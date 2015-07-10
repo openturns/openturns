@@ -25,6 +25,9 @@
 #include "ResourceMap.hxx"
 #include "algocobyla.h"
 #include "Log.hxx"
+#include "OptimizationSolver.hxx"
+#include "Cobyla.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,9 +36,13 @@ CLASSNAMEINIT(TrapezoidalFactory);
 /* Default constructor */
 TrapezoidalFactory::TrapezoidalFactory()
   : DistributionImplementationFactory()
+  , solver_(new Cobyla())
 {
   // Initialize any other class members here
   // At last, allocate memory space if needed, but go to destructor to free it
+  static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoBeg")));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
 }
 
 /* Virtual constructor */
@@ -44,7 +51,7 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
   return new TrapezoidalFactory(*this);
 }
 
-
+/* Compute the log-likelihood function */
 NumericalScalar TrapezoidalFactory::computeLogLikelihood(const NumericalPoint & x) const
 {
   NumericalScalar result(0.0);
@@ -61,35 +68,38 @@ NumericalScalar TrapezoidalFactory::computeLogLikelihood(const NumericalPoint & 
   return result;
 }
 
-
-int TrapezoidalFactory::ComputeObjectiveAndConstraint(int n,
-    int m,
-    double *x,
-    double *f,
-    double *con,
-    void *state)
+/* Compute the log-likelihood constraint */
+NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & x) const
 {
-  TrapezoidalFactory * factory = static_cast<TrapezoidalFactory *>(state);
-  const NumericalScalar a(x[0]);
-  const NumericalScalar b(x[1]);
-  const NumericalScalar c(x[2]);
-  const NumericalScalar d(x[3]);
-  NumericalPoint vec(0);
-  vec.add(a);
-  vec.add(b);
-  vec.add(c);
-  vec.add(d);
-
-  /* Compute the likelihood function at [a,b,c,d] */
-  *f = - factory->computeLogLikelihood( vec );
-
-  /* Compute the constraints */
-  con[0] = b - a;//a<=b
-  con[1] = c - b - SpecFunc::MinNumericalScalar;// b<c
-  con[2] = d - c;// c<=d
-  return 0;
+  NumericalPoint result(3,0.0);
+  result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
+  result[1] = x[2] - x[1] - SpecFunc::MinNumericalScalar;  // x[1] <  x[2]
+  result[2] = x[3] - x[2] ;                                // x[3] <= x[2]
+  return result;
 }
 
+/* Compute the log-likelihood function accessor */
+NumericalMathFunction TrapezoidalFactory::getLogLikelihoodFunction() const
+{
+  return bindMethod <TrapezoidalFactory, NumericalScalar, NumericalPoint> ( *this, &TrapezoidalFactory::computeLogLikelihood, 4, 1);
+}
+
+/* Compute the log-likelihood constraint accessor */
+NumericalMathFunction TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
+{
+  return bindMethod <TrapezoidalFactory, NumericalPoint, NumericalPoint> ( *this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
+}
+
+/* Optimization solver accessor */
+OptimizationSolver TrapezoidalFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void TrapezoidalFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
+}
 
 /* Here is the interface that all derived class must implement */
 
@@ -117,37 +127,34 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a Trapezoidal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  const NumericalScalar min(sample.getMin()[0]);
-  const NumericalScalar max(sample.getMax()[0]);
-
-  // number of optimized variables
-  int n(4);
-
-  // number of constraints
-  int m(3);
-
   // starting point
   NumericalPoint x(4);
+
+  const NumericalScalar min(sample.getMin()[0]);
+  const NumericalScalar max(sample.getMax()[0]);
   x[0] = min - std::abs( min ) / ( 2.0 + size );// a
   x[1] = sample.computeQuantilePerComponent( 0.25 )[0];// b
   x[2] = sample.computeQuantilePerComponent( 0.75 )[0];// c
   x[3] = max + std::abs( max ) / ( 2.0 + size );// d
 
-  NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar( "TrapezoidalFactory-RhoBeg" ));
-  NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar( "TrapezoidalFactory-RhoEnd" ));
-  int maxFun(ResourceMap::GetAsUnsignedInteger( "TrapezoidalFactory-MaximumIteration" ));
-  cobyla_message message( COBYLA_MSG_NONE );
-
   // use attributes to pass the data
   sample_ = sample;
 
-  // call cobyla algo
-  int returnCode(cobyla( n, m, &x[0], rhoBeg, rhoEnd, message, &maxFun, TrapezoidalFactory::ComputeObjectiveAndConstraint, (void*) this ));
-  if (returnCode != 0)
-  {
-    LOGWARN(OSS() << "Error solving maximum likelihood problem by cobyla method, message=" << cobyla_rc_string[returnCode - COBYLA_MINRC]);
-  }
-  Trapezoidal result(x[0], x[1], x[2], x[3]);
+  // Define Optimization problem 
+  OptimizationProblem problem;
+  problem.setObjective(getLogLikelihoodFunction());
+  problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
+  problem.setMinimization(false);
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(x);
+
+  // run Optimization problem
+  solver_.run();
+
+  // optimal point
+  const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+  Trapezoidal result(optpoint[0], optpoint[1], optpoint[2], optpoint[3]);
+
   result.setDescription(sample.getDescription());
   return result;
 }

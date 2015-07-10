@@ -24,6 +24,7 @@
 #include "OTprivate.hxx"
 #include "DistributionImplementationFactory.hxx"
 #include "Trapezoidal.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,21 +54,29 @@ public:
   Trapezoidal buildAsTrapezoidal( const NumericalPointWithDescriptionCollection & parameters ) const;
   Trapezoidal buildAsTrapezoidal() const;
 
+  /** Likelihood function accessor */
+  NumericalMathFunction getLogLikelihoodFunction() const;
+
+  /** Likelihood constraint accessor */
+  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
 protected:
 
   /** likelihood estimate */
   NumericalScalar computeLogLikelihood( const NumericalPoint & x ) const;
 
-  /** wrapper function passed to cobyla */
-  static int ComputeObjectiveAndConstraint( int n,
-      int m,
-      double * x,
-      double * f,
-      double * con,
-      void * state );
+  /** likelihood estimate */
+  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & x ) const;
 
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalSample sample_;
+
+  /**   OptimizationSolver   */ 
+  mutable OptimizationSolver solver_;
 
 }; /* class TrapezoidalFactory */
 

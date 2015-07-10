@@ -31,6 +31,9 @@
 #include "WhittleFactory.hxx"
 #include "Lapack.hxx"
 #include "ResourceMap.hxx"
+#include "OptimizationSolver.hxx"
+#include "Cobyla.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,8 +59,10 @@ ARMALikelihoodFactory::ARMALikelihoodFactory()
   , hasInitializedMACoefficients_(false)
   , hasInitializedCovarianceMatrix_(false)
   , verbose_(false)
+  , solver_(new Cobyla())
 {
-  // Nothing to do
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
 }
 
 /* Standard constructor */
@@ -78,10 +83,13 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
   , hasInitializedMACoefficients_(false)
   , hasInitializedCovarianceMatrix_(false)
   , verbose_(false)
+  , solver_(new Cobyla())
 {
   if (dimension == 0)
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
   dimension_ = dimension;
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
   if ((p != 0) || (q != 0))
   {
     currentP_ = p;
@@ -113,10 +121,13 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
   , hasInitializedMACoefficients_(false)
   , hasInitializedCovarianceMatrix_(false)
   , verbose_(false)
+  , solver_(new Cobyla())
 {
   if (dimension == 0)
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
   dimension_ = dimension;
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
 }
 
 void ARMALikelihoodFactory::initialize()
@@ -137,6 +148,8 @@ ARMALikelihoodFactory * ARMALikelihoodFactory::clone() const
 {
   return new ARMALikelihoodFactory(*this);
 }
+
+/* Compute the log-likelihood function */
 
 NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint & beta) const
 {
@@ -285,48 +298,38 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
   return logLikelihood;
 }
 
-/* objective function ==> function to be optimized */
-int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
-    int m,
-    double *x,
-    double *f,
-    double *con,
-    void *state)
+/* Compute the log-likelihood constraint */
+
+NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & beta) const
 {
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-RootEpsilon"));
-  NumericalPoint theta(n);
-  for (UnsignedInteger k = 0; k < static_cast<UnsignedInteger>(n); ++k) theta[k] = x[k];
 
-  ARMALikelihoodFactory * factory = static_cast<ARMALikelihoodFactory *>(state);
-  *f = - factory->computeLogLikelihood( theta );
+  NumericalPoint result(nbInequalityConstraint_,0.0);
 
-  const UnsignedInteger p(factory->getCurrentP());
-  const UnsignedInteger q(factory->getCurrentQ());
-  const UnsignedInteger dimension(factory->dimension_);
   UnsignedInteger constraintIndex(0);
   UnsignedInteger currentIndex(0);
 
   // If not pure MA, check the eigenValues of the AR polynom
-  if (p > 0)
+  if (currentP_ > 0)
   {
     // Companion matrix - Matrix is of size (dimension * p_)
-    SquareMatrix matrix(dimension * p);
-    for (UnsignedInteger coefficientIndex = 0; coefficientIndex < p ; ++coefficientIndex)
+    SquareMatrix matrix(dimension_ * currentP_);
+    for (UnsignedInteger coefficientIndex = 0; coefficientIndex < currentP_ ; ++coefficientIndex)
     {
-      for  (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
+      for  (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++ rowIndex)
       {
-        for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++ columnIndex)
         {
-          matrix( dimension * (p - 1) +  rowIndex, coefficientIndex * dimension + columnIndex ) = x[currentIndex] ;
+          matrix( dimension_ * (currentP_ - 1) +  rowIndex, coefficientIndex * dimension_ + columnIndex ) = beta[currentIndex] ;
           ++currentIndex;
         }
       }
     }
 
     // Incorporation into the previous for loop
-    for (UnsignedInteger index = 0; index < dimension * (p - 1); ++index)
+    for (UnsignedInteger index = 0; index < dimension_ * (currentP_ - 1); ++index)
     {
-      matrix(index, dimension + index) = 1.0;
+      matrix(index, dimension_ + index) = 1.0;
     }
 
     // Computation of EigenValues without keeping intact (matrix not used after)
@@ -337,30 +340,30 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
     for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
     // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
 
-    con[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
+    result[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
     ++constraintIndex;
   }
   // If invertible and not pure AR, check the eigenValues of the MA polynom
-  if (factory->getInvertible() && q > 0)
+  if (invertible_ && currentQ_ > 0)
   {
     // Companion matrix - Matrix is of size (dimension * p_)
-    SquareMatrix matrix(dimension * q);
-    for (UnsignedInteger coefficientIndex = 0; coefficientIndex < q ; ++coefficientIndex)
+    SquareMatrix matrix(dimension_ * currentQ_);
+    for (UnsignedInteger coefficientIndex = 0; coefficientIndex < currentQ_ ; ++coefficientIndex)
     {
-      for  (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
+      for  (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++ rowIndex)
       {
-        for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++ columnIndex)
         {
-          matrix( dimension * (q - 1) +  rowIndex, coefficientIndex * dimension + columnIndex ) = x[currentIndex];
+          matrix( dimension_ * (currentQ_ - 1) +  rowIndex, coefficientIndex * dimension_ + columnIndex ) = beta[currentIndex];
           ++currentIndex;
         }
       }
     }
 
     // Incorporation into the previous for loop
-    for (UnsignedInteger index = 0; index < dimension * (q - 1); ++index)
+    for (UnsignedInteger index = 0; index < dimension_ * (currentQ_ - 1); ++index)
     {
-      matrix(index, dimension + index) = 1.0;
+      matrix(index, dimension_ + index) = 1.0;
     }
 
     // Computation of EigenValues without keeping intact (matrix not used after)
@@ -370,17 +373,17 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
     NumericalScalar s(std::norm(eigenValues[0]));
     for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
     // If the largest eigenvalue is not in the interior of the unit circle, criteria is not respected
-    con[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
+    result[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
     ++constraintIndex;
   }
 
   // Check the positive character of the matrix
-  CovarianceMatrix covarianceMatrix(dimension);
-  for (UnsignedInteger j = 0; j < dimension; ++j)
+  CovarianceMatrix covarianceMatrix(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    for (UnsignedInteger i = j; i < dimension; ++i)
+    for (UnsignedInteger i = j; i < dimension_; ++i)
     {
-      covarianceMatrix(i, j) = x[currentIndex];
+      covarianceMatrix(i, j) = beta[currentIndex];
       currentIndex += 1;
     }
   }
@@ -391,9 +394,40 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
   NumericalScalar s(eigenValues[0]);
   for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::min(s, eigenValues[i]);
   // Constrain is that the min eigenvalue upper than 0
-  con[constraintIndex] = s - epsilon;
+  result[constraintIndex] = s - epsilon;
+   
+  return result;
+}
 
-  return 0;
+/* Compute the log-likelihood function accessor */
+NumericalMathFunction ARMALikelihoodFactory::getLogLikelihoodFunction() const
+{
+  return bindMethod <ARMALikelihoodFactory, NumericalScalar, NumericalPoint> ( *this, &ARMALikelihoodFactory::computeLogLikelihood, inputDimension_, 1);
+}
+
+/* Compute the log-likelihood constraint accessor */
+NumericalMathFunction ARMALikelihoodFactory::getLogLikelihoodInequalityConstraint() const
+{
+  return bindMethod <ARMALikelihoodFactory, NumericalPoint, NumericalPoint> ( *this, &ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint, inputDimension_ , nbInequalityConstraint_);
+}
+
+/* Initialize optimization solver parameter using the ResourceMap */
+void ARMALikelihoodFactory::initializeOptimizationSolverParameter()
+{
+  static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg")));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun"));
+}
+
+/* Optimization solver accessor */
+OptimizationSolver ARMALikelihoodFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
 }
 
 // in-place Cholesky decomposition
@@ -501,7 +535,11 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 {
   // Currently the implementation of the factory bases on m estimations of univariate models, m is the dimension of the
   // above time series
-
+  
+  // Define Optimization problem (Maximization)
+  OptimizationProblem problem;
+  problem.setMinimization(false);
+  
   // Checking the size of time series
   if (timeSeries.getSize() < currentG_)
     throw InvalidArgumentException(HERE) << "Error : expected time series of size greater than " << currentG_;
@@ -569,22 +607,20 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   // initial sigma2
   beta[currentIndex] = sigma2_;
   // use attributes to pass the data
+  nbInequalityConstraint_ = m;
+  inputDimension_ = n;
+  // Define Objective and Constraint functions for Optimization problem 
+  problem.setObjective(getLogLikelihoodFunction());
+  problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(beta);
+  
+  // run Optimization problem
+  solver_.run();
 
-  // Cobyla parameters
-  // cobyla rhobeg ==>  a reasonable initial change to the variables
-  // cobyla rhoend ==> the required accuracy for the variables
-  // if the cobyla will be the default method, then we must add these variables in the ResourceMap
-  // maxfun ==> on input, the maximum number of function evaluations on output, the number of function evaluations done
-  NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
-  NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
-  int maxFun(static_cast<int>(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun")));
-
-  // verbosity level
-  cobyla_message message( verbose_ ? COBYLA_MSG_INFO : COBYLA_MSG_NONE );
-  // call cobyla algo
-  int returnCode(cobyla( n, m, &beta[0], rhoBeg, rhoEnd, message, &maxFun, ARMALikelihoodFactory::ComputeObjectiveAndConstraint, (void*) this ));
-  if (returnCode != 0)
-    LOGWARN(OSS() << "Problem solving maximum likelihood problem by cobyla method, message=" << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+  // optimal point
+  const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+  beta = optpoint;
 
   // Return result
   currentIndex = 0;

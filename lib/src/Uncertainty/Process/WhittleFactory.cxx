@@ -29,6 +29,9 @@
 #include "Log.hxx"
 #include "Normal.hxx"
 #include "UniVariatePolynomial.hxx"
+#include "OptimizationSolver.hxx"
+#include "Cobyla.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,8 +56,10 @@ WhittleFactory::WhittleFactory()
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
+  , solver_(new Cobyla())
 {
-  // Nothing to do
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
 }
 
 /* Standard constructor */
@@ -72,9 +77,12 @@ WhittleFactory::WhittleFactory(const UnsignedInteger p,
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
+  , solver_(new Cobyla())
 {
   // Create the set of starting points using the parameters in the ResourceMap
   initializeStartingPoints();
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
 }
 
 /* Standard constructor */
@@ -92,9 +100,12 @@ WhittleFactory::WhittleFactory(const Indices & p,
   , isHistoryEnabled_(true)
   , history_(0)
   , startingPoints_(0)
+  , solver_(new Cobyla())
 {
   // Create the set of starting points using the parameters in the ResourceMap
   initializeStartingPoints();
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
 }
 
 /* Virtual constructor */
@@ -145,6 +156,7 @@ void WhittleFactory::computeSpectralDensity(const SpectralModel & spectralModel)
   }
 }
 
+/* Compute the log-likelihood function */
 NumericalScalar WhittleFactory::computeLogLikelihood(const NumericalPoint & theta) const
 {
   NumericalScalar logTerm(0.0);
@@ -173,71 +185,91 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const NumericalPoint & thet
   return -logTerm - m_ * log(ratioTerm);
 }
 
-/* objective function ==> function to be optimized */
-int WhittleFactory::ComputeObjectiveAndConstraint(int n,
-    int m,
-    double *x,
-    double *f,
-    double *con,
-    void *state)
+
+/* Compute the log-likelihood constraint */
+NumericalPoint WhittleFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & theta) const
 {
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("WhittleFactory-RootEpsilon"));
 
-  NumericalPoint theta(n);
-  for (UnsignedInteger k = 0; k < static_cast<UnsignedInteger>(n); ++k) theta[k] = x[k];
+  NumericalPoint result(nbInequalityConstraint_,0.0);
 
-  WhittleFactory * factory = static_cast<WhittleFactory *>(state);
-  *f = -factory->computeLogLikelihood( theta );
-  // AR dimension
-  const UnsignedInteger p(factory->getCurrentP());
-  const UnsignedInteger q(factory->getCurrentQ());
   UnsignedInteger constraintIndex(0);
   // If not pure MA, check the roots of the AR polynom
-  if (p > 0)
+  if (currentP_ > 0)
   {
-    NumericalPoint arCoefficients(p + 1, 1.0);
-    for (UnsignedInteger i = 0; i < p; ++i) arCoefficients[i + 1] = theta[i];
+    NumericalPoint arCoefficients(currentP_ + 1, 1.0);
+    for (UnsignedInteger i = 0; i < currentP_; ++i) arCoefficients[i + 1] = theta[i];
     UniVariatePolynomial polynom(arCoefficients);
     // Check the roots only if the polynom is not constant
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
       NumericalScalar minRootModule(std::norm(roots[0]));
-      for (UnsignedInteger i = 1; i < p; ++i)
+      for (UnsignedInteger i = 1; i < currentP_; ++i)
       {
         const NumericalScalar rootModule(std::norm(roots[i]));
         if (rootModule < minRootModule) minRootModule = rootModule;
       }
-      con[constraintIndex] = minRootModule - 1.0 - epsilon;
+      result[constraintIndex] = minRootModule - 1.0 - epsilon;
     }
     // For constant polynom, assume root 0
-    else con[constraintIndex] = -1.0 - epsilon;
+    else result[constraintIndex] = -1.0 - epsilon;
     ++constraintIndex;
   }
   // If invertible and not pure AR, check the roots of the MA polynom
-  if (factory->getInvertible() && q > 0)
+  if (invertible_ && currentQ_ > 0)
   {
-    NumericalPoint maCoefficients(q + 1, 1.0);
-    for (UnsignedInteger i = 0; i < q; ++i) maCoefficients[i + 1] = theta[i + p];
+    NumericalPoint maCoefficients(currentQ_ + 1, 1.0);
+    for (UnsignedInteger i = 0; i < currentQ_; ++i) maCoefficients[i + 1] = theta[i + currentP_];
     UniVariatePolynomial polynom(maCoefficients);
     // Check the roots only if the polynom is not constant
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
       NumericalScalar minRootModule(std::norm(roots[0]));
-      for (UnsignedInteger i = 1; i < q; ++i)
+      for (UnsignedInteger i = 1; i < currentQ_; ++i)
       {
         const NumericalScalar rootModule(std::norm(roots[i]));
         if (rootModule < minRootModule) minRootModule = rootModule;
       }
-      con[constraintIndex] = minRootModule - 1.0 - epsilon;
+      result[constraintIndex] = minRootModule - 1.0 - epsilon;
     }
     // For constant polynom, assume root 0
-    else con[constraintIndex] = -1.0 - epsilon;
+    else result[constraintIndex] = -1.0 - epsilon;
   }
-  return 0;
+  return result;
 }
 
+/* Compute the log-likelihood function accessor */
+NumericalMathFunction WhittleFactory::getLogLikelihoodFunction() const
+{
+  return bindMethod <WhittleFactory, NumericalScalar, NumericalPoint> ( *this, &WhittleFactory::computeLogLikelihood, currentP_ + currentQ_ , 1);
+}
+
+
+NumericalMathFunction WhittleFactory::getLogLikelihoodInequalityConstraint() const
+{	
+  return bindMethod <WhittleFactory, NumericalPoint, NumericalPoint> ( *this, &WhittleFactory::computeLogLikelihoodInequalityConstraint, currentP_ + currentQ_, nbInequalityConstraint_);
+}
+
+/* Initialize optimization solver parameter using the ResourceMap */
+void WhittleFactory::initializeOptimizationSolverParameter()
+{
+  static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg")));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));
+}
+
+/* Optimization solver accessor */
+OptimizationSolver WhittleFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void WhittleFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
+}
 
 /* String converter */
 String WhittleFactory::__repr__() const
@@ -359,6 +391,11 @@ ARMA WhittleFactory::build(const ProcessSample & sample) const
 /* Do the likelihood maximization */
 ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria) const
 {
+
+  // Define Optimization problem 
+  OptimizationProblem problem;
+  problem.setMinimization(false);
+
   // First, clean the history
   clearHistory();
   const UnsignedInteger sizeP(p_.getSize());
@@ -372,6 +409,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
   UnsignedInteger bestQ(0);
 
   UnsignedInteger pointIndex(0);
+
   for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
     currentP_ = p_[pIndex];
@@ -380,6 +418,8 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
       currentQ_ = q_[qIndex];
 
       if (verbose_) LOGINFO(OSS() << "Current parameters p=" << currentP_ << ", q=" << currentQ_);
+
+
       // Dimension of the optimization problem
       int n(currentP_ + currentQ_);
       int m(0);
@@ -387,29 +427,27 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
       if (currentP_ > 0) ++m;
       // Check the minimum root module of the MA polynom only if not pure AR process and if invertible
       if (invertible_ && currentQ_ > 0) ++m;
+
       // Current parameters vector
       NumericalPoint theta(startingPoints_[pointIndex]);
 
       // Optimize only if there is some ARMA parameters to estimate
       if (n > 0)
       {
-        // use attributes to pass the data
+  	// Define Objective and Constraint functions for Optimization problem 
+  	problem.setObjective(getLogLikelihoodFunction());
+ 	// use attributes to pass the data
+  	nbInequalityConstraint_ = m;
+	problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
+  	solver_.setProblem(problem);
+  	solver_.setStartingPoint(startingPoints_[pointIndex]);
 
-        // Cobyla parameters
-        // cobyla rhobeg ==>  a reasonable initial change to the variables
-        // cobyla rhoend ==> the required accuracy for the variables
-        // if the cobyla will be the default method, then we must add these variables in the ResourceMap
-        // maxfun ==> on input, the maximum number of function evaluations on output, the number of function evaluations done
-        NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg"));
-        NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
-        int maxFun(static_cast<int>(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun")));
-        // verbosity level
-        cobyla_message message( verbose_ ? COBYLA_MSG_INFO : COBYLA_MSG_NONE );
+  	// run Optimization problem
+  	solver_.run();
 
-        // call cobyla algo
-        int returnCode(cobyla( n, m, &theta[0], rhoBeg, rhoEnd, message, &maxFun, WhittleFactory::ComputeObjectiveAndConstraint, (void*) this ));
-        if (returnCode != 0)
-          LOGWARN(OSS() << "Problem solving maximum likelihood problem by cobyla method, message=" << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+ 	// optimal point
+  	const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+        theta = optpoint;
       }
       // Compute the information criteria
       // First, the corrected AIC
