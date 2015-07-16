@@ -360,6 +360,7 @@ ot_add_python_module(optim optim_module.i
                       Cobyla.i
                       TNCSpecificParameters.i
                       TNCObsolete.i
+                      TNC.i
                       SQPSpecificParameters.i
                       SQP.i
                       BaseOptimTemplateDefs.i
