@@ -380,15 +380,20 @@ int main(int argc, char *argv[])
     cobyla.setMaximumConstraintError(1.0e-10);
 
     // Create a TNC algorithm
-    TNCObsolete tnc;
+    OptimizationSolver tnc(new TNC());
     {
-      TNCSpecificParameters specific;
-      NumericalPoint startingPoint(3, 1.0);
       Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
-      tnc = TNCObsolete(specific, analytical, bounds, startingPoint, TNCObsolete::Result::MINIMIZATION);
+
+      OptimizationProblem problem;
+      problem.setBounds(bounds);
+      problem.setObjective(analytical);
+      problem.setMinimization(true);
+
+      tnc.setProblem(problem);
+      tnc.setStartingPoint(NumericalPoint(3, 1.0));
     }
     study.add("tnc", tnc);
-
+ 
     // Create a SORM algorithm
     SORM sorm(abdoRackwitz, event, NumericalPoint(3, 4.));
     study.add("sorm", sorm);
@@ -1017,7 +1022,7 @@ int main(int argc, char *argv[])
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
     compare<CobylaObsolete >( cobyla, study2, "cobyla" );
-    compare<TNCObsolete >( tnc, study2, "tnc" );
+    compare<OptimizationSolver >( tnc, study2, "tnc" );
     compare<BoundConstrainedAlgorithmImplementationResult >( boundConstrainedAlgorithmImplementationResult, study2 );
 
     // Model

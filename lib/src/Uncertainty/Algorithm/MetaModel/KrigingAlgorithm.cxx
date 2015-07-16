@@ -31,6 +31,8 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "HMatrixFactory.hxx"
 #include "NonCenteredFiniteDifferenceGradient.hxx"
+#include "TNC.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,7 +50,7 @@ KrigingAlgorithm::KrigingAlgorithm()
   , normalize_(false)
   , outputSample_(0, 0)
   , covarianceModel_()
-  , optimizer_()
+  , solver_(new TNC())
   , optimizerProvided_(false)
   , beta_(0)
   , gamma_(0)
@@ -79,7 +81,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , normalize_(normalize)
   , outputSample_()
   , covarianceModel_()
-  , optimizer_()
+  , solver_(new TNC())
   , optimizerProvided_(false)
   , beta_(0)
   , gamma_(0)
@@ -134,7 +136,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , normalize_(normalize)
   , outputSample_(outputSample)
   , covarianceModel_(covarianceModel)
-  , optimizer_()
+  , solver_(new TNC())
   , optimizerProvided_(false)
   , beta_(0)
   , gamma_(0)
@@ -183,7 +185,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , normalize_(true)
   , outputSample_()
   , covarianceModel_()
-  , optimizer_()
+  , solver_(new TNC())
   , optimizerProvided_(false)
   , beta_(0)
   , gamma_(0)
@@ -225,7 +227,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , normalize_(true)
   , outputSample_()
   , covarianceModel_()
-  , optimizer_()
+  , solver_(new TNC())
   , optimizerProvided_(false)
   , beta_(0)
   , gamma_(0)
@@ -654,15 +656,17 @@ NumericalPoint KrigingAlgorithm::optimizeLogLikelihood()
   const NumericalScalar initialLogLikelihood(logLikelihoodFunction(initialTheta)[0]);
   LOGINFO(OSS() << "Initial theta=" << initialTheta << ", log-likelihood=" << initialLogLikelihood);
 
-  BoundConstrainedAlgorithm optimizer(optimizer_);
-  optimizer.setObjectiveFunction(logLikelihoodFunction);
-  optimizer.setOptimizationProblem(BoundConstrainedAlgorithmImplementationResult::MAXIMIZATION);
-  optimizer.setStartingPoint(initialTheta);
-  optimizer.run();
+  // Define Optimization problem 
+  OptimizationProblem problem(solver_.getProblem());
+  problem.setObjective(logLikelihoodFunction);
+  problem.setMinimization(false);
+  solver_.setStartingPoint(initialTheta);	
+  solver_.setProblem(problem);
+  solver_.run();
 
   // check result
-  const NumericalScalar optimizedLogLikelihood(optimizer.getResult().getOptimalValue());
-  const NumericalPoint optimizedTheta(optimizer.getResult().getOptimizer());
+  const NumericalScalar optimizedLogLikelihood(solver_.getResult().getOptimalValue()[0]);
+  const NumericalPoint optimizedTheta(solver_.getResult().getOptimalPoint());
   LOGINFO(OSS() << "Optimized theta=" << optimizedTheta << ", log-likelihood=" << optimizedLogLikelihood);
   const NumericalPoint finalTheta(optimizedLogLikelihood > initialLogLikelihood ? optimizedTheta : initialTheta);
   // the last optimized point is not necessarily the last evaluated, so update intermediate results
@@ -672,19 +676,17 @@ NumericalPoint KrigingAlgorithm::optimizeLogLikelihood()
   return finalTheta;
 }
 
-
-void KrigingAlgorithm::setOptimizer(const BoundConstrainedAlgorithm& optimizer)
+/* Optimization solver accessor */
+OptimizationSolver KrigingAlgorithm::getOptimizationSolver() const
 {
-  optimizer_ = optimizer;
+  return solver_;
+}
+
+void KrigingAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
   optimizerProvided_ = true;
 }
-
-
-BoundConstrainedAlgorithm KrigingAlgorithm::getOptimizer() const
-{
-  return optimizer_;
-}
-
 
 void KrigingAlgorithm::setInputTransformation(const NumericalMathFunction& inputTransformation)
 {
@@ -761,7 +763,7 @@ void KrigingAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "normalize_", normalize_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
-  adv.saveAttribute( "optimizer_", optimizer_ );
+  adv.saveAttribute( "solver_", solver_ );
   adv.saveAttribute( "optimizerProvided_", optimizerProvided_ );
   adv.saveAttribute( "result_", result_ );
   adv.saveAttribute( "keepCovariance_", keepCovariance_ );
@@ -780,7 +782,7 @@ void KrigingAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "normalize_", normalize_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
-  adv.loadAttribute( "optimizer_", optimizer_ );
+  adv.loadAttribute( "solver_", solver_ );
   adv.loadAttribute( "optimizerProvided_", optimizerProvided_ );
   adv.loadAttribute( "result_", result_ );
   adv.loadAttribute( "keepCovariance_", keepCovariance_ );

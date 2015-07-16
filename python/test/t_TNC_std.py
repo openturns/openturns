@@ -11,12 +11,18 @@ try:
     specific = TNCSpecificParameters()
     startingPoint = NumericalPoint(4, 1.0)
     bounds = Interval(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0))
-    myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint,
-                      BoundConstrainedAlgorithmImplementationResult.MINIMIZATION)
-    myAlgorithm.setMaximumEvaluationsNumber(100)
+    myAlgorithm = OptimizationSolver(TNC())
+    problem = OptimizationProblem()
+    problem.setBounds(bounds)
+    problem.setObjective(levelFunction)
+    problem.setMinimization(True)
+
+    myAlgorithm.setProblem(problem)
+    myAlgorithm.setStartingPoint(startingPoint)
+    myAlgorithm.setMaximumIterationsNumber(100)
     myAlgorithm.setMaximumAbsoluteError(1.0e-10)
     myAlgorithm.setMaximumRelativeError(1.0e-10)
-    myAlgorithm.setMaximumObjectiveError(1.0e-10)
+    myAlgorithm.setMaximumResidualError(1.0e-10)
     myAlgorithm.setMaximumConstraintError(1.0e-10)
     print("myAlgorithm = ", myAlgorithm)
 except:

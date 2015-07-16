@@ -19,12 +19,13 @@
  *
  */
 #include "OrderStatisticsMarginalChecker.hxx"
-#include "TNCObsolete.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "FiniteDifferenceStep.hxx"
 #include "BlendedStep.hxx"
 #include "SpecFunc.hxx"
+#include "TNC.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,6 +34,7 @@ CLASSNAMEINIT(OrderStatisticsMarginalChecker);
 /* Parameters constructor */
 OrderStatisticsMarginalChecker::OrderStatisticsMarginalChecker(const DistributionCollection & collection)
   : Object()
+  , solver_(new TNC())
 {
   for (UnsignedInteger i = 0; i < collection.getSize(); ++ i)
   {
@@ -96,26 +98,33 @@ void OrderStatisticsMarginalChecker::check() const
     }
   }
   // Third test, find the minimum of F_i - F_{i+1}
-  // Algorithm used to solve difficult situations
-  TNCObsolete algo;
+
+  // Initilalyse Optimization problem 
+  OptimizationProblem problem;
+
   const FiniteDifferenceStep step(BlendedStep(NumericalPoint(1, std::pow(SpecFunc::NumericalScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::NumericalScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
     const OrderStatisticsMarginalCheckerWrapper wrapper(collection_[i - 1], collection_[i]);
     NumericalMathFunction f(bindMethod<OrderStatisticsMarginalCheckerWrapper, NumericalPoint, NumericalPoint>(wrapper, &OrderStatisticsMarginalCheckerWrapper::computeDelta, 1, 1));
     f.setGradient(CenteredFiniteDifferenceGradient(step, f.getEvaluation()->clone()));
+
     for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
     {
       const NumericalScalar xMin(quantiles[i - 1][k]);
       const NumericalScalar xMax(quantiles[i][k]);
       const NumericalScalar xMiddle(0.5 * (xMin + xMax));
-      algo.setBoundConstraints(Interval(xMin, xMax));
-      algo.setObjectiveFunction(f);
-      algo.setStartingPoint(NumericalPoint(1, xMiddle));
-      algo.run();
-      const NumericalPoint minimizer(algo.getResult().getOptimizer());
-      const NumericalScalar minValue(f(minimizer)[0]);
-      LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << algo.getResult());
+
+      // Define Optimization problem
+      problem.setBounds(Interval(xMin, xMax));
+      problem.setObjective(f);
+      solver_.setStartingPoint(NumericalPoint(1, xMiddle));
+      solver_.setProblem(problem);
+      solver_.run();
+      const NumericalPoint minimizer(solver_.getResult().getOptimalPoint());
+      const NumericalScalar minValue(solver_.getResult().getOptimalValue()[0]);
+
+      LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver_.getResult());
       if (minValue < epsilon) throw InvalidArgumentException(HERE) << "margins are not compatible: the CDF at x=" << minimizer[0] << " of margin " << i << " is not enough larger than the CDF of margin " << i + 1 << ". Gap is " << minValue << ".";
     } // k
   } // i
@@ -148,6 +157,17 @@ Indices OrderStatisticsMarginalChecker::buildPartition() const
     if (collection_[i - 1].getRange().getUpperBound()[0] <= collection_[i].getRange().getLowerBound()[0]) partition.add(i - 1);
   }
   return partition;
+}
+
+/* Optimization solver accessor */
+OptimizationSolver OrderStatisticsMarginalChecker::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
 }
 
 END_NAMESPACE_OPENTURNS

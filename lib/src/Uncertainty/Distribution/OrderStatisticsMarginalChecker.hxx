@@ -24,6 +24,7 @@
 #include "OTprivate.hxx"
 #include "Indices.hxx"
 #include "Distribution.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,7 +52,14 @@ public:
   /** Returns the indices of disjoints marginals */
   Indices buildPartition() const;
 
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
 protected:
+
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 
 private:
   DistributionCollection collection_;

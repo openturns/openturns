@@ -30,16 +30,24 @@ try:
     specific = TNCSpecificParameters()
     startingPoint = NumericalPoint(4, 0.0)
     bounds = Interval(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0))
-    myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint,
-                      BoundConstrainedAlgorithmImplementationResult.MINIMIZATION)
+    myAlgorithm = TNC()
+    myAlgorithm.setStartingPoint(startingPoint)
+
+    problem = OptimizationProblem()
+    problem.setBounds(bounds)
+    problem.setObjective(levelFunction)
+    problem.setMinimization(True)
+
+    myAlgorithm.setProblem(problem)
     myAlgorithm.run()
-    print("minimizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4),
-          " value=%g" % myAlgorithm.getResult().getOptimalValue())
-    myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint,
-                      BoundConstrainedAlgorithmImplementationResult.MAXIMIZATION)
+    print("minimizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4),
+          " value=%g" % myAlgorithm.getResult().getOptimalValue()[0])
+
+    problem.setMinimization(False)
+    myAlgorithm.setProblem(problem)
     myAlgorithm.run()
-    print("maximizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4),
-          " value=%g" % myAlgorithm.getResult().getOptimalValue())
+    print("maximizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4),
+          " value=%g" % myAlgorithm.getResult().getOptimalValue()[0])
 
 except:
     import sys

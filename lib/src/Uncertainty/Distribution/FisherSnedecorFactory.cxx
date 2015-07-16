@@ -22,7 +22,7 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "SpecFunc.hxx"
-#include "TNCObsolete.hxx"
+#include "TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,8 +31,14 @@ CLASSNAMEINIT(FisherSnedecorFactory);
 /* Default constructor */
 FisherSnedecorFactory::FisherSnedecorFactory():
   DistributionImplementationFactory()
+  , solver_(new TNC())
 {
-  // Nothing to do
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("FisherSnedecorFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */
@@ -94,20 +100,25 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   NumericalMathFunction logLikelihood(bindMethod<FisherSnedecorFactoryLogLikelihood, NumericalPoint, NumericalPoint>(logLikelihoodWrapper, &FisherSnedecorFactoryLogLikelihood::computeLogLikelihood, 2, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
   logLikelihood.setGradient(gradient);
-  // Solver
-  TNCObsolete optimizationAlgorithm(logLikelihood);
-  optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "FisherSnedecorFactory-MaximumEvaluationNumber"));
-  optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumAbsoluteError"));
-  optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumRelativeError"));
-  optimizationAlgorithm.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumObjectiveError"));
-  optimizationAlgorithm.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumConstraintError"));
+
+  // Define Optimization problem 
+  OptimizationProblem problem;
+  problem.setObjective(logLikelihood);
+
   NumericalPoint parametersLowerBound(0);
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-D1LowerBound"));
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-D2LowerBound"));
-  optimizationAlgorithm.setBoundConstraints(Interval(parametersLowerBound, NumericalPoint(2, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(2, true), Interval::BoolCollection(2, false)));
-  optimizationAlgorithm.run();
-  const NumericalPoint parameters(optimizationAlgorithm.getResult().getOptimizer());
-  return FisherSnedecor(parameters[0], parameters[1]);
+  problem.setBounds(Interval(parametersLowerBound, NumericalPoint(2, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(2, true), Interval::BoolCollection(2, false)));
+  
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(NumericalPoint(problem.getObjective().getInputDimension(), 0.0));
+  
+  // run Optimization problem
+  solver_.run();
+
+  // optimal point
+  const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+  return FisherSnedecor(optpoint[0], optpoint[1]);	
 }
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPointWithDescriptionCollection & parameters) const
@@ -134,5 +145,15 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor() const
   return FisherSnedecor();
 }
 
+/* Optimization solver accessor */
+OptimizationSolver FisherSnedecorFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void FisherSnedecorFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
+}
 
 END_NAMESPACE_OPENTURNS

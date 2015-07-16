@@ -22,7 +22,8 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "SpecFunc.hxx"
-#include "TNCObsolete.hxx"
+#include "TNC.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,8 +32,14 @@ CLASSNAMEINIT(TruncatedNormalFactory);
 /* Default constructor */
 TruncatedNormalFactory::TruncatedNormalFactory()
   : DistributionImplementationFactory()
+  , solver_(new TNC())
 {
-  // Nothing to do
+  // Initialize optimization solver parameter using the ResourceMap 
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("TruncatedNormalFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */
@@ -105,26 +112,26 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   NumericalMathFunction logLikelihood(bindMethod<TruncatedNormalFactoryLogLikelihood, NumericalPoint, NumericalPoint>(logLikelihoodWrapper, &TruncatedNormalFactoryLogLikelihood::computeLogLikelihood, 2, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
   logLikelihood.setGradient(gradient);
-  // Solver
-  TNCObsolete optimizationAlgorithm(logLikelihood);
-  optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "TruncatedNormalFactory-MaximumEvaluationNumber"));
-  optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-MaximumAbsoluteError"));
-  optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-MaximumRelativeError"));
-  optimizationAlgorithm.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-MaximumObjectiveError"));
-  optimizationAlgorithm.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-MaximumConstraintError"));
+
   NumericalPoint parametersLowerBound(1, -SpecFunc::MaxNumericalScalar);
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound"));
   NumericalPoint parametersUpperBound(2, SpecFunc::MaxNumericalScalar);
   Interval::BoolCollection parametersLowerFlags(1, false);
   parametersLowerFlags.add(true);
   Interval::BoolCollection parametersUpperFlags(2, false);
-  optimizationAlgorithm.setBoundConstraints(Interval(parametersLowerBound, parametersUpperBound, parametersLowerFlags, parametersUpperFlags));
   NumericalPoint startingPoint(2);
   startingPoint[0] = normalizedSample.computeMean()[0];
   startingPoint[1] = normalizedSample.computeStandardDeviationPerComponent()[0];
-  optimizationAlgorithm.setStartingPoint(startingPoint);
-  optimizationAlgorithm.run();
-  const NumericalPoint parameters(optimizationAlgorithm.getResult().getOptimizer());
+
+  // Define Optimization problem
+  OptimizationProblem problem;
+  problem.setObjective(logLikelihood);
+  problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, parametersLowerFlags, parametersUpperFlags));
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(startingPoint);
+  solver_.run();
+  const NumericalPoint parameters(solver_.getResult().getOptimalPoint());
+
   // The parameters are scaled back
   // X_norm = alpha * (X - beta)
   // X = beta + X_norm / alpha
@@ -170,4 +177,14 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal() const
   return TruncatedNormal();
 }
 
+/* Optimization solver accessor */
+OptimizationSolver TruncatedNormalFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void TruncatedNormalFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
+}
 END_NAMESPACE_OPENTURNS
