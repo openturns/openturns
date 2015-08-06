@@ -22,6 +22,6 @@
 #ifndef OPENTURNS_OTTNC_HXX
 #define OPENTURNS_OTTNC_HXX
 
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 
 #endif /* OPENTURNS_OTTNC_HXX */

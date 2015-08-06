@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     TNCSpecificParameters specific;
     NumericalPoint startingPoint(4, 1.0);
     Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
-    TNC myAlgorithm(specific, levelFunction, bounds, startingPoint, TNC::Result::MINIMIZATION);
+    TNCObsolete myAlgorithm(specific, levelFunction, bounds, startingPoint, TNCObsolete::Result::MINIMIZATION);
     myAlgorithm.setMaximumEvaluationsNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);

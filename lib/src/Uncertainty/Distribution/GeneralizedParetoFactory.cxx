@@ -22,7 +22,7 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "SpecFunc.hxx"
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -177,7 +177,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
   f.setGradient(gradient);
   // Solver
-  TNC optimizationAlgorithm(f);
+  TNCObsolete optimizationAlgorithm(f);
   optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-MaximumEvaluationNumber"));
   optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumAbsoluteError"));
   optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumRelativeError"));

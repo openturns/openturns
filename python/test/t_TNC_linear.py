@@ -30,12 +30,12 @@ try:
     specific = TNCSpecificParameters()
     startingPoint = NumericalPoint(4, 0.0)
     bounds = Interval(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0))
-    myAlgorithm = TNC(specific, levelFunction, bounds, startingPoint,
+    myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint,
                       BoundConstrainedAlgorithmImplementationResult.MINIMIZATION)
     myAlgorithm.run()
     print("minimizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4),
           " value=%g" % myAlgorithm.getResult().getOptimalValue())
-    myAlgorithm = TNC(specific, levelFunction, bounds, startingPoint,
+    myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint,
                       BoundConstrainedAlgorithmImplementationResult.MAXIMIZATION)
     myAlgorithm.run()
     print("maximizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4),

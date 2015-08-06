@@ -21,7 +21,7 @@
  */
 #include <cstdlib>
 
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 #include "ResourceMap.hxx"
 #include "PersistentObjectFactory.hxx"
 

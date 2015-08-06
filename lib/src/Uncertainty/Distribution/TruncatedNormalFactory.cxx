@@ -22,7 +22,7 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "SpecFunc.hxx"
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -106,7 +106,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
   logLikelihood.setGradient(gradient);
   // Solver
-  TNC optimizationAlgorithm(logLikelihood);
+  TNCObsolete optimizationAlgorithm(logLikelihood);
   optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "TruncatedNormalFactory-MaximumEvaluationNumber"));
   optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-MaximumAbsoluteError"));
   optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-MaximumRelativeError"));

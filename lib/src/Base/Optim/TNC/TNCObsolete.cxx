@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TNC is an actual implementation for a bound-constrained optimization algorithm
+ *  @brief TNCObsolete is an actual implementation for a bound-constrained optimization algorithm
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -20,7 +20,7 @@
  */
 #include <cmath> // For HUGE_VAL
 
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 #include "algotnc.h"
 #include "NumericalPoint.hxx"
 #include "Matrix.hxx"
@@ -32,33 +32,33 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(TNC);
+CLASSNAMEINIT(TNCObsolete);
 
-static Factory<TNC> RegisteredFactory("TNC");
+static Factory<TNCObsolete> RegisteredFactory("TNCObsolete");
 
 
 /* Default constructor */
-TNC::TNC():
+TNCObsolete::TNCObsolete():
   BoundConstrainedAlgorithmImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters: no constraint, starting from the origin */
-TNC::TNC(const NumericalMathFunction & objectiveFunction,
-         const Bool verbose):
+TNCObsolete::TNCObsolete(const NumericalMathFunction & objectiveFunction,
+                         const Bool verbose):
   BoundConstrainedAlgorithmImplementation(objectiveFunction, verbose)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters: bound constraints, starting from the given point */
-TNC::TNC(const TNCSpecificParameters & parameters,
-         const NumericalMathFunction & objectiveFunction,
-         const Interval & boundConstraints,
-         const NumericalPoint & startingPoint,
-         const OptimizationProblemObsolete optimization,
-         const Bool verbose)
+TNCObsolete::TNCObsolete(const TNCSpecificParameters & parameters,
+                         const NumericalMathFunction & objectiveFunction,
+                         const Interval & boundConstraints,
+                         const NumericalPoint & startingPoint,
+                         const OptimizationProblemObsolete optimization,
+                         const Bool verbose)
   :
   BoundConstrainedAlgorithmImplementation(objectiveFunction, boundConstraints, startingPoint, optimization, verbose),
   specificParameters_(parameters)
@@ -67,13 +67,13 @@ TNC::TNC(const TNCSpecificParameters & parameters,
 }
 
 /* Virtual constructor */
-TNC * TNC::clone() const
+TNCObsolete * TNCObsolete::clone() const
 {
-  return new TNC(*this);
+  return new TNCObsolete(*this);
 }
 
 /* Performs the actual computation by calling the TNC algorithm */
-void TNC::run()
+void TNCObsolete::run()
 {
   const UnsignedInteger dimension = getObjectiveFunction().getInputDimension();
   if (dimension == 0) throw InternalException(HERE) << "Error: cannot solve a bound constrained optimization problem with no objective function.";
@@ -169,7 +169,7 @@ void TNC::run()
    * On output, x, f and g may be very slightly out of sync because of scaling.
    *
    */
-  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndConstraint, (void*) this, &low[0], &up[0], refScale, refOffset, message, specificParameters_.getMaxCGit(), getMaximumEvaluationsNumber(), specificParameters_.getEta(), specificParameters_.getStepmx(), specificParameters_.getAccuracy(), specificParameters_.getFmin(), getMaximumObjectiveError(), getMaximumAbsoluteError(), getMaximumConstraintError(), specificParameters_.getRescale(), &nfeval);
+  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNCObsolete::ComputeObjectiveAndConstraint, (void*) this, &low[0], &up[0], refScale, refOffset, message, specificParameters_.getMaxCGit(), getMaximumEvaluationsNumber(), specificParameters_.getEta(), specificParameters_.getStepmx(), specificParameters_.getAccuracy(), specificParameters_.getFmin(), getMaximumObjectiveError(), getMaximumAbsoluteError(), getMaximumConstraintError(), specificParameters_.getRescale(), &nfeval);
 
   UnsignedInteger size = evaluationInputHistory_.getSize();
   for (UnsignedInteger i = 1; i < size; ++ i)
@@ -215,36 +215,36 @@ void TNC::run()
 }
 
 /* Specific parameters accessor */
-TNCSpecificParameters TNC::getSpecificParameters() const
+TNCSpecificParameters TNCObsolete::getSpecificParameters() const
 {
   return specificParameters_;
 }
 
 /* Specific parameters accessor */
-void TNC::setSpecificParameters(const TNCSpecificParameters & specificParameters)
+void TNCObsolete::setSpecificParameters(const TNCSpecificParameters & specificParameters)
 {
   specificParameters_ = specificParameters;
 }
 
 /* String converter */
-String TNC::__repr__() const
+String TNCObsolete::__repr__() const
 {
   OSS oss;
-  oss << "class=" << TNC::GetClassName()
+  oss << "class=" << TNCObsolete::GetClassName()
       << " " << BoundConstrainedAlgorithmImplementation::__repr__()
       << " specificParameters=" << getSpecificParameters();
   return oss;
 }
 
 /* Method save() stores the object through the StorageManager */
-void TNC::save(Advocate & adv) const
+void TNCObsolete::save(Advocate & adv) const
 {
   BoundConstrainedAlgorithmImplementation::save(adv);
   adv.saveAttribute("specificParameters_", specificParameters_);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void TNC::load(Advocate & adv)
+void TNCObsolete::load(Advocate & adv)
 {
   BoundConstrainedAlgorithmImplementation::load(adv);
   adv.loadAttribute("specificParameters_", specificParameters_);
@@ -252,11 +252,11 @@ void TNC::load(Advocate & adv)
 
 /*
  * Wrapper of the NumericalMathFunction operator() compatible with
- * TNC signature
+ * TNCObsolete signature
  */
-int TNC::ComputeObjectiveAndConstraint(double *x, double *f, double *g, void *state)
+int TNCObsolete::ComputeObjectiveAndConstraint(double *x, double *f, double *g, void *state)
 {
-  TNC *algorithm = static_cast<TNC *>(state);
+  TNCObsolete *algorithm = static_cast<TNCObsolete *>(state);
 
   /* Retreive the objective function */
   NumericalMathFunction objectiveFunction(algorithm->getObjectiveFunction());

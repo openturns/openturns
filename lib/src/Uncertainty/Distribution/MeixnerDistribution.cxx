@@ -24,7 +24,7 @@
 #include "SpecFunc.hxx"
 #include "DistFunc.hxx"
 #include "PersistentObjectFactory.hxx"
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 #include "Brent.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
@@ -250,7 +250,7 @@ void MeixnerDistribution::update()
   // Fourth, the random generator
   // Update the bounds for the ratio of uniform sampling algorithm
   const MeixnerBounds boundsFunctions(*this);
-  TNC algorithm;
+  TNCObsolete algorithm;
   algorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumAbsoluteError"));
   algorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumRelativeError"));
   algorithm.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumConstraintError"));

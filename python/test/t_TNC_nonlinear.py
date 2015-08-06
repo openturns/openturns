@@ -42,14 +42,14 @@ try:
     startingPointNearMaximizationCorner[3] = 4.5
 
     bounds = Interval(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0))
-    myAlgorithm = TNC(
+    myAlgorithm = TNCObsolete(
         specific, levelFunction, bounds, startingPointNearMinimizationCorner,
         BoundConstrainedAlgorithmImplementationResult.MINIMIZATION)
     myAlgorithm.run()
     print("minimizer = ", printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4),
           " value=%.5e" % myAlgorithm.getResult().getOptimalValue())
 
-    myAlgorithm = TNC(
+    myAlgorithm = TNCObsolete(
         specific, levelFunction, bounds, startingPointNearMaximizationCorner,
         BoundConstrainedAlgorithmImplementationResult.MAXIMIZATION)
     myAlgorithm.run()

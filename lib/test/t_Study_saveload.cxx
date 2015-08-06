@@ -380,12 +380,12 @@ int main(int argc, char *argv[])
     cobyla.setMaximumConstraintError(1.0e-10);
 
     // Create a TNC algorithm
-    TNC tnc;
+    TNCObsolete tnc;
     {
       TNCSpecificParameters specific;
       NumericalPoint startingPoint(3, 1.0);
       Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
-      tnc = TNC(specific, analytical, bounds, startingPoint, TNC::Result::MINIMIZATION);
+      tnc = TNCObsolete(specific, analytical, bounds, startingPoint, TNCObsolete::Result::MINIMIZATION);
     }
     study.add("tnc", tnc);
 
@@ -1017,7 +1017,7 @@ int main(int argc, char *argv[])
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
     compare<CobylaObsolete >( cobyla, study2, "cobyla" );
-    compare<TNC >( tnc, study2, "tnc" );
+    compare<TNCObsolete >( tnc, study2, "tnc" );
     compare<BoundConstrainedAlgorithmImplementationResult >( boundConstrainedAlgorithmImplementationResult, study2 );
 
     // Model

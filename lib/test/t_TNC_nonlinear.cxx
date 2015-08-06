@@ -68,12 +68,12 @@ int main(int argc, char *argv[])
 
       Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
       {
-        TNC myAlgorithm(specific, levelFunction, bounds, startingPointNearMinimizationCorner, TNC::Result::MINIMIZATION);
+        TNCObsolete myAlgorithm(specific, levelFunction, bounds, startingPointNearMinimizationCorner, TNCObsolete::Result::MINIMIZATION);
         myAlgorithm.run();
         fullprint << "minimizer = " << printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4) << " value=" << myAlgorithm.getResult().getOptimalValue() << std::endl;
       }
       {
-        TNC myAlgorithm(specific, levelFunction, bounds, startingPointNearMaximizationCorner, TNC::Result::MAXIMIZATION);
+        TNCObsolete myAlgorithm(specific, levelFunction, bounds, startingPointNearMaximizationCorner, TNCObsolete::Result::MAXIMIZATION);
         myAlgorithm.run();
         fullprint << "maximizer = " << printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4) << " value=" << myAlgorithm.getResult().getOptimalValue() << std::endl;
       }

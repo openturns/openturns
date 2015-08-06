@@ -19,7 +19,7 @@
  *
  */
 #include "BoundConstrainedAlgorithm.hxx"
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,7 +51,7 @@ BoundConstrainedAlgorithm::BoundConstrainedAlgorithm(const Implementation & p_im
 /* Constructor with parameters: no constraint, starting from the origin */
 BoundConstrainedAlgorithm::BoundConstrainedAlgorithm(const NumericalMathFunction & objectiveFunction,
     const Bool verbose):
-  TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>(new TNC(objectiveFunction, verbose))
+  TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>(new TNCObsolete(objectiveFunction, verbose))
 {
   // Nothing to do
 }
@@ -62,7 +62,7 @@ BoundConstrainedAlgorithm::BoundConstrainedAlgorithm(const NumericalMathFunction
     const NumericalPoint & startingPoint,
     const OptimizationProblemObsolete optimization,
     const Bool verbose)
-  : TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>(new TNC(TNCSpecificParameters(), objectiveFunction, boundConstraints, startingPoint, optimization, verbose))
+  : TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>(new TNCObsolete(TNCSpecificParameters(), objectiveFunction, boundConstraints, startingPoint, optimization, verbose))
 {
   // Nothing to do
 }

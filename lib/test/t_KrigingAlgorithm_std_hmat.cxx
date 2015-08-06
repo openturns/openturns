@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
       // create algorithm
       TNCSpecificParameters specific;
       Interval bounds(NumericalPoint(1, 0.7071067811865475), NumericalPoint(1, 35.60679774997894));
-      TNC optimizer(specific, NumericalMathFunction(Description(1, "x"), Description(1, "y"), Description(1, "x")), bounds, NumericalPoint(1, 22.360679774997898), TNC::Result::MINIMIZATION);
+      TNCObsolete optimizer(specific, NumericalMathFunction(Description(1, "x"), Description(1, "y"), Description(1, "x")), bounds, NumericalPoint(1, 22.360679774997898), TNCObsolete::Result::MINIMIZATION);
       optimizer.setMaximumEvaluationsNumber(10000);
       optimizer.setMaximumAbsoluteError(1.0e-8);
       optimizer.setMaximumRelativeError(1.0e-8);

@@ -30,6 +30,6 @@ Optimization of a function under bound constraints
     :template: class.rst_t
 
     BoundConstrainedAlgorithm
-    TNC
+    TNCObsolete
     TNCSpecificParameters
     BoundConstrainedAlgorithmImplementationResult

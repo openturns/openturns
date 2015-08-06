@@ -22,7 +22,7 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "SpecFunc.hxx"
-#include "TNC.hxx"
+#include "TNCObsolete.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -95,7 +95,7 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
   logLikelihood.setGradient(gradient);
   // Solver
-  TNC optimizationAlgorithm(logLikelihood);
+  TNCObsolete optimizationAlgorithm(logLikelihood);
   optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "FisherSnedecorFactory-MaximumEvaluationNumber"));
   optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumAbsoluteError"));
   optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumRelativeError"));

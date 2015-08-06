@@ -11,7 +11,7 @@ try:
     specific = TNCSpecificParameters()
     startingPoint = NumericalPoint(4, 1.0)
     bounds = Interval(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0))
-    myAlgorithm = TNC(specific, levelFunction, bounds, startingPoint,
+    myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint,
                       BoundConstrainedAlgorithmImplementationResult.MINIMIZATION)
     myAlgorithm.setMaximumEvaluationsNumber(100)
     myAlgorithm.setMaximumAbsoluteError(1.0e-10)

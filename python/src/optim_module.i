@@ -62,7 +62,7 @@
 %include CobylaObsolete.i
 %include Cobyla.i
 %include TNCSpecificParameters.i
-%include TNC.i
+%include TNCObsolete.i
 %include SQPSpecificParameters.i
 %include SQP.i
 

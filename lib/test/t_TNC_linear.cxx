@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
       TNCSpecificParameters specific;
       NumericalPoint startingPoint(4, 0.0);
       Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
-      TNC myAlgorithm(specific, levelFunction, bounds, startingPoint, TNC::Result::MINIMIZATION);
+      TNCObsolete myAlgorithm(specific, levelFunction, bounds, startingPoint, TNCObsolete::Result::MINIMIZATION);
       myAlgorithm.run();
       fullprint << "minimizer = " << printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4) << " value=" << myAlgorithm.getResult().getOptimalValue() << std::endl;
-      myAlgorithm = TNC(specific, levelFunction, bounds, startingPoint, TNC::Result::MAXIMIZATION);
+      myAlgorithm = TNCObsolete(specific, levelFunction, bounds, startingPoint, TNCObsolete::Result::MAXIMIZATION);
       myAlgorithm.run();
       fullprint << "maximizer = " << printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4) << " value=" << myAlgorithm.getResult().getOptimalValue() << std::endl;
     }

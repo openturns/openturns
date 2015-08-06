@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TNC is an actual implementation for a bound-constrained optimization algorithm
+ *  @brief TNCObsolete is an actual implementation for a bound-constrained optimization algorithm
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_TNC_HXX
-#define OPENTURNS_TNC_HXX
+#ifndef OPENTURNS_TNCOBSOLETE_HXX
+#define OPENTURNS_TNCOBSOLETE_HXX
 
 #include "OTprivate.hxx"
 #include "TNCSpecificParameters.hxx"
@@ -30,11 +30,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class TNC
- * TNC is an actual implementation for
+ * @class TNCObsolete
+ * TNCObsolete is an actual implementation for
  * BoundConstrainedAlgorithm using the TNC library
  */
-class OT_API TNC :
+class OT_API TNCObsolete :
   public BoundConstrainedAlgorithmImplementation
 {
   CLASSNAME;
@@ -42,22 +42,22 @@ public:
 
 
   /** Default constructor */
-  TNC();
+  TNCObsolete();
 
   /** Constructor with parameters: no constraint, starting from the origin */
-  explicit TNC(const NumericalMathFunction & objectiveFunction,
-               const Bool verbose = false);
+  explicit TNCObsolete(const NumericalMathFunction & objectiveFunction,
+                       const Bool verbose = false);
 
   /** Constructor with parameters: bound constraints, starting from the given point */
-  TNC(const TNCSpecificParameters & parameters,
-      const NumericalMathFunction & objectiveFunction,
-      const Interval & boundConstraints,
-      const NumericalPoint & startingPoint,
-      const OptimizationProblemObsolete optimization  = Result::MINIMIZATION,
-      const Bool verbose = false);
+  TNCObsolete(const TNCSpecificParameters & parameters,
+              const NumericalMathFunction & objectiveFunction,
+              const Interval & boundConstraints,
+              const NumericalPoint & startingPoint,
+              const OptimizationProblemObsolete optimization  = Result::MINIMIZATION,
+              const Bool verbose = false);
 
   /** Virtual constructor */
-  virtual TNC * clone() const;
+  virtual TNCObsolete * clone() const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
@@ -91,9 +91,9 @@ private:
   NumericalSample evaluationInputHistory_;
   NumericalSample evaluationOutputHistory_;
 
-}; /* class TNC */
+}; /* class TNCObsolete */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_TNC_HXX */
+#endif /* OPENTURNS_TNCOBSOLETE_HXX */

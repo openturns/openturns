@@ -359,7 +359,7 @@ ot_add_python_module(optim optim_module.i
                       CobylaObsolete.i
                       Cobyla.i
                       TNCSpecificParameters.i
-                      TNC.i
+                      TNCObsolete.i
                       SQPSpecificParameters.i
                       SQP.i
                       BaseOptimTemplateDefs.i
