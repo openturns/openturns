@@ -22,9 +22,6 @@
 #ifndef OPENTURNS_OTOPTIM_HXX
 #define OPENTURNS_OTOPTIM_HXX
 
-#include "BoundConstrainedAlgorithm.hxx"
-#include "BoundConstrainedAlgorithmImplementation.hxx"
-#include "BoundConstrainedAlgorithmImplementationResult.hxx"
 #include "PenalizedLeastSquaresAlgorithm.hxx"
 #include "NearestPointAlgorithm.hxx"
 #include "NearestPointAlgorithmImplementation.hxx"

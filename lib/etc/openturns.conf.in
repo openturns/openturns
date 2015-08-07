@@ -102,13 +102,6 @@
   <!-- OT::Contour parameters -->
   <Contour-DefaultLevelsNumber value="10" />
 
-  <!-- OT::BoundConstrainedAlgorithmImplementation parameters -->
-  <BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber value="100"    />
-  <BoundConstrainedAlgorithmImplementation-DefaultMaximumAbsoluteError     value="1.0e-5" />
-  <BoundConstrainedAlgorithmImplementation-DefaultMaximumRelativeError     value="1.0e-5" />
-  <BoundConstrainedAlgorithmImplementation-DefaultMaximumObjectiveError    value="1.0e-5" />
-  <BoundConstrainedAlgorithmImplementation-DefaultMaximumConstraintError   value="1.0e-5" />
-
   <!-- OT::SQP parameters -->
   <SQP-DefaultTau    value="0.5"    />
   <SQP-DefaultOmega  value="1.0e-4" />

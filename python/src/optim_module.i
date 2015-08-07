@@ -48,9 +48,6 @@
 %include OptimizationSolverImplementationResult.i
 %include OptimizationSolverImplementation.i
 %include OptimizationSolver.i
-%include BoundConstrainedAlgorithmImplementationResult.i
-%include BoundConstrainedAlgorithmImplementation.i
-%include BoundConstrainedAlgorithm.i
 %include NearestPointAlgorithmImplementationResult.i
 %include NearestPointAlgorithmImplementation.i
 %include NearestPointAlgorithm.i
@@ -62,7 +59,6 @@
 %include CobylaObsolete.i
 %include Cobyla.i
 %include TNCSpecificParameters.i
-%include TNCObsolete.i
 %include TNC.i
 %include SQPSpecificParameters.i
 %include SQP.i

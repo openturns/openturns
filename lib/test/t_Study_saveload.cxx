@@ -587,22 +587,6 @@ int main(int argc, char *argv[])
     }
     study.add("uniVariatePolynomial", uniVariatePolynomial);
 
-    // Create a BoundConstrainedAlgorithmImplementationResult
-    BoundConstrainedAlgorithmImplementationResult boundConstrainedAlgorithmImplementationResult;
-    {
-      UnsignedInteger dim(4);
-      NumericalPoint optimizer(dim, 1.0);
-      NumericalScalar optimalValue(5.0);
-      BoundConstrainedAlgorithmImplementationResult::OptimizationProblemObsolete optimization(BoundConstrainedAlgorithmImplementationResult::MINIMIZATION);
-      UnsignedInteger evaluationsNumber(10);
-      NumericalScalar absoluteError(1e-6);
-      NumericalScalar relativeError(1e-7);
-      NumericalScalar objectiveError(1e-8);
-      NumericalScalar constraintError(1e-10);
-      boundConstrainedAlgorithmImplementationResult = BoundConstrainedAlgorithmImplementationResult(optimizer, optimalValue, optimization, evaluationsNumber, absoluteError, relativeError, objectiveError, constraintError);
-    }
-    study.add("boundConstrainedAlgorithmImplementationResult", boundConstrainedAlgorithmImplementationResult);
-
     // Create a Burr
     Burr burr(1.5, 4.5);
     study.add("burr", burr);
@@ -1023,7 +1007,6 @@ int main(int argc, char *argv[])
     compare<SQP >( sqp, study2, "sqp" );
     compare<CobylaObsolete >( cobyla, study2, "cobyla" );
     compare<OptimizationSolver >( tnc, study2, "tnc" );
-    compare<BoundConstrainedAlgorithmImplementationResult >( boundConstrainedAlgorithmImplementationResult, study2 );
 
     // Model
     compare<Event >( event, study2 );

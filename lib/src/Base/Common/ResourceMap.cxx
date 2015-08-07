@@ -422,13 +422,6 @@ void ResourceMap::loadDefaultConfiguration()
   // Contour parameters //
   setAsUnsignedInteger( "Contour-DefaultLevelsNumber", 10 );
 
-  // BoundConstrainedAlgorithmImplementation parameters //
-  setAsUnsignedInteger( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber", 100 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumObjectiveError", 1.0e-5 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumConstraintError", 1.0e-5 );
-
   // SQP parameters //
   setAsNumericalScalar( "SQP-DefaultTau", 0.5 );
   setAsNumericalScalar( "SQP-DefaultOmega", 1.0e-4 );

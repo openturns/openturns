@@ -345,9 +345,6 @@ ot_add_python_module(optim optim_module.i
                       OptimizationSolver.i
                       OptimizationSolverImplementationResult.i
                       OptimizationSolverImplementation.i
-                      BoundConstrainedAlgorithmImplementationResult.i
-                      BoundConstrainedAlgorithmImplementation.i
-                      BoundConstrainedAlgorithm.i
                       NearestPointAlgorithmImplementationResult.i
                       NearestPointAlgorithmImplementation.i
                       NearestPointAlgorithm.i
@@ -359,7 +356,6 @@ ot_add_python_module(optim optim_module.i
                       CobylaObsolete.i
                       Cobyla.i
                       TNCSpecificParameters.i
-                      TNCObsolete.i
                       TNC.i
                       SQPSpecificParameters.i
                       SQP.i
