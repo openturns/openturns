@@ -176,7 +176,7 @@ Integration to the building suite
 ---------------------------------
 
 The separate docstring SWIG header files are included in the SWIG header files
-of the `openturns repos <https://svn.openturns.org/openturns>`_, so this does
+of the `openturns repos <https://github.com/openturns>`_, so this does
 not need any further integration steps (out of the backslashes escaper CMake
 script). A docstring test (`python/test/t_docstring.py`) has been added to the
 Python tests.
