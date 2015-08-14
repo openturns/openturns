@@ -55,11 +55,6 @@ public:
   CovarianceMatrix operator() (const NumericalPoint & s,
                                const NumericalPoint & t) const;
 
-  /** Case for 1D output dimension */
-  using CovarianceModelImplementation::computeAsScalar;
-  NumericalScalar computeAsScalar(const NumericalPoint & s,
-                                  const NumericalPoint & t) const;
-
   /** Gradient */
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
@@ -95,10 +90,6 @@ public:
 
 protected:
   void setCollection(const CovarianceModelCollection & collection);
-
-  /** Gradient  evaluation in case dimension = 1 */
-  Matrix partialGradient1D(const NumericalPoint & s,
-                           const NumericalPoint & t) const;
 
 private:
   /** The collection of marginal models */

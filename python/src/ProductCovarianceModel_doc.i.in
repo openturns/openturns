@@ -26,9 +26,9 @@ Examples
 Create a *ProductCovarianceModel* from two *ExponentialModel*:
 
 >>> import openturns as ot
->>> amplitude = [1., 2.]
->>> scale = [4., 5.]
->>> spatialDimension = 1
+>>> amplitude = [1.]
+>>> scale = [4.]
+>>> spatialDimension = 2
 >>> cov1 = ot.ExponentialModel(spatialDimension, amplitude, scale)
 >>> cov2 = ot.ExponentialModel(spatialDimension, amplitude, scale)
 >>> coll = ot.CovarianceModelCollection(2)
