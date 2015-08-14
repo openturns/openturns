@@ -1,0 +1,23 @@
+// DistributionFactory docstrings are defined in DistributionImplementationFactory_doc.i.in
+
+%feature("docstring") OT::DistributionFactory
+OT_DistributionFactory_doc
+%feature("docstring") OT::DistributionFactory::build
+OT_DistributionFactory_build_doc
+%feature("docstring") OT::DistributionFactory::GetContinuousMultiVariateFactories
+OT_DistributionFactory_GetContinuousMultiVariateFactories_doc
+%feature("docstring") OT::DistributionFactory::GetContinuousUniVariateFactories
+OT_DistributionFactory_GetContinuousUniVariateFactories_doc
+%feature("docstring") OT::DistributionFactory::GetDiscreteMultiVariateFactories
+OT_DistributionFactory_GetDiscreteMultiVariateFactories_doc
+%feature("docstring") OT::DistributionFactory::GetDiscreteUniVariateFactories
+OT_DistributionFactory_GetDiscreteUniVariateFactories_doc
+%feature("docstring") OT::DistributionFactory::GetMultiVariateFactories
+OT_DistributionFactory_GetMultiVariateFactories_doc
+%feature("docstring") OT::DistributionFactory::GetUniVariateFactories
+OT_DistributionFactory_GetUniVariateFactories_doc
+%feature("docstring") OT::DistributionFactory::getBootstrapSize
+OT_DistributionFactory_getBootstrapSize_doc
+%feature("docstring") OT::DistributionFactory::setBootstrapSize
+OT_DistributionFactory_setBootstrapSize_doc
+

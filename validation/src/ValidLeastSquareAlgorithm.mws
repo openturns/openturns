@@ -1,0 +1,75 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1894 "restart:\ndelta:=(
+x^3+1.5*y^3-x*y-a*x-b*y-c*x^2-d*y^2)^2;\nK1:=lambda*(a^2+b^2+c^2+d^2):
+\nK2:=lambda*(a^2+b^2+c^2+d^2+1/4*(a*b+b*c+c*d)):\nJc:=0:\nfor i from \+
+0 to 4 do\n  for j from 0 to 4 do\n    Jc:=Jc+subs(x=i/5,y=j/5,delta);
+\n  od:\nod:\nJnum:=0:\nfor i from 0 to 4 do\n  for j from 0 to 4 do\n
+w:=(i+1)*(j+1):\nxi:=j/5:\nyj:=i/5:\n#print(evalf([w,xi,yj]));\n    Jn
+um:=Jnum+w*subs(x=xi,y=yj,delta);\n  od:\nod:\n# Equi-weight\nJc0:=Jc:
+\nsolC0:=evalf(solve(\{diff(Jc0,a),diff(Jc0,b),diff(Jc0,c),diff(Jc0,d)
+\},\{a,b,c,d\})):\nprint(\"uniform weight, no penalization\");\nsubs(s
+olC0,[a,b,c,d]);\nresidualC0:=subs(solC0,Jc0)/25;\nJc1:=subs(lambda=1/
+4,Jc+K1):\nsyst:=diff(Jc1,a),diff(Jc1,b),diff(Jc1,c),diff(Jc1,d):\nm:=
+Matrix(4,4):\nvar:=a,b,c,d:\nfor i from 1 to 4 do\n  for j from 1 to 4
+ do\n    m[i,j]:=evalf(1/2*diff(syst[i],var[j]));\n  od:\nod:\nprint(m
+);\nsolC1:=evalf(solve(\{diff(Jc1,a),diff(Jc1,b),diff(Jc1,c),diff(Jc1,
+d)\},\{a,b,c,d\})):\nprint(\"uniform weight, spherical penalization\")
+;\nsubs(solC1,[a,b,c,d]);\nresidualC1:=subs(solC1,Jc1)/25;\n# Weighted
+\nJnum0:=Jnum:\nsolN0:=evalf(solve(\{diff(Jnum0,a),diff(Jnum0,b),diff(
+Jnum0,c),diff(Jnum0,d)\},\{a,b,c,d\})):\nprint(\"non uniform weight, n
+o penalization\");\nsubs(solN0,[a,b,c,d]);\nresidualN0:=subs(solN0,Jnu
+m0)/25;\nJnum1:=subs(lambda=1/4,Jnum+K1):\nsolN1:=evalf(solve(\{diff(J
+num1,a),diff(Jnum1,b),diff(Jnum1,c),diff(Jnum1,d)\},\{a,b,c,d\})):\npr
+int(\"non uniform weight, spherical penalization\");\nsubs(solN1,[a,b,
+c,d]);\nresidualN1:=subs(solN1,Jnum1)/25;\nJnum2:=subs(lambda=1/4,Jnum
++K2):\nsolN2:=evalf(solve(\{diff(Jnum2,a),diff(Jnum2,b),diff(Jnum2,c),
+diff(Jnum2,d)\},\{a,b,c,d\})):\nsyst:=diff(Jnum2,a),diff(Jnum2,b),diff
+(Jnum2,c),diff(Jnum2,d):\nm:=Matrix(4,4):\nvar:=a,b,c,d:\nfor i from 1
+ to 4 do\n  for j from 1 to 4 do\n    m[i,j]:=evalf(1/2*diff(syst[i],v
+ar[j]));\n  od:\nod:\nprint(m);\nprint(\"non uniform weight, non spher
+ical penalization\");\nsubs(solN2,[a,b,c,d]);\nresidualN2:=subs(solN2,
+Jnum2)/25;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&deltaG*$),0*$)%\"xG\"
+\"$\"\"\"F,*&$\"#:!\"\"F,)%\"yGF+F,F,*&F*F,F2F,F0*&%\"aGF,F*F,F0*&%\"b
+GF,F2F,F0*&%\"cGF,)F*\"\"#F,F0*&%\"dGF,)F2F;F,F0F;F," }}{PARA 11 "" 1 
+"" {XPPMATH 20 "6#Q@uniform~weight,~no~penalization6\"" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#7&$!+kjjBH!#5$!+kjjVYF&$\"+====yF&$\"+#===Q\"!\"*
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%+residualC0G$\"+X&)zI6!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#-%'RTABLEG6%\"*7W.o\"-%'MATRIXG6#7&7&$
+\"++++]i!\"*$\"\"%\"\"!F/$\"+++++CF.7&F/F,F2F/7&F/F2$\"++++#3$F.$\"+++
++S9F.7&F2F/F8F6%'MatrixG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#QGuniform~
+weight,~spherical~penalization6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7
+&$!+KE/!)G!#6$\"+ic=)H(F&$\"+n+6VL!#5$\"+8nzhdF+" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%+residualC1G$\"+$fuG;#!#6" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#QDnon~uniform~weight,~no~penalization6\"" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7&$!+TlhYC!#5$!+cA!4c%F&$\"+ot%*ylF&$\"+!)=v+8!
+\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%+residualN0G$\"+/G@=()!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#QKnon~uniform~weight,~spherical~penali
+zation6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7&$!+/y8AA!#5$!+vT!)3GF&$
+\"+h3S\\fF&$\"+k.*G2\"!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%+resid
+ualN1G$\"+#*ewo5!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%'RTABLEG6%\"*
+))fBp\"-%'MATRIXG6#7&7&$\"++++Dy!\")$\"++]7.kF.$\"++++[aF.$\"++++gTF.7
+&F/F,$\"++]7jTF.F17&F1F6$\"+++g%*RF.$\"++]72FF.7&F3F1F;F9%'MatrixG" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#QOnon~uniform~weight,~non~spherical~pe
+nalization6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7&$!+qzDf?!#5$!+Xw%*R
+GF&$\"+^nL_dF&$\"+q\\1t5!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%+res
+idualN2G$\"+[2%=3\"!#5" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" 
+}}}}{MARK "0 0 0" 1716 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }
+{PAGENUMBERS 0 1 2 33 1 1 }{RTABLE_HANDLES 168034412 169235988 }
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/168034412X,%)anythingG6"6"[gl!"%!!!#1"%"%$"++++]i!"*$""%""!F*$"++
++++CF)F*F'F-F*F*F-$"++++#3$F)$"++++S9F)F-F*F1F/F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/169235988X,%)anythingG6"6"[gl!"%!!!#1"%"%$"++++Dy!")$"++]7.kF)$"+
++++[aF)$"++++gTF)F*F'$"++]7jTF)F,F,F0$"+++g%*RF)$"++]72FF)F.F,F4F2F&
+}
+

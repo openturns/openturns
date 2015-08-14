@@ -1,0 +1,22 @@
+// CovarianceModel docstrings are defined in CovarianceModelImplementation_doc.i.in
+
+%feature("docstring") OT::CovarianceModel
+OT_CovarianceModel_doc
+%feature("docstring") OT::CovarianceModel::computeAsScalar
+OT_CovarianceModel_computeAsScalar_doc
+%feature("docstring") OT::CovarianceModel::discretize
+OT_CovarianceModel_discretize_doc
+%feature("docstring") OT::CovarianceModel::discretizeRow
+OT_CovarianceModel_discretizeRow_doc
+%feature("docstring") OT::CovarianceModel::getDimension
+OT_CovarianceModel_getDimension_doc
+%feature("docstring") OT::CovarianceModel::getParameters
+OT_CovarianceModel_getParameters_doc
+%feature("docstring") OT::CovarianceModel::isDiagonal
+OT_CovarianceModel_isDiagonal_doc
+%feature("docstring") OT::CovarianceModel::isStationary
+OT_CovarianceModel_isStationary_doc
+%feature("docstring") OT::CovarianceModel::partialGradient
+OT_CovarianceModel_partialGradient_doc
+%feature("docstring") OT::CovarianceModel::setParameters
+OT_CovarianceModel_setParameters_doc

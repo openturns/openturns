@@ -1,0 +1,6 @@
+distribution= class=Student name=Student dimension=1 nu=3.5 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.5] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Estimated distribution= class=Student name=Student dimension=1 nu=3.58491 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.52108] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Default distribution= Student(nu = 3, mu = 0, sigma = 1)
+Student          = Student(nu = 3.5, mu = 2.5, sigma = 1)
+Estimated student= Student(nu = 3.58491, mu = 2.52108, sigma = 1)
+Default student= Student(nu = 3, mu = 0, sigma = 1)

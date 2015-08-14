@@ -1,0 +1,22 @@
+{VERSION 5 0 "IBM INTEL LINUX" "5.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 99 "restart:\nDigits:=20
+:\nPdef:=int(int(1/(2*Pi)*exp(-(x1^2+x2^2)/2),x1=3/x2..infinity),x2=0.
+.infinity);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%PdefG,&#\"\"\"\"\"%F
+'*&#\"\"$\"\")F'*&%#PiG!\"\"-%$SumG6$*.)F/,$*&\"\"#F'%$_k1GF'F'F',,-%$
+PsiG6#,&#F'F7F'F8F'F'*&F7F'-F;6#,&F'F'F8F'F'F/-F;6#,&#F+F7F'F8F'F/*&F7
+F'-%#lnG6#F+F'F'*&F7F'-FI6#F7F'F/F')F+F5F')F7,$*&F7F'F8F'F/F'F=F/-%&GA
+MMAGFA!\"#/F8;\"\"!%)infinityGF'F'F'" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 14 "evalf(2*Pdef);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"
+3d!*oa@()H>)*!#?" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 64 "PHI:=pr
+oc(x)\n  int(1/sqrt(2*Pi)*exp(-t^2/2),t=-infinity..x)\nend:" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 25 "-fsolve(PHI(x)=2*Pdef,x);" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"5&y_p)Hc>=LB!#>" }}}{EXCHG {PARA 
+0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "0 0 0" 0 }{VIEWOPTS 1 1 0 1 
+1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

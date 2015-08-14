@@ -1,0 +1,27 @@
+%feature("docstring") OT::QuadraticBasisFactory
+"Quadratic basis factory to construct the regression basis.
+
+Available constructors:
+   QuadraticBasisFactory(*dimension*)
+
+Parameters
+----------
+dimension : integer
+    Input dimension of the basis.
+
+See also
+--------
+BasisFactory, ConstantBasisFactory, LinearBasisFactory
+
+Notes
+-----
+A factory for quadratic basis of input dimension *dimension*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticBasisFactory::build
+"Build the basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`."

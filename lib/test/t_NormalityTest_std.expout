@@ -1,0 +1,30 @@
+sample Beta result=0
+sample Gamma result=0
+sample Gumbel result=0
+sample LogNormal result=0
+sample Logistic result=0
+sample Normal result=1
+sample TruncatedNormal result=0
+sample Student result=0
+sample Triangular result=0
+sample Uniform result=0
+sample Weibull result=0
+sample Geometric result=0
+sample Poisson result=0
+sample UserDefined result=0
+andersonDarlingResult=class=NumericalPoint name=Unnamed dimension=14 values=[0,0,0,0,0,1,0,0,0,0,0,0,0,0]
+sample Beta result=0
+sample Gamma result=0
+sample Gumbel result=0
+sample LogNormal result=0
+sample Logistic result=0
+sample Normal result=1
+sample TruncatedNormal result=0
+sample Student result=0
+sample Triangular result=0
+sample Uniform result=0
+sample Weibull result=0
+sample Geometric result=0
+sample Poisson result=0
+sample UserDefined result=0
+cramerVonMisesResult=class=NumericalPoint name=Unnamed dimension=14 values=[0,0,0,0,0,1,0,0,0,0,0,0,0,0]

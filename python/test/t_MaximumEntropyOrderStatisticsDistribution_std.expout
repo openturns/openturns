@@ -1,0 +1,54 @@
+Distribution  MaximumEntropyOrderStatisticsDistribution(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4, b = 5),Arcsine(a = 3.5, b = 5.5)])
+Elliptical =  False
+oneRealization= class=NumericalPoint name=Unnamed dimension=4 values=[-0.514848,3.2432,3.56509,3.56672]
+oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[-1.01206,3.29988,4.61074,5.23875]  last= class=NumericalPoint name=Unnamed dimension=4 values=[-0.845925,3.08338,3.52119,3.58258]
+mean= class=NumericalPoint name=Unnamed dimension=4 values=[-0.690223,3.00869,4.00818,4.50954]
+covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.403946,-0.00036587,0.000691091,0.000399524,-0.00036587,0.0300943,0.00185244,0.00186245,0.000691091,0.00185244,0.170656,0.229411,0.000399524,0.00186245,0.229411,0.501871]
+Point=  [0.0, 3.0, 4.0, 5.0]
+ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.12232,1.33612e-06,0.269755,0.0815445]
+log pdf=-2.101117
+pdf     =0.122320
+condPDF     =0.000000
+cdf=0.185563
+ccdf=0.814437
+condCDF     =0.000000
+quantile= class=NumericalPoint name=Unnamed dimension=4 values=[0.712674,3.31129,4.83681,5.49913]
+cdf(quantile)=0.950000
+condQuantile     =3.886374
+mean= class=NumericalPoint name=Unnamed dimension=4 values=[-0.689255,3.00918,3.99995,4.49028]
+standard deviation= class=NumericalPoint name=Unnamed dimension=4 values=[0.627115,0.173677,0.408248,0.705644]
+skewness= class=NumericalPoint name=Unnamed dimension=4 values=[0.339203,0.0692634,0.000367457,0.041338]
+kurtosis= class=NumericalPoint name=Unnamed dimension=4 values=[2.39815,1.80525,2.4,1.5049]
+covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.393273,0,0,0,0,0.0301637,0.00251004,0,0,0.00251004,0.166667,0.203285,0,0,0.203285,0.497933]
+parameters= [class=NumericalPointWithDescription name=marginal_1_marginal 1 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=NumericalPointWithDescription name=marginal_2_marginal 1 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=NumericalPointWithDescription name=marginal_3_marginal 1 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4,5],class=NumericalPointWithDescription name=marginal_4_marginal 1 dimension=2 description=[a_marginal_3,b_marginal_3] values=[3.5,5.5]]
+margin= class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.645161
+margin PDF=0.322581
+margin CDF=0.838710
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[-0.760682]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[-0.79344]
+margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] finite lower bound=[1] finite upper bound=[1]
+margin= class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.71828 b=3.32012
+margin PDF=1.666667
+margin CDF=0.493061
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.00417]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[2.75513]
+margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.71828] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.32012] finite lower bound=[1] finite upper bound=[1]
+margin= class=Triangular name=Triangular dimension=1 a=3 m=4 b=5
+margin PDF=1.000000
+margin CDF=0.500000
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[3.91444]
+margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[3] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5] finite lower bound=[1] finite upper bound=[1]
+margin= class=Arcsine name=Arcsine dimension=1 a=3.5 b=5.5
+margin PDF=0.367553
+margin CDF=0.666667
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.5]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[3.87902]
+margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.5] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5.5] finite lower bound=[1] finite upper bound=[1]
+indices= [0, 1]
+margins= class=MaximumEntropyOrderStatisticsDistribution name=Unnamed dimension=2 collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.645161,class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.71828 b=3.32012]
+margins PDF=0.537634
+margins CDF=0.413535
+margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.190956,3.25075]
+margins CDF(qantile)=0.800000
+margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[-0.364049,2.83485]

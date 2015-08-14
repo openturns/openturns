@@ -1,0 +1,103 @@
+%feature("docstring") OT::LinearEnumerateFunction
+"Linear enumerate function.
+
+Available constructors:
+    LinearEnumerateFunction(*dim=1*)
+
+Parameters
+----------
+dim : int
+    Dimension.
+
+Notes
+-----
+Given an input random vector :math:`\vect{X}` with prescribed probability
+density function (PDF) :math:`f_{\vect{X}}(\vect{x})`, it is possible to build
+up a *polynomial chaos* (PC) basis
+:math:`\{\psi_{\vect{\alpha}},\vect{\alpha} \in \Nset^{n_X}\}`. Of interest is
+the definition of enumeration strategies for exploring this basis, i.e. of
+suitable *enumeration functions* :math:`\tau` from :math:`\Nset` to
+:math:`\Nset^{n_X}`, which creates a one-to-one mapping between an integer
+:math:`j` and a multi-index :math:`\Nset^{n_X}`.
+
+Let us first define the *total degree* of any multi-index :math:`\vect{\alpha}`
+in :math:`\Nset^{n_X}` by :math:`\sum_{i=1}^{n_X} \alpha_i`. A natural choice to
+sort the PC basis (i.e. the multi-indices :math:`\vect{\alpha}`)
+is the lexicographical order with a constraint of increasing total degree.
+Mathematically speaking, a bijective enumeration function :math:`\tau` is
+defined by:
+
+.. math::
+
+    \begin{array}{llcl}
+      \tau \, : & \Nset & \longrightarrow & \Nset^{n_X} \\
+      &  j & \longmapsto & \{\alpha_1,\dots, \alpha_{n_X}\} \,
+                 \equiv \, \{\tau_1(j),\dots,\tau_{n_X}(j)\} \\
+    \end{array}
+
+such that:
+
+.. math::
+
+    \tau(0) = \{0,\dots,0\}
+
+and
+
+.. math::
+
+    \forall 1 \leq j<k  \quad \, , \quad \, \left\{
+    \begin{array}{l}
+      \displaystyle{\sum_{i=1}^{n_X} \tau_i(j) < \sum_{i=1}^{n_X} \tau_i(k)}  \\
+      \\
+      \mbox{ or} \\
+      \\
+      \displaystyle{\exists \; m \in \{1,\dots,n_X\} \; : \;
+          \left(\forall i \leq m , \; \tau_i(j) = \tau_i(k) \; \right)
+          \, \, \, \mbox{ and } \, \, \,
+          \left(\tau_m(j) < \tau_m(k) \right)} \\
+    \end{array}
+    \right.
+
+Such an enumeration strategy is illustrated in a two-dimensional case
+(i.e. :math:`n_X=2`) in the figure below:
+
+.. plot:: pyplots/LinearEnumerateFunction.py
+    :include-source: False
+
+This corresponds to the following enumeration of the multi-indices:
+
+===== =====================
+  j   :math:`\vect{\alpha} = \{\alpha_1,\alpha_2\}`
+===== =====================
+  0       {0, 0}
+  1       {1, 0}
+  2       {0, 1}
+  3       {2, 0}
+  4       {1, 1}
+  5       {0, 2}
+  6       {3, 0}
+  7       {2, 1}
+  8       {1, 2}
+  9       {0, 3}
+===== =====================
+
+See also
+--------
+EnumerateFunction, HyperbolicAnisotropicEnumerateFunction
+
+Examples
+--------
+>>> import openturns as ot
+>>> # 4-dimensional case
+>>> enumerateFunction = ot.LinearEnumerateFunction(4)
+>>> for i in range(9):
+...     print(enumerateFunction(i))
+[0,0,0,0]
+[1,0,0,0]
+[0,1,0,0]
+[0,0,1,0]
+[0,0,0,1]
+[2,0,0,0]
+[1,1,0,0]
+[1,0,1,0]
+[1,0,0,1]"

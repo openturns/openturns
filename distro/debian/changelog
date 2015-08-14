@@ -1,0 +1,728 @@
+openturns (1.6-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream release.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 13 Aug 2015 18:14:47 +0200
+
+openturns (1.6~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 16 Jun 2015 16:34:47 +0100
+
+openturns (1.5-7) unstable; urgency=medium
+
+  * debian/patches/randommixture-x86.patch: Fix Python tests,
+    they are also failing on x86.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 23 May 2015 13:57:25 +0100
+
+openturns (1.5-6) unstable; urgency=medium
+
+  * debian/patches/randommixture-x86.patch: Rewrite patch, there
+    were still failures with RandomMixture_grid3d.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 21 May 2015 20:48:55 +0100
+
+openturns (1.5-5) unstable; urgency=medium
+
+  * debian/patches/tests-fix-precision-32bits.patch: Modify test
+    to really fix tests failures on ARM 32bits.
+  * debian/patches/randommixture-x86.patch: New patch to fix
+    tests failures on i386.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 20 May 2015 20:34:39 +0100
+
+openturns (1.5-4) unstable; urgency=medium
+
+  * debian/rules: add --no-diffs option to 2to3.
+  * debian/rules: less verbose tests output.
+  * debian/patches/tests-fix-precision-32bits.patch:
+    New patch to avoid tests failures on 32 bits systems.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 19 May 2015 21:17:40 +0100
+
+openturns (1.5-3) unstable; urgency=medium
+
+  * Upload into unstable.
+  * debian/control: Readd Build-Depends: gfortran to fix
+    build failures.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 11 May 2015 21:05:11 +0100
+
+openturns (1.5-2) experimental; urgency=medium
+
+  *  Merge python-openturns-dev into lib-openturns-dev.
+  *  Add a versioned dependency on swig to ensure that
+      backports work properly.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 01 May 2015 14:27:55 +0100
+
+openturns (1.5-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream release.
+  * Updated debian/patches/tests-disable-coupling_tools.patches
+
+  [ Denis Barbier ]
+  * Rename libopenturns-dbg package into libopenturns0.6-dbg.
+  * New python3-openturns binary package.
+  * debian/control: Bump Standards-Version to 3.9.6, no changes
+    are needed.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 28 Apr 2015 21:46:44 +0200
+
+openturns (1.5~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+  * Add build-dependency to libhmat-oss-dev
+  * Upstreamed libOT-gdb.py
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 10 Dec 2014 10:34:47 +0100
+
+openturns (1.4-3) experimental; urgency=medium
+
+  * debian/rules: Disable again mips and mipsel builds.
+    Mipsel failed to build, and mips did not even try.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 23 Aug 2014 00:37:17 +0200
+
+openturns (1.4-2) experimental; urgency=medium
+
+  * modify-tests-O0-i386.patch: Patch dropped; with newer gcc,
+    t_TrapezoidalFactory_std now gives the same result on *-i386
+    architectures as on other.
+  * debian/libOT-gdb.py: Make it compatible with python3.  Closes: #752663
+    Report and patch by Matthias Klose, thanks.
+  * debian/rules: Re-enable mips and mipsel builds.  Closes: #753594
+    Report and patch by Dejan Latinovic, thanks.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 13 Aug 2014 10:20:28 +0200
+
+openturns (1.4-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream release.
+  * tests-disable-broken-R.patch: Patch dropped, a fix has been
+    applied upstream.
+  * debian/control: Build Python bindings with -j1
+
+  [ Denis Barbier ]
+  * debian/copyright: Updated.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 25 Jul 2014 18:34:34 +0200
+
+openturns (1.4~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+  * Set CMAKE_INSTALL_LIBDIR overriden by Ubuntu
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 02 Jul 2014 10:34:47 +0200
+
+openturns (1.3-2) unstable; urgency=medium
+
+  * tests-disable-broken-R.patch: New patch, to disable 3
+    tests which fail with latest R.  Closes: #743073
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 19 Apr 2014 21:40:58 +0200
+
+openturns (1.3-1) unstable; urgency=medium
+
+  [ Julien Schueller ]
+  * New upstream release
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 06 Mar 2014 22:15:54 +0100
+
+openturns (1.3~rc3-1) experimental; urgency=medium
+
+  [ Julien Schueller ]
+  * New upstream pre-release
+  * Add build-dependency to libboost-math-dev
+
+  [ Denis Barbier ]
+  * Add a pretty-printer for OT types in gdb
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 21 Feb 2014 19:39:09 +0100
+
+openturns (1.3~rc2-1) experimental; urgency=medium
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+  * Upstream removes cdflib. Closes: #734855
+
+  [ Denis Barbier ]
+  * debian/copyright: Add missing stanzas.  Closes: #734856
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 21 Jan 2014 20:31:20 +0100
+
+openturns (1.3~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+  * Output test log on failure
+  * Bump soname to 0.4
+  * Build-depends on libmuparser-dev
+
+  [ Denis Barbier ]
+  * Update libopenturns0.4.lintian-overrides
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 08 Jan 2014 22:34:47 +0100
+
+openturns (1.2-2) unstable; urgency=low
+
+  * Upload into unstable
+  * debian/rules: also set CMAKE_EXE_LINKER_FLAGS with dpkg-buildflags's
+    output.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 09 Aug 2013 22:22:59 +0200
+
+openturns (1.2-1) experimental; urgency=low
+
+  [Julien Schueller]
+  * New upstream version 1.2
+  * Drop patches merged upstream:
+      fix-bigendian.patch
+      remove-soname-python-module.patches
+  * Rename debian/patches/tests-disable-distributed_python_wrapper.patch
+    into debian/patches/tests-disable-coupling_tools.patch
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 25 Jul 2013 20:06:52 +0200
+
+openturns (1.2~rc1-2) experimental; urgency=low
+
+  [ Denis Barbier ]
+  * debian/rules: Fix FTBFS on *-i386, copied from 1.1-8.
+
+  [ Julien Schueller ]
+  * debian/patches/fix-bigendian.patch: Patch rewritten to use
+    CMake detection of endianness.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 15 Jul 2013 20:47:24 +0200
+
+openturns (1.2~rc1-1) experimental; urgency=low
+
+  [Julien Schueller]
+  * New upstream version 1.2rc1
+  * Bump soname to 0.3
+  * Drop patches merged upstream:
+     add-missing-header-file.patch debian-soname.patch
+     fix-swig-warning.patch ftbfs-bison-2.7.patch
+  * Launch tests in parallel
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 28 Jun 2013 01:51:22 +0200
+
+openturns (1.1-9) unstable; urgency=low
+
+  [ Julien Schueller ]
+  * debian/control: All libraries listed in OPENTURNS_LIBRARIES
+    variable into OpenTURNSConfig.cmake must be installed in order
+    to link against OT.  Let libopenturns-dev depend on
+     libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64]
+
+  [ Denis Barbier ]
+  * debian/control: Replace Architecture: any by an hardcoded list
+    of supported architectures.  Openturns requires more than 1GB RAM,
+    this caused a lot of trouble on mips* architectures.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 18 Jul 2013 19:10:04 +0200
+
+openturns (1.1-8) unstable; urgency=low
+
+  * debian/rules: Fix building source package on *-i386, there was
+    trouble with debian/patches/modify-tests-O0-i386.patch.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 05 Jul 2013 18:06:37 +0200
+
+openturns (1.1-7) unstable; urgency=low
+
+  * debian/patches/modify-tests-O0-i386.patch: On *-i386 architectures,
+    algocobyla.c is compiled with -O0 flag since 1.1-6; output of
+    two tests is modified.  Closes: #714915
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 04 Jul 2013 22:36:45 +0200
+
+openturns (1.1-6) unstable; urgency=low
+
+  * debian/rules: The previous change fixed C++ tests on kfreebsd-i386,
+    but pyinstallcheck_Cobyla_nonlinear hangs.  There is another hang
+    on i386.  The -fno-guess-branch-probability flag fixes the failure
+    on kfreebsd-i386, but compile instead algocobyla.c with -O0 flag
+    on *-i386 architectures to be safe.  Closes: #714411
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 02 Jul 2013 20:08:27 +0200
+
+openturns (1.1-5) unstable; urgency=low
+
+  * debian/rules: algocobyla.c is again miscompiled with gcc 4.8.1
+    on kfreebsd-i386 and hurd-i386, cppcheck_TrapezoidalFactory_std
+    and cppcheck_WhittleFactory_std hang; compile with -fno-caller-saves
+    to avoid these problems.  Closes: #714411
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 29 Jun 2013 23:50:27 +0200
+
+openturns (1.1-4) unstable; urgency=low
+
+  * Upload into unstable
+  * Bump Standards-Version to 3.9.4, no changes are needed.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 27 Jun 2013 22:58:17 +0200
+
+openturns (1.1-3) experimental; urgency=low
+
+  * debian/rules: Adjust Python detection so that it works with
+    multiarch and non-multiarch Python.
+  * debian/patches/ftbfs-bison-2.7.patch: New patch, to fix build
+    failures with newer Bison.
+  * debian/patches/tests-disable-distributed_python_wrapper.patch:
+    New patch, to disable distributed python wrapper tests, these
+    tests sometimes fail in strange ways.
+  * debian/patches/fix-swig-warning.patch: New patch, taken from
+    upstream. Several tests are missing because of a behavior change
+    in swig 2.0.9, fix .i files.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 30 May 2013 23:51:47 +0200
+
+openturns (1.1-2) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * debian/rules: Install CMake files into /usr/lib/cmake/openturns
+  * debian/patches/add-missing-header-file.patch: New patch, to
+    install missing header file WrapperCommon_extern.h
+
+  [ Denis Barbier ]
+  * debian/patches/tests-disable-timing.patch: New patch, to disable
+    test timings.  They are useless, and prevent openturns from
+    building on Hurd.
+  * debian/patches/remove-soname-python-module.patch: New patch, to
+    remove SONAME from Python modules, this confuses dpkg-shlibdeps.
+  * debian/control: Let openturns-examples explicitly depend on python.
+  * debian/rules: Pass LDFLAGS when building shared libraries.
+  * openturns-examples: Remove duplicates from /usr/lib/openturns/examples/.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 05 Feb 2013 01:23:41 +0100
+
+openturns (1.1-1) experimental; urgency=low
+
+  [ Denis Barbier ]
+  * New upstream version
+  * License has been updated to LGPL-3+
+  * Drop patches merged upstream:
+      fix-dtd-search-path.patch install_cmake_files.patch
+      kfreebsd-fix-t_WrapperFile_generic.patch
+  * Let libopenturns-dev ship CMake files.
+  * debian/watch: Check for tar.bz2 instead of tar.gz
+  * debian/copyright: Convert to machine-readable format
+    and add missing stanzas.
+
+  [ Julien Schueller ]
+  * debian/rules: Drop chmod calls, they are useless.
+  * debian/rules: Removed useless clean override.
+  * debian/control: Fix URL in Homepage field.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 13 Jan 2013 09:46:40 +0100
+
+openturns (1.1~rc1-3) experimental; urgency=low
+
+  * debian/patches/kfreebsd-fix-t_WrapperFile_generic.patch: New
+    patch to fix t_WrapperFile_generic.py failure on kfreebsd.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 09 Dec 2012 21:39:44 +0100
+
+openturns (1.1~rc1-2) experimental; urgency=low
+
+  * debian/patches/disable-coupling_tools.patch: Replaced by...
+  * debian/patches/fix-dtd-search-path.patch: Fix DTD search path
+    to look into all wrapper directories and not only
+    Path::GetStandardWrapperDirectory().  All tests can now run.
+  * debian/rules: Thanks to this new patch, there is no more need
+    to set OPENTURNS_HOME.
+  * debian/rules: Append current value of LD_LIBRARY_PATH into
+    CTestTestfile.cmake, this should avoid FTBFS on kfreebsd-*.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 09 Dec 2012 08:44:04 +0100
+
+openturns (1.1~rc1-1) experimental; urgency=low
+
+  * New upstream version
+  * Drop patches merged upstream:
+      bigendian-randomgenerator.patch cmake-configdir.patch
+      cmake-tools.patch fix-tests-clang.patch ftbfs-4.7.patch
+      ftbfs-clang.patch installcheck.patch test-output.patch
+  * debian/patches/disable-coupling_tools.patch: New patch.
+    Disable two tests which require changing LD_LIBRARY_PATH,
+    this breaks fakeroot.
+  * debian/rules: Set R_LIBS_SITE when running tests.
+  * debian/rules: Now that all architectures run tests without
+    failures, let test failures abort build.
+  * debian/rules: Also use dpkg-buildflags to set CPPFLAGS.
+  * debian/rules: On mips, do not build Python libraries in
+    parallel to avoid build failures due to memory problems.
+  * debian/control: Adjust package dependencies
+      + Build-Depends: remove unused python-rpy2, ghostscript,
+        graphviz.
+      + libopenturns0.2: Demote r-other-rot from Depends into
+        Suggests, it is needed by few files only. Ditto for
+        ghostscript, only needed by R.
+      + python-openturns: Drop Depends on python-rpy2,
+        ghostscript, python-qt4;
+        Add Suggests: python-matplotlib, python-scipy
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 04 Dec 2012 19:39:48 +0100
+
+openturns (1.0-4) unstable; urgency=low
+
+  [ Denis Barbier ]
+  * debian/patches/test-output.patch: New patch.
+    Fix test output, some compilers print 'df(x)=' twice because
+    exception is thrown after text is printed to stdout.
+  * debian/patches/ftbfs-clang.patch: New patch.
+    Allows building with the clang compiler.
+  * debian/patches/fix-bigendian.patch: New patch.
+    Many checks fail on some (but not all) big endian machines,
+    it seems that not all systems define __BIG_ENDIAN__.
+    Add some compile-time checks to determine endianness.
+  * debian/rules: Do not ignore test results for architectures
+    on which tests currently pass.
+  * debian/rules: Also compile algocobyla.c with -fno-cse-follow-jumps
+    on kfreebsd-i386 and hurd-i386, one test hangs as on i386.
+  * debian/rules: On mipsel, do not build Python libraries in
+    parallel to avoid build failures due to memory problems.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 15 Jun 2012 20:45:14 +0200
+
+openturns (1.0-3) unstable; urgency=low
+
+  [ Denis Barbier ]
+  * debian/control: Fix dependency on r-other-rot, packages
+    were not installable.
+  * debian/patches/bigendian-randomgenerator.patch: New patch.
+    Fix t_RandomGenerator_std unit test, it fails on PowerPC
+    because of endianness.
+  * debian/patches/cmake-tools.patch: New patch.
+    Scripts openturns-config and openturns-module were broken.
+  * Cleanup debian/patches by removing obsolete patches.  Also
+    rewrite patch headers to follow DEP3.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 19 May 2012 19:39:30 +0200
+
+openturns (1.0-2) unstable; urgency=low
+
+  [ Denis Barbier ]
+  * debian/control: Fix dependency on tbb, it is available only on
+    amd64, i386 and ia64.
+  * debian/rules: Display output of failed tests to help debug failures.
+  * debian/rules: Do not abort if tests fail; this was the behaviour
+    when compiling with Autotools.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 17 May 2012 17:43:20 +0200
+
+openturns (1.0-1) experimental; urgency=low
+
+  [ Christophe Trophime ]
+  * debian/rules:
+      explicit python version in override_dh_auto_configure target
+  * debian/copyright:
+      fix lintian warning
+
+  [ Denis Barbier ]
+  * New upstream release (Closes: #669425).
+  * Build with g++ 4.6, several tests fail with g++ 4.7.
+  * debian/patches/ftbfs-4.7.patch: Patch upgraded, previous
+    fix had been applied upstream but there is another error.
+  * debian/patches/debian-soname.patch: New patch.
+    Use a Debian specific SONAME (0.1), upstream does
+    not yet take care of SONAME.
+    Rename libopenturns0 package into libopenturns0.1.
+  * debian/patches/no-link-python.patch: New patch.
+    Bugfix: "python-openturns is unusable" (Closes: #670066)
+  * debian/rules: Compile algocobyla.c with -fno-cse-follow-jumps
+    to work around an undefined GCC bug which makes one test
+    hang on x86.  (Closes: #666782)
+  * Do not build-depends on doxygen-latex, docbook-to-man.
+  * Build-depends on bison, flex and bc (the latter is needed to run
+    one test).
+  * Move rotRpackage into a new binary package: r-other-rot, and
+    let libopenturns0.1 depend on this package.  (Closes: #662800)
+  * Install files into versioned directories /usr/lib/openturns-1.0
+    and /etc/openturns-1.0 to avoid file conflicts during library
+    transitions.
+  * Add myself to Uploaders.
+
+  [ Julien Schueller ]
+  * Remove openturns-wrapper package, its files are now shipped
+    by libopenturns0, libopenturns-dev and openturns-examples.
+  * Moved dtd files to libopenturns0
+  * Added missing generic wrapper to libopenturns0
+  * Added python-openturns-dev
+  * Added dependency to libtbb
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 16 May 2012 20:03:53 +0200
+
+openturns (0.15-3.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix "ftbfs with GCC-4.7": add patch from Denis Barbier: move declaration
+    of streamObject before first usage.
+    (Closes: #667315)
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 21 Apr 2012 13:54:09 +0200
+
+openturns (0.15-3) unstable; urgency=low
+
+  * Team upload. (Closes: #662792).
+  * Getting rid of unneeded *.la (Closes: #622492).
+  * Transition to dh_python2 (Closes: #616928).
+  * Use dh rules.tiny, enable parallel build.
+
+ -- Aron Xu <aron@debian.org>  Mon, 26 Mar 2012 08:40:35 +0000
+
+openturns (0.15-2) unstable; urgency=low
+
+  * openturns-wrappers: install wrappers, wrapper.xml and wrapper.dtd
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Fri, 09 Sep 2011 06:34:05 +0200
+
+openturns (0.15-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 30 Aug 2011 12:12:18 +0200
+
+openturns (0.13.2-8) unstable; urgency=low
+
+  * debian/control: add python-qt4 depends to python-openturns and
+    openturns-examples now depends on python-openturns
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 28 Dec 2010 16:12:44 +0100
+
+openturns (0.13.2-7) unstable; urgency=low
+
+  [Christophe Prud'homme]
+  * Bug fix: "creates a mess in sys.path by adding its own namespace",
+    thanks to Bernd Zeimetz (Closes: #606870).
+  * Bug fix: "Preparations for the removal of the KDE3 and Qt3 libraries",
+    thanks to Eckhart Wörner (Closes: #604605).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 28 Dec 2010 08:14:21 +0100
+
+openturns (0.13.2-6) unstable; urgency=low
+
+  [Christophe Prud'homme]
+  * debian/rules: reduce optimization level to O1 on armel
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Fri, 13 Aug 2010 15:44:53 +0200
+
+openturns (0.13.2-5) unstable; urgency=low
+
+  [Christophe Prud'homme]
+  * Bug fix: "FTBFS with Python 2.6: Could not link test program to
+    Python.", thanks to Jakub Wilk (Closes: #586351).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Sat, 19 Jun 2010 07:22:38 +0200
+
+openturns (0.13.2-4) unstable; urgency=low
+
+  * Bug fix: "ftbfs with gcc-4.5", thanks to Matthias Klose (Closes:
+    #565081).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Wed, 09 Jun 2010 21:55:51 +0200
+
+openturns (0.13.2-3) unstable; urgency=low
+
+  * Bug fix: "python-openturns must be depend on python-rpy2", thanks to
+    Jerome Robert (Closes: #582532).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Sun, 23 May 2010 10:10:14 +0200
+
+openturns (0.13.2-2) unstable; urgency=low
+
+  * Bug fix: "command not found", thanks to Jerome Robert (Closes:
+    #573143).
+  * Bug fix: "does not byte-compile Python files", thanks to
+    dktrkranz@debian.org</a>; (Closes: #566041).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Sat, 13 Mar 2010 13:56:14 +0100
+
+openturns (0.13.2-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/libopenturns0.install: move lib to /usr/lib
+  * Fixed almost all lintian warnings and errors
+  * debian/control: update to Standard-Versions 3.8.4 (no change)
+  * debian/patches/fix_ftbfs_on_arm_and_mips: removed, applied upstream
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Mon, 01 Mar 2010 13:13:47 +0100
+
+openturns (0.13.1-4) unstable; urgency=low
+
+  * debian/control: Moved openturns to Debian Science
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 16 Feb 2010 13:39:07 +0100
+
+openturns (0.13.1-3) unstable; urgency=low
+
+  * debian/rules: enable quilt(the patches were not applied before)
+  * Bug fix: "Please support Renesas SH(sh4)", thanks to Nobuhiro Iwamatsu
+    (Closes: #565120).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Mon, 08 Feb 2010 19:13:55 +0100
+
+openturns (0.13.1-2) unstable; urgency=low
+
+  [Christophe Prud'homme]
+  * debian/control: no more depending on xerces
+  * Bug fix: "package-installs-python-pyc
+    /usr/lib/python2.5/site-packages/openturns/__init__.pyc", thanks to
+    Manoj Srivastava (Closes: #553479).
+  * Bug fix: "FTBFS with python2.6", thanks to Fabrice Coutadeur (Closes:
+    #542524).
+  * Bug fix: "The package is empty", thanks to Jerome Robert (Closes:
+    #548794).
+  * debian/control: openturns-doc is now removed from control file as the
+    documentation is now provided by upstream in a separate archive.
+  * Bug fix: "FTBFS: XMLToolbox.cxx:207: error: &#39;vsnprintf&#39; is not
+    a member of &#39;std&#39;", thanks to Nobuhiro Iwamatsu (Closes:
+    #565118).
+  * Bug fix: "Please support Renesas SH(sh4)", thanks to Nobuhiro Iwamatsu
+    (Closes: #565120).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Thu, 14 Jan 2010 07:34:22 +0100
+
+openturns (0.13.1-1) unstable; urgency=low
+
+  [Christophe Prud'homme]
+  * New upstream release
+  * Fix some lintian warnings
+  * Fix wrongly formatted description, thanks to Gerfried Fuchs (Closes: #530594).
+  * debian/control: updated Standard-Versions to 3.8.2 (no changes)
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 21 Jul 2009 10:52:57 +0200
+
+openturns (0.13.0-2) unstable; urgency=low
+
+  * Bug fix: "libboost1.35-dev", thanks to Lucas Nussbaum (Closes:
+    #527800).
+  * Bug fix: "Killed (program cc1plus)", thanks to Bastian Blank (Closes:
+    #499738).
+  * Bug fix: "FTBFS on sparc", thanks to Martin Zobel-Helas (Closes:
+    #500999).
+  * debian/control: -dbg in debug section now
+  * debian/python-openturns.install: create openturns subdirectory in
+    site-packages
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Sat, 09 May 2009 12:57:35 +0200
+
+openturns (0.13.0-1) unstable; urgency=low
+
+  * New upstream release
+    + Generic wrapper (compatible with Salome).
+    + Wrapper designer guide.
+    + Polynomial Chaos Expansion. WARNING! Due to a mistake, this feature
+    is only available in the C++ library and not the TUI.
+    + Support Vector Regression. WARNING! Due to a mistake, this feature
+    is only available in the C++ library and not the TUI.
+    + Sensitivity Analysis (Sobol indices).
+    + The gui module is definitely removed. A new (and simplier) GUI will
+    be proposed later.
+  * debian/{control,compat}: updated dh compat to 7
+  * debian/{control,rules}: get rid of qopenturns which was removed
+  * debian/control: get rid on lintian warnings, Depends on
+    ${misc:Depends} for openturns-{doc,validation}
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Thu, 19 Mar 2009 13:43:52 +0100
+
+openturns (0.12.2-2) unstable; urgency=low
+
+  * Bug fix: "Dynamic loading of library &#39;libOT.so&#39; failed at
+    /usr/lib/openturns ", thanks to Jerome Robert (Closes: #507162).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Fri, 28 Nov 2008 18:56:36 +0100
+
+openturns (0.12.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Bug fix: "New upstream release available (0.12.2)", thanks to Jerome
+    Robert (Closes: #506005).
+  * Applied patch by J. Robert.
+  * debian/control: build-depends on libxml2
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 18 Nov 2008 06:32:22 +0100
+
+openturns (0.12.1-7) unstable; urgency=low
+
+  * Bug fix: "Killed (program cc1plus)", thanks to Bastian Blank (Closes:
+    #499738).
+  * Bug fix: "FTBFS on sparc", thanks to Martin Zobel-Helas (Closes:
+    #500999).
+  * debian/rules: set OT_DEBUG_LEVEL to 3 as per default
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Sat, 04 Oct 2008 08:42:57 +0200
+
+openturns (0.12.1-6) unstable; urgency=low
+
+  * debian/rules: Fix FTBS on hppa, sparc, arm, and armel because of
+    __sync_fetch_and_add_4 not being available, the remedy is to use
+    -DBOOST_SP_USE_PTHREADS
+  * debian/rules: add --disable-debug option to configure and set the
+    compiler flags to -g -O2 (no -Wall)
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Fri, 03 Oct 2008 10:55:20 +0200
+
+openturns (0.12.1-5) unstable; urgency=low
+
+  * Bug fix: "Should recommend python-rpy", thanks to Jerome Robert
+    (Closes: #500874).
+  * Bug fix: "Missing r-rot package", thanks to Jerome Robert (Closes:
+    #500872).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Thu, 02 Oct 2008 12:57:48 +0200
+
+openturns (0.12.1-4) unstable; urgency=low
+
+  * debian/rules: use DEB_COMPRESS_EXCLUDE to avoid zipping pdf files
+  * Bug fix: "gzipped pdf", thanks to Jerome Robert (Closes: #499673).
+  * debian/qopenturns.sgml: fixed warnings and errors from docbook-to-man
+  * Bug fix: "No module named _openturns", thanks to Jerome Robert
+    (Closes: #499668).
+  * Bug fix: "short description should not contain &#39;A&#39; by policy",
+    thanks to Eugene V. Lyubimkin (Closes: #500427).
+  * Bug fix: "short description should not start with a capital letter by
+    policy", thanks to Eugene V. Lyubimkin (Closes: #500428).
+  * Bug fix: "Duplicated documentation", thanks to Jerome Robert (Closes:
+    #499672).
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Wed, 01 Oct 2008 11:06:56 +0200
+
+openturns (0.12.1-3) unstable; urgency=low
+
+  * debian/control: Fixed override disparity, python-openturns is now in
+    section python and no more in section science
+  * debian/rules: use -O2 instead -O3, it might help build OpenTURNS on
+    the other arch
+  * debian/rules: fixed typo, changed -enable-lib to --enable-lib
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 09 Sep 2008 14:59:04 +0200
+
+openturns (0.12.1-2) unstable; urgency=low
+
+
+  * debian/control: Improved package description, "the description does
+    not explain what OpenTURNS is" thanks to Helmut Grohne
+    <helmut@subdivi.de> (Closes: #498026).
+  * debian/control: Fixed FTBFS, "OpenTURNS_ArchitectureGuide.tex: command
+    not found" thanks to Kurt Roeckx <kurt@roeckx.be> (Closes: #498036).
+  * debian/control: Improved openturns-doc, "Useless long description"
+    tanks to Vincent Danjean <vdanjean@debian.org> (Closes: #498245)
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Tue, 09 Sep 2008 08:04:26 +0200
+
+openturns (0.12.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #490907)
+
+ -- Christophe Prud'homme <prudhomm@debian.org>  Sun, 06 Jul 2008 21:39:33 +0200
+

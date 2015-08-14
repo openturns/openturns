@@ -1,0 +1,2 @@
+wrapper( class=NumericalPoint name=Unnamed dimension=2 values=[10,10] ) = class=NumericalPoint name=Unnamed dimension=3 values=[14.1421,0.707107,0.707107]
+wrapper( class=NumericalPoint name=Unnamed dimension=2 values=[100,100] ) = class=NumericalPoint name=Unnamed dimension=3 values=[141.421,0.707107,0.707107]

@@ -1,0 +1,8 @@
+distribution= class=GumbelCopula name=GumbelCopula dimension=2 theta=1.5
+Estimated distribution= class=GumbelCopula name=GumbelCopula dimension=2 theta=1.55919
+Default distribution= GumbelCopula(theta = 2)
+Distribution from parameters= GumbelCopula(theta = 1.5)
+GumbelCopula          = GumbelCopula(theta = 1.5)
+Estimated gumbelCopula= GumbelCopula(theta = 1.55919)
+Default gumbelCopula= GumbelCopula(theta = 2)
+GumbelCopula from parameters= GumbelCopula(theta = 1.5)

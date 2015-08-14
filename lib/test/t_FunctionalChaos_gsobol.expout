@@ -1,0 +1,414 @@
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=21 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.000747975]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0.000179746]
+mean=1.01719 absolute error=1.7e-02
+variance=0.77079 absolute error=4.1e-02
+Sobol index 0 = 0.40665 absolute error=4.1e-03
+Sobol index 1 = 0.20470 absolute error=2.2e-02
+Sobol index 2 = 0.11767 absolute error=1.5e-02
+Sobol index 3 = 0.06381 absolute error=1.9e-03
+Sobol index 4 = 0.05107 absolute error=5.4e-03
+Sobol index [0,1] =0.05895 absolute error=1.9e-03
+Sobol index [0,2] =0.02768 absolute error=6.6e-03
+Sobol index [0,3] =0.01890 absolute error=3.0e-03
+Sobol index [0,4] =0.01140 absolute error=3.8e-03
+Sobol index [1,2] =0.01860 absolute error=3.4e-03
+Sobol index [1,3] =0.00745 absolute error=2.3e-03
+Sobol index [1,4] =0.00332 absolute error=3.4e-03
+Sobol index [2,3] =0.00433 absolute error=1.2e-03
+Sobol index [2,4] =0.00326 absolute error=5.4e-04
+Sobol index [3,4] =0.00000 absolute error=2.4e-03
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=21 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.000731116]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0.000186856]
+mean=1.01215 absolute error=1.2e-02
+variance=0.77109 absolute error=4.0e-02
+Sobol index 0 = 0.43137 absolute error=2.1e-02
+Sobol index 1 = 0.19674 absolute error=1.4e-02
+Sobol index 2 = 0.10462 absolute error=1.9e-03
+Sobol index 3 = 0.06158 absolute error=4.1e-03
+Sobol index 4 = 0.06223 absolute error=1.7e-02
+Sobol index [0,1] =0.05429 absolute error=6.6e-03
+Sobol index [0,2] =0.02645 absolute error=7.8e-03
+Sobol index [0,3] =0.01152 absolute error=1.0e-02
+Sobol index [0,4] =0.01281 absolute error=2.4e-03
+Sobol index [1,2] =0.00996 absolute error=5.3e-03
+Sobol index [1,3] =0.00623 absolute error=3.5e-03
+Sobol index [1,4] =0.00589 absolute error=8.7e-04
+Sobol index [2,3] =0.00564 absolute error=1.6e-04
+Sobol index [2,4] =0.00551 absolute error=1.7e-03
+Sobol index [3,4] =0.00372 absolute error=1.3e-03
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=21 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=5 coefficients=[1747396655419752448,2864289363007635456,4305441243766194176,3224577333197275136,1963569437533536256] seed=251 distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.000755863]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0.000198192]
+mean=1.00209 absolute error=2.1e-03
+variance=0.73650 absolute error=7.5e-02
+Sobol index 0 = 0.42117 absolute error=1.0e-02
+Sobol index 1 = 0.19370 absolute error=1.1e-02
+Sobol index 2 = 0.11212 absolute error=9.4e-03
+Sobol index 3 = 0.07006 absolute error=4.3e-03
+Sobol index 4 = 0.04993 absolute error=4.3e-03
+Sobol index [0,1] =0.04613 absolute error=1.5e-02
+Sobol index [0,2] =0.03263 absolute error=1.6e-03
+Sobol index [0,3] =0.01646 absolute error=5.4e-03
+Sobol index [0,4] =0.01355 absolute error=1.7e-03
+Sobol index [1,2] =0.01588 absolute error=6.7e-04
+Sobol index [1,3] =0.00632 absolute error=3.4e-03
+Sobol index [1,4] =0.00398 absolute error=2.8e-03
+Sobol index [2,3] =0.00544 absolute error=3.8e-05
+Sobol index [2,4] =0.00410 absolute error=3.0e-04
+Sobol index [3,4] =0.00000 absolute error=2.4e-03
+Sobol index [0,1,2] =0.00206 absolute error=3.0e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=21 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0949945]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=1.01809 absolute error=1.8e-02
+variance=1.69306 absolute error=8.8e-01
+Sobol index 0 = 0.14261 absolute error=2.7e-01
+Sobol index 1 = 0.13317 absolute error=4.9e-02
+Sobol index 2 = 0.00000 absolute error=1.0e-01
+Sobol index 3 = 0.02506 absolute error=4.1e-02
+Sobol index 4 = 0.08596 absolute error=4.0e-02
+Sobol index [0,1] =0.05695 absolute error=3.9e-03
+Sobol index [0,2] =0.00000 absolute error=3.4e-02
+Sobol index [0,3] =0.00000 absolute error=2.2e-02
+Sobol index [0,4] =0.06055 absolute error=4.5e-02
+Sobol index [1,2] =0.00000 absolute error=1.5e-02
+Sobol index [1,3] =0.00000 absolute error=9.7e-03
+Sobol index [1,4] =0.00000 absolute error=6.8e-03
+Sobol index [2,3] =0.00000 absolute error=5.5e-03
+Sobol index [2,4] =0.00000 absolute error=3.8e-03
+Sobol index [3,4] =0.02947 absolute error=2.7e-02
+Sobol index [0,1,2] =0.03403 absolute error=2.9e-02
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=21 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0569396]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=0.98767 absolute error=1.2e-02
+variance=1.22492 absolute error=4.1e-01
+Sobol index 0 = 0.19784 absolute error=2.1e-01
+Sobol index 1 = 0.08475 absolute error=9.8e-02
+Sobol index 2 = 0.05520 absolute error=4.7e-02
+Sobol index 3 = 0.05847 absolute error=7.2e-03
+Sobol index 4 = 0.05100 absolute error=5.4e-03
+Sobol index [0,1] =0.04743 absolute error=1.3e-02
+Sobol index [0,2] =0.00000 absolute error=3.4e-02
+Sobol index [0,3] =0.03203 absolute error=1.0e-02
+Sobol index [0,4] =0.00000 absolute error=1.5e-02
+Sobol index [1,2] =0.03114 absolute error=1.6e-02
+Sobol index [1,3] =0.03155 absolute error=2.2e-02
+Sobol index [1,4] =0.04619 absolute error=3.9e-02
+Sobol index [2,3] =0.00000 absolute error=5.5e-03
+Sobol index [2,4] =0.00000 absolute error=3.8e-03
+Sobol index [3,4] =0.04194 absolute error=4.0e-02
+Sobol index [0,1,2] =0.03750 absolute error=3.2e-02
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=21 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=5 coefficients=[1747396655419752448,2864289363007635456,4305441243766194176,3224577333197275136,1963569437533536256] seed=251 distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0487801]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=0.98068 absolute error=1.9e-02
+variance=0.98347 absolute error=1.7e-01
+Sobol index 0 = 0.28975 absolute error=1.2e-01
+Sobol index 1 = 0.11920 absolute error=6.3e-02
+Sobol index 2 = 0.05985 absolute error=4.3e-02
+Sobol index 3 = 0.05148 absolute error=1.4e-02
+Sobol index 4 = 0.03847 absolute error=7.2e-03
+Sobol index [0,1] =0.01403 absolute error=4.7e-02
+Sobol index [0,2] =0.00000 absolute error=3.4e-02
+Sobol index [0,3] =0.00000 absolute error=2.2e-02
+Sobol index [0,4] =0.00000 absolute error=1.5e-02
+Sobol index [1,2] =0.00000 absolute error=1.5e-02
+Sobol index [1,3] =0.00000 absolute error=9.7e-03
+Sobol index [1,4] =0.00000 absolute error=6.8e-03
+Sobol index [2,3] =0.00000 absolute error=5.5e-03
+Sobol index [2,4] =0.00000 absolute error=3.8e-03
+Sobol index [3,4] =0.01595 absolute error=1.4e-02
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.000486389]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[7.60066e-05]
+mean=1.02272 absolute error=2.3e-02
+variance=0.90017 absolute error=8.9e-02
+Sobol index 0 = 0.40358 absolute error=7.1e-03
+Sobol index 1 = 0.18033 absolute error=2.2e-03
+Sobol index 2 = 0.09823 absolute error=4.4e-03
+Sobol index 3 = 0.07319 absolute error=7.5e-03
+Sobol index 4 = 0.03993 absolute error=5.7e-03
+Sobol index [0,1] =0.05429 absolute error=6.6e-03
+Sobol index [0,2] =0.03629 absolute error=2.1e-03
+Sobol index [0,3] =0.02520 absolute error=3.3e-03
+Sobol index [0,4] =0.01559 absolute error=3.8e-04
+Sobol index [1,2] =0.01456 absolute error=6.5e-04
+Sobol index [1,3] =0.00680 absolute error=2.9e-03
+Sobol index [1,4] =0.00724 absolute error=4.8e-04
+Sobol index [2,3] =0.00319 absolute error=2.3e-03
+Sobol index [2,4] =0.00332 absolute error=4.8e-04
+Sobol index [3,4] =0.00369 absolute error=1.3e-03
+Sobol index [0,1,2] =0.00160 absolute error=3.5e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.000424142]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[6.28862e-05]
+mean=1.01272 absolute error=1.3e-02
+variance=0.80617 absolute error=5.4e-03
+Sobol index 0 = 0.40035 absolute error=1.0e-02
+Sobol index 1 = 0.19126 absolute error=8.7e-03
+Sobol index 2 = 0.09229 absolute error=1.0e-02
+Sobol index 3 = 0.07136 absolute error=5.6e-03
+Sobol index 4 = 0.04956 absolute error=3.9e-03
+Sobol index [0,1] =0.06437 absolute error=3.5e-03
+Sobol index [0,2] =0.02313 absolute error=1.1e-02
+Sobol index [0,3] =0.01262 absolute error=9.3e-03
+Sobol index [0,4] =0.01263 absolute error=2.6e-03
+Sobol index [1,2] =0.01820 absolute error=3.0e-03
+Sobol index [1,3] =0.00797 absolute error=1.8e-03
+Sobol index [1,4] =0.01008 absolute error=3.3e-03
+Sobol index [2,3] =0.00279 absolute error=2.7e-03
+Sobol index [2,4] =0.00674 absolute error=2.9e-03
+Sobol index [3,4] =0.00659 absolute error=4.2e-03
+Sobol index [0,1,2] =0.00107 absolute error=4.0e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=5 coefficients=[1747396655419752448,2864289363007635456,4305441243766194176,3224577333197275136,1963569437533536256] seed=251 distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.000529075]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[9.71037e-05]
+mean=1.00365 absolute error=3.6e-03
+variance=0.79975 absolute error=1.2e-02
+Sobol index 0 = 0.39887 absolute error=1.2e-02
+Sobol index 1 = 0.18784 absolute error=5.3e-03
+Sobol index 2 = 0.09898 absolute error=3.7e-03
+Sobol index 3 = 0.07067 absolute error=5.0e-03
+Sobol index 4 = 0.05266 absolute error=7.0e-03
+Sobol index [0,1] =0.04523 absolute error=1.6e-02
+Sobol index [0,2] =0.02875 absolute error=5.5e-03
+Sobol index [0,3] =0.02753 absolute error=5.6e-03
+Sobol index [0,4] =0.01574 absolute error=5.3e-04
+Sobol index [1,2] =0.01066 absolute error=4.6e-03
+Sobol index [1,3] =0.00926 absolute error=4.8e-04
+Sobol index [1,4] =0.01014 absolute error=3.4e-03
+Sobol index [2,3] =0.00527 absolute error=2.0e-04
+Sobol index [2,4] =0.00439 absolute error=5.9e-04
+Sobol index [3,4] =0.00441 absolute error=2.0e-03
+Sobol index [0,1,2] =0.00204 absolute error=3.0e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.139052]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=1.01809 absolute error=1.8e-02
+variance=2.65816 absolute error=1.8e+00
+Sobol index 0 = 0.10028 absolute error=3.1e-01
+Sobol index 1 = 0.09072 absolute error=9.2e-02
+Sobol index 2 = 0.02623 absolute error=7.6e-02
+Sobol index 3 = 0.03497 absolute error=3.1e-02
+Sobol index 4 = 0.05597 absolute error=1.0e-02
+Sobol index [0,1] =0.04976 absolute error=1.1e-02
+Sobol index [0,2] =0.01520 absolute error=1.9e-02
+Sobol index [0,3] =0.02464 absolute error=2.7e-03
+Sobol index [0,4] =0.05530 absolute error=4.0e-02
+Sobol index [1,2] =0.03005 absolute error=1.5e-02
+Sobol index [1,3] =0.02218 absolute error=1.2e-02
+Sobol index [1,4] =0.01776 absolute error=1.1e-02
+Sobol index [2,3] =0.00713 absolute error=1.7e-03
+Sobol index [2,4] =0.01629 absolute error=1.2e-02
+Sobol index [3,4] =0.03823 absolute error=3.6e-02
+Sobol index [0,1,2] =0.03395 absolute error=2.9e-02
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0960581]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=0.98767 absolute error=1.2e-02
+variance=1.96252 absolute error=1.2e+00
+Sobol index 0 = 0.14101 absolute error=2.7e-01
+Sobol index 1 = 0.05635 absolute error=1.3e-01
+Sobol index 2 = 0.03529 absolute error=6.7e-02
+Sobol index 3 = 0.03980 absolute error=2.6e-02
+Sobol index 4 = 0.03361 absolute error=1.2e-02
+Sobol index [0,1] =0.04336 absolute error=1.7e-02
+Sobol index [0,2] =0.01303 absolute error=2.1e-02
+Sobol index [0,3] =0.04507 absolute error=2.3e-02
+Sobol index [0,4] =0.03356 absolute error=1.8e-02
+Sobol index [1,2] =0.04102 absolute error=2.6e-02
+Sobol index [1,3] =0.03854 absolute error=2.9e-02
+Sobol index [1,4] =0.05723 absolute error=5.0e-02
+Sobol index [2,3] =0.02227 absolute error=1.7e-02
+Sobol index [2,4] =0.01265 absolute error=8.8e-03
+Sobol index [3,4] =0.03682 absolute error=3.4e-02
+Sobol index [0,1,2] =0.06059 absolute error=5.6e-02
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=126
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=5 coefficients=[1747396655419752448,2864289363007635456,4305441243766194176,3224577333197275136,1963569437533536256] seed=251 distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0742206]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=0.98068 absolute error=1.9e-02
+variance=1.29228 absolute error=4.8e-01
+Sobol index 0 = 0.22147 absolute error=1.9e-01
+Sobol index 1 = 0.09293 absolute error=9.0e-02
+Sobol index 2 = 0.05130 absolute error=5.1e-02
+Sobol index 3 = 0.04184 absolute error=2.4e-02
+Sobol index 4 = 0.02944 absolute error=1.6e-02
+Sobol index [0,1] =0.01384 absolute error=4.7e-02
+Sobol index [0,2] =0.02545 absolute error=8.8e-03
+Sobol index [0,3] =0.01277 absolute error=9.1e-03
+Sobol index [0,4] =0.01006 absolute error=5.2e-03
+Sobol index [1,2] =0.02587 absolute error=1.1e-02
+Sobol index [1,3] =0.02190 absolute error=1.2e-02
+Sobol index [1,4] =0.01001 absolute error=3.3e-03
+Sobol index [2,3] =0.01147 absolute error=6.0e-03
+Sobol index [2,4] =0.02031 absolute error=1.7e-02
+Sobol index [3,4] =0.02366 absolute error=2.1e-02
+Sobol index [0,1,2] =0.00898 absolute error=3.9e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=21
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.00166099]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0.000886377]
+mean=1.00029 absolute error=2.9e-04
+variance=0.62526 absolute error=1.9e-01
+Sobol index 0 = 0.52160 absolute error=1.1e-01
+Sobol index 1 = 0.21324 absolute error=3.1e-02
+Sobol index 2 = 0.12231 absolute error=2.0e-02
+Sobol index 3 = 0.06708 absolute error=1.4e-03
+Sobol index 4 = 0.05347 absolute error=7.8e-03
+Sobol index [0,1] =0.00025 absolute error=6.1e-02
+Sobol index [0,2] =0.00234 absolute error=3.2e-02
+Sobol index [0,3] =0.00306 absolute error=1.9e-02
+Sobol index [0,4] =0.00003 absolute error=1.5e-02
+Sobol index [1,2] =0.00209 absolute error=1.3e-02
+Sobol index [1,3] =0.00638 absolute error=3.4e-03
+Sobol index [1,4] =0.00461 absolute error=2.1e-03
+Sobol index [2,3] =0.00137 absolute error=4.1e-03
+Sobol index [2,4] =0.00214 absolute error=1.7e-03
+Sobol index [3,4] =0.00003 absolute error=2.4e-03
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=21
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.00160546]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0.000901012]
+mean=0.98742 absolute error=1.3e-02
+variance=0.58350 absolute error=2.3e-01
+Sobol index 0 = 0.48435 absolute error=7.4e-02
+Sobol index 1 = 0.25250 absolute error=7.0e-02
+Sobol index 2 = 0.08924 absolute error=1.3e-02
+Sobol index 3 = 0.09005 absolute error=2.4e-02
+Sobol index 4 = 0.06658 absolute error=2.1e-02
+Sobol index [0,1] =0.00312 absolute error=5.8e-02
+Sobol index [0,2] =0.00133 absolute error=3.3e-02
+Sobol index [0,3] =0.00010 absolute error=2.2e-02
+Sobol index [0,4] =0.00003 absolute error=1.5e-02
+Sobol index [1,2] =0.00036 absolute error=1.5e-02
+Sobol index [1,3] =0.00464 absolute error=5.1e-03
+Sobol index [1,4] =0.00372 absolute error=3.0e-03
+Sobol index [2,3] =0.00170 absolute error=3.8e-03
+Sobol index [2,4] =0.00063 absolute error=3.2e-03
+Sobol index [3,4] =0.00164 absolute error=7.9e-04
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=21
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=5 coefficients=[1747396655419752448,2864289363007635456,4305441243766194176,3224577333197275136,1963569437533536256] seed=251 distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0016184]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0.000908599]
+mean=0.99262 absolute error=7.4e-03
+variance=0.58379 absolute error=2.3e-01
+Sobol index 0 = 0.49747 absolute error=8.7e-02
+Sobol index 1 = 0.22343 absolute error=4.1e-02
+Sobol index 2 = 0.12660 absolute error=2.4e-02
+Sobol index 3 = 0.08963 absolute error=2.4e-02
+Sobol index 4 = 0.05481 absolute error=9.2e-03
+Sobol index [0,1] =0.00116 absolute error=6.0e-02
+Sobol index [0,2] =0.00208 absolute error=3.2e-02
+Sobol index [0,3] =0.00040 absolute error=2.2e-02
+Sobol index [0,4] =0.00018 absolute error=1.5e-02
+Sobol index [1,2] =0.00021 absolute error=1.5e-02
+Sobol index [1,3] =0.00006 absolute error=9.7e-03
+Sobol index [1,4] =0.00171 absolute error=5.0e-03
+Sobol index [2,3] =0.00002 absolute error=5.5e-03
+Sobol index [2,4] =0.00045 absolute error=3.3e-03
+Sobol index [3,4] =0.00179 absolute error=6.5e-04
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=21
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0472571]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=1.01809 absolute error=1.8e-02
+variance=0.90508 absolute error=9.3e-02
+Sobol index 0 = 0.26686 absolute error=1.4e-01
+Sobol index 1 = 0.26154 absolute error=7.9e-02
+Sobol index 2 = 0.03160 absolute error=7.1e-02
+Sobol index 3 = 0.07099 absolute error=5.3e-03
+Sobol index 4 = 0.15896 absolute error=1.1e-01
+Sobol index [0,1] =0.05018 absolute error=1.1e-02
+Sobol index [0,2] =0.00446 absolute error=3.0e-02
+Sobol index [0,3] =0.00530 absolute error=1.7e-02
+Sobol index [0,4] =0.01735 absolute error=2.1e-03
+Sobol index [1,2] =0.03123 absolute error=1.6e-02
+Sobol index [1,3] =0.01583 absolute error=6.1e-03
+Sobol index [1,4] =0.00023 absolute error=6.5e-03
+Sobol index [2,3] =0.00683 absolute error=1.4e-03
+Sobol index [2,4] =0.02351 absolute error=2.0e-02
+Sobol index [3,4] =0.05513 absolute error=5.3e-02
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=21
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0301525]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=0.98767 absolute error=1.2e-02
+variance=0.59357 absolute error=2.2e-01
+Sobol index 0 = 0.41357 absolute error=2.9e-03
+Sobol index 1 = 0.17529 absolute error=7.2e-03
+Sobol index 2 = 0.05806 absolute error=4.5e-02
+Sobol index 3 = 0.12180 absolute error=5.6e-02
+Sobol index 4 = 0.09997 absolute error=5.4e-02
+Sobol index [0,1] =0.00038 absolute error=6.0e-02
+Sobol index [0,2] =0.00647 absolute error=2.8e-02
+Sobol index [0,3] =0.06610 absolute error=4.4e-02
+Sobol index [0,4] =0.00199 absolute error=1.3e-02
+Sobol index [1,2] =0.00049 absolute error=1.5e-02
+Sobol index [1,3] =0.00156 absolute error=8.2e-03
+Sobol index [1,4] =0.02805 absolute error=2.1e-02
+Sobol index [2,3] =0.02313 absolute error=1.8e-02
+Sobol index [2,4] =0.00169 absolute error=2.1e-03
+Sobol index [3,4] =0.00145 absolute error=9.9e-04
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03
+//////////////////////////////////////////////////////////////////////
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=21
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=5 coefficients=[1747396655419752448,2864289363007635456,4305441243766194176,3224577333197275136,1963569437533536256] seed=251 distribution=class=ComposedDistribution name=ComposedDistribution dimension=5 copula=class=IndependentCopula name=IndependentCopula dimension=5 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[3]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[4]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[0.0270021]
+relative errors=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+mean=0.98068 absolute error=1.9e-02
+variance=0.52437 absolute error=2.9e-01
+Sobol index 0 = 0.47594 absolute error=6.5e-02
+Sobol index 1 = 0.19618 absolute error=1.4e-02
+Sobol index 2 = 0.11477 absolute error=1.2e-02
+Sobol index 3 = 0.09674 absolute error=3.1e-02
+Sobol index 4 = 0.06059 absolute error=1.5e-02
+Sobol index [0,1] =0.00343 absolute error=5.7e-02
+Sobol index [0,2] =0.01787 absolute error=1.6e-02
+Sobol index [0,3] =0.00600 absolute error=1.6e-02
+Sobol index [0,4] =0.00493 absolute error=1.0e-02
+Sobol index [1,2] =0.00201 absolute error=1.3e-02
+Sobol index [1,3] =0.00457 absolute error=5.2e-03
+Sobol index [1,4] =0.00005 absolute error=6.7e-03
+Sobol index [2,3] =0.00119 absolute error=4.3e-03
+Sobol index [2,4] =0.00501 absolute error=1.2e-03
+Sobol index [3,4] =0.01072 absolute error=8.3e-03
+Sobol index [0,1,2] =0.00000 absolute error=5.1e-03

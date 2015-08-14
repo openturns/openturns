@@ -1,0 +1,111 @@
+%feature("docstring") OT::BayesDistribution
+"Bayes distribution.
+
+Helper class for defining the distribution of the random vector :math:`(\vect{X},\vect{Y})` where :math:`\vect{Y}` follows the distribution :math:`\mathcal{L}_{\vect{Y}}` and :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`  where :math:`\vect{\Theta}=g(\vect{Y})` with :math:`g` a given function of input dimension the dimension of :math:`\mathcal{L}_{\vect{Y}}` and output dimension the dimension of :math:`\vect{\Theta}`.
+
+Available constructors:
+   BayesDistribution(*conditionedDist, conditioningDist, linkFunction*)
+
+   BayesDistribution(*conditionedDist, conditioningDist*)
+
+   BayesDistribution()
+
+Parameters
+----------
+
+conditionedDist : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`g(\vect{Y})`.
+    In the `BayesDistribution()` constructor, `conditionedDist` is taken equal to :math:`\vect{X} | \vect{\Theta} \sim` :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
+
+conditioningDist : :class:`~openturns.Distribution`, the distribution of :math:`\vect{Y}`, specified with its parameters.
+    In the `BayesDistribution()` constructor,  `conditioningDist` is taken equal to :math:`\vect{Y} \sim Uniform(-1,1)`.
+
+linkFunction : :class:`~openturns.NumericalMathFunction`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+    In the `BayesDistribution()` constructor, `linkFunction`  is taken equal to :math:`g: \Rset \rightarrow \Rset^2`, :math:`g(y)=(y,y+1)`.
+    In the `BayesDistribution(conditionedDist, conditioningDist)` constructor, we need :math:`p=q` and `linkFunction`  is taken equal to  :math:`g(\vect{y})=\vect{y}`.
+
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{(\vect{X}, \vect{Y})}(\vect{x}, \vect{y}) = f_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}( \vect{y})
+
+with  :math:`f_{\vect{X}|\vect{\Theta}=g(\vect{y})}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}`, where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`, :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and :math:`g` the linking function.
+
+With the default constructor, the resulting random vector :math:`(X,Y)` is uniformly distributed on the parallelogram which vertices are :math:`(-1,-1); (0,-1); (2,1); (1,1)`.
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> conditioningDist = ot.Normal(0.0, 1.0)
+>>> g = ot.NumericalMathFunction(['y'], ['y', '0.1+y^2'])
+>>> conditionedDist = ot.Normal()
+>>> finalDist = ot.ConditionalDistribution(conditionedDist, conditioningDist, g)
+
+Draw a sample:
+
+>>> sample = finalDist.getSample(10)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BayesDistribution::getConditionedDistribution
+"Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+
+Returns
+-------
+conditionedDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`g(\vect{Y})`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BayesDistribution::getConditioningDistribution
+"Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
+
+Returns
+-------
+conditioningDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{Y}`, specified with its parameters.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BayesDistribution::getLinkFunction
+"Accessor to the distribution's conditioned distribution parameter `linkFunction`.
+
+Returns
+-------
+linkFunction : :class:`~openturns.NumericalMathFunction`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BayesDistribution::setConditionedDistribution
+"Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+
+Parameters
+----------
+conditionedDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`g(\vect{Y})`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BayesDistribution::setConditioningDistribution
+"Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
+
+Parameters
+----------
+conditioningDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{Y}`, specified with its parameters.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BayesDistribution::setLinkFunction
+"Accessor to the distribution's conditioned distribution parameter `linkFunction`.
+
+Parameters
+----------
+linkFunction : :class:`~openturns.NumericalMathFunction`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+"

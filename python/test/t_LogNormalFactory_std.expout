@@ -1,0 +1,8 @@
+distribution= class=LogNormal name=LogNormal dimension=1 muLog=1.5 sigmaLog=2.5 gamma=-1.5
+Estimated distribution= class=LogNormal name=LogNormal dimension=1 muLog=1.46531 sigmaLog=2.50364 gamma=-1.49972
+Default distribution= LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
+Distribution from parameters= LogNormal(muLog = 1.5, sigmaLog = 2.5, gamma = -1.5)
+LogNormal          = LogNormal(muLog = 1.5, sigmaLog = 2.5, gamma = -1.5)
+Estimated logNormal= LogNormal(muLog = 1.46531, sigmaLog = 2.50364, gamma = -1.49972)
+Default logNormal= LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
+LogNormal from parameters= LogNormal(muLog = 1.5, sigmaLog = 2.5, gamma = -1.5)

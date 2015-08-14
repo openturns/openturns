@@ -1,0 +1,38 @@
+Distribution  class=LogUniform name=LogUniform dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
+Distribution  LogUniform(aLog = -0.5, bLog = 1.5)
+Mean=  class=NumericalPoint name=Unnamed dimension=1 values=[1.93758]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.1752]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Elliptical =  False
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[2.16024]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[3.68269]  last= class=NumericalPoint name=Unnamed dimension=1 values=[1.40286]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.94822]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19861]
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.5]
+ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.5]
+log pdf=-0.693147
+pdf     =0.500000
+pdf (FD)=0.500000
+cdf=0.250000
+ccdf=0.750000
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
+pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
+cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.0552]
+cdf(quantile)=0.950000
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.93758]
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.08407]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.67539]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[0.623015]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.1752]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[aLog,bLog] values=[-0.5,1.5]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [1.93758]
+standard moment n= 2  value= [4.92941]
+standard moment n= 3  value= [14.9657]
+standard moment n= 4  value= [50.4117]
+standard moment n= 5  value= [180.796]
+Standard representative= LogUniform(aLog = -0.5, bLog = 1.5)

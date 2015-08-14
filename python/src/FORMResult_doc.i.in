@@ -1,0 +1,80 @@
+%feature("docstring") OT::FORMResult
+"Result of a FORM analysis.
+
+Available constructors:
+    FORMResult(*designPoint, limitStateVariable, isInFailureSpace*)
+
+Notes
+-----
+Structure created by the method run() of the :class:`~openturns.FORM`
+class and obtained thanks to its method getResult().
+
+Parameters
+----------
+designPoint : sequence of float
+    Design point in the standard space resulting from the optimization
+    algorithm.
+limitStateVariable : :class:`~openturns.Event`
+    Event of which the probability is calculated.
+isInFailureSpace : bool
+    Indicates whether the origin of the standard space is in the failure space.
+
+
+See also
+--------
+Analytical, AnalyticalResult, SORM, SORMResult, FORM, StrongMaximumTest"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORMResult::drawEventProbabilitySensitivity
+"Draw the sensitivities of the FORM failure probability.
+
+Parameters
+----------
+width : float, optional
+    Value to calculate the shift position of the :class:`~openturns.BarPlot`.
+    By default it is 1.0.
+
+Returns
+-------
+graphCollection : list of two :class:`~openturns.Graph` containing a barplot
+    The first graph drawing the sensitivities of the FORM failure probability
+    with regards to the parameters of the probabilistic input vector.
+    The second graph drawing the sensitivities of the FORM failure probability
+    with regards to the parameters of the dependence structure of the
+    probabilistic input vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORMResult::getEventProbability
+"Accessor to the failure probability :math:`P_f`.
+
+Returns
+-------
+probability : positive float
+    The FORM failure probability :math:`P_f`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORMResult::getEventProbabilitySensitivity
+"Accessor to the sentivities of the FORM failure probability :math:`P_f`.
+
+Returns
+-------
+sentivities : :class:`~openturns.NumericalPoint`
+    Sentivities of the FORM failure probability with regards to the parameters
+    of the probabilistic input vector and to parameters of the dependence
+    structure of the probabilistic input vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORMResult::getGeneralisedReliabilityIndex
+"Accessor to the Generalised Reliability Index.
+
+Returns
+-------
+index : float
+    Generalised reliability index :math:`\beta_g` from the FORM failure
+    probability is equal to :math:`\pm` the Hasofer reliability index
+    :math:`\beta_{HL}` according to the fact the standard space center
+    fulfills the event or not."

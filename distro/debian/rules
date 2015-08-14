@@ -1,0 +1,130 @@
+#!/usr/bin/make -f
+
+ifeq ($(findstring parallel=,$(DEB_BUILD_OPTIONS)),)
+	export DEB_BUILD_OPTIONS+=parallel=$(shell getconf _NPROCESSORS_ONLN)
+endif
+$(info DEB_BUILD_OPTIONS:$(origin DEB_BUILD_OPTIONS)=$(DEB_BUILD_OPTIONS))
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	test_makeflags = -j$(NUMJOBS)
+endif
+
+cppflags := $(shell dpkg-buildflags --get CPPFLAGS)
+cflags := $(shell dpkg-buildflags --get CFLAGS) $(cppflags)
+cxxflags := $(shell dpkg-buildflags --get CXXFLAGS) $(cppflags)
+fflags := $(shell dpkg-buildflags --get FFLAGS)
+ldflags := $(shell dpkg-buildflags --get LDFLAGS)
+ldflags += -Wl,--as-needed
+
+ifeq ($(shell dpkg --print-architecture),armel)
+    cflags := $(subst -O2,-O1,$(cflags))
+    cxxflags := $(subst -O2,-O1,$(cxxflags))
+    fflags := $(subst -O2,-O1,$(fflags))
+endif
+ifeq ($(shell dpkg --print-architecture),armhf)
+    cflags := $(subst -O2,-O1,$(cflags))
+    cxxflags := $(subst -O2,-O1,$(cxxflags))
+    fflags := $(subst -O2,-O1,$(fflags))
+endif
+ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), i386 kfreebsd-i386 hurd-i386))
+    cflags += -O0
+endif
+ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), i386 amd64 ia64))
+    with_tbb := -DUSE_TBB:BOOL=ON
+else
+    with_tbb := -DUSE_TBB:BOOL=OFF
+endif
+
+debRlib := $(CURDIR)/debian/tmp/usr/lib/R/site-library
+export R_LIBS=$(debRlib)
+PYVER = $(shell pyversions -d)
+PY3VER = $(shell py3versions -d)
+PYALL = $(PYVER) $(PY3VER)
+
+%:
+ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
+	$(error This package requires more than 1GB RAM; do not build on mips/mipsel)
+endif
+	dh $@ --buildsystem=cmake --with python2,python3 --with quilt --parallel
+
+debian/tmp/usr/lib/R/site-library/rot:
+	-mkdir -p $(debRlib)
+	R CMD INSTALL --library=$(debRlib) utils/rot_1.4.6.tar.gz
+
+override_dh_auto_configure: debian/tmp/usr/lib/R/site-library/rot $(PYALL:python%=cmake-configure-%) \
+
+cmake-configure-%:
+	dh_auto_configure -Bbuild-python$* -- \
+            $(with_tbb) \
+            -DUSE_SPHINX:BOOL=OFF \
+            -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
+            -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
+            -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
+            -DCMAKE_C_FLAGS_RELWITHDEBINFO:STRING='$(cflags)' \
+            -DCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING='$(cxxflags)' \
+            -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+            -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
+            -DLIB_SOVERSION=0.7 \
+            -DLIB_VERSION=0.7.0 \
+            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.6 \
+            -DOPENTURNS_WRAPPER_PATH:PATH=lib/openturns-1.6/wrappers \
+            -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
+            -DLINK_PYTHON_LIBRARY:BOOL=OFF \
+            -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
+            -DPYTHON_INCLUDE_DIR:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
+            -DPYTHON_INCLUDE_DIR2:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
+            -DPYTHON_LIBRARY:PATH=$$(python$*-config --ldflags | sed -e 's/ .*//' -e 's/^-L//')/libpython$*.so
+
+override_dh_auto_build: $(PYALL:python%=cmake-build-%)
+
+cmake-build-%:
+	$(MAKE) $(test_makeflags) -C build-python$*/lib
+	$(MAKE) -j1 -C build-python$*/python
+	$(MAKE) $(test_makeflags) -C build-python$*
+
+override_dh_auto_install: debian/tmp/usr/lib/R/site-library/rot $(PYALL:python%=cmake-install-%)
+
+cmake-install-%:
+	dh_auto_install -Bbuild-python$*
+	mkdir -p debian/libopenturns0.7-dbg/usr/lib/debug/usr/lib
+ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+	# CTestTestfile.cmake sets LD_LIBRARY_PATH to find libraries in debian/tmp.
+	# But it overrides current value, which breaks when run by fakeroot.
+	[ -z "$$LD_LIBRARY_PATH" ] || sed -i -e "s#;LD_LIBRARY_PATH=[^;]*#&:$$LD_LIBRARY_PATH#" build-python$*/python/test/CTestTestfile.cmake
+	CTEST_OUTPUT_ON_FAILURE=1 \
+	  R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
+	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) -R pyinstallcheck"
+endif
+
+override_dh_makeshlibs:
+	dh_makeshlibs -Xpyshared
+
+override_dh_strip:
+	dh_strip -plibopenturns0.7 --dbg-package=libopenturns0.7-dbg
+	dh_strip
+
+override_dh_python2:
+	dh_python2 -p python-openturns
+
+override_dh_python3:
+	dh_python3 -p python3-openturns
+
+override_dh_compress:
+	dh_compress -X.pdf -X.svn -X.py
+
+override_dh_auto_test: $(PYALL:python%=cmake-test-%)
+
+cmake-test-%:
+	# 'make test' does not build binary tests
+ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+	$(MAKE) $(test_makeflags) -C build-python$* tests
+	CTEST_OUTPUT_ON_FAILURE=1 $(MAKE) -C build-python$* test ARGS="$(test_makeflags) -R cppcheck"
+endif
+
+get-orig-source:
+	uscan --force-download --verbose
+	mv ../openturn*.tar.[gzbz2]* ../tarballs

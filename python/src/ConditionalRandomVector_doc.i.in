@@ -1,0 +1,62 @@
+%feature("docstring") OT::ConditionalRandomVector
+"Conditional random vector.
+
+Helper class for defining the random vector :math:`\vect{X}` such that  :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`, with :math:`\vect{\Theta}` a random vector of dimension the dimension of :math:`\vect{\Theta}`.
+
+Available constructors:
+   ConditionalRandomVector(*conditionedDist, randomParameters*)
+
+Parameters
+----------
+
+conditionedDist : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`\vect{\Theta}`.
+    
+randomParameters : :class:`~openturns.RandomVector`, the random parameters :math:`\vect{\Theta}` of the `conditionedDist` distribution. 
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{\theta}}(\vect{x}|\vect{\theta}) f_{\vect{\Theta}}(\vect{\theta})\, d\vect{\theta}
+
+with  :math:`f_{\vect{X}|\vect{\Theta}=\vect{\theta}}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}`, where :math:`\vect{\Theta}` has been replaced by :math:`\vect{\theta}`, :math:`f_{\vect{\Theta}}` the PDF of :math:`\vect{\Theta}`.
+
+Note that there exist other (quasi) equivalent modellings using a combination of the classes :class:`~openturns.ConditionalDistribution` and :class:`~openturns.RandomVector` (see the Use Cases Guide).
+
+Examples
+--------
+Create a random vector:
+
+>>> import openturns as ot
+>>> conditionedDist = ot.Normal()
+>>> linkFunc = ot.NumericalMathFunction(['y'], ['m', 's'], ['y', 'y^2'])
+>>> rvTheta = ot.CompositeRandomVector(linkFunc, ot.RandomVector(ot.Normal()))
+>>> finalDist = ot.ConditionalRandomVector(conditionedDist, rvTheta)
+
+Draw a sample:
+
+>>> sample = finalDist.getSample(10)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ConditionalRandomVector::getRandomParameters
+"Accessor to the distribution's random parameter `randomParameters`.
+
+Returns
+-------
+randomParameters : :class:`~openturns.RandomVector`, the random parameters :math:`\vect{\Theta}`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ConditionalRandomVector::getDistribution
+"Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+
+Returns
+-------
+conditionedDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}=\vect{\theta}`, where the parameters :math:`\vect{\theta}` are equal to the  values used to generate the last realization of :math:`\vect{X}`.
+"
+

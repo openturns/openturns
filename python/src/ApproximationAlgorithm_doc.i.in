@@ -1,0 +1,8 @@
+// ApproximationAlgorithm docstrings are defined in ApproximationAlgorithmImplementation_doc.i.in
+
+%feature("docstring") OT::ApproximationAlgorithm
+OT_ApproximationAlgorithm_doc
+%feature("docstring") OT::ApproximationAlgorithm::getVerbose
+OT_ApproximationAlgorithm_getVerbose_doc
+%feature("docstring") OT::ApproximationAlgorithm::setVerbose
+OT_ApproximationAlgorithm_setVerbose_doc

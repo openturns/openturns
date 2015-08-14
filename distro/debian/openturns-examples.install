@@ -1,0 +1,7 @@
+usr/share/openturns/examples/*
+usr/lib/openturns-1.*/wrappers/external_code_threads*
+usr/lib/openturns-1.*/wrappers/minimal_wrapper*
+usr/lib/openturns-1.*/wrappers/poutre*
+usr/lib/openturns-1.*/wrappers/testwrapper*
+usr/lib/openturns-1.*/wrappers/Test*
+usr/lib/openturns-1.*/wrappers/wrapper.xml

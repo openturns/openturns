@@ -1,0 +1,197 @@
+%feature("docstring") OT::ARMALikelihoodFactory
+"Maximum likelihood estimator of a multivariate ARMA normal process.
+
+Available constructors:
+    ARMALikelihoodFactory()
+
+    ARMALikelihoodFactory(*p, q, d, invertible*)
+
+    ARMALikelihoodFactory(*indP, indQ, d, invertible*)
+
+
+Parameters
+----------
+p : int
+    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+q : int
+    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+d : int, :math:`d \geq 1`
+    Dimension of the process.
+invertible : bool, optional
+    Restrict the estimation to invertible ARMA processes.
+
+    By default: True.
+indP : :class:`~openturns.Indices`
+    All the :math:`p` orders that will be investigated.
+    Care: not yet implemented.
+indQ : :class:`~openturns.Indices`
+    All the :math:`p` orders that will be investigated.
+    Care: not yet implemented.
+
+Notes
+-----
+We suppose here that the white noise is normal with zero mean and  covariance matrix :math:`\mat{\Sigma}_{\varepsilon} = \sigma^2\mat{Q}` where :math:`|\mat{Q}| = 1`. It implies that the ARMA process estimated is normal.
+
+Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`d` from an :math:`ARMA(p,q)` process. 
+
+If we note :math:`\vect{W} = (\vect{X}_0, \hdots, \vect{X}_{n-1})`, then :math:`\vect{W}` is normal with zero mean. Its  covariance matrix writes :math:`\mathbb{E}(\vect{W}\vect{W}^t)= \sigma^2 \Sigma_{\vect{W}}` which depends on the coefficients :math:`(\mat{A}_k, \mat{B}_l)` for :math:`k = 1,\ldots,p` and :math:`l = 1,\ldots, q` and on the matrix :math:`\mat{Q}`.
+
+The likelihood of :math:`\vect{W}` writes :
+
+.. math::
+
+    L(\vect{\beta}, \sigma^2 | \vect{W}) = (2 \pi \sigma^2) ^{-\frac{d n}{2}} |\Sigma_{w}|^{-\frac{1}{2}} \exp\left(- (2\sigma^2)^{-1}  \vect{W}^t \Sigma_{\vect{W}}^{-1}  \vect{W} \right)
+
+where  :math:`\vect{\beta} = (\mat{A}_{k}, \mat{B}_{l}, \mat{Q}),\ k = 1,\ldots,p`, :math:`l = 1,\ldots, q` and where  :math:`|.|` denotes the determinant.
+
+No evaluation of selection criteria such as AIC or BIC is done.
+
+Examples
+--------
+Create a time series from a scalar ARMA(4,2) and a normal white noise:
+
+>>> import openturns as ot
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myWhiteNoise = ot.WhiteNoise(ot.Triangular(-1.0, 0.0, 1.0), myTimeGrid)
+>>> myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
+>>> myMACoef = ot.ARMACoefficients([0.4, 0.3])
+>>> myARMAProcess = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
+>>> myTimeSeries = myARMAProcess.getRealization()
+
+Estimate the ARMA process with the maximum likelihood estimator:
+
+>>> myFactory = ot.ARMALikelihoodFactory(4, 2, 1)
+>>> myARMA = myFactory.build(ot.TimeSeries(myTimeSeries))"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::build
+"Estimate the ARMA process.
+
+Available usages:
+    build(*myTimeSeries*)
+
+    build(*myProcessSample*)
+
+Parameters
+----------
+myTimeSeries : :class:`~openturns.TimeSeries`
+    One realization of the  process.
+myProcessSample : :class:`~openturns.ProcessSample`
+    Several realizations of the  process.
+
+Returns
+-------
+myARMA : :class:`~openturns.ARMA`
+    The  process estimated with the maximum likelihood estimator.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::setVerbose
+"Accessor to the verbose mode.
+
+Parameters
+----------
+verboseMode : bool
+    Set the verbose mode while both the exploration of the possible models and the optimization steps.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::getVerbose
+"Accessor to the verbose mode.
+
+Returns
+-------
+verboseMode : bool
+    Get the verbose mode while both the exploration of the possible models and the optimization steps.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::getInitialARCoefficients
+"Accessor to the initial AR coefficients.
+
+Returns
+-------
+initARCoeff : :class:`~openturns.ARMACoefficients`
+    The initial AR coefficients used for the optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::setInitialARCoefficients
+"Accessor to the initial AR coefficients.
+
+Parameters
+----------
+initARCoeff : :class:`~openturns.ARMACoefficients`
+    The initial AR coefficients used for the optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::ARMALikelihoodFactory::getInitialMACoefficients
+"Accessor to the initial MA coefficients.
+
+Returns
+-------
+initMACoeff : :class:`~openturns.ARMACoefficients`
+    The initial MA coefficients used for the optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::setInitialMACoefficients
+"Accessor to the initial MA coefficients.
+
+Parameters
+----------
+initMACoeff : :class:`~openturns.ARMACoefficients`
+    The initial MA coefficients used for the optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::ARMALikelihoodFactory::getInitialCovarianceMatrix
+"Accessor to the initial covariance matrix of the white noise.
+
+Returns
+-------
+initCovMat : :class:`~openturns.CovarianceMatrix`
+    The initial covariance matrix of the white noise used for the optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::ARMALikelihoodFactory::setInitialCovarianceMatrix
+"Accessor to the initial covariance matrix of the white noise.
+
+Parameters
+----------
+initCovMat : :class:`~openturns.CovarianceMatrix`
+    The initial covariance matrix of the white noise used for the optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::setInitialConditions
+"Accessor to the initial AR coefficients.
+
+Parameters
+----------
+initARCoeff : :class:`~openturns.ARMACoefficients`
+    The initial AR coefficients used for the optimization algorithm.
+initMACoeff : :class:`~openturns.ARMACoefficients`
+    The initial AR coefficients used for the optimization algorithm.
+initCovMatr : :class:`~openturns.CovarianceMatrix`
+    The initial covariance matrix of the white noise used for the optimization algorithm.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMALikelihoodFactory::getInvertible
+"Accessor to the initial AR coefficients.
+
+Returns
+-------
+invertible : bool
+    The initial AR coefficients used for the optimization algorithm.
+"

@@ -1,0 +1,57 @@
+%feature("docstring") OT::ImportanceSamplingExperiment
+"Importance Sampling experiment.
+
+Available constructors:
+    ImportanceSamplingExperiment(*distribution, size*)
+
+    ImportanceSamplingExperiment(*distribution, importanceDistribution, size*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` with an independent copula used to generate the
+    set of input data.
+size : positive int
+    Number :math:`cardI` of points that will be generated in the experiment.
+importanceDistribution : :class:`~openturns.Distribution`
+    Distribution :math:`p` according to which the points of the design of
+    experiments will be generated with the Importance Sampling technique.
+
+Notes
+-----
+ImportanceSamplingExperiment is a random weighted design of experiments.
+The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
+independently from the distribution :math:`\mu`. When the :meth:`generate`
+method is recalled, the generated sample changes.
+The weights associated to the points are all equal to:
+:math:`\frac{1}{\Xi_i}\frac{\mu(\Xi_i)}{p(\Xi_i)}`
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
+>>> importanceDistribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
+>>> myPlane = ot.ImportanceSamplingExperiment(distribution, importanceDistribution, 5)
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.629877              0.882805              ]
+1 : [ 0.135276              0.0325028             ]
+2 : [ 0.347057              0.969423              ]
+3 : [ 0.92068               0.50304               ]
+4 : [ 0.0632061             0.292757              ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WeightedExperiment::getImportanceDistribution
+"Accessor to the importance distribution.
+
+Returns
+-------
+importanceDistribution : :class:`~openturns.Distribution`
+    Distribution :math:`p` according to which the points of the design of
+    experiments will be generated with the Importance Sampling technique."

@@ -1,0 +1,47 @@
+> restart:
+> Rfs:=(int((diff(1/sqrt(2*Pi)*exp(-x*x/2),x$2))^2,x=-infinity..infinity
+> ));
+> assume(x>0,x<1):
+> _beta:=Beta(a,b);
+> _betaInc:=int(t^(a-1)*(1-t)^(b-1),t=0..x);
+> _betaRatioInc:=_betaInc/beta;
+> valnum:=a=3.5,b=5.6:
+> valx:=x=0.3:
+> valy:=y=0.002:
+> beta:=evalf(subs(valnum,_beta));
+> betaInc:=evalf(subs(valnum,valx,_betaInc));
+> betaRatioInc:=evalf(subs(valnum,valx,_betaRatioInc));
+> betaIncInv:=fsolve(subs(valnum,_betaInc)=subs(valy,y),x,0..1);
+> betaRatioIncInv:=fsolve(subs(valnum,_betaRatioInc)=subs(valy,y),x,0..1
+> );
+
+                         _beta := Beta(a, b)
+
+
+                       a
+                     x~  hypergeom([a, -b + 1], [1 + a], x~)
+         _betaInc := ---------------------------------------
+                                        a
+
+
+                          a
+                        x~  hypergeom([a, -b + 1], [1 + a], x~)
+       _betaRatioInc := ---------------------------------------
+                                        a beta
+
+
+                        beta := 0.004093457689
+
+
+                      betaInc := 0.001297399181
+
+
+                     betaRatioInc := 0.3169445686
+
+
+                      betaIncInv := 0.3711124504
+
+
+                   betaRatioIncInv := 0.05322108266
+
+> 

@@ -1,0 +1,101 @@
+%feature("docstring") OT::Frechet
+"Frechet distribution.
+
+Available constructors:
+    Frechet(*alpha=1.0, beta=1.0, gamma=0.0*)
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Shape parameter
+beta : float, :math:`\beta > 0`
+    Concentration parameter
+gamma : float
+    Location parameter
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\alpha}{\beta}(\frac{x-\gamma}{\beta})^{-1-\alpha}e^{-\left(\frac{x-\gamma}{\beta}\right)^{-\alpha}}
+
+with :math:`\alpha > 0` and :math:`\beta > 0`.
+
+Its cumulative density function is defined as:
+
+.. math::
+
+    F_X(x) = e^{-\left(\frac{x-\gamma}{\beta}\right)^{-\alpha}}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Frechet(3.0, 1.0, 0.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Frechet::getAlpha
+"Accessor to the shape parameter.
+
+Returns
+-------
+alpha : float
+    Shape parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Frechet::setAlpha
+"Accessor to the shape parameter.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Shape parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Frechet::getBeta
+"Accessor to the scale parameter.
+
+Returns
+-------
+beta : float
+    Scale parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Frechet::setBeta
+"Accessor to the scale parameter.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Frechet::getGamma
+"Accessor to the location parameter.
+
+Returns
+-------
+gamma : float
+    Location parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Frechet::setGamma
+"Accessor to the location parameter.
+
+Parameters
+----------
+gamma : float, :math:`\gamma > 0`
+    Location parameter."
+    

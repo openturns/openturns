@@ -1,0 +1,58 @@
+%feature("docstring") OT::LowDiscrepancyExperiment
+"LowDiscrepancy experiment.
+
+Available constructors:
+    LowDiscrepancyExperiment(*size*)
+
+    LowDiscrepancyExperiment(*sequence, size*)
+
+    LowDiscrepancyExperiment(*sequence, distribution, size*)
+
+Parameters
+----------
+size : positive int
+    Number :math:`N` of points of the sequence.
+sequence : :class:`~openturns.LowDiscrepancySequence`
+    Sequence of points :math:`(u_1, \cdots, u_N)` with low discrepancy.
+    If not specified, the sequence is a :class:`~openturns.SobolSequence`.
+distribution :
+    Distribution :math:`\mu` of dimension :math:`n` with an independent copula.
+    The low discrepancy sequence :math:`(u_1, \cdots, u_N)` is uniformly
+    distributed over :math:`[0,1]^n`. We use the marginal transformation
+    :math:`\Xi_i =F_i^{-1}(u_i)` to generate points :math:`(\Xi_i)_{i\in I}`
+    according to the distribution :math:`\mu`. The weights are all equal to
+    :math:`1/N`.
+
+Notes
+-----
+The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
+independently from the distribution :math:`\mu`. When the :meth:`generate`
+method is recalled, the generated sample changes.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
+>>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5)
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.5                   0.5                   ]
+1 : [ 0.75                  0.25                  ]
+2 : [ 0.25                  0.75                  ]
+3 : [ 0.375                 0.375                 ]
+4 : [ 0.875                 0.875                 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LowDiscrepancyExperiment::getSequence
+"Return the sequence.
+
+Returns
+-------
+sequence : :class:`~openturns.LowDiscrepancySequence`
+    Sequence of points :math:`(u_1, \cdots, u_N)` with low discrepancy."

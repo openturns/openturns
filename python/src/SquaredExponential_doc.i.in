@@ -1,0 +1,36 @@
+%feature("docstring") OT::SquaredExponential
+"Squared exponential covariance model.
+
+Available constructors:
+    SquaredExponential(*dim=1, theta=0.1*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    Input dimension.
+theta : float
+    Coefficient :math:`\theta` of the covariance function.
+
+Notes
+-----
+The covariance function of input dimension *dim* is:
+
+.. math::
+
+    C(s, t) = e^{-\frac{1}{2} \frac{||s-t||^2}{\theta^2}}
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+>>> import openturns as ot
+>>> covarianceModel = ot.SquaredExponential(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(covarianceModel(s, t))
+[[ 0.9999 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covarianceModel(tau))
+[[ 0.9995 ]]"

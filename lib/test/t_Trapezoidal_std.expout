@@ -1,0 +1,55 @@
+Testing class Trapezoidal
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=2 c=3 d=4 h=0.5
+streamObject(const T & anObject)
+class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=2 c=3 d=4 h=0.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=3 d=14 h=0.135135
+Distribution Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[6.23752]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[9.63201] last=class=NumericalPoint name=Unnamed dimension=1 values=[4.32244]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[5.52363]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.34744]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.526327]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[2.33181]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1.1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.675676]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.675676]
+log pdf=-2.69463
+pdf     =0.0675676
+pdf (FD)=0.0675676
+cdf=0.00337838
+ccdf=0.996622
+survival=0.996622
+characteristic function=(-0.115059,0.038602)
+log characteristic function=(-2.10898,2.8179)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[11.1469]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[5.48108]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[3.02371]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.548305]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[2.39403]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.1428]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 1, b : 1.2, c : 3, d : 14]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.310603]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.312872]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.176411]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.1781]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.120255]
+Standard representative=Trapezoidal(a = -1, b = -0.969231, c = -0.692308, d = 1)
+roughness=0.101047

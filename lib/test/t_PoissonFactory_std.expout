@@ -1,0 +1,8 @@
+Distribution          =class=Poisson name=Poisson dimension=1 lambda=2.5
+Estimated distribution=class=Poisson name=Poisson dimension=1 lambda=2.5153
+Default distribution=class=Poisson name=Poisson dimension=1 lambda=1
+Distribution from parameters=class=Poisson name=Poisson dimension=1 lambda=2.5
+Poisson          =class=Poisson name=Poisson dimension=1 lambda=2.5
+Estimated poisson=class=Poisson name=Poisson dimension=1 lambda=2.5153
+Default poisson=class=Poisson name=Poisson dimension=1 lambda=1
+Poisson from parameters=class=Poisson name=Poisson dimension=1 lambda=2.5

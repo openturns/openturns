@@ -1,0 +1,278 @@
+%feature("docstring") OT::SquareMatrix
+"Real square matrix.
+
+Parameters
+----------
+size : int, :math:`n > 0`, optional
+    Matrix size.
+    Default is 1.
+values : sequence of float with size :math:`n^2`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    Default creates a zero matrix.
+
+Examples
+--------
+Create a matrix
+
+>>> import openturns as ot
+>>> M = ot.SquareMatrix(2, range(2 * 2))
+>>> print(M)
+[[ 0 2 ]
+ [ 1 3 ]]
+
+Get or set terms
+
+>>> print(M[0, 0])
+0.0
+>>> M[0, 0] = 1.
+>>> print(M[0, 0])
+1.0
+>>> print(M[:, 0])
+[[ 1 ]
+ [ 1 ]]
+
+Create an openturns matrix from a **square** numpy 2d-array (or matrix, or
+2d-list)...
+
+>>> import numpy as np
+>>> np_2d_array = np.array([[1., 2.], [3., 4.]])
+>>> ot_matrix = ot.SquareMatrix(np_2d_array)
+
+and back
+
+>>> np_matrix = np.matrix(ot_matrix)
+
+Basic linear algebra operations (provided the dimensions are compatible)
+
+>>> A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> B = ot.SquareMatrix(np.eye(2))
+>>> C = ot.Matrix(3, 2, [1.] * 3 * 2)
+>>> print(A * B - C)
+[[ 0 1 ]
+ [ 2 3 ]
+ [ 4 5 ]]
+>>> A = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> print(A ** 2)
+[[  7 10 ]
+ [ 15 22 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeDeterminant
+"Compute the determinant.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+determinant : float
+    The square matrix determinant.
+
+Examples
+--------
+>>> import openturns as ot
+>>> A = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> A.computeDeterminant()
+-2.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeEigenValues
+"Compute eigen values.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+eigenvalues : :class:`~openturns.NumericalComplexCollection`
+    Eigen values.
+
+See Also
+--------
+computeEV
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> M.computeEigenValues()
+[(-0.372281,0),(5.37228,0)]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeEV
+"Compute the eigen values decomposition (EVD).
+
+The eigen values decomposition of a square matrix :math:`\mat{M}` with
+size :math:`n` reads:
+
+.. math::
+
+    \mat{M} = \mat{\Phi} \mat{\Lambda} \mat{\Phi}^{-1}
+
+where :math:`\mat{\Lambda}` is an :math:`n \times n` diagonal matrix and
+:math:`\mat{\Phi}` is an :math:`n \times n` orthogonal matrix.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+eigen_values : :class:`~openturns.NumericalComplexCollection`
+    The vector of eigen values with size :math:`n` that form the diagonal of
+    the :math:`n \times n` matrix :math:`\mat{\Lambda}` of the EVD.
+Phi : :class:`~openturns.SquareComplexMatrix`
+    The left matrix of the EVD.
+
+Notes
+-----
+This uses LAPACK'S `DGEEV <http://www.netlib.org/lapack/lapack-3.1.1/html/dgeev.f.html>`_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import numpy as np
+>>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> eigen_values, Phi = M.computeEV()
+>>> Lambda = ot.SquareComplexMatrix(M.getDimension())
+>>> for i in range(eigen_values.getSize()):
+...     Lambda[i, i] = eigen_values[i]
+>>> from scipy.linalg import inv # SquareComplexMatrix does not implement solveLinearSystem
+>>> Phi, Lambda = np.matrix(Phi), np.matrix(Lambda)
+>>> np.testing.assert_array_almost_equal(Phi * Lambda * inv(Phi), M)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeLogAbsoluteDeterminant
+"Compute the logarithm of the absolute value of the determinant.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+determinant : float
+    The logarithm of the absolute value of the square matrix determinant.
+sign : float
+    The sign of the determinant.
+
+Examples
+--------
+>>> import openturns as ot
+>>> A = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> A.computeLogAbsoluteDeterminant()
+[0.693147..., -1.0]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::getDimension
+"Accessor to the dimension (the number of rows).
+
+Returns
+-------
+dimension : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::isDiagonal
+"Test whether the matrix is diagonal or not.
+
+Returns
+-------
+test : bool
+    Answer."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::power
+"**(ditch me?)**"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::solveLinearSystem
+"Solve a square linear system whose the present matrix is the operator.
+
+Parameters
+----------
+rhs : sequence of float or :class:`~openturns.Matrix` with :math:`n_r` values or rows, respectively
+    The right hand side member of the linear system.
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+solution : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+    The solution of the square linear system.
+
+Notes
+-----
+This will handle both matrices and vectors. Note that you'd better type
+explicitely the matrix if it has some properties that could simplify the
+resolution (see :class:`~openturns.TriangularMatrix`).
+
+This uses LAPACK'S `DGESV <http://www.netlib.org/lapack/lapack-3.1.1/html/dgesv.f.html>`_
+for matrices and `DGELSY <http://www.netlib.org/lapack/lapack-3.1.1/html/dgelsy.f.html>`_
+for vectors.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import numpy as np
+>>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> b = ot.NumericalPoint([1.] * 2)
+>>> x = M.solveLinearSystem(b)
+>>> np.testing.assert_array_almost_equal(M * x, b)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::transpose
+"Transpose the matrix.
+
+Returns
+-------
+MT : :class:`~openturns.SquareMatrix`
+    The transposed matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> print(M)
+[[ 1 2 ]
+ [ 3 4 ]]
+>>> print(M.transpose())
+[[ 1 3 ]
+ [ 2 4 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquareMatrix::computeTrace
+"Compute the trace of the matrix.
+
+Returns
+-------
+trace : float
+    The trace of the matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> M.computeTrace()
+5.0"

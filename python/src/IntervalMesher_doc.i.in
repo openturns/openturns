@@ -1,0 +1,55 @@
+%feature("docstring") OT::IntervalMesher
+"Creation of mesh of type box in dimension :math:`\leq 3`.
+
+Available constructor:
+    IntervalMesher(*discretization*)
+
+Parameters
+----------
+discretization :  :class:`~openturns.Indices`, of dimension :math:`\leq 3`.
+    List of number of intervals in each direction of the box.
+
+Examples
+--------
+Create an interval mesher:
+
+>>> import openturns as ot
+>>> myMesher = ot.IntervalMesher(ot.Indices([5,10]))
+>>> lowerbound = [0.0, 0.0]
+>>> upperBound = [2.0, 4.0]
+>>> myInterval = ot.Interval(lowerbound, upperBound)
+>>> myMesh = myMesher.build(myInterval)
+
+Draw the mesh:
+>>> graph = myMesh.draw()
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntervalMesher::build
+"Build the mesh of type box.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    The bounds defining the interval must be of dimension equal to the dimension  of `discretization`.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntervalMesher::getDiscretization
+"Build the mesh of type box.
+
+Returns
+-------
+discretization :  :class:`~openturns.Indices`
+    List of number of intervals in each direction of the box.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntervalMesher::setDiscretization
+"Build the mesh of type box.
+
+Parameters
+----------
+discretization :  :class:`~openturns.Indices`
+    List of number of intervals in each direction of the box.
+"

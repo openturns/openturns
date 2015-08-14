@@ -1,0 +1,75 @@
+pGamma( 0.2 ,  0.1 )=0.676043 , complementary=0.323957
+pGamma( 0.2 ,  0.3 )=0.816527 , complementary=0.183473
+pGamma( 0.2 ,  0.5 )=0.878775 , complementary=0.121225
+pGamma( 0.2 ,  0.7 )=0.91522 , complementary=0.0847804
+pGamma( 0.2 ,  0.9 )=0.938827 , complementary=0.0611732
+pGamma( 1.4 ,  0.1 )=0.0302441 , complementary=0.969756
+pGamma( 1.4 ,  0.3 )=0.125659 , complementary=0.874341
+pGamma( 1.4 ,  0.5 )=0.229949 , complementary=0.770051
+pGamma( 1.4 ,  0.7 )=0.330626 , complementary=0.669374
+pGamma( 1.4 ,  0.9 )=0.423203 , complementary=0.576797
+pGamma( 2.6 ,  0.1 )=0.000628831 , complementary=0.999371
+pGamma( 2.6 ,  0.3 )=0.00948612 , complementary=0.990514
+pGamma( 2.6 ,  0.5 )=0.0310977 , complementary=0.968902
+pGamma( 2.6 ,  0.7 )=0.0649097 , complementary=0.93509
+pGamma( 2.6 ,  0.9 )=0.108786 , complementary=0.891214
+pGamma( 3.8 ,  0.1 )=8.2099e-06 , complementary=0.999992
+pGamma( 3.8 ,  0.3 )=0.000456182 , complementary=0.999544
+pGamma( 3.8 ,  0.5 )=0.00271909 , complementary=0.997281
+pGamma( 3.8 ,  0.7 )=0.00836579 , complementary=0.991634
+pGamma( 3.8 ,  0.9 )=0.018647 , complementary=0.981353
+pGamma( 5.0 ,  0.1 )=7.6678e-08 , complementary=1
+pGamma( 5.0 ,  0.3 )=1.5785e-05 , complementary=0.999984
+pGamma( 5.0 ,  0.5 )=0.000172116 , complementary=0.999828
+pGamma( 5.0 ,  0.7 )=0.000785535 , complementary=0.999214
+pGamma( 5.0 ,  0.9 )=0.00234412 , complementary=0.997656
+qGamma( 0.2 ,  0.1 )=6.52552e-06 , complementary=0.604902
+qGamma( 0.2 ,  0.3 )=0.00158779 , complementary=0.121038
+qGamma( 0.2 ,  0.5 )=0.0207463 , complementary=0.0207463
+qGamma( 0.2 ,  0.7 )=0.121038 , complementary=0.00158779
+qGamma( 0.2 ,  0.9 )=0.604902 , complementary=6.52552e-06
+qGamma( 1.4 ,  0.1 )=0.249736 , complementary=2.96694
+qGamma( 1.4 ,  0.3 )=0.637693 , complementary=1.70884
+qGamma( 1.4 ,  0.5 )=1.08437 , complementary=1.08437
+qGamma( 1.4 ,  0.7 )=1.70884 , complementary=0.637693
+qGamma( 1.4 ,  0.9 )=2.96694 , complementary=0.249736
+qGamma( 2.6 ,  0.1 )=0.862885 , complementary=4.7607
+qGamma( 2.6 ,  0.3 )=1.58195 , complementary=3.14956
+qGamma( 2.6 ,  0.5 )=2.27534 , complementary=2.27534
+qGamma( 2.6 ,  0.7 )=3.14956 , complementary=1.58195
+qGamma( 2.6 ,  0.9 )=4.7607 , complementary=0.862885
+qGamma( 3.8 ,  0.1 )=1.61202 , complementary=6.41335
+qGamma( 3.8 ,  0.3 )=2.59185 , complementary=4.53462
+qGamma( 3.8 ,  0.5 )=3.47237 , complementary=3.47237
+qGamma( 3.8 ,  0.7 )=4.53462 , complementary=2.59185
+qGamma( 3.8 ,  0.9 )=6.41335 , complementary=1.61202
+qGamma( 5.0 ,  0.1 )=2.43259 , complementary=7.99359
+qGamma( 5.0 ,  0.3 )=3.63361 , complementary=5.89036
+qGamma( 5.0 ,  0.5 )=4.67091 , complementary=4.67091
+qGamma( 5.0 ,  0.7 )=5.89036 , complementary=3.63361
+qGamma( 5.0 ,  0.9 )=7.99359 , complementary=2.43259
+rGamma( 0.2 )=0.180905
+rGamma( 0.2 )=0.0210068
+rGamma( 0.2 )=3.88934e-07
+rGamma( 0.2 )=0.0142227
+rGamma( 0.2 )=1.64884
+rGamma( 1.4 )=0.650772
+rGamma( 1.4 )=0.149491
+rGamma( 1.4 )=0.214591
+rGamma( 1.4 )=0.764088
+rGamma( 1.4 )=1.76641
+rGamma( 2.6 )=4.1207
+rGamma( 2.6 )=0.882263
+rGamma( 2.6 )=3.0057
+rGamma( 2.6 )=1.03548
+rGamma( 2.6 )=1.37163
+rGamma( 3.8 )=3.23821
+rGamma( 3.8 )=6.03859
+rGamma( 3.8 )=3.59904
+rGamma( 3.8 )=3.74936
+rGamma( 3.8 )=3.03665
+rGamma( 5.0 )=3.17393
+rGamma( 5.0 )=2.91779
+rGamma( 5.0 )=7.1899
+rGamma( 5.0 )=6.60932
+rGamma( 5.0 )=5.93144

@@ -1,0 +1,8 @@
+test number zero : default constructor and string converter
+testInterval =  [1; 36.92]
+test number one : copy constructor and string converter
+testIntervalCopy =  [1; 36.92]
+test number two : elements accessors
+testIntervalCopy2 values = 12 ; 92.3899
+testInterval == testIntervalCopy true
+testInterval == testIntervalCopy2 false

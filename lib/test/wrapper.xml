@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE wrapper SYSTEM "wrapper.dtd">
+<!-- author : dutka -->
+<!-- date   : 2007-08-01 16:47:51 +0200 (Wed, 01 Aug 2007) -->
+
+<wrapper>
+  <library>
+
+    <!-- The path of the shared object -->
+    <path>testwrapper_3.so</path>
+
+
+
+    <!-- This section describes all exchanges data between the wrapper and the platform -->
+    <description>
+
+
+
+      <!-- Those variables are substituted in the files above -->
+      <!-- The order of variables is the order of the arguments of the function -->
+      <variable-list>
+
+        <!-- The definition of a variable -->
+        <variable id="F" type="in">
+          <comment>May the force be with you</comment>
+          <unit>Newton</unit>
+          <regexp>F=.*</regexp>
+          <format>F=%10.5g</format>
+        </variable>
+
+        <!-- The definition of a variable -->
+        <variable id="L" type="in">
+          <comment>How long are you ?</comment>
+          <unit>Meter</unit>
+          <regexp>L=[0-9]+\.[0-9]* *m</regexp>
+          <format>L=%8.4f</format>
+        </variable>
+      </variable-list>
+      
+
+
+    <!-- The function that we try to execute through the wrapper -->
+    <function provided="yes">fonction1</function>
+    
+    <!-- The gradient of the function is defined into the wrapper -->
+    <gradient provided="yes">gradient1</gradient>
+    
+    <!-- But the hessian is NOT defined, so it does NOT appear in this file -->
+    <hessian provided="no" />
+    
+  </description>
+    
+    
+  </library>
+
+  <external-code>
+      <!-- Those data are external to the platform (input files, etc.)-->
+      <data>
+
+	<!-- An input file -->
+        <file id="file-1" type="in">
+          <name>StdIn</name>
+          <path>./fort.5</path>
+        </file>
+
+	<!-- Another input file -->
+        <file id="file-2" type="in">
+          <name>StdTruc</name>
+          <path>/tmp/fort.55</path>
+        </file>
+
+	<!-- An output file -->
+        <file id="file-3" type="out">
+          <name>StdOut</name>
+          <path>/tmp/out/fort.6</path>
+        </file>
+
+      </data>
+
+    <wrap-mode type="static-link">
+      <in-data-transfer mode="arguments" />
+      <out-data-transfer mode="arguments" />
+    </wrap-mode>
+
+    <command>
+    </command>
+  </external-code>
+
+</wrapper>

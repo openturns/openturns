@@ -1,0 +1,109 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief
+ *
+ *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#include "SpectralModel.hxx"
+#include "CauchyModel.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(SpectralModel);
+
+//   static Factory<SpectralModel> RegisteredFactory("SpectralModel");
+
+/* Constructor with parameters */
+SpectralModel::SpectralModel()
+  : TypedInterfaceObject<SpectralModelImplementation>(new CauchyModel())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+SpectralModel::SpectralModel(const SpectralModelImplementation & implementation)
+  : TypedInterfaceObject<SpectralModelImplementation>(implementation.clone())
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation */
+SpectralModel::SpectralModel(const Implementation & p_implementation)
+  : TypedInterfaceObject<SpectralModelImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation pointer */
+SpectralModel::SpectralModel(SpectralModelImplementation * p_implementation)
+  : TypedInterfaceObject<SpectralModelImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
+
+/* Dimension accessor */
+UnsignedInteger SpectralModel::getDimension() const
+{
+  return getImplementation()->getDimension();
+}
+
+/* Dimension accessor */
+void SpectralModel::setDimension(const UnsignedInteger dimension)
+{
+  copyOnWrite();
+  getImplementation()->setDimension(dimension);
+}
+
+/* Frequency grid accessors */
+RegularGrid SpectralModel::getFrequencyGrid() const
+{
+  return getImplementation()->getFrequencyGrid();
+}
+
+void SpectralModel::setFrequencyGrid(const RegularGrid & frequencyGrid)
+{
+  copyOnWrite();
+  getImplementation()->setFrequencyGrid(frequencyGrid);
+}
+
+HermitianMatrix SpectralModel::operator() (const NumericalScalar frequency) const
+{
+  return getImplementation()->operator()(frequency);
+}
+
+/* Drawing method */
+Graph SpectralModel::draw(const UnsignedInteger rowIndex,
+                          const UnsignedInteger columnIndex,
+                          const Bool module) const
+{
+  return getImplementation()->draw(rowIndex, columnIndex, module);
+}
+
+/* String converter */
+String SpectralModel::__repr__() const
+{
+  return getImplementation()->__repr__();
+}
+
+/* String converter */
+String SpectralModel::__str__(const String & offset) const
+{
+  return getImplementation()->__str__(offset);
+}
+
+END_NAMESPACE_OPENTURNS

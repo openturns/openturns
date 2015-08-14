@@ -1,0 +1,83 @@
+%define OT_OrthonormalizationAlgorithm_doc
+"Algorithm used to build the orthonormal basis.
+
+With respect to a specific distribution.
+
+Available constructors:
+    OrthonormalizationAlgorithm(*orthoAlgoImp*)
+
+    OrthonormalizationAlgorithm(*measure*)
+
+Parameters
+----------
+orthoAlgoImp : OrthonormalizationAlgorithmImplementation
+    An orthonormalization algorithm implementation which is the
+    :class:`~openturns.GramSchmidtAlgorithm` or
+    the :class:`~openturns.ChebychevAlgorithm`.
+measure : :class:`~openturns.Distribution`
+    A distribution for which the orthonormal polynomial basis is built. 
+
+See also
+--------
+GramSchmidtAlgorithm, ChebychevAlgorithm
+
+Notes
+-----
+It enables to build the orthonormal polynomial basis with respect to the given 
+distribution.
+
+In the first usage, the algorithm orthoAlgoImp is used (that specifies the
+associated distribution). In the second usage, the Gram-Schmidt algorithm is
+used by default. Only the distribution *measure* is specified."
+%enddef
+%feature("docstring") OT::OrthonormalizationAlgorithmImplementation
+OT_OrthonormalizationAlgorithm_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthonormalizationAlgorithm_getMeasure_doc
+"Accessor to the measure.
+
+Returns
+-------
+m : :class:`~openturns.Distribution`
+    The measure for which the orthonormal polynomial basis is built."
+
+%enddef
+%feature("docstring") OT::OrthonormalizationAlgorithmImplementation::getMeasure
+OT_OrthonormalizationAlgorithm_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthonormalizationAlgorithm_getRecurrenceCoefficients_doc
+"Accessor to the recurrence coefficients.
+
+Parameters
+----------
+n : integer
+    Index ot the recurrence step.
+
+Returns
+-------
+coef : sequence of float
+    Calculate the coefficients of recurrence :math:`a_0`, :math:`a_1`, :math:`a_2`
+    such that
+    :math:`P_{n+1}(x) = (a_0 \times x + a_1) \times P_n(x) + a_2 \times P_{n-1}(x)`."
+
+%enddef
+%feature("docstring") OT::OrthonormalizationAlgorithmImplementation::getRecurrenceCoefficients
+OT_OrthonormalizationAlgorithm_getRecurrenceCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthonormalizationAlgorithm_setMeasure_doc
+"Accessor to the measure.
+
+Parameters
+----------
+m : :class:`~openturns.Distribution`
+    The measure for which the orthonormal polynomial basis is built."
+%enddef
+%feature("docstring") OT::OrthonormalizationAlgorithmImplementation::setMeasure
+OT_OrthonormalizationAlgorithm_setMeasure_doc

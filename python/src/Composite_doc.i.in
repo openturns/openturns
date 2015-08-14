@@ -1,0 +1,44 @@
+%feature("docstring") OT::Composite
+"Composite design of experiments.
+
+Available constructor:
+    Composite(*center, levels*)
+
+    Composite(*dimension, levels*)
+
+Parameters
+----------
+center : sequence of float
+    Center of the design of experiments. If not specified, the design of
+    experiments is centered on :math:`\vect{0} \in \Rset^n`.
+levels : sequence of float of dimension :math:`n_{level}`
+    The discretisation of directions (the same for each one), without any
+    consideration of unit.
+dimension : positive int
+    Dimension :math:`n` of the space where the design of experiments is created.
+
+Notes
+-----
+Composite is a stratified design of experiments enabling to create a pattern
+as the union of an :class:`~openturns.Axial` pattern and a
+:class:`~openturns.Factorial` one. The number of points generated is
+:math:`1 + n_{level}(2n+2^n)`.
+
+In order to scale each direction and translate the grid structure onto the
+proper center, use the operator :math:`*=` and :math:`+=` of
+:class:`~openturns.NumericalSample`.
+
+See also
+--------
+StratifiedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> levels = [4., 2., 7.]
+>>> myCenteredReductedGrid = ot.Composite(2, levels)
+>>> mySample = myCenteredReductedGrid.generate()
+>>> # Translate the grid
+>>> mySample+=4
+>>> # Scale each direction
+>>> mySample*=2"

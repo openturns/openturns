@@ -1,0 +1,200 @@
+%feature("docstring") OT::SensitivityAnalysis
+"Sensitivity analysis.
+
+Available constructors:
+    SensitivityAnalysis(*inputSample1, inputSample2, model*)
+
+Parameters
+----------
+inputSample1 : 2-d sequence of float
+    Sample generated from the distribution of the input random vector. Note
+    that the input distribution must have an independent copula.
+inputSample2 : 2-d sequence of float
+    Sample generated from the input distribution, with the same size as the
+    first one. Note that it must be independently generated from the first one.
+model : :class:`~openturns.NumericalMathFunction`
+    Model to be evaluated on the input samples.
+
+Notes
+-----
+This method is concerned with analysing the influence the random vector
+:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
+:math:`Y^k` which is being studied for uncertainty. Here we attempt to evaluate
+the part of variance of :math:`Y^k` due to the different components :math:`X^i`.
+
+The estimators for the mean of :math:`m_{Y^j}` and the standard deviation
+:math:`\sigma` of :math:`Y^k` can be obtained from a first sample, as Sobol
+indices estimation requires two samples of the input variables :
+:math:`(X^1,\ldots,X^{n_X})`, that is two sets of :math:`N` vectors of dimension
+:math:`n_X`
+:math:`(x_{11}^{(1)},\ldots,x_{1n_X})^{(1)},\ldots,(x_{N^1}^{(1)},\ldots,x_{Nn_X}^{(1)})`
+and
+:math:`(x_{11}^{(2)},\ldots,x_{1n_X})^{(2)},\ldots,(x_{N^1}^{(2)},\ldots,x_{Nn_X}^{(2)})`
+
+The estimation of sensivity indices for first order consists in estimating the
+quantity:
+
+.. math::
+
+    V_i = \Var{\Expect{ Y^k \vert X_i}}
+        = \Expect{ \Expect{Y^k \vert X_i}^2} - \Expect{\Expect{ Y^k \vert X_i }} ^2
+        = U_i - \Expect{Y^k} ^2
+
+Sobol proposes to estimate the quantity
+:math:`U_i = \Expect{\Expect{ Y^k \vert X_i}^2}` by swaping every variables in
+the two samples except the variable :math:`X_i` between the two calls of the
+function :
+
+.. math::
+
+    \hat U_i = \frac{1}{N}
+               \sum_{k=1}^N
+               {
+               Y^k\left( x_{k1}^{(1)},\dots, x_{k(i-1)}^{(1)},x_{ki}^{(1)},x_{k(i+1)}^{(1)},\dots,x_{kn_X}^{(1)}\right)
+               \times
+               Y^k\left( x_{k1}^{(2)},\dots,x_{k(i-1)}^{(2)},x_{ki}^{(1)},x_{k(i+1)}^{(2)},\dots,x_{kn_X}^{(2)}\right)
+               }
+
+Then the :math:`n_X` first order indices are estimated by
+
+.. math::
+
+    \hat S_i = \frac{\hat V_i}{\hat \sigma^2}
+             = \frac{\hat U_i - m_{Y^k}^2}{\hat \sigma^2}
+
+For the second order, the two variables :math:`X_i` and :math:`X_j` are not
+swapped to estimate :math:`U_{ij}`, and so on for higher orders, assuming that
+order :math:`< n_X`.
+Then the :math:`\binom {n_X}{2}` second order indices are estimated by:
+
+.. math::
+
+    \hat S_{ij} = \frac{\hat V_{ij}}{\hat \sigma^2} = \frac{\hat U_{ij} - m_{Y^k}^2 - \hat V_i - \hat V_j}{\hat \sigma^2}
+
+For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable
+:math:`X_i` between the two samples.
+
+
+
+Some indices are computed together when calling the corresponding accessors.
+The cost is :math:`N(k+2)` model evaluations for first and total order indices,
+or :math:`N(2k+2)` for first, second and total order indices. Be sure to
+retrieve higher order indices first to avoid extra model evaluations, i.e. call
+:meth:`getSecondOrderIndices` before :meth:`getFirstOrderIndices` if you need
+second order indices.
+
+See also
+--------
+ANCOVA, FAST
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formula = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
+>>> model = ot.NumericalMathFunction(['X1', 'X2', 'X3'], ['Y'], formula)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, ot.IndependentCopula(3))
+>>> sample1 = distribution.getSample(1000)
+>>> sample2 = distribution.getSample(1000)
+>>> sensitivityAnalysis = ot.SensitivityAnalysis(sample1, sample2, model)
+>>> print(sensitivityAnalysis.getFirstOrderIndices())
+[0.435214,0.469041,0.0193581]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SensitivityAnalysis::getBlockSize
+"Get the block size.
+
+Returns
+-------
+k : positive int
+    Size of each block the sample is splitted into, this allows to save space
+    while allowing multithreading, when available (wrapper function) we
+    recommend to use the number of available CPUs, set by default to 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SensitivityAnalysis::setBlockSize
+"Set the block size.
+
+Parameters
+----------
+k : positive int
+    Size of each block the sample is splitted into, this allows to save space
+    while allowing multithreading, when available (wrapper function) we
+    recommend to use the number of available CPUs, set by default to
+    :math:`1`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SensitivityAnalysis::getFirstOrderIndices
+"Get first order Sobol' indices.
+
+Parameters
+----------
+i : int, optional
+    Index of the marginal of the function, equals to :math:`0` by default.
+
+Returns
+-------
+indices : :class:`~openturns.NumericalPoint`
+    Sequence containing first order Sobol' indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SensitivityAnalysis::getSecondOrderIndices
+"Get second order Sobol' indices.
+
+Parameters
+----------
+i : int, optional
+    Index of the marginal of the function, equals to :math:`0` by default.
+
+Returns
+-------
+indices : :class:`~openturns.SymmetricMatrix`
+    Matrix containing second order Sobol' indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SensitivityAnalysis::getTotalOrderIndices
+"Get total order Sobol' indices.
+
+Parameters
+----------
+i : int, optional
+    Index of the marginal of the function, equals to :math:`0` by default.
+
+Returns
+-------
+indices : :class:`~openturns.NumericalPoint`
+    Sequence containing total order Sobol' indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SensitivityAnalysis::DrawImportanceFactors
+"Draw the importance factors.
+
+:Available usages:
+    DrawImportanceFactors(*importanceFactors, title='Importance Factors'*)
+
+    DrawImportanceFactors(*values, names, title='Importance Factors'*)
+
+Parameters
+----------
+importanceFactors : :class:`~openturns.NumericalPointWithDescription`
+    Sequence containing the importance factors with a description for each
+    component. The descriptions are used to build labels for the created Pie.
+    If they are not mentioned, default labels will be used.
+values : sequence of float
+    Importance factors.
+names : sequence of str
+    Variables' names used to build labels for the created Pie.
+title : str
+    Title of the graph.
+
+Returns
+-------
+Graph : :class:`~openturns.Graph`
+    A graph containing a :class:`~openturns.Pie` of the importance factors of
+    the variables."

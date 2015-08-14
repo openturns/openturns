@@ -1,0 +1,1582 @@
+> restart:
+> with(Statistics):
+> assume(u<1,u>0,r>0,t>r);
+> beta_:=RandomVariable(Beta(r,t-r)):
+> pdf:=factor(subs(u=(x-a)/(b-a),PDF(beta_,u))/(b-a));
+> ddf:=(diff(pdf,x));
+> cdf:=subs(u=(x-a)/(b-a),CDF(beta_,u));
+> mu_:=a+(b-a)*Mean(beta_);
+> var_:=(b-a)^2*Variance(beta_);
+> sol:=subs(m='mu',v='var',solve({mu_=m,var_=v},{r,t}));
+> qdf:=a+(b-a)*Quantile(beta_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=map(_x->factor(subs(t=r+s,_x)),[diff(pdf, r)/pdf,diff(pdf,
+> t)/pdf,diff(pdf, a)/pdf,diff(pdf, b)/pdf]);
+> cdfgr:=[diff(cdf, r),diff(cdf, t),diff(cdf, a),diff(cdf, b)];
+> valnum:=r=1,t=3,a=-2,b=2:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,map(_x->_x*pdf,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(solve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,var_));
+
+                    /-x + a\(-1 + r~) /-b + x\(t~ - r~ - 1)
+                    |------|          |------|
+                    \-b + a/          \-b + a/
+           pdf := - ---------------------------------------
+                          Beta(r~, t~ - r~) (-b + a)
+
+
+         /-x + a\(-1 + r~)           /-b + x\(t~ - r~ - 1)
+         |------|          (-1 + r~) |------|
+         \-b + a/                    \-b + a/
+  ddf := -------------------------------------------------
+                (-x + a) Beta(r~, t~ - r~) (-b + a)
+
+           /-x + a\(-1 + r~) /-b + x\(t~ - r~ - 1)
+           |------|          |------|              (t~ - r~ - 1)
+           \-b + a/          \-b + a/
+         - -----------------------------------------------------
+                    (-b + x) Beta(r~, t~ - r~) (-b + a)
+
+
+          /x - a\r~                                         x - a
+          |-----|   hypergeom([r~, -t~ + r~ + 1], [1 + r~], -----)
+          \b - a/                                           b - a
+   cdf := --------------------------------------------------------
+                            Beta(r~, t~ - r~) r~
+
+
+                                   (b - a) r~
+                        mu_ := a + ----------
+                                       t~
+
+
+                                   2
+                            (b - a)  r~ (t~ - r~)
+                    var_ := ---------------------
+                                  2
+                                t~  (t~ + 1)
+
+
+                    2         2                 2                  2
+  sol := {r~ = - (-a  mu + b a  + a var + 2 a mu  - 2 b a mu + b mu
+
+                      3
+         - var mu - mu )/((-b + a) var),
+
+                                     2
+               -a mu + b a + var + mu  - mu b
+        t~ = - ------------------------------}
+                            var
+
+
+                             qdf := FAIL
+
+
+                  /  _Z - a\r~
+  qdf2 := RootOf(-|- ------|
+                  \  -b + a/
+
+                                                  _Z - a
+        hypergeom([r~, -t~ + r~ + 1], [1 + r~], - ------)
+                                                  -b + a
+
+         + p Beta(r~, t~ - r~) r~)
+
+
+               -x + a       -b + x
+  pdfgr := [ln(------) - ln(------) - Psi(r~) + Psi(s),
+               -b + a       -b + a
+
+           -b + x
+        ln(------) - Psi(s) + Psi(r~ + s),
+           -b + a
+
+          -b + x + r~ b - r~ x - s x + s a
+        - --------------------------------,
+                 (-x + a) (-b + a)
+
+          x + r~ b - r~ x - s x + s a - a
+        - -------------------------------]
+                 (-b + x) (-b + a)
+
+
+              /x - a\r~
+              |-----|   %1 (Psi(r~) - Psi(t~ - r~))
+              \b - a/
+  cdfgr := [- -------------------------------------
+                      Beta(r~, t~ - r~) r~
+
+               /x - a\r~           /x - a\r~    x - a
+               |-----|   %1        |-----|   ln(-----) %1
+               \b - a/             \b - a/      b - a
+         - --------------------- + ----------------------
+                               2    Beta(r~, t~ - r~) r~
+           Beta(r~, t~ - r~) r~
+
+            /x - a\r~ / d    \
+            |-----|   |--- %1|
+            \b - a/   \dr~   /
+         + --------------------,
+           Beta(r~, t~ - r~) r~
+
+          /x - a\r~
+          |-----|   %1 (Psi(t~ - r~) - Psi(t~))
+          \b - a/
+        - -------------------------------------
+                  Beta(r~, t~ - r~) r~
+
+            /x - a\r~ / d    \
+            |-----|   |--- %1|
+            \b - a/   \dt~   /
+         + --------------------,
+           Beta(r~, t~ - r~) r~
+
+        /x - a\r~ /    1      x - a  \
+        |-----|   |- ----- + --------| (b - a) %1
+        \b - a/   |  b - a          2|
+                  \          (b - a) /              /x - a\r~
+        ----------------------------------------- + |-----|
+                Beta(r~, t~ - r~) (x - a)           \b - a/
+
+        (-t~ + r~ + 1)
+
+                                                    x - a
+        hypergeom([1 + r~, -t~ + r~ + 2], [2 + r~], -----)
+                                                    b - a
+
+        /    1      x - a  \
+        |- ----- + --------|/(Beta(r~, t~ - r~) (1 + r~)),
+        |  b - a          2|
+        \          (b - a) /
+
+                /x - a\r~
+                |-----|   %1
+                \b - a/               /x - a\r~
+        - ------------------------- - |-----|   (-t~ + r~ + 1)
+          Beta(r~, t~ - r~) (b - a)   \b - a/
+
+                                                    x - a
+        hypergeom([1 + r~, -t~ + r~ + 2], [2 + r~], -----) (x - a)
+                                                    b - a
+
+           /                                    2
+          /  (Beta(r~, t~ - r~) (1 + r~) (b - a) )]
+         /
+
+                                                x - a
+  %1 := hypergeom([r~, -t~ + r~ + 1], [1 + r~], -----)
+                                                b - a
+
+
+                            -0.1250000000
+
+
+                             0.1250000000
+
+
+                             0.9375000000
+
+
+  [0.2094784941 + 0.1250000000 Psi(s), -0.1732867951
+
+         - 0.1250000000 Psi(s) + 0.1250000000 Psi(1. + s),
+
+        0.03125000000 s, -0.1250000000 + 0.09375000000 s]
+
+
+  [-0.2697019430 + 1.500000000 diff(hypergeom([1, -1], [2], 3/4), 1),
+
+        0.4687500000
+
+         + 1.500000000 diff(hypergeom([1, -1], [2], 3/4), 3),
+
+        -0.03125000000, -0.0937500000]
+
+
+                             1.105572809
+
+
+                            -0.6666666667
+
+
+                             0.8888888889
+
+> factor(subs(sol,r/t));
+
+                                a - mu
+                                ------
+                                -b + a
+
+> restart:
+> with(Statistics):
+> exponential_:=RandomVariable(Exponential(1/lambda)):
+> assume(u>0);
+> pdf:=subs(u=x-'gamma',PDF(exponential_,u));
+> cdf:=subs(u=x-'gamma',CDF(exponential_,u));
+> mu_:='gamma'+Mean(exponential_);
+> var_:=Variance(exponential_);
+> qdf:='gamma'+Quantile(exponential_,p);
+> qdf2:=solve(cdf=p,x);
+> [factor(diff(pdf,lambda))];
+> [factor(diff(cdf,lambda))];
+
+                pdf := lambda exp(-(x - gamma) lambda)
+
+
+                 cdf := 1 - exp(-(x - gamma) lambda)
+
+
+                                         1
+                        mu_ := gamma + ------
+                                       lambda
+
+
+                                      1
+                           var_ := -------
+                                         2
+                                   lambda
+
+
+                                      ln(1 - p)
+                       qdf := gamma - ---------
+                                       lambda
+
+
+                           lambda gamma - ln(1 - p)
+                   qdf2 := ------------------------
+                                    lambda
+
+
+      [-exp(-(x - gamma) lambda) (-1 + lambda x - lambda gamma)]
+
+
+                [(x - gamma) exp(-(x - gamma) lambda)]
+
+> restart:
+> with(Statistics):
+> gamma_:=RandomVariable(Gamma(1/lambda,k)):
+> assume(u>0);
+> pdf:=subs(u=x-_gamma,PDF(gamma_,u));
+> cdf:=subs(u=x-_gamma,CDF(gamma_,u)):
+> cdf2:=simplify(convert(cdf,hypergeom),symbolic);
+> mu_:=_gamma+Mean(gamma_);
+> var_:=Variance(gamma_);
+> subs(m='mu',v='var',solve({mu_=m,var_=v},{k,lambda}));
+> #qdf:=_gamma+Quantile(gamma_,p);
+> #qdf2:=solve(cdf=p,x);
+> map(_u->simplify(convert(_u,hypergeom),symbolic),[diff(pdf, k)/pdf,
+> diff(pdf, lambda)/pdf, diff(pdf, _gamma)/pdf]);
+> #dCDFdk:=collect(map(_u->simplify(convert(_u,hypergeom),symbolic),conv
+> ert(diff(subs(_gamma=0,cdf2), k),hypergeometric)),x);
+> #dCDFdlambda:=map(_u->factor(simplify(convert(_u,hypergeom),symbolic))
+> ,diff(cdf2, lambda));
+> #dCDFdgamma:=map(_u->simplify(convert(_u,hypergeom),symbolic),diff(cdf
+> 2, _gamma));
+> collect(expand(simplify(factor(convert(subs(_gamma=0,lambda=1,diff(cdf
+> 2,k)),'StandardFunctions'))),trig),k);
+
+                              (k - 1)
+  pdf := ((x - _gamma) lambda)        exp(-(x - _gamma) lambda)
+
+        lambda/GAMMA(k)
+
+
+  cdf2 := (GAMMA(k + 2) - GAMMA(k + 1, (x - _gamma) lambda)
+
+         - GAMMA(k + 1, (x - _gamma) lambda) k
+
+                         k                                 k
+         + k (x - _gamma)  exp(-(x - _gamma) lambda) lambda
+
+                       k                                 k
+         + (x - _gamma)  exp(-(x - _gamma) lambda) lambda )/
+
+        GAMMA(k + 2)
+
+
+                                          k
+                        mu_ := _gamma + ------
+                                        lambda
+
+
+                                      k
+                           var_ := -------
+                                         2
+                                   lambda
+
+
+                                                       2
+                       -_gamma + mu      (-_gamma + mu)
+             {lambda = ------------, k = ---------------}
+                           var                 var
+
+
+  [ln(x - _gamma) + ln(lambda) - Psi(k),
+
+          -k + lambda x - lambda _gamma
+        - -----------------------------,
+                     lambda
+
+        -k + 1 + lambda x - lambda _gamma
+        ---------------------------------]
+                   x - _gamma
+
+
+  k GAMMA(k + 1, x) Psi(k)   2 GAMMA(k + 1, x) Psi(k)
+  ------------------------ + ------------------------
+            2                          2
+     (k + 1)  GAMMA(k)          (k + 1)  GAMMA(k)
+
+           GAMMA(k + 1, x) Psi(k)   2 GAMMA(k + 1, x) ln(x)
+         + ---------------------- - -----------------------
+                   2                          2
+            (k + 1)  k GAMMA(k)        (k + 1)  GAMMA(k)
+
+           GAMMA(k + 1, x) ln(x)   k GAMMA(k + 1, x) ln(x)
+         - --------------------- - -----------------------
+                   2                         2
+            (k + 1)  k GAMMA(k)       (k + 1)  GAMMA(k)
+
+            2 GAMMA(k + 1, x)     GAMMA(k + 1, x)
+         + ------------------- + -----------------
+                  2                     2
+           (k + 1)  k GAMMA(k)   (k + 1)  GAMMA(k)
+
+            k
+           x  x hypergeom([k + 1, k + 1], [k + 2, k + 2], -x)
+         - --------------------------------------------------
+                                 2
+                          (k + 1)  k GAMMA(k)
+
+                                   2                     2
+             GAMMA(k + 1, x)      k  ln(x)    ln(x)     k  Psi(k)
+         + -------------------- + -------- + -------- - ---------
+                  2  2                   2          2          2
+           (k + 1)  k  GAMMA(k)   (k + 1)    (k + 1)    (k + 1)
+
+                                            k
+            Psi(k)    2 k Psi(k)         k x  Psi(k)
+         - -------- - ---------- - ------------------------
+                  2           2           2
+           (k + 1)     (k + 1)     (k + 1)  GAMMA(k) exp(x)
+
+                    k                          k
+                 2 x  Psi(k)                  x  Psi(k)
+         - ------------------------ - --------------------------
+                  2                          2
+           (k + 1)  GAMMA(k) exp(x)   (k + 1)  k GAMMA(k) exp(x)
+
+                     k                          k
+                  k x  ln(x)                 2 x  ln(x)
+         + ------------------------ + ------------------------
+                  2                          2
+           (k + 1)  GAMMA(k) exp(x)   (k + 1)  GAMMA(k) exp(x)
+
+                     k
+                    x  ln(x)            2 k ln(x)
+         + -------------------------- + ---------
+                  2                            2
+           (k + 1)  k GAMMA(k) exp(x)   (k + 1)
+
+                         k                          k
+                      2 x                          x
+         - -------------------------- - ------------------------
+                  2                            2
+           (k + 1)  k GAMMA(k) exp(x)   (k + 1)  GAMMA(k) exp(x)
+
+                                   k
+              2                   x                     1
+         - -------- - --------------------------- - ----------
+                  2          2  2                          2
+           (k + 1)    (k + 1)  k  GAMMA(k) exp(x)   (k + 1)  k
+
+              k
+         - --------
+                  2
+           (k + 1)
+
+
+> restart:
+> with(Statistics):
+> gumbel_:=RandomVariable(Gumbel(beta,1/alpha)):
+> pdf:=PDF(gumbel_,x);
+> ddf:=factor(diff(pdf,x));
+> cdf:=CDF(gumbel_,x);
+> mu_:=Mean(gumbel_);
+> var_:=Variance(gumbel_);
+> assume(v>0):
+> subs(m='mu',v='var',allvalues(solve({mu_=m,var_=v},{alpha,beta})));
+> qdf:=Quantile(gumbel_,p);
+> qdf2:=solve(cdf=p,x);
+> map(factor,[diff(pdf,alpha)/pdf,diff(pdf,beta)/pdf]);
+> map(factor,[diff(cdf,alpha)/cdf,diff(cdf,beta)/cdf]);
+
+   pdf := alpha exp(-(x - beta) alpha) exp(-exp(-(x - beta) alpha))
+
+
+              2
+  ddf := alpha  exp(-(x - beta) alpha) exp(-exp(-(x - beta) alpha))
+
+        (-1 + exp(-(x - beta) alpha))
+
+
+                 cdf := exp(-exp(-(x - beta) alpha))
+
+
+                                       gamma
+                         mu_ := beta + -----
+                                       alpha
+
+
+                                       2
+                                     Pi
+                           var_ := --------
+                                          2
+                                   6 alpha
+
+
+                                    /                /  2\1/2\
+                                    |            1/2 |Pi |   |
+        /  2\1/2          /  2\1/2  |         m 6    |---|   |
+    1/2 |Pi |         1/2 |Pi |     |                \v~ /   |  1/2
+   6    |---|        6    |---|     |-gamma + ---------------| 6
+        \v~ /             \var/     \                6       /
+  {------------- = - -------------, -------------------------------
+         6                 6                   /  2\1/2
+                                               |Pi |
+                                               |---|
+                                               \v~ /
+
+             /                 /  2\1/2\
+             |             1/2 |Pi |   |
+             |         mu 6    |---|   |
+             |                 \var/   |  1/2
+             |-gamma - ----------------| 6
+             \                6        /
+         = - --------------------------------}
+                         /  2\1/2
+                         |Pi |
+                         |---|
+                         \var/
+
+
+                                     ln(-ln(p))
+                       qdf := beta - ----------
+                                       alpha
+
+
+                           beta alpha - ln(-ln(p))
+                   qdf2 := -----------------------
+                                    alpha
+
+
+  [(1 - alpha x + beta alpha + alpha exp(-(x - beta) alpha) x
+
+         - alpha exp(-(x - beta) alpha) beta)/alpha,
+
+        -alpha (-1 + exp(-(x - beta) alpha))]
+
+
+  [(x - beta) exp(-(x - beta) alpha), -alpha exp(-(x - beta) alpha)]
+
+> restart:
+> with(Statistics):
+> with(student):
+> assume(u>0,sigma>0):
+> lognormal_:=RandomVariable(LogNormal(mu,sigma)):
+> pdf:=subs(u='x-_gamma',PDF(lognormal_,u));
+> cdf:=subs(u='x-_gamma',CDF(lognormal_,u));
+> cdf2:=value(changevar(ln(x)=y,Int(pdf,x=0..t)));
+> mu_:='_gamma'+Mean(lognormal_);
+> var_:=Variance(lognormal_);
+> qdf:='_gamma'+Quantile(lognormal_,p);
+> qdf2:=solve(cdf2=p,x);
+> fact:=pdf:
+> map(factor,[diff(pdf,mu)/fact,diff(pdf,sigma)/fact,diff(pdf,_gamma)/fa
+> ct]);
+> fact:=pdf:
+> map(factor,[diff(cdf,mu)/fact,diff(cdf,sigma)/fact,diff(cdf,_gamma)/fa
+> ct]) assuming x - _gamma > exp(mu);
+
+                                                         2
+                       1/2          (ln(x - _gamma) - mu)
+                      2    exp(-1/2 ----------------------)
+                                                 2
+                                           sigma~
+           pdf := 1/2 -------------------------------------
+                                                  1/2
+                            (x - _gamma) sigma~ Pi
+
+
+         {                                          1/2
+  cdf := {                   (mu - ln(x - _gamma)) 2
+         { 1/2 - 1/2 erf(1/2 --------------------------) ,
+         {                             sigma~
+
+        x - _gamma < exp(mu)
+
+                                                 1/2
+                          (ln(x - _gamma) - mu) 2
+        1/2 + 1/2 erf(1/2 --------------------------) , otherwise
+                                    sigma~
+
+
+                       1/2
+                      2    (mu - ln(-_gamma))
+  cdf2 := 1/2 erf(1/2 -----------------------)
+                              sigma~
+
+                        1/2
+                       2    (-ln(t - _gamma) + mu)
+         - 1/2 erf(1/2 ---------------------------)
+                                 sigma~
+
+
+                                                 2
+                                           sigma~
+                  mu_ := _gamma + exp(mu + -------)
+                                              2
+
+
+                                     2             2
+            var_ := exp(2 mu + sigma~ ) (exp(sigma~ ) - 1)
+
+
+                             qdf := FAIL
+
+
+                               qdf2 :=
+
+
+     mu - ln(x - _gamma)
+  [- -------------------, - (mu - ln(x - _gamma) + sigma~)
+                 2
+           sigma~
+
+                                              3
+        (-mu + ln(x - _gamma) + sigma~)/sigma~ ,
+
+              2
+        sigma~  + ln(x - _gamma) - mu
+        -----------------------------]
+                  2
+            sigma~  (x - _gamma)
+
+
+                      (ln(x - _gamma) - mu) (-x + _gamma)
+        [-x + _gamma, -----------------------------------, -1]
+                                    sigma~
+
+> restart:
+> with(Statistics):
+> assume(beta>0):
+> logistic_:=RandomVariable(Logistic(alpha,beta)):
+> pdf:=PDF(logistic_,x);
+> ddf:=factor(diff(pdf,x));
+> cdf:=CDF(logistic_,x);
+> mu_:='gamma'+Mean(logistic_);
+> var_:=Variance(logistic_);
+> qdf:=Quantile(logistic_,p);
+> qdf2:=solve(cdf=p,x);
+> dpdf:=map(factor,[diff(pdf,alpha),diff(pdf,beta)]);
+> factor(dpdf[2]-(x-alpha)*dpdf[1]/beta);
+> dcdf:=map(factor,[diff(cdf,alpha),diff(cdf,beta)]);
+> factor(dcdf[2]/dcdf[1]);
+
+                                   x - alpha
+                               exp(---------)
+                                     beta~
+                  pdf := ---------------------------
+                               /        x - alpha \2
+                         beta~ |1 + exp(---------)|
+                               \          beta~   /
+
+
+                         x - alpha  /         x - alpha \
+                     exp(---------) |-1 + exp(---------)|
+                           beta~    \           beta~   /
+            ddf := - ------------------------------------
+                              2 /        x - alpha \3
+                         beta~  |1 + exp(---------)|
+                                \          beta~   /
+
+
+                                     1
+                     cdf := --------------------
+                                      x - alpha
+                            1 + exp(- ---------)
+                                        beta~
+
+
+                         mu_ := gamma + alpha
+
+
+                                       2   2
+                                  beta~  Pi
+                          var_ := ----------
+                                      3
+
+
+                                              p
+                    qdf := alpha + beta~ ln(-----)
+                                            1 - p
+
+
+                                       -1 + p
+                  qdf2 := alpha - ln(- ------) beta~
+                                         p
+
+
+               x - alpha  /         x - alpha \
+           exp(---------) |-1 + exp(---------)|
+                 beta~    \           beta~   /      x - alpha  /
+  dpdf := [------------------------------------, exp(---------) |-x
+                    2 /        x - alpha \3            beta~    \
+               beta~  |1 + exp(---------)|
+                      \          beta~   /
+
+                 x - alpha                      x - alpha
+         + x exp(---------) + alpha - alpha exp(---------) - beta~
+                   beta~                          beta~
+
+                     x - alpha \   / /     3 /        x - alpha \3\
+         - beta~ exp(---------)|  /  |beta~  |1 + exp(---------)| |]
+                       beta~   / /   \       \          beta~   / /
+
+
+                                 x - alpha
+                             exp(---------)
+                                   beta~
+                    - ----------------------------
+                           2 /        x - alpha \2
+                      beta~  |1 + exp(---------)|
+                             \          beta~   /
+
+
+                         x - alpha
+                   exp(- ---------)
+                           beta~
+  dcdf := [- -----------------------------,
+             /          x - alpha \2
+             |1 + exp(- ---------)|  beta~
+             \            beta~   /
+
+                             x - alpha
+           (x - alpha) exp(- ---------)
+                               beta~
+        - ------------------------------]
+          /          x - alpha \2      2
+          |1 + exp(- ---------)|  beta~
+          \            beta~   /
+
+
+                              x - alpha
+                              ---------
+                                beta~
+
+> restart:
+> with(Statistics):
+> assume(sigma>0):
+> normal_:=RandomVariable(Normal(mu,sigma)):
+> pdf:=subs(u=x,PDF(normal_,u));
+> cdf:=subs(u=x,CDF(normal_,u));
+> cdf2:=int(pdf,x=0..t);
+> mu_:=Mean(normal_);
+> var_:=Variance(normal_);
+> qdf:=Quantile(normal_,p);
+> qdf2:=solve(cdf2=p,x);
+
+                                                 2
+                               1/2       (x - mu)
+                              2    exp(- ---------)
+                                                 2
+                                         2 sigma~
+                   pdf := 1/2 ---------------------
+                                    1/2
+                                  Pi    sigma~
+
+
+                                       1/2
+                                      2    (x - mu)
+                 cdf := 1/2 + 1/2 erf(-------------)
+                                        2 sigma~
+
+
+                              1/2              1/2
+                          mu 2                2    (t - mu)
+          cdf2 := 1/2 erf(--------) + 1/2 erf(-------------)
+                          2 sigma~              2 sigma~
+
+
+                              mu_ := mu
+
+
+                                         2
+                           var_ := sigma~
+
+
+                     1/2                                        1/2
+   qdf := -1/2 (-mu 2    + 2 RootOf(erf(_Z) - 1 + 2 p) sigma~) 2
+
+
+                               qdf2 :=
+
+> restart:
+> with(Statistics):
+> assume(sigma>0):
+> normal_:=RandomVariable(Normal(mu,sigma)):
+> pdf:=PDF(normal_,x)/(subs(x=b,CDF(normal_,x))-subs(x=a,CDF(normal_,x))
+> );
+> cdf:=int(subs(x=t,pdf),t=a..x);
+> mu_:=int(x*pdf,x=a..b);
+> var_:=int((x-mu_)^2*pdf,x=a..b);
+> qdf:=solve(cdf=p,x);
+> map(_x->factor(subs(erf(sqrt(2)*(b-mu)/2/sigma)=2*PhiB-1,erf(sqrt(2)*(
+> a-mu)/2/sigma)=2*PhiA-1,exp(-(b-mu)^2/2/sigma^2)=sqrt(2*Pi)*sigma*phiB
+> ,exp(-(a-mu)^2/2/sigma^2)=sqrt(2*Pi)*sigma*phiA,x=mu+sigma*X,a=mu+sigm
+> a*A,b=mu+sigma*B,_x)),[diff(pdf,mu),diff(pdf,sigma),diff(pdf,a),diff(p
+> df,b)]);
+> map(_x->factor(subs(erf(sqrt(2)*(b-mu)/2/sigma)=2*PhiB-1,erf(sqrt(2)*(
+> a-mu)/2/sigma)=2*PhiA-1,exp(-(b-mu)^2/2/sigma^2)=sqrt(2*Pi)*sigma*phiB
+> ,exp(-(a-mu)^2/2/sigma^2)=sqrt(2*Pi)*sigma*phiA,x=mu+sigma*X,a=mu+sigm
+> a*A,b=mu+sigma*B,_x)),[diff(cdf,mu),diff(cdf,sigma),diff(cdf,a),diff(c
+> df,b)]);
+
+                                2      /
+              1/2       (x - mu)     / |  1/2
+  pdf := 1/2 2    exp(- ---------)  /  |Pi    sigma~
+                                2  /   \
+                        2 sigma~
+
+        /         1/2                      1/2          \\
+        |        2    (b - mu)            2    (a - mu) ||
+        |1/2 erf(-------------) - 1/2 erf(-------------)||
+        \          2 sigma~                 2 sigma~    //
+
+
+                         1/2                  1/2
+                        2    (a - mu)        2    (x - mu)
+                   -erf(-------------) + erf(-------------)
+                          2 sigma~             2 sigma~
+          cdf := - ----------------------------------------
+                         1/2                  1/2
+                        2    (b - mu)        2    (a - mu)
+                   -erf(-------------) + erf(-------------)
+                          2 sigma~             2 sigma~
+
+
+         /                               2    2
+         |  1/2              -2 mu a + mu  + a
+  mu_ := |-2    sigma~ exp(- ------------------)
+         |                               2
+         \                       2 sigma~
+
+                   1/2
+                  2    (a - mu)    1/2
+         + mu erf(-------------) Pi
+                    2 sigma~
+
+                                         2    2
+            1/2              -2 mu b + mu  + b
+         + 2    sigma~ exp(- ------------------)
+                                         2
+                                 2 sigma~
+
+                   1/2                \     /
+                  2    (b - mu)    1/2|   / |  1/2
+         - mu erf(-------------) Pi   |  /  |Pi
+                    2 sigma~          | /   \
+                                      /
+
+        /      1/2                  1/2          \\
+        |     2    (b - mu)        2    (a - mu) ||
+        |-erf(-------------) + erf(-------------)||
+        \       2 sigma~             2 sigma~    //
+
+
+            /
+            |          (3/2)           2       1/2
+  var_ := - |-sigma~ Pi      exp(%5) %1  + %1 2    mu Pi %3
+            |
+            \
+
+                            (3/2)               1/2
+         + 2 %1 sigma~ %2 Pi      exp(%5) - %1 2    b Pi %3
+
+               1/2                1/2            1/2
+         - %1 2    mu Pi %4 + %1 2    a Pi %4 - 2    a %2 Pi %4
+
+                                  2
+                        2 mu a + b     1/2
+         + 2 sigma~ exp(-----------) Pi
+                                2
+                          sigma~
+
+                               2             2
+                      1/2     a  + 2 mu a + b  + 2 mu b
+         - 4 sigma~ Pi    exp(-------------------------)
+                                              2
+                                      2 sigma~
+
+                    2   (3/2)            1/2
+         - sigma~ %2  Pi      exp(%5) + 2    b %2 Pi %3
+
+                                  2
+                        2 mu b + a     1/2    1/2
+         + 2 sigma~ exp(-----------) Pi    + 2    mu %2 Pi %4
+                                2
+                          sigma~
+
+                           \
+            1/2            |                   /
+         - 2    mu %2 Pi %3| sigma~ exp(-%5)  /  (
+                           |                 /
+                           /
+
+           2               2    3/2
+        (%2  - 2 %2 %1 + %1 ) Pi   )
+
+             1/2
+            2    (a - mu)
+  %1 := erf(-------------)
+              2 sigma~
+
+             1/2
+            2    (b - mu)
+  %2 := erf(-------------)
+              2 sigma~
+
+                       2    2      2
+            2 mu b + mu  + b  + 2 a
+  %3 := exp(------------------------)
+                           2
+                   2 sigma~
+
+                       2    2      2
+            2 mu a + mu  + a  + 2 b
+  %4 := exp(------------------------)
+                           2
+                   2 sigma~
+
+          2    2    2
+        mu  + a  + b
+  %5 := -------------
+                 2
+           sigma~
+
+
+             /                                  1/2
+             | 1/2                             2    (a - mu)
+  qdf := 1/2 |2    mu + 2 RootOf(erf(_Z) - erf(-------------)
+             \                                   2 sigma~
+
+                  1/2                    1/2                  \
+                 2    (b - mu)          2    (a - mu)         |  1/2
+         - p erf(-------------) + p erf(-------------)) sigma~| 2
+                   2 sigma~               2 sigma~            /
+
+
+                    2
+        1/2        X
+  [1/2 2    exp(- ----) (X PhiB - X PhiA + sigma~ phiB - sigma~ phiA)
+                   2
+
+                                                              2
+           /    1/2       2              2        1/2        X
+          /  (Pi    sigma~  (PhiB - PhiA) ), 1/2 2    exp(- ----) (
+         /                                                   2
+
+                        2         2
+        -PhiB + PhiA + X  PhiB - X  PhiA + sigma~ phiB B
+
+                            /    1/2       2              2
+         - sigma~ phiA A)  /  (Pi    sigma~  (PhiB - PhiA) ),
+                          /
+
+                       2
+                      X     1/2
+               exp(- ----) 2    phiA
+                      2
+        1/2 ---------------------------,
+              1/2                     2
+            Pi    sigma~ (PhiB - PhiA)
+
+                        2
+                       X     1/2
+                exp(- ----) 2    phiB
+                       2
+        -1/2 ---------------------------]
+               1/2                     2
+             Pi    sigma~ (PhiB - PhiA)
+
+
+       /                                        2
+       |                1/2         1/2        X
+  [1/2 |2 phiA sigma~ Pi    PhiB - 2    exp(- ----) PhiB
+       \                                       2
+
+                        2
+            1/2        X                      1/2
+         + 2    exp(- ----) PhiA - 2 sigma~ Pi    PhiA phiB
+                       2
+
+                    1/2                      1/2
+         + sigma~ Pi    phiB - phiA sigma~ Pi
+
+                             1/2
+                    1/2     2    X
+         + sigma~ Pi    erf(------) phiB
+                              2
+
+                             1/2        \
+                    1/2     2    X      |   /    1/2
+         - sigma~ Pi    erf(------) phiA|  /  (Pi    sigma~
+                              2         / /
+
+                              /
+                     2        |                   1/2
+        (PhiB - PhiA) ), -1/2 |-2 phiA A sigma~ Pi    PhiB
+                              \
+
+                          2                         2
+            1/2          X            1/2          X
+         + 2    X exp(- ----) PhiB - 2    X exp(- ----) PhiA
+                         2                         2
+
+                      1/2                        1/2
+         + 2 sigma~ Pi    PhiA phiB B - sigma~ Pi    phiB B
+
+                                                   1/2
+                           1/2            1/2     2    X
+         + phiA A sigma~ Pi    - sigma~ Pi    erf(------) phiB B
+                                                    2
+
+                             1/2          \
+                    1/2     2    X        |   /    1/2
+         + sigma~ Pi    erf(------) phiA A|  /  (Pi    sigma~
+                              2           / /
+
+                                  /                   1/2   \
+                                  |                  2    X |
+                             phiA |-2 PhiB + 1 + erf(------)|
+                     2            \                    2    /
+        (PhiB - PhiA) ), 1/2 --------------------------------,
+                                                   2
+                                      (PhiB - PhiA)
+
+             /                   1/2   \
+             |                  2    X |
+             |-2 PhiA + 1 + erf(------)| phiB
+             \                    2    /
+        -1/2 --------------------------------]
+                                   2
+                      (PhiB - PhiA)
+
+> restart:
+> with(Statistics):
+> assume(u>0,nu>0):
+> student_:=RandomVariable(StudentT(nu)):
+> pdf:=subs(u=x-mu,PDF(student_,u));
+> cdf:=subs(u=x-mu,CDF(student_,u)):
+> cdf2:=simplify(convert(subs(mu=0,(cdf - 1)*Beta(1/2,nu/2)*sqrt(nu)),
+> GAMMA)) assuming nu > 1:
+> mu_:=mu+Mean(student_);
+> var_:=Variance(student_);
+> factor(diff((1+(x-mu)^2/nu)^(-1/2-1/2*nu),x));
+> map(factor,[diff((1+(x-mu)^2/nu)^(-1/2-1/2*nu),mu),diff(pdf,nu)]);
+> #qdf:=Quantile(student_,p):
+> #qdf2:=solve(cdf=p,x):
+
+                                          nu~
+                              GAMMA(1/2 + ---)
+                                           2
+       pdf := -------------------------------------------------
+                                                    /      nu~\
+                                                    |1/2 + ---|
+                                                    \       2 /
+                                     /            2\
+                      1/2       nu~  |    (x - mu) |
+              (Pi nu~)    GAMMA(---) |1 + ---------|
+                                 2   \       nu~   /
+
+
+                          /{ undefined        nu~ <= 1 \
+              mu_ := mu + |{                           |
+                          \{     0            otherwise/
+
+
+                         { undefined        nu~ <= 2
+                         {
+                 var_ := {   nu~
+                         { --------         otherwise
+                         { -2 + nu~
+
+
+                                /        nu~\
+                                |- 1/2 - ---|
+                                \         2 /
+       /       2              2\
+       |nu~ + x  - 2 x mu + mu |
+       |-----------------------|              (nu~ + 1) (x - mu)
+       \          nu~          /
+     - ---------------------------------------------------------
+                               2              2
+                        nu~ + x  - 2 x mu + mu
+
+
+        /        nu~\
+        |- 1/2 - ---|
+        \         2 /
+   /%1 \
+   |---|              (nu~ + 1) (x - mu)
+   \nu~/                                                  nu~
+  [-------------------------------------, 1/2 GAMMA(1/2 + ---) Pi nu~
+                    %1                                     2
+
+        /          nu~                  nu~   2
+        |Psi(1/2 + ---) nu~ + Psi(1/2 + ---) x
+        \           2                    2
+
+                       nu~                   nu~    2
+         - 2 Psi(1/2 + ---) x mu + Psi(1/2 + ---) mu  - 1
+                        2                     2
+
+               nu~            nu~   2         nu~
+         - Psi(---) nu~ - Psi(---) x  + 2 Psi(---) x mu
+                2              2               2
+
+               nu~    2      %1            %1    2        %1
+         - Psi(---) mu  - ln(---) nu~ - ln(---) x  + 2 ln(---) x mu
+                2            nu~           nu~            nu~
+
+                                                /
+                                                |
+                                                |
+              %1     2    2              2\   / |        3/2
+         - ln(---) mu  + x  - 2 x mu + mu |  /  |(Pi nu~)
+              nu~                         / /   \
+
+                        /      nu~\   \
+                        |1/2 + ---|   |
+                        \       2 /   |
+              nu~  /%1 \              |
+        GAMMA(---) |---|            %1|]
+               2   \nu~/              /
+
+               2              2
+  %1 := nu~ + x  - 2 x mu + mu
+
+> restart:
+> with(Statistics):
+> assume(a<m,m<b,a<b,x>a,x<b):
+> triangular_:=RandomVariable(Triangular(a,b,m)):
+> pdf:=subs(u=x,PDF(triangular_,u));
+> ddf:=diff(pdf,x);
+> cdf:=subs(u=x,CDF(triangular_,u));
+> mu_:=Mean(triangular_);
+> var_:=Variance(triangular_);
+> qdf:=Quantile(triangular_,p);
+> map(factor,[diff(pdf,a),diff(pdf,m),diff(pdf,b)]);
+> map(factor,[diff(cdf,a),diff(cdf,m),diff(cdf,b)]);
+
+                   {          0                  x~ < a~
+                   {
+                   {     2 (x~ - a~)
+                   { -------------------        x~ <= m~
+                   { (b~ - a~) (m~ - a~)
+            pdf := {
+                   {     2 (b~ - x~)
+                   { -------------------        x~ <= b~
+                   { (b~ - a~) (b~ - m~)
+                   {
+                   {          0                 otherwise
+
+
+                   {           2
+                   {  -------------------         x~ < m~
+                   {  (b~ - a~) (m~ - a~)
+                   {
+            ddf := {       undefined              x~ = m~
+                   {
+                   {            2
+                   { - -------------------        m~ < x~
+                   {   (b~ - a~) (b~ - m~)
+
+
+                 {            0                    x~ < a~
+                 {
+                 {                2
+                 {       (x~ - a~)
+                 {   -------------------          x~ <= m~
+                 {   (b~ - a~) (m~ - a~)
+          cdf := {
+                 {                  2
+                 {         (b~ - x~)
+                 { 1 - -------------------        x~ <= b~
+                 {     (b~ - a~) (b~ - m~)
+                 {
+                 {            1                   otherwise
+
+
+                              a~     b~     m~
+                      mu_ := ---- + ---- + ----
+                              3      3      3
+
+
+                 2          2          2
+  var_ := 1/18 a~  + 1/18 b~  + 1/18 m~  - 1/18 a~ b~ - 1/18 a~ m~
+
+         - 1/18 b~ m~
+
+
+         {                                1/2               m~ - a~
+         {    a~ + (p (b~ - a~) (m~ - a~))              p < -------
+  qdf := {                                                  b~ - a~
+         {
+         {                                   1/2
+         { b~ - ((1 - p) (b~ - a~) (b~ - m~))            otherwise
+
+
+   {               2
+   { 2 (-b~ m~ + a~  + x~ m~ - 2 x~ a~ + x~ b~)
+   { ------------------------------------------        x~ <= m~
+   {                    2           2
+  [{          (-b~ + a~)  (-m~ + a~)                            ,
+   {
+   {                2 (-b~ + x~)
+   {           ----------------------                  otherwise
+   {                     2
+   {           (-b~ + a~)  (-b~ + m~)
+
+        {       2 (-b~ + x~)
+        {  ----------------------         m~ < x~
+        {                       2
+        {  (-b~ + a~) (-b~ + m~)                   {
+        {                                          {
+        {        undefined                m~ = x~, {
+        {                                          {
+        {        2 (-x~ + a~)                      {
+        { - ----------------------        x~ < m~
+        {                        2
+        {   (-b~ + a~) (-m~ + a~)
+
+               2 (-x~ + a~)
+        - ---------------------- , x~ <= m~
+                    2
+          (-b~ + a~)  (-m~ + a~)
+
+               2
+          2 (b~  - a~ m~ + x~ m~ - 2 x~ b~ + x~ a~)
+        - ----------------------------------------- , otherwise]
+                             2           2
+                   (-b~ + a~)  (-b~ + m~)
+
+
+   {
+   {
+  [{ (-x~ + a~) (2 b~ m~ - a~ b~ - a~ m~ - x~ m~ + 2 x~ a~ - x~ b~)/(
+   {
+   {
+
+                  2           2
+        (-b~ + a~)  (-m~ + a~) ) , x~ <= m~
+
+                       2
+             (-b~ + x~)
+        ---------------------- , otherwise,
+                  2
+        (-b~ + a~)  (-b~ + m~)
+
+        {                2
+        {      (-b~ + x~)
+        { ----------------------        m~ <= x~
+        {                      2                  {
+        { (-b~ + a~) (-b~ + m~)                   {
+        {                                       , {
+        {                2                        {
+        {      (-x~ + a~)                         {
+        { ----------------------        x~ < m~
+        {                      2
+        { (-b~ + a~) (-m~ + a~)
+
+                       2
+             (-x~ + a~)
+        ---------------------- , x~ <= m~
+                  2
+        (-b~ + a~)  (-m~ + a~)
+
+        - (-b~ + x~)
+
+        (b~ m~ + a~ b~ - 2 a~ m~ + x~ m~ - 2 x~ b~ + x~ a~)/(
+
+                  2           2
+        (-b~ + a~)  (-b~ + m~) ) , otherwise]
+
+> restart:
+> with(Statistics):
+> assume(a<b,x<b,x>a):
+> uniform_:=RandomVariable(Uniform(a,b)):
+> pdf:=subs(u=x,PDF(uniform_,u));
+> cdf:=subs(u=x,CDF(uniform_,u));
+> cdf2:=int(pdf,x=0..t);
+> mu_:=Mean(uniform_);
+> var_:=Variance(uniform_);
+> qdf:=Quantile(uniform_,p);
+> qdf2:=solve(cdf=p,x);
+> [diff(pdf,a),diff(pdf,b)];
+> map(factor,[diff(cdf,a),diff(cdf,b)]);
+
+                         {    0            x~ < a~
+                         {
+                         {    1
+                  pdf := { -------         x~ < b~
+                         { b~ - a~
+                         {
+                         {    0           otherwise
+
+
+                         {    0            x~ < a~
+                         {
+                         { x~ - a~
+                  cdf := { -------         x~ < b~
+                         { b~ - a~
+                         {
+                         {    1           otherwise
+
+
+                                      t
+                           cdf2 := -------
+                                   b~ - a~
+
+
+                                  a~     b~
+                          mu_ := ---- + ----
+                                  2      2
+
+
+                                           2
+                                  (b~ - a~)
+                          var_ := ----------
+                                      12
+
+
+                       qdf := a~ + p (b~ - a~)
+
+
+                       qdf2 := a~ + p b~ - p a~
+
+
+                           1             1
+                      [----------, - ----------]
+                                2             2
+                       (b~ - a~)     (b~ - a~)
+
+
+                        -b~ + x~     -x~ + a~
+                      [-----------, -----------]
+                                 2            2
+                       (-b~ + a~)   (-b~ + a~)
+
+> restart:
+> with(Statistics):
+> assume(u>0,alpha>0,beta>0):
+> weibull_:=RandomVariable(Weibull(alpha,beta)):
+> pdf:=subs(u=x-'gamma',PDF(weibull_,u));
+> ddf:=diff(pdf,x);
+> cdf:=subs(u=x-'gamma',CDF(weibull_,u));
+> cdf2:=int(pdf,x=0..t);
+> mu_:='gamma'+Mean(weibull_);
+> var_:=Variance(weibull_);
+> subs(m='mu',v='var',solve({mu_=m,var_=v},{alpha,beta}));
+> qdf:='gamma'+Quantile(weibull_,p);
+> qdf2:=solve(cdf=p,x);
+> dpdf:=[diff(pdf,alpha),diff(pdf,beta)]:
+> map(factor,dpdf);
+> factor(dpdf[2]/dpdf[1]);
+> dcdf:=[diff(cdf,alpha),diff(cdf,beta)]:
+> map(factor,dcdf);
+> factor(dcdf[2]/dcdf[1]);
+
+                             (-1 + beta~)      /x - gamma\beta~
+            beta~ (x - gamma)             exp(-|---------|     )
+                                               \ alpha~  /
+     pdf := ----------------------------------------------------
+                                      beta~
+                                alpha~
+
+
+                          (-1 + beta~)
+  ddf := beta~ (x - gamma)             (-1 + beta~)
+
+             /x - gamma\beta~    /                    beta~         2
+        exp(-|---------|     )  /  ((x - gamma) alpha~     ) - beta~
+             \ alpha~  /       /
+
+                   (-1 + beta~) /x - gamma\beta~
+        (x - gamma)             |---------|
+                                \ alpha~  /
+
+             /x - gamma\beta~    /        beta~
+        exp(-|---------|     )  /  (alpha~      (x - gamma))
+             \ alpha~  /       /
+
+
+                                  /x - gamma\beta~
+                  cdf := 1 - exp(-|---------|     )
+                                  \ alpha~  /
+
+
+                    beta~                       (-beta~)
+  cdf2 := exp(-gamma      exp(Pi beta~ I) alpha~        )
+
+                           beta~       (-beta~)
+         - exp(-(t - gamma)      alpha~        )
+
+
+                                            beta~ + 1
+                mu_ := gamma + alpha~ GAMMA(---------)
+                                              beta~
+
+
+                       /      beta~ + 2          beta~ + 1 2\
+        var_ := alpha~ |GAMMA(---------) - GAMMA(---------) |
+                       \        beta~              beta~    /
+
+Warning, solutions may have been lost
+
+
+                               v = var
+
+
+                                               /  1  \
+                                               |-----|
+                                               \beta~/
+                                           1
+                qdf := gamma + alpha~ ln(-----)
+                                         1 - p
+
+
+                          ln(-ln(1 - p))
+              qdf2 := exp(--------------) alpha~ + gamma
+                              beta~
+
+
+        2            (-1 + beta~)      /x - gamma\beta~
+  [beta~  (x - gamma)             exp(-|---------|     )
+                                       \ alpha~  /
+
+        /     /x - gamma\beta~\   /        beta~
+        |-1 + |---------|     |  /  (alpha~      alpha~), -
+        \     \ alpha~  /     / /
+
+                   (-1 + beta~)      /x - gamma\beta~  /
+        (x - gamma)             exp(-|---------|     ) |-1
+                                     \ alpha~  /       \
+
+         - beta~ ln(x - gamma) + beta~ ln(alpha~)
+
+                 /x - gamma\beta~    x - gamma \   /       beta~
+         + beta~ |---------|      ln(---------)|  /  alpha~     ]
+                 \ alpha~  /          alpha~   / /
+
+
+    /
+  - |-1 - beta~ ln(x - gamma) + beta~ ln(alpha~)
+    \
+
+                 /x - gamma\beta~    x - gamma \          / /     2
+         + beta~ |---------|      ln(---------)| alpha~  /  |beta~
+                 \ alpha~  /          alpha~   /        /   \
+
+        /     /x - gamma\beta~\\
+        |-1 + |---------|     ||
+        \     \ alpha~  /     //
+
+
+     /x - gamma\beta~            /x - gamma\beta~
+     |---------|      beta~ exp(-|---------|     )
+     \ alpha~  /                 \ alpha~  /
+  [- ---------------------------------------------,
+                        alpha~
+
+        /x - gamma\beta~    x - gamma       /x - gamma\beta~
+        |---------|      ln(---------) exp(-|---------|     )]
+        \ alpha~  /          alpha~         \ alpha~  /
+
+
+                             x - gamma
+                          ln(---------) alpha~
+                              alpha~
+                        - --------------------
+                                 beta~
+
+> -(-1+simplify(-beta*ln(x-gamma)+beta*ln(alpha),'symbolic')+beta*((x-ga
+> mma)/alpha)^beta*ln((x-gamma)/alpha))*alpha/beta^2/(-1+((x-gamma)/alph
+> a)^beta);
+
+    /
+  - |-1 - beta~ (ln(x - gamma) - ln(alpha~))
+    \
+
+                 /x - gamma\beta~    x - gamma \          / /     2
+         + beta~ |---------|      ln(---------)| alpha~  /  |beta~
+                 \ alpha~  /          alpha~   /        /   \
+
+        /     /x - gamma\beta~\\
+        |-1 + |---------|     ||
+        \     \ alpha~  /     //
+
+> -(-1-simplify(beta*(ln(x-gamma)-ln(alpha)),'assume =
+> positive')+beta*((x-gamma)/alpha)^beta*ln((x-gamma)/alpha))*alpha/beta
+> ^2/(-1+((x-gamma)/alpha)^beta);
+
+    /
+  - |-1 - beta~ (ln(x - gamma) - ln(alpha~))
+    \
+
+                 /x - gamma\beta~    x - gamma \          / /     2
+         + beta~ |---------|      ln(---------)| alpha~  /  |beta~
+                 \ alpha~  /          alpha~   /        /   \
+
+        /     /x - gamma\beta~\\
+        |-1 + |---------|     ||
+        \     \ alpha~  /     //
+
+> restart:
+> with(Statistics):
+> geometric_:=RandomVariable(Geometric(p)):
+> pdf:=subs(u=n-1,ProbabilityFunction(geometric_,u));
+> cdf:=simplify(subs(u=n-1,CDF(geometric_,u)));
+> mu_:=factor(1+Mean(geometric_));
+> var_:=Variance(geometric_);
+> qdf:=simplify(1+Quantile(geometric_,q));
+> qdf2:=solve(cdf=q,K);
+> factor(diff(pdf, p));
+> diff(cdf, p);
+
+                     {        0                  n < 1
+              pdf := {
+                     {          (n - 1)
+                     { p (1 - p)               otherwise
+
+
+                     {          0                 n < 1
+              cdf := {
+                     {            floor(n)
+                     { 1 - (1 - p)                1 <= n
+
+
+                              mu_ := 1/p
+
+
+                                    1 - p
+                            var_ := -----
+                                      2
+                                     p
+
+
+                                    ln(1 - q)
+                        qdf := ceil(---------)
+                                    ln(1 - p)
+
+
+                               qdf2 :=
+
+
+             {             0                      n < 1
+             {
+             {        (n - 1)
+             { (1 - p)        (-1 + p n)
+             { -------------------------        otherwise
+             {          -1 + p
+
+
+               {            0                    n < 1
+               {
+               {        floor(n)
+               { (1 - p)         floor(n)
+               { ------------------------        1 <= n
+               {          1 - p
+
+> restart:
+> with(Statistics):
+> poisson_:=RandomVariable(Poisson(lambda)):
+> pdf:=subs(u=n,ProbabilityFunction(poisson_,u));
+> expand(log(pdf)) assuming n > 0, lambda > 0;
+> cdf:=simplify(subs(u=n,CDF(poisson_,u)));
+> mu_:=Mean(poisson_);
+> var_:=Variance(poisson_);
+> qdf:=simplify(Quantile(poisson_,q));
+> qdf2:=solve(cdf=q,K);
+> factor(diff(pdf, lambda));
+> diff(cdf, lambda);
+
+                   {          0                    n < 0
+                   {
+            pdf := {       n
+                   { lambda  exp(-lambda)
+                   { --------------------        otherwise
+                   {          n!
+
+
+                    n ln(lambda) - lambda - ln(n!)
+
+
+                         GAMMA(floor(n) + 1, lambda)
+                  cdf := ---------------------------
+                             GAMMA(floor(n) + 1)
+
+
+                            mu_ := lambda
+
+
+                            var_ := lambda
+
+
+  qdf := RootOf(floor(_Z) - RootOf(GAMMA(_Z + 1, lambda) _Z
+
+         + GAMMA(_Z + 1, lambda) - q GAMMA(_Z + 2)))
+
+
+                               qdf2 :=
+
+
+         {                 0                          n < 0
+         {
+         {       n
+         { lambda  exp(-lambda) (n - lambda)
+         { ---------------------------------        otherwise
+         {             lambda n!
+
+
+                            floor(n)
+                      lambda         exp(-lambda)
+                    - ---------------------------
+                          GAMMA(floor(n) + 1)
+
+> # 
+> allvalues(qdf);
+
+  RootOf(floor(_Z) - RootOf(GAMMA(_Z + 1, lambda) _Z
+
+         + GAMMA(_Z + 1, lambda) - q GAMMA(_Z + 2)))
+
+> plot(subs(lambda=10,GAMMA((n)+1,lambda)/GAMMA((n)+1)),n=0..50);
+
+> solve(GAMMA((n)+1,lambda)/GAMMA((n)+1)=q,n);
+
+           RootOf(-GAMMA(_Z + 1, lambda) + q GAMMA(_Z + 1))
+
+> int(1/sqrt(2*Pi)*exp(-t^2/2),t=-infinity..x);
+
+                                       1/2
+                                      2    x
+                        1/2 + 1/2 erf(------)
+                                        2
+
+> 

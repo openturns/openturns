@@ -1,0 +1,4 @@
+Domain= class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]
+Dimension= 2
+is point class=NumericalPoint name=Unnamed dimension=2 values=[0.5,0.5] inside class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]? yes
+is point class=NumericalPoint name=Unnamed dimension=2 values=[2.5,2.5] inside class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]? no

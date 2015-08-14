@@ -1,0 +1,1 @@
+/* Empty file for Windows builds with MSVC compiler */

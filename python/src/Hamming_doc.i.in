@@ -1,0 +1,22 @@
+%feature("docstring") OT::Hamming
+"Hamming filtering windows.
+
+Available constructors:
+    Hamming()
+   
+
+
+Notes
+-----
+The Hamming windows is implemented using the formula:
+
+.. math::
+
+    w(t) =  C(\alpha - (1-\alpha)\cos(2\pi t))\fcar{[0,1]}{t}
+
+with :math:`C = \frac{1}{\alpha^2 + (1-\alpha)^2/2}` and :math:`\alpha=25/46`.
+
+The value of :math:`\alpha` minimizes the amplitude of the first side lobe of its Fourier transform.
+
+The normalization constant :math:`C` is such that :math:`\int_{0}^{1} w(t)^2 dt = 1`.
+"

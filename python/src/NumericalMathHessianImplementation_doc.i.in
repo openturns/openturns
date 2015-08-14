@@ -1,0 +1,75 @@
+%feature("docstring") OT::NumericalMathHessianImplementation
+"Numerical math hessian implementation.
+
+See also
+--------
+NumericalMathFunction, NumericalMathGradientImplementation
+
+Notes
+-----
+This object is the result of the method *getHessian* of a 
+:class:`~openturns.NumericalMathFunction`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathHessianImplementation::getCallsNumber
+"Accessor to the number of times the hessian has been called.
+
+Returns
+-------
+calls_number : int
+    Integer that counts the number of times the hessian has been called
+    since its creation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathHessianImplementation::getInputDimension
+"Accessor to the number of the inputs.
+
+Returns
+-------
+number_inputs : int
+    Number of inputs."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathHessianImplementation::getOutputDimension
+"Accessor to the number of the outputs.
+
+Returns
+-------
+number_outputs : int
+    Number of outputs."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathHessianImplementation::getMarginal
+"Accessor to the hessian implementation of a specific output.
+
+Parameters
+----------
+i : integer
+    Integer corresponding to the output (Care: it starts at 0).
+indices : sequence of integer
+    The set of indices for which the outputs are extracted.
+
+Returns
+-------
+hessianImplementation : :class:`~openturns.NumericalMathHessianImplementation`
+    A hessian implementation restricted to its compenents functions which
+    indices are *i* or *indices*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathHessianImplementation::hessian
+"Return the Jacobian transposed matrix of the implementation at a point.
+
+Parameters
+----------
+point : sequence of float
+    Point where the Jacobian transposed matrix is calculated.
+
+Returns
+-------
+hessian : :class:`~openturns.Matrix`
+    The Jacobian transposed matrix of the function at *point*."

@@ -1,0 +1,246 @@
+> restart:
+> with(Statistics):
+> assume(beta>0,beta,real,alpha,real):
+> logistic_:=RandomVariable(Logistic(alpha,beta)):
+> pdf:=PDF(logistic_,x);
+> ddf:=factor(diff(pdf,x));
+> cdf:=CDF(logistic_,x);
+> cf:=subs(u=x,CharacteristicFunction(logistic_,u));
+> rough:=factor(int(pdf^2,x=-infinity..infinity));
+> mu_:=Mean(logistic_);
+> var_:=Variance(logistic_);
+> #skew_:=simplify(convert(Skewness(logistic_),GAMMA),symbolic);
+> skew_:=Int((x-mu_)^3*pdf,x=-infinity..infinity)/var_^(3/2);
+> #kurt_:=simplify(convert(Kurtosis(logistic_),GAMMA),symbolic);
+> kurt_:=Int((x-mu_)^4*pdf,x=-infinity..infinity)/var_^2;
+> qdf:=Quantile(logistic_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=map(factor,[diff(pdf,alpha),diff(pdf,beta)]);
+> factor(pdfgr[2]-(x-alpha)*pdfgr[1]/beta);
+> cdfgr:=map(factor,[diff(cdf,alpha),diff(cdf,beta)]);
+> factor(dcdf[2]/dcdf[1]);
+> valnum:=alpha=-1/2,beta=3/2:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(solve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+> evalf(subs(valnum,[mu_,sqrt(var_)]));
+
+                                  x - alpha~
+                              exp(----------)
+                                    beta~
+                 pdf := ----------------------------
+                              /        x - alpha~ \2
+                        beta~ |1 + exp(----------)|
+                              \          beta~    /
+
+
+                        x - alpha~  /         x - alpha~ \
+                    exp(----------) |-1 + exp(----------)|
+                          beta~     \           beta~    /
+           ddf := - --------------------------------------
+                             2 /        x - alpha~ \3
+                        beta~  |1 + exp(----------)|
+                               \          beta~    /
+
+
+                                      1
+                     cdf := ---------------------
+                                      x - alpha~
+                            1 + exp(- ----------)
+                                        beta~
+
+
+                         exp(alpha~ x I) Pi beta~ x
+                   cf := --------------------------
+                              sinh(Pi beta~ x)
+
+
+                                       1
+                           rough := -------
+                                    6 beta~
+
+
+                            mu_ := alpha~
+
+
+                                       2   2
+                                  beta~  Pi
+                          var_ := ----------
+                                      3
+
+
+  skew_ :=
+
+                           infinity
+                          /                     3     x - alpha~
+               1/2       |          (x - alpha~)  exp(----------)
+            3 3          |                              beta~
+        ---------------  |          ----------------------------- dx
+              2   2 3/2  |                /        x - alpha~ \2
+        (beta~  Pi )     |          beta~ |1 + exp(----------)|
+                        /                 \          beta~    /
+                          -infinity
+
+
+                          infinity
+                         /                     4     x - alpha~
+                        |          (x - alpha~)  exp(----------)
+                9       |                              beta~
+   kurt_ := ----------  |          ----------------------------- dx
+                 4   4  |                /        x - alpha~ \2
+            beta~  Pi   |          beta~ |1 + exp(----------)|
+                       /                 \          beta~    /
+                         -infinity
+
+
+                                              p
+                   qdf := alpha~ + beta~ ln(-----)
+                                            1 - p
+
+
+                                       -1 + p
+                 qdf2 := alpha~ - ln(- ------) beta~
+                                         p
+
+
+                x - alpha~  /         x - alpha~ \
+            exp(----------) |-1 + exp(----------)|
+                  beta~     \           beta~    /      x - alpha~  /
+  pdfgr := [--------------------------------------, exp(----------) |
+                     2 /        x - alpha~ \3             beta~     \
+                beta~  |1 + exp(----------)|
+                       \          beta~    /
+
+                   x - alpha~                        x - alpha~
+        -x + x exp(----------) + alpha~ - alpha~ exp(----------)
+                     beta~                             beta~
+
+                             x - alpha~ \   / /     3
+         - beta~ - beta~ exp(----------)|  /  |beta~
+                               beta~    / /   \
+
+        /        x - alpha~ \3\
+        |1 + exp(----------)| |]
+        \          beta~    / /
+
+
+                                x - alpha~
+                            exp(----------)
+                                  beta~
+                   - -----------------------------
+                          2 /        x - alpha~ \2
+                     beta~  |1 + exp(----------)|
+                            \          beta~    /
+
+
+                          x - alpha~
+                    exp(- ----------)
+                            beta~
+  cdfgr := [- ------------------------------,
+              /          x - alpha~ \2
+              |1 + exp(- ----------)|  beta~
+              \            beta~    /
+
+                             x - alpha~
+          (x - alpha~) exp(- ----------)
+                               beta~
+        - -------------------------------]
+          /          x - alpha~ \2      2
+          |1 + exp(- ----------)|  beta~
+          \            beta~    /
+
+
+                               dcdf[2]
+                               -------
+                               dcdf[1]
+
+
+                            -0.04038122117
+
+
+                             0.1310746222
+
+
+                             0.7310585787
+
+
+                   0.07430698329 - 0.04059408999 I
+
+
+                   [0.04038122117, -0.04700186026]
+
+
+                    [-0.1310746222, -0.1310746222]
+
+
+                             3.916658469
+
+
+                            -0.5000000000
+
+
+                             2.720699048
+
+
+                                         -11
+                          0.1330935130 10
+
+
+                             4.199999999
+
+
+                             7.402203303
+
+
+                     [-0.5000000000, 2.720699048]
+
+> qdf2 := alpha-ln(-(-1+p)/p)*beta;
+> diff(kurt_,alpha);
+> diff(kurt_,beta);
+
+                                       -1 + p
+                 qdf2 := alpha~ - ln(- ------) beta~
+                                         p
+
+
+                                  0
+
+
+                infinity
+               /                        5                     4
+      9       |          (-_t0 + alpha~)  %1   (-_t0 + alpha~)  %1
+  ----------  |          ------------------- - -------------------
+       4   4  |                3         2           2         2
+  beta~  Pi  /            beta~  (1 + %1)       beta~  (1 + %1)
+               -infinity
+
+                            5   2
+           2 (-_t0 + alpha~)  %1
+         - ---------------------- d_t0
+                   3         3
+              beta~  (1 + %1)
+
+           /              infinity                         \
+           |             /                        4        |
+           |    36      |          (-_t0 + alpha~)  %1     |
+         - |----------  |          ------------------- d_t0|
+           |     5   4  |                          2       |
+           |beta~  Pi  /             beta~ (1 + %1)        |
+           \             -infinity                         /
+
+              -_t0 + alpha~
+  %1 := exp(- -------------)
+                  beta~
+
+> plot(subs(valnum,pdf),x=-10..10);
+
+> 

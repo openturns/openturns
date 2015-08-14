@@ -1,0 +1,72 @@
+> restart:
+> with(LinearAlgebra):
+> abs_e:=proc(x)
+>    if evalf(x) < -0.0001 then
+>      -x
+>    else
+>      if evalf(x) > 0.0001 then
+>        x
+>      else
+>        x*x/0.0001
+>      fi:
+>    fi:
+> end:     
+> G:=proc(u)
+> local G1,G2;
+>   G1:=2-u[2]+exp(-0.1*u[1]^2)+(0.2*u[2])^4;
+>   G2:=4.5-u[1]*u[2];
+> (G1+G2+abs_e(evalf(G1-G2))/2)
+> end;
+> gradG:=proc(u)
+>   local x;
+>   x:=<x1,x2>;
+>   subs(x1=u[1],x2=u[2],<diff(G(x),x1),diff(G(x),x2)>)
+> end;
+
+  G := proc(u)
+local G1, G2;
+    G1 := 2 - u[2] + exp(-0.1*u[1]^2) + 0.2^4*u[2]^4;
+    G2 := 4.5 - u[1]*u[2];
+    G1 + G2 + 1/2*abs_e(evalf(G1 - G2))
+end proc
+
+
+  gradG := proc(u)
+local x;
+    x := <x1, x2>;
+    subs(x1 = u[1], x2 = u[2],
+        <diff(G(x), x1), diff(G(x), x2)>)
+end proc
+
+> u:=<1.,1.>;
+> lambda:=0;
+>   print(evalf([u, lambda, G(u), gradG(u)]));
+> for i from 1 to 20 do
+>  
+> lambda:=evalf((G(u)-Transpose(u).gradG(u))/(Transpose(gradG(u)).gradG(
+> u)));
+>   u:=evalf(-lambda.gradG(u));
+>   print([u, lambda, G(u), gradG(u)]);
+> od:  
+
+                                   [1.]
+                              u := [  ]
+                                   [1.]
+
+
+                             lambda := 0
+
+Error, (in abs_e) cannot determine if this expression is true or
+false: -1.*x2+exp(-.1*x1^2)+.16e-2*x2^4+x1*x2 < 2.4999
+
+Error, (in abs_e) cannot determine if this expression is true or
+false: -1.*x2+exp(-.1*x1^2)+.16e-2*x2^4+x1*x2 < 2.4999
+
+> gradG(<a,b>);
+Error, (in PiecewiseTools:-Convert) unable to convert
+
+> x(3,4);
+
+                                  4
+
+> 

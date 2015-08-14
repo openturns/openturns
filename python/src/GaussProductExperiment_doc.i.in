@@ -1,0 +1,62 @@
+%feature("docstring") OT::GaussProductExperiment
+"Gauss product experiment.
+
+Available constructors:
+    GaussProductExperiment(*marginalDegrees*)
+
+    GaussProductExperiment(*distribution*)
+
+    GaussProductExperiment(*distribution, marginalDegrees*)
+
+Parameters
+----------
+marginalDegrees : sequence of positive int
+    Numbers of points :math:`N_i` for each direction. Then, the total number of
+    points generated is :math:`cardI=\prod_{i=1}^n N_i`. If not specified,
+    each value :math:`N_i` is :math:`5`.
+distribution :
+    Distribution :math:`\mu` of dimension :math:`n` with an independent copula.
+
+Notes
+-----
+The number of points for each direction doesn't change and the :meth:`generate`
+method always gives the same sample.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.ComposedDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
+>>> marginalDegrees = [3, 2]
+>>> myPlane = ot.GaussProductExperiment(distribution, marginalDegrees)
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [  0.415775             -0.511215             ]
+1 : [  2.29428              -0.511215             ]
+2 : [  6.28995              -0.511215             ]
+3 : [  0.415775              0.357369             ]
+4 : [  2.29428               0.357369             ]
+5 : [  6.28995               0.357369             ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussProductExperiment::getMarginalDegrees
+"Get the marginal degrees.
+
+Returns
+-------
+marginalDegrees : :class:`~openturns.Indices`
+    Numbers of points :math:`N_i` for each direction."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussProductExperiment::setMarginalDegrees
+"Set the marginal degrees.
+
+Parameters
+----------
+marginalDegrees : sequence of positive int
+    Numbers of points :math:`N_i` for each direction."

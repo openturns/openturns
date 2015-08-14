@@ -1,0 +1,98 @@
+%define OT_OrthogonalBasis_doc
+"Orthogonal basis.
+
+Notes
+-----
+OrthogonalBasis is the interface class of the OrthogonalFunctionFactory
+implementation, which is an
+:class:`~openturns.OrthogonalProductPolynomialFactory` in the particular case
+of polynomial chaos expansion.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create an orthogonal basis
+>>> polynomialCollection = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory(polynomialCollection))"
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory
+OT_OrthogonalBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalBasis_build_doc
+"Get the term of the basis collection at a given index.
+
+Parameters
+----------
+index : int
+    Indicates the term of the basis which must be constructed. In other words,
+    *index* is used by a bijection from :math:`\Nset` to :math:`\Nset^d`
+    (with :math:`d` the dimension of the basis). The bijection is detailed in
+    :class:`~openturns.EnumerateFunction`.
+
+Returns
+-------
+function : :class:`~openturns.NumericalMathFunction`
+    The term of the basis collection at the index *index*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create an orthogonal basis
+>>> polynomialCollection = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory(polynomialCollection))
+>>> termBasis = productBasis.build(4)
+>>> print(termBasis.getEvaluation())
+-1.11803 + 3.3541 * x0^2
+>>> termBasis = productBasis.build(5)
+>>> print(termBasis.getEvaluation())
+(1.73205 * x0) * (-1 + x1)"
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory::build
+OT_OrthogonalBasis_build_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalBasis_getEnumerateFunction_doc
+"Return the enumerate function.
+
+Returns
+-------
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    Enumerate function that translates unidimensional indices into
+    multidimensional indices."
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory::getEnumerateFunction
+OT_OrthogonalBasis_getEnumerateFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalBasis_getMeasure_doc
+"Get the measure upon which the basis is orthogonal.
+
+Returns
+-------
+measure : :class:`~openturns.Distribution`
+    Measure upon which the basis is orthogonal.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create an orthogonal basis
+>>> polynomialCollection = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory(polynomialCollection))
+>>> measure = productBasis.getMeasure()
+>>> print(measure.getMarginal(0))
+Uniform(a = -1, b = 1)
+>>> print(measure.getMarginal(1))
+Gamma(k = 1, lambda = 1, gamma = 0)
+>>> print(measure.getMarginal(2))
+Normal(mu = 0, sigma = 1)"
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory::getMeasure
+OT_OrthogonalBasis_getMeasure_doc

@@ -1,0 +1,196 @@
+// Distribution docstrings are defined in DistributionImplementation_doc.i.in
+
+%feature("docstring") OT::Distribution
+OT_Distribution_doc
+%feature("docstring") OT::Distribution::computeCDF
+OT_Distribution_computeCDF_doc
+%feature("docstring") OT::Distribution::computeCDFGradient
+OT_Distribution_computeCDFGradient_doc
+%feature("docstring") OT::Distribution::computeCharacteristicFunction
+OT_Distribution_computeCharacteristicFunction_doc
+%feature("docstring") OT::Distribution::computeComplementaryCDF
+OT_Distribution_computeComplementaryCDF_doc
+%feature("docstring") OT::Distribution::computeConditionalCDF
+OT_Distribution_computeConditionalCDF_doc
+%feature("docstring") OT::Distribution::computeConditionalDDF
+OT_Distribution_computeConditionalDDF_doc
+%feature("docstring") OT::Distribution::computeConditionalPDF
+OT_Distribution_computeConditionalPDF_doc
+%feature("docstring") OT::Distribution::computeConditionalQuantile
+OT_Distribution_computeConditionalQuantile_doc
+%feature("docstring") OT::Distribution::computeDDF
+OT_Distribution_computeDDF_doc
+%feature("docstring") OT::Distribution::computeDensityGenerator
+OT_Distribution_computeDensityGenerator_doc
+%feature("docstring") OT::Distribution::computeDensityGeneratorDerivative
+OT_Distribution_computeDensityGeneratorDerivative_doc
+%feature("docstring") OT::Distribution::computeDensityGeneratorSecondDerivative
+OT_Distribution_computeDensityGeneratorSecondDerivative_doc
+%feature("docstring") OT::Distribution::computeGeneratingFunction
+OT_Distribution_computeGeneratingFunction_doc
+%feature("docstring") OT::Distribution::computeLogCharacteristicFunction
+OT_Distribution_computeLogCharacteristicFunction_doc
+%feature("docstring") OT::Distribution::computeLogGeneratingFunction
+OT_Distribution_computeLogGeneratingFunction_doc
+%feature("docstring") OT::Distribution::computeLogPDF
+OT_Distribution_computeLogPDF_doc
+%feature("docstring") OT::Distribution::computePDF
+OT_Distribution_computePDF_doc
+%feature("docstring") OT::Distribution::computePDFGradient
+OT_Distribution_computePDFGradient_doc
+%feature("docstring") OT::Distribution::computeProbability
+OT_Distribution_computeProbability_doc
+%feature("docstring") OT::Distribution::computeQuantile
+OT_Distribution_computeQuantile_doc
+%feature("docstring") OT::Distribution::computeRadialDistributionCDF
+OT_Distribution_computeRadialDistributionCDF_doc
+%feature("docstring") OT::Distribution::computeScalarQuantile
+OT_Distribution_computeScalarQuantile_doc
+%feature("docstring") OT::Distribution::computeSurvivalFunction
+OT_Distribution_computeSurvivalFunction_doc
+%feature("docstring") OT::Distribution::drawCDF
+OT_Distribution_drawCDF_doc
+%feature("docstring") OT::Distribution::drawMarginal1DCDF
+OT_Distribution_drawMarginal1DCDF_doc
+%feature("docstring") OT::Distribution::drawMarginal1DPDF
+OT_Distribution_drawMarginal1DPDF_doc
+%feature("docstring") OT::Distribution::drawMarginal2DCDF
+OT_Distribution_drawMarginal2DCDF_doc
+%feature("docstring") OT::Distribution::drawMarginal2DPDF
+OT_Distribution_drawMarginal2DPDF_doc
+%feature("docstring") OT::Distribution::drawPDF
+OT_Distribution_drawPDF_doc
+%feature("docstring") OT::Distribution::drawQuantile
+OT_Distribution_drawQuantile_doc
+%feature("docstring") OT::Distribution::getCDFEpsilon
+OT_Distribution_getCDFEpsilon_doc
+%feature("docstring") OT::Distribution::getCenteredMoment
+OT_Distribution_getCenteredMoment_doc
+%feature("docstring") OT::Distribution::getCholesky
+OT_Distribution_getCholesky_doc
+%feature("docstring") OT::Distribution::getCopula
+OT_Distribution_getCopula_doc
+%feature("docstring") OT::Distribution::getCorrelation
+OT_Distribution_getCorrelation_doc
+%feature("docstring") OT::Distribution::getCovariance
+OT_Distribution_getCovariance_doc
+%feature("docstring") OT::Distribution::getDescription
+OT_Distribution_getDescription_doc
+%feature("docstring") OT::Distribution::getDimension
+OT_Distribution_getDimension_doc
+%feature("docstring") OT::Distribution::getDispersionIndicator
+OT_Distribution_getDispersionIndicator_doc
+%feature("docstring") OT::Distribution::getInverseCholesky
+OT_Distribution_getInverseCholesky_doc
+%feature("docstring") OT::Distribution::getInverseIsoProbabilisticTransformation
+OT_Distribution_getInverseIsoProbabilisticTransformation_doc
+%feature("docstring") OT::Distribution::getIsoProbabilisticTransformation
+OT_Distribution_getIsoProbabilisticTransformation_doc
+%feature("docstring") OT::Distribution::getKendallTau
+OT_Distribution_getKendallTau_doc
+%feature("docstring") OT::Distribution::getKurtosis
+OT_Distribution_getKurtosis_doc
+%feature("docstring") OT::Distribution::getLinearCorrelation
+OT_Distribution_getLinearCorrelation_doc
+%feature("docstring") OT::Distribution::getMarginal
+OT_Distribution_getMarginal_doc
+%feature("docstring") OT::Distribution::getMean
+OT_Distribution_getMean_doc
+%feature("docstring") OT::Distribution::getMoment
+OT_Distribution_getMoment_doc
+%feature("docstring") OT::Distribution::getPDFEpsilon
+OT_Distribution_getPDFEpsilon_doc
+%feature("docstring") OT::Distribution::getParametersCollection
+OT_Distribution_getParametersCollection_doc
+%feature("docstring") OT::Distribution::getParametersNumber
+OT_Distribution_getParametersNumber_doc
+%feature("docstring") OT::Distribution::getPearsonCorrelation
+OT_Distribution_getPearsonCorrelation_doc
+%feature("docstring") OT::Distribution::getPositionIndicator
+OT_Distribution_getPositionIndicator_doc
+%feature("docstring") OT::Distribution::getRange
+OT_Distribution_getRange_doc
+%feature("docstring") OT::Distribution::getRealization
+OT_Distribution_getRealization_doc
+%feature("docstring") OT::Distribution::getRoughness
+OT_Distribution_getRoughness_doc
+%feature("docstring") OT::Distribution::getSample
+OT_Distribution_getSample_doc
+%feature("docstring") OT::Distribution::getShapeMatrix
+OT_Distribution_getShapeMatrix_doc
+%feature("docstring") OT::Distribution::getSkewness
+OT_Distribution_getSkewness_doc
+%feature("docstring") OT::Distribution::getSpearmanCorrelation
+OT_Distribution_getSpearmanCorrelation_doc
+%feature("docstring") OT::Distribution::getStandardDeviation
+OT_Distribution_getStandardDeviation_doc
+%feature("docstring") OT::Distribution::getStandardDistribution
+OT_Distribution_getStandardDistribution_doc
+%feature("docstring") OT::Distribution::getStandardMoment
+OT_Distribution_getStandardMoment_doc
+%feature("docstring") OT::Distribution::getStandardRepresentative
+OT_Distribution_getStandardRepresentative_doc
+%feature("docstring") OT::Distribution::getSupport
+OT_Distribution_getSupport_doc
+%feature("docstring") OT::Distribution::getWeight
+OT_Distribution_getWeight_doc
+%feature("docstring") OT::Distribution::hasEllipticalCopula
+OT_Distribution_hasEllipticalCopula_doc
+%feature("docstring") OT::Distribution::hasIndependentCopula
+OT_Distribution_hasIndependentCopula_doc
+%feature("docstring") OT::Distribution::isContinuous
+OT_Distribution_isContinuous_doc
+%feature("docstring") OT::Distribution::isCopula
+OT_Distribution_isCopula_doc
+%feature("docstring") OT::Distribution::isDiscrete
+OT_Distribution_isDiscrete_doc
+%feature("docstring") OT::Distribution::isElliptical
+OT_Distribution_isElliptical_doc
+%feature("docstring") OT::Distribution::isIntegral
+OT_Distribution_isIntegral_doc
+%feature("docstring") OT::Distribution::setDescription
+OT_Distribution_setDescription_doc
+%feature("docstring") OT::Distribution::setParametersCollection
+OT_Distribution_setParametersCollection_doc
+%feature("docstring") OT::Distribution::setWeight
+OT_Distribution_setWeight_doc
+%feature("docstring") OT::Distribution::cos
+OT_Distribution_cos_doc
+%feature("docstring") OT::Distribution::sin
+OT_Distribution_sin_doc
+%feature("docstring") OT::Distribution::tan
+OT_Distribution_tan_doc
+%feature("docstring") OT::Distribution::acos
+OT_Distribution_acos_doc
+%feature("docstring") OT::Distribution::asin
+OT_Distribution_asin_doc
+%feature("docstring") OT::Distribution::atan
+OT_Distribution_atan_doc
+%feature("docstring") OT::Distribution::cosh
+OT_Distribution_cosh_doc
+%feature("docstring") OT::Distribution::sinh
+OT_Distribution_sinh_doc
+%feature("docstring") OT::Distribution::tanh
+OT_Distribution_tanh_doc
+%feature("docstring") OT::Distribution::acosh
+OT_Distribution_acosh_doc
+%feature("docstring") OT::Distribution::asinh
+OT_Distribution_asinh_doc
+%feature("docstring") OT::Distribution::atanh
+OT_Distribution_atanh_doc
+%feature("docstring") OT::Distribution::exp
+OT_Distribution_exp_doc
+%feature("docstring") OT::Distribution::log
+OT_Distribution_log_doc
+%feature("docstring") OT::Distribution::ln
+OT_Distribution_ln_doc
+%feature("docstring") OT::Distribution::inverse
+OT_Distribution_inverse_doc
+%feature("docstring") OT::Distribution::sqr
+OT_Distribution_sqr_doc
+%feature("docstring") OT::Distribution::sqrt
+OT_Distribution_sqrt_doc
+%feature("docstring") OT::Distribution::cbrt
+OT_Distribution_cbrt_doc
+%feature("docstring") OT::Distribution::abs
+OT_Distribution_abs_doc

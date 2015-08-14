@@ -1,0 +1,50 @@
+in_dim=2 out_dim=1
+[15.0]
+[[15.0], [13.0]]
+myFunc input dimension= 2
+myFunc output dimension= 1
+class=NumericalPoint name=Unnamed dimension=2 values=[2,2]
+class=NumericalPoint name=Unnamed dimension=1 values=[4]
+class=NumericalPoint name=Unnamed dimension=1 values=[21]
+class=NumericalSample name=Unnamed description=[,] implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=2 data=[class=NumericalPoint name=Unnamed dimension=2 values=[0,0],class=NumericalPoint name=Unnamed dimension=2 values=[1,1],class=NumericalPoint name=Unnamed dimension=2 values=[2,2],class=NumericalPoint name=Unnamed dimension=2 values=[3,3],class=NumericalPoint name=Unnamed dimension=2 values=[4,4],class=NumericalPoint name=Unnamed dimension=2 values=[5,5],class=NumericalPoint name=Unnamed dimension=2 values=[6,6],class=NumericalPoint name=Unnamed dimension=2 values=[7,7],class=NumericalPoint name=Unnamed dimension=2 values=[8,8],class=NumericalPoint name=Unnamed dimension=2 values=[9,9]]
+class=NumericalSample name=Unnamed description=[T] implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[0],class=NumericalPoint name=Unnamed dimension=1 values=[2],class=NumericalPoint name=Unnamed dimension=1 values=[4],class=NumericalPoint name=Unnamed dimension=1 values=[6],class=NumericalPoint name=Unnamed dimension=1 values=[8],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[12],class=NumericalPoint name=Unnamed dimension=1 values=[14],class=NumericalPoint name=Unnamed dimension=1 values=[16],class=NumericalPoint name=Unnamed dimension=1 values=[18]]
+class=NumericalSample name=Unnamed description=[T] implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[200],class=NumericalPoint name=Unnamed dimension=1 values=[202],class=NumericalPoint name=Unnamed dimension=1 values=[204]]
+calls = 15 hits = 0
+T = class=NumericalPoint name=Unnamed dimension=1 values=[4]
+calls = 16 hits = 0
+T = class=NumericalPoint name=Unnamed dimension=1 values=[4]
+calls = 16 hits = 1
+T = class=NumericalSample name=Unnamed description=[T] implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[0],class=NumericalPoint name=Unnamed dimension=1 values=[2],class=NumericalPoint name=Unnamed dimension=1 values=[4],class=NumericalPoint name=Unnamed dimension=1 values=[6],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[12],class=NumericalPoint name=Unnamed dimension=1 values=[14],class=NumericalPoint name=Unnamed dimension=1 values=[16],class=NumericalPoint name=Unnamed dimension=1 values=[18]]
+calls = 24 hits = 2
+T = class=NumericalSample name=Unnamed description=[T] implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[0],class=NumericalPoint name=Unnamed dimension=1 values=[2],class=NumericalPoint name=Unnamed dimension=1 values=[4],class=NumericalPoint name=Unnamed dimension=1 values=[6],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[12],class=NumericalPoint name=Unnamed dimension=1 values=[14],class=NumericalPoint name=Unnamed dimension=1 values=[16],class=NumericalPoint name=Unnamed dimension=1 values=[18]]
+calls = 24 hits = 12
+T = class=NumericalSample name=Unnamed description=[T] implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[0],class=NumericalPoint name=Unnamed dimension=1 values=[2],class=NumericalPoint name=Unnamed dimension=1 values=[4],class=NumericalPoint name=Unnamed dimension=1 values=[6],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[10],class=NumericalPoint name=Unnamed dimension=1 values=[12],class=NumericalPoint name=Unnamed dimension=1 values=[14],class=NumericalPoint name=Unnamed dimension=1 values=[16],class=NumericalPoint name=Unnamed dimension=1 values=[18]]
+calls = 33 hits = 0
+exec
+    [ y0  ]
+0 : [ 200 ]
+1 : [ 202 ]
+2 : [ 204 ]
+exec + exec_sample
+    [ y0  ]
+0 : [ 200 ]
+1 : [ 202 ]
+2 : [ 204 ]
+exec_sample only on a point
+[200]
+exec_sample only on a sample
+    [ y0  ]
+0 : [ 200 ]
+1 : [ 202 ]
+2 : [ 204 ]
+gradient
+[[  1 ]
+ [ -1 ]]
+hessian
+sheet #0
+[[ 0.1 0.3 ]
+ [ 0.3 0.1 ]]
+no func
+no function detected : ok.
+exception handling: ok
+exception handling: ok

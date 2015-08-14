@@ -1,0 +1,8 @@
+distribution= class=Triangular name=Triangular dimension=1 a=1 m=2.5 b=4
+Estimated distribution= class=Triangular name=Triangular dimension=1 a=1.02699 m=2.51471 b=3.97879
+Default distribution= Triangular(a = -1, m = 0, b = 1)
+Distribution from parameters= Triangular(a = 1, m = 2.5, b = 4)
+Triangular          = Triangular(a = 1, m = 2.5, b = 4)
+Estimated triangular= Triangular(a = 1.02699, m = 2.51471, b = 3.97879)
+Default triangular= Triangular(a = -1, m = 0, b = 1)
+Triangular from parameters= Triangular(a = 1, m = 2.5, b = 4)

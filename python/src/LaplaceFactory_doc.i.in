@@ -1,0 +1,12 @@
+%feature("docstring") OT::LaplaceFactory
+"Laplace factory.
+
+Available constructor:
+    LaplaceFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

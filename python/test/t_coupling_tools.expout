@@ -1,0 +1,52 @@
+=== check_execute
+/bin/kill
+hi
+hi
+execute ok
+=== check_replace
+= check replace std
+check template.in.replaced: ok
+= check replace more vars
+check template.in.replaced: ok
+= check replace inplace
+check template.in: ok
+= check replace inplace with None
+check template.in: ok
+= check replace big template
+create template file of 256Mo
+check template_big.in.replaced: ok
+check replace big template: ok
+=== check_get_token_escaped
+ok
+=== check_get_regex
+ok
+=== check_get_regex_perf
+create file of 256Mo
+ok
+get regex in file: ok
+=== check_get_line_col
+ok
+=== check_get_tokens
+ok
+=== check_get_tokens_skip
+ok
+=== check_get_tokens_skip2
+ok
+=== check_get_array
+ok
+=== check_get_tokens_line_col
+ok
+=== check_get_tokens_skip_line_col
+ok
+=== check_get_tokens_perf
+create file of 256Mo
+ok
+get tokens: ok
+=== check_get_tokens_skip_perf
+create file of 256Mo
+ok
+get tokens skip: ok
+=== check_get_line_col_perf
+create file of 256Mo
+ok
+get line col: ok

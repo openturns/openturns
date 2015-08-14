@@ -1,0 +1,4 @@
+// Copula docstrings are defined in CopulaImplementation_doc.i.in
+
+%feature("docstring") OT::Copula
+OT_Copula_doc

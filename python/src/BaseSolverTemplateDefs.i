@@ -1,0 +1,2 @@
+// SWIG file BaseSolverTemplateDefs.i
+

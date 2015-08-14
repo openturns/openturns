@@ -1,0 +1,26 @@
+myDefautModel = class=SquaredExponential input dimension=1 theta=10
+myModel = class=SquaredExponential input dimension=2 theta=10
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.748]
+dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[-0.0524,0.0224]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0524,0.0224]
+myDefautModel = class=GeneralizedExponential input dimension=1 theta=10 p=1
+myModel = class=GeneralizedExponential input dimension=2 theta=10 p=1.5
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.514]
+dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[-0.0619,0.0265]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0619,0.0265]
+myDefautModel = class=AbsoluteExponential input dimension=1 theta=10
+myModel = class=AbsoluteExponential input dimension=2 theta=10
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.467]
+dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[-0.0429,0.0184]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0429,0.0184]
+myDefautModel = class=MaternModel input dimension=1 theta=10 nu=1.5
+myModel = class=MaternModel input dimension=2 theta=8 nu=2
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.535]
+dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[-0.0661,0.0283]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0661,0.0283]
+myModel = class=ProductCovarianceModel input dimension=2 models=[class=AbsoluteExponential input dimension=1 theta=3,class=SquaredExponential input dimension=1 theta=2]
+Validation of myModel(x_1, x_2) - myAbsoluteExponential(x_1) * mySquaredExponential(x_2) = class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0]
+myModel = class=ProductCovarianceModel input dimension=2 models=[class=AbsoluteExponential input dimension=1 theta=3,class=SquaredExponential input dimension=1 theta=2]
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0315]
+dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[-0.0105,0.0236]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0105,0.0236]

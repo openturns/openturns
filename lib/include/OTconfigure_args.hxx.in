@@ -1,0 +1,32 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief A file that contains the configure command line arguments
+ *
+ *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include "OTtypes.hxx"
+
+/** The command line arguments of the configure script */
+BEGIN_NAMESPACE_OPENTURNS
+
+static const char ConfigureArgs[]         = "@ot_configure_args@";
+static const char ConfigureDate[]         = "@ot_configure_date@";
+static const char Revision[]              = "@ot_revision@";
+static const char InstallationDirectory[] = "@prefix@";
+
+END_NAMESPACE_OPENTURNS

@@ -1,0 +1,12 @@
+%feature("docstring") OT::NormalCopulaFactory
+"Normal Copula factory.
+
+Available constructor:
+    NormalCopulaFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

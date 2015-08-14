@@ -1,0 +1,12 @@
+%feature("docstring") OT::ChiSquareFactory
+"Chi Square factory.
+
+Available constructor:
+    ChiSquareFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

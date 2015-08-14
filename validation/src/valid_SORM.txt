@@ -1,0 +1,118 @@
+> restart:
+> with(LinearAlgebra):
+> Digits:=30:
+> G:=-F_*L_^3/(6*E_*I_)-s;
+> T:=E_=E_moy+E_sd*u1,F_=F_moy+F_sd*u2,L_=L_moy+L_sd*u3,I_=I_moy+I_sd*u4
+> ;
+> g:=subs(T,G):
+> L:=1/2*(u1^2+u2^2+u3^2+u4^2)-lambda*g:
+> sys:=diff(L,u1),diff(L,u2),diff(L,u3),diff(L,u4),diff(L,lambda):
+> #sol:=solve({sys},{u1,u2,u3,u4,lambda});
+> num:=E_moy=50,E_sd=1,F_moy=1,F_sd=1,L_moy=10,L_sd=1,I_moy=5,I_sd=1,s=-
+> 3/2;
+> solnum:=fsolve(subs(num,{sys}),{u1,u2,u3,u4,lambda}):
+> subs(solnum,[u1,u2,u3,u4,lambda]);
+> beta:=subs(solnum,sqrt(u1^2+u2^2+u3^2+u4^2));
+
+                                      3
+                                 F_ L_
+                          G := - ------- - s
+                                 6 E_ I_
+
+
+  T := E_ = E_moy + E_sd u1, F_ = F_moy + F_sd u2,
+
+        L_ = L_moy + L_sd u3, I_ = I_moy + I_sd u4
+
+
+  num := E_moy = 50, E_sd = 1, F_moy = 1, F_sd = 1, L_moy = 10,
+
+        L_sd = 1, I_moy = 5, I_sd = 1, s = -3/2
+
+
+  [-0.0310354131886385333411402260320,
+
+        0.841941676288555078886397764047,
+
+        0.445403785549829310777385152548,
+
+        -0.332237896484057720356713452438,
+
+        -1.03387164170675809896100912782]
+
+
+               beta := 1.00925494062979021864719380923
+
+> grad_g:=<diff(g,u1),diff(g,u2),diff(g,u3),diff(g,u4)>:
+> hess_g:=<map(_x->diff(_x,u1),grad_g)|map(_x->diff(_x,u2),grad_g)|map(_
+> x->diff(_x,u3),grad_g)|map(_x->diff(_x,u4),grad_g)>:
+> map(_x->evalf(subs(num,solnum,_x)),grad_g):
+> map(_x->evalf(subs(num,solnum,_x)),hess_g):
+> M:=-(DiagonalMatrix(<1|1|1|1>)-grad_g.Transpose(grad_g)/Norm(grad_g,2,
+> conjugate=false)^2).hess_g/Norm(grad_g,2,conjugate=false):
+> Mnum:=map(_x->evalf(subs(num,solnum,_x)),M);
+
+  Mnum :=
+
+        [0.000614816378567372974392585979320 ,
+
+        -0.0116183116116243281612654229112 ,
+
+        -0.000573373284883000134471679041010 ,
+
+        -0.000713911705034510284765423988376]
+
+        [0.0000157867985964623520085654659985 ,
+
+        -0.137716634653075004620307551850 ,
+
+        0.0155547104103061432509295616504 ,
+
+        0.0193672954829168170140631189703]
+
+        [                                   -5
+        [0.835152844265092281487270805652 10   ,
+
+        0.166739844643325812480067438882 ,
+
+        -0.0340213552191429707721507036239 ,
+
+                                         ]
+        0.0102456820548182678055685111984]
+
+        [                                    -5
+        [-0.622961531139187778757812603112 10   ,
+
+        -0.124375447720974981776359682983 ,
+
+        -0.00613803118752803886389482548954 ,
+
+                                         ]
+        0.0628819155269579205767490657498]
+
+> curvatures:=Eigenvalues(Mnum);
+
+                  [   -0.150290062567166656332912272142 + 0. I   ]
+                  [                                              ]
+                  [  0.000407816322332149654279388752865 + 0. I  ]
+    curvatures := [                                              ]
+                  [                                    -29       ]
+                  [-0.192028063722549999999376072675 10    + 0. I]
+                  [                                              ]
+                  [   0.0416409882781418248373162796491 + 0. I   ]
+
+> with(Statistics):
+> X:=RandomVariable(Normal(0,1)):
+> PFORM:=evalf(subs(x=-beta,CDF(X,x)));
+
+              PFORM := 0.156426191965496816525285557108
+
+> PSORM:=PFORM:
+> for i from 1 to 4 do
+>   PSORM:=PSORM/sqrt(1+beta*curvatures[i]);
+> od:
+> PSORM;
+
+               0.166341709365589303575903437939 - 0. I
+
+> 

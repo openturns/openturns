@@ -1,0 +1,32 @@
+// RandomVector docstrings are defined in RandomVectorImplementation_doc.i.in
+
+%feature("docstring") OT::RandomVector
+OT_RandomVector_doc
+%feature("docstring") OT::RandomVector::getAntecedent
+OT_RandomVector_getAntecedent_doc
+%feature("docstring") OT::RandomVector::getFunction
+OT_RandomVector_getFunction_doc
+%feature("docstring") OT::RandomVector::getCovariance
+OT_RandomVector_getCovariance_doc
+%feature("docstring") OT::RandomVector::getMean
+OT_RandomVector_getMean_doc
+%feature("docstring") OT::RandomVector::getDistribution
+OT_RandomVector_getDistribution_doc
+%feature("docstring") OT::RandomVector::getDimension
+OT_RandomVector_getDimension_doc
+%feature("docstring") OT::RandomVector::getMarginal
+OT_RandomVector_getMarginal_doc
+%feature("docstring") OT::RandomVector::getSample
+OT_RandomVector_getSample_doc
+%feature("docstring") OT::RandomVector::getOperator
+OT_RandomVector_getOperator_doc
+%feature("docstring") OT::RandomVector::getThreshold
+OT_RandomVector_getThreshold_doc
+%feature("docstring") OT::RandomVector::isComposite
+OT_RandomVector_isComposite_doc
+%feature("docstring") OT::RandomVector::getDescription
+OT_RandomVector_getDescription_doc
+%feature("docstring") OT::RandomVector::setDescription
+OT_RandomVector_setDescription_doc
+%feature("docstring") OT::RandomVector::getRealization
+OT_RandomVector_getRealization_doc

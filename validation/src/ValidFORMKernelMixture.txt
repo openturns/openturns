@@ -1,0 +1,212 @@
+> restart:
+> with(Statistics):
+> #Digits:=30:
+> phi:=proc(x)
+>   1/sqrt(2*Pi)*exp(-x^2/2)
+> end:
+> PHI:=proc(x)
+>   int(phi(t),t=-infinity..x)
+> end:
+> g:=x1+x2;
+
+                             g := x1 + x2
+
+> CDF_x1:=1/2*CDF(Normal(mu1,sigma1),x1)+1/2*CDF(Normal(mu2,sigma2),x1);
+> CDF_x2:=CDF(Normal(mux2,sigmax2),x2);
+
+                          1/2                        1/2
+                         2    (x1 - mu1)            2    (x1 - mu2)
+ CDF_x1 := 1/2 + 1/4 erf(---------------) + 1/4 erf(---------------)
+                            2 sigma1                   2 sigma2
+
+
+                                       1/2
+                                      2    (x2 - mux2)
+              CDF_x2 := 1/2 + 1/2 erf(----------------)
+                                         2 sigmax2
+
+> u1:=subs(s=CDF_x1,Quantile(Normal(0,1),s));
+> u2:=subs(t=CDF_x2,Quantile(Normal(0,1),t));
+> X1:=subs(s=solve(CDF_x1=U1,x1),CDF(Normal(0,1),s));
+> X2:=subs(t=solve(CDF_x2=U2,x2),CDF(Normal(0,1),t));
+
+                                   1/2
+                                  2    (x1 - mu1)
+  u1 := RootOf(-erf(_Z) + 1/2 erf(---------------)
+                                     2 sigma1
+
+                    1/2
+                   2    (x1 - mu2)    1/2
+         + 1/2 erf(---------------)) 2
+                      2 sigma2
+
+
+                                      1/2
+                                     2    (x2 - mux2)    1/2
+         u2 := RootOf(-erf(_Z) + erf(----------------)) 2
+                                        2 sigmax2
+
+
+  X1 := 1/2 + 1/2 erf(1/2 RootOf(
+
+                 1/2                    1/2
+                2    (_Z - mu1)        2    (_Z - mu2)           1/2
+        2 + erf(---------------) + erf(---------------) - 4 U1) 2   )
+                   2 sigma1               2 sigma2
+
+
+                      1/2
+                     2    mux2
+ X2 := 1/2 + 1/2 erf(--------- + RootOf(erf(_Z) + 1 - 2 U2) sigmax2)
+                         2
+
+> G:=subs(x1=X1,x2=X2,g):
+> L:=1/2*(U1^2+U2^2)+lambda*G:
+> sys:={diff(L,U1),diff(L,U2),diff(L,lambda)}:
+> ValNum:={mu1=-1.0,sigma1=0.25,mu2=2.0,sigma2=2.0,mux2=2.5,sigmax2=3.0}
+> :
+> evalf(subs(ValNum,sys)):
+> vars:={U1,U2,lambda}:
+> sol:=fsolve(subs(ValNum,sys),vars);
+
+                                                      /      /
+                                          2   1/2   / |  1/2 |
+  sol := fsolve({U1 + 2 lambda exp(-1/2 %1 ) 2     /  |Pi    |
+                                                  /   |      |
+                                                      \      \
+
+                                               2   1/2
+        4.000000000 exp(-8.000000000 (%1 + 1.0) ) 2
+        ----------------------------------------------
+                              1/2
+                            Pi
+
+                                                    2   1/2\\
+           0.5000000000 exp(-0.1250000000 (%1 - 2.0) ) 2   ||
+         + ------------------------------------------------||, U2 +
+                                  1/2                      ||
+                                Pi                         //
+
+        3.0 lambda
+
+                           1/2                                  2
+        exp(-(1.250000000 2    + 3.0 RootOf(erf(_Z) + 1 - 2 U2)) )
+
+           /                                2
+          /  exp(-RootOf(erf(_Z) + 1 - 2 U2) ), 1
+         /
+
+                           1/2
+         + 1/2 erf(1/2 %1 2   )
+
+                                1/2
+         + 1/2 erf(1.250000000 2    + 3.0 RootOf(erf(_Z) + 1 - 2 U2))
+
+        }, {lambda, U2, U1})
+
+                                    1/2
+  %1 := RootOf(2 + erf(2.000000000 2    (_Z + 1.0))
+
+                             1/2
+         + erf(0.2500000000 2    (_Z - 2.0)) - 4 U1)
+
+> 
+> PointConception:=subs(sol,[u_E,u_F,u_L]);
+> beta:=subs(sol,sqrt(u_L^2+u_F^2+u_E^2));
+> FacteursImportance:=subs(sol,[F_E=(u_E/beta)^2,F_F=(u_F/beta)^2,F_L=(u
+> _L/beta)^2]);
+> Pdef_FORM:=PHI(-beta);
+> with(plots):
+> p1:=implicitplot3d(subs(ValNum,g),u_E=-4..0,u_F=0..4,u_L=0..4,style=PA
+> TCHNOGRID,scaling=constrained,axes=normal,grid=[31,31,31],lightmodel='
+> light1'):
+> p2:=pointplot3d(PointConception,symbol=circle,symbolsize=15,style=POIN
+> T,color=red,scaling=constrained):
+> p3:=spacecurve([PointConception[1]*t,PointConception[2]*t,PointConcept
+> ion[3]*t],t=0..1,color=blue,scaling=constrained):
+> display3d({p1,p2,p3});
+Warning, computation interrupted
+
+> expr:=subs(ValNum,solve(g,u_F));
+> A:=infinity;
+> Pde:=Int(Int(int(phi(u_E)*phi(u_F)*phi(u_L),u_F=expr..infinity),u_E=-A
+> ..A),u_L=-A..A);
+
+                /          1/2                             1/2     3
+                |         2    u_L                        2    u_L
+  expr := -1/50 |-240 erf(--------) + 480 u_E - 1/125 erf(--------)
+                \            2                               2
+
+                     1/2     2       \     /               1/2     3
+                    2    u_L         |   / |              2    u_L
+         - 12/5 erf(--------)  + 2080|  /  |-1/125000 erf(--------)
+                       2             / /   \                 2
+
+                       1/2     2             1/2         \
+                      2    u_L              2    u_L     |
+         - 3/1250 erf(--------)  - 6/25 erf(--------) - 8|
+                         2                     2         /
+
+
+                            A := infinity
+
+
+            infinity    infinity
+           /           /                       2      2  /       /
+          |           |                     u_E    u_L   |       |
+  Pde :=  |           |          -1/4 exp(- ---- - ----) |erf(10 |
+          |           |                      2      2    \       \
+         /           /
+           -infinity   -infinity
+
+                    1/2                         1/2     3
+                   2    u_L                    2    u_L
+        -30000 erf(--------) + 60000 u_E - erf(--------)
+                      2                           2
+
+                    1/2     2         \          /     1/2     3
+                   2    u_L           |  1/2   / |    2    u_L
+         - 300 erf(--------)  + 260000| 2     /  |erf(--------)
+                      2               /      /   \       2
+
+                    1/2     2              1/2               \     \
+                   2    u_L               2    u_L           |     |
+         + 300 erf(--------)  + 30000 erf(--------) + 1000000|) - 1|/
+                      2                      2               /     /
+
+        Pi du_E du_L
+
+> for i from 1 to 10 do
+>   evalf[i](Pde);
+> od;
+
+                                0.0006
+
+
+                               0.00060
+
+
+                               0.000604
+
+
+                              0.0006038
+
+
+                              0.00060378
+
+
+                             0.000603785
+
+
+                             0.0006037850
+
+
+                            0.00060378500
+
+
+                            0.000603785000
+
+
+                           0.0006037850000
+
+> 

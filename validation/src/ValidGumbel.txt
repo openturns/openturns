@@ -1,0 +1,186 @@
+> restart:
+> with(Statistics):
+> assume(alpha>0);
+> gumbel_:=RandomVariable(Gumbel(beta,1/alpha)):
+> pdf:=PDF(gumbel_,x);
+> ddf:=factor(diff(pdf,x));
+> cdf:=CDF(gumbel_,x);
+> assume(u,real):cf:=CharacteristicFunction(gumbel_,u);
+> mu_:=Mean(gumbel_);
+> var_:=Variance(gumbel_);
+> skew_:=simplify(convert(Skewness(gumbel_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(gumbel_),GAMMA),symbolic);
+> assume(v>0):
+> sol:=allvalues(solve({mu_=m,var_=v},{alpha,beta})):
+> map(_x->collect(simplify(_x,symbolic),m),subs(sol[1],v=sigma^2,[alpha,
+> beta]));
+> qdf:=Quantile(gumbel_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=map(factor,[diff(pdf,alpha)/pdf,diff(pdf,beta)/pdf]);
+> cdfgr:=map(factor,[diff(cdf,alpha)/cdf,diff(cdf,beta)/cdf]);
+> valnum:=alpha=2,beta=-0.5:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,map(_x->_x*pdf,pdfgr)));
+> evalf(subs(valnum,x=1,map(_x->_x*cdf,cdfgr)));
+> evalf(solve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+> evalf(subs(valnum,[mu_,sqrt(var_)]));
+
+ pdf := alpha~ exp(-(x - beta) alpha~) exp(-exp(-(x - beta) alpha~))
+
+
+                                       2
+  ddf := exp(-(x - beta) alpha~) alpha~
+
+        exp(-exp(-(x - beta) alpha~)) (-1 + exp(-(x - beta) alpha~))
+
+
+                 cdf := exp(-exp(-(x - beta) alpha~))
+
+
+                                                u~ I
+                cf := exp(beta u~ I) GAMMA(1 - ------)
+                                               alpha~
+
+
+                                       gamma
+                         mu_ := beta + ------
+                                       alpha~
+
+
+                                       2
+                                     Pi
+                          var_ := ---------
+                                          2
+                                  6 alpha~
+
+
+                             infinity
+              1/2       3   /
+           6 6    alpha~   |
+  skew_ := --------------  |
+                  3        |
+                Pi        /
+                            -infinity
+
+                                         3
+        (_t alpha~ - alpha~ beta - gamma)
+
+                                                                   /
+        exp(-_t alpha~ + alpha~ beta - exp(-(_t - beta) alpha~))  /
+                                                                 /
+
+              2
+        alpha~  d_t
+
+
+                         infinity
+                    4   /
+           36 alpha~   |
+  kurt_ := ----------  |
+                4      |
+              Pi      /
+                        -infinity
+
+                                           4
+        (-_t0 alpha~ + alpha~ beta + gamma)
+
+        exp(-_t0 alpha~ + alpha~ beta - exp(-(_t0 - beta) alpha~))
+
+           /       3
+          /  alpha~  d_t0
+         /
+
+
+                     1/2                      1/2
+                    6    Pi      gamma sigma 6
+                   [-------, m - ----------------]
+                    6 sigma             Pi
+
+
+                                     ln(-ln(p))
+                       qdf := beta - ----------
+                                       alpha~
+
+
+                           -alpha~ beta + ln(-ln(p))
+                 qdf2 := - -------------------------
+                                    alpha~
+
+
+  pdfgr := [(1 - alpha~ x + alpha~ beta
+
+         + alpha~ exp(-(x - beta) alpha~) x
+
+         - alpha~ exp(-(x - beta) alpha~) beta)/alpha~,
+
+        -alpha~ (-1 + exp(-(x - beta) alpha~))]
+
+
+  cdfgr := [(x - beta) exp(-(x - beta) alpha~),
+
+        -alpha~ exp(-(x - beta) alpha~)]
+
+
+                            -0.1800425822
+
+
+                            0.09473801936
+
+
+                             0.9514319929
+
+
+                    [-0.08766292699, 0.1800425822]
+
+
+                   [0.07105351452, -0.09473801936]
+
+
+                             0.9850976245
+
+
+                            -0.2113921676
+
+
+                             0.6412749152
+
+
+                             1.139547099
+
+
+                             5.399999997
+
+
+                             0.4112335169
+
+
+                    [-0.2113921676, 0.6412749152]
+
+> map(_x->collect(simplify(_x,symbolic),m),subs(sol[1],v=sigma^2,[alpha,
+> beta]));
+
+                     1/2                      1/2
+                    6    Pi      gamma sigma 6
+                   [-------, m - ----------------]
+                    6 sigma             Pi
+
+> evalf[25](-12*sqrt(6)*Zeta(3)/Pi^3);
+
+                     -1.139547099404648657492793
+
+> 3+12/5;
+
+                                 27/5
+
+> evalf[25](Zeta(3));
+
+                      1.202056903159594285399738
+
+> 

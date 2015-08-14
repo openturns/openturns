@@ -1,0 +1,12 @@
+%feature("docstring") OT::GumbelFactory
+"Gumbel factory.
+
+Available constructor:
+    GumbelFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

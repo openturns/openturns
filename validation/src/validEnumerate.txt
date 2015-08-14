@@ -1,0 +1,49 @@
+> restart:
+> f:=GAMMA(n+d+1)/GAMMA(n+1)/GAMMA(d+1):
+> p:=convert(series(f,n,2),polynom):
+> sol:=solve(p=k,n);
+> with(plots):
+> plot3d(f-p,n=0..5,d=0..5,axes=boxed);
+
+                                   -1 + k
+                      sol := ------------------
+                             Psi(d + 1) + gamma
+
+
+> assume(n,integer,d,integer);convert(f,factorial);
+
+                              (n~ + d~)!
+                              ----------
+                               n~! d~!
+
+> product((n+k)/k,k=1..d);
+
+                         GAMMA(n~ + d~ + 1)
+                     ---------------------------
+                     GAMMA(n~ + 1) GAMMA(1 + d~)
+
+> for i from 1 to 5 do
+>   expand(subs(n=i,f));
+> od;
+
+                                1 + d~
+
+
+                                            2
+                         1 + 3/2 d~ + 1/2 d~
+
+
+                                     2         3
+                     1 + 11/6 d~ + d~  + 1/6 d~
+
+
+                   25      35   2          3          4
+               1 + -- d~ + -- d~  + 5/12 d~  + 1/24 d~
+                   12      24
+
+
+             137             2   17   3         4           5
+         1 + --- d~ + 15/8 d~  + -- d~  + 1/8 d~  + 1/120 d~
+             60                  24
+
+> 

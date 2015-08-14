@@ -1,0 +1,47 @@
+%feature("docstring") OT::InverseTrendTransform
+"Inverse Trend transformation.
+
+Parameters
+----------
+myInverseTrendFunc : :class:`~openturns.NumericalMathFunction`
+    The  inverse trend function :math:`f_{trend}^{-1}`.
+
+
+Notes
+-----
+A multivariate stochastic  process :math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` may write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* as follows:
+
+.. math::
+
+    X(\omega,\vect{t}) = X_{stat}(\omega,\vect{t}) + f_{trend}(\vect{t})
+    
+
+We note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values of one field of the ocess *X*, associated to the mesh :math:`\cM = (\vect{t}_0, \dots, \vect{t}_{N-1})` of :math:`\cD`. We note :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})` the values of the resulting stationary field. Then we have:
+
+.. math::
+
+    \vect{x}^{stat}_i = \vect{x}_i - f_{trend}(\vect{t}_i)
+
+The inverse trend transformation enables to get the :math:`X_{stat}` process or to get the :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})` field.
+
+
+Examples
+--------
+Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t,s)=-(1+2t+t^2)`:
+
+>>> import openturns as ot
+>>> h = ot.NumericalMathFunction(['t'], ['-(1+2*t+t^2)'])
+>>> fTrendInv = ot.InverseTrendTransform(h)
+
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::InverseTrendTransform::getInverse
+"Accessor to the  trend function.
+
+Returns
+-------
+myTrendTransform : :class:`~openturns.TrendTransform`
+    The :math:`f_{trend}` function.
+
+"

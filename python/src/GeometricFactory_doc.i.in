@@ -1,0 +1,12 @@
+%feature("docstring") OT::GeometricFactory
+"Geometric factory.
+
+Available constructor:
+    GeometricFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

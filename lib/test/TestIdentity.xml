@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE wrapper SYSTEM "wrapper.dtd">
+<wrapper>
+  <library>
+    <path>TestIdentity.so</path>
+    <description>
+      <variable-list>
+        <variable id="x1" type="in">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="x2" type="in">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="x3" type="in">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="x4" type="in">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="y1" type="out">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="y2" type="out">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="y3" type="out">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+        <variable id="y4" type="out">
+          <comment>Automatically generated</comment>
+          <unit>None</unit>
+          <regexp>None</regexp>
+          <format>None</format>
+        </variable>
+      </variable-list>
+      <function provided="yes">TestIdentity</function>
+      <gradient provided="yes">TestIdentity</gradient>
+      <hessian provided="yes">TestIdentity</hessian>
+    </description>
+  </library>
+  <external-code>
+    <data>
+    </data>
+    <wrap-mode type="static-link">
+      <in-data-transfer mode="arguments" />
+      <out-data-transfer mode="arguments" />
+    </wrap-mode>
+    <command>
+    </command>
+  </external-code>
+ </wrapper>

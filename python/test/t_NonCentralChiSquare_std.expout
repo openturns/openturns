@@ -1,0 +1,37 @@
+Distribution  class=NonCentralChiSquare name=NonCentralChiSquare dimension=1 nu=1.5 lambda=2.5
+Distribution  NonCentralChiSquare(nu = 1.5, lambda = 2.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[5.14874]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[10.3181]  last= class=NumericalPoint name=Unnamed dimension=1 values=[3.44075]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[4.01363]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[12.6416]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.0277166]
+ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.0277166]
+pdf     = 0.168124667122
+pdf (FD)= 0.168124667
+cdf= 0.205327699996
+characteristic function= (0.0479067415537+0.195396095873j)
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.0269116,-0.0447116]
+pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.0269116,-0.0447116]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.127286,-0.0787015]
+cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.127286,-0.0787015]
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[11.1286]
+cdf(quantile)= 0.95
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[4]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[nu,lambda] values=[1.5,2.5]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [4]
+standard moment n= 2  value= [29]
+standard moment n= 3  value= [292]
+standard moment n= 4  value= [3715]
+standard moment n= 5  value= [56780]
+Standard representative= NonCentralChiSquare(nu = 1.5, lambda = 2.5)
+nu= 1.5
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[3.60555]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.53609]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[6.26627]

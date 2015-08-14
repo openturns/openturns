@@ -1,0 +1,43 @@
+%feature("docstring") OT::MediumSafe
+"MediumSafe method.
+
+Available constructors:
+    MediumSafe(*solver=ot.Brent()*)
+
+    MediumSafe(*solver, maximumDistance, stepSize*)
+
+Parameters
+----------
+solver : :class:`~openturns.Solver`
+    Non linear solver used to research the intersection of the limit state
+    function with the direction, on each segment of length *stepSize*, between
+    the center of the space and *maximumDistance* (root research).
+maximumDistance : positive float
+    Distance from the center of the standard space until which we research an
+    intersection with the limit state function along each direction. By
+    default, the maximum distance is equal to the value defined through the key
+    RootStrategyImplementation-DefaultMaximumDistance of the
+    :class:`~openturns.ResourceMap`.
+stepSize : float
+    Length of each segment inside which the root research is performed. By
+    default, the step size is equal to the value defined through the key
+    RootStrategyImplementation-DefaultStepSize of the
+    :class:`~openturns.ResourceMap`.
+
+See also
+--------
+DirectionalSampling
+
+Notes
+-----
+The *MediumSafe* strategy is the following: for each direction, we go along the
+direction by step of length *stepSize* from the origin to the maximum distant
+point (at distance *maximumDistance* from the center of the standard space) and
+we check whether there is a sign changement on each segment so formed.
+
+At the first sign changement, we research one root in the concerned segment
+with the selected non linear solver. Then, the segment
+*[root, maximum distant point]* is considered within the failure space.
+
+If *stepSize* is small enough, this strategy garantees us to find the root which
+is the nearest from the origin."

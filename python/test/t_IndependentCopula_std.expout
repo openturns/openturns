@@ -1,0 +1,43 @@
+Copula = class=IndependentCopula name=IndependentCopula dimension=3
+Copula = IndependentCopula(dimension = 3)
+Elliptical distribution =  False
+Continuous copula =  True
+Elliptical copula =  True
+hasIndependentCopula =  True
+oneRealization= class=NumericalPoint name=Unnamed dimension=3 values=[0.629877,0.882805,0.135276]
+oneSample first= class=NumericalPoint name=Unnamed dimension=3 values=[0.0325028,0.347057,0.969423]  last= class=NumericalPoint name=Unnamed dimension=3 values=[0.282986,0.307215,0.899457]
+mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.503596,0.496822,0.501632]
+covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0830104,0.000288954,0.000906179,0.000288954,0.0846323,2.63752e-05,0.000906179,2.63752e-05,0.0837848]
+Point=  class=NumericalPoint name=Unnamed dimension=3 values=[0.6,0.6,0.6]
+ddf     = class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0]
+pdf     =1.000000
+cdf=0.216000
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=0 values=[]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=0 values=[]
+quantile= class=NumericalPoint name=Unnamed dimension=3 values=[0.983048,0.983048,0.983048]
+cdf(quantile)=0.950000
+mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
+covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833333,0,0,0,0.0833333,0,0,0,0.0833333]
+parameters= [class=NumericalPointWithDescription name=Unnamed dimension=0 description=[] values=[]]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.575665]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.336563]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.961293]
+indices= [1,0]
+margins= class=IndependentCopula name=IndependentCopula dimension=2
+margins PDF=1.000000
+margins CDF=0.062500
+margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.974679,0.974679]
+margins CDF(quantile)=0.950000
+margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.931788,0.190073]

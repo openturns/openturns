@@ -1,0 +1,165 @@
+%define OT_Basis_doc
+"Basis.
+
+Available constructors:
+    Basis(*functionsColl*)
+
+    Basis(*size*)
+
+Parameters
+----------
+functionsColl : list of :class:`~openturns.NumericalMathFunction`
+    Functions constituting the Basis.
+size : int
+    Size of the Basis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> input = ['x0', 'x1', 'x2']
+>>> functions = []
+>>> for i in range(dimension):
+...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+>>> basis = ot.Basis(functions)"
+%enddef
+%feature("docstring") OT::BasisImplementation
+OT_Basis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_add_doc
+"Add an element in the Basis.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    Function added in the Basis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> input = ['x0', 'x1', 'x2']
+>>> functions = []
+>>> for i in range(2):
+...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+>>> basis = ot.Basis(functions)
+>>> basis.add(ot.NumericalMathFunction(input, ['y'], [input[2]]))"
+%enddef
+%feature("docstring") OT::BasisImplementation::add
+OT_Basis_add_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_build_doc
+"Build the element of the given index.
+
+Parameters
+----------
+index : int, :math:`index \geq 0`
+    Index of an element of the Basis.
+
+Returns
+-------
+function : :class:`~openturns.NumericalMathFunction`
+    The function at the index *index* of the Basis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> input = ['x0', 'x1', 'x2']
+>>> functions = []
+>>> for i in range(dimension):
+...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+>>> basis = ot.Basis(functions)
+>>> print(basis.build(0).getEvaluation())
+[x0,x1,x2]->[x0]"
+%enddef
+%feature("docstring") OT::BasisImplementation::build
+OT_Basis_build_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_getDimension_doc
+"Get the dimension of the Basis.
+
+Returns
+-------
+dimension : int
+    Dimension of the Basis."
+%enddef
+%feature("docstring") OT::BasisImplementation::getDimension
+OT_Basis_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_getSize_doc
+"Get the size of the Basis.
+
+Returns
+-------
+size : int
+    Size of the Basis."
+%enddef
+%feature("docstring") OT::BasisImplementation::getSize
+OT_Basis_getSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_getSubBasis_doc
+"Get a sub-basis of the Basis.
+
+Parameters
+----------
+indices : list of int
+    Indices of the terms of the Basis put in the sub-basis.
+
+Returns
+-------
+subBasis : list of :class:`~openturns.NumericalMathFunction`
+    Functions defining a sub-basis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> input = ['x0', 'x1', 'x2']
+>>> functions = []
+>>> for i in range(dimension):
+...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+>>> basis = ot.Basis(functions)
+>>> subbasis = basis.getSubBasis([1])
+>>> print(subbasis[0].getEvaluation())
+[x0,x1,x2]->[x1]"
+%enddef
+%feature("docstring") OT::BasisImplementation::getSubBasis
+OT_Basis_getSubBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_isFunctional_doc
+"Tell whether the basis is functional.
+
+Returns
+-------
+isOrthogonal : bool
+    `True` if the basis is functional i.e. if its terms are a solution
+    to an equation (e.g. a basis made up of Legendre functions)."
+%enddef
+%feature("docstring") OT::BasisImplementation::isFunctional
+OT_Basis_isFunctional_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_isOrthogonal_doc
+"Tell whether the basis is orthogonal.
+
+Returns
+-------
+isOrthogonal : bool
+    `True` if the basis is orthogonal."
+%enddef
+%feature("docstring") OT::BasisImplementation::isOrthogonal
+OT_Basis_isOrthogonal_doc

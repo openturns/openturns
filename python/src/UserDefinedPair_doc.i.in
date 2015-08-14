@@ -1,0 +1,55 @@
+%feature("docstring") OT::UserDefinedPair
+"Association of a point with a probability.
+
+Parameters
+----------
+x : sequence of float
+    Point.
+p : float, :math:`0 \geq p \geq 1`
+    Probability associated with the point *x*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.UserDefinedPair([2., 1.], 0.375)
+(class=NumericalPoint name=Unnamed dimension=2 values=[2,1],0.375)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefinedPair::getX
+"Get the point.
+
+Returns
+-------
+x : :class:`~openturns.NumericalPoint`
+    Point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefinedPair::setX
+"Set the point.
+
+Parameters
+----------
+x : sequence of float
+    Point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefinedPair::getP
+"Get the probability.
+
+Returns
+-------
+p : float
+    Probability associated with the point *x*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefinedPair::setP
+"Set the probability.
+
+Parameters
+----------
+p : float
+    Probability associated with the point *x*."

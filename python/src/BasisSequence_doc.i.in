@@ -1,0 +1,4 @@
+// BasisSequence docstrings are defined in BasisSequenceImplementation_doc.i.in
+
+%feature("docstring") OT::BasisSequence
+OT_BasisSequence_doc

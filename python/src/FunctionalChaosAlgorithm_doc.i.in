@@ -1,0 +1,247 @@
+%feature("docstring") OT::FunctionalChaosAlgorithm
+"Functional chaos algorithm.
+
+Available constructors:
+    FunctionalChaosAlgorithm(*inputSample, outputSample*)
+
+    FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy*)
+
+    FunctionalChaosAlgorithm(*inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy*)
+
+    FunctionalChaosAlgorithm(*model, distribution, adaptiveStrategy*)
+
+    FunctionalChaosAlgorithm(*model, distribution, adaptiveStrategy, projectionStrategy*)
+
+    FunctionalChaosAlgorithm(*inputSample, weights, outputSample, distribution, adaptiveStrategy*)
+
+    FunctionalChaosAlgorithm(*inputSample, weights, outputSample, distribution, adaptiveStrategy, projectionStrategy*)
+
+Parameters
+----------
+inputSample, outputSample : 2-d sequence of float
+    The input random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`
+    and the output samples :math:`\vect{Y}` of a model evaluated apart.
+model : :class:`~openturns.NumericalMathFunction`
+    Physical model :math:`g` such as :math:`\vect{Y} = g(\vect{X})` that
+    behaves as a :class:`~openturns.NumericalMathFunction`. When
+    :math:`\vect{Y}` is of dimension :math:`n_Y>1`, OpenTURNS operates marginal
+    by marginal, using the same multivariate orthonormal basis
+    :math:`(\Psi_k(\vect{x}))_{k \in \Nset^{n_X}}` for all the marginals.
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function :math:`f_{\vect{X}}(\vect{x})`
+    of the physical input vector :math:`\vect{X}`.
+adaptiveStrategy : :class:`~openturns.AdaptiveStrategy`
+    Strategy of selection of the different terms of the multivariate basis.
+projectionStrategy : :class:`~openturns.ProjectionStrategy`
+    Defines the strategy of projection of the empirical model results in the
+    selected orthonormal basis. If it is not mentioned, the projection
+    strategy considered is the :class:`~openturns.LeastSquaresStrategy`.
+weights : sequence of float
+    Weights of each point of the *inputSample*. The weights :math:`\omega_i`
+    are determined such that
+    :math:`\sum_{i\in I}\omega_i \delta_{\vect{X}_i} \simeq p_{\vect{X}}`,
+    where :math:`p_{\vect{X}}` is the distribution of the input random vector
+    :math:`\vect{X}`. When not specified, the *weights* are all equal to:
+    :math:`\omega_i = \frac{1}{cardI}`
+
+Notes
+-----
+Consider a physical model :math:`g` depending
+on a set random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`.
+We call functional chaos expansion the class of spectral methods which gathers
+all types of response surface that can be seen as a projection of the physical
+model in an orthonormal basis. This class of methods uses the Hilbertian space
+(square-integrable space: :math:`L^2`) to construct the response surface.
+
+The functional chaos representation implemented in OpenTURNS is the
+polynomial chaos (PC) expansion. It allows one to cast the response as a
+converging series featuring orthonormal polynomials.
+
+Consider that the output random variable of interest
+:math:`\vect{Y} = g(\vect{X})` has a finite variance, i.e.
+:math:`\Var{g(\vect{X})} < \infty`
+
+Then it is shown that :math:`\vect{Y}` may be expanded onto the PC basis as
+follows:
+
+.. math::
+
+    g(\vect{X}) = \sum_{j=0}^{\infty} \vect{a}_j \Psi_j(\vect{X})\circ T(\vect{X})
+
+where the :math:`\vect{a}_j=(a_{j,1}, \dots, a_{j,n_Y})`'s are
+deterministic vectors of coefficients that fully characterize the response
+:math:`\vect{Y}`. :math:`\Psi_j`'s are multivariate polynomials that are
+orthonormal with respect to the joint probability density function (PDF)
+:math:`f_{\vect{X}}(\vect{x})` of :math:`\vect{X}`. :math:`T` is the
+isoprobabilistic transformation which enables to rescale
+the components :math:`X_i` of random vector :math:`\vect{X}` such as:
+
+.. math::
+
+    Y \equiv h(\vect{U}) &= g \circ T^{-1}(\vect{U}) \\
+                         &= \sum_{j=0}^{\infty} \vect{a}_j \Psi_j(\vect{U})
+
+with :math:`\vect{U} = T(\vect{X})`
+
+Consider the case of independent input random variables. The PDF may be cast as:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) = \prod_{i=1}^{n_X} f_{X_i}(x_i)
+
+where :math:`f_{X_i}(x_i)` is the marginal PDF of :math:`X_i`.
+Let us consider a family :math:`\{\pi_j^{(i)}, j \in \Nset\}` of orthonormal
+univariate polynomials with respect to :math:`f_{X_i}`, i.e.:
+
+.. math::
+
+    \left<\pi_j^{(i)}(U_i), \pi_k^{(i)}(U_i)\right>
+        &\equiv \Expect{\pi_j^{(i)}(U_i), \pi_k^{(i)}(U_i)} \\
+        &= \delta_{j,k}
+
+where :math:`\delta_{j,k}=1` if :math:`j=k` and :math:`0` otherwise.
+For more details on the selection of suitable families of orthogonal
+polynomials see :class:`~openturns.StandardDistributionPolynomialFactory`.
+Upon tensoring the :math:`n_X` resulting families of univariate polynomials,
+one gets a set of orthonormal multivariate polynomials
+:math:`\{\Psi_{\vect{\alpha}}, \vect{\alpha} \in \Nset^{n_X}\}` defined by:
+
+.. math::
+
+    \Psi_{\vect{\alpha}}(\vect{u}) \equiv \pi_{\alpha_1}^{(1)}(u_1)
+                      \times \dots \times \pi_{\alpha_{n_X}}^{({n_X})}(u_{n_X})
+
+where the multi-index notation
+:math:`\vect{\alpha} \equiv \{\alpha_1, \dots, \alpha_{n_X}\}` has been
+introduced.
+
+
+For computational purpose, it is necessary to retain a finite number of
+terms by truncating the expansion. The metamodel :math:`\hat{g}(\vect{X})` is
+then represented by a *finite* subset of coefficients
+:math:`\{\vect{a}_k, k \in K\}` in a *truncated* basis
+:math:`\{\Psi_k, k \in K\}` as follows:
+
+.. math::
+
+    \hat{g}(\vect{X}) = \sum_{k \in K} \vect{a}_k \Psi_k \circ T(\vect{X})
+
+with :math:`K` a finite subset of :math:`\Nset`.
+
+So, a specific strategy for enumerating the infinite PC series has to be
+defined (see :class:`~openturns.EnumerateFunction`). Then, it is possible to
+use several strategies in order to truncate the representation (see
+:class:`~openturns.AdaptiveStrategy`). Finally, to characterize
+:math:`\vect{Y}`, the PC coefficients are estimated thanks to a
+:class:`projection strategy <openturns.ProjectionStrategy>`.
+
+See also
+--------
+FunctionalChaosResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # Define the model
+>>> inputDim = 1
+>>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> # Create the input distribution
+>>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> # Construction of the multivariate orthonormal basis
+>>> polyColl = [0.]*inputDim
+>>> for i in range(distribution.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> # Truncature strategy of the multivariate orthonormal basis
+>>> # We choose all the polynomials of degree <= 4
+>>> degree = 4
+>>> indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
+>>> print(indexMax)
+5
+>>> # We keep all the polynomials of degree <= 4
+>>> # which corresponds to the 5 first ones
+>>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)
+>>> # Evaluation strategy of the approximation coefficients
+>>> samplingSize = 50
+>>> experiment = ot.MonteCarloExperiment(samplingSize)
+>>> projectionStrategy = ot.LeastSquaresStrategy(experiment)
+>>> # Creation of the Functional Chaos Algorithm
+>>> algo = ot.FunctionalChaosAlgorithm(model, distribution, adaptiveStrategy,
+...                                    projectionStrategy)
+>>> algo.run()
+>>> # Get the result
+>>> functionalChaosResult = algo.getResult()
+>>> metamodel = functionalChaosResult.getMetaModel()
+>>> # Tests
+>>> X = [0.5]
+>>> print(model(X))
+[0.239713]
+>>> print(metamodel(X))
+[0.239514]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::getMaximumResidual
+"Get the maximum residual.
+
+Returns
+-------
+residual : float
+    Residual value needed in the projection strategy. By default, its value
+    is :math:`0`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::getProjectionStrategy
+"Get the projection strategy.
+
+Returns
+-------
+strategy : :class:`~openturns.ProjectionStrategy`
+    Projection strategy of the :class:`~openturns.FunctionalChaosAlgorithm`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::getResult
+"Get the results of the metamodel computation.
+
+Returns
+-------
+result : :class:`~openturns.FunctionalChaosResult`
+    Structure containing all the results obtained after metamodel computation
+    and created by the method :py:meth:`run`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::run
+"Compute the response surfaces.
+
+Notes
+-----
+Execute the procedure of determination of coefficients using the projection
+strategy selected with respect to the AdaptiveStrategy selected. It provides
+the results as an object of type :class:`~openturns.FunctionalChaosResult`,
+recoverable thanks to the method :py:meth:`getResult`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::setMaximumResidual
+"Set the maximum residual.
+
+Parameters
+----------
+residual : float
+    Residual value needed in the projection strategy. By default, its value
+    is :math:`0`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::setProjectionStrategy
+"Set the projection strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.ProjectionStrategy`
+    Projection strategy of the :class:`~openturns.FunctionalChaosAlgorithm`."

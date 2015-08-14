@@ -1,0 +1,375 @@
+pBeta(0.2, 0.2, 0.1)=0.33669, complementary=0.66331
+pBeta(0.2, 0.2, 0.3)=0.433204, complementary=0.566796
+pBeta(0.2, 0.2, 0.5)=0.5, complementary=0.5
+pBeta(0.2, 0.2, 0.7)=0.566796, complementary=0.433204
+pBeta(0.2, 0.2, 0.9)=0.66331, complementary=0.33669
+pBeta(0.2, 1.4, 0.1)=0.687341, complementary=0.312659
+pBeta(0.2, 1.4, 0.3)=0.843889, complementary=0.156111
+pBeta(0.2, 1.4, 0.5)=0.91974, complementary=0.0802601
+pBeta(0.2, 1.4, 0.7)=0.9659, complementary=0.0340998
+pBeta(0.2, 1.4, 0.9)=0.993451, complementary=0.0065488
+pBeta(0.2, 2.6, 0.1)=0.78472, complementary=0.21528
+pBeta(0.2, 2.6, 0.3)=0.927628, complementary=0.0723715
+pBeta(0.2, 2.6, 0.5)=0.976392, complementary=0.0236082
+pBeta(0.2, 2.6, 0.7)=0.994757, complementary=0.00524303
+pBeta(0.2, 2.6, 0.9)=0.999738, complementary=0.000262128
+pBeta(0.2, 3.8, 0.1)=0.839339, complementary=0.160661
+pBeta(0.2, 3.8, 0.3)=0.96231, complementary=0.03769
+pBeta(0.2, 3.8, 0.5)=0.992027, complementary=0.00797294
+pBeta(0.2, 3.8, 0.7)=0.999059, complementary=0.000940783
+pBeta(0.2, 3.8, 0.9)=0.999988, complementary=1.24072e-05
+pBeta(0.2, 5, 0.1)=0.875479, complementary=0.124521
+pBeta(0.2, 5, 0.3)=0.979271, complementary=0.0207289
+pBeta(0.2, 5, 0.5)=0.997129, complementary=0.00287138
+pBeta(0.2, 5, 0.7)=0.999819, complementary=0.00018128
+pBeta(0.2, 5, 0.9)=0.999999, complementary=6.34097e-07
+pBeta(1.4, 0.2, 0.1)=0.0065488, complementary=0.993451
+pBeta(1.4, 0.2, 0.3)=0.0340998, complementary=0.9659
+pBeta(1.4, 0.2, 0.5)=0.0802601, complementary=0.91974
+pBeta(1.4, 0.2, 0.7)=0.156111, complementary=0.843889
+pBeta(1.4, 0.2, 0.9)=0.312659, complementary=0.687341
+pBeta(1.4, 1.4, 0.1)=0.0591132, complementary=0.940887
+pBeta(1.4, 1.4, 0.3)=0.260754, complementary=0.739246
+pBeta(1.4, 1.4, 0.5)=0.5, complementary=0.5
+pBeta(1.4, 1.4, 0.7)=0.739246, complementary=0.260754
+pBeta(1.4, 1.4, 0.9)=0.940887, complementary=0.0591132
+pBeta(1.4, 2.6, 0.1)=0.122223, complementary=0.877777
+pBeta(1.4, 2.6, 0.3)=0.462386, complementary=0.537614
+pBeta(1.4, 2.6, 0.5)=0.749929, complementary=0.250071
+pBeta(1.4, 2.6, 0.7)=0.927944, complementary=0.0720564
+pBeta(1.4, 2.6, 0.9)=0.995565, complementary=0.0044346
+pBeta(1.4, 3.8, 0.1)=0.188357, complementary=0.811643
+pBeta(1.4, 3.8, 0.3)=0.61876, complementary=0.38124
+pBeta(1.4, 3.8, 0.5)=0.879463, complementary=0.120537
+pBeta(1.4, 3.8, 0.7)=0.980978, complementary=0.0190224
+pBeta(1.4, 3.8, 0.9)=0.999684, complementary=0.000315635
+pBeta(1.4, 5, 0.1)=0.25411, complementary=0.74589
+pBeta(1.4, 5, 0.3)=0.733788, complementary=0.266212
+pBeta(1.4, 5, 0.5)=0.943117, complementary=0.0568833
+pBeta(1.4, 5, 0.7)=0.995103, complementary=0.00489727
+pBeta(1.4, 5, 0.9)=0.999978, complementary=2.18452e-05
+pBeta(2.6, 0.2, 0.1)=0.000262128, complementary=0.999738
+pBeta(2.6, 0.2, 0.3)=0.00524303, complementary=0.994757
+pBeta(2.6, 0.2, 0.5)=0.0236082, complementary=0.976392
+pBeta(2.6, 0.2, 0.7)=0.0723715, complementary=0.927628
+pBeta(2.6, 0.2, 0.9)=0.21528, complementary=0.78472
+pBeta(2.6, 1.4, 0.1)=0.0044346, complementary=0.995565
+pBeta(2.6, 1.4, 0.3)=0.0720564, complementary=0.927944
+pBeta(2.6, 1.4, 0.5)=0.250071, complementary=0.749929
+pBeta(2.6, 1.4, 0.7)=0.537614, complementary=0.462386
+pBeta(2.6, 1.4, 0.9)=0.877777, complementary=0.122223
+pBeta(2.6, 2.6, 0.1)=0.0136623, complementary=0.986338
+pBeta(2.6, 2.6, 0.3)=0.181828, complementary=0.818172
+pBeta(2.6, 2.6, 0.5)=0.5, complementary=0.5
+pBeta(2.6, 2.6, 0.7)=0.818172, complementary=0.181828
+pBeta(2.6, 2.6, 0.9)=0.986338, complementary=0.0136623
+pBeta(2.6, 3.8, 0.1)=0.0281425, complementary=0.971858
+pBeta(2.6, 3.8, 0.3)=0.309445, complementary=0.690555
+pBeta(2.6, 3.8, 0.5)=0.694462, complementary=0.305538
+pBeta(2.6, 3.8, 0.7)=0.936802, complementary=0.0631984
+pBeta(2.6, 3.8, 0.9)=0.998688, complementary=0.00131193
+pBeta(2.6, 5, 0.1)=0.0476092, complementary=0.952391
+pBeta(2.6, 5, 0.3)=0.436453, complementary=0.563547
+pBeta(2.6, 5, 0.5)=0.823851, complementary=0.176149
+pBeta(2.6, 5, 0.7)=0.979632, complementary=0.0203678
+pBeta(2.6, 5, 0.9)=0.999885, complementary=0.000115391
+pBeta(3.8, 0.2, 0.1)=1.24072e-05, complementary=0.999988
+pBeta(3.8, 0.2, 0.3)=0.000940783, complementary=0.999059
+pBeta(3.8, 0.2, 0.5)=0.00797294, complementary=0.992027
+pBeta(3.8, 0.2, 0.7)=0.03769, complementary=0.96231
+pBeta(3.8, 0.2, 0.9)=0.160661, complementary=0.839339
+pBeta(3.8, 1.4, 0.1)=0.000315635, complementary=0.999684
+pBeta(3.8, 1.4, 0.3)=0.0190224, complementary=0.980978
+pBeta(3.8, 1.4, 0.5)=0.120537, complementary=0.879463
+pBeta(3.8, 1.4, 0.7)=0.38124, complementary=0.61876
+pBeta(3.8, 1.4, 0.9)=0.811643, complementary=0.188357
+pBeta(3.8, 2.6, 0.1)=0.00131193, complementary=0.998688
+pBeta(3.8, 2.6, 0.3)=0.0631984, complementary=0.936802
+pBeta(3.8, 2.6, 0.5)=0.305538, complementary=0.694462
+pBeta(3.8, 2.6, 0.7)=0.690555, complementary=0.309445
+pBeta(3.8, 2.6, 0.9)=0.971858, complementary=0.0281425
+pBeta(3.8, 3.8, 0.1)=0.00342106, complementary=0.996579
+pBeta(3.8, 3.8, 0.3)=0.132524, complementary=0.867476
+pBeta(3.8, 3.8, 0.5)=0.5, complementary=0.5
+pBeta(3.8, 3.8, 0.7)=0.867476, complementary=0.132524
+pBeta(3.8, 3.8, 0.9)=0.996579, complementary=0.00342106
+pBeta(3.8, 5, 0.1)=0.00702538, complementary=0.992975
+pBeta(3.8, 5, 0.3)=0.22026, complementary=0.77974
+pBeta(3.8, 5, 0.5)=0.664623, complementary=0.335377
+pBeta(3.8, 5, 0.7)=0.948811, complementary=0.0511887
+pBeta(3.8, 5, 0.9)=0.999633, complementary=0.000366713
+pBeta(5, 0.2, 0.1)=6.34097e-07, complementary=0.999999
+pBeta(5, 0.2, 0.3)=0.00018128, complementary=0.999819
+pBeta(5, 0.2, 0.5)=0.00287138, complementary=0.997129
+pBeta(5, 0.2, 0.7)=0.0207289, complementary=0.979271
+pBeta(5, 0.2, 0.9)=0.124521, complementary=0.875479
+pBeta(5, 1.4, 0.1)=2.18452e-05, complementary=0.999978
+pBeta(5, 1.4, 0.3)=0.00489727, complementary=0.995103
+pBeta(5, 1.4, 0.5)=0.0568833, complementary=0.943117
+pBeta(5, 1.4, 0.7)=0.266212, complementary=0.733788
+pBeta(5, 1.4, 0.9)=0.74589, complementary=0.25411
+pBeta(5, 2.6, 0.1)=0.000115391, complementary=0.999885
+pBeta(5, 2.6, 0.3)=0.0203678, complementary=0.979632
+pBeta(5, 2.6, 0.5)=0.176149, complementary=0.823851
+pBeta(5, 2.6, 0.7)=0.563547, complementary=0.436453
+pBeta(5, 2.6, 0.9)=0.952391, complementary=0.0476092
+pBeta(5, 3.8, 0.1)=0.000366713, complementary=0.999633
+pBeta(5, 3.8, 0.3)=0.0511887, complementary=0.948811
+pBeta(5, 3.8, 0.5)=0.335377, complementary=0.664623
+pBeta(5, 3.8, 0.7)=0.77974, complementary=0.22026
+pBeta(5, 3.8, 0.9)=0.992975, complementary=0.00702538
+pBeta(5, 5, 0.1)=0.00089092, complementary=0.999109
+pBeta(5, 5, 0.3)=0.0988087, complementary=0.901191
+pBeta(5, 5, 0.5)=0.5, complementary=0.5
+pBeta(5, 5, 0.7)=0.901191, complementary=0.0988087
+pBeta(5, 5, 0.9)=0.999109, complementary=0.00089092
+qBeta(0.2, 0.2, 0.1)=0.000247765, complementary=0.999752
+qBeta(0.2, 0.2, 0.3)=0.0578806, complementary=0.942119
+qBeta(0.2, 0.2, 0.5)=0.5, complementary=0.5
+qBeta(0.2, 0.2, 0.7)=0.942119, complementary=0.0578806
+qBeta(0.2, 0.2, 0.9)=0.999752, complementary=0.000247765
+qBeta(0.2, 1.4, 0.1)=6.30039e-06, complementary=0.436917
+qBeta(0.2, 1.4, 0.3)=0.00153177, complementary=0.109934
+qBeta(0.2, 1.4, 0.5)=0.0198197, complementary=0.0198197
+qBeta(0.2, 1.4, 0.7)=0.109934, complementary=0.00153177
+qBeta(0.2, 1.4, 0.9)=0.436917, complementary=6.30039e-06
+qBeta(0.2, 2.6, 0.1)=2.94251e-06, complementary=0.237904
+qBeta(0.2, 2.6, 0.3)=0.00071571, complementary=0.0530747
+qBeta(0.2, 2.6, 0.5)=0.00931014, complementary=0.00931014
+qBeta(0.2, 2.6, 0.7)=0.0530747, complementary=0.00071571
+qBeta(0.2, 2.6, 0.9)=0.237904, complementary=2.94251e-06
+qBeta(0.2, 3.8, 0.1)=1.91273e-06, complementary=0.162223
+qBeta(0.2, 3.8, 0.3)=0.000465297, complementary=0.0348444
+qBeta(0.2, 3.8, 0.5)=0.00606228, complementary=0.00606228
+qBeta(0.2, 3.8, 0.7)=0.0348444, complementary=0.000465297
+qBeta(0.2, 3.8, 0.9)=0.162223, complementary=1.91273e-06
+qBeta(0.2, 5, 0.1)=1.41593e-06, complementary=0.122897
+qBeta(0.2, 5, 0.3)=0.000344465, complementary=0.0259165
+qBeta(0.2, 5, 0.5)=0.00449136, complementary=0.00449136
+qBeta(0.2, 5, 0.7)=0.0259165, complementary=0.000344465
+qBeta(0.2, 5, 0.9)=0.122897, complementary=1.41593e-06
+qBeta(1.4, 0.2, 0.1)=0.563083, complementary=0.999994
+qBeta(1.4, 0.2, 0.3)=0.890066, complementary=0.998468
+qBeta(1.4, 0.2, 0.5)=0.98018, complementary=0.98018
+qBeta(1.4, 0.2, 0.7)=0.998468, complementary=0.890066
+qBeta(1.4, 0.2, 0.9)=0.999994, complementary=0.563083
+qBeta(1.4, 1.4, 0.1)=0.146816, complementary=0.853184
+qBeta(1.4, 1.4, 0.3)=0.333994, complementary=0.666006
+qBeta(1.4, 1.4, 0.5)=0.5, complementary=0.5
+qBeta(1.4, 1.4, 0.7)=0.666006, complementary=0.333994
+qBeta(1.4, 1.4, 0.9)=0.853184, complementary=0.146816
+qBeta(1.4, 2.6, 0.1)=0.085789, complementary=0.657564
+qBeta(1.4, 2.6, 0.3)=0.204845, complementary=0.4597
+qBeta(1.4, 2.6, 0.5)=0.323041, complementary=0.323041
+qBeta(1.4, 2.6, 0.7)=0.4597, complementary=0.204845
+qBeta(1.4, 2.6, 0.9)=0.657564, complementary=0.085789
+qBeta(1.4, 3.8, 0.1)=0.0606869, complementary=0.525681
+qBeta(1.4, 3.8, 0.3)=0.147795, complementary=0.348865
+qBeta(1.4, 3.8, 0.5)=0.238204, complementary=0.238204
+qBeta(1.4, 3.8, 0.7)=0.348865, complementary=0.147795
+qBeta(1.4, 3.8, 0.9)=0.525681, complementary=0.0606869
+qBeta(1.4, 5, 0.1)=0.046966, complementary=0.435859
+qBeta(1.4, 5, 0.3)=0.115615, complementary=0.280684
+qBeta(1.4, 5, 0.5)=0.188589, complementary=0.188589
+qBeta(1.4, 5, 0.7)=0.280684, complementary=0.115615
+qBeta(1.4, 5, 0.9)=0.435859, complementary=0.046966
+qBeta(2.6, 0.2, 0.1)=0.762096, complementary=0.999997
+qBeta(2.6, 0.2, 0.3)=0.946925, complementary=0.999284
+qBeta(2.6, 0.2, 0.5)=0.99069, complementary=0.99069
+qBeta(2.6, 0.2, 0.7)=0.999284, complementary=0.946925
+qBeta(2.6, 0.2, 0.9)=0.999997, complementary=0.762096
+qBeta(2.6, 1.4, 0.1)=0.342436, complementary=0.914211
+qBeta(2.6, 1.4, 0.3)=0.5403, complementary=0.795155
+qBeta(2.6, 1.4, 0.5)=0.676959, complementary=0.676959
+qBeta(2.6, 1.4, 0.7)=0.795155, complementary=0.5403
+qBeta(2.6, 1.4, 0.9)=0.914211, complementary=0.342436
+qBeta(2.6, 2.6, 0.1)=0.22943, complementary=0.77057
+qBeta(2.6, 2.6, 0.3)=0.381151, complementary=0.618849
+qBeta(2.6, 2.6, 0.5)=0.5, complementary=0.5
+qBeta(2.6, 2.6, 0.7)=0.618849, complementary=0.381151
+qBeta(2.6, 2.6, 0.9)=0.77057, complementary=0.22943
+qBeta(2.6, 3.8, 0.1)=0.173278, complementary=0.654633
+qBeta(2.6, 3.8, 0.3)=0.295079, complementary=0.503271
+qBeta(2.6, 3.8, 0.5)=0.39593, complementary=0.39593
+qBeta(2.6, 3.8, 0.7)=0.503271, complementary=0.295079
+qBeta(2.6, 3.8, 0.9)=0.654633, complementary=0.173278
+qBeta(2.6, 5, 0.1)=0.139386, complementary=0.565998
+qBeta(2.6, 5, 0.3)=0.240882, complementary=0.423301
+qBeta(2.6, 5, 0.5)=0.327633, complementary=0.327633
+qBeta(2.6, 5, 0.7)=0.423301, complementary=0.240882
+qBeta(2.6, 5, 0.9)=0.565998, complementary=0.139386
+qBeta(3.8, 0.2, 0.1)=0.837777, complementary=0.999998
+qBeta(3.8, 0.2, 0.3)=0.965156, complementary=0.999535
+qBeta(3.8, 0.2, 0.5)=0.993938, complementary=0.993938
+qBeta(3.8, 0.2, 0.7)=0.999535, complementary=0.965156
+qBeta(3.8, 0.2, 0.9)=0.999998, complementary=0.837777
+qBeta(3.8, 1.4, 0.1)=0.474319, complementary=0.939313
+qBeta(3.8, 1.4, 0.3)=0.651135, complementary=0.852205
+qBeta(3.8, 1.4, 0.5)=0.761796, complementary=0.761796
+qBeta(3.8, 1.4, 0.7)=0.852205, complementary=0.651135
+qBeta(3.8, 1.4, 0.9)=0.939313, complementary=0.474319
+qBeta(3.8, 2.6, 0.1)=0.345367, complementary=0.826722
+qBeta(3.8, 2.6, 0.3)=0.496729, complementary=0.704921
+qBeta(3.8, 2.6, 0.5)=0.60407, complementary=0.60407
+qBeta(3.8, 2.6, 0.7)=0.704921, complementary=0.496729
+qBeta(3.8, 2.6, 0.9)=0.826722, complementary=0.345367
+qBeta(3.8, 3.8, 0.1)=0.273162, complementary=0.726838
+qBeta(3.8, 3.8, 0.3)=0.402671, complementary=0.597329
+qBeta(3.8, 3.8, 0.5)=0.5, complementary=0.5
+qBeta(3.8, 3.8, 0.7)=0.597329, complementary=0.402671
+qBeta(3.8, 3.8, 0.9)=0.726838, complementary=0.273162
+qBeta(3.8, 5, 0.1)=0.226355, complementary=0.645024
+qBeta(3.8, 5, 0.3)=0.338889, complementary=0.517235
+qBeta(3.8, 5, 0.5)=0.426431, complementary=0.426431
+qBeta(3.8, 5, 0.7)=0.517235, complementary=0.338889
+qBeta(3.8, 5, 0.9)=0.645024, complementary=0.226355
+qBeta(5, 0.2, 0.1)=0.877103, complementary=0.999999
+qBeta(5, 0.2, 0.3)=0.974083, complementary=0.999656
+qBeta(5, 0.2, 0.5)=0.995509, complementary=0.995509
+qBeta(5, 0.2, 0.7)=0.999656, complementary=0.974083
+qBeta(5, 0.2, 0.9)=0.999999, complementary=0.877103
+qBeta(5, 1.4, 0.1)=0.564141, complementary=0.953034
+qBeta(5, 1.4, 0.3)=0.719316, complementary=0.884385
+qBeta(5, 1.4, 0.5)=0.811411, complementary=0.811411
+qBeta(5, 1.4, 0.7)=0.884385, complementary=0.719316
+qBeta(5, 1.4, 0.9)=0.953034, complementary=0.564141
+qBeta(5, 2.6, 0.1)=0.434002, complementary=0.860614
+qBeta(5, 2.6, 0.3)=0.576699, complementary=0.759118
+qBeta(5, 2.6, 0.5)=0.672367, complementary=0.672367
+qBeta(5, 2.6, 0.7)=0.759118, complementary=0.576699
+qBeta(5, 2.6, 0.9)=0.860614, complementary=0.434002
+qBeta(5, 3.8, 0.1)=0.354976, complementary=0.773645
+qBeta(5, 3.8, 0.3)=0.482765, complementary=0.661111
+qBeta(5, 3.8, 0.5)=0.573569, complementary=0.573569
+qBeta(5, 3.8, 0.7)=0.661111, complementary=0.482765
+qBeta(5, 3.8, 0.9)=0.773645, complementary=0.354976
+qBeta(5, 5, 0.1)=0.300969, complementary=0.699031
+qBeta(5, 5, 0.3)=0.415605, complementary=0.584395
+qBeta(5, 5, 0.5)=0.5, complementary=0.5
+qBeta(5, 5, 0.7)=0.584395, complementary=0.415605
+qBeta(5, 5, 0.9)=0.699031, complementary=0.300969
+rBeta(0.2, 0.2)=0.156052
+rBeta(0.2, 0.2)=0.9992
+rBeta(0.2, 0.2)=0.00584644
+rBeta(0.2, 0.2)=0.953567
+rBeta(0.2, 0.2)=0.000468873
+rBeta(0.2, 1.4)=0.15554
+rBeta(0.2, 1.4)=0.00609813
+rBeta(0.2, 1.4)=0.450018
+rBeta(0.2, 1.4)=0.599953
+rBeta(0.2, 1.4)=0.125688
+rBeta(0.2, 2.6)=0.00341746
+rBeta(0.2, 2.6)=0.0400444
+rBeta(0.2, 2.6)=2.63293e-06
+rBeta(0.2, 2.6)=0.000233909
+rBeta(0.2, 2.6)=5.06383e-09
+rBeta(0.2, 3.8)=0.000615211
+rBeta(0.2, 3.8)=0.0146319
+rBeta(0.2, 3.8)=8.77919e-06
+rBeta(0.2, 3.8)=0.0630611
+rBeta(0.2, 3.8)=5.66773e-07
+rBeta(0.2, 5)=0.000291087
+rBeta(0.2, 5)=0.000244793
+rBeta(0.2, 5)=0.033274
+rBeta(0.2, 5)=0.00475718
+rBeta(0.2, 5)=5.20763e-05
+rBeta(1.4, 0.2)=0.999707
+rBeta(1.4, 0.2)=0.986968
+rBeta(1.4, 0.2)=1
+rBeta(1.4, 0.2)=0.999096
+rBeta(1.4, 0.2)=0.999884
+rBeta(1.4, 1.4)=0.485624
+rBeta(1.4, 1.4)=0.933502
+rBeta(1.4, 1.4)=0.782887
+rBeta(1.4, 1.4)=0.242806
+rBeta(1.4, 1.4)=0.893764
+rBeta(1.4, 2.6)=0.426686
+rBeta(1.4, 2.6)=0.0736164
+rBeta(1.4, 2.6)=0.489684
+rBeta(1.4, 2.6)=0.295115
+rBeta(1.4, 2.6)=0.612222
+rBeta(1.4, 3.8)=0.175646
+rBeta(1.4, 3.8)=0.280007
+rBeta(1.4, 3.8)=0.27002
+rBeta(1.4, 3.8)=0.325441
+rBeta(1.4, 3.8)=0.424636
+rBeta(1.4, 5)=0.475496
+rBeta(1.4, 5)=0.312055
+rBeta(1.4, 5)=0.367104
+rBeta(1.4, 5)=0.122461
+rBeta(1.4, 5)=0.231872
+rBeta(2.6, 0.2)=0.999486
+rBeta(2.6, 0.2)=0.983949
+rBeta(2.6, 0.2)=0.999979
+rBeta(2.6, 0.2)=0.999994
+rBeta(2.6, 0.2)=0.994164
+rBeta(2.6, 1.4)=0.718897
+rBeta(2.6, 1.4)=0.900546
+rBeta(2.6, 1.4)=0.896262
+rBeta(2.6, 1.4)=0.751736
+rBeta(2.6, 1.4)=0.882997
+rBeta(2.6, 2.6)=0.518813
+rBeta(2.6, 2.6)=0.332689
+rBeta(2.6, 2.6)=0.779803
+rBeta(2.6, 2.6)=0.728029
+rBeta(2.6, 2.6)=0.154406
+rBeta(2.6, 3.8)=0.324814
+rBeta(2.6, 3.8)=0.402559
+rBeta(2.6, 3.8)=0.544642
+rBeta(2.6, 3.8)=0.438609
+rBeta(2.6, 3.8)=0.321803
+rBeta(2.6, 5)=0.403027
+rBeta(2.6, 5)=0.283523
+rBeta(2.6, 5)=0.375099
+rBeta(2.6, 5)=0.435297
+rBeta(2.6, 5)=0.314206
+rBeta(3.8, 0.2)=0.765236
+rBeta(3.8, 0.2)=1
+rBeta(3.8, 0.2)=0.771142
+rBeta(3.8, 0.2)=0.998233
+rBeta(3.8, 0.2)=0.975034
+rBeta(3.8, 1.4)=0.402612
+rBeta(3.8, 1.4)=0.514468
+rBeta(3.8, 1.4)=0.741919
+rBeta(3.8, 1.4)=0.646984
+rBeta(3.8, 1.4)=0.663609
+rBeta(3.8, 2.6)=0.801286
+rBeta(3.8, 2.6)=0.744747
+rBeta(3.8, 2.6)=0.653823
+rBeta(3.8, 2.6)=0.74085
+rBeta(3.8, 2.6)=0.813882
+rBeta(3.8, 3.8)=0.512431
+rBeta(3.8, 3.8)=0.908579
+rBeta(3.8, 3.8)=0.350713
+rBeta(3.8, 3.8)=0.317657
+rBeta(3.8, 3.8)=0.340499
+rBeta(3.8, 5)=0.505419
+rBeta(3.8, 5)=0.192688
+rBeta(3.8, 5)=0.434283
+rBeta(3.8, 5)=0.26326
+rBeta(3.8, 5)=0.633409
+rBeta(5, 0.2)=0.999251
+rBeta(5, 0.2)=0.971178
+rBeta(5, 0.2)=0.832947
+rBeta(5, 0.2)=0.995765
+rBeta(5, 0.2)=0.999984
+rBeta(5, 1.4)=0.590906
+rBeta(5, 1.4)=0.847716
+rBeta(5, 1.4)=0.881434
+rBeta(5, 1.4)=0.853464
+rBeta(5, 1.4)=0.683562
+rBeta(5, 2.6)=0.540083
+rBeta(5, 2.6)=0.94074
+rBeta(5, 2.6)=0.690156
+rBeta(5, 2.6)=0.597546
+rBeta(5, 2.6)=0.399028
+rBeta(5, 3.8)=0.318358
+rBeta(5, 3.8)=0.268051
+rBeta(5, 3.8)=0.462067
+rBeta(5, 3.8)=0.634355
+rBeta(5, 3.8)=0.341872
+rBeta(5, 5)=0.362547
+rBeta(5, 5)=0.787532
+rBeta(5, 5)=0.2502
+rBeta(5, 5)=0.20747
+rBeta(5, 5)=0.70176

@@ -1,0 +1,8 @@
+Distribution          =class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
+Estimated distribution=class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.433481
+Default distribution=class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
+Distribution from parameters=class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
+Distribution          =class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
+Estimated AliMikhailHaqCopula=class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.433481
+Default AliMikhailHaqCopula=class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
+AliMikhailHaqCopula from parameters=class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5

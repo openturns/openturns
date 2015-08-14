@@ -1,0 +1,12 @@
+%feature("docstring") OT::ExponentialFactory
+"Exponential factory.
+
+Available constructor:
+    ExponentialFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

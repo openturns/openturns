@@ -1,0 +1,15 @@
+Less(10,20) = true
+Less(20,20) = false
+Less(30,20) = false
+LessOrEqual(10,20) = true
+LessOrEqual(20,20) = true
+LessOrEqual(30,20) = false
+Equal(10,20) = false
+Equal(20,20) = true
+Equal(30,20) = false
+GreaterOrEqual(10,20) = false
+GreaterOrEqual(20,20) = true
+GreaterOrEqual(30,20) = true
+Greater(10,20) = false
+Greater(20,20) = false
+Greater(30,20) = true

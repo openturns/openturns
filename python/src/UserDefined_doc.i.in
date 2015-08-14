@@ -1,0 +1,102 @@
+%feature("docstring") OT::UserDefined
+"UserDefined distribution.
+
+Available constructors:
+    UserDefined(*coll=ot.UserDefinedPairCollection(1)*)
+
+    UserDefined(*sample*)
+
+    UserDefined(*sample, weights*)
+
+Parameters
+----------
+coll : :class:`~openturns.UserDefinedPairCollection`
+    `n` lists of `d` points :math:`x_{ij}, i = 1, \ldots, n, j = 1, \ldots, d`
+    associated with their weight :math:`p_i`.
+    If not :math:`\sum_1^n  p_i = 1.0`, the weights are normalized.
+sample : 2-d sequence of float
+    `n` lists of `d` points :math:`x_{ij}, i = 1, \ldots, n, j = 1, \ldots, d`.
+weights : :class:`~openturns.NumericalPoint`
+    List of `n` weights :math:`p_i, i = 1, \ldots, n`.
+    If not :math:`\sum_1^n  p_i = 1.0`, the weights are normalized.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    \Prob{X = x_{ij}} = p_i, \quad i = 1,\ldots,n
+
+where :math:`j =1, \ldots, d`, `d` the distribution's dimension and
+`n` the size of the multivariate d-dimensional distribution.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X_j} & = & \Tr{(\sum_{i=1}^n x_i p_i)}\\
+        \Var{X_j} & = & \Expect{X_j} - (\Expect{X_j})^2
+    \end{eqnarray*}
+
+with :math:`j =1, \ldots, d` and `d` the distribution's dimension.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> sample = ot.NumericalSample(4, 3)
+>>> for i in range(4):
+...     for j in range(3):
+...         sample[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
+
+>>> distribution = ot.UserDefined(sample, [0.3,0.2,0.25,0.25])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::getPairCollection
+"Accessor to the distribution's :math:`coll` parameter.
+
+Returns
+-------
+coll : :class:`~openturns.UserDefinedPairCollection`
+    Collection of points with their associated weight."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::setPairCollection
+"Accessor to the distribution's :math:`coll` parameter.
+
+Parameters
+----------
+coll : :class:`~openturns.UserDefinedPairCollection`
+    Collection of points with their associated weight."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::compactSupport()
+"Compact the support of the distribution.
+
+Compact by concatenating points of distance less than :math:`\varepsilon`
+and adding their weights.
+
+Notes
+-----
+The :math:`\varepsilon` has a default value stored in the ResourceMap: to
+change the default value the new value :math:`1.3e-3`, use the command:
+
+>>> import openturns as ot
+>>> ot.ResourceMap.SetAsNumericalScalar('DiscreteDistribution-SupportEpsilon', 1e-3)
+
+The method is always used for any univariate distributions and for upper
+dimensions, it is only used when the number of points defining the support is
+less than a limit specified in the ResourceMap in the key
+'UserDefined-SmallSize'. By default, the size limit is equal to :math:`1e4`.
+"

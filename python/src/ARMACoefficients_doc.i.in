@@ -1,0 +1,80 @@
+%feature("docstring") OT::ARMACoefficients
+"Coefficients of an ARMA process (MA or AR part).
+
+Available constructors:
+    ARMACoefficients(*size, dimension*)
+
+    ARMACoefficients(*coeffList*)
+
+    ARMACoefficients(*matrixColl*)
+   
+
+Parameters
+----------
+size : int, 
+    The number of elements in the list.
+dimension : int, 
+    The dimension of each element in the list.
+coeffList : a list of floats,
+    In dimension 1, the list of the coefficients defining the recurrence of the ARMA process (MA or AR part).
+matrixColl : a list of :class:`~openturns.SquareMatrix`
+    In dimension :math:`d`, the collection of square matrices in :math:`\Rset^d \times \Rset^d` defining the recurrence of the ARMA process (MA or AR part).
+
+Notes
+-----
+
+- In the first constructor:
+
+The elements are the null elements (scalar in dimension 1 and the null matrix in upper dimension).
+
+- In the other constructor:
+
+The elements are specified in the constructor.
+
+Examples
+--------
+Create the coefficients defining the recurrence of an ARMA process:
+
+>>> import openturns as ot
+>>> myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
+>>> myMACoef = ot.ARMACoefficients([0.4, 0.3])"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMACoefficients::getDimension
+"Accessor to the dimension of coefficients in the list.
+
+Returns
+-------
+dimension : int
+    The dimension of elements in the list."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMACoefficients::add
+"Add a new element in the list.
+
+Available usages:
+    add(*coeff*)
+
+    add(*squareMat*)
+
+Parameters
+----------
+coeff : float
+    A new scalar coefficient added to the list composed with scalars.
+squareMat : :class:`~openturns.SquareMatrix`
+    A new element in the list composed with square matrices.
+
+Returns
+-------
+- In the first usage:
+
+A new list of elements composed with scalars.
+
+- In the second usage:
+
+A new list of elements composed with square matrices.
+
+"

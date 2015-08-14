@@ -1,0 +1,139 @@
+> restart:
+> Digits:=20:
+> with(Statistics):
+> G:=RandomVariable(Normal(0,1)):
+> X1:=RandomVariable(Uniform(-1,2)):
+> CDF1:=CDF(X1,x1);
+> X2:=RandomVariable(Gamma(1/2,2)):
+> CDF2:=CDF(X2,x2);
+> X3:=RandomVariable(Beta(r,t-r)):
+> CDF3:=subs(t3=((x3+1)/3),r=2,t=5,CDF(X3,t3));
+
+                        {     0              x1 < -1
+                        {
+                        {        x1
+                CDF1 := { 1/3 + ----         x1 < 2
+                        {        3
+                        {
+                        {     1             otherwise
+
+
+              {                 0                        x2 <= 0
+      CDF2 := {
+              { -exp(-2 x2) - 2 exp(-2 x2) x2 + 1        0 < x2
+
+
+          {
+          {
+  CDF3 := {      x3
+          { 0 , ---- < -1/3
+          {      3
+
+            / x3       \2                          x3
+            |---- + 1/3|  hypergeom([2, -2], [3], ---- + 1/3)
+            \ 3        /                           3
+        1/2 ------------------------------------------------- ,
+                               Beta(2, 3)
+
+         x3
+        ---- < 2/3
+         3
+
+        1 , otherwise
+
+> X1:=evalf(subs(subs(x1=1,CDF1)));
+> X2:=evalf(subs(subs(x2=1,CDF2)));
+> X3:=evalf(subs(subs(x3=1,CDF3)));
+
+                     X1 := 0.66666666666666666667
+
+
+                     X2 := 0.59399415029016192433
+
+
+                     X3 := 0.88888888888888888889
+
+> u1:=fsolve(CDF(G,x)=X1,x);
+> u2:=fsolve(CDF(G,x)=X2,x);
+> u3:=fsolve(CDF(G,x)=X3,x);
+
+                     u1 := 0.43072729929545749022
+
+
+                     u2 := 0.23783161172327289985
+
+
+                     u3 := 1.2206403488473496983
+
+> INEC_g1:=evalf(subs(x=u1,PDF(G,x)));
+> INEC_g2:=evalf(subs(x=u2,PDF(G,x)));
+> INEC_g3:=evalf(subs(x=u3,PDF(G,x)));
+
+                  INEC_g1 := 0.36359977467531772230
+
+
+                  INEC_g2 := 0.38781747667892138429
+
+
+                  INEC_g3 := 0.18939510112030681087
+
+> INEC_h1:=evalf(subs(x=u1,diff(PDF(G,x),x)));
+> INEC_h2:=evalf(subs(x=u2,diff(PDF(G,x),x)));
+> INEC_h3:=evalf(subs(x=u3,diff(PDF(G,x),x)));
+
+                  INEC_h1 := -0.15661234897033648136
+
+
+                 INEC_h2 := -0.092235255533000673534
+
+
+                  INEC_h3 := -0.23118330230147037728
+
+> IMT_g1:=1/evalf(subs(x1=1,diff(CDF1,x1)));
+> IMT_g2:=1/evalf(subs(x2=1,diff(CDF2,x2)));
+> IMT_g3:=1/evalf(subs(x3=1,diff(CDF3,x3)));
+
+                   IMT_g1 := 3.0000000000000000000
+
+
+                   IMT_g2 := 1.8472640247326625569
+
+
+                   IMT_g3 := 3.3750000000000000001
+
+> IMT_h1:=-evalf(subs(x1=1,diff(CDF1,x1$2)))/evalf(subs(x1=1,diff(CDF1,x
+> 1)))^3;
+> IMT_h2:=-evalf(subs(x2=1,diff(CDF2,x2$2)))/evalf(subs(x2=1,diff(CDF2,x
+> 2)))^3;
+> IMT_h3:=-evalf(subs(x3=1,diff(CDF3,x3$2)))/evalf(subs(x3=1,diff(CDF3,x
+> 3)))^3;
+
+                            IMT_h1 := -0.
+
+
+                   IMT_h2 := 3.4123843770715149426
+
+
+                   IMT_h3 := 17.085937500000000002
+
+> diff(f(g(x)),x$2);
+
+                                                  / 2      \
+            (2)           /d      \2              |d       |
+          (D   )(f)(g(x)) |-- g(x)|  + D(f)(g(x)) |--- g(x)|
+                          \dx     /               |  2     |
+                                                  \dx      /
+
+> IMT_h1*INEC_g1^2+IMT_g1*INEC_h1;
+> IMT_h2*INEC_g2^2+IMT_g2*INEC_h2;
+> IMT_h3*INEC_g3^2+IMT_g3*INEC_h3;
+
+                       -0.46983704691100944408
+
+
+                        0.34284791435655692599
+
+
+                       -0.16736245021943200214
+
+> 

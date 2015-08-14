@@ -1,0 +1,8 @@
+distribution= class=Poisson name=Poisson dimension=1 lambda=2.5
+Estimated distribution= class=Poisson name=Poisson dimension=1 lambda=2.5153
+Default distribution= Poisson(lambda = 1)
+Distribution from parameters= Poisson(lambda = 2.5)
+Poisson          = Poisson(lambda = 2.5)
+Estimated poisson= Poisson(lambda = 2.5153)
+Default poisson= Poisson(lambda = 1)
+Poisson from parameters= Poisson(lambda = 2.5)

@@ -1,0 +1,112 @@
+> restart:
+> f:=(exp(alpha*(x-mu))-exp(-beta*(x-mu)))/(exp(alpha*(x-mu))+exp(-beta*
+> (x-mu)));
+
+                 exp(alpha (x - mu)) - exp(-beta (x - mu))
+            f := -----------------------------------------
+                 exp(alpha (x - mu)) + exp(-beta (x - mu))
+
+> with(plots):
+> for i from 0 to 6 do
+>   p[i]:=plot(subs(alpha=3,beta=i,mu=1,f),x=-5..5);
+>  
+> q[i]:=plot(subs(alpha=i,beta=3,mu=1,f),x=-5..5,color="green",style="po
+> int",symbol="circle");
+> od:
+> display(seq(p[i],i=0..5),seq(q[i],i=0..5));
+> 
+
+> plot(subs(mu=1,alpha=2,beta=0.3,factor(diff(f,x))),x=-5..5);
+
+> F:=exp(-alpha*exp(-(x-mu)/beta));
+
+                                          x - mu
+                    F := exp(-alpha exp(- ------))
+                                           beta
+
+> for i from 1 to 6 do
+>   p[i]:=plot(subs(alpha=1,beta=i,mu=1,F),x=-5..5);
+> od:
+> display(seq(p[i],i=0..5));
+
+> 
+> phi:=tanh((x-mu)/alpha);
+
+                                     x - mu
+                         phi := tanh(------)
+                                     alpha
+
+> phi := tanh((x-mu)/alpha);
+
+                                     x - mu
+                         phi := tanh(------)
+                                     alpha
+
+> restart:
+> phi := tanh((x-mu)/alpha);
+> assume(q>-1,q<1);
+> sys:=subs(x=x1,phi)=0,subs(x=x2,phi)=q;
+
+                                     x - mu
+                         phi := tanh(------)
+                                     alpha
+
+
+                         x1 - mu            x2 - mu
+             sys := tanh(-------) = 0, tanh(-------) = q~
+                          alpha              alpha
+
+> sol:=allvalues(solve({sys},{mu,alpha}));
+
+                           2 (-x2 + x1)
+  sol := {mu = x1, alpha = -------------},
+                                -1 + q~
+                           ln(- -------)
+                                1 + q~
+
+                               -x2 + x1
+        {mu = x1, alpha = -------------------}
+                              /  -1 + q~\1/2
+                          ln(-|- -------|   )
+                              \  1 + q~ /
+
+> phiinv:=subs(sol[1],convert(solve(phi=y,x),ln));
+
+                    2 (1/2 ln(y + 1) - 1/2 ln(1 - y)) (-x2 + x1)
+     phiinv := x1 + --------------------------------------------
+                                        -1 + q~
+                                   ln(- -------)
+                                        1 + q~
+
+> J:=convert(subs(sol[1],x=phiinv,diff(phi,x)),exp);
+
+                                  2       -1 + q~
+                            (1 - y ) ln(- -------)
+                                          1 + q~
+                   J := 1/2 ----------------------
+                                   -x2 + x1
+
+> simplify(subs(x=solve(phi=q,x),diff(phi,x)));
+
+                                       2
+                                -1 + q~
+                              - --------
+                                 alpha
+
+> ff:=collect(factor(convert(solve(phi=q,x),ln)),ln);
+
+        ff := mu + 1/2 alpha ln(1 + q~) - 1/2 alpha ln(1 - q~)
+
+> subs(q=0,ff);
+> evalf[25](simplify(solve(subs(q=3/4,ff)-subs(q=1/4,ff)=m3-m1,alpha)));
+
+                                  mu
+
+
+    1.393646133559127220494626 m3 - 1.393646133559127220494626 m1
+
+> 
+
+                             -1.386294361
+
+> 

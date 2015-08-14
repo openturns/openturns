@@ -1,0 +1,44 @@
+test number zero : default constructor and string converter
+matrix0 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test number one : constructor with size, operator() and string converter
+matrix1 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,2,3,4]
+test number two : copy constructor and string converter
+matrix2 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,2,3,4]
+test number three : get dimensions methods
+matrix1's nbRows =  2
+matrix1's nbColumns =  2
+test number four : constructor with collection method
+elementsValues =  [1,2,3,4,5,6]
+matrix0bis =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,2,3,4]
+test number five : assignment method
+test number six : transposition method
+matrix1 transposed =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,2,4]
+test number seven : addition method
+sum1 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,5,5,8]
+sum2 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,5,5,8]
+sum1 equals sum2 =  True
+test number eight : substraction method
+diff =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,-1,1,0]
+test number nine : matrix multiplication method
+prod =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,14,14,20]
+test number ten : multiplication with a numerical point method
+pt =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult =  class=NumericalPoint name=Unnamed dimension=2 values=[7,10]
+test number eleven : multiplication and division by a numerical scalar methods
+scalprod1 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
+scalprod3 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
+scalprod1 equals scalprod3 =  True
+scaldiv1 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,0.666667,1,1.33333]
+scaldiv2 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,0.666667,1,1.33333]
+scaldiv1 equals scaldiv2 =  True
+test number twelve : isEmpty method
+matrix1 is empty =  False
+matrix5 is empty =  True
+matrix6 is empty =  True
+matrix0 is empty =  True
+test number fourteen : multiplication with a numerical point method
+pt_test =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+A =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,-0.866025,0.866025,0.5]
+B =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,0.866025,-0.866025,0.5]
+id =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
+ptResult2 =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]

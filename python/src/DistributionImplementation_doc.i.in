@@ -1,0 +1,2225 @@
+%define OT_Distribution_doc
+"Base class for probability distributions.
+
+Notes
+-----
+In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution* for which an *analytical* description of its main properties is known, in contrast to the :class:`~openturns.RandomVector` which distribution is *unknown* and which characteristics can only be *estimated* by means of Monte Carlo simulation.
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation
+OT_Distribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeCDF_doc
+"Compute the cumulative distribution function.
+
+Parameters
+----------
+X : sequence of float, 2-d sequence of float
+    CDF input(s).
+
+Returns
+-------
+F : float, :class:`~openturns.NumericalPoint`
+    CDF value(s) at input(s) `X`.
+
+Notes
+-----
+The cumulative distribution function is defined as:
+
+.. math::
+
+    F_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i \leq x_i},
+                             \quad \vect{x} \in \supp{\vect{X}}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeCDF
+OT_Distribution_computeCDF_doc
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeCDFGradient_doc
+"Compute the gradient of the cumulative distribution function.
+
+Parameters
+----------
+X : sequence of float
+    CDF input.
+
+Returns
+-------
+dFdtheta : :class:`~openturns.NumericalPoint`
+    Partial derivatives of the CDF with respect to the distribution
+    parameters at input `X`."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeCDFGradient
+OT_Distribution_computeCDFGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeCharacteristicFunction_doc
+"Compute the characteristic function.
+
+Parameters
+----------
+t : float
+    Characteristic function input.
+
+Returns
+-------
+phi : complex
+    Characteristic function value at input `t`.
+
+Notes
+-----
+The characteristic function is defined as:
+
+.. math::
+    \phi_X(t) = \mathbb{E}\left[\exp(- i t X)\right],
+                \quad t \in \Rset
+
+OpenTURNS features a generic implementation of the characteristic function for
+all its univariate distributions (both continuous and discrete). This default
+implementation might be time consuming, especially as the modulus of `t` gets
+high. Only some univariate distributions benefit from dedicated more efficient
+implementations."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeCharacteristicFunction
+OT_Distribution_computeCharacteristicFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeComplementaryCDF_doc
+"Compute the complementary cumulative distribution function.
+
+Parameters
+----------
+X : sequence of float, 2-d sequence of float
+    Complementary CDF input(s).
+
+Returns
+-------
+C : float, :class:`~openturns.NumericalPoint`
+    Complementary CDF value(s) at input(s) `X`.
+
+Notes
+-----
+The complementary cumulative distribution function.
+
+.. math::
+
+    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i=1}^n X_i \leq x_i}, \quad \vect{x} \in \supp{\vect{X}}
+
+.. warning::
+    This is not the survival function (except for 1-dimensional
+    distributions).
+
+See Also
+--------
+computeSurvivalFunction"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeComplementaryCDF
+OT_Distribution_computeComplementaryCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeConditionalCDF_doc
+"Compute the conditional cumulative distribution function.
+
+Parameters
+----------
+Xn : float
+    Conditional CDF input (last component).
+Xcond : sequence of float with dimension :math:`n-1`
+    Conditionning values for the other components.
+
+Returns
+-------
+F : float
+    Conditional CDF value at input `Xn`, `Xcond`.
+
+Notes
+-----
+The conditional cumulative distribution function of the last component with
+respect to the other fixed components is defined as follows:
+
+.. math::
+
+    F_{X_n \mid X_1, \ldots, X_{n - 1}}(x_n) =
+        \Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}},
+        \quad x_n \in \supp{X_n}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeConditionalCDF
+OT_Distribution_computeConditionalCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeConditionalDDF_doc
+"Compute the conditional derivative density function of the last component.
+
+With respect to the other fixed components.
+
+Parameters
+----------
+Xn : float
+    Conditional DDF input (last component).
+Xcond : sequence of float with dimension :math:`n-1`
+    Conditionning values for the other components.
+
+Returns
+-------
+d : float
+    Conditional DDF value at input `Xn`, `Xcond`.
+
+See Also
+--------
+computeDDF, computeConditionalCDF"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeConditionalDDF
+OT_Distribution_computeConditionalDDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeConditionalPDF_doc
+"Compute the conditional probability density function.
+
+Conditional PDF of the last component with respect to the other fixed components.
+
+Parameters
+----------
+Xn : float
+    Conditional PDF input (last component).
+Xcond : sequence of float with dimension :math:`n-1`
+    Conditionning values for the other components.
+
+Returns
+-------
+f : float
+    Conditional PDF value at input `Xn`, `Xcond`.
+
+See Also
+--------
+computePDF, computeConditionalCDF"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeConditionalPDF
+OT_Distribution_computeConditionalPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeConditionalQuantile_doc
+"Compute the conditional quantile function of the last component.
+
+Conditional quantile with respect to the other fixed components.
+
+Parameters
+----------
+p : float, :math:`0 < p < 1`
+    Conditional quantile function input.
+Xcond : sequence of float with dimension :math:`n-1`
+    Conditionning values for the other components.
+
+Returns
+-------
+X1 : float
+    Conditional quantile at input `p`, `Xcond`.
+
+See Also
+--------
+computeQuantile, computeConditionalCDF"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeConditionalQuantile
+OT_Distribution_computeConditionalQuantile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeDDF_doc
+"Compute the derivative density function.
+
+Parameters
+----------
+X : sequence of float, 2-d sequence of float
+    PDF input(s).
+
+Returns
+-------
+d : :class:`~openturns.NumericalPoint`, :class:`~openturns.NumericalSample`
+    DDF value(s) at input(s) `X`.
+
+Notes
+-----
+The derivative density function is the gradient of the probability density
+function with respect to :math:`\vect{x}`:
+
+.. math::
+
+    \vect{\nabla}_{\vect{x}} f_{\vect{X}}(\vect{x}) =
+        \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_i},
+                  \quad i = 1, \ldots, n\right)},
+        \quad \vect{x} \in \supp{\vect{X}}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeDDF
+OT_Distribution_computeDDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeDensityGenerator_doc
+"Compute the probability density function of the characteristic generator.
+
+PDF of the characteristic generator of the elliptical distribution.
+
+Parameters
+----------
+beta2 : float
+    Density generator input.
+
+Returns
+-------
+p : float
+    Density generator value at input `X`.
+
+Notes
+-----
+This is the function :math:`\phi` such that the probability density function
+rewrites:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) =
+        \phi\left(\Tr{\left(\vect{x} - \vect{\mu}\right)}
+                      \mat{\Sigma}^{-1}
+                      \left(\vect{x} - \vect{\mu}\right)
+            \right),
+        \quad \vect{x} \in \supp{\vect{X}}
+
+This function only exists for elliptical distributions.
+
+See Also
+--------
+isElliptical, computePDF"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeDensityGenerator
+OT_Distribution_computeDensityGenerator_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeDensityGeneratorDerivative_doc
+"Compute the first-order derivative of the probability density function.
+
+PDF of the characteristic generator of the elliptical distribution.
+
+Parameters
+----------
+beta2 : float
+    Density generator input.
+
+Returns
+-------
+p : float
+    Density generator first-order derivative value at input `X`.
+
+Notes
+-----
+This function only exists for elliptical distributions.
+
+See Also
+--------
+isElliptical, computeDensityGenerator"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeDensityGeneratorDerivative
+OT_Distribution_computeDensityGeneratorDerivative_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeDensityGeneratorSecondDerivative_doc
+"Compute the second-order derivative of the probability density function.
+
+PDF of the characteristic generator of the elliptical distribution.
+
+Parameters
+----------
+beta2 : float
+    Density generator input.
+
+Returns
+-------
+p : float
+    Density generator second-order derivative value at input `X`.
+
+Notes
+-----
+This function only exists for elliptical distributions.
+
+See Also
+--------
+isElliptical, computeDensityGenerator"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeDensityGeneratorSecondDerivative
+OT_Distribution_computeDensityGeneratorSecondDerivative_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeGeneratingFunction_doc
+"Compute the probability-generating function.
+
+Parameters
+----------
+z : float or complex
+    Probability-generating function input.
+
+Returns
+-------
+g : float
+    Probability-generating function value at input `X`.
+
+Notes
+-----
+The probability-generating function is defined as follows:
+
+.. math::
+
+    G_X(z) = \Expect{z^X}, \quad z \in \Cset
+
+This function only exists for discrete distributions. OpenTURNS implements
+this method for univariate distributions only.
+
+See Also
+--------
+isDiscrete"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeGeneratingFunction
+OT_Distribution_computeGeneratingFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeLogCharacteristicFunction_doc
+"Compute the logarithm of the characteristic function.
+
+Parameters
+----------
+t : float
+    Characteristic function input.
+
+Returns
+-------
+phi : complex
+    Logarithm of the characteristic function value at input `t`.
+
+Notes
+-----
+OpenTURNS features a generic implementation of the characteristic function for
+all its univariate distributions (both continuous and discrete). This default
+implementation might be time consuming, especially as the modulus of `t` gets
+high. Only some univariate distributions benefit from dedicated more efficient
+implementations.
+
+See Also
+--------
+computeCharacteristicFunction"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeLogCharacteristicFunction
+OT_Distribution_computeLogCharacteristicFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeLogGeneratingFunction_doc
+"Compute the logarithm of the probability-generating function.
+
+Parameters
+----------
+z : float or complex
+    Probability-generating function input.
+
+Returns
+-------
+lg : float
+    Logarithm of the probability-generating function value at input `X`.
+
+Notes
+-----
+This function only exists for discrete distributions. OpenTURNS implements
+this method for univariate distributions only.
+
+See Also
+--------
+isDiscrete, computeGeneratingFunction"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeLogGeneratingFunction
+OT_Distribution_computeLogGeneratingFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeLogPDF_doc
+"Compute the logarithm of the probability density function.
+
+Parameters
+----------
+X : sequence of float, 2-d sequence of float
+    PDF input(s).
+
+Returns
+-------
+f : float, :class:`~openturns.NumericalPoint`
+    Logarithm of the PDF value(s) at input(s) `X`."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeLogPDF
+OT_Distribution_computeLogPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeInterval_doc
+"Compute the minimum volume interval of a given probability content.
+
+Univariate case only.
+
+Parameters
+----------
+prob : float
+    Probability
+
+Returns
+-------
+interval : :class:`~openturns.Interval`
+    Minimum volume interval of a given probability content in the univariate case."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
+OT_Distribution_computeMinimumVolumeInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computePDF_doc
+"Compute the probability density function.
+
+Parameters
+----------
+X : sequence of float, 2-d sequence of float
+    PDF input(s).
+
+Returns
+-------
+f : float, :class:`~openturns.NumericalPoint`
+    PDF value(s) at input(s) `X`.
+
+Notes
+-----
+The probability density function is defined as follows:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) = \frac{\partial^n F_{\vect{X}}(\vect{x})}
+                                  {\prod_{i=1}^n \partial x_i},
+                             \quad \vect{x} \in \supp{\vect{X}}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computePDF
+OT_Distribution_computePDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computePDFGradient_doc
+"Compute the gradient of the probability density function.
+
+Parameters
+----------
+X : sequence of float
+    PDF input.
+
+Returns
+-------
+dfdtheta : :class:`~openturns.NumericalPoint`
+    Partial derivatives of the PDF with respect to the distribution
+    parameters at input `X`."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computePDFGradient
+OT_Distribution_computePDFGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeProbability_doc
+  "Compute the interval probability.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    An interval, possibly multivariate.
+
+Returns
+-------
+P : float
+    Interval probability.
+
+Notes
+-----
+This computes the probability that the random vector :math:`\vect{X}` lies in
+the hyper-rectangular region formed by the vectors :math:`\vect{a}` and
+:math:`\vect{b}`:
+
+.. math::
+
+    \Prob{\bigcap\limits_{i=1}^n a_i < X_i \leq b_i} =
+        \sum\limits_{\vect{c}} (-1)^{n(\vect{c})}
+            F_{\vect{X}}\left(\vect{c}\right)
+
+where the sum runs over the :math:`2^n` vectors such that
+:math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, n)}` with :math:`c_i \in [a_i, b_i]`,
+and :math:`n(\vect{c})` is the number of components in
+:math:`\vect{c}` such that :math:`c_i = a_i`."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeProbability
+OT_Distribution_computeProbability_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeQuantile_doc
+"Compute the quantile function.
+
+Parameters
+----------
+p : float, :math:`0 < p < 1`
+    Quantile function input (a probability).
+
+Returns
+-------
+X : :class:`~openturns.NumericalPoint`
+    Quantile at probability level `p`.
+
+Notes
+-----
+The quantile function is also known as the inverse cumulative distribution
+function:
+
+.. math::
+
+    Q_{\vect{X}}(p) = F_{\vect{X}}^{-1}(p),
+                      \quad p \in [0; 1]"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeQuantile
+OT_Distribution_computeQuantile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeRadialDistributionCDF_doc
+"Compute the cumulative distribution function of the squared radius.
+
+For the underlying standard spherical distribution (for elliptical
+distributions only).
+
+Parameters
+----------
+r2 : float, :math:`0 \leq r^2`
+    Squared radius.
+
+Returns
+-------
+F : float
+    CDF value at input `r2`.
+
+Notes
+-----
+This is the CDF of the sum of the squared independent, standard, identically
+distributed components:
+
+.. math::
+
+    R^2 = \sqrt{\sum\limits_{i=1}^n U_i^2}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeRadialDistributionCDF
+OT_Distribution_computeRadialDistributionCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeScalarQuantile_doc
+"Compute the quantile function for univariate distributions.
+
+Parameters
+----------
+p : float, :math:`0 < p < 1`
+    Quantile function input (a probability).
+
+Returns
+-------
+X : float
+    Quantile at probability level `p`.
+
+Notes
+-----
+The quantile function is also known as the inverse cumulative distribution
+function:
+
+.. math::
+
+    Q_X(p) = F_X^{-1}(p), \quad p \in [0; 1]
+
+See Also
+--------
+computeQuantile"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeScalarQuantile
+OT_Distribution_computeScalarQuantile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeSurvivalFunction_doc
+"Compute the survival function.
+
+Parameters
+----------
+X : sequence of float, 2-d sequence of float
+    Survival function input(s).
+
+Returns
+-------
+S : float, :class:`~openturns.NumericalPoint`
+    Survival function value(s) at input(s) `X`.
+
+Notes
+-----
+The survival function is defined as follows:
+
+.. math::
+
+    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i > x_i},
+                             \quad \vect{x} \in \supp{\vect{X}}
+
+.. warning::
+
+    This is not the complementary cumulative distribution function (except for
+    1-dimensional distributions).
+
+See Also
+--------
+computeComplementaryCDF"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeSurvivalFunction
+OT_Distribution_computeSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawCDF_doc
+"Draw the cumulative distribution function.
+
+Available constructors:
+    drawCDF(*x_min, x_max, pointNumber*)
+
+    drawCDF(*lowerCorner, upperCorner, pointNbrInd*)
+
+    drawCDF(*lowerCorner, upperCorner*)
+
+Parameters
+----------
+x_min : float, optional
+    The min-value of the mesh of the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : float, optional, :math:`x_{\max} > x_{\min}`
+    The max-value of the mesh of the y-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+pointNumber : int
+    The number of points that is used for meshing each axis.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+lowerCorner : sequence of float, of dimension 2, optional
+    The lower corner :math:`[x_{min}, y_{min}]`.
+upperCorner : sequence of float, of dimension 2, optional
+    The upper corner :math:`[x_{max}, y_{max}]`.
+pointNbrInd : :class:`~openturns.Indices`, of dimension 2
+    Number of points that is used for meshing each axis.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the CDF.
+
+Notes
+-----
+Only valid for univariate and bivariate distributions.
+
+See Also
+--------
+computeCDF, viewer.View, ResourceMap
+
+Examples
+--------
+View the CDF of a univariate distribution:
+
+>>> import openturns as ot
+>>> dist = ot.Normal()
+>>> graph = dist.drawCDF()
+>>> graph.setLegends(['normal cdf'])
+
+View the iso-lines CDF of a bivariate distribution:
+
+>>> import openturns as ot
+>>> dist = ot.Normal(2)
+>>> graph2 = dist.drawCDF()
+>>> graph2.setLegends(['iso- normal cdf'])
+>>> graph3 = dist.drawCDF([-10, -5],[5, 10], [511, 511])
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawCDF
+OT_Distribution_drawCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawMarginal1DCDF_doc
+"Draw the cumulative distribution function of a margin.
+
+Parameters
+----------
+i : int, :math:`1 \leq i \leq n`
+    The index of the margin of interest.
+x_min : float
+    The starting value that is used for meshing the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : float, :math:`x_{\max} > x_{\min}`
+    The ending value that is used for meshing the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+n_points : int
+    The number of points that is used for meshing the x-axis.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the requested margin's CDF.
+
+See Also
+--------
+computeCDF, getMarginal, viewer.View, ResourceMap
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal(10)
+>>> graph = distribution.drawMarginal1DCDF(2, -6., 6., 100)
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginal1DCDF
+OT_Distribution_drawMarginal1DCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawMarginal1DPDF_doc
+"Draw the probability density function of a margin.
+
+Parameters
+----------
+i : int, :math:`1 \leq i \leq n`
+    The index of the margin of interest.
+x_min : float
+    The starting value that is used for meshing the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : float, :math:`x_{\max} > x_{\min}`
+    The ending value that is used for meshing the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+n_points : int
+    The number of points that is used for meshing the x-axis.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the requested margin's PDF.
+
+See Also
+--------
+computePDF, getMarginal, viewer.View, ResourceMap
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal(10)
+>>> graph = distribution.drawMarginal1DPDF(2, -6., 6., 100)
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginal1DPDF
+OT_Distribution_drawMarginal1DPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawMarginal2DCDF_doc
+"Draw the cumulative distribution function of a couple of margins.
+
+Parameters
+----------
+i : int, :math:`1 \leq i \leq n`
+    The index of the first margin of interest.
+j : int, :math:`1 \leq i \neq j \leq n`
+    The index of the second margin of interest.
+x_min : list of 2 floats
+    The starting values that are used for meshing the x- and y- axes.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+    The ending values that are used for meshing the x- and y- axes.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+n_points : list of 2 ints
+    The number of points that are used for meshing the x- and y- axes.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the marginal CDF of the requested couple of
+    margins.
+
+See Also
+--------
+computeCDF, getMarginal, viewer.View, ResourceMap
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal(10)
+>>> graph = distribution.drawMarginal2DCDF(2, 3, [-6.] * 2, [6.] * 2, [100] * 2)
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginal2DCDF
+OT_Distribution_drawMarginal2DCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawMarginal2DPDF_doc
+"Draw the probability density function of a couple of margins.
+
+Parameters
+----------
+i : int, :math:`1 \leq i \leq n`
+    The index of the first margin of interest.
+j : int, :math:`1 \leq i \neq j \leq n`
+    The index of the second margin of interest.
+x_min : list of 2 floats
+    The starting values that are used for meshing the x- and y- axes.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+    The ending values that are used for meshing the x- and y- axes.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+n_points : list of 2 ints
+    The number of points that are used for meshing the x- and y- axes.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the marginal PDF of the requested couple of
+    margins.
+
+See Also
+--------
+computePDF, getMarginal, viewer.View, ResourceMap
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal(10)
+>>> graph = distribution.drawMarginal2DPDF(2, 3, [-6.] * 2, [6.] * 2, [100] * 2)
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginal2DPDF
+OT_Distribution_drawMarginal2DPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawPDF_doc
+"Draw the graph or of iso-lines of probability density function.
+
+Available constructors:
+    drawPDF(*x_min, x_max, pointNumber*)
+
+    drawPDF(*lowerCorner, upperCorner, pointNbrInd*)
+
+    drawPDF(*lowerCorner, upperCorner*)
+
+Parameters
+----------
+x_min : float, optional
+    The min-value of the mesh of the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : float, optional, :math:`x_{\max} > x_{\min}`
+    The max-value of the mesh of the y-axis.
+    Defaults uses the quantile associated to the probability level
+    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+pointNumber : int
+    The number of points that is used for meshing each axis.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+lowerCorner : sequence of float, of dimension 2, optional
+    The lower corner :math:`[x_{min}, y_{min}]`.
+upperCorner : sequence of float, of dimension 2, optional
+    The upper corner :math:`[x_{max}, y_{max}]`.
+pointNbrInd : :class:`~openturns.Indices`, of dimension 2
+    Number of points that is used for meshing each axis.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the PDF or its iso_lines.
+
+Notes
+-----
+Only valid for univariate and bivariate distributions.
+
+See Also
+--------
+computePDF, viewer.View, ResourceMap
+
+Examples
+--------
+View the PDF of a univariate distribution:
+
+>>> import openturns as ot
+>>> dist = ot.Normal()
+>>> graph = dist.drawPDF()
+>>> graph.setLegends(['normal pdf'])
+
+View the iso-lines PDF of a bivariate distribution:
+
+>>> import openturns as ot
+>>> dist = ot.Normal(2)
+>>> graph2 = dist.drawPDF()
+>>> graph2.setLegends(['iso- normal pdf'])
+>>> graph3 = dist.drawPDF([-10, -5],[5, 10], [511, 511])
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawPDF
+OT_Distribution_drawPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawQuantile_doc
+"Draw the quantile function.
+
+Parameters
+----------
+q_min : float, in :math:`[0,1]`
+    The min value of the mesh of the x-axis.
+q_max : float, in :math:`[0,1]`
+    The max value of the mesh of the x-axis.
+n_points : int, optional
+    The number of points that is used for meshing the quantile curve.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the quantile function.
+
+Notes
+-----
+This is implemented for univariate and bivariate distributions only.
+In the case of bivariate distributions, defined by its CDF :math:`F` and its marginals :math:`(F_1, F_2)`, the quantile of order :math:`q` is the point :math:`(F_1(u),F_2(u))` defined by
+
+.. math::
+
+    F(F_1(u), F_2(u)) = q
+
+
+See Also
+--------
+computeQuantile, viewer.View, ResourceMap
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal()
+>>> graph = distribution.drawQuantile()
+>>> view = View(graph)
+>>> view.show()
+>>> distribution = ot.ComposedDistribution([ot.Normal(), ot.Exponential(1.0)], ot.ClaytonCopula(0.5))
+>>> graph = distribution.drawQuantile()
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawQuantile
+OT_Distribution_drawQuantile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCDFEpsilon_doc
+"Accessor to the CDF computation precision.
+
+Returns
+-------
+CDFEpsilon : float
+    CDF computation precision."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getCDFEpsilon
+OT_Distribution_getCDFEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCenteredMoment_doc
+"Accessor to the componentwise centered moments.
+
+Parameters
+----------
+k : int
+    The centered moment's order.
+
+Returns
+-------
+m : :class:`~openturns.NumericalPoint`
+    Componentwise centered moment of order :math:`k`.
+
+Notes
+-----
+Centered moments are centered with respect to the first-order moment:
+
+.. math::
+
+    \vect{m}^{(k)}_0 = \Tr{\left(\Expect{\left(X_i - \mu_i\right)^k},
+                                 \quad i = 1, \ldots, n\right)}
+
+See Also
+--------
+getMoment"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getCenteredMoment
+OT_Distribution_getCenteredMoment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCholesky_doc
+"Accessor to the Cholesky factor of the covariance matrix.
+
+Returns
+-------
+L : :class:`~openturns.SquareMatrix`
+    Cholesky factor of the covariance matrix.
+
+See Also
+--------
+getCovariance"
+%enddef
+  %feature("docstring") OT::DistributionImplementation::getCholesky
+OT_Distribution_getCholesky_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCopula_doc
+"Accessor to the distribution's copula.
+
+Returns
+-------
+C : :class:`~openturns.Distribution`
+    Distribution's copula.
+
+See Also
+--------
+ComposedDistribution"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getCopula
+OT_Distribution_getCopula_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCorrelation_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getCorrelation
+OT_Distribution_getCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCovariance_doc
+"Accessor to the covariance matrix.
+
+Returns
+-------
+Sigma : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix.
+
+Notes
+-----
+The covariance is the second-order standard moment. It is defined as:
+
+.. math::
+
+    \mat{\Sigma} & = \Cov{\vect{X}} \\
+                 & = \Expect{\left(\vect{X} - \vect{\mu}\right)
+                             \Tr{\left(\vect{X} - \vect{\mu}\right)}}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getCovariance
+OT_Distribution_getCovariance_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getDescription_doc
+"Accessor to the componentwise description.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the distribution's components.
+
+See Also
+--------
+setDescription"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getDescription
+OT_Distribution_getDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getDimension_doc
+"Accessor to the distribution's dimension.
+
+Returns
+-------
+n : int
+    The number of components in the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getDimension
+OT_Distribution_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getDispersionIndicator_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getDispersionIndicator
+OT_Distribution_getDispersionIndicator_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getInverseCholesky_doc
+"Accessor to the inverse Cholesky factor of the covariance matrix.
+
+Returns
+-------
+Linv : :class:`~openturns.SquareMatrix`
+    Inverse Cholesky factor of the covariance matrix.
+
+See also
+--------
+getCholesky"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getInverseCholesky
+OT_Distribution_getInverseCholesky_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getInverseIsoProbabilisticTransformation_doc
+"Accessor to the inverse iso-probabilistic transformation.
+
+Returns
+-------
+Tinv : :class:`~openturns.NumericalMathFunction`
+    Inverse iso-probabilistic transformation.
+
+Notes
+-----
+The inverse iso-probabilistic transformation is defined as follows:
+
+.. math::
+
+    T^{-1}: \left|\begin{array}{rcl}
+                \Rset^n & \rightarrow & \supp{\vect{X}} \\
+                \vect{u} & \mapsto & \vect{x}
+            \end{array}\right.
+
+See also
+--------
+getIsoProbabilisticTransformation"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getInverseIsoProbabilisticTransformation
+OT_Distribution_getInverseIsoProbabilisticTransformation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getIsoProbabilisticTransformation_doc
+"Accessor to the iso-probabilistic transformation.
+
+Returns
+-------
+T : :class:`~openturns.NumericalMathFunction`
+    Iso-probabilistic transformation.
+
+Notes
+-----
+The iso-probabilistic transformation is defined as follows:
+
+.. math::
+
+    T: \left|\begin{array}{rcl}
+            \supp{\vect{X}} & \rightarrow & \Rset^n \\
+            \vect{x} & \mapsto & \vect{u}
+       \end{array}\right.
+
+**An** iso-probabilistic transformation is a *diffeomorphism* [#diff]_ from
+:math:`\supp{\vect{X}}` to :math:`\Rset^n` that maps realizations
+:math:`\vect{x}` of a random vector :math:`\vect{X}` into realizations
+:math:`\vect{y}` of another random vector :math:`\vect{Y}` while
+preserving probabilities. It is hence defined so that it satisfies:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Prob{\bigcap_{i=1}^n X_i \leq x_i}
+            & = & \Prob{\bigcap_{i=1}^n Y_i \leq y_i} \\
+        F_{\vect{X}}(\vect{x})
+            & = & F_{\vect{Y}}(\vect{y})
+    \end{eqnarray*}
+
+**The present** implementation of the iso-probabilistic transformation maps
+realizations :math:`\vect{x}` into realizations :math:`\vect{u}` of a
+random vector :math:`\vect{U}` with *spherical distribution* [#spherical]_.
+To be more specific:
+
+    - if the distribution is elliptical, then the transformed distribution is
+      simply made spherical using the **Nataf (linear) transformation**
+      [Nataf1962]_, [Lebrun2009a]_.
+    - if the distribution has an elliptical Copula, then the transformed
+      distribution is made spherical using the **generalized Nataf
+      transformation** [Lebrun2009b]_.
+    - otherwise, the transformed distribution is the standard multivariate
+      Normal distribution and is obtained by means of the **Rosenblatt
+      transformation** [Rosenblatt1952]_, [Lebrun2009c]_.
+
+.. [#diff] A differentiable map :math:`f` is called a *diffeomorphism* if it
+    is a bijection and its inverse :math:`f^{-1}` is differentiable as well.
+    Hence, the iso-probabilistic transformation implements a gradient (and
+    even a Hessian).
+
+.. [#spherical] A distribution is said to be *spherical* if is invariant by
+    rotation. Mathematically, :math:`\vect{U}` has a spherical distribution
+    if:
+
+    .. math::
+
+        \mat{R}\,\vect{U} \sim \vect{U},
+        \quad \forall \mat{R} \in \cS\cP_n(\Rset)
+
+See also
+--------
+getInverseIsoProbabilisticTransformation, isElliptical, hasEllipticalCopula"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getIsoProbabilisticTransformation
+OT_Distribution_getIsoProbabilisticTransformation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getKendallTau_doc
+"Accessor to the Kendall coefficients matrix.
+
+Returns
+-------
+tau: :class:`~openturns.SquareMatrix`
+    Kendall coefficients matrix.
+
+Notes
+-----
+The Kendall coefficients matrix is defined as:
+
+.. math::
+
+    \mat{\tau} = \Big[& \Prob{X_i < x_i \cap X_j < x_j
+                              \cup
+                              X_i > x_i \cap X_j > x_j} \\
+                      & - \Prob{X_i < x_i \cap X_j > x_j
+                                \cup
+                                X_i > x_i \cap X_j < x_j},
+                      \quad i,j = 1, \ldots, n\Big]
+
+See Also
+--------
+getSpearmanCorrelation"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getKendallTau
+OT_Distribution_getKendallTau_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getKurtosis_doc
+"Accessor to the componentwise kurtosis.
+
+Returns
+-------
+k : :class:`~openturns.NumericalPoint`
+    Componentwise kurtosis.
+
+Notes
+-----
+The kurtosis is the fourth-order standard moment:
+
+.. math::
+
+    \vect{\kappa} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
+                                                 {\sigma_i}\right)^4},
+                              \quad i = 1, \ldots, n\right)}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getKurtosis
+OT_Distribution_getKurtosis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getLinearCorrelation_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getLinearCorrelation
+OT_Distribution_getLinearCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getMarginal_doc
+"Accessor to marginal distributions.
+
+Parameters
+----------
+i : int or list of ints, :math:`1 \leq i \leq n`
+    Component(s) indice(s).
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The marginal distribution of the selected component(s)."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getMarginal
+OT_Distribution_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getMean_doc
+"Accessor to the mean.
+
+Returns
+-------
+k : :class:`~openturns.NumericalPoint`
+    Mean.
+
+Notes
+-----
+The mean is the first-order moment:
+
+.. math::
+
+    \vect{\mu} = \Tr{\left(\Expect{X_i}, \quad i = 1, \ldots, n\right)}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getMean
+OT_Distribution_getMean_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getMoment_doc
+"Accessor to the componentwise moments.
+
+Parameters
+----------
+k : int
+    The moment's order.
+
+Returns
+-------
+m : :class:`~openturns.NumericalPoint`
+    Componentwise moment of order `k`.
+
+Notes
+-----
+The componentwise moment of order :math:`k` is defined as:
+
+.. math::
+
+    \vect{m}^{(k)} = \Tr{\left(\Expect{X_i^k}, \quad i = 1, \ldots, n\right)}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getMoment
+OT_Distribution_getMoment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getPDFEpsilon_doc
+"Accessor to the PDF computation precision.
+
+Returns
+-------
+PDFEpsilon : float
+    PDF computation precision."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getPDFEpsilon
+OT_Distribution_getPDFEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getParametersCollection_doc
+"Accessor to the distribution's parameters.
+
+Returns
+-------
+parameters : :class:`~openturns.NumericalPointWithDescription`
+    Dictionary-like object with parameters names and values."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getParametersCollection
+OT_Distribution_getParametersCollection_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getParametersNumber_doc
+"Accessor to the number of parameters in the distribution.
+
+Returns
+-------
+n_parameters : int
+    Number of parameters in the distribution.
+
+See Also
+--------
+getParametersCollection"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getParametersNumber
+OT_Distribution_getParametersNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getPearsonCorrelation_doc
+"Accessor to the Pearson correlation matrix.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    Pearson's correlation matrix.
+
+See Also
+--------
+getCovariance
+
+Notes
+-----
+Pearson's correlation is defined as the normalized covariance matrix:
+
+.. math::
+
+    \mat{\rho} & = \left[\frac{\Cov{X_i, X_j}}{\sqrt{\Var{X_i}\Var{X_j}}},
+                         \quad i,j = 1, \ldots, n\right] \\
+               & = \left[\frac{\Sigma_{i,j}}{\sqrt{\Sigma_{i,i}\Sigma_{j,j}}},
+                         \quad i,j = 1, \ldots, n\right]"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getPearsonCorrelation
+OT_Distribution_getPearsonCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getPositionIndicator_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getPositionIndicator
+OT_Distribution_getPositionIndicator_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getRange_doc
+"Accessor to the range of the distribution.
+
+Returns
+-------
+range : :class:`~openturns.Interval`
+    Distribution's range.
+
+Notes
+-----
+The *mathematical* range is the smallest closed interval outside of which the
+PDF is zero. The *numerical* range is the interval outside of which the PDF is
+rounded to zero in double precision.
+
+See Also
+--------
+getSupport"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getRange
+OT_Distribution_getRange_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getRealization_doc
+"Accessor to a pseudo-random realization from the distribution.
+
+Returns
+-------
+point : :class:`~openturns.NumericalPoint`
+    A pseudo-random realization of the distribution.
+
+See Also
+--------
+getSample, RandomGenerator"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getRealization
+OT_Distribution_getRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getRoughness_doc
+"Accessor to roughness of the distribution.
+
+Returns
+-------
+r : float
+    Distribution's roughness.
+
+Notes
+-----
+The roughness of the distribution is defined as the :math:`\cL^2`-norm of its
+PDF:
+
+.. math::
+
+    r = \int_{\supp{\vect{X}}} f_{\vect{X}}(\vect{x})^2 \di{\vect{x}}
+
+See Also
+--------
+computePDF"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getRoughness
+OT_Distribution_getRoughness_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSample_doc
+"Accessor to a pseudo-random sample from the distribution.
+
+Parameters
+----------
+size : int
+    Sample size.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    A pseudo-random sample of the distribution.
+
+See Also
+--------
+getRealization, RandomGenerator"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSample
+OT_Distribution_getSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getShapeMatrix_doc
+"Accessor to the shape matrix of the underlying copula if it is elliptical.
+
+Returns
+-------
+shape : :class:`~openturns.CorrelationMatrix`
+    Shape matrix of the distribution's elliptical copula.
+
+Notes
+-----
+This is not the Pearson correlation matrix.
+
+See Also
+--------
+getPearsonCorrelation"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getShapeMatrix
+OT_Distribution_getShapeMatrix_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSkewness_doc
+"Accessor to the componentwise skewness.
+
+Returns
+-------
+d : :class:`~openturns.NumericalPoint`
+    Componentwise skewness.
+
+Notes
+-----
+The skewness is the third-order standard moment:
+
+.. math::
+
+    \vect{\delta} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
+                                                 {\sigma_i}\right)^3},
+                              \quad i = 1, \ldots, n\right)}"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSkewness
+OT_Distribution_getSkewness_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSpearmanCorrelation_doc
+"Accessor to the Spearman correlation matrix.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    Spearman's correlation matrix.
+
+Notes
+-----
+Spearman's (rank) correlation is defined as the normalized covariance matrix
+of the copula (ie that of the uniform margins):
+
+.. math::
+
+    \mat{\rho_S} = \left[\frac{\Cov{F_{X_i}(X_i), F_{X_j}(X_j)}}
+                              {\sqrt{\Var{F_{X_i}(X_i)} \Var{F_{X_j}(X_j)}}},
+                         \quad i,j = 1, \ldots, n\right]
+
+See Also
+--------
+getKendallTau"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSpearmanCorrelation
+OT_Distribution_getSpearmanCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getStandardDeviation_doc
+"Accessor to the componentwise standard deviation.
+
+The standard deviation is the square root of the variance.
+
+Returns
+-------
+sigma : :class:`~openturns.NumericalPoint`
+    Componentwise standard deviation.
+
+See Also
+--------
+getCovariance"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getStandardDeviation
+OT_Distribution_getStandardDeviation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getStandardDistribution_doc
+"Accessor to the standard distribution.
+
+Returns
+-------
+standard_distribution : :class:`~openturns.Distribution`
+    Standard distribution.
+
+Notes
+-----
+The standard distribution is determined according to the distribution
+properties. This is the target distribution achieved by the iso-probabilistic
+transformation.
+
+See Also
+--------
+getIsoProbabilisticTransformation"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getStandardDistribution
+OT_Distribution_getStandardDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getStandardMoment_doc
+"Accessor to the componentwise standard moments.
+
+Parameters
+----------
+k : int
+    The standard moment's order.
+
+Returns
+-------
+m : :class:`~openturns.NumericalPoint`
+    Componentwise standard moment of order `k`.
+
+Notes
+-----
+Standard moments are centered with respect to the first-order moment and
+normalized with respect to the standard deviation:
+
+.. math::
+
+    \overline{\vect{m}}^{(k)}_0 =
+        \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
+                                     {\sigma_i}\right)^k},
+        \quad i = 1, \ldots, n\right)}
+
+See Also
+--------
+getMean, getStandardDeviation"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getStandardMoment
+OT_Distribution_getStandardMoment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getStandardRepresentative_doc
+"Accessor to the standard representative distribution in the parametric family.
+
+Returns
+-------
+std_repr_dist : :class:`~openturns.Distribution`
+    Standard representative distribution.
+
+Notes
+-----
+The standard representative distribution is the one associated with the
+standard moments."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getStandardRepresentative
+OT_Distribution_getStandardRepresentative_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSupport_doc
+"Accessor to the distribution's support.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    An interval to intersect with the distribution's support.
+
+Returns
+-------
+support : :class:`~openturns.Interval`
+    The intersection of the distribution's support with the given `interval`.
+
+Notes
+-----
+The mathematical support :math:`\supp{\vect{X}}` of the distribution is
+the interval (or collection of intervals) where the PDF is non-zero.
+
+This is yet implemented for discrete distributions only.
+
+See Also
+--------
+getRange"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSupport
+OT_Distribution_getSupport_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getWeight_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getWeight
+OT_Distribution_getWeight_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_hasEllipticalCopula_doc
+"Test whether the distribution's copula is elliptical or not.
+
+Returns
+-------
+test : bool
+    Answer.
+
+See Also
+--------
+isElliptical"
+%enddef
+%feature("docstring") OT::DistributionImplementation::hasEllipticalCopula
+OT_Distribution_hasEllipticalCopula_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_hasIndependentCopula_doc
+"Test whether the distribution's copula is independent.
+
+Returns
+-------
+test : bool
+    Answer."
+%enddef
+%feature("docstring") OT::DistributionImplementation::hasIndependentCopula
+OT_Distribution_hasIndependentCopula_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_isContinuous_doc
+"Test whether the distribution is continuous or not.
+
+Returns
+-------
+test : bool
+    Answer."
+%enddef
+%feature("docstring") OT::DistributionImplementation::isContinuous
+OT_Distribution_isContinuous_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_isCopula_doc
+"Test whether the distribution is a copula or not.
+
+Returns
+-------
+test : bool
+    Answer.
+
+Notes
+-----
+A copula is a distribution with uniform margins on [0; 1]."
+%enddef
+%feature("docstring") OT::DistributionImplementation::isCopula
+OT_Distribution_isCopula_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_isDiscrete_doc
+"Test whether the distribution is discrete or not.
+
+Returns
+-------
+test : bool
+    Answer."
+%enddef
+%feature("docstring") OT::DistributionImplementation::isDiscrete
+OT_Distribution_isDiscrete_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_isElliptical_doc
+"Test whether the distribution is elliptical or not.
+
+Returns
+-------
+test : bool
+    Answer.
+
+Notes
+-----
+A multivariate distribution is said to be *elliptical* if its characteristic
+function is of the form:
+
+.. math::
+
+    \phi(\vect{t}) = \exp\left(i \Tr{\vect{t}} \vect{\mu}\right)
+                     \Psi\left(\Tr{\vect{t}} \mat{\Sigma} \vect{t}\right),
+                     \quad \vect{t} \in \Rset^n
+
+for specified vector :math:`\vect{\mu}` and positive-definite matrix
+:math:`\mat{\Sigma}`. The function :math:`\Psi` is known as the
+*characteristic generator* of the elliptical distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::isElliptical
+OT_Distribution_isElliptical_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_isIntegral_doc
+"Test whether the distribution is integer-valued or not.
+
+Returns
+-------
+test : bool
+    Answer."
+%enddef
+%feature("docstring") OT::DistributionImplementation::isIntegral
+OT_Distribution_isIntegral_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_setDescription_doc
+"Accessor to the componentwise description.
+
+Parameters
+----------
+description : sequence of str
+    Description of the distribution's components."
+%enddef
+%feature("docstring") OT::DistributionImplementation::setDescription
+OT_Distribution_setDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_setParametersCollection_doc
+"Accessor to the distribution's parameters.
+
+Parameters
+----------
+parameters : :class:`~openturns.NumericalPointWithDescription`
+    Dictionary-like object with parameters names and values."
+%enddef
+%feature("docstring") OT::DistributionImplementation::setParametersCollection
+OT_Distribution_setParametersCollection_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_setWeight_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::DistributionImplementation::setWeight
+OT_Distribution_setWeight_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_cos_doc
+"Transform distribution by cosine function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::cos
+OT_Distribution_cos_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_sin_doc
+"Transform distribution by sine function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::sin
+OT_Distribution_sin_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_tan_doc
+"Transform distribution by tangent function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::tan
+OT_Distribution_tan_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_acos_doc
+"Transform distribution by arccosine function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::acos
+OT_Distribution_acos_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_asin_doc
+  "Transform distribution by arcsine function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::asin
+OT_Distribution_asin_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_atan_doc
+"Transform distribution by arctangent function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::atan
+OT_Distribution_atan_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_cosh_doc
+"Transform distribution by cosh function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::cosh
+OT_Distribution_cosh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_sinh_doc
+"Transform distribution by sinh function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::sinh
+OT_Distribution_sinh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_tanh_doc
+"Transform distribution by tanh function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::tanh
+OT_Distribution_tanh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_acosh_doc
+"Transform distribution by acosh function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::acosh
+OT_Distribution_acosh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_asinh_doc
+"Transform distribution by asinh function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::asinh
+OT_Distribution_asinh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_atanh_doc
+"Transform distribution by atanh function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::atanh
+OT_Distribution_atanh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_exp_doc
+"Transform distribution by exponential function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::exp
+OT_Distribution_exp_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_log_doc
+"Transform distribution by natural logarithm function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::log
+OT_Distribution_log_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_ln_doc
+"Transform distribution by natural logarithm function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::ln
+OT_Distribution_ln_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_inverse_doc
+"Transform distribution by inverse function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::inverse
+OT_Distribution_inverse_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_sqr_doc
+"Transform distribution by square function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::sqr
+OT_Distribution_sqr_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_sqrt_doc
+"Transform distribution by square root function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::sqrt
+OT_Distribution_sqrt_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_cbrt_doc
+"Transform distribution by cubic root function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::cbrt
+OT_Distribution_cbrt_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_abs_doc
+"Transform distribution by absolute value function.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The transformed distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::abs
+OT_Distribution_abs_doc

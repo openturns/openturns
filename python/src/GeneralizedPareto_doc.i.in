@@ -1,0 +1,91 @@
+%feature("docstring") OT::GeneralizedPareto
+"Generalized Pareto distribution.
+
+Available constructors:
+    GeneralizedPareto(*sigma=1.0, xi=0.*)
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`.
+xi : float
+    Shape parameter :math:`\xi`.
+
+Notes
+-----
+Its cumulative distribution function is defined as:
+
+.. math::
+
+    F_X(x) = \left\{\begin{array}{ll}
+               \displaystyle 1 - \left[1 + \xi \frac{x}{\sigma}\right]^{-1/\xi}
+                    & \text{ if } \xi \neq 0 \\
+               \displaystyle 1 - \exp\left(-\frac{x}{\sigma}\right)
+                    & \text{ if } \xi = 0
+            \end{array}\right.,
+            \quad x \in [0; +\infty[
+
+with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{\sigma}{1 - \xi}
+                         \quad \text{ if } \xi < 1 \\
+        \Var{X} & = & \frac{\sigma^2}{(1 - 2 \xi) (1 - \xi)^2}
+                      \quad \text{ if } \xi < \frac{1}{2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.GeneralizedPareto(1., 0.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::getSigma
+"Accessor to the distribution's scale parameter :math:`\sigma`.
+
+Returns
+-------
+sigma : float
+    Scale parameter :math:`\sigma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::getXi
+"Accessor to the distribution's shape parameter :math:`\xi`.
+
+Returns
+-------
+xi : float
+    Shape parameter :math:`\xi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::setSigma
+"Accessor to the distribution's scale parameter :math:`\sigma`.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::setXi
+"Accessor to the distribution's shape parameter :math:`\xi`.
+
+Parameters
+----------
+xi : float, :math:`\xi \in \Rset`
+    Shape parameter :math:`\xi`."

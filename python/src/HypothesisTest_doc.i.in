@@ -1,0 +1,532 @@
+%feature("docstring") OT::HypothesisTest::ChiSquared
+"Test whether two discrete samples are independent.
+
+**Available usages**:
+
+    HypothesisTest.ChiSquared(*firstSample, secondSample*)
+
+    HypothesisTest.ChiSquared(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Pearson, HypothesisTest_Spearman
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal()]
+>>> distribution = ot.ComposedDistribution(distCol)
+>>> sample = distribution.getSample(30)
+>>> test_result = ot.HypothesisTest.ChiSquared(sample[:,0], sample[:,1])
+>>> print(test_result)
+class=TestResult name=Unnamed type=TwoSampleChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.237197 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::FullPearson
+"Test whether two discrete samples are independent.
+
+**Available usages**:
+
+    HypothesisTest.FullPearson(*firstSample, secondSample*)
+
+    HypothesisTest.FullPearson(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Pearson, HypothesisTest_PartialPearson
+
+Notes
+-----
+The Full Pearson Test is the independence Pearson test between 2 samples :
+*firstSample* of dimension *n* and *secondSample* of dimension 1. If
+*firstSample[i]* is the numerical sample extracted from *firstSample*
+(:math:`i^{th}` coordinate of each point of the numerical sample), FullPearson
+performs the independence Pearson test simultaneously on *firstSample[i]* and 
+secondSample. For all *i*, it is supposed that the couple (*firstSample[i]* and
+*secondSample*) is issued from a gaussian vector.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal(), ot.Normal()]
+>>> S = ot.CorrelationMatrix(3)
+>>> S[0, 2] = 0.9
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :2]
+>>> secondSample = sample[:, 2]
+>>> test_result = ot.HypothesisTest.FullPearson(firstSample, secondSample)
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23865e-14 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 description=[]]
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::FullRegression
+"Test whether two discrete samples are not linear.
+
+**Available usages**:
+
+    HypothesisTest.FullRegression(*firstSample, secondSample*)
+
+    HypothesisTest.FullRegression(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_PartialRegression, LinearModelTest_LinearModelFisher
+
+Notes
+-----
+The Full Regression Test is used to check the quality of the linear regression
+model between two samples: *firstSample* of dimension *n* and *secondSample* of
+dimension 1. If *firstSample[i]* is the numerical sample extracted from
+*firstSample* (:math:`i^{th}` coordinate of each point of the numerical sample),
+FullRegression performs the linear regression test simultaneously on all
+*firstSample[i]* and *secondSample*. The linear regression test tests if the
+linear regression model between two scalar numerical samples is not significant.
+It is based on the deviation analysis of the regression. The Fisher distribution
+is used.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> distCol = [ot.Normal()] * dim
+>>> S = ot.CorrelationMatrix(dim)
+>>> S[0, dim - 1] = 0.99
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :2]
+>>> secondSample = sample[:, 2]
+>>> test_result = ot.HypothesisTest.FullRegression(firstSample, secondSample)
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 description=[]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::FullSpearman
+"Test whether two discrete samples are not monotonous.
+
+**Available usages**:
+
+    HypothesisTest.FullSpearman(*firstSample, secondSample*)
+
+    HypothesisTest.FullSpearman(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Spearman, HypothesisTest_PartialSpearman
+
+Notes
+-----
+The Full Spearman Test is used to check hypothesis of non monotonous relation
+between two samples: *firstSample* of dimension *n* and *secondSample* of
+dimension 1. If *firstSample[i]* is the numerical sample extracted from
+*firstSample* (:math:`i^{th}` coordinate of each point of the numerical sample),
+FullSpearman performs the independence Spearman test simultaneously on all
+*firstSample[i]* and *secondSample*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction(['x'], ['x', 'x^2'])
+>>> testedSample = func(sample)
+>>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample)
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.44348 description=[]]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::PartialPearson
+"Test whether two discrete samples are independent.
+
+**Available usages**:
+
+    HypothesisTest.PartialPearson(*firstSample, secondSample, selection*)
+
+    HypothesisTest.PartialPearson(*firstSample, secondSample, selection, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+selection : sequence of integers, maximum integer value :math:`< n`
+    List of indices selecting which subsets of the first sample will successively
+    be tested with the second sample through the Pearson test.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Pearson, HypothesisTest_FullPearson
+
+Notes
+-----
+The Partial Pearson Test is used to check the independence between two samples:
+*firstSample* of dimension *n* and *secondSample* of dimension 1. The parameter
+*selection* enables to select specific subsets of the *firstSample* to be tested.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal(), ot.Normal(), ot.Normal()]
+>>> S = ot.CorrelationMatrix(4)
+>>> S[0, 3] = 0.9
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :3]
+>>> secondSample = sample[:, 3]
+>>> test_result = ot.HypothesisTest.PartialPearson(firstSample, secondSample, [0, 2])
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 description=[]]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::PartialRegression
+"Test whether two discrete samples are independent.
+
+**Available usages**:
+
+    HypothesisTest.PartialRegression(*firstSample, secondSample, selection*)
+
+    HypothesisTest.PartialRegression(*firstSample, secondSample, selection, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+selection : sequence of int, maximum integer value :math:`< n`
+    List of indices selecting which subsets of the first sample will successively
+    be tested with the second sample through the regression test.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_FullRegression, LinearModelTest_LinearModelFisher
+
+Notes
+-----
+The Partial Regression Test is used to check the quality of the linear regression
+model between two samples: *firstSample* of dimension *n* and *secondSample* of
+dimension 1. The parameter *selection* enables to select specific subsets of the
+*firstSample* to be tested.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> distCol = [ot.Normal()] * dim
+>>> S = ot.CorrelationMatrix(dim)
+>>> S[0, dim - 1] = 0.99
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :2]
+>>> secondSample = sample[:, 2]
+>>> selection = [1]
+>>> test_result = ot.HypothesisTest.PartialRegression(firstSample, secondSample, selection)
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 description=[]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::PartialSpearman
+"Test whether two discrete samples are not monotonous.
+
+**Available usages**:
+
+HypothesisTest_PartialSpearman(*firstSample, secondSample, selection*)
+
+HypothesisTest_PartialSpearman(*firstSample, secondSample, selection, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+selection : sequence of integers, maximum integer value :math:`< n`
+    List of indices selecting which subsets of the first sample will successively
+    be tested with the second sample through the Spearman test.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Spearman, HypothesisTest_FullSpearman
+
+Notes
+-----
+The Partial Spearman Test is used to check hypothesis of non monotonous relation
+between two samples: *firstSample* of dimension *n* and *secondSample* of
+dimension 1. The parameter *selection* enables to select specific subsets of the
+*firstSample* to be tested.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction(['x'], ['x', 'x^2', 'x^3', 'sin(5*x)'])
+>>> testedSample = func(sample)
+>>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.57214 description=[]]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::Pearson
+"Test whether two discrete samples are independent.
+
+**Available usages**:
+
+    HypothesisTest.Pearson(*firstSample, secondSample*)
+
+    HypothesisTest.Pearson(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Smirnov, HypothesisTest_Spearman
+
+Notes
+-----
+The Pearson Test is used to check whether two samples which are assumed to form
+a gaussian vector are independent (based on the evaluation of the linear
+correlation coefficient).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal()]
+>>> firstSample = ot.Normal().getSample(30)
+>>> secondSample = ot.Normal().getSample(30)
+>>> test_result = ot.HypothesisTest.Pearson(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=TwoSamplePearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::Smirnov
+"Test whether two samples follows the same distribution.
+
+**Available usages**:
+
+    HypothesisTest.Smirnov(*firstSample, secondSample*)
+
+    HypothesisTest.Smirnov(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Pearson, HypothesisTest_Spearman
+
+Notes
+-----
+Smirnov's test is a tool that may be used to compare two samples
+:math:`\{x_1, \ldots, x_N\}` and :math:`\{x^{'}_1, \ldots, x^{'}_M\}` (of sizes not
+necessarily equal). The goal is to determine whether these two samples come from
+the same probability distribution or not. If this is the case, the two samples
+should be aggregated in order to increase the robustness of further statistical
+analyses.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal()]
+>>> firstSample = ot.Normal().getSample(30)
+>>> secondSample = ot.Normal().getSample(30)
+>>> test_result = ot.HypothesisTest.Smirnov(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=TwoSampleSmirnov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.807963 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::Spearman
+"Test whether two discrete samples are not monotonous.
+
+**Available usages**:
+
+    HypothesisTest.Spearman(*firstSample, secondSample*)
+
+    HypothesisTest.Spearman(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+HypothesisTest_Smirnov, HypothesisTest_Pearson
+
+Notes
+-----
+The Spearman Test is used to check whether two scalar samples have a monotonous
+relation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> firstSample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction('x', 'x^2')
+>>> secondSample = func(firstSample)
+>>> test_result = ot.HypothesisTest.Spearman(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=TwoSampleSpearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.44348 description=[]
+"

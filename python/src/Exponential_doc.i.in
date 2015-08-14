@@ -1,0 +1,84 @@
+%feature("docstring") OT::Exponential
+"Exponential distribution.
+
+Available constructors:
+    Exponential(*lambda=1.0, gamma=0.*)
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Failure rate parameter.
+gamma : float, optional
+    Shift parameter :math:`\gamma`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \lambda \exp\left(- \lambda\,(x - \gamma)\right),
+             \quad x \in [\gamma; +\infty[
+
+with :math:`\lambda > 0` and :math:`\gamma \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \gamma + \frac{1}{\lambda} \\
+        \Var{X} & = & \frac{1}{\lambda^2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Exponential(1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Exponential::getLambda
+"Accessor to the failure rate parameter.
+
+Returns
+-------
+lambda : float
+    Failure rate parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Exponential::getGamma
+"Accessor to the shift parameter.
+
+Returns
+-------
+gamma : float
+    Shift parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Exponential::setLambda
+"Accessor to the failure rate parameter.
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Failure rate parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Exponential::setGamma
+"Accessor to the shift parameter.
+
+Parameters
+----------
+gamma : float, :math:`\gamma \in \Rset`
+    Shift parameter."

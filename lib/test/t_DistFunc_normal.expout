@@ -1,0 +1,30 @@
+pNormal(0.1)=0.539828, complementary=0.460172
+pNormal(0.188889)=0.57491, complementary=0.42509
+pNormal(0.277778)=0.609409, complementary=0.390591
+pNormal(0.366667)=0.643066, complementary=0.356934
+pNormal(0.455556)=0.675645, complementary=0.324355
+pNormal(0.544444)=0.706932, complementary=0.293068
+pNormal(0.633333)=0.736742, complementary=0.263258
+pNormal(0.722222)=0.764921, complementary=0.235079
+pNormal(0.811111)=0.791349, complementary=0.208651
+pNormal(0.9)=0.81594, complementary=0.18406
+qNormal(0.1)=-1.28155, complementary=1.28155
+qNormal(0.188889)=-0.881998, complementary=0.881998
+qNormal(0.277778)=-0.589456, complementary=0.589456
+qNormal(0.366667)=-0.340695, complementary=0.340695
+qNormal(0.455556)=-0.111637, complementary=0.111637
+qNormal(0.544444)=0.111637, complementary=-0.111637
+qNormal(0.633333)=0.340695, complementary=-0.340695
+qNormal(0.722222)=0.589456, complementary=-0.589456
+qNormal(0.811111)=0.881998, complementary=-0.881998
+qNormal(0.9)=1.28155, complementary=-1.28155
+rNormal()=0.608202
+rNormal()=-1.26617
+rNormal()=-0.438266
+rNormal()=1.20548
+rNormal()=-2.18139
+rNormal()=0.350042
+rNormal()=-0.355007
+rNormal()=1.43725
+rNormal()=0.810668
+rNormal()=0.793156

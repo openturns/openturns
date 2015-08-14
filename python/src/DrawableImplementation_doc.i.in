@@ -1,0 +1,937 @@
+%define OT_Drawable_doc
+"Drawable object.
+
+Notes
+-----
+In OpenTURNS a Drawable is a drawable element described by:
+
+- its data,
+- its attributes: color, line stype, point style, fill style, legend ...
+
+The different drawable elements are:
+
+- :class:`~openturns.BarPlot`
+
+- :class:`~openturns.Cloud`
+
+- :class:`~openturns.Contour`
+
+- :class:`~openturns.Curve`
+
+- :class:`~openturns.Pairs`
+
+- :class:`~openturns.Pie`
+
+- :class:`~openturns.Polygon`
+
+- :class:`~openturns.Staircase`
+
+Examples
+--------
+>>> import openturns as ot
+>>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'topright')
+>>> sample = ot.Normal([0.,0.], [1.,1.], ot.CorrelationMatrix(2)).getSample(10)
+>>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'A Cloud')
+>>> myGraph.add(myCloud)"
+%enddef
+%feature("docstring") OT::DrawableImplementation
+OT_Drawable_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getLegend_doc
+"Accessor to the legend of the drawable element.
+
+Returns
+-------
+legend : str
+    Legend of the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getLegend
+OT_Drawable_getLegend_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setLegend_doc
+"Accessor to the legend of the drawable element.
+
+Parameters
+----------
+legend : str
+    Legend of the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setLegend
+OT_Drawable_setLegend_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getPalette_doc
+"Accessor to the names of the colors used for the Pie.
+
+Returns
+-------
+palette : :class:`~openturns.Description`
+    Names of the colors used for the :class:`~openturns.Pie`. It can be
+    either the name of a color (e.g. 'red') or an hexadecimal code
+    corresponding to the RGB (Red, Green, Blue) components of the color
+    (e.g. '#A1B2C3') or the RGBA (Red, Green, Blue, Alpha) components of the
+    color (e.g. '#A1B2C3D4')."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getPalette
+OT_Drawable_getPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setPalette_doc
+"Accessor to the names of the colors used for the Pie.
+
+Parameters
+----------
+palette : sequence of str
+    Names of the colors used for the :class:`~openturns.Pie`. It can be
+    either the name of a color (e.g. 'red') or an hexadecimal code
+    corresponding to the RGB (Red, Green, Blue) components of the color
+    (e.g. '#A1B2C3') or the RGBA (Red, Green, Blue, Alpha) components of the
+    color (e.g. '#A1B2C3D4'). Use :meth:`GetValidColors` for a list of
+    available values."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setPalette
+OT_Drawable_setPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_BuildDefaultPalette_doc
+"Build default palette.
+
+Parameters
+----------
+n : int :math:`n > 0`
+    Number of colors needed.
+
+Returns
+-------
+listColors : :class:`~openturns.Description`
+    List of n color codes defined according to the default OpenTURNS palette.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().BuildDefaultPalette(4))
+[#ff0000,#ccff00,#00ff66,#0066ff]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::BuildDefaultPalette
+OT_Drawable_BuildDefaultPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getColor_doc
+"Accessor to the color of the drawable element.
+
+Returns
+-------
+color : str
+    Name of the color of the lines within the drawable element. It can be
+    either the name of a color (e.g. 'red') or an hexadecimal code
+    corresponding to the RGB (Red, Green, Blue) components of the color
+    (e.g. '#A1B2C3') or the RGBA (Red, Green, Blue, Alpha) components of the
+    color (e.g. '#A1B2C3D4'). The alpha channel is taken into account only by
+    the PDF and PNG formats, for the other format the color is fully
+    transparent as soon as its alpha channel is less than 255 (or 1.0).
+    Use :meth:`GetValidColors` for a list of available values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().getColor())
+blue
+
+See Also
+--------
+setColor, GetValidColors, getColorCode"
+%enddef
+%feature("docstring") OT::DrawableImplementation::getColor
+OT_Drawable_getColor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setColor_doc
+"Accessor to the color of the drawable element.
+
+Parameters
+----------
+color : str
+    Describes the color of the lines within the drawable element. It can be
+    either the name of a color (e.g. 'red') or an hexadecimal code
+    corresponding to the RGB (Red, Green, Blue) components of the color
+    (e.g. '#A1B2C3') or the RGBA (Red, Green, Blue, Alpha) components of the
+    color (e.g. '#A1B2C3D4'). The alpha channel is taken into account only by
+    the PDF and PNG formats, for the other format the color is fully
+    transparent as soon as its alpha channel is less than 255 (or 1.0).
+    Use :meth:`GetValidColors` for a list of available values.
+
+See Also
+--------
+getColor, GetValidColors, getColorCode"
+%enddef
+%feature("docstring") OT::DrawableImplementation::setColor
+OT_Drawable_setColor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getColorCode_doc
+"Accessor to the code of the color of the drawable element.
+
+Returns
+-------
+color : str
+    Hexadecimal code corresponding to the RGB (Red, Green, Blue) components
+    of the color of the lines within the drawable element
+    or the RGBA (Red, Green, Blue, Alpha) components of the color.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().getColorCode())
+#0000FF
+
+See Also
+--------
+setColor, getColor, GetValidColors, setColorCode"
+%enddef
+%feature("docstring") OT::DrawableImplementation::getColorCode
+OT_Drawable_getColorCode_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidColors_doc
+"Return the list of the valid colors of the drawable element.
+
+Returns
+-------
+validColors : :class:`~openturns.Description`
+    List of the valid colors of the drawable element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().GetValidColors()[:5])
+[aliceblue,antiquewhite,antiquewhite1,antiquewhite2,antiquewhite3]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidColors
+OT_Drawable_GetValidColors_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getEdgeColor_doc
+"Accessor to the color of the Polygon edge.
+
+Returns
+-------
+edgeColor : str
+    Color of the edge of the :class:`~openturns.Polygon`."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getEdgeColor
+OT_Drawable_getEdgeColor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getFillStyle_doc
+"Accessor to the fill style of the drawable element.
+
+Returns
+-------
+fillStyle : str
+    Fill style of the surfaces within the drawable element. Use
+    :meth:`GetValidFillStyles` for a list of available values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().getFillStyle())
+solid"
+%enddef
+%feature("docstring") OT::DrawableImplementation::getFillStyle
+OT_Drawable_getFillStyle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setFillStyle_doc
+"Accessor to the fill style of the drawable element.
+
+Parameters
+----------
+fillStyle : str
+    Fill style of the surfaces within the drawable element. Use
+    :meth:`GetValidFillStyles` for a list of available values."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setFillStyle
+OT_Drawable_setFillStyle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidFillStyles_doc
+"Return the list of the valid fill styles of the drawable element.
+
+Returns
+-------
+validFillStyles : :class:`~openturns.Description`
+    List of the valid fill styles of the drawable element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().GetValidFillStyles()[:2])
+[solid,shaded]
+"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidFillStyles
+OT_Drawable_GetValidFillStyles_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getLineWidth_doc
+"Accessor to the line width of the drawable element.
+
+Returns
+-------
+lineWidth : int
+    Width of the line within the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getLineWidth
+OT_Drawable_getLineWidth_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setLineWidth_doc
+"Accessor to the line width of the drawable element.
+
+Parameters
+----------
+lineWidth : positive int
+    Width of the line within the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setLineWidth
+OT_Drawable_setLineWidth_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getLineStyle_doc
+"Accessor to the line style of the drawable element.
+
+Returns
+-------
+lineStyle : str
+    Style of the line within the drawable element. Use
+    :meth:`GetValidLineStyles` for a list of available values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().getLineStyle())
+solid"
+%enddef
+%feature("docstring") OT::DrawableImplementation::getLineStyle
+OT_Drawable_getLineStyle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setLineStyle_doc
+"Accessor to the line style of the drawable element.
+
+Parameters
+----------
+lineStyle : str
+    Style of the line within the drawable element. Use
+    :meth:`GetValidLineStyles` for a list of available values."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setLineStyle
+OT_Drawable_setLineStyle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidLineStyles_doc
+"Return the list of the valid line styles of the drawable element.
+
+Returns
+-------
+validLineStyles : :class:`~openturns.Description`
+    List of the valid line styles of the drawable element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().GetValidLineStyles())
+[blank,solid,dashed,dotted,dotdash,longdash,twodash]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidLineStyles
+OT_Drawable_GetValidLineStyles_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getPointStyle_doc
+"Accessor to the point style of the drawable element.
+
+Returns
+-------
+pointStyle : str
+    Style of the points within the drawable element. Use
+    :meth:GetValidPointStyles for a list of available values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().getPointStyle())
+none"
+%enddef
+%feature("docstring") OT::DrawableImplementation::getPointStyle
+OT_Drawable_getPointStyle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setPointStyle_doc
+"Accessor to the point style of the drawable element.
+
+Parameters
+----------
+pointStyle : str
+    Style of the points within the drawable element. Use
+    :meth:`GetValidPointStyles` for a list of available values."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setPointStyle
+OT_Drawable_setPointStyle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_GetValidPointStyles_doc
+"Return the list of the valid point styles of the drawable element.
+
+Returns
+-------
+validPointStyles : :class:`~openturns.Description`
+    List of the valid point styles of the drawable element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().GetValidPointStyles()[:5])
+[bullet,circle,diamond,dot,fcircle]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::GetValidPointStyles
+OT_Drawable_GetValidPointStyles_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getPointCode_doc
+"Accessor to the code of the points style.
+
+Parameters
+----------
+pointStyle : str
+    Style point to be changed in code.
+
+Returns
+-------
+code : int
+    Code of the style of the points within the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getPointCode
+OT_Drawable_getPointCode_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getLabels_doc
+"Accessor to the labels of data.
+
+Returns
+-------
+labels : :class:`~openturns.Description`
+    Describes the data within the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getLabels
+OT_Drawable_getLabels_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setLabels_doc
+"Accessor to the labels of data.
+
+Parameters
+----------
+labels : sequence of str
+    Describes the data within the drawable element."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setLabels
+OT_Drawable_setLabels_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getDrawLabels_doc
+"Accessor to the indication of data labels' presence within the drawable element.
+
+Returns
+-------
+drawLabels : bool
+    *True* to draw the data labels, *False* to hide them."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getDrawLabels
+OT_Drawable_getDrawLabels_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setDrawLabels_doc
+"Accessor to the indication of data labels' presence within the drawable element.
+
+Parameters
+----------
+drawLabels : bool
+    *True* to draw the data labels, *False* to hide them."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setDrawLabels
+OT_Drawable_setDrawLabels_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getX_doc
+"Accessor to the first coordinate.
+
+Returns
+-------
+firstCoord : :class:`~openturns.NumericalSample`
+    Values of the first coordinate."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getX
+OT_Drawable_getX_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setX_doc
+"Accessor to the first coordinate.
+
+Parameters
+----------
+firstCoord : 2-d sequence of float
+    Values of the first coordinate."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setX
+OT_Drawable_setX_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getY_doc
+"Accessor to the second coordinate.
+
+Returns
+-------
+secondCoord : :class:`~openturns.NumericalSample`
+    Values of the second coordinate."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getY
+OT_Drawable_getY_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setY_doc
+"Accessor to the second coordinate.
+
+Parameters
+----------
+secondCoord : 2-d sequence of float
+    Values of the second coordinate."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setY
+OT_Drawable_setY_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getData_doc
+"Accessor to the data from which the Drawable is built.
+
+Returns
+-------
+data : :class:`~openturns.NumericalSample`
+    Data from which the Drawable is built."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getData
+OT_Drawable_getData_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getBoundingBox_doc
+"Accessor to the bounding box of the whole plot.
+
+Returns
+-------
+boundingBox : :class:`~openturns.NumericalPoint` of dimension 4
+    Bounding box of the drawable element, which is a rectangle determined
+    by its range along X and its range along Y.
+    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getBoundingBox
+OT_Drawable_getBoundingBox_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getCenter_doc
+"Accessor to the center of the Pie inside the bounding box.
+
+Returns
+-------
+center : :class:`~openturns.NumericalPoint`
+    Center of the :class:`~openturns.Pie` inside the bounding box."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getCenter
+OT_Drawable_getCenter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setCenter_doc
+"Accessor to the center of the Pie inside the bounding box.
+
+Parameters
+----------
+center : sequence of float
+    Center of the :class:`~openturns.Pie` inside the bounding box."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setCenter
+OT_Drawable_setCenter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getRadius_doc
+"Accessor to the radius of the Pie.
+
+Returns
+-------
+radius : float
+    Radius of the :class:`~openturns.Pie`."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getRadius
+OT_Drawable_getRadius_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setRadius_doc
+"Accessor to the radius of the Pie.
+
+Parameters
+----------
+radius : float
+    Radius of the :class:`~openturns.Pie`."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setRadius
+OT_Drawable_setRadius_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getOrigin_doc
+"Accessor to the origin of the BarPlot.
+
+Returns
+-------
+origin : float
+    Value where the :class:`~openturns.BarPlot` begins."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getOrigin
+OT_Drawable_getOrigin_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setOrigin_doc
+"Accessor to the origin of the BarPlot.
+
+Parameters
+----------
+origin : float
+    Value where the :class:`~openturns.BarPlot` begins."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setOrigin
+OT_Drawable_setOrigin_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getLevels_doc
+"Accessor to the levels of the Contour.
+
+Returns
+-------
+levels : :class:`~openturns.NumericalPoint`
+    Different levels where the iso-curves of the :class:`~openturns.Contour`
+    will be drawn."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getLevels
+OT_Drawable_getLevels_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setLevels_doc
+"Accessor to the levels of the Contour.
+
+Parameters
+----------
+levels : sequence of float
+    Different levels where the iso-curves of the :class:`~openturns.Contour`
+    will be drawn."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setLevels
+OT_Drawable_setLevels_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getPattern_doc
+"Accessor to the pattern of the Staircase.
+
+Returns
+-------
+pattern : str
+    Pattern of the :class:`~openturns.Staircase` which is 'S' or 's'.
+    By default the pattern is equal to 's'. Going from :math:`(x_1, y_1)`
+    to :math:`(x_2, y_2)` with :math:`x_1<x_2`, pattern='s' moves first
+    horizontal then vertical, whereas pattern='S' moves the other way around."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getPattern
+OT_Drawable_getPattern_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setPattern_doc
+"Accessor to the pattern of the Staircase.
+
+Parameters
+----------
+pattern : str
+    Pattern of the :class:`~openturns.Staircase` which is 'S' or 's'.
+    By default the pattern is equal to 's'. Going from :math:`(x_1, y_1)`
+    to :math:`(x_2, y_2)` with :math:`x_1<x_2`, pattern='s' moves first
+    horizontal then vertical, whereas pattern='S' moves the other way around."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setPattern
+OT_Drawable_setPattern_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_draw_doc
+"Generate R command for plotting through R.
+
+Returns
+-------
+command : str
+    R command used mainly by the draw method of :class:`~openturns.Graph`."
+%enddef
+%feature("docstring") OT::DrawableImplementation::draw
+OT_Drawable_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_clean_doc
+"Clean all the temporary data created by :meth:`draw` method."
+%enddef
+%feature("docstring") OT::DrawableImplementation::clean
+OT_Drawable_clean_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertFromHSV_doc
+"Convert an HSV triplet to a valid hexadecimal code.
+
+Parameters
+----------
+hue : float
+    Hue.
+saturation : float
+    Saturation.
+value : float
+    Value.
+
+Returns
+-------
+code : str
+    Hexadecimal code of the color."
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromHSV
+OT_Drawable_ConvertFromHSV_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertFromHSVA_doc
+"Convert an HSVA quadruplet to a valid hexadecimal code.
+
+Parameters
+----------
+hue : float
+    Hue.
+saturation : float
+    Saturation.
+value : float
+    Value.
+alpha : float
+    Alpha component.
+
+Returns
+-------
+code : str
+    Hexadecimal code of the color."
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromHSVA
+OT_Drawable_ConvertFromHSVA_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertFromHSVIntoRGB_doc
+"Convert an HSV triplet into an RGB triplet.
+
+Parameters
+----------
+hue : float
+    Hue.
+saturation : float
+    Saturation.
+value : float
+    Value.
+
+Returns
+-------
+RGBComponents : :class:`~openturns.NumericalPoint`
+    RGB (Red, Green and Blue) components of the color."
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromHSVIntoRGB
+OT_Drawable_ConvertFromHSVIntoRGB_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertFromRGB_doc
+"Convert an RGB triplet to a valid hexadecimal code.
+
+Parameters
+----------
+red, green and blue : either three nonnegative integers or three nonnegative floats
+    These values are the Red, Green and Blue components of a color, a value
+    of 0 (or 0.0) meaning that the component is absent in the color, a value
+    of 255 (or 1.0) meaning that the component is fully saturated.
+
+Returns
+-------
+code : str
+    Hexadecimal code of the color.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().ConvertFromRGB(255,0,0))
+#ff0000"
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromRGB
+OT_Drawable_ConvertFromRGB_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertFromRGBA_doc
+"Convert an RGBA quadruplet to a valid hexadecimal code.
+
+Parameters
+----------
+red, green and blue : either three nonnegative integers or three nonnegative floats
+    These values are the Red, Green and Blue components of a color, a value
+    of 0 (or 0.0) meaning that the component is absent in the color, a value
+    of 255 (or 1.0) meaning that the component is fully saturated.
+alpha : either nonnegative integer or nonnegative float
+    Level of the color's transparency, 0 (or 0.0) meaning that the color is
+    fully transparent and 255 (or 1.0) meaning that the color is fully opaque.
+    The alpha channel is only supported by a few devices, namely the PDF and
+    PNG formats, for the other format the color is fully transparent as soon as
+    its alpha channel is less than 255 (or 1.0).
+
+Returns
+-------
+code : str
+    Hexadecimal code of the color.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().ConvertFromRGBA(255,0,0,255))
+#ff0000ff"
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromRGBA
+OT_Drawable_ConvertFromRGBA_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertFromName_doc
+"Convert a color name to a valid hexadecimal code.
+
+Parameters
+----------
+name : str
+    Name of the color. The valid color names are given by the
+    :meth:`GetValidColors` method.
+
+Returns
+-------
+code : str
+    Hexadecimal code of the color.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().ConvertFromName('red'))
+#FF0000"
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromName
+OT_Drawable_ConvertFromName_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertToRGB_doc
+"Convert an hexadecimal code into an RGB triplet.
+
+Parameters
+----------
+code : str
+    Hexadecimal code of the color.
+
+Returns
+-------
+RGBComponents : :class:`~openturns.Indices`
+    List containing the RGB (Red, Green and Blue) components of the color.
+    A value of 0 meaning that the component is absent in the color, a value
+    of 255 meaning that the component is fully saturated.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().ConvertToRGB('#ff0000'))
+[255,0,0]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertToRGB
+OT_Drawable_ConvertToRGB_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertToRGBA_doc
+"Convert an hexadecimal code into an RGBA quadruplet.
+
+Parameters
+----------
+code : str
+    Hexadecimal code of the color.
+
+Returns
+-------
+RGBAComponents : :class:`~openturns.Indices`
+    List containing the RGB (Red, Green and Blue) components. A value of 0
+    meaning that the component is absent in the color, a value of 255 meaning
+    that the component is fully saturated. It contains also alpha, the
+    level of transparency of the color. Alpha equal to 0 meaning that the
+    color is fully transparent and 255 meaning that the color is fully opaque.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().ConvertToRGBA('#ff0000'))
+[255,0,0,255]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertToRGBA
+OT_Drawable_ConvertToRGBA_doc
+
+
+

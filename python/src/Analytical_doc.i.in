@@ -1,0 +1,180 @@
+%feature("docstring") OT::Analytical
+"Base class to evaluate the probability of failure of a system.
+
+Available constructors:
+    Analytical(*nearestPointAlgorithm, event, physicalStartingPoint*)
+
+Parameters
+----------
+nearestPointAlgorithm : :class:`~openturns.NearestPointAlgorithm`
+    Optimization algorithm used to research the design point.
+event : :class:`~openturns.Event`
+    Failure event.
+physicalStartingPoint : sequence of float
+    Starting point of the optimization algorithm, declared in the physical
+    space.
+
+Notes
+-----
+Used in reliability analysis, Analytical is a base class for the approximation
+methods :class:`~openturns.FORM` and :class:`~openturns.SORM` enabling to
+evaluate the failure probability of a system.
+A failure event is defined as follows :
+:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`
+where :math:`\vect{X}` denotes a random input vector representing the sources
+of uncertainties, :math:`\vect{d}` is a determinist vector representing the
+fixed variables. :math:`g(\vect{X},\vect{d})` is the limit state function of
+the model separating the failure domain from the safe domain.
+Considering :math:`f_\vect{X}(\vect{x})` the joint probability density function
+of the random variables :math:`\vect{X}`, the probability of failure of the
+event :math:`\cD_f` is :
+
+.. math::
+
+    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})d\vect{x}
+
+The analytical methods use an isoprobabilistic transformation to move from
+the physical space to the standard normal space (U-space) where distributions
+are spherical (invariant by rotation by definition), with zero mean, unit
+variance and unit correlation matrix. The usual isoprobabilistic
+transformations are the Generalized Nataf transformation and the Rosenblatt one.
+
+In that new U-space, the event has the new expression defined
+from the transformed limit state function of the model
+:math:`G : \cD_f = \{\vect{U} \in \Rset^n \, | \, G(\vect{U}\,,\,\vect{d}) \le 0\}`
+and its boundary :
+:math:`\{\vect{U} \in \Rset^n \, | \,G(\vect{U}\,,\,\vect{d}) = 0\}`.
+Then, the event probability :math:`P_f` rewrites :
+
+.. math::
+
+    P_f = \Prob{G(\vect{U}\,,\,\vect{d})\leq 0}
+        = \int_{\Rset^n} \boldsymbol{1}_{G(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\,d\vect{u}
+
+where :math:`f_{\vect{U}}` is the density function of the distribution in the
+standard space.
+
+The analytical methods rely on the assumption that most of the contribution
+to :math:`P_f` comes from points located in the vicinity of a particular point
+:math:`P^*`, the **design point**, defined in the U-space as the point located
+on the limit state surface verifying the event of maximum likelihood. Given the
+probabilistic characteristics of the U-space, :math:`P^*` has a geometrical
+interpretation: it is the point located on the event boundary and at minimal
+distance from the origin of the U-space. Thus, considering :math:`\vect{u}^*`
+its coordinates in the U-space, the design point is the result of the
+constrained optimization problem :
+
+.. math::
+
+    \vect{u}^* = argmin \{||\vect{u}|| \, | \, G(\vect{u}) = 0 \}
+
+Then the limit state surface is approximated in the standard space by a linear
+surface (:class:`~openturns.FORM`) or by a quadratic surface
+(:class:`~openturns.SORM`) at the design point in order to evaluate the
+failure probability. For more information on this evaluation, see the
+documentation associated with these two methods.
+
+The result of the optimization problem is recoverable thanks to the method
+:meth:`getAnalyticalResult`.
+
+The unicity and the strongness of the design point can be checked thanks to the
+:class:`Strong Maximum Test <openturns.StrongMaximumTest>`.
+
+See also
+--------
+FORM, SORM, StrongMaximumTest, Event, StandardEvent, AnalyticalResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> vect = ot.RandomVector(myDistribution)
+>>> output = ot.RandomVector(myFunction, vect)
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a NearestPoint algorithm
+>>> myCobyla = ot.Cobyla()
+>>> myAlgo = ot.Analytical(myCobyla, myEvent, [50., 1., 10., 5.])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::getAnalyticalResult
+"Accessor to the result.
+
+Returns
+-------
+result : :class:`~openturns.AnalyticalResult`
+    Result structure which contains the results of the optimisation problem."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::getNearestPointAlgorithm
+"Accessor to the optimization algorithm used to find the design point.
+
+Returns
+-------
+algorithm : :class:`~openturns.NearestPointAlgorithm`
+     Optimization algorithm used to research the design point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::setNearestPointAlgorithm
+"Accessor to the optimization algorithm used to find the design point.
+
+Parameters
+----------
+algorithm : :class:`~openturns.NearestPointAlgorithm`
+     Optimization algorithm used to research the design point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::getPhysicalStartingPoint
+"Accessor to the starting point of the optimization algorithm.
+
+Returns
+-------
+point : :class:`~openturns.NumericalPoint`
+    Starting point of the optimization algorithm, declared in the physical
+    space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::setPhysicalStartingPoint
+"Accessor to the starting point of the optimization algorithm.
+
+Parameters
+----------
+point : sequence of float
+    Starting point of the optimization algorithm, declared in the physical
+    space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::getEvent
+"Accessor to the event of which the probability is calculated.
+
+Returns
+-------
+event : :class:`~openturns.Event`
+    Event of which the probability is calculated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::setEvent
+"Accessor to the event of which the probability is calculated.
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event of which the probability is calculated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Analytical::run
+"Perform the research of the design point.
+
+Notes
+-----
+Performs the research of the design point and creates a
+:class:`~openturns.AnalyticalResult`, the structure result which is
+accessible with the method :meth:`getAnalyticalResult`."

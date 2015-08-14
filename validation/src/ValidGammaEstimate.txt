@@ -1,0 +1,336 @@
+> restart:
+> with(Statistics):
+> gamma_:=RandomVariable(Gamma(1/lambda,k)):
+> assume(u>0);
+> pdf:=subs(u=x-_gamma,PDF(gamma_,u));
+> cdf:=subs(u=x-_gamma,CDF(gamma_,u)):
+> cdf2:=simplify(convert(cdf,hypergeom),symbolic);
+> mu_:=_gamma+Mean(gamma_);
+> var_:=Variance(gamma_);
+> sol:=subs(m='mu',v='var',solve({mu_=m,var_=v},{k,lambda}));
+> #qdf:=_gamma+Quantile(gamma_,p);
+> #qdf2:=solve(cdf=p,x);
+> pdfgr:=map(_u->simplify(convert(_u,hypergeom),symbolic),[diff(pdf,
+> k)/pdf, diff(pdf, lambda)/pdf, diff(pdf, _gamma)/pdf]);
+> cdfgr:=map(_u->simplify(convert(_u,hypergeom),symbolic),[diff(cdf, k),
+> diff(cdf, lambda), diff(cdf, _gamma)]);
+> #dCDFdk:=collect(map(_u->simplify(convert(_u,hypergeom),symbolic),conv
+> ert(diff(subs(_gamma=0,cdf2), k),hypergeometric)),x);
+> #dCDFdlambda:=map(_u->factor(simplify(convert(_u,hypergeom),symbolic))
+> ,diff(cdf2, lambda));
+> #dCDFdgamma:=map(_u->simplify(convert(_u,hypergeom),symbolic),diff(cdf
+> 2, _gamma));
+> collect(expand(simplify(factor(convert(subs(_gamma=0,lambda=1,diff(cdf
+> 2,k)),'StandardFunctions'))),trig),k);
+> valnum:=k=1.5,lambda=2.5,_gamma=-0.5;
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,map(_x->_x*pdf,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(fsolve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,var_));
+> evalf(subs(valnum,[mu_,sqrt(var_)]));
+> evalf(subs(sol,mu=mu_,var=var_,valnum,[k,lambda]));
+
+                              (k - 1)
+  pdf := ((x - _gamma) lambda)        exp(-(x - _gamma) lambda)
+
+        lambda/GAMMA(k)
+
+
+  cdf2 := - (-GAMMA(k + 1) + GAMMA(k + 1, (x - _gamma) lambda)
+
+                                           k             k
+         - exp(-(x - _gamma) lambda) lambda  (x - _gamma) )/
+
+        GAMMA(k + 1)
+
+
+                                          k
+                        mu_ := _gamma + ------
+                                        lambda
+
+
+                                      k
+                           var_ := -------
+                                         2
+                                   lambda
+
+
+                                                          2
+                          -_gamma + mu      (-_gamma + mu)
+         sol := {lambda = ------------, k = ---------------}
+                              var                 var
+
+
+  pdfgr := [ln(x - _gamma) + ln(lambda) - Psi(k),
+
+          -k + lambda x - lambda _gamma
+        - -----------------------------,
+                     lambda
+
+        -k + 1 + lambda x - lambda _gamma
+        ---------------------------------]
+                   x - _gamma
+
+
+                                          k             k
+  cdfgr := [- (4 exp(%1) Psi(k + 2) lambda  (x - _gamma)
+
+                           k                        k
+         - 4 exp(%1) lambda  ln(lambda) (x - _gamma)
+
+                         k             k  2
+         - exp(%1) lambda  (x - _gamma)  k
+
+                           k                        k  2
+         - 5 exp(%1) lambda  ln(lambda) (x - _gamma)  k
+
+                           k                        k
+         - 8 exp(%1) lambda  ln(lambda) (x - _gamma)  k
+
+                           k             k                 2
+         - 5 exp(%1) lambda  (x - _gamma)  ln(x - _gamma) k
+
+                           k             k
+         - 4 exp(%1) lambda  (x - _gamma)  k
+
+                           k             k
+         - 4 exp(%1) lambda  (x - _gamma)  ln(x - _gamma)
+
+                           k             k
+         - 8 exp(%1) lambda  (x - _gamma)  ln(x - _gamma) k
+
+                         k                        k  3
+         - exp(%1) lambda  ln(lambda) (x - _gamma)  k
+
+                         k             k                 3
+         - exp(%1) lambda  (x - _gamma)  ln(x - _gamma) k
+
+                                      k             k
+         + 8 exp(%1) Psi(k + 2) lambda  (x - _gamma)  k
+
+                                    k             k  3
+         + exp(%1) Psi(k + 2) lambda  (x - _gamma)  k
+
+                                      k             k  2
+         + 5 exp(%1) Psi(k + 2) lambda  (x - _gamma)  k
+
+               3                               2
+         + %2 k  ln(lambda) + 5 %2 ln(lambda) k
+
+               3                                       2
+         + %2 k  ln(x - _gamma) + 5 %2 ln(x - _gamma) k
+
+                          3                    2
+         - %2 Psi(k + 2) k  - 5 %2 Psi(k + 2) k  + 8 %2 k ln(lambda)
+
+         + 8 %2 k ln(x - _gamma) - 8 %2 Psi(k + 2) k
+
+         - ln(lambda) GAMMA(k + 3) k - ln(x - _gamma) GAMMA(k + 3) k
+
+         + Psi(k + 2) GAMMA(k + 3) k + 2 Psi(k + 2) GAMMA(k + 3)
+
+         - 2 ln(lambda) GAMMA(k + 3) - 2 ln(x - _gamma) GAMMA(k + 3)
+
+         + 4 %2 ln(lambda) + 4 %2 ln(x - _gamma) - 4 %2 Psi(k + 2)
+
+                           k             k         (k + 2)
+         - 4 exp(%1) lambda  (x - _gamma)  - lambda
+
+                    (k + 1)
+        (x - _gamma)
+
+        hypergeom([k + 2, k + 2], [k + 3, k + 3], %1) _gamma +
+
+              (k + 2)             (k + 1)
+        lambda        (x - _gamma)
+
+        hypergeom([k + 2, k + 2], [k + 3, k + 3], %1) x)/((k + 2)
+
+                                (k + 1)             k
+        GAMMA(k + 3)), - (lambda        (x - _gamma)  x
+
+                 (k + 1)             k
+         + lambda        (x - _gamma)  k x
+
+                 (k + 1)             k
+         - lambda        (x - _gamma)  _gamma
+
+                 (k + 1)             k
+         - lambda        (x - _gamma)  k _gamma
+
+                 (k + 1)             (k + 1)
+         - lambda        (x - _gamma)        k
+
+                 (k + 1)             (k + 1)
+         - lambda        (x - _gamma)
+
+                 k             k           k             k  2
+         - lambda  (x - _gamma)  k - lambda  (x - _gamma)  k )
+
+        exp(%1)/(GAMMA(k + 2) lambda), exp(%1) (
+
+              (k + 1)             k
+        lambda        (x - _gamma)  x
+
+                 (k + 1)             k
+         + lambda        (x - _gamma)  k x
+
+                 (k + 1)             k
+         - lambda        (x - _gamma)  _gamma
+
+                 (k + 1)             k
+         - lambda        (x - _gamma)  k _gamma
+
+                 (k + 1)             (k + 1)
+         - lambda        (x - _gamma)        k
+
+                 (k + 1)             (k + 1)
+         - lambda        (x - _gamma)
+
+                 k             k           k             k  2
+         - lambda  (x - _gamma)  k - lambda  (x - _gamma)  k )/(
+
+        (x - _gamma) GAMMA(k + 2))]
+
+  %1 := -(x - _gamma) lambda
+
+  %2 := GAMMA(k + 1, (x - _gamma) lambda)
+
+
+        1           2          k        2 GAMMA(k + 1, x)
+  - ---------- - -------- - -------- + -------------------
+             2          2          2            2
+    k (k + 1)    (k + 1)    (k + 1)    k (k + 1)  GAMMA(k)
+
+                                            k
+            GAMMA(k + 1, x)                x
+         + ----------------- - ---------------------------
+                  2             2        2
+           (k + 1)  GAMMA(k)   k  (k + 1)  GAMMA(k) exp(x)
+
+             GAMMA(k + 1, x)      2 GAMMA(k + 1, x) ln(x)
+         + -------------------- - -----------------------
+            2        2                      2
+           k  (k + 1)  GAMMA(k)      (k + 1)  GAMMA(k)
+
+           GAMMA(k + 1, x) ln(x)   k GAMMA(k + 1, x) Psi(k)
+         - --------------------- + ------------------------
+                     2                       2
+            k (k + 1)  GAMMA(k)       (k + 1)  GAMMA(k)
+
+           2 k ln(x)   GAMMA(k + 1, x) Psi(k)
+         + --------- + ----------------------
+                  2              2
+           (k + 1)      k (k + 1)  GAMMA(k)
+
+           k GAMMA(k + 1, x) ln(x)   2 GAMMA(k + 1, x) Psi(k)
+         - ----------------------- + ------------------------
+                     2                         2
+              (k + 1)  GAMMA(k)         (k + 1)  GAMMA(k)
+
+            k
+           x  x hypergeom([k + 1, k + 1], [k + 2, k + 2], -x)
+         - --------------------------------------------------
+                                   2
+                          k (k + 1)  GAMMA(k)
+
+            2                                            k
+           k  Psi(k)    ln(x)      Psi(k)               x
+         - --------- + -------- - -------- - ------------------------
+                  2           2          2          2
+           (k + 1)     (k + 1)    (k + 1)    (k + 1)  GAMMA(k) exp(x)
+
+            2                       k
+           k  ln(x)              2 x
+         + -------- - --------------------------
+                  2            2
+           (k + 1)    k (k + 1)  GAMMA(k) exp(x)
+
+                    k                            k
+                   x  Psi(k)                  k x  Psi(k)
+         - -------------------------- - ------------------------
+                    2                          2
+           k (k + 1)  GAMMA(k) exp(x)   (k + 1)  GAMMA(k) exp(x)
+
+                    k                           k
+                 2 x  Psi(k)                   x  ln(x)
+         - ------------------------ + --------------------------
+                  2                            2
+           (k + 1)  GAMMA(k) exp(x)   k (k + 1)  GAMMA(k) exp(x)
+
+                     k                          k
+                  2 x  ln(x)                 k x  ln(x)
+         + ------------------------ + ------------------------
+                  2                          2
+           (k + 1)  GAMMA(k) exp(x)   (k + 1)  GAMMA(k) exp(x)
+
+           2 k Psi(k)
+         - ----------
+                   2
+            (k + 1)
+
+
+            valnum := k = 1.5, lambda = 2.5, _gamma = -0.5
+
+
+                                 ddf
+
+
+                             0.1284713816
+
+
+                             0.9424415478
+
+
+             [0.1651198816, -0.1156242435, 0.2783546603]
+
+
+            [-0.08756249034, 0.07708282900, -0.1284713816]
+
+
+                             1.062945580
+
+
+                             0.1000000000
+
+
+                             0.2400000000
+
+
+                     [0.1000000000, 0.4898979484]
+
+
+                              [1.5, 2.5]
+
+> restart:assume(k,integer,k>2):
+> eq:=F(k+1)=F(k)-x^k*exp(-x)/k/GAMMA(k);
+> collect(expand(solve(eq,F(k+1))),F(k));
+
+                                           k~
+                                          x   exp(-x)
+                eq := F(k~ + 1) = F(k~) - ------------
+                                          k~ GAMMA(k~)
+
+
+                                      k~
+                                     x
+                     F(k~) - -------------------
+                             k~ GAMMA(k~) exp(x)
+
+> map(factor,collect(expand(solve(subs(k=k-1,eq),F(k-1))),F(k)));
+
+                                      k~
+                                     x
+                      F(k~) + ------------------
+                              GAMMA(k~) x exp(x)
+
+> int(log(x),x);
+
+                             x ln(x) - x
+
+> 
+

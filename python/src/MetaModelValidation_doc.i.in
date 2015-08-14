@@ -1,0 +1,135 @@
+%feature("docstring") OT::MetaModelValidation
+"Base class to score a metamodel and perform validations.
+
+Available constructor:
+    MetaModelValidation(*inputValidationSample, outputValidationSample, metaModel*)
+
+Parameters
+----------
+inputValidationSample, outputValidationSample : 2-d sequence of float
+    The input and output validation samples, not used during the learning step.
+
+metaModel : :class:`~openturns.NumericalMathFunction`
+    Metamodel to validate.
+
+Notes
+-----
+A MetaModelValidation object is used for the validation process of a metamodel.
+For that purpose, a dataset independent of the learning step, is used to score the surrogate model.
+Its main functionalities are :
+- To compute the predictivity factor :math:`Q_2`
+- To get the residual sample, its non parametric distribution
+- To draw a `model vs metamodel` validation graph.
+
+
+Currently only one dimensional output models are available.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import sqrt, sin, pi
+>>> dist = ot.Uniform(-pi/2, pi/2)
+>>> # Model here is sin(x)
+>>> model = ot.NumericalMathFunction('x', 'sin(x)')
+>>> # We can build several types of models (kriging, pc, ...)
+>>> # We use a Taylor developement (order 5) and compare the metamodel with the model
+>>> metaModel = ot.NumericalMathFunction('x', 'x - x^3/6.0 + x^5/120.0')
+>>> x = dist.getSample(100)
+>>> y = model(x)
+>>> # Validation of the model
+>>> val = ot.MetaModelValidation(x, y, metaModel)
+>>> # Compute the first indicator : q2
+>>> q2 = val.computePredictivityFactor()
+>>> # Get the residual
+>>> residual = val.getResidualSample()
+>>> # Get the histogram of residual
+>>> histoResidual = val.getResidualDistribution(False)
+>>> # Draw the validation graph
+>>> graph = val.drawValidation()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    Input sample of a model evaluated apart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.NumericalSample`
+    Output sample of a model evaluated apart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::computePredictivityFactor
+"Compute the predictivity factor.
+
+Returns
+-------
+q2 : float
+    The predictivity factor
+
+Notes
+-----
+The predictivity factor :math:`Q_2` is given by :
+
+.. math::
+    Q_2 = 1 - \frac{\sum_{l=1}^{N} Y_{l} -\hat{f}(X_l)}{Var(Y)}"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getResidualSample
+"Compute the residual sample.
+
+Returns
+-------
+residual : :class:`~openturns.NumericalSample`
+    The residual sample
+
+Notes
+-----
+The residual sample is given by :
+
+.. math::
+    \epsilon_{l} = Y_{l} -\hat{f}(X_l)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getResidualDistribution
+"Compute the non parametric distribution of the residual sample.
+
+Parameters
+----------
+smooth : bool
+    Tells if distribution is smooth (true) or not
+    Default argument is true
+
+Returns
+-------
+residualDistribution : :class:`~openturns.Distribution`
+    The residual distribution
+
+Notes
+-----
+The residual distribution is built thanks to :class:`~openturns.KernelSmoothing` if `smooth` argument is true. Otherwise, an histogram distribution is returned, thanks to :class:`~openturns.HistogramFactory`"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::drawValidation
+"Plot a model vs metamodel graph for visual validation.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The visual validation graph"

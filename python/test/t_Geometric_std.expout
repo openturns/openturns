@@ -1,0 +1,31 @@
+Distribution  class=Geometric name=Geometric dimension=1 p=0.7
+Distribution  Geometric(p = 0.7)
+Elliptical =  False
+Continuous =  False
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1]  last= class=NumericalPoint name=Unnamed dimension=1 values=[2]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.4309]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.618887]
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[3]
+pdf     =0.063000
+pdf (FD)=0.063000
+cdf=0.973000
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.33]
+pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.33]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=1 values=[0.27]
+cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[0.27]
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3]
+cdf(quantile)=0.973000
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.42857]
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.782461]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[2.37346]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[10.6333]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.612245]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=1 description=[p] values=[0.7]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [1.42857]
+standard moment n= 2  value= [2.65306]
+standard moment n= 3  value= [6.67638]
+standard moment n= 4  value= [22.1449]
+standard moment n= 5  value= [91.9266]
+Standard representative= Geometric(p = 0.7)

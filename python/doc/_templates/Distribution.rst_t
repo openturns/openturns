@@ -1,0 +1,44 @@
+{{ objname }} distribution
+{{ underline }}{{ underline }}
+
+.. plot::
+    :include-source: False
+
+    import openturns as ot
+    from matplotlib import pyplot as plt
+    from openturns.viewer import View
+    if (ot.{{ objname }}().__class__.__name__=='ComposedDistribution'):
+        correlation = ot.CorrelationMatrix(2)
+        correlation[1, 0] = 0.25
+        aCopula = ot.NormalCopula(correlation)
+        marginals = [ot.Normal(1., 2.), ot.Normal(2., 3.)]
+        distribution = ot.ComposedDistribution(marginals, aCopula)
+    else:
+        distribution = ot.{{ objname }}()
+    dimension = distribution.getDimension()
+    if dimension <= 2:
+        if distribution.getDimension() == 1:
+            distribution.setDescription(['$t$'])
+            pdf_graph = distribution.drawPDF()
+            cdf_graph = distribution.drawCDF()
+            fig = plt.figure(figsize=(10, 4))
+            plt.suptitle(str(distribution))
+            pdf_axis = fig.add_subplot(121)
+            cdf_axis = fig.add_subplot(122)
+            View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
+            View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False)
+        else:
+            distribution.setDescription(['$t_0$', '$t_1$'])
+            pdf_graph = distribution.drawPDF()
+            fig = plt.figure(figsize=(10, 5))
+            plt.suptitle(str(distribution))
+            pdf_axis = fig.add_subplot(111)
+            View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
+
+.. currentmodule:: {{ module }}
+
+.. autoclass:: {{ objname }}
+
+   {% block methods %}
+   .. automethod:: __init__
+   {% endblock %}

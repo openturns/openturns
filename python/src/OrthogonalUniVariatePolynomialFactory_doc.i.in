@@ -1,0 +1,212 @@
+%define OT_OrthogonalUniVariatePolynomialFactory_doc
+"Base class for orthogonal univariate polynomial factories.
+
+See also
+--------
+StandardDistributionPolynomialFactory"
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory
+OT_OrthogonalUniVariatePolynomialFactory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_build_doc
+"Build the :math:`k`-th order orthogonal univariate polynomial.
+
+Parameters
+----------
+k : int, :math:`0 \leq k`
+    Polynomial order.
+
+Returns
+-------
+polynomial : :class:`~openturns.OrthogonalUniVariatePolynomial`
+    Requested orthogonal univariate polynomial.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> print(polynomial_factory.build(2))
+-0.707107 + 0.707107 * X^2"
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::build
+OT_OrthogonalUniVariatePolynomialFactory_build_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::buildCoefficients
+"Build the :math:`k`-th order orthogonal univariate polynomial coefficients.
+
+Parameters
+----------
+k : int, :math:`0 \leq k`
+    Polynomial order.
+
+Returns
+-------
+coefficients : :class:`~openturns.NumericalPoint`
+    Coefficients of the requested orthogonal univariate polynomial.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> print(polynomial_factory.buildCoefficients(2))
+[-0.707107,0,0.707107]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection
+"Build the recurrence coefficients.
+
+Build the recurrence coefficients of the orthogonal univariate polynomial
+family up to the :math:`k`-th order.
+
+Parameters
+----------
+k : int, :math:`0 \leq k`
+    Polynomial order.
+
+Returns
+-------
+recurrence_coefficients : list of :class:`~openturns.NumericalPoint`
+    All the tecurrence coefficients up to the requested order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> print(polynomial_factory.buildRecurrenceCoefficientsCollection(2))
+[[1,0,0],[0.707107,0,-0.707107]]"
+
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_getMeasure_doc
+"Accessor to the associated probability measure.
+
+Returns
+-------
+measure : :class:`~openturns.Distribution`
+    The associated probability measure (according to which the polynomials are
+    orthogonal).
+
+Notes
+-----
+Two polynomials P and Q are orthogonal with respect to the **probability
+measure** :math:`w(x) \di{x}` if and only if their scalar product:
+
+.. math::
+
+    \langle P, Q \rangle = \int_{\alpha}^{\beta} P(x) Q(x) w(x) \di{x}
+                         = 0
+
+where :math:`\alpha \in \Rset \cup \{-\infty\}` and
+:math:`\beta \in \Rset \cup \{+\infty\}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> print(polynomial_factory.getMeasure())
+Normal(mu = 0, sigma = 1)"
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getMeasure
+OT_OrthogonalUniVariatePolynomialFactory_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_getNodesAndWeights_doc
+"Build the :math:`k`-th order quadrature scheme.
+
+Associated with the orthogonal univariate polynomials family.
+
+Parameters
+----------
+k : int, :math:`0 < k`
+    Polynomial order.
+
+Returns
+-------
+nodes : :class:`~openturns.NumericalPoint`
+    The nodes of the :math:`k`-th order quadrature scheme.
+weights : :class:`~openturns.NumericalPoint`
+    The weights of the :math:`k`-th order quadrature scheme.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> nodes, weights = polynomial_factory.getNodesAndWeights(3)
+>>> print(nodes)
+[-1.73205,...,1.73205]
+>>> print(weights)
+[0.166667,0.666667,0.166667]"
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getNodesAndWeights
+OT_OrthogonalUniVariatePolynomialFactory_getNodesAndWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_getRecurrenceCoefficients_doc
+"Accessor to the recurrence coefficients of the :math:`k`-th order.
+
+Of the orthogonal univariate polynomial.
+
+Parameters
+----------
+k : int, :math:`0 \leq k`
+    Polynomial order.
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i > 1
+
+Returns
+-------
+recurrence_coefficients : :class:`~openturns.NumericalPoint`
+    The recurrence coefficients of the :math:`k`-th order orthogonal
+    univariate polynomial.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> print(polynomial_factory.getRecurrenceCoefficients(3))
+[0.5,0,-0.866025]"
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getRecurrenceCoefficients
+OT_OrthogonalUniVariatePolynomialFactory_getRecurrenceCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_getRoots_doc
+"Accessor to the recurrence coefficients of the :math:`k`-th order.
+
+Of the orthogonal univariate polynomial.
+
+Parameters
+----------
+k : int, :math:`k > 0`
+    Polynomial order.
+
+Returns
+-------
+roots : :class:`~openturns.NumericalPoint`
+    The roots of the :math:`k`-th order orthogonal univariate polynomial.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> print(polynomial_factory.getRoots(3))
+[-1.73205,...,1.73205]"
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getRoots
+OT_OrthogonalUniVariatePolynomialFactory_getRoots_doc

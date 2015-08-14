@@ -1,0 +1,213 @@
+%define OT_ProjectionStrategy_doc
+"Base class for the evaluation strategies of the approximation coefficients.
+
+Available constructors:
+    ProjectionStrategy(*projectionStrategyImplementation*)
+
+Parameters
+----------
+projectionStrategyImplementation : :class:`~openturns.ProjectionStrategy`
+    A projection strategy which is a :class:`~openturns.LeastSquaresStrategy` or
+    an :class:`~openturns.IntegrationStrategy`.
+
+See also
+--------
+FunctionalChaosAlgorithm, LeastSquaresStrategy, IntegrationStrategy
+
+Notes
+-----
+The polynomial chaos (PC) expansion allows one to obtain an explicit
+representation of the random response :math:`\vect{Y} = g(\vect{X})` of the
+model under consideration. More precisely, the response *Y* is cast as a
+converging series featuring orthonormal polynomials. For computational purpose,
+it is necessary though to retain a finite number of terms by truncating the
+expansion using a :class:`~openturns.AdaptiveStrategy`. Then it is necessary to
+estimate the PC coefficients in order to characterize *Y* . This may be achieved
+using a projection strategy.
+
+The model response is assumed to be scalar for the sake of simplicity, i.e.
+:math:`\vect{Y} = Y`. However the following derivations hold componentwise in
+case of a vector-valued random response. Let us consider the following truncated
+PC representation of the model response:
+
+.. math::
+    
+    Y \equiv g(\vect{X}) \approx \sum_{k \in K} a_k \Psi_k \circ T(\vect{X})
+
+where *K* is a non empty finite set of indices, whose cardinality is denoted
+by *P* and where :math:`\vect{U} = T(\vect{X})`. Using the matrix notation 
+:math:`\vect{a} = \{a_0, \ldots, a_{P-1} \}` and
+:math:`\vect{\Psi}(\vect{U}) = \{\Psi_0 (\vect{U}), \ldots, \Psi_{P-1}(\vect{U})\}^{\intercal}`,
+the PC representation rewrites:
+
+.. math::
+    
+    Y \equiv g \circ T^{-1}(\vect{U}) \approx \vect{a}^{\intercal} \vect{\Psi}(\vect{U})
+
+The coefficients may be computed by a :math:`L^2`-projection onto the PC basis
+as follows:
+
+.. math::
+    
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P} E_{\mu} \left[ \left( g \circ T^{-1}
+            (\vect{U}) - \vect{b}^{\intercal} \vect{\Psi}(\vect{U}) \right)^2 \right]
+
+This relation means that the coefficients :math:`(a_k)_{k \in K}` minimize the
+quadratic error between the model and the polynomial approximation. OpenTURNS
+implements it through the :class:`~openturns.LeastSquaresStrategy`.
+
+Due to the orthonormality of the PC basis, it may be shown that the previous
+equation rewrites:
+
+.. math::
+    
+    \vect{a} = E_{\mu} \left[ g \circ T^{-1} (\vect{U}) \vect{\Psi}(\vect{U}) \right]
+
+This relation means that :math:`a_k` is the scalar product of the model with the
+:math:`k^{th}` element of the orthonormal basis :math:`(\Psi_k)_{k \in K}`.
+OpenTURNS implements it through the :class:`~openturns.IntegrationStrategy`.
+
+In both cases, the esperance :math:`E_{\mu}` is approximated by a linear
+quadrature formula:
+
+.. math::
+    
+    E_{\mu} \left[ f(\vect{U}) \right] \approx \sum_{i \in I} \omega_i f(\Xi_i)
+
+where is a function :math:`L_1(\mu)`. In the approximation of the esperance, the
+set *I*, the points :math:`(\Xi_i)_{i \in I}` and the weights 
+:math:`(\omega_i)_{i \in I}` are evaluated from different methods defined in
+:class:`~openturns.WeightedExperiment`."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation
+OT_ProjectionStrategy_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getCoefficients_doc
+"Accessor to the coefficients.
+
+Returns
+-------
+coef : :class:`~openturns.NumericalPoint`
+    Coefficients of the basis."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getCoefficients
+OT_ProjectionStrategy_getCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getExperiment_doc
+"Accessor to the experiments.
+
+Returns
+-------
+exp : :class:`~openturns.WeightedExperiment`
+    Weighted experiment."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getExperiment
+OT_ProjectionStrategy_getExperiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getInputSample_doc
+"Accessor to the input sample.
+
+Returns
+-------
+X : :class:`~openturns.NumericalSample`
+    Input Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getInputSample
+OT_ProjectionStrategy_getInputSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getMeasure_doc
+"Accessor to the measure.
+
+Returns
+-------
+m : Distribution
+    Measure."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getMeasure
+OT_ProjectionStrategy_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getOutputSample_doc
+"Accessor to the output sample.
+
+Returns
+-------
+Y : :class:`~openturns.NumericalSample`
+    Output Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getOutputSample
+OT_ProjectionStrategy_getOutputSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getRelativeError_doc
+"Accessor to the relative error.
+
+Returns
+-------
+e : float
+    Relative error."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getRelativeError
+OT_ProjectionStrategy_getRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getResidual_doc
+"Accessor to the residual.
+
+Returns
+-------
+er : float
+    Residual."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getResidual
+OT_ProjectionStrategy_getResidual_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getWeights_doc
+"Accessor to the weights.
+
+Returns
+-------
+w : :class:`~openturns.NumericalPoint`
+    Weights."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getWeights
+OT_ProjectionStrategy_getWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setExperiment_doc
+"Accessor to the experiments.
+
+Parameters
+----------
+exp : :class:`~openturns.WeightedExperiment`
+    Weighted experiment."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setExperiment
+OT_ProjectionStrategy_setExperiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setMeasure_doc
+"Accessor to the measure.
+
+Parameters
+----------
+m : Distribution
+    Measure."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setMeasure
+OT_ProjectionStrategy_setMeasure_doc

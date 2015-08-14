@@ -1,0 +1,8 @@
+distribution= class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-1
+Estimated distribution= class=Rayleigh name=Rayleigh dimension=1 sigma=2.47251 gamma=-0.964078
+Default distribution= Rayleigh(sigma = 1, gamma = 0)
+Distribution from parameters= Rayleigh(sigma = 2.5, gamma = -1)
+Rayleigh          = Rayleigh(sigma = 2.5, gamma = -1)
+Estimated rayleigh= Rayleigh(sigma = 2.47251, gamma = -0.964078)
+Default rayleigh= Rayleigh(sigma = 1, gamma = 0)
+Rayleigh from parameters= Rayleigh(sigma = 2.5, gamma = -1)

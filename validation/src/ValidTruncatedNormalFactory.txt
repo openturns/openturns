@@ -1,0 +1,21 @@
+> restart:
+> with(Statistics):
+> pdf:=PDF(RandomVariable(Normal(mu,sigma)),t);
+> cdf:=CDF(RandomVariable(Normal(mu,sigma)),t);
+
+                                                 2
+                               1/2       (t - mu)
+                              2    exp(- ---------)
+                                                2
+                                         2 sigma
+                   pdf := 1/2 ---------------------
+                                     1/2
+                                   Pi    sigma
+
+
+                                       1/2
+                                      2    (t - mu)
+                 cdf := 1/2 + 1/2 erf(-------------)
+                                         2 sigma
+
+> 

@@ -1,0 +1,14 @@
+// Classifier docstrings are defined in ClassifierImplementation_doc.i.in
+
+%feature("docstring") OT::Classifier
+OT_Classifier_doc
+%feature("docstring") OT::Classifier::classify
+OT_Classifier_classify_doc
+%feature("docstring") OT::Classifier::grade
+OT_Classifier_grade_doc
+%feature("docstring") OT::Classifier::getDimension
+OT_Classifier_getDimension_doc
+%feature("docstring") OT::Classifier::getVerbose
+OT_Classifier_getVerbose_doc
+%feature("docstring") OT::Classifier::setVerbose
+OT_Classifier_setVerbose_doc

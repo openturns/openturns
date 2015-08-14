@@ -1,0 +1,58 @@
+Testing class Arcsine
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+streamObject(const T & anObject)
+class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Arcsine name=Arcsine dimension=1 a=5.2 b=11.6
+Distribution Arcsine(a = 5.2, b = 11.6)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[9.66973]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[11.3856] last=class=NumericalPoint name=Unnamed dimension=1 values=[7.65026]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[8.42467]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.18235]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0159154]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[1.49339]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[9.1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.00731882]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.00731882]
+log pdf=-2.28336
+pdf     =0.101941
+pdf (FD)=0.101941
+cdf=0.570198
+ccdf=0.429802
+survival=0.429802
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[11.5606]
+cdf(quantile)=0.95
+quantile (tail)=class=NumericalPoint name=Unnamed dimension=1 values=[5.2394]
+cdf (tail)=0.95
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0130693,-0.0203881]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.0130693,-0.0203881]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0398206,-0.0621201]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0398206,-0.0621201]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[8.4]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[2.26274]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.12]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[a : 5.2, b : 11.6]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.375]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Standard representative=Arcsine(a = -1, b = 1)
+mu=8.4
+sigma=2.26274
+a from (mu, sigma)=5.2
+b from (mu, sigma)=11.6

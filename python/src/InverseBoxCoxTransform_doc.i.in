@@ -1,0 +1,94 @@
+%feature("docstring") OT::InverseBoxCoxTransform
+"BoxCox transformation.
+
+Available constructors:
+    InverseBoxCoxTransform(*lambdaVect, shiftVect = 0*)
+
+    InverseBoxCoxTransform(*lambda, shift=0*)
+
+Parameters
+----------
+lambdaVect : :class:`~openturns.NumericalPoint`
+    The  :math:`(\lambda_1, \dots, \lambda_d)` parameter.
+shiftVect : :class:`~openturns.NumericalPoint`
+    The  :math:`(\alpha_1, \dots, \alpha_d)` parameter. 
+
+    Default is :math:`(\alpha_1, \dots, \alpha_d)=(0, \dots, 0)`.
+lambda : float
+    The  :math:`\lambda` parameter in the univariate case.
+shift : float
+    The   :math:`\alpha` parameter in the univariate case.
+
+    Default is :math:`\alpha = 0`.
+
+
+Notes
+-----
+The inverse Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}^{-1}: \Rset^d \rightarrow \Rset^d` writes for each component :math:`h_{\lambda_i, \alpha_i}^{-1}: \Rset \rightarrow \Rset`:
+
+.. math::
+
+    \begin{array}{lcl}
+      h_{\lambda_i, \alpha_i}^{-1}(y) & = &
+      \left\{
+      \begin{array}{ll}
+    \displaystyle (\lambda_i y + 1)^{\frac{1}{\lambda_i}} - \alpha_i & \lambda_i \neq 0 \\
+    \displaystyle \exp(y) - \alpha_i                         & \lambda_i = 0
+      \end{array}
+      \right.
+    \end{array}
+
+The  Box Cox transformation writes:
+
+.. math::
+
+    h_{\lambda_i, \alpha_i}^{-1} (x)= 
+    \left\{
+    \begin{array}{ll}
+    \dfrac{(x+\alpha_i)^\lambda_i-1}{\lambda} & \lambda_i \neq 0 \\
+    \log(x+\alpha_i)                        & \lambda_i = 0
+    \end{array}
+    \right.
+
+for all :math:`x+\alpha_i >0`.
+
+Examples
+--------
+
+Create an inverse Box Cox tranformation:
+
+>>> import openturns as ot
+>>> myLambda = 0.1
+>>> myInverseBoxCox = ot.InverseBoxCoxTransform(myLambda)
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::InverseBoxCoxTransform::getLambda
+"Accessor to the :math:`\vect{\lambda}` parameter.
+
+Returns
+-------
+myLambda : :class:`~openturns.NumericalPoint`
+    The :math:`\vect{\lambda}` parameter.
+
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::InverseBoxCoxTransform::getShift
+"Accessor to the :math:`\vect{\alpha}` parameter.
+
+Returns
+-------
+myLambda : :class:`~openturns.NumericalPoint`
+    The :math:`\vect{\Lambda}` parameter.
+
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::InverseBoxCoxTransform::getInverse
+"Accessor to the  Box Cox transformation.
+
+Returns
+-------
+myInverseBoxCox : :class:`~openturns.BoxCoxTransform`
+    The Box Cox transformation.
+
+"

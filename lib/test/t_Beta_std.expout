@@ -1,0 +1,58 @@
+Testing class Beta
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
+streamObject(const T & anObject)
+class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Beta name=Beta dimension=1 r=2 t=5 a=-1 b=2
+Distribution Beta(r = 2, t = 5, a = -1, b = 2)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.456966]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[-0.504347] last=class=NumericalPoint name=Unnamed dimension=1 values=[-0.367645]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.203901]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.365788]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.444444]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.444444]
+log pdf=-1.2164
+pdf     =0.296296
+pdf (FD)=0.296296
+cdf=0.888889
+ccdf=0.111111
+survival=0.111111
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[1.25419]
+cdf(quantile)=0.95
+quantile (tail)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.707166]
+cdf (tail)=0.95
+characteristic function=(0.817458,0.156352)
+log characteristic function=(-0.183591,0.188983)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[0.353525,-0.152675,0.246914,0.197531]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.2]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.6]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.285714]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[2.35714]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.36]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[r : 2, t : 5, a : -1, b : 2]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.2]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.2]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0857143]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.0857143]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.047619]
+Standard representative=Beta(r = 2, t = 5, a = -1, b = 1)
+mu=0.2
+sigma=0.6
+r from (mu, sigma)=2
+t from (mu, sigma)=5

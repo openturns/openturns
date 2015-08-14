@@ -1,0 +1,66 @@
+%feature("docstring") OT::TimeSeries
+"Time series.
+
+Available constructors:
+    TimeSeries(*nSteps,dim*)
+
+    TimeSeries(*timeGrid, dim*)
+
+    TimeSeries(*timeGrid, sample*)
+
+    TimeSeries(*field*)
+
+Parameters
+----------
+nSteps : int
+    Enables to create a regular time grid on :math:`[0, nSteps]` which time step is equal to 1.
+
+timeGrid: :class:`~openturns.RegularGrid`
+    Regular time grid of the time series.
+
+dim : int
+    Dimension of the values of the time series at each time stamp. By default, the values are equal to the null vector.
+
+sample : 2-d sequence of float
+    Values assigned to each time stamp of the time series.
+
+field : :class:`~openturns.Field`
+    Maps a field into a time series when the associated lesh cn be interpretated as a regular time grid.
+
+Examples
+--------
+Create a time series:
+
+>>> import openturns as ot
+>>> tmin = 0.0
+>>> timeStep = 0.1
+>>> n = 5
+>>> myTimeGrid = ot.RegularGrid(tmin, timeStep, n)
+>>> myValues = [[1.], [2.], [1.5], [4.5], [0.5]]
+>>> myTimeSeries = ot.TimeSeries(myTimeGrid, myValues)
+
+Draw the time series:
+
+>>> graph = myTimeSeries.draw()"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeSeries::add
+"Add a new value to the time series and extend the associated time grid.
+
+Available usages:
+    add(*sample*)
+
+    add(*timeSeries*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension the same as the dimension of the values of the time series.
+
+timeSeries : :class:`~openturns.TimeSeries`, which time grid must match with the initial time grid (one follows the other).
+
+Returns
+-------
+newTimeSeries: :class:`~openturns.TimeSeries`, which regular grid has been extended with a new time stamp or a second time grid, associated to the new values.
+"

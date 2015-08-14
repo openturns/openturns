@@ -1,0 +1,12 @@
+%feature("docstring") OT::MultinomialFactory
+"Multinomial factory.
+
+Available constructor:
+    MultinomialFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

@@ -1,0 +1,148 @@
+%feature("docstring") OT::TruncatedNormal
+"TruncatedNormal distribution.
+
+Available constructors:
+    TruncatedNormal(*mu=0., sigma=1.0, a=-1.0, b=1.0*)
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation.
+a : float
+    Lower bound.
+b : float, :math:`a < b`
+    Upper bound.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{\sigma}
+             \frac{ \phi \left(\frac{x - \mu}{\sigma}\right)}
+                  { \Phi \left(\frac{b - \mu}{\sigma}\right)
+                  - \Phi \left(\frac{a - \mu}{\sigma}\right)},
+             \quad x \in [a; b]
+
+where :math:`\phi` and :math:`\Phi` are, respectively, the probability density
+distribution function and the cumulative distribution function of a standard
+normal distribution.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \mu + \frac{\phi(\frac{a - \mu}{\sigma})
+                                   - \phi(\frac{b - \mu}{\sigma})}
+                                    {\Phi(\frac{b - \mu}{\sigma})
+                                   - \Phi(\frac{a - \mu}{\sigma})}\sigma \\
+        \Var{X} & = & \sigma
+                  \left[1
+                    +\frac{\frac{a - \mu}{\sigma} \phi(\frac{a - \mu}{\sigma})
+                         - \frac{b - \mu}{\sigma} \phi(\frac{b - \mu}{\sigma})}
+                          {\Phi(\frac{b - \mu}{\sigma})
+                         - \Phi(\frac{a - \mu}{\sigma})}
+                    -\left(
+                     \frac{\phi(\frac{a - \mu}{\sigma})
+                         - \phi(\frac{b - \mu}{\sigma})}
+                          {\Phi(\frac{b - \mu}{\sigma})
+                         - \Phi(\frac{a - \mu}{\sigma})}
+                      \right)^2
+                  \right]^\frac{1}{2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.TruncatedNormal(0.5, 3.0, -2.0, 2.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::getSigma
+"Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::getA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::getB
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+b : float
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::setMu
+"Accessor to the distribution's mean.
+
+Parameters
+----------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::setSigma
+"Accessor to the distribution's standard deviation.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::setA
+"Accessor to the distribution's lower bound.
+
+Parameters
+----------
+a : float, :math:`a < b`
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormal::setB
+"Accessor to the distribution's upper bound.
+
+Parameters
+----------
+b : float, :math:`b > a`
+    Upper bound."

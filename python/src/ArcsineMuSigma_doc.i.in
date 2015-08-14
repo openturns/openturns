@@ -1,0 +1,44 @@
+%feature("docstring") OT::ArcsineMuSigma
+"Arcsine distribution parameters.
+
+Available constructors:
+    ArcsineMuSigma(*mu=1.0, sigma=1.0*)
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float
+    Standard deviation :math:`\sigma > 0`.
+
+Notes
+-----
+The native parameters are defined as follows:
+
+.. math::
+
+    a &= \mu - \sigma \sqrt{2} \\
+    b &= \mu + \sigma \sqrt{2}
+
+See also
+--------
+Arcsine
+
+Examples
+--------
+Create the parameters of the Arcsine distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.ArcsineMuSigma(8.4, 2.25)
+
+Convert parameters into the native parameters:
+
+>>> print(parameters([8.4, 2.25]))
+[5.21802,11.582]
+
+The gradient of the transformation of the native parameters into the new
+parameters:
+
+>>> print(parameters.gradient())
+[[  1        1       ]
+ [ -1.41421  1.41421 ]]"

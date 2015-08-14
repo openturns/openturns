@@ -1,0 +1,63 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 950 "restart:\nwith(Stat
+istics):\nassume(u>0,alpha>0):\nchisquare_:=RandomVariable(ChiSquare(n
+u)):\npdf:=subs(u=x,PDF(chisquare_,u));\nddf:=factor(diff(pdf,x));\ncd
+f:=subs(u=x,CDF(chisquare_,u));\ncf:=CharacteristicFunction(chisquare_
+,x);\nmu_:=Mean(chisquare_);\nevalf[25](mu_);\nvar_:=Variance(chisquar
+e_);\nevalf[25](sqrt(var_));\nevalf[25](var_);\nskew_:=simplify((Skewn
+ess(chisquare_)));\nevalf[25](skew_);\nkurt_:=simplify((Kurtosis(chisq
+uare_)));\nevalf[25](kurt_);\n#qdf:=Quantile(chisquare_,p);\nqdf:=proc
+(q,valnum)\n  fsolve(subs(valnum,cdf)=q,x)\nend:\npdfgr:=[diff(pdf,nu)
+];\ncdfgr:=[diff(cdf,nu)];\nvalnum:=nu=1.5;\nevalf(subs(valnum,x=1,ddf
+));\nevalf(subs(valnum,x=1,pdf));\nevalf(subs(valnum,x=1,cdf));\nevalf
+(subs(valnum,x=1,cf));\nevalf(subs(valnum,x=1,map(_x->_x,pdfgr)));\nev
+alf(subs(valnum,x=1,cdfgr));\nevalf(qdf(0.95,valnum));\nevalf(subs(val
+num,mu_));\nevalf(subs(valnum,sqrt(var_)));\nevalf(subs(valnum,skew_))
+;\nevalf(subs(valnum,kurt_));\nevalf(subs(valnum,var_));" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#>%$pdfG**)\"\"#,$*&F'!\"\"%#nuG\"\"\"F,F*-%&GAMM
+AG6#F(F*)%\"xG,&*&F'F*F+F,F,F,F*F,-%$expG6#,$*&F'F*F1F,F*F," }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%$ddfG,$*&#\"\"\"\"\"#F(*.)%\"xG,&*&F)!\"\"
+%#nuGF(F(F(F/F(-%$expG6#,$*&F)F/F,F(F/F(,(F)F/F0F(F,F/F()F),$*&F)F/F0F
+(F(F/-%&GAMMAG6#F8F/F,F/F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$cdf
+G,&\"\"\"F&*&-%&GAMMAG6$,$*&\"\"#!\"\"%#nuGF&F&,$*&F-F.%\"xGF&F&F&-F)6
+#F+F.F." }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#cfG),&\"\"\"F'*&^#!\"#F'
+%\"xGF'F',$*&\"\"#!\"\"%#nuGF'F/" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%
+$mu_G%#nuG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#%#nuG" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#>%%var_G,$*&\"\"#\"\"\"%#nuGF(F(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#,$*&$\":*o,)[]4tBc8UT\"!#C\"\"\"%#nuG#F(\"\"#F(" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*&$\"\"#\"\"!\"\"\"%#nuGF(F(" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&skew_G,$*(\"\"#\"\"\"%#nuG#!\"\"F'F
+'#F(F'F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*&$\":yLg(4!>YZ7F%GG!#C
+\"\"\"%#nuG#!\"\"\"\"#F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&kurt_G,
+$*(\"\"$\"\"\"%#nuG!\"\",&\"\"%F(F)F(F(F(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#,$*($\"\"$\"\"!\"\"\"%#nuG!\"\",&$\"\"%F'F(F)F(F(F(" }}
+{PARA 12 "" 1 "" {XPPMATH 20 "6#>%&pdfgrG7#,(*&#\"\"\"\"\"#F)*,)F*,$*&
+F*!\"\"%#nuGF)F)F/-%&GAMMAG6#F-F/)%\"xG,&*&F*F/F0F)F)F)F/F)-%$expG6#,$
+*&F*F/F5F)F/F)-%#lnG6#F*F)F)F/*&#F)F*F)*,F,F/F1F/F4F)F8F)-%$PsiGF3F)F)
+F/*&#F)F*F)*,F,F/F1F/F4F)-F>6#F5F)F8F)F)F)" }}{PARA 12 "" 1 "" 
+{XPPMATH 20 "6#>%&cdfgrG7#,&*&,&*&#\"\"\"\"\"#F+*&-%&GAMMAG6$,$*&F,!\"
+\"%#nuGF+F+,$*&F,F3%\"xGF+F+F+-%#lnG6#F5F+F+F+*&F*F+-%(MeijerGG6%7$7\"
+7$F+F+7$7%\"\"!FDF1F@F5F+F+F+-F/6#F1F3F3*&F*F+*(F.F+FEF3-%$PsiGFFF+F+F
++" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%'valnumG/%#nuG$\"#:!\"\"" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#$!+N:G2A!#5" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"+Z?/VH!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+(4r
+$z_!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#^$$\"+%3_#*o$!#5$\"+D$zo.%F&
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7#$\"*lk)yd!#5" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#7#$!+%HUr\"H!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$
+\"+%G&>!)\\!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"#:!\"\"" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+230K<!\"*" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"+w5S4B!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+++
+++6!\")" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"#I!\"\"" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 33 "combine(factor(pdfgr[1]/pdf),ln);" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "6#,&*&#\"\"\"\"\"#F&-%$PsiG6#,$*&F'!\"
+\"%#nuGF&F&F&F--%#lnG6#,$*(F'F-F'#F&F'%\"xGF4F&F&" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "2 0 0" 0 }{VIEWOPTS 1 1 0 1 1 
+1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

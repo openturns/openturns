@@ -1,0 +1,8 @@
+Distribution          = LogUniform(aLog = 1, bLog = 2.5)
+Estimated distribution= LogUniform(aLog = 1.00014, bLog = 2.49994)
+Default distribution= LogUniform(aLog = -1, bLog = 1)
+Distribution from parameters= LogUniform(aLog = 1, bLog = 2.5)
+LogUniform          = LogUniform(aLog = 1, bLog = 2.5)
+Estimated logUniform= LogUniform(aLog = 1.00014, bLog = 2.49994)
+Default logUniform= LogUniform(aLog = -1, bLog = 1)
+LogUniform from parameters= LogUniform(aLog = 1, bLog = 2.5)

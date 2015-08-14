@@ -1,0 +1,8 @@
+Distribution          =class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.5
+Estimated distribution=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.33821
+Default distribution=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
+Distribution from parameters=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.5
+ClaytonCopula          =class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.5
+Estimated claytonCopula=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.33821
+Default claytonCopula=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
+ClaytonCopula from parameters=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.5

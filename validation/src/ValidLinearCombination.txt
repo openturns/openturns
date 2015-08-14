@@ -1,0 +1,66 @@
+> restart:
+> f0:=x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2);
+> f1:=exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1);
+> coefficients:=<0.3, 2.9>;
+> f:=f0*coefficients[1]+f1*coefficients[2];
+> x:=<1.2,2.3,3.4>;
+> value:=evalf(subs(x1=x[1],x2=x[2],x3=x[3],f));
+
+                                                     2
+                       3                    (x1 + x2)
+               f0 := x1  sin(x2 + 2.5 x3) - ----------
+                                                    2
+                                            1.0 + x3
+
+
+                              exp(-x1 x2 + x3)
+                     f1 := ----------------------
+                           cos(-1.0 - x2 x3 + x1)
+
+
+                                        [0.3]
+                        coefficients := [   ]
+                                        [2.9]
+
+
+                                               2
+             3                    0.3 (x1 + x2)
+  f := 0.3 x1  sin(x2 + 2.5 x3) - --------------
+                                            2
+                                    1.0 + x3
+
+            2.9 exp(-x1 x2 + x3)
+         + ----------------------
+           cos(-1.0 - x2 x3 + x1)
+
+
+                                   [1.2]
+                                   [   ]
+                              x := [2.3]
+                                   [   ]
+                                   [3.4]
+
+
+                         value := 22.91998049
+
+> gradient:=evalf(subs(x1=x[1],x2=x[2],x3=x[3],<diff(f,x1),diff(f,x2),di
+> ff(f,x3)>));
+
+                                  [-155.5202685]
+                                  [            ]
+                      gradient := [309.6458439 ]
+                                  [            ]
+                                  [252.5311582 ]
+
+> hessian:=evalf[5](subs(x1=x[1],x2=x[2],x3=x[3],<<diff(diff(f,x1),x1),d
+> iff(diff(f,x1),x2),diff(diff(f,x1),x3)>|<diff(diff(f,x2),x1),diff(diff
+> (f,x2),x2),diff(diff(f,x2),x3)>|<diff(diff(f,x3),x1),diff(diff(f,x3),x
+> 2),diff(diff(f,x3),x3)>>));
+
+                         [1440.0     -3537.6    -2656.5]
+                         [                             ]
+              hessian := [-3537.6    9150.9     6852.4 ]
+                         [                             ]
+                         [-2656.5    6852.4     5028.0 ]
+
+> 

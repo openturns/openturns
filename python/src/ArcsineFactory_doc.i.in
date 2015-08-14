@@ -1,0 +1,9 @@
+%feature("docstring") OT::ArcsineFactory
+"Arcsine factory.
+
+Available constructor:
+    ArcsineFactory()
+
+See also
+--------
+DistributionFactory"

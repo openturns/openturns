@@ -1,0 +1,63 @@
+> restart;
+> dbeta:=beta*(sqrt(1-2*ln(epsilon)/beta^2)-1);
+
+                            //    2 ln(epsilon)\1/2    \
+              dbeta := beta ||1 - -------------|    - 1|
+                            ||            2    |       |
+                            \\        beta     /       /
+
+> phi:=proc(x)
+> 1/(2*Pi)^(N/2)*exp(-x*x/2)
+> end:
+> PHI:=proc(x)
+> int(phi(t),t=-infinity..x)
+> end:
+> khi2:=proc(x,n)
+> 1/GAMMA(n/2)*(1/2)^(n/2)*x^(n/2-1)*exp(-1/2*x)
+> end:
+> KHI2:=proc(x,n)
+> int(khi2(t,n),t=0..x)
+> end:
+> 
+> sol1:=solve(phi(beta+dbeta)/phi(beta)=epsilon,dbeta);
+> sol2:=solve(PHI(-beta-dbeta)/PHI(-beta)=epsilon,dbeta);
+> sol3:=solve((1-KHI2(beta+dbeta,6))/(1-KHI2(beta,6))=epsilon,dbeta);
+
+                       2                 1/2
+  sol1 := -beta + (beta  - 2 ln(epsilon))   ,
+
+                     2                 1/2
+        -beta - (beta  - 2 ln(epsilon))
+
+
+               /
+               | 1/2
+  sol2 := -1/2 |2    beta
+               \
+
+                                                1/2                 \
+                                               2    beta            |
+         - 2 RootOf(-erf(_Z) + 1 + epsilon erf(---------) - epsilon)|
+                                                   2                /
+
+         1/2
+        2
+
+
+                               sol3 :=
+
+> plot(subs(beta=5,n=2,[sol1[1],sol2,sol3]),epsilon=0.001..1);
+
+> series(sol1[1]/sol2,epsilon);
+Error, (in series/RootOf) unable to compute series
+
+> with(stats);
+Warning, these names have been redefined: anova, describe, fit,
+importdata, random, statevalf, statplots, transform
+
+
+  [anova, describe, fit, importdata, random, statevalf, statplots,
+
+        transform]
+
+> 

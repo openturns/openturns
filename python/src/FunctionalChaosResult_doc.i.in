@@ -1,0 +1,123 @@
+%feature("docstring") OT::FunctionalChaosResult
+"Functional chaos result.
+
+Notes
+-----
+Structure created by the method run() of
+:class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the method
+getResult()."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getCoefficients
+"Get the coefficients.
+
+Returns
+-------
+coefficients : 2-d sequence of float
+    Collection of coefficients of the functional chaos
+    :math:`(\vect{a}_k)_{k \in K}` with :math:`K` is a finite subset of
+    :math:`\Nset`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getComposedMetaModel
+"Get the composed metamodel.
+
+Returns
+-------
+composedMetamodel : :class:`~openturns.NumericalMathFunction`
+    :math:`\hat{h}=\sum_{k\in K} \vect{a}_k \Psi_k` with :math:`K` is a
+    finite subset of :math:`\Nset`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getMetaModel
+"Get the metamodel.
+
+Returns
+-------
+metamodel : :class:`~openturns.NumericalMathFunction`
+    :math:`\hat{g}=\hat{h}\circ T`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getComposedModel
+"Get the composed model.
+
+Returns
+-------
+composedModel : :class:`~openturns.NumericalMathFunction`
+    :math:`h` which is the composition of the physical model :math:`g` and the
+    inverse isoprobabilistic transformation such as:
+    :math:`h : \vect{U} \longrightarrow \vect{Y}=g \circ T^{-1}(\vect{U})`.
+    We have :math:`h=\sum_{k\in \Nset} \vect{a}_k \Psi_k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getDistribution
+"Get the joint distribution of the physical input vector.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Joint distribution of the physical input vector
+    :math:`f_{\vect{X}}(\vect{x})`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getIndices
+"Get the indices of the final basis.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Collection of integers that represent the indices of the final basis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getInverseTransformation
+"Get the inverse isoprobabilistic transformation.
+
+Returns
+-------
+transformation : :class:`~openturns.NumericalMathFunction`
+    The inverse isoprobabilistic transformation :math:`T^{-1}` that transforms
+    the data distributed according to the measure imposed by the selected
+    orthonormal basis into the input data:
+    :math:`T^{-1}: \Rset^{n_X}\longrightarrow \Rset^{n_X}, T^{-1}(\vect{U})=\vect{X}`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getOrthogonalBasis
+"Get the orthogonal basis.
+
+Returns
+-------
+basis : :class:`~openturns.OrthogonalBasis`
+    Orthogonal basis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getReducedBasis
+"Get the reduced basis.
+
+Returns
+-------
+basis : list of :class:`~openturns.NumericalMathFunction`
+    List of functions that correspond to the basis of the functional chaos
+    :math:`(\Psi_k)_{k\in K}` with :math:`K` is a finite subset of
+    :math:`\Nset`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getTransformation
+"Get the isoprobabilistic transformation.
+
+Returns
+-------
+transformation : :class:`~openturns.NumericalMathFunction`
+    The isoprobabilistic transformation :math:`T` that transforms
+    the input data into a data following the measure imposed by the selected
+    orthonormal basis:
+    :math:`T : \Rset^{n_X}\longrightarrow \Rset^{n_X}, T(\vect{X})=\vect{U}`."

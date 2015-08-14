@@ -1,0 +1,50 @@
+Testing class Burr
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Burr name=Burr dimension=1 c=1.5 k=4.5
+streamObject(const T & anObject)
+class=Burr name=Burr dimension=1 c=1.5 k=4.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Burr name=Burr dimension=1 c=1.5 k=4.5
+Distribution Burr(c = 1.5, k = 4.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.393842]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.719504] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.257588]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.383125]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0960551]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0861923]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0861923]
+log pdf=-3.62306
+pdf     =0.0267008
+pdf (FD)=0.0267008
+cdf=0.990837
+ccdf=0.00916331
+survival=0.00916331
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.00992994,-0.0219098]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.00992994,-0.0219098]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0108262,0.00955539]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.0108262,0.00955539]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.963592]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.37922]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.310221]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[2.16221]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[13.2624]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0962368]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[c : 1.5, k : 4.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.37922]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.240044]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.228571]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.324466]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.738598]
+Standard representative=Burr(c = 1.5, k = 4.5)

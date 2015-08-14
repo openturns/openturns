@@ -1,0 +1,21 @@
+%feature("docstring") OT::FaureSequence
+"Faure sequence.
+
+Available constructors:
+    FaureSequence(*dimension=1*)
+
+Parameters
+----------
+dimension : positive int
+    Dimension of the points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sequence = ot.FaureSequence(2)
+>>> print(sequence.generate(5))
+0 : [ 0.5   0.5   ]
+1 : [ 0.25  0.75  ]
+2 : [ 0.75  0.25  ]
+3 : [ 0.125 0.625 ]
+4 : [ 0.625 0.125 ]"

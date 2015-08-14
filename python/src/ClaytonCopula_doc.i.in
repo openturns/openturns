@@ -1,0 +1,66 @@
+%feature("docstring") OT::ClaytonCopula
+"Clayton copula.
+
+Available constructor:
+    ClaytonCopula(*theta=2.0*)
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta`, :math:'\theta \geq -1'.
+
+Notes
+-----
+The Clayton copula is a bivariate asymmmetric Archimedean copula, exhibiting
+greater dependence in the negative tail than in the positive. It is defined by:
+
+.. math::
+
+    C(u_1, u_2) = (u_1^{-\theta} + u_2^{-\theta} - 1)^{-1/\theta}
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+And its generator is:
+
+.. math::
+
+    \varphi(t) = \frac{1}{\theta} (t^{-\theta} - 1)
+
+The support of the copula is :math:`\{ (u,v)\in [0,1]^2, u^{-\theta} +  v^{-\theta} \geq 1 \}`. 
+
+If :math:`\theta <0`, the support is strictly included in :math:`[0,1]^2` and the frontier defined by :math:`\{ (u,v)\in [0,1]^2, u^{-\theta} +  v^{-\theta} = 1 \}` has a mass not equal to zero. In that case, the copula is a non strict archimedean copula.
+
+See also
+--------
+ArchimedeanCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.ClaytonCopula(2.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ClaytonCopula::getTheta
+"Get the parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    Parameter :math:`\theta` of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ClaytonCopula::setTheta
+"Set the parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta` of the copula."

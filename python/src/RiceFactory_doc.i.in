@@ -1,0 +1,9 @@
+%feature("docstring") OT::RiceFactory
+"Rice factory.
+
+Available constructor:
+    RiceFactory()
+
+See also
+--------
+DistributionFactory"

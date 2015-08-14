@@ -1,0 +1,47 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 753 "restart:\nwith(Stat
+istics):\nassume(beta>0):\nlogistic_:=RandomVariable(Logistic(alpha,be
+ta)):\npdf:=PDF(logistic_,x);\nddf:=factor(diff(pdf,x));\ncdf:=CDF(log
+istic_,x);\nmu_:=Mean(logistic_);\nvar_:=Variance(logistic_);\nqdf:=Qu
+antile(logistic_,p);\nqdf2:=solve(cdf=p,x);\npdfgr:=map(factor,[diff(p
+df,alpha),diff(pdf,beta)]);\nfactor(pdfgr[2]-(x-alpha)*pdfgr[1]/beta);
+\ncdfgr:=map(factor,[diff(cdf,alpha),diff(cdf,beta)]);\nfactor(dcdf[2]
+/dcdf[1]);\nvalnum:=alpha=-0.5,beta=1.5:\nevalf(subs(valnum,x=1,ddf));
+\nevalf(subs(valnum,x=1,pdf));\nevalf(subs(valnum,x=1,cdf));\nevalf(su
+bs(valnum,x=1,map(_x->_x,pdfgr)));\nevalf(subs(valnum,x=1,cdfgr));\nev
+alf(solve(subs(valnum,cdf)=0.95,x));\nevalf(subs(valnum,mu_));\nevalf(
+subs(valnum,var_));\nevalf(subs(valnum,[mu_,sqrt(var_)]));" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%$pdfG*(-%$expG6#*&,&%\"xG\"\"\"%&alphaG!\"
+\"F,%&beta|irGF.F,F/F.,&F,F,F&F,!\"#" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#>%$ddfG,$**-%$expG6#*&,&%\"xG\"\"\"%&alphaG!\"\"F-%&beta|irGF/F-,&F-
+F/F'F-F-F0!\"#,&F-F-F'F-!\"$F/" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$c
+dfG*&\"\"\"F&,&F&F&-%$expG6#,$*&,&%\"xGF&%&alphaG!\"\"F&%&beta|irGF0F0
+F&F0" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$mu_G%&alphaG" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#>%%var_G,$*(\"\"$!\"\"%&beta|irG\"\"#%#PiGF*\"\"
+\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$qdfG,&%&alphaG\"\"\"*&%&beta|
+irGF'-%#lnG6#*&%\"pGF',&F'F'F.!\"\"F0F'F'" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%%qdf2G,&%&alphaG\"\"\"*&-%#lnG6#,$*&,&F'!\"\"%\"pGF'F
+'F0F/F/F'%&beta|irGF'F/" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%&pdfgrG7$
+**-%$expG6#*&,&%\"xG\"\"\"%&alphaG!\"\"F-%&beta|irGF/F-,&F-F/F'F-F-F0!
+\"#,&F-F-F'F-!\"$**F'F-,.F,F/*&F,F-F'F-F-F.F-*&F.F-F'F-F/F0F/*&F0F-F'F
+-F/F-F0F4F3F4" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*(%&beta|irG!\"#-%$
+expG6#*&,&%\"xG\"\"\"%&alphaG!\"\"F-F%F/F-,&F-F-F'F-F&F/" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#>%&cdfgrG7$,$*(,&\"\"\"F)-%$expG6#,$*&,&%\"xGF)%
+&alphaG!\"\"F)%&beta|irGF2F2F)!\"#F3F2F*F)F2,$**F(F4F/F)F3F4F*F)F2" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#*&&%%dcdfG6#\"\"#\"\"\"&F%6#F(!\"\"" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#$!+<@7QS!#6" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"+Aiu58!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+(y&
+e5t!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"+<@7QS!#6$!+Eg=+ZF&" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$!+Aiu58!#5F$" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"+o%em\"R!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$!\"
+&!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+.L?-u!\"*" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7$$!\"&!\"\"$\"+[!*p?F!\"*" }}}}{MARK "1" 0 }
+{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

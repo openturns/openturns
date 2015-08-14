@@ -1,0 +1,83 @@
+> restart:
+> with(LinearAlgebra):
+> Point:=<1,2>:
+> center:=Vector(Point):
+> "center",evalf(center);
+> f:=<x1*sin(x2),cos(x1+x2),(x2+1)*exp(x1-2*x2)>:
+> const:=subs(x1=Point[1],x2=Point[2],f):
+> "const",evalf(const);
+> Df:=<map(_x->diff(_x,x1),f)|map(_x->diff(_x,x2),f)>:
+> Linear:=Transpose(subs(x1=Point[1],x2=Point[2],Df)):
+> "linear",evalf(Linear);
+> Quadratic:=array(1..3):
+> Quadratic[1]:=subs(x1=Point[1],x2=Point[2],<<diff(diff(f[1],x1),x1),di
+> ff(diff(f[1],x1),x2)>|<diff(diff(f[1],x2),x1),diff(diff(f[1],x2),x2)>>
+> ):
+> Quadratic[2]:=subs(x1=Point[1],x2=Point[2],<<diff(diff(f[2],x1),x1),di
+> ff(diff(f[2],x1),x2)>|<diff(diff(f[2],x2),x1),diff(diff(f[2],x2),x2)>>
+> ):
+> Quadratic[3]:=subs(x1=Point[1],x2=Point[2],<<diff(diff(f[3],x1),x1),di
+> ff(diff(f[3],x1),x2)>|<diff(diff(f[3],x2),x1),diff(diff(f[3],x2),x2)>>
+> ):
+> "quadratic",map(evalf,Quadratic);
+> res:=const+Transpose(Linear).(Point-center)+1/2*<Transpose(Point-cente
+> r).Quadratic[1].(Point-center),Transpose(Point-center).Quadratic[2].(P
+> oint-center),Transpose(Point-center).Quadratic[3].(Point-center)>:
+> evalf(res);
+> Point[1]:=Point[1]+0.4:
+> Point[2]:=Point[2]-0.4/2:
+> evalf(Point);
+> res:=const+Transpose(Linear).(Point-center)+1/2*<Transpose(Point-cente
+> r).Quadratic[1].(Point-center),Transpose(Point-center).Quadratic[2].(P
+> oint-center),Transpose(Point-center).Quadratic[3].(Point-center)>:
+> evalf(res);
+
+                                      [1.]
+                            "center", [  ]
+                                      [2.]
+
+
+                                [0.9092974268 ]
+                                [             ]
+                       "const", [-0.9899924966]
+                                [             ]
+                                [0.1493612051 ]
+
+
+               [0.9092974268     -0.1411200081    0.1493612051 ]
+     "linear", [                                               ]
+               [-0.4161468365    -0.1411200081    -0.2489353418]
+
+
+               [[     0.          -0.4161468365]
+  "quadratic", [[                              ],
+               [[-0.4161468365    -0.9092974268]
+
+        [0.9899924966    0.9899924966]
+        [                            ],
+        [0.9899924966    0.9899924966]
+
+        [0.1493612051     -0.2489353418]]
+        [                              ]]
+        [-0.2489353418    0.3982965470 ]]
+
+
+                           [0.9092974268 ]
+                           [             ]
+                           [-0.9899924966]
+                           [             ]
+                           [0.1493612051 ]
+
+
+                            [    1.4    ]
+                            [           ]
+                            [1.800000000]
+
+
+                           [ 1.371351563 ]
+                           [             ]
+                           [-0.9984166483]
+                           [             ]
+                           [0.2987224102 ]
+
+> 

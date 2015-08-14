@@ -1,0 +1,40 @@
+> restart:
+> delta:=(x^3+1.5*y^3-x*y-a*x-b*y-c*x^2-d*y^2)^2;
+> J:=int(int((x^3+y^3-a*x-b*y-c*x^2-d*y^2)^2,x=0..1),y=0..1);
+> Jnum:=0:
+> for i from 0 to 4 do
+>   for j from 0 to 4 do
+>     Jnum:=Jnum+(i+1)*(j+1)*subs(x=i/5,y=j/5,delta);
+>   od:
+> od:
+
+                  3        3                        2      2 2
+       delta := (x  + 1.5 y  - x y - a x - b y - c x  - d y )
+
+
+                           2                                       2
+       23         13 b    d           13 a   b d   2 d c   d a    b
+  J := -- - d/2 - ---- + ---- - c/2 - ---- + --- + ----- + --- + ----
+       56          20     5            20     2      9      3     3
+
+                         2            2
+           b c   b a    c     a c    a
+         + --- + --- + ---- + --- + ----
+            3     2     5      2     3
+
+> subs(evalf(solve({diff(J,a),diff(J,b),diff(J,c),diff(J,d)},{a,b,c,d}))
+> ,[a,b,c,d]);
+> subs(evalf(solve({diff(Jnum,a),diff(Jnum,b),diff(Jnum,c),diff(Jnum,d)}
+> ,{a,b,c,d})),[a,b,c,d]);
+
+       [-0.3882352941, -0.3882352941, 1.323529412, 1.323529412]
+
+
+      [-0.2446616541, -0.4560902256, 0.6578947368, 1.300751880]
+
+> sqrt(subs(evalf(solve({diff(J,a),diff(J,b),diff(J,c),diff(J,d)},{a,b,c
+> ,d})),Jnum));
+
+                             3.816973479
+
+> 

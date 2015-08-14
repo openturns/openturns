@@ -1,0 +1,67 @@
+%feature("docstring") OT::Dirac
+"Dirac distribution.
+
+Available constructors:
+    Dirac(*x=0.*)
+
+Parameters
+----------
+x : float, sequence of float, :math:`\vect{x} \in \Rset^n`
+    The deterministic value.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = \vect{x}} = 1
+
+with :math:`\vect{x} \in \Rset^n`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{\vect{X}} & = & \vect{x} \\
+        \Var{X_i} & = & 0, \quad i = 1, \ldots, n
+    \end{eqnarray*}
+
+Notes
+-----
+This is intended to be used for modelling deterministic parameters.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Dirac([1., 2., 3.])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(2)
+>>> sample[0] == sample[1]
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dirac::getPoint
+"Accessor to the distribution's unique value.
+
+Returns
+-------
+x : float, :class:`~openturns.NumericalPoint`
+    The deterministic value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dirac::setPoint
+"Accessor to the distribution's unique value.
+
+Parameters
+----------
+x : float, sequence of float, :math:`\vect{x} \in \Rset^n`
+    The deterministic value."

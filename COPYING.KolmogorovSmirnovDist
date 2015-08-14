@@ -1,0 +1,64 @@
+/********************************************************************
+ *
+ * File:          KolmogorovSmirnovDist.h
+ * Environment:   ISO C99 or ANSI C89
+ * Author:        Richard Simard
+ * Organization:  DIRO, Université de Montréal
+ * Date:          1 February 2012
+ * Version        1.1
+ *
+ * Copyright March 2010 by Université de Montréal,
+                           Richard Simard and Pierre L'Ecuyer
+ =====================================================================
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3 of the License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ =====================================================================*/
+
+Used in OpenTURNS with written permission of the author (in French, sorry):
+
+ On 07/10/2013 05:39 PM, Regis Lebrun wrote:
+>
+> Bonjour Monsieur,
+>
+> J'ai lu avec un très grand intérêt votre article "Computing the Two-Sided Kolmogorov-Smirnov Distribution" paru dans le Journal of Statistical Software.
+>
+> Je suis un des principaux contributeurs de la librairie OpenTURNS (www.openturns.org) dédié à la propagation probabiliste d'incertitudes. Cette librairie comprend une implémentation du test de Kolmogorov-Smirnov, pour lequel j'ai implémenté l'algorithme de Durbin ainsi que la distribution asymptotique, avant de lire votre article. A cette lecture, il me semble évident que votre implémentation est en tout point largement préférable à la mienne, mais je ne peux pas utiliser tels quels vos développements car ils sont sous licence GPL alors qu'OpenTURNS est sous licence LGPL.
+>
+> J'ai vu que vous aviez donné votre autorisation au projet Accord (https://code.google.com/p/accord/) pour qu'ils puissent utiliser votre code dans une librairie sous licence LGPL. Pourrais-je bénéficier de la même autorisation pour pouvoir intégrer votre code à ma librairie, avec tout le crédit qui vous ai dû ainsi que je l'ai fait pour toutes les autres contributions externes à la librairie?
+>
+> Je vous remercie pour l'attention que vous avez porté à ma demande et espère beaucoup recevoir votre accord.
+>
+> Bien cordialement,
+> Regis Lebrun
+=============================================
+
+Cher M. Lebrun,
+vous pouvez utiliser notre programme pour la distribution de Kolmogorov-Smirnov
+avec la licence LGPL. Je recommande d'utiliser la version 1.1 sur ma page
+
+http://www.iro.umontreal.ca/~simardr/ksdir/
+
+La version sur le site du Journal of Statistical Software est la version 1.0.
+La différence est que la version 1.1 utilise les algorithmes exacts pour n <= 500
+alors que l'ancienne version 1.0 les utilise pour n <= 140.
+Le programme sera donc plus précis pour n <= 500. Pour n > 500, on
+utilise des approximations asymptotiques comme avant.
+
+-- 
+
+=================================================
+  Richard Simard    <simardr@iro.umontreal.ca>
+  Laboratoire de simulation et d'optimisation
+  Université de Montréal, IRO
+

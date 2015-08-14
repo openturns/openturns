@@ -1,0 +1,86 @@
+%feature("docstring") OT::Logistic
+"Logistic distribution.
+
+Available constructors:
+    Logistic(*alpha=0., beta=1.0*)
+
+Parameters
+----------
+alpha : float
+    Location parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\exp\left(\left(- \frac{x - \alpha}{\beta}\right)\right)}
+                  {\beta \left(1 + \exp\left(- \frac{x-\alpha}{\beta}
+                                             \right)\right)^2},
+             \quad x \in \Rset
+
+with :math:`\alpha \in \Rset` and :math:`\beta > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \alpha \\
+        \Var{X} & = & \frac{1}{3} \pi^2 \beta^2
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Logistic(0., 1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Logistic::getAlpha
+"Accessor to the distribution's location parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Location parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Logistic::getBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Returns
+-------
+beta : float
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Logistic::setAlpha
+"Accessor to the distribution's location parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in \Rset`
+    Location parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Logistic::setBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."

@@ -1,0 +1,124 @@
+%feature("docstring") OT::MetaModelResult
+"Data structure containing a metamodel.
+
+Available constructor:
+    MetaModelResult(model, metaModel, residuals, relativeErrors)
+
+Parameters
+----------
+model : :class:`~openturns.NumericalMathFunction`
+    Physical model approximated by a metamodel.
+metaModel : :class:`~openturns.NumericalMathFunction`
+    Definition of the response surface(s) of the model's output(s).
+residuals : sequence of float
+    The residual values defined as follows for each output of the model:
+    :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
+    with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
+    metamodel's values.
+relativeErrors : sequence of float
+    The relative errors defined as follows for each output of the model:
+    :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
+    with :math:`\vect{Y}` the vector of the :math:`N` model's values
+    :math:`y_i` and :math:`\hat{y_i}` the metamodel's values.
+
+Notes
+-----
+Structure created by the method run() of :class:`~openturns.KrigingAlgorithm`
+or :class:`~openturns.FunctionalChaosAlgorithm` and obtained thanks to the
+method getResult() of these classes.
+
+See also
+--------
+FunctionalChaosResult"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getModel
+"Accessor to the model.
+
+Returns
+-------
+model : :class:`~openturns.NumericalMathFunction`
+    Physical model approximated by a metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setModel
+"Accessor to the model.
+
+Parameters
+----------
+model : :class:`~openturns.NumericalMathFunction`
+    Physical model approximated by a metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getMetaModel
+"Accessor to the metamodel.
+
+Returns
+-------
+metaModel : :class:`~openturns.NumericalMathFunction`
+    Metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setMetaModel
+"Accessor to the metamodel.
+
+Parameters
+----------
+metaModel : :class:`~openturns.NumericalMathFunction`
+    Metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getResiduals
+"Accessor to the residuals.
+
+Returns
+-------
+residuals : :class:`~openturns.NumericalPoint`
+    The residual values defined as follows for each output of the model:
+    :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
+    with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
+    metamodel's values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setResiduals
+"Accessor to the residuals.
+
+Parameters
+----------
+residuals : sequence of float
+    The residual values defined as follows for each output of the model:
+    :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
+    with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
+    metamodel's values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getRelativeErrors
+"Accessor to the relative errors.
+
+Returns
+-------
+relativeErrors : :class:`~openturns.NumericalPoint`
+    The relative errors  defined as follows for each output of the model:
+    :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
+    with :math:`\vect{Y}` the vector of the :math:`N` model's values
+    :math:`y_i` and :math:`\hat{y_i}` the metamodel's values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setRelativeErrors
+"Accessor to the relative errors.
+
+Parameters
+----------
+relativeErrors : sequence of float
+    The relative errors defined as follows for each output of the model:
+    :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
+    with :math:`\vect{Y}` the vector of the :math:`N` model's values
+    :math:`y_i` and :math:`\hat{y_i}` the metamodel's values."

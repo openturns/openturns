@@ -1,0 +1,75 @@
+%feature("docstring") OT::Contour
+"Contour.
+
+Available constructors:
+    Contour(*dimX, dimY, data, legend=' '*)
+
+    Contour(*sampleX, sampleY, data, levels, labels, drawLabels=True, legend=' '*)
+
+Parameters
+----------
+dimX, dimY : int
+    Dimensions of *data*.
+data : 2-d sequence of float of dimension 1 and of size :math:`dimX*dimY`
+    These values are those of a function :math:`f: \Rset^2 \rightarrow \Rset`
+    on each point of the grid with *dimX* points along the :math:`X`-direction
+    and *dimY* points along the :math:`Y`-direction. The :math:`(X, Y)`-
+    values are stored row-by-row.
+sampleX, sampleY : two 2-d sequences of float of dimension 1
+    First and second coordinates. If not specified the points are equally
+    spaced in :math:`[0, 1]` along the :math:`X` and :math:`Y`-directions.
+levels : sequence of float
+    Levels where the contour will be drawn. If two points of the grid have
+    values bracketing the *level*, a linear interpolation is made in order to
+    find the point associated to the *level* considered.
+labels : sequence of str
+    Labels of each curve associated to one *level*. By default, the labels are
+    the values of the *levels*.
+drawLabels : bool
+    Flag telling if the labels of the iso-curves must be explicited or not.
+legend : str
+    Legend of the Contour.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.NumericalMathFunction(['x', 'y'], ['z'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
+>>> # Generate the data for the curves to be drawn
+>>> nX = 75
+>>> nY = 75
+>>> inputData = ot.Box([nX, nY]).generate()
+>>> inputData *= [10.0] * 2
+>>> inputData += [-5.0] * 2
+>>> data = f(inputData)
+>>> levels = [(0.5 + i) / 5 for i in range(5)]
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('Complex iso lines', 'u1', 'u2', True, '')
+>>> # Create the contour
+>>> myContour = ot.Contour(nX + 2, nY + 2, data)
+>>> myContour.setLevels(levels)
+>>> myGraph.add(myContour)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::buildDefaultLabels
+"Build default labels by taking the level values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::buildDefaultLevels
+"Build default levels.
+
+Parameters
+----------
+n : int
+    Number of levels. If not specified, the default value is taken in the
+    :class:`~openturns.ResourceMap` and :math:`n=10`.
+
+Notes
+-----
+It builds :math:`n` level values and the associated labels which are the level
+values. The level values are the empirical quantiles of the data to be sliced
+at orders :math:`q_k` regularly distributed over :math:`]0,1[`:
+:math:`q_k = \frac{1}{n} \left( k+ \frac{1}{2} \right)` for
+:math:`0 \leq k \leq n-1`.
+"

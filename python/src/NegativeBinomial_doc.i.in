@@ -1,0 +1,83 @@
+%feature("docstring") OT::NegativeBinomial
+"NegativeBinomial distribution.
+
+Available constructors:
+    NegativeBinomial(*r=1.0, p=0.5*)
+
+Parameters
+----------
+r : float, :math:`r > 0`
+    Number of failures until the Bernoulli trial is stopped.
+
+p : float, :math:`0 < p < 1`
+    Success probability of the Bernoulli trial.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    \Prob{X = k} = \frac{\Gamma(k + r)}{\Gamma(r)\Gamma(k+1)}p^k(1-p)^r,
+                   \, \forall k \in \Nset
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{rp}{1-p} \\
+        \Var{X} & = & \frac{rp}{(1-p)^2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.NegativeBinomial(1., 0.6)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NegativeBinomial::getP
+"Accessor to the success probability parameter.
+
+Returns
+-------
+p : float
+    The success probability of the Bernoulli trial."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NegativeBinomial::getR
+"Accessor to the number of failures parameter.
+
+Returns
+-------
+r : float
+    Number of failures until the Bernoulli trial is stopped."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NegativeBinomial::setP
+"Accessor to the success probability parameter.
+
+Parameters
+----------
+p : float, :math:`0 \leq p \leq 1`
+    The success probability of the Bernoulli trial."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NegativeBinomial::setR
+"Accessor to the number of failures parameter.
+
+Parameters
+----------
+r : float, :math:`r > 0`
+    Number of failures until the Bernoulli trial is stopped."

@@ -1,0 +1,375 @@
+dNonCentralStudent(0.2, 0.2, 0.1)=0.195616
+dNonCentralStudent(0.2, 0.2, 0.3)=0.171706
+dNonCentralStudent(0.2, 0.2, 0.5)=0.136747
+dNonCentralStudent(0.2, 0.2, 0.7)=0.107823
+dNonCentralStudent(0.2, 0.2, 0.9)=0.0866756
+dNonCentralStudent(0.2, 1.4, 0.1)=0.0966703
+dNonCentralStudent(0.2, 1.4, 0.3)=0.137274
+dNonCentralStudent(0.2, 1.4, 0.5)=0.150602
+dNonCentralStudent(0.2, 1.4, 0.7)=0.142532
+dNonCentralStudent(0.2, 1.4, 0.9)=0.127164
+dNonCentralStudent(0.2, 2.6, 0.1)=0.0116755
+dNonCentralStudent(0.2, 2.6, 0.3)=0.0335846
+dNonCentralStudent(0.2, 2.6, 0.5)=0.0655722
+dNonCentralStudent(0.2, 2.6, 0.7)=0.0888641
+dNonCentralStudent(0.2, 2.6, 0.9)=0.0981329
+dNonCentralStudent(0.2, 3.8, 0.1)=0.000346153
+dNonCentralStudent(0.2, 3.8, 0.3)=0.00271108
+dNonCentralStudent(0.2, 3.8, 0.5)=0.0132314
+dNonCentralStudent(0.2, 3.8, 0.7)=0.0321665
+dNonCentralStudent(0.2, 3.8, 0.9)=0.050349
+dNonCentralStudent(0.2, 5, 0.1)=2.53101e-06
+dNonCentralStudent(0.2, 5, 0.3)=7.65629e-05
+dNonCentralStudent(0.2, 5, 0.5)=0.00134722
+dNonCentralStudent(0.2, 5, 0.7)=0.0073899
+dNonCentralStudent(0.2, 5, 0.9)=0.0187694
+dNonCentralStudent(1.4, 0.2, 0.1)=0.335629
+dNonCentralStudent(1.4, 0.2, 0.3)=0.328809
+dNonCentralStudent(1.4, 0.2, 0.5)=0.303097
+dNonCentralStudent(1.4, 0.2, 0.7)=0.266567
+dNonCentralStudent(1.4, 0.2, 0.9)=0.2272
+dNonCentralStudent(1.4, 1.4, 0.1)=0.148486
+dNonCentralStudent(1.4, 1.4, 0.3)=0.195381
+dNonCentralStudent(1.4, 1.4, 0.5)=0.239006
+dNonCentralStudent(1.4, 1.4, 0.7)=0.270636
+dNonCentralStudent(1.4, 1.4, 0.9)=0.285726
+dNonCentralStudent(1.4, 2.6, 0.1)=0.0156377
+dNonCentralStudent(1.4, 2.6, 0.3)=0.0287285
+dNonCentralStudent(1.4, 2.6, 0.5)=0.0501795
+dNonCentralStudent(1.4, 2.6, 0.7)=0.0803627
+dNonCentralStudent(1.4, 2.6, 0.9)=0.116083
+dNonCentralStudent(1.4, 3.8, 0.1)=0.000392098
+dNonCentralStudent(1.4, 3.8, 0.3)=0.00104998
+dNonCentralStudent(1.4, 3.8, 0.5)=0.00285531
+dNonCentralStudent(1.4, 3.8, 0.7)=0.00725525
+dNonCentralStudent(1.4, 3.8, 0.9)=0.0162246
+dNonCentralStudent(1.4, 5, 0.1)=2.34115e-06
+dNonCentralStudent(1.4, 5, 0.3)=9.58171e-06
+dNonCentralStudent(1.4, 5, 0.5)=4.47804e-05
+dNonCentralStudent(1.4, 5, 0.7)=0.000205981
+dNonCentralStudent(1.4, 5, 0.9)=0.000820326
+dNonCentralStudent(2.6, 0.2, 0.1)=0.361327
+dNonCentralStudent(2.6, 0.2, 0.3)=0.357305
+dNonCentralStudent(2.6, 0.2, 0.5)=0.335366
+dNonCentralStudent(2.6, 0.2, 0.7)=0.300818
+dNonCentralStudent(2.6, 0.2, 0.9)=0.260202
+dNonCentralStudent(2.6, 1.4, 0.1)=0.158077
+dNonCentralStudent(2.6, 1.4, 0.3)=0.204925
+dNonCentralStudent(2.6, 1.4, 0.5)=0.250973
+dNonCentralStudent(2.6, 1.4, 0.7)=0.28925
+dNonCentralStudent(2.6, 1.4, 0.9)=0.314223
+dNonCentralStudent(2.6, 2.6, 0.1)=0.0164281
+dNonCentralStudent(2.6, 2.6, 0.3)=0.028521
+dNonCentralStudent(2.6, 2.6, 0.5)=0.0475146
+dNonCentralStudent(2.6, 2.6, 0.7)=0.074528
+dNonCentralStudent(2.6, 2.6, 0.9)=0.108753
+dNonCentralStudent(2.6, 3.8, 0.1)=0.000405584
+dNonCentralStudent(2.6, 3.8, 0.3)=0.000964692
+dNonCentralStudent(2.6, 3.8, 0.5)=0.00229004
+dNonCentralStudent(2.6, 3.8, 0.7)=0.00522396
+dNonCentralStudent(2.6, 3.8, 0.9)=0.0110853
+dNonCentralStudent(2.6, 5, 0.1)=2.37889e-06
+dNonCentralStudent(2.6, 5, 0.3)=7.94166e-06
+dNonCentralStudent(2.6, 5, 0.5)=2.82718e-05
+dNonCentralStudent(2.6, 5, 0.7)=0.00010105
+dNonCentralStudent(2.6, 5, 0.9)=0.00034112
+dNonCentralStudent(3.8, 0.2, 0.1)=0.371953
+dNonCentralStudent(3.8, 0.2, 0.3)=0.369098
+dNonCentralStudent(3.8, 0.2, 0.5)=0.348898
+dNonCentralStudent(3.8, 0.2, 0.7)=0.315562
+dNonCentralStudent(3.8, 0.2, 0.9)=0.274808
+dNonCentralStudent(3.8, 1.4, 0.1)=0.162044
+dNonCentralStudent(3.8, 1.4, 0.3)=0.208819
+dNonCentralStudent(3.8, 1.4, 0.5)=0.255655
+dNonCentralStudent(3.8, 1.4, 0.7)=0.296458
+dNonCentralStudent(3.8, 1.4, 0.9)=0.325742
+dNonCentralStudent(3.8, 2.6, 0.1)=0.0167564
+dNonCentralStudent(3.8, 2.6, 0.3)=0.028458
+dNonCentralStudent(3.8, 2.6, 0.5)=0.0464552
+dNonCentralStudent(3.8, 2.6, 0.7)=0.0719742
+dNonCentralStudent(3.8, 2.6, 0.9)=0.104918
+dNonCentralStudent(3.8, 3.8, 0.1)=0.000411285
+dNonCentralStudent(3.8, 3.8, 0.3)=0.000934893
+dNonCentralStudent(3.8, 3.8, 0.5)=0.00209997
+dNonCentralStudent(3.8, 3.8, 0.7)=0.0045517
+dNonCentralStudent(3.8, 3.8, 0.9)=0.00932118
+dNonCentralStudent(3.8, 5, 0.1)=2.39627e-06
+dNonCentralStudent(3.8, 5, 0.3)=7.40896e-06
+dNonCentralStudent(3.8, 5, 0.5)=2.36895e-05
+dNonCentralStudent(3.8, 5, 0.7)=7.55621e-05
+dNonCentralStudent(3.8, 5, 0.9)=0.000231695
+dNonCentralStudent(5, 0.2, 0.1)=0.377722
+dNonCentralStudent(5, 0.2, 0.3)=0.375509
+dNonCentralStudent(5, 0.2, 0.5)=0.356303
+dNonCentralStudent(5, 0.2, 0.7)=0.323737
+dNonCentralStudent(5, 0.2, 0.9)=0.283025
+dNonCentralStudent(5, 1.4, 0.1)=0.164197
+dNonCentralStudent(5, 1.4, 0.3)=0.21092
+dNonCentralStudent(5, 1.4, 0.5)=0.258135
+dNonCentralStudent(5, 1.4, 0.7)=0.300249
+dNonCentralStudent(5, 1.4, 0.9)=0.33192
+dNonCentralStudent(5, 2.6, 0.1)=0.0169347
+dNonCentralStudent(5, 2.6, 0.3)=0.028427
+dNonCentralStudent(5, 2.6, 0.5)=0.0458856
+dNonCentralStudent(5, 2.6, 0.7)=0.0705534
+dNonCentralStudent(5, 2.6, 0.9)=0.102642
+dNonCentralStudent(5, 3.8, 0.1)=0.000414397
+dNonCentralStudent(5, 3.8, 0.3)=0.0009197
+dNonCentralStudent(5, 3.8, 0.5)=0.00200509
+dNonCentralStudent(5, 3.8, 0.7)=0.00422102
+dNonCentralStudent(5, 3.8, 0.9)=0.00844907
+dNonCentralStudent(5, 5, 0.1)=2.40597e-06
+dNonCentralStudent(5, 5, 0.3)=7.1458e-06
+dNonCentralStudent(5, 5, 0.5)=2.15797e-05
+dNonCentralStudent(5, 5, 0.7)=6.46041e-05
+dNonCentralStudent(5, 5, 0.9)=0.000186833
+pNonCentralStudent(0.2, 0.2, 0.1)=0.440296, complementary=0.559704
+pNonCentralStudent(0.2, 0.2, 0.3)=0.477478, complementary=0.522522
+pNonCentralStudent(0.2, 0.2, 0.5)=0.508294, complementary=0.491706
+pNonCentralStudent(0.2, 0.2, 0.7)=0.532613, complementary=0.467387
+pNonCentralStudent(0.2, 0.2, 0.9)=0.551948, complementary=0.448052
+pNonCentralStudent(0.2, 1.4, 0.1)=0.0892746, complementary=0.910725
+pNonCentralStudent(0.2, 1.4, 0.3)=0.112986, complementary=0.887014
+pNonCentralStudent(0.2, 1.4, 0.5)=0.142259, complementary=0.857741
+pNonCentralStudent(0.2, 1.4, 0.7)=0.171793, complementary=0.828207
+pNonCentralStudent(0.2, 1.4, 0.9)=0.198805, complementary=0.801195
+pNonCentralStudent(0.2, 2.6, 0.1)=0.00555527, complementary=0.994445
+pNonCentralStudent(0.2, 2.6, 0.3)=0.00979229, complementary=0.990208
+pNonCentralStudent(0.2, 2.6, 0.5)=0.0197091, complementary=0.980291
+pNonCentralStudent(0.2, 2.6, 0.7)=0.0353949, complementary=0.964605
+pNonCentralStudent(0.2, 2.6, 0.9)=0.0542989, complementary=0.945701
+pNonCentralStudent(0.2, 3.8, 0.1)=9.50467e-05, complementary=0.999905
+pNonCentralStudent(0.2, 3.8, 0.3)=0.000325614, complementary=0.999674
+pNonCentralStudent(0.2, 3.8, 0.5)=0.00173766, complementary=0.998262
+pNonCentralStudent(0.2, 3.8, 0.7)=0.00620761, complementary=0.993792
+pNonCentralStudent(0.2, 3.8, 0.9)=0.0145399, complementary=0.98546
+pNonCentralStudent(0.2, 5, 0.1)=4.26665e-07, complementary=1
+pNonCentralStudent(0.2, 5, 0.3)=4.66282e-06, complementary=0.999995
+pNonCentralStudent(0.2, 5, 0.5)=0.000101887, complementary=0.999898
+pNonCentralStudent(0.2, 5, 0.7)=0.000870284, complementary=0.99913
+pNonCentralStudent(0.2, 5, 0.9)=0.00342707, complementary=0.996573
+pNonCentralStudent(1.4, 0.2, 0.1)=0.454099, complementary=0.545901
+pNonCentralStudent(1.4, 0.2, 0.3)=0.520907, complementary=0.479093
+pNonCentralStudent(1.4, 0.2, 0.5)=0.584352, complementary=0.415648
+pNonCentralStudent(1.4, 0.2, 0.7)=0.641426, complementary=0.358574
+pNonCentralStudent(1.4, 0.2, 0.9)=0.690797, complementary=0.309203
+pNonCentralStudent(1.4, 1.4, 0.1)=0.0944955, complementary=0.905505
+pNonCentralStudent(1.4, 1.4, 0.3)=0.128858, complementary=0.871142
+pNonCentralStudent(1.4, 1.4, 0.5)=0.172431, complementary=0.827569
+pNonCentralStudent(1.4, 1.4, 0.7)=0.22365, complementary=0.77635
+pNonCentralStudent(1.4, 1.4, 0.9)=0.27957, complementary=0.72043
+pNonCentralStudent(1.4, 2.6, 0.1)=0.0060064, complementary=0.993994
+pNonCentralStudent(1.4, 2.6, 0.3)=0.0103213, complementary=0.989679
+pNonCentralStudent(1.4, 2.6, 0.5)=0.0180598, complementary=0.98194
+pNonCentralStudent(1.4, 2.6, 0.7)=0.030984, complementary=0.969016
+pNonCentralStudent(1.4, 2.6, 0.9)=0.0505803, complementary=0.94942
+pNonCentralStudent(1.4, 3.8, 0.1)=0.000103669, complementary=0.999896
+pNonCentralStudent(1.4, 3.8, 0.3)=0.000236638, complementary=0.999763
+pNonCentralStudent(1.4, 3.8, 0.5)=0.000598423, complementary=0.999402
+pNonCentralStudent(1.4, 3.8, 0.7)=0.00155027, complementary=0.99845
+pNonCentralStudent(1.4, 3.8, 0.9)=0.00380628, complementary=0.996194
+pNonCentralStudent(1.4, 5, 0.1)=4.60098e-07, complementary=1
+pNonCentralStudent(1.4, 5, 0.3)=1.47182e-06, complementary=0.999999
+pNonCentralStudent(1.4, 5, 0.5)=6.01639e-06, complementary=0.999994
+pNonCentralStudent(1.4, 5, 0.7)=2.73021e-05, complementary=0.999973
+pNonCentralStudent(1.4, 5, 0.9)=0.000117596, complementary=0.999882
+pNonCentralStudent(2.6, 0.2, 0.1)=0.456644, complementary=0.543356
+pNonCentralStudent(2.6, 0.2, 0.3)=0.528833, complementary=0.471167
+pNonCentralStudent(2.6, 0.2, 0.5)=0.598363, complementary=0.401637
+pNonCentralStudent(2.6, 0.2, 0.7)=0.662136, complementary=0.337864
+pNonCentralStudent(2.6, 0.2, 0.9)=0.718288, complementary=0.281712
+pNonCentralStudent(2.6, 1.4, 0.1)=0.0954614, complementary=0.904539
+pNonCentralStudent(2.6, 1.4, 0.3)=0.131719, complementary=0.868281
+pNonCentralStudent(2.6, 1.4, 0.5)=0.177381, complementary=0.822619
+pNonCentralStudent(2.6, 1.4, 0.7)=0.231587, complementary=0.768413
+pNonCentralStudent(2.6, 1.4, 0.9)=0.292186, complementary=0.707814
+pNonCentralStudent(2.6, 2.6, 0.1)=0.00609152, complementary=0.993908
+pNonCentralStudent(2.6, 2.6, 0.3)=0.0104869, complementary=0.989513
+pNonCentralStudent(2.6, 2.6, 0.5)=0.0179617, complementary=0.982038
+pNonCentralStudent(2.6, 2.6, 0.7)=0.0300318, complementary=0.969968
+pNonCentralStudent(2.6, 2.6, 0.9)=0.0482592, complementary=0.951741
+pNonCentralStudent(2.6, 3.8, 0.1)=0.000105395, complementary=0.999895
+pNonCentralStudent(2.6, 3.8, 0.3)=0.000234275, complementary=0.999766
+pNonCentralStudent(2.6, 3.8, 0.5)=0.000541433, complementary=0.999459
+pNonCentralStudent(2.6, 3.8, 0.7)=0.00125638, complementary=0.998744
+pNonCentralStudent(2.6, 3.8, 0.9)=0.00282554, complementary=0.997174
+pNonCentralStudent(2.6, 5, 0.1)=4.68022e-07, complementary=1
+pNonCentralStudent(2.6, 5, 0.3)=1.38425e-06, complementary=0.999999
+pNonCentralStudent(2.6, 5, 0.5)=4.57751e-06, complementary=0.999995
+pNonCentralStudent(2.6, 5, 0.7)=1.60321e-05, complementary=0.999984
+pNonCentralStudent(2.6, 5, 0.9)=5.5772e-05, complementary=0.999944
+pNonCentralStudent(3.8, 0.2, 0.1)=0.457696, complementary=0.542304
+pNonCentralStudent(3.8, 0.2, 0.3)=0.532111, complementary=0.467889
+pNonCentralStudent(3.8, 0.2, 0.5)=0.604172, complementary=0.395828
+pNonCentralStudent(3.8, 0.2, 0.7)=0.670791, complementary=0.329209
+pNonCentralStudent(3.8, 0.2, 0.9)=0.729903, complementary=0.270097
+pNonCentralStudent(3.8, 1.4, 0.1)=0.0958609, complementary=0.904139
+pNonCentralStudent(3.8, 1.4, 0.3)=0.132899, complementary=0.867101
+pNonCentralStudent(3.8, 1.4, 0.5)=0.179395, complementary=0.820605
+pNonCentralStudent(3.8, 1.4, 0.7)=0.234758, complementary=0.765242
+pNonCentralStudent(3.8, 1.4, 0.9)=0.297205, complementary=0.702795
+pNonCentralStudent(3.8, 2.6, 0.1)=0.00612677, complementary=0.993873
+pNonCentralStudent(3.8, 2.6, 0.3)=0.0105573, complementary=0.989443
+pNonCentralStudent(3.8, 2.6, 0.5)=0.0179307, complementary=0.982069
+pNonCentralStudent(3.8, 2.6, 0.7)=0.0296439, complementary=0.970356
+pNonCentralStudent(3.8, 2.6, 0.9)=0.0472198, complementary=0.95278
+pNonCentralStudent(3.8, 3.8, 0.1)=0.000106112, complementary=0.999894
+pNonCentralStudent(3.8, 3.8, 0.3)=0.000233646, complementary=0.999766
+pNonCentralStudent(3.8, 3.8, 0.5)=0.000522164, complementary=0.999478
+pNonCentralStudent(3.8, 3.8, 0.7)=0.00115851, complementary=0.998841
+pNonCentralStudent(3.8, 3.8, 0.9)=0.00249658, complementary=0.997503
+pNonCentralStudent(3.8, 5, 0.1)=4.71341e-07, complementary=1
+pNonCentralStudent(3.8, 5, 0.3)=1.35595e-06, complementary=0.999999
+pNonCentralStudent(3.8, 5, 0.5)=4.1537e-06, complementary=0.999996
+pNonCentralStudent(3.8, 5, 0.7)=1.3114e-05, complementary=0.999987
+pNonCentralStudent(3.8, 5, 0.9)=4.11142e-05, complementary=0.999959
+pNonCentralStudent(5, 0.2, 0.1)=0.458268, complementary=0.541732
+pNonCentralStudent(5, 0.2, 0.3)=0.53389, complementary=0.46611
+pNonCentralStudent(5, 0.2, 0.5)=0.607332, complementary=0.392668
+pNonCentralStudent(5, 0.2, 0.7)=0.675517, complementary=0.324483
+pNonCentralStudent(5, 0.2, 0.9)=0.736284, complementary=0.263716
+pNonCentralStudent(5, 1.4, 0.1)=0.0960778, complementary=0.903922
+pNonCentralStudent(5, 1.4, 0.3)=0.133539, complementary=0.866461
+pNonCentralStudent(5, 1.4, 0.5)=0.180481, complementary=0.819519
+pNonCentralStudent(5, 1.4, 0.7)=0.236453, complementary=0.763547
+pNonCentralStudent(5, 1.4, 0.9)=0.299881, complementary=0.700119
+pNonCentralStudent(5, 2.6, 0.1)=0.00614591, complementary=0.993854
+pNonCentralStudent(5, 2.6, 0.3)=0.0105958, complementary=0.989404
+pNonCentralStudent(5, 2.6, 0.5)=0.0179152, complementary=0.982085
+pNonCentralStudent(5, 2.6, 0.7)=0.029433, complementary=0.970567
+pNonCentralStudent(5, 2.6, 0.9)=0.046635, complementary=0.953365
+pNonCentralStudent(5, 3.8, 0.1)=0.000106501, complementary=0.999893
+pNonCentralStudent(5, 3.8, 0.3)=0.000233365, complementary=0.999767
+pNonCentralStudent(5, 3.8, 0.5)=0.000512502, complementary=0.999487
+pNonCentralStudent(5, 3.8, 0.7)=0.00111001, complementary=0.99889
+pNonCentralStudent(5, 3.8, 0.9)=0.00233429, complementary=0.997666
+pNonCentralStudent(5, 5, 0.1)=4.73149e-07, complementary=1
+pNonCentralStudent(5, 5, 0.3)=1.34199e-06, complementary=0.999999
+pNonCentralStudent(5, 5, 0.5)=3.95309e-06, complementary=0.999996
+pNonCentralStudent(5, 5, 0.7)=1.18148e-05, complementary=0.999988
+pNonCentralStudent(5, 5, 0.9)=3.49242e-05, complementary=0.999965
+rNonCentralStudent(0.2, 0.2)=9934.8
+rNonCentralStudent(0.2, 0.2)=777147
+rNonCentralStudent(0.2, 0.2)=-0.135759
+rNonCentralStudent(0.2, 0.2)=21.7255
+rNonCentralStudent(0.2, 0.2)=-2527.19
+rNonCentralStudent(0.2, 1.4)=3.78141
+rNonCentralStudent(0.2, 1.4)=0.717253
+rNonCentralStudent(0.2, 1.4)=197250
+rNonCentralStudent(0.2, 1.4)=23.9483
+rNonCentralStudent(0.2, 1.4)=6.81175
+rNonCentralStudent(0.2, 2.6)=2.49802
+rNonCentralStudent(0.2, 2.6)=17.6081
+rNonCentralStudent(0.2, 2.6)=5.09369
+rNonCentralStudent(0.2, 2.6)=8.87474
+rNonCentralStudent(0.2, 2.6)=141.296
+rNonCentralStudent(0.2, 3.8)=1.64729
+rNonCentralStudent(0.2, 3.8)=19.8836
+rNonCentralStudent(0.2, 3.8)=12146.3
+rNonCentralStudent(0.2, 3.8)=5.31691
+rNonCentralStudent(0.2, 3.8)=1923.69
+rNonCentralStudent(0.2, 5)=5.22208
+rNonCentralStudent(0.2, 5)=7.04668
+rNonCentralStudent(0.2, 5)=110.327
+rNonCentralStudent(0.2, 5)=16.924
+rNonCentralStudent(0.2, 5)=8.58818
+rNonCentralStudent(1.4, 0.2)=-5.57995
+rNonCentralStudent(1.4, 0.2)=2.9374
+rNonCentralStudent(1.4, 0.2)=-0.833079
+rNonCentralStudent(1.4, 0.2)=-0.392505
+rNonCentralStudent(1.4, 0.2)=0.0715501
+rNonCentralStudent(1.4, 1.4)=0.781103
+rNonCentralStudent(1.4, 1.4)=3.18001
+rNonCentralStudent(1.4, 1.4)=6.70006
+rNonCentralStudent(1.4, 1.4)=1.13151
+rNonCentralStudent(1.4, 1.4)=52.0542
+rNonCentralStudent(1.4, 2.6)=5.20717
+rNonCentralStudent(1.4, 2.6)=2.87432
+rNonCentralStudent(1.4, 2.6)=2.04453
+rNonCentralStudent(1.4, 2.6)=6.24137
+rNonCentralStudent(1.4, 2.6)=3.05677
+rNonCentralStudent(1.4, 3.8)=2.84277
+rNonCentralStudent(1.4, 3.8)=0.846181
+rNonCentralStudent(1.4, 3.8)=1.97535
+rNonCentralStudent(1.4, 3.8)=7.66042
+rNonCentralStudent(1.4, 3.8)=7.6798
+rNonCentralStudent(1.4, 5)=29.7351
+rNonCentralStudent(1.4, 5)=6.75319
+rNonCentralStudent(1.4, 5)=97.5129
+rNonCentralStudent(1.4, 5)=37.6912
+rNonCentralStudent(1.4, 5)=8.98728
+rNonCentralStudent(2.6, 0.2)=-0.838138
+rNonCentralStudent(2.6, 0.2)=0.196618
+rNonCentralStudent(2.6, 0.2)=4.72526
+rNonCentralStudent(2.6, 0.2)=0.398024
+rNonCentralStudent(2.6, 0.2)=0.353525
+rNonCentralStudent(2.6, 1.4)=1.85205
+rNonCentralStudent(2.6, 1.4)=2.80567
+rNonCentralStudent(2.6, 1.4)=0.922602
+rNonCentralStudent(2.6, 1.4)=3.37366
+rNonCentralStudent(2.6, 1.4)=0.942145
+rNonCentralStudent(2.6, 2.6)=10.9561
+rNonCentralStudent(2.6, 2.6)=0.965111
+rNonCentralStudent(2.6, 2.6)=5.18197
+rNonCentralStudent(2.6, 2.6)=5.11594
+rNonCentralStudent(2.6, 2.6)=3.36479
+rNonCentralStudent(2.6, 3.8)=5.47612
+rNonCentralStudent(2.6, 3.8)=2.66678
+rNonCentralStudent(2.6, 3.8)=10.553
+rNonCentralStudent(2.6, 3.8)=8.50958
+rNonCentralStudent(2.6, 3.8)=14.7761
+rNonCentralStudent(2.6, 5)=3.29199
+rNonCentralStudent(2.6, 5)=6.40479
+rNonCentralStudent(2.6, 5)=8.76698
+rNonCentralStudent(2.6, 5)=7.18538
+rNonCentralStudent(2.6, 5)=9.77094
+rNonCentralStudent(3.8, 0.2)=2.31629
+rNonCentralStudent(3.8, 0.2)=-0.157768
+rNonCentralStudent(3.8, 0.2)=4.96538
+rNonCentralStudent(3.8, 0.2)=1.3264
+rNonCentralStudent(3.8, 0.2)=0.218784
+rNonCentralStudent(3.8, 1.4)=2.10245
+rNonCentralStudent(3.8, 1.4)=1.49228
+rNonCentralStudent(3.8, 1.4)=4.98706
+rNonCentralStudent(3.8, 1.4)=0.544448
+rNonCentralStudent(3.8, 1.4)=1.36688
+rNonCentralStudent(3.8, 2.6)=4.18523
+rNonCentralStudent(3.8, 2.6)=4.51351
+rNonCentralStudent(3.8, 2.6)=2.53294
+rNonCentralStudent(3.8, 2.6)=2.06967
+rNonCentralStudent(3.8, 2.6)=2.04626
+rNonCentralStudent(3.8, 3.8)=3.04623
+rNonCentralStudent(3.8, 3.8)=4.06596
+rNonCentralStudent(3.8, 3.8)=4.01627
+rNonCentralStudent(3.8, 3.8)=1.6563
+rNonCentralStudent(3.8, 3.8)=7.38507
+rNonCentralStudent(3.8, 5)=5.57045
+rNonCentralStudent(3.8, 5)=5.58475
+rNonCentralStudent(3.8, 5)=4.46189
+rNonCentralStudent(3.8, 5)=6.44042
+rNonCentralStudent(3.8, 5)=6.56722
+rNonCentralStudent(5, 0.2)=0.145208
+rNonCentralStudent(5, 0.2)=0.625313
+rNonCentralStudent(5, 0.2)=1.14924
+rNonCentralStudent(5, 0.2)=1.33753
+rNonCentralStudent(5, 0.2)=0.794765
+rNonCentralStudent(5, 1.4)=0.449776
+rNonCentralStudent(5, 1.4)=1.36769
+rNonCentralStudent(5, 1.4)=2.70149
+rNonCentralStudent(5, 1.4)=-0.661426
+rNonCentralStudent(5, 1.4)=1.53251
+rNonCentralStudent(5, 2.6)=2.20857
+rNonCentralStudent(5, 2.6)=2.17065
+rNonCentralStudent(5, 2.6)=0.956197
+rNonCentralStudent(5, 2.6)=1.76901
+rNonCentralStudent(5, 2.6)=2.99356
+rNonCentralStudent(5, 3.8)=4.15438
+rNonCentralStudent(5, 3.8)=7.95548
+rNonCentralStudent(5, 3.8)=2.75046
+rNonCentralStudent(5, 3.8)=13.348
+rNonCentralStudent(5, 3.8)=2.76854
+rNonCentralStudent(5, 5)=3.89296
+rNonCentralStudent(5, 5)=5.7349
+rNonCentralStudent(5, 5)=3.11155
+rNonCentralStudent(5, 5)=9.62167
+rNonCentralStudent(5, 5)=4.25349

@@ -1,0 +1,35 @@
+%feature("docstring") OT::MinCopula
+"MinCopula.
+
+Available constructor:
+    MinCopula(*n=1*)
+
+Parameters
+----------
+n : int, :math:`n \geq 1`
+    Dimension of the copula.
+
+Notes
+-----
+The MinCopula is defined by :
+
+.. math::
+
+    C(u_1, \cdots, u_n) = \min_{i=1, \cdots, n} u_i
+
+for :math:`u_i \in [0, 1]`
+
+See also
+--------
+Copula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.MinCopula(3)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"

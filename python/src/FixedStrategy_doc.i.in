@@ -1,0 +1,65 @@
+%feature("docstring") OT::FixedStrategy
+"Fixed truncation strategy.
+
+Available constructors:
+    FixedStrategy(*orthogonalBasis, dimension*)
+
+Parameters
+----------
+orthogonalBasis : :class:`~openturns.OrthogonalBasis`
+    An OrthogonalBasis.
+dimension : positive int
+    Number of terms of the basis.
+
+See also
+--------
+AdaptiveStrategy, SequentialStrategy, CleaningStrategy
+
+Notes
+-----
+The so-called fixed strategy simply consists in retaining the first :math:`P`
+elements of the PC basis, the latter being ordered according to a given
+:class:`~openturns.EnumerateFunction` (hyperbolic or not). The retained set is
+built in a single pass. The truncated PC expansion is given by:
+
+.. math::
+    
+    \hat{h} (\uX) = \sum_{j=0}^{P-1} \vect{a}_j \Psi_j (\uX)
+
+In case of a :class:`~openturns.LinearEnumerateFunction`, for a given natural
+integer :math:`p`, a usual choice is to set :math:`P` equals to:
+
+.. math::
+    
+    P = \binom{n_X + p}{p} = \frac{(n_X + p)!}{n_X!\,p!}
+
+This way the set of retained basis functions :math:`\{\Psi_j, j = 0, \ldots, P-1\}`
+gathers all the polynomials with total degree not greater than :math:`p`.
+The number of terms :math:`P` grows polynomially both in :math:`n_X` and :math:`p`
+though, which may lead to difficulties in terms of computational efficiency and
+memory requirements when dealing with high-dimensional problems.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # Define the model
+>>> inputDim = 1
+>>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> # Create the input distribution
+>>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> # Construction of the multivariate orthonormal basis
+>>> polyColl = [0.]*inputDim
+>>> for i in range(distribution.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> # Truncature strategy of the multivariate orthonormal basis
+>>> # We choose all the polynomials of degree <= 4
+>>> degree = 4
+>>> indexMax = enumerateFunction.getStrataCumulatedCardinal(degree)
+>>> print(indexMax)
+5
+>>> # We keep all the polynomials of degree <= 4
+>>> # which corresponds to the 5 first ones
+>>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)"

@@ -1,0 +1,109 @@
+// Drawable docstrings are defined in DrawableImplementation_doc.i.in
+
+%feature("docstring") OT::Drawable
+OT_Drawable_doc
+%feature("docstring") OT::Drawable::getLegend
+OT_Drawable_getLegend_doc
+%feature("docstring") OT::Drawable::setLegend
+OT_Drawable_setLegend_doc
+%feature("docstring") OT::Drawable::getPalette
+OT_Drawable_getPalette_doc
+%feature("docstring") OT::Drawable::setPalette
+OT_Drawable_setPalette_doc
+%feature("docstring") OT::Drawable::BuildDefaultPalette
+OT_Drawable_BuildDefaultPalette_doc
+%feature("docstring") OT::Drawable::getColor
+OT_Drawable_getColor_doc
+%feature("docstring") OT::Drawable::setColor
+OT_Drawable_setColor_doc
+%feature("docstring") OT::Drawable::getColorCode
+OT_Drawable_getColorCode_doc
+%feature("docstring") OT::Drawable::GetValidColors
+OT_Drawable_GetValidColors_doc
+%feature("docstring") OT::Drawable::getEdgeColor
+OT_Drawable_getEdgeColor_doc
+%feature("docstring") OT::Drawable::getFillStyle
+OT_Drawable_getFillStyle_doc
+%feature("docstring") OT::Drawable::setFillStyle
+OT_Drawable_setFillStyle_doc
+%feature("docstring") OT::Drawable::GetValidFillStyles
+OT_Drawable_GetValidFillStyles_doc
+%feature("docstring") OT::Drawable::getLineWidth
+OT_Drawable_getLineWidth_doc
+%feature("docstring") OT::Drawable::setLineWidth
+OT_Drawable_setLineWidth_doc
+%feature("docstring") OT::Drawable::getLineStyle
+OT_Drawable_getLineStyle_doc
+%feature("docstring") OT::Drawable::setLineStyle
+OT_Drawable_setLineStyle_doc
+%feature("docstring") OT::Drawable::GetValidLineStyles
+OT_Drawable_GetValidLineStyles_doc
+%feature("docstring") OT::Drawable::getPointStyle
+OT_Drawable_getPointStyle_doc
+%feature("docstring") OT::Drawable::setPointStyle
+OT_Drawable_setPointStyle_doc
+%feature("docstring") OT::Drawable::GetValidPointStyles
+OT_Drawable_GetValidPointStyles_doc
+%feature("docstring") OT::Drawable::getPointCode
+OT_Drawable_getPointCode_doc
+%feature("docstring") OT::Drawable::getLabels
+OT_Drawable_getLabels_doc
+%feature("docstring") OT::Drawable::setLabels
+OT_Drawable_setLabels_doc
+%feature("docstring") OT::Drawable::getDrawLabels
+OT_Drawable_getDrawLabels_doc
+%feature("docstring") OT::Drawable::setDrawLabels
+OT_Drawable_setDrawLabels_doc
+%feature("docstring") OT::Drawable::getX
+OT_Drawable_getX_doc
+%feature("docstring") OT::Drawable::setX
+OT_Drawable_setX_doc
+%feature("docstring") OT::Drawable::getY
+OT_Drawable_getY_doc
+%feature("docstring") OT::Drawable::setY
+OT_Drawable_setY_doc
+%feature("docstring") OT::Drawable::getData
+OT_Drawable_getData_doc
+%feature("docstring") OT::Drawable::getBoundingBox
+OT_Drawable_getBoundingBox_doc
+%feature("docstring") OT::Drawable::getCenter
+OT_Drawable_getCenter_doc
+%feature("docstring") OT::Drawable::setCenter
+OT_Drawable_setCenter_doc
+%feature("docstring") OT::Drawable::getRadius
+OT_Drawable_getRadius_doc
+%feature("docstring") OT::Drawable::setRadius
+OT_Drawable_setRadius_doc
+%feature("docstring") OT::Drawable::getOrigin
+OT_Drawable_getOrigin_doc
+%feature("docstring") OT::Drawable::setOrigin
+OT_Drawable_setOrigin_doc
+%feature("docstring") OT::Drawable::getLevels
+OT_Drawable_getLevels_doc
+%feature("docstring") OT::Drawable::setLevels
+OT_Drawable_setLevels_doc
+%feature("docstring") OT::Drawable::getPattern
+OT_Drawable_getPattern_doc
+%feature("docstring") OT::Drawable::setPattern
+OT_Drawable_setPattern_doc
+%feature("docstring") OT::Drawable::draw
+OT_Drawable_draw_doc
+%feature("docstring") OT::Drawable::clean
+OT_Drawable_clean_doc
+%feature("docstring") OT::Drawable::ConvertFromHSV
+OT_Drawable_ConvertFromHSV_doc
+%feature("docstring") OT::Drawable::ConvertFromHSVA
+OT_Drawable_ConvertFromHSVA_doc
+%feature("docstring") OT::Drawable::ConvertFromHSVIntoRGB
+OT_Drawable_ConvertFromHSVIntoRGB_doc
+%feature("docstring") OT::Drawable::ConvertFromRGB
+OT_Drawable_ConvertFromRGB_doc
+%feature("docstring") OT::Drawable::ConvertFromRGBA
+OT_Drawable_ConvertFromRGBA_doc
+%feature("docstring") OT::Drawable::ConvertFromName
+OT_Drawable_ConvertFromName_doc
+%feature("docstring") OT::Drawable::ConvertToRGB
+OT_Drawable_ConvertToRGB_doc
+%feature("docstring") OT::Drawable::ConvertToRGBA
+OT_Drawable_ConvertToRGBA_doc
+

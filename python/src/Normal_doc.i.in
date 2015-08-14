@@ -1,0 +1,70 @@
+%feature("docstring") OT::Normal
+"Normal distribution.
+
+Available constructors:
+    Normal(*d=1*)
+
+    Normal(*mu, sigma*)
+
+    Normal(*mu, sigma, R*)
+
+    Normal(*mu, Sigma*)
+
+Parameters
+----------
+d : int, :math:`d \geq 1`
+    Dimension.
+mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`, optional
+    Mean.
+
+    Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
+sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`, optional
+    Scale parameter.
+
+    Default is :math:`\vect{\sigma}= (1, \dots, 1) \in \Rset^d`.
+R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in \Rset^d \times \Rset^d`, optional
+    If :math:`\nu > 2`: correlation matrix.
+
+    If :math:`\nu \leq 2`: generalized correlation matrix.
+
+    Default is :math:`\mat{R} = I_d \in \Rset^d \times \Rset^d`.
+Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in \Rset^d \times \Rset^d`
+    Covariance matrix.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}
+             {\displaystyle (2\pi)^{\frac{n}{2}}
+                            (\mathrm{det}\mathbf{\Sigma})^{\frac{1}{2}}}
+             \displaystyle exp \left(-\frac{1}{2}\Tr{(x - \mu)}
+                                     \mathbf{\Sigma}^{-1}(x - \mu)\right)
+
+with :math:`\Sigma = \Lambda(\sigma) R \Lambda(\sigma)`,
+:math:`\Lambda(\sigma) = diag(\sigma)`,
+:math:`R` symmetric, definite and positive, :math:`\sigma_i > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \vect{\mu} \\
+        \Var{X} & = & \mat{\Sigma}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Normal(0., 1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+

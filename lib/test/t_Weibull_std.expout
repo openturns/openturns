@@ -1,0 +1,54 @@
+Testing class Weibull
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
+streamObject(const T & anObject)
+class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
+Distribution Weibull(alpha = 2, beta = 1.5, gamma = -0.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.49188]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[2.82534] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.847293]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.32223]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.52908]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.107263]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.107263]
+log pdf=-1.08104
+pdf     =0.339242
+pdf (FD)=0.339242
+cdf=0.477703
+ccdf=0.522297
+survival=0.522297
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.0891733,0.191956,0.107263]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.0891733,0.191956,0.107263]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.65622]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.30549]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.22587]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.07199]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[4.3904]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.50276]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[alpha : 2, beta : 1.5, gamma : -0.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.902745]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.19064]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[2]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[4.0122]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[9.26053]
+Standard representative=Weibull(alpha = 1, beta = 1.5, gamma = 0)
+mu=1.30549
+sigma=1.22587
+alpha from (mu, sigma)=2
+beta from (mu, sigma)=1.5

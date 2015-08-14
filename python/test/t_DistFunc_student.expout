@@ -1,0 +1,150 @@
+pStudent( 0.2 ,  0.1 )=0.519555 , complementary=0.480445
+pStudent( 0.2 ,  0.188888888889 )=0.536073 , complementary=0.463927
+pStudent( 0.2 ,  0.277777777778 )=0.551258 , complementary=0.448742
+pStudent( 0.2 ,  0.366666666667 )=0.564919 , complementary=0.435081
+pStudent( 0.2 ,  0.455555555556 )=0.57708 , complementary=0.42292
+pStudent( 0.2 ,  0.544444444444 )=0.587878 , complementary=0.412122
+pStudent( 0.2 ,  0.633333333333 )=0.597486 , complementary=0.402514
+pStudent( 0.2 ,  0.722222222222 )=0.606072 , complementary=0.393928
+pStudent( 0.2 ,  0.811111111111 )=0.613789 , complementary=0.386211
+pStudent( 0.2 ,  0.9 )=0.620766 , complementary=0.379234
+pStudent( 1.4 ,  0.1 )=0.533632 , complementary=0.466368
+pStudent( 1.4 ,  0.188888888889 )=0.56307 , complementary=0.43693
+pStudent( 1.4 ,  0.277777777778 )=0.591695 , complementary=0.408305
+pStudent( 1.4 ,  0.366666666667 )=0.619199 , complementary=0.380801
+pStudent( 1.4 ,  0.455555555556 )=0.645341 , complementary=0.354659
+pStudent( 1.4 ,  0.544444444444 )=0.669952 , complementary=0.330048
+pStudent( 1.4 ,  0.633333333333 )=0.692939 , complementary=0.307061
+pStudent( 1.4 ,  0.722222222222 )=0.714268 , complementary=0.285732
+pStudent( 1.4 ,  0.811111111111 )=0.733956 , complementary=0.266044
+pStudent( 1.4 ,  0.9 )=0.752058 , complementary=0.247942
+pStudent( 2.6 ,  0.1 )=0.536228 , complementary=0.463772
+pStudent( 2.6 ,  0.188888888889 )=0.56803 , complementary=0.43197
+pStudent( 2.6 ,  0.277777777778 )=0.599113 , complementary=0.400887
+pStudent( 2.6 ,  0.366666666667 )=0.629184 , complementary=0.370816
+pStudent( 2.6 ,  0.455555555556 )=0.657993 , complementary=0.342007
+pStudent( 2.6 ,  0.544444444444 )=0.685348 , complementary=0.314652
+pStudent( 2.6 ,  0.633333333333 )=0.711109 , complementary=0.288891
+pStudent( 2.6 ,  0.722222222222 )=0.73519 , complementary=0.26481
+pStudent( 2.6 ,  0.811111111111 )=0.757555 , complementary=0.242445
+pStudent( 2.6 ,  0.9 )=0.77821 , complementary=0.22179
+pStudent( 3.8 ,  0.1 )=0.537302 , complementary=0.462698
+pStudent( 3.8 ,  0.188888888889 )=0.570082 , complementary=0.429918
+pStudent( 3.8 ,  0.277777777778 )=0.602182 , complementary=0.397818
+pStudent( 3.8 ,  0.366666666667 )=0.633317 , complementary=0.366683
+pStudent( 3.8 ,  0.455555555556 )=0.663241 , complementary=0.336759
+pStudent( 3.8 ,  0.544444444444 )=0.69175 , complementary=0.30825
+pStudent( 3.8 ,  0.633333333333 )=0.718689 , complementary=0.281311
+pStudent( 3.8 ,  0.722222222222 )=0.743953 , complementary=0.256047
+pStudent( 3.8 ,  0.811111111111 )=0.767481 , complementary=0.232519
+pStudent( 3.8 ,  0.9 )=0.789252 , complementary=0.210748
+pStudent( 5.0 ,  0.1 )=0.537885 , complementary=0.462115
+pStudent( 5.0 ,  0.188888888889 )=0.571196 , complementary=0.428804
+pStudent( 5.0 ,  0.277777777778 )=0.603849 , complementary=0.396151
+pStudent( 5.0 ,  0.366666666667 )=0.635563 , complementary=0.364437
+pStudent( 5.0 ,  0.455555555556 )=0.666095 , complementary=0.333905
+pStudent( 5.0 ,  0.544444444444 )=0.695236 , complementary=0.304764
+pStudent( 5.0 ,  0.633333333333 )=0.722825 , complementary=0.277175
+pStudent( 5.0 ,  0.722222222222 )=0.748744 , complementary=0.251256
+pStudent( 5.0 ,  0.811111111111 )=0.772918 , complementary=0.227082
+pStudent( 5.0 ,  0.9 )=0.795314 , complementary=0.204686
+qStudent( 0.2 ,  0.1 )=-750.829 , complementary=750.829
+qStudent( 0.2 ,  0.188888888889 )=-31.2237 , complementary=31.2237
+qStudent( 0.2 ,  0.277777777778 )=-4.52796 , complementary=4.52796
+qStudent( 0.2 ,  0.366666666667 )=-1.0846 , complementary=1.0846
+qStudent( 0.2 ,  0.455555555556 )=-0.236812 , complementary=0.236812
+qStudent( 0.2 ,  0.544444444444 )=0.236812 , complementary=-0.236812
+qStudent( 0.2 ,  0.633333333333 )=1.0846 , complementary=-1.0846
+qStudent( 0.2 ,  0.722222222222 )=4.52796 , complementary=-4.52796
+qStudent( 0.2 ,  0.811111111111 )=31.2237 , complementary=-31.2237
+qStudent( 0.2 ,  0.9 )=750.829 , complementary=-750.829
+qStudent( 1.4 ,  0.1 )=-2.29897 , complementary=2.29897
+qStudent( 1.4 ,  0.188888888889 )=-1.26062 , complementary=1.26062
+qStudent( 1.4 ,  0.277777777778 )=-0.757262 , complementary=0.757262
+qStudent( 1.4 ,  0.366666666667 )=-0.414108 , complementary=0.414108
+qStudent( 1.4 ,  0.455555555556 )=-0.132431 , complementary=0.132431
+qStudent( 1.4 ,  0.544444444444 )=0.132431 , complementary=-0.132431
+qStudent( 1.4 ,  0.633333333333 )=0.414108 , complementary=-0.414108
+qStudent( 1.4 ,  0.722222222222 )=0.757262 , complementary=-0.757262
+qStudent( 1.4 ,  0.811111111111 )=1.26062 , complementary=-1.26062
+qStudent( 1.4 ,  0.9 )=2.29897 , complementary=-2.29897
+qStudent( 2.6 ,  0.1 )=-1.70816 , complementary=1.70816
+qStudent( 2.6 ,  0.188888888889 )=-1.05942 , complementary=1.05942
+qStudent( 2.6 ,  0.277777777778 )=-0.673575 , complementary=0.673575
+qStudent( 2.6 ,  0.366666666667 )=-0.379219 , complementary=0.379219
+qStudent( 2.6 ,  0.455555555556 )=-0.122822 , complementary=0.122822
+qStudent( 2.6 ,  0.544444444444 )=0.122822 , complementary=-0.122822
+qStudent( 2.6 ,  0.633333333333 )=0.379219 , complementary=-0.379219
+qStudent( 2.6 ,  0.722222222222 )=0.673575 , complementary=-0.673575
+qStudent( 2.6 ,  0.811111111111 )=1.05942 , complementary=-1.05942
+qStudent( 2.6 ,  0.9 )=1.70816 , complementary=-1.70816
+qStudent( 3.8 ,  0.1 )=-1.54894 , complementary=1.54894
+qStudent( 3.8 ,  0.188888888889 )=-0.997383 , complementary=0.997383
+qStudent( 3.8 ,  0.277777777778 )=-0.64541 , complementary=0.64541
+qStudent( 3.8 ,  0.366666666667 )=-0.366713 , complementary=0.366713
+qStudent( 3.8 ,  0.455555555556 )=-0.119253 , complementary=0.119253
+qStudent( 3.8 ,  0.544444444444 )=0.119253 , complementary=-0.119253
+qStudent( 3.8 ,  0.633333333333 )=0.366713 , complementary=-0.366713
+qStudent( 3.8 ,  0.722222222222 )=0.64541 , complementary=-0.64541
+qStudent( 3.8 ,  0.811111111111 )=0.997383 , complementary=-0.997383
+qStudent( 3.8 ,  0.9 )=1.54894 , complementary=-1.54894
+qStudent( 5.0 ,  0.1 )=-1.47588 , complementary=1.47588
+qStudent( 5.0 ,  0.188888888889 )=-0.967394 , complementary=0.967394
+qStudent( 5.0 ,  0.277777777778 )=-0.631332 , complementary=0.631332
+qStudent( 5.0 ,  0.366666666667 )=-0.360314 , complementary=0.360314
+qStudent( 5.0 ,  0.455555555556 )=-0.117403 , complementary=0.117403
+qStudent( 5.0 ,  0.544444444444 )=0.117403 , complementary=-0.117403
+qStudent( 5.0 ,  0.633333333333 )=0.360314 , complementary=-0.360314
+qStudent( 5.0 ,  0.722222222222 )=0.631332 , complementary=-0.631332
+qStudent( 5.0 ,  0.811111111111 )=0.967394 , complementary=-0.967394
+qStudent( 5.0 ,  0.9 )=1.47588 , complementary=-1.47588
+rStudent( 0.2 )=7476.31
+rStudent( 0.2 )=666559
+rStudent( 0.2 )=-0.310923
+rStudent( 0.2 )=17.3504
+rStudent( 0.2 )=-2769.01
+rStudent( 0.2 )=-0.262211
+rStudent( 0.2 )=-0.478461
+rStudent( 0.2 )=47638.9
+rStudent( 0.2 )=6.05369
+rStudent( 0.2 )=3.81509
+rStudent( 1.4 )=0.131632
+rStudent( 1.4 )=-1.29869
+rStudent( 1.4 )=0.679956
+rStudent( 1.4 )=0.455992
+rStudent( 1.4 )=-0.772744
+rStudent( 1.4 )=0.184676
+rStudent( 1.4 )=0.916568
+rStudent( 1.4 )=1.23578
+rStudent( 1.4 )=-1.7993
+rStudent( 1.4 )=2.31455
+rStudent( 2.6 )=-0.106989
+rStudent( 2.6 )=-0.323672
+rStudent( 2.6 )=-2.29613
+rStudent( 2.6 )=-1.60233
+rStudent( 2.6 )=0.507901
+rStudent( 2.6 )=-2.79408
+rStudent( 2.6 )=-0.823351
+rStudent( 2.6 )=-0.851024
+rStudent( 2.6 )=0.926106
+rStudent( 2.6 )=-0.902698
+rStudent( 3.8 )=2.05706
+rStudent( 3.8 )=-2.89392
+rStudent( 3.8 )=-0.0639838
+rStudent( 3.8 )=-0.145949
+rStudent( 3.8 )=-0.627063
+rStudent( 3.8 )=3.52391
+rStudent( 3.8 )=-2.73892
+rStudent( 3.8 )=-0.239003
+rStudent( 3.8 )=1.59404
+rStudent( 3.8 )=-2.43636
+rStudent( 5.0 )=-0.619784
+rStudent( 5.0 )=-0.620556
+rStudent( 5.0 )=-0.772649
+rStudent( 5.0 )=1.24861
+rStudent( 5.0 )=-0.151396
+rStudent( 5.0 )=-0.700545
+rStudent( 5.0 )=-1.79918
+rStudent( 5.0 )=2.25695
+rStudent( 5.0 )=-0.510679
+rStudent( 5.0 )=-0.715766

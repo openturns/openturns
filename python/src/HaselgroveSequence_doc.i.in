@@ -1,0 +1,28 @@
+%feature("docstring") OT::HaselgroveSequence
+"Haselgrove sequence.
+
+Available constructors:
+    HaselgroveSequence(*dimension=1*)
+
+    HaselgroveSequence(*base*)
+
+Parameters
+----------
+dimension : positive int
+    Dimension of the points.
+base : sequence of positive float
+    Sequence of positive real values linearly independent over the integer
+    ring, i.e. no linear combination with integer coefficients of these values
+    can be zero excepted if all the coefficients are zero. The dimension of the
+    sequence is given by the dimension of the base.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sequence = ot.HaselgroveSequence(2)
+>>> print(sequence.generate(5))
+0 : [ 0.414214  0.732051  ]
+1 : [ 0.828427  0.464102  ]
+2 : [ 0.242641  0.196152  ]
+3 : [ 0.656854  0.928203  ]
+4 : [ 0.0710678 0.660254  ]"

@@ -1,0 +1,53 @@
+%define OT_ApproximationAlgorithm_doc
+"Approximation algorithm.
+
+Available constructor:
+    ApproximationAlgorithm(*ApproxAlgoImp*)
+
+Parameters
+----------
+ApproxAlgoImp : ApproximationAlgorithmImplementation
+
+See also
+--------
+LeastSquaresStrategy, PenalizedLeastSquaresAlgorithmFactory,
+LeastSquaresMetaModelSelectionFactory
+
+Notes
+-----
+The ApproximationAlgorithm is built from an approximation algorithm
+implementation factory which is a
+:class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` or a 
+:class:`~openturns.LeastSquaresMetaModelSelectionFactory`.
+
+This class is not usable because it has sense only whithin the
+:class:`~openturns.FunctionalChaosAlgorithm`."
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation
+OT_ApproximationAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getVerbose_doc
+"Accessor to the verbosity.
+
+Returns
+-------
+v : bool.
+    Verbosity"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithm::getVerbose
+OT_ApproximationAlgorithm_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_setVerbose_doc
+"Accessor to the verbosity.
+
+Parameters
+----------
+v : bool
+    Enable or disable the verbosity."
+%enddef
+%feature("docstring") OT::ApproximationAlgorithm::setVerbose
+OT_ApproximationAlgorithm_setVerbose_doc

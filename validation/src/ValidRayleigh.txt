@@ -1,0 +1,208 @@
+> restart:
+> with(Statistics):
+> assume(u>0,sigma>0):
+> rayleigh_:=RandomVariable(Rayleigh(sigma)):
+> pdf:=subs(u=x-_gamma,PDF(rayleigh_,u));
+> ddf:=factor(diff(pdf,x));
+> cdf:=subs(u=x-_gamma,CDF(rayleigh_,u));
+> cf:=CharacteristicFunction(rayleigh_,x)*exp(I*x*_gamma);
+> mu_:=_gamma+Mean(rayleigh_);
+> evalf[25](mu_);
+> var_:=Variance(rayleigh_);
+> evalf[25](sqrt(var_));
+> evalf[25](var_);
+> skew_:=simplify((Skewness(rayleigh_)));
+> evalf[25](skew_);
+> kurt_:=simplify((Kurtosis(rayleigh_)));
+> evalf[25](kurt_);
+> qdf:=_gamma+Quantile(rayleigh_,p);
+> pdfgr:=map(factor,[diff(pdf,sigma),diff(pdf,_gamma)]);
+> cdfgr:=map(factor,[diff(cdf,sigma),diff(cdf,_gamma)]);
+> valnum:=sigma=2.5,_gamma=-0.5;
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(subs(valnum,p=0.95,qdf));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+                                                     2
+                                         (x - _gamma)
+                      (x - _gamma) exp(- -------------)
+                                                   2
+                                           2 sigma~
+               pdf := ---------------------------------
+                                         2
+                                   sigma~
+
+
+                             2
+                 (x - _gamma)
+  ddf := - exp(- -------------) (-_gamma + x - sigma~)
+                           2
+                   2 sigma~
+
+                                 /       4
+        (-_gamma + x + sigma~)  /  sigma~
+                               /
+
+
+                                                2
+                                    (x - _gamma)
+                   cdf := 1 - exp(- -------------)
+                                              2
+                                      2 sigma~
+
+
+        /                        /    1    \(- k/2)      k\
+        |infinity GAMMA(1 + k/2) |---------|        (x I) |
+        | -----                  |        2|              |
+        |  \                     \2 sigma~ /              |
+  cf := |   )     ----------------------------------------|
+        |  /                         k!                   |
+        | -----                                           |
+        \ k = 0                                           /
+
+        exp(x _gamma I)
+
+
+                                          1/2   1/2
+                                  sigma~ 2    Pi
+                  mu_ := _gamma + -----------------
+                                          2
+
+
+              _gamma + 1.253314137315500251207882 sigma~
+
+
+                              /     Pi \       2
+                      var_ := |2 - ----| sigma~
+                              \     2  /
+
+
+                  0.6551363775620335530939357 sigma~
+
+
+                                                   2
+                  0.429203673205103380768678 sigma~
+
+
+                                1/2   1/2
+                             2 2    Pi    (-3 + Pi)
+                  skew_ := - -----------------------
+                                                 1/2
+                             (-4 + Pi) (8 - 2 Pi)
+
+
+                     0.6311106578189371381918970
+
+
+                                             2
+                                   -32 + 3 Pi
+                        kurt_ := - -----------
+                                            2
+                                   (-4 + Pi)
+
+
+                      3.245089300687638062848662
+
+
+                                        2           1/2
+              qdf := _gamma + (-2 sigma~  ln(1 - p))
+
+
+                                           2
+                               (x - _gamma)
+  pdfgr := [(x - _gamma) exp(- -------------)
+                                         2
+                                 2 sigma~
+
+                  2    2                      2    /       5
+        (-2 sigma~  + x  - 2 x _gamma + _gamma )  /  sigma~ ,
+                                                 /
+
+                          2
+              (x - _gamma)
+        exp(- -------------) (-_gamma + x - sigma~)
+                        2
+                2 sigma~
+
+                                 /       4
+        (-_gamma + x + sigma~)  /  sigma~ ]
+                               /
+
+
+                                              2
+                          2       (x - _gamma)
+              (x - _gamma)  exp(- -------------)
+                                            2
+                                    2 sigma~
+  cdfgr := [- ----------------------------------,
+                                 3
+                           sigma~
+
+                                         2
+                             (x - _gamma)
+          (x - _gamma) exp(- -------------)
+                                       2
+                               2 sigma~
+        - ---------------------------------]
+                             2
+                       sigma~
+
+
+                valnum := sigma~ = 2.5, _gamma = -0.5
+
+
+                            0.08553166965
+
+
+                             0.2004648507
+
+
+                             0.1647297886
+
+
+                    -0.1575153039 + 0.2429216564 I
+
+
+                   [-0.1315049421, -0.08553166965]
+
+
+                    [-0.1202789104, -0.2004648507]
+
+
+                             5.619367077
+
+
+                             2.633285342
+
+
+                             1.637840944
+
+
+                             0.6311106598
+
+
+                             3.245089294
+
+
+                             2.682522956
+
+> cf2:=proc(x, sigma, _gamma)
+>   local t;
+>   t := sigma * x / sqrt(2);
+>   (1 - t * (2 * dawson(t) - I * exp(-t * t) * sqrt(Pi))) * exp(I *
+> _gamma * x)
+> end:  
+> evalf(cf2(1.0, 2.5, -0.5));
+
+                    -0.1575153040 + 0.2429216564 I
+
+> 

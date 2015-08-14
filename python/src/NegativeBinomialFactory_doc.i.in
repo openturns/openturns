@@ -1,0 +1,12 @@
+%feature("docstring") OT::NegativeBinomialFactory
+"Negative Binomial factory.
+
+Available constructor:
+    NegativeBinomialFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

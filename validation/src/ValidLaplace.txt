@@ -1,0 +1,188 @@
+> restart:
+> with(Statistics):
+> assume(lambda>0):
+> laplace_:=RandomVariable(Laplace(mu,lambda)):
+> pdf:=subs(u=x,PDF(laplace_,u));
+> ddf:=factor(diff(pdf,x));
+> cdf:=subs(u=x,CDF(laplace_,u));
+> cf:=CharacteristicFunction(laplace_,x);
+> mu_:=Mean(laplace_);
+> evalf[25](mu_);
+> var_:=Variance(laplace_);
+> evalf[25](sqrt(var_));
+> evalf[25](var_);
+> skew_:=simplify((Skewness(laplace_)));
+> evalf[25](skew_);
+> kurt_:=simplify((Kurtosis(laplace_)));
+> evalf[25](kurt_);
+> qdf:=Quantile(laplace_,p);
+> pdfgr:=[diff(pdf,lambda),diff(pdf,mu)];
+> cdfgr:=[diff(cdf,lambda),diff(cdf,mu)];
+> valnum:=lambda=1.5,mu=0.5;
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(subs(valnum,p=0.95,qdf));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+> 
+
+                                     | -x + mu |
+                               exp(- -----------)
+                                       lambda~
+                    pdf := 1/2 ------------------
+                                    lambda~
+
+
+                                             | -x + mu |
+                       abs(1, -x + mu) exp(- -----------)
+                                               lambda~
+            ddf := 1/2 ----------------------------------
+                                           2
+                                    lambda~
+
+
+                  {             -x + mu
+                  {   1/2 exp(- -------)           x < mu
+                  {             lambda~
+           cdf := {
+                  {               x - mu
+                  { 1 - 1/2 exp(- -------)        otherwise
+                  {               lambda~
+
+
+                                exp(mu x I)
+                        cf := ---------------
+                                         2  2
+                              1 + lambda~  x
+
+
+                              mu_ := mu
+
+
+                                  mu
+
+
+                                           2
+                          var_ := 2 lambda~
+
+
+                  1.414213562373095048801689 lambda~
+
+
+                                       2
+                             2. lambda~
+
+
+                              skew_ := 0
+
+
+                                  0.
+
+
+                              kurt_ := 6
+
+
+                                  6.
+
+
+                 {   mu + lambda~ ln(2 p)           p < 1/2
+          qdf := {
+                 { mu - lambda~ ln(2 - 2 p)        otherwise
+
+
+  pdfgr := [
+
+                   | -x + mu |                          | -x + mu |
+             exp(- -----------)       | -x + mu | exp(- -----------)
+                     lambda~                              lambda~
+        -1/2 ------------------ + 1/2 ------------------------------,
+                         2                              3
+                  lambda~                        lambda~
+
+                                   | -x + mu |
+             abs(1, -x + mu) exp(- -----------)
+                                     lambda~
+        -1/2 ----------------------------------]
+                                 2
+                          lambda~
+
+
+            {                     -x + mu
+            {     (-x + mu) exp(- -------)
+            {                     lambda~
+            { 1/2 ------------------------         x < mu
+            {                    2
+            {             lambda~
+  cdfgr := [{                                              ,
+            {                     x - mu
+            {      (x - mu) exp(- -------)
+            {                     lambda~
+            { -1/2 -----------------------        otherwise
+            {                    2
+            {             lambda~
+
+        {            x - mu
+        {      exp(- -------)
+        {            lambda~
+        { -1/2 --------------        mu <= x
+        {         lambda~
+        {                                   ]
+        {            -x + mu
+        {      exp(- -------)
+        {            lambda~
+        { -1/2 --------------        x < mu
+        {         lambda~
+
+
+                  valnum := lambda~ = 1.5, mu = 0.5
+
+
+                            -0.1592291801
+
+
+                             0.2388437702
+
+
+                             0.6417343447
+
+
+                    0.2700254037 + 0.1475155503 I
+
+
+                    [-0.1061527867, 0.1592291801]
+
+
+                   [-0.07961459006, -0.2388437702]
+
+
+                             3.953877640
+
+
+                                 0.5
+
+
+                             2.121320343
+
+
+                                  0.
+
+
+                                  6.
+
+
+                                 4.50
+
+> factor(ddf/pdf);
+
+                           abs(1, -x + mu)
+                           ---------------
+                               lambda~
+
+> 

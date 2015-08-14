@@ -1,0 +1,23 @@
+distribution=class=PythonDistributionImplementation name=SciPyDistribution
+realization=[0.37454]
+sample=0 : [ 0.950714 ]
+1 : [ 0.731994 ]
+2 : [ 0.598658 ]
+3 : [ 0.156019 ]
+4 : [ 0.155995 ]
+pdf=1.0
+cdf=0.6
+mean=[0.5]
+std=[0.288675]
+skewness=[0]
+kurtosis=[-1.2]
+range=[0, 1]
+randomVector=class=RandomVector implementation=class=PythonRandomVectorImplementation name=SciPyRandomVector description=[x0]
+realization=[0.0580836]
+sample=0 : [ 0.866176  ]
+1 : [ 0.601115  ]
+2 : [ 0.708073  ]
+3 : [ 0.0205845 ]
+4 : [ 0.96991   ]
+mean=[0.5]
+covariance=[[ 0.0833333 ]]

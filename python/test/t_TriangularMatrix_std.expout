@@ -1,0 +1,35 @@
+test : default constructor and string converter
+triangularMatrix0 =  class=TriangularMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test : constructor with size, operator() and string converter
+triangularMatrix1 =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,0,4]
+test : copy constructor and string converter
+triangularMatrix2 =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,0,4]
+test : get dimensions methods
+triangularMatrix1's nbRows =  2
+triangularMatrix1's nbColumns =  2
+isLower?  True
+test  : transpose and conjugate methods
+triangularMatrix1 transpose =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,3,4]
+is transpose Lower?  False
+triangularMatrix1 conjugate and transpose =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,3,4]
+is conjugate Lower?  False
+test : addition method
+sum1 =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,3,3,8]
+sum2 =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,3,3,8]
+sum1 equals sum2 =  True
+test : substraction method
+diff =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,3,-3,0]
+test : matrix multiplication method
+prod =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,3,25]
+test : multiplication with a numerical point method
+pt =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult =  [1,11]
+test : multiplication and division by a numerical scalar methods
+scalprod =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,0,12]
+scaldiv1 =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,0,1.33333]
+scaldiv2 =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,0,1.33333]
+scaldiv1 equals scaldiv2 =  True
+test : isEmpty method
+triangularMatrix0 is empty =  True
+triangularMatrix1 is empty =  False
+triangularMatrix5 is empty =  True

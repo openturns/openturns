@@ -1,0 +1,189 @@
+###################################
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.00183731]
+relativeErrors= [6.16204e-05]
+mean=3.52113827 absolute error=0.0211382679
+variance=13.62209540 absolute error=0.2224925455
+Sobol index 0 = 0.31794192 absolute error=0.0040367337
+Sobol index 1 = 0.43569734 absolute error=0.0067138095
+Sobol index 2 = 0.00000141 absolute error=0.0000014063
+Sobol index [0,1] =0.00004580 absolute error=0.0000458036
+Sobol index [0,2] =0.24415868 absolute error=0.0004750191
+Sobol index [1,2] =0.00043642 absolute error=0.0004364176
+Sobol index [0,1,2] =0.00171843 absolute error=0.0017184293
+Sobol total index 0 =0.56386484 absolute error=0.0062759857
+Sobol total index 1 =0.43789799 absolute error=0.0045131590
+Sobol total index 2 =0.24631494 absolute error=0.0026312723
+Sobol total index [0,1] =0.00004580 absolute error=0.0000458036
+Sobol total index [0,2] =0.24415868 absolute error=0.0004750191
+Sobol total index [1,2] =0.00043642 absolute error=0.0004364176
+Sobol total index  [0,1,2] =0.00171843 absolute error=0.0017184293
+###################################
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.00304432]
+relativeErrors= [0.000294246]
+mean=3.52880217 absolute error=0.0288021749
+variance=13.29971414 absolute error=0.5448737983
+Sobol index 0 = 0.32623972 absolute error=0.0123345262
+Sobol index 1 = 0.42007829 absolute error=0.0223328551
+Sobol index 2 = 0.00000000 absolute error=0.0000000000
+Sobol index [0,1] =0.00000000 absolute error=0.0000000000
+Sobol index [0,2] =0.25368199 absolute error=0.0099983289
+Sobol index [1,2] =0.00000000 absolute error=0.0000000000
+Sobol index [0,1,2] =0.00000000 absolute error=0.0000000000
+Sobol total index 0 =0.57992171 absolute error=0.0223328551
+Sobol total index 1 =0.42007829 absolute error=0.0223328551
+Sobol total index 2 =0.25368199 absolute error=0.0099983289
+Sobol total index [0,1] =0.00000000 absolute error=0.0000000000
+Sobol total index [0,2] =0.25368199 absolute error=0.0099983289
+Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
+Sobol total index  [0,1,2] =0.00000000 absolute error=0.0000000000
+###################################
+class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.0782409]
+relativeErrors= [0]
+mean=3.57690572 absolute error=0.0769057245
+variance=14.86914494 absolute error=1.0245570037
+Sobol index 0 = 0.29130318 absolute error=0.0226020099
+Sobol index 1 = 0.39832680 absolute error=0.0440843416
+Sobol index 2 = 0.00062391 absolute error=0.0006239110
+Sobol index [0,1] =0.00931554 absolute error=0.0093155371
+Sobol index [0,2] =0.26319037 absolute error=0.0195067022
+Sobol index [1,2] =0.01460970 absolute error=0.0146096968
+Sobol index [0,1,2] =0.02263050 absolute error=0.0226305044
+Sobol total index 0 =0.58643959 absolute error=0.0288507338
+Sobol total index 1 =0.44488254 absolute error=0.0024713967
+Sobol total index 2 =0.30105448 absolute error=0.0573708144
+Sobol total index [0,1] =0.00931554 absolute error=0.0093155371
+Sobol total index [0,2] =0.26319037 absolute error=0.0195067022
+Sobol total index [1,2] =0.01460970 absolute error=0.0146096968
+Sobol total index  [0,1,2] =0.02263050 absolute error=0.0226305044
+###################################
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.0015633]
+relativeErrors= [4.46114e-05]
+mean=3.52947075 absolute error=0.0294707509
+variance=13.72885940 absolute error=0.1157285436
+Sobol index 0 = 0.31135035 absolute error=0.0025548383
+Sobol index 1 = 0.42587317 absolute error=0.0165379771
+Sobol index 2 = 0.00040887 absolute error=0.0004088663
+Sobol index [0,1] =0.00314638 absolute error=0.0031463799
+Sobol index [0,2] =0.25121369 absolute error=0.0075300230
+Sobol index [1,2] =0.00251830 absolute error=0.0025182974
+Sobol index [0,1,2] =0.00548925 absolute error=0.0054892488
+Sobol total index 0 =0.57119967 absolute error=0.0136108134
+Sobol total index 1 =0.43702709 absolute error=0.0053840510
+Sobol total index 2 =0.25963010 absolute error=0.0159464355
+Sobol total index [0,1] =0.00314638 absolute error=0.0031463799
+Sobol total index [0,2] =0.25121369 absolute error=0.0075300230
+Sobol total index [1,2] =0.00251830 absolute error=0.0025182974
+Sobol total index  [0,1,2] =0.00548925 absolute error=0.0054892488
+###################################
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.00189287]
+relativeErrors= [0.000136757]
+mean=3.52069064 absolute error=0.0206906357
+variance=13.65418253 absolute error=0.1904054104
+Sobol index 0 = 0.31778035 absolute error=0.0038751550
+Sobol index 1 = 0.43415084 absolute error=0.0082603022
+Sobol index 2 = 0.00000000 absolute error=0.0000000000
+Sobol index [0,1] =0.00000000 absolute error=0.0000000000
+Sobol index [0,2] =0.24616651 absolute error=0.0024828430
+Sobol index [1,2] =0.00000000 absolute error=0.0000000000
+Sobol index [0,1,2] =0.00190230 absolute error=0.0019023042
+Sobol total index 0 =0.56584916 absolute error=0.0082603022
+Sobol total index 1 =0.43605315 absolute error=0.0063579980
+Sobol total index 2 =0.24806881 absolute error=0.0043851472
+Sobol total index [0,1] =0.00000000 absolute error=0.0000000000
+Sobol total index [0,2] =0.24616651 absolute error=0.0024828430
+Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
+Sobol total index  [0,1,2] =0.00190230 absolute error=0.0019023042
+###################################
+class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.0865757]
+relativeErrors= [0]
+mean=3.57690572 absolute error=0.0769057245
+variance=15.31685750 absolute error=1.4722695545
+Sobol index 0 = 0.28586286 absolute error=0.0280423353
+Sobol index 1 = 0.38758073 absolute error=0.0548304190
+Sobol index 2 = 0.00285725 absolute error=0.0028572505
+Sobol index [0,1] =0.01429542 absolute error=0.0142954159
+Sobol index [0,2] =0.25857104 absolute error=0.0148873764
+Sobol index [1,2] =0.02057755 absolute error=0.0205775453
+Sobol index [0,1,2] =0.03025517 absolute error=0.0302551663
+Sobol total index 0 =0.58898448 absolute error=0.0313956232
+Sobol total index 1 =0.45270885 absolute error=0.0102977084
+Sobol total index 2 =0.31226100 absolute error=0.0685773385
+Sobol total index [0,1] =0.01429542 absolute error=0.0142954159
+Sobol total index [0,2] =0.25857104 absolute error=0.0148873764
+Sobol total index [1,2] =0.02057755 absolute error=0.0205775453
+Sobol total index  [0,1,2] =0.03025517 absolute error=0.0302551663
+###################################
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=20
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.0107385]
+relativeErrors= [0.00210498]
+mean=3.54673436 absolute error=0.0467343609
+variance=6.36939443 absolute error=7.4751935072
+Sobol index 0 = 0.66794880 absolute error=0.3540436052
+Sobol index 1 = 0.03503890 absolute error=0.4073722398
+Sobol index 2 = 0.00167597 absolute error=0.0016759697
+Sobol index [0,1] =0.00107792 absolute error=0.0010779238
+Sobol index [0,2] =0.29044446 absolute error=0.0467607950
+Sobol index [1,2] =0.00310003 absolute error=0.0031000318
+Sobol index [0,1,2] =0.00071391 absolute error=0.0007139144
+Sobol total index 0 =0.96018509 absolute error=0.4025962383
+Sobol total index 1 =0.03993077 absolute error=0.4024803698
+Sobol total index 2 =0.29593437 absolute error=0.0522507109
+Sobol total index [0,1] =0.00107792 absolute error=0.0010779238
+Sobol total index [0,2] =0.29044446 absolute error=0.0467607950
+Sobol total index [1,2] =0.00310003 absolute error=0.0031000318
+Sobol total index  [0,1,2] =0.00071391 absolute error=0.0007139144
+###################################
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=20
+class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.0109354]
+relativeErrors= [0.00288979]
+mean=3.54127942 absolute error=0.0412794161
+variance=6.25713118 absolute error=7.5874567592
+Sobol index 0 = 0.68439503 absolute error=0.3704898399
+Sobol index 1 = 0.00000000 absolute error=0.4424111448
+Sobol index 2 = 0.00000000 absolute error=0.0000000000
+Sobol index [0,1] =0.00000000 absolute error=0.0000000000
+Sobol index [0,2] =0.31560497 absolute error=0.0719213049
+Sobol index [1,2] =0.00000000 absolute error=0.0000000000
+Sobol index [0,1,2] =0.00000000 absolute error=0.0000000000
+Sobol total index 0 =1.00000000 absolute error=0.4424111448
+Sobol total index 1 =0.00000000 absolute error=0.4424111448
+Sobol total index 2 =0.31560497 absolute error=0.0719213049
+Sobol total index [0,1] =0.00000000 absolute error=0.0000000000
+Sobol total index [0,2] =0.31560497 absolute error=0.0719213049
+Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
+Sobol total index  [0,1,2] =0.00000000 absolute error=0.0000000000
+###################################
+class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=20
+class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
+residuals= [0.170595]
+relativeErrors= [0]
+mean=3.57690572 absolute error=0.0769057245
+variance=6.77931359 absolute error=7.0652743527
+Sobol index 0 = 0.63905368 absolute error=0.3251484854
+Sobol index 1 = 0.05806625 absolute error=0.3843448970
+Sobol index 2 = 0.00230777 absolute error=0.0023077680
+Sobol index [0,1] =0.00294293 absolute error=0.0029429332
+Sobol index [0,2] =0.29574183 absolute error=0.0520581665
+Sobol index [1,2] =0.00055223 absolute error=0.0005522324
+Sobol index [0,1,2] =0.00133531 absolute error=0.0013353116
+Sobol total index 0 =0.93907375 absolute error=0.3814848966
+Sobol total index 1 =0.06289672 absolute error=0.3795144198
+Sobol total index 2 =0.29993714 absolute error=0.0562534784
+Sobol total index [0,1] =0.00294293 absolute error=0.0029429332
+Sobol total index [0,2] =0.29574183 absolute error=0.0520581665
+Sobol total index [1,2] =0.00055223 absolute error=0.0005522324
+Sobol total index  [0,1,2] =0.00133531 absolute error=0.0013353116

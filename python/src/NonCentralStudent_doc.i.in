@@ -1,0 +1,120 @@
+%feature("docstring") OT::NonCentralStudent
+"NonCentralStudent distribution.
+
+Available constructors:
+    NonCentralStudent(*nu=5.0, delta=0., gamma=0.*)
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degree of freedom.
+delta : float
+    Non-centrality parameter :math:`\delta`.
+gamma : float
+    Shift parameter :math:`\gamma`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{exp \left(-\delta^2 / 2 \right)}
+                  {\sqrt{\nu\pi} \Gamma \left(\frac{\nu}{2} \right)}
+             \left(\frac{\nu}{\nu + (x - \gamma)^2}\right) ^ {\frac{\nu + 1}{2}}
+             \sum_{j=0}^{\infty}
+             \frac{\Gamma \left(\frac{\nu + j + 1}{2}\right)}{\Gamma(j + 1)}
+             \left(\delta(x - \gamma)
+             \sqrt{\frac{2}{\nu + (x - \gamma)^2}}\right) ^ j,
+             \quad x \in \Rset
+
+With :math:`\Gamma` denotes Euler's Gamma function
+:class:`~openturns.SpecFunc_Gamma`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \gamma + \delta sqrt{\frac{\nu}{2}}
+                         \frac{\Gamma\left(\frac{\nu - 1}{2}\right)}
+                              {\Gamma \left(\frac{\nu}{2}\right)}
+                       \quad \text{ if }\nu > 1\\
+        \Var{X} & = & \frac{\nu}{\nu - 2} (1 + \delta^2) -
+                      \left(\frac{\nu}{2}\delta^2
+                      \frac{\Gamma \left(\frac{\nu - 1}{2}\right)}
+                           {\Gamma \left(\frac{\nu}{2}\right)}
+                       - \gamma \right)^2
+                    \quad \text{ if }\nu>2
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.NonCentralStudent(6.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralStudent::getNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Returns
+-------
+nu : float
+    Generalised number degrees of freedom :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralStudent::getDelta
+"Accessor to the distribution's non-centrality parameter.
+
+Returns
+-------
+delta : float
+    Non-centrality parameter :math:`\delta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralStudent::getGamma
+"Accessor to the distribution's shift from the origin.
+
+Returns
+-------
+gamma : float
+    Shift parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralStudent::setNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralStudent::setDelta
+"Accessor to the distribution's non-centrality parameter.
+
+Parameters
+----------
+delta : float
+    Non-centrality parameter :math:`\delta`."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralStudent::setGamma
+"Accessor to the distribution's shift from the origin.
+
+Parameters
+----------
+gamma : float
+    Shift parameter :math:`\gamma`."

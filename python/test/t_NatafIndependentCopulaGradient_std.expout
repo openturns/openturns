@@ -1,0 +1,4 @@
+transformation= class=NatafIndependentCopulaGradient dimension=2
+transformation( [0.75,0.75] )= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3.14687,0,0,3.14687]
+input dimension= 2
+output dimension= 2

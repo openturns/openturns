@@ -1,0 +1,12 @@
+%feature("docstring") OT::DirichletFactory
+"Dirichlet factory.
+
+Available constructor:
+    DirichletFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

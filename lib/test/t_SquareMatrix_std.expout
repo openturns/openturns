@@ -1,0 +1,36 @@
+test number zero : default constructor and string converter
+squareMatrix0 = class=SquareMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test number one : constructor with size, operator() and string converter
+squareMatrix1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,2,3,4]
+test number two : copy constructor and string converter
+squareMatrix2 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,2,3,4]
+test number three : get dimensions methods
+squareMatrix1's nbRows = 2
+squareMatrix1's nbColumns = 2
+test number five : assignment method
+squareMatrix3 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,2,3,4]
+test number six : transposition method
+squareMatrix1 transposed = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,2,4]
+squareMatrix1 transposed = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,2,4]
+test number seven : addition method
+sum1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,5,5,8]
+sum2 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,5,5,8]
+sum1 equals sum2 = true
+test number eight : substraction method
+diff = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,-1,1,0]
+test number nine : matrix multiplication method
+prod = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,14,14,20]
+test number ten : multiplication with a numerical point method
+pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult = class=NumericalPoint name=Unnamed dimension=2 values=[7,10]
+test number eleven : multiplication and division by a numerical scalar methods
+scalprod1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
+scalprod2 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
+scalprod1 equals scalprod2 = true
+scaldiv1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,0.666667,1,1.33333]
+scaldiv2 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,0.666667,1,1.33333]
+scaldiv1 equals scaldiv2 = true
+test number twelve : isEmpty method
+squareMatrix0 is empty = true
+squareMatrix1 is empty = false
+squareMatrix5 is empty = true

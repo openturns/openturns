@@ -1,0 +1,133 @@
+%feature("docstring") OT::MeixnerDistribution
+"Meixner distribution.
+
+Available constructors:
+    MeixnerDistribution(*alpha=1.0, beta=0., delta=1.0, mu=0.*)
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Scale parameter.
+beta : float, :math:`\beta \in [-\pi; \pi]`
+    Skewness parameter.
+delta : float, :math:`\delta > 0`
+    Shape parameter.
+mu : float
+    Location parameter :math:`\mu`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\left(2 \cos(\beta / 2)\right)^{2 \delta}}
+                  {2 \alpha \pi \Gamma(2 \delta)}
+             \exp\left(\frac{\beta (x - \mu)}{\alpha}\right)
+             \left|\Gamma\left(\delta + i \frac{x - \mu}{\alpha}
+                               \right)\right|^2,
+             \quad x \in \Rset
+
+with :math:`\alpha, \delta > 0`, :math:`\beta \in [-\pi; \pi]`,
+:math:`\mu \in \Rset` and where :math:`i^2 = -1`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \alpha \delta \tan(\beta / 2) + \mu \\
+        \Var{X} & = & \frac{\alpha^2 \delta}{1 + \cos(\beta)}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.MeixnerDistribution(1., 0., 1., 0.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getAlpha
+"Accessor to the distribution's scale parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Scale parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getBeta
+"Accessor to the distribution's skewness parameter :math:`\beta`.
+
+Returns
+-------
+beta : float
+    Skewness parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getDelta
+"Accessor to the distribution's shape parameter :math:`\delta`.
+
+Returns
+-------
+delta : float
+    Shape parameter :math:`\delta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getMu
+"Accessor to the distribution's location parameter :math:`\mu`.
+
+Returns
+-------
+mu : float
+    Location parameter :math:`\mu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setAlpha
+"Accessor to the distribution's scale parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Scale parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setBeta
+"Accessor to the distribution's skewness parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\beta \in [-\pi; \pi]`
+    Skewness parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setDelta
+"Accessor to the distribution's shape parameter :math:`\delta`.
+
+Parameters
+----------
+delta : float, :math:`\delta > 0`
+    Shape parameter :math:`\delta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setMu
+"Accessor to the distribution's location parameter :math:`\mu`.
+
+Parameters
+----------
+mu : float, :math:`\mu \in \Rset`
+    Location parameter :math:`\mu`."

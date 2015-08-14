@@ -1,0 +1,95 @@
+%feature("docstring") OT::FORM
+"First Order Reliability Method (FORM).
+
+Available constructors:
+    FORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
+
+Parameters
+----------
+nearestPointAlgorithm : :class:`~openturns.NearestPointAlgorithm`
+    Optimization algorithm used to research the design point.
+event : :class:`~openturns.Event`
+    Failure event.
+physicalStartingPoint : sequence of float
+    Starting point of the optimization algorithm, declared in the physical
+    space.
+
+Notes
+-----
+See :class:`~openturns.Analytical` for the description of the first steps of
+the FORM analysis.
+
+The First Order Reliability Method (FORM) consists in linearizing the limit state
+function :math:`G(\vect{U}\,,\,\vect{d})` at the design point, denoted
+:math:`P^*`, which is the point on the limit state surface
+:math:`G(\vect{U}\,,\,\vect{d})=0` that is closest to the origin of the
+standard space.
+
+Then, the probability :math:`P_f` where the limit state surface has been
+approximated by a linear surface (hyperplane) can be obtained exactly, thanks
+to the rotation invariance of the standard distribution :math:`f_{\vect{U}}` :
+
+.. math::
+
+    P_f = \left\{
+              \begin{array}{ll}
+              \displaystyle E(-\beta_{HL})
+              & \text{if the origin of the }\vect{u}\text{-space lies in the domain }\cD_f \\
+              \displaystyle E(+\beta_{HL}) & \text{otherwise}
+              \end{array}
+          \right.
+
+where :math:`\beta_{HL}` is the Hasofer-Lind reliability index, defined as the
+distance of the design point :math:`\vect{u}^*` to the origin of the standard
+space and :math:`E` the marginal cumulative density function of the spherical
+distributions in the standard space.
+
+The evaluation of the failure probability is stored in the data structure
+:class:`~openturns.FORMResult` recoverable with the :meth:`getResult` method.
+
+See also
+--------
+Analytical, AnalyticalResult, SORM, StrongMaximumTest, FORMResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> vect = ot.RandomVector(myDistribution)
+>>> output = ot.RandomVector(myFunction, vect)
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a NearestPoint algorithm
+>>> myCobyla = ot.Cobyla()
+>>> myAlgo = ot.FORM(myCobyla, myEvent, [50., 1., 10., 5.])"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORM::getResult
+"Accessor to the result of FORM.
+
+Returns
+-------
+result : :class:`~openturns.FORMResult`
+    Structure containing all the results of the FORM analysis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORM::setResult
+"Accessor to the result of FORM.
+
+Parameters
+----------
+result : :class:`~openturns.FORMResult`
+    Structure containing all the results of the FORM analysis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FORM::run
+"Evaluate the failure probability.
+
+Notes
+-----
+Evaluate the failure probability and create a :class:`~openturns.FORMResult`,
+the structure result which is accessible with the method :meth:`getResult`."

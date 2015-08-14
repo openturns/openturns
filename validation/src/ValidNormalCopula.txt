@@ -1,0 +1,270 @@
+> restart:
+> with(LinearAlgebra):
+> with(Statistics):
+> for dim from 1 to 2 do
+>   sigma:=[seq(1,i=1..dim)];
+>   C:=Matrix(dim,dim):
+>   for i from 1 to dim do
+>     C[i,i]:=1;
+>   od:
+>   for i from 2 to dim do
+>     C[i-1, i]:=1/4;
+>     C[i, i-1]:=1/4;
+>   od:
+>   for i from 1 to dim do
+>     for j from 1 to dim do
+>       C[i, j] := C[i, j] * sigma[i] * sigma[j];
+>     od:
+>   od:
+>   x:=<seq(X[i],i=1..dim)>:
+>  
+> f:=1/(2*Pi)^(dim/2)/sqrt(Determinant(C))*exp(-Transpose(x).MatrixInver
+> se(C).x/2):
+>   print(evalf(subs(seq(X[i]=Quantile(Normal(0,1),u[i]),i=1..dim),f)));
+>  
+> print(evalf(subs(seq(X[i]=Quantile(Normal(0,1),u[i]),i=1..dim),[seq(di
+> ff(f,X[j]),j=1..dim)])));
+>   cdf:=(combine(expand(f),exp)):
+>   A:=-infinity:
+>   for i from 1 to dim do
+>     cdf:=Int(cdf,X[i]=A..Quantile(Normal(0,1),u[i]));
+>   od:
+>   print(cdf);
+> od;
+
+                             sigma := [1]
+
+
+                               C := [0]
+
+
+                             x := [X[1]]
+
+
+                              1/2              2
+                             2    exp(-1/2 X[1] )
+                    f := 1/2 --------------------
+                                      1/2
+                                    Pi
+
+
+                                                          2
+         0.3989422802 exp(-1. RootOf(erf(_Z) + 1 - 2 u[1]) )
+
+
+  [-0.5641895835 RootOf(erf(_Z) + 1 - 2 u[1])
+
+                                            2
+        exp(-1. RootOf(erf(_Z) + 1 - 2 u[1]) )]
+
+
+                               1/2              2
+                              2    exp(-1/2 X[1] )
+                   cdf := 1/2 --------------------
+                                       1/2
+                                     Pi
+
+
+                            A := -infinity
+
+
+                                  1/2
+    RootOf(erf(_Z) + 1 - 2 u[1]) 2
+   /                                       1/2              2
+  |                                       2    exp(-1/2 X[1] )
+  |                                   1/2 -------------------- dX[1]
+  |                                                1/2
+ /                                               Pi
+   -infinity
+
+
+                           sigma := [1, 1]
+
+
+                                 [0    0]
+                            C := [      ]
+                                 [0    0]
+
+
+                                  [X[1]]
+                             x := [    ]
+                                  [X[2]]
+
+
+              1/2               /16                 \
+  f := 2/15 15    exp(-1/2 X[1] |-- X[1] - 4/15 X[2]|
+                                \15                 /
+
+                    /             16     \
+         - 1/2 X[2] |-4/15 X[1] + -- X[2]|)/Pi
+                    \             15     /
+
+
+  0.1643745184 exp(-0.7071067810 RootOf(erf(_Z) + 1 - 2 u[1]) (
+
+        1.508494467 RootOf(erf(_Z) + 1 - 2 u[1])
+
+         - 0.3771236166 RootOf(erf(_Z) + 1 - 2 u[2])) - 0.7071067810
+
+        RootOf(erf(_Z) + 1 - 2 u[2]) (
+
+        -0.3771236166 RootOf(erf(_Z) + 1 - 2 u[1])
+
+         + 1.508494467 RootOf(erf(_Z) + 1 - 2 u[2])))
+
+
+  [0.1643745184 (-1.508494467 %2 + 0.3771236166 %1) exp(
+
+        -0.7071067810 %2 (1.508494467 %2 - 0.3771236166 %1)
+
+         - 0.7071067810 %1 (-0.3771236166 %2 + 1.508494467 %1)),
+
+        0.1643745184 (0.3771236166 %2 - 1.508494467 %1) exp(
+
+        -0.7071067810 %2 (1.508494467 %2 - 0.3771236166 %1)
+
+         - 0.7071067810 %1 (-0.3771236166 %2 + 1.508494467 %1))]
+
+  %1 := RootOf(erf(_Z) + 1 - 2 u[2])
+
+  %2 := RootOf(erf(_Z) + 1 - 2 u[1])
+
+
+                 1/2               2                             2
+               15    exp(-8/15 X[1]  + 4/15 X[1] X[2] - 8/15 X[2] )
+   cdf := 2/15 ----------------------------------------------------
+                                        Pi
+
+
+                            A := -infinity
+
+
+                                   1/2
+     RootOf(erf(_Z) + 1 - 2 u[2]) 2
+    /
+   |
+   |
+   |
+  /
+    -infinity
+
+                                         1/2
+           RootOf(erf(_Z) + 1 - 2 u[1]) 2
+          /
+         |
+         |
+         |
+        /
+          -infinity
+
+               1/2               2                             2
+             15    exp(-8/15 X[1]  + 4/15 X[1] X[2] - 8/15 X[2] )
+        2/15 ---------------------------------------------------- d
+                                      Pi
+
+        X[1] dX[2]
+
+> pdf:=diff(diff(cdf,u[1]),u[2]);
+> evalf(subs(u[1]=0.2,u[2]=0.2,pdf));
+> evalf(subs(u[1]=0.2,u[2]=0.2,cdf));
+> 
+
+                1/2      16                             2
+  pdf := 4/15 15    exp(--- RootOf(erf(_Z) + 1 - 2 u[1])  + 8/15
+                         15
+
+        RootOf(erf(_Z) + 1 - 2 u[1]) RootOf(erf(_Z) + 1 - 2 u[2])
+
+           16                             2    /
+         - -- RootOf(erf(_Z) + 1 - 2 u[2]) )  /  (
+           15                                /
+
+                                         2
+        exp(-RootOf(erf(_Z) + 1 - 2 u[2]) )
+
+                                         2
+        exp(-RootOf(erf(_Z) + 1 - 2 u[1]) ))
+
+
+                             1.189977644
+
+
+                            0.06139624118
+
+> PDF_:=proc(x,y)
+>   evalf(subs(u[1]=x,u[2]=y,pdf))
+> end:
+> eps:=1e-1:
+> for i from 2 to 9 do
+>   eps:=0.1*eps:
+>  
+> print([eps,i,evalf[i](Int(Int((u[1]-1/2)*(u[2]-1/2)*pdf,u[1]=eps..1-ep
+> s),u[2]=eps..1-eps))]);
+> od:
+> 
+
+                           [0.01, 2, 0.017]
+
+
+                          [0.001, 3, 0.0195]
+
+
+                                               -21
+                [0.0001, 4, 0.01989 + 0.2324 10    I]
+
+Warning, computation interrupted
+
+> inf:=1.0:
+> for i from 1 to 100 do
+>   inf:=inf+1.0:
+> Digits:=2*i;
+>  
+> print([inf,evalf[2*i](Int(Int((CDF(Normal(0,1),s)-1/2)*(CDF(Normal(0,1
+> ),t)-1/2)*subs(X[1]=s,X[2]=t,f),s=-inf..inf),t=-inf..inf))]);
+> od:
+
+                             [2.0, 0.013]
+
+
+                            [3.0, 0.01936]
+
+
+                           [4.0, 0.0199291]
+
+
+                          [5.0, 0.019946358]
+
+
+                         [6.0, 0.01994654312]
+
+
+                        [7.0, 0.0199465438364]
+
+
+                       [8.0, 0.019946543837384]
+
+
+                      [9.0, 0.01994654383738411]
+
+
+            10.0    10.0
+           /       /
+          |       |
+  [10.0,  |       |      0.0410936296040999870
+          |       |
+         /       /
+           -10.0   -10.0
+
+        erf(0.707106781186547525 s) erf(0.707106781186547525 t) exp(-
+
+        0.500000000000000000 s
+
+        (1.06666666666666667 s - 0.266666666666666667 t) -
+
+        0.500000000000000000 t
+
+        (-0.266666666666666667 s + 1.06666666666666667 t)) ds dt]
+
+Warning, computation interrupted
+
+> 

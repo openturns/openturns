@@ -1,0 +1,72 @@
+%feature("docstring") OT::OrderStatisticsMarginalChecker
+"Compatibility tests of marginals with respect to the order statistics constraint.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.Distribution`
+    The marginals :math:`(F_1, \dots, F_n)` which are tested with respect to the order :math:`F_1 < \dots < F_n` in the context of the maximum order statistics distribution.
+
+Notes
+-----
+
+Three tests are performed. We note :math:`[a_i,b_i]` the range of :math:`X_i`. The tests are :
+
+- Test 1 checks that :math:`a_i \leq a_{i+1}` and :math:`b_i \leq b_{i+1}` for all :math:`i`.
+
+- Test 2 discretizes :math:`[0,1]` with :math:`\{\dfrac{1}{2n},\dfrac{3}{2n}, \dots,\dfrac{2n-1}{2n}\} = \{q_1, \dots, q_{2n-1} \}` where :math:`n` is defined in the :class:`~openturns.ResourceMap` with `OSMC-OptimizationEpsilon`. By default, :math:`n=100`. Test 2 checks that:
+
+  .. math::
+  
+      F_k^{-1}(q_j) \geq F_{k-1}^{-1}(q_j)+\epsilon, \quad 1 \leq j \leq d
+
+  where :math:`\epsilon` is defined in the :class:`~openturns.ResourceMap` with `OSMC-QuantileIteration`. By default, :math:`\epsilon=10^{-7}`.
+
+- Test 3 checks that: 
+
+  .. math::
+
+      \min_{q \in [q_{j-1}, q_j]} \{F_k^{-1}(q) - F_{k-1}^{-1}(q) \} \geq \epsilon
+
+  using the TNC algorithm.
+
+
+Examples
+--------
+Create the test checker:
+
+>>> import openturns as ot
+>>> coll = [ot.Uniform(-1., 1.), ot.Uniform(-0.5, 1.5)]
+>>> testChecker = ot.OrderStatisticsMarginalChecker(coll)
+
+Check the compatibility:
+
+>>> compatibilityResult = testChecker.isCompatible()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::OrderStatisticsMarginalChecker::isCompatible
+"Result of the compatibility tests.
+
+Returns
+-------
+resCompatibility : bool
+    The final result of the 3 compatibility tests with respect to the order constraint."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::OrderStatisticsMarginalChecker::check
+"Give the reasons of uncompatibility of the margins if any.
+
+Notes
+-----
+This method throws an exception in case of compatibility problem with a message indicating the first compatibility problem arised.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::OrderStatisticsMarginalChecker::buildPartition
+"Accessor to the partition in independent marginal sets if any.
+
+Returns
+-------
+indepMarginals : :class:`~openturns.Indices`
+    Indicates the indices that build some independent sets of marginals. If we note :math:`indepMarginals = [i_1, i_2]` then the sub random vectors :math:`(X_1, \dots, X_{i_1})`,  :math:`(X_{i_1+1}, \dots, X_{i_2})` and  :math:`(X_{i_2+1}, \dots, X_n)` are independent.
+    This information is automatically used by OpenTURNS to build the appropriated maximum entropy order statistics distribution."
+

@@ -1,0 +1,47 @@
+%feature("docstring") OT::Axial
+"Axial design of experiments.
+
+Available constructor:
+    Axial(*center, levels*)
+
+    Axial(*dimension, levels*)
+
+Parameters
+----------
+center : sequence of float
+    Center of the design of experiments. If not specified, the design of
+    experiments is centered on :math:`\vect{0} \in \Rset^n`.
+levels : sequence of float of dimension :math:`n_{level}`
+    The discretisation of directions (the same for each one), without any
+    consideration of unit.
+dimension : positive int
+    Dimension :math:`n` of the space where the design of experiments is created.
+
+Notes
+-----
+Axial is a stratified design of experiments enabling to generate a pattern with
+points only along the axes. It is not convenient to model interactions between
+variables. The axial pattern is obtained by discretizing each direction
+according to specified levels, symmetrically with respect to the center of the
+design of experiments.
+
+The number of points generated is :math:`1 + 2 n_{level}n`.
+
+In order to scale each direction and translate the grid structure onto the
+proper center, use the operator :math:`*=` and :math:`+=` of
+:class:`~openturns.NumericalSample`.
+
+See also
+--------
+StratifiedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> levels = [4., 2., 7.]
+>>> myCenteredReductedGrid = ot.Axial(2, levels)
+>>> mySample = myCenteredReductedGrid.generate()
+>>> # Translate the grid
+>>> mySample+=4
+>>> # Scale each direction
+>>> mySample*=2"

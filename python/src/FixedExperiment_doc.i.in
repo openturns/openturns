@@ -1,0 +1,44 @@
+%feature("docstring") OT::FixedExperiment
+"Fixed experiment.
+
+Available constructors:
+    FixedExperiment(*aSample*)
+
+    FixedExperiment(*aSample, weights*)
+
+Parameters
+----------
+aSample : 2-d sequence of float
+    Sample that already exists.
+weights : sequence of float
+    Weights of each point of *aSample*.
+
+Notes
+-----
+FixedExperiment is a deterministic weighted design of experiments.
+It enables to take into account a random sample which has been obtained outside
+the OpenTURNS study or at another step of the OpenTURNS study. The
+:meth:`generate` method always gives the same sample, *aSample*, if it is
+recalled. When not specified, the weights associated to the points are all
+equal to :math:`1/cardI`. Then the sample *aSample* is considered as generated
+from the limit distribution
+:math:`\lim\limits_{cardI \to \infty} \sum_{i \in I} \omega_i \delta_{\vect{X}_i}=\mu`.
+The :meth:`setDistribution` method has no side effect, as the distribution is
+fixed by the initial sample.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = [[i,i+1] for i in range(5)]
+>>> myPlane = ot.FixedExperiment(sample)
+>>> print(myPlane.generate())
+0 : [ 0 1 ]
+1 : [ 1 2 ]
+2 : [ 2 3 ]
+3 : [ 3 4 ]
+4 : [ 4 5 ]"

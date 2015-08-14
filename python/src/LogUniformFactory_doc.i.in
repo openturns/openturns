@@ -1,0 +1,9 @@
+%feature("docstring") OT::LogUniformFactory
+"Log Uniform factory.
+
+Available constructor:
+    LogUniformFactory()
+
+See also
+--------
+DistributionFactory"

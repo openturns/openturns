@@ -1,0 +1,102 @@
+%feature("docstring") OT::StandardDistributionPolynomialFactory
+"Build orthonormal or orthogonal univariate polynomial families.
+
+Parameters
+----------
+arg : :class:`~openturns.Distribution` or :class:`~openturns.OrthonormalizationAlgorithm`
+    Either a :class:`~openturns.Distribution` implementing the probability
+    measure according to which the polynomial family is orthonormal **or** an
+    :class:`~openturns.OrthonormalizationAlgorithm`.
+
+    In the first case, the implementation will switch to the suitable specific
+    orthonormal univariate polynomial family if any (see the notes below), or
+    it will default to the :class:`~openturns.GramSchmidtAlgorithm` to build
+    an orthonormal univariate polynomial family.
+
+Notes
+-----
+OpenTURNS implements the following **specific orthonormal** [#orthonormal]_
+univariate polynomial families together with their associated **standard
+distributions**:
+
+.. table::
+
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | Standard distribution                                                 | Polynomial                            |
+    +=======================================================================+=======================================+
+    | :class:`~openturns.Normal`                                            | :class:`~openturns.HermiteFactory`    |
+    | :math:`\cN(\mu = 0, \sigma = 1)`                                      |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Uniform`                                           | :class:`~openturns.LegendreFactory`   |
+    | :math:`\cU(a = -1, b = 1)`                                            |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Gamma`                                             | :class:`~openturns.LaguerreFactory`   |
+    | :math:`\Gamma(k = k_a + 1, \lambda = 1, \gamma = 0)`                  |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Beta`                                              | :class:`~openturns.JacobiFactory`     |
+    | :math:`{\rm B}(r = \beta + 1, t = \alpha + \beta + 2, a = -1, b = 1)` |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Poisson`                                           | :class:`~openturns.CharlierFactory`   |
+    | :math:`\cP(\lambda)`                                                  |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Binomial`                                          | :class:`~openturns.KrawtchoukFactory` |
+    | :math:`\cB(n, p)`                                                     |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.NegativeBinomial`                                  | :class:`~openturns.MeixnerFactory`    |
+    | :math:`\cB^-(r, p)`                                                   |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+
+Aside, OpenTURNS also implements generic algorithms for building orthonormal
+univariate polynomial families with respect to any arbitrary probability
+measure (implemented as a :class:`~openturns.Distribution`). Starting with the
+most famous, OpenTURNS implements the following
+:class:`~openturns.OrthonormalizationAlgorithm`'s:
+
+   - :class:`~openturns.GramSchmidtAlgorithm` (default),
+   - :class:`~openturns.ChebychevAlgorithm`
+
+.. [#orthonormal] A polynomial family :math:`(P_n)_{n \geq 0}` is said to be
+    orthonormal with respect to the probability measure :math:`w(x) \di{x}` if
+    and only if:
+
+    .. math::
+
+        \langle P_i, P_j \rangle = \int_{\supp{w}} P_i(x) P_j(x) w(x) \di{x}
+                                 = \delta_{ij}, \quad i, j = 1, \ldots, n
+
+    where :math:`\delta_{ij}` denotes Kronecker's delta.
+
+Examples
+--------
+>>> import openturns as ot
+
+Build the specific orthonormal polynomial factory associated to the normal
+distribution (Hermite):
+
+>>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.Normal())
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+X
+-0.707107 + 0.707107 * X^2
+
+Build an orthonormal polynomial factory for the log-normal distribution with
+the default orthonormalization algorithm:
+
+>>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.LogNormal())
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+-0.762874 + 0.462706 * X
+0.497602 - 0.41284 * X + 0.0247741 * X^2
+
+Build an orthonormal polynomial factory for the log-normal distribution with
+Chebychev's othonormalization algorithm:
+
+>>> algorithm = ot.ChebychevAlgorithm(ot.LogNormal())
+>>> polynomial_factory = ot.StandardDistributionPolynomialFactory(algorithm)
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+-0.762874 + 0.462706 * X
+0.497602 - 0.41284 * X + 0.0247741 * X^2"

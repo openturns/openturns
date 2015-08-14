@@ -1,0 +1,5 @@
+regularGrid = RegularGrid(start=-2, step=0.1, n=10)
+Start time = -2.0
+End time = -1.0
+Time step = 0.1
+Steps = 10

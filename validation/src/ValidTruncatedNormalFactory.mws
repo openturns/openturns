@@ -1,0 +1,17 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 118 "restart:\nwith(Stat
+istics):\npdf:=PDF(RandomVariable(Normal(mu,sigma)),t);\ncdf:=CDF(Rand
+omVariable(Normal(mu,sigma)),t);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%
+$pdfG,$*&#\"\"\"\"\"#F(**F)F'%#PiG#!\"\"F)%&sigmaGF--%$expG6#,$*(F)F-,
+&%\"tGF(%#muGF-F)F.!\"#F-F(F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$
+cdfG,&#\"\"\"\"\"#F'*&F&F'-%$erfG6#,$**F(!\"\"F(F&,&%\"tGF'%#muGF/F'%&
+sigmaGF/F'F'F'" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}
+{MARK "1 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 
+33 1 1 }

@@ -1,0 +1,58 @@
+test number zero : default constructor and string converter
+symtensor0 = class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=0 columns=0 sheets=0 values=[]
+test number one : constructor with size, operator() and string converter
+symtensor1 = class=SymmetricTensor implementation=class=TensorImplementation name=symtensor1 rows=2 columns=2 sheets=3 values=[1,2,0,3,4,5,0,6,7,8,0,9]
+symtensor1 = sheet #0
+[[ 1 2 ]
+ [ 2 3 ]]
+sheet #1
+[[ 4 5 ]
+ [ 5 6 ]]
+sheet #2
+[[ 7 8 ]
+ [ 8 9 ]]
+symtensor1's values = 1,2,2,3,4,5,5,6,7,8,8,9
+test number two : copy constructor and string converter
+symtensor2 = class=SymmetricTensor implementation=class=TensorImplementation name=symtensor1 rows=2 columns=2 sheets=3 values=[1,2,2,3,4,5,5,6,7,8,8,9]
+symtensor2 = sheet #0
+[[ 1 2 ]
+ [ 2 3 ]]
+sheet #1
+[[ 4 5 ]
+ [ 5 6 ]]
+sheet #2
+[[ 7 8 ]
+ [ 8 9 ]]
+test number three : get dimensions methods
+symtensor1's nbRows = 2
+symtensor1's nbColumns = 2
+symtensor1's nbSheets = 3
+test number four : assignment method
+symtensor3 = class=SymmetricTensor implementation=class=TensorImplementation name=symtensor1 rows=2 columns=2 sheets=3 values=[1,2,2,3,4,5,5,6,7,8,8,9]
+symtensor3 = sheet #0
+[[ 1 2 ]
+ [ 2 3 ]]
+sheet #1
+[[ 4 5 ]
+ [ 5 6 ]]
+sheet #2
+[[ 7 8 ]
+ [ 8 9 ]]
+test number five : isEmpty method
+symtensor1 is empty = false
+symtensor0 is empty = true
+symtensor5 is empty = true
+symtensor6 is empty = true
+symtensor1 = class=SymmetricTensor implementation=class=TensorImplementation name=symtensor1 rows=2 columns=2 sheets=3 values=[1,2,2,3,4,5,5,6,7,8,8,9]
+symtensor1.getSheet(1) = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,5,5,6]
+sheet2 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.4,0.5,0,0.6]
+symtensor1 = class=SymmetricTensor implementation=class=TensorImplementation name=symtensor1 rows=2 columns=2 sheets=3 values=[1,2,2,3,0.4,0.5,0.5,0.6,7,8,8,9]
+symtensor1 = sheet #0
+[[ 1   2   ]
+ [ 2   3   ]]
+sheet #1
+[[ 0.4 0.5 ]
+ [ 0.5 0.6 ]]
+sheet #2
+[[ 7   8   ]
+ [ 8   9   ]]

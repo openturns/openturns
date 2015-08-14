@@ -1,0 +1,62 @@
+%feature("docstring") OT::PosteriorRandomVector
+"Random vectors based on samplers.
+
+Available constructors:
+    PosteriorRandomVector(*sampler*)
+
+Parameters
+----------
+sampler : :class:`~openturns.Sampler`
+    A sampler.
+
+Notes
+-----
+A *PosteriorRandomVector* corresponds to a random vector whose distribution
+poses some particular numerical difficulties such as evaluating its PDF, but
+which can be more easily sampled. By sampling a random vector, we means
+computing an i.i.d. sample according to its distribution or computing the
+realization of an ergodic Markov chain whose stationary distribution is the
+one of the random vector. Such random vector is typically encountered in
+Bayesian inference, where a common practice is to sample the posterior random
+vector of the infered parameters by Monte-Carlo Markov Chain.
+
+See also
+--------
+RandomVector, MCMC
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # observations
+>>> realDist = ot.Normal(31., 1.2)
+>>> data = realDist.getSample(10)
+>>> # proposal distribution
+>>> proposalColl = [ot.Uniform(-2.0, 2.0)]*2
+>>> # prior distribution
+>>> prior = ot.ComposedDistribution([ot.Normal(25., 0.1), ot.Dirac(2.0)])
+>>> # choose the initial state within the prior
+>>> initState = prior.getRealization()
+>>> # conditional distribution
+>>> cond = ot.Normal()
+>>> # create a metropolis-hastings sampler
+>>> sampler = ot.RandomWalkMetropolisHastings(prior, cond, data, initState, proposalColl)
+>>> sampler.setVerbose(True)
+>>> sampler.setThinning(100)
+>>> sampler.setBurnIn(1000)
+
+>>> # create a PosteriorRandomVector
+>>> randomVector = ot.PosteriorRandomVector(sampler)
+>>> # get a realization
+>>> print(randomVector.getRealization())
+[25.1464,2]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorRandomVector::getSampler
+"Get the sampler.
+
+Returns
+-------
+sampler : :class:`~openturns.Sampler`
+    The sampler used to create the RandomVector."

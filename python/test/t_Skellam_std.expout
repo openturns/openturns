@@ -1,0 +1,33 @@
+Distribution  class=Skellam name=Skellam dimension=1 lambda1=10 lambda2=5
+Distribution  Skellam(lambda1 = 10, lambda2 = 5)
+Elliptical =  False
+Continuous =  False
+oneRealization= [11]
+oneSample first= [11]  last= [7]
+mean= [4.9883]
+covariance= [[ 15.3189 ]]
+Point=  [12]
+log pdf= -3.91245138189
+pdf     = 0.0199914343056
+pdf (FD)= 0.0199914343056
+cdf= 0.971360859022
+ccdf= 0.028639140978
+characteristic function= (-0.0861799503022-0.0425613135496j)
+log characteristic function= (-2.34219061901-2.68286459j)
+generating function= (4.64245238616e-05+6.70957137037e-05j)
+log generating function= (-9.41379310345+0.965517241379j)
+quantile= [11]
+cdf(quantile)= 0.951369424716
+mean= [5]
+standard deviation= [3.87298]
+skewness= [0.0860663]
+kurtosis= [3.06667]
+covariance= [[ 15 ]]
+parameters= [[lambda1 : 10, lambda2 : 5]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [5]
+standard moment n= 2 , value= [40]
+standard moment n= 3 , value= [355]
+standard moment n= 4 , value= [3665]
+standard moment n= 5 , value= [41130]
+Standard representative= Skellam(lambda1 = 10, lambda2 = 5)

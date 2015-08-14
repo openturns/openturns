@@ -1,0 +1,38 @@
+Distribution  class=Exponential name=Exponential dimension=1 lambda=2.5 gamma=-0.5
+Distribution  Exponential(lambda = 2.5, gamma = -0.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[-0.315107]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[-0.45014]  last= class=NumericalPoint name=Unnamed dimension=1 values=[-0.157472]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[-0.101604]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.160734]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.146986]
+ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.146986]
+log pdf=-2.833709
+pdf     =0.058794
+pdf (FD)=0.058794
+cdf=0.976482
+ccdf=0.023518
+characteristic function= (0.921855842528-0.110683201593j)
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.0646738,0.146986]
+pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.0646738,0.146986]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.0352766,-0.0587944]
+cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.0352766,-0.0587944]
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.698293]
+cdf(quantile)=0.950000
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[-0.1]
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.4]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[2]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[9]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.16]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[lambda,gamma] values=[2.5,-0.5]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [1]
+standard moment n= 2  value= [2]
+standard moment n= 3  value= [6]
+standard moment n= 4  value= [24]
+standard moment n= 5  value= [120]
+Standard representative= Exponential(lambda = 1, gamma = 0)

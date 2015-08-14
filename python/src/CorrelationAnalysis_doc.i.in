@@ -1,0 +1,134 @@
+%feature("docstring") OT::CorrelationAnalysis::PCC
+"Correlation evaluation based on the Partial Correlation Coefficient.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension :math:`n \geq 2`.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : :class:`~openturns.NumericalPoint`
+    The PCC coefficients evaluated between the *sample2* and each coordinate of
+    *sample1*.
+
+See Also
+--------
+CorrelationAnalysis_PearsonCorrelation, CorrelationAnalysis_SRC, 
+CorrelationAnalysis_PRCC"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::PRCC
+"Correlation evaluation based on the Partial Rank Correlation Coefficient.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension :math:`n \geq 2`.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : :class:`~openturns.NumericalPoint`
+    The PRCC coefficients evaluated between the *sample2* and each coordinate of
+    *sample1* (based on the rank values).
+
+See Also
+--------
+CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_SRRC,
+CorrelationAnalysis_PCC"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::PearsonCorrelation
+"Correlation evaluation based on the Pearson correlation coefficient.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension = 1.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : float
+    The Pearson correlation coefficients evaluated between the *sample2* and the
+    *sample1*.
+
+See Also
+--------
+CorrelationAnalysis_PCC, CorrelationAnalysis_SRC,
+CorrelationAnalysis_SpearmanCorrelation"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::SpearmanCorrelation
+"Correlation evaluation based on the Spearman correlation coefficient.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension = 1.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : float
+    The Spearman correlation coefficients evaluated between the *sample2* and the
+    *sample1* (based on the rank values).
+
+See Also
+--------
+CorrelationAnalysis_PRCC, CorrelationAnalysis_SRRC,
+CorrelationAnalysis_PearsonCorrelation"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::SRC
+"Correlation evaluation based on the Standard Regression Coefficient.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension :math:`n \geq 1`.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : :class:`~openturns.NumericalPoint`
+    The SRC evaluated between the *sample2* and each coordinate of the *sample1*.
+
+See Also
+--------
+CorrelationAnalysis_PearsonCorrelation, CorrelationAnalysis_PCC,
+CorrelationAnalysis_SRRC"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::SRRC
+"Correlation evaluation based on the Standard Rank Regression Coefficient.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension :math:`n \geq 1`.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : :class:`~openturns.NumericalPoint`
+    The SRRC evaluated between the *sample2* and each coordinate of the
+    *sample1* (based on the rank value).
+
+See Also
+--------
+CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_PRCC,
+CorrelationAnalysis_SRC"

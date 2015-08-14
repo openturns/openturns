@@ -1,0 +1,64 @@
+> restart:
+> with(LinearAlgebra):
+> center:=<-1,1/2,1>;
+> const:=<-1,2>;
+> Linear:=<<1,2,3>|<4,5,6>>;
+> Quadratic:=array(1..2):
+> Quadratic[1]:=<<7,8,9>|<8,10,11>|<9,11,12>>;
+> Quadratic[2]:=<<-7,-8,-9>|<-8,-10,-11>|<-9,-11,-12>>;
+> Point:=<7,8,9>;
+> res:=const+Transpose(Linear).(Point-center)+1/2*<Transpose(Point-cente
+> r).Quadratic[1].(Point-center),Transpose(Point-center).Quadratic[2].(P
+> oint-center)>;
+> evalf(res);
+
+                                     [-1 ]
+                                     [   ]
+                           center := [1/2]
+                                     [   ]
+                                     [ 1 ]
+
+
+                                     [-1]
+                            const := [  ]
+                                     [ 2]
+
+
+                                    [1    4]
+                                    [      ]
+                          Linear := [2    5]
+                                    [      ]
+                                    [3    6]
+
+
+                                   [7     8     9]
+                                   [             ]
+                   Quadratic[1] := [8    10    11]
+                                   [             ]
+                                   [9    11    12]
+
+
+                                  [-7     -8     -9]
+                                  [                ]
+                  Quadratic[2] := [-8    -10    -11]
+                                  [                ]
+                                  [-9    -11    -12]
+
+
+                                      [7]
+                                      [ ]
+                             Point := [8]
+                                      [ ]
+                                      [9]
+
+
+                                  [10605/4]
+                           res := [       ]
+                                  [-9943/4]
+
+
+                            [2651.250000 ]
+                            [            ]
+                            [-2485.750000]
+
+> 

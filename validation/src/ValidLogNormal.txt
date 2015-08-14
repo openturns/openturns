@@ -1,0 +1,333 @@
+> restart:
+> with(Statistics):
+> with(student):
+> assume(u>0,sigmaLog>0):
+> lognormal_:=RandomVariable(LogNormal(muLog,sigmaLog)):
+> pdf:=subs(u='x-_gamma',PDF(lognormal_,u));
+> ddf:=diff(pdf,x);
+> cdf:=subs(u='x-_gamma',CDF(lognormal_,u));
+> cf:=CharacteristicFunction(lognormal_,u);
+> cdf2:=value(changevar(ln(x)=y,Int(pdf,x=0..t)));
+> mu_:='_gamma'+Mean(lognormal_);
+> var_:=Variance(lognormal_);
+> skew_:=simplify(factor(convert(Skewness(lognormal_),GAMMA)),symbolic);
+> kurt_:=simplify(factor(convert(Kurtosis(lognormal_),GAMMA)),symbolic);
+> sol:=solve({mu_=mu,var_=sigma},{muLog,sigmaLog});
+> qdf:='_gamma'+Quantile(lognormal_,p);
+> qdf2:=solve(cdf2=p,x);
+> fact:=pdf:
+> pdfgr:=map(factor,[diff(pdf,muLog)/fact,diff(pdf,sigmaLog)/fact,diff(p
+> df,_gamma)/fact]);
+> fact:=pdf:
+> cdfgr:=map(factor,[diff(cdf,muLog)/fact,diff(cdf,sigmaLog)/fact,diff(c
+> df,_gamma)/fact]) assuming x - _gamma > exp(muLog);
+> valnum:=muLog=-1.0,sigmaLog=1.5,_gamma=-0.5:
+> #valnum:=muLog=.0,sigmaLog=1.,_gamma=0.:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,map(_x->_x*pdf,pdfgr)));
+> evalf(subs(valnum,x=1,map(_x->_x*pdf,cdfgr)));
+> evalf(fsolve(subs(valnum,cdf)=0.95,x));
+> _EnvAllSolutions := true:allvalues(evalf(subs(valnum,mu_)));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+> evalf(subs(valnum,[mu_,sqrt(var_)]));
+> evalf(subs(valnum,[mu_,sqrt(var_)/mu_]));
+> 
+
+                                                          2
+                     1/2          (ln(x - _gamma) - muLog)
+                    2    exp(-1/2 -------------------------)
+                                                  2
+                                         sigmaLog~
+         pdf := 1/2 ----------------------------------------
+                                                   1/2
+                          (x - _gamma) sigmaLog~ Pi
+
+
+                                                    2
+               1/2          (ln(x - _gamma) - muLog)
+              2    exp(-1/2 -------------------------)
+                                            2
+                                   sigmaLog~                  1/2
+  ddf := -1/2 ---------------------------------------- - 1/2 2
+                               2             1/2
+                   (x - _gamma)  sigmaLog~ Pi
+
+                                                                  2
+                                          (ln(x - _gamma) - muLog)
+        (ln(x - _gamma) - muLog) exp(-1/2 -------------------------)
+                                                          2
+                                                 sigmaLog~
+
+           /              2          3   1/2
+          /  ((x - _gamma)  sigmaLog~  Pi   )
+         /
+
+
+         {                                             1/2
+  cdf := {                   (muLog - ln(x - _gamma)) 2
+         { 1/2 - 1/2 erf(1/2 -----------------------------) ,
+         {                             sigmaLog~
+
+        x - _gamma < exp(muLog)
+
+                                                    1/2
+                          (ln(x - _gamma) - muLog) 2
+        1/2 + 1/2 erf(1/2 -----------------------------) , otherwise
+                                    sigmaLog~
+
+
+                                 2
+          1/2  1/2          muLog
+  cf := Pi    2    exp(- ------------) invfourier(
+                                    2
+                         2 sigmaLog~
+
+                             ln(u) (-ln(u) + 2 muLog)        |
+        Heaviside(u) exp(1/2 ------------------------)       |
+                                             2               |
+                                    sigmaLog~                |
+        ----------------------------------------------, u, v)|      /
+                              u                              |v = u~
+
+        sigmaLog~
+
+
+                        1/2
+                       2    (ln(-_gamma) - muLog)
+  cdf2 := -1/2 erf(1/2 --------------------------)
+                               sigmaLog~
+
+                        1/2
+                       2    (ln(t - _gamma) - muLog)
+         + 1/2 erf(1/2 -----------------------------)
+                                 sigmaLog~
+
+
+                                                    2
+                                           sigmaLog~
+               mu_ := _gamma + exp(muLog + ----------)
+                                               2
+
+
+                                      2                2
+       var_ := exp(2 muLog + sigmaLog~ ) (exp(sigmaLog~ ) - 1)
+
+
+           /                         2
+           |              9 sigmaLog~
+  skew_ := |exp(3 muLog + ------------)
+           \                   2
+
+                                      2
+                           5 sigmaLog~
+         - 3 exp(3 muLog + ------------)
+                                2
+
+                            2           \
+                 3 sigmaLog~            |
+         + 2 exp(------------ + 3 muLog)|
+                      2                 /
+
+                                  2
+                       3 sigmaLog~     /               2      3/2
+        exp(-3 muLog - ------------)  /  (exp(sigmaLog~ ) - 1)
+                            2        /
+
+
+                                     2
+  kurt_ := (exp(4 muLog + 8 sigmaLog~ )
+
+                                      2
+         - 4 exp(4 muLog + 5 sigmaLog~ )
+
+                                      2
+         + 6 exp(4 muLog + 3 sigmaLog~ )
+
+                            2
+         - 3 exp(2 sigmaLog~  + 4 muLog))
+
+                                  2    /               2      2
+        exp(-4 muLog - 2 sigmaLog~ )  /  (exp(sigmaLog~ ) - 1)
+                                     /
+
+
+                            2                   2    /
+  sol := {muLog = ln((_gamma  - 2 _gamma mu + mu )  /  RootOf(
+                                                   /
+
+                        2                 2     2
+        2 _gamma mu - mu  - sigma - _gamma  + _Z , label = _L1)),
+
+                             2
+        sigmaLog~ = RootOf(_Z  - 2 ln(RootOf(
+
+                        2                 2     2
+        2 _gamma mu - mu  - sigma - _gamma  + _Z , label = _L1)/(
+
+        -_gamma + mu)), label = _L2)}
+
+
+                             qdf := FAIL
+
+
+                               qdf2 :=
+
+
+            ln(x - _gamma) - muLog
+  pdfgr := [----------------------, -
+                           2
+                  sigmaLog~
+
+        (ln(x - _gamma) - muLog + sigmaLog~)
+
+                                                       3
+        (-ln(x - _gamma) + muLog + sigmaLog~)/sigmaLog~ ,
+
+                 2
+        sigmaLog~  + ln(x - _gamma) - muLog
+        -----------------------------------]
+                       2
+              sigmaLog~  (x - _gamma)
+
+
+                         (ln(x - _gamma) - muLog) (-x + _gamma)
+  cdfgr := [-x + _gamma, --------------------------------------, -1]
+                                       sigmaLog~
+
+
+                            -0.1238104588
+
+
+                             0.1143111167
+
+
+                             0.8256147383
+
+
+            [0.07140457156, -0.009302988550, 0.1238104588]
+
+
+            [-0.1714666750, -0.1606602859, -0.1143111167]
+
+
+                             3.837423204
+
+
+                             0.633148453
+
+
+                             3.301282864
+
+
+                             33.46804681
+
+
+                             10078.25285
+
+
+                             10.89846855
+
+
+                      [0.633148453, 3.301282864]
+
+
+                      [0.633148453, 5.214073964]
+
+> tmp:=factor(diff((1/2+1/2*erf(1/2*(ln(x-_gamma)-muLog)/sigmaLog*2^(1/2
+> )))^N,x));
+
+           /                                            1/2 \N
+           |                  (muLog - ln(x - _gamma)) 2    |     1/2
+  tmp := - |1/2 - 1/2 erf(1/2 -----------------------------)|  N 2
+           \                            sigmaLog~           /
+
+                                         2      /
+                 (muLog - ln(x - _gamma))     / |
+        exp(-1/2 -------------------------)  /  |(x - _gamma)
+                                 2          /   \
+                        sigmaLog~
+
+                        /                                       1/2 \
+                    1/2 |             (muLog - ln(x - _gamma)) 2    |
+        sigmaLog~ Pi    |-1 + erf(1/2 -----------------------------)|
+                        \                       sigmaLog~           /
+
+        \
+        |
+        |
+        /
+
+> int(subs(N=2,_gamma=0,tmp)*x,x=0..infinity);
+
+     infinity
+    /             /                                   1/2 \2
+   |              |                  (muLog - ln(x)) 2    |   1/2
+   |          - 2 |1/2 - 1/2 erf(1/2 --------------------)|  2
+   |              \                       sigmaLog~       /
+  /
+    0
+
+                                2      /
+                 (muLog - ln(x))     / |            1/2
+        exp(-1/2 ----------------)  /  |sigmaLog~ Pi
+                             2     /   \
+                    sigmaLog~
+
+        /                              1/2 \\
+        |             (muLog - ln(x)) 2    ||
+        |-1 + erf(1/2 --------------------)|| dx
+        \                  sigmaLog~       //
+
+> evalf[40](subs(muLog=1.2,sigmaLog=0.3,skew_));
+> evalf[40](subs(muLog=1.2,sigmaLog=0.3,(exp(sigmaLog^2)+2)*sqrt(exp(sig
+> maLog^2)-1)));
+> 
+
+              0.9495349072565357028415441816902397383428
+
+
+              0.9495349072565357028415441816902397383633
+
+> kurt_;
+
+                            2                               2
+  (exp(4 muLog + 8 sigmaLog~ ) - 4 exp(4 muLog + 5 sigmaLog~ )
+
+                                      2
+         + 6 exp(4 muLog + 3 sigmaLog~ )
+
+                            2
+         - 3 exp(2 sigmaLog~  + 4 muLog))
+
+                                  2    /               2      2
+        exp(-4 muLog - 2 sigmaLog~ )  /  (exp(sigmaLog~ ) - 1)
+                                     /
+
+> mu2:=exp(2*muLog+sigmaLog^2)*(exp(sigmaLog^2)-1);
+> mu4:=exp(4*muLog+2*sigmaLog^2)*
+>      (exp(sigmaLog^2)-1)^2*
+>      (exp(4*sigmaLog^2)+2*exp(3*sigmaLog^2)+3*exp(2*sigmaLog^2)-3);
+
+                                      2                2
+        mu2 := exp(2 muLog + sigmaLog~ ) (exp(sigmaLog~ ) - 1)
+
+
+                        2                          2      2
+  mu4 := exp(2 sigmaLog~  + 4 muLog) (exp(sigmaLog~ ) - 1)  (
+
+                       2                     2                     2
+        exp(4 sigmaLog~ ) + 2 exp(3 sigmaLog~ ) + 3 exp(2 sigmaLog~ )
+
+         - 3)
+
+> evalf(subs(valnum,exp(4*sigmaLog^2)+2*exp(3*sigmaLog^2)+3*exp(2*sigmaL
+> og^2)-3));
+
+                             10078.25285
+
+> 

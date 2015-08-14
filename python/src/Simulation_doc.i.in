@@ -1,0 +1,265 @@
+%feature("docstring") OT::Simulation
+"Base class for sampling methods.
+
+Available constructor:
+    Simulation(*event, verbose=True, convergenceStrategy=ot.Compact()*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    The event we are computing the probability of.
+verbose : bool
+    If *True*, make the computation verbose.
+convergenceStrategy : :class:`~openturns.HistoryStrategy`
+    Storage strategy used to store the values of the probability estimator and
+    its variance during the simulation algorithm.
+
+Notes
+-----
+Base class for sampling methods, using the probability distribution of a random
+vector :math:`\vect{X}` to evaluate the failure probability:
+
+.. math::
+
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux
+        = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+
+Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
+vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
+which enables the definition of the event
+:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
+
+A Simulation object can be created only through its derived classes:
+
+- :class:`~openturns.DirectionalSampling`
+
+- :class:`~openturns.ImportanceSampling`,
+
+- :class:`~openturns.LHS`,
+
+- :class:`~openturns.MonteCarlo`,
+
+- :class:`~openturns.QuasiMonteCarlo`,
+
+- :class:`~openturns.PostAnalyticalControlledImportanceSampling`,
+
+- :class:`~openturns.PostAnalyticalImportanceSampling`,
+
+- :class:`~openturns.RandomizedLHS`,
+
+- :class:`~openturns.RandomizedQuasiMonteCarlo`.
+
+See also
+--------
+SimulationResult"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getBlockSize
+"Accessor to the block size.
+
+Returns
+-------
+blockSize : int
+    Number of terms in the probability simulation estimator grouped together.
+    It is set by default to 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setBlockSize
+"Accessor to the block size.
+
+Parameters
+----------
+blockSize : int, :math:`blockSize \geq 1`
+    Number of terms in the probability simulation estimator grouped together.
+    It is set by default to 1.
+
+Notes
+-----
+For Monte Carlo, LHS and Importance Sampling methods, this allows to save space
+while allowing multithreading, when available (wrapper function) we recommend
+to use the number of available CPUs; for the Directional Sampling, we recommend
+to set it to 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getConvergenceStrategy
+"Accessor to the convergence strategy.
+
+Returns
+-------
+storage_strategy : :class:`~openturns.HistoryStrategy`
+    Storage strategy used to store the values of the probability estimator
+    and its variance during the simulation algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setConvergenceStrategy
+"Accessor to the convergence strategy.
+
+Parameters
+----------
+storage_strategy : :class:`~openturns.HistoryStrategy`
+    Storage strategy used to store the values of the probability estimator
+    and its variance during the simulation algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getMaximumCoefficientOfVariation
+"Accessor to the maximum coefficient of variation.
+
+Returns
+-------
+coefficient : float
+    Maximum coefficient of variation of the simulated sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setMaximumCoefficientOfVariation
+"Accessor to the maximum coefficient of variation.
+
+Parameters
+----------
+coefficient : float
+    Maximum coefficient of variation of the simulated sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getMaximumOuterSampling
+"Accessor to the maximum sample size.
+
+Returns
+-------
+outerSampling : int
+    Maximum number of groups of terms in the probability simulation estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setMaximumOuterSampling
+"Accessor to the maximum sample size.
+
+Parameters
+----------
+outerSampling : int
+    Maximum number of groups of terms in the probability simulation estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getMaximumStandardDeviation
+"Accessor to the maximum standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Maximum standard deviation of the estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setMaximumStandardDeviation
+"Accessor to the maximum standard deviation.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Maximum standard deviation of the estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getResult
+"Accessor to the results.
+
+Returns
+-------
+results : :class:`~openturns.SimulationResult`
+    Structure containing all the results obtained after simulation and created
+    by the method :py:meth:`run`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getEvent
+"Accessor to the event.
+
+Returns
+-------
+event : :class:`~openturns.Event`
+    Event we want to evaluate the probability."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::getVerbose
+"Accessor to verbosity.
+
+Returns
+-------
+verbosity_enabled : bool
+    If *True*, the computation is verbose. By default it is verbose."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setVerbose
+"Accessor to verbosity.
+
+Parameters
+----------
+verbosity_enabled : bool
+    If *True*, make the computation verbose. By default it is verbose."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::run
+"Launch simulation.
+
+Notes
+-----
+It launches the simulation and creates a :class:`~openturns.SimulationResult`,
+structure containing all the results obtained after simulation.
+It computes the probability of occurence of the given event by computing the
+empirical mean of a sample of size at most *outerSampling * blockSize*,
+this sample being built by blocks of size *blockSize*. It allows to use
+efficiently the distribution of the computation as well as it allows to deal
+with a sample size :math:`> 2^{32}` by a combination of *blockSize* and
+*outerSampling*.
+
+see also
+--------
+setBlockSize, setMaximumOuterSampling, ResourceMap, SimulationResult"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::drawProbabilityConvergence
+"Draw the probability convergence at a given level.
+
+Parameters
+----------
+level : float, optional
+    The probability convergence is drawn at this given confidence length
+    *level*. By default *level* is 0.95.
+
+Returns
+-------
+graph : a :class:`~openturns.Graph`
+    probability convergence graph"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setProgressCallback
+"Set up a progress callback.
+
+Parameters
+----------
+callback : callable
+    Takes a float as argument as percentage of progress."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Simulation::setStopCallback
+"Set up a stop callback.
+
+Parameters
+----------
+callback : callable
+    Returns an int deciding whether to stop or continue."
+

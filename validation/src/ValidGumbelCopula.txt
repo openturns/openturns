@@ -1,0 +1,338 @@
+> restart:
+> CDF_gumbel:=exp(-((-log(u))^theta + (-log(v))^theta)^(1/theta));
+
+                                                        /  1  \
+                                                        |-----|
+                                                        \theta/
+                                  theta           theta
+      CDF_gumbel := exp(-((-ln(u))      + (-ln(v))     )       )
+
+> PDF_gumbel:=factor(diff(diff(CDF_gumbel,u),v));
+
+                  /  1  \                                    /  1  \
+                  |-----|                                    |-----|
+                  \theta/         theta         theta        \theta/
+  PDF_gumbel := %1        (-ln(v))      (-ln(u))      exp(-%1       )
+
+        /               /  1  \\
+        |               |-----||
+        |               \theta/|   /            2
+        \-1 + theta + %1       /  /  (v ln(v) %1  u ln(u))
+                                 /
+
+                theta           theta
+  %1 := (-ln(u))      + (-ln(v))
+
+> with(codegen,optimize,cost);
+
+                           [optimize, cost]
+
+> optimize(PDF_gumbel);
+
+                        theta                        theta
+  t1 = ln(u), t2 = (-t1)     , t3 = ln(v), t4 = (-t3)     ,
+
+                             /  1  \
+                             |-----|
+                             \theta/                         2
+        t5 = t2 + t4, t7 = t5       , t9 = exp(-t7), t17 = t5 ,
+
+              t7 t4 t2 t9 (-1 + theta + t7)
+        t24 = -----------------------------
+                      v t3 t17 u t1
+
+> solve(subs(u=t,v=t,CDF_gumbel)=y,t);
+
+                                  1
+                 -----------------------------------
+                         -ln(2) + ln(-ln(y)) theta
+                 exp(exp(-------------------------))
+                                   theta
+
+> phi:=(-log(t))^theta;
+
+                                        theta
+                         phi := (-ln(t))
+
+> phi := (-ln(t))^theta;
+
+                                        theta
+                         phi := (-ln(t))
+
+> factor(simplify(diff(phi,t)));
+
+                               (theta - 1)
+                       (-ln(t))            theta
+                     - -------------------------
+                                   t
+
+> factor((diff(phi,t$2)));
+
+                       theta
+               (-ln(t))      theta (theta - ln(t) - 1)
+               ---------------------------------------
+                               2      2
+                              t  ln(t)
+
+> du:=diff(CDF_gumbel,u);
+> dv:=diff(CDF_gumbel,v);
+
+                                         /  1  \
+                                         |-----|
+                                         \theta/
+                   theta           theta                 theta
+  du := - ((-ln(u))      + (-ln(v))     )        (-ln(u))
+
+                                            /  1  \
+                                            |-----|
+                                            \theta/
+                      theta           theta            /
+        exp(-((-ln(u))      + (-ln(v))     )       )  /  (u ln(u)
+                                                     /
+
+                 theta           theta
+        ((-ln(u))      + (-ln(v))     ))
+
+
+                                         /  1  \
+                                         |-----|
+                                         \theta/
+                   theta           theta                 theta
+  dv := - ((-ln(u))      + (-ln(v))     )        (-ln(v))
+
+                                            /  1  \
+                                            |-----|
+                                            \theta/
+                      theta           theta            /
+        exp(-((-ln(u))      + (-ln(v))     )       )  /  (v ln(v)
+                                                     /
+
+                 theta           theta
+        ((-ln(u))      + (-ln(v))     ))
+
+> fu:=factor(du/((-log(u))^theta/(u*log(u))));
+> fv:=factor(dv/((-log(v))^theta/(v*log(v))));
+> fu/fv;
+
+                                         /  1  \
+                                         |-----|
+                                         \theta/
+                   theta           theta
+  fu := - ((-ln(u))      + (-ln(v))     )
+
+                                            /  1  \
+                                            |-----|
+                                            \theta/
+                      theta           theta            /
+        exp(-((-ln(u))      + (-ln(v))     )       )  /  (
+                                                     /
+
+                theta           theta
+        (-ln(u))      + (-ln(v))     )
+
+
+                                         /  1  \
+                                         |-----|
+                                         \theta/
+                   theta           theta
+  fv := - ((-ln(u))      + (-ln(v))     )
+
+                                            /  1  \
+                                            |-----|
+                                            \theta/
+                      theta           theta            /
+        exp(-((-ln(u))      + (-ln(v))     )       )  /  (
+                                                     /
+
+                theta           theta
+        (-ln(u))      + (-ln(v))     )
+
+
+                                  1
+
+> optimize(fu);
+
+                        theta                        theta
+  t1 = ln(u), t2 = (-t1)     , t3 = ln(v), t4 = (-t3)     ,
+
+                             /  1  \
+                             |-----|
+                             \theta/                          t7 t10
+        t5 = t2 + t4, t7 = t5       , t10 = exp(-t7), t12 = - ------
+                                                                t5
+
+> a:=(diff(PDF_gumbel, theta)):
+> cost(a);
+> cost(factor(a));
+> cost(optimize(a));
+> cost(optimize(factor(a)));
+
+  149 additions + 148 multiplications + 57 divisions + 317 functions
+
+
+  205 multiplications + 162 additions + 22 divisions + 339 functions
+
+
+  12 functions + 29 assignments + 44 multiplications + 16 additions
+
+         + 10 divisions
+
+
+  12 functions + 35 assignments + 62 multiplications + 36 additions
+
+         + 8 divisions
+
+> algsubs(minusLogUPowTheta+minusLogVPowTheta=sum1,subs((-logU)^theta=mi
+> nusLogUPowTheta,(-logV)^theta=minusLogVPowTheta,algsubs(log(u)=logU,al
+> gsubs(log(v)=logV,a))));
+
+      /  1  \          /  1  \
+      |-----|          |-----|
+      \theta/          \theta/
+  sum1        exp(-sum1       )
+
+                                                       //
+                                                       ||
+                           2                           ||
+        (-minusLogVPowTheta  + sum1 minusLogVPowTheta) \\
+
+                          3          2
+        -2 ln(-logV) theta  + 3 theta  ln(-logV) - theta ln(-logV)
+
+                            2                    3
+         - 3 ln(-logU) theta  + 2 ln(-logU) theta  + theta ln(-logU)
+
+                                  /  1  \
+                                  |-----|
+                            2     \theta/
+         + 3 ln(-logU) theta  sum1
+
+                 /  1  \
+                 |-----|
+                 \theta/
+         - 3 sum1        theta ln(-logU)
+
+                                  /  1  \
+                                  |-----|
+                            2     \theta/
+         - 3 ln(-logV) theta  sum1
+
+           /    /  1  \\2
+           |    |-----||
+           |    \theta/|
+         - \sum1       /  theta ln(-logV)
+
+                 /  1  \
+                 |-----|
+                 \theta/
+         + 3 sum1        theta ln(-logV)
+
+           /    /  1  \\2                \
+           |    |-----||                 |
+           |    \theta/|                 |
+         + \sum1       /  theta ln(-logU)/ minusLogVPowTheta
+
+                           /    /  1  \\2
+                           |    |-----||
+                           |    \theta/|
+         + ln(sum1) sum1 - \sum1       /  theta ln(-logU) sum1
+
+                          3                         2
+         - ln(-logU) theta  sum1 + 2 ln(-logU) theta  sum1
+
+                                     /  1  \
+                                     |-----|
+                                     \theta/
+         - ln(sum1) theta sum1 + sum1        ln(sum1) theta sum1
+
+                                /  1  \
+                                |-----|
+                          2     \theta/
+         + ln(-logV) theta  sum1        sum1
+
+           /    /  1  \\2
+           |    |-----||
+           |    \theta/|
+         + \sum1       /  ln(sum1) sum1
+
+                 /  1  \
+                 |-----|
+                 \theta/                             2
+         + 3 sum1        theta ln(-logU) sum1 + theta  sum1
+
+                 /  1  \
+                 |-----|
+                 \theta/                      2
+         - 3 sum1        ln(sum1) sum1 - theta  ln(-logV) sum1
+
+                                  /  1  \
+                                  |-----|
+                            2     \theta/
+         - 2 ln(-logU) theta  sum1        sum1 - theta ln(-logU) sum1
+
+                                \
+                                |
+                          3     |   /       2                     3
+         + ln(-logV) theta  sum1/  /  (theta  v u ln(v) ln(u) sum1 )
+                                  /
+
+> INT:=subs(theta=2.5,Int(Int((u-0.5)*(v-0.5)*PDF_gumbel,u=eps..1-eps),v
+> =eps..1-eps));
+> evalf[7](subs(eps=1e-8,INT));
+
+            1 - eps    1 - eps
+           /          /
+          |          |                                     2.5
+  INT :=  |          |         (u - 0.5) (v - 0.5) (-ln(v))
+          |          |
+         /          /
+           eps        eps
+
+                2.5               2.5           2.5 0.4000000000
+        (-ln(u))    exp(-((-ln(u))    + (-ln(v))   )            )
+
+                        2.5           2.5 0.4000000000    /
+        (1.5 + ((-ln(u))    + (-ln(v))   )            )  /  (
+                                                        /
+
+                 2.5           2.5 1.600000000
+        ((-ln(u))    + (-ln(v))   )            v ln(v) u ln(u)) du dv
+
+
+                              0.06565504
+
+> cov:=proc(t)
+>        evalf(subs(theta=t,Int(Int(CDF_gumbel-u*v,u=0..1),v=0..1)))
+> end:
+> cov(2.5);
+
+                            0.06565504728
+
+> assume(u>0,u<1,v>0,v<1);limit(CDF_gumbel, theta=infinity);
+
+                                                           /  1  \
+                                                           |-----|
+                                                           \theta/
+                                    theta            theta
+         lim         exp(-((-ln(u~))      + (-ln(v~))     )       )
+  theta -> infinity
+
+> evalf(subs(u=0.2,v=0.2,theta=2.5,[PDF_gumbel,CDF_gumbel]));
+
+                     [2.220595759, 0.1195923913]
+
+> solve(subs(u=t,v=t,theta=2.5,CDF_gumbel)=0.5);
+
+  0.5913735883, 1.457228698 - 0.4648115355 I,
+
+        1.457228698 + 0.4648115355 I
+
+> assume(theta>0,v>0,v<1,u>0);(CDF_gumbel, u=0);
+
+                                              /  1   \
+                                              |------|
+                                              \theta~/
+                     theta~            theta~
+      exp(-((-ln(u~))       + (-ln(v~))      )        ), u~ = 0
+
+> 

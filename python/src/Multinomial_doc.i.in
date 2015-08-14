@@ -1,0 +1,92 @@
+%feature("docstring") OT::Multinomial
+"Multinomial distribution.
+
+Available constructors:
+    Multinomial(*N=1, P=[0.5]*)
+
+Parameters
+----------
+N : int, :math:`\sum_{i = 1}^n x_i \leq N`
+    Number of experiments.
+P : sequence of float, :math:`p_i \geq 0, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
+    Component probabilities (all positive with sum less than unity).
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = \vect{x}} = \frac{N!}{x_1! \ldots x_n! (N - s)!}
+                                 p_1^{x_1} \ldots p_n^{x_n} (1 - q)^{N - s},
+                                 \quad \forall \vect{x} \in \Nset^n:
+                                       s = \sum_{i = 1}^n x_i \leq N
+
+with :math:`N \in \Nset^*`, :math:`p_i \geq 0, i = 1, \ldots, n` and
+:math:`\sum_{i = 1}^n p_i \leq 1`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X_i} & = & N p_i, \quad i = 1, \ldots, n \\
+        \Var{X_i} & = & N p_i (1 - p_i), \quad i = 1, \ldots, n \\
+        \Cov{X_i, X_j} & = & - N p_i p_j, \quad i, j = 1, \ldots, n, i \neq j
+    \end{eqnarray*}
+
+See Also
+--------
+Dirichlet
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Multinomial(1, [.5])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getN
+"Accessor to the number of experiments parameter :math:`N`.
+
+Returns
+-------
+N : int
+    Number of experiments :math:`N`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getP
+"Accessor to the component probabilities parameter :math:`\vect{p}`.
+
+Returns
+-------
+P : :class:`~openturns.NumericalPoint`
+    Component probabilities :math:`\vect{p}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setN
+"Accessor to the number of experiments parameter :math:`N`.
+
+Parameters
+----------
+N : int, :math:`\sum_{i = 1}^n x_i \leq N`
+    Number of experiments :math:`N`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setP
+"Accessor to the component probabilities parameter :math:`\vect{p}`.
+
+Parameters
+----------
+P : sequence of float, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
+    Component probabilities (all positive with sum less than unity)."

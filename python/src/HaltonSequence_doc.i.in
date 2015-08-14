@@ -1,0 +1,21 @@
+%feature("docstring") OT::HaltonSequence
+"Halton sequence.
+
+Available constructors:
+    HaltonSequence(*dimension=1*)
+
+Parameters
+----------
+dimension : positive int
+    Dimension of the points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sequence = ot.HaltonSequence(2)
+>>> print(sequence.generate(5))
+0 : [ 0.5      0.333333 ]
+1 : [ 0.25     0.666667 ]
+2 : [ 0.75     0.111111 ]
+3 : [ 0.125    0.444444 ]
+4 : [ 0.625    0.777778 ]"

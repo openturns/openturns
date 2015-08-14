@@ -1,0 +1,27 @@
+Distribution  class=NegativeBinomial name=NegativeBinomial dimension=1 r=4.5 p=0.7
+Distribution  NegativeBinomial(r = 4.5, p = 0.7)
+Elliptical =  False
+Continuous =  False
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[7]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[10]  last= class=NumericalPoint name=Unnamed dimension=1 values=[20]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[10.4746]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[35.6333]
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[5]
+pdf     =0.063727
+pdf (FD)=0.063727
+cdf=0.203394
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[22]
+cdf(quantile)=0.959829
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[10.5]
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[5.91608]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.957841]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[4.3619]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[35]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[r,p] values=[4.5,0.7]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [10.5]
+standard moment n= 2  value= [145.25]
+standard moment n= 3  value= [2458.46]
+standard moment n= 4  value= [48980.9]
+standard moment n= 5  value= [1.12011e+06]
+Standard representative= NegativeBinomial(r = 4.5, p = 0.7)

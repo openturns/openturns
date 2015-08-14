@@ -1,0 +1,895 @@
+#                                               -*- cmake -*-
+
+add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
+
+# generate SWIG runtime header
+set (SWIG_PYTHON_OPTIONS "-python")
+add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.hxx
+                     COMMAND ${SWIG_EXECUTABLE}
+                     ARGS ${SWIG_PYTHON_OPTIONS} ${CMAKE_SWIG_FLAGS} ${OPENTURNS_SWIG_DEFINITIONS} -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.hxx
+                     COMMENT "Swig header")
+add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.hxx)
+add_custom_target (generate_docstrings)
+
+include_directories (${CMAKE_CURRENT_BINARY_DIR})
+
+include_directories (${INTERNAL_INCLUDE_DIRS})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+
+set (OPENTURNS_PYTHON_MODULES)
+macro (ot_add_python_module MODULENAME SOURCEFILE)
+  set_source_files_properties (${SOURCEFILE} PROPERTIES CPLUSPLUS ON)
+  set_source_files_properties (${SOURCEFILE} PROPERTIES SWIG_MODULE_NAME ${MODULENAME})
+  ot_install_swig_file (${SOURCEFILE})
+  if (${ARGC} GREATER 2)
+    set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
+    list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS PythonWrappingFunctions.hxx)
+  endif ()
+
+  set (swig_other_sources)
+  foreach (it ${ARGN})
+    if (${it} MATCHES ".*\\.i$")
+      ot_install_swig_file (${it})
+    elseif(${it} MATCHES ".*_doc\\.i\\.in$")
+     # handle docstring generation
+      set (DOCSTRING_IN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${it})
+      get_filename_component (DOCSTRING_FILE_BASENAME ${DOCSTRING_IN_FILE} NAME_WE)
+      add_custom_target (generate_${DOCSTRING_FILE_BASENAME}
+                          COMMAND ${CMAKE_COMMAND} -DDOCSTRING_IN_FILE=${DOCSTRING_IN_FILE} -DDOCSTRING_FILE=${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash_x4.cmake
+                          DEPENDS ${DOCSTRING_IN_FILE})
+      add_dependencies (generate_docstrings generate_${DOCSTRING_FILE_BASENAME})
+      list (APPEND SWIGFILES ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i)
+    else ()
+      list (APPEND swig_other_sources "${it}")
+    endif ()
+  endforeach ()
+
+  # workaround for a bug in UseSWIG script not supporting multiple modules and parallel compilation
+  # http://www.cmake.org/pipermail/cmake/2011-January/042345.html
+  if (CMAKE_VERSION VERSION_LESS 2.8.5)
+    set(swig_extra_generated_files)
+  endif ()
+
+  swig_add_module (${MODULENAME} python ${SOURCEFILE} ${swig_other_sources})
+
+  add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime generate_docstrings)
+  swig_link_libraries (${MODULENAME} OT)
+
+  if (LINK_PYTHON_LIBRARY)
+    swig_link_libraries (${MODULENAME} ${PYTHON_LIBRARIES})
+  endif ()
+
+  set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES NO_SONAME ON)
+
+  list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
+endmacro (ot_add_python_module)
+
+install (FILES PythonNumericalMathEvaluationImplementation.hxx
+                PythonNumericalMathGradientImplementation.hxx
+                PythonNumericalMathHessianImplementation.hxx
+                PythonDynamicalFunctionImplementation.hxx
+                PythonRandomVectorImplementation.hxx
+                PythonDistributionImplementation.hxx
+                PythonWrappingFunctions.hxx
+          DESTINATION ${OPENTURNS_INCLUDE_PATH}
+       )
+
+if (LIBXML2_FOUND)
+  list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_LIBXML2=1)
+endif ()
+if (MUPARSER_FOUND)
+  list (APPEND SWIG_MODULE_func_EXTRA_FLAGS -DOPENTURNS_HAVE_MUPARSER=1)
+endif ()
+ot_add_python_module(common common_module.i
+                      OTtypes.i
+                      OTexceptions.i
+                      Memory.i
+                      Object.i Object_doc.i.in
+                      PersistentObject.i PersistentObject_doc.i.in
+                      Study.i Study_doc.i.in
+                      StorageManager.i StorageManager_doc.i.in
+                      XMLStorageManager.i XMLStorageManager_doc.i.in
+                      Log.i
+                      TTY.i
+                      Path.i
+                      Catalog.i
+                      ResourceMap.i ResourceMap_doc.i.in
+                      ComparisonOperatorImplementation.i
+                      ComparisonOperator.i
+                      Equal.i
+                      Greater.i
+                      GreaterOrEqual.i
+                      Less.i
+                      LessOrEqual.i
+                      Cache.i
+                      PlatformInfo.i
+                      SharedPointer.i
+                      Pointer.i
+                      InterfaceObject.i InterfaceObject_doc.i.in
+                      TypedInterfaceObject.i
+                      TypedCollectionInterfaceObject.i
+                      BaseCommonTemplateDefs.i
+                   )
+
+ot_add_python_module(wrapper wrapper_module.i
+                      Collection.i Collection_doc.i.in
+                      WrapperData.i
+                      WrapperFile.i
+                      BaseWrapperTemplateDefs.i
+                   )
+
+ot_add_python_module(typ typ_module.i
+                      PersistentCollection.i
+                      Description.i Description_doc.i.in
+                      NumericalPoint.i NumericalPoint_doc.i.in
+                      NumericalPointWithDescription.i NumericalPointWithDescription_doc.i.in
+                      DomainImplementation.i DomainImplementation_doc.i.in
+                      Interval.i Interval_doc.i.in
+                      Indices.i Indices_doc.i.in
+                      MatrixImplementation.i
+                      Matrix.i Matrix_doc.i.in
+                      SquareMatrix.i SquareMatrix_doc.i.in
+                      SymmetricMatrix.i SymmetricMatrix_doc.i.in
+                      TensorImplementation.i TensorImplementation_doc.i.in
+                      Tensor.i Tensor_doc.i.in
+                      SymmetricTensor.i SymmetricTensor_doc.i.in
+                      ComplexTensorImplementation.i
+                      ComplexTensor.i ComplexTensor_doc.i.in
+                      ComplexMatrixImplementation.i
+                      ComplexMatrix.i
+                      HermitianMatrix.i
+                      SquareComplexMatrix.i SquareComplexMatrix_doc.i.in
+                      TriangularMatrix.i
+                      TriangularComplexMatrix.i
+                      CovarianceMatrix.i CovarianceMatrix_doc.i.in
+                      CorrelationMatrix.i
+                      IdentityMatrix.i
+                      NumericalSample.i NumericalSample_doc.i.in
+                      HistoryStrategyImplementation.i
+                      HistoryStrategy.i
+                      BaseTypTemplateDefs.i
+                   )
+
+ot_add_python_module(statistics statistics_module.i
+                      LevelSet.i LevelSet_doc.i.in
+                      Compact.i
+                      Full.i
+                      Last.i
+                      Null.i
+                      ConfidenceInterval.i
+                      LinearModel.i LinearModel_doc.i.in
+                      LinearModelFactory.i LinearModelFactory_doc.i.in
+                      TestResult.i TestResult_doc.i.in
+                      RandomGenerator.i RandomGenerator_doc.i.in
+                      RandomGeneratorState.i
+                      CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
+                      SensitivityAnalysis.i SensitivityAnalysis_doc.i.in
+                      LowDiscrepancySequenceImplementation.i LowDiscrepancySequenceImplementation_doc.i.in
+                      LowDiscrepancySequence.i LowDiscrepancySequence_doc.i.in
+                      SobolSequence.i SobolSequence_doc.i.in
+                      FaureSequence.i FaureSequence_doc.i.in
+                      HaltonSequence.i HaltonSequence_doc.i.in
+                      HaselgroveSequence.i HaselgroveSequence_doc.i.in
+                      ReverseHaltonSequence.i ReverseHaltonSequence_doc.i.in
+                      SecondOrderModelImplementation.i
+                      SecondOrderModel.i
+                      ExponentialCauchy.i
+                      SphericalModel.i
+                      FilteringWindowsImplementation.i FilteringWindowsImplementation_doc.i.in
+                      FilteringWindows.i FilteringWindows_doc.i.in
+                      Hamming.i Hamming_doc.i.in
+                      Hanning.i Hanning_doc.i.in
+                      FFTImplementation.i FFTImplementation_doc.i.in
+                      FFT.i FFT_doc.i.in
+                      SpectralModelImplementation.i
+                      SpectralModel.i
+                      CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
+                      CovarianceModel.i CovarianceModel_doc.i.in
+                      StationaryCovarianceModel.i
+                      SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
+                      SpectralModelFactory.i SpectralModelFactory_doc.i.in
+                      UserDefinedSpectralModel.i
+                      WelchFactory.i WelchFactory_doc.i.in
+                      ExponentialModel.i ExponentialModel_doc.i.in
+                      ExponentiallyDampedCosineModel.i
+                      CauchyModel.i
+                      CovarianceModelFactoryImplementation.i
+                      CovarianceModelFactory.i
+                      UserDefinedCovarianceModel.i
+                      UserDefinedStationaryCovarianceModel.i
+                      StationaryCovarianceModelFactory.i
+                      NonStationaryCovarianceModelFactory.i
+                      SquaredExponential.i SquaredExponential_doc.i.in
+                      GeneralizedExponential.i
+                      AbsoluteExponential.i
+                      MaternModel.i MaternModel_doc.i.in
+                      ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
+                      HMatrixFactory.i
+                      HMatrix.i
+                      HMatrixImplementation.i
+                      BaseStatisticsTemplateDefs.i
+                   )
+
+ot_add_python_module(geom geom_module.i
+                      Domain.i Domain_doc.i.in
+                      Mesh.i Mesh_doc.i.in
+                      RegularGrid.i
+                      MeshFactoryImplementation.i
+                      MeshFactory.i
+                      IntervalMesher.i IntervalMesher_doc.i.in
+                      BaseGeomTemplateDefs.i
+                    )
+
+ot_add_python_module(graph graph_module.i
+                      DrawableImplementation.i DrawableImplementation_doc.i.in
+                      Drawable.i Drawable_doc.i.in
+                      GraphImplementation.i
+                      Graph.i Graph_doc.i.in
+                      BarPlot.i BarPlot_doc.i.in
+                      Cloud.i Cloud_doc.i.in
+                      Contour.i Contour_doc.i.in
+                      Curve.i Curve_doc.i.in
+                      Pairs.i Pairs_doc.i.in
+                      Pie.i Pie_doc.i.in
+                      Polygon.i Polygon_doc.i.in
+                      PolygonArray.i PolygonArray_doc.i.in
+                      Staircase.i Staircase_doc.i.in
+                      BaseGraphTemplateDefs.i
+                   )
+
+ot_add_python_module(func func_module.i
+                      EnumerateFunction.i EnumerateFunction_doc.i.in
+                      EnumerateFunctionImplementation.i EnumerateFunctionImplementation_doc.i.in
+                      LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
+                      HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
+                      FieldImplementation.i FieldImplementation_doc.i.in
+                      Field.i Field_doc.i.in
+                      ProcessSample.i
+                      TimeSeries.i TimeSeries_doc.i.in
+                      SpecFunc.i SpecFunc_doc.i.in
+                      NumericalMathEvaluationImplementation.i NumericalMathEvaluationImplementation_doc.i.in
+                      NumericalMathGradientImplementation.i NumericalMathGradientImplementation_doc.i.in
+                      NumericalMathHessianImplementation.i NumericalMathHessianImplementation_doc.i.in
+                      NoNumericalMathEvaluationImplementation.i
+                      NoNumericalMathGradientImplementation.i
+                      NoNumericalMathHessianImplementation.i
+                      LinearNumericalMathEvaluationImplementation.i LinearNumericalMathEvaluationImplementation_doc.i.in
+                      LinearNumericalMathGradientImplementation.i LinearNumericalMathGradientImplementation_doc.i.in
+                      QuadraticNumericalMathEvaluationImplementation.i
+                      ConstantNumericalMathGradientImplementation.i
+                      ConstantNumericalMathHessianImplementation.i
+                      ComputedNumericalMathEvaluationImplementation.i
+                      ComputedNumericalMathGradientImplementation.i
+                      ComputedNumericalMathHessianImplementation.i
+                      ComposedNumericalMathEvaluationImplementation.i
+                      ComposedNumericalMathGradientImplementation.i
+                      ComposedNumericalMathHessianImplementation.i
+                      DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
+                      DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
+                      DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
+                      LinearCombinationEvaluationImplementation.i
+                      LinearCombinationGradientImplementation.i
+                      LinearCombinationHessianImplementation.i
+                      ProductNumericalMathEvaluationImplementation.i
+                      ProductNumericalMathGradientImplementation.i
+                      ProductNumericalMathHessianImplementation.i
+                      NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
+                      ComposedNumericalMathFunction.i
+                      ProductNumericalMathFunction.i
+                      NumericalMathFunction.i NumericalMathFunction_doc.i.in
+                      BaseFuncCollection.i
+                      DynamicalFunctionImplementation.i DynamicalFunctionImplementation_doc.i.in
+                      DynamicalFunction.i DynamicalFunction_doc.i.in
+                      SpatialFunction.i SpatialFunction_doc.i.in
+                      TemporalFunction.i TemporalFunction_doc.i.in
+                      LinearNumericalMathFunction.i LinearNumericalMathFunction_doc.i.in
+                      QuadraticNumericalMathFunction.i
+                      UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
+                      UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
+                      AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
+                      AnalyticalNumericalMathEvaluationImplementation.i
+                      AnalyticalNumericalMathGradientImplementation.i
+                      AnalyticalNumericalMathHessianImplementation.i
+                      DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
+                      IndicatorNumericalMathEvaluationImplementation.i
+                      PiecewiseLinearEvaluationImplementation.i
+                      PiecewiseHermiteEvaluationImplementation.i
+                      ProductPolynomialEvaluationImplementation.i
+                      ParametricEvaluationImplementation.i
+                      ParametricGradientImplementation.i
+                      ParametricHessianImplementation.i
+                      BasisImplementation.i BasisImplementation_doc.i.in
+                      Basis.i Basis_doc.i.in
+                      BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in
+                      BasisSequence.i BasisSequence_doc.i.in
+                      BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
+                      BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
+                      LAR.i LAR_doc.i.in
+                      BoxCoxEvaluationImplementation.i
+                      BoxCoxTransform.i BoxCoxTransform_doc.i.in
+                      InverseBoxCoxEvaluationImplementation.i
+                      PythonNumericalMathEvaluationImplementation.cxx
+                      PythonNumericalMathGradientImplementation.cxx
+                      PythonNumericalMathHessianImplementation.cxx
+                      PythonDynamicalFunctionImplementation.cxx
+                      InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i.in
+                      TrendEvaluationImplementation.i
+                      TrendTransform.i TrendTransform_doc.i.in
+                      InverseTrendEvaluationImplementation.i
+                      InverseTrendTransform.i InverseTrendTransform_doc.i.in
+                      FunctionalBasis.i
+                      FunctionalBasisImplementation.i
+                      BasisFactory.i BasisFactory_doc.i.in
+                      ConstantBasisFactory.i ConstantBasisFactory_doc.i.in
+                      LinearBasisFactory.i LinearBasisFactory_doc.i.in
+                      QuadraticBasisFactory.i QuadraticBasisFactory_doc.i.in
+                      BaseFuncTemplateDefs.i
+                   )
+
+ot_add_python_module(diff diff_module.i
+                      FiniteDifferenceStepImplementation.i FiniteDifferenceStepImplementation_doc.i.in
+                      FiniteDifferenceStep.i FiniteDifferenceStep_doc.i.in
+                      ConstantStep.i ConstantStep_doc.i.in
+                      BlendedStep.i BlendedStep_doc.i.in
+                      FiniteDifferenceGradient.i FiniteDifferenceGradient_doc.i.in
+                      FiniteDifferenceHessian.i FiniteDifferenceHessian_doc.i.in
+                      CenteredFiniteDifferenceGradient.i CenteredFiniteDifferenceGradient_doc.i.in
+                      CenteredFiniteDifferenceHessian.i CenteredFiniteDifferenceHessian_doc.i.in
+                      NonCenteredFiniteDifferenceGradient.i NonCenteredFiniteDifferenceGradient_doc.i.in
+                      BaseDiffTemplateDefs.i
+                    )
+
+ot_add_python_module(optim optim_module.i
+                      BoundConstrainedAlgorithmImplementationResult.i
+                      BoundConstrainedAlgorithmImplementation.i
+                      BoundConstrainedAlgorithm.i
+                      NearestPointAlgorithmImplementationResult.i
+                      NearestPointAlgorithmImplementation.i
+                      NearestPointAlgorithm.i
+                      NearestPointCheckerResult.i
+                      NearestPointChecker.i
+                      AbdoRackwitzSpecificParameters.i
+                      AbdoRackwitz.i
+                      CobylaSpecificParameters.i
+                      Cobyla.i
+                      TNCSpecificParameters.i
+                      TNC.i
+                      SQPSpecificParameters.i
+                      SQP.i
+                      BaseOptimTemplateDefs.i
+                   )
+
+ot_add_python_module(solver solver_module.i
+                      SolverImplementation.i
+                      Solver.i
+                      Bisection.i
+                      Secant.i
+                      Brent.i
+                      ODESolverImplementation.i
+                      ODESolver.i
+                      RungeKutta.i
+                      BaseSolverTemplateDefs.i
+                   )
+
+ot_add_python_module(algo algo_module.i
+                      ApproximationAlgorithmImplementation.i ApproximationAlgorithmImplementation_doc.i.in
+                      ApproximationAlgorithmImplementationFactory.i ApproximationAlgorithmImplementationFactory_doc.i.in
+                      ApproximationAlgorithm.i ApproximationAlgorithm_doc.i.in
+                      ClassifierImplementation.i ClassifierImplementation_doc.i.in
+                      Classifier.i Classifier_doc.i.in
+                      FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i.in
+                      FittingAlgorithm.i FittingAlgorithm_doc.i.in
+                      CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i.in
+                      KDTree.i
+                      KFold.i KFold_doc.i.in
+                      LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
+                      LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
+                      PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
+                      PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
+                      PythonNumericalMathEvaluationImplementation.cxx
+                      PythonNumericalMathGradientImplementation.cxx
+                      PythonNumericalMathHessianImplementation.cxx
+                      KissFFT.i
+                      IntegrationAlgorithmImplementation.i
+                      IntegrationAlgorithm.i
+                      GaussKronrodRule.i GaussKronrodRule_doc.i.in
+                      GaussKronrod.i GaussKronrod_doc.i.in
+                      IteratedQuadrature.i IteratedQuadrature_doc.i.in
+                      ExpertMixture.i ExpertMixture_doc.i.in
+                      BaseAlgoTemplateDefs.i
+                   )
+
+ot_add_python_module(experiment experiment_module.i
+                      ExperimentImplementation.i ExperimentImplementation_doc.i.in
+                      StratifiedExperiment.i StratifiedExperiment_doc.i.in
+                      Experiment.i Experiment_doc.i.in
+                      Axial.i Axial_doc.i.in
+                      Composite.i Composite_doc.i.in
+                      Factorial.i Factorial_doc.i.in
+                      Box.i Box_doc.i.in
+                      CombinatorialGeneratorImplementation.i
+                      CombinatorialGenerator.i
+                      Combinations.i
+                      KPermutations.i
+                      Tuples.i
+                      BaseExperimentTemplateDefs.i
+                   )
+
+ot_add_python_module(base base_module.i
+                      BaseTemplateDefs.i
+                   )
+
+ot_add_python_module(model_copula model_copula_module.i
+                      DistributionImplementation.i DistributionImplementation_doc.i.in
+                      DistributionImplementationFactory.i DistributionImplementationFactory_doc.i.in
+                      Distribution.i Distribution_doc.i.in
+                      DistributionFactory.i DistributionFactory_doc.i.in
+                      DistributionParametersImplementation.i DistributionParametersImplementation_doc.i.in
+                      DistributionParameters.i DistributionParameters_doc.i.in
+                      ContinuousDistribution.i
+                      EllipticalDistribution.i
+                      DiscreteDistribution.i
+                      CopulaImplementation.i CopulaImplementation_doc.i.in
+                      Copula.i Copula_doc.i.in
+                      ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
+                      SklarCopula.i SklarCopula_doc.i.in
+                      IndependentCopula.i IndependentCopula_doc.i.in
+                      MinCopula.i MinCopula_doc.i.in
+                      NormalCopula.i NormalCopula_doc.i.in
+                      NormalCopulaFactory.i NormalCopulaFactory_doc.i.in
+                      OrdinalSumCopula.i OrdinalSumCopula_doc.i.in
+                      FarlieGumbelMorgensternCopula.i FarlieGumbelMorgensternCopula_doc.i.in
+                      FarlieGumbelMorgensternCopulaFactory.i FarlieGumbelMorgensternCopulaFactory_doc.i.in
+                      AliMikhailHaqCopula.i AliMikhailHaqCopula_doc.i.in
+                      AliMikhailHaqCopulaFactory.i AliMikhailHaqCopulaFactory_doc.i.in
+                      FrankCopula.i FrankCopula_doc.i.in
+                      FrankCopulaFactory.i FrankCopulaFactory_doc.i.in
+                      ClaytonCopula.i ClaytonCopula_doc.i.in
+                      ClaytonCopulaFactory.i ClaytonCopulaFactory_doc.i.in
+                      GumbelCopula.i GumbelCopula_doc.i.in
+                      GumbelCopulaFactory.i GumbelCopulaFactory_doc.i.in
+                      ComposedDistribution.i ComposedDistribution_doc.i.in
+                      ComposedCopula.i ComposedCopula_doc.i.in
+                      PythonDistributionImplementation.cxx
+                      UncertaintyModelCopulaCollection.i
+                      UncertaintyModelCopulaTemplateDefs.i
+                   )
+
+ot_add_python_module(randomvector randomvector_module.i
+                      RandomVectorImplementation.i RandomVectorImplementation_doc.i.in
+                      ConstantRandomVector.i
+                      UsualRandomVector.i
+                      UncertaintyRandomVectorTemplateDefs.i
+                   )
+
+ot_add_python_module(model_process model_process_module.i
+                      ProcessImplementation.i ProcessImplementation_doc.i.in
+                      Process.i Process_doc.i.in
+                      WhiteNoise.i WhiteNoise_doc.i.in
+                      RandomWalk.i RandomWalk_doc.i.in
+                      ARMACoefficients.i ARMACoefficients_doc.i.in
+                      ARMAState.i ARMAState_doc.i.in
+                      ARMA.i ARMA_doc.i.in
+                      SpectralNormalProcess.i SpectralNormalProcess_doc.i.in
+                      TemporalNormalProcess.i TemporalNormalProcess_doc.i.in
+                      AggregatedProcess.i AggregatedProcess_doc.i.in
+                      CompositeProcess.i
+                      FunctionalBasisProcess.i
+                      ARMAFactoryImplementation.i ARMAFactoryImplementation_doc.i.in
+                      WhittleFactory.i WhittleFactory_doc.i.in
+                      WhittleFactoryState.i WhittleFactoryState_doc.i.in
+                      ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in  
+                      ARMAFactory.i ARMAFactory_doc.i.in
+		      ConditionedNormalProcess.i ConditionedNormalProcess_doc.i.in 
+                      UncertaintyProcessTemplateDefs.i
+                   )
+
+ot_add_python_module(dist_bundle1 dist_bundle1_module.i
+                      DistFunc.i
+                      Arcsine.i Arcsine_doc.i.in
+                      ArcsineFactory.i ArcsineFactory_doc.i.in
+                      ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
+                      BayesDistribution.i BayesDistribution_doc.i.in
+                      Bernoulli.i Bernoulli_doc.i.in
+                      BernoulliFactory.i BernoulliFactory_doc.i.in
+                      Beta.i Beta_doc.i.in
+                      BetaFactory.i BetaFactory_doc.i.in
+                      BetaMuSigma.i BetaMuSigma_doc.i.in
+                      Binomial.i Binomial_doc.i.in
+                      BinomialFactory.i BinomialFactory_doc.i.in
+                      Burr.i Burr_doc.i.in
+                      BurrFactory.i BurrFactory_doc.i.in
+                      ChiSquare.i ChiSquare_doc.i.in
+                      ChiSquareFactory.i ChiSquareFactory_doc.i.in
+                      Chi.i Chi_doc.i.in
+                      ChiFactory.i ChiFactory_doc.i.in
+                      CompositeDistribution.i CompositeDistribution_doc.i.in
+                      ConditionalDistribution.i ConditionalDistribution_doc.i.in
+                      Dirac.i Dirac_doc.i.in
+                      DiracFactory.i DiracFactory_doc.i.in
+                      Dirichlet.i Dirichlet_doc.i.in
+                      DirichletFactory.i DirichletFactory_doc.i.in
+                      Epanechnikov.i Epanechnikov_doc.i.in
+                      Exponential.i Exponential_doc.i.in
+                      ExponentialFactory.i ExponentialFactory_doc.i.in
+                      FisherSnedecor.i FisherSnedecor_doc.i.in
+                      FisherSnedecorFactory.i FisherSnedecorFactory_doc.i.in
+                      Frechet.i Frechet_doc.i.in
+                      Gamma.i Gamma_doc.i.in
+                      GammaFactory.i GammaFactory_doc.i.in
+                      GammaMuSigma.i GammaMuSigma_doc.i.in
+                      GeneralizedPareto.i GeneralizedPareto_doc.i.in
+                      GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in
+                      Geometric.i Geometric_doc.i.in
+                      GeometricFactory.i GeometricFactory_doc.i.in
+                      Gumbel.i Gumbel_doc.i.in
+                      GumbelFactory.i GumbelFactory_doc.i.in
+                      GumbelAB.i GumbelAB_doc.i.in
+                      GumbelMuSigma.i GumbelMuSigma_doc.i.in
+                   )
+
+ot_add_python_module(dist_bundle2 dist_bundle2_module.i
+                      HistogramPair.i HistogramPair_doc.i.in
+                      Histogram.i Histogram_doc.i.in
+                      HistogramFactory.i HistogramFactory_doc.i.in
+                      InverseChiSquare.i InverseChiSquare_doc.i.in
+                      InverseGamma.i InverseGamma_doc.i.in
+                      InverseNormal.i InverseNormal_doc.i.in
+                      InverseNormalFactory.i NormalFactory_doc.i.in InverseNormalFactory_doc.i.in
+                      InverseWishart.i
+                      KPermutationsDistribution.i KPermutationsDistribution_doc.i.in
+                      KernelMixture.i KernelMixture_doc.i.in
+                      KernelSmoothing.i KernelSmoothing_doc.i.in
+                      Laplace.i Laplace_doc.i.in
+                      LaplaceFactory.i LaplaceFactory_doc.i.in
+                      Logistic.i Logistic_doc.i.in
+                      LogisticFactory.i LogisticFactory_doc.i.in
+                      LogNormal.i LogNormal_doc.i.in
+                      LogNormalFactory.i LogNormalFactory_doc.i.in
+                      LogNormalMuSigma.i LogNormalMuSigma_doc.i.in
+                      LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
+                      LogUniform.i LogUniform_doc.i.in
+                      LogUniformFactory.i UniformFactory_doc.i.in LogUniformFactory_doc.i.in
+		      MarginalDistribution.i
+		      MaximumDistribution.i
+                      MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
+                      MaximumEntropyOrderStatisticsCopula.i MaximumEntropyOrderStatisticsCopula_doc.i.in
+                      MeixnerDistribution.i MeixnerDistribution_doc.i.in
+                      MeixnerDistributionFactory.i MeixnerDistributionFactory_doc.i.in
+                      Mixture.i  Mixture_doc.i.in
+                      Multinomial.i Multinomial_doc.i.in
+                      MultinomialFactory.i MultinomialFactory_doc.i.in
+                      NegativeBinomial.i NegativeBinomial_doc.i.in
+                      NegativeBinomialFactory.i NegativeBinomialFactory_doc.i.in
+                      NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
+                      NonCentralStudent.i NonCentralStudent_doc.i.in
+                      Normal.i Normal_doc.i.in
+                      NormalFactory.i
+                      NormalGamma.i NormalGamma_doc.i.in
+                   )
+
+ot_add_python_module(dist_bundle3 dist_bundle3_module.i
+                      OrderStatisticsMarginalChecker.i OrderStatisticsMarginalChecker_doc.i.in
+                      ParametrizedDistribution.i ParametrizedDistribution_doc.i.in
+                      Poisson.i Poisson_doc.i.in
+                      PoissonFactory.i PoissonFactory_doc.i.in
+                      PosteriorDistribution.i
+                      ProductDistribution.i ProductDistribution_doc.i.in
+                      RandomMixture.i RandomMixture_doc.i.in
+                      Rayleigh.i Rayleigh_doc.i.in
+                      RayleighFactory.i RayleighFactory_doc.i.in
+                      Rice.i Rice_doc.i.in
+                      RiceFactory.i RiceFactory_doc.i.in
+                      Skellam.i Skellam_doc.i.in
+                      SkellamFactory.i SkellamFactory_doc.i.in
+                      Student.i Student_doc.i.in
+                      StudentFactory.i StudentFactory_doc.i.in
+                      Trapezoidal.i Trapezoidal_doc.i.in
+                      TrapezoidalFactory.i TrapezoidalFactory_doc.i.in
+                      Triangular.i Triangular_doc.i.in
+                      TriangularFactory.i TriangularFactory_doc.i.in
+                      TruncatedDistribution.i TruncatedDistribution_doc.i.in
+                      TruncatedNormal.i TruncatedNormal_doc.i.in
+                      TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
+                      Uniform.i Uniform_doc.i.in
+                      UniformFactory.i
+                      UserDefined.i UserDefined_doc.i.in
+                      UserDefinedPair.i UserDefinedPair_doc.i.in
+                      UserDefinedFactory.i
+                      VonMises.i VonMises_doc.i.in
+                      Weibull.i Weibull_doc.i.in
+                      WeibullFactory.i WeibullFactory_doc.i.in
+                      WeibullMuSigma.i WeibullMuSigma_doc.i.in
+                      Wishart.i
+                      ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
+                      UncertaintyDistTemplateDefs.i
+                   )
+
+ot_add_python_module(bayesian bayesian_module.i
+                      CalibrationStrategyImplementation.i CalibrationStrategyImplementation_doc.i.in
+                      CalibrationStrategy.i CalibrationStrategy_doc.i.in
+                      SamplerImplementation.i SamplerImplementation_doc.i.in
+                      Sampler.i Sampler_doc.i.in
+                      MCMC.i MCMC_doc.i.in
+                      RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
+                      PosteriorRandomVector.i PosteriorRandomVector_doc.i.in
+                      ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
+                      UncertaintyBayesianTemplateDefs.i
+                    )
+
+ot_add_python_module(classification classification_module.i
+                      MixtureClassifier.i MixtureClassifier_doc.i.in
+                      UncertaintyClassificationTemplateDefs.i
+                   )
+
+ot_add_python_module(weightedexperiment weightedexperiment_module.i
+                      WeightedExperiment.i WeightedExperiment_doc.i.in
+                      BootstrapExperiment.i BootstrapExperiment_doc.i.in
+                      FixedExperiment.i FixedExperiment_doc.i.in
+                      ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
+                      GaussProductExperiment.i GaussProductExperiment_doc.i.in
+                      LHSExperiment.i LHSExperiment_doc.i.in
+                      LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
+                      MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
+                      UncertaintyWeightedExperimentTemplateDefs.i
+                   )
+
+ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
+                      OrthogonalUniVariatePolynomial.i OrthogonalUniVariatePolynomial_doc.i.in
+                      OrthogonalUniVariatePolynomialFactory.i OrthogonalUniVariatePolynomialFactory_doc.i.in
+                      CharlierFactory.i CharlierFactory_doc.i.in
+                      HermiteFactory.i HermiteFactory_doc.i.in
+                      JacobiFactory.i JacobiFactory_doc.i.in
+                      KrawtchoukFactory.i KrawtchoukFactory_doc.i.in
+                      LaguerreFactory.i LaguerreFactory_doc.i.in
+                      LegendreFactory.i LegendreFactory_doc.i.in
+                      MeixnerFactory.i MeixnerFactory_doc.i.in
+                      OrthogonalUniVariatePolynomialFamily.i OrthogonalUniVariatePolynomialFamily_doc.i.in
+                      OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in 
+                      OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i.in
+                      ChebychevAlgorithm.i ChebychevAlgorithm_doc.i.in
+                      GramSchmidtAlgorithm.i GramSchmidtAlgorithm_doc.i.in
+                      StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i.in
+                      OrthogonalFunctionFactory.i OrthogonalFunctionFactory_doc.i.in
+                      OrthogonalProductPolynomialFactory.i OrthogonalProductPolynomialFactory_doc.i.in
+                      OrthogonalBasis.i OrthogonalBasis_doc.i.in
+                      UncertaintyOrthogonalBasisTemplateDefs.i
+                   )
+
+ot_add_python_module(metamodel metamodel_module.i
+                      MetaModelResult.i MetaModelResult_doc.i.in
+                      MetaModelAlgorithm.i MetaModelAlgorithm_doc.i.in
+                      KrigingResult.i KrigingResult_doc.i.in
+                      MetaModelValidation.i MetaModelValidation_doc.i.in
+                      LinearTaylor.i LinearTaylor_doc.i.in
+                      QuadraticTaylor.i QuadraticTaylor_doc.i.in
+                      LinearLeastSquares.i LinearLeastSquares_doc.i.in
+                      QuadraticLeastSquares.i QuadraticLeastSquares_doc.i.in
+                      AdaptiveStrategyImplementation.i AdaptiveStrategyImplementation_doc.i.in
+                      FixedStrategy.i FixedStrategy_doc.i.in
+                      SequentialStrategy.i SequentialStrategy_doc.i.in
+                      CleaningStrategy.i CleaningStrategy_doc.i.in
+                      AdaptiveStrategy.i AdaptiveStrategy_doc.i.in
+                      ProjectionStrategyImplementation.i ProjectionStrategyImplementation_doc.i.in
+                      LeastSquaresStrategy.i LeastSquaresStrategy_doc.i.in
+                      IntegrationStrategy.i IntegrationStrategy_doc.i.in
+                      ProjectionStrategy.i ProjectionStrategy_doc.i.in
+                      FunctionalChaosResult.i FunctionalChaosResult_doc.i.in
+                      FunctionalChaosAlgorithm.i FunctionalChaosAlgorithm_doc.i.in
+                      KrigingAlgorithm.i KrigingAlgorithm_doc.i.in
+                      RandomVector.i RandomVector_doc.i.in
+                      PythonNumericalMathEvaluationImplementation.cxx
+                      PythonNumericalMathGradientImplementation.cxx
+                      PythonNumericalMathHessianImplementation.cxx
+                      PythonRandomVectorImplementation.cxx
+                      CompositeRandomVector.i
+                      EventRandomVectorImplementation.i
+                      EventDomainImplementation.i
+                      EventProcess.i
+                      Event.i Event_doc.i.in
+                      StandardEvent.i StandardEvent_doc.i.in
+                      FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
+                      KrigingRandomVector.i KrigingRandomVector_doc.i.in
+                      UncertaintyMetaModelTemplateDefs.i
+                   )
+
+ot_add_python_module(transformation transformation_module.i
+                      MarginalTransformationEvaluation.i
+                      MarginalTransformationGradient.i
+                      MarginalTransformationHessian.i
+                      NatafEllipticalCopulaEvaluation.i
+                      NatafEllipticalCopulaGradient.i
+                      NatafEllipticalCopulaHessian.i
+                      InverseNatafEllipticalCopulaEvaluation.i
+                      InverseNatafEllipticalCopulaGradient.i
+                      InverseNatafEllipticalCopulaHessian.i
+                      NatafIndependentCopulaEvaluation.i
+                      NatafIndependentCopulaGradient.i
+                      NatafIndependentCopulaHessian.i
+                      InverseNatafIndependentCopulaEvaluation.i
+                      InverseNatafIndependentCopulaGradient.i
+                      InverseNatafIndependentCopulaHessian.i
+                      NatafEllipticalDistributionEvaluation.i
+                      NatafEllipticalDistributionGradient.i
+                      NatafEllipticalDistributionHessian.i
+                      InverseNatafEllipticalDistributionEvaluation.i
+                      InverseNatafEllipticalDistributionGradient.i
+                      InverseNatafEllipticalDistributionHessian.i
+                      RosenblattEvaluation.i
+                      InverseRosenblattEvaluation.i
+                      BoxCoxFactory.i BoxCoxFactory_doc.i.in
+                      TrendFactory.i TrendFactory_doc.i.in
+                      UncertaintyTransformationTemplateDefs.i
+                   )
+
+ot_add_python_module(analytical analytical_module.i
+                      AnalyticalResult.i AnalyticalResult_doc.i.in
+                      Analytical.i Analytical_doc.i.in
+                      FORMResult.i FORMResult_doc.i.in
+                      FORM.i FORM_doc.i.in
+                      SORMResult.i SORMResult_doc.i.in
+                      SORM.i SORM_doc.i.in
+                      StrongMaximumTest.i StrongMaximumTest_doc.i.in
+                      UncertaintyAnalyticalTemplateDefs.i
+                   )
+
+ot_add_python_module(simulation simulation_module.i
+                      SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i.in
+                      SimulationResultImplementation.i SimulationResultImplementation_doc.i.in
+                      SimulationResult.i SimulationResult_doc.i.in
+                      Simulation.i Simulation_doc.i.in
+                      PostAnalyticalSimulation.i
+                      Wilks.i
+                      MonteCarlo.i MonteCarlo_doc.i.in
+                      LHS.i LHS_doc.i.in
+                      RandomizedLHS.i
+                      ImportanceSampling.i ImportanceSampling_doc.i.in
+                      PostAnalyticalControlledImportanceSampling.i
+                      PostAnalyticalImportanceSampling.i
+                      RootStrategyImplementation.i RootStrategyImplementation_doc.i.in
+                      RootStrategy.i RootStrategy_doc.i.in
+                      SamplingStrategyImplementation.i
+                      SamplingStrategy.i
+                      DirectionalSampling.i DirectionalSampling_doc.i.in
+                      OrthogonalDirection.i
+                      RandomDirection.i
+                      MediumSafe.i MediumSafe_doc.i.in
+                      RiskyAndFast.i RiskyAndFast_doc.i.in
+                      SafeAndSlow.i SafeAndSlow_doc.i.in
+                      QuasiMonteCarlo.i QuasiMonteCarlo_doc.i.in
+                      RandomizedQuasiMonteCarlo.i
+                      QuasiMonteCarloResult.i
+                      UncertaintySimulationTemplateDefs.i
+                    )
+
+ot_add_python_module(stattests stattests_module.i
+                      VisualTest.i VisualTest_doc.i.in
+                      FittingTest.i FittingTest_doc.i.in
+                      HypothesisTest.i HypothesisTest_doc.i.in
+                      LinearModelTest.i LinearModelTest_doc.i.in
+                      NormalityTest.i NormalityTest_doc.i.in
+                      DickeyFullerTest.i
+                      UncertaintyStatTestsTemplateDefs.i
+                    )
+
+ot_add_python_module(uncertainty uncertainty_module.i
+                      ANCOVA.i ANCOVA_doc.i.in
+                      FAST.i FAST_doc.i.in
+                      QuadraticCumul.i QuadraticCumul_doc.i.in
+                      UncertaintyTemplateDefs.i
+                    )
+
+ot_add_python_module(testing testing_module.i
+                    )
+
+
+foreach (module ${OPENTURNS_PYTHON_MODULES})
+  install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${module}.py
+            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
+           )
+  install (TARGETS _${module}
+            LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
+         )
+endforeach ()
+
+set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
+install (FILES ${EXTRA_PYTHON_FILES}
+          DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
+       )
+
+install (FILES ${SWIGFILES}
+          DESTINATION ${OPENTURNS_INCLUDE_PATH}/swig
+       )
+
+if (SPHINX_FOUND AND SPHINX_EXECUTABLE AND MUPARSER_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
+
+  # create a build site-package from which sphinx can import
+  set (OPENTURNS_PYTHON_BUILD_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/site-packages)
+  execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns)
+  foreach (module ${OPENTURNS_PYTHON_MODULES})
+    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${module}.py ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${module}.py)
+    # FIXME: get_target_property (suffix ${SWIG_MODULE_${module}_REAL_NAME} SUFFIX)
+    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/_${module}.so ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/_${module}.so)
+  endforeach ()
+  foreach (file ${EXTRA_PYTHON_FILES})
+    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/${file} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${file})
+  endforeach ()
+
+  # sphinx configuration
+  set (doc_formats)
+  list (APPEND doc_formats html)
+  list (APPEND doc_formats htmlhelp)
+  list (APPEND doc_formats latex)
+  list (APPEND doc_formats doctest)
+  list (APPEND doc_formats qthelp)
+  list (APPEND doc_formats devhelp)
+
+  set (SPHINX_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/sphinx_build)
+  set (SPHINX_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../doc)
+
+  file (MAKE_DIRECTORY ${SPHINX_BINARY_DIR}/_static) # currently empty
+  configure_file (${SPHINX_SOURCE_DIR}/conf.py.in ${SPHINX_BINARY_DIR}/conf.py @ONLY)
+
+  # get sphinx sources
+  file (GLOB_RECURSE sphinx_sources
+    ${SPHINX_SOURCE_DIR}/*.rst
+    ${SPHINX_SOURCE_DIR}/*.rst_t
+    ${SPHINX_SOURCE_DIR}/*.css_t
+    ${SPHINX_SOURCE_DIR}/*.conf
+    ${SPHINX_SOURCE_DIR}/*.py
+    ${SPHINX_SOURCE_DIR}/*.png
+    ${SPHINX_SOURCE_DIR}/*.html
+    ${SPHINX_SOURCE_DIR}/*.css
+    ${SPHINX_SOURCE_DIR}/*.jpg
+    ${SPHINX_SOURCE_DIR}/*.ico
+    ${SPHINX_SOURCE_DIR}/*.sty
+    ${SPHINX_SOURCE_DIR}/*.txt
+    ${SPHINX_SOURCE_DIR}/*.in
+ )
+
+  # copy sphinx sources
+  set (sphinx_clones)
+  foreach (file ${sphinx_sources})
+    if (EXISTS ${file})
+      file (RELATIVE_PATH rel_file ${SPHINX_SOURCE_DIR} ${file})
+      get_filename_component (rel_path ${rel_file} PATH)
+      file (MAKE_DIRECTORY ${SPHINX_BINARY_DIR}/${rel_path})
+      set (sphinx_clone ${SPHINX_BINARY_DIR}/${rel_file})
+      add_custom_command (OUTPUT ${sphinx_clone}
+        COMMAND ${CMAKE_COMMAND} -E copy ${file} ${sphinx_clone}
+        DEPENDS ${file}
+     )
+      list (APPEND sphinx_clones ${sphinx_clone})
+    endif ()
+  endforeach ()
+
+  set (SPHINX_FLAGS "-W" CACHE STRING "sphinx flags")
+  string (REPLACE " " ";" SPHINX_FLAGS ${SPHINX_FLAGS})
+
+  # generate sphinx rule for each format
+  foreach (format ${doc_formats})
+    add_custom_target (sphinx_${format}
+                        COMMAND ${SPHINX_EXECUTABLE}
+                                  -b ${format}
+                                  ${SPHINX_FLAGS}
+                                  ${SPHINX_BINARY_DIR}
+                                  ${SPHINX_BINARY_DIR}/${format}
+                        DEPENDS ${sphinx_clones}
+                     )
+    foreach (module ${OPENTURNS_PYTHON_MODULES})
+      add_dependencies (sphinx_${format} _${module})
+    endforeach ()
+  endforeach ()
+
+  # build html by default
+  set_target_properties (sphinx_html PROPERTIES EXCLUDE_FROM_ALL OFF)
+
+  add_custom_command (OUTPUT ${SPHINX_BINARY_DIR}/latex/OpenTURNS.pdf
+                      WORKING_DIRECTORY ${SPHINX_BINARY_DIR}/latex
+                      COMMAND make all-pdf
+                   )
+  add_custom_target (sphinx_pdf DEPENDS ${SPHINX_BINARY_DIR}/latex/OpenTURNS.pdf)
+  add_dependencies (sphinx_pdf sphinx_latex)
+
+  install (DIRECTORY ${SPHINX_BINARY_DIR}/html DESTINATION ${OPENTURNS_DOC_PATH})
+endif ()

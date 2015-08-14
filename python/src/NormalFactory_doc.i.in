@@ -1,0 +1,9 @@
+%feature("docstring") OT::NormalFactory
+"Normal factory.
+
+Available constructor:
+    NormalFactory()
+
+See also
+--------
+DistributionFactory"

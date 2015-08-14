@@ -1,0 +1,3 @@
+myARMA process = ARMA(X_{0,t} + 0.8 X_{0,t-1} = E_{0,t} + 0.5 E_{0,t-1} + 0.5 E_{0,t-2}, E_t ~ Normal(mu = 0, sigma = 0.05))
+factory=class= WhittleFactory p = [1] q = [2] spectralModelFactory = class=SpectralModelFactory implementation = class=WelchFactory window = class=FilteringWindows implementation=class=Hamming blockNumber = 1 overlap = 0
+factory=class= WhittleFactory p = [0,1] q = [0,1,2] spectralModelFactory = class=SpectralModelFactory implementation = class=WelchFactory window = class=FilteringWindows implementation=class=Hamming blockNumber = 1 overlap = 0

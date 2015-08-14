@@ -1,0 +1,8 @@
+Distribution Parameters  class=LogNormalMuSigma name=Unnamed mu=0.63 sigma=3.3 gamma=-0.5
+Distribution Parameters  LogNormalMuSigma(mu = 0.63, sigma = 3.3, gamma = -0.5)
+[[  1.67704  -0.527552  0        ]
+ [ -0.271228  0.180647  0        ]
+ [ -1.67704   0.527552  1        ]]
+[[  1.67704  -0.527552  0        ]
+ [ -0.271228  0.180647  0        ]
+ [ -1.67704   0.527552  1        ]]

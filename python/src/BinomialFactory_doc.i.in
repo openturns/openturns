@@ -1,0 +1,12 @@
+%feature("docstring") OT::BinomialFactory
+"Binomial factory.
+
+Available constructor:
+    BinomialFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

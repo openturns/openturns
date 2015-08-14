@@ -1,0 +1,9 @@
+myDefautModel =  class=ExponentiallyDampedCosineModel input dimension=1 amplitude=1 scale=1 frequency=1
+myModel =  class=ExponentiallyDampedCosineModel input dimension=1 amplitude=1 scale=1 frequency=0.1
+covariance matrix at t =  1.0  :  [[ 0.367879 ]]
+covariance matrix at t =  -1.0  :  [[ 0.367879 ]]
+covariance matrix at t =  15.0  :  [[ 3.05902e-07 ]]
+discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n=4) is= [[  1        -0.358266 -0.256709  0.367879 ]
+ [ -0.358266  1        -0.358266 -0.256709 ]
+ [ -0.256709 -0.358266  1        -0.358266 ]
+ [  0.367879 -0.256709 -0.358266  1        ]]

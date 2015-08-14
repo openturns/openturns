@@ -1,0 +1,257 @@
+> restart:
+> Digits:=20;
+> assume(sigma>0);
+> a:=mu+alpha*sigma;
+> b:=mu+beta*sigma;
+> f:=1/sqrt(2*Pi)/sigma*exp(-(x-mu)^2/2/sigma^2):
+> #f:=diff(Phi((x-mu)/sigma),x);#/(Phi((b-mu)/sigma)-Phi((a-mu)/sigma));
+> Iab:=simplify(int(f,x=a..b));
+> g:=f/Iab;
+> phi:=int(exp(I*u*x)*g,x=a..b);
+
+                             Digits := 20
+
+
+                        a := mu + alpha sigma~
+
+
+                        b := mu + beta sigma~
+
+
+                            1/2                   1/2
+                           2    alpha            2    beta
+           Iab := -1/2 erf(----------) + 1/2 erf(---------)
+                               2                     2
+
+
+                                               2
+                             1/2       (x - mu)
+                            2    exp(- ---------)
+                                               2
+                                       2 sigma~
+  g := 1/2 --------------------------------------------------------
+                        /          1/2                   1/2      \
+             1/2        |         2    alpha            2    beta |
+           Pi    sigma~ |-1/2 erf(----------) + 1/2 erf(---------)|
+                        \             2                     2     /
+
+
+                     2  2           /
+               sigma~  u            |
+  phi := exp(- ---------- + u mu I) |
+                   2                \
+
+                1/2
+               2    alpha          1/2
+        -erf(- ---------- + 1/2 I 2    sigma~ u)
+                   2
+
+                  1/2                            \     /
+                 2    beta          1/2          |   / |
+         + erf(- --------- + 1/2 I 2    sigma~ u)|  /  |
+                     2                           / /   \
+
+             1/2               1/2      \
+            2    alpha        2    beta |
+        erf(----------) - erf(---------)|
+                2                 2     /
+
+> int(subs(mu=0,sigma=1,f),x=-infinity..t);
+> RuleErf:=erf(alpha/sqrt(2))=2*Phi(alpha)-1,erf(beta/sqrt(2))=2*Phi(bet
+> a)-1:
+> RuleExpAlpha:=exp(-alpha^2/2)=ExpAlpha:
+> RuleExpBeta:=exp(-beta^2/2)=ExpBeta:
+> RuleA:=Phi(beta)=_A+Phi(alpha):
+> solve(RuleA,_A);
+> RuleB:=ExpBeta=sqrt(2*Pi)*_B+ExpAlpha:
+> solve(RuleB,_B);
+> RuleC:=beta*ExpBeta=sqrt(2*Pi)*_C+alpha*ExpAlpha:
+> solve(RuleC,_C);
+> RuleD:=beta^2*ExpBeta=sqrt(2*Pi)*_D+alpha^2*ExpAlpha:
+> solve(RuleD,_D);
+> RuleE:=beta^3*ExpBeta=sqrt(2*Pi)*_E+alpha^3*ExpAlpha:
+> solve(RuleE,_E);
+> Rule_b:=_B=_b*_A:
+> Rule_c:=_C=_c*_A:
+> Rule_d:=_D=_d*_A:
+> Rule_e:=_E=_e*_A:
+
+                                       1/2
+                                      2    t
+                        1/2 + 1/2 erf(------)
+                                        2
+
+
+                        Phi(beta) - Phi(alpha)
+
+
+                                              1/2
+                       (-ExpBeta + ExpAlpha) 2
+                     - --------------------------
+                                    1/2
+                                2 Pi
+
+
+                                                   1/2
+                 (-beta ExpBeta + alpha ExpAlpha) 2
+               - -------------------------------------
+                                    1/2
+                                2 Pi
+
+
+                      2                2            1/2
+                (-beta  ExpBeta + alpha  ExpAlpha) 2
+              - ---------------------------------------
+                                    1/2
+                                2 Pi
+
+
+                      3                3            1/2
+                (-beta  ExpBeta + alpha  ExpAlpha) 2
+              - ---------------------------------------
+                                    1/2
+                                2 Pi
+
+> m1:=simplify(int(x*g,x=a..b),symbolic):
+> m1:=applyrule([Rule_b,Rule_c,Rule_d],mu+expand(applyrule([RuleErf,Rule
+> ExpAlpha,RuleExpBeta,RuleA,RuleB],m1-mu)));
+> 
+
+                         m1 := mu - sigma~ _b
+
+> m2:=int((x-m1)^2*g,x=a..b):
+> normal(applyrule([Rule_b,Rule_c],normal(applyrule(RuleB,normal(applyru
+> le(RuleC,normal(map(_x->applyrule([RuleErf,RuleA,RuleExpAlpha,RuleExpB
+> eta],_x),expand(m2)))))))));
+
+                              2             2
+                       -sigma~  (_c - 1 + _b )
+
+> m3:=factor(int((x-m1)^3*g,x=a..b)):
+> map(factor,collect(normal(applyrule([Rule_b,Rule_c,Rule_d],normal(appl
+> yrule(RuleB,normal(applyrule(RuleC,normal(applyrule(RuleD,normal(map(_
+> x->applyrule([RuleErf,RuleA,RuleExpAlpha,RuleExpBeta],_x),expand(m3)))
+> )))))))/sigma^3),_b));
+
+                          3
+                     -2 _b  - (3 _c - 1) _b - _d
+
+> m4:=factor(int((x-m1)^4*g,x=a..b)):
+> map(factor,collect(normal(applyrule([Rule_b,Rule_c,Rule_d,Rule_e],norm
+> al(applyrule(RuleB,normal(applyrule(RuleC,normal(applyrule(RuleD,norma
+> l(applyrule(RuleE,normal(map(_x->applyrule([RuleErf,RuleA,RuleExpAlpha
+> ,RuleExpBeta],_x),expand(m4))))))))))))/sigma^4),_b));
+
+              4                  2
+         -3 _b  - 2 (1 + 3 _c) _b  - 4 _b _d - 3 _c - _e + 3
+
+> int(x^3*g,x=a..b);
+
+  /                          2
+  |        3  1/2       alpha
+  |2 sigma~  2    exp(- ------)
+  \                       2
+
+                                     2
+              1/2       2       alpha
+         + 3 2    sigma~  exp(- ------) mu alpha
+                                  2
+
+                                    2
+              1/2              alpha     2
+         + 3 2    sigma~ exp(- ------) mu
+                                 2
+
+                    1/2
+             3     2    alpha    1/2
+         - mu  erf(----------) Pi
+                       2
+
+                                   2
+                 3  1/2       alpha        2
+         + sigma~  2    exp(- ------) alpha
+                                2
+
+                             1/2
+                   2        2    alpha    1/2
+         - 3 sigma~  mu erf(----------) Pi
+                                2
+
+                                    2
+                   3  1/2       beta
+         - 2 sigma~  2    exp(- -----)
+                                  2
+
+                                    2
+              1/2       2       beta
+         - 3 2    sigma~  exp(- -----) mu beta
+                                  2
+
+                                   2                 1/2
+              1/2              beta     2     3     2    beta    1/2
+         - 3 2    sigma~ exp(- -----) mu  + mu  erf(---------) Pi
+                                 2                      2
+
+                                  2
+                 3  1/2       beta       2
+         - sigma~  2    exp(- -----) beta
+                                2
+
+                             1/2            \     /
+                   2        2    beta    1/2|   / |  1/2
+         + 3 sigma~  mu erf(---------) Pi   |  /  |Pi
+                                2           / /   \
+
+        /      1/2               1/2      \\
+        |     2    alpha        2    beta ||
+        |-erf(----------) + erf(---------)||
+        \         2                 2     //
+
+> Phitruncinv:=solve(int(subs(alpha=(1e-7-mu)/sigma,beta=(4.68e-3-mu)/si
+> gma,mu=6.68e-5,sigma=5.5e-6,g),x=-infinity..u)=y,u);
+
+  Phitruncinv := 0.000066799999999999999999 +
+
+                                 -5
+        0.77781745930520227682 10   RootOf(
+
+        -49999999999999999999 erf(_Z) - 49999999999999999999
+
+         + 100000000000000000000 y)
+
+> Phi:=int(1/sqrt(2*Pi)*exp(-x^2/2),x=-infinity..u);
+
+                                           1/2
+                                          2    u
+                     Phi := 1/2 + 1/2 erf(------)
+                                            2
+
+> U:=simplify(subs(u=Phitruncinv,Phi));
+
+                         1/2
+                     mu 2
+  U := 1/2 + 1/2 erf(------- +
+                        2
+
+                                    1/2                 1/2
+                                   2    alpha          2    beta
+        RootOf(erf(_Z) + 1 + y erf(----------) - y erf(---------))
+                                       2                   2
+
+        sigma~)
+
+> evalf(subs(alpha=(1e-7-mu)/sigma,beta=(4.68e-3-mu)/sigma,mu=6.68e-5,si
+> gma=5.5e-6,U));
+
+  0.50000000000000000000 + 0.50000000000000000000 erf(
+
+                                            -5
+        0.000047234732983261374630 + 0.55 10   RootOf(erf(_Z) + 1
+
+                                         1/2
+         + y erf(-6.0636363636363636363 2   )
+
+                                        1/2
+         - y erf(419.38181818181818181 2   )))
+
+> 

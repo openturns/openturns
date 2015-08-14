@@ -1,0 +1,134 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Text Output" -1 2 1 
+{CSTYLE "" -1 -1 "Courier" 1 10 0 0 255 1 0 0 0 0 0 1 3 0 3 0 }1 0 0 
+-1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Warning" 2 7 1 {CSTYLE "" -1 -1 "
+" 0 1 0 0 255 1 0 0 0 0 0 0 1 0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }
+{PSTYLE "Maple Output" 0 11 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 410 "restart:\nCa:=proc(
+alpha,r,N)\n  local sum, i, k;\n  sum:=0;\n  for i from N-r+1 to N do
+\n    k:=binomial(N,i)*alpha^i*(1-alpha)^(N-i);\n    sum:=sum+k;\n#   \+
+ print([i,k,sum]);\n  od:\n  return evalf(1-sum)\nend:\nCa2:=proc(alph
+a,r,N)\n  local sum, i, k;\n  sum:=0;\n  for i from 0 to r-1 do\n    k
+:=binomial(N,N-r+1+i)*alpha^(N-r+1+i)*(1-alpha)^(r-1-i);\n    sum:=sum
++k;\n    print([i,k,sum]);\n  od:\n  return evalf(1-sum)\nend:" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 386 "with(Statistics):\nNmax:=20
+0:\nalpha:=0.95;\nbeta:=0.95;\ntb:=Quantile(Normal(0,1),beta):\nfor r \+
+from 1 to 4 do\nNini:=ceil(-1/2*(alpha*tb^2+2*r-2+(alpha*tb^2*(alpha*t
+b^2+4*r-4))^(1/2))/(alpha-1));\nfor N from Nini to Nmax do\n  y:=Ca(al
+pha,r,N);\n  x:=Ca2(alpha,r,N);\n  if (x>beta) then\n    print([N,x,y]
+);break;\n  fi:\nod:\nod:\nevalf[100](Beta(N-r,r+1)*CDF(Beta(N-r,r+1),
+alpha)*N!/(N-r-1)!/r!);\n" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&alphaG
+$\"#&*!\"#" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%betaG$\"#&*!\"#" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+>SGWp!#6F%" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#7%\"\"!$\"+=)pqf'!#6F%" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"\"!$\"+Fj@ni!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#7%\"\"!$\"+6b&Q&f!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"
++NF;cc!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+)faLP&!#6F%
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+ooo/^!#6F%" }}{PARA 11 
+"" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+DDX\\[!#6F%" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"#f$\"+[Z0:&*!#5F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#7%\"\"!$\"+N#Q5G&!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$
+\"+*=IL:\"!#6$\"+C%oVV'F'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$
+\"+IGlu]!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+!ojc4\"!#
+6$\"+5lJqhF'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+wLqv[!#6F%
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+'\\!)3/\"!#6$\"+sQe;fF
+'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+KA'Ro%!#6F%" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+5ZO)))*!#7$\"+.()zsc!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+Vf?*\\%!#6F%" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+uk%RR*!#7$\"+!f+'Qa!#6" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+y`@@V!#6F%" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"\"\"$\"+]\"\\U#*)!#7$\"+$HSO@&!#6" }}{PARA 11 "" 1 
+"" {XPPMATH 20 "6#7%\"\"!$\"+bex\\T!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7%\"\"\"$\"+$pO!y%)!#7$\"+C&zv*\\!#6" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"#$*$\"+[?C+&*!#5F%" }}{PARA 11 "" 1 "" {XPPMATH 20 
+"6#7%\"\"!$\"+q'Hp\\%!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"
+$\"+g7ag9!#6$\"+I4ZdfF'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+
+z*=<N#!#7$\"+GGk#>'!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+]
+-6XV!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+#zs#*R\"!#6$
+\"+UIQWdF'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+II8MA!#7$\"+X
+jznf!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+y$=y>%!#6F%" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+=)z/M\"!#6$\"+'>)HQbF'" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+zjUA@!#7$\"+M3a]d!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+]9&\\0%!#6F%" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+gz1%G\"!#6$\"+5%>!R`F'" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+g]I;?!#7$\"+;*\\1a&!#6" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+vsS;R!#6F%" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"\"\"$\"+'3Y*H7!#6$\"+hLNY^F'" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"\"#$\"+2)*[:>!#7$\"+UB!zL&!#6" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%\"\"!$\"+=U3#y$!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 
+"6#7%\"\"\"$\"+Ki-y6!#6$\"+]/6g\\F'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6
+#7%\"\"#$\"+;`r>=!#7$\"+#)>3U^!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7
+%\"\"!$\"+=8)=l$!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+'
+\\B#G6!#6$\"+9[5!y%F'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+^&
+H(G<!#7$\"+px(H&\\!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"$C\"$\"+B
+Aq/&*!#5F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+%=sy,%!#6F%" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+5%R%z:!#6$\"+%f6tf&F'" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+)pp36%!#7$\"+k&)R3g!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"$$\"+)**oLJ&!#8$\"+aA`hg!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+Y0&f*Q!#6F%" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#7%\"\"\"$\"+)y@5_\"!#6$\"+MB(pT&F'" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#7%\"\"#$\"+eI*=$R!#7$\"+S;;5e!#6" }}{PARA 11 "" 1 
+"" {XPPMATH 20 "6#7%\"\"$$\"+[0qZ]!#8$\"+X'Q1'e!#6" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#7%\"\"!$\"+3T?xP!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7%\"\"\"$\"+k,jk9!#6$\"+sU$=C&F'" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7%\"\"#$\"+3p`gP!#7$\"+jz)yh&!#6" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7%\"\"$$\"+@bJ&z%!#8$\"+=6%em&!#6" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7%\"\"!$\"+6adhO!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"
+\"$\"+S8?59!#6$\"+^nxr]F'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$
+\"+Tm['f$!#7$\"+:aUJa!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"$$\"
++X(\\bb%!#8$\"+74)pZ&!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"
++3n+\\N!#6F%" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+2Pnd8!#6$
+\"+:/o1\\F'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+e+WRM!#7$\"+
+@Wi]_!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"$$\"+eAxFV!#8$\"+W@!
+RH&!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+e+WRM!#6F%" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+As)pI\"!#6$\"+!GFku%F'" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+;p5*G$!#7$\"+szLv]!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"$$\"+XOQ6T!#8$\"+3=X;^!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#7%\"\"!$\"+;u\"GL$!#6F%" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"\"$\"+'R$3e7!#6$\"+73!4f%F'" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"#$\"+)[3_9$!#7$\"+h;U0\\!#6" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%\"\"$$\"+iW\"e!R!#8$\"+1)zW%\\!#6" }}{PARA 11 
+"" 1 "" {XPPMATH 20 "6#7%\"$`\"$\"+>?b0&*!#5F%" }}{PARA 12 "" 1 "" 
+{XPPMATH 20 "6#$\"_q+++++++++++++++++++++++++++++++++++++++++++++++++5
+!#**" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 95 "ia:=n*Alpha+tb*sqrt
+(n*Alpha*(1-Alpha));\nsol:=solve(ia=n-R+1,n);\nfactor(sol[1]);\nfactor
+(sol[2]);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#iaG,&*&%\"nG\"\"\"%&Al
+phaGF(F(*&%#tbGF(*(F'F(F)F(,&F(F(F)!\"\"F(#F(\"\"#F(" }}{PARA 7 "" 1 "
+" {TEXT -1 38 "Warning, solutions may have been lost\n" }}{PARA 12 "" 
+1 "" {XPPMATH 20 "6#>%$solG6$*&,**(\"\"#!\"\"%&AlphaG\"\"\"%#tbGF)F*%
+\"RGF*F,F,*&F)F*,(*&)F+F)F,)F-\"\"%F,F,**F4F,F+F,)F-F)F,F.F,F,*(F4F,F+
+F,F6F,F*#F,F)F,F,,&F+F,F,F*F**&,**(F)F*F+F,F-F)F*F.F*F,F,*&F)F*F0F8F*F
+,F9F*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*(\"\"#!\"\",**&%&AlphaG\"
+\"\")%#tbGF%F*F&*&F%F*%\"RGF*F&F%F**$*(F)F*F+F*,(F(F**&\"\"%F*F.F*F*F3
+F&F*#F*F%F*F*,&F)F*F*F&F&F*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*(\"
+\"#!\"\",**&%&AlphaG\"\"\")%#tbGF%F*F**&F%F*%\"RGF*F*F%F&*$*(F)F*F+F*,
+(F(F**&\"\"%F*F.F*F*F3F&F*#F*F%F*F*,&F)F*F*F&F&F&" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 72 "solve(subs(Alpha=alpha, R=4, tb=Quantile(Nor
+mal(0,1),beta),ia=n-R+1),n);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+,j
+)*o9!\"(" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 227 "restart:assume
+(N,integer,r,integer,r<N,alpha>0,alpha<1,i>0,i<r):ratio:=convert(simpl
+ify((binomial(N,N-r+1+i)*alpha^(N-r+1+i)*(1-alpha)^(r-1-i))/(binomial(
+N+1,N+1-r+1+i)*alpha^(N+1-r+1+i)*(1-alpha)^(r-1-i)),symbolic),factoria
+l);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&ratioG*,-%*factorialG6#%#N|i
+rG\"\"\"-F'6#,*F)F*%#r|irG!\"\"F*F*%#i|irGF*F/%'alpha|irGF/-F'6#,&F)F*
+F*F*F/-F'6#,*F)F*\"\"#F*F.F/F0F*F*" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 25 "q:=(N+2-r+i)/(N+1)/alpha;" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%\"qG*(,*%#N|irG\"\"\"\"\"#F(%#r|irG!\"\"%#i|irGF(F(,&
+F'F(F(F(F+%'alpha|irGF+" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 48 "
+evalf(subs(N=100,r=7,alpha=0.95,i=5,[ratio,q]));" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7$$\"+%[4A/\"!\"*F$" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 66 "subs(N=N+1,binomial(N,N-r+1+i)*alpha^(N-r+1+i)*(1-alp
+ha)^(r-1-i));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*(-%)binomialG6$,&%#N
+|irG\"\"\"F)F),*F(F)\"\"#F)%#r|irG!\"\"%#i|irGF)F))%'alpha|irGF*F)),&F
+)F)F0F-,(F,F)F)F-F.F-F)" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 30 "
+.5281038235e-1/.1153330189e-1;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+
+pt%*yX!\"*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1
+ 14 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 
+}

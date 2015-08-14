@@ -1,0 +1,333 @@
+%feature("docstring") OT::Matrix
+"Real rectangular matrix.
+
+Parameters
+----------
+n_rows : int, :math:`n_r > 0`, optional
+    Number of rows.
+    Default is 1.
+n_columns : int, :math:`n_c > 0`, optional
+    Number of columns.
+    Default is 1.
+values : sequence of float with size :math:`n_r \times n_c`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    Default creates a zero matrix.
+
+Examples
+--------
+Create a matrix
+
+>>> import openturns as ot
+>>> M = ot.Matrix(2, 2, range(2 * 2))
+>>> print(M)
+[[ 0 2 ]
+ [ 1 3 ]]
+
+Get or set terms
+
+>>> print(M[0, 0])
+0.0
+>>> M[0, 0] = 1.
+>>> print(M[0, 0])
+1.0
+>>> print(M[:, 0])
+[[ 1 ]
+ [ 1 ]]
+
+Create an openturns matrix from a numpy 2d-array (or matrix, or 2d-list)...
+
+>>> import numpy as np
+>>> np_2d_array = np.array([[1., 2., 3.], [4., 5., 6.]])
+>>> ot_matrix = ot.Matrix(np_2d_array)
+
+and back
+
+>>> np_matrix = np.matrix(ot_matrix)
+
+Basic linear algebra operations (provided the dimensions are compatible)
+
+>>> A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> B = ot.Matrix(np.eye(2))
+>>> C = ot.Matrix(3, 2, [1.] * 3 * 2)
+>>> print(A * B - C)
+[[ 0 1 ]
+ [ 2 3 ]
+ [ 4 5 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::clean
+"Set elements smaller than a threshold to zero.
+
+Parameters
+----------
+threshold : float
+    Threshold for zeroing elements.
+
+Returns
+-------
+cleaned_matrix : :class:`~openturns.Matrix`
+    Input matrix with elements smaller than the threshold set to zero."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeQR
+"Compute the QR factorization. By default, it is the *economic* decomposition which is computed.
+
+The economic QR factorization of a rectangular matrix :math:`\mat{M}` with
+:math:`n_r \geq n_c` (more rows than columns) is defined as follows:
+
+.. math::
+
+    \mat{M} = \mat{Q} \mat{R}
+            = \mat{Q} \begin{bmatrix} \mat{R_1} \\ \mat{0} \end{bmatrix}
+            = \begin{bmatrix} \mat{Q_1}, \mat{Q_2} \end{bmatrix}
+              \begin{bmatrix} \mat{R_1} \\ \mat{0} \end{bmatrix}
+            = \mat{Q_1} \mat{R_1}
+
+where :math:`\mat{R_1}` is an :math:`n_c \times n_c` upper triangular matrix,
+:math:`\mat{Q_1}` is :math:`n_r \times n_c`, :math:`\mat{Q_2}` is
+:math:`n_r \times (n_r - n_c)`, and :math:`\mat{Q_1}` and :math:`\mat{Q_2}`
+both have orthogonal columns.
+
+Parameters
+----------
+full_qr : bool, optional
+    A flag telling whether `Q`, `R` or `Q1`, `R1` are returned.
+    Default is *False* and returns `Q1`, `R1`.
+keep_intact : bool, optional
+    A flag telling whether the present matrix is preserved or not in the computation of the decomposition.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+Q1 : :class:`~openturns.Matrix`
+    The orthogonal matrix of the economic QR factorization.
+R1 : :class:`~openturns.TriangularMatrix`
+    The right (upper) triangular matrix of the economic QR factorization.
+Q : :class:`~openturns.Matrix`
+    The orthogonal matrix of the full QR factorization.
+R : :class:`~openturns.TriangularMatrix`
+    The right (upper) triangular matrix of the full QR factorization.
+
+Notes
+-----
+The economic QR factorization is often used for solving overdetermined linear
+systems (where the operator :math:`\mat{M}` has :math:`n_r \geq n_c`) in the
+least-square sense because it implies solving a (simple) triangular system:
+
+.. math::
+
+    \vect{\hat{x}} = \arg\min\limits_{\vect{x} \in \Rset^{n_r}} \|\mat{M} \vect{x} - \vect{b}\|
+                   = \mat{R_1}^{-1} (\Tr{\mat{Q_1}} \vect{b})
+
+This uses LAPACK's `DGEQRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dgeqrf.f.html>`_
+and `DORGQR <http://www.netlib.org/lapack/lapack-3.1.1/html/dorgqr.f.html>`_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import numpy as np
+>>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> Q1, R1 = M.computeQR()
+>>> np.testing.assert_array_almost_equal(Q1 * R1, M)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeSingularValues
+"Compute the singular values.
+
+Parameters
+----------
+fullSVD : bool, optional
+    Whether the null parts of the orthogonal factors are explicitely stored
+    or not.
+    Default is *False* and computes a reduced SVD.
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+singular_values : :class:`~openturns.NumericalPoint`
+    The vector of singular values with size :math:`n = \min(n_r, n_c)` that
+    form the diagonal of the :math:`n_r \times n_c` matrix
+    :math:`\mat{\Sigma}` of the SVD decomposition.
+
+See also
+--------
+computeSVD
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> print(M.computeSingularValues(True))
+[9.52552,0.514301]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeSVD
+"Compute the singular values decomposition (SVD).
+
+The singular values decomposition of a rectangular matrix :math:`\mat{M}` with
+size :math:`n_r > n_c` reads:
+
+.. math::
+
+    \mat{M} = \mat{U} \mat{\Sigma} \Tr{\mat{V}}
+
+where :math:`\mat{U}` is an :math:`n_r \times n_r` orthogonal matrix,
+:math:`\mat{\Sigma}` is an :math:`n_r \times n_c` diagonal matrix and
+:math:`\mat{V}` is an :math:`n_c \times n_c` orthogonal matrix.
+
+Parameters
+----------
+fullSVD : bool, optional
+    Whether the null parts of the orthogonal factors are explicitely stored
+    or not.
+    Default is *False* and computes a reduced SVD.
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+singular_values : :class:`~openturns.NumericalPoint`
+    The vector of singular values with size :math:`n = \min(n_r, n_c)` that
+    form the diagonal of the :math:`n_r \times n_c` matrix
+    :math:`\mat{\Sigma}` of the SVD.
+U : :class:`~openturns.SquareMatrix`
+    The left orthogonal matrix of the SVD.
+VT : :class:`~openturns.SquareMatrix`
+    The transposed right orthogonal matrix of the SVD.
+
+Notes
+-----
+This uses LAPACK's `DGESDD <http://www.netlib.org/lapack/lapack-3.1.1/html/dgesdd.f.html>`_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import numpy as np
+>>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> singular_values, U, VT = M.computeSVD(True)
+>>> Sigma = ot.Matrix(M.getNbRows(), M.getNbColumns())
+>>> for i in range(singular_values.getSize()):
+...     Sigma[i, i] = singular_values[i]
+>>> np.testing.assert_array_almost_equal(U * Sigma * VT, M)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::getNbColumns
+"Accessor to the number of columns.
+
+Returns
+-------
+n_columns : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::getNbRows
+"Accessor to the number of rows.
+
+Returns
+-------
+n_rows : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::solveLinearSystem
+"Solve a rectangular linear system whose the present matrix is the operator.
+
+Parameters
+----------
+rhs : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix` with :math:`n_r` values or rows, respectively
+    The right hand side member of the linear system.
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+solution : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+    The solution of the rectangular linear system.
+
+Notes
+-----
+
+This will handle both matrices and vectors, as well as underdetermined, square
+or overdetermined linear systems although you'd better type explicitely your
+matrix if it has some properties that could simplify the resolution (see
+:class:`~openturns.TriangularMatrix`, :class:`~openturns.SquareMatrix`).
+
+This uses LAPACK's `DGELSY <http://www.netlib.org/lapack/lapack-3.1.1/html/dgelsy.f.html>`_.
+The `RCOND` parameter of this routine can be changed through the `MatrixImplementation-DefaultSmallPivot`
+key of the :class:`~openturns.ResourceMap`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import numpy as np
+>>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> b = ot.NumericalPoint([1.] * 3)
+>>> x = M.solveLinearSystem(b)
+>>> np.testing.assert_array_almost_equal(M * x, b)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::transpose
+"Transpose the matrix.
+
+Returns
+-------
+MT : :class:`~openturns.Matrix`
+    The transposed matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> print(M)
+[[ 1 2 ]
+ [ 3 4 ]
+ [ 5 6 ]]
+>>> print(M.transpose())
+[[ 1 3 5 ]
+ [ 2 4 6 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::computeGram
+"Compute the associated Gram matrix.
+
+Returns
+-------
+MT : :class:`~openturns.Matrix`
+    The Gram matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> print(M.computeGram())
+[[ 35 44 ]
+ [ 44 56 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::isEmpty
+"Tell if the matrix is empty.
+
+Returns
+-------
+is_empty : bool
+    True if the matrix contains no element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[]])
+>>> M.isEmpty()
+True"

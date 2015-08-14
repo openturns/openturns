@@ -1,0 +1,70 @@
+%feature("docstring") OT::MetaModelAlgorithm
+"Base class to compute a metamodel.
+
+Available constructor:
+    MetaModelAlgorithm(*distribution, model*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function of the physical input vector.
+model : :class:`~openturns.NumericalMathFunction`
+    Physical model to be approximated by a metamodel.
+
+Notes
+-----
+A MetaModelAlgorithm object can be used only through its derived classes:
+
+- :class:`~openturns.KrigingAlgorithm`
+
+- :class:`~openturns.FunctionalChaosAlgorithm`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::getDistribution
+"Accessor to the joint probability density function of the physical input vector.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function of the physical input vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::setDistribution
+"Accessor to the joint probability density function of the physical input vector.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function of the physical input vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    Input sample of a model evaluated apart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.NumericalSample`
+    Output sample of a model evaluated apart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::run
+"Compute the response surfaces.
+
+Notes
+-----
+It computes the response surfaces and creates a
+:class:`~openturns.MetaModelResult` structure containing all the results."

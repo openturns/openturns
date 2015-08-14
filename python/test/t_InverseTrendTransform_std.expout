@@ -1,0 +1,31 @@
+myInverseTrendFunc= [t]->[sin(t),cos(t)]
+myInverseTrendFunc input description= [y0,y1]
+myInverseTrendFunc input dimension= 2
+myInverseTrendFunc output description= [y0,y1]
+myInverseTrendFunc output dimension= 2
+input time series =  
+ 0 : [  0        1        1       ]
+ 1 : [  0.1      2.09983  1.995   ]
+ 2 : [  0.2      3.19867  2.98007 ]
+ 3 : [  0.3      4.29552  3.95534 ]
+ 4 : [  0.4      5.38942  4.92106 ]
+ 5 : [  0.5      6.47943  5.87758 ]
+ 6 : [  0.6      7.56464  6.82534 ]
+ 7 : [  0.7      8.64422  7.76484 ]
+ 8 : [  0.8      9.71736  8.69671 ]
+ 9 : [  0.9     10.7833   9.62161 ]
+10 : [  1       11.8415  10.5403  ]
+output time series = 
+     [      y0   y1   ]
+ 0 : [  0    1    0   ]
+ 1 : [  0.1  2    1   ]
+ 2 : [  0.2  3    2   ]
+ 3 : [  0.3  4    3   ]
+ 4 : [  0.4  5    4   ]
+ 5 : [  0.5  6    5   ]
+ 6 : [  0.6  7    6   ]
+ 7 : [  0.7  8    7   ]
+ 8 : [  0.8  9    8   ]
+ 9 : [  0.9 10    9   ]
+10 : [  1   11   10   ]
+called  1  times

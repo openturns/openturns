@@ -1,0 +1,69 @@
+%define OT_Experiment_doc
+"Base class for design of experiments.
+
+Considering :math:`\vect{x}=x^1,\dots, x^n` a vector of input parameters, this
+class is used to determine a particular set of values of :math:`\vect{x}`
+according to a particular design of experiments.
+
+Different types of design of experiments can be determined:
+
+- some stratified patterns: axial, composite, factorial or box patterns,
+
+- some weighted patterns that we can split into different categories:
+  the random patterns, the low discrepancy sequences and the deterministic
+  patterns.
+
+See also
+--------
+StratifiedExperiment, WeightedExperiment"
+%enddef
+%feature("docstring") OT::ExperimentImplementation
+OT_Experiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Experiment_generate_doc
+"Generate points according to the type of the experiment.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    The points which constitute the design of experiments. The sampling method
+    is defined by the nature of the experiment.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myExperiment = ot.Experiment(ot.MonteCarloExperiment(ot.Normal(2),5))
+>>> print(myExperiment.generate())
+    [ marginal 1 marginal 2 ]
+0 : [  0.608202  -1.26617   ]
+1 : [ -0.438266   1.20548   ]
+2 : [ -2.18139    0.350042  ]
+3 : [ -0.355007   1.43725   ]
+4 : [  0.810668   0.793156  ]"
+%enddef
+%feature("docstring") OT::ExperimentImplementation::generate
+OT_Experiment_generate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Experiment_setImplementation_doc
+"Accessor to the underlying implementation.
+
+Parameters
+----------
+implementation : ExperimentImplementation
+    An ExperimentImplementation object.
+
+Examples
+--------
+>>> import openturns as ot
+>>> myExperiment = ot.Experiment(ot.MonteCarloExperiment(ot.Normal(2),5))
+>>> myExperimentImplementation = myExperiment.getImplementation()
+>>> mySecondExperiment = ot.Experiment()
+>>> mySecondExperiment.setImplementation(myExperimentImplementation)"
+%enddef
+%feature("docstring") OT::ExperimentImplementation::setImplementation
+OT_Experiment_setImplementation_doc

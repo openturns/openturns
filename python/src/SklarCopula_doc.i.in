@@ -1,0 +1,63 @@
+%feature("docstring") OT::SklarCopula
+"Sklar copula.
+
+Available constructor:
+    SklarCopula(*distribution*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution, whatever its type : UsualDistribution, ComposedDistribution,
+    KernelMixture, Mixture, RandomMixture, Copula, ...).
+
+Notes
+-----
+The Sklar copula is obtained directly from the expression of the
+:math:`n`-dimensional distribution which cumulative distribution function is
+:math:`F` with :math:`F_i` its marginals :
+
+.. math::
+
+    C(u_1, \cdots, u_n) = F(F_1^{-1}(u_1), \cdots, F_n^{-1}(u_n))
+
+for :math:`u_i \in [0, 1]`
+
+See also
+--------
+MaximumEntropyOrderStatisticsCopula, Copula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(3)
+>>> R[0, 1] = 0.25
+>>> R[1, 2] = 0.25
+>>> copula = ot.SklarCopula(ot.Normal([1.0, 2.0, 3.0], [2.0, 3.0, 1.0], R))
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SklarCopula::getDistribution
+"Get the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The distribution from which the copula is built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SklarCopula::setDistribution
+"Set the distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    A distribution, whatever its type : UsualDistribution,
+    ComposedDistribution, KernelMixture, Mixture, RandomMixture, Copula, ...)
+    from which the copula is built."

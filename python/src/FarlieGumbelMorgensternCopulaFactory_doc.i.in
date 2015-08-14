@@ -1,0 +1,12 @@
+%feature("docstring") OT::FarlieGumbelMorgensternCopulaFactory
+"Farlie Gumbel Morgenstern Copula factory.
+
+Available constructor:
+    FarlieGumbelMorgensternCopulaFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

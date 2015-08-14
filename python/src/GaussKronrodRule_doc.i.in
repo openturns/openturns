@@ -1,0 +1,115 @@
+%feature("docstring") OT::GaussKronrodRule
+"Gauss-Kronrod rule used in the integration algorithm.
+
+Parameters
+----------
+myGaussKronrodPair : :class:`~openturns.GaussKronrodPair`
+    It encodes the selected rule. 
+
+    Available rules: 
+
+    - GaussKronrodRule.G3K7, 
+    - GaussKronrodRule.G7K15, 
+    - GaussKronrodRule.G11K23,
+    - GaussKronrodRule.G15K31, 
+    - GaussKronrodRule.G25K51. 
+
+Notes
+-----
+The Gauss-Kronrod rules :math:`G_mK_{2m+1}` with  :math:`m=2n+1` enable to build two approximations of the definite integral :math:`\int_{-1}^1 f(t)\, dt` defined by:
+
+.. math::
+
+    \int_{-1}^1 f(t)\, dt \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
+
+and:
+
+.. math::
+
+  \int_{-1}^1 f(t)\, dt\simeq  \alpha_0f(0) + \sum_{k=1}^{m} \alpha_k (f(\zeta_k)+f(-\zeta_k))
+
+We have :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
+
+The rule :math:`G_mK_{2m+1}` combines a :math:`m`-point Gauss rule and a :math:`(2m+1)`-point Kronrod rule (re-using the :math:`m` nodes of the Gauss method). The nodes are defined on :math:`[-1, 1]` and always contain the node 0 when :math:`m`  is odd. 
+
+Examples
+--------
+Create an Gauss-Kronrod rule:
+
+>>> import openturns as ot
+>>> myRule = ot.GaussKronrodRule(ot.GaussKronrodRule.G15K31)"
+
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getOrder
+"Accessor to :math:`m` parameter.
+
+Returns
+-------
+m : int
+    The number of points used for the Gauss approximation."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getPair
+"Accessor to pair definig the rule.
+
+Returns
+-------
+gkPair : :class:`~openturns.GaussKronrodPair`
+    Id of the Gauss-Kronrod rule."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getOtherGaussWeights
+"Accessor to the weights used in the Gauss approximation.
+
+Returns
+-------
+otherGaussWeights : :class:`~openturns.NumericalPoint`
+    The  weights :math:`(\omega_k)_{1 \leq k \leq n}`"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getOtherGaussNodes
+"Accessor to the positive nodes used in the Gauss-Kronrod approximation.
+
+Returns
+-------
+otherKronrodNodes : :class:`~openturns.NumericalPoint`
+    The  positive nodes :math:`(\xi_k)_{1 \leq k \leq n}`
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getOtherKronrodWeights
+"Accessor to the  positive nodes used in the Gauss-Kronrod approximation.
+
+Returns
+-------
+otherKronrodWeights : :class:`~openturns.NumericalPoint`
+    The  weights :math:`(\alpha_k)_{1 \leq k \leq m}`.
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getOtherKronrodNodes
+"Accessor to the positive nodes used in the Gauss-Kronrod approximation.
+
+Returns
+-------
+otherKronrodNodes : :class:`~openturns.NumericalPoint`
+    The  positive nodes :math:`(\zeta_k)_{1 \leq k \leq m}`
+    It contains the positive Gauss nodes as we have :math:`\zeta_{2j}=\xi_j`.
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getZeroGaussWeight
+"Accessor to the first Gauss weight.
+
+Returns
+-------
+zeroKronrodWeight : float
+    The  first weight :math:`\omega_0`.
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrodRule::getZeroKronrodWeight
+"Accessor to the first Kronrod weight.
+
+Returns
+-------
+zeroKronrodWeight : float
+    The  first weight :math:`\alpha_0`.
+"

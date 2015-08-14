@@ -1,0 +1,95 @@
+Testing class InverseChiSquare
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=InverseChiSquare name=InverseChiSquare dimension=1 nu=1.5
+streamObject(const T & anObject)
+class=InverseChiSquare name=InverseChiSquare dimension=1 nu=1.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=InverseChiSquare name=InverseChiSquare dimension=1 nu=10.5
+Distribution InverseChiSquare(nu = 10.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.0782188]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.139041] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.137094]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.118211]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00448375]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[0.190476]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-32.6097]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-32.6097]
+log pdf=0.538527
+pdf     =1.71348
+pdf (FD)=1.71348
+cdf=0.898124
+ccdf=0.101876
+survival=0.101876
+characteristic function=(0.999474,0.0224004)
+log characteristic function=(-0.000274906,0.0224084)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-1.01934,-6.74683]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.509672]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0888995,0.163189]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.0444498]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.235]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.117647]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00425872]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[nu : 10.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.235294]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.0723982]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.032177]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.0257416]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.102966]
+Standard representative=InverseChiSquare(nu = 10.5)
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.0652588]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[3.20493]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[35.5333]
+Distribution class=InverseChiSquare name=InverseChiSquare dimension=1 nu=15
+Distribution InverseChiSquare(nu = 15)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.0913064]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.0472117] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.0823255]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.0764712]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00106545]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[0.133333]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-67.8131]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-67.8131]
+log pdf=0.643708
+pdf     =1.90353
+pdf (FD)=1.90353
+cdf=0.942263
+ccdf=0.0577369
+survival=0.0577369
+characteristic function=(0.999938,0.0102561)
+log characteristic function=(-9.55898e-06,0.0102564)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-1.18971,-10.7073]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.594853]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0479461,0.126902]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.023973]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.137723]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.0769231]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00107585]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[nu : 15]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.153846]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.027972]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.00621601]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.001776]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.000710401]
+Standard representative=InverseChiSquare(nu = 15)
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.0328001]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[2.08463]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[13.0952]

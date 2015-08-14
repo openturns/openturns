@@ -1,0 +1,12 @@
+%feature("docstring") OT::InverseNormalFactory
+"Inverse Normal factory.
+
+Available constructor:
+    InverseNormalFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

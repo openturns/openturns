@@ -1,0 +1,199 @@
+> R:=(Fx+dFx*dp-Fa-dFa*dp)/(Fb+dFb*dp-Fa-dFa*dp);
+
+                         Fx + dFx dp - Fa - dFa dp
+                    R := -------------------------
+                         Fb + dFb dp - Fa - dFa dp
+
+> series(R,dp,2);
+
+                             (Fx - Fa) (dFb - dFa)
+                 dFx - dFa + ---------------------
+       Fx - Fa                     -Fb + Fa                 2
+       ------- + --------------------------------- dp + O(dp )
+       Fb - Fa                Fb - Fa
+
+> factor((dFx-dFa+(Fx-Fa)/(-Fb+Fa)*(dFb-dFa))/(Fb-Fa));
+
+         dFx Fb - dFx Fa - dFa Fb - Fx dFb + Fx dFa + Fa dFb
+         ---------------------------------------------------
+                                       2
+                             (-Fb + Fa)
+
+> r:=(fx+dfx*dp)/(Fb+dFb*dp-Fa-dFa*dp);
+
+                                fx + dfx dp
+                    r := -------------------------
+                         Fb + dFb dp - Fa - dFa dp
+
+> series(r,dp,2);
+
+                              fx (dFb - dFa)
+                        dfx + --------------
+                fx               -Fb + Fa             2
+              ------- + -------------------- dp + O(dp )
+              Fb - Fa         Fb - Fa
+
+> with(Statistics):
+> with(LinearAlgebra):
+> assume(sigma>0):
+> pdf:=PDF(RandomVariable(Normal(mu,sigma)),x);
+> cdf:=CDF(RandomVariable(Normal(mu,sigma)),x);
+
+                                                 2
+                               1/2       (x - mu)
+                              2    exp(- ---------)
+                                                 2
+                                         2 sigma~
+                   pdf := 1/2 ---------------------
+                                    1/2
+                                  Pi    sigma~
+
+
+                                       1/2
+                                      2    (x - mu)
+                 cdf := 1/2 + 1/2 erf(-------------)
+                                        2 sigma~
+
+> dfx:=Vector([diff(pdf,mu),diff(pdf,sigma)]);
+> dFx:=Vector([diff(cdf,mu),diff(cdf,sigma)]);
+
+  dfx :=
+
+        [                                2 ]
+        [     1/2                (x - mu)  ]
+        [    2    (x - mu) exp(- ---------)]
+        [                                2 ]
+        [                        2 sigma~  ]
+        [1/2 ------------------------------]
+        [              1/2       3         ]
+        [            Pi    sigma~          ]
+
+        [                        2
+        [      1/2       (x - mu)
+        [     2    exp(- ---------)
+        [                        2
+        [                2 sigma~
+        [-1/2 ---------------------
+        [           1/2       2
+        [         Pi    sigma~
+
+                                            2 ]
+                1/2         2       (x - mu)  ]
+               2    (x - mu)  exp(- ---------)]
+                                            2 ]
+                                    2 sigma~  ]
+         + 1/2 -------------------------------]
+                          1/2       4         ]
+                        Pi    sigma~          ]
+
+
+                    [                            2      ]
+                    [          1/2       (x - mu)       ]
+                    [         2    exp(- ---------)     ]
+                    [                            2      ]
+                    [                    2 sigma~       ]
+                    [    -1/2 ---------------------     ]
+                    [               1/2                 ]
+                    [             Pi    sigma~          ]
+             dFx := [                                   ]
+                    [                   2               ]
+                    [           (x - mu)    1/2         ]
+                    [     exp(- ---------) 2    (x - mu)]
+                    [                   2               ]
+                    [           2 sigma~                ]
+                    [-1/2 ------------------------------]
+                    [               1/2       2         ]
+                    [             Pi    sigma~          ]
+
+> nf:=1/(subs(x=b,cdf)-subs(x=a,cdf)):
+> p:=pdf*nf:
+> dft_ref:=Vector([diff(p,mu),diff(p,sigma)]):
+> dft:=dfx*nf-pdf*nf^2*(subs(x=b,dFx)-subs(x=a,dFx)):
+> evalf(subs(a=1.0,b=4.0,x=2.5,mu=2.0,sigma=1.5,dft));
+> evalf(subs(a=1.0,b=4.0,x=2.5,mu=2.0,sigma=1.5,dfx));
+> evalf(subs(a=1.0,b=4.0,x=2.5,mu=2.0,sigma=1.5,nf));
+> evalf(subs(a=1.0,b=4.0,x=2.5,mu=2.0,sigma=1.5,subs(x=b,dFx)));
+> evalf(subs(a=1.0,b=4.0,x=2.5,mu=2.0,sigma=1.5,subs(x=a,dFx)));
+
+                           [0.02465996580]
+                           [             ]
+                           [-0.0590838573]
+
+
+                           [0.05590862631]
+                           [             ]
+                           [-0.1490896701]
+
+
+                             1.523702156
+
+
+                           [-0.1093400498]
+                           [             ]
+                           [-0.1457867330]
+
+
+                           [-0.2129653370]
+                           [             ]
+                           [0.1419768913 ]
+
+> map(factor,dft-dft_ref);
+
+                                 [0]
+                                 [ ]
+                                 [0]
+
+> (dfx);
+
+        [                                2 ]
+        [     1/2                (x - mu)  ]
+        [    2    (x - mu) exp(- ---------)]
+        [                                2 ]
+        [                        2 sigma~  ]
+        [1/2 ------------------------------]
+        [              1/2       3         ]
+        [            Pi    sigma~          ]
+
+        [                        2
+        [      1/2       (x - mu)
+        [     2    exp(- ---------)
+        [                        2
+        [                2 sigma~
+        [-1/2 ---------------------
+        [           1/2       2
+        [         Pi    sigma~
+
+                                            2 ]
+                1/2         2       (x - mu)  ]
+               2    (x - mu)  exp(- ---------)]
+                                            2 ]
+                                    2 sigma~  ]
+         + 1/2 -------------------------------]
+                          1/2       4         ]
+                        Pi    sigma~          ]
+
+> phi:=1/sqrt(2*Pi)*exp(-t/2):
+> NF:=1/sigma:
+> -2*NF*subs(t=((x-mu)/sigma)^2,diff(phi,t))*(x-mu)/sigma/sigma;
+
+                                                  2
+                       1/2                (x - mu)
+                      2    (x - mu) exp(- ---------)
+                                                  2
+                                          2 sigma~
+                  1/2 ------------------------------
+                                1/2       3
+                              Pi    sigma~
+
+> dfx[1]*(x-mu)/sigma-NF*subs(t=((x-mu)/sigma)^2,phi)/sigma;
+
+                           2                                     2
+         1/2       (x - mu)          1/2         2       (x - mu)
+        2    exp(- ---------)       2    (x - mu)  exp(- ---------)
+                           2                                     2
+                   2 sigma~                              2 sigma~
+   -1/2 --------------------- + 1/2 -------------------------------
+              1/2       2                      1/2       4
+            Pi    sigma~                     Pi    sigma~
+
+> 

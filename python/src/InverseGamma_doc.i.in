@@ -1,0 +1,91 @@
+%feature("docstring") OT::InverseGamma
+"InverseGamma distribution.
+
+Helper class for defining the Inverse Gamma distribution which is the inverse of a :math:`\Gamma` distribution.
+
+Available constructors:
+    InverseGamma(*k, lambda*)
+
+Parameters
+----------
+k : float, :math:`k > 0`,
+    Shape parameter. By default, :math:`k=1`.
+
+lambda : float, :math:`\lambda > 0`.
+    Scale parameter. By default, :math:`\lambda=1`.
+     
+
+Notes
+-----
+:math:`X` follows an Inverse Gamma distribution of parameters :math:`(k, \lambda)` means that :math:`\dfrac{1}{X}` follows the :math:`\Gamma(k, \dfrac{1}{\lambda})` distribution, with :math:`k>0` and :math:`\lambda>0`.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \dfrac{\exp \left( -\dfrac{1}{\lambda x}\right)}{\Gamma(k)\lambda^kx^{k+1}}, \quad x \in [0; +\infty[
+
+with :math:`k >0 , \lambda > 0`.
+
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \dfrac{1}{\lambda(k-1)} \quad \text{if } k>1 \\
+        \Var{X} & = &\dfrac{1}{\lambda^2(k-1)^2(k-2)} \quad \text{if } k>2 
+    \end{eqnarray*}
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.InverseGamma(1., 1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::InverseGamma::getK
+"Accessor to the  parameter :math:`k`.
+
+Returns
+-------
+k : float
+    Shape parameter :math:`k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::InverseGamma::getLambda
+"Accessor to the parameter :math:`\lambda`.
+
+Returns
+-------
+lambda : float
+    Scale parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::InverseGamma::setK
+"Accessor to the distribution's shape parameter :math:`k`.
+
+Parameters
+----------
+k : float, :math:`k > 0`
+    Parameter :math:`k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::InverseGamma::setLambda
+"Accessor to the distribution's scale parameter :math:`\lambda`.
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Parameter :math:`\lambda`."

@@ -1,0 +1,195 @@
+> restart:
+> g:=S+3*x1-x2:
+> T1:=(x1-mu1)/sigma1:
+> T2:=(x2-mu2)/sigma2:
+> g_tilde:=subs(x1=solve(T1=u1,x1), x2=solve(T2=u2,x2),g);
+> dgtilde_u1:=diff(g_tilde,u1);
+> dgtilde_u2:=diff(g_tilde,u2);
+> eq_u1:=u1=lambda*dgtilde_u1;
+> eq_u2:=u2=lambda*dgtilde_u2;
+> eq_lambda:=g_tilde=0;
+> 
+
+         g_tilde := S + 3 mu1 + 3 u1 sigma1 - mu2 - u2 sigma2
+
+
+                        dgtilde_u1 := 3 sigma1
+
+
+                        dgtilde_u2 := -sigma2
+
+
+                    eq_u1 := u1 = 3 lambda sigma1
+
+
+                     eq_u2 := u2 = -lambda sigma2
+
+
+      eq_lambda := S + 3 mu1 + 3 u1 sigma1 - mu2 - u2 sigma2 = 0
+
+> sol:=allvalues(solve({eq_u1,eq_u2,eq_lambda},{u1,u2,lambda})):
+> valnum:=mu1=1,sigma1=0.2,mu2=2,sigma2=5,S=1:
+> with(plots):
+> gtildeNum:=subs(valnum,g_tilde):
+> p1:=implicitplot(gtildeNum,u1=-3..3,u2=-3..5,grid=[81,81]):
+> p2:=plot([[0,0],subs(sol,valnum,[u1,u2])],color=blue):
+> display({p1,p2},scaling=constrained);
+> expre:=subs(sol,[u1,u2,lambda]):
+> d_mu1:=evalf(subs(valnum,diff(expre,mu1))):
+> d_mu2:=evalf(subs(valnum,diff(expre,mu2))):
+> d_sigma1:=evalf(subs(valnum,diff(expre,sigma1))):
+> d_sigma2:=evalf(subs(valnum,diff(expre,sigma2))):
+
+> DthetaU_ref:=<<d_mu1[1..2]>|<d_sigma1[1..2]>|<d_mu2[1..2]>|<d_sigma2[1
+> ..2]>>;
+> DthetaLambda_ref:=<<d_mu1[3]>|<d_sigma1[3]>|<d_mu2[3]>|<d_sigma2[3]>>;
+> G_:=<dgtilde_u1,dgtilde_u2>;
+> G_num:=evalf(subs(sol[nsol],valnum,G_));
+> dgtilde_mu1:=diff(g_tilde,mu1); 
+> dgtilde_mu2:=diff(g_tilde,mu2);
+> dgtilde_sigma1:=diff(g_tilde,sigma1);
+> dgtilde_sigma2:=diff(g_tilde,sigma2);
+> K_:=<dgtilde_mu1,dgtilde_sigma1,dgtilde_mu2,dgtilde_sigma2>;
+> K_num:=evalf(subs(sol[nsol],valnum,K_));
+> E_:=<<diff(G_[1],u1),diff(G_[2],u1)> |
+> <diff(G_[1],u2),diff(G_[2],u2)>>;
+> E_num:=evalf(subs(sol[nsol],valnum,E_));
+> F_:=< <diff(G_[1],mu1),diff(G_[2],mu1)> |
+> <diff(G_[1],sigma1),diff(G_[2],sigma1)> |
+> <diff(G_[1],mu2),diff(G_[2],mu2)> |
+> <diff(G_[1],sigma2),diff(G_[2],sigma2)> >;
+> F_num:=evalf(subs(sol[nsol],valnum,F_));
+
+  DthetaU_ref :=
+
+        [-0.07097791799 , -0.2298759068 , 0.02365930600 ,
+
+        0.01865875867]
+
+        [0.5914826499 , -0.05597627602 , -0.1971608833 ,
+
+        -0.07662530228]
+
+
+  DthetaLambda_ref :=
+
+        [-0.1182965300 , 0.01119525520 , 0.03943217666 ,
+
+        0.03109793112]
+
+
+                                 [3 sigma1]
+                           G_ := [        ]
+                                 [-sigma2 ]
+
+
+                                     [0.6]
+                            G_num := [   ]
+                                     [-5.]
+
+
+                           dgtilde_mu1 := 3
+
+
+                          dgtilde_mu2 := -1
+
+
+                        dgtilde_sigma1 := 3 u1
+
+
+                        dgtilde_sigma2 := -u2
+
+
+                                   [ 3  ]
+                                   [    ]
+                                   [3 u1]
+                             K_ := [    ]
+                                   [ -1 ]
+                                   [    ]
+                                   [-u2 ]
+
+
+                                   [  3.  ]
+                                   [      ]
+                                   [3. u1 ]
+                          K_num := [      ]
+                                   [ -1.  ]
+                                   [      ]
+                                   [-1. u2]
+
+
+                                  [0    0]
+                            E_ := [      ]
+                                  [0    0]
+
+
+                                  [0.    0.]
+                         E_num := [        ]
+                                  [0.    0.]
+
+
+                            [0    3    0     0]
+                      F_ := [                 ]
+                            [0    0    0    -1]
+
+
+                            [0.    3.    0.    0. ]
+                   F_num := [                     ]
+                            [0.    0.    0.    -1.]
+
+> M:=Matrix(3,3):
+> with(LinearAlgebra):
+> M[1..2,1..2]:=-DiagonalMatrix([1,1])+lambda*E_:
+> M[1..2,3]:=Transpose(G_):
+> M[3,1..2]:=G_:
+> B:=Matrix(3,4):
+> B[1..2,1..4]:=-lambda*F_:
+> B[3,1..4]:=-K_:
+> M;
+
+                  [   -1          0       3 sigma1]
+                  [                               ]
+                  [   0          -1       -sigma2 ]
+                  [                               ]
+                  [3 sigma1    -sigma2       0    ]
+
+> B;
+
+                   [ 0    -3 lambda    0      0   ]
+                   [                              ]
+                   [ 0        0        0    lambda]
+                   [                              ]
+                   [-3      -3 u1      1      u2  ]
+
+> evalf(subs(sol,valnum,map(factor,MatrixInverse(M).B)));
+
+        [-0.07097791799 , -0.2298759068 , 0.02365930600 ,
+
+        0.01865875867]
+
+        [0.5914826499 , -0.05597627602 , -0.1971608833 ,
+
+        -0.07662530228]
+
+        [-0.1182965300 , 0.01119525520 , 0.03943217666 ,
+
+        0.03109793112]
+
+> DthetaU_ref;
+> DthetaLambda_ref;
+
+        [-0.07097791799 , -0.2298759068 , 0.02365930600 ,
+
+        0.01865875867]
+
+        [0.5914826499 , -0.05597627602 , -0.1971608833 ,
+
+        -0.07662530228]
+
+
+        [-0.1182965300 , 0.01119525520 , 0.03943217666 ,
+
+        0.03109793112]
+
+> 
+> 

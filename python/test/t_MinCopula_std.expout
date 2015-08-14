@@ -1,0 +1,50 @@
+Copula  class=MinCopula name=a min copula dimension=3
+Copula  MinCopula(dim = 3)
+Mean  [0.5,0.5,0.5]
+Covariance  [[ 0.0833333 0.0833333 0.0833333 ]
+ [ 0.0833333 0.0833333 0.0833333 ]
+ [ 0.0833333 0.0833333 0.0833333 ]]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [0.629877,0.629877,0.629877]
+oneSample=     [ marginal 1 marginal 2 marginal 3 ]
+0 : [ 0.882805   0.882805   0.882805   ]
+1 : [ 0.135276   0.135276   0.135276   ]
+2 : [ 0.0325028  0.0325028  0.0325028  ]
+3 : [ 0.347057   0.347057   0.347057   ]
+4 : [ 0.969423   0.969423   0.969423   ]
+5 : [ 0.92068    0.92068    0.92068    ]
+6 : [ 0.50304    0.50304    0.50304    ]
+7 : [ 0.0632061  0.0632061  0.0632061  ]
+8 : [ 0.292757   0.292757   0.292757   ]
+9 : [ 0.714382   0.714382   0.714382   ]
+anotherSample mean= [0.503282,0.503282,0.503282]
+anotherSample covariance= [[ 0.0847362 0.0847362 0.0847362 ]
+ [ 0.0847362 0.0847362 0.0847362 ]
+ [ 0.0847362 0.0847362 0.0847362 ]]
+point=  [0.2,0.2,0.2] pdf= 0.2 cdf= 0.2
+Quantile= [0.5,0.5,0.5]
+CDF(quantile)= 0.5
+margin= IndependentCopula(dimension = 1)
+margin PDF= 1.0
+margin CDF= 0.25
+margin quantile= [0.95]
+margin realization= [0.876152]
+margin= IndependentCopula(dimension = 1)
+margin PDF= 1.0
+margin CDF= 0.25
+margin quantile= [0.95]
+margin realization= [0.445759]
+margin= IndependentCopula(dimension = 1)
+margin PDF= 1.0
+margin CDF= 0.25
+margin quantile= [0.95]
+margin realization= [0.492964]
+indices= [1,0]
+margins= MinCopula(dim = 2)
+margins PDF= 0.25
+margins CDF= 0.25
+margins quantile= [0.95,0.95]
+margins CDF(quantile)= 0.95
+margins realization= [0.746851,0.746851]

@@ -1,0 +1,35 @@
+dist1: Normal(mu = 1, sigma = 0.5)
+dist1+2: RandomMixture(Normal(mu = 3, sigma = 0.5))
+dist1-2: RandomMixture(Normal(mu = -1, sigma = 0.5))
+dist1*2: RandomMixture(Normal(mu = 2, sigma = 1))
+dist1/2: RandomMixture(Normal(mu = 0.5, sigma = 0.25))
+cos(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[cos(x)]
+sin(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[sin(x)]
+tan(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[tan(x)]
+acos(dist0): CompositeDistribution=f(Uniform(a = -0.999, b = 0.999)) with f=[x]->[acos(x)]
+asin(dist0): CompositeDistribution=f(Uniform(a = -0.999, b = 0.999)) with f=[x]->[asin(x)]
+atan(dist0): CompositeDistribution=f(Uniform(a = -0.999, b = 0.999)) with f=[x]->[atan(x)]
+cosh(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[cosh(x)]
+sinh(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[sinh(x)]
+tanh(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[tanh(x)]
+acosh(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[acosh(x)]
+asinh(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[asinh(x)]
+atanh(dist0): CompositeDistribution=f(Uniform(a = -0.999, b = 0.999)) with f=[x]->[atanh(x)]
+exp(dist1): LogNormal(muLog = 1, sigmaLog = 0.5, gamma = 0)
+log(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[log(x)]
+ln(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[log(x)]
+dist1^3: CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[x^3]
+dist1^2.5: CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[x^2.5]
+inverse(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[1.0 / x]
+sqr(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[x^2]
+sqrt(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[sqrt(x)]
+cbrt(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[cbrt(x)]
+abs(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[abs(x)]
+dist1+dist2: RandomMixture(Normal(mu = -1, sigma = 1.11803))
+dist1-dist2: RandomMixture(Normal(mu = 3, sigma = 1.11803))
+dist1*dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * Normal(mu = -2, sigma = 1))
+dist1/dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * CompositeDistribution=f(Normal(mu = -2, sigma = 1)) with f=[x]->[1.0 / x])
+logn*logn: LogNormal(muLog = 0, sigmaLog = 1.41421, gamma = 0)
+logu*logu: CompositeDistribution=f(RandomMixture(Triangular(a = -2, m = 0, b = 2))) with f=[x]->[exp(x)]
+logu*logn: CompositeDistribution=f(RandomMixture(Normal(mu = 0, sigma = 1) + Uniform(a = -1, b = 1))) with f=[x]->[exp(x)]
+logn*logu: CompositeDistribution=f(RandomMixture(Normal(mu = 0, sigma = 1) + Uniform(a = -1, b = 1))) with f=[x]->[exp(x)]

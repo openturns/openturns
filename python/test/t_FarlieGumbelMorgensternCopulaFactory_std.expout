@@ -1,0 +1,8 @@
+distribution= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.7
+Estimated distribution= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.616721
+Default distribution= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.5
+Distribution from parameters= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.7
+FarlieGumbelMorgensternCopula          = class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.7
+Estimated farlieGumbelMorgensternCopula= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.616721
+Default farlieGumbelMorgensternCopula= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.5
+FarlieGumbelMorgensternCopula from parameters= class=FarlieGumbelMorgensternCopula name=FarlieGumbelMorgensternCopula dimension=2 theta=0.7

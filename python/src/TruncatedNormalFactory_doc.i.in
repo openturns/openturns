@@ -1,0 +1,9 @@
+%feature("docstring") OT::TruncatedNormalFactory
+"Truncated Normal factory.
+
+Available constructor:
+    TruncatedNormalFactory()
+
+See also
+--------
+DistributionFactory"

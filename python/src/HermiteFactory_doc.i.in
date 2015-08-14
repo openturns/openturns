@@ -1,0 +1,41 @@
+%feature("docstring") OT::HermiteFactory
+"Hermite specific orthonormal univariate polynomial family.
+
+For the :class:`~openturns.Normal` distribution.
+
+Available constructor:
+    HermiteFactory()
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+
+The recurrence coefficients for the Hermite polynomials come analytically and
+read:
+
+.. math::
+
+    \begin{array}{rcl}
+        a_i & = & \displaystyle \frac{1}{\sqrt{i + 1}} \\
+        b_i & = & 0 \\
+        c_i & = & \displaystyle - \sqrt{\frac{i}{i + 1}}
+    \end{array}, \quad 1 < i
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HermiteFactory()
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+X
+-0.707107 + 0.707107 * X^2"

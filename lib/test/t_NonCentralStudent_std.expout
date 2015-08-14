@@ -1,0 +1,50 @@
+Testing class NonCentralStudent
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=NonCentralStudent name=NonCentralStudent dimension=1 nu=7.2 delta=4.8 gamma=-3.7
+streamObject(const T & anObject)
+class=NonCentralStudent name=NonCentralStudent dimension=1 nu=7.2 delta=4.8 gamma=-3.7
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=NonCentralStudent name=NonCentralStudent dimension=1 nu=7.2 delta=4.8 gamma=-3.7
+Distribution NonCentralStudent(nu = 7.2, delta = 4.8, gamma = -3.7)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[4.76055]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[3.3233] last=class=NumericalPoint name=Unnamed dimension=1 values=[3.54549]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.6744]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.22198]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0278822]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0278822]
+log pdf=-1.4096
+pdf     =0.244242
+pdf (FD)=0.244242
+cdf=0.426086
+ccdf=0.573914
+survival=0.573914
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.0110231,-0.00328889,0.0278822]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.0110231,-0.00328889,0.0278822]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[5.47724]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.68455]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[2.07189]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.67602]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[10.0582]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.29272]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[nu : 7.2, delta : 4.8, gamma : -3.7]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[5.38455]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[33.2862]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[240.367]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[2093.79]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[23449.8]
+Standard representative=NonCentralStudent(nu = 7.2, delta = 4.8, gamma = 0)

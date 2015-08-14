@@ -1,0 +1,8 @@
+distribution= class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.5
+Estimated distribution= class=ClaytonCopula name=ClaytonCopula dimension=2 theta=1.33821
+Default distribution= ClaytonCopula(theta = 2)
+Distribution from parameters= ClaytonCopula(theta = 1.5)
+ClaytonCopula          = ClaytonCopula(theta = 1.5)
+Estimated claytonCopula= ClaytonCopula(theta = 1.33821)
+Default claytonCopula= ClaytonCopula(theta = 2)
+ClaytonCopula from parameters= ClaytonCopula(theta = 1.5)

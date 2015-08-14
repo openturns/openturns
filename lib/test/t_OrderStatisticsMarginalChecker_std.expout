@@ -1,0 +1,6 @@
+marginals=[Uniform(a = -1, b = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4, b = 5),Uniform(a = 5, b = 6),Uniform(a = 5.5, b = 6.5)]
+isCompatible=true
+partition=[0,2]
+marginals=[Uniform(a = -1, b = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4, b = 5),Uniform(a = 5, b = 6),Uniform(a = 5.5, b = 6.5),Uniform(a = 0, b = 1)]
+isCompatible=false
+partition=[0,2]

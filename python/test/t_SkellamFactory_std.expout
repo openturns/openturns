@@ -1,0 +1,8 @@
+distribution= class=Skellam name=Skellam dimension=1 lambda1=10 lambda2=5
+Estimated distribution= class=Skellam name=Skellam dimension=1 lambda1=10.1554 lambda2=5.1667
+Default distribution= Skellam(lambda1 = 1, lambda2 = 1)
+Distribution from parameters= Skellam(lambda1 = 10, lambda2 = 5)
+Skellam          = Skellam(lambda1 = 10, lambda2 = 5)
+Estimated skellam= Skellam(lambda1 = 10.1554, lambda2 = 5.1667)
+Default skellam= Skellam(lambda1 = 1, lambda2 = 1)
+Skellam from parameters= Skellam(lambda1 = 10, lambda2 = 5)

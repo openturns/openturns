@@ -1,0 +1,54 @@
+> diff(sinh(sinh(x)),x);
+
+                        cosh(sinh(x)) cosh(x)
+
+> evalf[25](int(exp(-x^2),x=0..infinity));
+
+                     0.8862269254527580136490835
+
+> sinh(sinh(5.));
+
+                                         32
+                          0.8414240067 10
+
+> solve(sinh(sinh(x))=1e50,x);
+
+                             5.445223815
+
+> simplify(diff(tanh(sinh(t)),t));
+
+                               cosh(t)
+                            --------------
+                                         2
+                            cosh(sinh(t))
+
+> convert(simplify(1+tanh(sinh(t))),exp);
+> convert(simplify(1-tanh(sinh(t))),exp);
+
+  exp(1/2 exp(t) - 1/2 exp(-t))/(1/2 exp(1/2 exp(t) - 1/2 exp(-t))
+
+         + 1/2 exp(-1/2 exp(t) + 1/2 exp(-t)))
+
+
+  exp(-1/2 exp(t) + 1/2 exp(-t))/(1/2 exp(1/2 exp(t) - 1/2 exp(-t))
+
+         + 1/2 exp(-1/2 exp(t) + 1/2 exp(-t)))
+
+> convert(simplify(diff(tanh(sinh(t)),t)),exp);
+
+  (1/2 exp(t) + 1/2 exp(-t))/(1/2 exp(1/2 exp(t) - 1/2 exp(-t))
+
+                                              2
+         + 1/2 exp(-1/2 exp(t) + 1/2 exp(-t)))
+
+> evalf[12](tanh(sinh(7.0*0.5)));
+
+                            1.00000000000
+
+> convert(solve(tanh(sinh(k*h))=1-eps,k),exp);
+
+                       arcsinh(arctanh(-1 + eps))
+                     - --------------------------
+                                   h
+
+> 

@@ -1,0 +1,109 @@
+%feature("docstring") OT::CompositeDistribution
+"Composite distribution.
+
+Helper class for defining the push-forward distribution of a given univariate
+distribution by a given scalar function.
+
+Available constructors:
+    CompositeDistribution(*g=NumericalMathFunction('x', 'x'), distX=Uniform(0.0,1.0)*)
+
+    CompositeDistribution(*g, distX, a, v*)
+
+Parameters
+----------
+g : :class:`~openturns.NumericalMathFunction`, :math:`\Rset \rightarrow \Rset`
+distX : :class:`~openturns.Distribution`, univariate
+a : sequence of float of dimension :math:`N+1`, :math:`a[0]=\inf \supp{distX}`, :math:`a[N]=\sup \supp{distX}`
+    The bounds of the intervals on which :math:`g` is monotone, sorted in
+    ascending order.
+v : sequence of float of dimension :math:`N+1`,
+    The values taken by :math:`g` on each bound: :math:`v[k]=g(a[k])`.
+
+Returns
+-------
+distY : :class:`~openturns.Distribution`, univariate
+    :math:`distY` is the push-forward distribution of :math:`distX` by :math:`g`.
+
+
+Notes
+-----
+We note :math:`X` a scalar random variable which distribution is :math:`distX`,
+which probability density function is :math:`f_X`.
+
+Then :math:`distY` is the distribution of the scalar random variable
+:math:`Y=g(X)`, which probability density function :math:`f_Y` is defined as:
+
+.. math::
+
+    \displaystyle f_Y(y) = \sum_{k =0}^{k=N} \frac{f_X (g^{-1}(y))}{|g'\circ g^{-1}(y)|}1_{y \in g^{-1}([a_k, a_{k+1}))}
+
+with :math:`a_0=\inf \supp{f_X}`, :math:`a_N=\sup \supp{f_X}` and
+:math:`(a_1, \dots, a_N)` such that :math:`g` is monotone over
+:math:`[a_k, a_{k+1})` for :math:`0 \leq k \leq N`.
+
+Its first moments are obtained by numerical integration.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> g = ot.NumericalMathFunction('x', 'sin(x) + cos(x)')
+>>> distY = ot.CompositeDistribution(g, ot.Normal(1.0, 0.5))
+
+>>> g = ot.NumericalMathFunction('x', 'abs(x)')
+>>> a = [-1.0, 0.0, 2.0]
+>>> v = [1.0, 0.0, 2.0]
+>>> distZ = ot.CompositeDistribution(g, ot.Uniform(-1.0, 2.0), a, v)
+
+>>> distX = ot.Normal(0.0, 1.0)
+>>> a0 = distX.getRange().getLowerBound()
+>>> aN = distX.getRange().getUpperBound()
+>>> a = [a0[0], 0.0, 0.0, aN[0]]
+>>> g = ot.NumericalMathFunction('x', '1.0/x')
+>>> v = [g(a0)[0], -ot.SpecFunc.MaxNumericalScalar, ot.SpecFunc.MaxNumericalScalar, g(aN)[0]]
+>>> distT = ot.CompositeDistribution(g, distX, a, v)
+
+
+Draw a sample:
+
+>>> sample = distT.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::getFunction
+"Accessor to the function.
+
+Returns
+-------
+g :  :class:`~openturns.NumericalMathFunction`, :math:`\Rset \rightarrow \Rset`
+    the function :math:`g`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::getAntecedent
+"Accessor to the antecedent distribution.
+
+Returns
+-------
+distX : :class:`~openturns.Distribution`, univariate
+    Antecedent distribution :math:`distX`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::setFunction
+"Fix the function through wich the distribution is push-forwarded.
+
+Parameters
+----------
+g :  :class:`~openturns.NumericalMathFunction`, :math:`\Rset \rightarrow \Rset`
+    the function :math:`g`."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::setAntecedent
+"Fix the antecedent distribution which is push-forwarded.
+
+Parameters
+----------
+distX : :class:`~openturns.Distribution`, univariate
+   Distribution of the antecedent :math:`distX`."

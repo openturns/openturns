@@ -1,0 +1,65 @@
+%feature("docstring") OT::FrankCopula
+"Frank copula.
+
+Available constructor:
+    FrankCopula(*theta=2.0*)
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta`, :math:`\theta \in \Rset`.
+
+Notes
+-----
+The Frank copula is a bivariate symmetric Archimedean copula defined by:
+
+.. math::
+
+    C(u_1, u_2) = -\frac{1}{\theta}
+                  log \left( 1 +
+                             \frac{(e^{-\theta u_1} - 1)(e^{-\theta u_2} - 1)}
+                                  {e^{-\theta} - 1}
+                      \right)
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+And its generator is:
+
+.. math::
+
+    \varphi(t) = -\log \left( \frac{e^{-\theta t}-1}{e^{-\theta}-1} \right)
+
+See also
+--------
+ArchimedeanCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.FrankCopula(2.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FrankCopula::getTheta
+"Get the parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    Parameter :math:`\theta` of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FrankCopula::setTheta
+"Set the parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta` of the copula."

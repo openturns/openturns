@@ -1,0 +1,7 @@
+Domain= [-1, 2]
+[-1, 2]
+Dimension= 2
+is point  [0.5,0.5]  inside  [-1, 2]
+[-1, 2] ?  True
+is point  [2.5,2.5]  inside  [-1, 2]
+[-1, 2] ?  False

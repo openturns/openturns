@@ -1,0 +1,99 @@
+%feature("docstring") OT::NonCentralChiSquare
+"NonCentralChiSquare distribution.
+
+Available constructors:
+    NonCentralChiSquare(*nu=5.0, lambda=0.*)
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degree of freedom.
+lambda : float, :math:`\lambda \geq 0`
+    Non-centrality parameter :math:`\lambda`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \sum_{j=0}^{\infty} e^{-\lambda}
+                                 \frac{\lambda^j}{j!}p_{\chi^2(\nu + 2j)}(x),
+             \quad x \in [0; +\infty[
+
+where :math:`p_{\chi^2(q)}` is the probability density function of a
+:math:`\chi^2(q)` random variate.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \nu + \lambda \\
+        \Var{X} & = & 2(\nu + 2\lambda)
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.NonCentralChiSquare(6.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::getNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Returns
+-------
+nu : float
+    Generalised number degrees of freedom :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::getLambda
+"Accessor to the distribution's non-centrality parameter :math:`\lambda`.
+
+Returns
+-------
+lambda : float
+    Non-centrality parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setLambda
+"Accessor to the distribution's non-centrality parameter :math:`\lambda`.
+
+Parameters
+----------
+lambda : float
+    Non-centrality parameter :math:`\lambda`."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setNuLambda
+"Accessor to the distribution's non-centrality parameters.
+
+Parameters :math:`\lambda` and generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom :math:`\nu`.
+lambda : float
+    Non-centrality parameter :math:`\lambda`."

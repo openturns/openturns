@@ -1,0 +1,10 @@
+distribution= class=NegativeBinomial name=NegativeBinomial dimension=1 r=15 p=0.7
+Estimated distribution= class=NegativeBinomial name=NegativeBinomial dimension=1 r=15.0803 p=0.699114
+Default distribution= class=NegativeBinomial name=NegativeBinomial dimension=1 r=1 p=0.5
+Distribution from parameters= class=NegativeBinomial name=NegativeBinomial dimension=1 r=15 p=0.7
+Default distribution= NegativeBinomial(r = 1, p = 0.5)
+Distribution from parameters= NegativeBinomial(r = 15, p = 0.7)
+NegativeBinomial          = NegativeBinomial(r = 15, p = 0.7)
+Estimated negativeBinomial= NegativeBinomial(r = 15.0803, p = 0.699114)
+Default negativeBinomial= NegativeBinomial(r = 1, p = 0.5)
+NegativeBinomial from parameters= NegativeBinomial(r = 15, p = 0.7)

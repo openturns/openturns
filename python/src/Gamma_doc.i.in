@@ -1,0 +1,163 @@
+%feature("docstring") OT::Gamma
+"Gamma distribution.
+
+Available constructors:
+    Gamma(*arg1=1, arg2=1.0, gamma=0., ot.Gamma.KLAMBDA*)
+
+Parameters
+----------
+arg1 : float
+    If `parameters_set == ot.Gamma.KLAMBDA`: shape parameter :math:`k > 0` with
+    :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+
+    If `parameters_set == ot.Gamma.MUSIGMA`: mean :math:`\mu`.
+arg2 : float
+    If `parameters_set == ot.Gamma.KLAMBDA`: scale parameter :math:`\lambda > 0` with
+    :math:`\lambda = (\mu - \gamma) / \sigma^2`.
+
+    If `parameters_set == ot.Gamma.MUSIGMA`: standard deviation :math:`\sigma > 0`.
+gamma : float, optional
+    Shift parameter :math:`\gamma`.
+parameters_set : int, optional
+    Integer telling which parameters set is used for defining the
+    distribution (amongst `ot.Gamma.KLAMBDA, ot.Gamma.MUSIGMA`).
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\lambda}{\Gamma(k)}
+             \left(\lambda (x - \gamma)\right)^{k - 1}
+             \exp\left(- \lambda (x - \gamma)\right),
+             \quad x \in [\gamma; +\infty[
+
+with :math:`k, \lambda > 0` and :math:`\gamma \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{k}{\lambda} + \gamma \\
+        \Var{X} & = & \frac{\sqrt{k}}{\lambda}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Gamma(1., 1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getK
+"Accessor to the distribution's shape parameter :math:`k`.
+
+Returns
+-------
+k : float
+    Shape parameter :math:`k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getLambda
+"Accessor to the distribution's scale parameter :math:`\lambda`.
+
+Returns
+-------
+lambda : float
+    Scale parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getGamma
+"Accessor to the distribution's shift parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Shift parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getSigma
+"Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setK
+"Accessor to the distribution's shape parameter :math:`k`.
+
+Parameters
+----------
+k : float, :math:`k > 0`
+    Shape parameter :math:`k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setLambda
+"Accessor to the distribution's scale parameter :math:`\lambda`.
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Scale parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setKLambda
+"Set the distribution's parameters.
+
+For scale parameter :math:`\lambda` and shape parameter :math:`k`.
+
+Parameters
+----------
+k : float, :math:`k > 0`
+    Shape parameter :math:`k`.
+lambda : float, :math:`\lambda > 0`
+    Scale parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setGamma
+"Accessor to the distribution's shift parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float, :math:`\gamma \in \Rset`
+    Shift parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setMuSigma
+"Accessor to the distribution's mean and standard deviation.
+
+Parameters
+----------
+mu : float, :math:`\mu > \gamma`
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

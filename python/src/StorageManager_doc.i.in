@@ -1,0 +1,146 @@
+%feature("docstring") OT::StorageManager
+"Define the way OpenTURNS' objects are saved and reloaded.
+
+Available constructors:
+    StorageManager(*defaultVersion=1*)
+
+Parameters
+----------
+defaultVersion : positive int
+    Argument interpreted as the name of the object in a user point of view.
+    This name is never used in another way than for user information. This name
+    has no meaning to the platform.
+
+Notes
+-----
+A StorageManager object can be used only through its derived class
+:class:`~openturns.XMLStorageManager`.
+
+See also
+--------
+XMLStorageManager"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::finalize
+"Do some administrative tasks after saving/reloading.
+
+:Available usages:
+    finalize(*ot.SaveAction()*)
+
+    finalize(*ot.LoadAction()*)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::getDefaultStudyVersion
+"Return the version of the study that the manager can read/write.
+
+Returns
+-------
+version : positive int
+    Version of the study that the manager can read/write."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::getStudyVersion
+"Get the study version.
+
+Returns
+-------
+version : positive int
+    Study version."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::setStudyVersion
+"Set the study version.
+
+Parameters
+----------
+version : positive int
+    Study version."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::getStudy
+"Get the study bound to the manager.
+
+Returns
+-------
+study : :class:`~openturns.Study`
+    Study bound to the manager."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::setStudy
+"Set the study bound to the manager.
+
+Parameters
+----------
+study : :class:`~openturns.Study`
+    Study bound to the manager."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::initialize
+"Do some administrative tasks before saving/reloading.
+
+:Available usages:
+    initialize(*ot.SaveAction()*)
+
+    initialize(*ot.LoadAction()*)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::isSavedObject
+"Tell if an object is already saved.
+
+Returns
+-------
+isSaved : bool
+    *True* if an object is already saved."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::load
+"Reload the whole study from the medium.
+
+Parameters
+----------
+study : :class:`~openturns.Study`
+    The study to reload objects from."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::markObjectAsSaved
+"Tell that an object is saved.
+
+Parameters
+----------
+Id : int
+    Internal identifier of the object."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::read
+"Read and create the internal representation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::save
+"Save the object onto the medium.
+
+Parameters
+----------
+object : :class:`~openturns.PersistentObject`
+    Object to be saved.
+label : str
+    Name associate with the object to be saved.
+fromStudy : bool, optional
+    Flag telling if the object was explicitely put in the study or not. By
+    default, it is equal to *False*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StorageManager::write
+"Write the internal representation."

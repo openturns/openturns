@@ -1,0 +1,7 @@
+matrix1 =  class=IdentityMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
+pt =  class=NumericalPoint name=Unnamed dimension=2 values=[5,0]
+result =  class=NumericalPoint name=Unnamed dimension=2 values=[5,0]
+determinant = 1.000000
+ev =  class=NumericalPoint name=Unnamed dimension=2 values=[1,1]
+isSPD =  true
+matrix2 =  class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]

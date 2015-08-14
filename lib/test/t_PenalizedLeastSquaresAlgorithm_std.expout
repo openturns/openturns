@@ -1,0 +1,16 @@
+Uniform weight, no penalization
+Coefficients=class=NumericalPoint name=Unnamed dimension=4 values=[-0.292364,-0.464364,0.781818,1.38182]
+Residual=0.0212678
+Relative error=0.20229
+Uniform weight, spherical penalization
+Coefficients=class=NumericalPoint name=Unnamed dimension=4 values=[-0.0288004,0.0729819,0.334311,0.57618]
+Residual=0.0294134
+Non uniform weight, no penalization
+Coefficients=class=NumericalPoint name=Unnamed dimension=4 values=[-0.244662,-0.45609,0.657895,1.30075]
+Residual=0.0590532
+Non uniform weight, spherical penalization
+Coefficients=class=NumericalPoint name=Unnamed dimension=4 values=[-0.222214,-0.28088,0.59494,1.07289]
+Residual=0.065384
+Non uniform weight, non spherical penalization
+Coefficients=class=NumericalPoint name=Unnamed dimension=4 values=[-0.205926,-0.283995,0.575234,1.07306]
+Residual=0.0657827

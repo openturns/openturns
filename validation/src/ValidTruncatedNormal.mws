@@ -1,0 +1,277 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 977 "restart:\nwith(Stat
+istics):\nassume(sigma>0):\nnormal_:=RandomVariable(Normal(mu,sigma)):
+\n\nsimplificationRules:=x=mu+sigma*X,a=mu+sigma*A,b=mu+sigma*B,erf(sq
+rt(2)*A/2)=2*PhiA-1,erf(sqrt(2)*B/2)=2*PhiB-1,erf(sqrt(2)*X/2)=2*PhiX-
+1,exp(-A^2/2)=sqrt(2*Pi)*phiA,exp(-B^2/2)=sqrt(2*Pi)*phiB,exp(-X^2/2)=
+sqrt(2*Pi)*phiX:\nMySimplify:=proc(u,fact)\n  local res;\n  res:=map(_
+x->(subs(simplificationRules,_x)),u);\n  if fact then\n    res:=map(_x
+->factor(subs(simplificationRules,_x)),factor(res));\n  fi:\n  res\nen
+d:\n\npdf:=PDF(normal_,x)/(subs(x=b,CDF(normal_,x))-subs(x=a,CDF(norma
+l_,x))):\nPDF_:=MySimplify(pdf,true);\nddf:=diff(pdf,x):\nDDF_:=MySimp
+lify(ddf,true);\ncdf:=int(subs(x=t,pdf),t=a..x):\nCDF_:=MySimplify(cdf
+,true);\nmu_:=collect(collect(int(x*pdf,x=a..b),mu),sigma);\nMU_:=MySi
+mplify(mu_,true);\nvar_:=int((x-mu_)^2*pdf,x=a..b):\nVAR_:=MySimplify(
+var_,true);\nskew_:=int((x-mu_)^3*pdf,x=a..b):\nSKEW_:=MySimplify(skew
+_,true);\nkurt_:=int((x-mu_)^4*pdf,x=a..b):\nKURT_:=MySimplify(kurt_,t
+rue);\n" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%PDF_G,$*(%%phiXG\"\"\"%'
+sigma|irG!\"\",&%%PhiBGF*%%PhiAGF(F*F*" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%%DDF_G**%\"XG\"\"\"%%phiXGF'%'sigma|irG!\"#,&%%PhiBG!\"\"%%Phi
+AGF'F-" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%CDF_G*&,&%%PhiAG\"\"\"%%P
+hiXG!\"\"F(,&%%PhiBGF*F'F(F*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$mu_
+G,&**,&*&\"\"##\"\"\"F)-%$expG6#,$*(F)!\"\",(*(F)F+%#muGF+%\"aGF+F1*$)
+F4F)F+F+*$)F5F)F+F+F+%'sigma|irG!\"#F1F+F1*&F)F*-F-6#,$*(F)F1,(*(F)F+F
+4F+%\"bGF+F1F6F+*$)FCF)F+F+F+F:F;F1F+F+F+,&-%$erfG6#,$**F)F1F)F*,&FCF+
+F4F1F+F:F1F+F+-FH6#,$**F)F1F)F*,&F5F+F4F1F+F:F1F+F1F1%#PiG#F1F)F:F+F1*
+*,&*&FRF*FMF+F+*&FRF*FGF+F1F+FFF1FRFSF4F+F1" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%$MU_G,$*&,**&%'sigma|irG\"\"\"%%phiAGF*F**&F)F*%%phiB
+GF*!\"\"*&%%PhiBGF*%#muGF*F**&%%PhiAGF*F1F*F.F*,&F0F.F3F*F.F." }}
+{PARA 12 "" 1 "" {XPPMATH 20 "6#>%%VAR_G,$*&#\"\"\"\"\"#F(*,%'sigma|ir
+GF),6*,F)#F(F)%#PiGF(-%$expG6#,$*(F)!\"\",,*&\"\"'F()%#muGF)F(F(**\"\"
+%F(F:F(F+F(%\"AGF(F(*&)F+F)F()F=F)F(F(**F<F(F:F(F+F(%\"BGF(F(*(F)F(F?F
+()FBF)F(F(F(F+!\"#F(F(F=F(%%PhiAGF(F(*,F)F.F/F(F0F(%%PhiBGF(F=F(F5*,F)
+F.F/F(-F16#,$*(F)F5,,*&F8F(F9F(F(**F<F(F:F(F+F(FBF(F(*&F?F(FDF(F(**F<F
+(F:F(F+F(F=F(F(*(F)F(F?F(F@F(F(F(F+FEF(F(FBF(FFF(F5*(F)F(F/F.-F16#,$*(
+F)F5,,*&F8F(F9F(F(**F<F(F:F(F+F(F=F(F(F>F(**F<F(F:F(F+F(FBF(F(FQF(F(F+
+FEF(F(F5*&-F16#*&,**&\"\"$F(F9F(F(**F)F(F:F(F+F(FBF(F(**F)F(F:F(F+F(F=
+F(F(F>F(F(F+FEF(F/F.F(*&-F16#*&,**&F]oF(F9F(F(**F)F(F:F(F+F(F=F(F(**F)
+F(F:F(F+F(FBF(F(FQF(F(F+FEF(F/F.F(*,F)F.F/F(FJF(FHF(FBF(F(**F)F()F/#F]
+oF)F(-F16#*&,,*&F]oF(F9F(F(**F)F(F:F(F+F(F=F(F(F>F(**F)F(F:F(F+F(FBF(F
+(FQF(F(F+FEF()FFF)F(F5*,F<F(FjoF(F\\pF(FHF(FFF(F(**F)F(FjoF(F\\pF()FHF
+)F(F5F(-F16#,$F^pF5F(,&FHF5FFF(FEF/#!\"$F)F(F5" }}{PARA 12 "" 1 "" 
+{XPPMATH 20 "6#>%&SKEW_G,$*&#\"\"\"\"\"#F(*,%'sigma|irG\"\"$,R**F)#F(F
+))%#PiGF)F(-%$expG6#,$*(F)!\"\",,*&\"\"'F()%#muGF)F(F(**\"\"%F(F<F(F+F
+(%\"AGF(F(*&)F+F)F()F?F)F(F(**F>F(F<F(F+F(%\"BGF(F(*(F)F(FAF()FDF)F(F(
+F(F+!\"#F(F()%%PhiAGF)F(F7*0F)F(F)F/F0F(-F36#,$*(F)F7,,*&F:F(F;F(F(**F
+>F(F<F(F+F(FDF(F(*&FAF(FFF(F(**F>F(F<F(F+F(F?F(F(*(F)F(FAF(FBF(F(F(F+F
+GF(F(FIF(FFF(%%PhiBGF(F(*.F)F(F)F/F0F(F2F(FIF(FUF(F(*0F)F(F)F/F0F(F2F(
+FIF(FBF(FUF(F7*,F,F(-F36#*&,**&F,F(F;F(F(**F)F(F<F(F+F(F?F(F(**F)F(F<F
+(F+F(FDF(F(FRF(F(F+FGF()F1#F,F)F(FIF(F?F(F(*,F,F(-F36#*&,**&F,F(F;F(F(
+**F)F(F<F(F+F(FDF(F(**F)F(F<F(F+F(F?F(F(F@F(F(F+FGF(FjnF(FIF(FDF(F(**F
+,F(F)F/F1F(-F36#,$*(F)F7,**&F:F(F;F(F(**F>F(F<F(F+F(F?F(F(F@F(**F>F(F<
+F(F+F(FDF(F(F(F+FGF(F(F(*(F)F/F1F(-F36#,$*(F)F7,,*&F:F(F;F(F(**F>F(F<F
+(F+F(FDF(F(FRF7**F>F(F<F(F+F(F?F(F(*(F)F(FAF(FBF(F(F(F+FGF(F(F7*(F)F/F
+1F(-F36#,$*(F)F7,,*&F:F(F;F(F7**F>F(F<F(F+F(F?F(F7F@F(**F>F(F<F(F+F(FD
+F(F7*(F)F(FAF(FFF(F7F(F+FGF7F(F(**F,F(F)F/F1F(-F36#,$*(F)F7,**&F:F(F;F
+(F(**F>F(F<F(F+F(F?F(F(**F>F(F<F(F+F(FDF(F(FRF(F(F+FGF(F(F7*,F)F/F0F(F
+KF(FHF(FFF(F7*,F,F(FjnF(-F36#,$*(F)F7,,*&F:F(F;F(F(**F>F(F<F(F+F(F?F(F
+(F@F(**F>F(F<F(F+F(FDF(F(FRF(F(F+FGF(F(FIF(F?F(F7*,F,F(FjnF(F\\rF(FIF(
+FDF(F7*,F)F/F0F(FKF(FFF()FUF)F(F7*,F,F(FjnF(F\\rF(FDF(FUF(F(**F)F/F0F(
+FKF(FHF(F(*,F)F/F0F(F2F(FBF(FfrF(F(**F)F/F0F(FKF(FfrF(F(*,F)F/F0F(F2F(
+FHF(FBF(F(*,F,F(FYF(FjnF(FUF(F?F(F7**F)F/F0F(F2F(FfrF(F7*,F,F(FjnF(F\\
+rF(FUF(F?F(F(*,F,F(F]oF(FjnF(FDF(FUF(F7*.F)F(F)F/F0F(FKF(FIF(FUF(F7F(-
+F36#,$*&,,*&F,F(F;F(F(**F)F(F<F(F+F(F?F(F(F@F(**F)F(F<F(F+F(FDF(F(FRF(
+F(F+FGF7F(,&FUF7FIF(!\"$F1#!\"&F)F(F7" }}{PARA 12 "" 1 "" {XPPMATH 20 
+"6#>%&KURT_G,$*&#\"\"\"\"\"%F(*,%'sigma|irGF),br**F)F(-%$expG6#*&,,*&
+\"\"'F()%#muG\"\"#F(F(**F)F(F6F(F+F(%\"BGF(F(*&)F+F7F()F9F7F(F(**F)F(F
+6F(F+F(%\"AGF(F(*(F7F(F;F()F>F7F(F(F(F+!\"#F()%#PiG#\"\"&F7F()%%PhiAGF
+7F(F(**\"#7F()FC#\"\"(F7F(-F/6#,$*(F7F(,,*&\"\"$F(F5F(F(**F7F(F6F(F+F(
+F>F(F(*&F;F(F@F(F(**F7F(F6F(F+F(F9F(F(F:F(F(F+FAF(F()FGF)F(!\"\"**F)F(
+-F/6#*&,,*&F4F(F5F(F(**F)F(F6F(F+F(F>F(F(FUF(**F)F(F6F(F+F(F9F(F(*(F7F
+(F;F(F<F(F(F(F+FAF(FBF(FFF(F(**\"\")F(FBF(-F/6#,$*(F7FX,,*&FIF(F5F(F(*
+*F]oF(F6F(F+F(F>F(F(*(FSF(F;F(F@F(F(**F]oF(F6F(F+F(F9F(F(*(FSF(F;F(F<F
+(F(F(F+FAF(F(FFF(FX**FIF(FJF(FMF()%%PhiBGF)F(FX**F]oF(FBF(F^oF()FjoF7F
+(FX**F)F(F.F(FBF(F\\pF(F(**F)F(FZF(FBF(F\\pF(F(*(FSF(-F/6#,$*(F7F(,**&
+FSF(F5F(F(**F7F(F6F(F+F(F>F(F(**F7F(F6F(F+F(F9F(F(F:F(F(F+FAF(F()FC#FS
+F7F(F(*(FSF(-F/6#,$*(F7F(,**&FSF(F5F(F(**F7F(F6F(F+F(F9F(F(**F7F(F6F(F
++F(F>F(F(FUF(F(F+FAF(F(FhpF(F(*(\"#=F(-F/6#*&,,*&F4F(F5F(F(**F)F(F6F(F
++F(F>F(F(FUF(**F)F(F6F(F+F(F9F(F(F:F(F(F+FAF(FhpF(F(*(FIF(FhpF(-F/6#,$
+*(F7FX,,*&FIF(F5F(F(**F]oF(F6F(F+F(F>F(F(FUF(**F]oF(F6F(F+F(F9F(F(*(FS
+F(F;F(F<F(F(F(F+FAF(F(FX*(FIF(FhpF(-F/6#,$*(F7FX,,*&FIF(F5F(F(**F]oF(F
+6F(F+F(F>F(F(*(FSF(F;F(F@F(F(**F]oF(F6F(F+F(F9F(F(F:F(F(F+FAF(F(FX*,F]
+oF(FBF(FZF(F\\pF(F@F(F(*,F]oF(F.F(FBF(FjoF(FGF(FX*,F]oF(FZF(FBF(FjoF(F
+GF(FX*,F]oF(F.F(FBF(F<F(FFF(F(*,\"#sF(FJF(FMF(F\\pF(FFF(FX*,\"#[F(FJF(
+FMF(FjoF()FGFSF(F(*,FgsF(FJF(FMF()FjoFSF(FGF(F(*,F]oF(FBF(F^oF(F<F(FFF
+(FX*,F]oF(F.F(FBF(F\\pF(F<F(F(*,F]oF(FBF(F^oF(F\\pF(F<F(FX*,F]oF(FBF(F
+ZF(F@F(FFF(F(*,F]oF(FBF(F^oF(F@F(FFF(FX*,\"#;F(FBF(F^oF(FjoF(FGF(F(*,F
+]oF(FBF(F^oF(F\\pF(F@F(FX*.FIF(F7#F(F7)FCF7F(-F/6#,$*(F7FX,,*&FIF(F5F(
+F(**F]oF(F6F(F+F(F>F(F(**F]oF(F6F(F+F(F9F(F(*(FSF(F;F(F<F(F(*(F7F(F;F(
+F@F(F(F(F+FAF(F(FjoF(F>F(F(*0F4F(F7Fdt)FCFSF(-F/6#,$*(F7FX,,*&FIF(F5F(
+F(**F]oF(F6F(F+F(F>F(F(*(FSF(F;F(F@F(F(**F]oF(F6F(F+F(F9F(F(*(F)F(F;F(
+F<F(F(F(F+FAF(F(F\\pF()F>FSF(FGF(F(*0FdqF(F7FdtFauF(-F/6#,$*(F7FX,,*&F
+IF(F5F(F(**F]oF(F6F(F+F(F9F(F(*(FSF(F;F(F<F(F(**F]oF(F6F(F+F(F>F(F(*(F
+)F(F;F(F@F(F(F(F+FAF(F(F\\pF(FGF(F9F(FX*.FatF(F.F(FBF(FjoF(F<F(FGF(FX*
+.FatF(FBF(FZF(FjoF(FGF(F@F(FX*0FdqF(F7FdtFauF(F^vF(FjoF(FFF(F9F(F(*.FI
+F(F7FdtFetF(FftF(FGF(F>F(FX*0FdqF(F7FdtFauF(FbuF(F\\pF(FGF(F>F(F(*0Fdq
+F(F7FdtFauF(FbuF(FjoF(F>F(FFF(FX*0F4F(F7FdtFauF(F^vF(FjoF()F9FSF(FFF(F
+(*.F4F(F7FdtFauF(FbuF(FhsF(F>F(F(*.F4F(F7FdtFetF(FftF(F9F(FGF(FX*.F4F(
+F7FdtFetF(-F/6#,$*(F7FX,,*&FIF(F5F(F(**F]oF(F6F(F+F(F>F(F(FUF(**F]oF(F
+6F(F+F(F9F(F(*(F)F(F;F(F<F(F(F(F+FAF(F(FGF(F>F(F(*.F4F(F7FdtFetF(-F/6#
+,$*(F7FX,,*&FIF(F5F(F(**F]oF(F6F(F+F(F9F(F(F:F(**F]oF(F6F(F+F(F>F(F(*(
+F)F(F;F(F@F(F(F(F+FAF(F(F9F(FGF(FX*.FIF(F7FdtFetF(-F/6#,$*(F7FX,,*&FIF
+(F5F(F(**F]oF(F6F(F+F(F>F(F(*(FSF(F;F(F@F(F(**F]oF(F6F(F+F(F9F(F(*(F7F
+(F;F(F<F(F(F(F+FAF(F(F9F(FGF(F(*.FIF(F7FdtFetF(FgxF(FjoF(F9F(FX*.F4F(F
+7FdtFetF(FgxF(FjoF(F>F(FX*.F4F(F7FdtFauF(F^vF(FjsF(F9F(F(*.F4F(F7FdtFa
+uF(FbuF(FjsF(F>F(FX*.F7F(F7FdtFauF(FbuF(F\\vF(FhsF(F(*.F7F(F7FdtFauF(F
+^vF(FjsF(F_wF(F(*0F4F(F7FdtFauF(FbuF(FjoF(F\\vF(FFF(FX*.F4F(F7FdtFetF(
+FgxF(FGF(F>F(F(*.F4F(F7FdtFauF(F^vF(FhsF(F9F(FX*.FatF(FBF(F^oF(FjoF(FG
+F(F@F(F(*.FatF(FBF(F^oF(FjoF(F<F(FGF(F(*0F4F(F7FdtFauF(F^vF(F\\pF(F_wF
+(FGF(FX*.F7F(F7FdtFauF(FbuF(FjsF(F\\vF(FX*.F4F(F7FdtFetF(FcwF(FjoF(F>F
+(FX*.F7F(F7FdtFauF(F^vF(F_wF(FhsF(FX*.F4F(F7FdtFetF(F]xF(FjoF(F9F(F(*.
+F4F(F7FdtFetF(FftF(FjoF(F9F(F(F(-F/6#,$*(F7F(FQF(F+FAFXF(,&FjoFXFGF(!
+\"%FC#!\"(F7F(FX" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 739 "qdf:=s
+olve(cdf=p,x):\nQDF_:=MySimplify(qdf,true);\npdfgr:=[diff(pdf,mu),diff
+(pdf,sigma),diff(pdf,a),diff(pdf,b)]:\nPDFGR_:=MySimplify(pdfgr,true);
+\ncdfgr:=[diff(cdf,mu),diff(cdf,sigma),diff(cdf,a),diff(cdf,b)]:\nCDFG
+R_:=MySimplify(cdfgr,true);\nvalnum:=mu=0.5,sigma=3,a=-2,b=2:\nddf_num
+:=evalf(subs(valnum,x=1,ddf));\npdf_num:=evalf(subs(valnum,x=1,pdf));
+\ncdf_num:=evalf(subs(valnum,x=1,cdf));\npdfgr_num:=evalf(subs(valnum,
+x=1,map(_x->_x,pdfgr)));\ncdfgr_num:=evalf(subs(valnum,x=1,cdfgr));\nq
+uantile_num:=evalf(solve(subs(valnum,cdf)=0.95,x));\nmu_num:=evalf(sub
+s(valnum,mu_));\nstd_num:=evalf(subs(valnum,sqrt(var_)));\nskew_num:=e
+valf(subs(valnum,skew_/(var_^(3/2))));\nkurt_num:=evalf(subs(valnum,ku
+rt_/(var_^2)));\nvar_num:=evalf(subs(valnum,var_));" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#>%%QDF_G,$*&#\"\"\"\"\"#F(*&,&*&%#muGF(F)F'F(*(F)F(-%
+'RootOfG6#,,-%$erfG6#%#_ZGF(*&F)F(%%PhiAGF(!\"\"F(F(*(F)F(%\"pGF(%%Phi
+BGF(F9*(F)F(F;F(F8F(F(F(%'sigma|irGF(F(F(F)F'F(F(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%'PDFGR_G7&,$**%%phiXG\"\"\",**&%\"XGF)%%PhiBGF)!\"\"*
+&F,F)%%PhiAGF)F)%%phiBGF.%%phiAGF)F)%'sigma|irG!\"#,&F-F.F0F)F4F.,$**F
+(F),.F-F)F0F.*&)F,\"\"#F)F-F)F.*&F:F)F0F)F)*&F1F)%\"BGF)F.*&F2F)%\"AGF
+)F)F)F3F4F5F4F.**F(F)F2F)F3F4F5F4,$**F(F)F1F)F3F4F5F4F." }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#>%'CDFGR_G7&,$*(,.*&%%phiAG\"\"\"%%PhiBGF+!\"\"*
+&%%phiXGF+F,F+F+*&F/F+%%PhiAGF+F-*&F1F+%%phiBGF+F+*&%%PhiXGF+F3F+F-*&F
+5F+F*F+F+F+,&F,F-F1F+!\"#%'sigma|irGF-F-*(,.*(F*F+%\"AGF+F,F+F+*(%\"XG
+F+F/F+F,F+F-*(F?F+F/F+F1F+F+*(F1F+F3F+%\"BGF+F-*(F5F+F3F+FBF+F+*(F5F+F
+*F+F=F+F-F+F7F8F9F-,$**F*F+,&F,F+F5F-F+F7F8F9F-F-**,&F1F+F5F-F+F3F+F7F
+8F9F-" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%(ddf_numG$!+,\\b*[\"!#6" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%(pdf_numG$\"+A))>\"o#!#5" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%(cdf_numG$\"+DrwQu!#5" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%*pdfgr_numG7&$\"+L.QrF!#6$!+T78!=\"F($\"+D(>5:&F($!+c
+^%GV'F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%*cdfgr_numG7&$!+,#RS/%!#6
+$\")N#ea$!#5$!*fX0#\\F+$!+U.u%y\"F+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6
+#>%-quantile_numG$\"+R-)\\z\"!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>
+%'mu_numG$\"*cqG(p!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%(std_numG$
+\"+co\\>6!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%)skew_numG$!+>S:&3(
+!#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%)kurt_numG$\"+iK()o=!\"*" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%(var_numG$\"+5KF`7!\"*" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 349 "pdfgrS:=map(_x->collect(factor(sub
+s(phiX=phiXNorm*Delta,phiA=phiANorm*Delta,phiB=phiBNorm*Delta,algsubs(
+PhiB-PhiA=Delta,_x))),[phiX,X]),pdfgrR);\ncdfgrS:=map(_x->collect(fact
+or(subs(phiX=phiXNorm*Delta,phiA=phiANorm*Delta,phiB=phiBNorm*Delta,Ph
+iX=PhiXNorm*Delta,PhiA=PhiANorm*Delta,PhiB=PhiBNorm*Delta,algsubs(PhiB
+-PhiA=Delta,_x))),[phiX,X]),pdfgrR);" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#>%'pdfgrSG%'pdfgrRG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%'cdfgrSG%'p
+dfgrRG" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 378 "evalf(subs(valnu
+m,x=1,subs(phiXNorm=phiX/Delta,phiANorm=phiA/Delta,phiBNorm=phiB/Delta
+,Delta=PhiB-PhiA,PhiA=1/2+1/2*erf(A/sqrt(2)),PhiB=1/2+1/2*erf(B/sqrt(2
+)),phiX=exp(-xNorm*xNorm/2)/sqrt(2*Pi)/sigma,phiA=exp(-aNorm*aNorm/2)/
+sqrt(2*Pi)/sigma,phiB=exp(-bNorm*bNorm/2)/sqrt(2*Pi)/sigma,X=xNorm,A=a
+Norm,B=bNorm,xNorm=(x-mu)/sigma,aNorm=(a-mu)/sigma,bNorm=(b-mu)/sigma,
+phiBNorm)));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+C@C*R#!#5" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 924 "mu_simplified:=map(collect,
+map(factor,collect(factor(algsubs(\n                   PhiBNorm-PhiANo
+rm=1/NormalizationFactor,\n                   factor(subs(\n          \+
+                     exp(-aNorm^2/2)=sqrt(2*Pi)*phiANorm,\n           \+
+                    exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNorm,\n            \+
+                   exp(-xNorm^2/2)=sqrt(2*Pi)*phiXNorm,\n             \+
+                  erf(sqrt(2)*aNorm/2)=2*PhiANorm-1,\n                \+
+               erf(sqrt(2)*bNorm/2)=2*PhiBNorm-1,\n                   \+
+            expand(subs(\n                                           a
+=mu+sigma*aNorm,\n                                           b=mu+sigm
+a*bNorm,\n                                           mu_\n            \+
+                              )\n                                     \+
+ )\n                              )\n                         )\n     \+
+              )\n             ),\n           sigma\n)),NormalizationFa
+ctor);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%.mu_simplifiedG,&*(%4Norma
+lizationFactorG\"\"\",&%)phiANormGF(%)phiBNormG!\"\"F(%'sigma|irGF(F(%
+#muGF(" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1246 "var_simplified:
+=map(collect,map(factor,collect(factor(algsubs(\n                    P
+hiBNorm-PhiANorm=1/NormalizationFactor,\n                    factor(su
+bs(\n                                exp(-aNorm^2/2)=sqrt(2*Pi)*phiANo
+rm,\n                                exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNo
+rm,\n                                exp(aNorm^2/2)=1/(sqrt(2*Pi)*phiA
+Norm),\n                                exp(bNorm^2/2)=1/(sqrt(2*Pi)*p
+hiBNorm),\n                                exp(aNorm^2)=1/(sqrt(2*Pi)*
+phiANorm)^2,\n                                exp(bNorm^2)=1/(sqrt(2*P
+i)*phiBNorm)^2,\n                                exp(xNorm^2)=1/(sqrt(
+2*Pi)*phiXNorm)^2,\n                                erf(sqrt(2)*aNorm/
+2)=2*PhiANorm-1,\n                                erf(sqrt(2)*bNorm/2)
+=2*PhiBNorm-1,\n                                expand(subs(\n        \+
+                                    a=mu+sigma*aNorm,\n               \+
+                             b=mu+sigma*bNorm,\n                      \+
+                      var_\n                                          \+
+ )\n                                      )\n                         \+
+      )\n                          )\n                     )\n        \+
+        ),\n           sigma\n          )),NormalizationFactor);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%/var_simplifiedG*&,(\"\"\"F'*&,(*(\"
+\"#F'%)phiANormGF'%)phiBNormGF'F'*$)F,F+F'!\"\"*$)F-F+F'F0F')%4Normali
+zationFactorGF+F'F'*&,&*&F,F'%&aNormGF'F'*&F-F'%&bNormGF'F0F'F4F'F'F')
+%'sigma|irGF+F'" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1248 "skew_s
+implified:=map(collect,map(factor,collect(factor(algsubs(\n           \+
+         PhiBNorm-PhiANorm=1/NormalizationFactor,\n                   \+
+ factor(subs(\n                                exp(-aNorm^2/2)=sqrt(2*
+Pi)*phiANorm,\n                                exp(-bNorm^2/2)=sqrt(2*
+Pi)*phiBNorm,\n                                exp(aNorm^2/2)=1/(sqrt(
+2*Pi)*phiANorm),\n                                exp(bNorm^2/2)=1/(sq
+rt(2*Pi)*phiBNorm),\n                                exp(aNorm^2)=1/(s
+qrt(2*Pi)*phiANorm)^2,\n                                exp(bNorm^2)=1
+/(sqrt(2*Pi)*phiBNorm)^2,\n                                exp(xNorm^2
+)=1/(sqrt(2*Pi)*phiXNorm)^2,\n                                erf(sqrt
+(2)*aNorm/2)=2*PhiANorm-1,\n                                erf(sqrt(2
+)*bNorm/2)=2*PhiBNorm-1,\n                                expand(subs(
+\n                                            a=mu+sigma*aNorm,\n     \+
+                                       b=mu+sigma*bNorm,\n            \+
+                                skew_\n                               \+
+            )\n                                      )\n              \+
+                 )\n                          )\n                     \+
+)\n                ),\n           NormalizationFactor\n          )),si
+gma);" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%0skew_simplifiedG,(**\"\"#
+\"\"\")%'sigma|irG\"\"$F(),&%)phiANormGF(%)phiBNormG!\"\"F+F()%4Normal
+izationFactorGF+F(F(*,F+F(F)F(F-F(,&*&F.F(%&aNormGF(F(*&F/F(%&bNormGF(
+F0F()F2F'F(F0*(F)F(,**&F.F()F6F'F(F(F.F0F/F(*&F/F()F8F'F(F0F(F2F(F(" }
+}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1400 "kurt_simplified:=map(col
+lect,map(factor,collect(factor(algsubs(\n                    PhiBNorm-
+PhiANorm=1/NormalizationFactor,\n                    factor(subs(\n   \+
+                             exp(-aNorm^2/2)=sqrt(2*Pi)*phiANorm,\n   \+
+                             exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNorm,\n   \+
+                             exp(aNorm^2/2)=1/(sqrt(2*Pi)*phiANorm),\n
+                                exp(bNorm^2/2)=1/(sqrt(2*Pi)*phiBNorm)
+,\n                                exp(3*aNorm^2/2)=1/(sqrt(2*Pi)*phiA
+Norm)^3,\n                                exp(3*bNorm^2/2)=1/(sqrt(2*P
+i)*phiBNorm)^3,\n                                exp(aNorm^2)=1/(sqrt(
+2*Pi)*phiANorm)^2,\n                                exp(bNorm^2)=1/(sq
+rt(2*Pi)*phiBNorm)^2,\n                                exp(xNorm^2)=1/
+(sqrt(2*Pi)*phiXNorm)^2,\n                                erf(sqrt(2)*
+aNorm/2)=2*PhiANorm-1,\n                                erf(sqrt(2)*bN
+orm/2)=2*PhiBNorm-1,\n                                expand(subs(\n  \+
+                                          a=mu+sigma*aNorm,\n         \+
+                                   b=mu+sigma*bNorm,\n                \+
+                            kurt_\n                                   \+
+        )\n                                      )\n                  \+
+             )\n                          )\n                     )\n \+
+               ),\n           NormalizationFactor\n          )),sigma)
+;" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%0kurt_simplifiedG,,**\"\"$\"\"
+\")%'sigma|irG\"\"%F(),&%)phiANormGF(%)phiBNormG!\"\"F+F()%4Normalizat
+ionFactorGF+F(F0*,\"\"'F(F)F()F-\"\"#F(,&*&F.F(%&aNormGF(F(*&F/F(%&bNo
+rmGF(F0F()F2F'F(F(*,F6F(F)F(F-F(,*F.F(*(F6F(F.F()F9F6F(F(*(F6F(F/F()F;
+F6F(F0F/F0F()F2F6F(F0*(F)F(,**(F'F(F/F(F;F(F0*&F/F()F;F'F(F0*(F'F(F.F(
+F9F(F(*&F.F()F9F'F(F(F(F2F(F(*&F'F(F)F(F(" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 462 "k1:=kurt_simplified:\nL1:=coeffs(expand(k1),Normal
+izationFactor):\nk2:=subs(ratio=(phiBNorm-phiANorm)*NormalizationFacto
+r,crossTerm1=(bNorm*phiBNorm-aNorm*phiANorm)*NormalizationFactor,cross
+Term2=(bNorm^2*phiBNorm-aNorm^2*phiANorm)*NormalizationFactor,crossTer
+m3=(bNorm^3*phiBNorm-aNorm^3*phiANorm)*NormalizationFactor,\n  (3 - 3*
+ratio^4 - 6*ratio^2*crossTerm1 - 2*ratio*(ratio+2*crossTerm2) - 3*cros
+sTerm1-crossTerm3)\n):\nL2:=coeffs(expand(k2),NormalizationFactor):" }
+}{PARA 0 "> " 0 "" {MPLTEXT 1 0 47 "for i from 1 to 4 do\n  factor(L1[
+i]/L2[i]);\nod;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*$)%'sigma|irG\"\"%
+\"\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*$)%'sigma|irG\"\"%\"\"\"" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#*$)%'sigma|irG\"\"%\"\"\"" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#*$)%'sigma|irG\"\"%\"\"\"" }}}{EXCHG {PARA 
+0 "> " 0 "" {MPLTEXT 1 0 23 "evalf(subs(valnum,k2));" }}{PARA 12 "" 1 
+"" {XPPMATH 20 "6#,.$\"\"$\"\"!\"\"\"*($F%F&F'),&*&$F'F&F'%)phiANormGF
+'!\"\"%)phiBNormGF'\"\"%F')%4NormalizationFactorGF1F'F/**$\"\"'F&F')F+
+\"\"#F')F3F%F',&*($F'F&F'F.F'%&aNormGF'F/*&F0F'%&bNormGF'F'F'F/**$F8F&
+F'F+F'F3F',&*&F+F'F3F'F'*($F8F&F',&*&F0F')F?F8F'F'*($F'F&F'F.F')F=F8F'
+F/F'F3F'F'F'F/*($F%F&F'F:F'F3F'F/*($F'F&F',&*&F0F')F?F%F'F'*($F'F&F'F.
+F')F=F%F'F/F'F3F'F/" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}
+}{MARK "11" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 
+33 1 1 }

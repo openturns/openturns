@@ -1,0 +1,42 @@
+Copula class=NormalCopula name=a normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]
+Copula NormalCopula(R = [[ 1    0.25 0    ]
+ [ 0.25 1    0.25 ]
+ [ 0    0.25 1    ]])
+Mean class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
+Elliptical distribution= false
+Elliptical copula= true
+Independent copula= false
+oneRealization=class=NumericalPoint name=Unnamed dimension=3 values=[0.728473,0.14143,0.226528]
+oneSample=class=NumericalSample name=a normal copula description=[marginal 1,marginal 2,marginal 3] implementation=class=NumericalSampleImplementation name=a normal copula size=10 dimension=3 data=[class=NumericalPoint name=Unnamed dimension=3 values=[0.885991,0.03509,0.410967],class=NumericalPoint name=Unnamed dimension=3 values=[0.361292,0.903689,0.875806],class=NumericalPoint name=Unnamed dimension=3 values=[0.786157,0.398475,0.551985],class=NumericalPoint name=Unnamed dimension=3 values=[0.0110089,0.0347878,0.0549614],class=NumericalPoint name=Unnamed dimension=3 values=[0.463832,0.82677,0.548704],class=NumericalPoint name=Unnamed dimension=3 values=[0.28767,0.614586,0.66531],class=NumericalPoint name=Unnamed dimension=3 values=[0.672124,0.18575,0.136607],class=NumericalPoint name=Unnamed dimension=3 values=[0.682113,0.49876,0.620616],class=NumericalPoint name=Unnamed dimension=3 values=[0.962655,0.696223,0.230639],class=NumericalPoint name=Unnamed dimension=3 values=[0.235291,0.339456,0.0367574]]
+anotherSample mean=class=NumericalPoint name=Unnamed dimension=3 values=[0.495928,0.496401,0.501236]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0829368,0.0183885,-0.000208548,0.0183885,0.0838067,0.0195431,-0.000208548,0.0195431,0.0843107]
+point= class=NumericalPoint name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=NumericalPoint name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] ddf (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 cdf=0.0176157
+Quantile=class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
+CDF(quantile)=0.5
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833333,0.0199465,0,0.0199465,0.0833333,0.0199465,0,0.0199465,0.0833333]
+correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.239359,0,0.239359,1,0.239359,0,0.239359,1]
+spearman=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.239359,0,0.239359,1,0.239359,0,0.239359,1]
+kendall=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.160861,0,0.160861,1,0.160861,0,0.160861,1]
+margin=class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1
+margin CDF=0.25
+margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.98013]
+margin=class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1
+margin CDF=0.25
+margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.248011]
+margin=class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1
+margin CDF=0.25
+margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.272373]
+indices=[1,0]
+margins=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
+margins PDF=1.13117
+margins CDF=0.0893097
+margins quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.97395,0.97395]
+margins CDF(quantile)=0.95
+margins realization=class=NumericalPoint name=Unnamed dimension=2 values=[0.265472,0.397787]
+Normal copula correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.261052,0,0.261052,1,0.261052,0,0.261052,1] from the Spearman correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]

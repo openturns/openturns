@@ -1,0 +1,51 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Text Output" -1 2 1 
+{CSTYLE "" -1 -1 "Courier" 1 10 0 0 255 1 0 0 0 0 0 1 3 0 3 0 }1 0 0 
+-1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Warning" 2 7 1 {CSTYLE "" -1 -1 "
+" 0 1 0 0 255 1 0 0 0 0 0 0 1 0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }
+{PSTYLE "Maple Output" 0 11 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 279 "restart:\nwith(Stat
+istics):\nassume(u>0,nu>0):\nstudent_:=RandomVariable(StudentT(nu)):\n
+pdf:=subs(u=x-mu,PDF(student_,u));\nmu_:=mu+Mean(student_);\nvar_:=Var
+iance(student_);\nlogLike:=map(factor,[diff(Sum(subs(x=x[i],log(pdf)),
+i=1..N),nu),diff(Sum(subs(x=x[i],log(pdf)),i=1..N),mu)]);" }}{PARA 11 
+"" 1 "" {XPPMATH 20 "6#>%$pdfG**-%&GAMMAG6#,&#\"\"\"\"\"#F+*&F,!\"\"%$
+nu|irGF+F+F+*&%#PiGF+F/F+#F.F,-F'6#,$*&F,F.F/F+F+F.),&F+F+*&,&%\"xGF+%
+#muGF.F,F/F.F+F)F." }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$mu_G,&%#muG\"
+\"\"-%*PIECEWISEG6$7$%*undefinedG1%$nu|irGF'7$\"\"!%*otherwiseGF'" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%var_G-%*PIECEWISEG6$7$%*undefinedG1
+%$nu|irG\"\"#7$*&F+\"\"\",&F,!\"\"F+F/F1%*otherwiseG" }}{PARA 12 "" 1 
+"" {XPPMATH 20 "6#>%(logLikeG7$-%$SumG6$,$*&#\"\"\"\"\"#F,*&,B*&-%$Psi
+G6#,&F+F,*&F-!\"\"%$nu|irGF,F,F,F7F,F,*&F1F,)&%\"xG6#%\"iGF-F,F,**F-F,
+F1F,F:F,%#muGF,F6*&F1F,)F?F-F,F,F,F6*&-F26#,$*&F-F6F7F,F,F,F7F,F6*&FCF
+,F9F,F6**F-F,FCF,F:F,F?F,F,*&FCF,FAF,F6*&-%#lnG6#*&,*F7F,*$F9F,F,*(F-F
+,F:F,F?F,F6*$FAF,F,F,F7F6F,F7F,F6*&FKF,F9F,F6**F-F,FKF,F:F,F?F,F,*&FKF
+,FAF,F6FPF,*(F-F,F:F,F?F,F6FRF,F,FOF6F,F,/F=;F,%\"NG-F'6$,$*(,&F,F,F7F
+,F,,&F:F6F?F,F,FOF6F6FW" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 39 "
+solve(\{logLike[1],logLike[2]\},\{mu,nu\});" }}{PARA 7 "" 1 "" {TEXT 
+-1 38 "Warning, solutions may have been lost\n" }}}{EXCHG {PARA 0 "> \+
+" 0 "" {MPLTEXT 1 0 23 "collect(logLike[1],nu);" }}{PARA 12 "" 1 "" 
+{XPPMATH 20 "6#,>*&,(*&#\"\"\"\"\"#F(-%$PsiG6#,$*&F)!\"\"%$nu|irGF(F(F
+(F/*&#F(F)F(-%#lnG6#*&,*F0F(*$)%\"xGF)F(F(*(F)F(F:F(%#muGF(F/*$)F<F)F(
+F(F(F0F/F(F/*&#F(F)F(-F+6#,&F@F(*&F)F/F0F(F(F(F(F(F0F(F(*&F)F/F:F)F(*&
+F@F(*&FAF(F9F(F(F(*(FAF(F:F(F<F(F/*&F@F(*&FAF(F>F(F(F(#F(F)F/*&#F(F)F(
+*&F*F(F9F(F(F/*(F*F(F:F(F<F(F(*&#F(F)F(*&F*F(F>F(F(F/*&#F(F)F(*&F3F(F9
+F(F(F/*(F3F(F:F(F<F(F(*&#F(F)F(*&F3F(F>F(F(F/*&F:F(F<F(F/*&F)F/F<F)F(
+" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 36 "subs(mu=Sum(y[i],i=1..N
+)/N,logLike);" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#7$,B*&#\"\"\"\"\"#F'*
+&-%$PsiG6#,&F&F'*&F(!\"\"%$nu|irGF'F'F'F0F'F'F'*&F&F'*&F*F')%\"xGF(F'F
+'F'**F*F'F4F'-%$SumG6$&%\"yG6#%\"iG/F<;F'%\"NGF'F?F/F/*&F&F'*(F*F'F6F(
+F?!\"#F'F'#F'F(F/*&#F'F(F'*&-F+6#,$*&F(F/F0F'F'F'F0F'F'F/*&#F'F(F'*&FG
+F'F3F'F'F/**FGF'F4F'F6F'F?F/F'*&#F'F(F'*(FGF'F6F(F?FBF'F/*&#F'F(F'*&-%
+#lnG6#*&,*F0F'*$F3F'F'**F(F'F4F'F6F'F?F/F/*&F6F(F?FBF'F'F0F/F'F0F'F'F/
+*&#F'F(F'*&FUF'F3F'F'F/**FUF'F4F'F6F'F?F/F'*&#F'F(F'*(FUF'F6F(F?FBF'F/
+*&F(F/F4F(F'*(F4F'F6F'F?F/F/*&F&F'FfnF'F'*&,&F4F'*&F6F'F?F/F/F',&F'F'F
+0F'F'" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1 0 0
+" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

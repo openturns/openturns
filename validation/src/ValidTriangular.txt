@@ -1,0 +1,417 @@
+> restart:
+> with(Statistics):
+> assume(a<m,m<b,a<b,x>a,x<b):
+> triangular_:=RandomVariable(Triangular(a,b,m)):
+> pdf:=subs(u=x,PDF(triangular_,u));
+> ddf:=diff(pdf,x);
+> cdf:=subs(u=x,CDF(triangular_,u));
+> cf:=subs(u=x,CharacteristicFunction(triangular_,u));
+> rough:=factor(int(pdf^2,x=a..b));
+> mu_:=Mean(triangular_);
+> var_:=Variance(triangular_);
+> skew_:=simplify(convert(Skewness(triangular_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(triangular_),GAMMA),symbolic);
+> qdf:=Quantile(triangular_,p);
+> pdfgr:=map(_x->factor(_x),[diff(pdf,a),diff(pdf,m),diff(pdf,b)]);
+> cdfgr:=map(factor,[diff(cdf,a),diff(cdf,m),diff(cdf,b)]);
+> valnum:=a=-0.5,m=1.5,b=2.5:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(subs(valnum,p=0.25,qdf));
+> evalf(subs(valnum,x=2,ddf));
+> evalf(subs(valnum,x=2,pdf));
+> evalf(subs(valnum,x=2,cdf));
+> evalf(subs(valnum,x=2,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=2,cdfgr));
+> evalf(subs(valnum,p=0.95,qdf));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+                   {          0                  x~ < a~
+                   {
+                   {     2 (x~ - a~)
+                   { -------------------        x~ <= m~
+                   { (b~ - a~) (m~ - a~)
+            pdf := {
+                   {     2 (b~ - x~)
+                   { -------------------        x~ <= b~
+                   { (b~ - a~) (b~ - m~)
+                   {
+                   {          0                 otherwise
+
+
+                   {           2
+                   {  -------------------         x~ < m~
+                   {  (b~ - a~) (m~ - a~)
+                   {
+            ddf := {       undefined              x~ = m~
+                   {
+                   {            2
+                   { - -------------------        m~ < x~
+                   {   (b~ - a~) (b~ - m~)
+
+
+                 {            0                    x~ < a~
+                 {
+                 {                2
+                 {       (x~ - a~)
+                 {   -------------------          x~ <= m~
+                 {   (b~ - a~) (m~ - a~)
+          cdf := {
+                 {                  2
+                 {         (b~ - x~)
+                 { 1 - -------------------        x~ <= b~
+                 {     (b~ - a~) (b~ - m~)
+                 {
+                 {            1                   otherwise
+
+
+             /       exp(m~ x~ I)
+  cf := 2 Pi |--------------------------
+             |     2
+             \Pi x~  (b~ - m~) (m~ - a~)
+
+                  exp(b~ x~ I)                  exp(a~ x~ I)        \
+         + --------------------------- + ---------------------------|
+                2                                                  2|
+           Pi x~  (b~ - m~) (-b~ + a~)   Pi (-m~ + a~) (b~ - a~) x~ /
+
+
+                                       4
+                         rough := -----------
+                                  3 (b~ - a~)
+
+
+                              a~     b~     m~
+                      mu_ := ---- + ---- + ----
+                              3      3      3
+
+
+                 2          2          2
+  var_ := 1/18 a~  + 1/18 b~  + 1/18 m~  - 1/18 a~ b~ - 1/18 a~ m~
+
+         - 1/18 b~ m~
+
+
+                  3          2       2          2
+  skew_ := 2 (2 b~  - 3 a~ b~  - 3 b~  m~ - 3 a~  b~ + 12 a~ b~ m~
+
+                  2       3          2       3       2       /
+         - 3 b~ m~  + 2 a~  - 3 a~ m~  + 2 m~  - 3 a~  m~)  /  (5
+                                                           /
+
+           2     2     2
+        (a~  + b~  + m~  - a~ b~ - a~ m~ - b~ m~)
+
+             2       2       2                               1/2
+        (2 a~  + 2 b~  + 2 m~  - 2 a~ b~ - 2 a~ m~ - 2 b~ m~)   )
+
+
+                            kurt_ := 12/5
+
+
+         {                                1/2               m~ - a~
+         {    a~ + (p (b~ - a~) (m~ - a~))              p < -------
+  qdf := {                                                  b~ - a~
+         {
+         {                                   1/2
+         { b~ - ((1 - p) (b~ - a~) (b~ - m~))            otherwise
+
+
+  pdfgr := [
+
+        {               2
+        { 2 (-b~ m~ + a~  + x~ m~ - 2 x~ a~ + x~ b~)
+        { ------------------------------------------        x~ <= m~
+        {                    2           2
+        {           (b~ - a~)  (-m~ + a~)
+        {
+        {                2 (b~ - x~)
+        {            --------------------                   otherwise
+        {                     2
+        {            (b~ - a~)  (b~ - m~)
+
+          {     2 (b~ - x~)
+          { --------------------         m~ < x~
+          {                    2
+          { (b~ - a~) (b~ - m~)                   {
+          {                                       {
+        , {       undefined              m~ = x~, {
+          {                                       {
+          {     2 (-x~ + a~)                      {
+          { ---------------------        x~ < m~
+          {                     2
+          { (b~ - a~) (-m~ + a~)
+
+              2 (-x~ + a~)
+        - --------------------- , x~ <= m~
+                   2
+          (b~ - a~)  (-m~ + a~)
+
+               2
+          2 (b~  - a~ m~ - 2 x~ b~ + x~ m~ + x~ a~)
+        - ----------------------------------------- , otherwise]
+                             2          2
+                    (b~ - a~)  (b~ - m~)
+
+
+            {
+            {
+  cdfgr := [{ - (-x~ + a~)
+            {
+            {
+
+        (-2 b~ m~ + a~ b~ + a~ m~ + x~ m~ - 2 x~ a~ + x~ b~)/(
+
+                 2           2
+        (b~ - a~)  (-m~ + a~) ) , x~ <= m~
+
+                        2
+               (b~ - x~)
+        - -------------------- , otherwise,
+                   2
+          (b~ - a~)  (b~ - m~)
+
+        {                 2
+        {        (b~ - x~)
+        { - --------------------         m~ <= x~
+        {                      2                   {
+        {   (b~ - a~) (b~ - m~)                    {
+        {                                        , {
+        {                  2                       {
+        {        (-x~ + a~)                        {
+        { - ---------------------        x~ < m~
+        {                       2
+        {   (b~ - a~) (-m~ + a~)
+
+                       2
+             (-x~ + a~)
+        --------------------- , x~ <= m~
+                 2
+        (b~ - a~)  (-m~ + a~)
+
+        (b~ - x~) (b~ m~ + a~ b~ - 2 a~ m~ - 2 x~ b~ + x~ m~ + x~ a~)
+
+                   2          2
+        /((b~ - a~)  (b~ - m~) ) , otherwise]
+
+
+                             0.3333333333
+
+
+                             0.4999999999
+
+
+                             0.3749999998
+
+
+                    0.3123054248 + 0.7583220702 I
+
+
+             [0.0833333334, -0.2499999999, -0.1666666666]
+
+
+            [-0.1875000000, -0.1875000000, -0.1250000000]
+
+
+                             0.724744872
+
+
+                            -0.6666666666
+
+
+                             0.333333333
+
+
+                             0.9166666667
+
+
+               [0.1111111112, 0.333333333, 0.222222223]
+
+
+           [-0.02777777778, -0.08333333332, -0.2222222222]
+
+
+                             2.112701665
+
+
+                             1.166666667
+
+
+                             0.6236095645
+
+
+                            -0.3054414193
+
+
+                             2.400000000
+
+
+                             0.3888888889
+
+> pdfgr1:=map(_x->factor(_x/(2/(b-a))),(simplify(pdfgr) assuming x <
+> m));
+> pdfgr2:=map(_x->factor(_x/(2/(b-a))),(simplify(pdfgr) assuming x >
+> m));
+
+                        2
+             -b~ m~ + a~  + x~ m~ - 2 x~ a~ + x~ b~   -x~ + a~
+  pdfgr1 := [--------------------------------------, -----------,
+                                         2                     2
+                     (b~ - a~) (-m~ + a~)            (-m~ + a~)
+
+                -x~ + a~
+        - --------------------]
+          (b~ - a~) (-m~ + a~)
+
+
+                   b~ - x~         b~ - x~
+  pdfgr2 := [-------------------, ----------,
+             (b~ - a~) (b~ - m~)           2
+                                  (b~ - m~)
+
+            2
+          b~  - a~ m~ - 2 x~ b~ + x~ m~ + x~ a~
+        - -------------------------------------]
+                                     2
+                  (b~ - a~) (b~ - m~)
+
+> factor(pdfgr1[1])=((-a*(x-a)+x*(b-a)-m*(b-x))/(m-a)^2/(b-a));
+> factor(pdfgr1[2]);
+> factor(pdfgr1[3]);
+
+             2
+  -b~ m~ + a~  + x~ m~ - 2 x~ a~ + x~ b~
+  -------------------------------------- =
+                              2
+          (b~ - a~) (-m~ + a~)
+
+        -a~ (x~ - a~) + x~ (b~ - a~) - m~ (b~ - x~)
+        -------------------------------------------
+                            2
+                   (m~ - a~)  (b~ - a~)
+
+
+                              -x~ + a~
+                             -----------
+                                       2
+                             (-m~ + a~)
+
+
+                                -x~ + a~
+                        - --------------------
+                          (b~ - a~) (-m~ + a~)
+
+> factor(pdfgr2[1]);
+> factor(pdfgr2[2]);
+> factor(pdfgr2[3]-(-(x-a)*m-(b-x)*b)/((b-a)*(b-m)*(b-m)));
+
+                               b~ - x~
+                         -------------------
+                         (b~ - a~) (b~ - m~)
+
+
+                               b~ - x~
+                              ----------
+                                       2
+                              (b~ - m~)
+
+
+                                  x~
+                              ----------
+                                       2
+                              (b~ - m~)
+
+> cdfgr1:=map(_x->factor(_x/((x-a)/(b-a)/(m-a))),(simplify(cdfgr)
+> assuming x < m));
+> cdfgr2:=map(_x->factor(_x/((b-x)/(b-a)/(b-m))),(simplify(cdfgr)
+> assuming x > m));
+
+               -2 b~ m~ + a~ b~ + a~ m~ + x~ m~ - 2 x~ a~ + x~ b~
+  cdfgr1 := [- --------------------------------------------------,
+                              (b~ - a~) (-m~ + a~)
+
+          -x~ + a~  -x~ + a~
+        - --------, --------]
+          -m~ + a~  b~ - a~
+
+
+               b~ - x~    b~ - x~
+  cdfgr2 := [- -------, - -------,
+               b~ - a~    b~ - m~
+
+        b~ m~ + a~ b~ - 2 a~ m~ - 2 x~ b~ + x~ m~ + x~ a~
+        -------------------------------------------------]
+                       (b~ - a~) (b~ - m~)
+
+> factor(cdfgr1[1]-(x*(m-a)+x*(b-a)-m*(b-a)-b*(m-a))/((m-a)*(b-a)));
+> factor(cdfgr1[2]);
+> factor(cdfgr1[3]);
+
+                                  0
+
+
+                                -x~ + a~
+                              - --------
+                                -m~ + a~
+
+
+                               -x~ + a~
+                               --------
+                               b~ - a~
+
+> factor(cdfgr2[1]);
+> factor(cdfgr2[2]);
+> factor(cdfgr2[3]-(m*x-m*a+a*b-a*m+x*a-x*b-b*x+b*m)/((b-m)*(b-a)));
+
+                                b~ - x~
+                              - -------
+                                b~ - a~
+
+
+                                b~ - x~
+                              - -------
+                                b~ - m~
+
+
+                                  0
+
+> expand(m*x-m*a+a*b-a*m+x*a-x*b-b*x+b*m-((b-a)*(m-x)+(a-x)*(b-m)));
+
+                                  0
+
+> Expr:=(factor(skew_));
+
+  Expr := 2 (-2 a~ + b~ + m~) (a~ + b~ - 2 m~) (-a~ + 2 b~ - m~)/(5
+
+           2     2     2
+        (a~  + b~  + m~  - a~ b~ - a~ m~ - b~ m~)
+
+             2       2       2                               1/2
+        (2 a~  + 2 b~  + 2 m~  - 2 a~ b~ - 2 a~ m~ - 2 b~ m~)   )
+
+> Expr:=expand(subs(a=AmM+m,subs(b=BmM+m,factor(var_))));
+
+                             2           2
+             Expr := 1/18 AmM  + 1/18 BmM  - 1/18 AmM BmM
+
+> (simplify(18^(3/2)/270));
+
+                                  1/2
+                                 2
+                                 ----
+                                  5
+
+> expand(a_ * (a_ - b_) + b_ * (b_ - m_) + m_ * (m_ - a_)-((b_ -
+> m_)^2+(m_ - a_)^2+(b_ - m_) * (m_ - a_)));
+
+                                  0
+
+> 

@@ -1,0 +1,248 @@
+%feature("docstring") OT::NumericalPoint
+"Real vector.
+
+Parameters
+----------
+dimension : int, :math:`n > 0`, optional
+    The number of components.
+value : float, optional
+    The components value.
+    Default creates a null vector.
+
+Examples
+--------
+Create a NumericalPoint
+
+>>> import openturns as ot
+>>> x = ot.NumericalPoint(3, 1.)
+>>> x
+class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
+
+Get or set terms
+
+>>> print(x[0])
+1.0
+>>> x[0] = 0.
+>>> print(x[0])
+0.0
+>>> print(x[:2])
+[0,1]
+
+Create a NumericalPoint from a flat (1d) array, list or tuple
+
+>>> import numpy as np
+>>> y = ot.NumericalPoint((0., 1., 2.))
+>>> y = ot.NumericalPoint(range(3))
+>>> y = ot.NumericalPoint(np.arange(3))
+
+and back
+
+>>> np.array(y)
+array([ 0.,  1.,  2.])
+
+Addition, subtraction (with compatible dimensions)
+
+>>> print(x + y)
+[0,2,3]
+>>> print(x - y)
+[0,0,-1]
+
+Multiplication, division with a scalar
+
+>>> print(x * 3.)
+[0,3,3]
+>>> print(x / 3.)
+[0,0.333333,0.333333]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::add
+"Appends a scalar component (in-place).
+
+Parameters
+----------
+value : float
+    The component to append.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint(2)
+>>> x.add(1.)
+>>> print(x)
+[0,0,1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::clear
+"Resets the vector to zero dimension.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint(2)
+>>> x.clear()
+>>> x
+class=NumericalPoint name=Unnamed dimension=0 values=[]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::getDescription
+"Accessor to the componentwise description.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the components.
+
+See Also
+--------
+setDescription"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::getDimension
+"Accessor to the vector's dimension.
+
+Returns
+-------
+n : int
+    The number of components in the vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::setDescription
+"Accessor to the componentwise description.
+
+Parameters
+----------
+description : sequence of str
+    Description of the components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::getSize
+"Accessor to the vector's dimension (or size).
+
+Returns
+-------
+n : int
+    The number of components in the vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::norm
+"Compute the Euclidean (L2) norm.
+
+The Euclidean (L2) norm of a vector is defined as:
+
+.. math::
+
+    \norm{\vect{x}} = \norm{\vect{x}}_2
+                    = \sqrt{\sum_{i=1}^n x_i^2}
+
+Returns
+-------
+norm : int
+    The vector's Euclidean norm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x.norm()
+3.741657..."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::norm1
+"Compute the L1 norm.
+
+The L1 norm of a vector is defined as:
+
+.. math::
+
+    \norm{\vect{x}}_1 = \sum_{i=1}^n |x_i|
+
+Returns
+-------
+norm : int
+    The vector's L1 norm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x.norm1()
+6.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::normSquare
+"Compute the squared Euclidean norm.
+
+Returns
+-------
+norm : int
+    The vector's squared Euclidean norm.
+
+See Also
+--------
+norm
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x.normSquare()
+14.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::normalize
+"Compute the normalized vector with respect to its Euclidean norm.
+
+Returns
+-------
+normalized_vector : int
+    The normalized vector with respect to its Euclidean norm.
+
+See Also
+--------
+norm
+
+Raises
+------
+RuntimeError : If the Euclidean norm is zero.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint([1., 2., 3.])
+>>> print(x.normalize())
+[0.267261,0.534522,0.801784]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalPoint::normalizeSquare
+"Compute the normalized vector with respect to its squared Euclidean norm.
+
+Returns
+-------
+normalized_vector : int
+    The normalized vector with respect to its squared Euclidean norm.
+
+See Also
+--------
+normSquare
+
+Raises
+------
+RuntimeError : If the squared Euclidean norm is zero.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint([1., 2., 3.])
+>>> print(x.normalizeSquare())
+[0.0714286,0.285714,0.642857]"

@@ -1,0 +1,18 @@
+// Domain docstrings are defined in DomainImplementation_doc.i.in
+
+%feature("docstring") OT::Domain
+OT_Domain_doc
+%feature("docstring") OT::Domain::contains
+OT_Domain_contains_doc
+%feature("docstring") OT::Domain::getDimension
+OT_Domain_getDimension_doc
+%feature("docstring") OT::Domain::getNumericalVolume
+OT_Domain_getNumericalVolume_doc
+%feature("docstring") OT::Domain::getVolume
+OT_Domain_getVolume_doc
+%feature("docstring") OT::Domain::isEmpty
+OT_Domain_isEmpty_doc
+%feature("docstring") OT::Domain::isNumericallyEmpty
+OT_Domain_isNumericallyEmpty_doc
+%feature("docstring") OT::Domain::numericallyContains
+OT_Domain_numericallyContains_doc

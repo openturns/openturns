@@ -1,0 +1,9 @@
+%feature("docstring") OT::PoissonFactory
+"Poisson factory.
+
+Available constructor:
+    PoissonFactory()
+
+See also
+--------
+DistributionFactory"

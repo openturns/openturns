@@ -1,0 +1,2 @@
+test number zero : default constructor and creation of linear model
+test =  class=LinearModel name=Unnamed regression=class=NumericalPoint name=Unnamed dimension=2 values=[3.01168,-2.00025] confidence intervals=[ [2.99572; 3.02763], [-2.0033; -1.9972]] p-Values=[2.07338e-35,3.81897e-45]

@@ -1,0 +1,83 @@
+%feature("docstring") OT::Uniform
+"Uniform distribution.
+
+Available constructors:
+    Uniform(*a=-1.0, b=1.0*)
+
+Parameters
+----------
+a : float
+    Lower bound.
+b : float, :math:`b > a`
+    Upper bound.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{b-a}, \quad x \in [a; b]
+
+with :math:`a < b`.
+
+Its first moments are defined as:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{a+b}{2} \\
+        \Var{X} & = & \frac{(b-a)^2}{12}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Uniform(2., 3.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Uniform::getA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Uniform::getB
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+b : float
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Uniform::setA
+"Accessor to the distribution's lower bound.
+
+Parameters
+----------
+a : float, :math:`a < b`
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Uniform::setB
+"Accessor to the distribution's upper bound.
+
+Parameters
+----------
+b : float, :math:`a < b`
+    Upper bound."

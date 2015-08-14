@@ -1,0 +1,9 @@
+%feature("docstring") OT::StudentFactory
+"Student factory.
+
+Available constructor:
+    StudentFactory()
+
+See also
+--------
+DistributionFactory"

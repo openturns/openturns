@@ -1,0 +1,45 @@
+/*
+  HMat-OSS (HMatrix library, open source software)
+
+  Copyright (C) 2014-2015 Airbus Group SAS
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+  http://github.com/jeromerobert/hmat-oss
+*/
+
+Used within OpenTURNS with the written permission of the HMAT representative:
+
+De: Duceau, Eric <eric.duceau@airbus.com>
+Envoyé: mercredi 10 décembre 2014 17:17
+À: Lebrun, Regis
+Cc: Risk, Ian; Mangeant, Fabien; Guilbert, Gerard
+Objet: deviation wrt GPL licence
+
+Dear colleague,
+ 
+In the limited frame of the development of Open Turns software, you are allowed to use the “Hmatrix library”, recently referenced in Open Source with the GPL v3 License.
+ 
+@ Ian & Gérard : This deviation is given to enrich our contribution to the partnership we have with EDF & Phimeca. There is no impact on our IPR nor on valorization.
+ 
+Regards
+ 
+Pr Eric Duceau
+Airbus Group Innovations
+Scientific Director
+System Engineering, Applied Math & IT
+12, rue Pasteur BP 76 
+92152 Suresnes Cedex
+ 

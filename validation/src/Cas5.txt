@@ -1,0 +1,130 @@
+> restart:
+> Digits:=20:
+> G1:=2-x2+exp(-0.1*x1^2)+(0.2*x1)^4:
+> G2:=4.5-x1*x2;
+> G:=min(G1,G2);
+> with(plots):
+> p1:=implicitplot(G1,x1=-5..5,x2=-5..5,grid=[101,101]):
+> p2:=implicitplot(G2,x1=-5..5,x2=-5..5,grid=[101,101],color=blue):
+> p3:=implicitplot(G=0,x1=-5..5,x2=-5..5,grid=[101,101],color=green,thic
+> kness=4):
+> with(plottools):
+> c := circle([0,0], 3, color=magenta):
+> display([p1,p2,p3,c]);
+> evalf(subs(x1=0,x2=0,G));
+
+                          G2 := 4.5 - x1 x2
+
+
+                                   2             4
+      G := min(2 - x2 + exp(-0.1 x1 ) + 0.0016 x1 , 4.5 - x1 x2)
+
+Warning, the name changecoords has been redefined
+
+Warning, the name arrow has been redefined
+
+
+
+                                  3.
+
+> y1:=solve(G1,x2);
+> y2:=solve(G2,x2);
+> xL:=fsolve(y1=y2,x1);
+
+                                           2
+  y1 := 2. + exp(-0.10000000000000000000 x1 )
+
+                                      4
+         + 0.0016000000000000000000 x1
+
+
+                           4.5000000000000000000
+                     y2 := ---------------------
+                                    x1
+
+
+                     xL := 1.6183841765382898291
+
+> Pdef:=(Int(Int(1/(2*Pi)*exp(-(x1^2+x2^2)/2),x2=-infinity..y2),x1=-infi
+> nity..0))+(Int(Int(1/(2*Pi)*exp(-(x1^2+x2^2)/2),x2=y1..infinity),x1=-i
+> nfinity..xL))+(Int(Int(1/(2*Pi)*exp(-(x1^2+x2^2)/2),x2=y2..infinity),x
+> 1=xL..infinity));
+
+             0
+            /
+           |
+  Pdef :=  |
+           |
+           |
+          /
+            -infinity
+
+           4.5000000000000000000
+           ---------------------             2     2
+                    x1                     x1    x2
+          /                          exp(- --- - ---)
+         |                                  2     2
+         |                       1/2 ---------------- dx2 dx1 +
+         |                                  Pi
+         |
+        /
+          -infinity
+
+           1.6183841765382898291                 2     2
+          /                                    x1    x2
+         |                               exp(- --- - ---)
+         |                                      2     2
+         |                       Int(1/2 ----------------, x2 = 2.
+         |                                      Pi
+         |
+        /
+          -infinity
+
+                                         2
+         + exp(-0.10000000000000000000 x1 )
+
+                                      4
+         + 0.0016000000000000000000 x1  .. infinity) dx1 +
+
+           infinity
+          /
+         |
+         |
+         |
+         |
+        /
+          1.6183841765382898291
+
+                                            2     2
+           infinity                       x1    x2
+          /                         exp(- --- - ---)
+         |                                 2     2
+         |                      1/2 ---------------- dx2 dx1
+         |                                 Pi
+         |
+        /
+          4.5000000000000000000
+          ---------------------
+                   x1
+
+> Pdef_num:=evalf(Pdef);
+
+                 Pdef_num := 0.0034789463209310872097
+
+> PHI:=proc(x)
+>   int(1/sqrt(2*Pi)*exp(-t^2/2),t=-infinity..x)
+> end:
+> -fsolve(PHI(x)=Pdef_num,x);
+
+                        1.2559685128742776753
+
+> 
+> 1-7.1529e-3/9.81929e-3;
+
+                        0.27154610974927922487
+
+> Digits:=20:evalf(sqrt(1/2));
+
+                        0.70710678118654752440
+
+> 

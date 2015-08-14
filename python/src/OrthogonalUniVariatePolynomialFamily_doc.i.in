@@ -1,0 +1,14 @@
+// OrthogonalUniVariatePolynomialFamily docstrings are defined in OrthogonalUniVariatePolynomialFactory_doc.i.in
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily
+OT_OrthogonalUniVariatePolynomialFactory_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::build
+OT_OrthogonalUniVariatePolynomialFactory_build_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getMeasure
+OT_OrthogonalUniVariatePolynomialFactory_getMeasure_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getNodesAndWeights
+OT_OrthogonalUniVariatePolynomialFactory_getNodesAndWeights_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getRecurrenceCoefficients
+OT_OrthogonalUniVariatePolynomialFactory_getRecurrenceCoefficients_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getRoots
+OT_OrthogonalUniVariatePolynomialFactory_getRoots_doc

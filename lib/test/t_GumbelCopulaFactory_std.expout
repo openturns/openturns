@@ -1,0 +1,8 @@
+Distribution          =class=GumbelCopula name=GumbelCopula dimension=2 theta=1.5
+Estimated distribution=class=GumbelCopula name=GumbelCopula dimension=2 theta=1.55919
+Default distribution=class=GumbelCopula name=GumbelCopula dimension=2 theta=2
+Distribution from parameters=class=GumbelCopula name=GumbelCopula dimension=2 theta=1.5
+GumbelCopula          =class=GumbelCopula name=GumbelCopula dimension=2 theta=1.5
+Estimated gumbelCopula=class=GumbelCopula name=GumbelCopula dimension=2 theta=1.55919
+Default gumbelCopula=class=GumbelCopula name=GumbelCopula dimension=2 theta=2
+GumbelCopula from parameters=class=GumbelCopula name=GumbelCopula dimension=2 theta=1.5

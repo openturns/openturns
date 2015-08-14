@@ -1,0 +1,177 @@
+> restart:
+> with(LinearAlgebra):
+> with(Statistics):
+> for dim from 1 to 4 do
+>  
+> print("---------------------------------------------------------------
+> -------");
+>   mu:=<seq(m[i],i=1..dim)>;
+>   assume(seq(s[i]>0,i=1..3));
+>   sigma:=[seq(s[i],i=1..dim)];
+>   C:=Matrix(dim,dim):
+>   for i from 1 to dim do
+>     C[i,i]:=1;
+>   od:
+>   for i from 2 to dim do
+>     C[i-1, i]:=1/2;
+>     C[i, i-1]:=1/2;
+>   od:
+>   for i from 1 to dim do
+>     for j from 1 to dim do
+>       C[i, j] := C[i, j] * sigma[i] * sigma[j];
+>     od:
+>   od:
+>   x:=<seq(X[i],i=1..dim)>:
+>  
+> pdf:=1/(2*Pi)^(dim/2)/sqrt(Determinant(C))*exp(-Transpose(x-mu).Matrix
+> Inverse(C).(x-mu)/2):
+>   pdfgr:=[seq(diff(pdf,m[i]),i=1..dim),seq(diff(pdf,s[i]),i=1..dim)];
+>   ddf:=[seq(diff(pdf,X[i]),i=1..dim)]:
+>   valnum:=seq(m[i]=0,i=1..dim),seq(s[i]=i,i=1..dim);
+>   valnumX:=seq(X[i]=1/2,i=1..dim);
+>   print(evalf(subs(valnum,valnumX,ddf)));
+>   print(evalf(subs(valnum,valnumX,pdf)));
+>   cdf:=evalf(combine(expand(subs(valnum,pdf)),exp)):
+>   A:=-infinity:
+>   for i from 1 to dim do
+>     cdf:=Int(cdf,X[i]=A..0.5);
+>   od:
+>   print(evalf[8-dim](cdf));
+>   print(evalf(subs(valnum,valnumX,pdfgr)));
+> #print(pdfgr);
+> od:
+
+  "---------------------------------------------------------------\
+        -------"
+
+
+                           [-0.1760326633]
+
+
+                             0.3520653266
+
+
+                              0.6914625
+
+
+                    [0.1760326633, -0.2640489950]
+
+
+  "---------------------------------------------------------------\
+        -------"
+
+
+                         [-0.04054550354, 0.]
+
+
+                            0.08109100710
+
+
+                               0.486770
+
+
+         [0.04054550354, 0., -0.06081825531, -0.04054550354]
+
+
+  "---------------------------------------------------------------\
+        -------"
+
+
+          [-0.007545293311, 0.001077899044, -0.001077899044]
+
+
+                            0.01293478853
+
+
+                               0.32981
+
+
+  [0.007545293311, -0.001077899044, 0.001077899044, -0.009162141878,
+
+        -0.006736869028, -0.004131946337]
+
+
+  "---------------------------------------------------------------\
+        -------"
+
+
+      [-0.0009518887465, 0.0001359841066, -0.0001359841066, 0.]
+
+
+                            0.001631809279
+
+
+     0.5                0.5                0.5
+    /                  /                  /
+   |                  |                  |
+   |                  |                  |
+   |                  |                  |
+  /                  /                  /
+    Float(-infinity)   Float(-infinity)   Float(-infinity)
+
+           0.5
+          /
+         |                                          2
+         |                 0.001888 exp(-0.8000 X[1]
+         |
+        /
+          Float(-infinity)
+
+         + 0.6000 X[1] X[2] - 0.2667 X[1] X[3] + 0.1000 X[1] X[4]
+
+                      2
+         - 0.3000 X[2]  + 0.2667 X[2] X[3] - 0.1000 X[2] X[4]
+
+                      2                                  2
+         - 0.1333 X[3]  + 0.1000 X[3] X[4] - 0.05000 X[4] ) dX[1] d
+
+        X[2] dX[3] dX[4]
+
+
+  [0.0009518887465, -0.0001359841066, 0.0001359841066, 0.,
+
+        -0.001155864906, -0.0008499006660, -0.0005212724087,
+
+        -0.0004079523198]
+
+> restart:with(Statistics):
+> X:=RandomVariable(Normal(mu,sigma)):
+> pdf:=PDF(X,x);
+> cdf:=CDF(X,x);
+
+                                                 2
+                               1/2       (x - mu)
+                              2    exp(- ---------)
+                                                2
+                                         2 sigma
+                   pdf := 1/2 ---------------------
+                                     1/2
+                                   Pi    sigma
+
+
+                                       1/2
+                                      2    (-x + mu)
+                 cdf := 1/2 - 1/2 erf(--------------)
+                                         2 sigma
+
+> factor(diff(cdf,mu)/pdf);factor(diff(cdf,sigma)/pdf);
+
+                                  -1
+
+
+                               -x + mu
+                               -------
+                                sigma
+
+> assume(sigma>0):int(pdf^2,x=-infinity..infinity);
+
+                                  1
+                            --------------
+                                1/2
+                            2 Pi    sigma~
+
+> evalf[25](1/(2*sqrt(Pi)));
+
+                     0.2820947917738781434740398
+
+> 

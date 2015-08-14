@@ -1,0 +1,87 @@
+%feature("docstring") OT::FisherSnedecor
+"Fisher-Snedecor distribution.
+
+Available constructors:
+    FisherSnedecor(*d1=1.0, d2=5.0*)
+
+Parameters
+----------
+d1 : float, :math:`d_1 > 0`
+    First :class:`~openturns.ChiSquare` degrees of freedom (numerator).
+d2 : float, :math:`d_2 > 0`
+    Second :class:`~openturns.ChiSquare` degrees of freedom (denominator).
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{x {\rm B}(d_1 / 2, d_2 / 2)}
+             \left[\left(\frac{d_1 x}{d_1 x + d_2}\right)^{d_1 / 2}
+                   \left(1 - \frac{d_1 x}{d_1 x + d_2}\right)^{d_2 / 2}\right],
+             \quad x \in \Rset^{+*}
+
+with :math:`d_1, d_2 > 0` and where :math:`\rm B` denotes Euler's beta
+function.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{d_2}{d_2 - 2} \\
+        \Var{X} & = & \frac{d_1 - 2}{d_1}\,\frac{d_2}{d_2 + 2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.FisherSnedecor(2., 3.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecor::getD1
+"Accessor to the parameter :math:`d_1`.
+
+Returns
+-------
+d1 : float
+    First :class:`~openturns.ChiSquare` degrees of freedom (numerator)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecor::getD2
+"Accessor to the parameter :math:`d_2`.
+
+Returns
+-------
+d2 : float
+    Second :class:`~openturns.ChiSquare` degrees of freedom (denominator)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecor::setD1
+"Accessor to the parameter :math:`d_1`.
+
+Parameters
+----------
+d1 : float, :math:`d_1 > 0`
+    First :class:`~openturns.ChiSquare` degrees of freedom (numerator)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecor::setD2
+"Accessor to the parameter :math:`d_2`.
+
+Parameters
+----------
+d2 : float, :math:`d_2 > 0`
+    Second :class:`~openturns.ChiSquare` degrees of freedom (denominator)."

@@ -1,0 +1,36 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 22 "diff(sinh(sinh(x)),x
+);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*&-%%coshG6#-%%sinhG6#%\"xG\"\"
+\"-F%F)F+" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 40 "evalf[25](int(
+exp(-x^2),x=0..infinity));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\":N3\\
+O,eFXDpA'))!#D" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 15 "sinh(sinh
+(5.));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+n+C9%)\"#A" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 28 "solve(sinh(sinh(x))=1e50,x);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+:QAXa!\"*" }}}{EXCHG {PARA 0 "> " 
+0 "" {MPLTEXT 1 0 32 "simplify(diff(tanh(sinh(t)),t));" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#*&-%%coshG6#%\"tG\"\"\"-F%6#-%%sinhGF&!\"#" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 79 "convert(simplify(1+tanh(sinh
+(t))),exp);\nconvert(simplify(1-tanh(sinh(t))),exp);" }}{PARA 11 "" 1 
+"" {XPPMATH 20 "6#*&-%$expG6#,&*&#\"\"\"\"\"#F*-F%6#%\"tGF*F**&#F*F+F*
+-F%6#,$F.!\"\"F*F4F*,&*&F)F*F$F*F**&F)F*-F%6#,&*&#F*F+F*F,F*F4*&F)F*F1
+F*F*F*F*F4" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*&-%$expG6#,&*&#\"\"\"\"
+\"#F*-F%6#%\"tGF*!\"\"*&#F*F+F*-F%6#,$F.F/F*F*F*,&*&F1F*-F%6#,&*&F1F*F
+,F*F**&#F*F+F*F2F*F/F*F**&F1F*F$F*F*F/" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 45 "convert(simplify(diff(tanh(sinh(t)),t)),exp);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#*&,&*&#\"\"\"\"\"#F'-%$expG6#%\"tGF'F'
+*&F&F'-F*6#,$F,!\"\"F'F'F',&*&F&F'-F*6#,&*&F&F'F)F'F'*&#F'F(F'F.F'F1F'
+F'*&F&F'-F*6#,&*&#F'F(F'F)F'F1*&F&F'F.F'F'F'F'!\"#" }}}{EXCHG {PARA 0 
+"> " 0 "" {MPLTEXT 1 0 31 "evalf[12](tanh(sinh(7.0*0.5)));" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$\"-+++++5!#6" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 44 "convert(solve(tanh(sinh(k*h))=1-eps,k),exp);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*&-%(arcsinhG6#-%(arctanhG6#,&\"\"\"
+!\"\"%$epsGF,F,%\"hGF-F-" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "
+" }}}}{MARK "8 0 0" 42 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }
+{PAGENUMBERS 0 1 2 33 1 1 }

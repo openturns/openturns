@@ -1,0 +1,19 @@
+test number zero : default constructor and string converter
+tensor0 =  class=ComplexTensor implementation=class=ComplexTensorImplementation name=Unnamed rows=0 columns=0 sheets=0 values=[]
+test number one : constructor with size, operator() and string converter
+tensor1 =  class=ComplexTensor implementation=class=ComplexTensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[(1,0.1),(2,0.2),(3,0.3),(4,0.4),(5,0.5),(6,0.6),(7,0.7),(8,0.8),(9,0.9),(10,1),(11,1.1),(12,1.2)]
+values = (1.000000, 0.100000j)   (2.000000, 0.200000j)   (3.000000, 0.300000j)   (4.000000, 0.400000j)   (5.000000, 0.500000j)   (6.000000, 0.600000j)   (7.000000, 0.700000j)   (8.000000, 0.800000j)   (9.000000, 0.900000j)   (10.000000, 1.000000j)   (11.000000, 1.100000j)   (12.000000, 1.200000j)
+test number two : copy constructor and string converter
+tensor2 =  class=ComplexTensor implementation=class=ComplexTensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[(1,0.1),(2,0.2),(3,0.3),(4,0.4),(5,0.5),(6,0.6),(7,0.7),(8,0.8),(9,0.9),(10,1),(11,1.1),(12,1.2)]
+test number three : get dimensions methods
+tensor1's nbRows =  2 tensor1's nbColumns =  2
+tensor1's nbSheets =  3
+test number four : assignment method
+test number five : isEmpty method
+tensor1 is empty =  False
+tensor0 is empty =  True
+tensor5 is empty =  True
+tensor1 =  class=ComplexTensor implementation=class=ComplexTensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[(1,0.1),(2,0.2),(3,0.3),(4,0.4),(5,0.5),(6,0.6),(7,0.7),(8,0.8),(9,0.9),(10,1),(11,1.1),(12,1.2)]
+tensor1.getSheet(1) =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(5,0.5),(6,0.6),(7,0.7),(8,0.8)]
+sheet2 =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.5,-0.5),(0.6,-0.5),(0.7,-0.5),(0.8,-0.5)]
+tensor1 =  class=ComplexTensor implementation=class=ComplexTensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[(1,0.1),(2,0.2),(3,0.3),(4,0.4),(0.5,-0.5),(0.6,-0.5),(0.7,-0.5),(0.8,-0.5),(9,0.9),(10,1),(11,1.1),(12,1.2)]

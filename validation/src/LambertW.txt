@@ -1,0 +1,110 @@
+> restart:
+> Digits:=50:
+> lW:=proc(x)
+>   local e,w,w0,w1,w2,w3,y,z,tmp,tmp2;
+> #  if (x < 6.46) then
+> #    w0:=x*(3+4*x)/(3+x*(7+x*5/2));
+>     w:=w0;
+>     z:=log(x)-w-log(w);
+> #  else
+> #    w0:=log(x);
+> #    w:=w0;
+> #    z:=-log(w);
+> #  fi:
+>   tmp:=1+w;
+>   y:=2*tmp*(tmp+2*z/3)-z;
+>   w1:=w*(1+z*y/(tmp*(y-z)));
+>   w:=w1;
+>   z:=log(x)-w-log(w);
+>   tmp:=1+w;
+>   tmp2:=tmp+2*z/3;
+>   e:=z*tmp2/(tmp*tmp2-1/2*z);
+>   w2:=w*(1+e);
+>   w:=w2;
+>   z:=log(x)-w-log(w);
+>   tmp:=1+w;
+>   tmp2:=tmp+2*z/3;
+>   e:=z*tmp2/(tmp*tmp2-1/2*z);
+>   w3:=w*(1+e);
+>   w:=w3;
+>   [x,w0,w1,w2,w3]
+> end:
+> err:=1e-16:
+> xmax:=1000.0:
+> imax:=10000:
+> flag1:=0:
+> flag2:=0:
+> flag3:=0:
+> for i from 0 to imax do
+>   x:=evalf(0+err+xmax*(i/imax));
+>   res:=evalf(lW(x));
+>   ref:=evalf(Re(LambertW(x)));
+>   if ((abs(res[1]/ref-1) > err) and (flag1=0)) then
+>     x1:=x;
+>     flag1:=1;
+>     print("res1",x1);
+>   fi;
+>   if ((abs(res[2]/ref-1) > err) and (flag2=0)) then
+>     x2:=x;
+>     flag2:=1;
+>     print("res2",x2);
+>   fi;
+>   if ((abs(res[3]/ref-1) > err) and (flag3=0)) then
+>     x3:=x;
+>     flag3:=1;
+>     print("res3",x3);
+>   fi;
+>   if ((abs(res[4]/ref-1) > err) and (flag4=0)) then
+>     x4:=x;
+>     flag4:=1;
+>     print("res4",x4);
+>   fi;
+> od:
+
+     "res1", 0.10000000000000010000000000000000000000000000000000
+
+
+     "res2", 0.10000000000000010000000000000000000000000000000000
+
+
+     "res3", 0.30000000000000010000000000000000000000000000000000
+
+Warning, computation interrupted
+
+> r:=lW(t)[4]:
+> with(codegen,optimize,cost):
+> ropt:=optimize(r);
+> cost(ropt);
+
+                                                     2 t1
+  ropt := t1 = ln(t), t2 = ln(w0), t4 = 1 + w0, t6 = ----,
+                                                      3
+
+                /     w0         2 t2\
+        t9 = t4 |1 + ---- + t6 - ----|,
+                \     3           3  /
+
+                 /    (t1 - w0 - t2) (2 t9 - t1 + w0 + t2)\
+        t19 = w0 |1 + ------------------------------------|,
+                 \          2 t4 (t9 - t1 + w0 + t2)      /
+
+                                 t19        2 t20
+        t20 = ln(t19), t24 = 1 + --- + t6 - -----,
+                                  3           3
+
+                  /          (t1 - t19 - t20) t24      \
+        t35 = t19 |1 + --------------------------------|
+                  |                     t1    t19   t20|
+                  |    (1 + t19) t24 - ---- + --- + ---|
+                  \                     2      2     2 /
+
+
+  3 functions + 9 assignments + 23 additions + 16 multiplications
+
+         + 3 divisions
+
+> LambertW(-exp(-1));
+
+                                  -1
+
+> 

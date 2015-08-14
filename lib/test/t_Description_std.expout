@@ -1,0 +1,12 @@
+size of desc1 = 2
+desc1[0] = X
+desc1[1] = Y
+desc2[0] = a
+desc2[1] = b
+desc3[0] = X
+desc3[1] = Y
+desc4[0] = a
+desc4[1] = b
+desc1 = [X,Y]
+desc5copy = [a,b,c]
+desc5 = [c,b,a]

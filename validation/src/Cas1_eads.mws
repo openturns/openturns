@@ -1,0 +1,27 @@
+{VERSION 5 0 "IBM INTEL LINUX" "5.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 506 "restart:\nPdef:=Int
+(\n        Int(\n          Int(\n            Int(\n              Int(
+\n                Int(\n                  Heaviside(x1+2*x2+2*x3+x4-5*
+x5-5*x6+\n                            1/1000*(sin(100*x1)+sin(100*x2)+
+sin(100*x3)+sin(100*x4)+sin(100*x5)+sin(100*x6)))*\n                  \+
+          1/sqrt(2*Pi)*exp(-(x1^2)/(2*sigma1^2)),\n                x1=
+0..infinity),\n              x2=0..infinity),\n            x3=0..infin
+ity),\n          x4=0..infinity),\n        x5=0..infinity),\n      x6=
+0..infinity);" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%%PdefG-%$IntG6$-F&6
+$-F&6$-F&6$-F&6$-F&6$,$*&#\"\"\"\"\"#F5**-%*HeavisideG6#,:%#x1GF5*&F6F
+5%#x2GF5F5*&F6F5%#x3GF5F5%#x4GF5*&\"\"&F5%#x5GF5!\"\"*&FCF5%#x6GF5FE*&
+#F5\"%+5F5-%$sinG6#,$*&\"$+\"F5F<F5F5F5F5*&FIF5-FL6#,$*&FPF5F>F5F5F5F5
+*&FIF5-FL6#,$*&FPF5F@F5F5F5F5*&FIF5-FL6#,$*&FPF5FAF5F5F5F5*&FIF5-FL6#,
+$*&FPF5FDF5F5F5F5*&FIF5-FL6#,$*&FPF5FGF5F5F5F5F5F6F4%#PiG#FEF6-%$expG6
+#,$*(F6FEF<F6%'sigma1G!\"#FEF5F5F5/F<;\"\"!%)infinityG/F>F^p/F@F^p/FAF
+^p/FDF^p/FGF^p" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}
+{MARK "0 0 0" 65 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 
+2 33 1 1 }

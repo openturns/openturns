@@ -1,0 +1,12 @@
+%feature("docstring") OT::HistogramFactory
+"Histogram factory.
+
+Available constructor:
+    HistogramFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

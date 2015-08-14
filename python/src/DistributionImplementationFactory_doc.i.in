@@ -1,0 +1,142 @@
+%define OT_DistributionFactory_doc
+"Base class for probability distribution factories.
+
+Notes
+-----
+This class generally describes the factory mechanism of each OpenTURNS
+distribution. Refer to the Reference Guide to have information on the specific
+estimators used for each distribution.
+"
+%enddef
+%feature("docstring") OT::DistributionImplementationFactory
+OT_DistributionFactory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_build_doc
+"build the distribution.
+
+**Available usages**:
+
+    build(*sample*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.NumericalPointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The built distribution."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::build
+OT_DistributionFactory_build_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_GetContinuousMultiVariateFactories_doc
+"Accessor to the list of continuous multivariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid continuous multivariate factories."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::GetContinuousMultiVariateFactories
+OT_DistributionFactory_GetContinuousMultiVariateFactories_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_GetContinuousUniVariateFactories_doc
+"Accessor to the list of continuous univariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid continuous univariate factories."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::GetContinuousUniVariateFactories
+OT_DistributionFactory_GetContinuousUniVariateFactories_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_GetDiscreteMultiVariateFactories_doc
+"Accessor to the list of discrete multivariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid discrete multivariate factories."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::GetDiscreteMultiVariateFactories
+OT_DistributionFactory_GetDiscreteMultiVariateFactories_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_GetDiscreteUniVariateFactories_doc
+"Accessor to the list of discrete univariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid discrete univariate factories."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::GetDiscreteUniVariateFactories
+OT_DistributionFactory_GetDiscreteUniVariateFactories_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_GetMultiVariateFactories_doc
+"Accessor to the list of multivariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid multivariate factories."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::GetMultiVariateFactories
+OT_DistributionFactory_GetMultiVariateFactories_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_GetUniVariateFactories_doc
+"Accessor to the list of univariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid univariate factories."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::GetUniVariateFactories
+OT_DistributionFactory_GetUniVariateFactories_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_getBootstrapSize_doc
+"Accessor to the bootstrap size.
+
+Returns
+-------
+size : integer
+    Size of the bootstrap."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::getBootstrapSize
+OT_DistributionFactory_getBootstrapSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_setBootstrapSize_doc
+"Accessor to the bootstrap size.
+
+Parameters
+----------
+size : integer
+    Size of the bootstrap."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::setBootstrapSize
+OT_DistributionFactory_setBootstrapSize_doc

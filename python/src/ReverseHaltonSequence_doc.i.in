@@ -1,0 +1,21 @@
+%feature("docstring") OT::ReverseHaltonSequence
+"Reverse Halton sequence.
+
+Available constructors:
+    ReverseHaltonSequence(*dimension=1*)
+
+Parameters
+----------
+dimension : positive int
+    Dimension of the points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sequence = ot.ReverseHaltonSequence(2)
+>>> print(sequence.generate(5))
+0 : [ 0.5      0.666667 ]
+1 : [ 0.25     0.333333 ]
+2 : [ 0.75     0.222222 ]
+3 : [ 0.125    0.888889 ]
+4 : [ 0.625    0.555556 ]"

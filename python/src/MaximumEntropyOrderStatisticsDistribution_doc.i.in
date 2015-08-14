@@ -1,0 +1,67 @@
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution
+"MaximumEntropyOrderStatistics distribution.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.Distribution`
+    The marginals, with range verifying :math:`a_i \leq a_{i+1}` and :math:`b_i \leq b_{i+1}`.
+useApproximation : bool
+    Indicates whether the expression :math:`\Phi_k(t)` is approximated with a polynomials (Hermitte with degree 4 on a discretization determined by a Gauss-Kronrod algorithm applied to :math:`\Phi_k(t)`).
+    By default, the approximation is used.
+checkMarginals : bool
+    Indicates whether the compatibility tests on the marginals is done.
+    By default, the tests are done.
+
+Notes
+-----
+Its realizations are ordered :math:`X_1 \leq \dots \leq X_n`.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = f_1(x_1) \prod\limits_{k=2}^d \phi_k(x_k) \exp\left(-\int_{x_{k-1}}^{x_k} \phi_k(s) ds\right) \mathbf{1}_{x_1 \leq \dots \leq x_d}
+
+             \text{with } \phi_k(x_k) = \frac{f_k(x_k)}{F_{k-1}(x_k)-F_k(x_k)}
+
+We note:
+
+.. math::
+
+    \Phi_k(t) = \exp\left(-\int_{a_{k}}^{t} \phi_k(s) ds\right)
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> coll = [ot.Uniform(-1., 1.), ot.LogUniform(1., 1.2), ot.Triangular(3., 4., 5.)]
+>>> distribution = ot.MaximumEntropyOrderStatisticsDistribution(coll)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::getDistributionCollection
+"Accessor to the distribution's collection.
+
+Returns
+-------
+coll : sequence
+    The marginals."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::setDistributionCollection
+"Accessor to the distribution's collection.
+
+Parameters
+----------
+coll : sequence
+    The marginals."
+
+// ---------------------------------------------------------------------
+

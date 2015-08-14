@@ -1,0 +1,282 @@
+%feature("docstring") OT::KrigingAlgorithm
+"Kriging algorithm.
+
+Available constructors:
+    KrigingAlgorithm(*inputSample, outputSample, basis, covarianceModel, normalize=True, keepCovariance=True*)
+
+    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, basis, covarianceModel, keepCovariance=True*)
+
+    KrigingAlgorithm(*inputSample, outputSample, multivariateBasis, covarianceModel, normalize=True, keepCovariance=True*)
+
+    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, multivariateBasis, covarianceModel, keepCovariance=True*)
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.NumericalSample`
+    The input and output samples of a model evaluated apart.
+inputTransformation : :class:`~openturns.NumericalMathFunction`
+    Function that helps to normalize the input sample.
+basis : :class:`~openturns.Basis`
+    Functional basis to estimate the trend.
+
+    If the output dimension is greater than 1, the same basis is used for all marginals.
+multivariateBasis : collection of :class:`~openturns.Basis`
+    Collection of functional basis: one basis for each marginal output.    
+
+    If the trend is not estimated, the collection must be empty.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance model.
+
+    If the spatial dimension (*d*) is greater than the input sample dimension, a product covariance model (:class:`~openturns.ProductCovarianceModel`) is built, with the same covariance model in each marginal.
+ 
+    Otherwise, the spatial dimension must be equal to the input sample dimension.
+
+    Its dimension (*p*) must be equal to the output sample dimension.
+normalize : bool, optional
+    Indicates whether the input sample has to be normalized.
+
+    OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
+
+    Default is *True*.
+keepCovariance : bool, optional
+    Indicates whether the covariance matrix has to be stored in the result structure *KrigingResult*.
+ 
+    Default is *True*.
+
+Notes
+-----
+We note :math:`\cM:\Rset^d \mapsto \Rset^p` with :math:`\cM(\vect{x})= \vect{y}`.
+
+We suppose  we have an input sample :math:`(\vect{x}_1, \dots, \vect{x}_m)` associated to the output sample :math:`(\vect{y}_1, \dots, \vect{y}_m)` where :math:`\vect{y}_i = \cM(\vect{x}_i)` for all *i*.
+
+Kriging method builds a metamodel of :math:`\tilde{\cM}` supposing that the output is a realization of a Normal process :math:`Y: \Omega \times \cD \mapsto \Rset^p` with :math:`\cD \in \Rset^d` that writes:
+
+.. math::
+
+    Y(\omega, \vect{x}) = \sum_{i=1}^M \beta_i f_i(\vect{x}) + Z(\omega, \vect{x})
+
+where :math:`(f_1, \dots, f_M)` is a functional basis whith :math:`f_i: \Rset^d \mapsto \Rset^p` and :math:`\beta_i \in _Rset` for all *i*  and :math:`Z(\omega, \vect{x})` is a zero-mean Normal process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}: \Rset^d \times \Rset^d \mapsto \mathcal{S}^{+}_{p}(\Rset)`:
+
+.. math::
+    C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{x}, \vect{y}) = \Expect{Z(\omega, \vect{x})Z(\omega, \vect{y})}
+
+where :math:`\vect{\sigma} \in \Rset^d` is the amplitude vector, :math:`\vect{\theta} \in \Rset^d` the scale vector and :math:`\vect{\lambda}` a set of residual parameters.
+
+As *Z* is a stationary process, we write :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{\tau})` rather than :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{x},\vect{x}+\vect{\tau})`.
+
+If :math:`R_{\vect{\theta}, \vect{\lambda}}` is the stationary correlation function, then we have:
+
+.. math::
+    C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{\tau}) = diag(\vect{\sigma})R_{\vect{\theta}, \vect{\lambda}}(\vect{\tau})  diag(\vect{\sigma})
+    R_{\vect{\theta}, \vect{\lambda}}(\vect{\tau}) = \rho_{\vect{\lambda}}(\tau_1/\theta_1, \dots)
+
+
+If the covariance model fixed by the User has a spatial dimension (*d*)  equal to 1 with parameters :math:`(\sigma, \theta, \vect{\lambda})` whereas the input sample dimension has a greater dimension, then OpenTURNS builds a product model covariance that writes:
+
+.. math::
+    C_{\sigma, \theta, \vect{\lambda}}(\vect{\tau}) = \prod_{i=1}^d C_{\sigma, \theta, \vect{\lambda}}(\tau_i)
+
+The User can fix any other multi-dimensional covariance models for example built with the :class:`~openturns.PoductCovarianceModel` class.
+
+OpenTURNS estimates with the maximum likelihood method the following parameters:
+
+    - :math:`(\beta_1, \dots, \beta_M)`
+    - :math:`\vect{\sigma}` if :math:`\sigma_i=\sigma` for all *i*.
+
+The parameter :math:`\vect{\theta}` is fixed by the User. However, :math:`\vect{\theta}` and :math:`\vect{\sigma}` can be estimated using the maximum likelihood estimators if an optimizer is fixed by the User with the method *setOptimizer*.
+
+It is also possible to proceed as follows:
+
+    - ask for the log-likelihood function to the *KrigingAlgorithm* after having launched the method *run()*
+    - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimisation algorithms (that can take into account some additional constraints if needed)
+    - fulfill the *KrigingAlgorithm* with the optimized value of these parameters. 
+
+The *KrigingAlgorithm* class provides methods to build such a meta model using different input arguments. With huge data, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
+
+This implementation, which is based on a sparse representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `KrigingAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
+
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> # use of Hmat implementation
+>>> # ot.ResourceMap.Set('KrigingAlgorithm-LinearAlgebra', 'HMAT')
+>>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
+>>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
+>>> outputSample = f(inputSample)
+
+Create the algorithm:
+
+>>> basis = ot.ConstantBasisFactory().build()
+>>> covarianceModel = ot.SquaredExponential(1)
+>>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
+>>> algo.run()
+
+Get the resulting meta model:
+
+>>> result = algo.getResult()
+>>> metamodel = result.getMetaModel()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getOptimizer
+"Accessor to solver used to optimize the covariance model parameters.
+
+Returns
+-------
+algorithm : :class:`~openturns.BoundConstrainedAlgorithm`
+    Solver used to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::setOptimizer
+"Accessor to the solver used to optimize the covariance model parameters.
+
+Parameters
+----------
+algorithm : :class:`~openturns.BoundConstrainedAlgorithm`
+    Solver used to optimize the covariance model parameters.
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> input_data = ot.Uniform(-1.0, 2.0).getSample(10)
+>>> model = ot.NumericalMathFunction('x', 'x-1+sin(_pi*x/(1+0.25*x^2))')
+>>> output_data = model(input_data)
+
+Create the Kriging algorithm with the optimizer option: 
+
+>>> basis = ot.Basis([ot.NumericalMathFunction('x', '0.0')])
+>>> thetaInit = 1.0
+>>> covariance = ot.GeneralizedExponential(1, thetaInit, 2.0)
+>>> optimizer = ot.TNC()
+>>> bounds = ot.Interval(1e-2,1e2)
+>>> optimizer.setBoundConstraints(bounds)
+>>> algo = ot.KrigingAlgorithm(input_data, output_data, basis, covariance)
+>>> algo.setOptimizer(optimizer)
+
+Launch the algorithm and get the result:
+
+>>> algo.run()
+>>> thetaOptimized = algo.getResult().getCovarianceModel().getScale()
+>>> log_likelihood = algo.getLogLikelihoodFunction()
+>>> graph_ll = log_likelihood.draw(bounds.getLowerBound()[0], bounds.getUpperBound()[0], 1024)
+>>> cloud = ot.Cloud([[thetaOptimized[0], log_likelihood(thetaOptimized)[0]]])
+>>> cloud.setColor('red')
+>>> cloud.setPointStyle('bullet')
+>>> graph_ll.add(cloud)
+>>> graph_ll.setLogScale(1)
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getInputTransformation
+"Get the function normalizing the input.
+
+Returns
+-------
+transformation : :class:`~openturns.NumericalMathFunction`
+    Function that normalizes the input."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getResult
+"Get the results of the metamodel computation.
+
+Returns
+-------
+result : :class:`~openturns.KrigingResult`
+    Structure containing all the results obtained after computation
+    and created by the method :py:meth:`run`.
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
+>>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
+>>> outputSample = f(inputSample)
+
+Create the algorithm:
+
+>>> basis = ot.ConstantBasisFactory().build()
+>>> covarianceModel = ot.SquaredExponential(1)
+>>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
+>>> algo.run()
+
+Get the result:
+
+>>> result = algo.getResult()
+"
+
+//-----------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.NumericalSample`
+    The output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getLogLikelihoodFunction
+"Accessor to the log-likelihood function that writes as argument of the covariance's model parameters.
+
+Returns
+-------
+logLikelihood : :class:`~openturns.NumericalMathFunction`
+    The log-likelihood function as a fucntion of the covariance's model parameters.
+
+Notes
+-----
+The log-likelihood function may be useful for some postprocessing: maximization using external optimizers for example.
+
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> f = ot.NumericalMathFunction(['x0'], ['f0'], ['x0 * sin(x0)'])
+>>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
+>>> outputSample = f(inputSample)
+
+Create the algorithm:
+
+>>> basis = ot.ConstantBasisFactory().build()
+>>> covarianceModel = ot.SquaredExponential(1)
+>>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
+>>> algo.run()
+
+Get the log-likelihood function:
+
+>>> likelihoodFunction = algo.getLogLikelihoodFunction()
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::run
+"Compute the response surface.
+
+Notes
+-----
+It computes the kriging response surface and creates a
+:class:`~openturns.KrigingResult` structure containing all the results."
+

@@ -1,0 +1,62 @@
+%feature("docstring") OT::GumbelCopula
+"Gumbel copula.
+
+Available constructor:
+    GumbelCopula(*theta=2.0*)
+
+Parameters
+----------
+theta : float, :math:`\theta \geq 1`
+    Parameter :math:`\theta`.
+
+Notes
+-----
+The Gumbel copula is a bivariate asymmetric Archimedean copula, exhibiting
+greater dependence in the positive tail than in the negative. It is defined by:
+
+.. math::
+
+    C(u_1, u_2) = \exp(-((-log(u_1))^{\theta} + (-log(u_2))^{\theta}))^{1/\theta})
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+And its generator is:
+
+.. math::
+
+    \varphi(t) = (-\log(t))^{\theta}
+
+See also
+--------
+ArchimedeanCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.GumbelCopula(2.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GumbelCopula::getTheta
+"Get the parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    Parameter :math:`\theta` of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GumbelCopula::setTheta
+"Set the parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float, :math:`\theta \geq 1`
+    Parameter :math:`\theta` of the copula."

@@ -1,0 +1,87 @@
+%feature("docstring") OT::LogUniform
+"LogUniform distribution.
+
+Available constructors:
+    LogUniform(*a_log=-1., b_log=1.0*)
+
+Parameters
+----------
+a_log : float
+    Lower bound in log-scale.
+b_log : float, :math:`b_\ell > a_\ell`
+    Upper bound in log-scale.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{x (b_\ell - a_\ell)},
+             \quad \log(x) \in [a_\ell; b_\ell]
+
+with :math:`a_\ell < b_\ell`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{b - a}{b_\ell - a_\ell} \\
+        \Var{X} & = & \frac{1}{2} (b - a)
+                      \frac{  b (b_\ell - a_\ell - 2)
+                            + a (b_\ell - a_\ell + 2)}
+                           {(b_\ell - a_\ell)^2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.LogUniform(-1., 1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogUniform::getALog
+"Accessor to the distribution's lower bound in log-scale :math:`a_\ell`.
+
+Returns
+-------
+a_log : float
+    Lower bound in log-scale."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogUniform::getBLog
+"Accessor to the distribution's upper bound in log-scale :math:`b_\ell`.
+
+Returns
+-------
+b_log : float
+    Upper bound in log-scale."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogUniform::setALog
+"Accessor to the distribution's lower bound in log-scale :math:`a_\ell`.
+
+Parameters
+----------
+a_log : float, :math:`a_\ell < b_\ell`
+    Lower bound in log-scale."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogUniform::setBLog
+"Accessor to the distribution's upper bound in log-scale :math:`b_\ell`.
+
+Parameters
+----------
+b_log : float, :math:`b_\ell > a_\ell`
+    Upper bound in log-scale."

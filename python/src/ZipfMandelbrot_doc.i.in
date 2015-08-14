@@ -1,0 +1,99 @@
+%feature("docstring") OT::ZipfMandelbrot
+"ZipfMandelbrot distribution.
+
+Available constructors:
+    ZipfMandelbrot(*N=1.0, q=0., s=1.0*)
+
+Parameters
+----------
+N : int, :math:`N > 0`
+q : float, :math:`q \geq 0`
+s : float, :math:`s > 0`
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    \Prob{X = k} = \frac{1}{(k+q)^s H(N,q,s)},
+                   \quad \forall k \in [1, N]
+
+where :math:`H(N,q,s)` is the Generalized Harmonic Number:
+:math:`H(N,q,s) = \sum_{i=1}^{N} \frac{1}{(i+q)^s}`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & =  & \frac{H_{N,q,s-1}}{H_{N,q,s}}-q \\
+        \Var{X} & = & \frac{\displaystyle \sum_{i=1}^N
+                                \frac{(i - \Expect{X})^2}{(i+q)^s}}{H_{N,q,s}}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.ZipfMandelbrot(15, 1.2, 2.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ZipfMandelbrot::getN
+"Accessor to the parameter :math:`N`.
+
+Returns
+-------
+N : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ZipfMandelbrot::getQ
+"Accessor to the parameter :math:`q`.
+
+Returns
+-------
+q : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ZipfMandelbrot::getS
+"Accessor to the parameter :math:`s`.
+
+Returns
+-------
+s : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ZipfMandelbrot::setN
+"Accessor to the parameter :math:`N`.
+
+Parameters
+----------
+N : int, :math:`N > 0`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ZipfMandelbrot::setQ
+"Accessor to the parameter :math:`q`.
+
+Parameters
+----------
+q : float, :math:`q >= 0`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ZipfMandelbrot::setS
+"Accessor to the parameter :math:`s`.
+
+Parameters
+----------
+s : float, :math:`s > 0`"

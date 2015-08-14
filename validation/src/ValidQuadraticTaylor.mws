@@ -1,0 +1,90 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1319 "restart:\nwith(Lin
+earAlgebra):\nPoint:=<1,2>:\ncenter:=Vector(Point):\n\"center\",evalf(
+center);\nf:=<x1*sin(x2),cos(x1+x2),(x2+1)*exp(x1-2*x2)>:\nconst:=subs
+(x1=Point[1],x2=Point[2],f):\n\"const\",evalf(const);\nDf:=<map(_x->di
+ff(_x,x1),f)|map(_x->diff(_x,x2),f)>:\nLinear:=Transpose(subs(x1=Point
+[1],x2=Point[2],Df)):\n\"linear\",evalf(Linear);\nQuadratic:=array(1..
+3):\nQuadratic[1]:=subs(x1=Point[1],x2=Point[2],<<diff(diff(f[1],x1),x
+1),diff(diff(f[1],x1),x2)>|<diff(diff(f[1],x2),x1),diff(diff(f[1],x2),
+x2)>>):\nQuadratic[2]:=subs(x1=Point[1],x2=Point[2],<<diff(diff(f[2],x
+1),x1),diff(diff(f[2],x1),x2)>|<diff(diff(f[2],x2),x1),diff(diff(f[2],
+x2),x2)>>):\nQuadratic[3]:=subs(x1=Point[1],x2=Point[2],<<diff(diff(f[
+3],x1),x1),diff(diff(f[3],x1),x2)>|<diff(diff(f[3],x2),x1),diff(diff(f
+[3],x2),x2)>>):\n\"quadratic\",map(evalf,Quadratic);\nres:=const+Trans
+pose(Linear).(Point-center)+1/2*<Transpose(Point-center).Quadratic[1].
+(Point-center),Transpose(Point-center).Quadratic[2].(Point-center),Tra
+nspose(Point-center).Quadratic[3].(Point-center)>:\nevalf(res);\nPoint
+[1]:=Point[1]+0.4:\nPoint[2]:=Point[2]-0.4/2:\nevalf(Point);\nres:=con
+st+Transpose(Linear).(Point-center)+1/2*<Transpose(Point-center).Quadr
+atic[1].(Point-center),Transpose(Point-center).Quadratic[2].(Point-cen
+ter),Transpose(Point-center).Quadratic[3].(Point-center)>:\nevalf(res)
+;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$Q'center6\"-%'RTABLEG6%\"*/&3c8-%
+'MATRIXG6#7$7#$\"\"\"\"\"!7#$\"\"#F0&%'VectorG6#%'columnG" }}{PARA 11 
+"" 1 "" {XPPMATH 20 "6$Q&const6\"-%'RTABLEG6%\"*gK*e8-%'MATRIXG6#7%7#$
+\"+oU(H4*!#57#$!+m\\#***)*F07#$\"+^?h$\\\"F0&%'VectorG6#%'columnG" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6$Q'linear6\"-%'RTABLEG6%\"*+*Hi8-%'MATR
+IXG6#7$7%$\"+oU(H4*!#5$!+\"3+7T\"F0$\"+^?h$\\\"F07%$!+l$o9;%F0F1$!+=MN
+*[#F0%'MatrixG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$Q*quadratic6\"K%'vec
+torG6#7%-%'RTABLEG6%\"*/\\HO\"-%'MATRIXG6#7$7$$\"\"!F3$!+l$o9;%!#57$F4
+$!+oU(H4*F6%'MatrixG-F*6%\"*C]HO\"-F.6#7$7$$\"+m\\#***)*F6FBFAF:-F*6%
+\"*ckHO\"-F.6#7$7$$\"+^?h$\\\"F6$!+=MN*[#F67$FM$\"+qa'H)RF6F:Q(pprint0
+F$" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%'RTABLEG6%\"*['Ho8-%'MATRIXG6#
+7%7#$\"+oU(H4*!#57#$!+m\\#***)*F.7#$\"+^?h$\\\"F.&%'VectorG6#%'columnG
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%'RTABLEG6%\"*!)*4o8-%'MATRIXG6#7
+$7#$\"#9!\"\"7#$\"+++++=!\"*&%'VectorG6#%'columnG" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#-%'RTABLEG6%\"*7BLP\"-%'MATRIXG6#7%7#$\"+j:Nr8!\"*7#$!+
+$[mT)**!#57#$\"+-TA()HF2&%'VectorG6#%'columnG" }}}{EXCHG {PARA 0 "> " 
+0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "0 0 0" 167 }{VIEWOPTS 1 1 0 1 1 
+1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }{RTABLE_HANDLES 135608504 
+135893260 136229900 136294904 136295024 136296456 136829648 136809980 
+137332312 }{RTABLE 
+M7R0
+I6RTABLE_SAVE/135608504X*%)anythingG6"6"[gl!#%!!!"#"#$"""""!$""#F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135893260X*%)anythingG6"6"[gl!#%!!!"$"$$"+oU(H4*!#5$!+m\#***)*F)$
+"+^?h$\"F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136229900X,%)anythingG6"6"[gl!"%!!!#'"#"$$"+oU(H4*!#5$!+l$o9;%F)$
+!+"3+7T"F)F,$"+^?h$\"F)$!+=MN*[#F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136294904X,%)anythingG6"6"[gl!"%!!!#%"#"#$""!F($!+l$o9;%!#5F)$!+o
+U(H4*F+F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136295024X,%)anythingG6"6"[gl!"%!!!#%"#"#$"+m\#***)*!#5F'F'F'F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136296456X,%)anythingG6"6"[gl!"%!!!#%"#"#$"+^?h$\"!#5$!+=MN*[#F)F
+*$"+qa'H)RF)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136829648X*%)anythingG6"6"[gl!#%!!!"$"$$"+oU(H4*!#5$!+m\#***)*F)$
+"+^?h$\"F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136809980X*%)anythingG6"6"[gl!#%!!!"#"#$"#9!""$"+++++=!"*F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/137332312X*%)anythingG6"6"[gl!#%!!!"$"$$"+j:Nr8!"*$!+$[mT)**!#5$"
++-TA()HF,F&
+}
+

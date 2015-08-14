@@ -1,0 +1,55 @@
+p -> class=PersistentObject name=One
+Object name is : One
+Object name is : One
+Unicity : true
+Count : 1
+p -> class=PersistentObject name=One
+Object name is : One
+Object name is : One
+Unicity : false
+Count : 2
+p -> class=PersistentObject name=One
+Object name is : One
+Object name is : One
+Unicity : false
+Count : 3
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 3
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 3
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 3
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 2
+p -> class=PersistentObject name=Three
+Object name is : Three
+Object name is : Three
+Unicity : true
+Count : 1
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 2
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 2
+p -> class=PersistentObject name=Two
+Object name is : Two
+Object name is : Two
+Unicity : false
+Count : 2

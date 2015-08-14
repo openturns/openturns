@@ -1,0 +1,40 @@
+%feature("docstring") OT::MonteCarloExperiment
+"MonteCarlo experiment.
+
+Available constructors:
+    MonteCarloExperiment(*distribution, size*)
+
+    MonteCarloExperiment(*size*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` with an independent copula used to generate the
+    set of input data.
+size : positive int
+    Number :math:`cardI` of points that will be generated in the experiment.
+
+Notes
+-----
+MonteCarloExperiment is a random weighted design of experiments.
+The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
+independently from the distribution :math:`\mu`. The weights associated to the
+points are all equal to :math:`1/cardI`. When the :meth:`generate` method is
+recalled, the generated sample changes.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myPlane = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> print(myPlane.generate())
+    [ marginal 1 marginal 2 ]
+0 : [  0.608202  -1.26617   ]
+1 : [ -0.438266   1.20548   ]
+2 : [ -2.18139    0.350042  ]
+3 : [ -0.355007   1.43725   ]
+4 : [  0.810668   0.793156  ]"

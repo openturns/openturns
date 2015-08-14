@@ -1,0 +1,8 @@
+distribution= class=Binomial name=Binomial dimension=1 n=15 p=0.7
+Estimated distribution= class=Binomial name=Binomial dimension=1 n=15 p=0.69894
+Default distribution= class=Binomial name=Binomial dimension=1 n=1 p=0.5
+Distribution from parameters= class=Binomial name=Binomial dimension=1 n=15 p=0.7
+Binomial          = Binomial(n = 15, p = 0.7)
+Estimated binomial= Binomial(n = 15, p = 0.69894)
+Default binomial= Binomial(n = 1, p = 0.5)
+Binomial from parameters= Binomial(n = 15, p = 0.7)

@@ -1,0 +1,5 @@
+transformation= class=InverseNatafIndependentCopulaEvaluation description=[x0,x1,y0,y1] dimension=2
+transformation( [0.75,0.75] )= class=NumericalPoint name=Unnamed dimension=2 values=[0.773373,0.773373]
+transformation parameters gradient= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=0 columns=2 values=[]
+input dimension= 2
+output dimension= 2

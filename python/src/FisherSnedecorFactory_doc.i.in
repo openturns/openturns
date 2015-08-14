@@ -1,0 +1,12 @@
+%feature("docstring") OT::FisherSnedecorFactory
+"Fisher Snedecor factory.
+
+Available constructor:
+    FisherSnedecorFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

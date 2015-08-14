@@ -1,0 +1,84 @@
+Distribution  InverseChiSquare(nu = 10.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.0782188]
+oneSample first= [0.139041]  last= [0.137094]
+mean= [0.118211]
+covariance= [[ 0.00448375 ]]
+Kolmogorov test for the generator, sample size= 100  is  accepted
+Kolmogorov test for the generator, sample size= 1000  is  accepted
+Point=  [0.190476]
+ddf     = [-32.6097]
+ddf (FD)=-32.6097
+log pdf= 0.538526870446
+pdf     =1.71348
+pdf (FD)=1.71348
+cdf= 0.898124218121
+ccdf= 0.101875781879
+survival= 0.101875781879
+characteristic function=(0.999474, 0.0224004)
+log characteristic function=(-0.000274906, 0.0224084)
+pdf gradient     = [-1.01934,-6.74683]
+pdf gradient (FD)= [-0.509672]
+cdf gradient     = [0.0888995,0.163189]
+cdf gradient (FD)= [0.0444498]
+quantile= [0.235]
+cdf(quantile)= 0.95
+mean= [0.117647]
+covariance= [[ 0.00425872 ]]
+correlation= [[ 1 ]]
+spearman= [[ 1 ]]
+kendall= [[ 1 ]]
+parameters= [[nu : 10.5]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [0.235294]
+standard moment n= 2 , value= [0.0723982]
+standard moment n= 3 , value= [0.032177]
+standard moment n= 4 , value= [0.0257416]
+standard moment n= 5 , value= [0.102966]
+Standard representative= InverseChiSquare(nu = 10.5)
+standard deviation= [0.0652588]
+skewness= [3.20493]
+kurtosis= [35.5333]
+Distribution  InverseChiSquare(nu = 15)
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.0913064]
+oneSample first= [0.0472117]  last= [0.0823255]
+mean= [0.0764712]
+covariance= [[ 0.00106545 ]]
+Kolmogorov test for the generator, sample size= 100  is  accepted
+Kolmogorov test for the generator, sample size= 1000  is  accepted
+Point=  [0.133333]
+ddf     = [-67.8131]
+ddf (FD)=-67.8131
+log pdf= 0.643707583651
+pdf     =1.90353
+pdf (FD)=1.90353
+cdf= 0.942263113464
+ccdf= 0.0577368865356
+survival= 0.0577368865356
+characteristic function=(0.999938, 0.0102561)
+log characteristic function=(-9.55898e-06, 0.0102564)
+pdf gradient     = [-1.18971,-10.7073]
+pdf gradient (FD)= [-0.594853]
+cdf gradient     = [0.0479461,0.126902]
+cdf gradient (FD)= [0.023973]
+quantile= [0.137723]
+cdf(quantile)= 0.95
+mean= [0.0769231]
+covariance= [[ 0.00107585 ]]
+correlation= [[ 1 ]]
+spearman= [[ 1 ]]
+kendall= [[ 1 ]]
+parameters= [[nu : 15]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [0.153846]
+standard moment n= 2 , value= [0.027972]
+standard moment n= 3 , value= [0.00621601]
+standard moment n= 4 , value= [0.001776]
+standard moment n= 5 , value= [0.000710401]
+Standard representative= InverseChiSquare(nu = 15)
+standard deviation= [0.0328001]
+skewness= [2.08463]
+kurtosis= [13.0952]

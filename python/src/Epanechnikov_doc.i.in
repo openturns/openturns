@@ -1,0 +1,39 @@
+%feature("docstring") OT::Epanechnikov
+"Epanechnikov distribution.
+
+Available constructor:
+    Epanechnikov()
+
+Notes
+-----
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{3}{4}\,(1 - x^2), \quad x \in [-1; 1]
+
+It has no parameters and is intended to be used as a kernel within a
+:class:`~openturns.KernelSmoothing`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & 0 \\
+        \Var{X} & = & \frac{1}{5}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Epanechnikov()
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+

@@ -1,0 +1,47 @@
+%feature("docstring") OT::GammaMuSigma
+"Gamma distribution parameters.
+
+Available constructors:
+    GammaMuSigma(*mu=1.0, sigma=1.0, gamma=0.*)
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float
+    Standard deviation :math:`\sigma > 0`.
+gamma : float, optional
+    Shift parameter.
+
+Notes
+-----
+The native parameters are defined as follows:
+
+.. math::
+
+    k &= \left( \frac{\mu-\gamma}{\sigma} \right)^2 \\
+    \lambda &= \frac{\mu-\gamma}{\sigma^2}
+
+See also
+--------
+Gamma
+
+Examples
+--------
+Create the parameters of the Gamma distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.GammaMuSigma(1.5, 2.5, -0.5)
+
+Convert parameters into the native parameters:
+
+>>> print(parameters([1.5, 2.5, -0.5]))
+[0.64,0.32,-0.5]
+
+The gradient of the transformation of the native parameters into the new
+parameters:
+
+>>> print(parameters.gradient())
+[[  0.64   0.16   0     ]
+ [ -0.512 -0.256  0     ]
+ [ -0.64  -0.16   1     ]]"

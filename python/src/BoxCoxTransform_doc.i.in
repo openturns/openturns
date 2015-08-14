@@ -1,0 +1,124 @@
+%feature("docstring") OT::BoxCoxTransform
+"BoxCox transformation.
+
+Available constructors:
+    BoxCoxTransform(*lambdaVect, shiftVect = 0*)
+
+    BoxCoxTransform(*lambda, shift=0*)
+
+Parameters
+----------
+lambdaVect : :class:`~openturns.NumericalPoint`
+    The  :math:`(\lambda_1, \dots, \lambda_d)` parameter.
+shiftVect : :class:`~openturns.NumericalPoint`
+    The  :math:`(\alpha_1, \dots, \alpha_d)` parameter. 
+
+    Default is :math:`(\alpha_1, \dots, \alpha_d)=(0, \dots, 0)`.
+lambda : float
+    The  :math:`\lambda` parameter in the univariate case.
+shift : float
+    The   :math:`\alpha` parameter in the univariate case.
+
+    Default is :math:`\alpha = 0`.
+
+
+Notes
+-----
+The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` writes for each component :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset`:
+
+.. math::
+
+    h_{\lambda_i, \alpha_i} (x)= 
+    \left\{
+    \begin{array}{ll}
+    \dfrac{(x+\alpha_i)^\lambda_i-1}{\lambda} & \lambda_i \neq 0 \\
+    \log(x+\alpha_i)                        & \lambda_i = 0
+    \end{array}
+    \right.
+
+for all :math:`x+\alpha_i >0`.
+
+The inverse Box Cox transformation writes:
+
+.. math::
+
+    \begin{array}{lcl}
+      h_{\lambda_i, \alpha_i}^{-1}(y) & = &
+      \left\{
+      \begin{array}{ll}
+    \displaystyle (\lambda_i y + 1)^{\frac{1}{\lambda_i}} - \alpha_i & \lambda_i \neq 0 \\
+    \displaystyle \exp(y) - \alpha_i                         & \lambda_i = 0
+      \end{array}
+      \right.
+    \end{array}
+
+Examples
+--------
+
+Create a Box Cox tranformation:
+
+>>> import openturns as ot
+>>> myLambda = 0.1
+>>> myBoxCox = ot.BoxCoxTransform(myLambda)
+
+Apply the transformation to a sample:
+
+>>> mySample = ot.Exponential(2).getSample(1000)
+>>> myModelTransform = ot.BoxCoxFactory().build(mySample)
+>>> myNormalSample = myModelTransform(mySample)
+
+>>> hist = ot.HistogramFactory().build(myNormalSample)
+>>> graph = hist.drawPDF()
+
+Apply it to a field:
+
+>>> myIndices= ot.Indices([40,20])
+>>> myMesher=ot.IntervalMesher(myIndices)
+>>> myInterval = ot.Interval([0., 0.], [2., 1.])
+>>> myMesh=myMesher.build(myInterval)
+>>> amplitude=[1.0]
+>>> scale=[0.2]
+>>> myCovModel=ot.ExponentialModel(myMesh.getDimension(),amplitude, scale)
+>>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
+>>> g = ot.NumericalMathFunction(['x1'],  ['exp(x1)'])
+>>> myDynTransform = ot.SpatialFunction(g, 2)
+>>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
+
+>>> myField = myXtProcess.getRealization()
+>>> myModelTransform = ot.BoxCoxFactory().build(myField)
+>>> myStabilizedField = myModelTransform(myField)
+
+>>> marginal = ot.HistogramFactory().build(myStabilizedField.getValues())
+>>> graph2 = marginal.drawPDF()
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::BoxCoxTransform::getLambda
+"Accessor to the :math:`\vect{\lambda}` parameter.
+
+Returns
+-------
+myLambda : :class:`~openturns.NumericalPoint`
+    The :math:`\vect{\lambda}` parameter.
+
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::BoxCoxTransform::getShift
+"Accessor to the :math:`\vect{\alpha}` parameter.
+
+Returns
+-------
+myLambda : :class:`~openturns.NumericalPoint`
+    The :math:`\vect{\Lambda}` parameter.
+
+"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::BoxCoxTransform::getInverse
+"Accessor to the inverse Box Cox transformation.
+
+Returns
+-------
+myInverseBoxCox : :class:`~openturns.InverseBoxCoxTransform`
+    The inverse Box Cox transformation.
+
+"

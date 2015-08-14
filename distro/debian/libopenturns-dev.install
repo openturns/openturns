@@ -1,0 +1,6 @@
+usr/bin/*
+usr/lib/libOT*.so
+usr/lib/cmake/openturns/*.cmake
+usr/include/openturns/*.h*
+usr/include/openturns/swig
+usr/share/openturns/WrapperTemplates

@@ -1,0 +1,12 @@
+distribution= class=ChiSquare name=ChiSquare dimension=1 nu=0.5
+Estimated distribution= class=ChiSquare name=ChiSquare dimension=1 nu=0.49317
+distribution= class=ChiSquare name=ChiSquare dimension=1 nu=1
+Estimated distribution= class=ChiSquare name=ChiSquare dimension=1 nu=1.00223
+distribution= class=ChiSquare name=ChiSquare dimension=1 nu=2.5
+Estimated distribution= class=ChiSquare name=ChiSquare dimension=1 nu=2.48936
+Default distribution= ChiSquare(nu = 1)
+Distribution from parameters= ChiSquare(nu = 2.5)
+ChiSquare          = ChiSquare(nu = 2.5)
+Estimated chiSquare= ChiSquare(nu = 2.48936)
+Default chiSquare= ChiSquare(nu = 1)
+ChiSquare from parameters= ChiSquare(nu = 2.5)

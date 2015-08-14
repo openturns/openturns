@@ -1,0 +1,54 @@
+Testing class CompositeDistribution
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=CompositeDistribution name=CompositeDistribution function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] gradientImplementation=class=AnalyticalNumericalMathGradientImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] hessianImplementation=class=AnalyticalNumericalMathHessianImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] antecedent=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=NumericalPoint name=Unnamed dimension=3 values=[-7.65063,-0.739085,7.65063] values=class=NumericalPoint name=Unnamed dimension=3 values=[56.5733,-0.800977,60.4909] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[1e-14,0.229928,1] increasing=[0,1]
+streamObject(const T & anObject)
+class=CompositeDistribution name=CompositeDistribution function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] gradientImplementation=class=AnalyticalNumericalMathGradientImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] hessianImplementation=class=AnalyticalNumericalMathHessianImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] antecedent=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=NumericalPoint name=Unnamed dimension=3 values=[-7.65063,-0.739085,7.65063] values=class=NumericalPoint name=Unnamed dimension=3 values=[56.5733,-0.800977,60.4909] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[1e-14,0.229928,1] increasing=[0,1]
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=CompositeDistribution name=CompositeDistribution function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] gradientImplementation=class=AnalyticalNumericalMathGradientImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] hessianImplementation=class=AnalyticalNumericalMathHessianImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] antecedent=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=NumericalPoint name=Unnamed dimension=3 values=[-7.65063,-0.739085,7.65063] values=class=NumericalPoint name=Unnamed dimension=3 values=[56.5733,-0.800977,60.4909] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[1e-14,0.229928,1] increasing=[0,1]
+Distribution CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)]
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.51269]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[-0.304726] last=class=NumericalPoint name=Unnamed dimension=1 values=[4.32165]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.981731]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.68811]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0620066]
+log pdf=-1.82877
+pdf     =0.160612
+pdf (FD)=0.160612
+cdf=0.621614
+ccdf=0.378386
+survival=0.378386
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[4.91251]
+cdf(quantile)=0.95
+quantile (tail)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.78963]
+cdf (tail)=0.95
+characteristic function=(0.421744,0.00166811)
+log characteristic function=(-0.863349,0.00395524)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0164482,-0.0648158]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.274716,-0.309724]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.005]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.92588]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.57199]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[6.20635]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.70901]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[mean : 0, standard deviation : 1]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.005]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[4.72533]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[23.4392]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[154.036]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[1261.42]
+Standard representative=CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)]
+antecedent=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] gradientImplementation=class=AnalyticalNumericalMathGradientImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] hessianImplementation=class=AnalyticalNumericalMathHessianImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)]
+newDistribution=class=CompositeDistribution name=CompositeDistribution function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] gradientImplementation=class=AnalyticalNumericalMathGradientImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] hessianImplementation=class=AnalyticalNumericalMathHessianImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] antecedent=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=NumericalPoint name=Unnamed dimension=3 values=[-7.65063,-0.739085,7.65063] values=class=NumericalPoint name=Unnamed dimension=3 values=[56.5733,-0.800977,60.4909] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[1e-14,0.229928,1] increasing=[0,1]

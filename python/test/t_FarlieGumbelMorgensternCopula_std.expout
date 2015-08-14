@@ -1,0 +1,43 @@
+Copula  class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
+Copula  class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
+Mean  [0.5,0.5]
+Covariance  [[ 0.0833333 0.0194444 ]
+ [ 0.0194444 0.0833333 ]]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [0.629877,0.899275]
+oneSample=     [ marginal 1 marginal 2 ]
+0 : [ 0.135276   0.0216751  ]
+1 : [ 0.347057   0.961496   ]
+2 : [ 0.92068    0.638913   ]
+3 : [ 0.0632061  0.196286   ]
+4 : [ 0.714382   0.457863   ]
+5 : [ 0.373767   0.700168   ]
+6 : [ 0.883503   0.426304   ]
+7 : [ 0.92851    0.882855   ]
+8 : [ 0.684575   0.859274   ]
+9 : [ 0.359802   0.944448   ]
+anotherSample mean= [0.502777,0.500551]
+anotherSample covariance= [[ 0.0845153 0.0201085 ]
+ [ 0.0201085 0.0833041 ]]
+point=  [0.2,0.2]  pdf= 1.252  cdf= 0.05792
+Quantile= [0.683555,0.683555]
+CDF(quantile)= 0.5
+margin= IndependentCopula(dimension = 1)
+margin PDF= 1.0
+margin CDF= 0.25
+margin quantile= [0.95]
+margin realization= [0.56939]
+margin= IndependentCopula(dimension = 1)
+margin PDF= 1.0
+margin CDF= 0.25
+margin quantile= [0.95]
+margin realization= [0.0571768]
+indices= [1,0]
+margins= class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
+margins PDF= 1.175
+margins CDF= 0.087109375
+margins quantile= [0.974457,0.974457]
+margins CDF(quantile)= 0.95
+margins realization= [0.243714,0.941316]

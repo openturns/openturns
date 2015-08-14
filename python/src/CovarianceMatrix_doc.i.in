@@ -1,0 +1,98 @@
+%feature("docstring") OT::CovarianceMatrix
+"Covariance (real symmetric positive definite) matrix.
+
+Parameters
+----------
+size : int, :math:`n > 0`, optional
+    Matrix size.
+    Default is 1.
+values : sequence of float with size :math:`n^2`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    Default creates an identity matrix.
+
+Raises
+------
+TypeError : If the matrix is not symmetric.
+
+Examples
+--------
+Create a matrix
+
+>>> import openturns as ot
+>>> C = ot.CovarianceMatrix(2, [1., .5, .5, 1.])
+>>> print(C)
+[[ 1   0.5 ]
+ [ 0.5 1   ]]
+
+Get or set terms
+
+>>> print(C[0, 1])
+0.5
+>>> C[0, 1] = .6
+>>> print(C[0, 1])
+0.6
+>>> print(C[:, 0])
+[[ 1   ]
+ [ 0.6 ]]
+
+Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
+2d-list)...
+
+>>> import numpy as np
+>>> np_2d_array = np.array([[1., .5], [.5, 1.]])
+>>> ot_matrix = ot.CovarianceMatrix(np_2d_array)
+
+and back
+
+>>> np_matrix = np.matrix(ot_matrix)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovarianceMatrix::computeCholesky
+"Compute the Cholesky factor.
+
+The Cholesky factor of a covariance (real symmetric positive definite) matrix
+:math:`\mat{C}` is the lower triangular matrix :math:`\mat{L}` such that:
+
+.. math::
+
+    \mat{C} = \mat{L} \Tr{\mat{L}}
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Notes
+-----
+This uses LAPACK's `DPOTRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dpotrf.f.html>`_.
+
+Returns
+-------
+cholesky_factor : :class:`~openturns.SquareMatrix`
+    The left (lower) Cholesky factor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CovarianceMatrix::isPositiveDefinite
+"Test whether the matrix is positive definite or not.
+
+A matrix :math:`\mat{M}` is positive definite if :math:`\Tr{\vect{z}} \mat{M} \vect{z}`
+is positive for every compatible non-zero column vector :math:`\vect{z}`.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Notes
+-----
+This uses LAPACK's `DPOTRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dpotrf.f.html>`_.
+
+Returns
+-------
+test : bool
+    Answer."

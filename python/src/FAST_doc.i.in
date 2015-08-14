@@ -1,0 +1,155 @@
+%feature("docstring") OT::FAST
+"Fourier Amplitude Sensitivity Testing (FAST).
+
+Available constructor:
+    FAST(*model, distribution, N, Nr=1, M=4*)
+
+Parameters
+----------
+model : :class:`~openturns.NumericalMathFunction`
+    Definition of the model to analyse.
+distribution : :class:`~openturns.Distribution`
+    Contains the distributions of each model's input.
+    Its dimension must be equal to the number of inputs.
+N : int, :math:`N > Nr`
+    Size of the sample from which the Fourier series are calculated.
+    It represents the length of the discretization of the s-space.
+Nr : int, :math:`Nr \geq 1`
+    Number of resamplings. The extended FAST method involves a part of
+    randomness in the computation of the indices. So it can be asked to
+    realize the procedure *Nr* times and then to calculate the
+    arithmetic means of the results over the *Nr* estimates.
+M : int, :math:`0 < M < N`
+    Interference factor usually equal to 4 or higher.
+    It corresponds to the truncation level of the Fourier series, i.e. the
+    number of harmonics that are retained in the decomposition.
+
+Notes
+-----
+FAST is a sensitivity analysis method which is based upon the ANOVA
+decomposition of the variance of the model response :math:`y = f(\vect{X})`,
+the latter being represented by its Fourier expansion.
+:math:`\vect{X}=\{X^1,\dots,X^{n_X}\}` is an input random vector of :math:`n_X`
+independent components.
+
+OpenTURNS implements the extended FAST method consisting in computing
+alternately the first order and the total-effect indices of each input.
+This approach, widely described in the paper by [Saltelli1999]_, relies upon a
+Fourier decomposition of the model response. Its key idea is to recast this
+representation as a function of a *scalar* parameter :math:`s`, by defining
+parametric curves :math:`s \mapsto x_i(s), i=1, \dots, n_X` exploring the
+support of the input random vector :math:`\vect{X}`.
+
+Then the Fourier expansion of the model response is:
+
+.. math::
+
+    f(s) = \sum_{k \in \Zset^N} A_k cos(ks) + B_k sin(ks)
+
+where :math:`A_k` and :math:`B_k` are Fourier coefficients whose estimates are:
+
+.. math::
+
+    \hat{A}_k &= \frac{1}{N} \sum_{j=1}^N f(x_j^1,\dots,x_j^{N_X}) cos\left(\frac{2k\pi (j-1)}{N} \right) \quad , \quad -\frac{N}{2} \leq k \leq \frac{N}{2} \\
+    \hat{B}_k &= \frac{1}{N} \sum_{j=1}^N f(x_j^1,\dots,x_j^{N_X}) sin\left(\frac{2k\pi (j-1)}{N} \right) \quad , \quad -\frac{N}{2} \leq k \leq \frac{N}{2}
+
+
+The first order indices are estimated by:
+
+.. math::
+
+    \hat{S}_i = \frac{\hat{D}_i}{\hat{D}}
+              = \frac{\sum_{p=1}^M(\hat{A}_{p\omega_i}^2 + \hat{B}_{p\omega_i}^2)^2}
+                      {\sum_{n=1}^{(N-1)/2}(\hat{A}_n^2 + \hat{B}_n^2)^2}
+
+and the total order indices by:
+
+.. math::
+
+    \hat{T}_i = 1 - \frac{\hat{D}_{-i}}{\hat{D}}
+              = 1 - \frac{\sum_{k=1}^{\omega_i/2}(\hat{A}_k^2 + \hat{B}_k^2)^2}
+                          {\sum_{n=1}^{(N-1)/2}(\hat{A}_n^2 + \hat{B}_n^2)^2}
+
+where :math:`\hat{D}` is the total variance, :math:`\hat{D}_i` the portion
+of :math:`D` arising from the uncertainty of the :math:`i^{th}` input and
+:math:`\hat{D}_{-i}` is the part of the variance due to all the inputs
+except the :math:`i^{th}` input.
+
+:math:`N` is the size of the sample using to compute the Fourier series and
+:math:`M` is the interference factor. *Saltelli et al.* (1999) recommanded to
+set :math:`M` to a value in the range :math:`[4, 6]`.
+:math:`\{\omega_i\}, \forall i=1, \dots, n_X` is a set of integer frequencies
+assigned to each input :math:`X^i`. The frequency associated with the input
+for which the sensitivity indices are computed, is set to the maximum admissible
+frequency satisfying the Nyquist criterion (which ensures to avoid aliasing effects):
+
+.. math::
+
+    \omega_i = \frac{N - 1}{2M}
+
+In the paper by Saltelli et al. (1999), for high sample size, it is suggested
+that :math:`16 \leq \omega_i/N_r \leq 64`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formulaIshigami = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
+>>> modelIshigami = ot.NumericalMathFunction(['X1', 'X2', 'X3'], ['y'], formulaIshigami)
+>>> distributions = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 400)
+>>> print(sensitivityAnalysis.getFirstOrderIndices())
+[0.307461,0.442524,4.18878e-07]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FAST::getFirstOrderIndices
+"Accessor to the first order indices.
+
+Parameters
+----------
+marginalIndex : int, :math:`0 \leq i < n`, optional
+    Index of the model's marginal used to estimate the indices.
+    By default, marginalIndex is equal to 0.
+
+Returns
+-------
+indices : :class:`~openturns.NumericalPoint`
+    List of the first order indices of all the inputs."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FAST::getTotalOrderIndices
+"Accessor to the total order indices.
+
+Parameters
+----------
+marginalIndex : int, :math:`0 \leq i < n`, optional
+    Index of the model's  marginal used to estimate the indices.
+    By default, marginalIndex is equal to 0.
+
+Returns
+-------
+indices : :class:`~openturns.NumericalPoint`
+    List of the total-effect order indices of all the inputs."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FAST::setFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Parameters
+----------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FAST::getFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Returns
+-------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."

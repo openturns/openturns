@@ -1,0 +1,839 @@
+> restart:
+> with(Statistics):
+> assume(sigma>0):
+> normal_:=RandomVariable(Normal(mu,sigma)):
+> 
+> simplificationRules:=x=mu+sigma*X,a=mu+sigma*A,b=mu+sigma*B,erf(sqrt(2
+> )*A/2)=2*PhiA-1,erf(sqrt(2)*B/2)=2*PhiB-1,erf(sqrt(2)*X/2)=2*PhiX-1,ex
+> p(-A^2/2)=sqrt(2*Pi)*phiA,exp(-B^2/2)=sqrt(2*Pi)*phiB,exp(-X^2/2)=sqrt
+> (2*Pi)*phiX:
+> MySimplify:=proc(u,fact)
+>   local res;
+>   res:=map(_x->(subs(simplificationRules,_x)),u);
+>   if fact then
+>     res:=map(_x->factor(subs(simplificationRules,_x)),factor(res));
+>   fi:
+>   res
+> end:
+> 
+> pdf:=PDF(normal_,x)/(subs(x=b,CDF(normal_,x))-subs(x=a,CDF(normal_,x))
+> ):
+> PDF_:=MySimplify(pdf,true);
+> ddf:=diff(pdf,x):
+> DDF_:=MySimplify(ddf,true);
+> cdf:=int(subs(x=t,pdf),t=a..x):
+> CDF_:=MySimplify(cdf,true);
+> mu_:=collect(collect(int(x*pdf,x=a..b),mu),sigma);
+> MU_:=MySimplify(mu_,true);
+> var_:=int((x-mu_)^2*pdf,x=a..b):
+> VAR_:=MySimplify(var_,true);
+> skew_:=int((x-mu_)^3*pdf,x=a..b):
+> SKEW_:=MySimplify(skew_,true);
+> kurt_:=int((x-mu_)^4*pdf,x=a..b):
+> KURT_:=MySimplify(kurt_,true);
+> 
+
+                                     phiX
+                   PDF_ := - ---------------------
+                             sigma~ (-PhiB + PhiA)
+
+
+                                    X phiX
+                    DDF_ := ----------------------
+                                  2
+                            sigma~  (-PhiB + PhiA)
+
+
+                                 PhiA - PhiX
+                         CDF_ := ------------
+                                 -PhiB + PhiA
+
+
+           /                        2    2
+           |  1/2       -2 mu a + mu  + a
+  mu_ := - |-2    exp(- ------------------)
+           |                        2
+           \                2 sigma~
+
+                                  2    2 \            /
+            1/2       -2 mu b + mu  + b  |          / |
+         + 2    exp(- ------------------)| sigma~  /  |
+                                  2      |        /   \
+                          2 sigma~       /
+
+        /     1/2                  1/2          \      \
+        |    2    (b - mu)        2    (a - mu) |   1/2|
+        |erf(-------------) - erf(-------------)| Pi   |
+        \      2 sigma~             2 sigma~    /      /
+
+           /           1/2                        1/2          \
+           |  1/2     2    (a - mu)      1/2     2    (b - mu) |
+           |Pi    erf(-------------) - Pi    erf(-------------)| mu
+           \            2 sigma~                   2 sigma~    /
+         - --------------------------------------------------------
+               /     1/2                  1/2          \
+               |    2    (b - mu)        2    (a - mu) |   1/2
+               |erf(-------------) - erf(-------------)| Pi
+               \      2 sigma~             2 sigma~    /
+
+
+                 sigma~ phiA - sigma~ phiB + PhiB mu - PhiA mu
+        MU_ := - ---------------------------------------------
+                                 -PhiB + PhiA
+
+
+                       /
+                     2 |
+  VAR_ := -1/2 sigma~  |
+                       |
+                       \
+
+                2                                         2  2
+            3 mu  + 2 mu sigma~ B + 2 mu sigma~ A + sigma~  A     1/2
+        exp(--------------------------------------------------) Pi
+                                       2
+                                 sigma~
+
+               1/2          2                         2  2
+         - 2 Pi    exp((6 mu  + 4 mu sigma~ A + sigma~  A
+
+                                 2  2    /          2      1/2
+         + 4 mu sigma~ B + sigma~  B )  /  (2 sigma~ )) + 2    Pi exp(
+                                       /
+
+             2                         2  2
+        (6 mu  + 4 mu sigma~ B + sigma~  B  + 4 mu sigma~ A
+
+                   2  2    /          2             1/2             2
+         + 2 sigma~  A )  /  (2 sigma~ )) PhiB B - 2    Pi exp((6 mu
+                         /
+
+                                 2  2                           2  2
+         + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B + 2 sigma~  B )
+
+           /          2                (3/2)                      1/2
+          /  (2 sigma~ )) PhiB A + 4 Pi      exp(%1) PhiB PhiA - 2
+         /
+
+                    2                         2  2
+        Pi exp((6 mu  + 4 mu sigma~ B + sigma~  B  + 4 mu sigma~ A
+
+                   2  2    /          2             1/2             2
+         + 2 sigma~  A )  /  (2 sigma~ )) B PhiA + 2    Pi exp((6 mu
+                         /
+
+                                 2  2                           2  2
+         + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B + 2 sigma~  B )
+
+           /          2                (3/2)             2
+          /  (2 sigma~ )) A PhiA - 2 Pi      exp(%1) PhiB  +
+         /
+
+                2                                         2  2
+            3 mu  + 2 mu sigma~ A + 2 mu sigma~ B + sigma~  B     1/2
+        exp(--------------------------------------------------) Pi
+                                       2
+                                 sigma~
+
+                                  \
+               (3/2)             2|            /                2
+         - 2 Pi      exp(%1) PhiA | exp(-%1)  /  ((-PhiB + PhiA)
+                                  |          /
+                                  /
+
+          3/2
+        Pi   )
+
+             2                         2  2
+  %1 := (3 mu  + 2 mu sigma~ A + sigma~  A  + 2 mu sigma~ B
+
+                 2  2    /       2
+         + sigma~  B )  /  sigma~
+                       /
+
+
+                        /
+                      3 |    (3/2)
+  SKEW_ := -1/2 sigma~  |3 Pi      %3 PhiB A - 3
+                        |
+                        \
+
+                2                                         2  2
+            3 mu  + 2 mu sigma~ A + 2 mu sigma~ B + sigma~  B
+        exp(--------------------------------------------------)
+                                       2
+                                 sigma~
+
+          (3/2)             1/2   2          2         1/2
+        Pi      PhiB A - 2 2    Pi  %2 PhiB A  PhiA + 2    Pi exp(- (
+
+             2                         2  2
+        -6 mu  - 4 mu sigma~ A + sigma~  A  - 4 mu sigma~ B
+
+                   2  2    /          2        1/2   2
+         - 2 sigma~  B )  /  (2 sigma~ )) - 2 2    Pi  %1 PhiB PhiA
+                         /
+
+              1/2   2                   1/2   2          2
+         + 2 2    Pi  %2 PhiB PhiA + 2 2    Pi  %1 PhiB B  PhiA + 3
+
+         1/2
+        2    Pi
+
+                2                         2  2
+            6 mu  + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B
+        exp(--------------------------------------------------) -
+                                        2
+                                2 sigma~
+
+         1/2             2                         2  2
+        2    Pi exp((6 mu  + 4 mu sigma~ B - sigma~  B
+
+                                   2  2    /          2        1/2
+         + 4 mu sigma~ A + 2 sigma~  A )  /  (2 sigma~ )) - 3 2    Pi
+                                         /
+
+                2                                         2  2
+            6 mu  + 4 mu sigma~ A + 4 mu sigma~ B + sigma~  B
+        exp(--------------------------------------------------)
+                                        2
+                                2 sigma~
+
+            1/2   2     2     2    1/2   2        2
+         + 2    Pi  %2 A  PhiA  + 2    Pi  %1 PhiA
+
+            1/2   2        2  2    1/2   2        2
+         + 2    Pi  %2 PhiB  A  + 2    Pi  %1 PhiB
+
+               (3/2)                 (3/2)
+         - 3 Pi      %3 A PhiA - 3 Pi      %3 PhiA B + 3
+
+                2                                         2  2
+            3 mu  + 2 mu sigma~ B + 2 mu sigma~ A + sigma~  A
+        exp(--------------------------------------------------)
+                                       2
+                                 sigma~
+
+          (3/2)           1/2   2     2     2    1/2   2        2
+        Pi      PhiA B - 2    Pi  %1 B  PhiA  - 2    Pi  %2 PhiB
+
+               (3/2)
+         + 3 Pi      %3 PhiB B + 3
+
+                2                                         2  2
+            3 mu  + 2 mu sigma~ A + 2 mu sigma~ B + sigma~  B
+        exp(--------------------------------------------------)
+                                       2
+                                 sigma~
+
+          (3/2)           1/2   2        2
+        Pi      A PhiA - 2    Pi  %2 PhiA  - 3
+
+                2                                         2  2
+            3 mu  + 2 mu sigma~ B + 2 mu sigma~ A + sigma~  A
+        exp(--------------------------------------------------)
+                                       2
+                                 sigma~
+
+                                             \
+          (3/2)           1/2   2        2  2|            2
+        Pi      PhiB B - 2    Pi  %1 PhiB  B | exp(- (3 mu
+                                             |
+                                             /
+
+                                 2  2                         2  2
+         + 2 mu sigma~ A + sigma~  A  + 2 mu sigma~ B + sigma~  B )
+
+           /       2    /                3   5/2
+          /  sigma~ )  /  ((-PhiB + PhiA)  Pi   )
+         /            /
+
+                 2                         2  2
+  %1 := exp((6 mu  + 4 mu sigma~ B + sigma~  B  + 4 mu sigma~ A
+
+                   2  2    /          2
+         + 2 sigma~  A )  /  (2 sigma~ ))
+                         /
+
+                 2                         2  2
+  %2 := exp((6 mu  + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B
+
+                   2  2    /          2
+         + 2 sigma~  B )  /  (2 sigma~ ))
+                         /
+
+                 2                         2  2
+  %3 := exp((6 mu  + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B
+
+                 2  2    /          2
+         + sigma~  B )  /  (2 sigma~ ))
+                       /
+
+
+                        /
+                      4 |      (7/2)      2 %1        4
+  KURT_ := -1/4 sigma~  |-12 Pi      exp(-------) PhiA
+                        |                      2
+                        \                sigma~
+
+                  (5/2)  2     2       (5/2)        2  2
+         + 8 %5 Pi      B  PhiA  + 8 Pi      %8 PhiB  A
+
+               (5/2)        2  2          (5/2)     2  2
+         - 8 Pi      %2 PhiB  A  + 8 %5 Pi      PhiB  B  + 3
+
+                   2                                         2  2
+            2 (3 mu  + 2 mu sigma~ B + 2 mu sigma~ A + sigma~  A )
+        exp(------------------------------------------------------)
+                                         2
+                                   sigma~
+
+          (3/2)
+        Pi      + 3
+
+                   2                                         2  2
+            2 (3 mu  + 2 mu sigma~ A + 2 mu sigma~ B + sigma~  B )
+        exp(------------------------------------------------------)
+                                         2
+                                   sigma~
+
+          (3/2)        (3/2)           2                         2  2
+        Pi      - 12 Pi      exp((12 mu  + 8 mu sigma~ A + sigma~  A
+
+                                   2  2    /          2
+         + 8 mu sigma~ B + 3 sigma~  B )  /  (2 sigma~ )) + 18 exp((
+                                         /
+
+            2                         2  2
+        6 mu  + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B
+
+                 2  2    /       2    (3/2)        (3/2)           2
+         + sigma~  B )  /  sigma~ ) Pi      - 12 Pi      exp((12 mu
+                       /
+
+                                   2  2                         2  2
+         + 8 mu sigma~ A + 3 sigma~  A  + 8 mu sigma~ B + sigma~  B )
+
+           /          2         1/2   2
+          /  (2 sigma~ )) + 12 2    Pi  %3 PhiB A
+         /
+
+              1/2   3     3     3       1/2   2
+         + 2 2    Pi  %7 A  PhiA  + 12 2    Pi  %6 PhiA B
+
+              1/2   3        2  3           1/2   3        3
+         + 6 2    Pi  %7 PhiB  A  PhiA + 6 2    Pi  %4 PhiB  B
+
+              1/2   2                 1/2   3               2
+         + 6 2    Pi  %3 PhiB B - 18 2    Pi  %7 PhiB A PhiA
+
+              1/2   2                1/2   3          3     2
+         - 6 2    Pi  %6 PhiB A + 6 2    Pi  %4 PhiB B  PhiA
+
+                (5/2)          2               (5/2)
+         - 16 Pi      %8 PhiB A  PhiA - 8 %8 Pi      PhiB PhiA
+
+               (5/2)     2     2      1/2   3        3
+         - 8 Pi      %2 B  PhiA  - 6 2    Pi  %7 PhiB  A
+
+                (5/2)          2           1/2   2           2
+         + 16 Pi      %2 PhiB A  PhiA - 6 2    Pi  exp((12 mu
+
+                                 2  2                           2  2
+         + 8 mu sigma~ B + sigma~  B  + 8 mu sigma~ A + 4 sigma~  A )
+
+           /          2                (5/2)        2
+          /  (2 sigma~ )) PhiA B - 8 Pi      %2 PhiB
+         /
+
+                  (5/2)     2        (7/2)      2 %1        4
+         + 4 %8 Pi      PhiB  - 12 Pi      exp(-------) PhiB
+                                                     2
+                                               sigma~
+
+                  (5/2)     2          (5/2)
+         + 4 %8 Pi      PhiA  - 8 %5 Pi      PhiB PhiA
+
+               1/2   3             2        1/2   3          3     2
+         + 18 2    Pi  %4 PhiB PhiA  B - 6 2    Pi  %7 PhiB A  PhiA
+
+              1/2   2           2                         2  2
+         + 6 2    Pi  exp((12 mu  + 8 mu sigma~ A + sigma~  A
+
+                                   2  2    /          2
+         + 8 mu sigma~ B + 4 sigma~  B )  /  (2 sigma~ )) A PhiA
+                                         /
+
+               1/2   2                1/2   3     3     3
+         - 12 2    Pi  %6 PhiB B - 2 2    Pi  %4 B  PhiA
+
+               1/2   3        2             1/2   3        3
+         - 18 2    Pi  %4 PhiB  PhiA B - 6 2    Pi  %4 PhiA  B
+
+              1/2   3        2  3
+         - 6 2    Pi  %4 PhiB  B  PhiA
+
+                (7/2)      2 %1        3            (5/2)        2  2
+         + 48 Pi      exp(-------) PhiB  PhiA - 8 Pi      %2 PhiB  B
+                                2
+                          sigma~
+
+               (5/2)     2     2        (7/2)      2 %1             3
+         + 8 Pi      %8 A  PhiA  + 48 Pi      exp(-------) PhiB PhiA
+                                                        2
+                                                  sigma~
+
+                (5/2)          2            1/2   3        2
+         + 16 Pi      %2 PhiB B  PhiA + 18 2    Pi  %7 PhiB  A PhiA
+
+              1/2   3        3  3      1/2   3          3      1/2
+         - 2 2    Pi  %7 PhiB  A  + 6 2    Pi  %7 A PhiA  - 6 2
+
+          2           2                         2  2
+        Pi  exp((12 mu  + 8 mu sigma~ A + sigma~  A  + 8 mu sigma~ B
+
+                   2  2    /          2               1/2   2
+         + 4 sigma~  B )  /  (2 sigma~ )) PhiB A + 6 2    Pi  exp((
+                         /
+
+             2                         2  2
+        12 mu  + 8 mu sigma~ B + sigma~  B  + 8 mu sigma~ A
+
+                   2  2    /          2
+         + 4 sigma~  A )  /  (2 sigma~ )) PhiB B
+                         /
+
+                   (5/2)       2           1/2   2
+         - 16 %5 Pi      PhiB B  PhiA + 6 2    Pi  %6 A PhiA
+
+               (5/2)     2     2
+         - 8 Pi      %2 A  PhiA
+
+                (7/2)      2 %1        2     2          (5/2)     2
+         - 72 Pi      exp(-------) PhiB  PhiA  + 4 %5 Pi      PhiB
+                                2
+                          sigma~
+
+                  (5/2)     2      1/2   2
+         + 4 %5 Pi      PhiA  - 6 2    Pi  %3 PhiA B
+
+              1/2   3        3  3       1/2   2
+         + 2 2    Pi  %4 PhiB  B  - 12 2    Pi  %3 A PhiA
+
+                                                       \
+                (5/2)                    (5/2)        2|
+         + 16 Pi      %2 PhiB PhiA - 8 Pi      %2 PhiA |
+                                                       |
+                                                       /
+
+               2 %1      /                4   7/2
+        exp(- -------)  /  ((-PhiB + PhiA)  Pi   )
+                    2  /
+              sigma~
+
+            2                         2  2
+  %1 := 3 mu  + 2 mu sigma~ A + sigma~  A  + 2 mu sigma~ B
+
+                 2  2
+         + sigma~  B
+
+                  2                           2  2
+  %2 := exp((12 mu  + 8 mu sigma~ A + 3 sigma~  A  + 8 mu sigma~ B
+
+                   2  2    /          2
+         + 3 sigma~  B )  /  (2 sigma~ ))
+                         /
+
+                  2                                           2  2
+  %3 := exp((12 mu  + 8 mu sigma~ A + 8 mu sigma~ B + 3 sigma~  B
+
+                   2  2    /          2
+         + 2 sigma~  A )  /  (2 sigma~ ))
+                         /
+
+                  2                           2  2
+  %4 := exp((12 mu  + 8 mu sigma~ B + 3 sigma~  B  + 8 mu sigma~ A
+
+                   2  2    /          2
+         + 4 sigma~  A )  /  (2 sigma~ ))
+                         /
+
+                 2                         2  2
+  %5 := exp((6 mu  + 4 mu sigma~ B + sigma~  B  + 4 mu sigma~ A
+
+                   2  2    /       2
+         + 2 sigma~  A )  /  sigma~ )
+                         /
+
+                  2                           2  2
+  %6 := exp((12 mu  + 8 mu sigma~ A + 3 sigma~  A  + 8 mu sigma~ B
+
+                   2  2    /          2
+         + 2 sigma~  B )  /  (2 sigma~ ))
+                         /
+
+                  2                           2  2
+  %7 := exp((12 mu  + 8 mu sigma~ A + 3 sigma~  A  + 8 mu sigma~ B
+
+                   2  2    /          2
+         + 4 sigma~  B )  /  (2 sigma~ ))
+                         /
+
+                 2                         2  2
+  %8 := exp((6 mu  + 4 mu sigma~ A + sigma~  A  + 4 mu sigma~ B
+
+                   2  2    /       2
+         + 2 sigma~  B )  /  sigma~ )
+                         /
+
+> qdf:=solve(cdf=p,x):
+> QDF_:=MySimplify(qdf,true);
+> pdfgr:=[diff(pdf,mu),diff(pdf,sigma),diff(pdf,a),diff(pdf,b)]:
+> PDFGR_:=MySimplify(pdfgr,true);
+> cdfgr:=[diff(cdf,mu),diff(cdf,sigma),diff(cdf,a),diff(cdf,b)]:
+> CDFGR_:=MySimplify(cdfgr,true);
+> valnum:=mu=0.5,sigma=3,a=-2,b=2:
+> ddf_num:=evalf(subs(valnum,x=1,ddf));
+> pdf_num:=evalf(subs(valnum,x=1,pdf));
+> cdf_num:=evalf(subs(valnum,x=1,cdf));
+> pdfgr_num:=evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> cdfgr_num:=evalf(subs(valnum,x=1,cdfgr));
+> quantile_num:=evalf(solve(subs(valnum,cdf)=0.95,x));
+> mu_num:=evalf(subs(valnum,mu_));
+> std_num:=evalf(subs(valnum,sqrt(var_)));
+> skew_num:=evalf(subs(valnum,skew_/(var_^(3/2))));
+> kurt_num:=evalf(subs(valnum,kurt_/(var_^2)));
+> var_num:=evalf(subs(valnum,var_));
+
+                   1/2
+  QDF_ := 1/2 (mu 2    +
+
+        2 RootOf(erf(_Z) - 2 PhiA + 1 - 2 p PhiB + 2 p PhiA) sigma~)
+
+         1/2
+        2
+
+
+               phiX (-X PhiB + X PhiA - phiB + phiA)
+  PDFGR_ := [- -------------------------------------,
+                            2               2
+                      sigma~  (-PhiB + PhiA)
+
+                               2         2
+          phiX (PhiB - PhiA - X  PhiB + X  PhiA - phiB B + phiA A)
+        - --------------------------------------------------------,
+                                2               2
+                          sigma~  (-PhiB + PhiA)
+
+               phiX phiA                  phiX phiB
+        -----------------------, - -----------------------]
+              2               2          2               2
+        sigma~  (-PhiB + PhiA)     sigma~  (-PhiB + PhiA)
+
+
+  CDFGR_ := [- (-phiA PhiB + phiX PhiB - phiX PhiA + PhiA phiB
+
+                                                 2
+         - PhiX phiB + PhiX phiA)/((-PhiB + PhiA)  sigma~), (
+
+        phiA A PhiB - X phiX PhiB + X phiX PhiA - PhiA phiB B
+
+                                                     2
+         + PhiX phiB B - PhiX phiA A)/((-PhiB + PhiA)  sigma~),
+
+            phiA (PhiB - PhiX)      (PhiA - PhiX) phiB
+        - ----------------------, ----------------------]
+                        2                       2
+          (-PhiB + PhiA)  sigma~  (-PhiB + PhiA)  sigma~
+
+
+                      ddf_num := -0.01489554901
+
+
+                       pdf_num := 0.2681198822
+
+
+                       cdf_num := 0.7438767125
+
+
+  pdfgr_num := [
+
+        0.02771380333, -0.01180131241, 0.05151019725, -0.06432845156]
+
+
+  cdfgr_num :=
+
+        [-0.04044039201, 0.0035458235, -0.0492054559, -0.1784740342]
+
+
+                     quantile_num := 1.794980239
+
+
+                        mu_num := 0.0697287056
+
+
+                        std_num := 1.119496856
+
+
+                      skew_num := -0.07085153763
+
+
+                       kurt_num := 1.868873413
+
+
+                        var_num := 1.253273210
+
+> pdfgrS:=map(_x->collect(factor(subs(phiX=phiXNorm*Delta,phiA=phiANorm*
+> Delta,phiB=phiBNorm*Delta,algsubs(PhiB-PhiA=Delta,_x))),[phiX,X]),pdfg
+> rR);
+> cdfgrS:=map(_x->collect(factor(subs(phiX=phiXNorm*Delta,phiA=phiANorm*
+> Delta,phiB=phiBNorm*Delta,PhiX=PhiXNorm*Delta,PhiA=PhiANorm*Delta,PhiB
+> =PhiBNorm*Delta,algsubs(PhiB-PhiA=Delta,_x))),[phiX,X]),pdfgrR);
+
+                           pdfgrS := pdfgrR
+
+
+                           cdfgrS := pdfgrR
+
+> evalf(subs(valnum,x=1,subs(phiXNorm=phiX/Delta,phiANorm=phiA/Delta,phi
+> BNorm=phiB/Delta,Delta=PhiB-PhiA,PhiA=1/2+1/2*erf(A/sqrt(2)),PhiB=1/2+
+> 1/2*erf(B/sqrt(2)),phiX=exp(-xNorm*xNorm/2)/sqrt(2*Pi)/sigma,phiA=exp(
+> -aNorm*aNorm/2)/sqrt(2*Pi)/sigma,phiB=exp(-bNorm*bNorm/2)/sqrt(2*Pi)/s
+> igma,X=xNorm,A=aNorm,B=bNorm,xNorm=(x-mu)/sigma,aNorm=(a-mu)/sigma,bNo
+> rm=(b-mu)/sigma,phiBNorm)));
+
+                             0.2399242124
+
+> mu_simplified:=map(collect,map(factor,collect(factor(algsubs(
+>                    PhiBNorm-PhiANorm=1/NormalizationFactor,
+>                    factor(subs(
+>                                exp(-aNorm^2/2)=sqrt(2*Pi)*phiANorm,
+>                                exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNorm,
+>                                exp(-xNorm^2/2)=sqrt(2*Pi)*phiXNorm,
+>                                erf(sqrt(2)*aNorm/2)=2*PhiANorm-1,
+>                                erf(sqrt(2)*bNorm/2)=2*PhiBNorm-1,
+>                                expand(subs(
+>                                            a=mu+sigma*aNorm,
+>                                            b=mu+sigma*bNorm,
+>                                            mu_
+>                                           )
+>                                       )
+>                               )
+>                          )
+>                    )
+>              ),
+>            sigma
+> )),NormalizationFactor);
+
+  mu_simplified :=
+
+        NormalizationFactor (phiANorm - phiBNorm) sigma~ + mu
+
+> var_simplified:=map(collect,map(factor,collect(factor(algsubs(
+>                     PhiBNorm-PhiANorm=1/NormalizationFactor,
+>                     factor(subs(
+>                                 exp(-aNorm^2/2)=sqrt(2*Pi)*phiANorm,
+>                                 exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNorm,
+>                                
+> exp(aNorm^2/2)=1/(sqrt(2*Pi)*phiANorm),
+>                                
+> exp(bNorm^2/2)=1/(sqrt(2*Pi)*phiBNorm),
+>                                
+> exp(aNorm^2)=1/(sqrt(2*Pi)*phiANorm)^2,
+>                                
+> exp(bNorm^2)=1/(sqrt(2*Pi)*phiBNorm)^2,
+>                                
+> exp(xNorm^2)=1/(sqrt(2*Pi)*phiXNorm)^2,
+>                                 erf(sqrt(2)*aNorm/2)=2*PhiANorm-1,
+>                                 erf(sqrt(2)*bNorm/2)=2*PhiBNorm-1,
+>                                 expand(subs(
+>                                             a=mu+sigma*aNorm,
+>                                             b=mu+sigma*bNorm,
+>                                             var_
+>                                            )
+>                                       )
+>                                )
+>                           )
+>                      )
+>                 ),
+>            sigma
+>           )),NormalizationFactor);
+
+  var_simplified := (1 +
+
+                  2           2
+        (-phiBNorm  - phiANorm  + 2 phiANorm phiBNorm)
+
+                           2
+        NormalizationFactor
+
+         + (phiANorm aNorm - phiBNorm bNorm) NormalizationFactor)
+
+              2
+        sigma~
+
+> skew_simplified:=map(collect,map(factor,collect(factor(algsubs(
+>                     PhiBNorm-PhiANorm=1/NormalizationFactor,
+>                     factor(subs(
+>                                 exp(-aNorm^2/2)=sqrt(2*Pi)*phiANorm,
+>                                 exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNorm,
+>                                
+> exp(aNorm^2/2)=1/(sqrt(2*Pi)*phiANorm),
+>                                
+> exp(bNorm^2/2)=1/(sqrt(2*Pi)*phiBNorm),
+>                                
+> exp(aNorm^2)=1/(sqrt(2*Pi)*phiANorm)^2,
+>                                
+> exp(bNorm^2)=1/(sqrt(2*Pi)*phiBNorm)^2,
+>                                
+> exp(xNorm^2)=1/(sqrt(2*Pi)*phiXNorm)^2,
+>                                 erf(sqrt(2)*aNorm/2)=2*PhiANorm-1,
+>                                 erf(sqrt(2)*bNorm/2)=2*PhiBNorm-1,
+>                                 expand(subs(
+>                                             a=mu+sigma*aNorm,
+>                                             b=mu+sigma*bNorm,
+>                                             skew_
+>                                            )
+>                                       )
+>                                )
+>                           )
+>                      )
+>                 ),
+>            NormalizationFactor
+>           )),sigma);
+
+  skew_simplified :=
+
+                3                      3                    3
+        2 sigma~  (phiANorm - phiBNorm)  NormalizationFactor  - 3
+
+              3
+        sigma~  (phiANorm - phiBNorm)
+
+                                                              2
+        (-phiBNorm bNorm + phiANorm aNorm) NormalizationFactor  +
+
+              3
+        sigma~
+
+                       2                 2
+        (phiANorm aNorm  - phiBNorm bNorm  - phiANorm + phiBNorm)
+
+        NormalizationFactor
+
+> kurt_simplified:=map(collect,map(factor,collect(factor(algsubs(
+>                     PhiBNorm-PhiANorm=1/NormalizationFactor,
+>                     factor(subs(
+>                                 exp(-aNorm^2/2)=sqrt(2*Pi)*phiANorm,
+>                                 exp(-bNorm^2/2)=sqrt(2*Pi)*phiBNorm,
+>                                
+> exp(aNorm^2/2)=1/(sqrt(2*Pi)*phiANorm),
+>                                
+> exp(bNorm^2/2)=1/(sqrt(2*Pi)*phiBNorm),
+>                                
+> exp(3*aNorm^2/2)=1/(sqrt(2*Pi)*phiANorm)^3,
+>                                
+> exp(3*bNorm^2/2)=1/(sqrt(2*Pi)*phiBNorm)^3,
+>                                
+> exp(aNorm^2)=1/(sqrt(2*Pi)*phiANorm)^2,
+>                                
+> exp(bNorm^2)=1/(sqrt(2*Pi)*phiBNorm)^2,
+>                                
+> exp(xNorm^2)=1/(sqrt(2*Pi)*phiXNorm)^2,
+>                                 erf(sqrt(2)*aNorm/2)=2*PhiANorm-1,
+>                                 erf(sqrt(2)*bNorm/2)=2*PhiBNorm-1,
+>                                 expand(subs(
+>                                             a=mu+sigma*aNorm,
+>                                             b=mu+sigma*bNorm,
+>                                             kurt_
+>                                            )
+>                                       )
+>                                )
+>                           )
+>                      )
+>                 ),
+>            NormalizationFactor
+>           )),sigma);
+
+  kurt_simplified :=
+
+                 4                      4                    4
+        -3 sigma~  (phiANorm - phiBNorm)  NormalizationFactor  + 6
+
+              4                      2
+        sigma~  (phiANorm - phiBNorm)
+
+                                                              3
+        (-phiBNorm bNorm + phiANorm aNorm) NormalizationFactor  - 2
+
+              4
+        sigma~  (phiANorm - phiBNorm)
+
+                                    2                              2
+        (phiANorm + 2 phiANorm aNorm  - phiBNorm - 2 phiBNorm bNorm )
+
+                           2         4
+        NormalizationFactor  + sigma~  (-3 phiBNorm bNorm
+
+                         3                 3
+         - phiBNorm bNorm  + phiANorm aNorm  + 3 phiANorm aNorm)
+
+                                      4
+        NormalizationFactor + 3 sigma~
+
+> k1:=kurt_simplified:
+> L1:=coeffs(expand(k1),NormalizationFactor):
+> k2:=subs(ratio=(phiBNorm-phiANorm)*NormalizationFactor,crossTerm1=(bNo
+> rm*phiBNorm-aNorm*phiANorm)*NormalizationFactor,crossTerm2=(bNorm^2*ph
+> iBNorm-aNorm^2*phiANorm)*NormalizationFactor,crossTerm3=(bNorm^3*phiBN
+> orm-aNorm^3*phiANorm)*NormalizationFactor,
+>   (3 - 3*ratio^4 - 6*ratio^2*crossTerm1 - 2*ratio*(ratio+2*crossTerm2)
+> - 3*crossTerm1-crossTerm3)
+> ):
+> L2:=coeffs(expand(k2),NormalizationFactor):
+> for i from 1 to 4 do
+>   factor(L1[i]/L2[i]);
+> od;
+
+                                     4
+                               sigma~
+
+
+                                     4
+                               sigma~
+
+
+                                     4
+                               sigma~
+
+
+                                     4
+                               sigma~
+
+> evalf(subs(valnum,k2));
+
+                                   4                    4
+  3. - 3. (-1. phiANorm + phiBNorm)  NormalizationFactor  - 6.
+
+                                 2                    3
+        (-1. phiANorm + phiBNorm)  NormalizationFactor
+
+        (phiBNorm bNorm - 1. phiANorm aNorm) + 2.
+
+        (-1. phiANorm + phiBNorm) NormalizationFactor (
+
+        (phiBNorm bNorm - 1. phiANorm aNorm) NormalizationFactor +
+
+                          2                    2
+        2. (phiBNorm bNorm  - 1. phiANorm aNorm ) NormalizationFactor
+
+        ) -
+
+        3. (phiBNorm bNorm - 1. phiANorm aNorm) NormalizationFactor
+
+         -
+
+                          3                    3
+        1. (phiBNorm bNorm  - 1. phiANorm aNorm ) NormalizationFactor
+
+> 

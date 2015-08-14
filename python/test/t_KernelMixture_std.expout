@@ -1,0 +1,28 @@
+Distribution  class=KernelMixture name=KernelMixture kernel=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bandwidth=class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1] sample=class=NumericalSample name=Unnamed description=[,,] implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=3 data=[class=NumericalPoint name=Unnamed dimension=3 values=[0.5,-0.5,1],class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2],class=NumericalPoint name=Unnamed dimension=3 values=[2.5,1.5,3]]
+Distribution  KernelMixture(kernel = Normal(mu = 0, sigma = 1), bandwidth = [2,3,1], sample = 
+0 : [  0.5 -0.5  1   ]
+1 : [  1.5  0.5  2   ]
+2 : [  2.5  1.5  3   ]
+Elliptical =  False
+Continuous =  True
+oneRealization= class=NumericalPoint name=Unnamed dimension=3 values=[2.07328,-2.47593,2.92288]
+oneSample first= class=NumericalPoint name=Unnamed dimension=3 values=[-1.86277,2.55013,2.64499]  last= class=NumericalPoint name=Unnamed dimension=3 values=[2.81013,-1.29834,1.89856]
+mean= class=NumericalPoint name=Unnamed dimension=3 values=[1.63854,0.0623536,2.01459]
+covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.5743,-0.738335,-0.178015,-0.738335,6.42657,0.306325,-0.178015,0.306325,1.37246]
+Point=  class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
+ddf     = class=NumericalPoint name=Unnamed dimension=3 values=[1.17543e-05,-0.000596732,0.00275582]
+ddf (ref)= class=NumericalPoint name=Unnamed dimension=3 values=[1.17543e-05,-0.000596732,0.00275582]
+ddf (FD)= class=NumericalPoint name=Unnamed dimension=3 values=[1.17543e-05,-0.000596732,0.00275582]
+log pdf=-5.218101
+pdf     =0.005418
+pdf (ref)=0.005418
+cdf=0.081759
+ccdf=0.918241
+cdf (ref)=0.081759
+quantile= class=NumericalPoint name=Unnamed dimension=3 values=[6.05991,7.07458,4.66827]
+quantile (ref)= class=NumericalPoint name=Unnamed dimension=3 values=[6.05991,7.07458,4.66827]
+cdf(quantile)=0.950000
+mean= class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2]
+mean (ref)= class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2]
+covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,0.666667,0.666667,0.666667,9.66667,0.666667,0.666667,0.666667,1.66667]
+covariance (ref)= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,0.666667,0.666667,0.666667,9.66667,0.666667,0.666667,0.666667,1.66667]

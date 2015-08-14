@@ -1,0 +1,48 @@
+Testing class FisherSnedecor
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.5 d2=10.5
+streamObject(const T & anObject)
+class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.5 d2=10.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.5 d2=10.5
+Distribution FisherSnedecor(d1 = 5.5, d2 = 10.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.85322]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[2.55996] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.06184]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.24575]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.20146]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.517181]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.517181]
+log pdf=-0.659362
+pdf     =0.517181
+pdf (FD)=0.517181
+cdf=0.531405
+ccdf=0.468595
+survival=0.468595
+characteristic function=(0.385738,0.612601)
+log characteristic function=(-0.323062,1.00884)
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.2027]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.23529]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.09323]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[3.56105]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[42.039]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19515]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[d1 : 5.5, d2 : 10.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.23529]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.7211]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[10.9669]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[96.309]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[4964.29]
+Standard representative=FisherSnedecor(d1 = 5.5, d2 = 10.5)

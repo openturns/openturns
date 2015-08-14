@@ -1,0 +1,31 @@
+myTrendFunc= [t]->[sin(t),cos(t)]
+myTrendFunc input description= [y0,y1]
+myTrendFunc input dimension= 2
+myTrendFunc output description= [y0,y1]
+myTrendFunc output dimension= 2
+input time series =  
+ 0 : [  0    0    1   ]
+ 1 : [  0.1  2    3   ]
+ 2 : [  0.2  4    5   ]
+ 3 : [  0.3  6    7   ]
+ 4 : [  0.4  8    9   ]
+ 5 : [  0.5 10   11   ]
+ 6 : [  0.6 12   13   ]
+ 7 : [  0.7 14   15   ]
+ 8 : [  0.8 16   17   ]
+ 9 : [  0.9 18   19   ]
+10 : [  1   20   21   ]
+output time series = 
+     [          y0       y1       ]
+ 0 : [  0        0        2       ]
+ 1 : [  0.1      2.09983  3.995   ]
+ 2 : [  0.2      4.19867  5.98007 ]
+ 3 : [  0.3      6.29552  7.95534 ]
+ 4 : [  0.4      8.38942  9.92106 ]
+ 5 : [  0.5     10.4794  11.8776  ]
+ 6 : [  0.6     12.5646  13.8253  ]
+ 7 : [  0.7     14.6442  15.7648  ]
+ 8 : [  0.8     16.7174  17.6967  ]
+ 9 : [  0.9     18.7833  19.6216  ]
+10 : [  1       20.8415  21.5403  ]
+called  1  times

@@ -1,0 +1,7 @@
+distribution = class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+vect=class=RandomVector implementation=class=UsualRandomVector distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+vect dimension=1
+vect realization (first )=class=NumericalPoint name=Unnamed dimension=1 values=[1.6082]
+vect realization (second)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.266173]
+vect realization (third )=class=NumericalPoint name=Unnamed dimension=1 values=[0.561734]
+vect sample =class=NumericalSample name=Normal description=[marginal 1] implementation=class=NumericalSampleImplementation name=Normal size=5 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[2.20548],class=NumericalPoint name=Unnamed dimension=1 values=[-1.18139],class=NumericalPoint name=Unnamed dimension=1 values=[1.35004],class=NumericalPoint name=Unnamed dimension=1 values=[0.644993],class=NumericalPoint name=Unnamed dimension=1 values=[2.43725]]

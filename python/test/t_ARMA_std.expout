@@ -1,0 +1,42 @@
+coefficientsP =  class=ARMACoefficients, shift=0, value=class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.2,0.3,0.7,0.4]
+coefficientsQ =  class=ARMACoefficients, shift=0, value=class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.1,0,0,0.5]
+dist =  ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2))
+Last values of the process =  0 : [ 0.629877 0.135276 ]
+Last innovations of the process =  0 : [ 0.882805  0.0325028 ]
+process =  ARMA(X_{0,t} + 0.2 X_{0,t-1} + 0.7 X_{1,t-1} = E_{0,t} + 0.1 E_{0,t-1}
+X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
+ARMA process =  ARMA(X_{0,t} + 0.2 X_{0,t-1} + 0.7 X_{1,t-1} = E_{0,t} + 0.1 E_{0,t-1}
+X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
+ARMA process with ARMAstate =  ARMA(X_{0,t} + 0.2 X_{0,t-1} + 0.7 X_{1,t-1} = E_{0,t} + 0.1 E_{0,t-1}
+X_{1,t} + 0.3 X_{0,t-1} + 0.4 X_{1,t-1} = E_{1,t} + 0.5 E_{1,t-1}, E_t ~ ComposedDistribution(Normal(mu = 0, sigma = 0.01), Normal(mu = 0, sigma = 0.02), IndependentCopula(dimension = 2)))
+One realization=      [                       marginal_1_marginal 1 marginal_2_marginal 1 ]
+ 0 : [  0                     0.010204             -0.00744086           ]
+ 1 : [  0.1                  -0.00287281           -0.0293307            ]
+ 2 : [  0.2                   0.0190836            -0.00416576           ]
+ 3 : [  0.3                   0.000428186          -0.0133922            ]
+ 4 : [  0.4                   0.0226688            -0.0154754            ]
+ 5 : [  0.5                   0.0156377            -0.00180096           ]
+ 6 : [  0.6                  -0.00152644            0.0220058            ]
+ 7 : [  0.7                  -0.0290278            -0.000953817          ]
+ 8 : [  0.8                   0.00341936           -0.0137703            ]
+ 9 : [  0.9                   0.00530122           -0.00738418           ]
+10 : [  1                    -0.0161936             0.0111398            ]
+One future= 0 : [  1.1        -0.00486985  0.0088404  ]
+1 : [  1.2        -0.0213829   0.0140495  ]
+2 : [  1.3        -0.0034992   0.00524708 ]
+3 : [  1.4         0.0067867  -0.00506869 ]
+Some futures= [field 0:
+0 : [  1.1         -1.82364e-05  0.0156951   ]
+1 : [  1.2         -0.0150433   -0.0192013   ]
+2 : [  1.3          0.0304955    0.00743803  ]
+3 : [  1.4         -0.00879671  -0.0355234   ]
+field 1:
+0 : [  1.1        -0.0129397  -0.00706455 ]
+1 : [  1.2         0.013426   -0.0179524  ]
+2 : [  1.3        -0.00898944  0.00403051 ]
+3 : [  1.4        -0.00677231  0.00868747 ]
+field 2:
+0 : [  1.1         -0.00500545  -0.0157516   ]
+1 : [  1.2          0.0236257    0.0301551   ]
+2 : [  1.3         -0.0128599   -0.00625936  ]
+3 : [  1.4         -0.00239186   0.000610274 ]]

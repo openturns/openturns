@@ -1,0 +1,266 @@
+%feature("docstring") OT::Interval
+"Numerical interval.
+
+Available constructors:
+    Interval(*dim=0*)
+
+    Interval(*lowerBound, upperBound, finiteLowerBound=[True]*dim, finiteUpperBound=[True]*dim*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    Dimension of the interval. If only *dim* is mentioned, it leads to create
+    the finite interval :math:`[0, 1]^{dim}`.
+    By default, an empty interval is created.
+lowerBound, upperBound : float or sequence of float of dimension *dim*
+    Define an interval
+    :math:`[lowerBound_0, upperBound_0]\times \dots \times [lowerBound_{dim-1}, upperBound_{dim-1}]`.
+    It is allowed to have :math:`lowerBound_i \geq upperBound_i` for some
+    :math:`i`: it simply defines an empty interval.
+    The *lowerBound* and the *upperBound* must be of the same type. If
+    *finiteLowerBound* and *finiteUpperBound* are mentioned, they must be
+    sequences.
+finiteLowerBound : sequence of bool of dimension *dim*
+    Flags telling for each component of the lower bound whether it is finite or
+    not.
+finiteUpperBound : sequence of bool of dimension *dim*
+    Flags telling for each component of the upper bound whether it is finite or
+    not.
+
+Notes
+-----
+The meaning of a flag is: if flag :math:`i` is *True*, the corresponding
+component of the given bound is finite and its value is given by bound
+:math:`i`. If not, the corresponding component is infinite and its value is
+either :math:`-\infty` if bound :math:`i < 0` or :math:`+\infty` if bound
+:math:`i \geq 0`.
+
+It is possible to add or substract two intervals and multiply an interval by a
+scalar.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # A finite interval
+>>> print(ot.Interval([2., 3.], [4., 5.]))
+[2, 4]
+[3, 5]
+>>> # Not finite intervals
+>>> a = 2.
+>>> print(ot.Interval([a], [1], [True], [False]))
+[2, (1) +inf[
+>>> print(ot.Interval([1], [a], [False], [True]))
+]-inf (1), 2]
+>>> # Operations with intervals:
+>>> interval1 = ot.Interval([2., 3.], [5., 8.])
+>>> interval2 = ot.Interval([1., 4.], [6., 13.])
+>>> # Addition
+>>> print(interval1 + interval2)
+[3, 11]
+[7, 21]
+>>> # Substraction
+>>> print(interval1 - interval2)
+[-4, 4]
+[-10, 4]
+>>> # Multiplication
+>>> print(interval1 * 3)
+[6, 15]
+[9, 24]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::getFiniteLowerBound
+"Tell for each component of the lower bound whether it is finite or not.
+
+Returns
+-------
+flags : :class:`~openturns.BoolCollection`
+    If the :math:`i^{th}` element is *False*, the corresponding component of
+    the lower bound is infinite. Otherwise, it is finite.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2., 3.], [4., 5.], [True, False], [True, True])
+>>> print(interval.getFiniteLowerBound())
+[1,0]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::setFiniteLowerBound
+"Tell for each component of the lower bound whether it is finite or not.
+
+Parameters
+----------
+flags : sequence of bool
+    If the :math:`i^{th}` element is *False*, the corresponding component of
+    the lower bound is infinite. Otherwise, it is finite.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval(2)
+>>> interval.setFiniteLowerBound([True, False])
+>>> print(interval)
+[0, 1]
+]-inf (0), 1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::getFiniteUpperBound
+"Tell for each component of the upper bound whether it is finite or not.
+
+Returns
+-------
+flags : :class:`~openturns.BoolCollection`
+    If the :math:`i^{th}` element is *False*, the corresponding component of
+    the upper bound is infinite. Otherwise, it is finite.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2., 3.], [4., 5.], [True, False], [True, True])
+>>> print(interval.getFiniteUpperBound())
+[1,1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::setFiniteUpperBound
+"Tell for each component of the upper bound whether it is finite or not.
+
+Parameters
+----------
+flags : sequence of bool
+    If the :math:`i^{th}` element is *False*, the corresponding component of
+    the upper bound is infinite. Otherwise, it is finite.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval(2)
+>>> interval.setFiniteUpperBound([True, False])
+>>> print(interval)
+[0, 1]
+[0, (1) +inf["
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::getLowerBound
+"Get the lower bound.
+
+Returns
+-------
+lowerBound : :class:`~openturns.NumericalPoint`
+    Value of the lower bound.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2., 3.], [4., 5.], [True, False], [True, True])
+>>> print(interval.getLowerBound())
+[2,3]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::setLowerBound
+"Set the lower bound.
+
+Parameters
+----------
+lowerBound : sequence of float
+    Value of the lower bound.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval(2)
+>>> interval.setLowerBound([-4, -5])
+>>> print(interval)
+[-4, 1]
+[-5, 1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::getUpperBound
+"Get the upper bound.
+
+Returns
+-------
+upperBound : :class:`~openturns.NumericalPoint`
+    Value of the upper bound.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2., 3.], [4., 5.], [True, False], [True, True])
+>>> print(interval.getUpperBound())
+[4,5]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::setUpperBound
+"Set the upper bound.
+
+Parameters
+----------
+upperBound : sequence of float
+    Value of the upper bound.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval(2)
+>>> interval.setUpperBound([4, 5])
+>>> print(interval)
+[0, 4]
+[0, 5]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::intersect
+"Get the intersection with an other interval.
+
+Parameters
+----------
+otherInterval : :class:`~openturns.Interval`
+    Interval of the same dimension.
+
+Returns
+-------
+interval : :class:`~openturns.Interval`
+    An interval corresponding to the intersection of the current interval with
+    *otherInterval*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval1 = ot.Interval([2., 3.], [5., 8.])
+>>> interval2 = ot.Interval([1., 4.], [6., 13.])
+>>> print(interval1.intersect(interval2))
+[2, 5]
+[4, 8]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::join
+"Get the smallest interval containing both the current interval and another one.
+
+Parameters
+----------
+otherInterval : :class:`~openturns.Interval`
+    Interval of the same dimension.
+
+Returns
+-------
+interval : :class:`~openturns.Interval`
+    Smallest interval containing both the current interval and
+    *otherInterval*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval1 = ot.Interval([2., 3.], [5., 8.])
+>>> interval2 = ot.Interval([1., 4.], [6., 13.])
+>>> print(interval1.join(interval2))
+[1, 6]
+[3, 13]"

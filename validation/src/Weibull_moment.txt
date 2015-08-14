@@ -1,0 +1,60 @@
+> restart:
+> assume(eps>0,a>0,b>0);
+> f:=b/a*(x/a)^(b-1)*exp(-(x/a)^b);
+> I0:=int(x*f,x=0..infinity);
+
+                        / x  \(b~ - 1)      / x  \b~
+                     b~ |----|         exp(-|----|  )
+                        \ a~ /              \ a~ /
+                f := --------------------------------
+                                    a~
+
+
+                                       b~ + 1
+                        I0 := a~ GAMMA(------)
+                                         b~
+
+> xmax:=solve(diff(f,x),x);
+> g:=factor(simplify(b/a*exp(-(x/a)^b)/subs(x=xmax,f),symbolic));
+> sol:=solve(g=eps,x);
+
+                                     b~ - 1
+                                  ln(------)
+                                       b~
+                      xmax := exp(----------) a~
+                                      b~
+
+
+               b~   (-b~)
+  g := exp(- (x   a~      b~ - b~ ln(b~) + b~ ln(b~ - 1) + ln(b~)
+
+         - ln(b~ - 1) - b~ + 1)/b~)
+
+
+             /
+             |
+             |
+  sol := exp(|
+             \
+
+                 b~ - 1              b~ - 1
+             -ln(------) + 1 + b~ ln(------) - b~ + ln(eps~) b~
+                   b~                  b~
+        ln(- --------------------------------------------------)
+                                     b~
+
+                    \
+                    |
+                    |
+         + b~ ln(a~)|/b~)
+                    /
+
+> series(sol,b=1,2);
+
+  exp(ln(-ln(eps~)) + ln(a~)) + exp(ln(-ln(eps~)) + ln(a~))
+
+        /  -ln(b~ - 1) + 1                \                      2
+        |- --------------- - ln(-ln(eps~))| (b~ - 1) + O((b~ - 1) )
+        \     ln(eps~)                    /
+
+> 

@@ -1,0 +1,271 @@
+> restart:
+> with(Statistics):
+> assume(u>0,nu>0):
+> student_:=RandomVariable(StudentT(nu)):
+> pdf:=subs(u=x-mu,PDF(student_,u));
+> ddf:=factor(diff(pdf,x));
+> cdf:=subs(u=x-mu,CDF(student_,u)):
+> cdf2:=simplify(convert(subs(mu=0,(cdf - 1)*Beta(1/2,nu/2)*sqrt(nu)),
+> GAMMA)) assuming nu > 1:
+> rough:=int(pdf^2,x=-infinity..infinity);
+> mu_:=mu+Mean(student_);
+> var_:=Variance(student_);
+> skew_:=simplify(convert(Skewness(student_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(student_),GAMMA),symbolic);
+> pdfgr:=map(factor,[diff(pdf,nu),diff(pdf,mu)]):
+> cdfgr:=map(factor,[diff(cdf,nu),diff(cdf,mu)]):
+> #qdf:=Quantile(student_,p):
+> #qdf2:=solve(cdf=p,x):
+> valnum:=nu=5,mu=-0.5:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,pdfgr));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(subs(valnum,mu+Quantile(StudentT(subs(valnum,nu)),0.95)));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+                                          nu~
+                              GAMMA(1/2 + ---)
+                                           2
+       pdf := -------------------------------------------------
+                                                    /      nu~\
+                                                    |1/2 + ---|
+                                                    \       2 /
+                                     /            2\
+                      1/2       nu~  |    (x - mu) |
+              (Pi nu~)    GAMMA(---) |1 + ---------|
+                                 2   \       nu~   /
+
+
+                                                   /
+                                                   |
+                                                   |
+                                                   |
+                       nu~                       / |        1/2
+  ddf := - GAMMA(1/2 + ---) (1 + nu~) (x - mu)  /  |(Pi nu~)
+                        2                      /   \
+
+                                            /      nu~\
+                                            |1/2 + ---|
+                                            \       2 /
+                   /       2              2\
+              nu~  |nu~ + x  - 2 x mu + mu |
+        GAMMA(---) |-----------------------|
+               2   \          nu~          /
+
+                                 \
+                                 |
+                                 |
+                                 |
+                2              2 |
+        (nu~ + x  - 2 x mu + mu )|
+                                 /
+
+
+              infinity
+             /
+            |
+            |
+            |
+            |
+  rough :=  |
+            |
+            |
+            |
+            |
+           /
+             -infinity
+
+                                   nu~ 2
+                       GAMMA(1/2 + ---)
+                                    2
+        ------------------------------------------------ dx
+                           /               /      nu~\\2
+                           |               |1/2 + ---||
+                           |               \       2 /|
+                           |/            2\           |
+                     nu~ 2 ||    (x - mu) |           |
+        Pi nu~ GAMMA(---)  ||1 + ---------|           |
+                      2    \\       nu~   /           /
+
+
+                          /{ undefined        nu~ <= 1 \
+              mu_ := mu + |{                           |
+                          \{     0            otherwise/
+
+
+                         { undefined        nu~ <= 2
+                         {
+                 var_ := {   nu~
+                         { --------         otherwise
+                         { -2 + nu~
+
+
+                          { undefined        nu~ <= 2
+                 skew_ := {
+                          {     0            2 < nu~
+
+
+                        {  undefined          nu~ <= 2
+                        {
+               kurt_ := { 3 (-2 + nu~)
+                        { ------------        2 < nu~
+                        {   nu~ - 4
+
+
+                            -0.1545732554
+
+
+                             0.1245173447
+
+
+                             0.9030481600
+
+
+                    [0.001274928807, 0.1545732554]
+
+
+                   [0.005719977472, -0.1245173445]
+
+
+                             1.515042560
+
+
+                                 -0.5
+
+
+                             1.290994449
+
+
+                                  0.
+
+
+                                  9.
+
+
+                             1.666666667
+
+> map(collect,map(collect,simplify(subs(x^2=xRed*nu-nu+2*x*mu-mu^2,facto
+> r(subs(nu+x^2-2*x*mu+mu^2=xRed*nu,-nu-x^2+2*x*mu-mu^2=-xRed*nu,collect
+> (convert(pdfgr[1]*Beta(1/2,nu/2)*sqrt(nu),GAMMA),Psi)))),symbolic),ln)
+> ,xRed);
+> map(collect,map(collect,simplify(subs(x^2=xRed*nu-nu+2*x*mu-mu^2,facto
+> r(subs(nu+x^2-2*x*mu+mu^2=xRed*nu,-nu-x^2+2*x*mu-mu^2=-xRed*nu,collect
+> (convert(pdfgr[2]*Beta(1/2,nu/2)*sqrt(nu),GAMMA),Psi)))),symbolic),ln)
+> ,xRed);
+
+       //    nu~                                       nu~     \
+  -1/2 ||Psi(---) nu~ + ln(xRed) nu~ - nu~ - Psi(1/2 + ---) nu~| xRed
+       \\     2                                         2      /
+
+                        /        nu~\
+                        |- 3/2 - ---|
+                  \     \         2 /
+         + 1 + nu~| xRed             /nu~
+                  /
+
+
+                                        /        nu~\
+                                        |- 3/2 - ---|
+                                        \         2 /
+                 (1 + nu~) (x - mu) xRed
+                 ------------------------------------
+                                 nu~
+
+> densityGenerator:=subs(x=mu+sqrt(nu/(nu-2))*sqrt(u),pdf);
+> densityGeneratorDerivative:=factor(diff(densityGenerator, u));
+> evalf(subs(valnum,u=1,densityGeneratorDerivative));
+> evalf((subs(valnum,u=1+1e-5,densityGenerator)-subs(valnum,u=1-1e-5,den
+> sityGenerator))/2e-5);
+> densityGeneratorSecondDerivative:=factor(diff(densityGeneratorDerivati
+> ve, u));
+> evalf(subs(valnum,u=1,densityGeneratorSecondDerivative));
+> evalf((subs(valnum,u=1+1e-5,densityGeneratorDerivative)-subs(valnum,u=
+> 1-1e-5,densityGeneratorDerivative))/2e-5);
+
+  densityGenerator :=
+
+                                    nu~
+                        GAMMA(1/2 + ---)
+                                     2
+        ------------------------------------------------
+                                             /      nu~\
+                                             |1/2 + ---|
+                                             \       2 /
+                1/2       nu~  /       u~   \
+        (Pi nu~)    GAMMA(---) |1 + --------|
+                           2   \    -2 + nu~/
+
+
+                                                                    /
+                                                                    |
+                                                                    |
+                                                           nu~    / |
+  densityGeneratorDerivative := -1/2 (1 + nu~) GAMMA(1/2 + ---)  /  |
+                                                            2   /   \
+
+                                       /      nu~\
+                                       |1/2 + ---|
+                                       \       2 /
+                        /-2 + nu~ + u~\                  nu~
+        (-2 + nu~ + u~) |-------------|            GAMMA(---)
+                        \  -2 + nu~   /                   2
+
+                   \
+                   |
+                   |
+                1/2|
+        (Pi nu~)   |
+                   /
+
+
+                            -0.09188814925
+
+
+                            -0.09188888436
+
+
+                                                                nu~
+  densityGeneratorSecondDerivative := 1/4 (1 + nu~) GAMMA(1/2 + ---)
+                                                                 2
+
+                      /                                /      nu~\
+                      |                                |1/2 + ---|
+                      |                                \       2 /
+                    / |               2 /-2 + nu~ + u~\
+        (3 + nu~)  /  |(-2 + nu~ + u~)  |-------------|
+                  /   \                 \  -2 + nu~   /
+
+                              \
+                              |
+                              |
+              nu~          1/2|
+        GAMMA(---) (Pi nu~)   |
+               2              /
+
+
+                             0.1378322239
+
+
+                             0.1378322239
+
+> assume(a<0):int((1+x)^a,x=-infinity..infinity);
+
+                          infinity
+                         /
+                        |                 a~
+                        |          (1 + x)   dx
+                        |
+                       /
+                         -infinity
+
+> evalf[25](4/(2*sqrt(Pi)));
+
+                      1.128379167095512573896159
+
+> 

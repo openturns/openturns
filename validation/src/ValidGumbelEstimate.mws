@@ -1,0 +1,25 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 301 "restart:\nwith(Stat
+istics):\nassume(alpha>0);\ngumbel_:=RandomVariable(Gumbel(beta,1/alph
+a)):\npdf:=PDF(gumbel_,x);\nmu_:=Mean(gumbel_);\nvar_:=Variance(gumbel
+_);\nassume(v>0):\nsol:=allvalues(solve(\{mu_=m,var_=v\},\{alpha,beta
+\})):\nmap(_x->collect(simplify(_x,symbolic),m),subs(sol[1],v=sigma^2,
+[alpha,beta]));\n" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$pdfG*(%'alpha|
+irG\"\"\"-%$expG6#,$*&,&%\"xGF'%%betaG!\"\"F'F&F'F0F'-F)6#,$F(F0F'" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$mu_G,&%%betaG\"\"\"*&%&gammaGF'%'al
+pha|irG!\"\"F'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%var_G,$*(\"\"'!\"
+\"%'alpha|irG!\"#%#PiG\"\"#\"\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7
+$,$**\"\"'!\"\"F&#\"\"\"\"\"#%#PiGF)%&sigmaGF'F),&%\"mGF)**%&gammaGF)F
+,F)F&F(F+F'F'" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 78 "map(_x->co
+llect(simplify(_x,symbolic),m),subs(sol[1],v=sigma^2,[alpha,beta]));" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$,$**\"\"'!\"\"F&#\"\"\"\"\"#%#PiGF
+)%&sigmaGF'F),&%\"mGF)**%&gammaGF)F,F)F&F(F+F'F'" }}}{EXCHG {PARA 0 ">
+ " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1 0 0" 0 }{VIEWOPTS 1 1 0 1 1 
+1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

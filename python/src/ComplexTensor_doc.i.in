@@ -1,0 +1,188 @@
+%feature("docstring") OT::ComplexTensor
+"Complex tensor.
+
+Available constructors:
+    ComplexTensor(*n_rows, n_columns, n_sheets*)
+
+    ComplexTensor(*n_rows, n_columns, n_sheets, values*)
+
+    ComplexTensor(*sequence*)
+
+Parameters
+----------
+n_rows : int, :math:`n_r > 0`
+    Number of rows.
+n_columns : int, :math:`n_c > 0`
+    Number of columns.
+n_sheets : int, :math:`n_s > 0`
+    Number of sheets.
+values : sequence of complex with size :math:`n_r \times n_c \times n_s`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    If not mentioned, a zero tensor is created.
+sequence : sequence of complex
+    Values.
+
+Examples
+--------
+Create a tensor of complex values:
+
+>>> import openturns as ot
+>>> T = ot.ComplexTensor(2, 2, 2, range(2 * 2 * 2))
+>>> print(T)
+sheet #0
+[[ (0,0) (2,0) ]
+ [ (1,0) (3,0) ]]
+sheet #1
+[[ (4,0) (6,0) ]
+ [ (5,0) (7,0) ]]
+
+Get or set terms:
+
+>>> print(T[0, 0, 0])
+0j
+>>> T[0, 0, 0] = 1.
+>>> print(T[0, 0, 0])
+(1+0j)
+
+Create an openturns tensor from a numpy 3d-array:
+
+>>> import numpy as np
+>>> np_3d_array = np.array([[[1., 2., 3.], [4., 5., 6.]], [[7., 8., 9.], [10., 11., 12.]]])
+>>> ot_tensor = ot.ComplexTensor(np_3d_array)
+
+and back
+
+>>> np_tensor = np.array(ot_tensor)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::clean
+"Set elements smaller than a threshold to zero.
+
+Parameters
+----------
+threshold : float
+    Threshold for zeroing elements.
+
+Returns
+-------
+cleaned_tensor : :class:`~openturns.ComplexTensor`
+    Input tensor with elements smaller than the threshold set to zero."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::getNbColumns
+"Accessor to the number of columns.
+
+Returns
+-------
+n_columns : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::getNbRows
+"Accessor to the number of rows.
+
+Returns
+-------
+n_rows : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::getNbSheets
+"Accessor to the number of sheets.
+
+Returns
+-------
+n_sheets : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::getSheet
+"Get a sheet of the tensor.
+
+Parameters
+----------
+sheet : int
+    Index of sheet element.
+
+Returns
+-------
+M : :class:`~openturns.ComplexMatrix`
+    The sheet element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.ComplexTensor(2,2,3, range(2*2*3))
+>>> print(T)
+sheet #0
+[[  (0,0)  (2,0) ]
+ [  (1,0)  (3,0) ]]
+sheet #1
+[[  (4,0)  (6,0) ]
+ [  (5,0)  (7,0) ]]
+sheet #2
+[[  (8,0) (10,0) ]
+ [  (9,0) (11,0) ]]
+>>> print(T.getSheet(0))
+[[ (0,0) (2,0) ]
+ [ (1,0) (3,0) ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::setSheet
+"Set a matrix as a sheet of the complex tensor.
+
+Parameters
+----------
+sheet : int
+    Index of sheet element.
+
+M : :class:`~openturns.ComplexMatrix`
+    The matrix.
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.ComplexTensor(2,2,3, range(2*2*3))
+>>> print(T)
+sheet #0
+[[  (0,0)  (2,0) ]
+ [  (1,0)  (3,0) ]]
+sheet #1
+[[  (4,0)  (6,0) ]
+ [  (5,0)  (7,0) ]]
+sheet #2
+[[  (8,0) (10,0) ]
+ [  (9,0) (11,0) ]]
+>>> M = ot.ComplexMatrix([[1,2],[3,4]])
+>>> T.setSheet(0, M)
+>>> print(T)
+sheet #0
+[[  (1,0)  (2,0) ]
+ [  (3,0)  (4,0) ]]
+sheet #1
+[[  (4,0)  (6,0) ]
+ [  (5,0)  (7,0) ]]
+sheet #2
+[[  (8,0) (10,0) ]
+ [  (9,0) (11,0) ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComplexTensor::isEmpty
+"Tell if the tensor is empty.
+
+Returns
+-------
+is_empty : bool
+    True if the tensor contains no element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> T = ot.ComplexTensor()
+>>> T.isEmpty()
+True"

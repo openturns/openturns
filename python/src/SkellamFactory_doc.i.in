@@ -1,0 +1,9 @@
+%feature("docstring") OT::SkellamFactory
+"Skellam factory.
+
+Available constructor:
+    SkellamFactory()
+
+See also
+--------
+DistributionFactory"

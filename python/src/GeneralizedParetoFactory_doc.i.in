@@ -1,0 +1,12 @@
+%feature("docstring") OT::GeneralizedParetoFactory
+"Generalized Pareto factory.
+
+Available constructor:
+    GeneralizedParetoFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

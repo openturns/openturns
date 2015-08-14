@@ -1,0 +1,129 @@
+%define OT_Classifier_doc
+"Classifier.
+
+Available constructors:
+    Classifier(*classifierImp*)
+
+Parameters
+----------
+classifierImp : classifier implementation
+    A classifier implementation. It can be a :class:`~openturns.MixtureClassifier`.
+
+See also
+--------
+MixtureClassifier, ExpertMixture
+
+Notes
+-----
+The classifier enables to define rules that assign a vector to a particular
+class."
+%enddef
+%feature("docstring") OT::ClassifierImplementation
+OT_Classifier_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_classify_doc
+"Classify points according to the classifier.
+
+**Available usages**:
+
+    classify(*inputPoint*)
+
+    classify(*inputSample*)
+
+Parameters
+----------
+inputPoint : sequence of float
+    A point to classify.
+inputSample : 2-d a sequence of float
+    A set of point to classify.
+
+Notes
+-----
+The rules to assign a point to a class are specific to each *classifierImp*.
+
+In the first usage, it returns an integer which corresponds to the class where
+*inputPoint* has been assigned.
+
+In the second usage, it returns an :class:`~openturns.Indices` that collects the
+class of each point of *inputSample*."
+%enddef
+%feature("docstring") OT::ClassifierImplementation::classify
+OT_Classifier_classify_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_grade_doc
+"Grade points according to the classifier.
+
+**Available usages**:
+
+    grade(*inputPoint, k*)
+
+    grade(*inputSample, classList*)
+
+Parameters
+----------
+inputPoint : sequence of float
+    A point to grade.
+inputSample : 2-d a sequence of float
+    A set of point to grade.
+k : integer
+    The class number.
+classList : sequence of integer
+    The list of class number.
+
+Notes
+-----
+The rules to grade a point with respect to a class are specific to each
+*classifierImp*.
+
+In the first usage, it returns a real that grades *inputPoint* with respect to
+the class *k*. The greatest, the best.
+
+In the second usage, it returns an :class:`~openturns.Indices` that collects the
+grades of the :math:`i^{th}` point of *inputSample* with respect to the
+:math:`i^{th}` class of *classList*."
+%enddef
+%feature("docstring") OT::ClassifierImplementation::grade
+OT_Classifier_grade_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_getDimension_doc
+"Accessor to the dimension.
+
+Returns
+-------
+dim : integer
+    The dimension of the classifier."
+%enddef
+%feature("docstring") OT::ClassifierImplementation::getDimension
+OT_Classifier_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_getVerbose_doc
+"Accessor to the verbosity.
+
+Returns
+-------
+verb : bool
+    Logical value telling if the verbose mode has been activated."
+%enddef
+%feature("docstring") OT::ClassifierImplementation::getVerbose
+OT_Classifier_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_setVerbose_doc
+"Accessor to the verbosity.
+
+Parameters
+----------
+verb : bool
+    Logical value telling if the verbose mode has been activated."
+%enddef
+%feature("docstring") OT::ClassifierImplementation::setVerbose
+OT_Classifier_setVerbose_doc

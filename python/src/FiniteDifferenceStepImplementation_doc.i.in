@@ -1,0 +1,54 @@
+%define OT_FiniteDifferenceStep_doc
+"Base class to define finite difference steps.
+
+Available constructors:
+    FiniteDifferenceStep(*epsilon=[1.0]*)
+
+Parameters
+----------
+epsilon : sequence of float
+    Finite difference steps for each dimension.
+
+Notes
+-----
+Base class to define how finite difference steps are computed.
+Using *FiniteDifferenceStep* is equivalent to use its derived class
+:class:`~openturns.ConstantStep`. Another way to compute steps
+is through its second derived class :class:`~openturns.BlendedStep`."
+%enddef
+%feature("docstring") OT::FiniteDifferenceStepImplementation
+OT_FiniteDifferenceStep_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FiniteDifferenceStep_getEpsilon_doc
+"Get the finite difference steps.
+
+Returns
+-------
+epsilon : :class:`~openturns.NumericalPoint`
+    If :class:`~openturns.ConstantStep` : Finite difference steps for each
+    dimension.
+
+    If :class:`~openturns.BlendedStep` : Finite difference step factors for
+    each dimension."
+%enddef
+%feature("docstring") OT::FiniteDifferenceStepImplementation::getEpsilon
+OT_FiniteDifferenceStep_getEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FiniteDifferenceStep_setEpsilon_doc
+"Set the finite difference steps.
+
+Parameters
+----------
+epsilon : sequence of float
+    If :class:`~openturns.ConstantStep` : Finite difference steps for each
+    dimension.
+
+    If :class:`~openturns.BlendedStep` : Finite difference step factors for
+    each dimension."
+%enddef
+%feature("docstring") OT::FiniteDifferenceStepImplementation::setEpsilon
+OT_FiniteDifferenceStep_setEpsilon_doc

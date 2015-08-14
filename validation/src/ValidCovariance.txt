@@ -1,0 +1,77 @@
+> restart:
+> with(LinearAlgebra):
+> diag:=<<sigma1,0,0>|<0,sigma2,0>|<0,0,sigma3>>;
+> Cor:=<<r11,r21,r31>|<r12,r22,r32>|<r13,r23,r33>>;
+> Cov:=diag.Cor.diag;
+> factor(Determinant(Cov));
+> iCov:=MatrixInverse(Cov);
+> factor(Determinant(iCov));
+
+                         [sigma1      0         0   ]
+                         [                          ]
+                 diag := [  0       sigma2      0   ]
+                         [                          ]
+                         [  0         0       sigma3]
+
+
+                             [r11    r12    r13]
+                             [                 ]
+                      Cor := [r21    r22    r23]
+                             [                 ]
+                             [r31    r32    r33]
+
+
+            [      2                                            ]
+            [sigma1  r11 , sigma1 r12 sigma2 , sigma1 r13 sigma3]
+            [                                                   ]
+     Cov := [                          2                        ]
+            [sigma2 r21 sigma1 , sigma2  r22 , sigma2 r23 sigma3]
+            [                                                   ]
+            [                                              2    ]
+            [sigma3 r31 sigma1 , sigma3 r32 sigma2 , sigma3  r33]
+
+
+        2       2       2
+  sigma1  sigma2  sigma3  (r11 r22 r33 - r11 r23 r32 + r21 r32 r13
+
+         - r21 r12 r33 + r31 r12 r23 - r31 r22 r13)
+
+
+  iCov :=
+
+        [r22 r33 - r23 r32     -r32 r13 + r12 r33   r12 r23 - r22 r13
+        [----------------- , - ------------------ , -----------------
+        [         2             sigma2 sigma1 %1    sigma1 sigma3 %1
+        [   sigma1  %1
+
+        ]
+        ]
+        ]
+        ]
+
+        [  r21 r33 - r31 r23   r11 r33 - r13 r31
+        [- ----------------- , ----------------- ,
+        [  sigma2 sigma1 %1             2
+        [                         sigma2  %1
+
+          r11 r23 - r13 r21]
+        - -----------------]
+          sigma2 sigma3 %1 ]
+                           ]
+
+        [r21 r32 - r31 r22     r11 r32 - r12 r31   r11 r22 - r12 r21]
+        [----------------- , - ----------------- , -----------------]
+        [sigma1 sigma3 %1      sigma2 sigma3 %1             2       ]
+        [                                             sigma3  %1    ]
+
+  %1 := r11 r22 r33 - r11 r23 r32 + r21 r32 r13 - r21 r12 r33
+
+         + r31 r12 r23 - r31 r22 r13
+
+
+           2       2       2
+  1/(sigma1  sigma2  sigma3  (r11 r22 r33 - r11 r23 r32 + r21 r32 r13
+
+         - r21 r12 r33 + r31 r12 r23 - r31 r22 r13))
+
+> 

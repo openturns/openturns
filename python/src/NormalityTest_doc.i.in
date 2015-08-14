@@ -1,0 +1,88 @@
+%feature("docstring") OT::NormalityTest::AndersonDarlingNormal
+"Evaluate whether a sample follows a normal distribution using the Anderson
+Darling Normal test.
+
+**Available usages**:
+
+    NormalityTest.AndersonDarlingNormal(*sample*)
+
+    NormalityTest.AndersonDarlingNormal(*sample, level*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+level : positive float
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+NormalityTest_CramerVonMisesNormal
+
+Notes
+-----
+The test is used to check whether the sample follows a normal distribution. This
+test gives more importance to extreme values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> test_result = ot.NormalityTest.AndersonDarlingNormal(sample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=AndersonDarlingNormal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.7268 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalityTest::CramerVonMisesNormal
+"Evaluate whether a sample follows a normal distribution using the Cramer Von
+Mises Normal test.
+
+**Available usages**:
+
+    NormalityTest.CramerVonMisesNormal(*sample*)
+
+    NormalityTest.CramerVonMisesNormal(*sample, level*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+level : positive float
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+NormalityTest_AndersonDarlingNormal
+
+Notes
+-----
+The test is used to check whether the sample follows a normal distribution. The 
+test concerns the deviation squared and integrated over the entire variation
+domain, it often appears to be more robust than the Kolmogorov-Smirnov test.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> test_result = ot.NormalityTest.CramerVonMisesNormal(sample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=CramerVonMisesNormal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.682524 description=[]
+"

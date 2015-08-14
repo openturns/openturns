@@ -1,0 +1,164 @@
+%feature("docstring") OT::BoxCoxFactory
+"BoxCox transformation estimator.
+
+Notes
+-----
+The class :class:`~openturns.BoxCoxFactory` enables to build a Box Cox transformation from data.
+
+The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` maps a sample into a new sample following a normal distribution with independent components. That sample may be the realization of a process as well as the realization of a distribution.
+
+In the multivariate case, OpenTURNS proceeds component by component: :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset` which writes :
+
+.. math::
+
+    h_{\lambda_i, \alpha_i}(x) = 
+    \left\{
+    \begin{array}{ll}
+    \dfrac{(x+\alpha_i)^\lambda-1}{\lambda_i} & \lambda_i \neq 0 \\
+    \log(x+\alpha_i)                        & \lambda_i = 0
+    \end{array}
+    \right.
+
+for all :math:`x+\alpha_i >0`.
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoxCoxFactory::build
+"Estimate the Box Cox transformation.
+
+Available usages:
+    build(*myTimeSeries*)
+
+    build(*myTimeSeries, shift*)
+
+    build(*myTimeSeries, shift, likelihoodGraph*)
+
+    build(*mySample*)
+
+    build(*mySample, shift*)
+
+    build(*mySample, shift, likelihoodGraph*)
+
+Parameters
+----------
+myTimeSeries : :class:`~openturns.TimeSeries`
+    One realization of a  process.
+mySample : :class:`~openturns.NumericalSample`
+    A set of *iid* values.
+shift : :class:`~openturns.NumericalPoint`
+    It ensures that when shifted, the data are all positive. If not precised, OpenTURNS uses the opposite of the min vector of the data if some data are negative.
+likelihoodGraph : :class:`~openturns.Graph`
+    An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
+
+Returns
+-------
+myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
+    The estimated Box Cox transformation.
+
+Notes
+-----
+
+We describe the estimation in the univariate case. Only the parameter :math:`\lambda` is estimated. To clarify the notations, we omit the mention of :math:`\alpha` in :math:`h_\lambda`.
+
+We note :math:`(x_0, \dots, x_{N-1})` a sample of :math:`X`. We suppose that :math:`h_\lambda(X) \sim \cN(\beta , \sigma^2 )`.
+
+The parameters :math:`(\beta,\sigma,\lambda)` are  estimated by the maximum likelihood estimators. We note :math:`\Phi_{\beta, \sigma}` and :math:`\phi_{\beta, \sigma}` respectively the cumulative distribution function and the density probability function of the :math:`\cN(\beta , \sigma^2)` distribution.
+
+We have :
+
+.. math::
+
+    \begin{array}{lcl}
+      \forall v \geq 0, \, \Prob{ X \leq v } & = & \Prob{ h_\lambda(X) \leq h_\lambda(v) } \\
+      & = & \Phi_{\beta, \sigma} \left(h_\lambda(v)\right)
+    \end{array}
+
+from which we derive the  density probability function *p* of :math:`X`:
+
+.. math::
+
+    \begin{array}{lcl}
+      p(v) & = & h_\lambda'(v)\phi_{\beta, \sigma}(v) = v^{\lambda - 1}\phi_{\beta, \sigma}(v)
+    \end{array}
+
+which enables to write the likelihood of the values :math:`(x_0, \dots, x_{N-1})`:
+
+.. math::
+
+    \begin{array}{lcl}
+      L(\beta,\sigma,\lambda)
+      & = &
+      \underbrace{ \frac{1}{(2\pi)^{N/2}}
+        \times
+        \frac{1}{(\sigma^2)^{N/2}}
+        \times
+        \exp\left[
+          -\frac{1}{2\sigma^2}
+          \sum_{k=0}^{N-1}
+          \left(
+          h_\lambda(x_k)-\beta
+          \right)^2
+          \right]
+      }_{\Psi(\beta, \sigma)}
+      \times
+      \prod_{k=0}^{N-1} x_k^{\lambda - 1}
+    \end{array}
+
+
+
+We notice that for each fixed :math:`\lambda`, the likelihood equation is proportional to the likelihood equation which estimates  :math:`(\beta, \sigma^2)`.
+
+Thus, the maximum likelihood estimators for :math:`(\beta(\lambda), \sigma^2(\lambda))` for a given :math:`\lambda`  are :
+
+.. math::
+
+    \begin{array}{lcl}
+     \hat{\beta}(\lambda) & = & \frac{1}{N} \sum_{k=0}^{N-1} h_{\lambda}(x_k) \\
+     \hat{\sigma}^2(\lambda)  & = &  \frac{1}{N} \sum_{k=0}^{N-1} (h_{\lambda}(x_k) - \beta(\lambda))^2
+    \end{array}
+
+Substituting these expressions in the  likelihood equation  and taking the :math:`\log-` likelihood leads to:
+
+.. math::
+
+    \begin{array}{lcl}
+      \ell(\lambda) = \log L( \hat{\beta}(\lambda), \hat{\sigma}(\lambda),\lambda ) & = & C -
+      \frac{N}{2}
+      \log\left[\hat{\sigma}^2(\lambda)\right]
+      \;+\;
+      \left(\lambda - 1 \right) \sum_{k=0}^{N-1} \log(x_i)\,,%\qquad mbox{where $C$ is a constant.}
+    \end{array}
+
+The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell(\lambda)`.
+
+When the empty graph *likelihoodGraph* is precised, it is fulfilled with the evolution of the likelihood with respect to the value of :math:`\lambda` for each component  *i*. It enables to graphically detect the optimal values.
+
+Examples
+--------
+Estimate the Box Cox transformation from a sample:
+
+>>> import openturns as ot
+>>> mySample = ot.Exponential(2).getSample(1000)
+>>> myBoxCoxFactory = ot.BoxCoxFactory()
+>>> myModelTransform = myBoxCoxFactory.build(mySample)
+>>> estimatedLambda = myModelTransform.getLambda()
+
+Estimate the Box Cox transformation from a field:
+
+>>> myIndices= ot.Indices([40,20])
+>>> myMesher=ot.IntervalMesher(myIndices)
+>>> myInterval = ot.Interval([0., 0.], [2., 1.])
+>>> myMesh=myMesher.build(myInterval)
+>>> amplitude=[1.0]
+>>> scale=[0.2]
+>>> myCovModel=ot.ExponentialModel(myMesh.getDimension(),amplitude, scale)
+>>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
+>>> g = ot.NumericalMathFunction(['x1'],  ['exp(x1)'])
+>>> myDynTransform = ot.SpatialFunction(g, 2)
+>>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
+
+>>> myField = myXtProcess.getRealization()
+>>> myModelTransform = ot.BoxCoxFactory().build(myField)
+"

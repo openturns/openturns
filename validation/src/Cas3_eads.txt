@@ -1,0 +1,31 @@
+> restart:
+> Digits:=20:
+> Pdef:=int(int(1/(2*Pi)*exp(-(x1^2+x2^2)/2),x1=3/x2..infinity),x2=0..in
+> finity);
+
+                    infinity
+                     -----
+                      \          (2 _k1)
+  Pdef := 1/4 + 3/8    )     (-1)        (Psi(1/2 + _k1)
+                      /
+                     -----
+                    _k1 = 0
+
+         - 2 Psi(1 + _k1) - Psi(3/2 + _k1) + 2 ln(3) - 2 ln(2))
+
+         (2 _k1)  (-2 _k1)   /                            2
+        3        2          /  ((1/2 + _k1) GAMMA(1 + _k1) )/Pi
+                           /
+
+> evalf(2*Pdef);
+
+                        0.00981929872154689057
+
+> PHI:=proc(x)
+>   int(1/sqrt(2*Pi)*exp(-t^2/2),t=-infinity..x)
+> end:
+> -fsolve(PHI(x)=2*Pdef,x);
+
+                        2.3331819562986952785
+
+> 

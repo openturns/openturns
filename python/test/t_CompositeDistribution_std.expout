@@ -1,0 +1,45 @@
+Distribution  class=CompositeDistribution name=CompositeDistribution function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] gradientImplementation=class=AnalyticalNumericalMathGradientImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] hessianImplementation=class=AnalyticalNumericalMathHessianImplementation name=Unnamed evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2 + 2 * sin(x)] antecedent=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=NumericalPoint name=Unnamed dimension=3 values=[-7.65063,-0.739085,7.65063] values=class=NumericalPoint name=Unnamed dimension=3 values=[56.5733,-0.800977,60.4909] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[1e-14,0.229928,1] increasing=[0,1]
+Distribution  CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)]
+Elliptical =  False
+Continuous =  True
+oneRealization= [1.51269]
+oneSample first= [-0.304726]  last= [4.32165]
+mean= [0.981731]
+covariance= [[ 3.68811 ]]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  [1]
+ddf     = [-0.0620066]
+log pdf= -1.82876523119
+pdf     = 0.1606117638
+pdf (FD)= 0.1606117638
+cdf= 0.621614338562
+ccdf= 0.378385661438
+survival= 0.378385661438
+quantile= [4.91251]
+cdf(quantile)= 0.95
+quantile (tail)= [-0.78963]
+cdf (tail)= 0.95
+characteristic function=(0.421744+0.00166811j)
+log characteristic function=(-0.863349+0.00395524j)
+pdf gradient     = [0.0164482,-0.0648158]
+cdf gradient     = [-0.274716,-0.309724]
+mean= [1.005]
+standard deviation= [1.92588]
+skewness= [1.57199]
+kurtosis= [6.20635]
+covariance= [[ 3.70901 ]]
+correlation= [[ 1 ]]
+spearman= [[ 1 ]]
+kendall= [[ 1 ]]
+parameters= [[mean : 0, standard deviation : 1]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [1.005]
+standard moment n= 2 , value= [4.72533]
+standard moment n= 3 , value= [23.4392]
+standard moment n= 4 , value= [154.036]
+standard moment n= 5 , value= [1261.42]
+Standard representative= CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)]
+antecedent= Normal(mu = 0, sigma = 1)
+function= [x]->[x^2 + 2 * sin(x)]
+newDistribution= CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)]

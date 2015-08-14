@@ -1,0 +1,74 @@
+%feature("docstring") OT::LHSExperiment
+"LHS experiment.
+
+Available constructors:
+    LHSExperiment(*distribution, size*)
+
+    LHSExperiment(*size*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` with an independent copula used to generate the
+    set of input data.
+size : positive int
+    Number :math:`cardI` of points that will be generated in the experiment.
+
+Notes
+-----
+LHSExperiment is a random weighted design of experiments.
+The method generates a sample of points :math:`\Xi_i` according to the
+distribution :math:`\mu` with the LHS technique: some cells are determined,
+with the same probabilistic content according to the distribution, each line
+and each column contains exactly one cell, then points are selected among these
+selected cells. The weights associated to the points are all equal to
+:math:`1/cardI`. When recalled, the :meth:`generate` method generates a new
+sample: the point selection within the cells changes but not the cells
+selection. To change the cell selection, it is necessary to create a new LHS
+Experiment.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+Create an *LHSExperiment*:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5)
+>>> print(experiment.generate())
+    [ marginal 1 marginal 2 ]
+0 : [  0.887671  -0.647818  ]
+1 : [  0.107683   1.15851   ]
+2 : [  0.453077  -1.04742   ]
+3 : [ -0.928012   0.409732  ]
+4 : [ -0.290539   0.16153   ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::getShuffle
+"Return the cell randomization.
+
+Returns
+-------
+shuffle : :class:`~openturns.Matrix`
+    For each point, the indices of the shuffled components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::ComputeShuffle
+"Generate a new cell randomization for external use.
+
+Parameters
+----------
+dimension : positive int
+    Number of input dimension.
+totalSize : positive int
+    Number :math:`cardI` of points that need to be shuffled.
+
+Returns
+-------
+shuffle : :class:`~openturns.Matrix`
+    For each point, the indices of the shuffled components."

@@ -1,0 +1,13 @@
+myAbdoRackwitz= class=AbdoRackwitz class=NearestPointAlgorithmImplementation startingPoint=class=NumericalPoint name=Unnamed dimension=0 values=[] levelFunction=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoNumericalMathEvaluationImplementation name=Unnamed gradientImplementation=class=NoNumericalMathGradientImplementation name=Unnamed hessianImplementation=class=NoNumericalMathHessianImplementation name=Unnamed levelValue=0 maximumIterationsNumber=100 maximumAbsoluteError=1e-10 maximumRelativeError=1e-10 maximumResidualError=1e-10 maximumConstraintError=1e-10 verbose=false specificParameters=class=AbdoRackwitzSpecificParameters tau=0.5 omega=0.0001 smooth=1.2
+Breitung event probability=0.451173
+Breitung generalized reliability index=0.122699
+HohenBichler event probability=0.435230
+HohenBichler generalized reliability index=0.163074
+Tvedt event probability=0.433548
+Tvedt generalized reliability index=0.167348
+sorted curvatures= [-0.025678,-0.000273,0.000000,0.128951]
+standard space design point= [-0.002385,0.107665,0.035650,-0.023966]
+physical space design point= [49.997615,1.107665,10.035650,4.976034]
+is standard point origin in failure space?  False
+importance factors= [0.000423,0.862305,0.094543,0.042728]
+Hasofer reliability index=0.115943

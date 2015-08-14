@@ -1,0 +1,105 @@
+> restart:
+> mu:=alpha*GAMMA(1+1/beta);
+> var:=alpha^2*(GAMMA(1+2/beta)-GAMMA(1+1/beta)^2);
+> V:=alpha^2*(GAMMA(1+1/beta)-GAMMA(1+1/beta)^2);
+
+                                            1
+                     mu := alpha GAMMA(1 + ----)
+                                           beta
+
+
+                      2 /           2                 1   2\
+          var := alpha  |GAMMA(1 + ----) - GAMMA(1 + ----) |
+                        \          beta              beta  /
+
+
+                     2 /           1                 1   2\
+           V := alpha  |GAMMA(1 + ----) - GAMMA(1 + ----) |
+                       \          beta              beta  /
+
+> with(plots):
+> p1:=plot(V/var,beta=0...30,color='red'):
+> expr1:=evalf(convert(series(V/var,beta=infinity,3),polynom)):
+> p2:=plot(expr1,beta=0...30,color='blue'):
+> x:=fsolve(diff(V/var,beta),beta):
+> expr:=convert(series(V/var,beta=x,3),polynom):
+> p3:=plot(expr,beta=0...2,color='green'):
+> display({p1,p2,p3});
+
+> expr1;
+
+                          0.3509050462 beta
+
+> solve({mu=m,k*beta*V=v},{alpha,beta});
+Warning, solutions may have been lost
+
+> M:=map(factor,<<diff(mu,alpha)|diff(mu,beta)>,<diff(var,alpha)|diff(va
+> r,beta)>>);
+
+  M :=
+
+        [                              beta + 1        beta + 1 ]
+        [                    alpha Psi(--------) GAMMA(--------)]
+        [      beta + 1                  beta            beta   ]
+        [GAMMA(--------) , - -----------------------------------]
+        [        beta                           2               ]
+        [                                   beta                ]
+
+        [         /       beta + 2          beta + 1 2\          2 /
+        [-2 alpha |-GAMMA(--------) + GAMMA(--------) | , 2 alpha  |
+        [         \         beta              beta    /            \
+
+             beta + 2        beta + 2
+        -Psi(--------) GAMMA(--------)
+               beta            beta
+
+                 beta + 1 2     beta + 1 \   /     2]
+         + GAMMA(--------)  Psi(--------)|  /  beta ]
+                   beta           beta   / /        ]
+
+> help(Psi);
+> r:=(log(k)-Psi(k)-S)/(Psi(1,k)-1/k);
+
+                            ln(k) - Psi(k) - S
+                       r := ------------------
+                             Psi(1, k) - 1/k
+
+> p:=expand(evalf(convert(series(r,k),polynom)));
+
+            2                      2         2                3
+  p := k + k  ln(k) + 1.577215665 k  - 1. S k  - 1.712652469 k
+
+            3               3                4                4
+         + k  ln(k) - 1. S k  - 0.700897539 k  - 0.644934068 k  ln(k)
+
+                          4                5                5
+         + 0.644934068 S k  + 1.578815873 k  + 0.114245670 k  ln(k)
+
+                          5
+         - 0.114245670 S k
+
+> series(solve(log(k)-Psi(k)-S,k),_Z);
+
+                    RootOf(-ln(_Z) + Psi(_Z) + S)
+
+> n:=1;evalf(series(solve(convert(series(log(k)-Psi(k)-S,k,n),polynom),k
+> ),S));
+
+                                n := 1
+
+
+   - 0.03381041981 + 0.6131875243 I + (0.2506324443 + 0.1887666633 I)
+
+                                              2
+        S + (0.1410530934 - 0.01305786841 I) S  +
+
+                                           3
+        (0.04710451564 - 0.03604051692 I) S  +
+
+                                           4
+        (0.01169159185 - 0.02083727925 I) S  +
+
+                                             5      6
+        (0.002334197122 - 0.009323936491 I) S  + O(S )
+
+> 

@@ -1,0 +1,80 @@
+#                                               -*- cmake -*-
+#
+#  OpenTURNSConfig.cmake(.in)
+#
+#  Find OpenTURNS includes and libraries
+#
+#  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+#
+#  This library is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This library is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+
+# Use the following variables to compile and link against OpenTURNS:
+#  OPENTURNS_FOUND              - True if OpenTURNS was found on your system
+#  OPENTURNS_USE_FILE           - The file making OpenTURNS usable
+#  OPENTURNS_DEFINITIONS        - Definitions needed to build with OpenTURNS
+#  OPENTURNS_INCLUDE_DIR        - Directory where OT.hxx can be found
+#  OPENTURNS_INCLUDE_DIRS       - List of directories of OpenTURNS and it's dependencies
+#  OPENTURNS_LIBRARY            - OpenTURNS library location
+#  OPENTURNS_LIBRARIES          - List of libraries to link against
+#  OPENTURNS_WRAPPER_LIBRARIES  - List of wrapper libraries to link against
+#  OPENTURNS_LIBRARY_DIRS       - List of directories containing OpenTURNS' libraries
+#  OPENTURNS_ROOT_DIR           - The base directory of OpenTURNS
+#  OPENTURNS_VERSION_STRING     - A human-readable string containing the version
+#  OPENTURNS_VERSION_MAJOR      - The major version of OpenTURNS
+#  OPENTURNS_VERSION_MINOR      - The minor version of OpenTURNS
+#  OPENTURNS_VERSION_PATCH      - The patch version of OpenTURNS
+#  OPENTURNS_SWIG_INCLUDE_DIRS  - Location of swig interface files
+#  OPENTURNS_SWIG_DEFINITIONS   - Definitions to compile the swig generated source
+#  OPENTURNS_PYTHON_MODULE_PATH - Path to the python module
+
+@PACKAGE_INIT@
+
+set ( OPENTURNS_FOUND 1 )
+set_and_check ( OPENTURNS_USE_FILE   "@PACKAGE_OPENTURNS_USE_FILE@" )
+
+set ( OPENTURNS_DEFINITIONS  "@OPENTURNS_DEFINITIONS@" )
+set_and_check ( OPENTURNS_INCLUDE_DIR        "@PACKAGE_OPENTURNS_INCLUDE_DIR@" )
+set ( OPENTURNS_INCLUDE_DIRS "@PACKAGE_OPENTURNS_INCLUDE_DIRS@" )
+set ( OPENTURNS_LIBRARY      "@OPENTURNS_LIBRARY@" )
+set ( OPENTURNS_LIBRARIES    "@OPENTURNS_LIBRARIES@" )
+set ( OPENTURNS_WRAPPER_LIBRARIES    "@OPENTURNS_WRAPPER_LIBRARIES@" )
+set ( OPENTURNS_LIBRARY_DIRS "@PACKAGE_OPENTURNS_LIBRARY_DIRS@" )
+set_and_check ( OPENTURNS_ROOT_DIR   "@PACKAGE_OPENTURNS_ROOT_DIR@" )
+
+set ( OPENTURNS_VERSION_STRING "@OPENTURNS_VERSION_STRING@" )
+set ( OPENTURNS_VERSION_MAJOR  "@OPENTURNS_VERSION_MAJOR@" )
+set ( OPENTURNS_VERSION_MINOR  "@OPENTURNS_VERSION_MINOR@" )
+set ( OPENTURNS_VERSION_PATCH  "@OPENTURNS_VERSION_PATCH@" )
+
+set_and_check ( OPENTURNS_SWIG_INCLUDE_DIRS  "@PACKAGE_OPENTURNS_SWIG_INCLUDE_DIRS@" )
+set ( OPENTURNS_SWIG_DEFINITIONS   "@OPENTURNS_SWIG_DEFINITIONS@" )
+set (OPENTURNS_PYTHON@PYTHON_VERSION_MAJOR@_MODULE_PATH "@PYTHON_MODULE_PATH@")
+
+if ("1" STREQUAL "@HMAT_FOUND@")
+  find_package ( HMAT NO_MODULE REQUIRED PATHS "@HMAT_DIR@" NO_DEFAULT_PATH )
+endif ()
+
+# CMAKE_CURRENT_LIST_DIR defined since 2.8.3
+if(CMAKE_VERSION VERSION_LESS 2.8.3)
+  get_filename_component (CMAKE_CURRENT_LIST_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+endif ()
+# Our library dependencies (contains definitions for IMPORTED targets)
+include("${CMAKE_CURRENT_LIST_DIR}/OpenTURNS-Targets.cmake")
+
+if(CMAKE_VERSION VERSION_LESS 2.8.3)
+  set(CMAKE_CURRENT_LIST_DIR)
+endif ()
+

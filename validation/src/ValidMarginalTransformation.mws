@@ -1,0 +1,108 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 901 "restart:\nwith(Stat
+istics):\nassume(y>g):\nPx:=PDF(RandomVariable(Normal(mu,sigma)),x);\n
+Fx:=CDF(RandomVariable(Normal(mu,sigma)),x):\nPy:=PDF(RandomVariable(G
+amma(1/lambda,k)),y-g);\nFy:=subs(Int(subs(y=t,Py),t=g..y));\n# Margin
+al transformation\nT:=[Fx,Fy]:\nvalnum:=x=1/2,y=1/2,mu=1,sigma=5/2,k=3
+/2,lambda=3,g=0:\nprint(\"Value=\");\nevalf(subs(valnum,T));\nprint(\"
+Parameters gradient\");\nevalf(subs(valnum,map(_t->diff(_t,mu),T)));\n
+evalf(subs(valnum,map(_t->diff(_t,sigma),T)));\nevalf[40](subs(epsilon
+=1e-10,subs(valnum,(subs(k=k+epsilon,T)-subs(k=k-epsilon,T))/(2*epsilo
+n))));\nevalf(subs(valnum,map(_t->diff(_t,lambda),T)));\nevalf(subs(va
+lnum,map(_t->diff(_t,g),T)));\nprint(\"Gradient\");\nevalf(subs(valnum
+,diff(T,x)));\nevalf(subs(valnum,diff(T,y)));\nprint(\"Hessian\");\nev
+alf(subs(valnum,diff(T,x$2)));\nevalf(subs(valnum,diff(diff(T,x),y)));
+\nevalf(subs(valnum,diff(diff(T,y),x)));\nevalf(subs(valnum,diff(T,y$2
+)));\n" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#PxG,$*&#\"\"\"\"\"#F(**F)
+F'%#PiG#!\"\"F)%&sigmaGF--%$expG6#,$*(F)F-,&%\"xGF(%#muGF-F)F.!\"#F-F(
+F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#PyG**)*&,&%#y|irG\"\"\"%#g|
+irG!\"\"F*%'lambdaGF*,&%\"kGF*F*F,F*-%$expG6#,$F'F,F*F-F*-%&GAMMAG6#F/
+F," }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#FyG-%$IntG6$**)*&,&%\"tG\"\"
+\"%#g|irG!\"\"F-%'lambdaGF-,&%\"kGF-F-F/F--%$expG6#,$F*F/F-F0F--%&GAMM
+AG6#F2F//F,;F.%#y|irG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q'Value=6\"" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"+1HS2U!#5$\"+P#[P3'F&" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#Q4Parameters~gradient6\"" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#7$$!+v2<k:!#5$\"\"!F(" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7$$\"+]:MGJ!#6$\"\"!F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"
+\"!F%$!?C:HfnO&\\Sjvd<(RM!#I" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"
+\"!F%$\"+)H.=a\"!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%$!+)y
+>3D*!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q)Gradient6\"" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7$$\"+v2<k:!#5$\"\"!F(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7$$\"\"!F%$\"+'y>3D*!#5" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#Q(Hessian6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"+?mL^7!#6$
+\"\"!F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%F$" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7$$\"\"!F%F$" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#
+7$$\"\"!F%$!+dR;]=!\"*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1637 
+"Digits:=50:\nepsnum:=1e-5:\nQuant:=proc(F,rules)\n  local eq,sol:\n  \+
+FX:=subs(rules,F):\n  eq:=subs(rules,F)=subs(rules,q):\n  sol:=fsolve(
+eq,x,0..10,fulldigits);\n  print([\"sol\",sol]);\n  print([\"verif\",e
+valf(subs(x=sol,lhs(eq)))]);\n  sol\nend:\n# Marginal transformation\n
+valnum2:=p=1/2,q=1/2,mu=1,sigma=5/2,k=3/2,lambda=3,g=0:\nprint(\"Value
+=\");\n[Quant(Fx,\{valnum2\}),Quant(subs(y=x,Fy),\{valnum2\})];\nprint
+(\"Parameters gradient\");\n#[(Quant(subs(mu=mu+epsnum,Fx),\{valnum2\}
+)-Quant(subs(mu=mu-epsnum,Fx),\{valnum2\}))/(2*epsnum),(Quant(subs(mu=
+mu+epsnum,y=x,Fy),\{valnum2\})-Quant(subs(mu=mu-epsnum,y=x,Fy),\{valnu
+m2\}))/(2*epsnum)];\n#[(Quant(subs(sigma=sigma+epsnum,Fx),\{valnum2\})
+-Quant(subs(sigma=sigma-epsnum,Fx),\{valnum2\}))/(2*epsnum),(Quant(sub
+s(sigma=sigma+epsnum,y=x,Fy),\{valnum2\})-Quant(subs(sigma=sigma-epsnu
+m,y=x,Fy),\{valnum2\}))/(2*epsnum)];\n#[(Quant(subs(k=k+epsnum,Fx),\{v
+alnum2\})-Quant(subs(k=k-epsnum,Fx),\{valnum2\}))/(2*epsnum),(Quant(su
+bs(k=k+epsnum,y=x,Fy),\{valnum2\})-Quant(subs(k=k-epsnum,y=x,Fy),\{val
+num2\}))/(2*epsnum)];\nq1:=Quant(subs(k=k+epsnum,y=x,Fy),\{valnum2\});
+\nevalf(subs(y=q1,valnum2,subs(k=k+epsnum,Fy)));\nq2:=Quant(subs(k=k-e
+psnum,y=x,Fy),\{valnum2\});\nevalf(subs(y=q2,valnum2,subs(k=k-epsnum,F
+y)));\nv:=(q1-q2)/(2*epsnum);\n#[(Quant(subs(lambda=lambda+epsnum,Fx),
+\{valnum2\})-Quant(subs(lambda=lambda-epsnum,Fx),\{valnum2\}))/(2*epsn
+um),(Quant(subs(lambda=lambda+epsnum,y=x,Fy),\{valnum2\})-Quant(subs(l
+ambda=lambda-epsnum,y=x,Fy),\{valnum2\}))/(2*epsnum)];\n#[(Quant(subs(
+g=g+epsnum,Fx),\{valnum2\})-Quant(subs(g=g-epsnum,Fx),\{valnum2\}))/(2
+*epsnum),(Quant(subs(g=g+epsnum,y=x,Fy),\{valnum2\})-Quant(subs(g=g-ep
+snum,y=x,Fy),\{valnum2\}))/(2*epsnum)];" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#Q'Value=6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$Q$sol6\"$\"S+++
++++++++++++++++++++++5!#\\" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$Q&veri
+f6\"$\"S++++++++++++++++++++++++]!#]" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#7$Q$sol6\"$\"S(Q9-L]]<%3%3@+r_cV/B#H2)*GVR!#]" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7$Q&verif6\"$\"S++++++++++++++++++++++++]!#]" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#7$$\"S++++++++++++++++++++++++5!#\\$\"S(Q9-L
+]]<%3%3@+r_cV/B#H2)*GVR!#]" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q4Parame
+ters~gradient6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$Q$sol6\"$\"S0en7
+/gwN,D-,HfOT/qa1b%y99\"!#\\" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$Q&ver
+if6\"$\"SgR`bw))Q$[%*QEJTN>:\\T8b[()=t%!#]" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%#q1G$\"S0en7/gwN,D-,HfOT/qa1b%y99\"!#\\" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#$\"SgR`bw))Q$[%*QEJTN>:\\T8b[()=t%!#]" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#7$Q$sol6\"$\"Szr0:H(\\\\m?'ef([f'4Y&)3u_q5ju
+!#]" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$Q&verif6\"$\"Sp@c5LLYDs9+5+mC
+yk8>Gc'QyN$!#]" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#q2G$\"Szr0:H(\\\\
+m?'ef([f'4Y&)3u_q5ju!#]" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"Sp@c5LLY
+Ds9+5+mCyk8>Gc'QyN$!#]" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"vG$\"SO/
+&eg:bjMS>`7!***>!\\2p&*[(Qe(>!#X" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 537 "\nevalf(subs(valnum,map(_t->diff(_t,sigma),T)));\nev
+alf[40](subs(epsilon=1e-10,subs(valnum,(subs(k=k+epsilon,T)-subs(k=k-e
+psilon,T))/(2*epsilon))));\nevalf(subs(valnum,map(_t->diff(_t,lambda),
+T)));\nevalf(subs(valnum,map(_t->diff(_t,g),T)));\nprint(\"Gradient\")
+;\nevalf(subs(epsilon=1e-7,valnum,(subs(x=x+epsilon,T)-subs(x=x-epsilo
+n,T))/(2*epsilon)));\nevalf(subs(valnum,diff(T,y)));\nprint(\"Hessian
+\");\nevalf(subs(valnum,diff(T,x$2)));\nevalf(subs(valnum,diff(diff(T,
+x),y)));\nevalf(subs(valnum,diff(diff(T,y),x)));\nevalf(subs(valnum,di
+ff(T,y$2)));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q'Value=6\"" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#7$$\"+++++5!\"*$\"+2)*GVR!#5" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#Q4Parameters~gradient6\"" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7#$\"++,++5!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$
+\"+]:MGJ!#6$\"\"!F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%$\"B$
+[ii>A*>=&y(e9q99q'!#I" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%$\"
++)H.=a\"!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%$!+)y>3D*!#5
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q)Gradient6\"" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7$$\"%k:!\"%$\"\"!F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6
+#7$$\"\"!F%$\"+'y>3D*!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q(Hessian6
+\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"+?mL^7!#6$\"\"!F(" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%F$" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#7$$\"\"!F%F$" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"\"!F%$!+dR;
+]=!\"*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1 0 0
+" 83 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

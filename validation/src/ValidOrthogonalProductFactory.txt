@@ -1,0 +1,132 @@
+> restart:
+> with(PolynomialTools):
+> with(Statistics):
+> w:=PDF(RandomVariable(Uniform(-1,1)),x) assuming x>0, x<1:
+> assume(n,integer,n>1,alpha,real,alpha>0):
+> # Legendre
+> R:=n*Pn=(2*n-1)*xPn_1+0*Pn_1-(n-1)*Pn_2:
+> normF:=sqrt(1/(2*n+1)):
+> S:=subs(Pn=normF*Qn,Pn_1=subs(n=n-1,normF)*Qn_1,xPn_1=subs(n=n-1,normF
+> )*xQn_1,Pn_2=subs(n=n-2,normF)*Qn_2,R):
+> map(_x->factor(simplify(convert(_x,GAMMA),symbolic)),[coeff(rhs(S),xQn
+> _1)/coeff(lhs(S),Qn),coeff(rhs(S),Qn_1)/coeff(lhs(S),Qn),coeff(rhs(S),
+> Qn_2)/coeff(lhs(S),Qn)]):
+> C0:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=0,1/normF*Vect
+> or([1]))):
+> C1:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=1,1/normF*Vect
+> or([0,1]))):
+> U:=C0[1]:V:=C1[1]+C1[2]*x:
+> legendreFactory:=evalf(U):
+> legendreFactory:=legendreFactory,evalf(V):
+> for i from 2 to 9 do
+>  
+> W:=map(factor,collect(subs(n=i,xQn_1=x*V,Qn_1=V,Qn_2=U,solve(S,Qn)),x)
+> ):
+>   legendreFactory:=legendreFactory,evalf(W);
+>   U:=V:
+>   V:=W:
+> od:
+> w:=PDF(RandomVariable(Normal(0,1)),x):
+> # Hermite
+> R:=Pn=xPn_1-(n-1)*Pn_2:
+> normF:=sqrt(GAMMA(n+1)):
+> S:=subs(Pn=normF*Qn,Pn_1=subs(n=n-1,normF)*Qn_1,xPn_1=subs(n=n-1,normF
+> )*xQn_1,Pn_2=subs(n=n-2,normF)*Qn_2,R):
+> map(_x->factor(simplify(convert(_x,GAMMA),symbolic)),[coeff(rhs(S),xQn
+> _1)/coeff(lhs(S),Qn),coeff(rhs(S),Qn_1)/coeff(lhs(S),Qn),coeff(rhs(S),
+> Qn_2)/coeff(lhs(S),Qn)]):
+> C0:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=0,1/normF*Vect
+> or([1]))):
+> C1:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=1,1/normF*Vect
+> or([0,1]))):
+> U:=C0[1]:
+> V:=C1[1]+C1[2]*x:
+> hermiteFactory:=evalf(U):
+> hermiteFactory:=hermiteFactory,evalf(V):
+> for i from 2 to 9 do
+>  
+> W:=map(factor,collect(subs(n=i,xQn_1=x*V,Qn_1=V,Qn_2=U,solve(S,Qn)),x)
+> ):
+>   hermiteFactory:=hermiteFactory,evalf(W);
+>   U:=V:
+>   V:=W:
+> od:
+> w:=PDF(RandomVariable(Gamma(1,alpha+1)),x):
+> # Laguerre
+> R:=n*Pn=-xPn_1+(2*n-1+alpha)*Pn_1-(n-1+alpha)*Pn_2:
+> normF:=sqrt(GAMMA(n+alpha+1)/GAMMA(alpha+1)/GAMMA(n+1)):
+> S:=subs(Pn=normF*Qn,Pn_1=subs(n=n-1,normF)*Qn_1,xPn_1=subs(n=n-1,normF
+> )*xQn_1,Pn_2=subs(n=n-2,normF)*Qn_2,R):
+> map(_x->factor(simplify(convert(_x,GAMMA),symbolic)),[coeff(rhs(S),xQn
+> _1)/coeff(lhs(S),Qn),coeff(rhs(S),Qn_1)/coeff(lhs(S),Qn),coeff(rhs(S),
+> Qn_2)/coeff(lhs(S),Qn)]):
+> C0:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=0,1/normF*Vect
+> or([1]))):
+> C1:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=1,1/normF*Vect
+> or([1+alpha,-1]))):
+> alpha_num:=2.5:
+> U:=C0[1]:
+> V:=C1[1]+C1[2]*x:
+> laguerreFactory:=evalf(subs(alpha=alpha_num,U)):
+> laguerreFactory:=laguerreFactory,evalf(subs(alpha=alpha_num,V)):
+> for i from 2 to 9 do
+>  
+> W:=map(_x->factor(simplify(_x,symbolic)),collect(subs(n=i,xQn_1=x*V,Qn
+> _1=V,Qn_2=U,alpha=alpha_num,solve(S,Qn)),x)):
+>   laguerreFactory:=laguerreFactory,evalf(W);
+>   U:=V:
+>   V:=W:
+> od:
+> p:=<0.5|0.5|0.5>:
+> # Expand the enumerate function
+> evalf(subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][
+> 1])*subs(x=p[3],[hermiteFactory][1]));
+> evalf(subs(x=p[1],[laguerreFactory][2])*subs(x=p[2],[legendreFactory][
+> 1])*subs(x=p[3],[hermiteFactory][1]));
+> evalf(subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][
+> 2])*subs(x=p[3],[hermiteFactory][1]));
+> evalf(subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][
+> 1])*subs(x=p[3],[hermiteFactory][2]));
+> evalf(subs(x=p[1],[laguerreFactory][3])*subs(x=p[2],[legendreFactory][
+> 1])*subs(x=p[3],[hermiteFactory][1]));
+> evalf(subs(x=p[1],[laguerreFactory][2])*subs(x=p[2],[legendreFactory][
+> 2])*subs(x=p[3],[hermiteFactory][1]));
+> evalf(subs(x=p[1],[laguerreFactory][2])*subs(x=p[2],[legendreFactory][
+> 1])*subs(x=p[3],[hermiteFactory][2]));
+> evalf(subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][
+> 3])*subs(x=p[3],[hermiteFactory][1]));
+> evalf(subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][
+> 2])*subs(x=p[3],[hermiteFactory][2]));
+> evalf(subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][
+> 1])*subs(x=p[3],[hermiteFactory][3]));
+
+                                  1.
+
+
+                             1.603567451
+
+
+                             0.8660254040
+
+
+                                 0.5
+
+
+                             2.049002854
+
+
+                             1.388730150
+
+
+                             0.8017837255
+
+
+                            -0.2795084965
+
+
+                             0.4330127020
+
+
+                            -0.5303300858
+
+> 

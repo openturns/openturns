@@ -1,0 +1,30 @@
+myDefautModel =  class=SquaredExponential input dimension=1 theta=10
+myModel =  class=SquaredExponential input dimension=2 theta=10
+myModel( [-1,-2] ,  [3,5] )= [[ 0.722527 ]]
+dCov = [[ 0.0289011 ]
+ [ 0.0505769 ]]
+dCov (FD)= [0.0289011,0.0505769]
+myDefautModel =  class=GeneralizedExponential input dimension=1 theta=10 p=1
+myModel =  class=GeneralizedExponential input dimension=2 theta=10 p=1.5
+myModel( [-1,-2] ,  [3,5] )= [[ 0.484852 ]]
+dCov = [[ 0.0323991 ]
+ [ 0.0566984 ]]
+dCov (FD)= [0.032399,0.0566984]
+myDefautModel =  class=AbsoluteExponential input dimension=1 theta=10
+myModel =  class=AbsoluteExponential input dimension=2 theta=10
+myModel( [-1,-2] ,  [3,5] )= [[ 0.44654 ]]
+dCov = [[ 0.0221546 ]
+ [ 0.0387705 ]]
+dCov (FD)= [0.0221546,0.0387706]
+myDefautModel =  class=MaternModel input dimension=1 theta=10 nu=1.5
+myModel =  class=MaternModel input dimension=2 theta=8 nu=2
+myModel( [-1,-2] ,  [3,5] )= [[ 0.503176 ]]
+dCov = [[ 0.0345258 ]
+ [ 0.0604202 ]]
+dCov (FD)= [0.0345258,0.0604202]
+myDefautModel =  class=ProductCovarianceModel input dimension=1 models=[class=AbsoluteExponential input dimension=1 theta=10]
+myModel =  class=ProductCovarianceModel input dimension=2 models=[class=AbsoluteExponential input dimension=1 theta=3,class=SquaredExponential input dimension=1 theta=2]
+myModel( [-1,-2] ,  [3,5] )= [[ 0.000576616 ]]
+dCov = [[ 0.000192205 ]
+ [ 0.00100908  ]]
+dCov (FD)= [0.000192206,0.00100909]

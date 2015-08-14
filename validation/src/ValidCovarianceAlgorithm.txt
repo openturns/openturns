@@ -1,0 +1,84 @@
+> restart:
+> assume(lambda>0):
+> #F:=1-exp(-lambda*x):
+> I1:=Int(1-F(x),x=0..infinity);
+> I2:=int(1/2*(1-subs(x=(u-1)/2/(1-(u-1)/2),F))/(1-(u-1)/2)^2,u=0..1);
+
+                             infinity
+                            /
+                           |
+                    I1 :=  |          1 - F(x) dx
+                           |
+                          /
+                            0
+
+
+                           I2 := 1/3 - F/3
+
+> with(student):
+> changevar(x=(u+1)/(u-1),Int(1-F(x),x=0..infinity),u);
+> changevar(x=(u+1)/(u-1),Int(F(x),x=-infinity..0),u);
+
+                          1          u + 1
+                         /  -2 + 2 F(-----)
+                        |            u - 1
+                        |   --------------- du
+                        |     2
+                        |    u  - 2 u + 1
+                       /
+                         -1
+
+
+                            1      u + 1
+                           /   2 F(-----)
+                          |        u - 1
+                          |   ------------ du
+                          |    2
+                          |   u  - 2 u + 1
+                         /
+                           -1
+
+> plot((u+1)/(u-1),u=-0.99..0.99);
+
+> plot(tanh(x),x=-10..10);
+
+> plot(x/(1+abs(x)),x=-10..10);
+
+> restart:
+> with(student):
+> assume(lambda>0):
+> F:=1-exp(-lambda*x);
+> G(u):=solve(F=u,x);
+> value(changevar(x=G(u),Int((x-m)^2*diff(F,x),x=0..infinity),u));
+
+                       F := 1 - exp(-lambda~ x)
+
+
+                                   ln(1 - u)
+                         G(u) := - ---------
+                                    lambda~
+
+
+                         2        2
+                    2 + m  lambda~  - 2 m lambda~
+                    -----------------------------
+                                     2
+                              lambda~
+
+> int((x-m)^2*diff(F,x),x=0..infinity);
+
+                         2        2
+                    2 + m  lambda~  - 2 m lambda~
+                    -----------------------------
+                                     2
+                              lambda~
+
+> int((G(u)-m)^2,u=0..1);
+
+                         2        2
+                    2 + m  lambda~  - 2 m lambda~
+                    -----------------------------
+                                     2
+                              lambda~
+
+> 

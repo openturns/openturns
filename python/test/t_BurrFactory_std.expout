@@ -1,0 +1,8 @@
+distribution= class=Burr name=Burr dimension=1 c=2.5 k=1.5
+Estimated distribution= class=Burr name=Burr dimension=1 c=2.48352 k=1.48109
+Default distribution= Burr(c = 1, k = 1)
+Distribution from parameters= Burr(c = 2.5, k = 1.5)
+Burr          = Burr(c = 2.5, k = 1.5)
+Estimated burr= Burr(c = 2.48352, k = 1.48109)
+Default burr= Burr(c = 1, k = 1)
+Burr from parameters= Burr(c = 2.5, k = 1.5)

@@ -1,0 +1,167 @@
+{VERSION 6 0 "Linux" "6.0" }
+{USTYLETAB {PSTYLE "Ordered List 1" -1 200 1 {CSTYLE "" -1 -1 "Times"
+ 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 3 3 2 0 2 0 2 2 -1 1 }
+{PSTYLE "Ordered List 2" -1 201 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 
+1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 3 3 2 36 2 0 2 2 -1 1 }{PSTYLE "Ordered
+ List 3" -1 202 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 
+0 0 1 }1 1 0 0 3 3 2 72 2 0 2 2 -1 1 }{PSTYLE "Ordered List 4" -1 203 
+1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 3
+ 3 2 108 2 0 2 2 -1 1 }{PSTYLE "Ordered List 5" -1 204 1 {CSTYLE "" -1
+ -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 3 3 2 144 2 0 2 
+2 -1 1 }{PSTYLE "Author" -1 19 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1
+ 2 2 2 2 2 2 1 0 0 1 }3 1 0 0 8 8 2 0 2 0 2 2 -1 1 }{PSTYLE "Warning" 
+-1 7 1 {CSTYLE "" -1 -1 "Courier" 1 10 0 0 255 1 2 2 2 2 2 1 1 0 0 1 }
+1 1 0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Annotation Title" -1 205 1 
+{CSTYLE "" -1 -1 "Times" 1 18 0 0 0 1 2 1 2 2 2 2 1 0 0 1 }3 1 0 0 12 
+12 2 0 2 0 2 2 -1 1 }{PSTYLE "Fixed Width" -1 17 1 {CSTYLE "" -1 -1 "C
+ourier" 1 10 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }3 1 0 0 0 0 2 0 2 0 2 2 -1 1
+ }{PSTYLE "Maple Plot" -1 13 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2
+ 2 2 2 2 2 1 0 0 1 }3 1 0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Line Printe
+d Output" -1 6 1 {CSTYLE "" -1 -1 "Courier" 1 10 0 0 255 1 2 2 2 2 2 1
+ 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Help" -1 10 1 {CSTYLE
+ "" -1 -1 "Courier" 1 9 0 0 255 1 2 2 2 2 2 1 1 0 0 1 }1 1 0 0 0 0 2 0
+ 2 0 2 2 -1 1 }{PSTYLE "Text Output" -1 2 1 {CSTYLE "" -1 -1 "Courier"
+ 1 10 0 0 255 1 2 2 2 2 2 1 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 2 -1 1 }
+{PSTYLE "Diagnostic" -1 9 1 {CSTYLE "" -1 -1 "Courier" 1 10 64 128 64 
+1 2 2 2 2 2 1 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Normal" 
+-1 0 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }1 1 
+0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Maple Output" -1 11 1 {CSTYLE "" -1
+ -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }3 1 0 0 0 0 2 0 2 0 2 2 
+-1 1 }{PSTYLE "Dash Item" -1 16 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 
+1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 3 3 2 0 2 0 2 2 -1 1 }{PSTYLE "Hyperlin
+kError" -1 206 1 {CSTYLE "" -1 -1 "Courier" 1 12 255 0 255 1 2 2 1 2 2
+ 1 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Error" -1 8 1 
+{CSTYLE "" -1 -1 "Courier" 1 10 255 0 255 1 2 2 2 2 2 1 1 0 0 1 }1 1 0
+ 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Title" -1 18 1 {CSTYLE "" -1 -1 "Tim
+es" 1 18 0 0 0 1 2 1 1 2 2 2 1 0 0 1 }3 1 0 0 12 12 2 0 2 0 2 2 -1 1 }
+{PSTYLE "Heading 1" -1 3 1 {CSTYLE "" -1 -1 "Times" 1 18 0 0 0 1 2 1 2
+ 2 2 2 1 0 0 1 }1 1 0 0 8 4 2 0 2 0 2 2 -1 1 }{PSTYLE "Bullet Item" -1
+ 15 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }1 1 0
+ 0 3 3 2 0 2 0 2 2 -1 1 }{PSTYLE "Heading 4" -1 20 1 {CSTYLE "" -1 -1 
+"Times" 1 10 0 0 0 1 1 1 2 2 2 2 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 2 -1 1
+ }{PSTYLE "Heading 3" -1 5 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 1 1
+ 2 2 2 2 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 2 -1 1 }{PSTYLE "Heading 2" -1
+ 4 1 {CSTYLE "" -1 -1 "Times" 1 14 0 0 0 1 2 1 2 2 2 2 1 0 0 1 }1 1 0 
+0 8 2 2 0 2 0 2 2 -1 1 }{PSTYLE "HyperlinkWarning" -1 207 1 {CSTYLE ""
+ -1 -1 "Courier" 1 12 0 0 255 1 2 2 1 2 2 1 1 0 0 1 }1 1 0 0 0 0 2 0 2
+ 0 2 2 -1 1 }{PSTYLE "Left Justified Maple Output" -1 12 1 {CSTYLE "" 
+-1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 0 0 2 0 2 0 2 
+2 -1 1 }{PSTYLE "List Item" -1 14 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 
+0 1 2 2 2 2 2 2 1 0 0 1 }1 1 0 0 3 3 2 0 2 0 2 2 -1 1 }{CSTYLE "Annota
+tion Text" -1 200 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "H
+elp Maple Name" -1 35 "Times" 1 12 104 64 92 1 2 1 2 2 2 2 0 0 0 1 }
+{CSTYLE "2D Math Bold" -1 5 "Times" 1 12 0 0 0 1 2 1 2 2 2 2 0 0 0 1 }
+{CSTYLE "Help Menus" -1 36 "Times" 1 12 0 0 0 1 2 1 2 2 2 2 0 0 0 1 }
+{CSTYLE "2D Math Italic" -1 3 "Times" 1 12 0 0 0 1 1 2 2 2 2 2 0 0 0 1
+ }{CSTYLE "Help Normal" -1 30 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 0 0 0 1
+ }{CSTYLE "Plot Text" -1 28 "Times" 1 8 0 0 0 1 2 2 2 2 2 2 0 0 0 1 }
+{CSTYLE "Help Nonterminal" -1 24 "Courier" 1 12 0 0 0 1 2 1 2 2 2 2 0 
+0 0 1 }{CSTYLE "Help Heading" -1 26 "Times" 1 14 0 0 0 1 2 1 2 2 2 2 0
+ 0 0 1 }{CSTYLE "Help Italic" -1 42 "Times" 1 12 0 0 0 1 1 2 2 2 2 2 0
+ 0 0 1 }{CSTYLE "Help Variable" -1 25 "Courier" 1 12 0 0 0 1 2 2 2 2 2
+ 2 0 0 0 1 }{CSTYLE "Help Italic Bold" -1 40 "Times" 1 12 0 0 0 1 1 2 
+2 2 2 2 0 0 0 1 }{CSTYLE "Default" -1 38 "Times" 1 12 0 0 0 1 2 2 2 2 
+2 2 0 0 0 1 }{CSTYLE "Help Underlined Italic" -1 43 "Times" 1 12 0 0 0
+ 1 1 2 1 2 2 2 0 0 0 1 }{CSTYLE "Maple Input" -1 0 "Courier" 1 12 255 
+0 0 1 2 1 2 2 1 2 0 0 0 1 }{CSTYLE "2D Output" -1 20 "Times" 1 12 0 0 
+255 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "2D Math Bold Small" -1 10 "Times" 
+1 1 0 0 0 1 2 1 2 2 2 2 0 0 0 1 }{CSTYLE "2D Math Small" -1 7 "Times" 
+1 1 0 0 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Page Number" -1 33 "Times" 1
+ 12 0 0 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Output Labels" -1 29 "Times"
+ 1 8 0 0 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Plot Title" -1 27 "Times" 1
+ 10 0 0 0 1 2 1 2 2 2 2 0 0 0 1 }{CSTYLE "Help Emphasized" -1 22 "Time
+s" 1 12 0 0 0 1 1 2 2 2 2 2 0 0 0 1 }{CSTYLE "2D Math Symbol 2" -1 16 
+"Times" 1 12 0 0 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Maple Comment" -1 
+21 "Courier" 1 12 0 0 0 1 2 1 2 2 2 2 0 0 0 1 }{CSTYLE "Maple Input Pl
+aceholder" -1 201 "Courier" 1 12 200 0 200 1 2 1 2 2 1 2 0 0 0 1 }
+{CSTYLE "Code" -1 202 "Courier" 1 12 255 0 0 1 2 2 2 2 2 2 0 0 0 1 }
+{CSTYLE "2D Inert Output" -1 203 "Times" 1 12 144 144 144 1 2 2 2 2 1 
+2 0 0 0 1 }{CSTYLE "2D Math Italic Small" -1 204 "Times" 1 1 0 0 0 1 1
+ 2 2 2 2 2 0 0 0 1 }{CSTYLE "2D Comment" -1 18 "Times" 1 12 0 0 0 1 2 
+2 2 2 2 2 0 0 0 1 }{CSTYLE "Help Underlined Bold" -1 41 "Times" 1 12 0
+ 0 0 1 1 1 2 2 2 2 0 0 0 1 }{CSTYLE "Copyright" -1 34 "Times" 1 10 0 0
+ 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Hyperlink" -1 17 "Times" 1 12 0 128
+ 128 1 2 2 1 2 2 2 0 0 0 1 }{CSTYLE "Help Underlined" -1 44 "Times" 1 
+12 0 0 0 1 2 2 1 2 2 2 0 0 0 1 }{CSTYLE "Prompt" -1 1 "Courier" 1 12 0
+ 0 0 1 2 1 2 2 2 2 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 1 12 0 0 0 
+1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "2D Input" -1 19 "Times" 1 12 255 0 0 1
+ 2 2 2 2 1 2 0 0 0 1 }{CSTYLE "Header and Footer" -1 205 "Times" 1 10 
+0 0 0 1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Text" -1 206 "Times" 1 12 0 0 0 
+1 2 2 2 2 2 2 0 0 0 1 }{CSTYLE "Help Notes" -1 37 "Times" 1 12 0 0 0 1
+ 2 1 2 2 2 2 0 0 0 1 }{CSTYLE "Help Bold" -1 39 "Times" 1 12 0 0 0 1 2
+ 1 2 2 2 2 0 0 0 1 }{CSTYLE "Equation Label" -1 207 "Times" 1 12 0 0 0
+ 1 2 1 2 2 2 2 0 0 0 1 }{CSTYLE "LaTeX" -1 32 "Times" 1 12 0 0 0 1 2 2
+ 2 2 2 2 0 0 0 1 }{CSTYLE "Popup" -1 31 "Times" 1 12 0 128 128 1 1 2 1
+ 2 2 2 0 0 0 1 }{CSTYLE "Dictionary Hyperlink" -1 45 "Times" 1 12 147 
+0 15 1 2 2 1 2 2 2 0 0 0 1 }{CSTYLE "Help Fixed" -1 23 "Courier" 1 10 
+0 0 0 1 2 2 2 2 2 2 0 0 0 1 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 9 "restart:\n" }
+{MPLTEXT 1 0 60 "with(Statistics):\nassume(nu>0,lambda>0):\nnoncentral
+chisquare" }{MPLTEXT 1 0 50 ":=RandomVariable(NonCentralChiSquare(nu,l
+ambda)):\n" }{MPLTEXT 1 0 9 "pdf:=PDF(" }{MPLTEXT 1 0 19 "noncentralch
+isquare" }{MPLTEXT 1 0 23 ",x):\nddf:=diff(pdf,x):\n" }{MPLTEXT 1 0 9 
+"cdf:=CDF(" }{MPLTEXT 1 0 19 "noncentralchisquare" }{MPLTEXT 1 0 5 ",x
+):\n" }{MPLTEXT 1 0 49 "cdf2:=simplify(convert(cdf,hypergeom),symbolic
+):\n" }{MPLTEXT 1 0 27 "cf:=CharacteristicFunction(" }{MPLTEXT 1 0 19 
+"noncentralchisquare" }{MPLTEXT 1 0 5 ",x):\n" }{MPLTEXT 1 0 10 "mu_:=
+Mean(" }{MPLTEXT 1 0 19 "noncentralchisquare" }{MPLTEXT 1 0 3 "):\n" }
+{MPLTEXT 1 0 15 "var_:=Variance(" }{MPLTEXT 1 0 19 "noncentralchisquar
+e" }{MPLTEXT 1 0 3 "):\n" }{MPLTEXT 1 0 33 "skew_:=simplify(convert(Sk
+ewness(" }{MPLTEXT 1 0 19 "noncentralchisquare" }{MPLTEXT 1 0 20 "),GA
+MMA),symbolic):\n" }{MPLTEXT 1 0 33 "kurt_:=simplify(convert(Kurtosis(
+" }{MPLTEXT 1 0 19 "noncentralchisquare" }{MPLTEXT 1 0 20 "),GAMMA),sy
+mbolic):\n" }{MPLTEXT 1 0 61 "sol:=subs(m='mu',v='var',solve(\{mu_=m,v
+ar_=v\},\{nu,lambda\})):\n" }{MPLTEXT 1 0 14 "qdf:=Quantile(" }
+{MPLTEXT 1 0 19 "noncentralchisquare" }{MPLTEXT 1 0 5 ",p):\n" }
+{MPLTEXT 1 0 22 "qdf2:=solve(cdf=p,x):\n" }{MPLTEXT 1 0 101 "pdfgr:=ma
+p(_u->simplify(convert(_u,hypergeom),symbolic),[diff(pdf, nu)/pdf, dif
+f(pdf, lambda)/pdf]):\n" }{MPLTEXT 1 0 93 "cdfgr:=map(_u->simplify(con
+vert(_u,hypergeom),symbolic),[diff(cdf, nu), diff(cdf, lambda)]):\n" }
+{MPLTEXT 1 0 101 "collect(expand(simplify(factor(convert(subs(lambda=1
+,diff(cdf2,k)),'StandardFunctions'))),trig),nu):\n" }{MPLTEXT 1 0 27 "
+valnum:=nu=1.5,lambda=2.5;\n" }{MPLTEXT 1 0 29 "evalf(subs(valnum,x=1,
+ddf));\n" }{MPLTEXT 1 0 29 "evalf(subs(valnum,x=1,pdf));\n" }{MPLTEXT 
+1 0 29 "evalf(subs(valnum,x=1,cdf));\n" }{MPLTEXT 1 0 28 "evalf(subs(v
+alnum,x=1,cf));\n" }{MPLTEXT 1 0 47 "evalf(subs(valnum,x=1,map(_x->_x*
+pdf,pdfgr)));\n" }{MPLTEXT 1 0 31 "evalf(subs(valnum,x=1,cdfgr));\n" }
+{MPLTEXT 1 0 40 "evalf(fsolve(subs(valnum,cdf)=0.95,x));\n" }{MPLTEXT 
+1 0 25 "evalf(subs(valnum,mu_));\n" }{MPLTEXT 1 0 32 "evalf(subs(valnu
+m,sqrt(var_)));\n" }{MPLTEXT 1 0 27 "evalf(subs(valnum,skew_));\n" }
+{MPLTEXT 1 0 27 "evalf(subs(valnum,kurt_));\n" }{MPLTEXT 1 0 26 "evalf
+(subs(valnum,var_));\n" }{MPLTEXT 1 0 38 "evalf(subs(valnum,[mu_,sqrt(
+var_)]));\n" }{MPLTEXT 1 0 52 "evalf(subs(sol,mu=mu_,var=var_,valnum,[
+nu,lambda]));" }}{PARA 207 "" 1 "" {TEXT 208 0 "" }{HYPERLNK 208 "Warn
+ing, solve may be ignoring assumptions on the input variables." 4 "htt
+p://www.maplesoft.com/support/help/errors/view.aspx?path=Warning,%20so
+lve%20may%20be%20ignoring%20assumptions%20on%20the%20input%20variables
+." "" }{TEXT 208 0 "" }}{PARA 206 "" 1 "" {TEXT 209 0 "" }{HYPERLNK 
+209 "Error, (in solve) cannot solve expressions with int(-(-1+Heavisid
+e(-_t))*exp(-(1/2)*_t-(1/2)*lambda)*_t^((1/2)*nu-1)*hypergeom([], [(1/
+2)*nu], (1/4)*lambda*_t)/(GAMMA((1/2)*nu)*2^((1/2)*nu)), _t = -infinit
+y .. x) for x" 4 "http://www.maplesoft.com/support/help/errors/view.as
+px?path=Error,%20(in%20solve)%20cannot%20solve%20expressions%20with%20
+int(-(-1+Heaviside(-_t))*exp(-(1%2F2)*_t-(1%2F2)*lambda)*_t%5E((1%2F2)
+*nu-1)*hypergeom(%5B%5D,%20%5B(1%2F2)*nu%5D,%20(1%2F4)*lambda*_t)%2F(G
+AMMA((1%2F2)*nu)*2%5E((1%2F2)*nu)),%20_t%20%3D%20-inf" "" }{TEXT 209 
+0 "" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$/I$nu|irG6\"$\"#:!\"\"/I(lambda
+|irGF%$\"#DF(" }}{PARA 11 "" 1 "" {XPPMATH 20 "$!+'Qh;x#!#6" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "$\"+smC\"o\"!#5" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "$\"+**pF`?!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "^$$\"+cTn!z%!#6$\"+
+e4'R&>!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "7$,($\"+mS()=S!#6\"\"\"-I%d
+iffG%*protectedG6$-I(BesselIG6$F*I(_syslibG6\"6$$\"+++++v!#5$\"+I)Q6e
+\"!\"*$\"#:!\"\"$\"+*G;JC*F&-F)6$-F-6$$\"++++]<F7F5F8$\"+^+5V(*F&$!+(*
+y:rWF&" }}{PARA 206 "" 1 "" {TEXT 209 0 "" }{HYPERLNK 209 "Error, (in \+
+evalf/int) invalid input: diff received 3/2, which is not valid for it
+s 2nd argument" 4 "http://www.maplesoft.com/support/help/errors/view.a
+spx?path=Error,%20(in%20evalf%2Fint)%20invalid%20input%3A%20diff%20rec
+eived%203%2F2,%20which%20is%20not%20valid%20for%20its%202nd%20argument
+" "" }{TEXT 209 0 "" }}{PARA 11 "" 1 "" {XPPMATH 20 "$\"+53'G6\"!\")" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "$\"#S!\"\"" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "$\"+w7b0O!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "^$$\"+aG4O
+:!\"*$!)GT!>)!#>" }}{PARA 11 "" 1 "" {XPPMATH 20 "^$$\"+*=siE'!\"*$\"+
+>y#Gc$!#>" }}{PARA 11 "" 1 "" {XPPMATH 20 "$\"+++++8!\")" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "7$$\"#S!\"\"$\"+w7b0O!\"*" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "7$$\"\"!F$$\"+,+++S!\"*" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 0 "" }}}}
+{MARK "0 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2
+ 33 1 1 }

@@ -1,0 +1,123 @@
+%feature("docstring") OT::NormalCopula
+"Normal copula.
+
+Available constructor:
+    NormalCopula(*n=1*)
+
+    NormalCopula(*R*)
+
+Parameters
+----------
+n : int, :math:`n \geq 1`
+    Dimension of the copula.
+R : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mathbf R` which is not the Kendall nor the
+    Spearman rank correlation matrix of the distribution. The :math:`\mathbf R`
+    matrix can be evaluated from the Spearman or Kendall correlation matrix.
+
+Notes
+-----
+The Normal copula is defined by :
+
+.. math::
+
+    C(u_1, \cdots, u_n) = \Phi_{\mathbf R}^n(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_n))
+
+where :math:`\Phi_{\mathbf R}^n` is the multinormal cumulative density function in
+dimension :math:`n` :
+
+.. math::
+
+    \Phi_{\mathbf R}^n(\vect{x}) = \int_{-\infty}^{x_1} \ldots
+                                   \int_{-\infty}^{x_n}
+                                   \frac{1}
+                                        {{(2\pi.\det{\mathbf R})}^{\frac{n}{2}}}
+                          \: . \: \exp \left(-\frac{^t\vect{u}.\mathbf R.\vect{u}}{2} \right)
+
+with :math:`\Phi` is the cumulative distribution function of the normal law in
+dimension 1:
+
+.. math::
+
+      \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} \: e^{-\frac{t^2}{2}} \: dt
+
+and with :math:`\mathbf R` is the correlation matrix. This matrix is defined
+by its algebric properties: symmetric, definite and positive.
+
+The correlation matrix :math:`\mathbf R` is obtainable by different ways:
+
+- If the Spearman correlation matrix is known :
+
+  .. math ::
+
+      \mathbf R_{ij} = 2 \sin \left( \frac{\pi}{6}\rho_{ij}^S \right)
+
+  where :math:`\rho_{ij}^S = \rho^S(X_i,X_j) = \rho^P(F_{X_i}(X_i),F_{X_j}(X_j))`
+
+- If the Kendall measure of correlation is known :
+
+  .. math::
+
+      \mathbf R_{ij} = \sin \left( \frac{\pi}{2} . \tau_{ij} \right)
+
+  with
+
+  .. math::
+
+      \tau_{ij} = \tau(X_i,X_j)
+                = \Prob{(X_{i_1} - X_{i_2}).(X_{j_1} - X_{j_2}) > 0} -
+                  \Prob{(X_{i_1} - X_{i_2}).(X_{j_1} - X_{j_2}) < 0}
+
+  where :math:`(X_{i_1},X_{j_1}` and :math:`(X_{i_2},X_{j_2})` follow the law
+  of :math:`(X_i,X_j)`.
+
+See also
+--------
+Copula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(3)
+>>> R[0, 1] = 0.25
+>>> R[1, 2] = 0.25
+>>> copula = ot.NormalCopula(R)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalCopula::GetCorrelationFromKendallCorrelation
+"Get the correlation matrix from the Kendall correlation matrix.
+
+Parameters
+----------
+K : :class:`~openturns.CorrelationMatrix`
+    Kendall correlation matrix of the considered random vector.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mathbf R` of the normal copula evaluated from
+    the Kendall correlation matrix :math:`K`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalCopula::GetCorrelationFromSpearmanCorrelation
+"Get the correlation matrix from the Spearman correlation matrix.
+
+Parameters
+----------
+S : :class:`~openturns.CorrelationMatrix`
+    Spearman correlation matrix :math:`S` of the considered random vector.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mathbf R` of the normal copula evaluated from
+    the Spearman correlation matrix :math:`S`."
+

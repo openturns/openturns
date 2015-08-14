@@ -1,0 +1,11 @@
+%feature("docstring") OT::PenalizedLeastSquaresAlgorithm
+"Penalized least squares algorithm.
+
+See also
+--------
+ApproximationAlgorithm, LeastSquaresMetaModelSelection
+
+Notes
+-----
+The LeastSquaresMetaModelSelection is built from a penalized least squares
+algorithm factory."

@@ -1,0 +1,74 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 3829 "restart:\nwith(Pol
+ynomialTools):\nwith(Statistics):\nw:=PDF(RandomVariable(Uniform(-1,1)
+),x) assuming x>0, x<1:\nassume(n,integer,n>1,alpha,real,alpha>0):\n# \+
+Legendre\nR:=n*Pn=(2*n-1)*xPn_1+0*Pn_1-(n-1)*Pn_2:\nnormF:=sqrt(1/(2*n
++1)):\nS:=subs(Pn=normF*Qn,Pn_1=subs(n=n-1,normF)*Qn_1,xPn_1=subs(n=n-
+1,normF)*xQn_1,Pn_2=subs(n=n-2,normF)*Qn_2,R):\nmap(_x->factor(simplif
+y(convert(_x,GAMMA),symbolic)),[coeff(rhs(S),xQn_1)/coeff(lhs(S),Qn),c
+oeff(rhs(S),Qn_1)/coeff(lhs(S),Qn),coeff(rhs(S),Qn_2)/coeff(lhs(S),Qn)
+]):\nC0:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=0,1/normF
+*Vector([1]))):\nC1:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs
+(n=1,1/normF*Vector([0,1]))):\nU:=C0[1]:V:=C1[1]+C1[2]*x:\nlegendreFac
+tory:=evalf(U):\nlegendreFactory:=legendreFactory,evalf(V):\nfor i fro
+m 2 to 9 do\n  W:=map(factor,collect(subs(n=i,xQn_1=x*V,Qn_1=V,Qn_2=U,
+solve(S,Qn)),x)):\n  legendreFactory:=legendreFactory,evalf(W);\n  U:=
+V:\n  V:=W:\nod:\nw:=PDF(RandomVariable(Normal(0,1)),x):\n# Hermite\nR
+:=Pn=xPn_1-(n-1)*Pn_2:\nnormF:=sqrt(GAMMA(n+1)):\nS:=subs(Pn=normF*Qn,
+Pn_1=subs(n=n-1,normF)*Qn_1,xPn_1=subs(n=n-1,normF)*xQn_1,Pn_2=subs(n=
+n-2,normF)*Qn_2,R):\nmap(_x->factor(simplify(convert(_x,GAMMA),symboli
+c)),[coeff(rhs(S),xQn_1)/coeff(lhs(S),Qn),coeff(rhs(S),Qn_1)/coeff(lhs
+(S),Qn),coeff(rhs(S),Qn_2)/coeff(lhs(S),Qn)]):\nC0:=map(_x->simplify(c
+onvert(_x,GAMMA),symbolic),subs(n=0,1/normF*Vector([1]))):\nC1:=map(_x
+->simplify(convert(_x,GAMMA),symbolic),subs(n=1,1/normF*Vector([0,1]))
+):\nU:=C0[1]:\nV:=C1[1]+C1[2]*x:\nhermiteFactory:=evalf(U):\nhermiteFa
+ctory:=hermiteFactory,evalf(V):\nfor i from 2 to 9 do\n  W:=map(factor
+,collect(subs(n=i,xQn_1=x*V,Qn_1=V,Qn_2=U,solve(S,Qn)),x)):\n  hermite
+Factory:=hermiteFactory,evalf(W);\n  U:=V:\n  V:=W:\nod:\nw:=PDF(Rando
+mVariable(Gamma(1,alpha+1)),x):\n# Laguerre\nR:=n*Pn=-xPn_1+(2*n-1+alp
+ha)*Pn_1-(n-1+alpha)*Pn_2:\nnormF:=sqrt(GAMMA(n+alpha+1)/GAMMA(alpha+1
+)/GAMMA(n+1)):\nS:=subs(Pn=normF*Qn,Pn_1=subs(n=n-1,normF)*Qn_1,xPn_1=
+subs(n=n-1,normF)*xQn_1,Pn_2=subs(n=n-2,normF)*Qn_2,R):\nmap(_x->facto
+r(simplify(convert(_x,GAMMA),symbolic)),[coeff(rhs(S),xQn_1)/coeff(lhs
+(S),Qn),coeff(rhs(S),Qn_1)/coeff(lhs(S),Qn),coeff(rhs(S),Qn_2)/coeff(l
+hs(S),Qn)]):\nC0:=map(_x->simplify(convert(_x,GAMMA),symbolic),subs(n=
+0,1/normF*Vector([1]))):\nC1:=map(_x->simplify(convert(_x,GAMMA),symbo
+lic),subs(n=1,1/normF*Vector([1+alpha,-1]))):\nalpha_num:=2.5:\nU:=C0[
+1]:\nV:=C1[1]+C1[2]*x:\nlaguerreFactory:=evalf(subs(alpha=alpha_num,U)
+):\nlaguerreFactory:=laguerreFactory,evalf(subs(alpha=alpha_num,V)):\n
+for i from 2 to 9 do\n  W:=map(_x->factor(simplify(_x,symbolic)),colle
+ct(subs(n=i,xQn_1=x*V,Qn_1=V,Qn_2=U,alpha=alpha_num,solve(S,Qn)),x)):
+\n  laguerreFactory:=laguerreFactory,evalf(W);\n  U:=V:\n  V:=W:\nod:
+\np:=<0.5|0.5|0.5>:\n# Expand the enumerate function\nevalf(subs(x=p[1
+],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][1])*subs(x=p[3],
+[hermiteFactory][1]));\nevalf(subs(x=p[1],[laguerreFactory][2])*subs(x
+=p[2],[legendreFactory][1])*subs(x=p[3],[hermiteFactory][1]));\nevalf(
+subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][2])*su
+bs(x=p[3],[hermiteFactory][1]));\nevalf(subs(x=p[1],[laguerreFactory][
+1])*subs(x=p[2],[legendreFactory][1])*subs(x=p[3],[hermiteFactory][2])
+);\nevalf(subs(x=p[1],[laguerreFactory][3])*subs(x=p[2],[legendreFacto
+ry][1])*subs(x=p[3],[hermiteFactory][1]));\nevalf(subs(x=p[1],[laguerr
+eFactory][2])*subs(x=p[2],[legendreFactory][2])*subs(x=p[3],[hermiteFa
+ctory][1]));\nevalf(subs(x=p[1],[laguerreFactory][2])*subs(x=p[2],[leg
+endreFactory][1])*subs(x=p[3],[hermiteFactory][2]));\nevalf(subs(x=p[1
+],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][3])*subs(x=p[3],
+[hermiteFactory][1]));\nevalf(subs(x=p[1],[laguerreFactory][1])*subs(x
+=p[2],[legendreFactory][2])*subs(x=p[3],[hermiteFactory][2]));\nevalf(
+subs(x=p[1],[laguerreFactory][1])*subs(x=p[2],[legendreFactory][1])*su
+bs(x=p[3],[hermiteFactory][3]));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$
+\"\"\"\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+^uc.;!\"*" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$\"+SSDg')!#5" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#$\"\"&!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+aG+\\?!\"*" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+],t)Q\"!\"*" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"+bs$y,)!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$!+l\\
+3&z#!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+?q7IV!#5" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#$!+e3I.`!#5" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 0 "" }}}}{MARK "1 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 
+1 }{PAGENUMBERS 0 1 2 33 1 1 }

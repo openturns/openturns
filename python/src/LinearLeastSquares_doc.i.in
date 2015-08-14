@@ -1,0 +1,171 @@
+%feature("docstring") OT::LinearLeastSquares
+"First order polynomial response surface by least squares.
+
+Available constructors:
+    LinearLeastSquares(*dataIn, function*)
+
+    LinearLeastSquares(*dataIn, dataOut*)
+
+Parameters
+----------
+dataIn : 2-d sequence of float
+    Input data.
+function : :class:`~openturns.NumericalMathFunction`
+    Function :math:`h` to be approximated.
+dataOut : 2-d sequence of float
+    Output data. If not specified, this sample is computed such as:
+    :math:`dataOut = h(dataIn)`.
+
+Notes
+-----
+Instead of replacing the model response :math:`h(\vect{x})` for a *local*
+approximation around a given set :math:`\vect{x}_0` of input parameters as in
+Taylor approximations, one may seek a *global* approximation of
+:math:`h(\vect{x})` over its whole domain of definition. A common choice to
+this end is global polynomial approximation.
+
+We consider here a global approximation of the model response using  a linear
+function:
+
+.. math::
+
+    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
+                      = \, \sum_{j=0}^{n_X} \; a_j \; \psi_j(\vect{x})
+
+where :math:`(a_j  \, , \, j=0, \cdots,n_X)` is a set of unknown coefficients
+and the family :math:`(\psi_j,j=0,\cdots, n_X)` gathers the constant monomial
+:math:`1` and the monomials of degree one :math:`x_i`. Using the vector
+notation :math:`\vect{a} \, = \, (a_{0} , \cdots , a_{n_X} )^{\textsf{T}}` and
+:math:`\vect{\psi}(\vect{x}) \, = \, (\psi_0(\vect{x}), \cdots, \psi_{n_X}(\vect{x}) )^{\textsf{T}}`,
+this rewrites:
+
+.. math::
+
+    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
+                      = \, \vect{a}^{\textsf{T}} \; \vect{\psi}(\vect{x})
+
+A *global* approximation of the model response over its whole definition domain
+is sought. To this end, the coefficients :math:`a_j` may be computed using a
+least squares regression approach. In this context, an experimental design
+:math:`\vect{\cX} =(x^{(1)},\cdots,x^{(N)})`, i.e. a set of realizations of
+input parameters is required, as well as the corresponding model evaluations
+:math:`\vect{\cY} =(y^{(1)},\cdots,y^{(N)})`.
+
+The following minimization problem has to be solved:
+
+.. math::
+
+    \mbox{Find} \quad \widehat{\vect{a}} \quad \mbox{that minimizes}
+      \quad \cJ(\vect{a}) \, = \, \sum_{i=1}^N \;
+                                \left(
+                                y^{(i)} \; - \;
+                                \vect{a}^{\textsf{T}} \vect{\psi}(\vect{x}^{(i)})
+                                \right)^2
+
+The solution is given by:
+
+.. math::
+
+    \widehat{\vect{a}} \, = \, \left(
+                               \vect{\vect{\Psi}}^{\textsf{T}} \vect{\vect{\Psi}}
+                               \right)^{-1} \;
+                               \vect{\vect{\Psi}}^{\textsf{T}}  \; \vect{\cY}
+
+where:
+
+.. math::
+
+    \vect{\vect{\Psi}} \, = \, (\psi_{j}(\vect{x}^{(i)}) \; , \; i=1,\cdots,N \; , \; j = 0,\cdots,n_X)
+
+See also
+--------
+QuadraticLeastSquares, LinearTaylor, QuadraticTaylor
+
+Examples
+--------
+>>> import openturns as ot
+>>> formulas = ['cos(x1 + x2)', '(x2 + 1) * exp(x1 - 2 * x2)']
+>>> myFunc = ot.NumericalMathFunction(['x1', 'x2'], ['y1', 'y2'], formulas)
+>>> data  = [[0.5,0.5], [-0.5,-0.5], [-0.5,0.5], [0.5,-0.5]]
+>>> data += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
+>>> myLeastSquares = ot.LinearLeastSquares(data, myFunc)
+>>> myLeastSquares.run()
+>>> responseSurface = myLeastSquares.getResponseSurface()
+>>> print(responseSurface([0.1,0.1]))
+[0.854471,1.06031]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getDataIn
+"Get the input data.
+
+Returns
+-------
+dataIn : :class:`~openturns.NumericalSample`
+    Input data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getConstant
+"Get the constant vector of the approximation.
+
+Returns
+-------
+constantVector : :class:`~openturns.NumericalPoint`
+    Constant vector of the approximation, equal to :math:`a_0`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getDataOut
+"Get the output data.
+
+Returns
+-------
+dataOut : :class:`~openturns.NumericalSample`
+    Output data. If not specified in the constructor, the sample is computed
+    such as: :math:`dataOut = h(dataIn)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::setDataOut
+"Set the output data.
+
+Parameters
+----------
+dataOut : 2-d sequence of float
+    Output data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getInputFunction
+"Get the function.
+
+Returns
+-------
+function : :class:`~openturns.NumericalMathFunction`
+    Function :math:`h` to be approximated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getLinear
+"Get the linear matrix of the approximation.
+
+Returns
+-------
+linearMatrix : :class:`~openturns.Matrix`
+    Linear matrix of the approximation of the function :math:`h`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getResponseSurface
+"Get an approximation of the function.
+
+Returns
+-------
+approximation : :class:`~openturns.NumericalMathFunction`
+    An approximation of the function :math:`h` by Linear Least Squares."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::run
+"Perform the least squares approximation."

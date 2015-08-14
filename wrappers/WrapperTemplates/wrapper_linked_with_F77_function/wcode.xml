@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+ @configure_input@
+
+ @brief The description file of the wrapper
+
+ Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+
+ This library is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public
+ along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<wrapper>
+  <library>
+
+    <!-- The path of the shared object -->
+    <path>wcode.so</path>
+
+
+
+    <!-- This section describes all exchanges data between the wrapper and the platform -->
+    <description>
+
+      <!-- Those variables are substituted in the files above -->
+      <!-- The order of variables is the order of the arguments of the function -->
+      <variable-list>
+
+        <variable id="I1" type="in" />
+        <variable id="I2" type="in" />
+        <variable id="I3" type="in" />
+
+        <variable id="O1" type="out" />
+        <variable id="O2" type="out" />
+
+      </variable-list>
+      
+
+
+      <!-- The function that we try to execute through the wrapper -->
+      <function provided="yes">wcode</function>
+
+      <!-- the gradient is  defined  -->
+      <gradient provided="no"></gradient>
+
+      <!--  the hessian is  defined  -->
+      <hessian provided="no"></hessian>
+
+    </description>
+
+
+  </library>
+
+  <external-code>
+    <!-- Those data are external to the platform (input files, etc.)-->
+    <data></data>
+
+    <wrap-mode type="static-link" state="shared">
+      <in-data-transfer mode="arguments" />
+      <out-data-transfer mode="arguments" />
+    </wrap-mode>
+
+    <command># no command</command>
+
+  </external-code>
+
+</wrapper>

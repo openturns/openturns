@@ -1,0 +1,119 @@
+%feature("docstring") OT::SymmetricMatrix
+"Real symmetric matrix.
+
+Parameters
+----------
+size : int, :math:`n > 0`, optional
+    Matrix size.
+    Default is 1.
+values : sequence of float with size :math:`n^2`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    Default creates a zero matrix.
+
+Raises
+------
+TypeError : If the matrix is not symmetric.
+
+Examples
+--------
+Create a matrix
+
+>>> import openturns as ot
+>>> M = ot.SymmetricMatrix(2, [0., 2., 2., 1.])
+>>> print(M)
+[[ 0 2 ]
+ [ 2 1 ]]
+
+Get or set terms
+
+>>> print(M[0, 0])
+0.0
+>>> M[0, 0] = 1.
+>>> print(M[0, 0])
+1.0
+>>> print(M[:, 0])
+[[ 1 ]
+ [ 2 ]]
+
+Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
+2d-list)...
+
+>>> import numpy as np
+>>> np_2d_array = np.array([[1., 2.], [2., 4.]])
+>>> ot_matrix = ot.SymmetricMatrix(np_2d_array)
+
+and back
+
+>>> np_matrix = np.matrix(ot_matrix)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricMatrix::computeEigenValues
+"Compute eigen values.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+eigenvalues : :class:`~openturns.NumericalPoint`
+    Eigen values.
+
+See Also
+--------
+computeEV
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SymmetricMatrix([[1., 2.], [2., -4.]])
+>>> print(M.computeEigenValues())
+[-4.70156,1.70156]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricMatrix::computeEV
+"Compute the eigen values decomposition (EVD).
+
+The eigen values decomposition of a square matrix :math:`\mat{M}` with
+size :math:`n` reads:
+
+.. math::
+
+    \mat{M} = \mat{\Phi} \mat{\Lambda} \Tr{\mat{\Phi}}
+
+where :math:`\mat{\Lambda}` is an :math:`n \times n` diagonal matrix and
+:math:`\mat{\Phi}` is an :math:`n \times n` orthogonal matrix.
+
+Parameters
+----------
+keep_intact : bool, optional
+    A flag telling whether the present matrix can be overwritten or not.
+    Default is *True* and leaves the present matrix unchanged.
+
+Returns
+-------
+eigen_values : :class:`~openturns.NumericalPoint`
+    The vector of eigen values with size :math:`n` that form the diagonal of
+    the :math:`n \times n` matrix :math:`\mat{\Lambda}` of the EVD.
+Phi : :class:`~openturns.SquareComplexMatrix`
+    The left matrix of the EVD.
+
+Notes
+-----
+This uses LAPACK'S `DSYEV <http://www.netlib.org/lapack/lapack-3.1.1/html/dsyev.f.html>`_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import numpy as np
+>>> M = ot.SymmetricMatrix([[1., 2.], [2., -4.]])
+>>> eigen_values, Phi = M.computeEV()
+>>> Lambda = ot.SquareMatrix(M.getDimension())
+>>> for i in range(eigen_values.getSize()):
+...     Lambda[i, i] = eigen_values[i]
+>>> np.testing.assert_array_almost_equal(Phi * Lambda * Phi.transpose(), M)"

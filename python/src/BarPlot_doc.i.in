@@ -1,0 +1,47 @@
+%feature("docstring") OT::BarPlot
+"BarPlot.
+
+Available constructors:
+    BarPlot(*data, origin, legend=' '*)
+
+    BarPlot(*data, origin, color, fillStyle, lineStyle, legend=' '*)
+
+    BarPlot(*data, origin, color, fillStyle, lineStyle, lineWidth, legend=' '*)
+
+Parameters
+----------
+data : 2-d sequence of float
+    Data from which the BarPlot is built, must be of dimension 2: the
+    discontinuous points and their corresponding height.
+origin : float
+    Scalar defining where the BarPlot begins.
+legend : str
+    Legend of the BarPlot.
+color : str
+    Color of the curve. If not specified, by default it is 'blue'.
+fillStyle : str
+    Fill style of the surfaces. If not specified, by default it is 'solid'.
+lineStyle : str
+    Style of the curve. If not specified, by default it is 'solid'.
+lineWidth : int
+    Width of the curve. If not specified, by default it is 1.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import floor
+>>> # Create data
+>>> myDistribution = ot.Normal(0.5, 2.)
+>>> sample = myDistribution.getSample(100)
+>>> minSample = sample.getMin()[0]
+>>> maxSample = sample.getMax()[0] + 0.1
+>>> nBars = 10
+>>> data = ot.NumericalSample(nBars, [(maxSample - minSample) / nBars, 0])
+>>> for i in range(100):
+...     index = int(floor((sample[i, 0] - minSample) / (maxSample - minSample) * nBars))
+...     data[index, 1] += 1
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('A barplot', 'Realizations', 'Frequency', True, 'topright')
+>>> # Create the barplot
+>>> myBarPlot = ot.BarPlot(data, data.getMin()[0], 'red', 'shaded', 'dashed', 'Normal histogram')
+>>> myGraph.add(myBarPlot)"

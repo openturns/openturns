@@ -1,0 +1,52 @@
+Testing class Exponential
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Exponential name=Exponential dimension=1 lambda=2.5 gamma=-0.5
+streamObject(const T & anObject)
+class=Exponential name=Exponential dimension=1 lambda=2.5 gamma=-0.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Exponential name=Exponential dimension=1 lambda=2.5 gamma=-0.5
+Distribution Exponential(lambda = 2.5, gamma = -0.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[-0.315107]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[-0.45014] last=class=NumericalPoint name=Unnamed dimension=1 values=[-0.157472]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.101604]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.160734]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.146986]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.146986]
+log pdf=-2.83371
+pdf     =0.0587944
+pdf (FD)=0.0587944
+cdf=0.976482
+ccdf=0.0235177
+survival=0.0235177
+characteristic function=(0.921856,-0.110683)
+log characteristic function=(-0.07421,-0.119494)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0646738,0.146986]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0646738,0.146986]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0352766,-0.0587944]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.0352766,-0.0587944]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.698293]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.1]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.4]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[2]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[9]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.16]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[lambda : 2.5, gamma : -0.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[2]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[6]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[24]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[120]
+Standard representative=Exponential(lambda = 1, gamma = 0)

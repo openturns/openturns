@@ -1,0 +1,40 @@
+{#
+    basic/layout.html
+    ~~~~~~~~~~~~~~~~~
+
+    Master layout template for Sphinx themes.
+
+    :copyright: Copyright 2007-2013 by the Sphinx team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
+#}
+{%- extends "basic/layout.html" %}
+
+{# put the sidebar before the body #}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}
+
+{# enable font #}
+{% block extrahead %}
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+{{ super() }}
+{% endblock %}
+
+{# static banner #}
+{% block header %}
+<div class="pageheader">
+  <ul>
+    <li><a href="{{ pathto('index') }}">Home</a></li>
+    <li><a href="{{ pathto('install') }}">Get it</a></li>
+    <li><a href="{{ pathto('contents') }}">Doc</a></li>
+    <li><a href="http://trac.openturns.org">Bugs</a></li>
+  </ul>
+  <a href="{{ pathto('index') }}">
+    <h1>
+      <img src="{{ pathto('_static/logo-openturns-wo-bg.png', 1) }}" alt="" width=100px height=100px />
+      OpenTURNS
+    </h1>
+    <h2> An Open source initiative for the Treatment of Uncertainties, Risks'N Statistics</h2>
+  </a>
+</div>
+{% endblock %}

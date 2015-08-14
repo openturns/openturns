@@ -1,0 +1,8 @@
+distribution= class=Arcsine name=Arcsine dimension=1 a=1 b=2.5
+Estimated distribution= class=Arcsine name=Arcsine dimension=1 a=1.00127 b=2.51039
+Default distribution= Arcsine(a = -1, b = 1)
+Distribution from parameters= Arcsine(a = 1, b = 2.5)
+Arcsine          = Arcsine(a = 1, b = 2.5)
+Estimated Arcsine= Arcsine(a = 1.00127, b = 2.51039)
+Default Arcsine= Arcsine(a = -1, b = 1)
+Arcsine from parameters= Arcsine(a = 1, b = 2.5)

@@ -1,0 +1,52 @@
+Testing class LogUniform
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=LogUniform name=LogUniform dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
+streamObject(const T & anObject)
+class=LogUniform name=LogUniform dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=LogUniform name=LogUniform dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
+Distribution LogUniform(aLog = -0.5, bLog = 1.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.13775]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[3.54526] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.41828]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.95442]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.20332]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.5]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5]
+log pdf=-0.693147
+pdf     =0.5
+pdf (FD)=0.5
+cdf=0.25
+ccdf=0.75
+survival=0.75
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
+characteristic function=(-0.0896196,0.531924)
+log characteristic function=(-0.61726,1.73771)
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[4.0552]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.93758]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.08407]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.67539]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[0.623015]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.1752]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[aLog : -0.5, bLog : 1.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.93758]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[4.92941]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[14.9657]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[50.4117]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[180.796]
+Standard representative=LogUniform(aLog = -0.5, bLog = 1.5)

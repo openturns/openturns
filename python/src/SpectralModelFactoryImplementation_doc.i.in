@@ -1,0 +1,90 @@
+%define OT_SpectralModelFactory_doc
+"Base class for spectral model factory."
+
+%enddef
+%feature("docstring") OT::SpectralModelFactoryImplementation
+OT_SpectralModelFactory_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModelFactory_getFrequencyGrid_doc
+"Accessor to the frequency grid.
+
+Returns
+-------
+freqGrid : :class:`~openturns.RegularGrid` 
+    Grid on which the  spectral model is estimated.
+ "
+%enddef
+%feature("docstring") OT::SpectralModelFactoryImplementation::getFrequencyGrid
+OT_SpectralModelFactory_getFrequencyGrid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModelFactory_setFrequencyGrid_doc
+"Accessor to the frequency grid.
+
+Parameters
+----------
+freqGrid : :class:`~openturns.RegularGrid` 
+    Grid on which the  spectral model is estimated.
+ "
+%enddef
+%feature("docstring") OT::SpectralModelFactoryImplementation::setFrequencyGrid
+OT_SpectralModelFactory_setFrequencyGrid_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModelFactory_getFFTAlgorithm_doc
+"Accessor to the FFT algorithm used for the Fourier transform.
+
+Returns
+-------
+fftAlgo : :class:`~openturns.FFT` 
+     The FFT algorithm used for the Fourier transform.
+ "
+%enddef
+%feature("docstring") OT::SpectralModelFactoryImplementation::getFFTAlgorithm
+OT_SpectralModelFactory_getFFTAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModelFactory_setFFTAlgorithm_doc
+"Accessor to the FFT algorithm used for the Fourier transform.
+
+Parameters
+----------
+fftAlgo : :class:`~openturns.FFT` 
+     The FFT algorithm used for the Fourier transform.
+ "
+%enddef
+%feature("docstring") OT::SpectralModelFactoryImplementation::setFFTAlgorithm
+OT_SpectralModelFactory_setFFTAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModelFactory_build_doc
+"Estimate the spectral model from data.
+
+Available constructors:
+    build(*myTimeSeries*)
+
+    build(*myProcessSample*)
+
+Parameters
+----------
+myTimeSeries : :class:`~openturns.TimeSeries` 
+    The time series from which the spectral model is estimated.
+myProcessSample : :class:`~openturns.ProcessSample` 
+    The sample of time series from which the spectral model is estimated.
+
+Returns
+-------
+mySpectralModel : :class:`~openturns.SpectralModel`
+    The estimatd spectral model.
+ "
+%enddef
+%feature("docstring") OT::SpectralModelFactoryImplementation::build
+OT_SpectralModelFactory_build_doc

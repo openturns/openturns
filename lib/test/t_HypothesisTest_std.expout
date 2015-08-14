@@ -1,0 +1,5 @@
+ChiSquared=class=TestResult name=Unnamed type=TwoSampleChiSquared binaryQualityMeasure=true p-value threshold=0.1 p-value=0.985079 description=[]
+ChiSquared2=class=TestResult name=Unnamed type=TwoSampleChiSquared binaryQualityMeasure=false p-value threshold=0.1 p-value=1.15627e-20 description=[]
+Pearson=class=TestResult name=Unnamed type=TwoSamplePearson binaryQualityMeasure=false p-value threshold=0.1 p-value=6.40572e-08 description=[]
+Smirnov=class=TestResult name=Unnamed type=TwoSampleSmirnov binaryQualityMeasure=false p-value threshold=0.1 p-value=7.47514e-11 description=[]
+Spearman=class=TestResult name=Unnamed type=TwoSampleSpearman binaryQualityMeasure=false p-value threshold=0.1 p-value=0 description=[]

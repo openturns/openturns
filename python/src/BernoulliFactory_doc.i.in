@@ -1,0 +1,9 @@
+%feature("docstring") OT::BernoulliFactory
+"Bernoulli factory.
+
+Available constructor:
+    BernoulliFactory()
+
+See also
+--------
+DistributionFactory"

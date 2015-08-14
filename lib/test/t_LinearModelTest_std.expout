@@ -1,0 +1,4 @@
+LinearModelAdjustedRSquared=class=TestResult name=Unnamed type=AdjustedRSquared binaryQualityMeasure=false p-value threshold=0.95 p-value=0.251488 description=[]
+LinearModelFisher=class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value threshold=0.05 p-value=1 description=[]
+LinearModelResidualMean=class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-value threshold=0.05 p-value=1 description=[]
+LinearModelRSquared=class=TestResult name=Unnamed type=RSquared binaryQualityMeasure=false p-value threshold=0.95 p-value=0.259049 description=[]

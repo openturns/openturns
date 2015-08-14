@@ -1,0 +1,112 @@
+> restart:
+> with(Statistics):
+> geometric_:=RandomVariable(Geometric(p)):
+> pdf:=subs(u=n-1,ProbabilityFunction(geometric_,u));
+> cdf:=simplify(subs(u=n-1,CDF(geometric_,u)));
+> mu_:=factor(1+Mean(geometric_));
+> var_:=Variance(geometric_);
+> skew_:=simplify(convert(Skewness(geometric_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(geometric_),GAMMA),symbolic);
+> qdf:=simplify(1+Quantile(geometric_,q));
+> qdf2:=solve(cdf=q,K);
+> pdfgr:=factor(diff(pdf, p));
+> cdfgr:=diff(cdf, p);
+> valnum:=p=0.7:
+> evalf(subs(valnum,n=3,pdf));
+> evalf(subs(valnum,n=3,cdf));
+> evalf(subs(valnum,n=3,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,n=3,cdfgr));
+> evalf(subs(valnum,q=0.95,qdf));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+                     {        0                  n < 1
+              pdf := {
+                     {          (n - 1)
+                     { p (1 - p)               otherwise
+
+
+                     {          0                 n < 1
+              cdf := {
+                     {            floor(n)
+                     { 1 - (1 - p)                1 <= n
+
+
+                              mu_ := 1/p
+
+
+                                    1 - p
+                            var_ := -----
+                                      2
+                                     p
+
+
+                                     -2 + p
+                        skew_ := - ----------
+                                          1/2
+                                   (1 - p)
+
+
+                                   2
+                                  p  - 9 p + 9
+                       kurt_ := - ------------
+                                     -1 + p
+
+
+                                    ln(1 - q)
+                        qdf := ceil(---------)
+                                    ln(1 - p)
+
+
+                               qdf2 :=
+
+
+                 {             0                      n < 1
+                 {
+        pdfgr := {        (n - 1)
+                 { (1 - p)        (-1 + p n)
+                 { -------------------------        otherwise
+                 {          -1 + p
+
+
+                   {            0                    n < 1
+                   {
+          cdfgr := {        floor(n)
+                   { (1 - p)         floor(n)
+                   { ------------------------        1 <= n
+                   {          1 - p
+
+
+                                0.063
+
+
+                                0.973
+
+
+                            -0.3300000000
+
+
+                             0.2700000000
+
+
+                                  3.
+
+
+                             1.428571429
+
+
+                             0.7824607965
+
+
+                             2.373464415
+
+
+                             10.63333333
+
+
+                             0.6122448980
+
+> 

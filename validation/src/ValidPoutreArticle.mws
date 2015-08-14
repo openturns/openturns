@@ -1,0 +1,19 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 38 "int(int(z^2,x=-a/2..
+a/2),z=-a/2..a/2);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*&\"#7!\"\"%\"
+aG\"\"%\"\"\"" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 9 "1e-8/12.;" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+LLLL$)!#>" }}}{EXCHG {PARA 0 "> \+
+" 0 "" {MPLTEXT 1 0 38 "subs(a=1e-2,e=1e-3,a^4/12-(a-e)^4/12);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+LL$e'G!#>" }}}{EXCHG {PARA 0 "> " 
+0 "" {MPLTEXT 1 0 77 "subs(F=10,L=1,E=2.1e11,I_=a^4/12-(a-e)^4/12,a=2e
+-2,e=1e-3,[I_,F*L^3/3/E/I_]);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#7$$\"
+*+]KZ#!#<$\"+Qw(yT'!#7" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" 
+}}}}{MARK "4 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 
+1 2 33 1 1 }

@@ -1,0 +1,12 @@
+%feature("docstring") OT::BurrFactory
+"Burr factory.
+
+Available constructor:
+    BurrFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

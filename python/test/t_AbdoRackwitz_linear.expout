@@ -1,0 +1,2 @@
+myGradient =  class=NonCenteredFiniteDifferenceGradient name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=4 values=[1e-07,1e-07,1e-07,1e-07] evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x1,x2,x3,x4] outputVariablesNames=[y1] formulas=[x1+2*x2-3*x3+4*x4]
+result =  [0.100000,0.200000,-0.300000,0.400000]

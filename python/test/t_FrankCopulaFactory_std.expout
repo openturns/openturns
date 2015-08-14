@@ -1,0 +1,6 @@
+distribution= class=FrankCopula name=FrankCopula dimension=2 theta=1.5
+Estimated distribution= class=FrankCopula name=FrankCopula dimension=2 theta=1.31776
+FrankCopula          = FrankCopula(theta = 1.5)
+Estimated frankCopula= FrankCopula(theta = 1.31776)
+Default frankCopula= FrankCopula(theta = 2)
+FrankCopula from parameters= FrankCopula(theta = 1.5)

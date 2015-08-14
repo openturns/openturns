@@ -1,0 +1,144 @@
+> restart:
+> with(Statistics):
+> assume(beta>0):
+> logistic_:=RandomVariable(Logistic(alpha,beta)):
+> pdf:=PDF(logistic_,x);
+> ddf:=factor(diff(pdf,x));
+> cdf:=CDF(logistic_,x);
+> mu_:=Mean(logistic_);
+> var_:=Variance(logistic_);
+> qdf:=Quantile(logistic_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=map(factor,[diff(pdf,alpha),diff(pdf,beta)]);
+> factor(pdfgr[2]-(x-alpha)*pdfgr[1]/beta);
+> cdfgr:=map(factor,[diff(cdf,alpha),diff(cdf,beta)]);
+> factor(dcdf[2]/dcdf[1]);
+> valnum:=alpha=-0.5,beta=1.5:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(solve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,var_));
+> evalf(subs(valnum,[mu_,sqrt(var_)]));
+
+                                   x - alpha
+                               exp(---------)
+                                     beta~
+                  pdf := ---------------------------
+                               /        x - alpha \2
+                         beta~ |1 + exp(---------)|
+                               \          beta~   /
+
+
+                         x - alpha  /         x - alpha \
+                     exp(---------) |-1 + exp(---------)|
+                           beta~    \           beta~   /
+            ddf := - ------------------------------------
+                              2 /        x - alpha \3
+                         beta~  |1 + exp(---------)|
+                                \          beta~   /
+
+
+                                     1
+                     cdf := --------------------
+                                      x - alpha
+                            1 + exp(- ---------)
+                                        beta~
+
+
+                             mu_ := alpha
+
+
+                                       2   2
+                                  beta~  Pi
+                          var_ := ----------
+                                      3
+
+
+                                              p
+                    qdf := alpha + beta~ ln(-----)
+                                            1 - p
+
+
+                                       -1 + p
+                  qdf2 := alpha - ln(- ------) beta~
+                                         p
+
+
+                x - alpha  /         x - alpha \
+            exp(---------) |-1 + exp(---------)|
+                  beta~    \           beta~   /      x - alpha  /
+  pdfgr := [------------------------------------, exp(---------) |-x
+                     2 /        x - alpha \3            beta~    \
+                beta~  |1 + exp(---------)|
+                       \          beta~   /
+
+                 x - alpha                      x - alpha
+         + x exp(---------) + alpha - alpha exp(---------) - beta~
+                   beta~                          beta~
+
+                     x - alpha \   / /     3 /        x - alpha \3\
+         - beta~ exp(---------)|  /  |beta~  |1 + exp(---------)| |]
+                       beta~   / /   \       \          beta~   / /
+
+
+                                 x - alpha
+                             exp(---------)
+                                   beta~
+                    - ----------------------------
+                           2 /        x - alpha \2
+                      beta~  |1 + exp(---------)|
+                             \          beta~   /
+
+
+                          x - alpha
+                    exp(- ---------)
+                            beta~
+  cdfgr := [- -----------------------------,
+              /          x - alpha \2
+              |1 + exp(- ---------)|  beta~
+              \            beta~   /
+
+                             x - alpha
+           (x - alpha) exp(- ---------)
+                               beta~
+        - ------------------------------]
+          /          x - alpha \2      2
+          |1 + exp(- ---------)|  beta~
+          \            beta~   /
+
+
+                               dcdf[2]
+                               -------
+                               dcdf[1]
+
+
+                            -0.04038122117
+
+
+                             0.1310746222
+
+
+                             0.7310585787
+
+
+                   [0.04038122117, -0.04700186026]
+
+
+                    [-0.1310746222, -0.1310746222]
+
+
+                             3.916658468
+
+
+                                 -0.5
+
+
+                             7.402203303
+
+
+                         [-0.5, 2.720699048]
+

@@ -1,0 +1,4 @@
+point1.getDescription() =  [,]
+point2.getDescription() =  [,]
+point1.getDescription() =  [point1_X,point1_Y]
+point2.getDescription() =  [,]

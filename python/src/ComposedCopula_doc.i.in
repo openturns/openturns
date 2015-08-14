@@ -1,0 +1,64 @@
+%feature("docstring") OT::ComposedCopula
+"Composed copula.
+
+Available constructor:
+    ComposedCopula(*copulas*)
+
+Parameters
+----------
+copulas : list of copulas
+    The collection of copulas from which the ComposedCopula is built.
+
+Notes
+-----
+A ComposedCopula is defined as the product of other copulas. For example, if
+:math:`C_1` and :math:`C_2` are two copulas respectively of :math:`\Rset^{n_1}`
+and :math:`\Rset^{n_2}`, we can create the copula of a random vector of
+:math:`\Rset^{n_1 + n_2}`, noted :math:`C` as follows :
+
+.. math::
+
+    C(u_1, \cdots, u_n) = C_1 (u_1, \cdots, u_{n_1})
+                          C_2 (u_{n_1 + 1}, \cdots, u_{n_1 + n_2})
+
+for :math:`u_i \in [0, 1]`.
+It means that both subvectors :math:`(u_1, \cdots, u_{n_1})` and
+:math:`(u_{n_1 + 1}, \cdots, u_{n_1 + n_2})` of :math:`\Rset^{n_1}` and
+:math:`\Rset^{n_2}` are independent.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(3)
+>>> R[0, 1] = 0.5
+>>> R[0, 2] = 0.25
+>>> collection = [ot.FrankCopula(3.0), ot.NormalCopula(R), ot.ClaytonCopula(2.0)]
+>>> copula = ot.ComposedCopula(collection)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComposedCopula::getCopulaCollection
+"Get the list of the copulas.
+
+Returns
+-------
+copulas : list of copulas
+    The collection of copulas from which the ComposedCopula is built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ComposedCopula::setCopulaCollection
+"Set the list of the copulas.
+
+Parameters
+----------
+copulas : list of copulas
+    The collection of copulas from which the ComposedCopula is built."
+
+

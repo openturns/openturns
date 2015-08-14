@@ -1,0 +1,29 @@
+%feature("docstring") OT::LAR
+"Least Angle Regression.
+
+Available constructors:
+    LAR()
+
+See also
+--------
+BasisSequenceFactory
+
+Notes
+-----
+LAR inherits from :class:`~openturns.BasisSequenceFactory`.
+
+If the size :math:`P` of the PC basis is of similar size to :math:`N`, or even
+possibly significantly larger than :math:`N` , then the following ordinary least
+squares problem is ill-posed:
+
+.. math::
+    
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P} E_{\mu} \left[ \left( g \circ T^{-1}
+            (\vect{U}) - \vect{b}^{\intercal} \vect{\Psi}(\vect{U}) \right)^2 \right]
+
+The sparse least squares approaches may be employed instead. Eventually a sparse
+PC representation is obtained, that is an approximation which only contains a
+small number of active basis functions.
+
+This class is not usable as is because it has sense only whithin the
+:class:`~openturns.FunctionalChaosAlgorithm`."

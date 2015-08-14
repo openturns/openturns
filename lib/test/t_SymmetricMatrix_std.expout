@@ -1,0 +1,65 @@
+test number zero : default constructor and string converter
+SymmetricMatrix0 = class=SymmetricMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test number one : constructor with size, operator() and string converter
+SymmetricMatrix1 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,0,4]
+SymmetricMatrix1 = [[ 1 3 ]
+ [ 3 4 ]]
+test number two : copy constructor and string converter
+SymmetricMatrix2 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,3,4]
+SymmetricMatrix2 = [[ 1 3 ]
+ [ 3 4 ]]
+test number three : get dimensions methods
+SymmetricMatrix1's nbRows = 2
+SymmetricMatrix1's nbColumns = 2
+test number five : assignment method
+SymmetricMatrix3 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,3,4]
+SymmetricMatrix3 = [[ 1 3 ]
+ [ 3 4 ]]
+test number six : transposition method
+SymmetricMatrix1 transposed = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,3,4]
+SymmetricMatrix1 transposed = [[ 1 3 ]
+ [ 3 4 ]]
+SymmetricMatrix1 transposed = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,3,4]
+test number seven : addition method
+sum1 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,6,6,8]
+sum1 = [[ 2 6 ]
+ [ 6 8 ]]
+sum2 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,6,6,8]
+sum2 = [[ 2 6 ]
+ [ 6 8 ]]
+sum1 equals sum2 = true
+test number eight : substraction method
+diff = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
+diff = [[ 0 0 ]
+ [ 0 0 ]]
+test number nine : matrix multiplication method
+prod = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,15,15,25]
+prod = [[ 10 15 ]
+ [ 15 25 ]]
+test number ten : multiplication with a numerical point method
+pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult = class=NumericalPoint name=Unnamed dimension=2 values=[7,11]
+test number eleven : multiplication and division by a numerical scalar methods
+scalprod1 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,9,12]
+scalprod1 = [[  3  9 ]
+ [  9 12 ]]
+scalprod2 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,9,12]
+scalprod2 = [[  3  9 ]
+ [  9 12 ]]
+scalprod1 equals scalprod2 = true
+scaldiv1 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,1,1.33333]
+scaldiv1 = [[ 0.333333 1        ]
+ [ 1        1.33333  ]]
+scaldiv2 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,1,1.33333]
+scaldiv2 = [[ 0.333333 1        ]
+ [ 1        1.33333  ]]
+scaldiv1 equals scaldiv2 = true
+test number twelve : isEmpty method
+SymmetricMatrix0 is empty = true
+SymmetricMatrix1 is empty = false
+SymmetricMatrix5 is empty = true
+L * SM = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[6.9,7.1,11.64,7.4]
+L * M = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[6.9,7.1,11.64,7.4]
+M2 * SM = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3.46,4.95,4.95,10.21]
+M * SM = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3.46,4.95,4.95,10.21]
+SM * M3 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[3.46,4.95,4.95,10.21,20.55,34.81]

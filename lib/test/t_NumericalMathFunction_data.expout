@@ -1,0 +1,12 @@
+database=DatabaseNumericalMathEvaluationImplementation
+  input sample :
+    [ x0 x1 ]
+0 : [ 1  1  ]
+1 : [ 2  2  ]
+  output sample :
+    [ y0 ]
+0 : [ 4  ]
+1 : [ 5  ]
+
+x=[1.8,1.8]
+database(x)=[5]

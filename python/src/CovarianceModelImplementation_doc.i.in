@@ -1,0 +1,219 @@
+%define OT_CovarianceModel_doc
+"Covariance model.
+
+Notes
+-----
+We consider :math:`X: \Omega \times\cD \mapsto \Rset^d` a multivariate
+stochastic process of dimension :math:`d`, where :math:`\omega \in \Omega`
+is an event, :math:`\cD` is a domain of :math:`\Rset^n`,
+:math:`\vect{t}\in \cD` is a multivariate index and
+:math:`X(\omega, \vect{t}) \in \Rset^d`.
+
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` the random variable at
+index :math:`\vect{t} \in \cD` defined by
+:math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})` and
+:math:`X(\omega): \cD  \mapsto \Rset^d` a realization of the process
+:math:`X`, for a given :math:`\omega \in \Omega` defined by
+:math:`X(\omega)(\vect{t})=X(\omega, \vect{t})`.
+
+If the process is a second order process, we note:
+
+- :math:`m : \cD \mapsto  \Rset^d` its *mean function*, defined by
+  :math:`m(\vect{t})=\Expect{X_{\vect{t}}}`,
+- :math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` its
+  *covariance function*, defined by
+  :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}`,
+- :math:`R : \cD \times \cD \mapsto  \mathcal{M}_{d \times d}(\Rset)` its
+  *correlation function*, defined for all :math:`(\vect{s}, \vect{t})`,
+  by :math:`R(\vect{s}, \vect{t})` such that for all :math:`(i,j)`,
+  :math:`R_{ij}(\vect{s}, \vect{t})=C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
+
+A CovarianceModel object can be created only through its derived classes:
+:class:`~openturns.StationaryCovarianceModel`,
+:class:`~openturns.UserDefinedCovarianceModel`,
+:class:`~openturns.GeneralizedExponential`,
+:class:`~openturns.AbsoluteExponential`,
+:class:`~openturns.SquaredExponential`."
+
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation
+OT_CovarianceModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_computeAsScalar_doc
+"Compute the covariance function for 1-d model.
+
+Available usages:
+    computeAsScalar(s, t)
+
+    computeAsScalar(tau)
+
+Parameters
+----------
+s, t : sequences of float
+    Inputs.
+tau : sequence of float
+    Input.
+
+Returns
+-------
+covariance : float
+    Covariance.
+
+Notes
+-----
+*computeAsScalar* evaluates the covariance model
+:math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` at
+:math:`(s,t)\in \Rset^n`:
+
+.. math::
+
+    C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}
+
+In the second usage, the covariance model must be stationary. Then we note
+:math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})` as
+this quantity does not depend on :math:`\vect{s}`."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::computeAsScalar
+OT_CovarianceModel_computeAsScalar_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_discretize_doc
+"Discretize the covariance function on a given RegularGrid/Mesh.
+
+Parameters
+----------
+meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
+    Mesh or time grid of size :math:`N` associated with the process.
+
+Returns
+-------
+covarianceMatrix : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    dimension :math:`d`).
+
+Notes
+-----
+This method makes a discretization of the model on *meshOrGrid* composed of
+the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` and returns the
+covariance matrix:
+
+.. math ::
+
+    \mat{C}_{1,\dots,k} = \left(
+        \begin{array}{cccc}
+        C(\vect{t}_1, \vect{t}_1) &C(\vect{t}_1, \vect{t}_2) & \dots & C(\vect{t}_1, \vect{t}_{k}) \\
+        \dots & C(\vect{t}_2, \vect{t}_2)  & \dots & C(\vect{t}_2, \vect{t}_{k}) \\
+        \dots & \dots & \dots & \dots \\
+        \dots & \dots & \dots & C(\vect{t}_{k}, \vect{t}_{k})
+        \end{array} \right)"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretize
+OT_CovarianceModel_discretize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_discretizeRow_doc
+"**(TODO)**"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeRow
+OT_CovarianceModel_discretizeRow_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getDimension_doc
+"Get the dimension of the *CovarianceModel*.
+
+Returns
+-------
+dimension : int
+    Dimension of the *CovarianceModel*."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getDimension
+OT_CovarianceModel_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getParameters_doc
+"Get the parameters of the covariance function.
+
+Returns
+-------
+parameters : :class:`~openturns.NumericalPointWithDescription`
+    Sequence containing the parameters of the covariance function with a
+    description for each component."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getParameters
+OT_CovarianceModel_getParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_isDiagonal_doc
+"Test whether the model is diagonal or not.
+
+Returns
+-------
+isDiagonal : bool
+    *True* if the model is diagonal."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::isDiagonal
+OT_CovarianceModel_isDiagonal_doc
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_isStationary_doc
+"Test whether the model is stationary or not.
+
+Returns
+-------
+isStationary : bool
+    *True* if the model is stationary.
+
+Notes
+-----
+The covariance function :math:`C` is stationary when it is invariant by
+translation:
+
+.. math::
+
+    \forall(\vect{s},\vect{t},\vect{h}) \in \cD, & \, \quad
+    C(\vect{s}, \vect{s}+\vect{h}) = C(\vect{t}, \vect{t}+\vect{h})
+
+We note :math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})`."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::isStationary
+OT_CovarianceModel_isStationary_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_partialGradient_doc
+"Compute the gradient of the covariance function.
+
+Parameters
+----------
+s, t : sequence of float
+    Inputs.
+
+Returns
+-------
+gradient : :class:`~openturns.SymmetricTensor`
+    Gradient of the covariance function."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::partialGradient
+OT_CovarianceModel_partialGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_setParameters_doc
+"Set the parameters of the covariance function.
+
+Returns
+-------
+parameters : :class:`~openturns.NumericalPointWithDescription`
+    Sequence containing the parameters of the covariance function with a
+    description for each component."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::setParameters
+OT_CovarianceModel_setParameters_doc
+

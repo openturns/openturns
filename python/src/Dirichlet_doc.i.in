@@ -1,0 +1,81 @@
+%feature("docstring") OT::Dirichlet
+"Dirichlet distribution.
+
+Available constructors:
+    Dirichlet(*theta=[1.0, 1.0]*)
+
+Parameters
+----------
+theta : sequence of float, :math:`\theta_i > 0, i = 1, \ldots, n+1`
+        theta must be at least bidimensional.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) = \frac{\Gamma(|\vect{\theta}|_1)}
+                                  {\prod_{j=1}^{n + 1} \Gamma(\theta_j)}
+                             \left[1 - \sum_{j=1}^{n} x_j
+                                   \right]^{\theta_{n+1} - 1}
+                             \prod_{j=1}^n x_j^{\theta_j - 1},
+                             \quad \vect{x} \in \Delta(\vect{X})
+
+with :math:`\Delta(\vect{X}) = \{ \vect{x} \in \Rset^n : x_i \geq 0, \sum_{i=1}^n x_i \leq 1, i = 1, \ldots, n \}`
+and :math:`\theta_i > 0, i = 1, \ldots, n+1` and where :math:`|\vect{\theta}|_1 = \sum_{i=1}^{n+1} \theta_i`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{\vect{X}} & = & \Tr{(\theta_i/|\vect{\theta}|_1,
+                                     \quad i = 1, \ldots, n)} \\
+        \Cov{\vect{X}} & = & \left[- \frac{\theta_i \theta_j}
+                                          {|\vect{\theta}|_1^2
+                                           (|\vect{\theta}|_1+1)},
+                                   \quad i,j = 1, \ldots, n \right]
+    \end{eqnarray*}
+
+.. warning::
+    The present implementation does not model the :math:`n+1`-th component of
+    the Dirichlet distribution as it is fixed:
+
+    .. math::
+
+        X_{n + 1} = 1 - \sum_{i=1}^{n} X_i
+
+See Also
+--------
+Multinomial
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Dirichlet([1., 1., 1.])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dirichlet::getTheta
+"Accessor to the distribution's vector parameter.
+
+Returns
+-------
+theta : float, :class:`~openturns.NumericalPoint`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dirichlet::setTheta
+"Accessor to the distribution's vector parameter.
+
+Parameters
+----------
+theta : float, sequence of float, :math:`\theta_i > 0, i = 1, \ldots, n+1`"

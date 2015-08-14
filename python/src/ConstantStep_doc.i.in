@@ -1,0 +1,29 @@
+%feature("docstring") OT::ConstantStep
+"Constant step.
+
+Available constructors:
+    ConstantStep(*epsilon=[1.0]*)
+
+Parameters
+----------
+epsilon : sequence of float
+    Finite difference steps for each dimension.
+
+Notes
+-----
+*ConstantStep* defines a list of constant finite difference steps equal to
+*epsilon*.
+
+See also
+--------
+BlendedStep
+
+Examples
+--------
+>>> import openturns as ot
+>>> epsilon = [1e-4, 2e-4]
+>>> steps = ot.ConstantStep(epsilon)
+>>> print(steps([2.]*2))
+[0.0001,0.0002]
+>>> print(steps([0., 3.]))
+[0.0001,0.0002]"

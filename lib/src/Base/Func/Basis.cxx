@@ -1,0 +1,138 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief A collection of numerical math function
+ *
+ *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include "PersistentObjectFactory.hxx"
+#include "Basis.hxx"
+#include "FiniteBasis.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(Basis);
+
+/* Default constructor */
+Basis::Basis()
+  : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(0))
+{
+  // Nothing to do
+}
+
+/* Constructor from a collection */
+Basis::Basis(const Collection<NumericalMathFunction> & coll)
+  : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(coll))
+{
+  // Nothing to do
+}
+
+/* Constructor from a collection */
+Basis::Basis(const UnsignedInteger size)
+  : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(size))
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation */
+Basis::Basis(const BasisImplementation & implementation)
+  : TypedInterfaceObject<BasisImplementation>(implementation.clone())
+{
+  // Nothing to do
+}
+
+
+Basis::operator NumericalMathFunctionCollection() const
+{
+  NumericalMathFunctionCollection coll;
+  for (UnsignedInteger i = 0; i < getSize(); ++ i)
+  {
+    coll.add(build(i));
+  }
+  return coll;
+}
+
+
+/* Constructor from implementation */
+// Basis::Basis(BasisImplementation * p_implementation)
+//   : TypedInterfaceObject<BasisImplementation>(p_implementation->clone())
+// {
+//   // Nothing to do
+// }
+
+/* String converter */
+String Basis::__repr__() const
+{
+//   return OSS(true) << "class=" << GetClassName();
+  return getImplementation()->__repr__();
+}
+
+String Basis::__str__(const String & offset) const
+{
+  return getImplementation()->__str__(offset);
+}
+
+NumericalMathFunction Basis::build(const UnsignedInteger index) const
+{
+  return getImplementation()->build(index);
+}
+
+
+NumericalMathFunction Basis::operator[](const UnsignedInteger index) const
+{
+  return getImplementation()->operator[](index);
+}
+
+NumericalMathFunction & Basis::operator[](const UnsignedInteger index)
+{
+  return getImplementation()->operator[](index);
+}
+
+Basis::NumericalMathFunctionCollection Basis::getSubBasis(const Indices & indices) const
+{
+  return getImplementation()->getSubBasis(indices);
+}
+
+void Basis::add(const NumericalMathFunction & elt)
+{
+  getImplementation()->add(elt);
+}
+
+/* Dimension accessor */
+UnsignedInteger Basis::getDimension() const
+{
+  return getImplementation()->getDimension();
+}
+
+UnsignedInteger Basis::getSize() const
+{
+  return getImplementation()->getSize();
+}
+
+
+Bool Basis::isOrthogonal() const
+{
+  return getImplementation()->isOrthogonal();
+}
+
+Bool Basis::isFunctional() const
+{
+  return getImplementation()->isFunctional();
+}
+
+END_NAMESPACE_OPENTURNS
+

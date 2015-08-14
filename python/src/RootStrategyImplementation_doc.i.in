@@ -1,0 +1,168 @@
+%define OT_RootStrategy_doc
+"Base class for root strategies.
+
+*RootStrategy* is used through its derived classes:
+
+- :class:`~openturns.SafeAndSlow`
+
+- :class:`~openturns.RiskyAndFast`
+
+- :class:`~openturns.MediumSafe`
+
+See also
+--------
+DirectionalSampling"
+%enddef
+%feature("docstring") OT::RootStrategyImplementation
+OT_RootStrategy_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_getMaximumDistance_doc
+"Get the maximum distance.
+
+Returns
+-------
+maximumDistance : positive float
+    Distance from the center of the standard space until which we research an
+    intersection with the limit state function along each direction. By
+    default, the maximum distance is equal to the value defined through the key
+    RootStrategyImplementation-DefaultMaximumDistance of the
+    :class:`~openturns.ResourceMap`."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::getMaximumDistance
+OT_RootStrategy_getMaximumDistance_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_setMaximumDistance_doc
+"Set the maximum distance.
+
+Parameters
+----------
+maximumDistance : positive float
+    Distance from the center of the standard space until which we research an
+    intersection with the limit state function along each direction. By
+    default, the maximum distance is equal to the value defined through the key
+    RootStrategyImplementation-DefaultMaximumDistance of the
+    :class:`~openturns.ResourceMap`."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::setMaximumDistance
+OT_RootStrategy_setMaximumDistance_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_getOriginValue_doc
+"Get the origin value.
+
+Returns
+-------
+origin : float
+    Value of the limit state function at the center of the standard space."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::getOriginValue
+OT_RootStrategy_getOriginValue_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_setOriginValue_doc
+"Set the origin value.
+
+Parameters
+----------
+origin : float
+    Value of the limit state function at the center of the standard space."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::setOriginValue
+OT_RootStrategy_setOriginValue_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_getSolver_doc
+"Get the solver.
+
+Returns
+-------
+solver : :class:`~openturns.Solver`
+    Non linear solver which will research the root in a segment."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::getSolver
+OT_RootStrategy_getSolver_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_setSolver_doc
+"Set the solver.
+
+Parameters
+----------
+solver : :class:`~openturns.Solver`
+    Non linear solver which will research the root in a segment."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::setSolver
+OT_RootStrategy_setSolver_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_getStepSize_doc
+"Get the step size.
+
+Returns
+-------
+stepSize : float
+    Length of each segment inside which the root research is performed. By
+    default, the step size is equal to the value defined through the key
+    RootStrategyImplementation-DefaultStepSize of the
+    :class:`~openturns.ResourceMap`."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::getStepSize
+OT_RootStrategy_getStepSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_setStepSize_doc
+"Set the step size.
+
+Parameters
+----------
+stepSize : float
+    Length of each segment inside which the root research is performed. By
+    default, the step size is equal to the value defined through the key
+    RootStrategyImplementation-DefaultStepSize of the
+    :class:`~openturns.ResourceMap`."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::setStepSize
+OT_RootStrategy_setStepSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RootStrategy_solve_doc
+"Give all the roots found applying the root strategy.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    Function from :math:`\Rset` to :math:`\Rset` along the ray, a linear
+    function along the direction.
+value : float
+
+Returns
+-------
+roots : :class:`~openturns.NumericalScalarCollection`
+    All the roots found applying the root strategy.
+
+    - If :class:`~openturns.SafeAndSlow`:
+      all the real values :math:`x` such as *function(x) = value* researched in
+      each segment of length *stepSize*, within *[origin, maximumDistance]*.
+
+    - If :class:`~openturns.RiskyAndFast`:
+      the real value :math:`x` such as *function(x) = value* researched within
+      *[origin, maximumDistance]*.
+
+    - If :class:`~openturns.MediumSafe`:
+      the real value :math:`x` such as *function(x) = value* researched the
+      first segment of length *stepSize*, within *[origin, maximumDistance]*
+      where a sign changement of function has been detected."
+%enddef
+%feature("docstring") OT::RootStrategyImplementation::solve
+OT_RootStrategy_solve_doc

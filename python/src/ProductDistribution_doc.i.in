@@ -1,0 +1,77 @@
+%feature("docstring") OT::ProductDistribution
+"Product distribution.
+
+Helper class for defining the push-forward distribution of a given univariate distribution by a given scalar function.
+
+Available constructors:
+    ProductDistribution(*distX, distY*)
+
+Parameters
+----------
+
+distX : :class:`~openturns.Distribution`, univariate
+    Independant of `distY`
+
+distY : :class:`~openturns.Distribution`, univariate
+    Independant of `distX`
+
+Returns
+-------
+distZ : :class:`~openturns.Distribution`, univariate
+    :math:`distZ` is the distribution of the random variable :math:`Z = XY` when :math:`(X,Y)` is a random vector with independant copula and respective marginal distributions `distX` and `distY`.
+
+
+Notes
+-----
+We note :math:`Z=XY` the scalar random variable which distribution is :math:`f_Z`.
+ 
+.. math::
+
+    \displaystyle f_Z(z) = \int_{\Rset} f_X (t) f_{Y}(\dfrac{z}{t}) \, \dfrac{dt}{|t|}
+
+with :math:`f_X`,  and :math:`f_Y` the probability density functions of :math:`X`  and :math:`Y`.
+
+Its first moments, if finite, are defined as: 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{Z} & = &  \Expect{X} \Expect{Y} \\
+        \Var{Z} & = & \Expect{X}^2 \Var{Y} +  \Expect{Y}^2 \Var{X} + \Var{X}  \Var{Y} 
+    \end{eqnarray*}
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distX = ot.Normal(-1.0, 1.0)
+>>> distY = ot.Uniform(-1.0, 1.0)
+>>> distZ = ot.ProductDistribution(distX, distY)
+
+
+Draw the PDF:
+
+>>> pdfdistZ = distZ.drawPDF()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProductDistribution::getLeft
+"Accessor to the left distribution of the product.
+
+Returns
+-------
+distX :  :class:`~openturns.Distribution`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProductDistribution::getRight
+"Accessor to the right distribution of the product.
+
+Returns
+-------
+distY :  :class:`~openturns.Distribution`."
+

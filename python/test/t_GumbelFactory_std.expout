@@ -1,0 +1,8 @@
+distribution= class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
+Estimated distribution= class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
+Default distribution= Gumbel(alpha = 1, beta = 0)
+Distribution from parameters= Gumbel(alpha = 2, beta = 2.5)
+Gumbel          = Gumbel(alpha = 2, beta = 2.5)
+Estimated gumbel= Gumbel(alpha = 1.98682, beta = 2.50626)
+Default gumbel= Gumbel(alpha = 1, beta = 0)
+Gumbel from parameters= Gumbel(alpha = 2, beta = 2.5)

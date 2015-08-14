@@ -1,0 +1,13 @@
+hermite=class=HermiteFactory measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+hermite(0)=1
+hermite(1)=X
+hermite(2)=-0.707107 + 0.707107 * X^2
+hermite(3)=-1.22474 * X + 0.408248 * X^3
+hermite(4)=0.612372 - 1.22474 * X^2 + 0.204124 * X^4
+hermite(5)=1.36931 * X - 0.912871 * X^3 + 0.0912871 * X^5
+hermite(6)=-0.559017 + 1.67705 * X^2 - 0.559017 * X^4 + 0.0372678 * X^6
+hermite(7)=-1.47902 * X + 1.47902 * X^3 - 0.295804 * X^5 + 0.0140859 * X^7
+hermite(8)=0.522913 - 2.09165 * X^2 + 1.04583 * X^4 - 0.139443 * X^6 + 0.00498012 * X^8
+hermite(9)=1.56874 * X - 2.09165 * X^3 + 0.627495 * X^5 - 0.0597614 * X^7 + 0.00166004 * X^9
+hermite(10) roots=class=NumericalPoint name=Unnamed dimension=10 values=[-4.85946,-3.58182,-2.48433,-1.46599,-0.484936,0.484936,1.46599,2.48433,3.58182,4.85946]
+hermite(10) nodes=class=NumericalPoint name=Unnamed dimension=10 values=[-4.85946,-3.58182,-2.48433,-1.46599,-0.484936,0.484936,1.46599,2.48433,3.58182,4.85946] and weights=class=NumericalPoint name=Unnamed dimension=10 values=[4.31065e-06,0.000758071,0.0191116,0.135484,0.344642,0.344642,0.135484,0.0191116,0.000758071,4.31065e-06]

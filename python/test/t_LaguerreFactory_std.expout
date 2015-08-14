@@ -1,0 +1,15 @@
+laguerre= class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=2.5 lambda=1 gamma=0
+laguerre= class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=3.5 lambda=1 gamma=0
+laguerre= class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=3.5 lambda=1 gamma=0
+laguerre( 0 )= 1
+laguerre( 1 )= -1.87083 + 0.534522 * X
+laguerre( 2 )= 2.80624 - 1.60357 * X + 0.178174 * X^2
+laguerre( 3 )= -3.79967 + 3.25686 * X - 0.723747 * X^2 + 0.0438634 * X^3
+laguerre( 4 )= 4.84365 - 5.5356 * X + 1.8452 * X^2 - 0.223661 * X^3 + 0.00860233 * X^4
+laguerre( 5 )= -5.93223 + 8.47462 * X - 3.7665 * X^2 + 0.684818 * X^3 - 0.0526783 * X^4 + 0.00140475 * X^5
+laguerre( 6 )= 7.06077 - 12.1042 * X + 6.72454 * X^2 - 1.63019 * X^3 + 0.188099 * X^4 - 0.010032 * X^5 + 0.000196705 * X^6
+laguerre( 7 )= -8.22555 + 16.4511 * X - 10.9674 * X^2 + 3.32345 * X^3 - 0.511301 * X^4 + 0.0409041 * X^5 - 0.00160408 * X^6 + 2.41215e-05 * X^7
+laguerre( 8 )= 9.42355 - 21.5395 * X + 16.753 * X^2 - 6.09199 * X^3 + 1.17154 * X^4 - 0.124964 * X^5 + 0.00735082 * X^6 - 0.000221077 * X^7 + 2.63187e-06 * X^8
+laguerre( 9 )= -10.6523 + 27.3916 * X - 24.3481 * X^2 + 10.3295 * X^3 - 2.38373 * X^4 + 0.31783 * X^5 - 0.0249278 * X^6 + 0.00112456 * X^7 - 2.67753e-05 * X^8 + 2.58699e-07 * X^9
+laguerre(10) roots= class=NumericalPoint name=Unnamed dimension=10 values=[0.711476,1.78548,3.31448,5.33305,7.89076,11.0617,14.961,19.7822,25.8977,34.2622]
+laguerre(10) nodes= [0.711476,1.78548,3.31448,5.33305,7.89076,11.0617,14.961,19.7822,25.8977,34.2622]#10 and weights= [0.0540126,0.27873,0.386588,0.217442,0.0561105,0.00675159,0.000357814,7.2229e-06,4.05914e-08,2.8002e-11]#10

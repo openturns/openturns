@@ -1,0 +1,9 @@
+%feature("docstring") OT::TriangularFactory
+"Triangular factory.
+
+Available constructor:
+    TriangularFactory()
+
+See also
+--------
+DistributionFactory"

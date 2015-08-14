@@ -1,0 +1,9 @@
+%feature("docstring") OT::TrapezoidalFactory
+"Trapezoidal factory.
+
+Available constructor:
+    TrapezoidalFactory()
+
+See also
+--------
+DistributionFactory"

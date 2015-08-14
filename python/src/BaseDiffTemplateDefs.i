@@ -1,0 +1,2 @@
+// SWIG file BaseDiffTemplateDefs.i
+

@@ -1,0 +1,171 @@
+%feature("docstring") OT::LevelSet
+"Level set.
+
+Available constructors:
+    LevelSet(*dim=1*)
+
+    LevelSet(*function=ot.NumericalMathFunction('x', '1.'), level=0.*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    Dimension of the LevelSet.
+function : :class:`~openturns.NumericalMathFunction`
+    A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
+    LevelSet.
+level : float
+    Level :math:`s` defining the LevelSet.
+
+Notes
+-----
+A LevelSet is a :class:`~openturns.Domain` defined as follows:
+
+.. math::
+
+    \{ \vect{x} \in \Rset^{dim} \, | \, f(\vect{x}) \leq s \}
+
+Examples
+--------
+>>> import openturns as ot
+>>> function = ot.NumericalMathFunction(['x1', 'x2'], ['x1^4 + x2^4'])
+>>> s = 1.0
+>>> levelSet = ot.LevelSet(function, s)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::intersect
+"Return the levelSet equals to the intersection between the LevelSet and another one.
+
+Parameters
+----------
+otherLevelSet :
+    A LevelSet defined by :math:`(f_2, s_2)`.
+
+Returns
+-------
+levelSet : :class:`~openturns.LevelSet`
+    *levelSet* equals to the intersection between the LevelSet and
+    *otherLevelSet* i.e. *levelSet* is defined by:
+    :math:`\{\vect{x} \in \Rset^{dim} | f(\vect{x}) \leq s \, \mbox{and} \, f_2(\vect{x}) \leq s_2\}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # First level set
+>>> function = ot.NumericalMathFunction(['x'], ['3*x-1'])
+>>> levelSet1 = ot.LevelSet(function, 0.5)
+>>> # Second level set
+>>> function = ot.NumericalMathFunction(['x'], ['x'])
+>>> levelSet2 = ot.LevelSet(function, 0.5)
+>>> # Intersection between levelSet1 and levelSet2
+>>> intersection = levelSet1.intersect(levelSet2)
+>>> # Tests
+>>> print(intersection.contains([1.]))
+False
+>>> print(intersection.contains([0.25]))
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::join
+"Return the levelSet equals to the union between the LevelSet and another one.
+
+Parameters
+----------
+otherLevelSet :
+    A LevelSet defined by :math:`(f_2, s_2)`.
+
+Returns
+-------
+levelSet : :class:`~openturns.LevelSet`
+    *levelSet* equals to the union between the LevelSet and *otherLevelSet*
+    i.e. *levelSet* is defined by:
+    :math:`\{\vect{x} \in \Rset^{dim} | f(\vect{x}) \leq s \, \mbox{or} \, f_2(\vect{x}) \leq s_2\}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # First level set
+>>> function = ot.NumericalMathFunction(['x'], ['3*x-1'])
+>>> levelSet1 = ot.LevelSet(function, 0.)
+>>> # Second level set
+>>> function = ot.NumericalMathFunction(['x'], ['x'])
+>>> levelSet2 = ot.LevelSet(function, 0.)
+>>> # Union between levelSet1 and levelSet2
+>>> join = levelSet1.join(levelSet2)
+>>> # Tests
+>>> print(join.contains([0.5]))
+False
+>>> print(join.contains([0.25]))
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::getFunction
+"Get the function defining the level set.
+
+Returns
+-------
+function : :class:`~openturns.NumericalMathFunction`
+    A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
+    LevelSet.
+
+Examples
+--------
+>>> import openturns as ot
+>>> function = ot.NumericalMathFunction(['x'], ['3*x-1'])
+>>> levelSet = ot.LevelSet(function, 0.)
+>>> print(levelSet.getFunction().getEvaluation())
+[x]->[3*x-1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::setFunction
+"Set the function defining the level set.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
+    LevelSet.
+
+Examples
+--------
+>>> import openturns as ot
+>>> levelSet = ot.LevelSet()
+>>> function = ot.NumericalMathFunction(['x'], ['3*x-1'])
+>>> levelSet.setFunction(function)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::getLevel
+"Get the level defining the level set.
+
+Returns
+-------
+level : float
+    Level :math:`s` defining the LevelSet.
+
+Examples
+--------
+>>> import openturns as ot
+>>> function = ot.NumericalMathFunction(['x'], ['3*x-1'])
+>>> levelSet = ot.LevelSet(function, 0.)
+>>> print(levelSet.getLevel())
+0.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::setLevel
+"Set the level defining the level set.
+
+Parameters
+----------
+level : float
+    Level :math:`s` defining the LevelSet.
+
+Examples
+--------
+>>> import openturns as ot
+>>> levelSet = ot.LevelSet()
+>>> levelSet.setLevel(3.)"

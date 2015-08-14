@@ -1,0 +1,65 @@
+%feature("docstring") OT::Bernoulli
+"Bernoulli distribution.
+
+Available constructors:
+    Bernoulli(*p=0.5*)
+
+Parameters
+----------
+p : float, :math:`0 \leq p \leq 1`
+    Success probability.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Prob{X = 1} & = & p \\
+        \Prob{X = 0} & = & 1 - p
+    \end{eqnarray*}
+
+with :math:`0 \leq p \leq 1`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & p \\
+        \Var{X} & = & p\,(1 - p)
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Bernoulli(.2)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bernoulli::getP
+"Accessor to the distribution's *success probability* parameter.
+
+Returns
+-------
+p : float
+    Success probability."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bernoulli::setP
+"Accessor to the distribution's *success probability* parameter.
+
+Parameters
+----------
+p : float, :math:`0 \leq p \leq 1`
+    Success probability."

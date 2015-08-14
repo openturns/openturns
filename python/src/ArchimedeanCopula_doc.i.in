@@ -1,0 +1,93 @@
+%feature("docstring") OT::ArchimedeanCopula
+"Base class for bivariate Archimedean copulas.
+
+Notes
+-----
+The bivariate Archimedean copulas are defined by:
+
+.. math::
+
+    C(u_1, u_2; \theta) = \varphi^{-1}(\varphi(u_1; \theta) + \varphi(u_2; \theta); \theta)
+
+where :math:`\varphi` is the generator of the copula, a continous, strictly
+decreasing and convex function from :math:`[0, 1]\times \theta` to
+:math:`[0, \infty)` such that :math:`\varphi(1; \theta)=0`. :math:`\varphi^{-1}`
+is the pseudo-inverse of the generator function defined by:
+
+.. math::
+
+    \varphi^{-1}(t; \theta) = \left\{
+                      \begin{array}{ll}
+                      \displaystyle \varphi^{-1}(t; \theta)
+                          & \text{ if } 0 \leq t \leq \varphi(0; \theta)\\
+                      \displaystyle 0 & \text{ if } \varphi(0; \theta) \leq t \leq \infty
+                      \end{array}
+                              \right.
+
+
+An ArchimedeanCopula object can be used only through its derived classes:
+
+- :class:`~openturns.AliMikhailHaqCopula`
+- :class:`~openturns.ClaytonCopula`
+- :class:`~openturns.FrankCopula`
+- :class:`~openturns.GumbelCopula`
+
+See also
+--------
+Copula"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ArchimedeanCopula::computeArchimedeanGenerator
+"Compute the Archimedean generator :math:`\varphi`.
+
+Parameters
+----------
+t : float
+
+Returns
+-------
+result : float
+    The Archimedean generator :math:`\varphi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ArchimedeanCopula::computeArchimedeanGeneratorDerivative
+"Compute the derivative of the Archimedean generator.
+
+Parameters
+----------
+t : float
+
+Returns
+-------
+result : float
+    The derivative of the Archimedean generator :math:`\varphi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative
+"Compute the seconde derivative of the Archimedean generator.
+
+Parameters
+----------
+t : float
+
+Returns
+-------
+result : float
+    The seconde derivative of the Archimedean generator :math:`\varphi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ArchimedeanCopula::computeInverseArchimedeanGenerator
+"Compute the inverse of the Archimedean generator.
+
+Parameters
+----------
+t : float
+
+Returns
+-------
+result : float
+     :math:`\varphi^{-1}` the inverse of the Archimedean generator."

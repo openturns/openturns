@@ -1,0 +1,104 @@
+%feature("docstring") OT::HyperbolicAnisotropicEnumerateFunction
+"Hyperbolic and anisotropic enumerate function.
+
+Available constructors:
+    HyperbolicAnisotropicEnumerateFunction(*dim*)
+
+    HyperbolicAnisotropicEnumerateFunction(*dim, q*)
+
+    HyperbolicAnisotropicEnumerateFunction(*weight*)
+
+    HyperbolicAnisotropicEnumerateFunction(*weight, q*)
+
+Parameters
+----------
+dim : integer
+    Dimension of the :class:`~openturns.EnumerateFunction`. *dim* must be equal
+    to the dimension of the :class:`~openturns.OrthogonalBasis`.
+q : float
+    Correspond to the q-quasi norm parameter. If not precised, :math:`q = 0.4`.
+weight : sequence of float
+    Weights of the indices in each dimension. If not precised, all weights are
+    equals to :math:`w_i = 1`.
+
+See also
+--------
+EnumerateFunction, LinearEnumerateFunction
+
+Notes
+-----
+The hyperbolic truncation strategy is inspired by the so-called sparsity-of-
+effects principle, which states that most models are principally governed by
+main effects and low-order interactions. Accordingly, one wishes to define an
+enumeration strategy which first selects those multi-indices related to main
+effects, i.e. with a reasonably small number of nonzero components, prior to
+selecting those associated with higher-order interactions.
+
+For any real number :math:`q \in ]0, 1]`, one defines the anisotropic hyperbolic
+norm of a multi-index :math:`a` by:
+
+.. math::
+    
+    \| \vect{a} \|_{\vect{w}, q} = \left( \sum_{i=1}^{n_X} w_i a^q \right)^{1/q}
+
+where the :math:`w_i`'s are real positive numbers. This would lead to first
+select the basis polynomials depending on a specific subset of input variables.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # 4-dimensional case
+>>> enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(2, 0.5)
+>>> for i in range(10):
+...     print(enumerateFunction(i))
+[0,0]
+[1,0]
+[0,1]
+[2,0]
+[0,2]
+[3,0]
+[0,3]
+[1,1]
+[4,0]
+[0,4]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HyperbolicAnisotropicEnumerateFunction::getQ
+"Accessor to the norm.
+
+Returns
+-------
+q : float
+    q-quasi norm parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HyperbolicAnisotropicEnumerateFunction::getWeight
+"Accessor to the weights.
+
+Returns
+-------
+w : :class:`~openturns.NumericalPoint`
+    Weights of the indices in each dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HyperbolicAnisotropicEnumerateFunction::setQ
+"Accessor to the norm.
+
+Parameters
+----------
+q : float
+    q-quasi norm parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HyperbolicAnisotropicEnumerateFunction::setWeight
+"Accessor to the weights.
+
+Parameters
+----------
+w : sequence of float
+    Weights of the indices in each dimension."

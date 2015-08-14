@@ -1,0 +1,131 @@
+%feature("docstring") OT::Gumbel
+"Gumbel distribution.
+
+Available constructors:
+    Gumbel(*arg1=1.0, arg2=0., parameters_set=ot.Gumbel.ALPHABETA*)
+
+Parameters
+----------
+arg1 : float
+    If `parameters_set == ot.Gumbel.ALPHABETA`: scale parameter :math:`\alpha > 0`.
+
+    If `parameters_set == ot.Gumbel.AB`: location parameter :math:`a = \beta`.
+
+    If `parameters_set == ot.Gumbel.MUSIGMA`: mean.
+arg2 : float
+    If `parameters_set == ot.Gumbel.ALPHABETA`: location parameter :math:`\beta`.
+
+    If `parameters_set == ot.Gumbel.AB`: scale parameter :math:`b = 1 / \alpha > 0`.
+
+    If `parameters_set == ot.Gumbel.MUSIGMA`: standard deviation :math:`\sigma > 0`.
+parameters_set : int, optional
+    Integer telling which parameters set is used for defining the
+    distribution (amongst `ot.Gumbel.ALPHABETA, ot.Gumbel.AB, ot.Gumbel.MUSIGMA`).
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \alpha
+             \exp\left[- \alpha (x - \beta)
+                       - \exp\left(- \alpha (x - \beta)\right)\right],
+             \quad x \in \Rset
+
+with :math:`\alpha > 0` and :math:`\beta \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \beta + \frac{\gamma}{\alpha} \\
+        \Var{X} & = & \frac{\pi^2}{6 \alpha^2}
+    \end{eqnarray*}
+
+where :math:`\gamma` is the Euler-Mascheroni constant.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Gumbel(1., 0.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::getAlpha
+"Accessor to the distribution's scale parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Scale parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::getBeta
+"Accessor to the distribution's location parameter :math:`\beta`.
+
+Returns
+-------
+beta : float
+    Location parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::getSigma
+"Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::setAlpha
+"Accessor to the distribution's scale parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Scale parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::setBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\beta \in \Rset`
+    Location parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gumbel::setMuSigma
+"Accessor to the distribution's mean and standard deviation.
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

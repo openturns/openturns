@@ -1,0 +1,85 @@
+%feature("docstring") OT::Laplace
+"Laplace distribution.
+
+Available constructors:
+    Laplace(*lambda=1.0, mu=0.*)
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Scale parameter :math:`\lambda`.
+mu : float
+    Location parameter :math:`\mu`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\lambda}{2}
+             \exp\left(- \lambda |x - \mu|\right),
+             \quad x \in \Rset
+
+with :math:`\lambda > 0` and :math:`\mu \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \mu \\
+        \Var{X} & = & \frac{2}{\lambda^2}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Laplace(1., 0.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Laplace::getLambda
+"Accessor to the distribution's scale parameter :math:`\lambda`.
+
+Returns
+-------
+lambda : float
+    Scale parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Laplace::getMu
+"Accessor to the distribution's location parameter :math:`\mu`.
+
+Returns
+-------
+mu : float
+    Location parameter :math:`\mu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Laplace::setLambda
+"Accessor to the distribution's scale parameter :math:`\lambda`.
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Scale parameter :math:`\lambda`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Laplace::setMu
+"Accessor to the distribution's location parameter :math:`\mu`.
+
+Parameters
+----------
+mu : float, :math:`\mu \in \Rset`
+    Location parameter :math:`\mu`."

@@ -1,0 +1,4 @@
+myAlgo=class=Brent derived from class=SolverImplementation absoluteError=1e-05 relativeError=1e-05 residualError=1e-08 maximumFunctionEvaluation=100 usedFunctionEvaluation=0
+Solve x-cos(x)=0 for x
+x=0.73908
+myAlgo=class=Brent derived from class=SolverImplementation absoluteError=1e-05 relativeError=1e-05 residualError=1e-08 maximumFunctionEvaluation=100 usedFunctionEvaluation=8

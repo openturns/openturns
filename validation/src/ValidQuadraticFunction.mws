@@ -1,0 +1,67 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 397 "restart:\nwith(Line
+arAlgebra):\ncenter:=<-1,1/2,1>;\nconst:=<-1,2>;\nLinear:=<<1,2,3>|<4,
+5,6>>;\nQuadratic:=array(1..2):\nQuadratic[1]:=<<7,8,9>|<8,10,11>|<9,1
+1,12>>;\nQuadratic[2]:=<<-7,-8,-9>|<-8,-10,-11>|<-9,-11,-12>>;\nPoint:
+=<7,8,9>;\nres:=const+Transpose(Linear).(Point-center)+1/2*<Transpose(
+Point-center).Quadratic[1].(Point-center),Transpose(Point-center).Quad
+ratic[2].(Point-center)>;\nevalf(res);" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%'centerG-%'RTABLEG6%\"*?27N\"-%'MATRIXG6#7%7#!\"\"7##\"\"\"\"
+\"#7#F1&%'VectorG6#%'columnG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&con
+stG-%'RTABLEG6%\"*g72O\"-%'MATRIXG6#7$7#!\"\"7#\"\"#&%'VectorG6#%'colu
+mnG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%'LinearG-%'RTABLEG6%\"*[09O\"
+-%'MATRIXG6#7%7$\"\"\"\"\"%7$\"\"#\"\"&7$\"\"$\"\"'%'MatrixG" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>&%*QuadraticG6#\"\"\"-%'RTABLEG6%\"*gK;O\"-
+%'MATRIXG6#7%7%\"\"(\"\")\"\"*7%F2\"#5\"#67%F3F6\"#7%'MatrixG" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>&%*QuadraticG6#\"\"#-%'RTABLEG6%\"*#
+\\nh8-%'MATRIXG6#7%7%!\"(!\")!\"*7%F2!#5!#67%F3F6!#7%'MatrixG" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&PointG-%'RTABLEG6%\"*g6$e8-%'MATRIX
+G6#7%7#\"\"(7#\"\")7#\"\"*&%'VectorG6#%'columnG" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%$resG-%'RTABLEG6%\"*+!\\m8-%'MATRIXG6#7$7##\"&01\"\"
+\"%7##!%V**F0&%'VectorG6#%'columnG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#
+-%'RTABLEG6%\"*k$fm8-%'MATRIXG6#7$7#$\"+++D^E!\"'7#$!+++v&[#F.&%'Vecto
+rG6#%'columnG" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}
+{MARK "0 0 0" 103 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 
+2 33 1 1 }{RTABLE_HANDLES 135120720 136071260 136140548 136163260 
+136167492 135831160 136649000 136659364 }{RTABLE 
+M7R0
+I6RTABLE_SAVE/135120720X*%)anythingG6"6"[gl!#%!!!"$"$!""#"""""#F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136071260X*%)anythingG6"6"[gl!#%!!!"#"#!""""#F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136140548X,%)anythingG6"6"[gl!"%!!!#'"$"#"""""#""$""%""&""'F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136163260X,%)anythingG6"6"[gl!"%!!!#*"$"$""("")""*F("#5"#6F)F+"#7
+F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136167492X,%)anythingG6"6"[gl!"%!!!#*"$"$!"(!")!"*F(!#5!#6F)F+!#7
+F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135831160X*%)anythingG6"6"[gl!#%!!!"$"$""("")""*F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136649000X*%)anythingG6"6"[gl!#%!!!"#"##"&01"""%#!%V**F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136659364X*%)anythingG6"6"[gl!#%!!!"#"#$"+++D^E!"'$!+++v&[#F)F&
+}
+

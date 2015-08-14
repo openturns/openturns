@@ -1,0 +1,46 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 425 "restart:\nDigits:=2
+0:\ndim:=4;\nassume(t>0);\nThr:=1.0;\nf:=1/2*sum(x[i]^2,i=0..dim-1):\n
+g:=sum((x[i]-i)^2,i=0..dim-1)-Thr;\nL:=f+lambda*g:\nvars:=seq(x[i],i=0
+..dim-1),lambda:\nsysteme:=seq(diff(L,vars[i]),i=1..dim+1):\nsol:=solv
+e(\{systeme\},\{vars\}):\nfor j from 1 to 2 do\n  res[j]:=subs(sol[j],
+[seq(vars[i],i=1..dim)]):\nod:\nif sum(res[1][i]^2,i=1..dim) < sum(res
+[2][i]^2,i=1..dim) then\n  print([1,res[1]]);\nelse\n  print([2,res[2]
+]);\nfi:" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$dimG\"\"%" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#>%$ThrG$\"#5!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%\"gG,,*$)&%\"xG6#\"\"!\"\"#\"\"\"F-*$),&&F)6#F-F-F-!\"\"F,F-F-
+*$),&&F)6#F,F-F,F3F,F-F-*$),&&F)6#\"\"$F-F>F3F,F-F-$\"#5F3F3" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#7$\"\"\"7&$\"\"!F'$\"5K:cd(3e(QFt!#?$\"51B^^
+<;vZl9!#>$\"5f%osiUF;#)>#F-" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 
+34 "expand(subs(allvalues(sol),x[5]));" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#&%\"xG6#\"\"&" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 17 "ifac
+tor(3795/23);" }}{PARA 0 "> " 0 "" {MPLTEXT 1 0 24 "factor(sum(i^2,i=0
+..N));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*(-%!G6#\"\"$\"\"\"-F%6#\"\"
+&F(-F%6#\"#6F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$**\"\"'!\"\"%\"NG
+\"\"\",&F'F(F(F(F(,&*&\"\"#F(F'F(F(F(F(F(F(" }}}{EXCHG {PARA 0 "> " 0 
+"" {MPLTEXT 1 0 20 "sum(i^2,i=0..dim-1);" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#\"#9" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 19 "ss:=allvalues(sol);" }}{PARA 12 "" 
+1 "" {XPPMATH 20 "6#>%#ssG6$<'/&%\"xG6#\"\"\",$**,&%#t|irGF+*$,**&F/F+
+)&%\"vG6#\"\"!\"\"#F+F+*&F/F+)&F5F*F8F+F+*&F/F+)&F56#F8F8F+F+*&F/F+)&F
+56#\"\"$F8F+F+#F+F8!\"\"F+F/FFF;F+,&F+F+*&F.F+F/FFFFFFFF/%'lambdaG,$*&
+#F+F8F+FHF+FF/&F)FC,$**F.F+F/FFFBF+FGFFFF/&F)F?,$**F.F+F/FFF>F+FGFFFF/
+&F)F6,$**F.F+F/FFF4F+FGFFFF<'/FJ,$*&#F+F8F+*&,&F/F+F0F+F+F/FFF+FF/FO,$
+**FjnF+F/FFFBF+,&F+F+FinFFFFFF/FS,$**FjnF+F/FFF>F+F^oFFFF/F(,$**FjnF+F
+/FFF;F+F^oFFFF/FW,$**FjnF+F/FFF4F+F^oFFFF" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 51 "factor(subs(ss[1],x[1]));\nfactor(subs(ss[2],x[1]))
+;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*(,&%#t|irG\"\"\"*$*&F&F',**$)&
+%\"vG6#\"\"!\"\"#F'F'*$)&F.6#F'F1F'F'*$)&F.6#F1F1F'F'*$)&F.6#\"\"$F1F'
+F'F'#F'F1!\"\"F'F4F'F)#F@F1F@" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*(,&%
+#t|irG\"\"\"*$*&F%F&,**$)&%\"vG6#\"\"!\"\"#F&F&*$)&F-6#F&F0F&F&*$)&F-6
+#F0F0F&F&*$)&F-6#\"\"$F0F&F&F&#F&F0F&F&F3F&F(#!\"\"F0" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1 0 0" 0 }{VIEWOPTS 1 
+1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

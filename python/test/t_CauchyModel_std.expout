@@ -1,0 +1,14 @@
+myDefautModel =  class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
+myModel =  class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
+spectral density matrix at f =  1.0  :  [[ (0.049409,0) ]]
+spectral density matrix at f =  10.0  :  [[ (0.000506478,0) ]]
+mySecondOrderModel =  class=CauchyModel amplitude=[1,1,1] scale=[1,2,3] spatial correlation=
+[[ 1    1    0    ]
+ [ 1    1    0.25 ]
+ [ 0    0.25 1    ]]
+myHighModel =  class=CauchyModel amplitude=[1,1,1] scale=[1,2,3] spatial correlation=
+[[ 1    1    0    ]
+ [ 1    1    0.25 ]
+ [ 0    0.25 1    ]]
+spectral density matrix at f =  1.0  :  [[ (0.049409,0) ]]
+spectral density matrix at f =  10.0  :  [[ (0.000506478,0) ]]

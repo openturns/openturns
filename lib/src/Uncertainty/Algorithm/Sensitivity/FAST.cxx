@@ -1,0 +1,190 @@
+//                                               -*- C++ -*-
+/**
+ * @brief FAST implements the sensivity analysis method based on fourier decomposition
+ *
+ *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include <cmath>
+
+#include "FAST.hxx"
+#include "RandomGenerator.hxx"
+#include "FFT.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/* Constructor with model */
+FAST::FAST(const NumericalMathFunction & model,
+           const Distribution & inputsDistribution,
+           const UnsignedInteger samplingSize,
+           const UnsignedInteger resamplingSize,
+           const UnsignedInteger interferenceFactor)
+  : model_(model),
+    inputsDistribution_(inputsDistribution),
+    samplingSize_(samplingSize),
+    resamplingSize_(resamplingSize),
+    interferenceFactor_(interferenceFactor),
+    alreadyComputedIndices_(false)
+{
+  if (inputsDistribution_.getDimension() != model_.getInputDimension())
+    throw InvalidArgumentException(HERE) << "Error: The distribution's dimension " << inputsDistribution_.getDimension()
+                                         << " must be equal to the model's number of inputs " << model_.getInputDimension() << ".";
+  if (resamplingSize_ < 1) throw InvalidArgumentException(HERE) << "Error: The number of resamplings must be greater or equal than 0, here Nr=" << resamplingSize_ << ".";
+
+  if (interferenceFactor_ < 1) throw InvalidArgumentException(HERE) << "Error: The interference factor is necessarily greater than 0, here M=" << interferenceFactor_ << ".";
+
+  if (samplingSize_ - 1 < 4 * interferenceFactor_ * interferenceFactor_ )
+    throw InvalidArgumentException(HERE) << "Error: It is necessary that 4*M^2 <= N-1 to compute a valid set of frequencies.";
+
+  if (!inputsDistribution.hasIndependentCopula())
+    throw InvalidArgumentException(HERE) << "Error: Cannot use FAST method with distributions having a non-independent copula.";
+}
+
+/* Compute all the FAST indices */
+void FAST::run() const
+{
+  // Model dimensions
+  const UnsignedInteger nbIn = model_.getInputDimension();
+  const UnsignedInteger nbOut = model_.getOutputDimension();
+
+  // Allocate indices
+  firstOrderIndice_ = NumericalSample(nbOut, nbIn);
+  totalOrderIndice_ = NumericalSample(nbOut, nbIn);
+
+  // Sample of s-space
+  NumericalPoint s(samplingSize_);
+  for ( UnsignedInteger i = 1; i < samplingSize_; ++ i ) s[i] = 2. * M_PI * i / samplingSize_;
+
+  // Set of frequencies definition
+  Indices w_i_0(nbIn);
+  UnsignedInteger omega = (samplingSize_ - 1) / (2 * interferenceFactor_);
+  //  omega_{-i} = omega / (2 * interferenceFactor_):;
+  UnsignedInteger max_w_l = (samplingSize_ - 1) / (4 * interferenceFactor_ * interferenceFactor_);
+
+  w_i_0[0] = omega;
+  if ( max_w_l >= nbIn - 1 )
+  {
+    const NumericalScalar step = (max_w_l - 1.) / (nbIn - 2.);
+    for ( UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp )
+      w_i_0[inp + 1] = inp * step + 1;
+    w_i_0[nbIn - 1] = max_w_l;
+  }
+  else
+  {
+    for ( UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp )
+      w_i_0[inp + 1] = inp % max_w_l + 1;
+  }
+
+  // Initializations
+  NumericalSample D_i(nbOut, nbIn);
+  NumericalSample D_l(nbOut, nbIn);
+
+  // For each input, compute first order and total order indices for each model's output
+  for ( UnsignedInteger inp = 0; inp < nbIn; ++ inp )
+  {
+    NumericalPoint D(nbOut, 0.);
+
+    // Frequencies assignment
+    Indices w_i(w_i_0);
+    w_i[inp] = omega;
+    for ( UnsignedInteger i = 0; i < inp; ++ i )
+      w_i[i] = w_i_0[i + 1];
+
+    // Loop of resampling
+    for ( UnsignedInteger t = 0; t < resamplingSize_; ++ t )
+    {
+      // Random phase-shift
+      NumericalPoint phi_i(nbIn);
+      for ( UnsignedInteger i = 0; i < nbIn; ++ i )
+        phi_i[i] = 2. * M_PI * RandomGenerator::Generate();
+
+      NumericalPoint xi_s(nbIn);
+      NumericalSample y(nbOut, samplingSize_);
+
+      for ( UnsignedInteger j = 0; j < samplingSize_; ++ j )
+      {
+        // Search-curve x_i(s)=g_i(w_i,s) definition
+        for ( UnsignedInteger i = 0; i < nbIn; ++ i )
+        {
+          const NumericalScalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[j] + phi_i[i])) / M_PI;
+          xi_s[i] = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
+        }
+
+        // Model evaluations
+        for ( UnsignedInteger out = 0; out < nbOut; ++ out )
+          y[out][j] = model_(xi_s)[out];
+      }
+
+      // For each model's output
+      for ( UnsignedInteger out = 0; out < nbOut; ++ out )
+      {
+        // Fourier transformation
+        NumericalComplexCollection coefficients(fftAlgorithm_.transform(y[out]));
+
+        // Total variance
+        for ( UnsignedInteger j = 0; j < (samplingSize_ - 1) / 2; ++ j )
+          D[out] += std::norm(coefficients[j + 1]);
+
+        // Partial variance of all factors except the factor of interest
+        for ( UnsignedInteger j = 0; j < omega / 2; ++ j )
+          D_l[out][inp] += std::norm(coefficients[j + 1]);
+
+        // Partial variance of the factor of interest
+        for ( UnsignedInteger j = 0; j < interferenceFactor_; ++ j )
+          D_i[out][inp] += std::norm(coefficients[(j + 1) * omega]);
+      }
+    }
+    // When all resamplings are realised: save the indices
+    for ( UnsignedInteger out = 0; out < nbOut; ++ out )
+    {
+      firstOrderIndice_[out][inp] = D_i[out][inp] / D[out];
+      totalOrderIndice_[out][inp] = 1. - D_l[out][inp] / D[out];
+    }
+  }
+  alreadyComputedIndices_ = true;
+}
+
+/* First order indices accessor */
+NumericalPoint FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
+{
+  if (!alreadyComputedIndices_) run();
+
+  if (marginalIndex >= firstOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << firstOrderIndice_.getSize();
+  return firstOrderIndice_[marginalIndex];
+}
+
+/* Total order indices accessor */
+NumericalPoint FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+{
+  if (!alreadyComputedIndices_) run();
+  if (marginalIndex >= totalOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << totalOrderIndice_.getSize();
+  return totalOrderIndice_[marginalIndex];
+}
+
+
+/* FFT algorithm accessor */
+FFT FAST::getFFTAlgorithm() const
+{
+  return fftAlgorithm_;
+}
+
+void FAST::setFFTAlgorithm(const FFT & fft)
+{
+  fftAlgorithm_ = fft;
+}
+
+END_NAMESPACE_OPENTURNS

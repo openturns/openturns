@@ -1,0 +1,8 @@
+Distribution          = Dirac(point = [0.7])
+Estimated distribution= Dirac(point = [0.7])
+Default distribution= Dirac(point = [0])
+Distribution from parameters= Dirac(point = [0.7])
+Dirac          = Dirac(point = [0.7])
+Estimated dirac= Dirac(point = [0.7])
+Default dirac= Dirac(point = [0])
+Dirac from parameters= Dirac(point = [0.7])

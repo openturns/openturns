@@ -1,0 +1,43 @@
+%feature("docstring") OT::LegendreFactory
+"Legendre specific orthonormal univariate polynomial family.
+
+For the :class:`~openturns.Uniform` distribution.
+
+Available constructor:
+    LegendreFactory()
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+
+The recurrence coefficients for the Legendre polynomials come analytically and
+read:
+
+.. math::
+
+    \begin{array}{rcl}
+        a_i & = & \displaystyle \frac{\sqrt{(2 i + 1) (2 i + 3)}}
+                                     {i + 1} \\
+        b_i & = & 0 \\
+        c_i & = & \displaystyle - \frac{i \sqrt{2 i + 3}}
+                                       {(i + 1) \sqrt{2 i - 1}}
+    \end{array}, \quad 1 < i
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.LegendreFactory()
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+1.73205 * X
+-1.11803 + 3.3541 * X^2"

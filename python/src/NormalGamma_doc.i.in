@@ -1,0 +1,132 @@
+%feature("docstring") OT::NormalGamma
+"NormalGamma distribution.
+
+Helper class for defining the distribution of the random vector :math:`(X,Y)` where :math:`Y` follows the distribution :math:`\Gamma(\alpha, \beta)` with :math:`\alpha>0` and :math:`\beta>0`, :math:`X|Y` follows the distribution :math:`\mathcal{N}\left(\mu, \dfrac{1}{\sqrt{\kappa Y}}\right)`.
+
+Available constructor:
+   NormalGamma(*mu, kappa, alpha, beta*)
+
+Parameters
+----------
+
+mu : float :math:`\mu`,
+     Mean of the conditioned Normal distribution of :math:`X|Y`.
+     Default is :math:`\mu=0.`
+
+kappa : float  :math:`\kappa >0`,
+     Scale parameter of the precision (ie the inverse of the variance) of the conditioned Normal distribution of :math:`X|Y`.
+     Default is :math:`\kappa=1.`
+
+alpha : float  :math:`\alpha >0`,
+     Shape parameter of the conditioning Gamma distribution of :math:`Y`.
+     Default is :math:`\alpha=1.`
+
+beta : float  :math:`\beta >0`,
+     Rate parameter of the conditioning Gamma distribution of :math:`Y`.
+     Default is :math:`\beta=1.`
+
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{(X,Y)}(x,y) = \dfrac{\Gamma(\alpha)}{\beta^\alpha}\sqrt{\dfrac{2\pi}{\kappa}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.NormalGamma(1.0, 2.0, 1.0, 1.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::getAlpha
+"Accessor to the parameter alpha.
+
+Returns
+-------
+alpha : float, :math:`\alpha`, :math:`\alpha >0`
+        Shape parameter of the conditioning Gamma distribution of :math:`Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::getBeta
+"Accessor to the parameter beta.
+
+Returns
+-------
+beta : float, :math:`\beta`, :math:`\beta >0`
+       Rate parameter of the conditioning Gamma distribution of :math:`Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::getKappa
+"Accessor to the parameter kappa.
+
+Returns
+-------
+kappa : float, :math:`\kappa`, :math:`\kappa >0`
+        Scale parameter of the precision (ie the inverse of the variance) of the conditioned Normal distribution of :math:`X|Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::getMu
+"Accessor to the parameter mu.
+
+Returns
+-------
+mu : float, :math:`\mu`,
+     Mean of the conditioned Normal distribution of :math:`X|Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::setAlpha
+"Accessor to the parameter alpha.
+
+Parameters
+----------
+alpha : float,  :math:`\alpha >0`,
+        Shape parameter of the conditioning Gamma distribution of :math:`Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::setBeta
+"Accessor to the parameter beta.
+
+Parameters
+----------
+beta : float,  :math:`\beta >0`,
+       Rate parameter of the conditioning Gamma distribution of :math:`Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::setKappa
+"Accessor to the parameter kappa.
+
+Parameters
+----------
+kappa : float :math:`\kappa >0`,
+        Scale parameter of the precision (ie the inverse of the variance) of the conditioned Normal distribution of :math:`X|Y`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalGamma::setMu
+"Accessor to the parameter mu.
+
+Parameters
+----------
+mu : float, :math:`\mu`,
+     Mean of the conditioned Normal distribution of :math:`X|Y`"
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 201 "restart:\nValNum:=x
+=1,y=1;\nf1:=sqrt(x^2+y^2);\nf2:=arctan(y/x);\ng11:=diff(f1,x);\ng21:=
+diff(f1,y);\ng12:=diff(f2,x);\ng22:=diff(f2,y);\nevalf(subs(ValNum,<f1
+|f2>));\nevalf(subs(ValNum,<<g11,g21>|<g12,g22>>));" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#>%'ValNumG6$/%\"xG\"\"\"/%\"yGF(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%#f1G*$,&*$)%\"xG\"\"#\"\"\"F+*$)%\"yGF*F+F+#F+F*" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#f2G-%'arctanG6#*&%\"yG\"\"\"%\"xG!
+\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$g11G*&,&*$)%\"xG\"\"#\"\"\"
+F+*$)%\"yGF*F+F+#!\"\"F*F)F+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$g21
+G*&,&*$)%\"xG\"\"#\"\"\"F+*$)%\"yGF*F+F+#!\"\"F*F.F+" }}{PARA 11 "" 1 
+"" {XPPMATH 20 "6#>%$g12G,$*(%\"yG\"\"\"%\"xG!\"#,&F(F(*&F'\"\"#F)F*F(
+!\"\"F." }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$g22G*&\"\"\"F&*&%\"xGF&,
+&F&F&*&%\"yG\"\"#F(!\"#F&F&!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%
+'RTABLEG6%\"*;8bM\"-%'VECTORG6#7$$\"+iN@99!\"*$\"+M;)R&y!#5&%'VectorG6
+#%$rowG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%'RTABLEG6%\"*g6eN\"-%'MAT
+RIXG6#7$7$$\"+5y1rq!#5$!+++++]F.7$F,$\"+++++]F.%'MatrixG" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "0 2 0" 0 }{VIEWOPTS 1 
+1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }{RTABLE_HANDLES 
+134551316 135581160 }{RTABLE 
+M7R0
+I6RTABLE_SAVE/134551316X*%)anythingG6"6"[gl!$%!!!"#"#$"+iN@99!"*$"+M;)R&y!#5F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135581160X,%)anythingG6"6"[gl!"%!!!#%"#"#$"+5y1rq!#5F'$!+++++]F)$
+"+++++]F)F&
+}
+

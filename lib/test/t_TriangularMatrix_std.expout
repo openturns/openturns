@@ -1,0 +1,40 @@
+test 0 : default constructor and string converter
+triangularMatrix0 = class=TriangularMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test 1: constructor with size, operator() and string converter
+triangularMatrix1 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,4]
+is triangular lower ?  true
+test 2 : copy constructor and string converter
+triangularMatrix2 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,4]
+test 3 : get dimensions methods
+triangularMatrix1's nbRows = 2
+triangularMatrix1's nbColumns = 2
+test 4 : assignment method
+triangularMatrix3 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,4]
+test 5 : transpose method
+triangularMatrix1 transpose = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,1,4]
+is transpose triangular lower ?  false
+test number 6 : addition method
+sum1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,1,1,8]
+sum2 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,1,1,8]
+sum1 equals sum2 = true
+test 7 : substraction method
+diff = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,1,-1,0]
+test 8 : matrix multiplication method
+prod = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,17]
+test 9 : multiplication with a numerical point method
+pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult = [1,9]
+test 10 : multiplication with a numerical scalar collection method
+ptScalar = [1,0]
+ptResult2 = [1,1]
+test 11 : multiplication and division by a numerical scalar methods
+scalprod1 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,3,0,12]
+scalprod2 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,3,0,12]
+scalprod1 equals scalprod2 = true
+scaldiv1 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,0.333333,0,1.33333]
+scaldiv2 = class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,0.333333,0,1.33333]
+scaldiv1 equals scaldiv2 = true
+test 12 : isEmpty method
+triangularMatrix0 is empty = true
+triangularMatrix1 is empty = false
+triangularMatrix5 is empty = true

@@ -1,0 +1,18 @@
+// Tensor docstrings are defined in TensorImplementation_doc.i.in
+
+%feature("docstring") OT::Tensor
+OT_Tensor_doc
+%feature("docstring") OT::Tensor::getNbColumns
+OT_Tensor_getNbColumns_doc
+%feature("docstring") OT::Tensor::getNbRows
+OT_Tensor_getNbRows_doc
+%feature("docstring") OT::Tensor::getNbSheets
+OT_Tensor_getNbSheets_doc
+%feature("docstring") OT::Tensor::getSheet
+OT_Tensor_getSheet_doc
+%feature("docstring") OT::Tensor::setSheet
+OT_Tensor_setSheet_doc
+%feature("docstring") OT::Tensor::clean
+OT_Tensor_clean_doc
+%feature("docstring") OT::Tensor::isEmpty
+OT_Tensor_isEmpty_doc

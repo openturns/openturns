@@ -1,0 +1,5 @@
+regularGrid = class=RegularGrid name=Unnamed start=-2 step=0.1 n=10
+Start= -2
+End= -1
+Step = 0.1
+N = 10

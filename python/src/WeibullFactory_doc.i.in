@@ -1,0 +1,9 @@
+%feature("docstring") OT::WeibullFactory
+"Weibull factory.
+
+Available constructor:
+    WeibullFactory()
+
+See also
+--------
+DistributionFactory"

@@ -1,0 +1,34 @@
+test number zero : default constructor and string converter
+symmetricMatrix0 =  class=SymmetricMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test number one : constructor with size, operator() and string converter
+symmetricMatrix1 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,0,4]
+test number two : copy constructor and string converter
+symmetricMatrix2 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,0,4]
+test number three : get dimensions methods
+symmetricMatrix1's nbRows =  2
+symmetricMatrix1's nbColumns =  2
+test number five : assignment method
+test number six : transposition method
+symmetricMatrix1 transposed =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,3,0,4]
+test number seven : addition method
+sum1 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,6,0,8]
+sum2 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,6,0,8]
+sum1 equals sum2 =  True
+test number eight : substraction method
+diff =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
+test number nine : matrix multiplication method
+prod =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,15,15,25]
+test number ten : multiplication with a numerical point method
+pt =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult =  class=NumericalPoint name=Unnamed dimension=2 values=[7,11]
+test number eleven : multiplication and division by a numerical scalar methods
+scalprod1 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,9,12]
+scalprod3 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,9,12]
+scalprod1 equals scalprod3 =  True
+scaldiv1 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,1,1.33333]
+scaldiv2 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.333333,1,1,1.33333]
+scaldiv1 equals scaldiv2 =  True
+test number twelve : isEmpty method
+symmetricMatrix0 is empty =  True
+symmetricMatrix1 is empty =  False
+symmetricMatrix5 is empty =  True

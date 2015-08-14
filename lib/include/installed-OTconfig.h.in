@@ -1,0 +1,40 @@
+/**
+ *  @brief The header file that contains macros needed by other installed header files
+ *
+ *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/* Support for regular expression library */
+#cmakedefine OPENTURNS_HAVE_LIBXML2
+
+/* Define to 1 if you have the <malloc.h> header file. */
+#cmakedefine OPENTURNS_HAVE_MALLOC_H
+
+/* Define to 1 if you have the <pthread.h> header file. */
+#cmakedefine OPENTURNS_HAVE_PTHREAD_H
+
+/* Support for TBB library */
+#cmakedefine OPENTURNS_HAVE_TBB
+
+/* Define to 1 if UnsignedLong and uint64_t are the same type */
+#cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+
+/* Define to the full name of this package. */
+#define PACKAGE_NAME "@PACKAGE_NAME@"
+
+/* Define to the version of this package. */
+#define PACKAGE_VERSION "@PACKAGE_VERSION@"

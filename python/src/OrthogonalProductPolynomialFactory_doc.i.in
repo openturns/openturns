@@ -1,0 +1,103 @@
+%feature("docstring") OT::OrthogonalProductPolynomialFactory
+"Base class for orthogonal multivariate polynomials.
+
+Available constructors:
+        OrthogonalProductPolynomialFactory(*polynomials*)
+
+        OrthogonalProductPolynomialFactory(*polynomials, enumerateFunction*)
+
+Parameters
+----------
+polynomials : list of :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    List of orthogonal univariate polynomials factories with the same
+    dimension as the orthogonal basis.
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    Associates to an integer its multi-index image in the :math:`\Nset^d`
+    dimension, which is the dimension of the basis. This multi-index represents
+    the collection of degrees of the univariate polynomials.
+
+Notes
+-----
+OrthogonalProductPolynomialFactory is a particular case of implementation of
+the :class:`~openturns.OrthogonalBasis` in the case of polynomial chaos
+expansion. It provides to the OrthogonalBasis the persistent types of the
+univariate orthogonal polynomials (e.g. Hermite, Legendre, Laguerre and Jacobi)
+needed to determine the distribution measure of projection of the input
+variable. Let's note that the exact hessian and gradient have been implemented
+for the product of polynomials.
+To facilitate the construction of the basis it is recommanded to use the class
+:class:`~openturns.StandardDistributionPolynomialFactory`.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define the model
+>>> myModel = ot.NumericalMathFunction(['x1','x2','x3'], ['y'], ['1+x1*x2 + 2*x3^2'])
+>>> # Create a distribution of dimension 3
+>>> Xdist = ot.ComposedDistribution([ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0)])
+>>> # Construct the multivariate orthonormal basis
+>>> polyColl = [ot.HermiteFactory(), ot.LegendreFactory(), ot.LaguerreFactory(2.75)]
+>>> enumerateFunction = ot.LinearEnumerateFunction(3)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+
+>>> # Easier way to construct the same multivariate orthonormal basis
+>>> polyColl = [0.]*3
+>>> for i in range(Xdist.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(Xdist.getMarginal(i))
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalProductPolynomialFactory::getPolynomialFamilyCollection
+"Get the collection of univariate orthogonal polynomial families.
+
+Returns
+-------
+polynomialFamily : list of :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    List of orthogonal univariate polynomials families."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalProductPolynomialFactory::getNodesAndWeights
+"Get the nodes and the weights.
+
+Parameters
+----------
+degrees : list of positiv int (:math:`k_1, \dots, k_n`)
+    List of :math:`n` polynomial orders associated with the :math:`n`
+    univariate polynomials of the basis.
+
+Returns
+-------
+nodes : :class:`~openturns.NumericalSample`
+weights : :class:`~openturns.NumericalPoint`
+    Nodes and weights of the multivariate polynomial associated with the
+    marginal degrees (:math:`k_1, \dots, k_n`) as the tensor product
+    of the marginal orthogonal univariate polynomials, to build multivariate
+    quadrature rules.
+
+See also
+--------
+OrthogonalUniVariatePolynomialFamily.getNodesAndWeights
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define the model
+>>> myModel = ot.NumericalMathFunction(['x1','x2','x3'], ['y'], ['1+x1*x2 + 2*x3^2'])
+>>> # Create a distribution of dimension 3
+>>> Xdist = ot.ComposedDistribution([ot.Normal(), ot.Uniform(), ot.Gamma(2.75, 1.0)])
+>>> # Construct the multivariate orthonormal basis
+>>> polyColl = [ot.HermiteFactory(), ot.LegendreFactory(), ot.LaguerreFactory(2.75)]
+>>> enumerateFunction = ot.LinearEnumerateFunction(3)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> nodes, weights = productBasis.getNodesAndWeights([2, 3, 1])
+>>> print(nodes[:2])
+0 : [ -1        -0.774597  3.75     ]
+1 : [  1        -0.774597  3.75     ]
+>>> print(weights[:2])
+[0.138889,0.138889]"

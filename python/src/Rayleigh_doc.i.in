@@ -1,0 +1,83 @@
+%feature("docstring") OT::Rayleigh
+"Rayleigh distribution.
+
+Available constructors:
+    Rayleigh(*sigma=1.0, gamma=0.*)
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`.
+gamma : float
+    Location parameter :math:`\gamma`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{(x - \gamma)} {\sigma^2}
+             exp \left(-\frac{(x - \gamma)^2}{2\sigma^2}\right)
+             \quad x \in [\gamma,+\infty[
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \sigma sqrt{\frac{\pi}{2}} + \gamma \\
+        \Var{X} & = & \frac{4 - \pi}{2} \sigma^2
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Poisson(10.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rayleigh::getSigma
+"Accessor to the distribution's scale parameter :math:`\sigma`.
+
+Returns
+-------
+sigma : float
+    Scale parameter :math:`\sigma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rayleigh::getGamma
+"Accessor to the distribution's location parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Location parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rayleigh::setSigma
+"Accessor to the distribution's scale parameter :math:`\sigma`.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rayleigh::setGamma
+"Accessor to the distribution's location parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float
+    Location parameter :math:`\gamma`."

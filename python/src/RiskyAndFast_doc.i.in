@@ -1,0 +1,42 @@
+%feature("docstring") OT::RiskyAndFast
+"RiskyAndFast method.
+
+Available constructors:
+    RiskyAndFast(*solver=ot.Brent()*)
+
+    RiskyAndFast(*solver, maximumDistance, stepSize*)
+
+Parameters
+----------
+solver : :class:`~openturns.Solver`
+    Non linear solver used to research the intersection of the limit state
+    function with the direction, on each segment of length *stepSize*, between
+    the center of the space and *maximumDistance* (root research).
+maximumDistance : positive float
+    Distance from the center of the standard space until which we research an
+    intersection with the limit state function along each direction. By
+    default, the maximum distance is equal to the value defined through the key
+    RootStrategyImplementation-DefaultMaximumDistance of the
+    :class:`~openturns.ResourceMap`.
+stepSize : float
+    Length of each segment inside which the root research is performed. By
+    default, the step size is equal to the value defined through the key
+    RootStrategyImplementation-DefaultStepSize of the
+    :class:`~openturns.ResourceMap`.
+
+See also
+--------
+DirectionalSampling
+
+Notes
+-----
+The *RiskyAndFast* strategy is the following: for each direction, we check
+whether there is a sign changement of the standard limit state function between
+the maximum distant point (at distance *maximumDistance* from the center of the
+standard space) and the center of the standard space.
+
+In case of sign changement, we search one root in the segment
+*[origin, maximum distant point]* with the selected non linear solver.
+
+As soon as founded, the segment *[root, infinity point]* is considered within
+the failure space."

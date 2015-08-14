@@ -1,0 +1,123 @@
+> restart:
+> with(Statistics):
+> exponential_:=RandomVariable(Exponential(1/lambda)):
+> assume(u>0);
+> pdf:=subs(u=x-_gamma,PDF(exponential_,u));
+> ddf:=diff(pdf,x);
+> cdf:=subs(u=x-_gamma,CDF(exponential_,u));
+> cf:=subs(u=x,exp(-I*_gamma)*CharacteristicFunction(exponential_,u));
+> mu_:=_gamma+Mean(exponential_);
+> var_:=Variance(exponential_);
+> skew_:=simplify(convert(Skewness(exponential_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(exponential_),GAMMA),symbolic);
+> qdf:=_gamma+Quantile(exponential_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=[factor(diff(pdf,lambda)),factor(diff(pdf,_gamma))];
+> cdfgr:=[factor(diff(cdf,lambda)),factor(diff(cdf,_gamma))];
+> valnum:=lambda=2.5,_gamma=-0.5:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(solve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+               pdf := lambda exp(-(x - _gamma) lambda)
+
+
+                            2
+              ddf := -lambda  exp(-(x - _gamma) lambda)
+
+
+                 cdf := 1 - exp(-(x - _gamma) lambda)
+
+
+                               exp(-I _gamma)
+                         cf := --------------
+                                      x I
+                                 1 - ------
+                                     lambda
+
+
+                                          1
+                        mu_ := _gamma + ------
+                                        lambda
+
+
+                                      1
+                           var_ := -------
+                                         2
+                                   lambda
+
+
+                              skew_ := 2
+
+
+                              kurt_ := 9
+
+
+                                      ln(1 - p)
+                      qdf := _gamma - ---------
+                                       lambda
+
+
+                          lambda _gamma - ln(1 - p)
+                  qdf2 := -------------------------
+                                   lambda
+
+
+  pdfgr := [
+
+        -exp(-(x - _gamma) lambda) (-1 + lambda x - lambda _gamma),
+
+              2
+        lambda  exp(-(x - _gamma) lambda)]
+
+
+  cdfgr := [(x - _gamma) exp(-(x - _gamma) lambda),
+
+        -lambda exp(-(x - _gamma) lambda)]
+
+
+                            -0.1469859116
+
+
+                            0.05879436465
+
+
+                             0.9764822541
+
+
+                    0.5912175400 + 0.7159125546 I
+
+
+                    [-0.06467380112, 0.1469859116]
+
+
+                   [0.03527661879, -0.05879436465]
+
+
+                             0.6982929094
+
+
+                            -0.1000000000
+
+
+                             0.4000000000
+
+
+                                  2.
+
+
+                                  9.
+
+
+                             0.1600000000
+
+> 

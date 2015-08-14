@@ -1,0 +1,163 @@
+%feature("docstring") OT::Weibull
+"Weibull distribution.
+
+Available constructors:
+    Weibull(*arg1=1.0, arg2=1.0, gamma=0., ot.Weibull.ALPHABETA*)
+
+Parameters
+----------
+arg1 : float
+    If `parameters_set == ot.Weibull.ALPHABETA`: shape parameter :math:`\alpha > 0`.
+
+    If `parameters_set == ot.Weibull.MUSIGMA`: mean.
+arg2 : float
+    If `parameters_set == ot.Weibull.ALPHABETA`: scale parameter :math:`\beta > 0`.
+
+    If `parameters_set == ot.Weibull.MUSIGMA`: standard deviation :math:`\sigma > 0`.
+gamma : float, optional
+    Location parameter :math:`\gamma < \mu`.
+parameters_set : int, optional
+    Integer telling which parameters set is used for defining the
+    distribution (amongst `ot.Weibull.ALPHABETA, ot.Weibull.MUSIGMA`).
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\beta}{\alpha}
+             \left(\frac{x - \gamma}{\alpha} \right) ^ {\beta-1}
+             exp \left(-\left(\frac{x - \gamma}{\alpha}\right)^{\beta}\right),
+             \quad x \in [\gamma; +\infty[
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \alpha \,\Gamma\left(1 + \frac{1}{\beta}\right)
+                       + \gamma \\
+        \Var{X} & = & \alpha^2 \Gamma\left(1 + \frac{2}{\beta}\right) -
+                     \Gamma^2 \left(1 + \frac{1}{\beta}\right)
+    \end{eqnarray*}
+
+where :math:`\Gamma` denotes Euler's Gamma function
+:class:`~openturns.SpecFunc_Gamma`.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Weibull(2.0, 1.5, -0.5, 1)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::getAlpha
+"Accessor to the distribution's shape parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Shape parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::getBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Returns
+-------
+beta : float
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::getGamma
+"Accessor to the distribution's shift parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Location parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::getSigma
+"Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::setAlpha
+"Accessor to the distribution's shape parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::setBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::setAlphaBeta
+"Accessor to the distribution's shape parameter :math:`\alpha` and
+scale parameter :math:`\beta`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::setGamma
+"Accessor to the distribution's location parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float
+    Location parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Weibull::setMuSigma
+"Accessor to the distribution's mean and standard deviation.
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

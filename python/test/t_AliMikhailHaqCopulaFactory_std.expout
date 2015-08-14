@@ -1,0 +1,8 @@
+distribution= class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
+Estimated distribution= class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.433481
+Default distribution= AliMikhailHaqCopula(theta = 0.5)
+Distribution from parameters= AliMikhailHaqCopula(theta = 0.5)
+Distribution          = AliMikhailHaqCopula(theta = 0.5)
+Estimated AliMikhailHaqCopula= AliMikhailHaqCopula(theta = 0.433481)
+Default AliMikhailHaqCopula= AliMikhailHaqCopula(theta = 0.5)
+AliMikhailHaqCopula from parameters= AliMikhailHaqCopula(theta = 0.5)

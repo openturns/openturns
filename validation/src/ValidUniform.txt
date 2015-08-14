@@ -1,0 +1,139 @@
+> restart:
+> with(Statistics):
+> assume(a<b,x<b,x>a):
+> uniform_:=RandomVariable(Uniform(a,b)):
+> pdf:=subs(u=x,PDF(uniform_,u));
+> ddf:=diff(pdf,x);
+> cdf:=subs(u=x,CDF(uniform_,u));
+> cf:=subs(u=x,CharacteristicFunction(uniform_,u));
+> cdf2:=int(pdf,x=0..t);
+> rough:=int(pdf^2,x=a..b);
+> mu_:=Mean(uniform_);
+> var_:=Variance(uniform_);
+> skew_:=simplify(convert(Skewness(uniform_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(uniform_),GAMMA),symbolic);
+> qdf:=Quantile(uniform_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=[diff(pdf,a),diff(pdf,b)];
+> cdfgr:=map(factor,[diff(cdf,a),diff(cdf,b)]);
+> valnum:=a=-0.5,b=1.5:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(subs(valnum,p=0.95,qdf));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+                         {    0            x~ < a~
+                         {
+                         {    1
+                  pdf := { -------         x~ < b~
+                         { b~ - a~
+                         {
+                         {    0           otherwise
+
+
+                               ddf := 0
+
+
+                         {    0            x~ < a~
+                         {
+                         { x~ - a~
+                  cdf := { -------         x~ < b~
+                         { b~ - a~
+                         {
+                         {    1           otherwise
+
+
+                      -I (exp(b~ x~ I) - exp(a~ x~ I))
+                cf := --------------------------------
+                                x~ (b~ - a~)
+
+
+                                      t
+                           cdf2 := -------
+                                   b~ - a~
+
+
+                                       1
+                           rough := -------
+                                    b~ - a~
+
+
+                                  a~     b~
+                          mu_ := ---- + ----
+                                  2      2
+
+
+                                           2
+                                  (b~ - a~)
+                          var_ := ----------
+                                      12
+
+
+                              skew_ := 0
+
+
+                             kurt_ := 9/5
+
+
+                       qdf := a~ + p (b~ - a~)
+
+
+                       qdf2 := a~ + p b~ - p a~
+
+
+                               1             1
+                 pdfgr := [----------, - ----------]
+                                    2             2
+                           (b~ - a~)     (b~ - a~)
+
+
+                            -b~ + x~     -x~ + a~
+                 cdfgr := [-----------, -----------]
+                                     2            2
+                           (-b~ + a~)   (-b~ + a~)
+
+
+                                  0.
+
+
+                             0.5000000000
+
+
+                             0.7500000000
+
+
+                    0.7384602625 + 0.4034226801 I
+
+
+                    [0.2500000000, -0.2500000000]
+
+
+                    [-0.1250000000, -0.3750000000]
+
+
+                                1.400
+
+
+                             0.5000000000
+
+
+                             0.5773502693
+
+
+                                  0.
+
+
+                             1.800000000
+
+
+                             0.3333333333
+
+> 

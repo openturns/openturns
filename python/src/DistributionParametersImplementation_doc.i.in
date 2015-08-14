@@ -1,0 +1,63 @@
+%define OT_DistributionParameters_doc
+"Define a distribution with particular parameters.
+
+This class enables to create a set of non-native parameters in order to
+define distribution.
+
+A *DistributionParameters* object can be used through its derived classes:
+
+- :class:`~openturns.ArcsineMuSigma`
+- :class:`~openturns.BetaMuSigma`
+- :class:`~openturns.GammaMuSigma`
+- :class:`~openturns.GumbelMuSigma`
+- :class:`~openturns.GumbelAB`
+- :class:`~openturns.LogNormalMuSigma`
+- :class:`~openturns.LogNormalMuSigmaOverMu`
+- :class:`~openturns.WeibullMuSigma`
+
+See also
+--------
+ParametrizedDistribution, Distribution"
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation
+OT_DistributionParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_getDistribution_doc
+"Build a distribution based on a set of native parameters.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution built with the native parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::getDistribution
+OT_DistributionParameters_getDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_getParametersCollection_doc
+"Get the value and the description of the parameters.
+
+Returns
+-------
+collection : :class:`~openturns.NumericalPointWithDescriptionCollection`
+    List of the value and the description of the parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::getParametersCollection
+OT_DistributionParameters_getParametersCollection_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_gradient_doc
+"Get the gradient.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    The gradient of the transformation of the native parameters into the new
+    parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::gradient
+OT_DistributionParameters_gradient_doc

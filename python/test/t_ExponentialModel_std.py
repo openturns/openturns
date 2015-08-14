@@ -1,0 +1,79 @@
+#! /usr/bin/env python
+
+from __future__ import print_function
+from openturns import *
+
+TESTPREAMBLE()
+RandomGenerator.SetSeed(0)
+
+try:
+
+    # Default dimension parameter to evaluate the model
+    defaultDimension = 1
+    spatialDimension = 1
+
+    # Amplitude values
+    amplitude = NumericalPoint(defaultDimension, 1.0)
+
+    # Scale values
+    scale = NumericalPoint(defaultDimension, 1.0)
+
+    # Default constructor
+    myDefautModel = ExponentialModel()
+    print("myDefautModel = ", myDefautModel)
+
+    # Second order model with parameters
+    myModel = ExponentialModel(spatialDimension, amplitude, scale)
+    print("myModel = ", myModel)
+
+    timeValueOne = 1.
+    print("covariance matrix at t = ", timeValueOne,
+          " : ", myModel(timeValueOne))
+    print("covariance matrix at t = ", -1.0 * timeValueOne,
+          " : ", myModel(-1.0 * timeValueOne))
+
+    # Evaluation at time higher to check the decrease of the exponential values
+    timeValueHigh = 15.
+    print("covariance matrix at t = ", timeValueHigh,
+          " : ", myModel(timeValueHigh).__str__())
+
+    timeGrid = RegularGrid(0.0, 1.0 / 3.0, 4)
+    print("discretized covariance over the time grid=",
+          timeGrid, "is=", myModel.discretize(timeGrid))
+
+    # Default dimension parameter to evaluate the model
+    highDimension = 3
+
+    # Reallocation of adequate sizes
+    amplitude.resize(highDimension)
+    scale.resize(highDimension)
+    spatialCorrelation = CorrelationMatrix(highDimension)
+    for index in range(highDimension):
+        amplitude[index] = 1.0
+        scale[index] = (index + 1.0) / (defaultDimension * defaultDimension)
+        if index > 0:
+            spatialCorrelation[index, index - 1] = 1.0 / (index * index)
+
+    # check the cast
+    mySecondOrderModel = StationaryCovarianceModel(
+        ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation))
+    print("mySecondOrderModel = ", mySecondOrderModel)
+
+    # Second order model  - dimension 10
+    myHighModel = ExponentialModel(
+        spatialDimension, amplitude, scale, spatialCorrelation)
+    print("myHighModel = ", myHighModel)
+
+    print("covariance matrix at t = ", timeValueOne,
+          " : ", myHighModel(timeValueOne))
+    print("covariance matrix at t = ", -1.0 * timeValueOne,
+          " : ", myHighModel(-1.0 * timeValueOne))
+    print("covariance matrix at t = ", timeValueHigh,
+          " : ", myHighModel(timeValueHigh))
+
+    print("discretized covariance over the time grid=",
+          timeGrid, "is=", myHighModel.discretize(timeGrid))
+
+except:
+    import sys
+    print("t_ExponentialModel_std.py", sys.exc_info()[0], sys.exc_info()[1])

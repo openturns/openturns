@@ -1,0 +1,123 @@
+> restart:
+> with(LinearAlgebra):
+> dim:=3;
+> nu:=2;
+> Sigma:=<<1,1/2,1/4>|<1/2,1,1/2>|<1/4,1/2,1>>;
+> x:=<x1,x2,x3>;
+> p:=GAMMA((dim+nu)/2)/(GAMMA(nu/2)*nu^(dim/2)*Pi^(dim/2)*Determinant(Si
+> gma)^(1/2)*(1+1/nu*Transpose(x).MatrixInverse(Sigma).x)^((dim+nu)/2));
+
+                               dim := 3
+
+
+                               nu := 2
+
+
+                              [ 1     1/2    1/4]
+                              [                 ]
+                     Sigma := [1/2     1     1/2]
+                              [                 ]
+                              [1/4    1/2     1 ]
+
+
+                                   [x1]
+                                   [  ]
+                              x := [x2]
+                                   [  ]
+                                   [x3]
+
+
+        1/2  1/2   1/2   / /      /       /2 x1    x2 \
+  p := 2    9    16     /  |48 Pi |1 + x1 |---- - ----|
+                       /   \      \       \ 3      3  /
+
+              /   x1    5 x2    x3 \      /   x2    2 x3\\5/2\
+         + x2 |- ---- + ---- - ----| + x3 |- ---- + ----||   |
+              \   3      6      3  /      \   3      3  //   /
+
+> for n from 1 to 8 do
+>  
+> disp([n,evalf[n](Int(Int(Int(p,x1=-infinity..1/2),x2=-infinity..1),x3=
+> -infinity..3/2))]);
+> od;
+
+                            disp([1, 0.6])
+
+
+                           disp([2, 0.55])
+
+
+                           disp([3, 0.551])
+
+
+                          disp([4, 0.5509])
+
+
+                          disp([5, 0.55090])
+
+
+                         disp([6, 0.550895])
+
+
+                         disp([7, 0.5508953])
+
+
+                        disp([8, 0.55089531])
+
+> with(Statistics):
+> X:=RandomVariable(StudentT(NU)):
+> pt:=PDF(X,t);
+
+                                          NU
+                             GAMMA(1/2 + ----)
+                                          2
+         pt := ---------------------------------------------
+                                                /       NU \
+                                                |1/2 + ----|
+                                                \       2  /
+                                      /      2 \
+                      1/2        NU   |     t  |
+               (Pi NU)    GAMMA(----) |1 + ----|
+                                 2    \     NU /
+
+> simplify((pt*sqrt(2+t^2)^3),symbolic);
+
+                                                  /         NU \
+                      / NU \                      |- 1/2 - ----|
+                      |----|                      \         2  /
+               NU     \ 2  /       2 3/2        2                  /
+  GAMMA(1/2 + ----) NU       (2 + t )    (NU + t )                /
+               2                                                 /
+
+        /  1/2        NU  \
+        |Pi    GAMMA(----)|
+        \             2   /
+
+> convert(1/Beta(1/2,NU/2),GAMMA);
+
+                                       NU
+                          GAMMA(1/2 + ----)
+                                       2
+                          -----------------
+                            1/2        NU
+                          Pi    GAMMA(----)
+                                       2
+
+> coef:=1/Pi:
+> for i from 1 to 101-1 do
+>   if (i mod 2 = 0) and (i>2) then
+>     coef := coef * (i-1) / (i-2);
+>   fi;
+> od;
+> evalf(coef);
+
+                             2.533404109
+
+> (coef/Beta(1/2,101/2-1));
+
+                                 99
+                                 ---
+                                   2
+                                 Pi
+
+> 

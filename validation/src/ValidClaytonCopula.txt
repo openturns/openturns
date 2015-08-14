@@ -1,0 +1,155 @@
+> restart:
+> F:=exp(-log(u1^(-theta)/(u1*u2)^(theta/(theta+1))+1-u1^(-theta))/theta
+> );
+
+                             (-theta)
+                           u1                     (-theta)
+                    ln(------------------ + 1 - u1        )
+                              /  theta  \
+                              |---------|
+                              \theta + 1/
+                       (u1 u2)
+         F := exp(- ---------------------------------------)
+                                     theta
+
+> simplify(F);
+
+                                                       /    1  \
+                                                       |- -----|
+                                                       \  theta/
+     /                  /    theta  \                 \
+     |                  |- ---------|                 |
+     |  (-theta)        \  theta + 1/         (-theta)|
+     \u1         (u1 u2)              + 1 - u1        /
+
+> CDF_clayton:=(u^(-theta)+v^(-theta)-1)^(-1/theta);
+
+                                                   /    1  \
+                                                   |- -----|
+                                                   \  theta/
+                          (-theta)    (-theta)
+         CDF_clayton := (u         + v         - 1)
+
+> PDF_clayton:=factor(diff(diff(CDF_clayton,u),v));
+> du:=factor(diff(PDF_clayton, u));
+> dv:=factor(diff(PDF_clayton, v));
+> with(codegen,optimize,makeproc,cost,prep2trans):
+> optimize(du);
+> optimize(dv);
+
+                                            /    1  \
+                                            |- -----|
+                                            \  theta/
+                   (-theta)    (-theta)                (-theta)
+  PDF_clayton := (u         + v         - 1)          v
+
+         (-theta)               /      (-theta)    (-theta)     2
+        u         (theta + 1)  /  (v (u         + v         - 1)  u)
+                              /
+
+
+                                   /    1  \
+                                   |- -----|
+                                   \  theta/
+          (-theta)    (-theta)                (-theta)  (-theta)
+  du := (u         + v         - 1)          v         u
+
+        (theta + 1)
+
+          (-theta)                (-theta)            (-theta)
+        (u         theta - theta v         + theta - v         + 1)
+
+           /   2   (-theta)    (-theta)     3
+          /  (u  (u         + v         - 1)  v)
+         /
+
+
+                                     /    1  \
+                                     |- -----|
+                                     \  theta/
+            (-theta)    (-theta)                (-theta)  (-theta)
+  dv := - (u         + v         - 1)          v         u
+
+        (theta + 1)
+
+          (-theta)                (-theta)            (-theta)
+        (u         theta - theta v         - theta + u         - 1)
+
+           /   2   (-theta)    (-theta)     3
+          /  (v  (u         + v         - 1)  u)
+         /
+
+
+                                                           /    1  \
+                                                           |- -----|
+        (-theta)        (-theta)                           \  theta/
+  t1 = u        , t2 = v        , t3 = t1 + t2 - 1, t5 = t3         ,
+
+               2          2
+        t13 = u , t16 = t3 , t22 =
+
+        t5 t2 t1 (theta + 1) (t1 theta - theta t2 + theta - t2 + 1)
+        -----------------------------------------------------------
+                               t13 t16 t3 v
+
+
+                                                           /    1  \
+                                                           |- -----|
+        (-theta)        (-theta)                           \  theta/
+  t1 = u        , t2 = v        , t3 = t1 + t2 - 1, t5 = t3         ,
+
+               2          2
+        t13 = v , t16 = t3 , t23 =
+
+          t5 t2 t1 (theta + 1) (t1 theta - theta t2 - theta + t1 - 1)
+        - -----------------------------------------------------------
+                                 t13 t16 t3 u
+
+> optimize(factor(diff(PDF_clayton, theta)));
+
+                                                           /    1  \
+                                                           |- -----|
+        (-theta)        (-theta)                           \  theta/
+  t1 = u        , t2 = v        , t3 = t1 + t2 - 1, t5 = t3         ,
+
+                              2
+        t7 = ln(v), t8 = theta , t9 = t8 theta, t10 = t7 t9,
+
+        t13 = ln(u), t15 = t7 t8, t16 = t13 t8, t19 = ln(t3),
+
+        t20 = t19 t1, t21 = t19 t2, t22 = t8 t1, t25 = t8 t2, t29 =
+
+        -t10 t1 + theta t1 t13 + t15 + t16 + theta t2 t7 - t8 + t20
+
+         + t21 + 2 t22 t13 + 2 t25 t7 + t20 theta, t33 = t13 t9, t38
+
+         = t21 theta + t10 t2 - t15 t1 + t33 t1 - t33 t2 - t16 t2
+
+                                                            2
+         - t19 - t19 theta + t10 + t33 + t22 + t25, t43 = t3 ,
+
+              t5 t2 t1 (t29 + t38)
+        t51 = --------------------
+                 t8 t43 t3 v u
+
+> theta:=2.5;evalf(Int(Int((u-0.5)*(v-0.5)*PDF_clayton,u=0..1),v=0..1));
+
+                             theta := 2.5
+
+
+                            0.06183689859
+
+> evalf(subs(theta=2.5,Int(Int((u-1/2)*(v-1/2)*PDF_clayton,u=0..1),v=0..
+> 1)));
+
+                            0.06183689859
+
+> subs(u=0.2,v=0.2,PDF_clayton);
+> subs(u=0.2,v=0.2,CDF_clayton);
+
+                             3.387900732
+
+
+                             0.1521173556
+
+> 

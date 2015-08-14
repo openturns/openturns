@@ -1,0 +1,53 @@
+x=[2,3]
+factory=class=ConstantBasisFactory name=Unnamed
+basis=Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
+ [ 0 ]]] )
+y=[1]
+factory=class=LinearBasisFactory name=Unnamed
+basis=Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
+ [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+ [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
+ [ 1 ]]] )
+y=[1,2,3]
+factory=class=QuadraticBasisFactory name=Unnamed
+basis=Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
+ [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+ [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
+ [ 1 ]],QuadraticNumericalMathEvaluationImplementation
+  center :
+[0,0]
+  constant :
+[0]
+  linear :
+  [[ 0 ]
+   [ 0 ]]
+  quadratic :
+sheet #0
+  [[ 1 0 ]
+   [ 0 0 ]]
+,QuadraticNumericalMathEvaluationImplementation
+  center :
+[0,0]
+  constant :
+[0]
+  linear :
+  [[ 0 ]
+   [ 0 ]]
+  quadratic :
+sheet #0
+  [[ 0 1 ]
+   [ 1 0 ]]
+,QuadraticNumericalMathEvaluationImplementation
+  center :
+[0,0]
+  constant :
+[0]
+  linear :
+  [[ 0 ]
+   [ 0 ]]
+  quadratic :
+sheet #0
+  [[ 0 0 ]
+   [ 0 1 ]]
+] )
+y=[1,2,3,2,6,4.5]

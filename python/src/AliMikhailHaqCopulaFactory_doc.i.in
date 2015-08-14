@@ -1,0 +1,10 @@
+%feature("docstring") OT::AliMikhailHaqCopulaFactory
+"AliMikhailHaq copula factory.
+
+Available constructor:
+    AliMikhailHaqCopulaFactory()
+
+See also
+--------
+ClaytonCopulaFactory, FarlieGumbelMorgensternCopulaFactory, FrankCopulaFactory,
+GumbelCopulaFactory, NormalCopulaFactory"

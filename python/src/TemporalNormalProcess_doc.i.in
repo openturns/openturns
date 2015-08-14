@@ -1,0 +1,115 @@
+%feature("docstring") OT::TemporalNormalProcess
+"Temporal normal processes.
+
+Available constructor:
+    TemporalNormalProcess(*trend, secondOrderModel, mesh*)
+
+    TemporalNormalProcess(*trend, covarianceModel, mesh*)
+
+    TemporalNormalProcess(*secondOrderModel, mesh*)
+
+    TemporalNormalProcess(*covarianceModel, mesh*)
+
+Parameters
+----------
+trend : :class:`~openturns.TrendTransform`
+    Trend function of the process. By default the trend is null.
+secondOrderModel : :class:`~openturns.SecondOrderModel`
+    Stationary second order model that insures the coherence between the
+    covariance function and the spectral density function.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Temporal covariance model :math:`C`.
+mesh : :class:`~openturns.Mesh`
+    Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
+
+Notes
+-----
+TemporalNormalProcess creates normal processes,
+:math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`,
+from their temporal covariance function
+:math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)`, which writes, in
+the stationary case: :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)`. A
+process is *normal*, if all its finite dimensional joint distributions are
+normal (See the method :meth:`~openturns.Process.isNormal` for a detailed definition).
+
+The temporal normal processes may have a trend: in that case, the normal
+process is the sum of the trend function
+:math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean normal process.
+
+If the zero-mean process is stationary, in order to manipulate the same
+normal process through both the temporal and spectral views, it is necessary to
+create a second order model *secondOrderModel* that insures the coherence
+between the covariance function :math:`C^{stat}` and the spectral density
+function :math:`S: \Rset \mapsto \cH^+(d)`. :math:`\cH^+(d) \in \cM_d(\Cset)`
+is the set of :math:`d`-dimensional positive definite hermitian matrices.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # Default dimension parameter to evaluate the model
+>>> defaultDimension = 1
+>>> # Amplitude values
+>>> amplitude = [1.0]*defaultDimension
+>>> # Scale values
+>>> scale = [1.0]*defaultDimension
+>>> # Second order model with parameters
+>>> myModel = ot.ExponentialCauchy(amplitude, scale)
+>>> # Time grid
+>>> tmin = 0.0
+>>> step = 0.1
+>>> n = 11
+>>> myTimeGrid = ot.RegularGrid(tmin, step, n)
+>>> size = 100
+>>> myProcess = ot.TemporalNormalProcess(myModel, myTimeGrid)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TemporalNormalProcess::getCovarianceModel
+"Get the covariance model.
+
+Returns
+-------
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Temporal covariance model :math:`C`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TemporalNormalProcess::getTrend
+"Get the trend function.
+
+Returns
+-------
+trend : :class:`~openturns.TrendTransform`
+    Trend function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TemporalNormalProcess::isTrendStationary
+"Tell if the process is trend stationary or not.
+
+Returns
+-------
+isTrendStationary : bool
+    *True* if the process is trend stationary."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TemporalNormalProcess::setSamplingMethod
+"Set the used method for getRealization.
+
+Available parameters are :
+
+  * 0 : Cholesky factor sampling (default method)
+
+  * 1 : H-Matrix method (if H-Mat available)
+
+  * 2 : Gibbs method (in dimension 1 only)
+
+Parameters
+----------
+samplingMethod : int
+    Fix a method for sampling.
+
+"

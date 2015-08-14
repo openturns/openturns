@@ -1,0 +1,351 @@
+> restart:
+> with(Statistics):
+> assume(u<1,u>0,r>0,t>r);
+> beta_:=RandomVariable(Beta(r,t-r)):
+> pdf:=factor(subs(u=(x-a)/(b-a),PDF(beta_,u))/(b-a));
+> ddf:=(diff(pdf,x));
+> cf:=simplify(subs(w=(u-a)/(b-a),CharacteristicFunction(beta_,w)),hyper
+> geom);
+> factor(ddf/pdf);
+> cdf:=subs(u=(x-a)/(b-a),CDF(beta_,u));
+> mu_:=a+(b-a)*Mean(beta_);
+> var_:=(b-a)^2*Variance(beta_);
+> skew_:=simplify(convert(Skewness(beta_),GAMMA),symbolic);
+> kurt_:=simplify(convert(Kurtosis(beta_),GAMMA),symbolic);
+> sol:=subs(m='mu',v='var',solve({mu_=m,var_=v},{r,t}));
+> qdf:=a+(b-a)*Quantile(beta_,p);
+> qdf2:=solve(cdf=p,x);
+> pdfgr:=map(_x->factor(subs(t=r+s,_x)),[diff(pdf, r)/pdf,diff(pdf,
+> t)/pdf,diff(pdf, a)/pdf,diff(pdf, b)/pdf]);
+> cdfgr:=[diff(cdf, r),diff(cdf, t),diff(cdf, a),diff(cdf, b)];
+> valnum:=r=2,t=5,a=-1,b=2:
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,map(_x->_x*pdf,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(solve(subs(valnum,cdf)=0.95,x));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+> evalf(subs(valnum,[mu_,sqrt(var_)]));
+> evalf(subs(sol,mu=mu_,var=var_,valnum,[r,t]));
+> 
+
+                    /-x + a\(-1 + r~) /-b + x\(t~ - r~ - 1)
+                    |------|          |------|
+                    \-b + a/          \-b + a/
+           pdf := - ---------------------------------------
+                          Beta(r~, t~ - r~) (-b + a)
+
+
+         /-x + a\(-1 + r~)           /-b + x\(t~ - r~ - 1)
+         |------|          (-1 + r~) |------|
+         \-b + a/                    \-b + a/
+  ddf := -------------------------------------------------
+                (-x + a) Beta(r~, t~ - r~) (-b + a)
+
+           /-x + a\(-1 + r~) /-b + x\(t~ - r~ - 1)
+           |------|          |------|              (t~ - r~ - 1)
+           \-b + a/          \-b + a/
+         - -----------------------------------------------------
+                    (-b + x) Beta(r~, t~ - r~) (-b + a)
+
+
+                                           (u~ - a) I
+               cf := hypergeom([r~], [t~], ----------)
+                                             b - a
+
+
+                b - 2 x - r~ b + a + t~ x - t~ a + r~ a
+              - ---------------------------------------
+                           (-b + x) (-x + a)
+
+
+           /x - a\r~                                        x - a
+           |-----|   hypergeom([r~, 1 - t~ + r~], [1 + r~], -----)
+           \b - a/                                          b - a
+    cdf := -------------------------------------------------------
+                            Beta(r~, t~ - r~) r~
+
+
+                                   (b - a) r~
+                        mu_ := a + ----------
+                                       t~
+
+
+                                   2
+                            (b - a)  r~ (t~ - r~)
+                    var_ := ---------------------
+                                  2
+                                t~  (t~ + 1)
+
+
+                                      1/2
+                            2 (t~ + 1)    (2 r~ - t~)
+                skew_ := - ---------------------------
+                             1/2          1/2
+                           r~    (t~ - r~)    (2 + t~)
+
+
+                 2          2        2                 2
+            3 (r~  t~ - 6 r~  - r~ t~  + 6 r~ t~ - 2 t~ ) (t~ + 1)
+   kurt_ := ------------------------------------------------------
+                       r~ (-t~ + r~) (3 + t~) (2 + t~)
+
+
+                                      2
+                 b a - a mu + var + mu  - mu b             2    2
+  sol := {t~ = - -----------------------------, r~ = - (b a  - a  mu
+                              var
+
+                         2                  2              3
+         + a var + 2 a mu  - 2 b a mu + b mu  - var mu - mu )/(
+
+        (-b + a) var)}
+
+
+                             qdf := FAIL
+
+
+  qdf2 := RootOf(-
+
+        /  _Z - a\r~                                          _Z - a
+        |- ------|   hypergeom([r~, 1 - t~ + r~], [1 + r~], - ------)
+        \  -b + a/                                            -b + a
+
+         + p Beta(r~, t~ - r~) r~)
+
+
+               -x + a       -b + x
+  pdfgr := [ln(------) - ln(------) - Psi(r~) + Psi(s),
+               -b + a       -b + a
+
+           -b + x
+        ln(------) - Psi(s) + Psi(r~ + s),
+           -b + a
+
+          -b + x + r~ b - r~ x - s x + s a
+        - --------------------------------,
+                 (-x + a) (-b + a)
+
+          x + r~ b - r~ x - s x + s a - a
+        - -------------------------------]
+                 (-b + x) (-b + a)
+
+
+              /x - a\r~
+              |-----|   %1 (Psi(r~) - Psi(t~ - r~))
+              \b - a/
+  cdfgr := [- -------------------------------------
+                      Beta(r~, t~ - r~) r~
+
+               /x - a\r~           /x - a\r~    x - a
+               |-----|   %1        |-----|   ln(-----) %1
+               \b - a/             \b - a/      b - a
+         - --------------------- + ----------------------
+                               2    Beta(r~, t~ - r~) r~
+           Beta(r~, t~ - r~) r~
+
+            /x - a\r~ / d    \
+            |-----|   |--- %1|
+            \b - a/   \dr~   /
+         + --------------------,
+           Beta(r~, t~ - r~) r~
+
+          /x - a\r~
+          |-----|   %1 (Psi(t~ - r~) - Psi(t~))
+          \b - a/
+        - -------------------------------------
+                  Beta(r~, t~ - r~) r~
+
+            /x - a\r~ / d    \
+            |-----|   |--- %1|
+            \b - a/   \dt~   /
+         + --------------------,
+           Beta(r~, t~ - r~) r~
+
+        /x - a\r~ /    1      x - a  \
+        |-----|   |- ----- + --------| (b - a) %1
+        \b - a/   |  b - a          2|
+                  \          (b - a) /              /x - a\r~
+        ----------------------------------------- + |-----|
+                Beta(r~, t~ - r~) (x - a)           \b - a/
+
+        (1 - t~ + r~)
+
+                                                   x - a
+        hypergeom([1 + r~, 2 - t~ + r~], [2 + r~], -----)
+                                                   b - a
+
+        /    1      x - a  \
+        |- ----- + --------|/(Beta(r~, t~ - r~) (1 + r~)),
+        |  b - a          2|
+        \          (b - a) /
+
+                /x - a\r~
+                |-----|   %1
+                \b - a/               /x - a\r~
+        - ------------------------- - |-----|   (1 - t~ + r~)
+          Beta(r~, t~ - r~) (b - a)   \b - a/
+
+                                                   x - a
+        hypergeom([1 + r~, 2 - t~ + r~], [2 + r~], -----) (x - a)
+                                                   b - a
+
+           /                                    2
+          /  (Beta(r~, t~ - r~) (1 + r~) (b - a) )]
+         /
+
+                                               x - a
+  %1 := hypergeom([r~, 1 - t~ + r~], [1 + r~], -----)
+                                               b - a
+
+
+                            -0.4444444445
+
+
+                             0.2962962962
+
+
+                             0.8888888888
+
+
+  [0.08010750986 + 0.2962962962 Psi(s), -0.3255147523
+
+         - 0.2962962962 Psi(s) + 0.2962962962 Psi(2. + s),
+
+        -0.04938271604 + 0.09876543209 s,
+
+        -0.3950617284 + 0.1975308642 s]
+
+
+  [-0.3604134293 + 2.666666666 diff(hypergeom([2, -2], [3], 2/3), 2),
+
+        0.5185185182
+
+         + 2.666666666 diff(hypergeom([2, -2], [3], 2/3), 5),
+
+        -0.0987654321, -0.1975308640]
+
+
+                             1.254186123
+
+
+                             0.2000000000
+
+
+                             0.6000000000
+
+
+                             0.2857142858
+
+
+                             2.357142857
+
+
+                             0.3600000000
+
+
+                     [0.2000000000, 0.6000000000]
+
+
+                               [2., 5.]
+
+> factor(subs(sol,r/t));
+
+                                a - mu
+                                ------
+                                -b + a
+
+> R:=map(simplify,collect(-(b-2*x-r*b+a+t*x-t*a+r*a)/(-b+x)/(-x+a),t));
+
+                      t~     b - 2 x - r~ b + a + r~ a
+               R := ------ - -------------------------
+                    -b + x       (-b + x) (-x + a)
+
+> factor(R-(-(t-r-1)/(b-x)+(r-1)/(x-a)));
+
+                                  0
+
+> kurt_;
+
+             2          2        2                 2
+        3 (r~  t~ - 6 r~  - r~ t~  + 6 r~ t~ - 2 t~ ) (t~ + 1)
+        ------------------------------------------------------
+                   r~ (-t~ + r~) (3 + t~) (2 + t~)
+
+> A:=collect(-(r^2*t-6*r^2-r*t^2+6*r*t-2*t^2),r);
+
+                             2      2                  2
+             A := (6 - t~) r~  + (t~  - 6 t~) r~ + 2 t~
+
+> ((-2-r)*t+r*(r+6)/2)^2/(-2-r)-r^2*(r-6)^2/(4*(2+r))-12*r^2/(2+r);
+
+        /               r~ (r~ + 6)\2
+        |(-2 - r~) t~ + -----------|      2         2        2
+        \                    2     /    r~  (r~ - 6)    12 r~
+        ----------------------------- - ------------- - ------
+                   -2 - r~                8 + 4 r~      2 + r~
+
+> factor((6-t)*r^2+(t^2-6*t)*r);
+
+                       -r~ (-6 + t~) (-t~ + r~)
+
+> S:=simplify(int(pdf^2,x=a..b),symbolic);
+
+               (2 - 2 t~)
+       (-b + a)
+  S := ------------------
+                        2
+       Beta(r~, t~ - r~)
+
+           b
+          /
+         |           (-2 + 2 r~)         (2 t~ - 2 r~ - 2)
+         |   (-x + a)            (-b + x)                  dx
+         |
+        /
+          a
+
+> delta:=S-Beta(2*r-1,2*t-2*r-1)/Beta(r,t-r)^2/(b-a);
+
+                   (2 - 2 t~)
+           (-b + a)
+  delta := ------------------
+                            2
+           Beta(r~, t~ - r~)
+
+           b
+          /
+         |           (-2 + 2 r~)         (2 t~ - 2 r~ - 2)
+         |   (-x + a)            (-b + x)                  dx
+         |
+        /
+          a
+
+           Beta(-1 + 2 r~, 2 t~ - 2 r~ - 1)
+         - --------------------------------
+                               2
+              Beta(r~, t~ - r~)  (b - a)
+
+> evalf(subs(r=2.5,t=4.9,a=-1.2,b=3.5,delta));
+
+                         -9                  -10
+                   0.1 10   - 0.2353302428 10    I
+
+> int(exp(I*u*x)*pdf,x=-infinity..infinity);
+
+     infinity               /-x + a\(-1 + r~) /-b + x\(t~ - r~ - 1)
+    /           exp(u~ x I) |------|          |------|
+   |                        \-b + a/          \-b + a/
+   |          - --------------------------------------------------- d
+   |                        Beta(r~, t~ - r~) (-b + a)
+  /
+    -infinity
+
+        x
+
+> 

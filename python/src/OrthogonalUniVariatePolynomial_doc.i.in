@@ -1,0 +1,54 @@
+%feature("docstring") OT::OrthogonalUniVariatePolynomial
+"Base class for orthogonal univariate polynomials.
+
+.. warning::
+
+    Orthogonal univariate polynomials are not intended to be created manually.
+    They should be constructed with the subclasses of
+    :class:`~openturns.OrthogonalUniVariatePolynomialFamily` (like e.g.
+    :class:`~openturns.HermiteFactory`). Constructor parameters are therefore
+    intentionally not documented.
+
+See Also
+--------
+OrthogonalUniVariatePolynomialFamily
+
+Examples
+--------
+>>> import openturns as ot
+
+Create a univariate polynomial from a list of coefficients:
+
+>>> for i in range(3):
+...     print(ot.OrthogonalUniVariatePolynomialFamily().build(i))
+1
+X
+-0.707107 + 0.707107 * X^2"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomial::getRecurrenceCoefficients
+"Accessor to the recurrence coefficients.
+
+Returns
+-------
+recurrence_coefficients : list of :class:`NumericalPoint`
+    The list of recurrence coefficients that defined the orthogonal univariate
+    polynomial from the very first univariate orthogonal polynomial
+    :math:`P_0`.
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i > 1
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
+>>> print(polynomial.getRecurrenceCoefficients())
+[[1,0,0],[0.707107,0,-0.707107]]"

@@ -1,0 +1,21 @@
+test number zero : default constructor and string converter
+symmetricTensor0 =  class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=0 columns=0 sheets=0 values=[]
+test number one : constructor with size, operator() and string converter
+symmetricTensor1 =  class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,0,3,4,5,0,6,7,8,0,9]
+values = 1.000000   2.000000   2.000000   3.000000   4.000000   5.000000   5.000000   6.000000   7.000000   8.000000   8.000000   9.000000
+test number two : copy constructor and string converter
+symmetricTensor2 =  class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,0,3,4,5,0,6,7,8,0,9]
+test number three : get dimensions methods
+symmetricTensor1's nbRows =  2
+symmetricTensor1's nbColumns =  2
+symmetricTensor1's nbSheets =  3
+test number four : assignment method
+test number five : isEmpty method
+symmetricTensor1 is empty =  False
+symmetricTensor0 is empty =  True
+symmetricTensor5 is empty =  True
+symmetricTensor6 is empty =  True
+symmetricTensor1 =  class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,0,3,4,5,0,6,7,8,0,9]
+symmetricTensor1.getSheet(1) =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,5,5,6]
+sheet2 =  class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.4,0.5,0,0.6]
+symmetricTensor1 =  class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,0,3,0.4,0.5,0.5,0.6,7,8,0,9]

@@ -1,0 +1,9 @@
+%feature("docstring") OT::RayleighFactory
+"Rayleigh factory.
+
+Available constructor:
+    RayleighFactory()
+
+See also
+--------
+DistributionFactory"

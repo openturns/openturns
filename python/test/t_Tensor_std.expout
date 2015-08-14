@@ -1,0 +1,20 @@
+test number zero : default constructor and string converter
+tensor0 =  class=Tensor implementation=class=TensorImplementation name=Unnamed rows=0 columns=0 sheets=0 values=[]
+test number one : constructor with size, operator() and string converter
+tensor1 =  class=Tensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,3,4,5,6,7,8,9,10,11,12]
+values = 1.000000   2.000000   3.000000   4.000000   5.000000   6.000000   7.000000   8.000000   9.000000   10.000000   11.000000   12.000000
+test number two : copy constructor and string converter
+tensor2 =  class=Tensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,3,4,5,6,7,8,9,10,11,12]
+test number three : get dimensions methods
+tensor1's nbRows =  2 tensor1's nbColumns =  2
+tensor1's nbSheets =  3
+test number four : assignment method
+test number five : isEmpty method
+tensor1 is empty =  False
+tensor0 is empty =  True
+tensor5 is empty =  True
+tensor6 is empty =  True
+tensor1 =  class=Tensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,3,4,5,6,7,8,9,10,11,12]
+tensor1.getSheet(1) =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[5,6,7,8]
+sheet2 =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,0.6,0.7,0.8]
+tensor1 =  class=Tensor implementation=class=TensorImplementation name=Unnamed rows=2 columns=2 sheets=3 values=[1,2,3,4,0.5,0.6,0.7,0.8,9,10,11,12]

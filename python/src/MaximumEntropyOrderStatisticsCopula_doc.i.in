@@ -1,0 +1,52 @@
+%feature("docstring") OT::MaximumEntropyOrderStatisticsCopula
+"MaximumEntropyOrderStatisticsCopula copula.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.Distribution`
+    The margins, with range verifying :math:`a_i \leq a_{i+1}` and :math:`b_i \leq b_{i+1}`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_U(u) = \prod\limits_{k=2}^d \frac{\exp\left(-\int_{\partial_{k-1}^{-1}(u_{k-1})}^{\partial_k^{-1}(u_k)} \phi_k(s) ds\right)}{\partial_{k-1}(\partial_k^{-1}(u_k))-u_k} \mathbf{1}_{F_1^{-1}(u_1) \leq \dots \leq F_d^{-1}(u_d)}
+
+             \text{with } \partial_k(t) = F_k(G^{-1}(t)) \text{ and } G(t) = \frac{1}{t} \sum\limits_{k=1}^d F_k(t)
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> coll = [ot.Uniform(-1., 1.), ot.LogUniform(1., 1.2), ot.Triangular(3., 4., 5.)]
+>>> copulaOrderStat = ot.MaximumEntropyOrderStatisticsCopula(coll)
+
+Draw a sample:
+
+>>> sample = copulaOrderStat.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsCopula::getDistributionCollection
+"Accessor to the distribution's margins collection.
+
+Returns
+-------
+coll : sequence of :class:`~openturns.Distribution`
+    The marginals."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsCopula::setDistributionCollection
+"Accessor to the distribution's collection.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.Distribution`
+    The margins."
+
+// ---------------------------------------------------------------------
+

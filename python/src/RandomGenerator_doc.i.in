@@ -1,0 +1,104 @@
+%feature("docstring") OT::RandomGenerator
+"Uniform random generator.
+
+The random generator of uniform(0,1) sample of OpenTURNS is based on the DSFTM
+(Double precision SIMD oriented Fast Mersenne Twister) algorithm described in
+the Reference Guide."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomGenerator::GetState
+"Get the state of the random generator.
+
+Returns
+-------
+particularState : :class:`~openturns.RandomGeneratorState`
+    State of the random generator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomGenerator::SetState
+"Set the state of the random generator.
+
+Parameters
+----------
+particularState : :class:`~openturns.RandomGeneratorState`
+    State of the random generator.
+
+Notes
+-----
+This method fixes the entire state of the random generator algorithm
+thanks the specification of the entire state *particularState* usually
+previously obtained thanks to the :meth:`GetState` method."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomGenerator::Generate
+"Generate a pseudo-random vector.
+
+Parameters
+----------
+size : positive int
+    Number of realizations required. When not given, by default it is equal to
+    1.
+
+Returns
+-------
+numbers : float, :class:`~openturns.NumericalPoint`
+    Pseudo-random numbers uniformly distributed over :math:`[0, 1[`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> print('%.6f' % ot.RandomGenerator.Generate())
+0.629877
+>>> print(ot.RandomGenerator.Generate(2))
+[0.882805,0.135276]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomGenerator::IntegerGenerate
+"Generate a pseudo-random integer.
+
+:Available usages:
+    IntegerGenerate(*n*)
+
+    IntegerGenerate(*size, n*)
+
+Parameters
+----------
+n : positive int
+    Upper bound of the interval where the pseudo-random integers are.
+size : positive int
+    Number of integers to generate. When not given, by default it is equal to
+    1.
+
+Returns
+-------
+integer : int, :class:`~openturns.UnsignedIntegerCollection`
+    Pseudo-random integers uniformly distributed over :math:`[0,...,n-1]`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> print(ot.RandomGenerator.IntegerGenerate(30))
+24
+>>> print(ot.RandomGenerator.IntegerGenerate(5, 30))
+[26,21,21,22,26]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomGenerator::SetSeed
+"Set the seed of the random generator.
+
+Parameters
+----------
+n : int :math:`\in [0, 2^{32}-1]`
+
+Notes
+-----
+This method fixes a particular state of the random generator algorithm
+thanks to the seed :math:`n`. The seed of the random generator is automatically
+initialized to 0 when a session is launched."

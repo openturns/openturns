@@ -1,0 +1,60 @@
+m1=[1 5; 2 12];
+disp("m1=")
+disp(m1)
+p1=[5;0]
+disp("p1=")
+disp(p1)
+x1=m1\p1
+disp("x1=")
+disp(x1)
+r1=m1*x1
+disp("m1*x1=")
+disp(r1)
+m2=[1 5 3; 2 12 4]
+disp("m2=")
+disp(m2)
+p2=[5;0]
+disp("p2=")
+disp(p2)
+x2=m2\p2
+disp("x2=")
+disp(x2)
+r2=m2*x2
+disp("m2*x2=")
+disp(r2)
+m3=[1 5; 2 12; 4 3     ];
+disp("m3=")
+disp(m3)
+p3=[5;0;1]
+disp("p3=")
+disp(p3)
+x3=m3\p3
+disp("x3=")
+disp(x3)
+r3=m3*x3
+disp("m3*x3=")
+disp(r3)
+b1=[5 10 15 20; 1 2 3 4]
+disp("b1=")
+disp(b1)
+x4=m1\b1
+disp("x4=")
+disp(x4)
+r4=m1*x4
+disp("m1*x4=")
+disp(m1*x4)
+x5=m2\b1
+disp("x5=")
+disp(x5)
+r5=m2*x5
+disp("m2*x5=")
+disp(r5)
+b2=[5 10 15 20; 1 2 3 4; -2 -4 -6 -8]
+disp("b2=")
+disp(b2)
+x6=m3\b2
+disp("x6=")
+disp(x6)
+r6=m3*x6
+disp("m3*x6=")
+disp(r6)

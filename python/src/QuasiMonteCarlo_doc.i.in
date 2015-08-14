@@ -1,0 +1,77 @@
+%feature("docstring") OT::QuasiMonteCarlo
+"Quasi-Monte Carlo method.
+
+Available constructors:
+    QuasiMonteCarlo(*event=ot.Event(), lowDiscrepancySequence=ot.SobolSequence()*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event we are computing the probability of.
+lowDiscrepancySequence : :class:`~openturns.LowDiscrepancySequence`
+    Low-discrepancy sequence used to generate the samples.
+
+Notes
+-----
+Using the probability distribution of a random vector :math:`\vect{X}`, we seek
+to evaluate the following probability:
+
+.. math::
+
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux
+        = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+
+Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
+vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
+which enables the definition of the event
+:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
+
+Quasi-Monte Carlo method approximates the probability of failure using low
+:class:`discrepancy sequences <openturns.LowDiscrepancySequence>`
+:math:`\{\vect{x}_1, ..., \vect{x}_N\}` instead of randomly generated
+sequences, as follows:
+
+.. math::
+
+    P_f \approx \frac{1}{N}\,\sum_{i=1}^N \mathbf{1}_{\cD_f}(\ux_i) f(\ux_i).
+
+In general, the integral of a function :math:`f` on :math:`\Delta = [0,1]^s`
+can be approximated by using some low discrepancy sequence
+:math:`\{\vect{x}_1, \hdots, \vect{x}_N\}`  as follows:
+
+.. math::
+
+    \int_{\Delta} f(\vect{u})\,d\vect{u} \approx \frac{1}{N}\,\sum_{i=1}^N f(\vect{x}_i).
+
+The low discrepancy sequence is generated on :math:`\Delta` according to the
+Lebesgue measure then may be transformed to any measure :math:`\mu` thanks to
+the inverse CDF technique in order to approximate the integral:
+
+.. math::
+
+    \int_{\Rset^s} f(\vect{u})\,d\vect{u} \approx \frac{1}{N}\,\sum_{i=1}^N f(\vect{x}_i)
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> # We create a 'usual' RandomVector from the Distribution
+>>> vect = ot.RandomVector(myDistribution)
+>>> # We create a composite random vector
+>>> output = ot.RandomVector(myFunction, vect)
+>>> # We create an Event from this RandomVector
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a QuasiMonteCarlo algorithm
+>>> myAlgo = ot.QuasiMonteCarlo(myEvent)
+>>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.147000"

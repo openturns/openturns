@@ -1,0 +1,2 @@
+%feature("docstring") OT::LinearNumericalMathGradientImplementation
+"Linear numerical math gradient implementation."

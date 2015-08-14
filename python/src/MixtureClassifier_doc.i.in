@@ -1,0 +1,120 @@
+%feature("docstring") OT::MixtureClassifier
+"Particular classifier based on a mixture distribution.
+
+Available constructors:
+    MixtureClassifier(*mixtDist*)
+
+Parameters
+----------
+mixtDist : :class:`~openturns.Mixture`
+    A mixture distribution.
+
+See also
+--------
+Classifier, ExpertMixture
+
+Notes
+-----
+This implements a mixture classifier which is a particular classifier based on
+a mixture distribution:
+
+.. math::
+
+    p( \vect{x} ) = \sum_{i=1}^N w_i p_i ( \vect{x} )
+
+The classifier proposes :math:`N` classes. The rule to assign a point 
+:math:`\vect{x}` to a class :math:`i` is defined as follows: 
+
+.. math::
+    
+    i = \argmax_k \log w_k p_k( \vect{x} )
+
+See useful methods :meth:`classify` and :meth:`grade`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MixtureClassifier::classify
+"Classify points according to the classifier.
+
+**Available usages**:
+
+    classify(*inputPoint*)
+
+    classify(*inputSample*)
+
+Parameters
+----------
+inputPoint : sequence of float
+    A point to classify.
+inputSample : 2-d a sequence of float
+    A set of point to classify.
+
+Notes
+-----
+The classifier proposes :math:`N` classes where :math:`N` is the dimension of
+the mixture distribution *mixtDist*. The rule to assign a point :math:`\vect{x}`
+to a class :math:`i` is defined as follows: 
+
+.. math::
+    
+    i = \argmax_k \log w_k p_k( \vect{x} )
+
+In the first usage, it returns an integer which corresponds to the class where
+*inputPoint* has been assigned.
+
+In the second usage, it returns an :class:`~openturns.Indices` that collects the
+class of each point of *inputSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MixtureClassifier::grade
+"Grade points according to the classifier.
+
+**Available usages**:
+
+    grade(*inputPoint, k*)
+
+    grade(*inputSample, classList*)
+
+Parameters
+----------
+inputPoint : sequence of float
+    A point to grade.
+inputSample : 2-d a sequence of float
+    A set of point to grade.
+k : integer
+    The class number.
+classList : sequence of integer
+    The list of class number.
+
+Notes
+-----
+The grade of :math:`\vect{x}` with respect to the class *k* is
+:math:`log w_k p_k ( \vect{x} )`.
+
+In the first usage, it returns a real that grades *inputPoint* with respect to
+the class *k*. The greatest, the best.
+
+In the second usage, it returns an :class:`~openturns.Indices` that collects the
+grades of the :math:`i^{th}` point of *inputSample* with respect to the
+:math:`i^{th}` class of *classList*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MixtureClassifier::getMixture
+"Accessor to the mixture distribution.
+
+Returns
+-------
+mixtDist : :class:`~openturns.Mixture`
+    The mixture distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MixtureClassifier::setMixture
+"Accessor to the mixture distribution.
+
+Parameters
+----------
+mixtDist : :class:`~openturns.Mixture`
+    The mixture distribution."

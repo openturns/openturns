@@ -1,0 +1,120 @@
+%feature("docstring") OT::Student
+"Student distribution.
+
+Available constructors:
+    Student(*nu=3.0, d=1*)
+
+    Student(*nu, mu, sigma=1.0*)
+
+    Student(*nu, mu, sigma, R*)
+
+Parameters
+----------
+d : int, :math:`d \geq 1`
+    Dimension.
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom.
+mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`, optional
+    If :math:`\nu > 1`: mean.
+
+    If :math:`\nu = 1`: location parameter.
+
+    Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
+sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`, optional
+    Scale parameter.
+
+    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^d`.
+R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in \Rset^d \times \Rset^d`, optional
+    If :math:`\nu > 2`: correlation matrix.
+
+    If :math:`\nu \leq 2`: generalized correlation matrix.
+
+    Default is :math:`\mat{R} = I_d \in \Rset^d \times \Rset^d`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\Gamma \left(\frac{\nu + d}{2}\right)}
+                  {(\pi \nu) ^ {\frac{d}{2}} \Gamma \left(\frac{\nu}{2}\right)}
+             \frac{\left| \mathrm{det}(\mat{R}) \right| ^ {-1/2}}
+                  {\prod_{k = 1} ^ d \sigma_k}
+             \left(1 + \frac{\vect{z} ^ t \mat{R} ^ {-1} \vect{z}}{\nu}
+             \right) ^ {-\frac{\nu + d}{2}}, \quad x \in \Rset
+
+with :math:`\nu > 0, d \geq 1, \mat{R} \in \Rset^d \times \Rset^d,
+\sigma_k > 0, k=1, \dots, d` .
+
+where :math:`\vect{z}=\mat{\Delta}^{-1}\left(\vect{x}-\vect{\mu}\right)`, 
+:math:`\mat{\Delta} = \mat{\mathrm{diag}}(\vect{\sigma})` and :math:`\Gamma`
+denotes Euler's Gamma function :class:`~openturns.SpecFunc_Gamma`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \vect{\Expect{X}} & = & \vect{\mu} \quad \text{ if }\nu>1\\
+        \mat{\Cov{X}} & = & \displaystyle \frac{\nu}{\nu-2}
+                            \mat{\Delta}^t\,\mat{R}\,\mat{\Delta}
+                          \quad \text{ if }\nu>2
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Student(5.0, -0.5, 2.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean.
+    Only defined when the dimension is 1
+    (else, use the :func:`getMean()` method inherited from the
+    EllipticalDistribution class)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::getNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Returns
+-------
+nu : float
+    Generalised number degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::setMu
+"Accessor to the distribution's mean.
+
+Parameters
+----------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::setNu
+"Accessor to the distribution's generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom."
+
+

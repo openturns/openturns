@@ -1,0 +1,61 @@
+%feature("docstring") OT::TestResult
+"Test result data structure.
+
+.. warning::
+
+    Tests results are not intended to be created manually. They are returned
+    by the statistical tests implemented in the :mod:`~openturns.stattests`
+    subpackage. Constructor is therefore intentionally not documented.
+
+Notes
+-----
+The p-value of a test can be seen as the probability of observing a sample
+having a worst or equal statistic than the one that has been calculated on the
+tested sample, under the null hypothesis. This is the metric that is used for
+concluding the test with respect to the given accepted risk of committing a
+Type I error, that is an incorrect rejection of a true null hypothesis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), .99)
+>>> print(test_result.getPValue())
+0.846896...
+>>> print(test_result.getThreshold())
+0.01...
+>>> print(test_result.getBinaryQualityMeasure())
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::getBinaryQualityMeasure
+"Accessor to the test's binary conclusion.
+
+Returns
+-------
+binary_measure : bool, optional
+    Test conclusion: `False` if it can reject the null hypothesis, `True` if
+    it cannot."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::getPValue
+"Accessor to the test's p-value.
+
+Returns
+-------
+p_value : float, :math:`0 \leq p \leq 1`
+    The test's p-value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::getThreshold
+"Accessor to the accepted risk of committing a Type I error.
+
+Returns
+-------
+threshold : float, :math:`0 \leq \alpha \leq 1`
+    Accepted risk of committing a Type I error."

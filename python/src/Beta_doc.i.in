@@ -1,0 +1,169 @@
+%feature("docstring") OT::Beta
+"Beta distribution.
+
+Available constructors:
+    Beta(*arg1=2.0, arg2=4.0, a=-1.0, b=1.0, parameters_set=ot.Beta.RT*)
+
+Parameters
+----------
+arg1 : float
+    If *parameters_set == ot.Beta.RT*: shape parameter :math:`r > 0` with
+    :math:`r = t * (\mu - a) / (b - a)`.
+    If *parameters_set == ot.Beta.MUSIGMA*: mean :math:`\mu`.
+arg2 : float
+    If *parameters_set == ot.Beta.RT*: shape parameter :math:`t > r` with
+    :math:`t = (b - \mu) * (\mu - a) / \sigma^2 - 1`.
+    If *parameters_set == ot.Beta.MUSIGMA*: standard deviation :math:`\sigma > 0`.
+a : float
+    Lower bound.
+b : float, :math:`b > a`
+    Upper bound.
+parameters_set : int, optional
+    An integer telling which parameters set is used for defining the
+    distribution (amongst *ot.Beta.RT, ot.Beta.MUSIGMA*).
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{(x - a)^{r - 1} (b - x)^{t - r - 1}}
+                  {(b - a)^{t - 1} {\rm B}(r, t - r)},
+                  \quad x \in [a, b]
+
+with :math:`r < t` and :math:`a < b` and where :math:`\rm B` denotes
+Euler's beta function :class:`~openturns.SpecFunc_Beta`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & a + \frac{(b - a)\,r}{t} \\
+        \Var{X} & = & \left(\frac{b - a}{t}\right)^2 \frac{r\,(t - r)}{t + 1}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Beta(2., 1., 1., 5., ot.Beta.MUSIGMA)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getR
+"Accessor to the distribution's shape parameter :math:`r`.
+
+Returns
+-------
+r : float
+    Shape parameter :math:`r`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getT
+"Accessor to the distribution's shape parameter :math:`t`.
+
+Returns
+-------
+t : float
+    Shape parameter :math:`t`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getB
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+b : float
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getSigma
+"Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setR
+"Accessor to the distribution's shape parameter :math:`r`.
+
+Parameters
+----------
+r : float, :math:`r > 0`
+    Shape parameter :math:`r`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setT
+"Accessor to the distribution's shape parameter :math:`t`.
+
+Parameters
+----------
+t : float, :math:`t > r`
+    Shape parameter :math:`t`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setA
+"Accessor to the distribution's lower bound.
+
+Parameters
+----------
+a : float, :math:`a < b`
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setB
+"Accessor to the distribution's upper bound.
+
+Parameters
+----------
+b : float, :math:`b > a`
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setMuSigma
+"Accessor to the distribution's mean and standard deviation.
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

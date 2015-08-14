@@ -1,0 +1,48 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 548 "restart:\nprint(\"C
+layton\");\nC:=(u^(-theta)+v^(-theta)-1)^(-1/theta);\nconditionalCDF:=
+simplify(diff(C,u));\nconditionalQuantile:=simplify(solve(conditionalC
+DF=q,v),symbolic);\nprint(\"Frank\");\nC:=-log(1+(exp(-theta*u)-1)*(ex
+p(-theta*v)-1)/(exp(-theta)-1))/theta;\nconditionalCDF:=simplify(diff(
+C,u));\nconditionalQuantile:=combine(simplify(solve(conditionalCDF=q,v
+),symbolic),ln);\n# Gumbel\nprint(\"Gumbel\");\nC:=exp(-((-log(u))^the
+ta+(-log(v))^theta)^(1/theta));\nconditionalCDF:=simplify(diff(C,u));
+\nconditionalQuantile:=simplify(solve(conditionalCDF=q,v));" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#Q(Clayton6\"" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%\"CG),()%\"uG,$%&thetaG!\"\"\"\"\")%\"vGF)F,F,F+,$*&F,F,F*F+F+
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%/conditionalCDFG*&),()%\"uG,$%&t
+hetaG!\"\"\"\"\")%\"vGF*F-F-F,,$*&,&F+F-F-F-F-F+F,F,F-)F),&F+F,F-F,F-
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%4conditionalQuantileG),(*&)%\"uG
+,$%&thetaG!\"\"\"\"\")%\"qG,$*&F+F-,&F+F-F-F-F,F,F-F-F(F,F-F-,$*&F-F-F
++F,F," }}{PARA 11 "" 1 "" {XPPMATH 20 "6#Q&Frank6\"" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#>%\"CG,$*&-%#lnG6#,&\"\"\"F+*(,&-%$expG6#,$*&%&thetaG
+F+%\"uGF+!\"\"F+F+F5F+,&-F/6#,$*&F3F+%\"vGF+F5F+F+F5F+,&-F/6#,$F3F5F+F
++F5F5F+F+F3F5F5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%/conditionalCDFG*
+(,&-%$expG6#,$*&%&thetaG\"\"\"%\"vGF-!\"\"F-F-F/F--F(6#,$*&F,F-%\"uGF-
+F/F-,*-F(6#,$F,F/F--F(6#,&F3F/F+F/F-F0F/F'F/F/" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%4conditionalQuantileG*&,(-%#lnG6#,(-%$expG6#,$*&%&the
+taG\"\"\",&%\"uGF1F1!\"\"F1F4F4%\"qGF4*&F5F1F+F1F1F4-F(6#,(-F,6#,$*&F0
+F1F3F1F4F4*&F5F1F:F1F1F5F4F1F0F1F1F0F4" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#Q'Gumbel6\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"CG-%$expG6#,$
+),&),$-%#lnG6#%\"uG!\"\"%&thetaG\"\"\"),$-F.6#%\"vGF1F2F3*&F3F3F2F1F1
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%/conditionalCDFG**),&),$-%#lnG6#
+%\"uG!\"\"%&thetaG\"\"\"),$-F+6#%\"vGF.F/F0,$*&,&F/F0F0F.F0F/F.F.F0)F)
+F8F0F-F.-%$expG6#,$)F'*&F0F0F/F.F.F0" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#>%4conditionalQuantileG-%$expG6#,$),&-F&6#,$*(,(*&-%)LambertWG6#*&,&
+%&thetaG\"\"\"F7!\"\"F8)*(),$-%#lnG6#%\"uGF8F5F7%\"qGF8F@F8*&F7F7F5F8F
+7F7F6F7F7F1F8-F>6#F:F8F7F6F7F5F8F8F7)F<F6F8*&F7F7F6F8F8" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 54 "qv:=evalf(subs(u=0.3,v=0.6,theta=2.
+5,conditionalCDF));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#qvG$\"+')>Bf
+))!#5" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 54 "evalf(subs(q=qv,u=
+0.3,theta=2.5,conditionalQuantile));" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#$\"+w******f!#5" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 14 "Lamber
+tW(0.4);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+2vnrH!#5" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "0 8 0" 0 }{VIEWOPTS 1 
+1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

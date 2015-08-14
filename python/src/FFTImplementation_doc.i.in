@@ -1,0 +1,245 @@
+%define OT_FFT_doc
+"Base class for Fast Fourier Transform (FFT) and Inverse Fast Fourier Transform (IFFT).
+
+Notes
+-----
+Perform FFT and IFFT with array of ndim=1,2,3
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation
+OT_FFT_doc
+// ---------------------------------------------------------------------
+
+
+%define OT_FFT_transform_doc
+"Perform Fast Fourier Transform (fft).
+
+Parameters
+----------
+collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.NumericalScalarCollection`, sequence of float
+  Data to transform.
+
+Returns
+-------
+collection : :class:`~openturns.NumericalComplexCollection`
+  The data in Fourier domain.
+
+Notes
+-----
+The Fast Fourier Transform writes as following:
+
+.. math::
+
+    {\rm y_k} = \sum_{n=0}^{N-1} x_n exp(-2 \imath \pi \frac{kn}{N})
+
+where :math:`x` denotes the data to be transformed, of size :math:`N`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> fft = ot.FFT()
+>>> result = fft.transform(ot.Normal(8).getRealization())
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation::transform
+OT_FFT_transform_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FFT_inverseTransform_doc
+"Perform Inverse Fast Fourier Transform (fft).
+
+Parameters
+----------
+collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.NumericalScalarCollection`, sequence of float
+  Data to transform.
+
+Returns
+-------
+collection : :class:`~openturns.NumericalComplexCollection`
+    The transformed data.
+
+Notes
+-----
+The Inverse Fast Fourier Transform writes as following:
+
+.. math::
+
+    {\rm y_k} = \sum_{n=0}^{N-1} \frac{1}{N} x_n exp(2 \imath \pi \frac{kn}{N})
+
+where :math:`x` denotes the data, of size :math:`N`, to be transformed.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> fft = ot.FFT()
+>>> collection = ot.NumericalComplexCollection([1+1j,2-0.3j,5-.3j,6+1j,9+8j,16+8j,0.3])
+>>> result = fft.inverseTransform(collection)
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation::inverseTransform
+OT_FFT_inverseTransform_doc
+// ---------------------------------------------------------------------
+
+%define OT_FFT_transform2D_doc
+"Perform 2D FFT.
+
+Parameters
+----------
+matrix : :class:`~openturns.ComplexMatrix`, :class:`~openturns.Matrix`, 2-d sequence of float
+  Data to transform.
+
+Returns
+-------
+result : :class:`~openturns.ComplexMatrix`
+  The data in fourier domain.
+
+Notes
+-----
+The 2D Fast Fourier Transform writes as following:
+
+.. math::
+
+    {\rm Z_{k,l}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1} X_{m,n} exp(-2 \imath \pi \frac{km}{M}) exp(-2 \imath \pi \frac{ln}{N})
+
+where :math:`X` denotes the data to be transformed with shape (:math:`M`,:math:`N`)
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> fft = ot.FFT()
+>>> x = ot.Normal(8).getSample(16)
+>>> result = fft.transform2D(x)
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation::transform2D
+OT_FFT_transform2D_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FFT_inverseTransform2D_doc
+"Perform 2D IFFT.
+
+Parameters
+----------
+matrix : :class:`~openturns.ComplexMatrix`, :class:`~openturns.Matrix`, 2-d sequence of float
+  Data to transform.
+
+Returns
+-------
+result : :class:`~openturns.ComplexMatrix`
+  The data transformed.
+
+Notes
+-----
+The 2D Fast Inverse Fourier Transform writes as following:
+
+.. math::
+
+    {\rm Y_{k,l}} = \frac{1}{M\times N}\sum_{m=0}^{M-1}\sum_{n=0}^{N-1} Z_{m,n} exp(2 \imath \pi \frac{km}{M}) exp(2 \imath \pi \frac{ln}{N})
+
+where :math:`Z` denotes the data to be transformed with shape (:math:`M`,:math:`N`)
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> fft = ot.FFT()
+>>> x = ot.Normal(8).getSample(16)
+>>> result = fft.inverseTransform2D(x)
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation::inverseTransform2D
+OT_FFT_inverseTransform2D_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FFT_transform3D_doc
+"Perform 3D FFT.
+
+Parameters
+----------
+tensor : :class:`~openturns.ComplexTensor` or :class:`~openturns.Tensor` or 3d array
+  Data to transform.
+
+Returns
+-------
+result : :class:`~openturns.ComplexTensor`
+  The data in fourier domain.
+
+Notes
+-----
+The 3D Fast Fourier Transform writes as following:
+
+.. math::
+
+    {\rm Z_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} X_{m,n,p} exp(-2 \imath \pi \frac{km}{M}) exp(-2 \imath \pi \frac{ln}{N}) exp(-2 \imath \pi \frac{rp}{P})
+
+where :math:`X` denotes the data to be transformed with shape (:math:`M`,:math:`N`, :math:`P`)
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> fft = ot.FFT()
+>>> x = ot.ComplexTensor(8,8,2)
+>>> y = ot.Normal(8).getSample(8)
+>>> x.setSheet(0,fft.transform2D(y))
+>>> z = ot.Normal(8).getSample(8)
+>>> x.setSheet(1,fft.transform2D(z))
+>>> result = fft.transform3D(x)
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation::transform3D
+OT_FFT_transform3D_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FFT_inverseTransform3D_doc
+"Perform 3D IFFT.
+
+Parameters
+----------
+tensor : :class:`~openturns.ComplexTensor` or :class:`~openturns.Tensor` or 3d array
+  The data to be transformed.
+
+Returns
+-------
+result : :class:`~openturns.ComplexTensor`
+  The transformed data.
+
+Notes
+-----
+The 3D Inverse Fast Fourier Transform writes as following:
+
+.. math::
+
+    {\rm Y_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} \frac{1}{M\times N \times P} Z_{m,n,p} exp(2 \imath \pi \frac{km}{M}) exp(2 \imath \pi \frac{ln}{N}) exp(2 \imath \pi \frac{rp}{P})
+
+where :math:`Z` denotes the data to be transformed with shape (:math:`M`,:math:`N`, :math:`P`)
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> fft = ot.FFT()
+>>> x = ot.ComplexTensor(8,8,2)
+>>> y = ot.Normal(8).getSample(8)
+>>> x.setSheet(0, fft.transform2D(y))
+>>> z = ot.Normal(8).getSample(8)
+>>> x.setSheet(1, fft.transform2D(z))
+>>> result = fft.inverseTransform3D(x)
+"
+%enddef
+
+%feature("docstring") OT::FFTImplementation::inverseTransform3D
+OT_FFT_inverseTransform3D_doc

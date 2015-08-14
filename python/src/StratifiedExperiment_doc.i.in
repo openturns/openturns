@@ -1,0 +1,69 @@
+%feature("docstring") OT::StratifiedExperiment
+"Base class for stratified experiments.
+
+Available constructor:
+    StratifiedExperiment(*center, levels*)
+
+Parameters
+----------
+center, levels : two sequences of float
+    Sequences which have different meanings according to the nature of the
+    stratified experiment: Axial, Composite, Factorial or Box (see
+    corresponding documentation).
+
+Notes
+-----
+A StratifiedExperiment object can be used only through its derived classes:
+
+- :class:`~openturns.Axial`
+- :class:`~openturns.Box`
+- :class:`~openturns.Composite`
+- :class:`~openturns.Factorial`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StratifiedExperiment::getCenter
+"Get the center of the stratified experiment.
+
+Returns
+-------
+center : :class:`~openturns.NumericalPoint`
+    Sequence which has different meanings according to the nature of the
+    stratified experiment: Axial, Composite, Factorial or Box (see
+    corresponding documentation)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StratifiedExperiment::setCenter
+"Set the center of the stratified experiment.
+
+Parameters
+----------
+center : sequence of float
+    Sequence which has different meanings according to the nature of the
+    stratified experiment: Axial, Composite, Factorial or Box (see
+    corresponding documentation)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StratifiedExperiment::getLevels
+"Get the levels of the stratified experiment.
+
+Returns
+-------
+levels : :class:`~openturns.NumericalPoint`
+    Sequence which has different meanings according to the nature of the
+    stratified experiment: Axial, Composite, Factorial or Box (see
+    corresponding documentation)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StratifiedExperiment::setLevels
+"Set the levels of the stratified experiment.
+
+Parameters
+----------
+levels : sequence of float
+    Sequence which has different meanings according to the nature of the
+    stratified experiment: Axial, Composite, Factorial or Box (see
+    corresponding documentation)."

@@ -1,0 +1,46 @@
+%feature("docstring") OT::SafeAndSlow
+"SafeAndSlow method.
+
+Available constructors:
+    SafeAndSlow(*solver=ot.Brent()*)
+
+    SafeAndSlow(*solver, maximumDistance, stepSize*)
+
+Parameters
+----------
+solver : :class:`~openturns.Solver`
+    Non linear solver used to research the intersection of the limit state
+    function with the direction, on each segment of length *stepSize*, between
+    the center of the space and *maximumDistance* (root research).
+maximumDistance : positive float
+    Distance from the center of the standard space until which we research an
+    intersection with the limit state function along each direction. By
+    default, the maximum distance is equal to the value defined through the key
+    RootStrategyImplementation-DefaultMaximumDistance of the
+    :class:`~openturns.ResourceMap`.
+stepSize : float
+    Length of each segment inside which the root research is performed. By
+    default, the step size is equal to the value defined through the key
+    RootStrategyImplementation-DefaultStepSize of the
+    :class:`~openturns.ResourceMap`.
+
+See also
+--------
+DirectionalSampling
+
+Notes
+-----
+The *SafeAndSlow* strategy is the following: for each direction, we go along
+the direction by step of length *stepSize* from the origin to the maximum
+distant point(at distance *maximumDistance* from the center of the standard
+space) and we check whether there is a sign changement on each segment so
+formed.
+
+We go until the maximum distant point. Then, for all the segments where we
+detected the presence of a root, we research the root with the selected non
+linear solver. We evaluate the contribution to the failure probability of each
+segment.
+
+If *stepSize* is small enough, this strategy garantees us to find all the roots
+in the direction and the contribution of this direction to the failure
+probability is precisely evaluated."

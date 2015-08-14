@@ -1,0 +1,11 @@
+%feature("docstring") OT::LeastSquaresMetaModelSelection
+"Least squares metamodel selection factory.
+
+See also
+--------
+ApproximationAlgorithm, PenalizedLeastSquaresAlgorithm
+
+Notes
+-----
+The LeastSquaresMetaModelSelection is built from a least squares metamodel
+selection factory."

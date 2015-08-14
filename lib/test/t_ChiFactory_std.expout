@@ -1,0 +1,12 @@
+Distribution          =class=Chi name=Chi dimension=1 nu=0.5
+Estimated distribution=class=Chi name=Chi dimension=1 nu=0.49317
+Distribution          =class=Chi name=Chi dimension=1 nu=1
+Estimated distribution=class=Chi name=Chi dimension=1 nu=1.00223
+Distribution          =class=Chi name=Chi dimension=1 nu=2.5
+Estimated distribution=class=Chi name=Chi dimension=1 nu=2.48936
+Default distribution=class=Chi name=Chi dimension=1 nu=1
+Distribution from parameters=class=Chi name=Chi dimension=1 nu=2.5
+Chi          =class=Chi name=Chi dimension=1 nu=2.5
+Estimated chi=class=Chi name=Chi dimension=1 nu=2.48936
+Default chi=class=Chi name=Chi dimension=1 nu=1
+Chi from parameters=class=Chi name=Chi dimension=1 nu=2.5

@@ -1,0 +1,167 @@
+%define OT_LowDiscrepancySequence_doc
+"Base class to generate low discrepancy sequences.
+
+Available constructors:
+    LowDiscrepancySequence(*dimension=1*)
+
+Parameters
+----------
+dimension : int
+    Dimension of the points of the low discrepancy sequence.
+
+Notes
+-----
+The low discrepancy sequences, also called 'quasi-random' sequences, are a
+deterministic alternative to random sequences for use in Monte Carlo methods.
+These sequences are sets of equidistributed points which the error in uniformity
+is measured by its discrepancy.
+
+The **discrepancy** of a set :math:`P = \{x_1, \hdots, x_N\}` is defined,
+using Niederreiter's notation, as:
+
+.. math::
+
+    D_N(P) = \sup_{B\in J} \left| \frac{A(B;P)}{N} - \lambda_s(B) \right|
+
+where :math:`\lambda_s` is the s-dimensional Lebesgue measure, :math:`A(B;P)`
+is the number of points in :math:`P` that fall into :math:`B`, and :math:`J` is
+the set of s-dimensional intervals or boxes of the form:
+
+.. math::
+
+    \prod_{i=1}^s [a_i, b_i) = \{ \mathbf{x} \in \mathbf{R}^s : a_i \le x_i < b_i \} \,
+
+where :math:`0 \le a_i < b_i \le 1`.
+
+The star-discrepancy :math:`D_N^*(P)` is defined similarly, except that the
+supremum is taken over the set :math:`J^*` of intervals of the form:
+
+.. math::
+
+    \prod_{i=1}^s [0, u_i)
+
+where :math:`u_i` is in the half-open interval :math:`[0, 1)`.
+
+A low-discrepancy sequence can be generated only through the derived classes of
+LowDiscrepancySequence. OpenTURNS proposes the
+:class:`Faure <openturns.FaureSequence>`,
+:class:`Halton <openturns.HaltonSequence>`,
+:class:`Reverse Halton <openturns.ReverseHaltonSequence>`,
+:class:`Haselgrove <openturns.HaselgroveSequence>` and
+:class:`Sobol <openturns.SobolSequence>` sequences.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create a sequence of 3 points of 2 dimensions
+>>> sequence = ot.LowDiscrepancySequence(ot.SobolSequence(2))
+>>> print(sequence.generate(3))
+0 : [ 0.5  0.5  ]
+1 : [ 0.75 0.25 ]
+2 : [ 0.25 0.75 ]"
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation
+OT_LowDiscrepancySequence_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LowDiscrepancySequence_computeStarDiscrepancy_doc
+"Compute the star discrepancy of a sample uniformly distributed over [0, 1).
+
+Parameters
+----------
+sample : 2-d sequence of float
+
+Returns
+-------
+starDiscrepancy : float
+    Star discrepancy of a sample uniformly distributed over [0, 1).
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create a sequence of 3 points of 2 dimensions
+>>> sequence = ot.LowDiscrepancySequence(ot.SobolSequence(2))
+>>> sample = sequence.generate(16)
+>>> print(sequence.computeStarDiscrepancy(sample))
+0.12890625
+>>> sample = sequence.generate(64)
+>>> print(sequence.computeStarDiscrepancy(sample))
+0.0537109375"
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy
+OT_LowDiscrepancySequence_computeStarDiscrepancy_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LowDiscrepancySequence_generate_doc
+"Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1).
+
+Parameters
+----------
+size : int
+    Number of points to be generated. Default is 1.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    Sample of pseudo-random vectors of numbers uniformly distributed over
+    [0, 1).
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create a sequence of 3 points of 2 dimensions
+>>> sequence = ot.LowDiscrepancySequence(ot.SobolSequence(2))
+>>> print(sequence.generate(3))
+0 : [ 0.5  0.5  ]
+1 : [ 0.75 0.25 ]
+2 : [ 0.25 0.75 ]"
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation::generate
+OT_LowDiscrepancySequence_generate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LowDiscrepancySequence_getDimension_doc
+"Accessor to the dimension of the points of the low discrepancy sequence.
+
+Returns
+-------
+dimension : int
+    Dimension of the points of the low discrepancy sequence."
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation::getDimension
+OT_LowDiscrepancySequence_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LowDiscrepancySequence_initialize_doc
+"Initialize the sequence.
+
+Parameters
+----------
+dimension : int
+    Dimension of the points of the low discrepancy sequence.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create a sequence of 3 points of 2 dimensions
+>>> sequence = ot.LowDiscrepancySequence(ot.SobolSequence(2))
+>>> print(sequence.generate(3))
+0 : [ 0.5  0.5  ]
+1 : [ 0.75 0.25 ]
+2 : [ 0.25 0.75 ]
+>>> print(sequence.generate(3))
+0 : [ 0.375 0.375 ]
+1 : [ 0.875 0.875 ]
+2 : [ 0.625 0.125 ]
+>>> sequence.initialize(2)
+>>> print(sequence.generate(3))
+0 : [ 0.5  0.5  ]
+1 : [ 0.75 0.25 ]
+2 : [ 0.25 0.75 ]"
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation::initialize
+OT_LowDiscrepancySequence_initialize_doc

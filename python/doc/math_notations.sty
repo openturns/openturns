@@ -1,0 +1,128 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{math_notations}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% For matrixes and vectors
+\newcommand{\vect}[1]{{\underline{#1}}}
+\newcommand{\mat}[1]{{\underline{\underline{#1}}}}
+\newcommand{\Tr}[1]{{#1}^{\text{\upshape\textsf T}}}
+
+% Bold letters 
+\newcommand{\bdA}{{\boldsymbol{A}}}
+\newcommand{\bdB}{{\boldsymbol{B}}}
+\newcommand{\bdC}{{\boldsymbol{C}}}
+\newcommand{\bdD}{{\boldsymbol{D}}}
+\newcommand{\bdE}{{\boldsymbol{E}}}
+\newcommand{\bdF}{{\boldsymbol{F}}}
+\newcommand{\bdG}{{\boldsymbol{G}}}
+\newcommand{\bdH}{{\boldsymbol{H}}}
+\newcommand{\bdI}{{\boldsymbol{I}}}
+\newcommand{\bdJ}{{\boldsymbol{J}}}
+\newcommand{\bdK}{{\boldsymbol{K}}}
+\newcommand{\bdL}{{\boldsymbol{L}}}
+\newcommand{\bdM}{{\boldsymbol{M}}}
+\newcommand{\bdN}{{\boldsymbol{N}}}
+\newcommand{\bdO}{{\boldsymbol{O}}}
+\newcommand{\bdP}{{\boldsymbol{P}}}
+\newcommand{\bdQ}{{\boldsymbol{Q}}}
+\newcommand{\bdR}{{\boldsymbol{R}}}
+\newcommand{\bdS}{{\boldsymbol{S}}}
+\newcommand{\bdT}{{\boldsymbol{T}}}
+\newcommand{\bdU}{{\boldsymbol{U}}}
+\newcommand{\bdV}{{\boldsymbol{V}}}
+\newcommand{\bdW}{{\boldsymbol{W}}}
+\newcommand{\bdX}{{\boldsymbol{X}}}
+\newcommand{\bdY}{{\boldsymbol{Y}}}
+\newcommand{\bdZ}{{\boldsymbol{Z}}}
+\newcommand{\bda}{{\boldsymbol{a}}}
+\newcommand{\bdb}{{\boldsymbol{b}}}
+\newcommand{\bdc}{{\boldsymbol{c}}}
+\newcommand{\bdd}{{\boldsymbol{d}}}
+\newcommand{\bde}{{\boldsymbol{e}}}
+\newcommand{\bdf}{{\boldsymbol{f}}}
+\newcommand{\bdg}{{\boldsymbol{g}}}
+\newcommand{\bdh}{{\boldsymbol{h}}}
+\newcommand{\bdi}{{\boldsymbol{i}}}
+\newcommand{\bdj}{{\boldsymbol{j}}}
+\newcommand{\bdk}{{\boldsymbol{k}}}
+\newcommand{\bdl}{{\boldsymbol{l}}}
+\newcommand{\bdm}{{\boldsymbol{m}}}
+\newcommand{\bdn}{{\boldsymbol{n}}}
+\newcommand{\bdo}{{\boldsymbol{o}}}
+\newcommand{\bdp}{{\boldsymbol{p}}}
+\newcommand{\bdq}{{\boldsymbol{q}}}
+\newcommand{\bdr}{{\boldsymbol{r}}}
+\newcommand{\bds}{{\boldsymbol{s}}}
+\newcommand{\bdt}{{\boldsymbol{t}}}
+\newcommand{\bdu}{{\boldsymbol{u}}}
+\newcommand{\bdv}{{\boldsymbol{v}}}
+\newcommand{\bdw}{{\boldsymbol{w}}}
+\newcommand{\bdx}{{\boldsymbol{x}}}
+\newcommand{\bdy}{{\boldsymbol{y}}}
+\newcommand{\bdz}{{\boldsymbol{z}}}
+
+% special caracters
+\newcommand{\cA}{{\mathcal A}}
+\newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}}
+\newcommand{\cD}{{\mathcal D}}
+\newcommand{\cE}{{\mathcal E}}
+\newcommand{\cF}{{\mathcal F}}
+\newcommand{\cG}{{\mathcal G}}
+\newcommand{\cH}{{\mathcal H}}
+\newcommand{\cI}{{\mathcal I}}
+\newcommand{\cJ}{{\mathcal J}}
+\newcommand{\cK}{{\mathcal K}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cM}{{\mathcal M}}
+\newcommand{\cN}{{\mathcal N}}
+\newcommand{\cO}{{\mathcal P}}
+\newcommand{\cP}{{\mathcal P}}
+\newcommand{\cQ}{{\mathcal Q}}
+\newcommand{\cR}{{\mathcal R}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\cU}{{\mathcal U}}
+\newcommand{\cV}{{\mathcal V}}
+\newcommand{\cW}{{\mathcal W}}
+\newcommand{\cX}{{\mathcal X}}
+\newcommand{\cY}{{\mathcal Y}}
+\newcommand{\cZ}{{\mathcal Z}}
+\newcommand{\Cset}{{\mathbb C}}
+\newcommand{\Eset}{{\mathbb E}}
+\newcommand{\Nset}{{\mathbb N}}
+\newcommand{\Pset}{{\mathbb P}}
+\newcommand{\Qset}{{\mathbb Q}}
+\newcommand{\Rset}{{\mathbb R}}
+\newcommand{\Zset}{{\mathbb Z}}
+\newcommand{\Diff}{{\mathrm{d}}}
+
+% short commands
+\newcommand{\un}[1]{\underline{#1}}
+\newcommand{\dpl}[1]{\displaystyle{#1}}
+\newcommand{\uw}{\underline{w}}
+\newcommand{\uW}{\underline{W}}
+\newcommand{\ux}{\underline{x}}
+\newcommand{\uX}{\underline{X}}
+\newcommand{\uy}{\underline{y}}
+\newcommand{\uY}{\underline{Y}}
+\newcommand{\uz}{\underline{z}}
+\newcommand{\uZ}{\underline{Z}}
+\newcommand{\muX}{\underline{\mu}_{\:X}}
+\newcommand{\Var}[1]{{\rm Var}\left[ #1 \right]}
+\newcommand{\Cov}[1]{{\rm Cov}\left[ #1 \right]}
+\newcommand{\Expect}[1]{{\mathbb E}\left[ #1 \right]}
+\newcommand{\Prob}[1]{{\mathbb P}\left[ #1 \right]}
+\newcommand{\pdf}{f_{\un{X}}(\un{x})}
+\newcommand{\ech}{\left\{ x_1, \, \dots\,, x_N  \right\}}
+\newcommand{\matcov} {\mathbf C}
+\newcommand{\matcor} {\mathbf R}
+\newcommand{\fcar}[2] {{\mathbf 1}_{#1}(#2)}
+\newcommand{\supp}[1] {{\rm supp}\left(#1\right)}
+\newcommand{\di}[1] {{\rm d}#1}
+\newcommand{\norm}[1] {\left\|#1\right\|}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}

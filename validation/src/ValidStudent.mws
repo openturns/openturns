@@ -1,0 +1,128 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1065 "restart:\nwith(Sta
+tistics):\nassume(u>0,nu>0):\nstudent_:=RandomVariable(StudentT(nu)):
+\npdf:=subs(u=(x-mu)/sigma,PDF(student_,u));\nddf:=factor(diff(pdf,x))
+;\ncdf:=subs(u=(x-mu)/sigma,CDF(student_,u)):\ncdf2:=simplify(convert(
+subs(mu=0,(cdf - 1)*Beta(1/2,nu/2)*sqrt(nu)), GAMMA)) assuming nu > 1:
+\nrough:=int(pdf^2,x=-infinity..infinity);\nmu_:=mu+Mean(student_);\nv
+ar_:=Variance(student_);\nskew_:=simplify(convert(Skewness(student_),G
+AMMA),symbolic);\nkurt_:=simplify(convert(Kurtosis(student_),GAMMA),sy
+mbolic);\npdfgr:=map(factor,[diff(pdf,nu),diff(pdf,mu),diff(pdf,sigma)
+]):\ncdfgr:=map(factor,[diff(cdf,nu),diff(cdf,mu),diff(cdf,sigma)]):\n
+#qdf:=Quantile(student_,p):\n#qdf2:=solve(cdf=p,x):\nvalnum:=nu=5,mu=-
+0.5,sigma=1.0:\nevalf(subs(valnum,x=1,ddf));\nevalf(subs(valnum,x=1,pd
+f));\nevalf(subs(valnum,x=1,cdf));\nevalf(subs(valnum,x=1,pdfgr));\nev
+alf(subs(valnum,x=1,cdfgr));\nevalf(subs(valnum,mu+Quantile(StudentT(s
+ubs(valnum,nu)),0.95)));\nevalf(subs(valnum,mu_));\nevalf(subs(valnum,
+sqrt(var_)));\nevalf(subs(valnum,skew_));\nevalf(subs(valnum,kurt_));
+\nevalf(subs(valnum,var_));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$pdfG
+**-%&GAMMAG6#,&*&\"\"#!\"\"%$nu|irG\"\"\"F.#F.F+F.F.*&%#PiGF.F-F.#F,F+
+-F'6#,$*&F+F,F-F.F.F,),&F.F.*(,&%\"xGF.%#muGF,F+%&sigmaG!\"#F-F,F.F)F,
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$ddfG*0-%&GAMMAG6#,&*&\"\"#!\"\"
+%$nu|irG\"\"\"F.#F.F+F.F.,&F-F.F.F.F.,&%\"xGF,%#muGF.F.*&%#PiGF.F-F.#F
+,F+-F'6#,$*&F+F,F-F.F.F,)*(,**&)%&sigmaGF+F.F-F.F.*$)F2F+F.F.*(F+F.F2F
+.F3F.F,*$)F3F+F.F.F.F@!\"#F-F,F)F,F=F," }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%&roughG-%$intG6$*,-%&GAMMAG6#,&*&\"\"#!\"\"%$nu|irG\"\"\"F1#F1
+F.F1F.%#PiGF/F0F/-F*6#,$*&F.F/F0F1F1!\"#),&F1F1*(,&%\"xGF1%#muGF/F.%&s
+igmaGF8F0F/F1F,F8/F=;,$%)infinityGF/FC" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%$mu_G,&%#muG\"\"\"-%*PIECEWISEG6$7$%*undefinedG1%$nu|irGF'7$\"
+\"!%*otherwiseGF'" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%%var_G-%*PIECEW
+ISEG6$7$%*undefinedG1%$nu|irG\"\"#7$*&F+\"\"\",&F,!\"\"F+F/F1%*otherwi
+seG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&skew_G-%*PIECEWISEG6$7$%*und
+efinedG1%$nu|irG\"\"#7$\"\"!2F,F+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>
+%&kurt_G-%*PIECEWISEG6$7$%*undefinedG1%$nu|irG\"\"#7$,$*(\"\"$\"\"\",&
+\"\"%!\"\"F+F1F4,&F,F4F+F1F1F12F,F+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6
+#$!+aDtX:!#5" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+ZM<X7!#5" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$\"+)f\"[I!*!#5" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#7%$\"+2)G\\F\"!#7$\"+aDtX:!#5$\"+J))f=BF)" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#7%,&$\"+TIXbR!#7\"\"\"*&$\"+Z.5%p&!#5F(-%%diffG6
+$-%*hypergeomG6%7$#F(\"\"#\"\"$7##F6F5$!+++++XF,\"\"&F(F($!+YM<X7F,$!+
+p,wn=F," }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+gD/::!\"*" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#$!\"&!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$
+\"+\\W*4H\"!\"*" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"\"!F$" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$\"\"*\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 
+"6#$\"+nmmm;!\"*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 435 "map(co
+llect,map(collect,simplify(subs(x^2=xRed*nu-nu+2*x*mu-mu^2,factor(subs
+(nu+x^2-2*x*mu+mu^2=xRed*nu,-nu-x^2+2*x*mu-mu^2=-xRed*nu,collect(conve
+rt(pdfgr[1]*Beta(1/2,nu/2)*sqrt(nu),GAMMA),Psi)))),symbolic),ln),xRed)
+;\nmap(collect,map(collect,simplify(subs(x^2=xRed*nu-nu+2*x*mu-mu^2,fa
+ctor(subs(nu+x^2-2*x*mu+mu^2=xRed*nu,-nu-x^2+2*x*mu-mu^2=-xRed*nu,coll
+ect(convert(pdfgr[2]*Beta(1/2,nu/2)*sqrt(nu),GAMMA),Psi)))),symbolic),
+ln),xRed);" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#,$*&#\"\"\"\"\"#F&**%$nu
+|irG!\"\",4*&,,*(F'F&-%#lnG6#%&sigmaGF&F)F&F*F)F**&-%$PsiG6#,$*&F'F*F)
+F&F&F&F)F&F&*&-F06#,(*$)F2F'F&F&%%xRedGF&F&F*F&F)F&F&*&-F56#,&*&F'F*F)
+F&F&#F&F'F&F&F)F&F*F&F?F&F&*&,&*(F'F&F>F&F)F&F**&F'F&F)F&F&F&F/F&F&F)F
+&*&,&*&F>F&F)F&F&F)F*F&F:F&F&*(F4F&F)F&F>F&F&*(FAF&F)F&F>F&F*F=F&F@F&F
+3F*F&)F<,&*&F'F*F)F&F*#\"\"$F'F*F&)F2,&F)F&F&F&F&F&F*" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#,$*,,&%$nu|irG\"\"\"F'F'F',&%\"xG!\"\"%#muGF'F'),(
+*$)%&sigmaG\"\"#F'F'%%xRedGF'F'F*,&*&F1F*F&F'F*#\"\"$F1F*F')F0F%F'F&F*
+F*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 499 "densityGenerator:=su
+bs(x=mu+sqrt(u),pdf);\ndensityGeneratorDerivative:=factor(diff(density
+Generator, u));\nevalf(subs(valnum,u=1,densityGeneratorDerivative));\n
+evalf((subs(valnum,u=1+1e-5,densityGenerator)-subs(valnum,u=1-1e-5,den
+sityGenerator))/2e-5);\ndensityGeneratorSecondDerivative:=factor(diff(
+densityGeneratorDerivative, u));\nevalf(subs(valnum,u=1,densityGenerat
+orSecondDerivative));\nevalf((subs(valnum,u=1+1e-5,densityGeneratorDer
+ivative)-subs(valnum,u=1-1e-5,densityGeneratorDerivative))/2e-5);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%1densityGeneratorG**-%&GAMMAG6#,&*&
+\"\"#!\"\"%$nu|irG\"\"\"F.#F.F+F.F.*&%#PiGF.F-F.#F,F+-F'6#,$*&F+F,F-F.
+F.F,),&F.F.*(%#u|irGF.%&sigmaG!\"#F-F,F.F)F," }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%;densityGeneratorDerivativeG,$*&#\"\"\"\"\"#F(*.-%&GA
+MMAG6#,&*&F)!\"\"%$nu|irGF(F(#F(F)F(F(,&F1F(F(F(F(*&%#PiGF(F1F(#F0F)-F
+,6#,$*&F)F0F1F(F(F0)*(,&*&)%&sigmaGF)F(F1F(F(%#u|irGF(F(F@!\"#F1F0F.F0
+F=F0F(F0" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$!+()*)R)4\"!#5" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$!+d>R)4\"!#5" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%AdensityGeneratorSecondDerivativeG,$*&#\"\"\"\"\"%F(*0,&%$nu|i
+rGF(F(F(F(-%&GAMMAG6#,&*&\"\"#!\"\"F,F(F(#F(F2F(F(,&F,F(\"\"$F(F(*&%#P
+iGF(F,F(#F3F2-F.6#,$*&F2F3F,F(F(F3)*(,&*&)%&sigmaGF2F(F,F(F(%#u|irGF(F
+(FC!\"#F,F3F0F3F@FEF(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+4*fEK(!
+#6" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+YIhAt!#6" }}}{EXCHG {PARA 0 
+"> " 0 "" {MPLTEXT 1 0 47 "assume(a<0):int((1+x)^a,x=-infinity..infini
+ty);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%$intG6$),&\"\"\"F(%\"xGF(%#a
+|irG/F);,$%)infinityG!\"\"F." }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 
+0 26 "evalf[25](4/(2*sqrt(Pi)));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$
+\":fh*Qd7b4n\"z$G6!#C" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 31 "ph
+i:=C*(1+beta/nu)^(-(d+nu)/2);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$ph
+iG*&%\"CG\"\"\"),&F'F'*&%%betaGF'%$nu|irG!\"\"F',&*&\"\"#F-%\"dGF'F-*&
+F0F-F,F'F-F'" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 81 "simplify(di
+ff(phi,beta)/(-1/2*C*(1+beta/nu)^(-1/2*(nu+d+2))*(d+nu)/nu),symbolic);
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#\"\"\"" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 73 "simplify(diff(phi,beta$2)/(-1/4*C*(1+beta/nu)^(-1/2
+*(nu+d+4))),symbolic);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*&,,*$)%$n
+u|irG\"\"#\"\"\"F**(F)F*F(F*%\"dGF*F**&F)F*F(F*F**$)F,F)F*F**&F)F*F,F*
+F*F*F(!\"#!\"\"" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 68 "simplify
+(-(nu^2+2*nu*d+2*nu+d^2+2*d)/nu^2+(1+d/nu)^2+2/nu*(d/nu+1));" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#\"\"!" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 
+1 0 41 "factor(-(nu^2+2*nu*d+2*nu+d^2+2*d)/nu^2);" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#,$*(,(%$nu|irG\"\"\"%\"dGF'\"\"#F'F',&F(F'F&F'F'F&!\"#!
+\"\"" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 45 "delta:=(subs(nu=nu+
+epsilon,pdf)-pdf)/epsilon;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&delta
+G*&,&**-%&GAMMAG6#,(*&\"\"#!\"\"%$nu|irG\"\"\"F0*&F-F.%(epsilonGF0F0#F
+0F-F0F0*&%#PiGF0,&F/F0F2F0F0#F.F--F)6#,&*&F-F.F/F0F0*&F-F.F2F0F0F.),&F
+0F0*(,&%\"xGF0%#muGF.F-%&sigmaG!\"#F6F.F0F+F.F0**-F)6#,&*&F-F.F/F0F0F3
+F0F0*&F5F0F/F0F7-F)6#,$*&F-F.F/F0F0F.),&F0F0*(F@F-FCFDF/F.F0FHF.F.F0F2
+F." }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 24 "limit(delta, epsilon=
+0);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#-%&limitG6$*&,&**-%&GAMMAG6#,(*
+&\"\"#!\"\"%$nu|irG\"\"\"F1*&F.F/%(epsilonGF1F1#F1F.F1F1*&%#PiGF1,&F0F
+1F3F1F1#F/F.-F*6#,&*&F.F/F0F1F1*&F.F/F3F1F1F/),&F1F1*(,&%\"xGF1%#muGF/
+F.%&sigmaG!\"#F7F/F1F,F/F1**-F*6#,&*&F.F/F0F1F1F4F1F1*&F6F1F0F1F8-F*6#
+,$*&F.F/F0F1F1F/),&F1F1*(FAF.FDFEF0F/F1FIF/F/F1F3F//F3\"\"!" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 26 "series(delta,epsilon=0,2);" 
+}}{PARA 12 "" 1 "" {XPPMATH 20 "6#+)%(epsilonG,&**-%&GAMMAG6#,&*&\"\"#
+!\"\"%$nu|irG\"\"\"F/#F/F,F/F/*&%#PiGF/F.F/#F-F,-F(6#,$*&F,F-F.F/F/F--
+%$expG6#*&F*F/-%#lnG6#*(,**&)%&sigmaGF,F/F.F/F/*$)%\"xGF,F/F/*(F,F/FFF
+/%#muGF/F-*$)FHF,F/F/F/FC!\"#F.F-F/F-F/**F'F/F1F3F4F-),&F/F/*(,&FFF/FH
+F-F,FCFKF.F-F/F*F-F-F-*&,&*&,(*&#F/F,F/*(F'F/F1F3F.F-F/F-*&F0F/*(-%$Ps
+iGF)F/F'F/F1F3F/F/*&#F/F,F/*(F'F/F1F3-FenF5F/F/F-F/F4F-F/*.F'F/F1F3F4F
+--F96#,$*&F0F/*&,&F.F/F/F/F/F<F/F/F/F-F8F/,&**F*F/,&FFF-FHF/F,F.F-F@F-
+F-*&F0F/F<F/F/F/F-F/F8F-\"\"!-%\"OG6#F/F/" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 0 "" }}}}{MARK "13 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 
+1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

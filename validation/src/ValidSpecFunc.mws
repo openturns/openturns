@@ -1,0 +1,28 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 506 "restart:\nRfs:=(int
+((diff(1/sqrt(2*Pi)*exp(-x*x/2),x$2))^2,x=-infinity..infinity));\nassu
+me(x>0,x<1):\n_beta:=Beta(a,b);\n_betaInc:=int(t^(a-1)*(1-t)^(b-1),t=0
+..x);\n_betaRatioInc:=_betaInc/beta;\nvalnum:=a=3.5,b=5.6:\nvalx:=x=0.
+3:\nvaly:=y=0.002:\nbeta:=evalf(subs(valnum,_beta));\nbetaInc:=evalf(s
+ubs(valnum,valx,_betaInc));\nbetaRatioInc:=evalf(subs(valnum,valx,_bet
+aRatioInc));\nbetaIncInv:=fsolve(subs(valnum,_betaInc)=subs(valy,y),x,
+0..1);\nbetaRatioIncInv:=fsolve(subs(valnum,_betaRatioInc)=subs(valy,y
+),x,0..1);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&_betaG-%%BetaG6$%\"aG
+%\"bG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%)_betaIncG*()%#x|irG%\"aG\"
+\"\"F(!\"\"-%*hypergeomG6%7$F(,&%\"bGF*F)F)7#,&F)F)F(F)F'F)" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%._betaRatioIncG**)%#x|irG%\"aG\"\"\"F(!\"
+\"-%*hypergeomG6%7$F(,&%\"bGF*F)F)7#,&F)F)F(F)F'F)%%betaGF*" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%%betaG$\"+*odM4%!#7" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%(betaIncG$\"+\"=*R(H\"!#7" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%-betaRatioIncG$\"+'oX%pJ!#5" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%+betaIncInvG$\"+/X76P!#5" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%0betaRatioIncInvG$\"+m#3@K&!#6" }}}{EXCHG {PARA 0 "> \+
+" 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1 0 0" 0 }{VIEWOPTS 1 1 0 1 1 
+1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

@@ -1,0 +1,34 @@
+test 0 : default constructor and string converter
+squareComplexMatrix0 = class=SquareComplexMatrix dimension=0 implementation=class=ComplexMatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test 1: constructor with size, operator() and string converter
+squareComplexMatrix1 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(0,1),(3,1),(5,1)]
+test 2 : copy constructor and string converter
+squareComplexMatrix2 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(0,1),(3,1),(5,1)]
+test 3 : get dimensions methods
+squareComplexMatrix1's dimension = 2
+test 4 : assignment method
+squareComplexMatrix3 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(0,1),(3,1),(5,1)]
+test 5 : conjugate method
+squareComplexMatrix1 conjugate = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,-1),(0,-1),(3,-1),(5,-1)]
+test number 6 : addition method
+sum1 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(0,0),(6,0),(10,0)]
+sum2 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(0,0),(6,0),(10,0)]
+sum1 equals sum2 = true
+test 7 : substraction method
+diff = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,2),(0,2),(0,2),(0,2)]
+test 8 : matrix multiplication method
+prod = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(3,-3),(2,-4),(20,4),(27,3)]
+test 9 : multiplication with a numerical point method
+pt = [(1,1),(0,1)]
+ptResult = [(-1,5),(-2,6)]
+test 10 : multiplication and division by a numerical scalar methods
+scalprod1 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,3),(-1,2),(5,5),(9,7)]
+scalprod2 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,3),(-1,2),(5,5),(9,7)]
+scalprod1 equals scalprod2 = true
+scaldiv1 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.6,0.2),(0.2,0.4),(1.4,-0.2),(2.2,-0.6)]
+scaldiv2 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.6,0.2),(0.2,0.4),(1.4,-0.2),(2.2,-0.6)]
+scaldiv1 equals scaldiv2 = true
+test number twelve : isEmpty method
+squareComplexMatrix0 is empty = true
+squareComplexMatrix1 is empty = false
+squareComplexMatrix5 is empty = true

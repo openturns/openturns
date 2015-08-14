@@ -1,0 +1,8 @@
+Distribution          =class=LogNormal name=LogNormal dimension=1 muLog=1.5 sigmaLog=2.5 gamma=-1.5
+Estimated distribution=class=LogNormal name=LogNormal dimension=1 muLog=1.46531 sigmaLog=2.50364 gamma=-1.49972
+Default distribution=class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+Distribution from parameters=class=LogNormal name=LogNormal dimension=1 muLog=1.5 sigmaLog=2.5 gamma=-1.5
+LogNormal          =class=LogNormal name=LogNormal dimension=1 muLog=1.5 sigmaLog=2.5 gamma=-1.5
+Estimated logNormal=class=LogNormal name=LogNormal dimension=1 muLog=1.46531 sigmaLog=2.50364 gamma=-1.49972
+Default logNormal=class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+LogNormal from parameters=class=LogNormal name=LogNormal dimension=1 muLog=1.5 sigmaLog=2.5 gamma=-1.5

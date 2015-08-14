@@ -1,0 +1,91 @@
+%feature("docstring") OT::OrdinalSumCopula
+"Copula built as an ordinal sum of copulas.
+
+Available constructors:
+    OrdinalSumCopula(*collCopula, bounds*)
+
+Parameters
+----------
+collCopula : list of :class:`~openturns.Distribution`
+    The collection :math:`(C_1, \dots, C_n)` of :math:`n` copulas of dimension :math:`d`.
+
+bounds : sequence of float, of size :math:`n-1` and :math:`0 \leq \alpha_1 \leq \dots \leq \alpha_{n-1} \leq 1`
+    The bounds :math:`\alpha_i` are such that the copula :math:`C_i` is
+    squeezed into :math:`[\alpha_i, \alpha_{i+1}]`.
+
+Notes
+-----
+The ordinal sum of the :math:`n` copulas :math:`(C_1, \dots, C_n)`, each one
+being squeezed into the interval :math:`[\alpha_i, \alpha_{i+1}], i=1 \dots n-1`,
+writes:
+
+.. math::
+
+    C(\vect{u}) = \left\{
+    \begin{array}{ll}
+       \alpha_i+C_i \left( \dfrac{u_1-\alpha_i}{\alpha_{i+1} - \alpha_i} \right)
+           & \mbox{ if } \vect{u} \in [\alpha_i, \alpha_{i+1}[ \\
+       M_d(\vect{u}) & \mbox{ else }
+    \end{array}
+    \right.
+
+with :math:`M_d` the Min-copula: :math:`M_d(\vect{u}) = \min_{k=1 \dots d} u_k`
+and where, for convenience, we noted :math:`\alpha_0=0` and :math:`\alpha_n=1`.
+
+Note that if  :math:`\alpha_i=\alpha_{i+1}` then the copula :math:`C_{i+1}` is
+erased from the list, for :math:`i=0 \dots n-1`.
+
+See also
+--------
+Copula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> ordinalSumCop = ot.OrdinalSumCopula([ot.GumbelCopula(2), ot.NormalCopula(2)], [0.3])
+>>> graph = ordinalSumCop.drawPDF()
+>>> graph.setTitle('Ordinal sum of copulas')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrdinalSumCopula::getCopulaCollection
+"Accessor to the collection of copulas.
+
+Returns
+-------
+copColl : list of :class:`~openturns.Copula` with the same dimension
+    List of copulas that build the ordinal sum."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrdinalSumCopula::getBounds
+"Accessor to the collection of bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.NumericalPoint`
+    Bounds defining the intervals on which the copulas of the collection are
+    squeezed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrdinalSumCopula::setCopulaCollection
+"Accessor to the collection of copulas.
+
+Parameters
+----------
+copColl : list of :class:`~openturns.Copula` with the same dimension
+    List of copulas that build the ordinal sum."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrdinalSumCopula::setBounds
+"Accessor to the collection of bounds.
+
+Parameters
+----------
+bounds : sequence of float
+    Bounds defining the intervals on whch the copulas of the collection are
+    squeezed."

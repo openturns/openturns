@@ -1,0 +1,31 @@
+Copula  class=GumbelCopula name=GumbelCopula dimension=2 theta=2.5
+Copula  GumbelCopula(theta = 2.5)
+Mean  class=NumericalPoint name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0656557,0.0656557,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= class=NumericalPoint name=Unnamed dimension=2 values=[0.659445,0.596689]
+oneSample= class=NumericalSample name=GumbelCopula description=[marginal 1,marginal 2] implementation=class=NumericalSampleImplementation name=GumbelCopula size=10 dimension=2 data=[class=NumericalPoint name=Unnamed dimension=2 values=[0.92546,0.834663],class=NumericalPoint name=Unnamed dimension=2 values=[0.239934,0.114143],class=NumericalPoint name=Unnamed dimension=2 values=[0.705071,0.41781],class=NumericalPoint name=Unnamed dimension=2 values=[0.94214,0.955906],class=NumericalPoint name=Unnamed dimension=2 values=[0.814987,0.721541],class=NumericalPoint name=Unnamed dimension=2 values=[0.254655,0.325386],class=NumericalPoint name=Unnamed dimension=2 values=[0.694987,0.506464],class=NumericalPoint name=Unnamed dimension=2 values=[0.87143,0.917787],class=NumericalPoint name=Unnamed dimension=2 values=[0.191102,0.290004],class=NumericalPoint name=Unnamed dimension=2 values=[0.881289,0.654839]]
+anotherSample mean= class=NumericalPoint name=Unnamed dimension=2 values=[0.504187,0.500439]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0840685,0.0659466,0.0659466,0.0842036]
+Point =  class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2]  pdf=2.220596  cdf=0.119592
+Quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.591374,0.591374]
+CDF(quantile)=0.500000
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.787581]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.162257]
+indices= [1,0]
+margins= class=GumbelCopula name=GumbelCopula dimension=2 theta=2.5
+margins PDF=2.034871
+margins CDF=0.160538
+margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.961873,0.961873]
+margins CDF(qantile)=0.950000
+margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.374821,0.792618]

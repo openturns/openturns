@@ -1,0 +1,53 @@
+Testing class Chi
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Chi name=Chi dimension=1 nu=1.5
+streamObject(const T & anObject)
+class=Chi name=Chi dimension=1 nu=1.5
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Chi name=Chi dimension=1 nu=1.5
+Distribution Chi(nu = 1.5)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.66733]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.58636] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.02264]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.04589]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.399002]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.294304]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.294304]
+log pdf=-0.529994
+pdf     =0.588608
+pdf (FD)=0.588608
+cdf=0.527937
+ccdf=0.472063
+survival=0.472063
+characteristic function=(0.433496,0.694719)
+log characteristic function=(-0.199826,1.01293)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[0.115577]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.115577]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.291714]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.291714]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[2.23164]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.04605]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.40578]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[nu : 1.5]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.04605]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.61512]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[5.25]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[11.7681]
+Standard representative=Chi(nu = 1.5)
+nu=1.5
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.637009]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.762585]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.42425]

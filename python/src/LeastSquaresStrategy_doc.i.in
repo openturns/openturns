@@ -1,0 +1,73 @@
+%feature("docstring") OT::LeastSquaresStrategy
+"Least squares strategy for the approximation coefficients.
+
+Available constructors:
+    LeastSquaresStrategy(*weightedExp*)
+
+    LeastSquaresStrategy(*weightedExp, approxAlgoImpFact*)
+
+    LeastSquaresStrategy(*measure, approxAlgoImpFact*)
+
+    LeastSquaresStrategy(*measure, weightedExp, approxAlgoImpFact*)
+
+    LeastSquaresStrategy(*inputSample, outputSample, approxAlgoImpFact*)
+
+    LeastSquaresStrategy(*inputSample, weights, outputSample, approxAlgoImpFact*)
+
+Parameters
+----------
+weightedExp : :class:`~openturns.WeightedExperiment`
+    Experimental design used for the transformed input data. When not precised,
+    OpenTURNS uses a :class:`~openturns.MonteCarloExperiment`.
+approxAlgoImpFact : ApproximationAlgorithmImplementationFactory
+    The factory that builds the desired :class:`~openturns.ApproximationAlgorithm`.
+    When not precised, OpenTURNS uses the 
+    :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory`.
+measure : Distribution
+    Distribution :math:`\mu` with respect to which the basis is orthonormal.
+    When not precised, OpenTURNS uses the limit measure defined within the
+    :class:`~openturns.WeightedExperiment`.
+inputSample, outputSample : 2-d sequence of float
+    The input random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`
+    and the output samples :math:`\vect{Y}` that describe the model.
+weights : sequence of float
+    Numerical point that are the weights associated to the input sample points
+    such that the corresponding weighted experiment is a good approximation of
+    :math:`\mu`. If not precised, all weights are equals to 
+    :math:`\omega_i = \frac{1}{size}`, where :math:`size` is the size of the
+    sample.
+
+See also
+--------
+FunctionalChaosAlgorithm, ProjectionStrategy, IntegrationStrategy
+
+Notes
+-----
+This class is not usable because it has sense only within the
+:class:`~openturns.FunctionalChaosAlgorithm` : the least squares strategy
+evaluates the coefcients :math:`(a_k)_{k \in K}` of the polynomials
+decomposition as follows:
+
+.. math::
+    
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P} E_{\mu} \left[ \left( g \circ T^{-1}
+            (\vect{U}) - \vect{b}^{\intercal} \vect{\Psi}(\vect{U}) \right)^2 \right]
+
+where :math:`\vect{U} = T(\vect{X})`.
+
+The esperance :math:`E_{\mu}` is approximated by a relation of type:
+
+.. math::
+    
+    E_{\mu} \left[ f(\vect{U}) \right] \approx \sum_{i \in I} \omega_i f(\Xi_i)
+
+where is a function :math:`L_1(\mu)` defined as:
+
+.. math::
+
+    f(\vect{U} = \left( g \circ T^{-1} (\vect{U}) - \vect{b}^{\intercal}
+                                 \vect{\Psi}(\vect{U}) \right)^2 
+
+In the approximation of the esperance, the set *I*, the points 
+:math:`(\Xi_i)_{i \in I}` and the weights :math:`(\omega_i)_{i \in I}` are
+evaluated from methods implemented in the :class:`~openturns.WeightedExperiment`."

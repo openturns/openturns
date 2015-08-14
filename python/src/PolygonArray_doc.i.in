@@ -1,0 +1,68 @@
+%feature("docstring") OT::PolygonArray
+"Polygon array.
+
+Available constructors:
+    PolygonArray(*legend=' '*)
+
+    PolygonArray(*polygons, legend=' '*)
+
+    PolygonArray(*coordinates, verticesNumber, palette, legend=' '*)
+
+Parameters
+----------
+legend : str
+    Legend of the Cloud.
+polygons : sequence of :class:`~openturns.Polygon`
+    Sequence of polygons.
+coordinates : 2-d sequence of float
+    The list of coordinates.
+verticesNumber : int
+    Number of vertices.
+palette : sequence of str
+    Polygon colors.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> generator = ot.Normal(2)
+>>> size = 5
+>>> array = []
+>>> palette = ot.Drawable.BuildDefaultPalette(size)
+>>> for i in range(size):
+...     vertices = generator.getSample(3)
+...     array.append(ot.Polygon(vertices, palette[i], palette[size - i - 1]))
+>>> graph = ot.Graph('An array of polygons', 'x', 'y', True, '')
+>>> graph.add(ot.PolygonArray(array))"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PolygonArray::setCoordinatesAndVerticesNumber
+"Accessor to the coordinates of polygons.
+
+Parameters
+----------
+coordinates : 2-d sequence of float
+    The list of coordinates.
+verticesNumber : int
+    number of vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PolygonArray::getCoordinates
+"Accessor to the color of each polygon.
+
+Returns
+-------
+coordinates : :class:`~openturns.NumericalSample`
+    Polygon coordinates."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PolygonArray::getVerticesNumber
+"Accessor to the number of vertices.
+
+Returns
+-------
+verticesNumber : int
+    Number of vertices."

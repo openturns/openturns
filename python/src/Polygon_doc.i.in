@@ -1,0 +1,43 @@
+%feature("docstring") OT::Polygon
+"Polygon.
+
+Available constructors:
+    Polygon(*legend=' '*)
+
+    Polygon(*data, legend=' '*)
+
+    Polygon(*dataX, dataY, legend=' '*)
+
+    Polygon(*data, color, edgeColor, legend=' '*)
+
+Parameters
+----------
+data : 2-d sequence of float of dimension 2
+    Vertices of the polygon.
+dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
+    List of the first and second coordinates of the vertices.
+legend : str
+    Legend of the polygon.
+color, edgeColor : two str
+    Fill color and the edge color. If not specified, by default it is 'blue'.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Generate the data for the polygons to be drawn
+>>> data =[[9.*i/51, (9.*i/51)*(9.*i/51)] for i in range(50)]
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('Polygon example', 'x1', 'x2', True, '', 1.0)
+>>> myPolygon = ot.Polygon(data)
+>>> myPolygon.setColor('red')
+>>> myGraph.add(myPolygon)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Polygon::setEdgeColor
+"Set the color of the Polygon edge.
+
+Parameters
+----------
+edgeColor : str
+    Color of the edge of the :class:`~openturns.Polygon`."

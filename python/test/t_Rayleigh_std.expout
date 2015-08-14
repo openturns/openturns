@@ -1,0 +1,38 @@
+Distribution  class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
+Distribution  Rayleigh(sigma = 2.5, gamma = -0.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[1.90372]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[0.748252]  last= class=NumericalPoint name=Unnamed dimension=1 values=[2.7717]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[2.61902]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.72183]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[0.0855317]
+ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[0.0855317]
+pdf     = 0.200464850739
+pdf (FD)= 0.200464851
+cdf= 0.164729788589
+characteristic function= (-0.157515303917+0.242921656409j)
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.131505,-0.0855317]
+pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.131505,-0.0855317]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.120279,-0.200465]
+cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.120279,-0.200465]
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[5.61937]
+cdf(quantile)= 0.95
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[2.63329]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.68252]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[sigma,gamma] values=[2.5,-0.5]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [1.25331]
+standard moment n= 2  value= [2]
+standard moment n= 3  value= [3.75994]
+standard moment n= 4  value= [8]
+standard moment n= 5  value= [18.7997]
+Standard representative= Rayleigh(sigma = 1, gamma = 0)
+gamma= -0.5
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.63784]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.631111]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[3.24509]
+sigma= 2.5

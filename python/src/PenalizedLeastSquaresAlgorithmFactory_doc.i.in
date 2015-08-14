@@ -1,0 +1,17 @@
+%feature("docstring") OT::PenalizedLeastSquaresAlgorithmFactory
+"Penalized least squares algorithm factory.
+
+Available constructors:
+    PenalizedLeastSquaresAlgorithmFactory()
+
+See also
+--------
+ApproximationAlgorithm, LeastSquaresMetaModelSelectionFactory
+
+Notes
+-----
+Implementation of an approximation algorithm implementation factory which builds
+an :class:`~openturns.ApproximationAlgorithm`.
+
+This class is not usable because it has sense only whithin the
+:class:`~openturns.FunctionalChaosAlgorithm`."

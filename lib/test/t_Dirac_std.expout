@@ -1,0 +1,89 @@
+Testing class Dirac
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Dirac name=Dirac dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+streamObject(const T & anObject)
+class=Dirac name=Dirac dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Dirac name=Dirac dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+Distribution Dirac(point = [0.7])
+Elliptical = false
+Continuous = false
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.7] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+covariance=0
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[0]
+pdf     =0
+pdf (FD)=0
+cdf=0
+ccdf=1
+survival=1
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+log pdf=0
+pdf     =1
+pdf (FD)=1
+cdf=1
+ccdf=0
+survival=0
+characteristic function=(0.939373,0.342898)
+log characteristic function=(0,0.35)
+generating function=(0.637047,0.253185)
+log generating function=(-0.377583,0.378294)
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+cdf(quantile)=1
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[point_0 : 0.7]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.49]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.343]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.2401]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.16807]
+Standard representative=Dirac(point = [0.7])
+Distribution class=Dirac name=Dirac dimension=4 point=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+Distribution Dirac(point = [2.3,2.3,2.3,2.3])
+Elliptical = false
+Continuous = false
+oneRealization=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+oneSample first=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3] last=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+mean=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+Point= class=NumericalPoint name=Unnamed dimension=4 values=[0,0,0,0]
+pdf     =0
+pdf (FD)=0
+cdf=0
+ccdf=1
+Point= class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+log pdf=0
+pdf     =1
+pdf (FD)=1
+cdf=1
+ccdf=0
+quantile=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+cdf(quantile)=1
+mean=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+standard deviation=class=NumericalPoint name=Unnamed dimension=4 values=[0,0,0,0]
+skewness=class=NumericalPoint name=Unnamed dimension=4 values=[0,0,0,0]
+kurtosis=class=NumericalPoint name=Unnamed dimension=4 values=[0,0,0,0]
+covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+kendall=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+parameters=[[point_0 : 2.3],[point_1 : 2.3],[point_2 : 2.3],[point_3 : 2.3]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=4 values=[1,1,1,1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=4 values=[5.29,5.29,5.29,5.29]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=4 values=[12.167,12.167,12.167,12.167]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=4 values=[27.9841,27.9841,27.9841,27.9841]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=4 values=[64.3634,64.3634,64.3634,64.3634]
+Standard representative=Dirac(point = [2.3,2.3,2.3,2.3])

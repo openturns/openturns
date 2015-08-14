@@ -1,0 +1,36 @@
+#                                               -*- cmake -*-
+
+# Register current directory files
+ot_add_current_dir_to_include_dirs ()
+
+ot_add_source_file (Experiment.cxx)
+ot_add_source_file (ExperimentImplementation.cxx)
+ot_add_source_file (StratifiedExperiment.cxx)
+ot_add_source_file (Axial.cxx)
+ot_add_source_file (Box.cxx)
+ot_add_source_file (Composite.cxx)
+ot_add_source_file (Factorial.cxx)
+ot_add_source_file (CombinatorialGenerator.cxx)
+ot_add_source_file (CombinatorialGeneratorImplementation.cxx)
+ot_add_source_file (Combinations.cxx)
+ot_add_source_file (KPermutations.cxx)
+ot_add_source_file (SphereUniformNorm.cxx)
+ot_add_source_file (SphereUniformNormImplementation.cxx)
+ot_add_source_file (Tuples.cxx)
+
+ot_install_header_file (OTExperiments.hxx)
+ot_install_header_file (Experiment.hxx)
+ot_install_header_file (ExperimentImplementation.hxx)
+ot_install_header_file (StratifiedExperiment.hxx)
+ot_install_header_file (Axial.hxx)
+ot_install_header_file (Box.hxx)
+ot_install_header_file (Composite.hxx)
+ot_install_header_file (Factorial.hxx)
+ot_install_header_file (CombinatorialGenerator.hxx)
+ot_install_header_file (CombinatorialGeneratorImplementation.hxx)
+ot_install_header_file (Combinations.hxx)
+ot_install_header_file (KPermutations.hxx)
+ot_install_header_file (SphereUniformNorm.hxx)
+ot_install_header_file (SphereUniformNormImplementation.hxx)
+ot_install_header_file (Tuples.hxx)
+

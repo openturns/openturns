@@ -1,0 +1,375 @@
+dNonCentralChiSquare( 0.2 ,  0.2 ,  0.1 )=0.704123
+dNonCentralChiSquare( 0.2 ,  0.2 ,  0.3 )=0.259812
+dNonCentralChiSquare( 0.2 ,  0.2 ,  0.5 )=0.161577
+dNonCentralChiSquare( 0.2 ,  0.2 ,  0.7 )=0.11686
+dNonCentralChiSquare( 0.2 ,  0.2 ,  0.9 )=0.0907845
+dNonCentralChiSquare( 0.2 ,  1.4 ,  0.1 )=0.498846
+dNonCentralChiSquare( 0.2 ,  1.4 ,  0.3 )=0.260264
+dNonCentralChiSquare( 0.2 ,  1.4 ,  0.5 )=0.204772
+dNonCentralChiSquare( 0.2 ,  1.4 ,  0.7 )=0.176642
+dNonCentralChiSquare( 0.2 ,  1.4 ,  0.9 )=0.157882
+dNonCentralChiSquare( 0.2 ,  2.6 ,  0.1 )=0.337148
+dNonCentralChiSquare( 0.2 ,  2.6 ,  0.3 )=0.212679
+dNonCentralChiSquare( 0.2 ,  2.6 ,  0.5 )=0.184725
+dNonCentralChiSquare( 0.2 ,  2.6 ,  0.7 )=0.170368
+dNonCentralChiSquare( 0.2 ,  2.6 ,  0.9 )=0.160341
+dNonCentralChiSquare( 0.2 ,  3.8 ,  0.1 )=0.220747
+dNonCentralChiSquare( 0.2 ,  3.8 ,  0.3 )=0.158063
+dNonCentralChiSquare( 0.2 ,  3.8 ,  0.5 )=0.146156
+dNonCentralChiSquare( 0.2 ,  3.8 ,  0.7 )=0.140845
+dNonCentralChiSquare( 0.2 ,  3.8 ,  0.9 )=0.13735
+dNonCentralChiSquare( 0.2 ,  5.0 ,  0.1 )=0.14127
+dNonCentralChiSquare( 0.2 ,  5.0 ,  0.3 )=0.111158
+dNonCentralChiSquare( 0.2 ,  5.0 ,  0.5 )=0.107764
+dNonCentralChiSquare( 0.2 ,  5.0 ,  0.7 )=0.107523
+dNonCentralChiSquare( 0.2 ,  5.0 ,  0.9 )=0.107958
+dNonCentralChiSquare( 1.4 ,  0.2 ,  0.1 )=0.820233
+dNonCentralChiSquare( 1.4 ,  0.2 ,  0.3 )=0.541407
+dNonCentralChiSquare( 1.4 ,  0.2 ,  0.5 )=0.426228
+dNonCentralChiSquare( 1.4 ,  0.2 ,  0.7 )=0.353531
+dNonCentralChiSquare( 1.4 ,  0.2 ,  0.9 )=0.300786
+dNonCentralChiSquare( 1.4 ,  1.4 ,  0.1 )=0.469535
+dNonCentralChiSquare( 1.4 ,  1.4 ,  0.3 )=0.335866
+dNonCentralChiSquare( 1.4 ,  1.4 ,  0.5 )=0.285213
+dNonCentralChiSquare( 1.4 ,  1.4 ,  0.7 )=0.254135
+dNonCentralChiSquare( 1.4 ,  1.4 ,  0.9 )=0.231438
+dNonCentralChiSquare( 1.4 ,  2.6 ,  0.1 )=0.268511
+dNonCentralChiSquare( 1.4 ,  2.6 ,  0.3 )=0.206715
+dNonCentralChiSquare( 1.4 ,  2.6 ,  0.5 )=0.187178
+dNonCentralChiSquare( 1.4 ,  2.6 ,  0.7 )=0.176573
+dNonCentralChiSquare( 1.4 ,  2.6 ,  0.9 )=0.169285
+dNonCentralChiSquare( 1.4 ,  3.8 ,  0.1 )=0.153407
+dNonCentralChiSquare( 1.4 ,  3.8 ,  0.3 )=0.126375
+dNonCentralChiSquare( 1.4 ,  3.8 ,  0.5 )=0.120994
+dNonCentralChiSquare( 1.4 ,  3.8 ,  0.7 )=0.119699
+dNonCentralChiSquare( 1.4 ,  3.8 ,  0.9 )=0.119636
+dNonCentralChiSquare( 1.4 ,  5.0 ,  0.1 )=0.087567
+dNonCentralChiSquare( 1.4 ,  5.0 ,  0.3 )=0.0768137
+dNonCentralChiSquare( 1.4 ,  5.0 ,  0.5 )=0.0772675
+dNonCentralChiSquare( 1.4 ,  5.0 ,  0.7 )=0.079638
+dNonCentralChiSquare( 1.4 ,  5.0 ,  0.9 )=0.0824557
+dNonCentralChiSquare( 2.6 ,  0.2 ,  0.1 )=0.195959
+dNonCentralChiSquare( 2.6 ,  0.2 ,  0.3 )=0.248429
+dNonCentralChiSquare( 2.6 ,  0.2 ,  0.5 )=0.264025
+dNonCentralChiSquare( 2.6 ,  0.2 ,  0.7 )=0.266295
+dNonCentralChiSquare( 2.6 ,  0.2 ,  0.9 )=0.261802
+dNonCentralChiSquare( 2.6 ,  1.4 ,  0.1 )=0.110039
+dNonCentralChiSquare( 2.6 ,  1.4 ,  0.3 )=0.145918
+dNonCentralChiSquare( 2.6 ,  1.4 ,  0.5 )=0.162028
+dNonCentralChiSquare( 2.6 ,  1.4 ,  0.7 )=0.170565
+dNonCentralChiSquare( 2.6 ,  1.4 ,  0.9 )=0.174844
+dNonCentralChiSquare( 2.6 ,  2.6 ,  0.1 )=0.061777
+dNonCentralChiSquare( 2.6 ,  2.6 ,  0.3 )=0.0855441
+dNonCentralChiSquare( 2.6 ,  2.6 ,  0.5 )=0.0989422
+dNonCentralChiSquare( 2.6 ,  2.6 ,  0.7 )=0.10825
+dNonCentralChiSquare( 2.6 ,  2.6 ,  0.9 )=0.115102
+dNonCentralChiSquare( 2.6 ,  3.8 ,  0.1 )=0.0346748
+dNonCentralChiSquare( 2.6 ,  3.8 ,  0.3 )=0.0500623
+dNonCentralChiSquare( 2.6 ,  3.8 ,  0.5 )=0.0601544
+dNonCentralChiSquare( 2.6 ,  3.8 ,  0.7 )=0.0681684
+dNonCentralChiSquare( 2.6 ,  3.8 ,  0.9 )=0.0748904
+dNonCentralChiSquare( 2.6 ,  5.0 ,  0.1 )=0.0194585
+dNonCentralChiSquare( 2.6 ,  5.0 ,  0.3 )=0.0292499
+dNonCentralChiSquare( 2.6 ,  5.0 ,  0.5 )=0.0364298
+dNonCentralChiSquare( 2.6 ,  5.0 ,  0.7 )=0.0426416
+dNonCentralChiSquare( 2.6 ,  5.0 ,  0.9 )=0.0482532
+dNonCentralChiSquare( 3.8 ,  0.2 ,  0.1 )=0.0302672
+dNonCentralChiSquare( 3.8 ,  0.2 ,  0.3 )=0.0740002
+dNonCentralChiSquare( 3.8 ,  0.2 ,  0.5 )=0.106597
+dNonCentralChiSquare( 3.8 ,  0.2 ,  0.7 )=0.131252
+dNonCentralChiSquare( 3.8 ,  0.2 ,  0.9 )=0.149684
+dNonCentralChiSquare( 3.8 ,  1.4 ,  0.1 )=0.0168744
+dNonCentralChiSquare( 3.8 ,  1.4 ,  0.3 )=0.0425607
+dNonCentralChiSquare( 3.8 ,  1.4 ,  0.5 )=0.0632196
+dNonCentralChiSquare( 3.8 ,  1.4 ,  0.7 )=0.0802345
+dNonCentralChiSquare( 3.8 ,  1.4 ,  0.9 )=0.094277
+dNonCentralChiSquare( 3.8 ,  2.6 ,  0.1 )=0.00940691
+dNonCentralChiSquare( 3.8 ,  2.6 ,  0.3 )=0.0244605
+dNonCentralChiSquare( 3.8 ,  2.6 ,  0.5 )=0.0374202
+dNonCentralChiSquare( 3.8 ,  2.6 ,  0.7 )=0.0488657
+dNonCentralChiSquare( 3.8 ,  2.6 ,  0.9 )=0.0590282
+dNonCentralChiSquare( 3.8 ,  3.8 ,  0.1 )=0.00524361
+dNonCentralChiSquare( 3.8 ,  3.8 ,  0.3 )=0.0140482
+dNonCentralChiSquare( 3.8 ,  3.8 ,  0.5 )=0.0221091
+dNonCentralChiSquare( 3.8 ,  3.8 ,  0.7 )=0.0296614
+dNonCentralChiSquare( 3.8 ,  3.8 ,  0.9 )=0.0367658
+dNonCentralChiSquare( 3.8 ,  5.0 ,  0.1 )=0.00292266
+dNonCentralChiSquare( 3.8 ,  5.0 ,  0.3 )=0.00806276
+dNonCentralChiSquare( 3.8 ,  5.0 ,  0.5 )=0.0130406
+dNonCentralChiSquare( 3.8 ,  5.0 ,  0.7 )=0.0179496
+dNonCentralChiSquare( 3.8 ,  5.0 ,  0.9 )=0.0227935
+dNonCentralChiSquare( 5.0 ,  0.2 ,  0.1 )=0.00362671
+dNonCentralChiSquare( 5.0 ,  0.2 ,  0.3 )=0.0171199
+dNonCentralChiSquare( 5.0 ,  0.2 ,  0.5 )=0.033464
+dNonCentralChiSquare( 5.0 ,  0.2 ,  0.7 )=0.0503583
+dNonCentralChiSquare( 5.0 ,  0.2 ,  0.9 )=0.0666942
+dNonCentralChiSquare( 5.0 ,  1.4 ,  0.1 )=0.00201435
+dNonCentralChiSquare( 5.0 ,  1.4 ,  0.3 )=0.00973762
+dNonCentralChiSquare( 5.0 ,  1.4 ,  0.5 )=0.019488
+dNonCentralChiSquare( 5.0 ,  1.4 ,  0.7 )=0.0300198
+dNonCentralChiSquare( 5.0 ,  1.4 ,  0.9 )=0.0406898
+dNonCentralChiSquare( 5.0 ,  2.6 ,  0.1 )=0.00111877
+dNonCentralChiSquare( 5.0 ,  2.6 ,  0.3 )=0.00553668
+dNonCentralChiSquare( 5.0 ,  2.6 ,  0.5 )=0.011338
+dNonCentralChiSquare( 5.0 ,  2.6 ,  0.7 )=0.0178624
+dNonCentralChiSquare( 5.0 ,  2.6 ,  0.9 )=0.0247504
+dNonCentralChiSquare( 5.0 ,  3.8 ,  0.1 )=0.00062134
+dNonCentralChiSquare( 5.0 ,  3.8 ,  0.3 )=0.003147
+dNonCentralChiSquare( 5.0 ,  3.8 ,  0.5 )=0.0065903
+dNonCentralChiSquare( 5.0 ,  3.8 ,  0.7 )=0.0106102
+dNonCentralChiSquare( 5.0 ,  3.8 ,  0.9 )=0.0150137
+dNonCentralChiSquare( 5.0 ,  5.0 ,  0.1 )=0.000345064
+dNonCentralChiSquare( 5.0 ,  5.0 ,  0.3 )=0.00178812
+dNonCentralChiSquare( 5.0 ,  5.0 ,  0.5 )=0.00382731
+dNonCentralChiSquare( 5.0 ,  5.0 ,  0.7 )=0.00629217
+dNonCentralChiSquare( 5.0 ,  5.0 ,  0.9 )=0.00908441
+pNonCentralChiSquare( 0.2 ,  0.2 ,  0.1 )=0.704862 , complementary=0.295138
+pNonCentralChiSquare( 0.2 ,  0.2 ,  0.3 )=0.786395 , complementary=0.213605
+pNonCentralChiSquare( 0.2 ,  0.2 ,  0.5 )=0.82698 , complementary=0.17302
+pNonCentralChiSquare( 0.2 ,  0.2 ,  0.7 )=0.854362 , complementary=0.145638
+pNonCentralChiSquare( 0.2 ,  0.2 ,  0.9 )=0.874928 , complementary=0.125072
+pNonCentralChiSquare( 0.2 ,  1.4 ,  0.1 )=0.397213 , complementary=0.602787
+pNonCentralChiSquare( 0.2 ,  1.4 ,  0.3 )=0.465193 , complementary=0.534807
+pNonCentralChiSquare( 0.2 ,  1.4 ,  0.5 )=0.510895 , complementary=0.489105
+pNonCentralChiSquare( 0.2 ,  1.4 ,  0.7 )=0.548804 , complementary=0.451196
+pNonCentralChiSquare( 0.2 ,  1.4 ,  0.9 )=0.582156 , complementary=0.417844
+pNonCentralChiSquare( 0.2 ,  2.6 ,  0.1 )=0.223771 , complementary=0.776229
+pNonCentralChiSquare( 0.2 ,  2.6 ,  0.3 )=0.274526 , complementary=0.725474
+pNonCentralChiSquare( 0.2 ,  2.6 ,  0.5 )=0.313859 , complementary=0.686141
+pNonCentralChiSquare( 0.2 ,  2.6 ,  0.7 )=0.349258 , complementary=0.650742
+pNonCentralChiSquare( 0.2 ,  2.6 ,  0.9 )=0.382285 , complementary=0.617715
+pNonCentralChiSquare( 0.2 ,  3.8 ,  0.1 )=0.126022 , complementary=0.873978
+pNonCentralChiSquare( 0.2 ,  3.8 ,  0.3 )=0.161651 , complementary=0.838349
+pNonCentralChiSquare( 0.2 ,  3.8 ,  0.5 )=0.191869 , complementary=0.808131
+pNonCentralChiSquare( 0.2 ,  3.8 ,  0.7 )=0.220519 , complementary=0.779481
+pNonCentralChiSquare( 0.2 ,  3.8 ,  0.9 )=0.248322 , complementary=0.751678
+pNonCentralChiSquare( 0.2 ,  5.0 ,  0.1 )=0.0709516 , complementary=0.929048
+pNonCentralChiSquare( 0.2 ,  5.0 ,  0.3 )=0.0949936 , complementary=0.905006
+pNonCentralChiSquare( 0.2 ,  5.0 ,  0.5 )=0.116784 , complementary=0.883216
+pNonCentralChiSquare( 0.2 ,  5.0 ,  0.7 )=0.138291 , complementary=0.861709
+pNonCentralChiSquare( 0.2 ,  5.0 ,  0.9 )=0.159835 , complementary=0.840165
+pNonCentralChiSquare( 1.4 ,  0.2 ,  0.1 )=0.120179 , complementary=0.879821
+pNonCentralChiSquare( 1.4 ,  0.2 ,  0.3 )=0.250471 , complementary=0.749529
+pNonCentralChiSquare( 1.4 ,  0.2 ,  0.5 )=0.346152 , complementary=0.653848
+pNonCentralChiSquare( 1.4 ,  0.2 ,  0.7 )=0.423682 , complementary=0.576318
+pNonCentralChiSquare( 1.4 ,  0.2 ,  0.9 )=0.488869 , complementary=0.511131
+pNonCentralChiSquare( 1.4 ,  1.4 ,  0.1 )=0.067112 , complementary=0.932888
+pNonCentralChiSquare( 1.4 ,  1.4 ,  0.3 )=0.144597 , complementary=0.855403
+pNonCentralChiSquare( 1.4 ,  1.4 ,  0.5 )=0.206188 , complementary=0.793812
+pNonCentralChiSquare( 1.4 ,  1.4 ,  0.7 )=0.259929 , complementary=0.740071
+pNonCentralChiSquare( 1.4 ,  1.4 ,  0.9 )=0.308388 , complementary=0.691612
+pNonCentralChiSquare( 1.4 ,  2.6 ,  0.1 )=0.0374735 , complementary=0.962526
+pNonCentralChiSquare( 1.4 ,  2.6 ,  0.3 )=0.0834022 , complementary=0.916598
+pNonCentralChiSquare( 1.4 ,  2.6 ,  0.5 )=0.122545 , complementary=0.877455
+pNonCentralChiSquare( 1.4 ,  2.6 ,  0.7 )=0.158838 , complementary=0.841162
+pNonCentralChiSquare( 1.4 ,  2.6 ,  0.9 )=0.193389 , complementary=0.806611
+pNonCentralChiSquare( 1.4 ,  3.8 ,  0.1 )=0.020922 , complementary=0.979078
+pNonCentralChiSquare( 1.4 ,  3.8 ,  0.3 )=0.0480651 , complementary=0.951935
+pNonCentralChiSquare( 1.4 ,  3.8 ,  0.5 )=0.0726836 , complementary=0.927316
+pNonCentralChiSquare( 1.4 ,  3.8 ,  0.7 )=0.096719 , complementary=0.903281
+pNonCentralChiSquare( 1.4 ,  3.8 ,  0.9 )=0.120642 , complementary=0.879358
+pNonCentralChiSquare( 1.4 ,  5.0 ,  0.1 )=0.0116798 , complementary=0.98832
+pNonCentralChiSquare( 1.4 ,  5.0 ,  0.3 )=0.027678 , complementary=0.972322
+pNonCentralChiSquare( 1.4 ,  5.0 ,  0.5 )=0.043028 , complementary=0.956972
+pNonCentralChiSquare( 1.4 ,  5.0 ,  0.7 )=0.0587043 , complementary=0.941296
+pNonCentralChiSquare( 1.4 ,  5.0 ,  0.9 )=0.0749113 , complementary=0.925089
+pNonCentralChiSquare( 2.6 ,  0.2 ,  0.1 )=0.0153806 , complementary=0.984619
+pNonCentralChiSquare( 2.6 ,  0.2 ,  0.3 )=0.0609317 , complementary=0.939068
+pNonCentralChiSquare( 2.6 ,  0.2 ,  0.5 )=0.112495 , complementary=0.887505
+pNonCentralChiSquare( 2.6 ,  0.2 ,  0.7 )=0.165677 , complementary=0.834323
+pNonCentralChiSquare( 2.6 ,  0.2 ,  0.9 )=0.218569 , complementary=0.781431
+pNonCentralChiSquare( 2.6 ,  1.4 ,  0.1 )=0.00855084 , complementary=0.991449
+pNonCentralChiSquare( 2.6 ,  1.4 ,  0.3 )=0.0347375 , complementary=0.965262
+pNonCentralChiSquare( 2.6 ,  1.4 ,  0.5 )=0.0657071 , complementary=0.934293
+pNonCentralChiSquare( 2.6 ,  1.4 ,  0.7 )=0.0990561 , complementary=0.900944
+pNonCentralChiSquare( 2.6 ,  1.4 ,  0.9 )=0.133653 , complementary=0.866347
+pNonCentralChiSquare( 2.6 ,  2.6 ,  0.1 )=0.0047536 , complementary=0.995246
+pNonCentralChiSquare( 2.6 ,  2.6 ,  0.3 )=0.0197958 , complementary=0.980204
+pNonCentralChiSquare( 2.6 ,  2.6 ,  0.5 )=0.038337 , complementary=0.961663
+pNonCentralChiSquare( 2.6 ,  2.6 ,  0.7 )=0.0591062 , complementary=0.940894
+pNonCentralChiSquare( 2.6 ,  2.6 ,  0.9 )=0.0814749 , complementary=0.918525
+pNonCentralChiSquare( 2.6 ,  3.8 ,  0.1 )=0.00264251 , complementary=0.997357
+pNonCentralChiSquare( 2.6 ,  3.8 ,  0.3 )=0.0112764 , complementary=0.988724
+pNonCentralChiSquare( 2.6 ,  3.8 ,  0.5 )=0.0223448 , complementary=0.977655
+pNonCentralChiSquare( 2.6 ,  3.8 ,  0.7 )=0.0352029 , complementary=0.964797
+pNonCentralChiSquare( 2.6 ,  3.8 ,  0.9 )=0.0495269 , complementary=0.950473
+pNonCentralChiSquare( 2.6 ,  5.0 ,  0.1 )=0.00146889 , complementary=0.998531
+pNonCentralChiSquare( 2.6 ,  5.0 ,  0.3 )=0.00642093 , complementary=0.993579
+pNonCentralChiSquare( 2.6 ,  5.0 ,  0.5 )=0.013011 , complementary=0.986989
+pNonCentralChiSquare( 2.6 ,  5.0 ,  0.7 )=0.02093 , complementary=0.97907
+pNonCentralChiSquare( 2.6 ,  5.0 ,  0.9 )=0.030028 , complementary=0.969972
+pNonCentralChiSquare( 3.8 ,  0.2 ,  0.1 )=0.00161935 , complementary=0.998381
+pNonCentralChiSquare( 3.8 ,  0.2 ,  0.3 )=0.0122783 , complementary=0.987722
+pNonCentralChiSquare( 3.8 ,  0.2 ,  0.5 )=0.0304894 , complementary=0.969511
+pNonCentralChiSquare( 3.8 ,  0.2 ,  0.7 )=0.0543902 , complementary=0.94561
+pNonCentralChiSquare( 3.8 ,  0.2 ,  0.9 )=0.0825763 , complementary=0.917424
+pNonCentralChiSquare( 3.8 ,  1.4 ,  0.1 )=0.000897902 , complementary=0.999102
+pNonCentralChiSquare( 3.8 ,  1.4 ,  0.3 )=0.00694693 , complementary=0.993053
+pNonCentralChiSquare( 3.8 ,  1.4 ,  0.5 )=0.0175934 , complementary=0.982407
+pNonCentralChiSquare( 3.8 ,  1.4 ,  0.7 )=0.031993 , complementary=0.968007
+pNonCentralChiSquare( 3.8 ,  1.4 ,  0.9 )=0.0494895 , complementary=0.950511
+pNonCentralChiSquare( 3.8 ,  2.6 ,  0.1 )=0.000497858 , complementary=0.999502
+pNonCentralChiSquare( 3.8 ,  2.6 ,  0.3 )=0.00392958 , complementary=0.99607
+pNonCentralChiSquare( 3.8 ,  2.6 ,  0.5 )=0.0101458 , complementary=0.989854
+pNonCentralChiSquare( 3.8 ,  2.6 ,  0.7 )=0.0187973 , complementary=0.981203
+pNonCentralChiSquare( 3.8 ,  2.6 ,  0.9 )=0.0296067 , complementary=0.970393
+pNonCentralChiSquare( 3.8 ,  3.8 ,  0.1 )=0.000276039 , complementary=0.999724
+pNonCentralChiSquare( 3.8 ,  3.8 ,  0.3 )=0.0022223 , complementary=0.997778
+pNonCentralChiSquare( 3.8 ,  3.8 ,  0.5 )=0.00584748 , complementary=0.994153
+pNonCentralChiSquare( 3.8 ,  3.8 ,  0.7 )=0.0110323 , complementary=0.988968
+pNonCentralChiSquare( 3.8 ,  3.8 ,  0.9 )=0.0176822 , complementary=0.982318
+pNonCentralChiSquare( 3.8 ,  5.0 ,  0.1 )=0.000153047 , complementary=0.999847
+pNonCentralChiSquare( 3.8 ,  5.0 ,  0.3 )=0.0012565 , complementary=0.998743
+pNonCentralChiSquare( 3.8 ,  5.0 ,  0.5 )=0.00336826 , complementary=0.996632
+pNonCentralChiSquare( 3.8 ,  5.0 ,  0.7 )=0.0064683 , complementary=0.993532
+pNonCentralChiSquare( 3.8 ,  5.0 ,  0.9 )=0.0105438 , complementary=0.989456
+pNonCentralChiSquare( 5.0 ,  0.2 ,  0.1 )=0.000147079 , complementary=0.999853
+pNonCentralChiSquare( 5.0 ,  0.2 ,  0.3 )=0.00214169 , complementary=0.997858
+pNonCentralChiSquare( 5.0 ,  0.2 ,  0.5 )=0.00717736 , complementary=0.992823
+pNonCentralChiSquare( 5.0 ,  0.2 ,  0.7 )=0.0155617 , complementary=0.984438
+pNonCentralChiSquare( 5.0 ,  0.2 ,  0.9 )=0.0272824 , complementary=0.972718
+pNonCentralChiSquare( 5.0 ,  1.4 ,  0.1 )=8.14106e-05 , complementary=0.999919
+pNonCentralChiSquare( 5.0 ,  1.4 ,  0.3 )=0.00120559 , complementary=0.998794
+pNonCentralChiSquare( 5.0 ,  1.4 ,  0.5 )=0.00410761 , complementary=0.995892
+pNonCentralChiSquare( 5.0 ,  1.4 ,  0.7 )=0.00905177 , complementary=0.990948
+pNonCentralChiSquare( 5.0 ,  1.4 ,  0.9 )=0.0161242 , complementary=0.983876
+pNonCentralChiSquare( 5.0 ,  2.6 ,  0.1 )=4.50613e-05 , complementary=0.999955
+pNonCentralChiSquare( 5.0 ,  2.6 ,  0.3 )=0.000678549 , complementary=0.999321
+pNonCentralChiSquare( 5.0 ,  2.6 ,  0.5 )=0.00234991 , complementary=0.99765
+pNonCentralChiSquare( 5.0 ,  2.6 ,  0.7 )=0.0052614 , complementary=0.994739
+pNonCentralChiSquare( 5.0 ,  2.6 ,  0.9 )=0.00951886 , complementary=0.990481
+pNonCentralChiSquare( 5.0 ,  3.8 ,  0.1 )=2.49413e-05 , complementary=0.999975
+pNonCentralChiSquare( 5.0 ,  3.8 ,  0.3 )=0.000381859 , complementary=0.999618
+pNonCentralChiSquare( 5.0 ,  3.8 ,  0.5 )=0.00134386 , complementary=0.998656
+pNonCentralChiSquare( 5.0 ,  3.8 ,  0.7 )=0.00305615 , complementary=0.996944
+pNonCentralChiSquare( 5.0 ,  3.8 ,  0.9 )=0.00561339 , complementary=0.994387
+pNonCentralChiSquare( 5.0 ,  5.0 ,  0.1 )=1.38047e-05 , complementary=0.999986
+pNonCentralChiSquare( 5.0 ,  5.0 ,  0.3 )=0.000214866 , complementary=0.999785
+pNonCentralChiSquare( 5.0 ,  5.0 ,  0.5 )=0.000768256 , complementary=0.999232
+pNonCentralChiSquare( 5.0 ,  5.0 ,  0.7 )=0.00177404 , complementary=0.998226
+pNonCentralChiSquare( 5.0 ,  5.0 ,  0.9 )=0.0033069 , complementary=0.996693
+rNonCentralChiSquare( 0.2 ,  0.2 )=0.0612653
+rNonCentralChiSquare( 0.2 ,  0.2 )=4.76134
+rNonCentralChiSquare( 0.2 ,  0.2 )=0.038133
+rNonCentralChiSquare( 0.2 ,  0.2 )=1.71477e-05
+rNonCentralChiSquare( 0.2 ,  0.2 )=0.000417952
+rNonCentralChiSquare( 0.2 ,  1.4 )=0.00325601
+rNonCentralChiSquare( 0.2 ,  1.4 )=2.07897
+rNonCentralChiSquare( 0.2 ,  1.4 )=0.0239742
+rNonCentralChiSquare( 0.2 ,  1.4 )=0.0361934
+rNonCentralChiSquare( 0.2 ,  1.4 )=0.561101
+rNonCentralChiSquare( 0.2 ,  2.6 )=0.608614
+rNonCentralChiSquare( 0.2 ,  2.6 )=2.47661
+rNonCentralChiSquare( 0.2 ,  2.6 )=5.28009
+rNonCentralChiSquare( 0.2 ,  2.6 )=3.31977
+rNonCentralChiSquare( 0.2 ,  2.6 )=2.93009
+rNonCentralChiSquare( 0.2 ,  3.8 )=0.934387
+rNonCentralChiSquare( 0.2 ,  3.8 )=9.20111
+rNonCentralChiSquare( 0.2 ,  3.8 )=6.10443
+rNonCentralChiSquare( 0.2 ,  3.8 )=11.642
+rNonCentralChiSquare( 0.2 ,  3.8 )=1.06002
+rNonCentralChiSquare( 0.2 ,  5.0 )=3.14006
+rNonCentralChiSquare( 0.2 ,  5.0 )=3.85811
+rNonCentralChiSquare( 0.2 ,  5.0 )=5.44288
+rNonCentralChiSquare( 0.2 ,  5.0 )=16.3424
+rNonCentralChiSquare( 0.2 ,  5.0 )=9.41437
+rNonCentralChiSquare( 1.4 ,  0.2 )=0.26634
+rNonCentralChiSquare( 1.4 ,  0.2 )=2.37055
+rNonCentralChiSquare( 1.4 ,  0.2 )=3.48665
+rNonCentralChiSquare( 1.4 ,  0.2 )=0.89323
+rNonCentralChiSquare( 1.4 ,  0.2 )=1.79408
+rNonCentralChiSquare( 1.4 ,  1.4 )=0.0821739
+rNonCentralChiSquare( 1.4 ,  1.4 )=2.20005
+rNonCentralChiSquare( 1.4 ,  1.4 )=3.39576
+rNonCentralChiSquare( 1.4 ,  1.4 )=1.23198
+rNonCentralChiSquare( 1.4 ,  1.4 )=0.991647
+rNonCentralChiSquare( 1.4 ,  2.6 )=0.375739
+rNonCentralChiSquare( 1.4 ,  2.6 )=6.61233
+rNonCentralChiSquare( 1.4 ,  2.6 )=2.81355
+rNonCentralChiSquare( 1.4 ,  2.6 )=8.49984
+rNonCentralChiSquare( 1.4 ,  2.6 )=1.07351
+rNonCentralChiSquare( 1.4 ,  3.8 )=4.59694
+rNonCentralChiSquare( 1.4 ,  3.8 )=8.596
+rNonCentralChiSquare( 1.4 ,  3.8 )=4.46206
+rNonCentralChiSquare( 1.4 ,  3.8 )=6.91333
+rNonCentralChiSquare( 1.4 ,  3.8 )=7.15488
+rNonCentralChiSquare( 1.4 ,  5.0 )=2.46596
+rNonCentralChiSquare( 1.4 ,  5.0 )=0.350294
+rNonCentralChiSquare( 1.4 ,  5.0 )=2.41434
+rNonCentralChiSquare( 1.4 ,  5.0 )=1.12
+rNonCentralChiSquare( 1.4 ,  5.0 )=4.45259
+rNonCentralChiSquare( 2.6 ,  0.2 )=1.08586
+rNonCentralChiSquare( 2.6 ,  0.2 )=1.68427
+rNonCentralChiSquare( 2.6 ,  0.2 )=0.955528
+rNonCentralChiSquare( 2.6 ,  0.2 )=10.587
+rNonCentralChiSquare( 2.6 ,  0.2 )=3.40341
+rNonCentralChiSquare( 2.6 ,  1.4 )=1.00498
+rNonCentralChiSquare( 2.6 ,  1.4 )=3.55186
+rNonCentralChiSquare( 2.6 ,  1.4 )=3.70253
+rNonCentralChiSquare( 2.6 ,  1.4 )=4.49896
+rNonCentralChiSquare( 2.6 ,  1.4 )=4.58234
+rNonCentralChiSquare( 2.6 ,  2.6 )=5.95968
+rNonCentralChiSquare( 2.6 ,  2.6 )=1.0963
+rNonCentralChiSquare( 2.6 ,  2.6 )=0.981728
+rNonCentralChiSquare( 2.6 ,  2.6 )=2.7402
+rNonCentralChiSquare( 2.6 ,  2.6 )=6.14636
+rNonCentralChiSquare( 2.6 ,  3.8 )=1.09154
+rNonCentralChiSquare( 2.6 ,  3.8 )=8.64628
+rNonCentralChiSquare( 2.6 ,  3.8 )=0.0890308
+rNonCentralChiSquare( 2.6 ,  3.8 )=8.45384
+rNonCentralChiSquare( 2.6 ,  3.8 )=13.5536
+rNonCentralChiSquare( 2.6 ,  5.0 )=9.99927
+rNonCentralChiSquare( 2.6 ,  5.0 )=1.86201
+rNonCentralChiSquare( 2.6 ,  5.0 )=10.1853
+rNonCentralChiSquare( 2.6 ,  5.0 )=4.2474
+rNonCentralChiSquare( 2.6 ,  5.0 )=7.71897
+rNonCentralChiSquare( 3.8 ,  0.2 )=4.19774
+rNonCentralChiSquare( 3.8 ,  0.2 )=2.88942
+rNonCentralChiSquare( 3.8 ,  0.2 )=10.1338
+rNonCentralChiSquare( 3.8 ,  0.2 )=3.30303
+rNonCentralChiSquare( 3.8 ,  0.2 )=0.721482
+rNonCentralChiSquare( 3.8 ,  1.4 )=6.08327
+rNonCentralChiSquare( 3.8 ,  1.4 )=9.54997
+rNonCentralChiSquare( 3.8 ,  1.4 )=5.78148
+rNonCentralChiSquare( 3.8 ,  1.4 )=0.630014
+rNonCentralChiSquare( 3.8 ,  1.4 )=5.81862
+rNonCentralChiSquare( 3.8 ,  2.6 )=7.27571
+rNonCentralChiSquare( 3.8 ,  2.6 )=0.975429
+rNonCentralChiSquare( 3.8 ,  2.6 )=6.61349
+rNonCentralChiSquare( 3.8 ,  2.6 )=6.98297
+rNonCentralChiSquare( 3.8 ,  2.6 )=3.25552
+rNonCentralChiSquare( 3.8 ,  3.8 )=0.767204
+rNonCentralChiSquare( 3.8 ,  3.8 )=3.36333
+rNonCentralChiSquare( 3.8 ,  3.8 )=3.57949
+rNonCentralChiSquare( 3.8 ,  3.8 )=4.263
+rNonCentralChiSquare( 3.8 ,  3.8 )=2.89343
+rNonCentralChiSquare( 3.8 ,  5.0 )=4.22781
+rNonCentralChiSquare( 3.8 ,  5.0 )=12.4908
+rNonCentralChiSquare( 3.8 ,  5.0 )=9.15028
+rNonCentralChiSquare( 3.8 ,  5.0 )=4.54976
+rNonCentralChiSquare( 3.8 ,  5.0 )=12.439
+rNonCentralChiSquare( 5.0 ,  0.2 )=1.69273
+rNonCentralChiSquare( 5.0 ,  0.2 )=2.81985
+rNonCentralChiSquare( 5.0 ,  0.2 )=7.24405
+rNonCentralChiSquare( 5.0 ,  0.2 )=11.4825
+rNonCentralChiSquare( 5.0 ,  0.2 )=2.01198
+rNonCentralChiSquare( 5.0 ,  1.4 )=2.97689
+rNonCentralChiSquare( 5.0 ,  1.4 )=4.89329
+rNonCentralChiSquare( 5.0 ,  1.4 )=3.70067
+rNonCentralChiSquare( 5.0 ,  1.4 )=4.16863
+rNonCentralChiSquare( 5.0 ,  1.4 )=11.0268
+rNonCentralChiSquare( 5.0 ,  2.6 )=2.48859
+rNonCentralChiSquare( 5.0 ,  2.6 )=6.32029
+rNonCentralChiSquare( 5.0 ,  2.6 )=5.56539
+rNonCentralChiSquare( 5.0 ,  2.6 )=9.47491
+rNonCentralChiSquare( 5.0 ,  2.6 )=13.9559
+rNonCentralChiSquare( 5.0 ,  3.8 )=10.361
+rNonCentralChiSquare( 5.0 ,  3.8 )=1.09388
+rNonCentralChiSquare( 5.0 ,  3.8 )=5.42167
+rNonCentralChiSquare( 5.0 ,  3.8 )=11.1485
+rNonCentralChiSquare( 5.0 ,  3.8 )=12.514
+rNonCentralChiSquare( 5.0 ,  5.0 )=11.3336
+rNonCentralChiSquare( 5.0 ,  5.0 )=6.2603
+rNonCentralChiSquare( 5.0 ,  5.0 )=14.7487
+rNonCentralChiSquare( 5.0 ,  5.0 )=11.6438
+rNonCentralChiSquare( 5.0 ,  5.0 )=12.4474

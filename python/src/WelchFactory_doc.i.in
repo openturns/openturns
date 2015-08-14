@@ -1,0 +1,155 @@
+%feature("docstring") OT::WelchFactory
+"Welch estimator of the spectral model of a stationary process.
+
+Parameters
+----------
+window : :class:`~openturns.FilteringWindows`
+    The filtering window model.
+
+    By default, the filtering window model is the Hanning model.
+blockNumber : int
+    Number of blocks. 
+
+    By default, *blockNumber=1*.
+overlap : float, :math:`0 \leq overlap \leq 0.5`.
+    Overlap rate parameter of the segments of the time series.
+
+    By default, *overlap=0.5*.
+
+Notes
+-----
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \in \Rset^n` (here we only treat the case *n=1*).
+
+If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^n \rightarrow \Rset^n` is :math:`\cL^1(\Rset^n)` (ie :math:`\int_{\Rset^n} |C^{stat}_{i,j}(\vect{\tau})|\, d\vect{\tau}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`. 
+
+The bilateral spectral density function :math:`S : \Rset^n \rightarrow \mathcal{H}^+(d)` exists and is defined as the Fourier transform of the covariance function :math:`C^{stat}` :
+
+.. math::
+
+    \forall \vect{f} \in \Rset^n, \,S(\vect{f}) = \int_{\Rset^n}\exp\left\{  -2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\, d\vect{\tau}
+
+
+where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+
+
+The Welch estimator is a non parametric estimator based on the segmentation of the time series into *blockNumber* segments  possibly overlapping (size of overlap *overlap*). The length of each segment is deduced.
+
+
+Examples
+--------
+Create a time series from a stationary second order process:
+
+>>> import openturns as ot
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, pow(2,12))
+>>> model = ot.ExponentialCauchy([5], [3])
+>>> myNormalProcess = ot.SpectralNormalProcess(model, myTimeGrid)
+>>> myTimeSeries = myNormalProcess.getRealization()
+
+Estimate the spectral model ith the WelchFactory:
+
+>>> mySegmentNumber = 10
+>>> myOverlapSize = 0.3
+>>> myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber , myOverlapSize)
+>>> myEstimatedModel_TS = myFactory.build(myTimeSeries)
+
+Change the filtering window: 
+
+>>> myFactory.setFilteringWindows(ot.Hamming())
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::build
+"Estimate the spetral model.
+
+Available usages:
+    build(*myTimeSeries*)
+
+    build(*myProcessSample*)
+
+Parameters
+----------
+myTimeSeries : :class:`~openturns.TimeSeries`
+    One realization of the  process.
+myProcessSample : :class:`~openturns.ProcessSample`
+    Several realizations of the  process.
+
+Returns
+-------
+mySpectralModel : :class:`~openturns.UserDefinedSpectralModel`
+    The  spectral model estimated with the Welch estimator.
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::getFilteringWindows
+"Accessor to the filtering window.
+
+Returns
+-------
+filteringWindow : :class:`~openturns.FilteringWindows`
+    The filtering window used.
+
+    By default, the :class:`~openturns.Hanning` one.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::setFilteringWindows
+"Accessor to the filtering window.
+
+Parameters
+----------
+filteringWindow : :class:`~openturns.FilteringWindows`
+    The filtering window used.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::getBlockNumber
+"Accessor to the block number.
+
+Returns
+-------
+blockNumber : int
+    The number of blocks used in the Welch estimator.
+
+    By default, *blockNumber = 1*.
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::setBlockNumber
+"Accessor to the block number.
+
+Parameters
+----------
+blockNumber : positive int
+    The number of blocks used in the Welch estimator.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::getOverlap
+"Accessor to the overlap rate.
+
+Returns
+-------
+overlap : float, :math:`0 \leq overlap \leq 0.5`.
+    The overlap rate of the time series.
+
+    By default, *overlap = 0.5*.
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WelchFactory::setOverlap
+"Accessor to the block number.
+
+Parameters
+----------
+blockNumber : int, :math:`0 \leq overlap \leq 0.5`.
+    The overlap rate of the times series.
+"
+

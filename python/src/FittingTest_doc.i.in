@@ -1,0 +1,254 @@
+%feature("docstring") OT::FittingTest::BestModelBIC
+"Select the best model according to the Bayesian information criterion.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+models : list of :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distributions.
+
+Returns
+-------
+best_model : :class:`~openturns.Distribution`
+    The best distribution for the sample according to Bayesian information
+    criterion.
+    This may raise a warning if the best model does not perform well.
+
+See Also
+--------
+FittingTest_BIC
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
+>>> best_model = ot.FittingTest.BestModelBIC(sample, tested_distributions)
+>>> print(best_model)
+Normal(mu = -0.0944924, sigma = 0.989808)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::BestModelChiSquared
+"Select the best model according to the :math:`\chi^2` goodness-of-fit test.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+models : list of :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distributions.
+
+Returns
+-------
+best_model : :class:`~openturns.Distribution`
+    The best distribution for the sample according to Bayesian information
+    criterion.
+    This may raise a warning if the best model does not perform well.
+best_result : :class:`~openturns.TestResult`
+    Best test result.
+
+See Also
+--------
+FittingTest_ChiSquared
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Poisson()
+>>> sample = distribution.getSample(30)
+>>> tested_distributions = [ot.PoissonFactory(), ot.UserDefinedFactory()]
+>>> best_model = ot.FittingTest.BestModelBIC(sample, tested_distributions)
+>>> print(best_model)
+Poisson(lambda = 1.06667)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::BestModelKolmogorov
+"Select the best model according to the Kolmogorov goodness-of-fit test.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+models : list of :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distributions.
+
+Returns
+-------
+best_model : :class:`~openturns.Distribution`
+    The best distribution for the sample according to Bayesian information
+    criterion.
+    This may raise a warning if the best model does not perform well.
+best_result : :class:`~openturns.TestResult`
+    Best test result.
+
+See Also
+--------
+FittingTest_Kolmogorov
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
+>>> best_model, best_result = ot.FittingTest.BestModelKolmogorov(sample, tested_distributions)
+>>> print(best_model)
+Normal(mu = -0.0944924, sigma = 0.989808)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::BIC
+"Compute the Bayesian information criterion.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distribution.
+n_parameters : int, :math:`0 \leq k`, optional
+    The number of parameters in the distribution that have been estimated from
+    the sample.
+    This parameter must not be provided if a :class:`~openturns.DistributionFactory`
+    was provided as the second argument (it will internally be set to the
+    number of parameters estimated by the :class:`~openturns.DistributionFactory`).
+    It can be specified if  a :class:`~openturns.Distribution` was provided
+    as the second argument, but if it is not, it will be set equal to 0.
+
+Returns
+-------
+BIC : float
+    The Bayesian information criterion.
+
+Notes
+-----
+The Bayesian information criterion is defined as follows:
+
+.. math::
+
+    {\rm BIC} = \frac{1}{m}
+                \left(- 2 \log L(\vect{x}^{(i)}, i = 1, \ldots, m)
+                      + k \log m\right)
+
+where :math:`\log L` denotes the log-likelihood of the sample with respect to
+the given distribution, and :math:`k` denotes the number of estimated
+parameters in the distribution.
+
+This is used for model selection.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> ot.FittingTest.BIC(sample, distribution)
+2.7938693005063415
+>>> ot.FittingTest.BIC(sample, distribution, 2)
+3.0206157926171517
+>>> ot.FittingTest.BIC(sample, ot.NormalFactory())
+3.0108025506670955"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::ChiSquared
+"Perform a :math:`\chi^2` goodness-of-fit test for 1-d discrete distributions.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distribution.
+level : float, :math:`0 \leq {\rm level} \leq 1`, optional
+    This the value such that :math:`\alpha = 1 - {\rm level}` is the risk of
+    committing a Type I error, that is an incorrect rejection of a true
+    null hypothesis.
+n_parameters : int, :math:`0 \leq k`, optional
+    The number of parameters in the distribution that have been estimated from
+    the sample.
+    This parameter must not be provided if a :class:`~openturns.DistributionFactory`
+    was provided as the second argument (it will internally be set to the
+    number of parameters estimated by the :class:`~openturns.DistributionFactory`).
+    It can be specified if  a :class:`~openturns.Distribution` was provided
+    as the second argument, but if it is not, it will be set equal to 0.
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Raises
+------
+TypeError : If the distribution is not discrete or if the sample is
+    multivariate.
+
+Notes
+-----
+This is an interface to the `chisq.test function from the
+'stats' R package <http://stat.ethz.ch/R-manual/R-patched/library/stats/html/chisq.test.html>`_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Poisson()
+>>> sample = distribution.getSample(30)
+>>> ot.FittingTest.ChiSquared(sample, ot.PoissonFactory(), .99)
+class=TestResult name=Unnamed type=ChiSquaredPoisson binaryQualityMeasure=true p-value threshold=0.01 p-value=0.606136 description=[]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::Kolmogorov
+"Perform a Kolmogorov goodness-of-fit test for 1-d continuous distributions.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distribution.
+level : float, :math:`0 \leq {\rm level} \leq 1`, optional
+    This is the value such that :math:`\alpha = 1 - {\rm level}` is the risk of
+    committing a Type I error, that is an incorrect rejection of a true
+    null hypothesis.
+n_parameters : int, :math:`0 \leq k`, optional
+    The number of parameters in the distribution that have been estimated from
+    the sample.
+    This parameter must not be provided if a :class:`~openturns.DistributionFactory`
+    was provided as the second argument (it will internally be set to the
+    number of parameters estimated by the :class:`~openturns.DistributionFactory`).
+    It can be specified if  a :class:`~openturns.Distribution` was provided
+    as the second argument, but if it is not, it will be set equal to 0.
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Raises
+------
+TypeError : If the distribution is not continuous or if the sample is
+    multivariate.
+
+Notes
+-----
+The present implementation of the Kolmogorov goodness-of-fit test is
+two-sided. This uses an external C implementation of the Kolmogorov cumulative
+distribution function by [Simard2011]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), .99)
+class=TestResult name=Unnamed type=KolmogorovDistribution binaryQualityMeasure=true p-value threshold=0.01 p-value=0.846896 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"

@@ -1,0 +1,13 @@
+interval1D=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-3] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5] finite lower bound=[1] finite upper bound=[1]
+defaultInterval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
+interval from 2 points=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]
+interval from 2 points and 2 flags=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[0,0] finite upper bound=[1,1]
+lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1]
+upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2]
+lower bound flags=[0,0]
+upper bound flags=[1,1]
+interval [p1, p2] empty? false
+interval [p2, p1] empty? true
+intersection of class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1] and class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.5,-1.5] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1.5,2.5] finite lower bound=[1,1] finite upper bound=[1,1] equals class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.5,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1.5,2] finite lower bound=[1,1] finite upper bound=[1,1]
+is point class=NumericalPoint name=Unnamed dimension=2 values=[0.5,0.5] inside class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]? yes
+is point class=NumericalPoint name=Unnamed dimension=2 values=[4,4] inside class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-1,-1] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]? no

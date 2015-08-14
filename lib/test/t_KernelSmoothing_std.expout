@@ -1,0 +1,157 @@
+kernel=Normal
+kernel bandwidth=[0.681867, 1.14073]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.025801 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.271892 cdf(exact)=0.305529
+kernel=Epanechnikov
+kernel bandwidth=[1.5247, 2.55075]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.025933 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.272041 cdf(exact)=0.305529
+kernel=Uniform
+kernel bandwidth=[1.18103, 1.9758]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.0246413 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.272447 cdf(exact)=0.305529
+kernel=Triangular
+kernel bandwidth=[1.67023, 2.7942]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.0255707 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.272078 cdf(exact)=0.305529
+kernel=Logistic
+kernel bandwidth=[0.375933, 0.628917]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.025701 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.27191 cdf(exact)=0.305529
+kernel=Beta
+kernel bandwidth=[1.5247, 2.55075]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.025933 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.272041 cdf(exact)=0.305529
+kernel=Beta
+kernel bandwidth=[1.80405, 3.01809]
+mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
+covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)= 0.0259139 pdf(exact)=0.0280502
+ cdf(smoothed)= 0.27195 cdf(exact)=0.305529
+kernel=Normal
+Silverman's bandwidth=0.304667 plugin bandwidth=0.301536 mixed bandwidth=0.296607
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.271227 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208052 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.271406 pdf(exact)=0.266085
+ cdf(smoothed)= 0.207727 cdf(exact)=0.18406
+Silverman's bandwidth=0.390286 plugin bandwidth=0.14183 mixed bandwidth=0.146186
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.458803 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0829312 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.621511 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0618142 cdf(exact)=0.0852122
+kernel=Epanechnikov
+Silverman's bandwidth=0.681257 plugin bandwidth=0.674254 mixed bandwidth=0.663233
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.27125 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208384 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.27125 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208384 cdf(exact)=0.18406
+Silverman's bandwidth=0.872707 plugin bandwidth=0.317142 mixed bandwidth=0.326883
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.437164 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0831747 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.640392 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0651184 cdf(exact)=0.0852122
+kernel=Uniform
+Silverman's bandwidth=0.527699 plugin bandwidth=0.522275 mixed bandwidth=0.513738
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.282245 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208734 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.282245 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208734 cdf(exact)=0.18406
+Silverman's bandwidth=0.675996 plugin bandwidth=0.245657 mixed bandwidth=0.253202
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.414688 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0829579 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.645071 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0642517 cdf(exact)=0.0852122
+kernel=Triangular
+Silverman's bandwidth=0.746279 plugin bandwidth=0.738609 mixed bandwidth=0.726535
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.267673 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208251 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.267673 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208251 cdf(exact)=0.18406
+Silverman's bandwidth=0.956002 plugin bandwidth=0.347412 mixed bandwidth=0.358082
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.447781 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0833693 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.637093 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0657848 cdf(exact)=0.0852122
+kernel=Logistic
+Silverman's bandwidth=0.167972 plugin bandwidth=0.166245 mixed bandwidth=0.163528
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.270018 pdf(exact)=0.266085
+ cdf(smoothed)= 0.207968 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.270196 pdf(exact)=0.266085
+ cdf(smoothed)= 0.207655 cdf(exact)=0.18406
+Silverman's bandwidth=0.215176 plugin bandwidth=0.0781951 mixed bandwidth=0.0805968
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.476832 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0826949 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.60452 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0593203 cdf(exact)=0.0852122
+kernel=Beta
+Silverman's bandwidth=0.681257 plugin bandwidth=0.674254 mixed bandwidth=0.663233
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.27125 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208384 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.27125 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208384 cdf(exact)=0.18406
+Silverman's bandwidth=0.872707 plugin bandwidth=0.317142 mixed bandwidth=0.326883
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.437164 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0831747 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.640392 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0651184 cdf(exact)=0.0852122
+kernel=Beta
+Silverman's bandwidth=0.806074 plugin bandwidth=0.797789 mixed bandwidth=0.784747
+Bounded underlying distribution? False bounded reconstruction? False
+ pdf(smoothed)= 0.270706 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208212 cdf(exact)=0.18406
+Bounded underlying distribution? False bounded reconstruction? True
+ pdf(smoothed)= 0.270706 pdf(exact)=0.266085
+ cdf(smoothed)= 0.208212 cdf(exact)=0.18406
+Silverman's bandwidth=1.0326 plugin bandwidth=0.375247 mixed bandwidth=0.386773
+Bounded underlying distribution? True bounded reconstruction? False
+ pdf(smoothed)= 0.443128 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0831543 cdf(exact)=0.0852122
+Bounded underlying distribution? True bounded reconstruction? True
+ pdf(smoothed)= 0.6398 pdf(exact)=0.597681
+ cdf(smoothed)= 0.0654913 cdf(exact)=0.0852122
+with low  bin count, pdf=0.366602
+with high bin count, pdf=0.367161
+without   binning,   pdf=0.367185

@@ -1,0 +1,15 @@
+restart:
+Digits:=30:
+with(LinearAlgebra):
+R:=Matrix([[1,rho12,rho13],[rho12,1,rho23],[rho13,rho23,1]]);
+sigma:=Matrix([[1,0,0],[0,1,0],[0,0,1]]);
+Sigma:=sigma.R.sigma;
+Eigenvalues(Sigma);
+x:=Vector([x1,x2,x3]):
+pdf:=1/((2*Pi)^((3)/(2))*abs(Determinant(Sigma))^(1/(2)))*exp(expand(-1/(2)* Transpose(x).MatrixInverse(Sigma).x));
+valrho:=rho12=0.5,rho13=0.2,rho23=0.1:
+valnum:=x1=0.1,x2=0.2,x3=0.3:
+for n to 16 do
+ cdf := evalf[n](Int(Int(int(subs(valrho,pdf), x1 = -infinity .. subs(valnum,x1)), x2 = -infinity .. subs(valnum,x2)), x3 = -infinity .. subs(valnum,x3)))
+end do;
+quit

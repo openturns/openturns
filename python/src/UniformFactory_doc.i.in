@@ -1,0 +1,9 @@
+%feature("docstring") OT::UniformFactory
+"Uniform factory.
+
+Available constructor:
+    UniformFactory()
+
+See also
+--------
+DistributionFactory"

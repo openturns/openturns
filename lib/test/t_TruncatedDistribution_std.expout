@@ -1,0 +1,129 @@
+Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=1 finiteLowerBound=true upperBound=4 finiteUpperBound=true thresholdRealization=0.5
+Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = 4)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.9123]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.3426] last=class=NumericalPoint name=Unnamed dimension=1 values=[3.87446]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.34616]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.63794]
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[2.5]
+ddf      =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0851881]
+ddf (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0851881]
+pdf      =0.383346
+pdf (ref)=0.383346
+cdf      =0.57606
+cdf (ref)=0.57606
+pdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[0.02466,-0.0590839,0.124394,-0.0638662]
+pdf gradient (ref)=class=NumericalPoint name=Unnamed dimension=4 values=[0.02466,-0.0590839,0.124394,-0.0638662]
+cdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[-0.149807,-0.0915298,-0.137567,-0.0959726]
+cdf gradient (ref)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.149807,-0.0915298,-0.137567,-0.0959726]
+quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[3.73264]
+quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[3.73264]
+cdf(quantile)=0.95
+mean      =class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
+mean (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
+standard deviation      =class=NumericalPoint name=Unnamed dimension=1 values=[0.802475]
+standard deviation (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[0.802475]
+skewness      =class=NumericalPoint name=Unnamed dimension=1 values=[0.190048]
+skewness (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[0.190048]
+kurtosis      =class=NumericalPoint name=Unnamed dimension=1 values=[1.9933]
+kurtosis (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[1.9933]
+covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
+covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
+parameters      =[[mean : 2, standard deviation : 1.5, lowerBound : 1, upperBound : 4]]
+parameters (ref)=[[mu : 2, sigma : 1.5, a : 1, b : 4]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[6.19122]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[17.7136]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[53.9574]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[172.105]
+Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = 4)
+lowerBound=1
+upperBound=4
+Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=1 finiteLowerBound=true upperBound=13.4759 finiteUpperBound=false thresholdRealization=0.5
+Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = +inf)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.69199]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[2.79367] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.76978]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.64435]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.23607]
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[2.5]
+ddf      =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0747934]
+ddf (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0747934]
+pdf      =0.33657
+pdf (ref)=0.33657
+cdf      =0.505769
+cdf (ref)=0.505769
+pdf gradient      =class=NumericalPoint name=Unnamed dimension=3 values=[-0.0210957,-0.135523,0.0958891]
+pdf gradient (ref)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.0210957,-0.135523,0.0958891,0]
+cdf gradient      =class=NumericalPoint name=Unnamed dimension=3 values=[-0.195764,-0.206061,-0.140807]
+cdf gradient (ref)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.195764,-0.206061,-0.140807,0]
+quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[4.67299]
+quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[4.67299]
+cdf(quantile)=0.95
+mean      =class=NumericalPoint name=Unnamed dimension=1 values=[2.64103]
+mean (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[2.64103]
+standard deviation      =class=NumericalPoint name=Unnamed dimension=1 values=[1.09456]
+standard deviation (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[1.09456]
+skewness      =class=NumericalPoint name=Unnamed dimension=1 values=[0.730758]
+skewness (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[0.730758]
+kurtosis      =class=NumericalPoint name=Unnamed dimension=1 values=[3.23251]
+kurtosis (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[3.23251]
+covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19806]
+covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19806]
+parameters      =[[mean : 2, standard deviation : 1.5, lowerBound : 1]]
+parameters (ref)=[[mu : 2, sigma : 1.5, a : 1, b : 200]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.64103]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[8.17308]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[28.8718]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[113.553]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[487.593]
+Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = +inf)
+lowerBound=1
+upperBound=13.4759
+Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=-9.47594 finiteLowerBound=false upperBound=4 finiteUpperBound=true thresholdRealization=0.5
+Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = -inf, b = 4)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.38239]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.09659] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.440643]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.72507]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.64216]
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[2.5]
+ddf      =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0615199]
+ddf (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0615199]
+pdf      =0.27684
+pdf (ref)=0.27684
+cdf      =0.693845
+cdf (ref)=0.693845
+pdf gradient      =class=NumericalPoint name=Unnamed dimension=3 values=[0.0948276,-0.119643,-0.0333077]
+pdf gradient (ref)=class=NumericalPoint name=Unnamed dimension=4 values=[0.0948276,-0.119643,0,-0.0333077]
+cdf gradient      =class=NumericalPoint name=Unnamed dimension=3 values=[-0.19336,0.0190258,-0.0834793]
+cdf gradient (ref)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.19336,0.0190258,0,-0.0834793]
+quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[3.64324]
+quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[3.64324]
+cdf(quantile)=0.95
+mean      =class=NumericalPoint name=Unnamed dimension=1 values=[1.72929]
+mean (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[1.72929]
+standard deviation      =class=NumericalPoint name=Unnamed dimension=1 values=[1.27879]
+standard deviation (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[1.27879]
+skewness      =class=NumericalPoint name=Unnamed dimension=1 values=[-0.455767]
+skewness (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.455767]
+kurtosis      =class=NumericalPoint name=Unnamed dimension=1 values=[2.84601]
+kurtosis (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[2.84601]
+covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.6353]
+covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.6353]
+parameters      =[[mean : 2, standard deviation : 1.5, upperBound : 4]]
+parameters (ref)=[[mu : 2, sigma : 1.5, a : -200, b : 4]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.72929]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[4.62576]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[12.702]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[39.3027]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[123.623]
+Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = -inf, b = 4)
+lowerBound=-9.47594
+upperBound=4

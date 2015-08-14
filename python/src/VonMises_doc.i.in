@@ -1,0 +1,74 @@
+%feature("docstring") OT::VonMises
+"von Mises distribution.
+
+Available constructors:
+    VonMises(*mu=0.0, kappa=1.0*)
+
+Parameters
+----------
+mu : float
+    Location parameter
+kappa : float, :math:`\kappa > 0`
+    Concentration parameter
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{e^{\kappa\cos(x-\mu)}}
+                  {2\pi I_0(\kappa)}, \quad x \in [-\pi, \pi]
+
+with :math:`\kappa > 0` and :math:`I_0` the modified Bessel function of order 0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.VonMises(1.0, 2.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getMu
+"Accessor to the location parameter.
+
+Returns
+-------
+mu : float
+    Location parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::setMu
+"Accessor to the location parameter.
+
+Parameters
+----------
+mu : float
+    Location parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getKappa
+"Accessor to the concentration parameter.
+
+Returns
+-------
+kappa : float
+    Concentration parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::setKappa
+"Accessor to the concentration parameter.
+
+Parameters
+----------
+kappa : float, :math:`\kappa > 0`
+    Concentration parameter."

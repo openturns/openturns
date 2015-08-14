@@ -1,0 +1,115 @@
+/*
+
+This software was written by Mike Giles, copyright University of Oxford, 
+and is provided under the terms of the GNU GPLv3 license:
+http://www.gnu.org/licenses/gpl.html
+
+Commercial users who would like to use the software under a more
+permissive license, such as BSD, should contact the author:
+mike.giles@maths.ox.ac.uk
+
+*/
+
+Used in OpenTURNS with written permission of the author:
+
+
+        Mike Giles
+        Aujourd’hui à 1h23 PM
+
+À
+
+        regis lebrun
+
+
+That sounds fine so I'm happy for you to use it.  Is this email sufficient authorisation or would you like something else?
+
+I suggest you review my validation software carefully to ensure that you are happy with the way in which I have validated the software.  Or you might like to develop your own validation tests for it.  Please ask me if you have any questions about anything.
+
+Cheers,
+
+Mike
+
+
+
+On 27 Jan 2014, at 11:27, regis lebrun <regis_anne.lebrun_dutfoy@yahoo.fr> wrote:
+
+> Dear Mike,
+>
+> Thank you for your quick answer and your positive feedback. I am pleased to clarify the point you raised:
+>
+> + Concerning OpenTURNS, yes, it is distributed in source form in addition to binary form (and you can even follow the development as our versioning system is public). so your source code will be visible (but it is already the case on your website).
+>
+> + Concerning the license, your code retains its initial license even if it is included in the sources of OpenTURNS. Nobody is allowed to extract it and use it independently of OpenTURNS without your written permission, but of course anybody using OpenTURNS in a commercial product can use your code through its openTURNS interface (ie the Poisson::computeQuantile() method)
+>
+> The GPL package ksdir, developed by Richard SIMARD (http://www.iro.umontreal.ca/~simardr/ksdir/) has been used by the LGPL Accord project (http://accord.googlecode.com/svn/docs/html/T_Accord_Statistics_Testing_KolmogorovSmirnovTest.htm) with the written permission of the author, and instead of copy/pasting this code, I asked the initial author for the authorization to use his work in OpenTURNS (see http://trac.openturns.org/browser/openturns/trunk/lib/COPYING.KolmogorovSmirnovDist) in the very same way I am asking you for the authorization to use your software.
+>
+> I perfectly understand your point of view concerning the interaction between profit and non-profit organizations, if a bank makes money with your work you can expect a kind of feedback at least by a generous funding of the academic research. OpenTURNS is made of contributions from many horizons, including several academic teams in Europe. I am sure that your work will be both appreciated and valorized by our users, mainly Electricité de France, Airbus (including Airbus UK at Filton) and many others.
+>
+> I hope that it will help you in making your decision. Whatever you decide, I would like to thank you once again for the good job you did with your algorithm.
+>
+> Best regards,
+>
+> Régis
+>
+>
+>
+>
+> ----- Mail original -----
+>> De : Mike Giles <mike.giles@maths.ox.ac.uk>
+>> À : Regis Lebrun <regis.lebrun@m4x.org>
+>> Cc :
+>> Envoyé le : Lundi 27 janvier 2014 10h40
+>> Objet : Re: Use of poissinv.h in a LGPL library
+>>
+>>
+>> Dear Regis,
+>>
+>> I am perfectly happy for you to use my software as part of your library,
+>> and I am willing to grant you an exception to allow you to do this.
+>>
+>> However, can I please ask a couple of questions.  Do you distribute your
+>> library as source code?  If you do, would the LGPL license allow
+>> companies to extract my piece of code from your library and use it on
+>> its own?
+>>
+>> To be honest, I'm not sure that this is a likely scenario, but I would
+>> like to be clear what I am agreeing to.
+>>
+>> (Broadly speaking, as I have an engineering background, I am very happy
+>> for engineering companies to use my software for free, because they have
+>> a good record of funding academic research.  But banks and
+>> pharmaceutical companies who might be interested in this work are not so
+>> good at funding academic research so software licensing is one mechanism
+>> for obtaining funding from them.)
+>>
+>> Regards,
+>>
+>> Mike
+>>
+>>
+>>
+>>
+>> On 21/01/14 21:51, Regis Lebrun wrote:
+>>> Dear Professor,
+>>>
+>>> I read with great interest your article entitled "Fast evaluation of
+>> the
+>>> inverse Poisson cumulative distribution function" and I would be very
+>> pleased
+>>> to have the possibility to include the associated source code into the
+>>> OpenTURNS software (www.openturns.org), which is a scientific library
+>>> dedicated to probabilistic uncertainty modelling and quantification.
+>>>
+>>> As your software is released under the GPLv3 license and OpenTURNS is
+>> released
+>>> under the LGPL license, I need your written permission to use it as an
+>>> exception to your default license policy. You will obviously be credited
+>> for
+>>> your work in a dedicated COPYING.poissinv file in the source tree of
+>>> OpenTURNS.
+>>>
+>>> I would be very grateful if you could accept my request.
+>>>
+>>> Best regards,
+>>>
+>>

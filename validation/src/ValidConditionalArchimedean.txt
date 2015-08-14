@@ -1,0 +1,157 @@
+> restart:
+> print("Clayton");
+> C:=(u^(-theta)+v^(-theta)-1)^(-1/theta);
+> conditionalCDF:=simplify(diff(C,u));
+> conditionalQuantile:=simplify(solve(conditionalCDF=q,v),symbolic);
+> print("Frank");
+> C:=-log(1+(exp(-theta*u)-1)*(exp(-theta*v)-1)/(exp(-theta)-1))/theta;
+> conditionalCDF:=simplify(diff(C,u));
+> conditionalQuantile:=combine(simplify(solve(conditionalCDF=q,v),symbol
+> ic),ln);
+> # Gumbel
+> print("Gumbel");
+> C:=exp(-((-log(u))^theta+(-log(v))^theta)^(1/theta));
+> conditionalCDF:=simplify(diff(C,u));
+> conditionalQuantile:=simplify(solve(conditionalCDF=q,v));
+
+                              "Clayton"
+
+
+                                              /    1  \
+                                              |- -----|
+                                              \  theta/
+                     (-theta)    (-theta)
+              C := (u         + v         - 1)
+
+
+  conditionalCDF :=
+
+                                   /  theta + 1\
+                                   |- ---------|
+                                   \    theta  /
+          (-theta)    (-theta)                    (-theta - 1)
+        (u         + v         - 1)              u
+
+
+  conditionalQuantile :=
+
+                                                  /    1  \
+                                                  |- -----|
+                                                  \  theta/
+        /           /    theta  \                \
+        |           |- ---------|                |
+        | (-theta)  \  theta + 1/    (-theta)    |
+        \u         q              - u         + 1/
+
+
+                               "Frank"
+
+
+                      (exp(-theta u) - 1) (exp(-theta v) - 1)
+               ln(1 + ---------------------------------------)
+                                  exp(-theta) - 1
+        C := - -----------------------------------------------
+                                    theta
+
+
+  conditionalCDF := (exp(-theta v) - 1) exp(-theta u)/(exp(-theta)
+
+         + exp(-theta u - theta v) - exp(-theta u) - exp(-theta v))
+
+
+  conditionalQuantile := (
+
+        -ln(-exp(-theta (u - 1)) - q + q exp(-theta (u - 1)))
+
+         + ln(-exp(-theta u) + q exp(-theta u) - q) + theta)/theta
+
+
+                               "Gumbel"
+
+
+                                                   /  1  \
+                                                   |-----|
+                                                   \theta/
+                             theta           theta
+          C := exp(-((-ln(u))      + (-ln(v))     )       )
+
+
+                                                   /  theta - 1\
+                                                   |- ---------|
+                                                   \    theta  /
+                             theta           theta
+  conditionalCDF := ((-ln(u))      + (-ln(v))     )
+
+                (theta - 1)
+        (-ln(u))
+
+                                            /  1  \
+                                            |-----|
+                                            \theta/
+                      theta           theta
+        exp(-((-ln(u))      + (-ln(v))     )       )/u
+
+
+                              /      /
+                              |      |
+                              |      |
+                              |      |
+                              |      |
+                              |      |
+                              |      |
+  conditionalQuantile := exp(-|exp(- |
+                              \      \
+
+                                      /    1    \
+                                      |---------|
+                                      \theta - 1/
+                 /        (theta - 1)\
+                 |(-ln(u))           |
+                 |-------------------|
+                 \        q u        /
+        LambertW(--------------------------------) theta
+                            theta - 1
+
+                                         /    1    \
+                                         |---------|
+                                         \theta - 1/
+                    /        (theta - 1)\
+                    |(-ln(u))           |
+                    |-------------------|
+                    \        q u        /
+         - LambertW(--------------------------------)
+                               theta - 1
+
+                                  \
+                                  |
+                                  |
+                                  |
+                                  |
+                      (theta - 1) |
+              (-ln(u))            |
+         - ln(-------------------)| theta/(theta - 1))
+                      q u         /
+
+                        \/  1  \
+                        ||-----|
+                        |\theta/
+                        |
+                        |
+                        |
+                   theta|
+         - (-ln(u))     |       )
+                        /
+
+> qv:=evalf(subs(u=0.3,v=0.6,theta=2.5,conditionalCDF));
+
+                          qv := 0.8859231986
+
+> evalf(subs(q=qv,u=0.3,theta=2.5,conditionalQuantile));
+
+                             0.5999999976
+
+> LambertW(0.4);
+
+                             0.2971677507
+
+> 

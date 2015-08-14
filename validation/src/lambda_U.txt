@@ -1,0 +1,19 @@
+> restart:
+> assume(teta,real,theta>0):
+> phi:=(-log(t))^theta:
+> phiinv:=solve(phi=s,t);
+> lambda:=2-2*limit(diff(subs(s=2*s,phiinv),s)/diff(phiinv,s),s=0);
+
+                                       1
+                      phiinv := ----------------
+                                        ln(s)
+                                exp(exp(------))
+                                        theta~
+
+
+                                       /  1   \
+                                       |------|
+                                       \theta~/
+                      lambda := 2 - 2 2
+
+> 

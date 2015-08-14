@@ -1,0 +1,96 @@
+%feature("docstring") OT::Triangular
+"Triangular distribution.
+
+Available constructors:
+    Triangular(*a=-1.0, m=0., b=1.0*)
+
+Parameters
+----------
+a : float
+    Lower bound.
+m : float, :math:`a \leq m \leq b`
+    Mode.
+b : float, :math:`a < b`
+    Upper bound.
+
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \left\{
+                 \begin{array}{ll}
+                 \displaystyle \frac{2(x - a)}{(m - a)(b - a)}
+                               & a \leq x \leq m \\
+                 \displaystyle \frac{2(b - x)}{(b - m)(b - a)}
+                               & m \leq x \leq b
+                 \end{array}
+             \right., \quad x \in [a, b]
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & =  & \frac{1}{3}\,(a+m+b) \\
+        \Var{X} & = & \frac{1}{18} (a^2+b^2+m^2-ab-am-bm)
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Triangular(1.0, 2.5, 4.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Triangular::getA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Triangular::getB
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+b : float
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Triangular::getM
+"Accessor to the distribution's mode.
+
+Returns
+-------
+m : float
+    Mode."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Triangular::setAMB
+"Accessor to the distribution's parameters.
+
+Parameters
+----------
+a : float
+    Lower bound.
+m : float, :math:`a \leq m \leq b`
+    Mode.
+b : float, :math:`a < b`
+    Upper bound."
+

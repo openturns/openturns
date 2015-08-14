@@ -1,0 +1,21 @@
+%feature("docstring") OT::SobolSequence
+"Sobol sequence.
+
+Available constructors:
+    SobolSequence(*dimension=1*)
+
+Parameters
+----------
+dimension : positive int
+    Dimension of the points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sequence = ot.SobolSequence(2)
+>>> print(sequence.generate(5))
+0 : [ 0.5   0.5   ]
+1 : [ 0.75  0.25  ]
+2 : [ 0.25  0.75  ]
+3 : [ 0.375 0.375 ]
+4 : [ 0.875 0.875 ]"

@@ -1,0 +1,280 @@
+%feature("docstring") OT::VisualTest::DrawHenryLine
+"Draw an Henry plot as an OpenTURNS :class:`~openturns.Graph`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested (univariate) sample.
+normal_distribution : :class:`~openturns.Normal`, optional
+    Tested (univariate) normal distribution.
+
+    If not given, this will build a :class:`~openturns.Normal` distribution
+    from the given sample using the :class:`~openturns.NormalFactory`.
+
+Notes
+-----
+The Henry plot is a visual fitting test for the normal distribution. It
+opposes the sample quantiles to those of the standard normal distribution
+(the one with zero mean and unit variance) by plotting the following points
+could:
+
+.. math::
+
+    \left(x^{(i)},
+          \Phi^{-1}\left[\widehat{F}\left(x^{(i)}\right)\right]
+    \right), \quad i = 1, \ldots, m
+
+where :math:`\widehat{F}` denotes the empirical CDF of the sample and
+:math:`\Phi^{-1}` denotes the quantile function of the standard normal
+distribution.
+
+If the given sample fits to the tested normal distribution (with mean
+:math:`\mu` and standard deviation :math:`\sigma`), then the points should be
+close to be aligned (up to the uncertainty associated with the estimation
+of the empirical probabilities) on the **Henry line** whose equation reads:
+
+.. math::
+
+    y = \frac{x - \mu}{\sigma}, \quad x \in \Rset
+
+The Henry plot is a special case of the more general QQ-plot.
+
+See Also
+--------
+VisualTest_DrawQQplot, FittingTest_Kolmogorov
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal(2., .5)
+>>> sample = distribution.getSample(30)
+
+Draw an Henry plot against a given (wrong) Normal distribution:
+
+>>> henry_graph = ot.VisualTest.DrawHenryLine(sample, distribution)
+>>> henry_graph.setTitle('Henry plot against given %s' % ot.Normal(3., 1.))
+>>> View(henry_graph).show()
+
+Draw an Henry plot against an inferred Normal distribution:
+
+>>> henry_graph = ot.VisualTest.DrawHenryLine(sample)
+>>> henry_graph.setTitle('Henry plot against inferred Normal distribution')
+>>> View(henry_graph).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawQQplot
+"Draw a QQ-plot as an OpenTURNS :class:`~openturns.Graph`.
+
+Available usages:
+    VisualTest.DrawQQplot(*sample1, sample2, n_points*)
+
+    VisualTest.DrawQQplot(*sample1, distribution*);
+
+Parameters
+----------
+sample1, sample2 : 2-d sequences of float
+    Tested samples.
+ditribution : :class:`~openturns.Distribution`
+    Tested model.
+n_points : int, optional
+    The number of points that is used for interpolating the empirical CDF of
+    the two samples (with possibly different sizes).
+
+    It will default to *DistributionImplementation-DefaultPointNumber* from
+    the :class:`~openturns.ResourceMap`.
+
+Notes
+-----
+The QQ-plot is a visual fitting test for univariate distributions. It
+opposes the sample quantiles to those of the tested quantity (either a
+distribution or another sample) by plotting the following points could:
+
+.. math::
+
+    \left(x^{(i)},
+          \bullet\left[\widehat{F}\left(x^{(i)}\right)\right]
+    \right), \quad i = 1, \ldots, m
+
+where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
+sample and :math:`\bullet` denotes either the quantile function of the tested
+distribution or the empirical quantile function of the second tested sample.
+
+If the given sample fits to the tested distribution or sample, then the points
+should be close to be aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bissector**  whose
+equation reads:
+
+.. math::
+
+    y = x, \quad x \in \Rset
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Weibull(2., .5)
+>>> sample = distribution.getSample(30)
+>>> sample.setDescription(['Sample'])
+
+Draw a QQ-plot against a given (inferred) distribution:
+
+>>> tested_distribution = ot.WeibullFactory().build(sample)
+>>> QQ_plot = ot.VisualTest.DrawQQplot(sample, tested_distribution)
+>>> View(QQ_plot).show()
+
+Draw a two-sample QQ-plot:
+
+>>> another_sample = distribution.getSample(50)
+>>> another_sample.setDescription(['Another sample'])
+>>> QQ_plot = ot.VisualTest.DrawQQplot(sample, another_sample)
+>>> View(QQ_plot).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawCobWeb
+"Draw a Cobweb plot as an OpenTURNS :class:`~openturns.Graph`.
+
+Available usages:
+    VisualTest.DrawCobWeb(*inputSample, outputSample, min, max, color, quantileScale=True*)
+
+Parameters
+----------
+inputSample : 2-d sequence of float of dimension :math:`n`
+    Input sample :math:`\vect{X}`.
+outputSample : 2-d sequence of float of dimension :math:`1`
+    Output sample :math:`Y`.
+Ymin, Ymax : float such that *Ymax > Ymin*
+    Values to select lines which will colore in *color*. Must be in
+    :math:`[0,1]` if *quantileScale=True*.
+color : str
+    Color of the specified curves.
+quantileScale : bool
+    Flag indicating the scale of the *Ymin* and *Ymax*. If
+    *quantileScale=True*, they are expressed in the rank based scale;
+    otherwise, they are expressed in the :math:`Y`-values scale.
+
+Notes
+-----
+Let's suppose a model :math:`f: \Rset^n \mapsto \Rset`, where
+:math:`f(\vect{X})=Y`.
+The Cobweb graph enables to visualize all the combinations of the input
+variables which lead to a specific range of the output variable.
+
+Each column represents one component :math:`X_i` of the input vector
+:math:`\vect{X}`. The last column represents the scalar output variable
+:math:`Y`.
+
+For each point :math:`\vect{X}^j` of *inputSample*, each component :math:`X_i^j`
+is noted on its respective axe and the last mark is the one which corresponds
+to the associated :math:`Y^j`. A line joins all the marks. Thus, each point of
+the sample corresponds to a particular line on the graph.
+
+The scale of the axes are quantile based : each axe runs between 0 and 1 and
+each value is represented by its quantile with respect to its marginal
+empirical distribution.
+
+It is interesting to select, among those lines, the ones which correspond to a
+specific range of the output variable. These particular lines selected are
+colored differently in *color*. This specific range is defined with *Ymin* and
+*Ymax* in the quantile based scale of :math:`Y` or in its specific scale. In
+that second case, the range is automatically converted into a quantile based
+scale range.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> inputSample = ot.Normal(2).getSample(15)
+>>> inputSample.setDescription(['X0', 'X1'])
+>>> formula = ['cos(X0)+cos(2*X1)']
+>>> model = ot.NumericalMathFunction(['X0', 'X1'], ['y'], formula)
+>>> outputSample = model(inputSample)
+
+Draw a Cobweb plot:
+
+>>> cobweb = ot.VisualTest.DrawCobWeb(inputSample, outputSample, 1., 2., 'red', False)
+>>> View(cobweb).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawHistogram
+"Draw an histogram as an OpenTURNS :class:`~openturns.Graph`.
+
+Available usages:
+    VisualTest.DrawHistogram(*sample*)
+
+    VisualTest.DrawHistogram(*sample, barsNumber*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample to draw.
+barsNumber : positive int
+    Number of barplots used to draw the histogram. If not specified, it is
+    automatically determined by OpenTURNS according to the Silverman rule.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(1).getSample(100)
+
+Draw an histogram:
+
+>>> hist = ot.VisualTest.DrawHistogram(sample)
+>>> View(hist).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawEmpiricalCDF
+"Draw an empirical CDF as an OpenTURNS :class:`~openturns.Graph`.
+
+Available usages:
+    VisualTest.DrawEmpiricalCDF(*sample, Xmin, Xmax*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample to draw.
+Xmin, Xmax : float with *Xmin < Xmax*
+    Lower and upper boundaries of the graph.
+
+Notes
+-----
+The created graph contains a staircase curve which is the empirical CDF of the
+sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(1).getSample(100)
+>>> Xmin = sample.getMin()[0]
+>>> Xmax = sample.getMax()[0]
+
+Draw an empirical CDF:
+
+>>> empiricalCDF = ot.VisualTest.DrawEmpiricalCDF(sample, Xmin - 1.0, Xmax + 1.0)
+>>> View(empiricalCDF).show()"

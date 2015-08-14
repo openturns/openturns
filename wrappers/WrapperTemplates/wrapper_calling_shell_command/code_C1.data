@@ -1,0 +1,10 @@
+# This is file 'code_C1.data' used as input for 'code_C1' solver
+#
+# You can put any number of comments in this file since regular expressions
+# can filter them out.
+
+I1 = -0.17
+I2 = 43.6E2
+I3 = .8e-3
+
+# End of file

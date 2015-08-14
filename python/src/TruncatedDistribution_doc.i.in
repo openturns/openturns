@@ -1,0 +1,178 @@
+%feature("docstring") OT::TruncatedDistribution
+"Truncated distribution.
+
+Available constructors:
+    TruncatedDistribution(*distribution, lowerBound, upperBound, threshold=0.5*)
+
+    TruncatedDistribution(*distribution, bound, side=ot.TruncatedDistribution.LOWER, threshold=0.5*)
+
+    TruncatedDistribution(*distribution, truncationInterval, threshold=0.5*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution to be truncated.
+lowerBound, upperBound : float
+    Define a new distribution range :math:`[lowerBound, upperBound]` with
+    finite bounds. The upper bound must be strictly greater than the lower
+    bound.
+bound : float
+    Scalar used when one of the bounds of the distribution is not finite.
+
+    If *side = ot.TruncatedDistribution.LOWER*: the interval
+    :math:`[bound, +\infty)` is used to bound the distribution.
+
+    If *side = ot.TruncatedDistribution.LOWER*: the interval
+    :math:`(-\infty, bound]` is used to bound the distribution.
+side : int, optional
+    Integer used when one of the bounds of the distribution is not finite.
+    (Amongst ot.TruncatedDistribution.LOWER and ot.TruncatedDistribution.UPPER).
+truncationInterval : :class:`~openturns.Interval`
+    Define a new distribution range :math:`[lowerBound, upperBound]` with
+    finite bounds.
+threshold : float, :math:`\tau \in [0, 1]`
+    This threshold is used when generating an evaluation of the distribution.
+    We note :math:`F` the CDF of the non truncated distribution:
+
+    If :math:`F(upperBound)-F(lowerBound)<\tau`: a CDF inversion is performed.
+
+    If :math:`F(upperBound)-F(lowerBound)>\tau`: rejection.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getDistribution
+"Get the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The distribution to be truncated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::setDistribution
+"Set the distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution to be truncated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getFiniteLowerBound
+"Get the finite lower bound flag.
+
+Returns
+-------
+isLowerBoundFinite : bool
+    Flag telling if the lower bound is finite or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::setFiniteLowerBound
+"Set the finite lower bound flag.
+
+Parameters
+----------
+isLowerBoundFinite : bool
+    Flag telling if the lower bound is finite or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getFiniteUpperBound
+"Get the finite upper bound flag.
+
+Returns
+-------
+isUpperBoundFinite : bool
+    Flag telling if the upper bound is finite or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::setFiniteUpperBound
+"Set the finite upper bound flag.
+
+Parameters
+----------
+isUpperBoundFinite : bool
+    Flag telling if the upper bound is finite or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getLowerBound
+"Get the lower bound.
+
+Returns
+-------
+lowerBound : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::setLowerBound
+"Set the lower bound.
+
+Parameters
+----------
+lowerBound : float
+    Lower bound. The upper bound must be strictly greater than the lower bound. "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getUpperBound
+"Get the upper bound.
+
+Returns
+-------
+upperBound : float
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::setUpperBound
+"Set the upper bound.
+
+Parameters
+----------
+upperBound : float
+    Upper bound. The upper bound must be strictly greater than the lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::getThresholdRealization
+"Get the threshold used when generating an evaluation of the distribution.
+
+Returns
+-------
+threshold : float, :math:`\tau \in [0, 1]`
+    This threshold is used when generating an evaluation of the distribution.
+    We note :math:`F` the CDF of the non truncated distribution:
+
+    If :math:`F(upperBound)-F(lowerBound)<\tau`: a CDF inversion is performed.
+
+    If :math:`F(upperBound)-F(lowerBound)>\tau`: rejection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedDistribution::setThresholdRealization
+"Set the threshold used when generating an evaluation of the distribution.
+
+Parameters
+----------
+threshold : float, :math:`\tau \in [0, 1]`
+    This threshold is used when generating an evaluation of the distribution.
+    We note :math:`F` the CDF of the non truncated distribution:
+
+    If :math:`F(upperBound)-F(lowerBound)<\tau`: a CDF inversion is performed.
+
+    If :math:`F(upperBound)-F(lowerBound)>\tau`: rejection."

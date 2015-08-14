@@ -1,0 +1,12 @@
+%feature("docstring") OT::LogisticFactory
+"Logistic factory.
+
+Available constructor:
+    LogisticFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

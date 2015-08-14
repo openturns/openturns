@@ -1,0 +1,144 @@
+%feature("docstring") OT::WhittleFactoryState
+"Last state recorded of a scalar ARMA process.
+
+Parameters
+----------
+p : int, 
+    AR order of the estimated :math:`ARMA(p,q)`.
+ARMACoeff : :class:`~openturns.NumericalPoint` of dimension :math:`p+q`
+    Coefficients of the AR then MA part of the estimated  :math:`ARMA(p,q)` process.
+sigma2 : float,
+    Variance of the white noise.
+criteria : :class:`~openturns.NumericalPoint` of dimension 3
+    The values of the criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* on the estimated :math:`ARMA(p,q)` process.
+timeGrid : :class:`~openturns.RegularGrid`
+    Time grid of the :math:`ARMA(p,q)` process.
+
+Examples
+--------
+Create a time series from a scalar ARMA(4,2) and a normal white noise:
+
+>>> import openturns as ot
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myWhiteNoise = ot.WhiteNoise(ot.Triangular(-1.0, 0.0, 1.0), myTimeGrid)
+>>> myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
+>>> myMACoef = ot.ARMACoefficients([0.4, 0.3])
+>>> myARMAProcess = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
+>>> myTimeSeries = myARMAProcess.getRealization()
+>>> myProcessSample = myARMAProcess.getSample(100)
+
+Estimate the ARMA process specifying a range for the orders:
+
+>>> pIndices = [1, 2, 4]
+>>> qIndices =  [4, 5, 6]
+>>> myFactory_Range = ot.WhittleFactory(pIndices, qIndices)
+
+Print all the models and their state:
+
+>>> myWhittleHistory = myFactory_Range.getHistory()
+>>> for i in range(myWhittleHistory.getSize()):
+...     model_i = myWhittleHistory[i]
+...     arma = model_i.getARMA()
+...     print('Order(p,q) = '+str(model_i.getP())+', '+str(model_i.getQ()))
+...     print('AR coeff = '+str(model_i.getARCoefficients()))
+...     print('MA coeff = '+str(model_i.getMACoefficients()))
+...     print('White Noise - Sigma = '+str(model_i.getSigma2()))
+...     print('Criteria AICc, AIC, BIC = '+str(model_i.getInformationCriteria()))"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getARCoefficients
+"Accessor to the AR coefficients of the scalar ARMA process.
+
+Returns
+-------
+ARCoeff : :class:`~openturns.ARMACoefficients`
+    The AR coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getMACoefficients
+"Accessor to the MA coefficients of the scalar ARMA process.
+
+Returns
+-------
+MACoeff : :class:`~openturns.ARMACoefficients`
+    The MA coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getTheta
+"Accessor to the coefficients of the scalar ARMA process.
+
+Returns
+-------
+coeff : :class:`~openturns.NumericalPoint`
+    The AR and MA coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getWhiteNoise
+"Accessor to the white noise defining the scalar ARMA process.
+
+Returns
+-------
+whiteNoise : :class:`~openturns.WhiteNoise`
+    The white noise of the estimated model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getARMA
+"Accessor to the estimated scalar ARMA.
+
+Returns
+-------
+MACoeff : :class:`~openturns.ARMA`
+    The estimated ARMA model."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::WhittleFactoryState::getInformationCriteria
+"Accessor to the values of the criteria *AIC*, :math:`AIC_c` and *BIC*.
+
+Returns
+-------
+criteria : :class:`~openturns.NumericalPoint` of  dimension 3
+    Values of the criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* of the estimated model. "
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::WhittleFactoryState::getP
+"Accessor to AR order.
+
+Returns
+-------
+p : int
+    Order of the AR part of the estimated model.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::WhittleFactoryState::getQ
+"Accessor to MA order.
+
+Returns
+-------
+q : int
+    Order of the MA part of the estimated model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getSigma2
+"Accessor to the variance of the white noise.
+
+Parameters
+----------
+sigma2 : positive float
+    Variance of the white noise."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactoryState::getTimeGrid
+"Accessor to the time grid of the scalar ARMA process.
+
+Returns
+-------
+timeGrid : :class:`~openturns.RegularGrid` 
+   Time grid over which the ARMA process is defined."

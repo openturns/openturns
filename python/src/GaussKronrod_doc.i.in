@@ -1,0 +1,171 @@
+%feature("docstring") OT::GaussKronrod
+"Integration algorithm of .
+
+Parameters
+----------
+maximumSubIntervals : int
+    The maximal number of subdivisions of the interval :math:`[a,b]`
+maximumError : float
+    The maximal error between Gauss and Kronrod approximations.
+GKRule : :class:`~openturns.GaussKronrodRule`
+    The rule that fixes the number of points used in the Gauss and Kronrod approximations. 
+
+Notes
+-----
+The Gauss-Kronrod algorithm enables to approximate the definite integral:
+
+.. math::
+
+    \int_{a}^b f(t)\, dt
+
+
+with :math:`f: \Rset \mapsto \Rset^p`, using both approximations : Gauss and Kronrod ones defined by:
+
+.. math::
+
+    \int_{-1}^1 f(t)\, dt \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
+
+and:
+
+.. math::
+
+  \int_{-1}^1 f(t)\, dt\simeq  \alpha_0f(0) + \sum_{k=1}^{m} \alpha_k (f(\zeta_k)+f(-\zeta_k))
+
+where :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
+
+
+
+The Gauss-Kronrod algorithm evaluates the integral using the Gauss and the Konrod approximations. If the difference between both approximations is greater that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with the same length. The Gauss-Kronrod algorihtm is then applied on both subintervals with the sames rules. The algorithm is iterative until the  difference between both approximations is less that *maximumError*. In that case, the integral on the subinterval is approximated by the Kronrod sum. The subdivision process is limited by *maximumSubIntervals* that imposes the maximum number of subintervals.
+
+The final integral is the sum of the integrals evaluated on the subintervals.
+
+Examples
+--------
+Create an Gauss-Kronrod algorithm:
+
+>>> import openturns as ot
+
+First, a piecewise smooth function:
+
+>>> f = ot.NumericalMathFunction('x', 'abs(sin(x))')
+>>> a = -2.5
+>>> b = 4.5
+
+Then, create the algorithm:
+
+>>> algo = ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::integrate
+"Evaluation of the integral of :math:`f` on an interval.
+
+Available usages:
+    integrate(*f, interval*)
+
+    integrate(*f, interval, error*)
+
+    integrate(*f, a, b, error, ai, bi, fi, ei*)
+
+Parameters
+----------
+f : :class:`~openturns.NumericalMathFunction`, :math:`f: \Rset \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset` 
+    The integration domain. 
+error : :class:`~openturns.NumericalPoint`
+    The error estimation of the approximation.
+a,b : float 
+    Bounds of the integration interval.
+ai, bi, ei : :class:`~openturns.NumericalPoint`; 
+    *ai* is the set of lower bounds of the subintervals; 
+
+    *bi* the corresponding upper bounds; 
+
+    *ei* the associated error estimation. 
+fi : :class:`~openturns.NumericalSample`
+    *fi* is the set of :math:`\int_{ai}^{bi} f(t)\, dt`
+
+Returns
+-------
+value : :class:`~openturns.NumericalPoint`
+    Approximation of the integral.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.NumericalMathFunction('x', 'abs(sin(x))')
+>>> a = -2.5
+>>> b = 4.5
+>>> algoGK = ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))
+
+Use the high-level usage:
+
+>>> value = algoGK.integrate(f, ot.Interval(a, b))[0]
+>>> print(value)
+4.590...
+
+Use the low-level usage:
+
+>>> error = ot.NumericalPoint()
+>>> ai = ot.NumericalPoint()
+>>> bi = ot.NumericalPoint()
+>>> ei = ot.NumericalPoint()
+>>> fi = ot.NumericalSample()
+>>> value2 = algoGK.integrate(f, a, b, error, ai, bi, fi, ei)[0]
+>>> print(value2)
+4.590..."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getMaximumError
+"Accessor to the maximal error between Gauss and Kronrod approximations.
+
+Returns
+-------
+maximumErrorvalue : float, positive
+    The maximal error between Gauss and Kronrod approximations."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getMaximumSubIntervals
+"Accessor to the maximal  number of subdivisions of :math:`[a,b]`.
+
+Returns
+-------
+maximumSubIntervals : float, positive
+    The maximal number of subdivisions of the interval :math:`[a,b]`."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getRule
+"Accessor to the Gauss-Kronrod rule used in the integration algorithm.
+
+Returns
+-------
+rule : :class:`~openturns.GaussKronrodRule`
+    The Gauss-Kronrod rule used in the integration algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::setMaximumError
+"Set the maximal error between Gauss and Kronrod approximations.
+
+Parameters
+----------
+maximumErrorvalue : float, positive
+    The maximal error between Gauss and Kronrod approximations."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::setMaximumSubIntervals
+"Set the maximal  number of subdivisions of :math:`[a,b]`.
+
+Parameters
+----------
+maximumSubIntervals : float, positive
+    The maximal number of subdivisions of the interval :math:`[a,b]`."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::setRule
+"Set the Gauss-Kronrod rule used in the integration algorithm.
+
+Parameters
+----------
+rule : :class:`~openturns.GaussKronrodRule`
+    The Gauss-Kronrod rule used in the integration algorithm."

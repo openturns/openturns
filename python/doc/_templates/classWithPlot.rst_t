@@ -1,0 +1,13 @@
+{{ objname }}
+{{ underline }}
+
+.. plot:: pyplots/{{ objname }}.py
+    :include-source: False
+
+.. currentmodule:: {{ module }}
+
+.. autoclass:: {{ objname }}
+
+   {% block methods %}
+   .. automethod:: __init__
+   {% endblock %}

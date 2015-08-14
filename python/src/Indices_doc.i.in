@@ -1,0 +1,101 @@
+%feature("docstring") OT::Indices
+"Collection of unsigned integers.
+
+Available constructors:
+    Indices(*size=0, value=0*)
+
+    Indices(*sequence*)
+
+Parameters
+----------
+size : int, :math:`size \geq 0`
+    Size of the collection.
+value : positive int
+    Value set to the *size* elements.
+sequence : sequence of int
+    Components of the vector.
+
+Examples
+--------
+>>> import openturns as ot
+
+Use the first constructor:
+
+>>> ot.Indices(3)
+[0,0,0]
+>>> ot.Indices(3, 4)
+[4,4,4]
+
+Use the second constructor:
+
+>>> vector = ot.Indices([100, 30, 70])
+>>> vector
+[100,30,70]
+
+Use some functionalities:
+
+>>> vector[1] = 20
+>>> vector
+[100,20,70]
+>>> vector.add(50)
+>>> vector
+[100,20,70,50]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::check
+"Check that no value is repeated and no value exceed the given bound.
+
+Parameters
+----------
+bound : positive int
+    A bound.
+
+Returns
+-------
+check : bool
+    *True* if no value is repeated and no value exceed the given bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::fill
+"Fill the indices with a linear progression.
+
+Starting from the start value *initialValue* by step *stepSize*.
+
+Parameters
+----------
+initialValue : positive int
+    Initial value. By default it is equal to 0.
+stepSize : positive int
+    Step size. By default it is equal to 1.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices(3)
+>>> indices.fill()
+>>> print(indices)
+[0,1,2]
+>>> indices = ot.Indices(3)
+>>> indices.fill(2, 4)
+>>> print(indices)
+[2,6,10]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Indices::isIncreasing
+"Check if the indices are increasing.
+
+Returns
+-------
+isIncreasing : bool
+    *True* if the indices are increasing.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices(3)
+>>> indices.fill()
+>>> indices.isIncreasing()
+True"

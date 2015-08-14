@@ -1,0 +1,267 @@
+%feature("docstring") OT::AnalyticalResult
+"Analytical result.
+
+Available constructors:
+    AnalyticalResult(*designPoint, limitStateVariable, isInFailureSpace*)
+
+Notes
+-----
+Structure created by the method run() of the :class:`~openturns.Analytical`
+class and obtained thanks to its method getAnalyticalResult().
+
+Parameters
+----------
+designPoint : sequence of float
+    Design point in the standard space resulting from the optimization
+    algorithm.
+limitStateVariable : :class:`~openturns.Event`
+    Event of which the probability is calculated.
+isInFailureSpace : bool
+    Indicates whether the origin of the standard space is in the failure space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::drawHasoferReliabilityIndexSensitivity
+"Draw the sensitivity of the Hasofer Reliability Index.
+
+Parameters
+----------
+width : float, optional
+    Value to calculate the shift position of the :class:`~openturns.BarPlot`.
+    By default it is 1.0.
+
+Returns
+-------
+graphCollection : sequence of two :class:`~openturns.Graph` containing a barplot
+    The first graph drawing the sensitivity of the Hasofer Reliability Index to
+    the parameters of the marginals of the probabilistic input vector.
+    The second graph drawing the sensitivity of the Hasofer Reliability Index
+    to the parameters of the dependence structure of the probabilistic input
+    vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::drawImportanceFactors
+"Draw the importance factors.
+
+Parameters
+----------
+type : int, optional
+    See :meth:`getImportanceFactors`
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Pie of the importance factors of the probabilistic variables."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getImportanceFactors
+"Accessor to the importance factors.
+
+Parameters
+----------
+type : int, optional
+    - When *ot.AnalyticalResult.ELLIPTICAL*, the importance factors
+      are evaluated as the square of the co-factors of the design point in the
+      elliptical space of the iso-probabilistic transformation (Y-space).
+
+    - When *ot.AnalyticalResult.CLASSICAL* they are evaluated as the square of
+      the co-factors of the design point in the U-space.
+
+    - When *ot.AnalyticalResult.PHYSICAL*, the importance factors are evaluated
+      as the square of the physical sensitivities.
+
+    By default *type = ot.AnalyticalResult.ELLIPTICAL*.
+
+Notes
+-----
+- If the importance factors are evaluated as the square of the
+  co-factors of the design point in the U-space :
+
+  .. math::
+
+    \alpha_i^2 = \frac{(u_i^*)^2}
+                      {\beta_{HL}^2}
+
+- If the importance factors are evaluated as the square of the co-factors of the
+  design point in the Y-space :
+
+  .. math::
+
+    \alpha_i^2 = \frac{(y_i^*)^2}
+                      {\|\vect{y}^*\|^2}
+
+  where
+
+  .. math::
+
+    Y^* = \left(
+          \begin{array}{c}
+              E^{-1}\circ F_1(X_1^*) \\
+              E^{-1}\circ F_2(X_2^*) \\
+              \vdots \\
+              E^{-1}\circ F_n(X_n^*)
+          \end{array}
+          \right)
+
+  with :math:`\vect{X}^*` is the design point in the physical space and :math:`E`
+  the univariate standard CDF of the elliptical space. In the case where the
+  input distribution of :math:`\vect{X}` has an elliptical copula
+  :math:`C_E`, then :math:`E` has the same type as :math:`C_E`.
+  In the case where the input distribution of :math:`\vect{X}` has a copula
+  :math:`C` which is not elliptical, then :math:`E=\Phi` where :math:`\Phi`
+  is the CDF of the standard normal.
+
+- If the importance factors are evaluated as the square of the physical sensitivities :
+
+  .. math::
+      \alpha_i^2 = \displaystyle \frac{s_i^2}{{\|s\|}^2}
+
+  where
+
+  .. math::
+      s_i = \displaystyle \frac{\partial \beta}{\partial x_i} (x^*)
+          = \sum_{j=1}^n \frac{\partial \beta}{\partial u_i} \frac{\partial u_j}{\partial x_i} (x^*)
+
+Returns
+-------
+factors : :class:`~openturns.NumericalPointWithDescription`
+    Sequence containing the importance factors with a description for each
+    component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getOptimizationResult
+"Accessor to the result of the optimization problem.
+
+Returns
+-------
+result : :class:`~openturns.NearestPointAlgorithmImplementationResult`
+    Contains the design point in the standard space and information concerning
+    the convergence of the optimization algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::setOptimizationResult
+"Accessor to the result of the optimization problem.
+
+Parameters
+----------
+result : :class:`~openturns.NearestPointAlgorithmImplementationResult`
+    Contains the design point in the standard space and information concerning
+    the convergence of the optimization algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getHasoferReliabilityIndex
+"Accessor to the Hasofer Reliability Index.
+
+Returns
+-------
+index : float
+    Hasofer Reliability Index which is the distance of the design point from
+    the origin of the standard space :math:`\beta_{HL}=||\vect{u}^*||`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getHasoferReliabilityIndexSensitivity
+"Accessor to the sensitivities of the Hasofer Reliability Index.
+
+Returns
+-------
+sensitivity : :class:`~openturns.NumericalPointWithDescription`
+    Sequence containing the sensitivities of the Hasofer Reliability Index to
+    the parameters of the probabilistic input vector (marginals and dependence
+    structure) with a description for each component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getLimitStateVariable
+"Accessor to the event of which the probability is calculated.
+
+Returns
+-------
+limitStateVariable : :class:`~openturns.Event`
+    Event of which the probability is calculated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getMeanPointInStandardEventDomain
+"Accessor to the mean point in the standard event domain.
+
+Returns
+-------
+meanPoint : :class:`~openturns.NumericalPoint`
+    Mean point of the standard space distribution restricted to the event
+    domain:
+    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1`
+    where :math:`E_1` is the spheric univariate distribution of the standard
+    space and :math:`\beta` the reliability index."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::setMeanPointInStandardEventDomain
+"Accessor to the mean point in the standard event domain.
+
+Parameters
+----------
+meanPoint : sequence of float
+    Mean point of the standard space distribution restricted to the event
+    domain:
+    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1`
+    where :math:`E_1` is the spheric univariate distribution of the standard
+    space and :math:`\beta` the reliability index."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getPhysicalSpaceDesignPoint
+"Accessor to the design point in the physical space.
+
+Returns
+-------
+designPoint : :class:`~openturns.NumericalPoint`
+    Design point in the physical space resulting from the optimization
+    algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getStandardSpaceDesignPoint
+"Accessor to the design point in the standard space.
+
+Returns
+-------
+designPoint : :class:`~openturns.NumericalPoint`
+    Design point in the standard space resulting from the optimization
+    algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::setStandardSpaceDesignPoint
+"Accessor to the design point in the standard space.
+
+Parameters
+----------
+designPoint : sequence of float
+    Design point in the standard space resulting from the optimization
+    algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::getIsStandardPointOriginInFailureSpace
+"Accessor to know if the standard point origin is in the failure space.
+
+Returns
+-------
+isInFailureSpace : bool
+    Indicates whether the origin of the standard space is in the failure space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalResult::setIsStandardPointOriginInFailureSpace
+"Accessor to specify if the standard point origin is in the failure space.
+
+Parameters
+----------
+isInFailureSpace : bool
+    Indicates whether the origin of the standard space is in the failure space."

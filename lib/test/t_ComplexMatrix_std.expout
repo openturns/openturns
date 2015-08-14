@@ -1,0 +1,52 @@
+test 0 : default constructor and string converter
+matrix0 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test 1 : constructor with size, operator() and string converter
+matrix1 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(2,-1),(4,2),(3,2)]
+test 2 : copy constructor and string converter
+matrix2 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(2,-1),(4,2),(3,2)]
+test 3 : get dimensions methods
+matrix1's nbRows = 2
+matrix1's nbColumns = 2
+test 4 : constructor with collection and array method
+elementsValues = [(1,0),(2,0),(3,0),(4,0),(5,0),(6,0)]
+matrix0bis = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(2,0),(3,0),(4,0)]
+test 5 : assignment method
+matrix3 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(2,-1),(4,2),(3,2)]
+test 6 : transposition method
+matrix1 transposed = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,1),(4,2),(2,-1),(3,2)]
+test 7 : conjugate method
+matrix1 conjugated = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,-1),(2,1),(4,-2),(3,-2)]
+test 8 : conjugate and transposition method
+matrix1 conjugated and transposed= class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,-1),(2,1),(4,-2),(3,-2)]
+test 9 : addition method
+sum1 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,2),(6,1),(6,1),(6,4)]
+sum2 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,2),(6,1),(6,1),(6,4)]
+sum1 equals sum2 = true
+test 10: substraction method
+diff = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,0),(-2,-3),(2,3),(0,0)]
+test 11 : matrix multiplication method
+prod = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(12,18),(11,15),(11,15),(8,8)]
+test 12 : multiplication with a numerical point method
+pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult = [(9,5),(8,3)]
+test 13 : multiplication and division by a complex methods
+scalprod1 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,4),(7,-1),(10,10),(7,9)]
+scalprod2 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,4),(7,-1),(10,10),(7,9)]
+scalprod3 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,4),(7,-1),(10,10),(7,9)]
+scalprod1 equals scalprod2 = true
+scalprod1 equals scalprod3 = true
+scalprod2 equals scalprod3 = true
+scaldiv1 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.4,0.2),(0.5,-0.5),(1.4,0.2),(1.1,0.3)]
+scaldiv2 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.4,0.2),(0.5,-0.5),(1.4,0.2),(1.1,0.3)]
+scaldiv1 equals scaldiv2 = true
+test 14 : isEmpty method
+matrix1 is empty = false
+matrix7 is empty = true
+matrix8 is empty = true
+matrix0 is empty = true
+test 15 : multiplication with a numerical point method
+pt_test = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+A = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.5,0),(-0.866025,0),(0.866025,0),(0.5,0)]
+B = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.5,0),(0.866025,0),(-0.866025,0),(0.5,0)]
+id = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(0,0),(0,0),(1,0)]
+ptResult2 = [(1,0),(2,0)]

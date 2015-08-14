@@ -1,0 +1,12 @@
+%feature("docstring") OT::FrankCopulaFactory
+"Frank Copula factory.
+
+Available constructor:
+    FrankCopulaFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

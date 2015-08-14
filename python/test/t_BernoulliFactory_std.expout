@@ -1,0 +1,8 @@
+distribution= class=Bernoulli name=Bernoulli dimension=1 p=0.7
+Estimated distribution= class=Bernoulli name=Bernoulli dimension=1 p=0.6916
+Default distribution= Bernoulli(p = 0.5)
+Distribution from parameters= Bernoulli(p = 0.7)
+Bernoulli          = Bernoulli(p = 0.7)
+Estimated Bernoulli= Bernoulli(p = 0.6916)
+Default Bernoulli= Bernoulli(p = 0.5)
+Bernoulli from parameters= Bernoulli(p = 0.7)

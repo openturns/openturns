@@ -1,0 +1,98 @@
+%define OT_Sampler_doc
+"Sampler.
+
+Available constructors:
+    Sampler(*aSampler*)
+
+Parameters
+----------
+aSampler : :class:`~openturns.Sampler`
+    Particular sampler. By default it is a
+    :class:`~openturns.RandomWalkMetropolisHastings`.
+
+Notes
+-----
+A Sampler is an object whose fundamental ability is to produce samples
+according to a certain distribution.
+
+See also
+--------
+MCMC, RandomWalkMetropolisHastings
+
+Examples
+--------
+>>> import openturns as ot
+>>> sampler = ot.Sampler()"
+%enddef
+%feature("docstring") OT::SamplerImplementation
+OT_Sampler_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Sampler_getDimension_doc
+"Get the dimension of the samples generated.
+
+Returns
+-------
+dimension : int
+    Dimension of the samples that the Sampler can generate."
+%enddef
+%feature("docstring") OT::SamplerImplementation::getDimension
+OT_Sampler_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Sampler_getRealization_doc
+"Return a realization.
+
+Returns
+-------
+realization : :class:`~openturns.NumericalPoint`
+    A new realization."
+%enddef
+%feature("docstring") OT::SamplerImplementation::getRealization
+OT_Sampler_getRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Sampler_getSample_doc
+"Return several realizations.
+
+Parameters
+----------
+size : int, :math:`size \leq 0`
+    Number of realizations needed.
+
+Returns
+-------
+realizations : :class:`~openturns.NumericalSample`
+    Sequence composed of *size* new realizations."
+%enddef
+%feature("docstring") OT::SamplerImplementation::getSample
+OT_Sampler_getSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Sampler_getVerbose_doc
+"Tell whether the verbose mode is activated or not.
+
+Returns
+-------
+isVerbose : bool
+    The verbose mode is activated if it is *True*, desactivated otherwise."
+%enddef
+%feature("docstring") OT::SamplerImplementation::getVerbose
+OT_Sampler_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Sampler_setVerbose_doc
+"Set the verbose mode.
+
+Parameters
+----------
+isVerbose : bool
+    The verbose mode is activated if it is *True*, desactivated otherwise."
+%enddef
+%feature("docstring") OT::SamplerImplementation::setVerbose
+OT_Sampler_setVerbose_doc

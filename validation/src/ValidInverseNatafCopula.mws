@@ -1,0 +1,71 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 405 "restart:\nwith(Line
+arAlgebra):\nL:=<<L11,L21>|<L12,L22>>;\nU:=<u[1],u[2]>;\nZ:=L.U;\nS:=<
+F(Z[1]),F(Z[2])>;\nJ:=array(1..2,1..2):\nfor i from 1 to 2 do\n  for j
+ from 1 to 2 do\n    J[i, j] := diff(S[i],u[j]);\n  od:\nod:\nprint(J)
+;\nH:=array(1..2,1..2,1..2):\nfor i from 1 to 2 do\n  for j from 1 to \+
+2 do\n    for k from 1 to 2 do\n      H[i, j, k] := diff(diff(S[i],u[j
+]),u[k]);\n    od:\n  od:\nod:\nprint(H);\nL.Transpose(L);" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%\"LG-%'RTABLEG6%\"*%)oxN\"-%'MATRIXG6#7$7$
+%$L11G%$L12G7$%$L21G%$L22G%'MatrixG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6
+#>%\"UG-%'RTABLEG6%\"*!Gaa8-%'MATRIXG6#7$7#&%\"uG6#\"\"\"7#&F/6#\"\"#&
+%'VectorG6#%'columnG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"ZG-%'RTABL
+EG6%\"*gE&f8-%'MATRIXG6#7$7#,&*&%$L11G\"\"\"&%\"uG6#F1F1F1*&%$L12GF1&F
+36#\"\"#F1F17#,&*&%$L21GF1F2F1F1*&%$L22GF1F7F1F1&%'VectorG6#%'columnG
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"SG-%'RTABLEG6%\"*)=(*f8-%'MATR
+IXG6#7$7#-%\"FG6#,&*&%$L11G\"\"\"&%\"uG6#F4F4F4*&%$L12GF4&F66#\"\"#F4F
+47#-F/6#,&*&%$L21GF4F5F4F4*&%$L22GF4F:F4F4&%'VectorG6#%'columnG" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#K%'matrixG6#7$7$*&--%\"DG6#%\"FG6#,&*&
+%$L11G\"\"\"&%\"uG6#F2F2F2*&%$L12GF2&F46#\"\"#F2F2F2F1F2*&F)F2F7F27$*&
+-F*6#,&*&%$L21GF2F3F2F2*&%$L22GF2F8F2F2F2FBF2*&F>F2FDF2Q)pprint286\"" 
+}}{PARA 12 "" 1 "" {XPPMATH 20 "6#K%&ARRAYG6$7%;\"\"\"\"\"#F'F'7*/6%F(
+F(F(*&---%#@@G6$%\"DGF)6#%\"FG6#,&*&%$L11GF(&%\"uG6#F(F(F(*&%$L12GF(&F
+;6#F)F(F(F()F9F)F(/6%F(F(F)*(F.F(F>F(F9F(/6%F(F)F(FD/6%F(F)F)*&F.F()F>
+F)F(/6%F)F(F(*&-F/6#,&*&%$L21GF(F:F(F(*&%$L22GF(F?F(F(F()FRF)F(/6%F)F(
+F)*(FNF(FTF(FRF(/6%F)F)F(FX/6%F)F)F)*&FNF()FTF)F(Q)pprint296\"" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#-%'RTABLEG6%\"*+\"Qi8-%'MATRIXG6#7$7$,
+&*$)%$L11G\"\"#\"\"\"F1*$)%$L12GF0F1F1,&*&F/F1%$L21GF1F1*&F4F1%$L22GF1
+F17$F5,&*$)F7F0F1F1*$)F9F0F1F1%'MatrixG" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 157 "D2:=array(1..2,1..2,1..2):\nfor i from 1 to 2 do\n  \+
+for j from 1 to 2 do\n    for k from 1 to 2 do\n      D2[i, j, k] := H
+[k, j, i];\n    od:\n  od:\nod:\nprint(D2);" }}{PARA 12 "" 1 "" 
+{XPPMATH 20 "6#K%&ARRAYG6$7%;\"\"\"\"\"#F'F'7*/6%F(F(F(*&---%#@@G6$%\"
+DGF)6#%\"FG6#,&*&%$L11GF(&%\"uG6#F(F(F(*&%$L12GF(&F;6#F)F(F(F()F9F)F(/
+6%F(F(F)*&-F/6#,&*&%$L21GF(F:F(F(*&%$L22GF(F?F(F(F()FIF)F(/6%F(F)F(*(F
+.F(F>F(F9F(/6%F(F)F)*(FEF(FKF(FIF(/6%F)F(F(FO/6%F)F(F)FR/6%F)F)F(*&F.F
+()F>F)F(/6%F)F)F)*&FEF()FKF)F(Q)pprint306\"" }}}{EXCHG {PARA 0 "> " 0 
+"" {MPLTEXT 1 0 0 "" }}}}{MARK "2 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 
+1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }{RTABLE_HANDLES 135776884 135454280 
+135952660 135997188 136238100 }{RTABLE 
+M7R0
+I6RTABLE_SAVE/135776884X,%)anythingG6"6"[gl!"%!!!#%"#"#%$L11G%$L21G%$L12G%$L22G
+F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135454280X*%)anythingG6"6"[gl!#%!!!"#"#&%"uG6#"""&F(6#""#F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135952660X*%)anythingG6"6"[gl!#%!!!"#"#,&*&%$L11G"""&%"uG6#F*F*F*
+*&%$L12GF*&F,6#""#F*F*,&*&%$L21GF*F+F*F**&%$L22GF*F0F*F*F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135997188X*%)anythingG6"6"[gl!#%!!!"#"#-%"FG6#,&*&%$L11G"""&%"uG6
+#F-F-F-*&%$L12GF-&F/6#""#F-F--F(6#,&*&%$L21GF-F.F-F-*&%$L22GF-F3F-F-F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/136238100X,%)anythingG6"6"[gl!"%!!!#%"#"#,&*$%$L11G""#"""*$%$L12G
+F*F+,&*&F)F+%$L21GF+F+*&F-F+%$L22GF+F+F.,&*$F0F*F+*$F2F*F+F&
+}
+

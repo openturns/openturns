@@ -1,0 +1,8 @@
+distribution= class=Geometric name=Geometric dimension=1 p=0.7
+Estimated distribution= class=Geometric name=Geometric dimension=1 p=0.698861
+Default distribution= Geometric(p = 0.5)
+Distribution from parameters= Geometric(p = 0.7)
+Geometric          = Geometric(p = 0.7)
+Estimated geometric= Geometric(p = 0.698861)
+Default geometric= Geometric(p = 0.5)
+Geometric from parameters= Geometric(p = 0.7)

@@ -1,0 +1,451 @@
+%feature("docstring") OT::RandomMixture
+"RandomMixture distribution.
+
+Available constructors:
+    RandomMixture(*coll, cst*)
+
+    RandomMixture(*coll, weights, cst*)
+
+    RandomMixture(*coll, weightsMatrix*)
+
+    RandomMixture(*coll, weightsMatrix, constant*)
+
+
+Parameters
+----------
+coll : list of :class:`~openturns.Distribution`
+    The collection of distributions that model the random vector.
+cst : float
+    Constant coefficient of the affine expression in dimension 1.
+    Default value is zero.
+weights :  sequence of float
+    Weights of the affine combination in dimension 1.
+constant : sequence of float
+    Constant vector of the affine expression.
+    Its size should be equal to the dimension of the distribution.
+    Default value is (0,...,0).
+weightsMatrix :  2-d sequence of float
+    Weights of the affine combination.
+
+Notes
+-----
+Create an affine combination of input random variables of form:
+    :math:`Y = y_0 + M X`
+where: :math:`\vect{Y}` of size :math:`d` with :math:`d\in \{1,2,3\}`
+       :math:`\vect{X}` is a :math:`n`-random vector with independent components, i.e. a
+       collection of univariate distributions,
+
+       :math:`\mat{M}` is a :math:`d \times n` deterministic matrix, i.e. the linear
+       operator of the affine transformation,
+
+       :math:`\vect{y}_0` a constant and deterministic vector, i.e the constant
+       part of the affine transformation.
+
+As the univariate random variables :math:`X_i` are independent, the
+characteristic function of :math:`\vect{Y}`, denoted :math:`\phi_Y`, is
+easily defined from the characteristic function of :math:`X_k` denoted
+:math:`\phi_{X_k}` as follows :
+
+.. math::
+
+    \phi(z_1,...,z_d) =  \prod_{j=1}^d {\exp(\imath z_j {y_0}_j)} \prod_{k=1}^n \phi_{X_k}((\Tr{\mat{M}} z)_k)
+
+It is possible to evaluate its density probability function once the
+characteristic function evaluated, using the Poisson summation formula:
+
+.. math::
+
+    \sum_{j_1 \in \mathbb{Z}}\hdots \sum_{j_d \in \mathbb{Z}} p(y_1 + 2\pi j_1/h_1,\hdots,y_d + 2\pi j_d/h_d) = (h_1\hdots h_d)/(2^d \pi^d) \sum_{k_1 \in \mathbb{Z}}\hdots \sum_{k_d \in \mathbb{Z}} \phi(k_1 h_1,\hdots,k_d h_d)\exp(-\imath(k_1 h_1+\hdots+k_d h_d))
+
+For :math:`h_i` small enough, the nested sums of the left term are reduced
+to the central term :math:`j_1=\hdots=j_d = 0`.
+Thus, the density is approximated by:
+
+.. math::
+
+    p(y_1,\hdots,y_d) = (h_1\hdots h_d)/(2^d \pi^d) \sum_{|k_1| \leq N}\hdots \sum_{|k_d| \leq N} \phi(k_1 h_1,\hdots,k_d h_d)\exp(-\imath(k_1 h_1+\hdots+k_d h_d))
+
+The nested sums of the right term are computed by blocks of form
+:math:`2^b \leq k < 2^{b+1}`, and are truncated when the contribution of a
+block becomes lower than a threshold, which can be changed by
+setPDFPrecision method.
+Two other methods also may change the number of iterations; setBlockMin
+sets the block number from which truncation is possible, which means that
+computations are always performed for blocks lower than this parameter,
+even if their contributions are very small.  On the other hand, setBlockMax
+sets the maximum number of blocks, which can be useful to make sure that
+computations run in a limited time.
+
+Note that the total number of evaluations of the characteristic function to
+compute up to block :math:`b` is equivalent to :math:`2^{dim \times (b+1)}`, so
+it is important to ensure that this number has some reasonable value.
+
+Note finally that the characteristic function evaluations are independent
+from :math:`\vect{y}=(y_1,\hdots,y_d)`: these values are stored in a cache.
+
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{\vect{Y}}  & = & \vect{y}_0 + \mat{M}\Expect{\vect{X}} \\
+        \Cov{Y}  & = & \mat{M} \Cov{X} \Tr{\mat{M}}
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Normal(), ot.Uniform()])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getDistributionCollection
+"Return the list of distributions used.
+
+In dimension 1, some analytical aggregations may be performed on
+distributions to improve performance, and collection may differ from the
+one originally given by user.
+
+Returns
+-------
+coll : DistributionCollection
+    The collection of univariate distributions used for the combination
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # Sum of two Uniform here is a Triangular
+>>> coll = distribution.getDistributionCollection()
+>>> print(coll)
+[Triangular(a = -2, m = 0, b = 2)]"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getConstant
+"Return the vector of the affine combination.
+
+Returns
+-------
+out : :class:`~openturns.NumericalPoint`
+    The constant term
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # Constant term is 0
+>>> cst = distribution.getConstant()
+>>> print(cst)
+[0]"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setConstant
+"Set the constant term of the affine combination.
+
+Parameters
+----------
+vect : sequence of float
+    The constant term
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # Set the new constant term is 0
+>>> distribution.setConstant([1.0])"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getWeights
+"Return the weights of the combination as a Matrix.
+
+Returns
+-------
+out : :class:`~openturns.Matrix`
+    The element of affine transformation
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # weights
+>>> w = distribution.getWeights()
+>>> print(w)
+[[ 1 ]]"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getBlockMin
+"Return the blockMin parameter.
+
+Returns
+-------
+blockMin : int
+    Number of minimal evaluations of blocks for characteristic function evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # blockMin
+>>> blockMin = distribution.getBlockMin()
+>>> print(blockMin)
+3"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setBlockMin
+"Set the blockMin parameter.
+
+Parameters
+----------
+blockMin : int
+    Number of minimal evaluations of blocks for characteristic function evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution.setBlockMin(4)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getBlockMax
+"Return the blockMax parameter.
+
+Returns
+-------
+blockMax : int
+    Number of maximal evaluations of blocks for characteristic function evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # blockMax
+>>> blockMax = distribution.getBlockMax()
+>>> print(blockMax)
+16"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setBlockMax
+"Set the blockMax parameter.
+
+Returns
+-------
+blockMax : int
+    Number of maximal evaluations of blocks for characteristic function
+    evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution.setBlockMax(14)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getAlpha
+"Return the priori range of PDF and CDF argument.
+
+It is expressed in dispersionIndicator units.
+
+Returns
+-------
+alpha : float
+    A Priori range of PDF/CDF
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # alpha
+>>> alpha = distribution.getAlpha()
+>>> print(alpha)
+5.0"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setAlpha
+"Set the a priori range of PDF and CDF arguments in terms of standard deviation.
+
+Parameters
+----------
+alpha : float
+    A Priori range of PDF/CDF
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> alpha = 8.0
+>>> distribution.setAlpha(alpha)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getBeta
+"Return the distance of the a priori range at which the PDF is negligible.
+
+Returns
+-------
+beta : float
+    Distance from the boundary of the a priori range
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # beta
+>>> beta = distribution.getBeta()
+>>> print(beta)
+8.5"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setBeta
+"Set the distance of the a priori range at which the PDF is negligible.
+
+Parameters
+----------
+beta : float
+    Distance from the boundary of the a priori range
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> beta = 8.0
+>>> distribution.setBeta(beta)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getMaxSize
+"Return the maximum size of cache for characteristic function evaluations.
+
+Returns
+-------
+size : int
+    Maximum size of cache for characteristic function evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # default cache size
+>>> size = distribution.getMaxSize()
+>>> print(size)
+65536"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setMaxSize
+"Set the maximum size of cache for characteristic function evaluations.
+
+Parameters
+----------
+size : int
+    Maximum size of cache for characteristic function evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> size = pow(2,15)
+>>> distribution.setMaxSize(size)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setPDFPrecision
+"Set the requested precision for PDF computation.
+
+Parameters
+----------
+eps : float
+    Precision for density evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> eps = 1.e-12
+>>> distribution.setPDFPrecision(eps)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setCDFPrecision
+"Set the requested precision for CDF computation.
+
+Parameters
+----------
+eps : float
+    Precision for cumulative function evaluations
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> eps = 1.e-12
+>>> distribution.setCDFPrecision(eps)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::getReferenceBandwidth
+"Return the reference bandwidth.
+
+It is the maximum bandwidth that allows an accurate computation
+of the PDF over the range :math:`[mean \pm \beta\sigma]`.
+
+Returns
+-------
+out : :class:`~openturns.NumericalPoint`
+    The reference bandwidth
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> # bw
+>>> bw = distribution.getReferenceBandwidth()
+>>> print(bw)
+[0.785398]"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::setReferenceBandwidth
+"Set the reference bandwidth.
+
+Parameters
+----------
+bw : sequence of float
+    The reference bandwidth
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> bw = [0.75]
+>>> distribution.setReferenceBandwidth(bw)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomMixture::project
+"Project a RandomMixture distribution over a collection of DistributionFactory.
+
+Uses sampling and Kolmogorov distance.
+
+Parameters
+----------
+coll : :class:`~openturns.DistributionFactoryCollection`
+    The collection of factories
+kolmogorovNorm: sequence of float
+    The Kolmogorov norms
+size : int
+    Size of projection
+
+Returns
+-------
+out : tuple of size 2:
+    First element is a collection of :class:`~openturns.Distribution`,
+    and second element is a sequence of float containing
+    the Kolmogorov norm of the projection over its factory.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.RandomMixture([ot.Normal(0.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> coll = [ot.NormalFactory(), ot.UniformFactory()]
+>>> dist, kolmogorovNorm = distribution.project(coll)
+"
+

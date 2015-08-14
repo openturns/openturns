@@ -1,0 +1,12 @@
+%feature("docstring") OT::DiracFactory
+"Dirac factory.
+
+Available constructor:
+    DiracFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

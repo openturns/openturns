@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE wrapper SYSTEM "wrapper.dtd">
+<!-- author : dutka -->
+<!-- date   : 2008-06-26 13:50:17 +0200 (Thu, 26 Jun 2008) -->
+
+<wrapper>
+  <library>
+
+    <!-- The path of the shared object -->
+    <path>poutre_threads.so</path>
+
+
+
+    <!-- This section describes all exchanges data between the wrapper and the platform -->
+    <description>
+
+      <!-- Those variables are substituted in the files above -->
+      <!-- The order of variables is the order of the arguments of the function -->
+      <variable-list>
+
+        <!-- The definition of a variable -->
+        <variable id="E" type="in">
+          <comment>meanYoungModulus</comment>
+          <unit>Pascal</unit>
+          <regexp>E=.*</regexp>
+          <format>E=%10.5g</format>
+        </variable>
+
+        <!-- The definition of a variable -->
+        <variable id="F" type="in">
+          <comment>LoadForce</comment>
+          <unit>Newton</unit>
+          <regexp>F=.*</regexp>
+          <format>F=%10.5g</format>
+        </variable>
+      
+        <!-- The definition of a variable -->
+        <variable id="L" type="in">
+          <comment>BeamLength</comment>
+          <unit>Meter</unit>
+          <regexp>L=[0-9]+\.[0-9]* *m</regexp>
+          <format>L=%8.4f</format>
+        </variable>
+      
+        <!-- The definition of a variable -->
+        <variable id="I" type="in">
+          <comment>SectionInertia</comment>
+          <unit>Meter^4</unit>
+          <regexp>I=.*</regexp>
+          <format>I=%10.5g</format>
+        </variable>
+
+        <!-- The definition of a variable -->
+        <variable id="d" type="out">
+          <comment>Deviation</comment>
+          <unit>Meter</unit>
+          <regexp>d=.*</regexp>
+          <format>d=%10.5g</format>
+        </variable>
+
+      </variable-list>
+      
+
+
+      <!-- The function that we try to execute through the wrapper -->
+      <function provided="yes">compute_deviation</function>
+
+      <!-- the gradient is  defined  -->
+      <gradient provided="no" />
+
+      <!--  the hessian is  defined  -->
+      <hessian provided="no" />
+
+    </description>
+
+
+  </library>
+
+  <external-code>
+    <!-- Those data are external to the platform (input files, etc.)-->
+    <data>
+    </data>
+
+    <wrap-mode type="static-link">
+      <in-data-transfer mode="arguments" />
+      <out-data-transfer mode="arguments" />
+    </wrap-mode>
+
+    <command>
+    </command>
+  </external-code>
+
+</wrapper>

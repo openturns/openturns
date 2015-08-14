@@ -1,0 +1,33 @@
+Distribution  class=ParametrizedDistribution parameters=class=GammaMuSigma name=Unnamed mu=0.1 sigma=0.489898 gamma=-0.5 distribution=class=Gamma name=Gamma dimension=1 k=1.5 lambda=2.5 gamma=-0.5
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.128566]
+oneSample first= [0.677574]  last= [-0.102762]
+mean= [0.106857]
+covariance= [[ 0.243092 ]]
+Point=  [1]
+ddf     = [-0.278355]
+ddf (FD)= -0.278355
+log pdf= -2.05205
+pdf     =0.128471
+pdf (FD)=0.128471
+cdf= 0.942442
+ccdf= 0.0575585
+survival= 0.0575585
+characteristic function=(0.892418, 0.0632527)
+log characteristic function=(-0.111315, 0.0707596)
+quantile= [1.06295]
+cdf(quantile)= 0.95
+mean= [0.1]
+covariance= [[ -0.126138 ]]
+correlation= [[ 1 ]]
+spearman= [[ 1 ]]
+kendall= [[ 1 ]]
+parameters= [[mu : 0.1, sigma : 0.489898, gamma : -0.5]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [1.5]
+standard moment n= 2 , value= [3.75]
+standard moment n= 3 , value= [13.125]
+standard moment n= 4 , value= [59.0625]
+standard moment n= 5 , value= [324.844]
+Standard representative= Gamma(k = 1.5, lambda = 1, gamma = 0)

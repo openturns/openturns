@@ -1,0 +1,76 @@
+%feature("docstring") OT::SymmetricTensor
+"Symmetric tensor.
+
+Available constructors:
+    SymmetricTensor(*n_rows, n_sheets*)
+
+    SymmetricTensor(*n_rows, n_sheets, values*)
+
+    SymmetricTensor(*sequence*)
+
+Parameters
+----------
+n_rows : int, :math:`n_r > 0`
+    Number of rows and columns.
+n_sheets : int, :math:`n_s > 0`
+    Number of sheets.
+values : sequence of float with size :math:`n_r \times n_r \times n_s`, optional
+    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    reshaping the flat list of values.
+    If not mentioned, a zero tensor is created.
+sequence : sequence of float
+    Values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymmetricTensor(2, 2, [0, 1]))
+sheet #0
+[[ 0 1 ]
+ [ 1 0 ]]
+sheet #1
+[[ 0 0 ]
+ [ 0 0 ]]
+>>> T = ot.SymmetricTensor(2, 3, range(2*2*3))
+>>> print(T)
+sheet #0
+[[  0  1 ]
+ [  1  3 ]]
+sheet #1
+[[  4  5 ]
+ [  5  7 ]]
+sheet #2
+[[  8  9 ]
+ [  9 11 ]]
+
+Get or set terms:
+
+>>> print(T[0, 0, 0])
+0.0
+>>> T[0, 0, 0] = 1.
+>>> print(T[0, 0, 0])
+1.0
+
+Create an openturns tensor from a sequence:
+
+>>> T = ot.SymmetricTensor([[[1., 2., 3.], [7., 8., 9.]], [[7., 8., 9.], [10., 11., 12.]]])
+>>> print(T)
+sheet #0
+[[  1  7 ]
+ [  7 10 ]]
+sheet #1
+[[  2  8 ]
+ [  8 11 ]]
+sheet #2
+[[  3  9 ]
+ [  9 12 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricTensor::checkSymmetry
+"Check if the internal representation is really symmetric.
+
+Returns
+-------
+isSymmetric : str
+    *True* if the internal representation is really symmetric."

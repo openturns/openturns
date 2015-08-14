@@ -1,0 +1,138 @@
+%feature("docstring") OT::SORM
+"Second Order Reliability Method (SORM).
+
+Available constructors:
+    SORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
+
+Parameters
+----------
+nearestPointAlgorithm : :class:`~openturns.NearestPointAlgorithm`
+    Optimization algorithm used to research the design point.
+event : :class:`~openturns.Event`
+    Failure event.
+physicalStartingPoint : sequence of float
+    Starting point of the optimization algorithm, declared in the physical
+    space.
+
+Notes
+-----
+See :class:`~openturns.Analytical` for the description of the first steps of
+the SORM analysis.
+
+The Second Order Reliability Method (SORM) consists in approximating the limit
+state surface in U-space at the design point :math:`P^*` by a quadratic
+surface. SORM is usually more accurate than FORM e.g. in case when the event
+boundary is highly curved.
+
+Let us denote by :math:`n` the dimension of the random vector :math:`\vect{X}`
+and :math:`(\kappa_i)_{1 \leq i \leq n-1}` the :math:`n-1` main curvatures of
+the limit state function at the design point in the standard space.
+
+Several approximations of the failure probability :math:`P_f` are available in
+the standard version of OpenTURNS, detailed here in the case where the origin
+of the standard space does not belong to the failure domain :
+
+- Breitung's formula :
+
+  .. _Breitung_formula:
+
+  .. math ::
+
+      P_{Breitung} = E(-\beta_{HL})\prod_{i=1}^{n-1} \frac{1}{\sqrt{1 + \beta_{HL}\kappa_i}}
+
+  :math:`E` the marginal cumulative density function of the spherical
+  distributions in the standard space and :math:`\beta_{HL}` is the Hasofer-Lind
+  reliability index, defined as the distance of the design point
+  :math:`\vect{u}^*` to the origin of the standard space.
+
+- Hohen Bichler's formula is an approximation of the previous equation :
+
+  .. _Hohenbichler_formula:
+
+  .. math ::
+
+      \displaystyle P_{Hohenbichler} = \Phi(-\beta_{HL})
+       \prod_{i=1}^{n-1} \left(
+                         1 + \frac{\phi(\beta_{HL})}{\Phi(-\beta_{HL})}\kappa_i
+                         \right) ^{-1/2}
+
+  where :math:`\Phi` is the cumulative distribution function of the
+  standard 1D normal distribution and :math:`\phi` is the standard Gaussian
+  probability density function.
+
+- Tvedt's formula :
+
+  .. _Tvedt_formula:
+
+  .. math ::
+
+      \left\{
+        \begin{array}{lcl}
+          \displaystyle P_{Tvedt} & = & A_1 + A_2 + A_3 \\
+          \displaystyle A_1 & = & \displaystyle
+            \Phi(-\beta_{HL}) \prod_{i=1}^{N-1} \left( 1 + \beta_{HL} \kappa_i \right) ^{-1/2}\\
+          \displaystyle A_2 & = & \displaystyle
+            \left[ \beta_{HL} \Phi(-\beta_{HL}) - \phi(\beta_{HL}) \right]
+            \left[ \prod_{j=1}^{N-1} \left( 1 + \beta_{HL} \kappa_i \right) ^{-1/2} -
+                   \prod_{j=1}^{N-1} \left( 1 + (1 + \beta_{HL}) \kappa_i \right) ^{-1/2}
+            \right ] \\
+          \displaystyle A_3 & = & \displaystyle (1 + \beta_{HL})
+            \left[ \beta_{HL} \Phi(-\beta_{HL}) - \phi(\beta_{HL}) \right]
+            \left[ \prod_{j=1}^{N-1} \left( 1 + \beta_{HL} \kappa_i \right) ^{-1/2} -
+                   {\cR}e \left( \prod_{j=1}^{N-1} \left( 1 + (i + \beta_{HL}) \kappa_j \right) ^{-1/2}
+            \right)\right ]
+        \end{array}
+      \right.
+
+  where :math:`{\cR}e(z)` is the real part of the complex number :math:`z` and
+  :math:`i` the complex number such that :math:`i^2 = -1`.
+
+The evaluation of the failure probability is stored in the data structure
+:class:`~openturns.SORMResult` recoverable with the :meth:`getResult` method.
+
+See also
+--------
+Analytical, AnalyticalResult, FORM, StrongMaximumTest, SORMResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> vect = ot.RandomVector(myDistribution)
+>>> output = ot.RandomVector(myFunction, vect)
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a NearestPoint algorithm
+>>> myCobyla = ot.Cobyla()
+>>> myAlgo = ot.SORM(myCobyla, myEvent, [50., 1., 10., 5.])"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORM::getResult
+"Accessor to the result of SORM.
+
+Returns
+-------
+result : :class:`~openturns.SORMResult`
+    Structure containing all the results of the SORM analysis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORM::setResult
+"Accessor to the result of SORM.
+
+Parameters
+----------
+result : :class:`~openturns.SORMResult`
+    Structure containing all the results of the SORM analysis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORM::run
+"Evaluate the failure probability.
+
+Notes
+-----
+Evaluate the failure probability and create a :class:`~openturns.SORMResult`,
+the structure result which is accessible with the method :meth:`getResult`."

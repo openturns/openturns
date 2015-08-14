@@ -1,0 +1,91 @@
+> restart:
+> Phi:=proc(x)
+>   int(1/sqrt(2*Pi)*exp(-t^2/2),t=-infinity..x)
+> end:
+> sigma:=sqrt(v);
+> #PhiA:=Phi((a-mu)/sigma);
+> #PhiB:=Phi((b-mu)/sigma);
+> #phiA:=1/sqrt(2*Pi)*exp(-((a-mu)/sigma)^2/2);
+> #phiB:=1/sqrt(2*Pi)*exp(-((b-mu)/sigma)^2/2);
+> assume(PhiB>PhiA,b>a,b>m,a<m);
+> iDenom:=1/(PhiB-PhiA);ratio:=(phiB-phiA)*iDenom*sigma;aNorm:=(a-mu)/si
+> gma;bNorm:=(b-mu)/sigma;
+> eq:={m=mu-sigma^2*(phiB-phiA)/(PhiB-PhiA),s2=(sigma * sigma * (1 -
+> sigma * (bNorm * phiB - aNorm * phiA) * iDenom - ratio * ratio))};
+> sol:=map(factor,solve(eq,{mu,v}));
+
+                                      1/2
+                            sigma := v
+
+
+                                       1
+                       iDenom := -------------
+                                 PhiB~ - PhiA~
+
+
+                                             1/2
+                              (phiB - phiA) v
+                     ratio := ------------------
+                                PhiB~ - PhiA~
+
+
+                                    a~ - mu
+                           aNorm := -------
+                                      1/2
+                                     v
+
+
+                                    b~ - mu
+                           bNorm := -------
+                                      1/2
+                                     v
+
+
+                /
+                |
+                |
+                |
+  eq := {s2 = v |
+                |
+                \
+
+             1/2 /(b~ - mu) phiB   (a~ - mu) phiA\
+            v    |-------------- - --------------|
+                 |      1/2              1/2     |                2
+                 \     v                v        /   (phiB - phiA)  v
+        1 - -------------------------------------- - ----------------
+                        PhiB~ - PhiA~                               2
+                                                     (PhiB~ - PhiA~)
+
+        \
+        |
+        |
+        |            v (phiB - phiA)
+        |, m~ = mu - ---------------}
+        |             PhiB~ - PhiA~
+        /
+
+
+                                   2          2
+  sol := {mu = (-m~ PhiA~ + phiB m~  - phiA m~  + phiA a~ m~
+
+         - phiB b~ m~ + s2 phiB - s2 phiA + m~ PhiB~)/(
+
+        -PhiA~ + phiB m~ - phiA m~ + phiA a~ - phiB b~ + PhiB~),
+
+                               s2 (-PhiB~ + PhiA~)
+        v = - ------------------------------------------------------}
+              -PhiA~ + phiB m~ - phiA m~ + phiA a~ - phiB b~ + PhiB~
+
+> factor(subs(sol,mu)-1);
+
+                      2          2
+  (-m~ PhiA~ + phiB m~  - phiA m~  + phiA a~ m~ - phiB b~ m~
+
+         + s2 phiB - s2 phiA + m~ PhiB~ + PhiA~ - phiB m~ + phiA m~
+
+         - phiA a~ + phiB b~ - PhiB~)/(
+
+        -PhiA~ + phiB m~ - phiA m~ + phiA a~ - phiB b~ + PhiB~)
+
+> 

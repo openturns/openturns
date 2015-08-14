@@ -1,0 +1,36 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 184 "restart:\nfirstX:=-
+1.5;\nh:=[0.5,1.5,3.5,2.5];\nl:=[1.0,0.7,1.2,0.9];\ncl:=[seq(sum(l[i],
+i=1..j),j=1..4)];\ns:=[seq(h[i]*l[i],i=1..4)];\nsurface:=sum(s[i],i=1.
+.4);\nnh:=map(_x->_x/surface,h);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%
+'firstXG$!#:!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"hG7&$\"\"&!\"
+\"$\"#:F($\"#NF($\"#DF(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"lG7&$\"
+#5!\"\"$\"\"(F($\"#7F($\"\"*F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#c
+lG7&$\"#5!\"\"$\"#<F($\"#HF($\"#QF(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6
+#>%\"sG7&$\"#]!\"#$\"$0\"F($\"$?%F($\"$D#F(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%(surfaceG$\"$+)!\"#" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#>%#nhG7&$\"++++]i!#6$\"++++v=!#5$\"++++vVF+$\"++++DJF+" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 245 "nx:=[firstX,seq(cl[i]+firstX,i=1..
+4)];\nnp:=[0,seq(sum(s[i],i=1..j)/surface,j=1..4)];\nnl:=[0,seq(cl[i],
+i=1..4)];\nmean:=sum(int(x*nh[i],x=firstX+nl[i]..firstX+nl[i+1]),i=1..
+4);\nvar:=sum(int((x-mean)^2*nh[i],x=firstX+nl[i]..firstX+nl[i+1]),i=1
+..4);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#nxG7'$!#:!\"\"$!\"&F($\"\"
+#F($\"#9F($\"#BF(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#npG7'\"\"!$\"+
++++]i!#6$\"+++]P>!#5$\"+++](=(F,$\"+++++5!\"*" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%#nlG7'\"\"!$\"#5!\"\"$\"#<F)$\"#HF)$\"#QF)" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%%meanG$\"+++D\"e)!#5" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%$varG$\"+v\"[??(!#5" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 169 "q:=0.95;\nfor i from 1 to 4 do\n  Xq:=solve((xq-nx[i
++1])/(q-np[i+1])=(nx[i]-nx[i+1])/(np[i]-np[i+1]),xq);\n  if ((Xq>=nx[i
+]) and (Xq<nx[i+1])) then\n    print(Xq);\n  fi:\nod:" }}{PARA 11 "" 
+1 "" {XPPMATH 20 "6#>%\"qG$\"#&*!\"#" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6#$\"++++S@!\"*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "1 1 0" 0 }
+{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

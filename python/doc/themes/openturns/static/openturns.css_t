@@ -1,0 +1,493 @@
+/*
+ * openturns.css
+ * ~~~~~~~~~~~~~
+ *
+ * OpenTURNS sphinx-doc stylesheet -- openturns theme.
+ *
+ * :copyright: Copyright 2007-2013 by the Sphinx team, see AUTHORS.
+ * :license: BSD, see LICENSE for details.
+ * 
+ * Theme colors:
+ * Dark green: #256C24
+ * Light green: #33842D
+ * Dark red: #7B0C16
+ * Light red: #E20B18
+ * Dark gold: #A2881D
+ * Light gold: #E1C13F
+ */
+
+@import url("basic.css");
+
+/* -- main layout ---------------------------------------------------------- */
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    line-height: 125%;
+    text-align: center;
+    background-image: url(body-bg.png);
+    color: black;
+    padding: 0;
+    border: 1px solid #aaa;
+    margin: 0px auto;
+    min-width: 740px;
+    max-width: 1080px;
+}
+
+div.document {
+    background-color: white;
+    text-align: left;
+    background-image: url(contents.png);
+    background-repeat: repeat-x;
+}
+
+div.figure {
+    text-align: center;
+}
+
+div.bodywrapper {
+    margin: 0 {{ theme_sidebarwidth|toint + 10 }}px 0 0;
+    border-right: 1px solid #aaa;
+}
+
+div.body {
+    margin: 0;
+    padding: 0.5em 20px 20px 20px;
+}
+
+/* -- header --------------------------------------------------------------- */
+
+div.pageheader {
+    text-align: left;
+    background-image: url(header-bg.png);
+    padding: 10px 10px 5px 5px;
+}
+
+div.pageheader h1 {
+    font: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 64px;
+    color: white;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+div.pageheader h2 {
+    font: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+div.pageheader img {
+    vertical-align: middle;
+}
+
+div.pageheader ul {
+    float: right;
+    color: white;
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 30px;
+    margin-right: 10px;
+}
+
+div.pageheader li {
+    float: left;
+    margin: 0 0 0 10px;
+}
+
+div.pageheader li a {
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #f9f9f0;
+}
+
+div.pageheader li a:hover {
+    background-color: #f9f9f0;
+    color: #7B0C16;
+}
+
+/* -- relbar --------------------------------------------------------------- */
+
+div.related {
+    font-size: 1em;
+}
+
+div.related ul {
+    background-image: url(relbar-bg.png);
+    height: 2em;
+}
+
+div.related ul li {
+    margin: 0;
+    padding: 0;
+    height: 2em;
+    float: left;
+}
+
+div.related ul li.right {
+    float: right;
+    margin-right: 5px;
+}
+
+div.related ul li a {
+    margin: 0;
+    padding: 0 5px 0 5px;
+    line-height: 1.75em;
+    color: white;
+}
+
+div.related ul li a:hover {
+    text-decoration: underline;
+}
+
+/* -- sidebar -------------------------------------------------------------- */
+
+div.sphinxsidebarwrapper {
+    position: relative;
+    top: 0px;
+    padding: 0;
+}
+
+div.sphinxsidebar {
+    margin: 0;
+    padding: 0 15px 15px 15px;
+    border-left: 1px solid #aaa;
+    width: 210px;
+    float: right;
+    font-size: 1em;
+    text-align: left;
+}
+
+div.sphinxsidebar .logo {
+    font-size: 1.8em;
+    color: #aaa;
+    font-weight: 300;
+    text-align: center;
+}
+
+div.sphinxsidebar .logo img {
+    vertical-align: middle;
+}
+
+div.sphinxsidebar input {
+    border: 1px solid #aaa;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+}
+
+div.sphinxsidebar h3 {
+    font-size: 1.5em;
+    border-top: 1px solid #aaa;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+}
+
+div.sphinxsidebar h4 {
+    font-size: 1.2em;
+    margin-bottom: 0;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-right: 14px;
+    padding-left: 14px;
+    color: #333;
+    font-weight: 300;
+    color: #7B0C16;
+}
+
+div.sphinxsidebarwrapper > h3:first-child {
+    margin-top: 0.5em;
+    border: none;
+}
+
+div.sphinxsidebar h3 a {
+    color: #7B0C16;
+}
+
+div.sphinxsidebar ul {
+    color: #444;
+    margin-top: 7px;
+    padding: 0;
+    line-height: 130%;
+}
+
+div.sphinxsidebar ul ul {
+    margin-left: 20px;
+    list-style-image: url(listitem.png);
+}
+
+/* -- footer --------------------------------------------------------------- */
+
+div.footer {
+    font-size: .8em;
+    background-image: url(footer-bg.png);
+    height: 2em;
+    color: white;
+    line-height: 1.75em;
+    margin: 0;
+    padding: 0 5px 0 5px;
+}
+
+div.footer a {
+    color: white;
+}
+
+div.footer a:hover {
+    text-decoration: underline;
+}
+
+/* -- general body styles --------------------------------------------------- */
+
+p {    
+    margin: 0.8em 0 0.5em 0;
+}
+
+a {
+    color: #256C24;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #33842D;
+    text-decoration: none;
+}
+
+div.body a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h1 {
+    margin: 0;
+    padding: 0.7em 0 0.3em 0;
+    font-size: 1.5em;
+    color: #11557C;
+    font-size: 2.4em;
+    font-weight: 300;
+    color: #7B0C16;
+}
+
+h2 {
+    margin: 1.3em 0 0.2em 0;
+    padding: 0;
+    font-size: 1.4em;
+    font-weight: 400;
+    color: #7B0C16;
+}
+
+h3 {
+    margin: 1em 0 0.2em 0;
+    font-size: 1.3em;
+    font-weight: 400;
+    color: #7B0C16;
+}
+
+h4 {
+    margin: 1em 0 0.2em 0;
+    font-size: 1.2em;
+    font-weight: 300;
+    color: #7B0C16;
+}
+
+div.body h1 a, div.body h2 a, div.body h3 a, div.body h4 a, div.body h5 a, div.body h6 a {
+    color: black!important;
+}
+
+h1 a.anchor, h2 a.anchor, h3 a.anchor, h4 a.anchor, h5 a.anchor, h6 a.anchor {
+    display: none;
+    margin: 0 0 0 0.3em;
+    padding: 0 0.2em 0 0.2em;
+    color: #7B0C16!important;
+}
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor,
+h5:hover a.anchor, h6:hover a.anchor {
+    display: inline;
+    color: #7B0C16;
+}
+
+h1 a.anchor:hover, h2 a.anchor:hover, h3 a.anchor:hover, h4 a.anchor:hover,
+h5 a.anchor:hover, h6 a.anchor:hover {
+    color: #33842D;
+}
+
+a.headerlink {
+    color: #7B0C16;
+    font-size: 1em;
+    margin-left: 6px;
+    padding: 0 4px 0 4px;
+    text-decoration: none!important;
+}
+
+a.headerlink:hover {
+    color: #33842D!important;
+}
+
+cite, code, tt {
+    font-family: 'Consolas', monospace;
+    font-size: 0.95em;
+    font-style: normal;
+    letter-spacing: 0.01em;
+}
+
+tt {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+tt.descname, tt.descclassname, tt.xref {
+    border: 0;
+}
+
+hr {
+    border: 1px solid #abc;
+    margin: 2em;
+}
+
+a tt {
+    border: 0;
+    color: #256C24;
+    text-decoration: none;
+}
+
+a tt:hover {
+    color: #33842D;
+    text-decoration: none;
+}
+
+pre {
+    font-family: 'Consolas', monospace;
+    font-size: 0.95em;
+    letter-spacing: 0.015em;
+    line-height: 120%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+}
+
+pre a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+td.linenos pre {
+    padding: 0.5em 0;
+}
+
+div.quotebar {
+    background-color: #f8f8f8;
+    max-width: 250px;
+    float: right;
+    padding: 2px 7px;
+    border: 1px solid #ccc;
+}
+
+div.topic {
+    background-color: #f8f8f8;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 -0.5em 0 -0.5em;
+}
+
+table td, table th {
+    padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+table.citation {
+    border-left: none;
+    margin-top: 0.8em;
+}
+
+table.citation td {
+    border-bottom: none;
+}
+
+table.citation td.label {
+    font-weight: bold;
+    color: #256C24;
+    width: 150px;
+    border-right: solid 1px gray;
+}
+
+div.admonition {
+    font-size: 0.9em;
+    margin: 1em 0 1em 0;
+    background-color: #ECD98A;
+    padding: 0;
+}
+
+div.warning {
+    font-size: 0.9em;
+    margin: 1em 0 1em 0;
+    background-color: #F0C5C5;
+    padding: 0;
+}
+
+div.admonition p, div.warning p {
+    margin: 0em 1em 0.5em 1em;
+    padding: 0 0 0.5em 0;
+    font-style: italic;
+}
+
+div.admonition pre, div.warning pre {
+    margin: 0em 1em 0.4em 1em;
+}
+
+div.admonition p.admonition-title,
+div.warning p.admonition-title {
+    margin: 0;
+    padding: 0.5em 0.1em 0.1em 0.5em;
+    font-style: normal;
+    font-weight: bold;
+    color: #A2881D;
+    background-color: #ECD98A;
+}
+
+div.warning p.admonition-title {
+    background-color: #F0C5C5;
+    color: #7B0C16;
+}
+
+div.admonition ul, div.admonition ol,
+div.warning ul, div.warning ol {
+    margin: 0.1em 0.5em 0.5em 3em;
+    padding: 0;
+}
+
+div.versioninfo {
+    margin: 1em 0 0 0;
+    border: 1px solid #ccc;
+    background-color: #DDEAF0;
+    padding: 8px;
+    line-height: 1.3em;
+    font-size: 0.9em;
+}
+
+.viewcode-back {
+    font-family: 'Open Sans', sans-serif;
+}
+
+div.viewcode-block:target {
+    background-color: #f4debf;
+    border-top: 1px solid #ac9;
+    border-bottom: 1px solid #ac9;
+}
+
+dt {
+    font-weight: bold;
+}

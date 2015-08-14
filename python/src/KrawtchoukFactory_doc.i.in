@@ -1,0 +1,88 @@
+%feature("docstring") OT::KrawtchoukFactory
+"Krawtchouk specific orthonormal univariate polynomial family.
+
+For the :class:`~openturns.Binomial` distribution.
+
+Available constructors:
+    KrawtchoukFactory(*n=1, p=0.5*)
+
+Parameters
+----------
+n : int, :math:`n > 0`
+    Number of experiment parameter of the :class:`~openturns.Binomial`
+    distribution.
+p : float, :math:`0 < p < 1`
+    Success probability parameter of the :class:`~openturns.Binomial`
+    distribution.
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i < n
+
+The recurrence coefficients for the Krawtchouk polynomials come analytically
+and read:
+
+.. math::
+
+    \begin{array}{rcl}
+        a_i & = & \displaystyle - \frac{1}
+                                       {\sqrt{(i + 1) (n - i) p (1 - p)}} \\
+        b_i & = & \displaystyle \frac{p (n - i) + i (1 - p)}
+                                     {\sqrt{(i + 1) (n - i) p (1 - p)}} \\
+        c_i & = & \displaystyle - \sqrt{(1 - \frac{1}{i + 1})
+                                        (1 + \frac{1}{n - i})}
+    \end{array}, \quad 1 < i
+
+where :math:`n` and :math:`p` are the parameters of the
+:class:`~openturns.Binomial` distribution.
+
+.. warning::
+
+    The Krawtchouk polynomials are only defined up to a degree :math:`m` equal
+    to :math:`n - 1`. Indeed, for :math:`i = n`, some factors in the
+    denominators of the recurrence coefficients would be equal to zero.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.KrawtchoukFactory(3, .5)
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+1.73205 - 1.1547 * X
+1.73205 - 3.4641 * X + 1.1547 * X^2"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerFactory::getN
+"Accessor to the number of failures parameter :math:`n`.
+
+Of the :class:`~openturns.Binomial` distribution.
+
+Returns
+-------
+n : int
+    Number of experiments parameter of the :class:`~openturns.Binomial`
+    distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerFactory::getP
+"Accessor to the success probability parameter :math:`p`.
+
+Of the :class:`~openturns.Binomial` distribution.
+
+Returns
+-------
+p : float
+    Success probability parameter of the :class:`~openturns.Binomial`
+    distribution."

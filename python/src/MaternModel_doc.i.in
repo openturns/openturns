@@ -1,0 +1,40 @@
+%feature("docstring") OT::MaternModel
+"Matern covariance model.
+
+Available constructors:
+    MaternModel(*dim=1*)
+
+    MaternModel(*dim, theta, nu*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    Input dimension.
+theta : float
+    Scale coefficient :math:`\theta` of the covariance function.
+nu : float
+    Coefficient :math:`\nu` of the covariance function.
+
+Notes
+-----
+The covariance function of input dimension *dim* is:
+
+.. math::
+
+    C(s, t) = \frac{1}{\Gamma(\nu) 2^{\nu-1}} \left(\sqrt{2 \nu} \frac{||s-t||}{\theta}\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} \frac{||s-t||}{\theta}\right)
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+>>> import openturns as ot
+>>> covarianceModel = ot.MaternModel(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(covarianceModel(s, t))
+[[ 0.999705 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covarianceModel(tau))
+[[ 0.998554 ]]"

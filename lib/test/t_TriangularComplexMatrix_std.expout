@@ -1,0 +1,44 @@
+test 0 : default constructor and string converter
+triangularMatrix0 = class=TriangularComplexMatrix dimension=0 implementation=class=ComplexMatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test 1: constructor with size, operator() and string converter
+triangularMatrix1 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(0,0),(4,0)]
+is triangular lower ?  true
+test 2 : copy constructor and string converter
+triangularMatrix2 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(0,0),(4,0)]
+test 3 : get dimensions methods
+triangularMatrix1's nbRows = 2
+triangularMatrix1's nbColumns = 2
+test 4 : assignment method
+triangularMatrix3 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(0,0),(4,0)]
+test 5 : transpose and conjugate method
+triangularMatrix1 transpose = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(0,0),(3,1),(4,0)]
+is transpose triangular lower ?  false
+triangularMatrix1 conjugate = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,-0),(3,-1),(0,-0),(4,-0)]
+is conjugate triangular lower ?  true
+triangularMatrix1 conjugate transpose = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,-0),(0,-0),(3,-1),(4,-0)]
+is conjugate/transpose triangular lower ?  false
+test number 6 : addition method
+sum1 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(3,1),(3,-1),(8,0)]
+sum2 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(3,1),(3,-1),(8,0)]
+sum1 equals sum2 = true
+test 7 : substraction method
+diff = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,0),(3,1),(-3,1),(0,0)]
+test 8 : matrix multiplication method
+prod = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(3,-1),(26,0)]
+test 9 : multiplication with a numerical point method
+pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult = [(1,0),(11,1)]
+test 10 : multiplication with a numerical complex collection method
+ptComplexe = [(1,5),(0,1)]
+ptResult2 = [(1,5),(-2,20)]
+test 11 : multiplication and division by a numerical scalar methods
+scalprod1 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(3,2),(7,9),(0,0),(12,8)]
+scalprod2 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(3,2),(7,9),(0,0),(12,8)]
+scalprod1 equals scalprod2 = true
+scaldiv1 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.230769,-0.153846),(0.846154,-0.230769),(0,0),(0.923077,-0.615385)]
+scaldiv2 = class=TriangularComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.230769,-0.153846),(0.846154,-0.230769),(0,0),(0.923077,-0.615385)]
+scaldiv1 equals scaldiv2 = true
+test 12 : isEmpty method
+triangularMatrix0 is empty = true
+triangularMatrix1 is empty = false
+triangularMatrix5 is empty = true

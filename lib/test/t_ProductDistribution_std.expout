@@ -1,0 +1,31 @@
+Distribution class=ProductDistribution name=ProductDistribution left=class=Uniform name=Uniform dimension=1 a=-1 b=2 right=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution ProductDistribution(Uniform(a = -1, b = 2) * Normal(mu = 1, sigma = 2))
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.28927]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[-0.11143] last=class=NumericalPoint name=Unnamed dimension=1 values=[2.03647]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.48959]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.80714]
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[2.5]
+ddf      =class=NumericalPoint name=Unnamed dimension=1 values=[-0.032141]
+pdf      =0.0680485
+cdf      =0.896315
+pdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[0.00830329,0.0103036,0.0171714,-0.00243373]
+cdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[-0.0212084,21.8982,-3.16162,23.4921]
+quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[4.5313]
+cdf(quantile)=0.95
+mean      =class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+standard deviation      =class=NumericalPoint name=Unnamed dimension=1 values=[2.18012]
+skewness      =class=NumericalPoint name=Unnamed dimension=1 values=[0.868382]
+kurtosis      =class=NumericalPoint name=Unnamed dimension=1 values=[5.99438]
+covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.75]
+parameters      =[[a : -1, b : 2, mean : 1, standard deviation : 2]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.49735]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[4.99986]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[16.25]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[160.6]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[983.5]
+Standard representative=ProductDistribution(Uniform(a = -1, b = 2) * Normal(mu = 1, sigma = 2))
+left=class=Uniform name=Uniform dimension=1 a=-1 b=2
+right=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

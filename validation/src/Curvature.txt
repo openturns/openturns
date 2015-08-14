@@ -1,0 +1,144 @@
+> restart:
+> G:=5-u2-1/2*(u1-1/10)^2;
+> sol:=solve(G<0);
+> with(plots):
+> p1:=implicitplot(G,u1=-5..5,u2=-5..5):
+> display(p1);
+> P:=evalf(Int(int(1/(2*Pi)*exp(-(u1^2+u2^2)/2),u2=5-1/2*(u1-1/10)^2..in
+> finity),u1=-infinity..infinity));
+
+                                               2
+                                    (u1 - 1/10)
+                      G := 5 - u2 - ------------
+                                         2
+
+
+                        999         2
+                sol := {--- - 1/2 u1  + 1/10 u1 < u2}
+                        200
+
+
+
+                         P := 0.003016311901
+
+> L:=u1^2+u2^2-lambda*G:
+> sol:=evalf(allvalues(solve({diff(L,u1),diff(L,u2),diff(L,lambda)},{u1,
+> u2,lambda}))):
+> p2:=plot([subs(sol[1],[u1,u2])],style=point,symbol=CIRCLE,color=GREEN)
+> :
+> p3:=plot([subs(sol[2],[u1,u2])],style=point,symbol=CIRCLE,color=BLUE):
+> p4:=plot([subs(sol[3],[u1,u2])],style=point,symbol=CIRCLE,color=MAGENT
+> A):
+> display({p1,p2,p3,p4});
+> map(Re,subs(sol[1],[u1,u2]));
+> map(Re,subs(sol[2],[u1,u2]));
+> map(Re,subs(sol[3],[u1,u2]));
+
+
+                      [0.125001954, 4.999687451]
+
+
+                      [2.915843269, 1.035513343]
+
+
+                     [-2.740845224, 0.9647992061]
+
+> with(LinearAlgebra):
+> #G:=-(u1^2+u2^2-R^2);
+> gradG:=<diff(G,u1),diff(G,u2)>;
+> iGradNorm:=1/sqrt(gradG[1]^2+gradG[2]^2);
+> uGradG:=iGradNorm*gradG;
+> kron:=uGradG.Transpose(uGradG);
+> W:=(kron-<<1,0>|<0,1>>).<<diff(G,u1$2),diff(diff(G,u1),u2)>|<diff(diff
+> (G,u1),u2),diff(G,u2$2)>>;
+> evalf(subs(sol[1],iGradNorm*Eigenvalues(W)));
+> evalf(subs(sol[2],iGradNorm*Eigenvalues(W)));
+> evalf(subs(sol[3],iGradNorm*Eigenvalues(W)));
+> #evalf(subs(u1=0,u2=R,iGradNorm*Eigenvalues(W)));
+
+                                 [-u1 + 1/10]
+                        gradG := [          ]
+                                 [    -1    ]
+
+
+                                        10
+               iGradNorm := --------------------------
+                                   2               1/2
+                            (100 u1  - 20 u1 + 101)
+
+
+                         [      10 (-u1 + 1/10)       ]
+                         [ -------------------------- ]
+                         [        2               1/2 ]
+                         [ (100 u1  - 20 u1 + 101)    ]
+               uGradG := [                            ]
+                         [              10            ]
+                         [- --------------------------]
+                         [         2               1/2]
+                         [  (100 u1  - 20 u1 + 101)   ]
+
+
+                  [                2                       ]
+                  [100 (-u1 + 1/10)        100 (-u1 + 1/10)]
+                  [-----------------     - ----------------]
+          kron := [       %1                      %1       ]
+                  [                                        ]
+                  [  100 (-u1 + 1/10)           100        ]
+                  [- ----------------           ---        ]
+                  [         %1                  %1         ]
+
+                                   2
+                       %1 := 100 u1  - 20 u1 + 101
+
+
+                    [                    2           ]
+                    [    100 (-u1 + 1/10)            ]
+                    [- --------------------- + 1    0]
+                    [        2                       ]
+               W := [  100 u1  - 20 u1 + 101         ]
+                    [                                ]
+                    [     100 (-u1 + 1/10)           ]
+                    [   ---------------------       0]
+                    [         2                      ]
+                    [   100 u1  - 20 u1 + 101        ]
+
+
+                [                0.                 ]
+                [                                   ]
+                [                              -10  ]
+                [0.9990630866 - 0.9481109191 10    I]
+
+
+                [                 0.                 ]
+                [                                    ]
+                [                               -10  ]
+                [0.03747983864 + 0.3900484940 10    I]
+
+
+                [                 0.                 ]
+                [                                    ]
+                [                               -10  ]
+                [0.03660667020 - 0.1602921043 10    I]
+
+> s:=solve(G,u2);
+
+                          999         2
+                     s := --- - 1/2 u1  + 1/10 u1
+                          200
+
+> subs(sol[1],diff(s,u1$2)/(1+diff(s,u1)^2)^(3/2));
+> subs(sol[2],diff(s,u1$2)/(1+diff(s,u1)^2)^(3/2));
+> subs(sol[3],diff(s,u1$2)/(1+diff(s,u1)^2)^(3/2));
+
+                                                -10
+                 -0.9990630851 + 0.9481109172 10    I
+
+
+                                                -10
+                -0.03747983863 - 0.3900484939 10    I
+
+
+                                                -10
+                -0.03660667020 + 0.1602921042 10    I
+
+> 

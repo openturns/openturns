@@ -1,0 +1,56 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 251 "restart:\nf0:=x1^3 \+
+* sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2);\nf1:=exp(-x1 * x2 +
+ x3) / cos(1.0 + x2 * x3 - x1);\ncoefficients:=<0.3, 2.9>;\nf:=f0*coef
+ficients[1]+f1*coefficients[2];\nx:=<1.2,2.3,3.4>;\nvalue:=evalf(subs(
+x1=x[1],x2=x[2],x3=x[3],f));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#f0G
+,&*&)%#x1G\"\"$\"\"\"-%$sinG6#,&%#x2GF**&$\"#D!\"\"F*%#x3GF*F*F*F**&,&
+F(F*F/F*\"\"#,&$\"#5F3F**$)F4F7F*F*F3F3" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#>%#f1G*&-%$expG6#,&*&%#x1G\"\"\"%#x2GF,!\"\"%#x3GF,F,-%$cosG6#,(
+$\"#5F.F.*&F-F,F/F,F.F+F,F." }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%-coef
+ficientsG-%'RTABLEG6%\"*g%Ga8-%'MATRIXG6#7$7#$\"\"$!\"\"7#$\"#HF0&%'Ve
+ctorG6#%'columnG" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"fG,(*($\"\"$!
+\"\"\"\"\")%#x1GF(F*-%$sinG6#,&%#x2GF**&$\"#DF)F*%#x3GF*F*F*F**($F(F)F
+*,&F,F*F1F*\"\"#,&$\"#5F)F**$)F5F9F*F*F)F)*($\"#HF)F*-%$expG6#,&*&F,F*
+F1F*F)F5F*F*-%$cosG6#,($F<F)F)*&F1F*F5F*F)F,F*F)F*" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#>%\"xG-%'RTABLEG6%\"*%[)RN\"-%'MATRIXG6#7%7#$\"#7!\"
+\"7#$\"#BF07#$\"#MF0&%'VectorG6#%'columnG" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%&valueG$\"+\\!)*>H#!\")" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 82 "gradient:=evalf(subs(x1=x[1],x2=x[2],x3=x[3],<diff(f,
+x1),diff(f,x2),diff(f,x3)>));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%)gr
+adientG-%'RTABLEG6%\"*7D]N\"-%'MATRIXG6#7%7#$!+&o-_b\"!\"(7#$\"+R%ek4$
+F07#$\"+#e6`_#F0&%'VectorG6#%'columnG" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 237 "hessian:=evalf[5](subs(x1=x[1],x2=x[2],x3=x[3],<<dif
+f(diff(f,x1),x1),diff(diff(f,x1),x2),diff(diff(f,x1),x3)>|<diff(diff(f
+,x2),x1),diff(diff(f,x2),x2),diff(diff(f,x2),x3)>|<diff(diff(f,x3),x1)
+,diff(diff(f,x3),x2),diff(diff(f,x3),x3)>>));" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%(hessianG-%'RTABLEG6%\"*;*ef8-%'MATRIXG6#7%7%$\"&+W\"
+!\"\"$!&w`$F0$!&ll#F07%F1$\"&4:*F0$\"&C&oF07%F3F8$\"&!G]F0%'MatrixG" }
+}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "0 0 0" 9 }
+{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }
+{RTABLE_HANDLES 135428460 135398484 135502512 135958916 }{RTABLE 
+M7R0
+I6RTABLE_SAVE/135428460X*%)anythingG6"6"[gl!#%!!!"#"#$""$!""$"#HF)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135398484X*%)anythingG6"6"[gl!#%!!!"$"$$"#7!""$"#BF)$"#MF)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135502512X*%)anythingG6"6"[gl!#%!!!"$"$$!+&o-_b"!"($"+R%ek4$F)$"+
+#e6`_#F)F&
+}
+{RTABLE 
+M7R0
+I6RTABLE_SAVE/135958916X,%)anythingG6"6"[gl!"%!!!#*"$"$$"&+W"!""$!&w`$F)$!&ll#F
+)F*$"&4:*F)$"&C&oF)F,F0$"&!G]F)F&
+}
+

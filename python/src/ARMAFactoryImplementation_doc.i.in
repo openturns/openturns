@@ -1,0 +1,33 @@
+%define OT_ARMAFactory_doc
+"Base class for ARMA models factory."
+
+%enddef
+%feature("docstring") OT::ARMAFactoryImplementation
+OT_ARMAFactory_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_ARMAFactory_build_doc
+"Estimate the ARMA model from data.
+
+Available constructors:
+    build(*myTimeSeries*)
+
+    build(*myProcessSample*)
+
+Parameters
+----------
+myTimeSeries : :class:`~openturns.TimeSeries` 
+    The time series from which the ARMA model is estimated.
+myProcessSample : :class:`~openturns.ProcessSample` 
+    The sample of time series from which the ARMA model is estimated.
+
+Returns
+-------
+myARMA : :class:`~openturns.ARMA`
+    The estimated spectral model.
+ "
+%enddef
+%feature("docstring") OT::ARMAFactoryImplementation::build
+OT_ARMAFactory_build_doc

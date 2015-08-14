@@ -1,0 +1,48 @@
+%feature("docstring") OT::ChebychevAlgorithm
+"Chebychev algorithm used to build the orthonormal basis.
+
+The algorithm builds the basis With respect to a specific distribution.
+
+Available constructors:
+    ChebychevAlgorithm(*measure*)
+
+    ChebychevAlgorithm(*measure, referenceFamily*)
+
+Parameters
+----------
+measure : :class:`~openturns.Distribution`
+    A measure for which the orthonormal polynomial basis is built. 
+referenceFamily : :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    A polynomial family from which the algorithm starts to build the orthonornal
+    polynomial family. When not specified, the *referenceFamily* is the
+    canonical one: :math:`\{ 1, x, x^2, \ldots\}`.
+
+See also
+--------
+OrthonormalizationAlgorithm, GramSchmidtAlgorithm
+
+Notes
+-----
+It implements the Chebychev algorithm that builds the orthonormalized
+polynomial family with respect to the distribution *measure*, where the initial
+polynomial family is the one specified in *referenceFamily*. "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ChebychevAlgorithm::getReferenceFamily
+"Accessor to the reference family.
+
+Returns
+-------
+family : :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    The polynomial family from which the orthonormal polynomial family is built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ChebychevAlgorithm::setReferenceFamily
+"Accessor to the reference family.
+
+Parameters
+----------
+family : :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+    The polynomial family from which the orthonormal polynomial family is built."

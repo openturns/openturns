@@ -1,0 +1,33 @@
+myDefautModel = class=CauchyModel amplitude=class=NumericalPoint name=Unnamed dimension=1 values=[1] scale=class=NumericalPoint name=Unnamed dimension=1 values=[1] spatial correlation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[] isDiagonal=true
+myModel = class=CauchyModel amplitude=class=NumericalPoint name=Unnamed dimension=1 values=[1] scale=class=NumericalPoint name=Unnamed dimension=1 values=[1] spatial correlation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[] isDiagonal=true
+spectral density matrix at f = 1 : class=HermitianMatrix dimension=1 implementation=class=ComplexMatrixImplementation name=Unnamed rows=1 columns=1 values=[(0.049409,0)]
+spectral density matrix at f = 10 : class=HermitianMatrix dimension=1 implementation=class=ComplexMatrixImplementation name=Unnamed rows=1 columns=1 values=[(0.000506478,0)]
+spatialCorrelation=
+class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,1,0.5,0,0.5,1]
+spatialCorrelation=
+[[ 1   1   0   ]
+ [ 1   1   0.5 ]
+ [ 0   0.5 1   ]]
+mySpectralModel = class=CauchyModel amplitude=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] scale=class=NumericalPoint name=Unnamed dimension=3 values=[1,2,3] spatial correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,1,0.5,0,0.5,1] isDiagonal=false
+myHighModel = class=CauchyModel amplitude=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] scale=class=NumericalPoint name=Unnamed dimension=3 values=[1,2,3] spatial correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,1,0.5,0,0.5,1] isDiagonal=false
+spectral density matrix at f = 1 : class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=3 columns=3 values=[(0.049409,0),(0.037462,0),(0,0),(0,0),(0.025171,0),(0.010508,0),(0,0),(0,0),(0.016839,0)]
+spectral density matrix at f = 1 :
+[[    (0.049409,0) (0,0)           (0,0)           ]
+ [    (0.037462,0)    (0.025171,0) (0,0)           ]
+ [ (0,0)              (0.010508,0)    (0.016839,0) ]]
+spectral density matrix at f = 10 : class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=3 columns=3 values=[(0.000506,0),(0.00038,0),(0,0),(0,0),(0.000253,0),(0.000106,0),(0,0),(0,0),(0.000169,0)]
+spectral density matrix at f = 10 :
+[[    (0.000506,0) (0,0)           (0,0)           ]
+ [    (0.00038,0)     (0.000253,0) (0,0)           ]
+ [ (0,0)              (0.000106,0)    (0.000169,0) ]]
+myHighModelCovariance = class=CauchyModel amplitude=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] scale=class=NumericalPoint name=Unnamed dimension=3 values=[1,2,3] spatial correlation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[] isDiagonal=true
+spectral density matrix at f = 1 : class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=3 columns=3 values=[(0.049409,0),(0,0),(0,0),(0,0),(0.025171,0),(0,0),(0,0),(0,0),(0.016839,0)]
+spectral density matrix at f = 1 :
+[[    (0.049409,0) (0,0)           (0,0)           ]
+ [ (0,0)              (0.025171,0) (0,0)           ]
+ [ (0,0)           (0,0)              (0.016839,0) ]]
+spectral density matrix at f = 10 : class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=3 columns=3 values=[(0.000506,0),(0,0),(0,0),(0,0),(0.000253,0),(0,0),(0,0),(0,0),(0.000169,0)]
+spectral density matrix at f = 10 :
+[[    (0.000506,0) (0,0)           (0,0)           ]
+ [ (0,0)              (0.000253,0) (0,0)           ]
+ [ (0,0)           (0,0)              (0.000169,0) ]]

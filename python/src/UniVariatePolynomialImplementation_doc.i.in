@@ -1,0 +1,222 @@
+%define OT_UniVariatePolynomial_doc
+"Base class for univariate polynomials.
+
+Parameters
+----------
+coefficients : sequence of float
+    Polynomial coefficients in increasing polynomial order.
+
+Examples
+--------
+>>> import openturns as ot
+
+Create a univariate polynomial from a list of coefficients:
+
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P)
+1 + 2 * X + 3 * X^2
+
+Univariate polynomials are of course callable:
+
+>>> print(P(1.))
+6.0
+
+Addition, subtraction and multiplication of univariate polynomials:
+
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> Q = ot.UniVariatePolynomial([1., 2.])
+>>> print('(%s) + (%s) = %s' % (P, Q, P + Q))
+(1 + 2 * X + 3 * X^2) + (1 + 2 * X) = 2 + 4 * X + 3 * X^2
+>>> print('(%s) - (%s) = %s' % (P, Q, P - Q))
+(1 + 2 * X + 3 * X^2) - (1 + 2 * X) = 3 * X^2
+>>> print('(%s) * (%s) = %s' % (P, Q, P * Q))
+(1 + 2 * X + 3 * X^2) * (1 + 2 * X) = 1 + 4 * X + 7 * X^2 + 6 * X^3"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation
+OT_UniVariatePolynomial_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_derivate_doc
+"Build the first-order derivative polynomial.
+
+Returns
+-------
+derivated_polynomial : :class:`~openturns.Univariate`
+    The first-order derivated polynomial.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.derivate())
+2 + 6 * X"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::derivate
+OT_UniVariatePolynomial_derivate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_derivative_doc
+"Compute the first-order derivative polynomial at point :math:`x`.
+
+Parameters
+----------
+x : float
+    Polynomial input.
+
+Returns
+-------
+derivative_value : float
+    The value of the polynomial's first-order derivative at point :math:`x`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.derivative(1.))
+8.0"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::derivative
+OT_UniVariatePolynomial_derivative_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_draw_doc
+"Draw the polynomial.
+
+Parameters
+----------
+x_min : float, optional
+    The starting value that is used for meshing the x-axis.
+x_max : float, optional, :math:`x_{\max} > x_{\min}`
+    The ending value that is used for meshing the x-axis.
+n_points : int, optional
+    The number of points that is used for meshing the x-axis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> P = ot.UniVariatePolynomial([1., 2., -3., 5.])
+>>> View(P.draw(-10., 10., 100)).show()"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::draw
+OT_UniVariatePolynomial_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_getCoefficients_doc
+"Accessor to the polynomials's coefficients.
+
+Returns
+-------
+coefficients : :class:`~openturns.NumericalPoint`
+    Polynomial coefficients in increasing polynomial order.
+
+See Also
+--------
+setCoefficients
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.getCoefficients())
+[1,2,3]"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::getCoefficients
+OT_UniVariatePolynomial_getCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_getDegree_doc
+"Accessor to the polynomials's degree.
+
+Returns
+-------
+degree : int
+    Polynomial's degree.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.getDegree())
+2"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::getDegree
+OT_UniVariatePolynomial_getDegree_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_getRoots_doc
+"Compute the roots of the polynomial.
+
+Returns
+-------
+roots : list of complex values
+    Polynomial's roots.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.getRoots())
+[(-0.333333,0.471405),(-0.333333,-0.471405)]"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::getRoots
+OT_UniVariatePolynomial_getRoots_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_incrementDegree_doc
+"Multiply the polynomial by :math:`x^k`.
+
+Parameters
+----------
+degree : int, optional
+    The incremented degree :math:`k`.
+    Default uses :math:`k = 1`.
+
+Returns
+-------
+incremented_degree_polynomial : :class:`~openturns.UniVariatePolynomial`
+    Polynomial with incremented degree.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.incrementDegree())
+X + 2 * X^2 + 3 * X^3
+>>> print(P.incrementDegree(2))
+X^2 + 2 * X^3 + 3 * X^4"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::incrementDegree
+OT_UniVariatePolynomial_incrementDegree_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariatePolynomial_setCoefficients_doc
+"Accessor to the polynomials's coefficients.
+
+Parameters
+----------
+coefficients : sequence of float
+    Polynomial coefficients in increasing polynomial order.
+
+See Also
+--------
+getCoefficients
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P.setCoefficients([4., 2., 1.])
+>>> print(P)
+4 + 2 * X + X^2"
+%enddef
+%feature("docstring") OT::UniVariatePolynomialImplementation::setCoefficients
+OT_UniVariatePolynomial_setCoefficients_doc

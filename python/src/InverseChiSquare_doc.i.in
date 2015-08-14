@@ -1,0 +1,69 @@
+%feature("docstring") OT::InverseChiSquare
+"InverseChiSquare distribution.
+
+Helper class for defining the Inverse ChiSquare distribution which is the inverse of a :math:`\chi^2` distribution.
+
+Available constructors:
+    InverseChiSquare(*nu*)
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.  
+    By default, :math:`\nu =1`.
+     
+
+Notes
+-----
+:math:`X` follows an Inverse ChiSquare distribution of parameter :math:`\nu` means that :math:`\dfrac{1}{X}` follows the :math:`\chi^2(\nu)` distribution, with :math:`\nu>0`.
+The Inverse ChiSquare distribution parametered by :math:`\nu` is exactly the :math:`InverseGamma(\dfrac{\nu}{2}, 2)` distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \dfrac{\exp \left( -\dfrac{1}{2 x}\right)}{\Gamma \left(\dfrac{\nu}{2}\right)\lambda^{\frac{\nu}{2}}x^{\frac{\nu}{2}+1}}, \quad x \in [0; +\infty[
+
+with :math:`\nu > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \dfrac{1}{\nu-2}  \quad \text{if } \nu>2\\
+        \Var{X} & = &\dfrac{2}{(\nu-2)^2(\nu-4)}\quad \text{if } \nu>4
+    \end{eqnarray*}
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.InverseChiSquare(1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::InverseChiSquare::getNu
+"Accessor to the  parameter :math:`nu`.
+
+Returns
+-------
+nu : float
+    Degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::InverseChiSquare::setNu
+"Accessor to the distribution parameter :math:`\nu`.
+
+Parameters
+----------
+nu : float
+    Degrees of freedom."

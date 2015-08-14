@@ -1,0 +1,205 @@
+%feature("docstring") OT::RandomWalkMetropolisHastings
+"Random Walk Metropolis-Hastings method.
+
+Available constructor:
+    RandomWalkMetropolisHastings(*prior, conditional, observations, initialState, proposal*)
+
+    RandomWalkMetropolisHastings(*prior, conditional, model, parameters, observations, initialState, proposal*)
+
+Parameters
+----------
+prior : :class:`~openturns.Distribution`
+    Prior distribution of the parameters of the underlying Bayesian statistical
+    model.
+conditional : :class:`~openturns.Distribution`
+    Required distribution to define the likelihood of the underlying Bayesian
+    statistical model.
+model : :class:`~openturns.NumericalMathFunction`
+    Function required to define the likelihood.
+observations : 2-d sequence of float
+    Observations required to define the likelihood.
+initialState : sequence of float
+    Initial state of the Monte-Carlo Markov chain on which the Sampler is
+    based.
+parameters : 2-d sequence of float
+    Parameters of the model to be fixed.
+proposal : list of :class:`~openturns.Distribution`
+    Distributions from which the transition kernels of the
+    :class:`~openturns.MCMC` are defined, as explained hereafter. In the
+    following of this paragraph, :math:`\delta \sim p_j` means that the
+    realization :math:`\delta` is obtained according to the :math:`j^{th}`
+    Distribution of the list *proposal* of size :math:`d`. The underlying
+    MCMC algorithm is a Metropolis-Hastings one which draws candidates (for the
+    next state of the chain) using a random walk: from the current state
+    :math:`\vect{\theta}^k`, the candidate :math:`\vect{c}^k` for
+    :math:`\vect{\theta}^{k+1}` can be expressed as
+    :math:`\vect{c}^k = \vect{\theta}^k +\vect{\delta}^k` where the
+    distribution of :math:`\vect{\delta}^k` does not depend on
+    :math:`\vect{\theta}^k`. More precisely, here, during the :math:`k^{th}`
+    Metropolis-Hastings iteration, only the :math:`j^{th}` component
+    :math:`\delta_j^k` of :math:`\vect{\delta}^k` , with :math:`j=k \mod d`, is
+    not zero and :math:`\delta_j^k = \lambda_j^k \delta^k` where
+    :math:`\lambda_j^k` is a deterministic scalar *calibration* coefficient and
+    where :math:`\delta^k \sim p_j`. Moreover, :math:`\lambda_j^k = 1` by default,
+    but adaptive strategy based on the acceptance rate of each component can be
+    defined using the method :meth:`setCalibrationStrategyPerComponent`.
+
+Notes
+-----
+A RandomWalkMetropolisHastings enables to carry out :class:`~openturns.MCMC`
+sampling according to the preceding statements. It is important to note that
+sampling one new realization comes to carrying out :math:`d` Metropolis-
+Hastings iterations (such as described above): all of the components of the new
+realization can differ from the corresponding components of the previous
+realization. Besides, the burn-in and thinning parameters do not take into
+consideration the number of MCMC iterations indeed, but the number of sampled
+realizations.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> chainDim = 3
+>>> # Observations
+>>> obsDim = 1
+>>> obsSize = 10
+>>> y = [-9.50794871493506, -3.83296694500105, -2.44545713047953,
+...      0.0803625289211318, 1.01898069723583, 0.661725805623086,
+...      -1.57581204592385, -2.95308465670895, -8.8878164296758,
+...      -13.0812290405651]
+>>> y_obs = ot.NumericalSample(y, obsDim)
+>>> # Parameters
+>>> p = ot.NumericalSample(obsSize, chainDim)
+>>> for i in range(obsSize):
+...     for j in range(chainDim):
+...         p[i, j] = (-2 + 5. * i / 9.) ** j
+>>> # Model
+>>> fullModel = ot.NumericalMathFunction(
+...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'],
+...          ['p1*x1+p2*x2+p3*x3', '1.0'])
+>>> model = ot.NumericalMathFunction(fullModel, range(chainDim))
+>>> # Calibration parameters
+>>> calibrationColl = [ot.CalibrationStrategy()]*chainDim
+>>> # Proposal distribution
+>>> proposalColl = [ot.Uniform(-1., 1.)]*chainDim
+>>> # Prior distribution
+>>> sigma0 = [10.]*chainDim
+>>> #  Covariance matrix
+>>> Q0_inv = ot.CorrelationMatrix(chainDim)
+>>> for i in range(chainDim): 
+...     Q0_inv[i, i] = sigma0[i] * sigma0[i]
+>>> mu0 = [0.]*chainDim
+>>> #  x0 ~ N(mu0, sigma0)
+>>> prior = ot.Normal(mu0, Q0_inv)
+>>> # Conditional distribution y~N(z, 1.0)
+>>> conditional = ot.Normal()
+>>> # Create a metropolis-hastings sampler
+>>> # prior =a distribution of dimension chainDim, the a priori distribution of the parameter
+>>> # conditional =a distribution of dimension 1, the observation error on the output
+>>> # model =the link between the parameters and the output
+>>> # y_obs =noisy observations of the output
+>>> # mu0 =starting point of the chain
+>>> sampler = ot.RandomWalkMetropolisHastings(
+...     prior, conditional, model, p, y_obs, mu0, proposalColl)
+>>> sampler.setCalibrationStrategyPerComponent(calibrationColl)
+>>> sampler.setBurnIn(2000)
+>>> sampler.setThinning(100)
+>>> # Get a realization
+>>> print(sampler.getRealization())
+[1.25054,1.32356,-2.15476]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getAcceptanceRate
+"Get acceptance rate.
+
+Returns
+-------
+acceptanceRate : :class:`~openturns.NumericalPoint` of dimension :math:`d`
+    Sequence whose the :math:`j^{th}` component corresponds to the acceptance
+    rate of the candidates :math:`\vect{c}^k` obtained from a state
+    :math:`\vect{\theta}^k` by only changing its :math:`j^{th}` component, that
+    is to the acceptance rate only relative to the :math:`k^{th}` MCMC
+    iterations such that :math:`k \mod d=j` (see the paragraph dedicated to the
+    constructors of the class above). These are global acceptance rates over
+    all the MCMC iterations performed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getCalibrationStrategyPerComponent
+"Get the calibration strategy per component.
+
+Returns
+-------
+strategy : list of :class:`~openturns.CalibrationStrategy`
+    A list of CalibrationStrategy *strategy*, whose :math:`j^{th}` component
+    :math:`strategy[j]` defines whether and how the :math:`\lambda_j^k` (see the
+    paragraph dedicated to the constructors of the class above) are rescaled,
+    on the basis of the last :math:`j^{th}` component acceptance rate
+    :math:`\rho_j^k` . The *calibration* coefficients are rescaled every
+    :math:`q\times d` MCMC iterations with
+    :math:`q = strategy[j].getCalibrationStep()`, thus on the basis of the
+    acceptances or refusals of the last :math:`q` candidates obtained by only
+    changing the :math:`j^{th}` component of the current state:
+    :math:`\lambda_j^k = \Phi_j (\rho_j^k)\lambda_j^{k-qd}` where
+    :math:`\Phi_j(.)` is defined by :math:`strategy[j].computeUpdateFactor()`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setCalibrationStrategyPerComponent
+"Set the calibration strategy per component.
+
+Parameters
+----------
+strategy : list of :class:`~openturns.CalibrationStrategy`
+    A list of CalibrationStrategy *strategy*, whose :math:`j^{th}` component
+    :math:`strategy[j]` defines whether and how the :math:`\lambda_j^k` (see the
+    paragraph dedicated to the constructors of the class above) are rescaled,
+    on the basis of the last :math:`j^{th}` component acceptance rate
+    :math:`\rho_j^k` . The *calibration* coefficients are rescaled every
+    :math:`q\times d` MCMC iterations with
+    :math:`q = strategy[j].getCalibrationStep()`, thus on the basis of the
+    acceptances or refusals of the last :math:`q` candidates obtained by only
+    changing the :math:`j^{th}` component of the current state:
+    :math:`\lambda_j^k = \Phi_j (\rho_j^k)\lambda_j^{k-qd}` where
+    :math:`\Phi_j(.)` is defined by :math:`strategy[j].computeUpdateFactor()`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setCalibrationStrategy
+"Set the calibration strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.CalibrationStrategy`
+    Same strategy applied for each component :math:`\lambda_j^k`.
+
+See also
+--------
+setCalibrationStrategyPerComponent"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::getProposal
+"Get the proposal.
+
+Returns
+-------
+proposal : list of :class:`~openturns.Distribution`
+    The :math:`d`-tuple of Distributions :math:`p_j (1 \leq j \leq d)` from
+    which the transition kernels of the random walk Metropolis-Hastings
+    algorithm are defined; look at the paragraph dedicated to the constructors
+    of the class above."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomWalkMetropolisHastings::setProposal
+"Set the proposal.
+
+Parameters
+----------
+proposal : list of :class:`~openturns.Distribution`
+    The :math:`d`-tuple of Distributions :math:`p_j (1 \leq j \leq d)` from
+    which the transition kernels of the random walk Metropolis-Hastings
+    algorithm are defined; look at the paragraph dedicated to the constructors
+    of the class above."

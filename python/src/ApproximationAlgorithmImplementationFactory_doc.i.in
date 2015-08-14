@@ -1,0 +1,25 @@
+%feature("docstring") OT::ApproximationAlgorithmImplementation
+"Approximation algorithm implementation factory.
+
+Available constructor:
+    ApproximationAlgorithmImplementationFactory(*ApproxAlgoImpFac*)
+
+Parameters
+----------
+ApproxAlgoImpFac : ApproximationAlgorithmImplementationFactory
+    An ApproximationAlgorithmImplementationFactory which is a 
+    :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` or a 
+    :class:`~openturns.LeastSquaresMetaModelSelectionFactory`.
+
+Notes
+-----
+It represents a generic class (virtual) for different factories like
+:class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` or
+    :class:`~openturns.LeastSquaresMetaModelSelectionFactory`
+
+This class is not usable because it has sense only whithin the
+:class:`~openturns.FunctionalChaosAlgorithm`.
+
+See also
+--------
+PenalizedLeastSquaresAlgorithmFactory, LeastSquaresMetaModelSelectionFactory"

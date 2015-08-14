@@ -1,0 +1,9 @@
+%feature("docstring") OT::GammaFactory
+"Gamma factory.
+
+Available constructor:
+    GammaFactory()
+
+See also
+--------
+DistributionFactory"

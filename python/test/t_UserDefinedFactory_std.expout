@@ -1,0 +1,8 @@
+sample= class=NumericalSample name=Unnamed description=[,] implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=2 data=[class=NumericalPoint name=Unnamed dimension=2 values=[1,1.5],class=NumericalPoint name=Unnamed dimension=2 values=[2,2.5],class=NumericalPoint name=Unnamed dimension=2 values=[3,3.5]]
+Estimated distribution= class=UserDefined name=UserDefined dimension=2 collection=[(class=NumericalPoint name=Unnamed dimension=2 values=[1,1.5],0.333333),(class=NumericalPoint name=Unnamed dimension=2 values=[2,2.5],0.333333),(class=NumericalPoint name=Unnamed dimension=2 values=[3,3.5],0.333333)]
+Default distribution= UserDefined({x = [0], p = 1})
+Sample                = 0 : [ 1   1.5 ]
+1 : [ 2   2.5 ]
+2 : [ 3   3.5 ]
+Estimated UserDefined= UserDefined({x = [1,1.5], p = 0.333333}, {x = [2,2.5], p = 0.333333}, {x = [3,3.5], p = 0.333333})
+Default UserDefined= UserDefined({x = [0], p = 1})

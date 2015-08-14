@@ -1,0 +1,42 @@
+> restart:
+> with(Statistics):
+> assume(alpha>0);
+> gumbel_:=RandomVariable(Gumbel(beta,1/alpha)):
+> pdf:=PDF(gumbel_,x);
+> mu_:=Mean(gumbel_);
+> var_:=Variance(gumbel_);
+> assume(v>0):
+> sol:=allvalues(solve({mu_=m,var_=v},{alpha,beta})):
+> map(_x->collect(simplify(_x,symbolic),m),subs(sol[1],v=sigma^2,[alpha,
+> beta]));
+> 
+
+ pdf := alpha~ exp(-(x - beta) alpha~) exp(-exp(-(x - beta) alpha~))
+
+
+                                       gamma
+                         mu_ := beta + ------
+                                       alpha~
+
+
+                                       2
+                                     Pi
+                          var_ := ---------
+                                          2
+                                  6 alpha~
+
+
+                     1/2                      1/2
+                    6    Pi      gamma sigma 6
+                   [-------, m - ----------------]
+                    6 sigma             Pi
+
+> map(_x->collect(simplify(_x,symbolic),m),subs(sol[1],v=sigma^2,[alpha,
+> beta]));
+
+                     1/2                      1/2
+                    6    Pi      gamma sigma 6
+                   [-------, m - ----------------]
+                    6 sigma             Pi
+
+> 

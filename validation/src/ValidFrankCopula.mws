@@ -1,0 +1,92 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 86 "restart:\nCDF_frank:
+=-log(1+(exp(-theta*u)-1)*(exp(-theta*v)-1)/(exp(-theta)-1))/theta;" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%*CDF_frankG,$*&-%#lnG6#,&\"\"\"F+*(
+,&-%$expG6#,$*&%&thetaGF+%\"uGF+!\"\"F+F+F5F+,&-F/6#,$*&F3F+%\"vGF+F5F
++F+F5F+,&-F/6#,$F3F5F+F+F5F5F+F+F3F5F5" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 45 "PDF_frank:=factor(diff(diff(CDF_frank,u),v));" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%*PDF_frankG,$*,-%$expG6#,$*&%&thetaG
+\"\"\"%\"uGF-!\"\"F-F,F--F(6#,$*&F,F-%\"vGF-F/F-,&-F(6#,$F,F/F-F-F/F-,
+*F6F-*&F'F-F0F-F-F'F/F0F/!\"#F/" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 
+1 0 60 "algsubs(exp(-theta*v)=V,algsubs(exp(-theta*u)=U,PDF_frank));" 
+}}{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*,%&thetaG\"\"\",&-%$expG6#,$F%!\"
+\"F&F&F,F&%\"UGF&%\"VGF&,*F(F&F.F,*&F-F&F.F&F&F-F,!\"#F," }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 61 "du:=factor(diff(PDF_frank,u));\ndv:
+=factor(diff(PDF_frank,v));" }}{PARA 0 "> " 0 "" {MPLTEXT 1 0 69 "with
+(codegen,optimize,makeproc,cost,prep2trans):\noptimize(CDF_frank);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#>%#duG,$*.%&thetaG\"\"#-%$expG6#,$*&F'
+\"\"\"%\"uGF.!\"\"F.-F*6#,$*&F'F.%\"vGF.F0F.,&-F*6#,$F'F0F.F.F0F.,*F7F
+0*&F)F.F1F.F.F)F0F1F.F.,*F7F.F;F.F)F0F1F0!\"$F0" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%#dvG,$*.%&thetaG\"\"#-%$expG6#,$*&F'\"\"\"%\"uGF.!\"
+\"F.-F*6#,$*&F'F.%\"vGF.F0F.,&-F*6#,$F'F0F.F.F0F.,*F7F0*&F)F.F1F.F.F)F
+.F1F0F.,*F7F.F;F.F)F0F1F0!\"$F0" }}{PARA 11 "" 1 "" {XPPMATH 20 "6'/%#
+t2G-%$expG6#,$*&%&thetaG\"\"\"%\"uGF+!\"\"/%#t5G-F&6#,$*&F*F+%\"vGF+F-
+/%#t8G-F&6#,$F*F-/%$t13G-%#lnG6#,&F+F+*(,&F$F+F+F-F+,&F/F+F+F-F+,&F6F+
+F+F-F-F+/%$t16G,$*&F;F+F*F-F-" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 
+0 27 "optimize(du);\noptimize(dv);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6*
+/%#t1G*$)%&thetaG\"\"#\"\"\"/%#t3G-%$expG6#,$*&F'F)%\"uGF)!\"\"/%#t6G-
+F-6#,$*&F'F)%\"vGF)F2/%#t8G-F-6#,$F'F2/%$t10G*&F+F)F4F)/%$t13G,*F;F)F@
+F)F+F2F4F2/%$t14G*$)FCF(F)/%$t19G,$*0F$F)F+F)F4F),&F;F)F)F2F),*F;F2F@F
+)F+F2F4F)F)FCF2FFF2F2" }}{PARA 11 "" 1 "" {XPPMATH 20 "6*/%#t1G*$)%&th
+etaG\"\"#\"\"\"/%#t3G-%$expG6#,$*&F'F)%\"uGF)!\"\"/%#t6G-F-6#,$*&F'F)%
+\"vGF)F2/%#t8G-F-6#,$F'F2/%$t10G*&F+F)F4F)/%$t13G,*F;F)F@F)F+F2F4F2/%$
+t14G*$)FCF(F)/%$t19G,$*0F$F)F+F)F4F),&F;F)F)F2F),*F;F2F@F)F+F)F4F2F)FC
+F2FFF2F2" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 14 "factor(du/dv);
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*&,*-%$expG6#,$%&thetaG!\"\"F**&-F
+&6#,$*&F)\"\"\"%\"uGF0F*F0-F&6#,$*&F)F0%\"vGF0F*F0F0F,F*F2F0F0,*F%F*F+
+F0F,F0F2F*F*" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 68 "theta:=2.5;
+evalf(Int(Int((u-0.5)*(v-0.5)*PDF_frank,u=0..1),v=0..1));" }}{PARA 0 "
+> " 0 "" {MPLTEXT 1 0 0 "" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%&thetaG
+$\"#D!\"\"" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"+.g^8K!#6" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 25 "theta:='theta';CDF_frank;" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%&thetaGF$" }}{PARA 11 "" 1 "" {XPPMATH 20 
+"6#,$*&-%#lnG6#,&\"\"\"F)*(,&-%$expG6#,$*&%&thetaGF)%\"uGF)!\"\"F)F)F3
+F),&-F-6#,$*&F1F)%\"vGF)F3F)F)F3F),&-F-6#,$F1F3F)F)F3F3F)F)F1F3F3" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 25 "limit(CDF_frank,theta=0);" }
+}{PARA 11 "" 1 "" {XPPMATH 20 "6#*&%\"uG\"\"\"%\"vGF%" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 86 "factor((subs(v=u,(expand(1+(exp(-th
+eta*u)-1)*(exp(-theta*v)-1)/(exp(-theta)-1)))))-1);" }}{PARA 11 "" 1 "
+" {XPPMATH 20 "6#,$**-%$expG6#%&thetaG\"\"\",&-F&6#*&F(F)%\"uGF)F)F)!
+\"\"\"\"#,&F)F/F%F)F/F+!\"#F/" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 
+0 35 "f:=(exp(-u*theta))/(exp(-theta)-1);" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%\"fG*&-%$expG6#,$*&%&thetaG\"\"\"%\"uGF,!\"\"F,,&-F'6
+#,$F+F.F,F,F.F." }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 16 "g:=solve
+(f=y,u);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%\"gG*&,&-%#lnG6#,$*&%\"y
+G\"\"\",&F-!\"\"-%$expG6#%&thetaGF-F-F/F/F3F-F-F3F/" }}}{EXCHG {PARA 
+0 "> " 0 "" {MPLTEXT 1 0 55 "map(expand,subs(y=f+subs(u=v,f),g));\nexp
+and(CDF_frank);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#*&,&-%#lnG6#*&,&*&-
+%$expG6#,$*&%&thetaG\"\"\"%\"uGF1!\"\"F1,&-F,6#,$F0F3F1F1F3F3F3*&-F,6#
+,$*&F0F1%\"vGF1F3F1F4F3F3F1,&F1F3-F,6#F0F1F1F3F0F1F1F0F3" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#,$*&-%#lnG6#,&\"\"\"F)*(,&-%$expG6#,$*&%&thetaGF
+)%\"uGF)!\"\"F)F)F3F),&-F-6#,$*&F1F)%\"vGF)F3F)F)F3F),&-F-6#,$F1F3F)F)
+F3F3F)F)F1F3F3" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 64 "factor((1
++(exp(-theta*u)-1)*(exp(-theta*v)-1)/(exp(-theta)-1)));" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#*&,*-%$expG6#,$%&thetaG!\"\"\"\"\"*&-F&6#,$*&F)F
++%\"uGF+F*F+-F&6#,$*&F)F+%\"vGF+F*F+F+F-F*F2F*F+,&F%F+F+F*F*" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 20 "subs(v=0,CDF_frank);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#,$*&-%#lnG6#,&\"\"\"F)*(,&-%$expG6#,$*
+&%&thetaGF)%\"uGF)!\"\"F)F)F3F),&-F-6#\"\"!F)F)F3F),&-F-6#,$F1F3F)F)F3
+F3F)F)F1F3F3" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 148 "restart:\n
+phi:=-log((exp(-theta*t)-1)/(exp(-theta)-1));\npsi:=solve(phi=y,t);\n#
+assume(p>0, p < 1, theta>0):\nq:=simplify(solve(subs(y=2*phi,psi)=p,t)
+);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#>%$phiG,$-%#lnG6#*&,&-%$expG6#,$
+*&%&thetaG\"\"\"%\"tGF1!\"\"F1F1F3F1,&-F,6#,$F0F3F1F1F3F3F3" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%$psiG*&,(-%#lnG6#,(\"\"\"F+-%$expG6#%&thet
+aG!\"\"-F-6#,&%\"yGF+F/F+F+F0F4F+F/F+F+F/F0" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%\"qG*&,&-%#lnG6#,(*&*&,&\"\"\"!\"\"-%$expG6#*&%\"pGF.
+%&thetaGF.F.F.,&F.F/-F16#F5F.F/#F.\"\"#-F16#,$*(F:F/,&F4F.F.F/F.F5F.F/
+F.F.*&F,F9-F16#,$*(F:F/F5F.,&\"\"$F/F4F.F.F/F.F/F7F.F/F5F.F.F5F/" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 205 "diff(simplify(q-(\n   1-log
+(\n         (sqrt(\n               (exp(theta*p)-1)/\n               (
+exp(theta)-1)*exp(theta)/exp(theta*p)\n              )*(1-exp(theta))+
+exp(theta)\n         )/theta)),symbolic),t);" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#\"\"!" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}
+}}{MARK "6 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 
+2 33 1 1 }

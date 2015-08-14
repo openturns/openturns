@@ -1,0 +1,1 @@
+algo = class=LeastSquaresMetaModelSelection basisSequenceFactory=class=LAR fittingAlgorithm=class=CorrectedLeaveOneOut

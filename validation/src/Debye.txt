@@ -1,0 +1,71 @@
+> restart:
+> solve(t/(t+2)=y,t);
+
+                                  2 y
+                               - ------
+                                 -1 + y
+
+> help(Debye);
+Error, Could not find any help on "Debye"
+
+> solve(int(u/(exp(u)-1),u=0..x)/x=y,x);
+
+                                            2                     2
+  ln(-exp(RootOf(-6 _Z ln(-exp(_Z) + 1) + Pi  + 3 ln(-exp(_Z) + 1)
+
+         - 6 polylog(2, -exp(_Z) + 1) + 6 y ln(-exp(_Z) + 1))) + 1)
+
+> debye:=Int(u/(exp(u)-1),u=0..x)/x:
+> eval(debye);
+> pol:=convert(series(debye,x=4,20),polynom):
+
+                               x
+                              /
+                             |       u
+                        1/x  |   ---------- du
+                             |   exp(u) - 1
+                            /
+                              0
+
+> plot(log(abs(pol-debye)),x=0..15);
+Warning, computation interrupted
+
+> plot(debye-pol,x=0..5);
+
+> allvalues(solve(value(debye)=y,x));
+
+  ln(-exp(RootOf(6 _Z ln(-exp(_Z) + 1) + 6 polylog(2, -exp(_Z) + 1)
+
+                                  2                     2
+         - 6 ln(-exp(_Z) + 1) - Pi  - 3 ln(-exp(_Z) + 1)
+
+                               2
+         + 6 y ln(-exp(_Z) + 1) )) + 1)
+
+> plot(1-4*(1-debye)/x,x=-5..5);
+
+> series(1-4*(1-debye)/x,x);
+
+                                      3      4
+                       1/9 x - 1/900 x  + O(x )
+
+> Digits:=30;fsolve((x/9-x^3/900)/(1-4*(1-value(debye))/x)-1=-1e-16,x);
+
+                             Digits := 30
+
+
+                 -0.000875677785080733459909609107099
+
+> plot((abs((x/9-x^3/900)/(1-4*(1-value(debye))/x)-1)),x=-0.001..0.001);
+
+> k:=2:limit(int(t^k/(exp(t)-1),t=0..x)/x^k*k,x=0,left);
+
+                                  1
+
+> expand(factor(n/x^n*x^n*(1/n-x/(2*(n+1)))));
+
+                        n       1        x n
+                      ----- + ----- - ---------
+                      n + 1   n + 1   2 (n + 1)
+
+> 

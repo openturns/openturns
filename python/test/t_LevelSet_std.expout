@@ -1,0 +1,158 @@
+levelSet1= {x | f(x) <= 1} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   x^4 + y^4
+  gradient   :   
+  | d(y0) / d(x) = 4*x^3 
+  | d(y0) / d(y) = 4*y^3 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 12*x^2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 12*y^2 
+
+levelSet1 contains  [-0.5, -0.5] ?  True
+levelSet1 contains  [0.5, 0.0] ?  True
+levelSet1 contains  [1.5, 0.0] ?  False
+levelSet2= {x | f(x) <= 1} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x-1)^2 + y^2
+  gradient   :   
+  | d(y0) / d(x) = (-2)+(2*x) 
+  | d(y0) / d(y) = 2*y 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 2 
+
+levelSet2 contains  [-0.5, -0.5] ?  False
+levelSet2 contains  [0.5, 0.0] ?  True
+levelSet2 contains  [1.5, 0.0] ?  True
+intersection of  {x | f(x) <= 1} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   x^4 + y^4
+  gradient   :   
+  | d(y0) / d(x) = 4*x^3 
+  | d(y0) / d(y) = 4*y^3 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 12*x^2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 12*y^2 
+  and  {x | f(x) <= 1} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x-1)^2 + y^2
+  gradient   :   
+  | d(y0) / d(x) = (-2)+(2*x) 
+  | d(y0) / d(y) = 2*y 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 2 
+  equals  {x | f(x) <= 0} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x0 > 1) + (x1 > 1) > 0.0
+  o
+[NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   x^4 + y^4
+  gradient   :   
+  | d(y0) / d(x) = 4*x^3 
+  | d(y0) / d(y) = 4*y^3 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 12*x^2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 12*y^2 
+,NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x-1)^2 + y^2
+  gradient   :   
+  | d(y0) / d(x) = (-2)+(2*x) 
+  | d(y0) / d(y) = 2*y 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 2 
+]
+  gradient   :   NumericalMathGradientImplementation
+  hessian    :   NumericalMathHessianImplementation
+intersection contains  [-0.5, -0.5] ?  False
+intersection contains  [0.5, 0.0] ?  True
+intersection contains  [1.5, 0.0] ?  False
+join of  {x | f(x) <= 1} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   x^4 + y^4
+  gradient   :   
+  | d(y0) / d(x) = 4*x^3 
+  | d(y0) / d(y) = 4*y^3 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 12*x^2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 12*y^2 
+  and  {x | f(x) <= 1} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x-1)^2 + y^2
+  gradient   :   
+  | d(y0) / d(x) = (-2)+(2*x) 
+  | d(y0) / d(y) = 2*y 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 2 
+  equals  {x | f(x) <= 0} with f=
+NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x0 > 1) * (x1 > 1) > 0.0 
+  o
+[NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   x^4 + y^4
+  gradient   :   
+  | d(y0) / d(x) = 4*x^3 
+  | d(y0) / d(y) = 4*y^3 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 12*x^2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 12*y^2 
+,NumericalMathFunction :
+  input  : [x,y]
+  output : [y0]
+  evaluation :   (x-1)^2 + y^2
+  gradient   :   
+  | d(y0) / d(x) = (-2)+(2*x) 
+  | d(y0) / d(y) = 2*y 
+
+  hessian    :   
+  |   d^2(y0) / d(x)^2 = 2 
+  | d^2(y0) / d(y)d(x) = 0 
+  |   d^2(y0) / d(y)^2 = 2 
+]
+  gradient   :   NumericalMathGradientImplementation
+  hessian    :   NumericalMathHessianImplementation
+join contains  [-0.5, -0.5] ?  True
+join contains  [0.5, 0.0] ?  True
+join contains  [1.5, 0.0] ?  True

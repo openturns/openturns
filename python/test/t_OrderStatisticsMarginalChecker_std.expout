@@ -1,0 +1,6 @@
+marginals= [class=Uniform name=Uniform dimension=1 a=-1 b=1, class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.71828 b=3.32012, class=Triangular name=Triangular dimension=1 a=3 m=4 b=5, class=Uniform name=Uniform dimension=1 a=5 b=6, class=Uniform name=Uniform dimension=1 a=5.5 b=6.5]
+isCompatible= True
+partition= [0,2]
+marginals= [class=Uniform name=Uniform dimension=1 a=-1 b=1, class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.71828 b=3.32012, class=Triangular name=Triangular dimension=1 a=3 m=4 b=5, class=Uniform name=Uniform dimension=1 a=5 b=6, class=Uniform name=Uniform dimension=1 a=5.5 b=6.5, class=Uniform name=Uniform dimension=1 a=0 b=1]
+isCompatible= False
+partition= [0,2]

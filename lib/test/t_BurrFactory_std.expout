@@ -1,0 +1,8 @@
+Distribution          =class=Burr name=Burr dimension=1 c=2.5 k=1.5
+Estimated distribution=class=Burr name=Burr dimension=1 c=2.48352 k=1.48109
+Default distribution=class=Burr name=Burr dimension=1 c=1 k=1
+Distribution from parameters=class=Burr name=Burr dimension=1 c=2.5 k=1.5
+Burr          =class=Burr name=Burr dimension=1 c=2.5 k=1.5
+Estimated burr=class=Burr name=Burr dimension=1 c=2.48352 k=1.48109
+Default burr=class=Burr name=Burr dimension=1 c=1 k=1
+Burr from parameters=class=Burr name=Burr dimension=1 c=2.5 k=1.5

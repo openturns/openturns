@@ -1,0 +1,140 @@
+%feature("docstring") OT::Trapezoidal
+"Trapezoidal distribution.
+
+Available constructors:
+    Trapezoidal(*a=-2.0, b=-1.0, c=1.0, d=2.0*)
+
+Parameters
+----------
+a : float, :math:`a < d`
+    Lower bound.
+b : float, :math:`a \leq b < c`
+    Level start.
+c : float, :math:`b < c \leq d`
+    Level end.
+d : float, :math:`c \leq d`
+    Upper bound.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \left\{
+                 \begin{array}{ll}
+                 \displaystyle h \frac{x - a}{b - a} & a \leq x < b \\
+                 \displaystyle h                     & b \leq x < c \\
+                 \displaystyle h \frac{d - x}{d - c} & c \leq x \leq d \\
+                 \end{array}
+             \right., \quad x \in [a, d]
+
+with: :math:`h=\frac{2}{d+c-a-b}`
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{h}{6}(d^2 + cd + c^2 - b^2 - ab - a^2)  \\
+        \Var{X} & = &  \frac{h^2}{72}(d^4 + 2cd^3 - 3bd^3 - 3ad^3 ...\\
+                    & & - 3bcd^2 - 3acd^2 + 4b^2d^2 + 4abd^2 ...\\
+                    & & + 4a^2d^2 + 2c^3d - 3bc^2d - 3ac^2d ...\\
+                    & & + 4b^2cd + 4abcd + 4a^2cd - 3b^3d - 3ab^2d ...\\
+                    & & - 3a^2bd - 3a^3d + c^4 - 3bc^3 - 3ac^3 + 4b^2c^2 ...\\
+                    & & + 4abc^2 + 4a^2c^2 - 3b^3c - 3ab^2c - 3a^2bc ...\\
+                    & & - 3a^3c + b^4 + 2ab^3 + 2a^3b + a^4)
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Trapezoidal(1.0, 2.3, 4.5, 5.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::getA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::getB
+"Accessor to the distribution's level start.
+
+Returns
+-------
+b : float
+    Level start."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::getC
+"Accessor to the distribution's level end.
+
+Returns
+-------
+c : float
+    Level end."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::getD
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+d : float
+    Upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::setA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float, :math:`a \leq b < c \leq d`
+    Lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::setB
+"Accessor to the distribution's level start.
+
+Returns
+-------
+b : float, :math:`a \leq b < c \leq d`
+    Level start."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::setC
+"Accessor to the distribution's level end.
+
+Returns
+-------
+c : float, :math:`a \leq b < c \leq d`
+    Level end."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Trapezoidal::setD
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+d : float, :math:`a \leq b < c \leq d`
+    Upper bound."
+

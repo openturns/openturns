@@ -1,0 +1,134 @@
+%feature("docstring") OT::DirectionalSampling
+"Directional simulation.
+
+Available constructors:
+    DirectionalSampling(*event=ot.Event()*)
+
+    DirectionalSampling(*event, rootStrategy, samplingStrategy*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event we are computing the probability of.
+rootStrategy : :class:`~openturns.RootStrategy`
+    Strategy adopted to evaluate the intersections of each direction with the
+    limit state function and take into account the contribution of the
+    direction to the event probability. By default,
+    *rootStrategy = ot.RootStrategy(ot.SafeAndSlow())*.
+samplingStrategy : :class:`~openturns.SamplingStrategy`
+    Strategy adopted to sample directions. By default,
+    *samplingStrategy=ot.SamplingStrategy(ot.RandomDirection())*.
+
+Notes
+-----
+Using the probability distribution of a random vector :math:`\vect{X}`, we seek
+to evaluate the following probability:
+
+.. math::
+
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux
+        = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+
+Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
+vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
+which enables the definition of the event
+:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
+
+The directional simulation method is an accelerated sampling method. It implies
+a preliminary iso-probabilistic transformation, as for :class:`~openturns.FORM`
+and :class:`~openturns.SORM` methods; however, it remains based on sampling and
+is thus not an approximation method.
+In the transformed space, the (transformed) uncertain variables :math:`\vect{U}`
+are independent standard gaussian variables (mean equal to zero and standard
+deviation equal to 1).
+
+Roughly speaking, each simulation of the directional simulation algorithm is
+made of three steps. For the :math:`i^\textrm{th}` iteration, these steps are
+the following:
+
+- Let :math:`\cS = \big\{ \vect{u} \big| ||\vect{u}|| = 1 \big\}`. A point
+  :math:`P_i` is drawn randomly on :math:`\cS` according to an uniform
+  distribution.
+
+- In the direction starting from the origin and passing through :math:`P_i`,
+  solutions of the equation :math:`g(\vect{X},\vect{d}) = 0` (i.e. limits of
+  :math:`\cD_f`) are searched. The set of values of :math:`\vect{u}` that
+  belong to :math:`\cD_f` is deduced for these solutions: it is a subset
+  :math:`I_i \subset \Rset`.
+
+- Then, one calculates the probability :math:`q_i = \Prob{ ||\vect{U}|| \in I_i }`.
+  By property of independent standard variable, :math:`||\vect{U}||^2` is a
+  random variable distributed according to a chi-square distribution, which
+  makes the computation effortless.
+
+Finally, the estimate of the probability :math:`P_f` after :math:`N` simulations
+is the following:
+
+.. math::
+
+    \widehat{P}_{f,DS} = \frac{1}{N} \sum_{i=1}^N q_i
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> # We create a 'usual' RandomVector from the Distribution
+>>> vect = ot.RandomVector(myDistribution)
+>>> # We create a composite random vector
+>>> output = ot.RandomVector(myFunction, vect)
+>>> # We create an Event from this RandomVector
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a DirectionalSampling algorithm
+>>> myAlgo = ot.DirectionalSampling(myEvent, ot.MediumSafe(), ot.OrthogonalDirection())
+>>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.169716"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DirectionalSampling::getRootStrategy
+"Get the root strategy.
+
+Returns
+-------
+strategy : :class:`~openturns.RootStrategy`
+    Root strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DirectionalSampling::setRootStrategy
+"Set the root strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.RootStrategy`
+    Root strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DirectionalSampling::getSamplingStrategy
+"Get the direction sampling strategy.
+
+Returns
+-------
+strategy : :class:`~openturns.SamplingStrategy`
+    Direction sampling strategy adopted."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DirectionalSampling::setSamplingStrategy
+"Set the direction sampling strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.SamplingStrategy`
+    Direction sampling strategy adopted."

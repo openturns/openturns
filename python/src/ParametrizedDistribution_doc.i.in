@@ -1,0 +1,35 @@
+%feature("docstring") OT::ParametrizedDistribution
+"Parametrized distribution.
+
+Available constructors:
+    ParametrizedDistribution(*parameters*)
+
+Parameters
+----------
+parameters : :class:`~openturns.DistributionParameters`
+    Parameters of the distribution to be created.
+
+See also
+--------
+Distribution
+
+Notes
+-----
+A *ParametrizedDistribution* object enables to create a distribution with
+non-native parameters defined thanks to the class
+:class:`~openturns.DistributionParameters`.
+
+Examples
+--------
+Create the parameters of the Gamma distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.GammaMuSigma(1.5, 2.5, -0.5)
+
+Create the distribution:
+
+>>> distribution = ot.ParametrizedDistribution(parameters)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)"

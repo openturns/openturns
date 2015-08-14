@@ -1,0 +1,9 @@
+mean=[0,0,0]
+sigma=[1,2,3]
+R=[1,0.5,0;0.5,1,0.5;0,0.5,1]
+C=diag(sigma)*R*diag(sigma)
+cholesky=chol(C)'
+inverseCholesky=cholesky^(-1)
+inverseR=R^(-1)
+inverseCovariance=C^(-1)
+normalizationFactor=1/sqrt(det(C))

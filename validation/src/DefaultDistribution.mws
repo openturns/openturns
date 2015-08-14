@@ -1,0 +1,58 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }{PSTYLE "" 11 12 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 }1 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 555 "restart:\na:=-1:\nb
+:=1:\nPhiA:=int(1/sqrt(2*Pi)*exp(-x^2/2),x=-infinity..a):\nevalf[16](P
+hiA);\nPhiB:=int(1/sqrt(2*Pi)*exp(-x^2/2),x=-infinity..b);\nevalf[16](
+PhiB);\nphiA:=1/sqrt(2*Pi)*exp(-a^2/2);\nevalf[16](phiA);\nphiB:=1/sqr
+t(2*Pi)*exp(-b^2/2);\nevalf[16](phiB);\nnormalizationFactor:=1/(PhiB -
+ PhiA);\nevalf[16](normalizationFactor);\nphiANorm:=phiA*normalization
+Factor;\nevalf[16](phiANorm);\nphiBNorm:=phiB*normalizationFactor;\nev
+alf[16](phiBNorm);\nPhiANorm:=PhiA*normalizationFactor;\nevalf[16](Phi
+ANorm);\nPhiBNorm:=PhiB*normalizationFactor;\nevalf[16](PhiBNorm);" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1qXJRDb'e\"!#;" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%%PhiBG,$*&#\"\"\"\"\"#F(*(F)F'%#PiG#!\"\"F),&*(F)F-F)
+F'F+F'F(*&F'F(*(F)F'F+F'-%$erfG6#,$*&F)F-F)F'F(F(F(F(F(F(F(" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$\"1DaoguW8%)!#;" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%%phiAG,$*&#\"\"\"\"\"#F(*(F)F'%#PiG#!\"\"F)-%$expG6#F
+,F(F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1L9>Xsq>C!#;" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#>%%phiBG,$*&#\"\"\"\"\"#F(*(F)F'%#PiG#!\"\"F
+)-%$expG6#F,F(F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1L9>Xsq>C!#;
+" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%4normalizationFactorG*&\"\"\"F&,
+&*&#F&\"\"#F&*(F*F)%#PiG#!\"\"F*,&*(F*F.F*F)F,F)F&*&F)F&*(F*F)F,F)-%$e
+rfG6#,$*&F*F.F*F)F&F&F&F&F&F&F&*&#F&F*F&*(F*F)F,F-,&*(F*F.F*F)F,F)F&*&
+#F&F*F&F2F&F.F&F&F.F." }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1X:\\tZzk9
+!#:" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%)phiANormG,$*&#\"\"\"\"\"#F(*
+*F)F'%#PiG#!\"\"F)-%$expG6#F,F(,&*&F'F(*(F)F'F+F,,&*(F)F-F)F'F+F'F(*&F
+'F(*(F)F'F+F'-%$erfG6#,$*&F)F-F)F'F(F(F(F(F(F(F(*&#F(F)F(*(F)F'F+F,,&*
+(F)F-F)F'F+F'F(*&#F(F)F(F7F(F-F(F(F-F-F(F(" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"1Og8EXPWN!#;" }}{PARA 12 "" 1 "" {XPPMATH 20 "6#>%)p
+hiBNormG,$*&#\"\"\"\"\"#F(**F)F'%#PiG#!\"\"F)-%$expG6#F,F(,&*&F'F(*(F)
+F'F+F,,&*(F)F-F)F'F+F'F(*&F'F(*(F)F'F+F'-%$erfG6#,$*&F)F-F)F'F(F(F(F(F
+(F(F(*&#F(F)F(*(F)F'F+F,,&*(F)F-F)F'F+F'F(*&#F(F)F(F7F(F-F(F(F-F-F(F(
+" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1Og8EXPWN!#;" }}{PARA 12 "" 1 "
+" {XPPMATH 20 "6#>%)PhiANormG,$*&#\"\"\"\"\"#F(**F)F'%#PiG#!\"\"F),&*(
+F)F-F)F'F+F'F(*&#F(F)F(*(F)F'F+F'-%$erfG6#,$*&F)F-F)F'F(F(F(F-F(,&*&F'
+F(*(F)F'F+F,,&*(F)F-F)F'F+F'F(*&F'F(F2F(F(F(F(F(*&#F(F)F(*(F)F'F+F,F.F
+(F(F-F-F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1AxXnQ(RK#!#;" }}
+{PARA 12 "" 1 "" {XPPMATH 20 "6#>%)PhiBNormG,$*&#\"\"\"\"\"#F(**F)F'%#
+PiG#!\"\"F),&*(F)F-F)F'F+F'F(*&F'F(*(F)F'F+F'-%$erfG6#,$*&F)F-F)F'F(F(
+F(F(F(,&*&F'F(*(F)F'F+F,F.F(F(F(*&#F(F)F(*(F)F'F+F,,&*(F)F-F)F'F+F'F(*
+&#F(F)F(F1F(F-F(F(F-F-F(F(" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"1sdu'
+Q(RK7!#:" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 106 "evalf[20](1/(i
+nt(1/sqrt(2*Pi)*exp(-x^2/2),x=-infinity..1)-int(1/sqrt(2*Pi)*exp(-x^2/
+2),x=-infinity..-1)));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"5+3W:\\tZ
+zk9!#>" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 39 "evalf[20](1/(sqrt
+(3-2)*Beta(1/2,3/2)));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"51V8enBx>
+mj!#?" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 21 "evalf[20](sqrt(1/3
+));" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"5\\kdi*=p-Nx&!#?" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 24 "evalf[20](1/sqrt(2*Pi));" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6#$\"5%znK9S!GU*)R!#?" }}}{EXCHG {PARA 0 "> " 
+0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "5 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 
+1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

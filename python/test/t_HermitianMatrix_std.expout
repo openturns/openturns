@@ -1,0 +1,31 @@
+test : default constructor and string converter
+hermitianMatrix0 =  class=HermitianMatrix dimension=0 implementation=class=ComplexMatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+test : constructor with size, operator() and string converter
+hermitianMatrix1 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(0,0),(4,0)]
+test : copy constructor and string converter
+hermitianMatrix2 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(0,0),(4,0)]
+test : get dimensions methods
+hermitianMatrix1's nbRows =  2
+hermitianMatrix1's nbColumns =  2
+test  : conjugate method
+hermitianMatrix1 conjugate =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,-0),(3,-1),(0,0),(4,-0)]
+test : addition method
+sum1 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(6,0),(0,0),(8,0)]
+sum2 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(6,0),(0,0),(8,0)]
+sum1 equals sum2 =  True
+test : substraction method
+diff =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,0),(0,2),(0,0),(0,0)]
+test : matrix multiplication method
+prod =  class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(9,-6),(15,-3),(15,-3),(24,6)]
+test : multiplication with a numerical point method
+pt =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+ptResult =  [(7,-2),(11,1)]
+test : multiplication and division by a numerical scalar methods
+scalprod =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(3,2),(7,9),(0,0),(12,8)]
+scaldiv1 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.230769,-0.153846),(0.846154,-0.230769),(0,0),(0.923077,-0.615385)]
+scaldiv2 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.230769,-0.153846),(0.846154,-0.230769),(0,0),(0.923077,-0.615385)]
+scaldiv1 equals scaldiv2 =  True
+test : isEmpty method
+hermitianMatrix0 is empty =  True
+hermitianMatrix1 is empty =  False
+hermitianMatrix5 is empty =  True

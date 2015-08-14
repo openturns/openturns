@@ -1,0 +1,85 @@
+> restart:
+> assume(sigma>0):
+> p:=1/(sigma*sqrt(2*Pi))*exp(-(x-mu)^2/(2*sigma^2));
+> F:=int(p,x=-infinity..t);
+
+                                                2
+                              1/2       (x - mu)
+                             2    exp(- ---------)
+                                                2
+                                        2 sigma~
+                    p := 1/2 ---------------------
+                                          1/2
+                                 sigma~ Pi
+
+
+                                      1/2
+                                     2    (t - mu)
+                  F := 1/2 + 1/2 erf(-------------)
+                                       2 sigma~
+
+> m:=int(x*p,x=-infinity..infinity);
+> v:=int((x-m)^2*p,x=-infinity..infinity);
+> -int(2*(w-m)*subs(t=w,F),w=-infinity..m)+int(2*(w-m)*subs(t=w,1-F),w=m
+> ..infinity);
+> int(3*w^2*subs(t=m-w,F)-3*w^2*subs(t=w+m,1-F),w=0..infinity);
+> V:=2*Int(t*(1-subs(t=u+m,G(t))+subs(t=m-u,G(t))),t=0..infinity);
+
+                               m := mu
+
+
+                                        2
+                             v := sigma~
+
+
+                                     2
+                               sigma~
+
+
+                                  0
+
+
+                   infinity
+                  /
+                 |
+         V := 2  |          t (1 - G(u + mu) + G(mu - u)) dt
+                 |
+                /
+                  0
+
+> restart:
+> with(student):
+> assume(alpha>0):
+> II:=changevar(t=-alpha*log((1-v)/2),Int(2*t*(1-F(t-mu)+F(mu-t)),t=0..i
+> nfinity),v);
+> 
+
+           1
+          /
+         |             2
+  II :=  |   - 2 alpha~  ln(1/2 - v/2) (-1
+         |
+        /
+          -1
+
+         + F(-alpha~ ln(1/2 - v/2) - mu)
+
+         - F(mu + alpha~ ln(1/2 - v/2)))/(-1 + v) dv
+
+> subs(phi(t)=2*t*(1-F(t-mu)+F(mu-t)),II);
+
+                1
+               /
+              |     phi(-alpha~ ln(1/2 - v/2)) alpha~
+              |   - --------------------------------- dv
+              |                  -1 + v
+             /
+               -1
+
+> int(sin(x)^2,x=0..2*Pi);
+
+                                  Pi
+
+> plot(Pi/2*cosh(t)/(cosh(Pi*sinh(t))^2),t=2..3);
+
+> 

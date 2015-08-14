@@ -1,0 +1,89 @@
+%feature("docstring") OT::Description
+"Collection of strings.
+
+Available constructors:
+    Description(*size=0, value=' '*)
+
+    Description(*sequence*)
+
+Parameters
+----------
+size : int, :math:`size \geq 0`
+    Size of the collection.
+value : str
+    Value set to the *size* elements.
+sequence : sequence of str
+    Components of the vector.
+
+Examples
+--------
+>>> import openturns as ot
+
+Use the first constructor:
+
+>>> ot.Description()
+[]
+>>> ot.Description(2)
+[,]
+>>> ot.Description(2, 'C')
+[C,C]
+
+Use the second constructor:
+
+>>> vector = ot.Description(['P1', 'P2', 'P3'])
+>>> vector
+[P1,P2,P3]
+
+Use some functionalities:
+
+>>> vector[1] = 'P4'
+>>> vector
+[P1,P4,P3]
+>>> vector.add('P5')
+>>> vector
+[P1,P4,P3,P5]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Description::BuildDefault
+"Build a default description.
+
+Parameters
+----------
+size : int, :math:`size \geq 0`
+    Size of the collection.
+value : str
+    Prefixed label of the final labels. By default, it is equal to *Component*.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of dimension *size* built as: *value0, ..., valueN with N=size-1*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.Description.BuildDefault(3)
+[Component0,Component1,Component2]
+>>> ot.Description.BuildDefault(3, 'C')
+[C0,C1,C2]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Description::isBlank
+"Check if the description is blank.
+
+Returns
+-------
+isBlank : bool
+    *True* if all the components are empty.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vector = ot.Description(3)
+>>> vector.isBlank()
+True
+>>> vector = ot.Description(['P1', 'P2', ' '])
+>>> vector.isBlank()
+False"

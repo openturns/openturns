@@ -1,0 +1,3 @@
+algo= class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Triangular name=Triangular dimension=1 a=-1 m=0.3 b=1
+measure= class=Triangular name=Triangular dimension=1 a=-1 m=0.3 b=1
+new measure= class=Triangular name=Triangular dimension=1 a=-1 m=-0.2 b=1

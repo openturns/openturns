@@ -1,0 +1,213 @@
+> restart:
+> with(Statistics):
+> assume(u>0,alpha>0):
+> chisquare_:=RandomVariable(ChiSquare(nu)):
+> pdf:=subs(u=x,PDF(chisquare_,u));
+> ddf:=factor(diff(pdf,x));
+> cdf:=subs(u=x,CDF(chisquare_,u));
+> cf:=CharacteristicFunction(chisquare_,x);
+> mu_:=Mean(chisquare_);
+> evalf[25](mu_);
+> var_:=Variance(chisquare_);
+> evalf[25](sqrt(var_));
+> evalf[25](var_);
+> skew_:=simplify((Skewness(chisquare_)));
+> evalf[25](skew_);
+> kurt_:=simplify((Kurtosis(chisquare_)));
+> evalf[25](kurt_);
+> #qdf:=Quantile(chisquare_,p);
+> qdf:=proc(q,valnum)
+>   fsolve(subs(valnum,cdf)=q,x)
+> end:
+> pdfgr:=[diff(pdf,nu)];
+> cdfgr:=[diff(cdf,nu)];
+> valnum:=nu=1.5;
+> evalf(subs(valnum,x=1,ddf));
+> evalf(subs(valnum,x=1,pdf));
+> evalf(subs(valnum,x=1,cdf));
+> evalf(subs(valnum,x=1,cf));
+> evalf(subs(valnum,x=1,map(_x->_x,pdfgr)));
+> evalf(subs(valnum,x=1,cdfgr));
+> evalf(qdf(0.95,valnum));
+> evalf(subs(valnum,mu_));
+> evalf(subs(valnum,sqrt(var_)));
+> evalf(subs(valnum,skew_));
+> evalf(subs(valnum,kurt_));
+> evalf(subs(valnum,var_));
+
+                            / nu     \
+                            |---- - 1|
+                            \ 2      /
+                           x           exp(- x/2)
+                    pdf := ----------------------
+                             / nu \
+                             |----|
+                             \ 2  /        nu
+                            2       GAMMA(----)
+                                           2
+
+
+                       / nu     \
+                       |---- - 1|
+                       \ 2      /
+                      x           exp(- x/2) (-2 + nu - x)
+           ddf := 1/2 ------------------------------------
+                              / nu \
+                              |----|
+                              \ 2  /        nu
+                             2       GAMMA(----) x
+                                            2
+
+
+                                       nu
+                                GAMMA(----, x/2)
+                                       2
+                     cdf := 1 - ----------------
+                                         nu
+                                  GAMMA(----)
+                                         2
+
+
+                                       /   nu \
+                                       |- ----|
+                                       \   2  /
+                      cf := (1 - 2 I x)
+
+
+                              mu_ := nu
+
+
+                                  nu
+
+
+                             var_ := 2 nu
+
+
+                                                1/2
+                   1.414213562373095048801689 nu
+
+
+                                2. nu
+
+
+                                       1/2
+                                    2 2
+                           skew_ := ------
+                                      1/2
+                                    nu
+
+
+                      2.828427124746190097603378
+                      --------------------------
+                                  1/2
+                                nu
+
+
+                                  3 (4 + nu)
+                         kurt_ := ----------
+                                      nu
+
+
+                             3. (4. + nu)
+                             ------------
+                                  nu
+
+
+                  / nu     \
+                  |---- - 1|
+                  \ 2      /
+                 x           exp(- x/2) ln(2)
+  pdfgr := [-1/2 ----------------------------
+                      / nu \
+                      |----|
+                      \ 2  /        nu
+                     2       GAMMA(----)
+                                    2
+
+                / nu     \
+                |---- - 1|
+                \ 2      /                 nu
+               x           exp(- x/2) Psi(----)
+                                           2
+         - 1/2 --------------------------------
+                      / nu \
+                      |----|
+                      \ 2  /        nu
+                     2       GAMMA(----)
+                                    2
+
+                / nu     \
+                |---- - 1|
+                \ 2      /
+               x           ln(x) exp(- x/2)
+         + 1/2 ----------------------------]
+                    / nu \
+                    |----|
+                    \ 2  /        nu
+                   2       GAMMA(----)
+                                  2
+
+
+              /           nu
+  cdfgr := [- |1/2 GAMMA(----, x/2) ln(x/2)
+              \           2
+
+                                              nu             \   /
+         + 1/2 MeijerG([[], [1, 1]], [[0, 0, ----], []], x/2)|  /
+                                              2              / /
+
+                                 nu             nu
+                          GAMMA(----, x/2) Psi(----)
+               nu                2              2
+        GAMMA(----) + 1/2 --------------------------]
+               2                        nu
+                                 GAMMA(----)
+                                        2
+
+
+                          valnum := nu = 1.5
+
+
+                            -0.2207281535
+
+
+                             0.2943042047
+
+
+                             0.5279371097
+
+
+                    0.3689252084 + 0.4036879325 I
+
+
+                            [0.0577886465]
+
+
+                           [-0.2917142294]
+
+
+                             4.980195284
+
+
+                                 1.5
+
+
+                             1.732050807
+
+
+                             2.309401076
+
+
+                             11.00000000
+
+
+                                 3.0
+
+> combine(factor(pdfgr[1]/pdf),ln);
+
+                                         1/2  1/2
+                              nu        2    x
+                    -1/2 Psi(----) + ln(---------)
+                              2             2
+
+> 

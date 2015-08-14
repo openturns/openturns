@@ -1,0 +1,4 @@
+usr/lib/libOT*.so.0*
+usr/lib/openturns-1.*/wrappers/wrapper*.dtd
+usr/lib/openturns-1.*/wrappers/generic.*
+etc/openturns-1.*

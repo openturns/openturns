@@ -1,0 +1,37 @@
+restart:
+
+a := [0, 1/2, 1]:
+f    := product((abs(4 * x[i] - 2) + a[i]) / (1 + a[i]), i=1..3):
+mu   := int(int(int(f, x[1]=0..1), x[2]=0..1), x[3]=0..1):
+f1   := int(int(f, x[2]=0..1), x[3]=0..1) - mu:
+f2   := int(int(f, x[3]=0..1), x[1]=0..1) - mu:
+f3   := int(int(f, x[1]=0..1), x[2]=0..1) - mu:
+f12  := int(f, x[3]=0..1) - mu - f1 - f2:
+f23  := int(f, x[1]=0..1) - mu - f2 - f3:
+f31  := int(f, x[2]=0..1) - mu - f3 - f1:
+f123 := f - mu - f1 - f2 - f3 - f12 - f23 - f31:
+var  := int(int(int(f^2, x[1]=0..1), x[2]=0..1), x[3]=0..1) - mu^2:
+D1   := int(f1^2, x[1]=0..1):
+D2   := int(f2^2, x[2]=0..1):
+D3   := int(f3^2, x[3]=0..1):
+D12  := int(int(f12^2, x[1]=0..1), x[2]=0..1):
+D23  := int(int(f23^2, x[2]=0..1), x[3]=0..1):
+D31  := int(int(f31^2, x[3]=0..1), x[1]=0..1):
+D123 := int(int(int(f123^2, x[1]=0..1), x[2]=0..1), x[3]=0..1):
+S1   := D1 / var:
+S2   := D2 / var:
+S3   := D3 / var:
+S12  := D12 / var:
+S23  := D23 / var:
+S31  := D31 / var:
+S123 := D123 / var:
+m    := [mu, evalf(mu)];
+v    := [var, evalf(var)];
+s1   := [S1, evalf(S1)];
+s2   := [S2, evalf(S2)];
+s3   := [S3, evalf(S3)];
+s12  := [S12, evalf(S12)];
+s23  := [S23, evalf(S23)];
+s31  := [S31, evalf(S31)];
+s123 := [S123, evalf(S123)];
+

@@ -1,0 +1,9 @@
+%feature("docstring") OT::MeixnerDistributionFactory
+"Meixner Distribution factory.
+
+Available constructor:
+    MeixnerDistributionFactory()
+
+See also
+--------
+DistributionFactory"

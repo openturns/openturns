@@ -1,0 +1,59 @@
+%feature("docstring") OT::BlendedStep
+"Blended step.
+
+Available constructors:
+    BlendedStep(*epsilon, eta=1.*)
+
+Parameters
+----------
+epsilon : sequence of float
+    Finite difference step factors for each dimension.
+eta : positive float, sequence of positive float with the same dimension as *epsilon*
+    Finite difference step offsets for each dimension.
+
+Notes
+-----
+*BlendedStep* defines a list of finite difference steps equal to:
+*epsilon (|x| + eta)*.
+
+See also
+--------
+ConstantStep
+
+Examples
+--------
+>>> import openturns as ot
+>>> epsilon = [1e-4, 2e-4]
+>>> x = [2.]*2
+>>> steps = ot.BlendedStep(epsilon)
+>>> print(steps(x))
+[0.0003,0.0006]
+>>> steps = ot.BlendedStep(epsilon, 0.)
+>>> print(steps(x))
+[0.0002,0.0004]
+>>> steps = ot.BlendedStep(epsilon, [1., 2.])
+>>> print(steps(x))
+[0.0003,0.0008]
+>>> steps = ot.BlendedStep(epsilon, 2.)
+>>> print(steps(x))
+[0.0004,0.0008]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BlendedStep::getEta
+"Get the finite difference step offsets.
+
+Returns
+-------
+eta : :class:`~openturns.NumericalPoint`
+    Finite difference step offsets for each dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BlendedStep::setEta
+"Set the finite difference step offsets.
+
+Parameters
+----------
+eta : sequence of positive float
+    Finite difference step offsets for each dimension."

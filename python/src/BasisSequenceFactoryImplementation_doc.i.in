@@ -1,0 +1,74 @@
+%define OT_BasisSequenceFactory_doc
+"Basis sequence factory.
+
+Available constructors:
+    BasisSequenceFactory(*basisSeqFacImp*)
+
+Parameters
+----------
+basisSeqFacImp : a BasisSequenceFactoryImplementation
+
+See also
+--------
+LAR
+
+Notes
+-----
+BasisSequenceFactory is the interface of the BasisSequenceFactoryImplementation.
+This class is not usable because it has sense only whithin the
+:class:`~openturns.FunctionalChaosAlgorithm`."
+%enddef
+%feature("docstring") OT::BasisSequenceFactoryImplementation
+OT_BasisSequenceFactory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_BasisSequence_getMaximumRelativeConvergence_doc
+"Accessor to the stopping criterion on the L1-norm of the coefficients.
+
+Returns
+-------
+e : float
+    Stopping criterion."
+%enddef
+%feature("docstring") OT::BasisSequence::getMaximumRelativeConvergence
+OT_BasisSequence_getMaximumRelativeConvergence_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_BasisSequence_getVerbose_doc
+"Accessor to the verbosity.
+
+Returns
+-------
+v : bool.
+    Verbosity"
+%enddef
+%feature("docstring") OT::BasisSequence::getVerbose
+OT_BasisSequence_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_BasisSequence_setMaximumRelativeConvergence_doc
+"Accessor to the stopping criterion on the L1-norm of the coefficients.
+
+Parameters
+----------
+e : float
+    Stopping criterion."
+%enddef
+%feature("docstring") OT::BasisSequence::setMaximumRelativeConvergence
+OT_BasisSequence_setMaximumRelativeConvergence_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_BasisSequence_setVerbose_doc
+"Accessor to the verbosity.
+
+Parameters
+----------
+v : bool
+    Enable or disable the verbosity."
+%enddef
+%feature("docstring") OT::BasisSequence::setVerbose
+OT_BasisSequence_setVerbose_doc

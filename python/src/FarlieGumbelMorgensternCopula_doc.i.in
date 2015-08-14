@@ -1,0 +1,35 @@
+%feature("docstring") OT::FarlieGumbelMorgensternCopula
+"FarlieGumbelMorgenstern copula.
+
+Available constructor:
+    FarlieGumbelMorgensternCopula(*theta=1.0*)
+
+Parameters
+----------
+theta : float, :math:`-1 \leq \theta \leq 1`
+    Parameter :math:`\theta`.
+
+Notes
+-----
+The FarlieGumbelMorgenstern copula is defined by :
+
+.. math::
+
+    C(u_1, u_2) = u_1 u_2 (1- \theta (1 - u_1)(1 - u_2))
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+See also
+--------
+Copula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.FarlieGumbelMorgensternCopula(0.7)
+
+Draw a sample:
+
+>>> sample = copula.getSample(10)"

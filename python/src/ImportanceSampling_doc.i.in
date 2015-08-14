@@ -1,0 +1,95 @@
+%feature("docstring") OT::ImportanceSampling
+"Importance simulation.
+
+Available constructors:
+    ImportanceSampling(*event=ot.Event(), importanceDistribution*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event we are computing the probability of.
+importanceDistribution : :class:`~openturns.Distribution`
+    Importance distribution of the Importance Sampling simulation method.
+
+Notes
+-----
+Using the probability distribution of a random vector :math:`\vect{X}`, we seek
+to evaluate the following probability:
+
+.. math::
+
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}f_{\uX}(\ux)d\ux
+        = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+
+Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
+vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
+which enables the definition of the event
+:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
+:math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
+
+The main idea of the Importance Sampling method is to replace the initial
+probability distribution of the input variables by a more *efficient* one.
+*Efficient* means that more events will be counted in the failure domain
+:math:`\cD_f` and thus reduce the variance of the estimator of the probability
+of exceeding a threshold. Let :math:`\vect{Y}` be a random vector such that its
+probability density function :math:`f_{\vect{Y}}(\vect{y}) > 0` almost
+everywhere in the domain :math:`\cD_f`,
+
+.. math::
+
+    P_f &= \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}
+           f_{\uX}(\ux)d\ux \\
+        &= \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}
+           \frac{f_{\uX}(\ux)}{f_{\vect{Y}}(\ux)}f_{\vect{Y}}(\ux)d\ux
+
+The estimator built by Importance Sampling method is:
+
+.. math::
+
+    \widehat{P}_{f,IS} = \frac{1}{N}
+                         \sum_{i=1}^N \mathbf{1}_{\{g(\vect{Y}_{\:i}),\vect{d}) \leq 0 \}}
+                                      \frac{f_{\uX}(\vect{Y}_{\:i})}
+                                           {f_{\vect{Y}}(\vect{Y}_{\:i})}
+
+where:
+
+- :math:`N` is the total number of computations,
+
+- the random vectors :math:`\{\vect{Y}_i, i=1\hdots N\}` are independent,
+  identically distributed and following the probability density function
+  :math:`f_{\uY}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> # We create a 'usual' RandomVector from the Distribution
+>>> vect = ot.RandomVector(myDistribution)
+>>> # We create a composite random vector
+>>> output = ot.RandomVector(myFunction, vect)
+>>> # We create an Event from this RandomVector
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a ImportanceSampling algorithm
+>>> myImportance = ot.Normal([49.969, 1.84194, 10.4454, 4.66776], [1.]*4, ot.IdentityMatrix(4))
+>>> myAlgo = ot.ImportanceSampling(myEvent, myImportance)
+>>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.153314"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ImportanceSampling::getImportanceDistribution
+"Get the importance distribution.
+
+Returns
+-------
+importanceDistribution : :class:`~openturns.Distribution`
+    Importance distribution of the Importance Sampling simulation method."

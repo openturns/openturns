@@ -1,0 +1,47 @@
+%feature("docstring") OT::LogNormalMuSigma
+"LogNormal distribution parameters.
+
+Available constructors:
+    LogNormalMuSigma(*mu=* :math:`e^{0.5}` *, sigma=* :math:`\sqrt{e^2-e}` *, gamma=0.*)
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float
+    Standard deviation :math:`\sigma > 0`.
+gamma : float, optional
+    Shift parameter.
+
+Notes
+-----
+The native parameters are defined as follows:
+
+.. math::
+
+    \sigma_l &= \sqrt{\log{ \left( 1+\frac{\sigma^2}{(\mu-\gamma)^2} \right) }} \\
+    \mu_l &= \log{(\mu-\gamma)} - \frac{\sigma_l^2}{2}
+
+See also
+--------
+LogNormal
+
+Examples
+--------
+Create the parameters of the LogNormal distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.LogNormalMuSigma(0.63, 3.3, -0.5)
+
+Convert parameters into the native parameters:
+
+>>> print(parameters([0.63, 3.3, -0.5]))
+[-1.00492,1.50143,-0.5]
+
+The gradient of the transformation of the native parameters into the new
+parameters:
+
+>>> print(parameters.gradient())
+[[  1.67704  -0.527552  0        ]
+ [ -0.271228  0.180647  0        ]
+ [ -1.67704   0.527552  1        ]]"

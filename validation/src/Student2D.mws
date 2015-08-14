@@ -1,0 +1,24 @@
+{VERSION 6 0 "IBM INTEL LINUX" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 }0 0 0 -1 -1 -1 0 0 0 0 0 0 -1 0 }{PSTYLE "Maple Output" 0 11 1 
+{CSTYLE "" -1 -1 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 }3 3 0 -1 -1 -1 0 
+0 0 0 0 0 -1 0 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 8 "restart:" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 150 "bvt:=proc(a,b,nu,rho)\n   evalf(In
+t(Int(1/(2*Pi*sqrt(1-rho^2))*(1+(s^2-2*rho*s*t+t^2)/(nu*(1-rho^2)))^(-
+(nu+2)/2),s=-infinity..a),t=-infinity..b))\nend:" }}}{EXCHG {PARA 0 ">
+ " 0 "" {MPLTEXT 1 0 21 "bvt(1.0,1.0,1.5,0.5);" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#$\"+CC\"4k'!#5" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 
+0 102 "(Int(Int(1/(2*Pi*sqrt(1-rho^2))*(1+(s^2-2*s*t+t^2)/(nu*(1-rho^2
+)))^(-(nu+2)/2),s=-INF..a),t=-INF..b));" }}{PARA 11 "" 1 "" {XPPMATH 
+20 "6#-%$IntG6$-F$6$,$**\"\"#!\"\"%#PiGF+,&\"\"\"F.*$)%$rhoGF*F.F+#F+F
+*),&F.F.*(,(*$)%\"sGF*F.F.*(F*F.F9F.%\"tGF.F+*$)F;F*F.F.F.%#nuGF+F-F+F
+.,&*&F*F+F>F.F+F.F+F.F./F9;$!#gF+%\"aG/F;;FC%\"bG" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 8 "38/2.54;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$
+\"5?D%)f7#*H1'\\\"!#=" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 8 "12*
+2.54;" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#$\"%[I!\"#" }}}{EXCHG {PARA 
+0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "6 0 0" 0 }{VIEWOPTS 1 1 0 1 
+1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

@@ -1,0 +1,141 @@
+%feature("docstring") OT::KernelSmoothing
+"Non parametric fitting technique with kernel smoothing.
+
+Parameters
+----------
+kernel : :class:`~openturns.Distribution`, optional
+    Univariate distribution of the kernel that will be used. By default, the standard Normal distribution is used. 
+bined : bool, optional
+    Activates bining mecanism only in the univariate or bivariate cases. It allows to speed up the manipulation of the density function of the resulting distribution.  By default, the mecanism is activated.
+binNumber : int, :math:`binNumber \geq 2`, optional
+    Indicates the number of bins used by the bining mecanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
+
+
+Notes
+-----
+The bining mecanism creates a regular grid of *binNumber* intervals: all the data falling in the same interval are regrouped and replaced by the central point of the interval, weighted by the number of data within the interval.
+
+When applied to multivariate samples, the kernel is the kernel product of the univariate distribution specified in the constructor. 
+
+Examples
+--------
+Fit a distribution on data thanks to the kernel smoothing technique:
+
+>>> import openturns as ot
+>>> sample = ot.Gamma(6.0, 1.0).getSample(1000)
+>>> kernel = ot.KernelSmoothing()
+>>> fittedDist = kernel.build(sample)
+
+Compare the PDFs:
+
+>>> graph = fittedDist.drawPDF()
+>>> graph.add( ot.Gamma(6.0, 1.0).drawPDF())
+>>> graph.setColors(['blue', 'red'])
+>>> graph.setLegends(['KS dist', 'Gamma'])
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::build
+"Fit a kernel smoothing distribution on data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data on which the distribution is fitted. Any dimension.
+bandwidth : :class:`~openturns.NumericalPoint`, optional
+    Contains the bandwith in each direction. If not specified, the bandwith is calculated using the mixed rule from data.
+boundaryCorrection : bool, optional
+    Activates the boundary correction using the mirroring technique.  By dafault, the correction is not provided.
+
+Returns
+-------
+fittdDist : :class:`~openturns.Distribution`
+    The fitted distribution.
+
+Notes
+-----
+According to the dimension of the data and the specified treatments, the type of the resulting distribution differs:
+
+- In dimension 1: 
+
+    - if only the bining mecanism is activated, a :class:`~openturns.Mixture` is produced (all the weights differ).
+    - if only the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.KernelMixture`  (all the weights are identical). 
+    - if the bining mecanism  and the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.Mixture` (all the weights differ).
+
+
+Examples
+--------
+See the effect of the boundary correction:
+
+>>> import openturns as ot
+>>> sample = ot.Exponential(1.0).getSample(1000)
+>>> kernel = ot.KernelSmoothing()
+>>> fittedDistNoCorr = kernel.build(sample)
+>>> fittedDistWithCorr = kernel.build(sample, True)
+
+Compare the PDFs:
+
+>>> graph = ot.Exponential(1.0).drawPDF()
+>>> graph.add(fittedDistNoCorr.drawPDF())
+>>> graph.add(fittedDistWithCorr.drawPDF())
+>>> graph.setColors(['black', 'blue', 'red'])
+>>> graph.setLegends(['Exp dist', 'No boundary corr', 'Boundary corr'])
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::getBandwidth
+"Accessor to the bandwith used in the kernel smoothing.
+
+Returns
+-------
+bandwidth : :class:`~openturns.NumericalPoint`
+    Bandwith used in each direction. 
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::getKernel
+"Accessor to kernel used in the kernel smoothing.
+
+Returns
+-------
+kernel : :class:`~openturns.Distribution`
+    Univariate distribution used to build the kernel.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::computeSilvermanBandwidth
+"Compute the bandwith according to the Silverman rule.
+
+Returns
+-------
+bandwidth : :class:`~openturns.NumericalPoint`
+    Bandwith wich components are evaluated according to the Silverman rule supposing a normal distribution. The bandwith is based on the evaluation of the interquartiles rather than the standard deviation of the distribution and the sample.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::computePluginBandwidth
+"Compute the bandwith according to the plugin rule.
+
+Returns
+-------
+bandwidth : :class:`~openturns.NumericalPoint`
+    Bandwith wich components are evaluated according to the plugin rule. 
+
+Notes
+-----
+Warning! It can take a lot of time for large samples, as the cost is  quadratic with the sample size.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::computeMixedBandwidth
+"Compute the bandwith according to a mixed rule.
+
+Returns
+-------
+bandwidth : :class:`~openturns.NumericalPoint`
+    Bandwith wich components are evaluated according to a mixed rule.
+
+Notes
+----- 
+Simply use the plugin rule for small sample, and estimate the ratio between the plugin rule and the Silverman rule on a small sample, then scale the Silverman bandwidth computed on the full sample with this ratio.
+"

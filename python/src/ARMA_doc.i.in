@@ -1,0 +1,232 @@
+%feature("docstring") OT::ARMA
+"ARMA process.
+
+Available constructors:
+    ARMA()
+
+    ARMA(*ARCoeff, MACoeff, whiteNoise*)
+
+    ARMA(*ARCoeff, MACoeff, whiteNoise, ARMAstate*)
+   
+
+Parameters
+----------
+ARCoeff : :class:`~openturns.ARMACoefficients`
+    The coefficients of the AR part of the recurrence : :math:`(a_1, \hdots, a_p)` in dimension 1 and :math:`(\mat{A}_{\, 1}, \hdots, \mat{A}{\, _p})` in dimension :math:`d`.
+
+    Default is: :math:`0` in dimension 1 and the associated time grid is :math:`\{0,1\}`.
+MACoeff :  :class:`~openturns.ARMACoefficients`
+    The coefficients of the MA part of the recurrence : :math:`(b_1, \hdots, b_q)` in dimension 1 and :math:`(\mat{B}_{\, 1}, \hdots, \mat{B}{\, _p})` in dimension :math:`d`.
+
+    Default is: :math:`0` in dimension 1 and the associated time grid is :math:`\{0,1\}`.
+whiteNoise : :class:`~openturns.WhiteNoise`
+    The white noise distribution of the recurrent relation.
+
+    Default is: the Normal distribution with zero mean and unit variance in dimension 1.
+ARMAstate : :class:`~openturns.ARMAState`
+    The state of the ARMA process which will be extended to the next time stamps. The state  is composed with :math:`p` values of the process and :math:`q` values of the white noise. This constructor is needed to get possible futurs from the current state.
+
+
+Notes
+-----
+An ARMA process in dimension :math:`d` is defined by the linear recurrence :
+
+.. math::
+
+    \vect{X}_t + \mat{A}_{\, 1}   \,  \vect{X}_{t-1} + \hdots +  \mat{A}_{\, p} \,   \vect{X}_{t-p} = \vect{\varepsilon}_{t}+  \mat{B}_ {\, 1} \,   \vect{\varepsilon}_{t-1}+   \hdots + \mat{B}_{\, q}  \,  \vect{\varepsilon}_{t-q}
+
+where :math:`\mat{A}_{\, i} \in  \Rset^d \times \Rset^d` and :math:`\mat{B}_{\, j} \in  \Rset^d \times \Rset^d`.
+
+In dimension 1, an ARMA process is defined by:
+
+.. math::
+
+    X_t +a_1  X_{t-1} + \hdots +  a_p X_{t-p} = \varepsilon_{t}+  b_1 \varepsilon_{t-1}+   \hdots +b_q \varepsilon_{t-q}
+
+
+where :math:`(a_i,b_i) \in \Rset`.
+
+Examples
+--------
+Create an ARMA(4,2) process:
+
+>>> import openturns as ot
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myWhiteNoise = ot.WhiteNoise(ot.Triangular(-1.0, 0.0, 1.0), myTimeGrid)
+>>> myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
+>>> myMACoef = ot.ARMACoefficients([0.4, 0.3])
+>>> myARMAProcess = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
+
+>>> myLastValues = ot.NumericalSample([[0.6], [0.7], [0.3], [0.2]])
+>>> myLastNoiseValues = ot.NumericalSample([[1.2], [1.8]])
+>>> myARMAState = ot.ARMAState(myLastValues, myLastNoiseValues)
+>>> myARMAProcessWithState = ot.ARMA(myARCoef, myMACoef, myWhiteNoise, myARMAState)
+
+Generate a realization:
+
+>>> myTimeSeries = myARMAProcess.getContinuousRealization()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::getARCoefficients
+"Accessor to the AR coefficients of the ARMA process.
+
+Returns
+-------
+ARCoeff : :class:`~openturns.ARMACoefficients`
+    The AR coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::setARCoefficients
+"Accessor to the AR coefficients of the ARMA process.
+
+Parameters
+----------
+ARCoeff : :class:`~openturns.ARMACoefficients`
+    The AR coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::getMACoefficients
+"Accessor to the MA coefficients of the ARMA process.
+
+Returns
+-------
+MACoeff : :class:`~openturns.ARMACoefficients`
+    The MA coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::setMACoefficients
+"Accessor to the MA coefficients of the ARMA process.
+
+Parameters
+----------
+MACoeff : :class:`~openturns.ARMACoefficients`
+    The MA coefficients of the linear recurrence defining the process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::getFuture
+"Get possible futures from the current state of the ARMA process.
+
+Parameters
+----------
+Nit : int, :math:`N_{it} \geq 1`
+    The number of time stamps of the future.
+
+Nreal : int, :math:`N_{real} \geq 1`
+    The number of possible futures that are generated. 
+
+    Default is: :math:`N_{real} = 1`.
+
+Notes
+-----
+
+- If :math:`N_{real} = 1`:
+
+A :class:`~openturns.TimeSeries`
+    One possible future of the ARMA process, from the current state over the next :math:`N_{it}` time stamps.
+
+
+- If :math:`N_{real} > 1`:
+
+A :class:`~openturnsProcessSample`
+    :math:`N_{real}`  possible futures of the ARMA process, from the current state over the next :math:`N_{it}` time stamps.
+
+Note that the time grid of each future begins at the last time stamp of the time grid associated to the time series which is extended."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::getState
+"Accessor to the stored state of the ARMA process.
+
+Returns
+-------
+ARMAstate : :class:`~openturns.ARMAState`
+    The state of the ARMA process which will be extended to the next time stamps. The state  is composed with :math:`p` values of the process and :math:`q` values of the white noise."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::setState
+"Accessor to the stored state of the ARMA process.
+
+Parameters
+----------
+ARMAstate : :class:`~openturns.ARMAState`
+    The state of the ARMA process which will be extended to the next time stamps. The state  is composed with :math:`p` values of the process and :math:`q` values of the white noise."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::getWhiteNoise
+"Accessor to the white noise defining the ARMA process.
+
+Returns
+-------
+whiteNoise : :class:`~openturns.WhiteNoise`
+    The white noise :math:`\varepsilon` used in the linear recurrence of the ARMA process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::setWhiteNoise
+"Accessor to the white noise defining the ARMA process.
+
+Parameters
+----------
+whiteNoise : :class:`~openturns.WhiteNoise`
+    The white noise :math:`\varepsilon` used in the linear recurrence of the ARMA process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::computeNThermalization
+"Accessor to the stored state of the ARMA process.
+
+Parameters
+----------
+eps : float, :math:`\epsilon > 0`
+
+
+Returns
+-------
+Nther : int, :math:`N_{ther} \geq 1`
+    The number of iterations of the ARMA process before being stationary and independent of its intial state.
+
+Notes
+-----
+The thermalization number :math:`N_{ther}` is defined as follows:
+
+.. math::
+
+    N_{ther} > E\left[ \displaystyle \frac{\ln \epsilon}{\ln \max_{i,j} |r_{ij}|}\right]
+
+where :math:`E[]` is the integer part of a float and the :math:`(r_i)_i` are the roots of the polynomials (given here in dimension 1) :
+
+.. math::
+
+   \Phi(\vect{r}) = \vect{r}^p + \sum_{i=1}^p a_i\vect{r}^{p-i}
+
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::getNThermalization
+"Accessor to the number of time stamps used to thermalize the process.
+
+Returns
+-------
+Nther : int, :math:`N_{ther} \geq 1`
+    The number of time stamps used to make the ARMA realization be independent from its actual state.
+
+    Default precision is: :math:`\varepsilon = 2^{-53} \equiv 10^{-16}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMA::setNThermalization
+"Accessor to the number of time stamps used to thermalize the process.
+
+Parameters
+----------
+Nther : int, :math:`N_{ther} \geq 1`
+    The number of time stamps used to make the ARMA realization independent from its actual state."
+

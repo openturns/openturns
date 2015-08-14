@@ -1,0 +1,69 @@
+%feature("docstring") OT::WhiteNoise
+"White Noise process.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution` 
+    Distribution of dimension :math:`d` of the white noise process.
+
+mesh : :class:`~openturns.Mesh`, optional
+    Mesh in :math:`\Rset^n` over which the process is discretized. 
+    By default, the mesh is reduced to one point in :math:`\Rset` which coordinate is equal to 0.
+
+
+Notes
+-----
+A second order white noise :math:`\varepsilon: \Omega \times \cD \rightarrow \Rset^d`  is a stochastic process of dimension :math:`d` such that the covariance function :math:`C(\vect{s},\vect{t})=\delta(\vect{t}-\vect{s})C(\vect{s},\vect{s})` where :math:`C(\vect{s},\vect{s})`  is the covariance matrix of the process at vertex :math:`\vect{s}` and :math:`\delta` the Kroenecker function.
+
+A process :math:`\varepsilon` is a white noise if  all finite family of locations  :math:`(\vect{t}_i)_{i=1, \dots, n} \in \cD`, :math:`(\varepsilon_{\vect{t}_i})_{i=1, \dots, n}` is independent and identically distributed.
+
+
+Examples
+--------
+Create a normal normal white noise of dimension 1:
+
+>>> import openturns as ot
+>>> myDist = ot.Normal()
+>>> myMesh = ot.IntervalMesher([100]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+>>> myWN = ot.WhiteNoise(myDist, myMesh)
+
+Get a realization:
+
+>>> myReal =myWN.getRealization()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::WhiteNoise::getDistribution
+"Accessor to the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution` 
+    The distribution of dimension :math:`d` of the white noise."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::WhiteNoise::getMarginal
+"Accessor to the marginal process.
+
+Parameters
+----------
+N : integer
+    The  index of the marginal to be extracted.
+
+indices : :class:`~openturns.Indices`, optional
+    The list of the indexes of the marginal to be extracted.
+
+Returns
+-------
+wn : :class:`~openturns.WhiteNoise` 
+    The marginal white noise."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::WhiteNoise::setDistribution
+"Accessor to the distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution` 
+    The distribution of dimension :math:`d` of the white noise."
+
+// ---------------------------------------------------------------------

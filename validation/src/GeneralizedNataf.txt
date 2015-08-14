@@ -1,0 +1,34 @@
+> restart:
+> #phi:=1/(2*Pi)^(n/2)*exp(-t/2);
+> #g(u^2):=subs(t=u^2,phi);
+> l:=log(g(u^2));
+> map(factor,collect(diff(l,u$1),u));
+> map(factor,collect(diff(l,u$2),u));
+
+                                       2
+                            l := ln(g(u ))
+
+
+                                     2
+                             2 D(g)(u ) u
+                             ------------
+                                   2
+                                g(u )
+
+
+              (2)      2     2          2 2   2           2
+         4 ((D   )(g)(u ) g(u ) - D(g)(u ) ) u    2 D(g)(u )
+         -------------------------------------- + ----------
+                            2 2                        2
+                         g(u )                      g(u )
+
+> subs(t=u^2,2*diff(phi,t)/phi);
+
+                                  -1
+
+> diff(phi,t)/phi;
+> 
+
+                                 -1/2
+
+> 

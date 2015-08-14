@@ -1,0 +1,49 @@
+Testing class Rice
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Rice name=Rice dimension=1 sigma=5 nu=4
+streamObject(const T & anObject)
+class=Rice name=Rice dimension=1 sigma=5 nu=4
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Rice name=Rice dimension=1 sigma=5 nu=4
+Distribution Rice(sigma = 5, nu = 4)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[9.46867]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[6.29291] last=class=NumericalPoint name=Unnamed dimension=1 values=[2.16415]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[7.26091]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.4082]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[10]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.0138143]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0138143]
+log pdf=-2.67669
+pdf     =0.0687907
+pdf (FD)=0.0687907
+cdf=0.778505
+ccdf=0.221495
+survival=0.221495
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.00902981,0.0060508]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.103467,-0.0426433]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[13.9273]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[7.23115]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.7104]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[sigma : 5, nu : 4]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[7.23115]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[66]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[704.457]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[8456]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[111488]
+Standard representative=Rice(sigma = 5, nu = 4)
+nu=4
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[3.70276]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.569607]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.10633]

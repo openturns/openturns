@@ -1,0 +1,1017 @@
+%feature("docstring") OT::SpecFunc::BesselI0
+"Modified first kind Bessel function of order 0.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    J_0(x) = \sum_{m=0}^\infty\frac{(-1)^m}{(m!)^2}\left(\frac{x}{2}\right)^{2m}
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogBesselI0
+"Logarithm of the modified first kind Bessel function of order 0.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    LogBesselI0(x) = \log (J_0(x))
+
+See also
+--------
+SpecFunc_BesselI0
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::BesselI1
+"Modified first kind Bessel function of order 1.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    J_1(x) = \sum_{m=0}^\infty\frac{(-1)^m}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogBesselI1
+"Logarithm of the modified first kind Bessel function of order 1.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    LogBesselI1(x) = \log (J_1(x))
+
+See also
+--------
+SpecFunc_BesselI1
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::BesselK
+"Modified second kind Bessel function of order :math:`\nu`.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    J_{\nu}(x) = \frac{\pi}{2}\frac{I_{-\nu}(x)-I_{\nu}(x)}{\sin{\nu\pi}}
+
+Parameters
+----------
+nu : float
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogBesselK
+"Logarithm of the modified second kind Bessel function of order :math:`\nu`.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    LogBesselK(\nu, x) = \log (J_{\nu}(x))
+
+See also
+--------
+SpecFunc_BesselK
+
+Parameters
+----------
+nu : float
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Beta
+"Beta function :math:`B`.
+
+.. math::
+
+    \forall (a, b) > 0, \quad
+    B(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1} dt
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogBeta
+"Logarithm of the Beta function.
+
+.. math::
+
+    \forall (a, b) > 0, \quad
+    LogBeta(a, b) = \log (B(a, b))
+
+See also
+--------
+SpecFunc_Beta
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LnBeta
+"Logarithm of the Beta function.
+
+.. math::
+
+    \forall (a, b) > 0,\quad
+    LnBeta(a, b) = \ln (B(a, b)) = \log (B(a, b))
+
+See also
+--------
+SpecFunc_Beta
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IncompleteBeta
+"Incomplete Beta function.
+
+.. math::
+
+    \forall (a, b) > 0, t \in [0, 1], \quad
+    B(x; a, b) = \int_0^x t^{a-1}(1-t)^{b-1} dt
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = B(x; a, b)`.
+    - If *tail* is *True*: :math:`result = B(a, b) - B(x; a, b)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IncompleteBetaInverse
+"Inverse of the incomplete Beta function.
+
+.. math::
+
+    \forall (a, b) > 0 \quad
+    IncompleteBetaInverse(x; a, b) = I^{-1}(x/B(a, b); a, b)
+
+See also
+--------
+SpecFunc_IncompleteBeta, SpecFunc_RegularizedIncompleteBetaInverse
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = I^{-1}(x/B(a, b); a, b)`.
+    - If *tail* is *True*: :math:`result = 1 - I^{-1}(x/B(a, b); b, a)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::RegularizedIncompleteBeta
+"Regularized incomplete Beta function.
+
+.. math::
+
+    \forall (a, b) > 0 \quad
+    I(x; a, b) = \frac{B(x; a, b)}{B(a, b)}
+               = \frac{1}{B(a, b)} \int_0^x t^{a-1}(1-t)^{b-1} dt
+
+with :math:`B(a, b)` the Beta function and :math:`B(x; a, b)` the incomplete
+Beta function.
+
+See also
+--------
+SpecFunc_IncompleteBeta, SpecFunc_Beta
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = I(x; a, b)`.
+    - If *tail* is *True*: :math:`result = 1 - I(x; a, b)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::RegularizedIncompleteBetaInverse
+"Inverse of the regularized incomplete Beta function.
+
+.. math::
+
+    \forall (a, b) > 0, \quad
+    RegularizedIncompleteBetaInverse(x; a, b) = I^{-1}(x; a, b)
+
+See also
+--------
+SpecFunc_RegularizedIncompleteBeta
+
+Parameters
+----------
+a, b : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = I^{-1}(x; a, b)`.
+    - If *tail* is *True*: :math:`result = 1 - I^{-1}(x; b, a)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Dawson
+"Dawson function.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    D_+(x) = \exp(-x^2)\int_0^x \exp(t^2) dt
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Debye
+"Debye function of order :math:`n`.
+
+.. math::
+
+    \forall x \in \Rset, \forall n \in \Nset^* \text{and} \, n \leq 20, \quad
+    D_n(x) = \frac{n}{x^n} \int_0^x \frac{t^n}{\exp(t)-1} dt
+
+Parameters
+----------
+x : float
+n : int :math:`\in \{1, \cdots, 20\}`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Faddeeva
+"Complex Faddeeva function.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    w(x) = exp(-x^2)ErfC(-ix)
+
+with :math:`ErfC` the complementary error function.
+
+See also
+--------
+SpecFunc_ErfC
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::FaddeevaIm
+"Imaginary part of the Faddeeva function.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    FaddeevaIm(x) = \Im (w(x))
+
+See also
+--------
+SpecFunc_Faddeeva
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Gamma
+"Gamma function :math:`\Gamma`.
+
+.. math::
+
+    \forall a \in \Cset, \quad
+    \Gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
+
+Parameters
+----------
+a : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogGamma
+"Logarithm of the Gamma function.
+
+.. math::
+
+    \forall a \in \Cset, \quad
+    LogGamma(a) = \log (\Gamma(a))
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+a : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogGamma1p
+"LogGamma1p function.
+
+.. math::
+
+    \forall a \in \Rset, \quad
+    LogGamma1p(a) = \log (\Gamma(a - 1.0))
+
+with :math:`\Gamma` the Gamma function.
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+a : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LnGamma
+"Logarithm of the Gamma function.
+
+.. math::
+
+    \forall a \in \Rset, \quad
+    LnGamma(a) = \ln (\Gamma(a))
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+a : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IncompleteGamma
+"Incomplete Gamma function.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    \gamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt
+
+Parameters
+----------
+a : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = \gamma(a, x)`.
+    - If *tail* is *True*: :math:`result = \Gamma(a) - \gamma(a, x)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IncompleteGammaInverse
+"Inverse of the incomplete Gamma function with respect to :math:`x`.
+
+.. math::
+
+    IncompleteGammaInverse(a, x) = \gamma^{-1}(a, x)
+
+See also
+--------
+SpecFunc_IncompleteGamma
+
+Parameters
+----------
+a : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = P^{-1}(a, x/\Gamma(a))`.
+    - If *tail* is *True*: :math:`result = P^{-1}(a, (1-x)/\Gamma(a))`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::RegularizedIncompleteGamma
+"Regularized incomplete Gamma function.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    P(a, x) = \frac{\gamma(a, x)}{\Gamma(a)}
+            = \frac{1}{\Gamma(a)}\int_0^x t^{a-1}\exp(-t) dt
+
+See also
+--------
+SpecFunc_Gamma, SpecFunc_IncompleteGamma
+
+Parameters
+----------
+a : float :math:`\in \Rset^*_+`
+x : float
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = P(a, x)`.
+    - If *tail* is *True*: :math:`result = \Gamma(a) - P(a, x)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::RegularizedIncompleteGammaInverse
+"Inverse of the regularized incomplete Gamma function.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    RegularizedIncompleteGammaInverse(a, x) = P^{-1}(a, x)
+
+See also
+--------
+SpecFunc_Gamma, SpecFunc_RegularizedIncompleteGamma
+
+Parameters
+----------
+a : float :math:`\in \Rset^*_+`
+x : float :math:`\in [0, 1]`
+tail : bool, optional
+    By default, *tail* is *False*.
+
+Returns
+-------
+result : float
+    - If *tail* is *False*: :math:`result = P^{-1}(a, x)`.
+    - If *tail* is *True*: :math:`result = P^{-1}(a, 1-x)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::DiGamma
+"Digamma function.
+
+.. math::
+
+    \Psi(x) = \frac{1}{\Gamma(x)}\frac{\mathrm{d} \Gamma(x)}{\mathrm{d}x}
+
+with :math:`\Gamma` the Gamma function.
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+x : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Psi
+"Psi function.
+
+.. math::
+
+    \Psi(x) = \frac{1}{\Gamma(x)}\frac{\mathrm{d} \Gamma(x)}{\mathrm{d}x}
+
+with :math:`\Gamma` the Gamma function.
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+x : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::DiGammaInv
+"Inverse of the DiGamma function.
+
+.. math::
+
+    DiGammaInv(x) = \Psi^{-1} (x)
+
+See also
+--------
+SpecFunc_DiGamma
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::TriGamma
+"TriGamma function.
+
+.. math::
+
+    \Psi_1(x) = \frac{1}{\Gamma(x)}\frac{\mathrm{d}^2 \Gamma(x)}{\mathrm{d}x^2}
+
+with :math:`\Gamma` the Gamma function.
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+x : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IGamma1pm1
+"IGamma1pm1 function.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    IGamma1pm1(a, x) = \int_0^x t^{a-1}\exp(-t) dt
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::GammaCorrection
+"GammaCorrection function.
+
+.. math::
+
+    \forall x \in \Rset^*_+, \quad
+    GammaCorrection(a) = \log (\Gamma(a)) - \log (\sqrt{2\Pi}) + a - (a - 0.5) \log(a)
+
+with :math:`\Gamma` the Gamma function.
+
+See also
+--------
+SpecFunc_Gamma
+
+Parameters
+----------
+a : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::HyperGeom_1_1
+"Hypergeometric function of type (1,1).
+
+.. math::
+
+    {}_1F_1(p_1, q_1, x) = \sum_{n=0}^{\infty}
+                           \left[
+                           \prod_{k=0}^{n-1} \frac{(p_1 + k)}{(q_1 + k)}
+                           \right]  \frac{x^n}{n!}
+
+Parameters
+----------
+p1, q1 : float
+x : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::HyperGeom_2_1
+"Hypergeometric function of type (2,1).
+
+.. math::
+
+    {}_2F_1(p_1, p_2, q_1, x) = \sum_{n=0}^{\infty}
+                                \left[
+                                \prod_{k=0}^{n-1} \frac{(p_1 + k)(p_2 + k)}{(q_1 + k)}
+                                \right] \frac{x^n}{n!}
+
+Parameters
+----------
+p1, p2, q1, x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::HyperGeom_2_2
+"Hypergeometric function of type (2,2).
+
+.. math::
+
+    {}_2F_2(p_1, p_2, q_1, q_2, x) = \sum_{n=0}^{\infty}
+                         \left[
+                         \prod_{k=0}^{n-1} \frac{(p_1 + k)(p_2 + k)}{(q_1 + k) (q_2 + k)}
+                         \right] \frac{x^n}{n!}
+
+Parameters
+----------
+p1, p2, q1, q2, x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Erf
+"Error function Erf.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    Erf(x) = \frac{2}{\sqrt{\pi}} \int_0^x \exp(-t^2) dt
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::ErfC
+"Complementary error function ErfC.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    ErfC(x) = 1 - Erf(x)
+
+with :math:`Erf` the error function.
+
+See also
+--------
+SpecFunc_Erf
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::ErfInverse
+"Inverse of the error function Erf.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    ErfInverse(x) = Erf^{-1} (x)
+
+See also
+--------
+SpecFunc_Erf
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::ErfCX
+"ErfCX function.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    ErfCX(x) = exp(x^2).ErfC(x)
+
+with :math:`ErfC` the complementary error function.
+
+See also
+--------
+SpecFunc_ErfC
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::ErfI
+"Imaginary error function ErfI.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    ErfI(x) = -i.Erf(ix)
+
+with :math:`Erf` the error function.
+
+See also
+--------
+SpecFunc_Erf
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : float or complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Log1MExp
+"Log1MExp function.
+
+.. math::
+
+    \forall x \in \Rset^+, \quad
+    Log1MExp(x) = \log (1-exp(-x))
+
+Parameters
+----------
+x : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Expm1
+"Expm1 function.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    Expm1(x) = exp(x)-1
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Log1p
+"Log1p function.
+
+.. math::
+
+    \forall x \in \Cset, \quad
+    Log1p(x) = \log (1+x)
+
+Parameters
+----------
+x : float or complex
+
+Returns
+-------
+result : complex"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::DiLog
+"Dilogarithm function.
+
+.. math::
+
+    \forall x \in ]-\infty, 1[, \quad
+    Li_2(x) = -\int_0^x \frac{\log (1-t)}{t} dt
+
+Parameters
+----------
+x : float :math:`\in ]-\infty, 1[`
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::NextPowerOfTwo
+"Smallest power of two greater or equal to the given :math:`n`.
+
+.. math::
+
+    NextPowerOfTwo(n) = 2^{\lceil \log_2(n)\rceil}
+
+Parameters
+----------
+n : positive int
+
+Returns
+-------
+result : positive int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::BitCount
+"Compute the number of bits set to 1 in an integer.
+
+Parameters
+----------
+n : positive int
+
+Returns
+-------
+result : positive int
+
+Examples
+--------
+>>> import openturns as ot
+>>> n_bits = ot.SpecFunc.BitCount(4398046511103)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LambertW
+"Lambert W function.
+
+The Lambert W function :math:`W(x)` is defined by the relation:
+
+.. math::
+
+    x = W(x) \exp(W(x))
+
+Parameters
+----------
+x : float
+principal : bool, optional
+    By default, *principal* is *True*.
+
+Returns
+-------
+result : float
+    - If *principal* is *True* : :math:`result = W_0(x)`.
+      :math:`W_0(x)` is referred to as the principal branch of the Lambert W
+      function. It denotes the upper part of the function whose domain is
+      :math:`[-1/e, +\infty[` and range :math:`[-1, +\infty[`.
+    - If *principal* is *False* : :math:`result = W_{-1}(x)`.
+      :math:`W_{-1}(x)` is the second real branch of the Lambert W function.
+      It denotes the lower part of the function whose domain is
+      :math:`[-1/e, 0[` and range :math:`]-\infty, -1]`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Cbrt
+"Cubit root function.
+
+Parameters
+----------
+x : float
+
+Returns
+-------
+result : float"
+

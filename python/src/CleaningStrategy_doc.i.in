@@ -1,0 +1,183 @@
+%feature("docstring") OT::CleaningStrategy
+"Cleaning truncation strategy.
+
+Available constructors:
+    CleaningStrategy(*orthogonalBasis, maximumDimension*)
+
+    CleaningStrategy(*orthogonalBasis, maximumDimension, verbose*)
+
+    CleaningStrategy(*orthogonalBasis, maximumDimension, maximumSize, 
+    significanceFactor*)
+
+    CleaningStrategy(*orthogonalBasis, maximumDimension, maximumSize, 
+    significanceFactor, verbose*)
+
+Parameters
+----------
+orthogonalBasis : :class:`~openturns.OrthogonalBasis`
+    An OrthogonalBasis.
+maximumDimension : positive int
+    Maximum index that can be used by the :class:`~openturns.EnumerateFunction`
+    to determine the last term of the basis.
+maximumSize : positve int
+    Parameter that characterizes the cleaning strategy. It represents the 
+    number of efficient coefficients of the basis. Its default value is set to 
+    20.
+significanceFactor : float 
+    Parameter used as a threshold for selecting the efficient coefficients of
+    the basis. The real threshold represents the multiplication of the
+    significanceFactor with the maximum magnitude of the current determined 
+    coefficients. Its default value is equal to :math:`1e^{-4}`.
+verbose : bool
+    Used for the online monitoring of the current basis updates (removed or
+    added coefficients).
+
+
+See also
+--------
+AdaptiveStrategy, FixedStrategy, SequentialStrategy
+
+Notes
+-----
+The cleaning strategy aims at building a PC expansion containing at most
+:math:`P` significant coefficients, i.e. at most :math:`P` significant basis
+functions. It proceeds as follows:
+
+- Generate an initial PC basis made of the :math:`P` first polynomials
+  (according to the adopted :class:`~openturns.EnumerateFunction`), or
+  equivalently an initial set of indices :math:`K = \{0, \ldots, P-1\}`.
+
+- Discard from the basis all those polynomials :math:`\Psi_j` associated with 
+  insignificance coefficients, i.e. the coefficients that satisfy:
+
+.. math::
+
+    |a_j| \leq \epsilon \times \max_{ k \in K } |a_k|
+
+where :math:`\epsilon` is the significance factor, default is
+:math:`\epsilon = 10^{-4}`.
+
+- Add the next basis term :math:`\Psi_{k+1}` to the current basis :math:`K`.
+- Reiterate the procedure until either :math:`P` terms have been retained or if
+  the given maximum index :math:`P_{max}` has been reached.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # Define the model
+>>> inputDim = 1
+>>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> # Create the input distribution
+>>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> # Construction of the multivariate orthonormal basis
+>>> polyColl = [0.]*inputDim
+>>> for i in range(distribution.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> # Truncature strategy of the multivariate orthonormal basis
+>>> # We want to select, among the maximumDimension = 100 first polynomials of
+>>> # the multivariate basis, those which have the maximumSize = 20 most 
+>>> # significant contribution (greatest coefficients), with respect to the 
+>>> # significance factor = 10^-4.
+>>> maximumDimension = 100
+>>> maximumSize = 20
+>>> significanceFactor = 1e-4
+>>> adaptiveStrategy = ot.CleaningStrategy(productBasis, maximumDimension,
+...                                          maximumSize, significanceFactor)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getCurrentVectorIndex
+"Accessor to the current vector index.
+
+Returns
+-------
+index : integer
+    Current index of the basis term."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getMaximumSize
+"Accessor to the maximum size of the orthogonal basis.
+
+Returns
+-------
+size : integer
+    Maximum number of significant terms of the basis.
+
+See also
+--------
+setMaximumSize"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getSignificanceFactor
+"Accessor to the significance factor.
+
+Returns
+-------
+factor : float
+    Value of the significance factor.
+
+See also
+--------
+setSignificanceFactor"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getVerbose
+"Accessor to the verbose.
+
+Returns
+-------
+verbose : bool
+    Return if the online monitoring of the current basis updates is enabled or not.
+
+See also
+--------
+setVerbose"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::setMaximumSize
+"Accessor to the maximum size of the orthogonal basis.
+
+Parameters
+----------
+size : integer
+    Maximum number of significant terms of the basis.
+
+See also
+--------
+getMaximumSize"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::setSignificanceFactor
+"Accessor to the significance factor.
+
+Parameters
+----------
+factor : float
+    Value of the significance factor.
+
+See also
+--------
+getSignificanceFactor"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::setVerbose
+"Accessor to the verbose.
+
+Parameters
+----------
+verbose : bool
+    Enable the online monitoring of the current basis updates or not.
+
+See also
+--------
+getVerbose"

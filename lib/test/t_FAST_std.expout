@@ -1,0 +1,15 @@
+Ishigami first order FAST indice 0 = 0.30746 absolute error=6.4e-03
+Ishigami first order FAST indice 1 = 0.44252 absolute error=1.1e-04
+Ishigami first order FAST indice 2 = 0.00000 absolute error=4.2e-07
+
+Ishigami total order FAST indice 0 = 0.55425 absolute error=3.3e-03
+Ishigami total order FAST indice 1 = 0.48710 absolute error=4.5e-02
+Ishigami total order FAST indice 2 = 0.23946 absolute error=4.2e-03
+
+G-Sobol first order FAST indice 0 = 0.49827 absolute error=1.6e-01
+G-Sobol first order FAST indice 1 = 0.22147 absolute error=7.3e-02
+G-Sobol first order FAST indice 2 = 0.12249 absolute error=3.9e-02
+
+G-Sobol total order FAST indice 0 = 0.63490 absolute error=2.2e-01
+G-Sobol total order FAST indice 1 = 0.32501 absolute error=1.1e-01
+G-Sobol total order FAST indice 2 = 0.19723 absolute error=7.0e-02

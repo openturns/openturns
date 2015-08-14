@@ -1,0 +1,12 @@
+%feature("docstring") OT::BetaFactory
+"Beta factory.
+
+Available constructor:
+    BetaFactory()
+
+See also
+--------
+DistributionFactory"
+
+
+

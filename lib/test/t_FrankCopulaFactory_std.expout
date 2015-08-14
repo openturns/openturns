@@ -1,0 +1,8 @@
+Distribution          =class=FrankCopula name=FrankCopula dimension=2 theta=1.5
+Estimated distribution=class=FrankCopula name=FrankCopula dimension=2 theta=1.31776
+Default distribution=class=FrankCopula name=FrankCopula dimension=2 theta=2
+Distribution from parameters=class=FrankCopula name=FrankCopula dimension=2 theta=1.5
+FrankCopula          =class=FrankCopula name=FrankCopula dimension=2 theta=1.5
+Estimated frankCopula=class=FrankCopula name=FrankCopula dimension=2 theta=1.31776
+Default frankCopula=class=FrankCopula name=FrankCopula dimension=2 theta=2
+FrankCopula from parameters=class=FrankCopula name=FrankCopula dimension=2 theta=1.5

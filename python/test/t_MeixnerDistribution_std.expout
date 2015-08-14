@@ -1,0 +1,37 @@
+Distribution  class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.5 beta=0.5 delta=2.5 mu=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
+Distribution  MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)
+Elliptical =  False
+Continuous =  True
+oneRealization= [2.06954]
+oneSample first= [0.267624]  last= [-2.89629]
+mean= [0.426758]
+covariance= [[ 2.89038 ]]
+Kolmogorov test for the generator, sample size= 100  is  accepted
+Kolmogorov test for the generator, sample size= 1000  is  accepted
+Point=  [1]
+log pdf=-1.517348
+pdf     =0.219293
+pdf (FD)=0.219293
+cdf=0.640774
+ccdf=0.359226
+characteristic function=(0.0679463313303-0.248507038511j)
+log characteristic function=(-1.35623659307-1.30390135592j)
+quantile= [3.39477]
+cdf(quantile)=0.950000
+mean= [0.457532]
+covariance= [[ 2.99587 ]]
+parameters= [[alpha : 1.5, beta : 0.5, mu : 2.5,  : -0.5]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [0.638355]
+standard moment n= 2 , value= [1.739]
+standard moment n= 3 , value= [3.15002]
+standard moment n= 4 , value= [10.4043]
+standard moment n= 5 , value= [29.745]
+Standard representative= MeixnerDistribution(alpha = 1, beta = 0.5, delta = 2.5, mu = 0)
+alpha=1.500000
+beta=0.500000
+delta=2.500000
+mu=-0.500000
+standard deviation= [1.73086]
+skewness= [0.221285]
+kurtosis= [3.44897]

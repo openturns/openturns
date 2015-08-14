@@ -1,0 +1,24 @@
+%define OT_FittingAlgorithm_doc
+"Fitting algorithm.
+
+Available constructors:
+    FittingAlgorithm(*fittingAlgoImp*)
+
+Parameters
+----------
+fittingAlgoImp : a FittingAlgorithmImplementation
+    A fitting algorithm implementation which is the
+    :class:`~openturns.CorrectedLeaveOneOut` or :class:`~openturns.KFold`.
+
+See also
+--------
+CorrectedLeaveOneOut, KFold
+
+Notes
+-----
+FittingAlgorithm is the interface of the FittingAlgorithmImplementation.
+This class is not usable because it has sense only whithin the
+:class:`~openturns.FunctionalChaosAlgorithm`."
+%enddef
+%feature("docstring") OT::FittingAlgorithmImplementation
+OT_FittingAlgorithm_doc

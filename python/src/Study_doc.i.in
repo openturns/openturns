@@ -1,0 +1,230 @@
+%feature("docstring") OT::Study
+"Study.
+
+The study allows the user to save all its data to a structure looking like a
+map. The data are copied verbatim to the study. This is not a link, so future
+modification of the original won't affect the data saved in the study. To
+update the data saved in the study, the user has to explicitely save it again.
+Study allows the user to retrieve previously saved objects either by their name
+if a name was defined for the object or by their Id.
+
+Examples
+--------
+>>> import openturns as ot
+
+Create a Study object:
+
+>>> myStudy = ot.Study()
+>>> myStudy.setStorageManager(ot.XMLStorageManager('myStudy.xml'))
+
+Add PersistentObjects to the study:
+
+>>> # a NumericalPoint:
+>>> point = ot.NumericalPoint(3, 0.)
+>>> point[0] = 10.
+>>> point[1] = 11.
+>>> point[2] = 12.
+>>> myStudy.add('point', point)
+>>> # a Simulation::Result:
+>>> simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
+>>> myStudy.add('simulationResult', simulationResult)
+
+Get objects from the study:
+
+>>> print(myStudy.getObject('point'))
+[10,11,12]
+
+Save the Study:
+
+>>> myStudy.save()
+
+Create a new Study object:
+
+>>> myStudy = ot.Study()
+>>> myStudy.setStorageManager(ot.XMLStorageManager('myStudy.xml'))
+
+Load data from the study:
+
+>>> myStudy.load()
+
+Create data from the ones stored in the study:
+
+>>> # a NumericalPoint:
+>>> otherPoint = ot.NumericalPoint()
+>>> myStudy.fillObject('point', otherPoint)
+>>> # a Simulation::Result:
+>>> otherSimulationResult = ot.SimulationResult()
+>>> myStudy.fillObject('simulationResult', otherSimulationResult)
+
+Get information from the study:
+
+>>> myStudy.printLabels()
+'point;simulationResult'
+
+Remove data:
+
+>>> myStudy.hasObject(otherSimulationResult.getId())
+True
+>>> myStudy.remove(otherSimulationResult)
+>>> myStudy.hasObject('simulationResult')
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::add
+"Add an object to the study.
+
+:Available usages:
+    add(*object*)
+
+    add(*name, object, force=False*)
+
+Parameters
+----------
+object : :class:`~openturns.InterfaceObject`, :class:`~openturns.PersistentObject`
+    Object to add in the study.
+name : str
+    Name to associate with the object.
+force : bool
+    If *force=True* and *name* is already defined in the study, the previous
+    object associated with this name is removed. A error message is emitted
+    otherwise."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::fillObject
+"Fill an object with one got from study.
+
+:Available usages:
+    fillObject(*name, object*)
+
+    fillObject(*id, object*)
+
+Parameters
+----------
+object : :class:`~openturns.InterfaceObject`, :class:`~openturns.PersistentObject`
+    An object to be refilled (may be empty, i.e. default constructed).
+name : str
+    Name of the object stored in the study.
+id : int
+    Internal identifier of the object stored in the study."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::fillObjectByName
+"Fill an object with one got from study.
+
+:Available usages:
+    fillObjectByName(*object, name*)
+
+    fillObjectByName(*id, object*)
+
+Parameters
+----------
+object : :class:`~openturns.InterfaceObject`, :class:`~openturns.PersistentObject`
+    An object to be refilled (may be empty, i.e. default constructed).
+name : str
+    Name of the object stored in the study.
+id : int
+    Internal identifier of the object stored in the study."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::getObject
+"Get object from the study.
+
+:Available usages:
+    getObject(*id*)
+
+    getObject(*name*)
+
+Parameters
+----------
+name : str
+    Name of the object stored in the study.
+id : int
+    Internal identifier of the object stored in the study.
+
+Returns
+-------
+object : :class:`~openturns.PersistentObject`
+    The object saved in the study."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::getStorageManager
+"Get the storage manager used by the study.
+
+Parameters
+----------
+manager : :class:`~openturns.StorageManager`
+    Storage manager used by the study to save and reload data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::setStorageManager
+"Set the storage manager used by the study.
+
+Returns
+-------
+manager : :class:`~openturns.StorageManager`
+    Storage manager used by the study to save and reload data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::hasObject
+"Query if object is stored in study.
+
+:Available usages:
+    hasObject(*id*)
+
+    hasObject(*name*)
+
+Parameters
+----------
+name : str
+    Name of the object stored in the study.
+id : int
+    Internal identifier of the object stored in the study.
+
+Returns
+-------
+hasObject : bool
+    *True* if the object is stored in the study."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::load
+"Reload the study from the storage manager."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::printLabels
+"Print all the names of the objects stored in the study.
+
+Returns
+-------
+names : str
+    Names of the objects stored in the study."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::remove
+"Remove an object from the study.
+
+:Available usages:
+    remove(*object*)
+
+    remove(*name*)
+
+Parameters
+----------
+object : :class:`~openturns.InterfaceObject`
+    An object to be removed.
+name : str
+    Name of the object to be removed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Study::save
+"Save the study through the storage manager."

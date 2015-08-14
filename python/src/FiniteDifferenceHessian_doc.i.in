@@ -1,0 +1,98 @@
+%feature("docstring") OT::FiniteDifferenceHessian
+"Base class for second order centered finite-difference scheme.
+
+Available constructors:
+    FiniteDifferenceHessian(*epsilon, evalImpl*)
+
+    FiniteDifferenceHessian(*step, evalImpl*)
+
+Parameters
+----------
+evalImpl : :class:`~openturns.NumericalMathEvaluationImplementation`
+    Implementation of the evaluation of a function.
+epsilon : float, sequence of float
+    Finite difference steps for each dimension.
+step : :class:`~openturns.FiniteDifferenceStep`
+    Defines how finite difference steps values are computed.
+
+Notes
+-----
+Base class to define second order finite-difference scheme. The hessian
+can be computed only through its derived class:
+
+- :class:`~openturns.CenteredFiniteDifferenceHessian`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::getInputDimension
+"Get the input dimension.
+
+Returns
+-------
+dimension : int
+    Input dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::getOutputDimension
+"Get the output dimension.
+
+Returns
+-------
+dimension : int
+    Output dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::getEpsilon
+"Get the finite difference steps.
+
+Returns
+-------
+epsilon : :class:`~openturns.NumericalPoint`
+    Finite difference steps for each dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::getEvaluation
+"Get the implementation of the evaluation of the function.
+
+Returns
+-------
+evalImpl : :class:`~openturns.NumericalMathFunctionEvaluationImplementation`
+    Implementation of the evaluation of a function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::hessian
+"Get the hessian at some point.
+
+Parameters
+----------
+point : sequence of float
+    Point where the hessian is computed.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricTensor`
+    Hessian evaluated at *point*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::getFiniteDifferenceStep
+"Get the finite difference step.
+
+Returns
+-------
+step : :class:`~openturns.FiniteDifferenceStep`
+    Defines how finite difference steps values are computed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FiniteDifferenceHessian::setFiniteDifferenceStep
+"Set the finite difference step.
+
+Parameters
+----------
+step : :class:`~openturns.FiniteDifferenceStep`
+    Defines how finite difference steps values are computed."

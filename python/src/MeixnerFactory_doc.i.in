@@ -1,0 +1,82 @@
+%feature("docstring") OT::MeixnerFactory
+"Meixner specific orthonormal univariate polynomial family.
+
+For the :class:`~openturns.NegativeBinomial` distribution.
+
+Available constructors:
+    MeixnerFactory(*r=1.0, p=0.5*)
+
+Parameters
+----------
+r : float, :math:`r > 0`
+    Number of failures parameter of the :class:`~openturns.NegativeBinomial`
+    distribution.
+p : float, :math:`0 < p < 1`
+    Success probability parameter of the :class:`~openturns.NegativeBinomial`
+    distribution.
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+
+The recurrence coefficients for the Meixner polynomials come analytically
+and read:
+
+.. math::
+
+    \begin{array}{rcl}
+        a_i & = & \displaystyle \frac{p - 1}
+                                     {\sqrt{p (i + 1) (i + r)}} \\
+        b_i & = & \displaystyle \frac{p (i + r) + i}
+                                     {\sqrt{p (i + 1) (i + r)}} \\
+        c_i & = & \displaystyle - \frac{\sqrt{p i (i + r - 1)}}
+                                       {\sqrt{p (i + 1) (i + r)}} \\
+    \end{array}, \quad 1 < i
+
+where :math:`r` and :math:`p` are the parameters of the
+:class:`~openturns.NegativeBinomial` distribution.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.MeixnerFactory()
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+0.707107 - 0.707107 * X
+0.5 - 1.25 * X + 0.25 * X^2"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerFactory::getP
+"Accessor to the success probability parameter :math:`p`.
+
+Of the :class:`~openturns.NegativeBinomial` distribution.
+
+Returns
+-------
+p : float
+    Success probability parameter of the :class:`~openturns.NegativeBinomial`
+    distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerFactory::getR
+"Accessor to the number of failures parameter :math:`r`.
+
+Of the :class:`~openturns.NegativeBinomial` distribution.
+
+Returns
+-------
+r : int
+    Number of failures parameter of the :class:`~openturns.NegativeBinomial`
+    distribution."

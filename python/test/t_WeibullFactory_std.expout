@@ -1,0 +1,7 @@
+distribution= class=Weibull name=Weibull dimension=1 alpha=1 beta=2.5 gamma=-1
+Estimated distribution= class=Weibull name=Weibull dimension=1 alpha=0.971656 beta=2.39412 gamma=-0.969546
+Default distribution= Weibull(alpha = 1, beta = 1, gamma = 0)
+Distribution from parameters= Weibull(alpha = 1, beta = 2.5, gamma = -1)
+Estimated weibull= Weibull(alpha = 0.971656, beta = 2.39412, gamma = -0.969546)
+Default weibull= Weibull(alpha = 1, beta = 1, gamma = 0)
+Weibull from parameters= Weibull(alpha = 1, beta = 2.5, gamma = -1)

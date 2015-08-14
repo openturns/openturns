@@ -1,0 +1,137 @@
+%define OT_AdaptiveStrategy_doc
+"Base class for the construction of the truncated multivariate orthogonal basis.
+
+Available constructors:
+    AdaptiveStrategy(*orthogonalBasis, dimension*)
+
+    AdaptiveStrategy(*adaptiveStrategyImplementation*)
+
+Parameters
+----------
+orthogonalBasis : :class:`~openturns.OrthogonalBasis`
+    An OrthogonalBasis.
+dimension : positive int
+    Number of terms of the basis. This first usage has the same implementation
+    as the second with a :class:`~openturns.FixedStrategy`. 
+adaptiveStrategyImplementation : AdaptiveStrategyImplementation
+    Adaptive strategy implementation which is a :class:`~openturns.FixedStrategy`, 
+    :class:`~openturns.SequentialStrategy` or a :class:`~openturns.CleaningStrategy`.
+
+See also
+--------
+FunctionalChaosAlgorithm, FixedStrategy, SequentialStrategy, CleaningStrategy
+
+Notes
+-----
+A strategy must be chosen for the selection of the different terms of the
+multivariate basis in which the response surface by functional chaos is expressed.
+The selected terms are regrouped in the finite subset :math:`K` of :math:`\Nset`.
+
+There are three different strategies in OpenTURNS :
+
+- :class:`~openturns.FixedStrategy`,
+- :class:`~openturns.SequentialStrategy`,
+- :class:`~openturns.CleaningStrategy`.
+
+These strategies are conceived in such a way to be adapted for other orthogonal
+expansions (other than polynomial). For the moment, their implementation are
+only useful for the polynomial chaos expansion."
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation
+OT_AdaptiveStrategy_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_computeInitialBasis_doc
+"Compute initial basis for the approximation.
+
+See also
+--------
+getPsi"
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::computeInitialBasis
+OT_AdaptiveStrategy_computeInitialBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_getBasis_doc
+"Accessor to the underlying orthogonal basis.
+
+Returns
+-------
+basis : :class:`~openturns.OrthogonalBasis`
+    Orthogonal basis of which the adaptive strategy is based."
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::getBasis
+OT_AdaptiveStrategy_getBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_getMaximumDimension_doc
+"Accessor to the maximum dimension of the orthogonal basis.
+
+Returns
+-------
+P : integer
+    Maximum dimension of the truncated basis."
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::getMaximumDimension
+OT_AdaptiveStrategy_getMaximumDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_getPsi_doc
+"Accessor to the orthogonal polynomials of the basis.
+
+Returns
+-------
+polynomials : list of polynomials
+    Sequence of :math:`P` analytical polynomials.
+
+Notes
+-----
+The method :meth:`computeInitialBasis` must be applied first.
+
+Examples
+--------
+>>> import openturns as ot
+>>> productBasis = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()])
+>>> adaptiveStrategy = ot.FixedStrategy(productBasis, 3)
+>>> adaptiveStrategy.computeInitialBasis()
+>>> print(adaptiveStrategy.getPsi())
+[1,x,-0.707107 + 0.707107 * x^2]"
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::getPsi
+OT_AdaptiveStrategy_getPsi_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_setMaximumDimension_doc
+"Accessor to the maximum dimension of the orthogonal basis.
+
+Parameters
+----------
+P : integer
+    Maximum dimension of the truncated basis."
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::setMaximumDimension
+OT_AdaptiveStrategy_setMaximumDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_AdaptiveStrategy_updateBasis_doc
+"Update the basis for the next iteration of approximation.
+
+Notes
+-----
+No changes are made to the basis in the fixed strategy."
+
+%enddef
+%feature("docstring") OT::AdaptiveStrategyImplementation::updateBasis
+OT_AdaptiveStrategy_updateBasis_doc

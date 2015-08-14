@@ -1,0 +1,77 @@
+%feature("docstring") OT::RandomWalk
+"Random walk process.
+
+Parameters
+----------
+origin : :class:`~openturns.NumericalPoint` 
+    Origin of the random walk.
+
+distribution : :class:`~openturns.Distribution` 
+    Distribution of dimension equal to the dimension of `origin`.
+
+timeGrid : :class:`~openturns.TimeGrid`, optional
+    The time grid of the process.
+    By default, the time grid is  reduced to one time stamp equal to 0.
+
+
+Notes
+-----
+A random walk is a process :math:`X: \Omega \times \cD \rightarrow \Rset^d` where :math:`\cD=\Rset` discretized on the time grid :math:`(t_i)_{i \geq 0}` such that:
+
+.. math::
+
+    \forall n>0,\: X_{t_n}  =  X_{t_{n-1}} + \varepsilon_{t_n}
+
+where :math:`\vect{x}_0 \in \Rset^d` and :math:`\varepsilon` is a  white noise of dimension :math:`d`.
+
+
+Examples
+--------
+Create a random walk:
+
+>>> import openturns as ot
+>>> myTimeGrid = ot.RegularGrid(0, 0.1, 10)
+>>> myDist = ot.ComposedDistribution([ot.Normal(), ot.Exponential(0.2)], ot.ClaytonCopula(0.5))
+>>> myOrigin = ot.NumericalPoint(myDist.getMean())
+>>> myRandomWalk = ot.RandomWalk(myOrigin, myDist, myTimeGrid)
+
+Get a realization:
+
+>>> myReal = myRandomWalk.getRealization()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomWalk::getDistribution
+"Accessor to the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution` 
+    The distribution of dimension :math:`d` of the white noise."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomWalk::getOrigin
+"Accessor to the origin.
+
+Returns
+-------
+origin : :class:`~openturns.NumericalPoint` 
+    The origin of the random walk."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomWalk::setDistribution
+"Accessor to the distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution` 
+    The distribution of dimension :math:`d` of the white noise."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RandomWalk::setOrigin
+"Accessor to the origin.
+
+Parameters
+----------
+origin : :class:`~openturns.NumericalPoint` 
+    The origin of the random walk."
+
