@@ -360,7 +360,7 @@ set (CPACK_BINARY_STGZ           "OFF"         )
 set (CPACK_BINARY_TBZ2           "ON"          )
 set (CPACK_BINARY_TGZ            "ON"          )
 set (CPACK_BINARY_TZ             "OFF"         )
-set (CPACK_SOURCE_IGNORE_FILES "/.svn;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}")
+set (CPACK_SOURCE_IGNORE_FILES "/.git;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}")
 #set (CPACK_INSTALL_CMAKE_PROJECTS "lib;OpenTURNSLib;ALL;/" "python;OpenTURNSPython;ALL;/")
 
 
