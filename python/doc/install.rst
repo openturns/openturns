@@ -124,8 +124,8 @@ From sources
 ============
 You can checkout the development trunk::
 
-    $ svn checkout https://svn.openturns.org/openturns/trunk
-    $ cd trunk
+    $ git clone https://github.com/openturns/openturns.git
+    $ cd openturns
     $ cmake -DCMAKE_INSTALL_PREFIX=~/.local .
     $ make OT -j$(getconf _NPROCESSORS_CONF)
     $ make install
