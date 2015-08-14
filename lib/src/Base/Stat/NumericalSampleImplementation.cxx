@@ -1050,7 +1050,6 @@ struct Comparison
              const NumericalSampleImplementation & nsi)
     : first_(first), second_(first), nsi_(nsi), permutation_(nsi_.getSize()), hasTies_(false)
   {
-    const UnsignedInteger size = nsi_.getSize();
     permutation_.fill();
   }
 
@@ -1058,7 +1057,6 @@ struct Comparison
              const NumericalSampleImplementation & nsi)
     : first_(first), second_(second), nsi_(nsi), permutation_(nsi_.getSize()), hasTies_(false)
   {
-    const UnsignedInteger size = nsi_.getSize();
     permutation_.fill();
   }
 
