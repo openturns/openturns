@@ -1,0 +1,76 @@
+language: cpp
+
+addons:
+  apt:
+    packages:
+    - cmake
+    - gfortran
+    - bison
+    - flex
+    - libmuparser-dev
+    - liblapack-dev
+    - libxml2-dev
+    - libboost-math-dev
+    - libtbb-dev
+    - r-base-core
+    - yodl
+    - swig
+    - python-dev
+    - python-scipy
+    - python-matplotlib
+    - python-sphinx
+    - texlive-latex-recommended
+    - texlive-fonts-recommended
+    - texlive-latex-extra
+    - dvipng
+
+install:
+# sphinx >=1.2 is looking better
+  - git clone https://github.com/sphinx-doc/sphinx.git
+  - pushd sphinx
+  - python setup.py install --user
+  - popd
+# keep an eye on swig
+  - git clone https://github.com/swig/swig.git
+  - pushd swig
+  - ./autogen.sh
+  - ./configure --prefix=$HOME/.local
+  - make -j2
+  - make install
+  - popd
+# use latest hmat-oss
+  - git clone https://github.com/jeromerobert/hmat-oss.git
+  - pushd hmat-oss
+  - cmake -DCMAKE_INSTALL_PREFIX=~/.local .
+  - make install -j2
+  - popd
+
+before_script:
+  - R CMD INSTALL --library=$PWD utils/rot_1.4.6.tar.gz
+  - export R_LIBS=$PWD
+
+script:
+  - cmake -DCMAKE_INSTALL_PREFIX=~/.local
+    -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
+    -DSWIG_EXECUTABLE=~/.local/bin/swig
+    -DHMAT_DIR=~/.local/lib/cmake/hmat
+    .
+  - make install -j2
+  - make tests -j2
+  - ctest -j2 --output-on-failure
+
+after_success:
+  - test "$TRAVIS_PULL_REQUEST" != "true" || exit 0
+  - git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
+  - cp -r ~/.local/share/openturns/doc/html/* openturns.github.io
+  - cd openturns.github.io
+  - touch .nojekyll
+  - git config user.email "support@travis-ci.com"
+  - git config user.name "Travis CI"
+  - git add -A .
+  - git commit -a -m "Travis build $TRAVIS_BUILD_NUMBER"
+  - git push --quiet origin master > /dev/null 2>&1
+
+env:
+  global:
+    secure: Psfsq/OVsdMQKfeVCDHBK2No8WqvrMJQlfx6xXJhsrde+WOFrTWM/c3Xfk44SUaoyIxNwc62vOyFu/C9rI7faeo+g0N/SuPyqUwul+cNJNb0neIOQa4X9tEQJ3KxnXCtIDPSPfoYIlueIxaFyQk281Cu/g52O+x+dBPtj0puelc=
