@@ -47,7 +47,7 @@ BoundConstrainedAlgorithmImplementationResult::BoundConstrainedAlgorithmImplemen
 /* Standard constructor */
 BoundConstrainedAlgorithmImplementationResult::BoundConstrainedAlgorithmImplementationResult(const NumericalPoint & optimizer,
     const NumericalScalar optimalValue,
-    const OptimizationProblem optimization,
+    const OptimizationProblemObsolete optimization,
     const UnsignedInteger evaluationsNumber,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
@@ -95,12 +95,12 @@ void BoundConstrainedAlgorithmImplementationResult::setOptimalValue(const Numeri
 }
 
 /* Optimization problem accessors */
-BoundConstrainedAlgorithmImplementationResult::OptimizationProblem BoundConstrainedAlgorithmImplementationResult::getOptimizationProblem() const
+BoundConstrainedAlgorithmImplementationResult::OptimizationProblemObsolete BoundConstrainedAlgorithmImplementationResult::getOptimizationProblem() const
 {
   return optimization_;
 }
 
-void BoundConstrainedAlgorithmImplementationResult::setOptimizationProblem(const OptimizationProblem optimization)
+void BoundConstrainedAlgorithmImplementationResult::setOptimizationProblem(const OptimizationProblemObsolete optimization)
 {
   optimization_ = optimization;
 }
@@ -201,7 +201,7 @@ void BoundConstrainedAlgorithmImplementationResult::load(Advocate & adv)
   adv.loadAttribute( "optimalValue_", optimalValue_ );
   UnsignedInteger optimization;
   adv.loadAttribute( "optimization_", optimization );
-  optimization_ = static_cast<OptimizationProblem>( optimization);
+  optimization_ = static_cast<OptimizationProblemObsolete>( optimization);
   adv.loadAttribute( "evaluationsNumber_", evaluationsNumber_ );
   adv.loadAttribute( "absoluteError_",     absoluteError_ );
   adv.loadAttribute( "relativeError_",     relativeError_ );

@@ -72,7 +72,7 @@ BoundConstrainedAlgorithmImplementation::BoundConstrainedAlgorithmImplementation
 BoundConstrainedAlgorithmImplementation::BoundConstrainedAlgorithmImplementation(const NumericalMathFunction & objectiveFunction,
     const Interval & boundConstraints,
     const NumericalPoint & startingPoint,
-    const OptimizationProblem optimization,
+    const OptimizationProblemObsolete optimization,
     const Bool verbose):
   PersistentObject(),
   objectiveFunction_(objectiveFunction),
@@ -116,12 +116,12 @@ void BoundConstrainedAlgorithmImplementation::setBoundConstraints(const Interval
 }
 
 /* Optimization problem accessor */
-BoundConstrainedAlgorithmImplementation::OptimizationProblem BoundConstrainedAlgorithmImplementation::getOptimizationProblem() const
+BoundConstrainedAlgorithmImplementation::OptimizationProblemObsolete BoundConstrainedAlgorithmImplementation::getOptimizationProblem() const
 {
   return optimization_;
 }
 
-void BoundConstrainedAlgorithmImplementation::setOptimizationProblem(const OptimizationProblem optimization)
+void BoundConstrainedAlgorithmImplementation::setOptimizationProblem(const OptimizationProblemObsolete optimization)
 {
   optimization_ = optimization;
 }

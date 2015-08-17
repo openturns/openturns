@@ -46,8 +46,8 @@ class OT_API BoundConstrainedAlgorithmImplementation
 public:
 
   typedef BoundConstrainedAlgorithmImplementationResult Result;
-  typedef Result::OptimizationProblem      OptimizationProblem;
-  //typedef enum {MINIMIZATION = 0, MAXIMIZATION} OptimizationProblem;
+  typedef Result::OptimizationProblemObsolete      OptimizationProblemObsolete;
+  //typedef enum {MINIMIZATION = 0, MAXIMIZATION} OptimizationProblemObsolete;
 
   /** Default constructor */
   BoundConstrainedAlgorithmImplementation();
@@ -60,7 +60,7 @@ public:
   BoundConstrainedAlgorithmImplementation(const NumericalMathFunction & objectiveFunction,
                                           const Interval & boundConstraints,
                                           const NumericalPoint & startingPoint,
-                                          const OptimizationProblem optimization  = Result::MINIMIZATION,
+                                          const OptimizationProblemObsolete optimization  = Result::MINIMIZATION,
                                           const Bool verbose = true);
 
   /** Virtual constructor */
@@ -82,8 +82,8 @@ public:
   void setBoundConstraints(const Interval & boundConstraints);
 
   /** Optimization problem accessor */
-  OptimizationProblem getOptimizationProblem() const;
-  void setOptimizationProblem(const OptimizationProblem optimization);
+  OptimizationProblemObsolete getOptimizationProblem() const;
+  void setOptimizationProblem(const OptimizationProblemObsolete optimization);
 
   /** Result accessor */
   Result getResult() const;
@@ -122,7 +122,7 @@ private:
   NumericalMathFunction objectiveFunction_;
   Interval boundConstraints_;
   NumericalPoint startingPoint_;
-  OptimizationProblem optimization_;
+  OptimizationProblemObsolete optimization_;
   UnsignedInteger    maximumEvaluationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

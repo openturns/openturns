@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     UnsignedInteger dim(4);
     NumericalPoint optimizer(dim, 1.0);
     NumericalScalar optimalValue(5.0);
-    BoundConstrainedAlgorithmImplementationResult::OptimizationProblem optimization(BoundConstrainedAlgorithmImplementationResult::MINIMIZATION);
+    BoundConstrainedAlgorithmImplementationResult::OptimizationProblemObsolete optimization(BoundConstrainedAlgorithmImplementationResult::MINIMIZATION);
     UnsignedInteger evaluationsNumber(10);
     NumericalScalar absoluteError(1e-6);
     NumericalScalar relativeError(1e-7);

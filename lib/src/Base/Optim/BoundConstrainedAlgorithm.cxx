@@ -60,7 +60,7 @@ BoundConstrainedAlgorithm::BoundConstrainedAlgorithm(const NumericalMathFunction
 BoundConstrainedAlgorithm::BoundConstrainedAlgorithm(const NumericalMathFunction & objectiveFunction,
     const Interval & boundConstraints,
     const NumericalPoint & startingPoint,
-    const OptimizationProblem optimization,
+    const OptimizationProblemObsolete optimization,
     const Bool verbose)
   : TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>(new TNC(TNCSpecificParameters(), objectiveFunction, boundConstraints, startingPoint, optimization, verbose))
 {
@@ -92,12 +92,12 @@ void BoundConstrainedAlgorithm::setBoundConstraints(const Interval & boundConstr
 }
 
 /* Optimization problem accessor */
-BoundConstrainedAlgorithm::OptimizationProblem BoundConstrainedAlgorithm::getOptimizationProblem() const
+BoundConstrainedAlgorithm::OptimizationProblemObsolete BoundConstrainedAlgorithm::getOptimizationProblem() const
 {
   return getImplementation()->getOptimizationProblem();
 }
 
-void BoundConstrainedAlgorithm::setOptimizationProblem(const OptimizationProblem optimization)
+void BoundConstrainedAlgorithm::setOptimizationProblem(const OptimizationProblemObsolete optimization)
 {
   copyOnWrite();
   getImplementation()->setOptimizationProblem(optimization);

@@ -53,7 +53,7 @@ public:
       const NumericalMathFunction & objectiveFunction,
       const Interval & boundConstraints,
       const NumericalPoint & startingPoint,
-      const OptimizationProblem optimization  = Result::MINIMIZATION,
+      const OptimizationProblemObsolete optimization  = Result::MINIMIZATION,
       const Bool verbose = false);
 
   /** Virtual constructor */

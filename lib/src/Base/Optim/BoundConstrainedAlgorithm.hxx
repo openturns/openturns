@@ -42,7 +42,7 @@ class OT_API BoundConstrainedAlgorithm
 public:
 
   typedef Pointer<BoundConstrainedAlgorithmImplementation>                  Implementation;
-  typedef BoundConstrainedAlgorithmImplementation::OptimizationProblem      OptimizationProblem;
+  typedef BoundConstrainedAlgorithmImplementation::OptimizationProblemObsolete      OptimizationProblemObsolete;
   typedef BoundConstrainedAlgorithmImplementationResult                     Result;
 
   /** Default constructor */
@@ -62,7 +62,7 @@ public:
   BoundConstrainedAlgorithm(const NumericalMathFunction & objectiveFunction,
                             const Interval & boundConstraints,
                             const NumericalPoint & startingPoint,
-                            const OptimizationProblem optimization  = BoundConstrainedAlgorithmImplementationResult::MINIMIZATION,
+                            const OptimizationProblemObsolete optimization  = BoundConstrainedAlgorithmImplementationResult::MINIMIZATION,
                             const Bool verbose = false);
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
@@ -81,8 +81,8 @@ public:
   void setBoundConstraints(const Interval & boundConstraints);
 
   /** Optimization problem accessor */
-  OptimizationProblem getOptimizationProblem() const;
-  void setOptimizationProblem(const OptimizationProblem optimization);
+  OptimizationProblemObsolete getOptimizationProblem() const;
+  void setOptimizationProblem(const OptimizationProblemObsolete optimization);
 
   /** Result accessor */
   Result getResult() const;

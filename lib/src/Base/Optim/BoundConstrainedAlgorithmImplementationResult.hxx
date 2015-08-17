@@ -42,7 +42,7 @@ class OT_API BoundConstrainedAlgorithmImplementationResult
 
 public:
 
-  typedef enum {MINIMIZATION = 0, MAXIMIZATION} OptimizationProblem;
+  typedef enum {MINIMIZATION = 0, MAXIMIZATION} OptimizationProblemObsolete;
 
   /** Default constructor */
   BoundConstrainedAlgorithmImplementationResult();
@@ -50,7 +50,7 @@ public:
   /** Standard constructor */
   BoundConstrainedAlgorithmImplementationResult(const NumericalPoint & optimizer,
       const NumericalScalar optimalValue,
-      const OptimizationProblem optimization,
+      const OptimizationProblemObsolete optimization,
       const UnsignedInteger evaluationsNumber,
       const NumericalScalar absoluteError,
       const NumericalScalar relativeError,
@@ -68,7 +68,7 @@ public:
   NumericalScalar getOptimalValue() const;
 
   /** Optimization problem accessor */
-  OptimizationProblem getOptimizationProblem() const;
+  OptimizationProblemObsolete getOptimizationProblem() const;
 
   /** Iterations number accessor */
   UnsignedInteger getEvaluationsNumber() const;
@@ -106,7 +106,7 @@ protected:
   void setOptimalValue(const NumericalScalar optimalValue);
 
   /** Optimization problem accessor */
-  void setOptimizationProblem(const OptimizationProblem optimization);
+  void setOptimizationProblem(const OptimizationProblemObsolete optimization);
 
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);
@@ -124,7 +124,7 @@ private:
 
   NumericalPoint  optimizer_;
   NumericalScalar optimalValue_;
-  OptimizationProblem optimization_;
+  OptimizationProblemObsolete optimization_;
   UnsignedInteger    evaluationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

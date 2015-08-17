@@ -57,7 +57,7 @@ TNC::TNC(const TNCSpecificParameters & parameters,
          const NumericalMathFunction & objectiveFunction,
          const Interval & boundConstraints,
          const NumericalPoint & startingPoint,
-         const OptimizationProblem optimization,
+         const OptimizationProblemObsolete optimization,
          const Bool verbose)
   :
   BoundConstrainedAlgorithmImplementation(objectiveFunction, boundConstraints, startingPoint, optimization, verbose),
