@@ -43,6 +43,11 @@
 %import BaseDiffTemplateDefs.i
 
 /* Base/Optim */
+%include OptimizationProblemImplementation.i
+%include OptimizationProblem.i
+%include OptimizationSolverImplementationResult.i
+%include OptimizationSolverImplementation.i
+%include OptimizationSolver.i
 %include BoundConstrainedAlgorithmImplementationResult.i
 %include BoundConstrainedAlgorithmImplementation.i
 %include BoundConstrainedAlgorithm.i
@@ -55,6 +60,7 @@
 %include AbdoRackwitz.i
 %include CobylaSpecificParameters.i
 %include CobylaObsolete.i
+%include Cobyla.i
 %include TNCSpecificParameters.i
 %include TNC.i
 %include SQPSpecificParameters.i

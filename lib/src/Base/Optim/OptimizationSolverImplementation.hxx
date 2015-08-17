@@ -1,8 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementation implements an algorithm for
- *         finding the point of an implicitely defined manifold the nearest
- *         to the origin.
+ *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -42,11 +40,13 @@ class OptimizationSolverImplementation
   CLASSNAME;
 public:
 
+  typedef OptimizationSolverImplementationResult   Result;
+
   /** Default constructor */
   OptimizationSolverImplementation();
 
   /** Constructor with parameters */
-  explicit OptimizationSolverImplementation(const NumericalMathFunction & levelFunction,
+  explicit OptimizationSolverImplementation(const OptimizationProblem & problem,
       const Bool verbose = false);
 
 
@@ -62,17 +62,9 @@ public:
   /** Starting point accessor */
   void setStartingPoint(const NumericalPoint & startingPoint);
 
-  /** Level function accessor */
-  NumericalMathFunction getLevelFunction() const;
-
-  /** Level function accessor */
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
-
-  /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-
-  /** Level value accessor */
-  void setLevelValue(const NumericalScalar levelValue);
+  /** Problem accessor */
+  OptimizationProblem getProblem() const;
+  void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
   Result getResult() const;
@@ -121,9 +113,8 @@ protected:
   Result result_;
 
 private:
-  NumericalMathFunction levelFunction_;
   NumericalPoint startingPoint_;
-  NumericalScalar levelValue_;
+  OptimizationProblem  problem_;
   UnsignedInteger    maximumIterationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

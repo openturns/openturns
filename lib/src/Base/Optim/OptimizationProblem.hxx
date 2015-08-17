@@ -80,8 +80,21 @@ public:
   void setBounds(const Interval & bounds);
   Bool hasBounds() const;
 
+  /** Level function accessor */
+  NumericalMathFunction getLevelFunction() const;
+  void setLevelFunction(const NumericalMathFunction & levelFunction);
+  Bool hasLevelFunction() const;
+
+  /** Level value accessor */
+  NumericalScalar getLevelValue() const;
+  void setLevelValue(NumericalScalar levelValue);
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
+
+  /** Minimization accessor */
+  void setMinimization(Bool minimization);
+  Bool isMinimization() const;
 
   /** String converter */
   virtual String __repr__() const;

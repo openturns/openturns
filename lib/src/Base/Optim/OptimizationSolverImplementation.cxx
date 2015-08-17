@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementation implements an algorithm for finding the
+ *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -28,14 +28,13 @@ CLASSNAMEINIT(OptimizationSolverImplementation);
 /* Default constructor */
 OptimizationSolverImplementation::OptimizationSolverImplementation()
   : PersistentObject()
-  , levelFunction_(NumericalMathFunction())
   , startingPoint_(NumericalPoint(0))
-  , levelValue_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultLevelValue" ))
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
   , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
+  , verbose_(false)
 {
   // Nothing to do
 }
@@ -43,16 +42,15 @@ OptimizationSolverImplementation::OptimizationSolverImplementation()
 /*
  * @brief Standard constructor: the optimization problem is managed by the optimization solver, and the actual solver is in charge to check if it is able to solve it.
  */
-OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem,
-    const NumericalPoint & startingPoint)
+OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem, const Bool verbose)
   : PersistentObject()
   , problem_(problem)
-  , startingPoint_(startingPoint)
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
   , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
+  , verbose_(verbose)
 {
   // Nothing to do
 }
@@ -67,18 +65,6 @@ NumericalPoint OptimizationSolverImplementation::getStartingPoint() const
 void OptimizationSolverImplementation::setStartingPoint(const NumericalPoint & startingPoint)
 {
   startingPoint_ = startingPoint;
-}
-
-/* Level value accessor */
-NumericalScalar OptimizationSolverImplementation::getLevelValue() const
-{
-  return levelValue_;
-}
-
-/* Level value accessor */
-void OptimizationSolverImplementation::setLevelValue(const NumericalScalar levelValue)
-{
-  levelValue_ = levelValue;
 }
 
 /* Result accessor */
@@ -164,7 +150,8 @@ String OptimizationSolverImplementation::__repr__() const
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
-      << " maximumConstraintError=" << maximumConstraintError_;
+      << " maximumConstraintError=" << maximumConstraintError_
+      << " verbose=" << (verbose_ ? "true" : "false");
   return oss;
 }
 
@@ -189,6 +176,18 @@ void OptimizationSolverImplementation::run()
 OptimizationSolverImplementation * OptimizationSolverImplementation::clone() const
 {
   return new OptimizationSolverImplementation(*this);
+}
+
+/* Verbose accessor */
+Bool OptimizationSolverImplementation::getVerbose() const
+{
+  return verbose_;
+}
+
+/* Verbose accessor */
+void OptimizationSolverImplementation::setVerbose(const Bool verbose)
+{
+  verbose_ = verbose;
 }
 
 END_NAMESPACE_OPENTURNS

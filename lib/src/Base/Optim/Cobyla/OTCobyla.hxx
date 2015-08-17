@@ -23,5 +23,6 @@
 #define OPENTURNS_OTCOBYLA_HXX
 
 #include "CobylaObsolete.hxx"
+#include "Cobyla.hxx"
 
 #endif /* OPENTURNS_OTCOBYLA_HXX */

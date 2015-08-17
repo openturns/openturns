@@ -340,6 +340,11 @@ ot_add_python_module(diff diff_module.i
                     )
 
 ot_add_python_module(optim optim_module.i
+                      OptimizationProblem.i
+                      OptimizationProblemImplementation.i
+                      OptimizationSolver.i
+                      OptimizationSolverImplementationResult.i
+                      OptimizationSolverImplementation.i
                       BoundConstrainedAlgorithmImplementationResult.i
                       BoundConstrainedAlgorithmImplementation.i
                       BoundConstrainedAlgorithm.i
@@ -352,6 +357,7 @@ ot_add_python_module(optim optim_module.i
                       AbdoRackwitz.i
                       CobylaSpecificParameters.i
                       CobylaObsolete.i
+                      Cobyla.i
                       TNCSpecificParameters.i
                       TNC.i
                       SQPSpecificParameters.i

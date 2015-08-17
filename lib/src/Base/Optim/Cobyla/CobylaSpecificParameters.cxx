@@ -43,6 +43,7 @@ CobylaSpecificParameters::CobylaSpecificParameters():
 /* Parameters with parameters */
 CobylaSpecificParameters::CobylaSpecificParameters(const NumericalScalar rhoBeg):
   PersistentObject()
+  , rhoBeg_(rhoBeg)
 {
   // Nothing to do
 } /* SpecificParametersCobyla */

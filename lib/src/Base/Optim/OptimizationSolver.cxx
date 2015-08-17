@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "CobylaObsolete.hxx"
 #include "OptimizationSolver.hxx"
+#include "Cobyla.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,7 +50,7 @@ OptimizationSolver::OptimizationSolver(const Implementation & p_implementation) 
  * @brief  Standard constructor: the problem is defined by an OptimizationProblem
  */
 OptimizationSolver::OptimizationSolver(const OptimizationProblem & problem):
-  TypedInterfaceObject<OptimizationSolverImplementation>(new CobylaObsolete(problem))
+  TypedInterfaceObject<OptimizationSolverImplementation>(new Cobyla(problem))
 {
   // Nothing to do
 }
@@ -73,7 +73,7 @@ OptimizationProblem OptimizationSolver::getProblem() const
   return getImplementation()->getProblem();
 }
 
-void OptimizationSolver::setLevelValue(const OptimizationProblem & problem)
+void OptimizationSolver::setProblem(const OptimizationProblem & problem)
 {
   copyOnWrite();
   getImplementation()->setProblem(problem);

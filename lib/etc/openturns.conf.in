@@ -135,6 +135,13 @@
   <NearestPointAlgorithmImplementation-DefaultMaximumResidualError    value="1.0e-5" />
   <NearestPointAlgorithmImplementation-DefaultMaximumConstraintError  value="1.0e-5" />
 
+  <!-- OT::OptimizationSolverImplementation parameters -->
+  <OptimizationSolverImplementation-DefaultMaximumIteration        value="100"    />
+  <OptimizationSolverImplementation-DefaultMaximumAbsoluteError    value="1.0e-5" />
+  <OptimizationSolverImplementation-DefaultMaximumRelativeError    value="1.0e-5" />
+  <OptimizationSolverImplementation-DefaultMaximumResidualError    value="1.0e-5" />
+  <OptimizationSolverImplementation-DefaultMaximumConstraintError  value="1.0e-5" />
+
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value="0.1" />
 

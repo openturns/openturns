@@ -455,6 +455,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError", 1.0e-5 );
   setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumConstraintError", 1.0e-5 );
 
+  // OptimizationSolverImplementation parameters //
+  setAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration", 100 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError", 1.0e-5 );
+
+
   // Cobyla parameters //
   setAsNumericalScalar( "Cobyla-DefaultRhoBeg", 0.1 );
 

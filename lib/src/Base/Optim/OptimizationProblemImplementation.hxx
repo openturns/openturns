@@ -48,7 +48,12 @@ public:
   OptimizationProblemImplementation(const NumericalMathFunction & objective,
                                     const NumericalMathFunction & equalityConstraint,
                                     const NumericalMathFunction & inequalityConstraint,
-                                    const Interval & bounds);
+                                    const Interval & bounds,
+                                    Bool minimization = true);
+
+  /** Constructor with parameters */
+  explicit OptimizationProblemImplementation(const NumericalMathFunction & levelFunction,
+                                             NumericalScalar levelValue = 0.0);
 
   /** Virtual constructor */
   virtual OptimizationProblemImplementation * clone() const;
@@ -73,8 +78,21 @@ public:
   void setBounds(const Interval & bounds);
   Bool hasBounds() const;
 
+  /** Level function accessor */
+  NumericalMathFunction getLevelFunction() const;
+  void setLevelFunction(const NumericalMathFunction & levelFunction);
+  Bool hasLevelFunction() const;
+
+  /** Level value accessor */
+  NumericalScalar getLevelValue() const;
+  void setLevelValue(NumericalScalar levelValue);
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
+
+  /** Minimization accessor */
+  void setMinimization(Bool minimization);
+  Bool isMinimization() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -86,6 +104,9 @@ public:
   void load(Advocate & adv);
 
 private:
+  void clearLevelFunction();
+  void setNearestPointConstraints();
+
   // The objective function
   NumericalMathFunction objective_;
 
@@ -97,6 +118,15 @@ private:
 
   // The bounds
   Interval bounds_;
+
+  // The level function, for nearest point problems
+  NumericalMathFunction levelFunction_;
+
+  // The level value, for nearest point problems
+  NumericalScalar levelValue_;
+
+  // Minimization problem
+  Bool minimization_;
 
   // The dimension of the search space
   UnsignedInteger dimension_;
