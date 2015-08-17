@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cobyla is an actual implementation for
+ *  @brief CobylaObsolete is an actual implementation for
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Cobyla.hxx"
+#include "CobylaObsolete.hxx"
 #include "algocobyla.h"
 #include "NumericalPoint.hxx"
 #include "PersistentObjectFactory.hxx"
@@ -28,12 +28,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Cobyla);
+CLASSNAMEINIT(CobylaObsolete);
 
-static Factory<Cobyla> RegisteredFactory("Cobyla");
+static Factory<CobylaObsolete> RegisteredFactory("CobylaObsolete");
 
 /* Default constructor */
-Cobyla::Cobyla():
+CobylaObsolete::CobylaObsolete():
   NearestPointAlgorithmImplementation()
 {
   // Nothing to do
@@ -43,8 +43,8 @@ Cobyla::Cobyla():
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
  *         and a level value
  */
-Cobyla::Cobyla(const NumericalMathFunction & levelFunction,
-               const Bool verbose):
+CobylaObsolete::CobylaObsolete(const NumericalMathFunction & levelFunction,
+                               const Bool verbose):
   NearestPointAlgorithmImplementation(levelFunction, verbose),
   specificParameters_()
 {
@@ -55,9 +55,9 @@ Cobyla::Cobyla(const NumericalMathFunction & levelFunction,
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in vact, a 1-D vector valued fnction)
  *         and a level value
  */
-Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
-               const NumericalMathFunction & levelFunction,
-               const Bool verbose):
+CobylaObsolete::CobylaObsolete(const CobylaSpecificParameters & specificParameters,
+                               const NumericalMathFunction & levelFunction,
+                               const Bool verbose):
   NearestPointAlgorithmImplementation(levelFunction, verbose),
   specificParameters_(specificParameters)
 {
@@ -65,14 +65,14 @@ Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
 }
 
 /* Virtual constructor */
-Cobyla * Cobyla::clone() const
+CobylaObsolete * CobylaObsolete::clone() const
 {
-  return new Cobyla(*this);
+  return new CobylaObsolete(*this);
 }
 
-/* Performs the actual computation by calling the Cobyla algorithm
+/* Performs the actual computation by calling the CobylaObsolete algorithm
  */
-void Cobyla::run()
+void CobylaObsolete::run()
 {
   UnsignedInteger dimension = getStartingPoint().getDimension();
   int n = dimension;
@@ -114,7 +114,7 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = cobyla(n, m, &x[0], rhoBeg, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  int returnCode = cobyla(n, m, &x[0], rhoBeg, rhoEnd, message, &maxFun, CobylaObsolete::ComputeObjectiveAndConstraint, (void*) this);
 
   // Update the result
   result_.update(x, maxFun / x.getDimension());
@@ -149,36 +149,36 @@ void Cobyla::run()
 }
 
 /* Specific parameters accessor */
-CobylaSpecificParameters Cobyla::getSpecificParameters() const
+CobylaSpecificParameters CobylaObsolete::getSpecificParameters() const
 {
   return specificParameters_;
 }
 
 /* Specific parameters accessor */
-void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificParameters)
+void CobylaObsolete::setSpecificParameters(const CobylaSpecificParameters & specificParameters)
 {
   specificParameters_ = specificParameters;
 }
 
 /* String converter */
-String Cobyla::__repr__() const
+String CobylaObsolete::__repr__() const
 {
   OSS oss;
-  oss << "class=" << Cobyla::GetClassName()
+  oss << "class=" << CobylaObsolete::GetClassName()
       << " " << NearestPointAlgorithmImplementation::__repr__()
       << " specificParameters=" << getSpecificParameters();
   return oss;
 }
 
 /* Method save() stores the object through the StorageManager */
-void Cobyla::save(Advocate & adv) const
+void CobylaObsolete::save(Advocate & adv) const
 {
   NearestPointAlgorithmImplementation::save(adv);
   adv.saveAttribute("specificParameters_", specificParameters_);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void Cobyla::load(Advocate & adv)
+void CobylaObsolete::load(Advocate & adv)
 {
   NearestPointAlgorithmImplementation::load(adv);
   adv.loadAttribute("specificParameters_", specificParameters_);
@@ -188,14 +188,14 @@ void Cobyla::load(Advocate & adv)
  * Wrapper of the NumericalMathFunction operator() compatible with
  * cobyla signature
  */
-int Cobyla::ComputeObjectiveAndConstraint(int n,
+int CobylaObsolete::ComputeObjectiveAndConstraint(int n,
     int m,
     double *x,
     double *f,
     double *con,
     void *state)
 {
-  Cobyla *algorithm = static_cast<Cobyla *>(state);
+  CobylaObsolete *algorithm = static_cast<CobylaObsolete *>(state);
 
   /* Convert the input vector in OpenTURNS format */
   NumericalPoint inPoint((UnsignedInteger)n);

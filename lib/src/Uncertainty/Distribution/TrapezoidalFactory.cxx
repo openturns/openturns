@@ -24,7 +24,6 @@
 #include "SpecFunc.hxx"
 #include "ResourceMap.hxx"
 #include "algocobyla.h"
-#include "Cobyla.hxx"
 #include "Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -26,7 +26,6 @@
 #include "UserDefinedSpectralModel.hxx"
 #include "SpecFunc.hxx"
 #include "algocobyla.h"
-#include "Cobyla.hxx"
 #include "Log.hxx"
 #include "Normal.hxx"
 #include "UniVariatePolynomial.hxx"

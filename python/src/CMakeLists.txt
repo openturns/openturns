@@ -351,7 +351,7 @@ ot_add_python_module(optim optim_module.i
                       AbdoRackwitzSpecificParameters.i
                       AbdoRackwitz.i
                       CobylaSpecificParameters.i
-                      Cobyla.i
+                      CobylaObsolete.i
                       TNCSpecificParameters.i
                       TNC.i
                       SQPSpecificParameters.i

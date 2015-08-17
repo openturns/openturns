@@ -25,7 +25,6 @@
 #include "BoxCoxEvaluationImplementation.hxx"
 #include "SpecFunc.hxx"
 #include "algocobyla.h"
-#include "Cobyla.hxx"
 #include "Log.hxx"
 #include "BoxCoxTransform.hxx"
 #include "InverseBoxCoxTransform.hxx"

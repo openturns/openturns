@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     Event myEvent(output, Greater(), 0.0);
 
     /* We create a NearestPoint algorithm */
-    Cobyla myCobyla;
+    CobylaObsolete myCobyla;
     myCobyla.setSpecificParameters(CobylaSpecificParameters());
     myCobyla.setMaximumIterationsNumber(100);
     myCobyla.setMaximumAbsoluteError(1.0e-10);

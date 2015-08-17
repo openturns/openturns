@@ -19,7 +19,7 @@
  *
  */
 #include "NearestPointAlgorithm.hxx"
-#include "Cobyla.hxx"
+#include "CobylaObsolete.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,7 +53,7 @@ NearestPointAlgorithm::NearestPointAlgorithm(const Implementation & p_implementa
  *         and a level value
  */
 NearestPointAlgorithm::NearestPointAlgorithm(const NumericalMathFunction & levelFunction):
-  TypedInterfaceObject<NearestPointAlgorithmImplementation>(new Cobyla(levelFunction))
+  TypedInterfaceObject<NearestPointAlgorithmImplementation>(new CobylaObsolete(levelFunction))
 {
   // Nothing to do
 }

@@ -132,7 +132,7 @@ try:
     #
     #
     # FORM/SORM Cobyla
-    myCobyla = Cobyla()
+    myCobyla = CobylaObsolete()
     parameters = CobylaSpecificParameters()
     parameters.setRhoBeg(0.1)
     myCobyla.setSpecificParameters(parameters)

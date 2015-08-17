@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     /* The first parameter is a NearestPointAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
-    Cobyla myCobyla;
+    CobylaObsolete myCobyla;
     FORM myAlgo(myCobyla, myEvent, mean);
 
     /* Perform the simulation */

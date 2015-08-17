@@ -74,7 +74,7 @@ try:
 
     #
     # FORM/SORM Cobyla
-    myCobyla = Cobyla()
+    myCobyla = CobylaObsolete()
     myCobyla.setSpecificParameters(CobylaSpecificParameters())
     myCobyla.setMaximumIterationsNumber(1000)
     myCobyla.setMaximumAbsoluteError(1.0e-10)

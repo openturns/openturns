@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cobyla is an actual implementation for
+ *  @brief CobylaObsolete is an actual implementation for
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_COBYLA_HXX
-#define OPENTURNS_COBYLA_HXX
+#ifndef OPENTURNS_COBYLAOBSOLETE_HXX
+#define OPENTURNS_COBYLAOBSOLETE_HXX
 
 #include "CobylaSpecificParameters.hxx"
 #include "OTprivate.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * cobyla is an actual implementation for
  * NearestPointAlgorithm using the cobyla library
  */
-class OT_API Cobyla :
+class OT_API CobylaObsolete :
   public NearestPointAlgorithmImplementation
 {
   CLASSNAME;
@@ -42,21 +42,21 @@ public:
 
 
   /** Default constructor */
-  Cobyla();
+  CobylaObsolete();
 
   /** Constructor with parameters */
-  explicit Cobyla(const NumericalMathFunction & levelFunction,
-                  const Bool verbose = false);
+  explicit CobylaObsolete(const NumericalMathFunction & levelFunction,
+                          const Bool verbose = false);
 
 
   /** Constructor with parameters */
-  Cobyla(const CobylaSpecificParameters & specificParameters,
-         const NumericalMathFunction & levelFunction,
-         const Bool verbose = false);
+  CobylaObsolete(const CobylaSpecificParameters & specificParameters,
+                 const NumericalMathFunction & levelFunction,
+                 const Bool verbose = false);
 
 
   /** Virtual constructor */
-  virtual Cobyla * clone() const;
+  virtual CobylaObsolete * clone() const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
@@ -94,8 +94,8 @@ private:
   NumericalSample evaluationInputHistory_;
   NumericalSample evaluationOutputHistory_;
 
-}; /* class Cobyla */
+}; /* class CobylaObsolete */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_COBYLA_HXX */
+#endif /* OPENTURNS_COBYLAOBSOLETE_HXX */

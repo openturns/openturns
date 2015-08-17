@@ -14,7 +14,7 @@ Minimization of the distance under an equality constraint
     NearestPointAlgorithm
     AbdoRackwitz
     AbdoRackwitzSpecificParameters
-    Cobyla
+    CobylaObsolete
     CobylaSpecificParameters
     SQP
     SQPSpecificParameters

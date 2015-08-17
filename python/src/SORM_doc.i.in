@@ -103,7 +103,7 @@ Examples
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create a NearestPoint algorithm
->>> myCobyla = ot.Cobyla()
+>>> myCobyla = ot.CobylaObsolete()
 >>> myAlgo = ot.SORM(myCobyla, myEvent, [50., 1., 10., 5.])"
 
 

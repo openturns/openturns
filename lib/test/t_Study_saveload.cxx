@@ -370,7 +370,7 @@ int main(int argc, char *argv[])
     study.add("sqp", sqp);
 
     // Create a Cobyla algorithm
-    Cobyla cobyla;
+    CobylaObsolete cobyla;
     study.add("cobyla", cobyla);
     cobyla.setLevelValue(3.0);
     cobyla.setMaximumIterationsNumber(100);
@@ -1016,7 +1016,7 @@ int main(int argc, char *argv[])
     compare<NearestPointAlgorithm::Result >( nearestPointAlgorithmResult, study2, "nearestPointAlgorithmResult");
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
-    compare<Cobyla >( cobyla, study2, "cobyla" );
+    compare<CobylaObsolete >( cobyla, study2, "cobyla" );
     compare<TNC >( tnc, study2, "tnc" );
     compare<BoundConstrainedAlgorithmImplementationResult >( boundConstrainedAlgorithmImplementationResult, study2 );
 

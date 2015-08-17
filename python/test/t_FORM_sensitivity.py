@@ -83,7 +83,7 @@ try:
         myEvent = Event(output, Greater(), 0.0)
 
         # We create a NearestPoint algorithm
-        myCobyla = Cobyla()
+        myCobyla = CobylaObsolete()
         myCobyla.setSpecificParameters(CobylaSpecificParameters())
         myCobyla.setMaximumIterationsNumber(100)
         myCobyla.setMaximumAbsoluteError(1.0e-10)

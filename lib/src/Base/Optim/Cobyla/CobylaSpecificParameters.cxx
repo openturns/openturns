@@ -20,7 +20,7 @@
  *
  */
 
-#include "Cobyla.hxx"
+#include "CobylaObsolete.hxx"
 #include "PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
