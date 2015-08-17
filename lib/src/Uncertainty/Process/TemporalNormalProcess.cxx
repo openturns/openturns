@@ -198,7 +198,7 @@ void TemporalNormalProcess::initialize() const
       {
         covarianceHMatrix_.factorize("LLt");
       }
-      catch (InternalException &ex)
+      catch (InternalException)
       {
         cumulatedScaling += scaling ;
         scaling *= 2.0;
