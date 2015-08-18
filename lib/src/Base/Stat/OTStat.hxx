@@ -84,6 +84,7 @@
 #include "DiracCovarianceModel.hxx"
 #include "HMatrixParameters.hxx"
 #include "ProductCovarianceModel.hxx"
+#include "TensorizedCovarianceModel.hxx"
 #include "HMatrixImplementation.hxx"
 #include "HMatrix.hxx"
 #include "HMatrixFactory.hxx"
