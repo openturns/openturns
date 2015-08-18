@@ -36,6 +36,61 @@ If you are willing to contribute the actual development of the library, please
 consider reading our coding guidelines in the OpenTURNS developer's guide and
 contact us on the developer's mailing list.
 
+Proposing a pull request
+------------------------
+
+Patches are welcome to our library repository: https://github.com/openturns/openturns.
+
+Here are the steps required to propose a modification with git:
+
+1. Register on `GitHub <https://github.com>`_.
+
+2. Fork the library repository https://github.com/openturns/openturns
+
+3. Setup git for first use::
+
+    git config --global user.name "John Doe"
+    git config --global user.email "johndoe@example.com"
+
+
+3. Clone your personal fork::
+
+    git clone https://github.com/doe/openturns
+
+
+4. Create a branch with a relevant topic name::
+
+    git checkout master # be sure to fork from master
+    git checkout -b branch_name
+
+
+5. Commit your changes, split your work in as much commits as needed to ease reviewing::
+
+    git add <files> # Add current state of files to commit
+    git commit -m "Comment on commit 1/2" # Commit added files
+    ...
+    git add <files>
+    git commit -m "Comment on commit 2/2"
+
+
+6. Push the new branch your personal repository::
+
+    git push --set-upstream origin branch_name
+
+
+7. Create a pull request on https://github.com/openturns/openturns
+
+That's it, your code is ready for reviewing, but it may not be accepted as is.
+
+Checkout the comments made after your pull request and the automated test result.
+
+You may want to push more commits to that branch as required.
+
+Propose a separate pull request for each topic you want to address.
+
+Here are more resources on `using pull requests <https://help.github.com/articles/using-pull-requests/>`_
+and `Git <https://git-scm.com/book/en/v2>`_.
+
 Documentation
 =============
 
