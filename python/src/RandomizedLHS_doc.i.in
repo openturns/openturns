@@ -1,0 +1,20 @@
+%feature("docstring") OT::RandomizedLHS
+"Randomized Latin Hypercube Sampling.
+
+Available constructor:
+    RandomizedLHS(*event*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    The event we are computing the probability of.
+
+See also
+--------
+Simulation
+
+Notes
+-----
+Be carefull, to be valid, the RandomizedLHS sampling method requires
+that the multivariate distribution have an independent copula. All events can be
+reduced to this case using the Rosenblatt transformation."

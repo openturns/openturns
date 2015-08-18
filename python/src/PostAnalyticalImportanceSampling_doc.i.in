@@ -1,0 +1,16 @@
+%feature("docstring") OT::PostAnalyticalImportanceSampling
+"Post analytical importance sampling.
+
+Available constructor:
+    Solver(*analyticalResult*)
+
+Parameters
+----------
+analyticalResult : :class:`~openturns.AnalyticalResult`
+    Result which contains the whole information on the analytical study
+    performed before the simulation study : in particular, the standard
+    distribution of the standard space and the standard space design point.
+
+See also
+--------
+PostAnalyticalSimulation, PostAnalyticalControlledImportanceSampling"

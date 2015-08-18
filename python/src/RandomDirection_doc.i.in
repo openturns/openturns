@@ -1,0 +1,34 @@
+%feature("docstring") OT::RandomDirection
+"Sampling following the random direction strategy.
+
+Available constructor:
+    RandomDirection()
+
+    RandomDirection(*dimension*)
+
+Parameters
+----------
+dimension : integer
+    The dimension of the standard space. By default, :math:`dimension = 0` but
+    automatically updated by the calling class.
+
+See also
+--------
+OrthogonalDirection
+
+Notes
+-----
+The RandomDirection strategy is the following : we generate some points on the
+sphere unity in the standard space according to the uniform distribution and we
+consider both opposite directions so built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomDirection::generate
+"Generate the sample.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    The sample generated in two opposite random directions."
+

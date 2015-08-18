@@ -1,0 +1,169 @@
+%define OT_Solver_doc
+"SolverImplementation of 1D non linear equations.
+
+Available constructor:
+    SolverImplementation()
+
+    SolverImplementation(*solverImplementation*)
+
+    SolverImplementation(*absError, relError, resError, maximumFunctionEvaluation*)
+
+Parameters
+----------
+solverImplementation : SolverImplementationImplementation
+    The implementation of a particular solver which is :class:`~openturns.Bisection`,
+    :class:`~openturns.Brent` or :class:`~openturns.Secant`.   
+absError : positive float
+    Absolute error: distance between two successive iterates at the end point.
+    Default is :math:`10^{-5}`.
+relError : positive float
+    Relative error: distance between the two last successive iterates with
+    regards to the last iterate. Default is :math:`10^{-5}`.
+resError : positive float
+    Residual error: difference between the last iterate value and the expected
+    value. Default is :math:`10^{-8}`.
+maximumFunctionEvaluation : int
+    The maximum number of evaluations of the function. Default is :math:`100`.
+
+See also
+--------
+Bisection, Brent, Secant
+
+Notes
+-----
+This class enables to solve 1D non linear equations :
+
+.. math::
+
+    f(x) = value, \forall x \in [infPoint, supPoint]
+
+if :math:`f` is a continuous function from :math:`\Rset` to :math:`\Rset`,
+:math:`infPoint, supPoint \in \Rset` and if :math:`f` is such that
+:math:`f(infPoint) \times f(supPoint) < 0`, then :math:`f` has at least a zero
+in the interval :math:`[infPoint, supPoint]`. In particular, it is used in the
+root research of a 
+:class:`Directional Sampling simulation <openturns.DirectionalSampling>`."
+%enddef
+%feature("docstring") OT::SolverImplementation
+OT_Solver_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_getAbsoluteError_doc
+"Accessor to the absolute error.
+
+Returns
+-------
+absError : float
+    The absolute error: distance between two successive iterates at the end point."
+%enddef
+%feature("docstring") OT::SolverImplementation::getAbsoluteError
+OT_Solver_getAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_getMaximumFunctionEvaluation_doc
+"Accessor to the maximum number of evaluations of the function.
+
+Returns
+-------
+maxEval : int
+    The maximum number of evaluations of the function."
+%enddef
+%feature("docstring") OT::SolverImplementation::getMaximumFunctionEvaluation
+OT_Solver_getMaximumFunctionEvaluation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_getRelativeError_doc
+"Accessor to the relative error.
+
+Returns
+-------
+relError : float
+    The relative error: distance between the two last successive iterates with
+    regards to the last iterate."
+%enddef
+%feature("docstring") OT::SolverImplementation::getRelativeError
+OT_Solver_getRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_getResidualError_doc
+"Accessor to the residual error.
+
+Returns
+-------
+resError : float
+    The residual errors: difference between the last iterate value and the
+    expected value."
+%enddef
+%feature("docstring") OT::SolverImplementation::getResidualError
+OT_Solver_getResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_setAbsoluteError_doc
+"Accessor to the absolute error.
+
+Parameters
+----------
+absError : float
+    The absolute error: distance between two successive iterates at the end point."
+%enddef
+%feature("docstring") OT::SolverImplementation::setAbsoluteError
+OT_Solver_setAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_setMaximumFunctionEvaluation_doc
+"Accessor to the maximum number of evaluations of the function.
+
+Parameters
+----------
+maxEval : int
+    The maximum number of evaluations of the function."
+%enddef
+%feature("docstring") OT::SolverImplementation::setMaximumFunctionEvaluation
+OT_Solver_setMaximumFunctionEvaluation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_setRelativeError_doc
+"Accessor to the relative error.
+
+Parameters
+----------
+relError : float
+    The relative error: distance between the two last successive iterates with
+    regards to the last iterate."
+%enddef
+%feature("docstring") OT::SolverImplementation::setRelativeError
+OT_Solver_setRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_setResidualError_doc
+"Accessor to the residual error.
+
+Parameters
+----------
+resError : float
+    The residual errors: difference between the last iterate value and the
+    expected value."
+%enddef
+%feature("docstring") OT::SolverImplementation::setResidualError
+OT_Solver_setResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Solver_getUsedFunctionEvaluation_doc
+"Accessor to the number of evaluations of the function.
+
+Returns
+-------
+nEval : int
+    The number of evaluations of the function."
+%enddef
+%feature("docstring") OT::SolverImplementation::getUsedFunctionEvaluation
+OT_Solver_getUsedFunctionEvaluation_doc

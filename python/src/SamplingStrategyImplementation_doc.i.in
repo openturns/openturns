@@ -1,0 +1,85 @@
+%define OT_SamplingStrategy_doc
+"Base class for sampling strategies.
+
+Available constructor:
+    SamplingStrategyImplementation()
+
+    SamplingStrategyImplementation(*samplingStratImp*)
+
+    SamplingStrategyImplementation(*dimension*)
+
+Parameters
+----------
+samplingStratImp : SamplingStrategyImplementationImplementation
+    An implementation of the sampling strategy adopted, which is
+    :class:`~openturns.RandomDirection` or :class:`~openturns.OrthogonalDirection`.
+dimension : int
+    The dimension of the standard space. By default, :math:`dimension = 0` but
+    automatically updated by the calling class.
+
+See also
+--------
+RandomDirection, OrthogonalDirection"
+%enddef
+%feature("docstring") OT::SamplingStrategyImplementation
+OT_SamplingStrategy_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SamplingStrategy_generate_doc
+"Generate the sample.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    The sample generated according to the sampling strategy."
+%enddef
+%feature("docstring") OT::SamplingStrategyImplementation::generate
+OT_SamplingStrategy_generate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SamplingStrategy_getDimension_doc
+"Accessor to the dimension.
+
+Returns
+-------
+dimension : int
+    Dimension of the standard space."
+%enddef
+%feature("docstring") OT::SamplingStrategyImplementation::getDimension
+OT_SamplingStrategy_getDimension_doc
+    
+// ---------------------------------------------------------------------
+
+%define OT_SamplingStrategy_setDimension_doc
+"Accessor to the dimension.
+
+Parameters
+----------
+dimension : int
+    Dimension of the standard space."
+%enddef
+%feature("docstring") OT::SamplingStrategyImplementation::setDimension
+OT_SamplingStrategy_setDimension_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_SamplingStrategy_getUniformUnitVectorRealization_doc
+"Accessor to a realization according to the uniform distribution.
+
+Parameters
+----------
+dimension : int
+    The dimension of the sphere unity (which is the dimension of the standard
+    space).
+
+Returns
+-------
+sample : :class:`~openturns.NumericalPoint`
+    The realization of a vector on the sphere unity, according to the uniform
+    distribution."
+%enddef
+%feature("docstring") OT::SamplingStrategyImplementation::getUniformUnitVectorRealization
+OT_SamplingStrategy_getUniformUnitVectorRealization_doc
