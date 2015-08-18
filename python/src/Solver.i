@@ -4,6 +4,8 @@
 #include "Solver.hxx"
 %}
 
+%include Solver_doc.i
+
 OTTypedInterfaceObjectHelper(Solver)
 
 %include Solver.hxx

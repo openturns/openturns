@@ -344,8 +344,8 @@ ot_add_python_module(optim optim_module.i
                       BoundConstrainedAlgorithmImplementation.i
                       BoundConstrainedAlgorithm.i
                       NearestPointAlgorithmImplementationResult.i
-                      NearestPointAlgorithmImplementation.i
-                      NearestPointAlgorithm.i
+                      NearestPointAlgorithmImplementation.i NearestPointAlgorithmImplementation_doc.i.in
+                      NearestPointAlgorithm.i NearestPointAlgorithm_doc.i.in
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitzSpecificParameters.i
@@ -360,11 +360,11 @@ ot_add_python_module(optim optim_module.i
                    )
 
 ot_add_python_module(solver solver_module.i
-                      SolverImplementation.i
-                      Solver.i
-                      Bisection.i
-                      Secant.i
-                      Brent.i
+                      SolverImplementation.i SolverImplementation_doc.i.in
+                      Solver.i Solver_doc.i.in
+                      Bisection.i Bisection_doc.i.in
+                      Secant.i Secant_doc.i.in
+                      Brent.i Brent_doc.i.in
                       ODESolverImplementation.i
                       ODESolver.i
                       RungeKutta.i
@@ -738,27 +738,27 @@ ot_add_python_module(simulation simulation_module.i
                       SimulationResultImplementation.i SimulationResultImplementation_doc.i.in
                       SimulationResult.i SimulationResult_doc.i.in
                       Simulation.i Simulation_doc.i.in
-                      PostAnalyticalSimulation.i
-                      Wilks.i
+                      PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i.in
+                      Wilks.i Wilks_doc.i.in
                       MonteCarlo.i MonteCarlo_doc.i.in
                       LHS.i LHS_doc.i.in
-                      RandomizedLHS.i
+                      RandomizedLHS.i RandomizedLHS_doc.i.in
                       ImportanceSampling.i ImportanceSampling_doc.i.in
-                      PostAnalyticalControlledImportanceSampling.i
-                      PostAnalyticalImportanceSampling.i
+                      PostAnalyticalControlledImportanceSampling.i PostAnalyticalControlledImportanceSampling_doc.i.in
+                      PostAnalyticalImportanceSampling.i PostAnalyticalImportanceSampling_doc.i.in
                       RootStrategyImplementation.i RootStrategyImplementation_doc.i.in
                       RootStrategy.i RootStrategy_doc.i.in
-                      SamplingStrategyImplementation.i
-                      SamplingStrategy.i
+                      SamplingStrategyImplementation.i SamplingStrategyImplementation_doc.i.in
+                      SamplingStrategy.i SamplingStrategy_doc.i.in
                       DirectionalSampling.i DirectionalSampling_doc.i.in
-                      OrthogonalDirection.i
-                      RandomDirection.i
+                      OrthogonalDirection.i OrthogonalDirection_doc.i.in
+                      RandomDirection.i RandomDirection_doc.i.in
                       MediumSafe.i MediumSafe_doc.i.in
                       RiskyAndFast.i RiskyAndFast_doc.i.in
                       SafeAndSlow.i SafeAndSlow_doc.i.in
                       QuasiMonteCarlo.i QuasiMonteCarlo_doc.i.in
-                      RandomizedQuasiMonteCarlo.i
-                      QuasiMonteCarloResult.i
+                      RandomizedQuasiMonteCarlo.i RandomizedQuasiMonteCarlo_doc.i.in
+                      QuasiMonteCarloResult.i QuasiMonteCarloResult_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 

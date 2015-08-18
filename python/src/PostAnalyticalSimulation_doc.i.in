@@ -1,0 +1,30 @@
+%feature("docstring") OT::PostAnalyticalSimulation
+"Post analytical simulation.
+
+See also
+--------
+PostAnalyticalImportanceSampling, PostAnalyticalControlledImportanceSampling
+
+Notes
+-----
+This class inherits from Simulation.
+
+The principle is to perform a simulation study to evaluate the threshold
+exceedance probability according to an importance density centered around the
+design point, in the standard space. The importance distribution is the standard
+distribution of the standard space.
+
+A PostAnalyticalSimulation object can be created only through its derivative
+classes : :class:`~openturns.PostAnalyticalImportanceSampling` or
+:class:`~openturns.PostAnalyticalControlledImportanceSampling`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PostAnalyticalSimulation::getAnalyticalResult
+"Accessor to the analytical result.
+
+Returns
+-------
+result : :class:`~openturns.AnalyticalResult`
+    Result of the analytical study which has been performed just before the 
+    simulation study centered around the importance factor."

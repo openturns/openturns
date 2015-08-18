@@ -1,0 +1,25 @@
+%feature("docstring") OT::RandomizedQuasiMonteCarlo
+"Randomized quasi Monte Carlo.
+
+Available constructor:
+    RandomizedQuasiMonteCarlo(*event*)
+
+    RandomizedQuasiMonteCarlo(*event, sequence*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    The event we are computing the probability of.
+sequence : :class:`~openturns.LowDiscrepancySequence`
+    A low discrepancy sequence used to generate the samples. Default is the 
+    Sobol sequence.
+
+See also
+--------
+Simulation
+
+Notes
+-----
+Be careful, to be valid, the RandomizedQuasiMonteCarlo sampling method requires
+that the multivariate distribution have an independent copula. All events can be
+reduced to this case using the Rosenblatt transformation."
