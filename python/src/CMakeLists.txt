@@ -344,8 +344,8 @@ ot_add_python_module(optim optim_module.i
                       BoundConstrainedAlgorithmImplementation.i
                       BoundConstrainedAlgorithm.i
                       NearestPointAlgorithmImplementationResult.i
-                      NearestPointAlgorithmImplementation.i NearestPointAlgorithmImplementation_doc.i.in
-                      NearestPointAlgorithm.i NearestPointAlgorithm_doc.i.in
+                      NearestPointAlgorithmImplementation.i
+                      NearestPointAlgorithm.i
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitzSpecificParameters.i
