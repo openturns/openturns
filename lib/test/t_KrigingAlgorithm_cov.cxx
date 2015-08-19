@@ -33,11 +33,12 @@ static void test_model(const CovarianceModel & myModel)
 
   fullprint << "myModel = " << myModel << std::endl;
 
-  const UnsignedInteger dimension = myModel.getSpatialDimension();
+  const UnsignedInteger spatialDimension = myModel.getSpatialDimension();
+  const UnsignedInteger dimension = myModel.getDimension();
 
-  NumericalPoint x1(dimension);
-  NumericalPoint x2(dimension);
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  NumericalPoint x1(spatialDimension);
+  NumericalPoint x2(spatialDimension);
+  for (UnsignedInteger j = 0; j < spatialDimension; ++ j)
   {
     x1[j] = 8.0 * (0.5 - j);
     x2[j] = -1.0 * (3.0 - 2.0 * j);
@@ -49,16 +50,41 @@ static void test_model(const CovarianceModel & myModel)
   fullprint << "dCov =" << grad << std::endl;
 
   NumericalScalar eps = 1e-3;
-  NumericalPoint gradfd(dimension);
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  if (dimension == 1)
   {
-    NumericalPoint x1_g(x1);
-    NumericalPoint x1_d(x1);
-    x1_g[j] += eps;
-    x1_d[j] -= eps;
-    gradfd[j] = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
+    NumericalPoint gradfd(spatialDimension);
+    for (UnsignedInteger j = 0; j < spatialDimension; ++ j)
+    {
+      NumericalPoint x1_g(x1);
+      NumericalPoint x1_d(x1);
+      x1_g[j] += eps;
+      x1_d[j] -= eps;
+      gradfd[j] = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
+    }
+    fullprint << "dCov (FD)=" << gradfd << std::endl;
   }
-  fullprint << "dCov (FD)=" << gradfd << std::endl;
+  else
+  {
+     Matrix gradfd(spatialDimension, dimension * dimension);
+     CovarianceMatrix covarianceX1X2 = myModel(x1, x2);
+     // Convert result into MatrixImplementation to symmetrize & get the collection
+     MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
+     covarianceX1X2Implementation.symmetrize();
+     const NumericalPoint centralValue(covarianceX1X2Implementation);
+     // Loop over the shifted points
+     for (UnsignedInteger i = 0; i < spatialDimension; ++i)
+     {
+       NumericalPoint currentPoint(x1);
+       currentPoint[i] += eps;
+       CovarianceMatrix localCovariance = myModel(currentPoint, x2);
+       MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
+       localCovarianceImplementation.symmetrize();
+       const NumericalPoint currentValue(localCovarianceImplementation);
+       for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
+         gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
+     }
+    fullprint << "dCov (FD)=" << gradfd << std::endl;
+  }
 }
 
 
@@ -133,7 +159,37 @@ int main(int argc, char *argv[])
 
     }
 
-    PlatformInfo::SetNumericalPrecision(precision);
+    {
+      // Tensorized covariance model
+      const UnsignedInteger spatialDimension = 2;
+      Collection<CovarianceModel> collection;
+      // Collection ==> add covariance models
+      // Add AbsoluteExponentialModel to the collection
+      AbsoluteExponential myAbsoluteExponential(spatialDimension, 3.0);
+      collection.add(myAbsoluteExponential);
+      // Add SquaredExponentialModel to the collection
+      SquaredExponential mySquaredExponential(spatialDimension, 2.0);
+      collection.add(mySquaredExponential);
+      // Add exponentialModel to the collection
+      NumericalPoint amplitude(2);
+      amplitude[0] = 4.0;
+      amplitude[1] = 2.0;
+      // Define scale
+      NumericalPoint scale(2, 1.0);
+      // Define a spatial correlation
+      CorrelationMatrix spatialCorrelation(spatialDimension);
+      spatialCorrelation(1,0) = 0.3;
+      ExponentialModel myExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation);
+      collection.add(myExponentialModel);
+      // Build TensorizedCovarianceModel with scale = [1,..,1]
+      TensorizedCovarianceModel myModel(collection);
+      test_model(myModel);
+      // Define new scale
+      scale[0] = 2.5;
+      scale[1] = 1.5;
+      myModel.setScale(scale);
+      test_model(myModel);
+    }
 
   }
   catch (TestFailed & ex)
