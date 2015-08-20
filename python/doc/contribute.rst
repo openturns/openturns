@@ -58,10 +58,9 @@ Here are the steps required to propose a modification with git:
     git clone https://github.com/doe/openturns
 
 
-4. Create a branch with a relevant topic name::
+4. Create a branch from master with a relevant topic name::
 
-    git checkout master # be sure to fork from master
-    git checkout -b branch_name
+    git checkout -b branch_name master
 
 
 5. Commit your changes, split your work in as much commits as needed to ease reviewing::
@@ -90,6 +89,39 @@ Propose a separate pull request for each topic you want to address.
 
 Here are more resources on `using pull requests <https://help.github.com/articles/using-pull-requests/>`_
 and `Git <https://git-scm.com/book/en/v2>`_.
+
+
+Keep your local repository in sync
+----------------------------------
+
+You may want to keep your personal repository in sync with the main repository
+before starting new developments.
+
+1. Be sure to start from master branch::
+
+    git checkout master
+
+
+2. Add upstream remote repository::
+
+    git remote add upstream https://github.com/openturns/openturns.git
+
+
+3. Retrieve usptream::
+
+    git fetch upstream
+
+
+4. Merge upstream master branch to your local personal master branch::
+
+    git checkout master
+    git merge upstream/master
+
+
+5. Push to your remote personal repository::
+
+    git push
+
 
 Documentation
 =============
