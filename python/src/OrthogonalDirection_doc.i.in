@@ -1,0 +1,43 @@
+%feature("docstring") OT::OrthogonalDirection
+"Sampling following the orthogonal direction strategy.
+
+Available constructor:
+    OrthogonalDirection()
+
+    OrthogonalDirection(*dimension, k*)
+
+Parameters
+----------
+dimension : integer
+    The dimension of the standard space. By default, :math:`dimension = 0` but
+    automatically updated by the calling class.
+k : int
+    The number of elements in the linear combinations. By default,
+    :math:`k = 1` but automatically updated by the calling class.
+
+See also
+--------
+RandomDirection
+
+Notes
+-----
+This strategy is parameterized by :math:`k \in \{1, \ldots, n\}`, where *n* is
+the dimension of the input random vector :math:`\vect{X}`. We generate one
+direct orthonormalized basis :math:`(e_1, \ldots, e_n)` uniformly distributed in
+the set of direct orthonormal bases. We consider all the normalized linear
+combinations of *k* vectors chosen within the *n* vectors of the basis, where
+the coefficients of the linear combinations are in :math:`\{+1, -1\}`. This
+generates :math:`\binom{k}{n} 2^k` new vectors :math:`v_i`. We sample according
+to all the directions defined by the vectors :math:`v_i`.
+
+If :math:`k = 1`, we consider all the axes of the standard space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalDirection::generate
+"Generate the sample.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    The sample generated according to the orthogonal direction strategy."

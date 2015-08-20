@@ -1,0 +1,67 @@
+%feature("docstring") OT::Wilks
+"Class to evaluate the Wilks number.
+
+Available constructor:
+    Wilks(*randomVector*)
+
+Parameters
+----------
+randomVector : :class:`~openturns.RandomVector` of dimension 1
+    Output variable of interest.
+
+Notes
+-----
+This class is a static class which enables the evaluation of the Wilks number:
+the minimal sample size :math:`N_{\alpha, \beta, i}` to perform in order to
+garantee that the empirical quantile :math:`\alpha`, noted
+:math:`\tilde{q}_{\alpha} N_{\alpha, \beta, i}` evaluated with the
+:math:`(n - i)^{th}` maximum of the sample, noted :math:`X_{n - i}` be greater
+than the theoretical quantile :math:`q_{\alpha}` with a probability at least
+:math:`\beta`:
+
+.. math::
+
+    \Pset (\tilde{q}_{\alpha} N_{\alpha, \beta, i} > q_{\alpha}) > \beta
+
+where :math:`\tilde{q}_{\alpha} N_{\alpha, \beta, i} = X_{n-i}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wilks::ComputeSampleSize
+"Evaluate the size of the sample.
+
+Parameters
+----------
+alpha : positive float :math:`< 1`
+    The order of the quantile we want to evaluate.
+beta : positive float :math:`< 1`
+    Confidence on the evaluation of the empirical quantile.
+i : int
+    Rank of the maximum which will evaluate the empirical quantile. Default
+    :math:`i = 0` (maximum of the sample)
+
+Returns
+-------
+w : int
+    the Wilks number."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wilks::computeQuantileBound
+"Evaluate the bound of the quantile.
+
+Parameters
+----------
+alpha : positive float :math:`< 1`
+    The order of the quantile we want to evaluate.
+beta : positive float :math:`< 1`
+    Confidence on the evaluation of the empirical quantile.
+i : int
+    Rank of the maximum which will evaluate the empirical quantile. Default
+    :math:`i = 0` (maximum of the sample)
+
+Returns
+-------
+q : :class:`~openturns.NumericalPoint`
+    The estimate of the quantile upper bound for the given quantile level, at
+    the given confidence level and using the given upper statistics."

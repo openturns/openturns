@@ -4,6 +4,8 @@
 #include "SamplingStrategy.hxx"
 %}
 
+%include SamplingStrategy_doc.i
+
 OTTypedInterfaceObjectHelper(SamplingStrategy)
 
 %include SamplingStrategy.hxx
