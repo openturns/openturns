@@ -196,6 +196,7 @@ ot_add_python_module(statistics statistics_module.i
                       GeneralizedExponential.i GeneralizedExponential_doc.i.in
                       AbsoluteExponential.i AbsoluteExponential_doc.i.in
                       MaternModel.i MaternModel_doc.i.in
+		      DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
                       HMatrixFactory.i
                       HMatrix.i

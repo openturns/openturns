@@ -88,6 +88,7 @@
 %include GeneralizedExponential.i
 %include AbsoluteExponential.i
 %include MaternModel.i
+%include DiracCovarianceModel.i
 %include ProductCovarianceModel.i
 %include HMatrixFactory.i
 %include HMatrixImplementation.i

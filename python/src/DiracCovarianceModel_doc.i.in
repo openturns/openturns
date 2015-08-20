@@ -1,0 +1,56 @@
+%feature("docstring") OT::DiracCovarianceModel
+"Dirac covariance function.
+
+Available constructors:
+    DiracCovarianceModel(*spatialDim, amplitude*)
+
+    DiracCovarianceModel(*spatialDim, amplitude, spatialCorrelation*)
+
+    DiracCovarianceModel(*spatialDim, spatialCovariance*)
+
+Parameters
+----------
+spatialDim : int
+    Dimension of the domain :math:`\cD`.
+amplitude : sequence of float
+    Vector :math:`\vect{\sigma}` of dimension :math:`d`.
+spatialCorrelation : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])`.
+spatialCovariance : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix :math:`C^{stat} \in \mathcal{M}^{+}_{d \times d}(\Rset)`.
+
+Notes
+-----
+The Dirac model defines a stationary covariance function
+:math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau}) \forall (\vect{s},\vect{\tau}) \in \cD`
+such that :
+
+.. math::
+
+    \forall \vect{\tau} \in \cD,\quad
+    C^{stat}( \vect{\tau} )= 1_{\tau=0} \times \left[\vect{\Sigma}\right] \,\mat{R}\, \left[ \mat{\Sigma}\right]
+
+where :math:`\mat{R} \in  \mathcal{M}_{d \times d}([-1, 1])` is a correlation
+matrix, :math:`\mat{\Sigma} \in \mathcal{M}_{d \times d}(\Rset)` is defined by:
+
+.. math::
+
+ \mat{\Sigma}= \mbox{Diag}(\sigma_1, \dots, \sigma_d)
+
+with :math:`\sigma_i>0` for any :math:`i`. :math:`\vect{\sigma}` is the amplitude vector.
+
+The model is used for example in linear regression. Indeed, in that context, error is considered to be gaussian with `homoscedasticitc` variance
+(same variance distribution, independent spatial correlation)
+
+Examples
+--------
+Create two *DiracCovarianceModel* of dimension 2:
+
+>>> import openturns as ot
+>>> spatialDimension = 3
+>>> amplitude = [1., 2.]
+>>> correlation = ot.CorrelationMatrix(2)
+>>> correlation[1,0] = 0.1
+>>> covarianceModel = ot.DiracCovarianceModel(spatialDimension, amplitude)
+>>> covarianceModelCorr = ot.DiracCovarianceModel(spatialDimension, amplitude, correlation)
+"
