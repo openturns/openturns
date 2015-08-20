@@ -81,6 +81,7 @@
 #include "AbsoluteExponential.hxx"
 #include "SphericalModel.hxx"
 #include "MaternModel.hxx"
+#include "DiracCovarianceModel.hxx"
 #include "ProductCovarianceModel.hxx"
 #include "HMatrixImplementation.hxx"
 #include "HMatrix.hxx"
