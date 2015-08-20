@@ -8,7 +8,7 @@ Parameters
 ----------
 analyticalResult : :class:`~openturns.AnalyticalResult`
     Result which contains the whole information on the analytical study
-    performed before the simulation study : in particular, the standard
+    performed before the simulation study: in particular, the standard
     distribution of the standard space and the standard space design point.
 
 See also
