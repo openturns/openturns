@@ -21,7 +21,6 @@
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
 #include "AbsoluteExponential.hxx"
-#include "IdentityMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
