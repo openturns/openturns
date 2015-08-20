@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     CobylaSpecificParameters specific;
     NumericalPoint startingPoint(4, 0.0);
-    CobylaObsolete myAlgorithm(specific, levelFunction);
+    Cobyla myAlgorithm(specific, levelFunction);
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setLevelValue(3.0);
     myAlgorithm.setMaximumIterationsNumber(100);
@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
     myAlgorithm.setMaximumConstraintError(1.0e-10);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    NearestPointAlgorithmImplementationResult result(myAlgorithm.getResult());
-    fullprint << "result = " << printNumericalPoint(result.getMinimizer(), 4) << std::endl;
+    OptimizationSolverImplementationResult result(myAlgorithm.getResult());
+    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     //FIXME:fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

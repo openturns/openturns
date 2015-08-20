@@ -24,8 +24,7 @@
 #include "PersistentObject.hxx"
 #include "NumericalPoint.hxx"
 #include "NumericalPointWithDescription.hxx"
-#include "NearestPointAlgorithm.hxx"
-#include "NearestPointChecker.hxx"
+#include "OptimizationSolver.hxx"
 #include "Collection.hxx"
 #include "Event.hxx"
 #include "StandardEvent.hxx"
@@ -41,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Analytical
- * NearestPointAlgorithm implements an algorithm to find the design point
+ * Analytical implements an algorithm to find the design point
  * and computes the results of an analytical result
  */
 
@@ -55,7 +54,7 @@ public:
   typedef Collection<NumericalPointWithDescription> Sensitivity;
 
   /** Constructor with parameters */
-  Analytical(const NearestPointAlgorithm & nearestPointAlgorithm,
+  Analytical(const OptimizationSolver & solver,
              const Event & compositeEvent,
              const NumericalPoint & physicalStartingPoint);
 
@@ -75,11 +74,11 @@ public:
   /** Event accessor */
   void setEvent(const Event & event);
 
-  /** NearestPointAlgorithm accessor */
-  NearestPointAlgorithm getNearestPointAlgorithm() const;
+  /** OptimizationSolver accessor */
+  OptimizationSolver getNearestPointAlgorithm() const;
 
-  /** NearestPointAlgorithm accessor */
-  void setNearestPointAlgorithm(const NearestPointAlgorithm & nearestPointAlgorithm);
+  /** OptimizationSolver accessor */
+  void setNearestPointAlgorithm(const OptimizationSolver & solver);
 
   /** Result accessor */
   virtual AnalyticalResult getAnalyticalResult() const;
@@ -105,7 +104,7 @@ protected:
 
 private:
 
-  NearestPointAlgorithm nearestPointAlgorithm_;
+  OptimizationSolver nearestPointAlgorithm_;
   Event event_;
   NumericalPoint physicalStartingPoint_;
   AnalyticalResult result_;

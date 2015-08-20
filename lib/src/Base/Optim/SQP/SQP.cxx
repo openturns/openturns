@@ -25,6 +25,7 @@
 #include "SQP.hxx"
 #include "Log.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "OptimizationProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,7 @@ static Factory<SQP> RegisteredFactory("SQP");
 
 /* Default constructor */
 SQP::SQP():
-  NearestPointAlgorithmImplementation()
+  OptimizationSolverImplementation()
 {
   initialize();
 }
@@ -49,10 +50,10 @@ SQP::SQP():
 SQP::SQP(const SQPSpecificParameters & specificParameters,
          const NumericalMathFunction & levelFunction,
          const Bool verbose)
-  : NearestPointAlgorithmImplementation(levelFunction, verbose),
-    specificParameters_(specificParameters),
-    currentPoint_(getStartingPoint().getDimension()),
-    currentGradient_(getStartingPoint().getDimension())
+  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+  , specificParameters_(specificParameters)
+  , currentPoint_(getStartingPoint().getDimension())
+  , currentGradient_(getStartingPoint().getDimension())
 {
   initialize();
 }
@@ -146,11 +147,11 @@ void SQP::run()
   NumericalScalar relativeError(-1.0);
   NumericalScalar residualError(-1.0);
 
-  // reset result
-  setResult(NearestPointAlgorithmImplementationResult(currentPoint_, 0, absoluteError, relativeError, residualError, constraintError));
-
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
+
+  // reset result
+  setResult(OptimizationSolverImplementationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError));
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationsNumber()) )
   {
@@ -250,12 +251,36 @@ void SQP::setSpecificParameters(const SQPSpecificParameters & specificParameters
   specificParameters_ = specificParameters;
 }
 
+/* Level function accessor */
+NumericalMathFunction SQP::getLevelFunction() const
+{
+  return getProblem().getLevelFunction();
+}
+
+/* Level function accessor */
+void SQP::setLevelFunction(const NumericalMathFunction & levelFunction)
+{
+  getProblem().setLevelFunction(levelFunction);
+}
+
+/* Level value accessor */
+NumericalScalar SQP::getLevelValue() const
+{
+  return getProblem().getLevelValue();
+}
+
+/* Level value accessor */
+void SQP::setLevelValue(const NumericalScalar levelValue)
+{
+  getProblem().setLevelValue(levelValue);
+}
+
 /* String converter */
 String SQP::__repr__() const
 {
   OSS oss;
   oss << "class=" << SQP::GetClassName()
-      << " " << NearestPointAlgorithmImplementation::__repr__()
+      << " " << OptimizationSolverImplementation::__repr__()
       << " specificParameters=" << getSpecificParameters();
   return oss;
 }
@@ -263,7 +288,7 @@ String SQP::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SQP::save(Advocate & adv) const
 {
-  NearestPointAlgorithmImplementation::save(adv);
+  OptimizationSolverImplementation::save(adv);
   adv.saveAttribute("specificParameters_", specificParameters_);
   adv.saveAttribute("currentSigma_", currentSigma_);
   adv.saveAttribute("currentPoint_", currentPoint_);
@@ -279,7 +304,7 @@ void SQP::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SQP::load(Advocate & adv)
 {
-  NearestPointAlgorithmImplementation::load(adv);
+  OptimizationSolverImplementation::load(adv);
   adv.loadAttribute("specificParameters_", specificParameters_);
   adv.loadAttribute("currentSigma_", currentSigma_);
   adv.loadAttribute("currentPoint_", currentPoint_);

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief AbdoRackwitz is an actual implementation for
- *         NearestPointAlgorithm using the AbdoRackwitz algorithm.
+ *         OptimizationSolver using the AbdoRackwitz algorithm.
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,8 +23,9 @@
 #define OPENTURNS_ABDORACKWITZ_HXX
 
 #include "OTprivate.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
+#include "OptimizationSolverImplementation.hxx"
 #include "NumericalPoint.hxx"
+#include "NumericalMathFunction.hxx"
 #include "AbdoRackwitzSpecificParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,10 +33,10 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class AbdoRackwitz
  * AbdoRackwitz is an actual implementation for
- * NearestPointAlgorithm
+ * OptimizationSolver
  */
 class OT_API AbdoRackwitz :
-  public NearestPointAlgorithmImplementation
+  public OptimizationSolverImplementation
 {
   CLASSNAME;
 public:
@@ -45,9 +46,10 @@ public:
   AbdoRackwitz();
 
   /** Constructor with parameters */
-  AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-               const NumericalMathFunction & levelFunction);
+  explicit AbdoRackwitz(const NumericalMathFunction & levelFunction, const Bool verbose=false);
 
+  AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
+               const NumericalMathFunction & levelFunction, const Bool verbose=false);
 
   /** Virtual constructor */
   virtual AbdoRackwitz * clone() const;
@@ -60,6 +62,18 @@ public:
 
   /** Specific parameters accessor */
   void setSpecificParameters(const AbdoRackwitzSpecificParameters & specificParameters);
+
+  /** Level function accessor */
+  NumericalMathFunction getLevelFunction() const;
+
+  /** Level function accessor */
+  void setLevelFunction(const NumericalMathFunction & levelFunction);
+
+  /** Level value accessor */
+  NumericalScalar getLevelValue() const;
+
+  /** Level value accessor */
+  void setLevelValue(const NumericalScalar levelValue);
 
   /** String converter */
   String __repr__() const;

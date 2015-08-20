@@ -34,8 +34,8 @@ CLASSNAMEINIT(Cobyla);
 static Factory<Cobyla> RegisteredFactory("Cobyla");
 
 /* Default constructor */
-Cobyla::Cobyla():
-  OptimizationSolverImplementation()
+Cobyla::Cobyla()
+  : OptimizationSolverImplementation()
 {
   // Nothing to do
 }
@@ -44,23 +44,30 @@ Cobyla::Cobyla():
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
  *         and a level value
  */
+Cobyla::Cobyla(const NumericalMathFunction & levelFunction, const Bool verbose)
+  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+  , specificParameters_()
+{
+  // Nothing to do
+}
+
 Cobyla::Cobyla(const OptimizationProblem & problem,
-                 const Bool verbose):
-  OptimizationSolverImplementation(problem, verbose),
-  specificParameters_()
+               const Bool verbose)
+  : OptimizationSolverImplementation(problem, verbose)
+  , specificParameters_()
 {
   // Nothing to do
 }
 
 /*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in vact, a 1-D vector valued fnction)
+ * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
  *         and a level value
  */
 Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
-                 const OptimizationProblem & problem,
-                 const Bool verbose):
-  OptimizationSolverImplementation(problem, verbose),
-  specificParameters_(specificParameters)
+               const NumericalMathFunction & levelFunction,
+               const Bool verbose)
+  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+  , specificParameters_(specificParameters)
 {
   // Nothing to do
 }
@@ -164,6 +171,31 @@ void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificPara
 {
   specificParameters_ = specificParameters;
 }
+
+/* Level function accessor */
+NumericalMathFunction Cobyla::getLevelFunction() const
+{
+  return getProblem().getLevelFunction();
+}
+
+/* Level function accessor */
+void Cobyla::setLevelFunction(const NumericalMathFunction & levelFunction)
+{
+  getProblem().setLevelFunction(levelFunction);
+}
+
+/* Level value accessor */
+NumericalScalar Cobyla::getLevelValue() const
+{
+  return getProblem().getLevelValue();
+}
+
+/* Level value accessor */
+void Cobyla::setLevelValue(const NumericalScalar levelValue)
+{
+  getProblem().setLevelValue(levelValue);
+}
+
 
 /* String converter */
 String Cobyla::__repr__() const

@@ -46,7 +46,7 @@ try:
     print("myalgorithm=", repr(myAlgorithm))
     myAlgorithm.run()
     print("result = ", printNumericalPoint(
-        myAlgorithm.getResult().getMinimizer(), 4))
+        myAlgorithm.getResult().getOptimalPoint(), 4))
     print("evaluation calls number=", levelFunction.getEvaluationCallsNumber())
     print("gradient   calls number=", levelFunction.getGradientCallsNumber())
     print("hessian    calls number=", levelFunction.getHessianCallsNumber())

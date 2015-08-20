@@ -60,6 +60,10 @@ public:
                       const NumericalMathFunction & inequalityConstraint,
                       const Interval & bounds);
 
+  /** Constructor with parameters */
+  explicit OptimizationProblem(const NumericalMathFunction & levelFunction,
+                               NumericalScalar levelValue = 0.0);
+
   /** Objective functions accessor */
   NumericalMathFunction getObjective() const;
   void setObjective(const NumericalMathFunction & objective);

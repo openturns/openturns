@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
       mySQPAlgorithm.setLevelValue(3.0);
       fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
       mySQPAlgorithm.run();
-      fullprint << "result=" << printNumericalPoint(mySQPAlgorithm.getResult().getMinimizer(), 4) << std::endl;
+      fullprint << "result=" << printNumericalPoint(mySQPAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
     }
     catch (NoWrapperFileFoundException & ex)
     {

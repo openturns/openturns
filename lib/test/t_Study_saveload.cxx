@@ -370,9 +370,8 @@ int main(int argc, char *argv[])
     study.add("sqp", sqp);
 
     // Create a Cobyla algorithm
-    CobylaObsolete cobyla;
+    Cobyla cobyla;
     study.add("cobyla", cobyla);
-    cobyla.setLevelValue(3.0);
     cobyla.setMaximumIterationsNumber(100);
     cobyla.setMaximumAbsoluteError(1.0e-10);
     cobyla.setMaximumRelativeError(1.0e-10);
@@ -1005,7 +1004,7 @@ int main(int argc, char *argv[])
     compare<NearestPointAlgorithm::Result >( nearestPointAlgorithmResult, study2, "nearestPointAlgorithmResult");
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
-    compare<CobylaObsolete >( cobyla, study2, "cobyla" );
+    compare<Cobyla >( cobyla, study2, "cobyla" );
     compare<OptimizationSolver >( tnc, study2, "tnc" );
 
     // Model

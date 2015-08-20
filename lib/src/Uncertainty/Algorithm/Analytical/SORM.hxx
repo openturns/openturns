@@ -49,7 +49,7 @@ public:
   SORM();
 
   /** Constructor with parameters */
-  SORM(const NearestPointAlgorithm & nearestPointAlgorithm,
+  SORM(const OptimizationSolver & nearestPointAlgorithm,
        const Event & event,
        const NumericalPoint & physicalStartingPoint);
 

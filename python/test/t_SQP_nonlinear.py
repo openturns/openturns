@@ -45,7 +45,7 @@ try:
         print("myAlgorithm=", myAlgorithm)
         myAlgorithm.run()
         print("result = ", printNumericalPoint(
-            myAlgorithm.getResult().getMinimizer(), 4))
+            myAlgorithm.getResult().getOptimalPoint(), 4))
     except:
         raise
 except:

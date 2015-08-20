@@ -32,7 +32,14 @@ static Factory<AbdoRackwitz> RegisteredFactory("AbdoRackwitz");
 
 /* Default constructor */
 AbdoRackwitz::AbdoRackwitz()
-  : NearestPointAlgorithmImplementation()
+  : OptimizationSolverImplementation()
+{
+  initialize();
+}
+
+AbdoRackwitz::AbdoRackwitz(const NumericalMathFunction & levelFunction, const Bool verbose)
+  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+  , specificParameters_()
 {
   initialize();
 }
@@ -42,8 +49,9 @@ AbdoRackwitz::AbdoRackwitz()
  *         and a level value
  */
 AbdoRackwitz::AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-                           const NumericalMathFunction & levelFunction)
-  : NearestPointAlgorithmImplementation(levelFunction)
+                           const NumericalMathFunction & levelFunction,
+                           const Bool verbose)
+  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
   , specificParameters_(specificParameters)
   , currentPoint_(getStartingPoint().getDimension())
   , currentDirection_(getStartingPoint().getDimension())
@@ -126,11 +134,11 @@ void AbdoRackwitz::run()
   NumericalScalar relativeError(-1.0);
   NumericalScalar residualError(-1.0);
 
-  // reset result
-  setResult(NearestPointAlgorithmImplementationResult(currentPoint_, 0, absoluteError, relativeError, residualError, constraintError));
-
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
+
+  // reset result
+  setResult(OptimizationSolverImplementationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError));
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationsNumber()) )
   {
@@ -198,12 +206,37 @@ void AbdoRackwitz::setSpecificParameters(const AbdoRackwitzSpecificParameters & 
   specificParameters_ = specificParameters;
 }
 
+/* Level function accessor */
+NumericalMathFunction AbdoRackwitz::getLevelFunction() const
+{
+  return getProblem().getLevelFunction();
+}
+
+/* Level function accessor */
+void AbdoRackwitz::setLevelFunction(const NumericalMathFunction & levelFunction)
+{
+  getProblem().setLevelFunction(levelFunction);
+}
+
+/* Level value accessor */
+NumericalScalar AbdoRackwitz::getLevelValue() const
+{
+  return getProblem().getLevelValue();
+}
+
+/* Level value accessor */
+void AbdoRackwitz::setLevelValue(const NumericalScalar levelValue)
+{
+  getProblem().setLevelValue(levelValue);
+}
+
+
 /* String converter */
 String AbdoRackwitz::__repr__() const
 {
   OSS oss;
   oss << "class=" << AbdoRackwitz::GetClassName()
-      << " " << NearestPointAlgorithmImplementation::__repr__()
+      << " " << OptimizationSolverImplementation::__repr__()
       << " specificParameters=" << getSpecificParameters();
   return oss;
 }
@@ -211,7 +244,7 @@ String AbdoRackwitz::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void AbdoRackwitz::save(Advocate & adv) const
 {
-  NearestPointAlgorithmImplementation::save(adv);
+  OptimizationSolverImplementation::save(adv);
   adv.saveAttribute("specificParameters_", specificParameters_);
   adv.saveAttribute("currentSigma_", currentSigma_);
   adv.saveAttribute("currentPoint_", currentPoint_);
@@ -224,7 +257,7 @@ void AbdoRackwitz::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void AbdoRackwitz::load(Advocate & adv)
 {
-  NearestPointAlgorithmImplementation::load(adv);
+  OptimizationSolverImplementation::load(adv);
   adv.loadAttribute("specificParameters_", specificParameters_);
   adv.loadAttribute("currentSigma_", currentSigma_);
   adv.loadAttribute("currentPoint_", currentPoint_);

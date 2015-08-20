@@ -43,7 +43,7 @@ try:
         print("mySQPAlgorithm = ", repr(mySQPAlgorithm))
         mySQPAlgorithm.run()
         print("result = ", printNumericalPoint(
-            mySQPAlgorithm.getResult().getMinimizer(), 4))
+            mySQPAlgorithm.getResult().getOptimalPoint(), 4))
     except:
         raise
 except:

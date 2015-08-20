@@ -40,4 +40,4 @@ myAlgorithm.setStartingPoint(startingPoint)
 myAlgorithm.setLevelValue(3.0)
 myAlgorithm.run()
 print("result = ", printNumericalPoint(
-    myAlgorithm.getResult().getMinimizer(), 4))
+    myAlgorithm.getResult().getOptimalPoint(), 4))

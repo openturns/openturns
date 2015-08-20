@@ -44,13 +44,14 @@ public:
   Cobyla();
 
   /** Constructor with parameters */
-  explicit Cobyla(const OptimizationProblem & problem,
-                  const Bool verbose = false);
+  explicit Cobyla(const NumericalMathFunction & levelFunction, const Bool verbose = false);
 
+  /** Constructor with parameters */
+  explicit Cobyla(const OptimizationProblem & problem, const Bool verbose = false);
 
   /** Constructor with parameters */
   Cobyla(const CobylaSpecificParameters & specificParameters,
-         const OptimizationProblem & problem,
+         const NumericalMathFunction & levelFunction,
          const Bool verbose = false);
 
 
@@ -65,6 +66,18 @@ public:
 
   /** Specific parameters accessor */
   void setSpecificParameters(const CobylaSpecificParameters & specificParameters);
+
+  /** Level function accessor */
+  NumericalMathFunction getLevelFunction() const;
+
+  /** Level function accessor */
+  void setLevelFunction(const NumericalMathFunction & levelFunction);
+
+  /** Level value accessor */
+  NumericalScalar getLevelValue() const;
+
+  /** Level value accessor */
+  void setLevelValue(const NumericalScalar levelValue);
 
   /** String converter */
   String __repr__() const;

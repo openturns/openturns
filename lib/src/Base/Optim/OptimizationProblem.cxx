@@ -58,6 +58,14 @@ OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective
   // Nothing to do
 }
 
+/* Constructor for nearest point problem */
+OptimizationProblem::OptimizationProblem(const NumericalMathFunction & levelFunction,
+    NumericalScalar levelValue)
+  : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(levelFunction, levelValue))
+{
+  // Nothing to do
+}
+
 /* Objective accessor */
 NumericalMathFunction OptimizationProblem::getObjective() const
 {

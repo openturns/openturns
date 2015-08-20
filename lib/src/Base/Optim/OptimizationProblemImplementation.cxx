@@ -237,14 +237,17 @@ Bool OptimizationProblemImplementation::isMinimization() const
 String OptimizationProblemImplementation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << OptimizationProblemImplementation::GetClassName()
-      << " objective=" << objective_
-      << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
-      << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none");
+  oss << "class=" << OptimizationProblemImplementation::GetClassName();
   if (hasLevelFunction())
   {
     oss << " level function=" << levelFunction_.__repr__()
         << " level value=" << levelValue_;
+  }
+  else
+  {
+    oss << " objective=" << objective_
+        << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
+        << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none");
   }
   oss << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none")
       << " minimization=" << minimization_

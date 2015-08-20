@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
     myAlgorithm.setLevelValue(-0.5);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    NearestPointAlgorithmImplementationResult result(myAlgorithm.getResult());
-    fullprint << "result = " << printNumericalPoint(result.getMinimizer(), 4) << std::endl;
+    OptimizationSolverImplementationResult result(myAlgorithm.getResult());
+    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;
