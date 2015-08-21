@@ -1,5 +1,5 @@
 %feature("docstring") OT::ProductCovarianceModel
-"Multivariate covariance function defined as a product.
+"Univariate covariance function defined as a product.
 
 Parameters
 ----------
@@ -10,25 +10,25 @@ Notes
 -----
 The product covariance model defines a covariance model from the given collection as follows.
 
-We consider :math:`X: \Omega \times\cD \mapsto \Rset^d` a multivariate
-stochastic process of dimension :math:`d`, where :math:`\omega \in \Omega`
-is an event, :math:`\cD` is a domain of :math:`\Rset^n`, :math:`\vect{t}\in \cD` is a multivariate index and :math:`X(\omega, \vect{t}) \in \Rset^d`.
+We consider :math:`X: \Omega \times\cD \mapsto \Rset` a
+stochastic process of dimension 1, where :math:`\omega \in \Omega`
+is an event, :math:`\cD` is a domain of :math:`\Rset^n`, :math:`\vect{t}\in \cD` is a multivariate index and :math:`X(\omega, \vect{t}) \in \Rset`.
 
-The covariance function :math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` is defined as:
+The covariance function :math:`C : \cD \times \cD \mapsto  \Rset_{+}^{*}` is defined as:
 
 .. math::
     C(\vect{s}, \vect{t})=\prod_{k=1}^K  C_k(\vect{s}_k, \vect{t}_k)
 
-where :math:`C_k : \cD_k \times \cD_k \mapsto  \cM_{d \times d}(\Rset)`  with :math:`\cD_k \in \Rset^{d_k}`, :math:`\vect{s} = (\vect{s}_1, \dots, \vect{s}_k)` and :math:`d_1+\dots+d_k=d`.
+where :math:`C_k : \cD_k \times \cD_k \mapsto  \cM_{d \times d}(\Rset)`  with :math:`\cD_k \in \Rset^{d_k}`, :math:`\vect{s} = (\vect{s}_1, \dots, \vect{s}_k)` and :math:`d_1+\dots+d_k=n`.
 
 Examples
 --------
 Create a *ProductCovarianceModel* from two *ExponentialModel*:
 
 >>> import openturns as ot
->>> amplitude = [1., 2.]
->>> scale = [4., 5.]
->>> spatialDimension = 1
+>>> amplitude = [1.]
+>>> scale = [4.]
+>>> spatialDimension = 2
 >>> cov1 = ot.ExponentialModel(spatialDimension, amplitude, scale)
 >>> cov2 = ot.ExponentialModel(spatialDimension, amplitude, scale)
 >>> coll = ot.CovarianceModelCollection(2)
