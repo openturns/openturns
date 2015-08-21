@@ -49,32 +49,32 @@ Here are the steps required to propose a modification with git:
 
 3. Setup git for first use::
 
-    git config --global user.name "John Doe"
-    git config --global user.email "johndoe@example.com"
+    $ git config --global user.name "John Doe"
+    $ git config --global user.email "johndoe@example.com"
 
 
 3. Clone your personal fork::
 
-    git clone https://github.com/doe/openturns
+    $ git clone https://github.com/doe/openturns
 
 
 4. Create a branch from master with a relevant topic name::
 
-    git checkout -b branch_name master
+    $ git checkout -b branch_name master
 
 
 5. Commit your changes, split your work in as much commits as needed to ease reviewing::
 
-    git add <files> # Add current state of files to commit
-    git commit -m "Comment on commit 1/2" # Commit added files
+    $ git add <files> # Add current state of files to commit
+    $ git commit -m "Comment on commit 1/2" # Commit added files
     ...
-    git add <files>
-    git commit -m "Comment on commit 2/2"
+    $ git add <files>
+    $ git commit -m "Comment on commit 2/2"
 
 
 6. Push the new branch your personal repository::
 
-    git push --set-upstream origin branch_name
+    $ git push --set-upstream origin branch_name
 
 
 7. Create a pull request on https://github.com/openturns/openturns
@@ -97,30 +97,48 @@ Keep your local repository in sync
 You may want to keep your personal repository in sync with the main repository
 before starting new developments.
 
-1. Be sure to start from master branch::
+1. Add upstream remote repository::
 
-    git checkout master
-
-
-2. Add upstream remote repository::
-
-    git remote add upstream https://github.com/openturns/openturns.git
+    $ git remote add upstream https://github.com/openturns/openturns.git
 
 
-3. Retrieve usptream::
+2. Retrieve usptream::
 
-    git fetch upstream
-
-
-4. Merge upstream master branch to your local personal master branch::
-
-    git checkout master
-    git merge upstream/master
+    $ git fetch upstream
 
 
-5. Push to your remote personal repository::
+3. Merge upstream master branch to your local personal master branch::
 
-    git push
+    $ git checkout master
+    $ git merge upstream/master
+
+
+4. Push to your remote personal repository::
+
+    $ git push
+
+
+Tagging a release
+-----------------
+
+0. List existing tags::
+
+    $ git tag
+
+
+1. Get the master branch::
+
+    $ git checkout master
+
+
+2. Create the tag on local repository::
+
+    $ git tag -a v2.0 -m 'version 2.0'
+
+
+3. Push the tag on the remote repository::
+
+    $ git push origin v2.0
 
 
 Documentation
