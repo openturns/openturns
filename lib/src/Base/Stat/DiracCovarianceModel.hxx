@@ -66,6 +66,12 @@ public:
   NumericalSample discretizeRow(const NumericalSample & vertices,
                                 const UnsignedInteger p) const;
 
+  // discretize with use of HMatrix
+  using StationaryCovarianceModel::discretizeHMatrix;
+  HMatrix discretizeHMatrix(const NumericalSample & vertices,
+                            const NumericalScalar nuggetFactor,
+                            const HMatrixParameters & parameters) const;
+
   /** Gradient */
   Matrix partialGradient(const NumericalPoint & s,
                          const NumericalPoint & t) const;
