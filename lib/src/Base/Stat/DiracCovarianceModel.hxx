@@ -95,6 +95,7 @@ public:
   void load(Advocate & adv);
 
 protected:
+  friend class DiracCovarianceModelDiscretizePolicy;
   CovarianceMatrix covariance_;
   void computeCovariance();
 

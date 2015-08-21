@@ -113,6 +113,34 @@ CovarianceMatrix DiracCovarianceModel::operator() (const NumericalPoint & tau) c
     return CovarianceMatrix(SquareMatrix(dimension_).getImplementation());
 }
 
+struct DiracCovarianceModelDiscretizePolicy
+{
+  const NumericalSample & input_;
+  CovarianceMatrix & output_;
+  const DiracCovarianceModel & model_;
+  const UnsignedInteger dimension_;
+
+  DiracCovarianceModelDiscretizePolicy(const NumericalSample & input,
+                                       CovarianceMatrix & output,
+                                       const DiracCovarianceModel & model)
+    : input_(input)
+    , output_(output)
+    , model_(model)
+    , dimension_(model.getDimension())
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+    {
+      const UnsignedInteger indexBlock(index * dimension_);
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        for (UnsignedInteger i = 0; i < dimension_; ++i)
+          output_(indexBlock + i, indexBlock + j) = model_.covariance_(i, j);
+    }
+  }
+}; /* end struct DiracCovarianceModelDiscretizePolicy */
+
 CovarianceMatrix DiracCovarianceModel::discretize(const NumericalSample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_)
@@ -125,14 +153,11 @@ CovarianceMatrix DiracCovarianceModel::discretize(const NumericalSample & vertic
   const UnsignedInteger size(vertices.getSize());
   const UnsignedInteger fullSize(size * dimension_);
   CovarianceMatrix covarianceMatrix(fullSize);
-  for (UnsignedInteger blockIndex = 0; blockIndex < size; ++ blockIndex)
-  {
-    const UnsignedInteger iBase = blockIndex * dimension_;
-    const UnsignedInteger jBase = blockIndex * dimension_;
-    for(UnsignedInteger j = 0; j < dimension_; ++j)
-      for(UnsignedInteger i = j; i < dimension_; ++i)
-        covarianceMatrix(iBase + i, jBase + j) = covariance_(i, j);
-  }
+
+  const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
+  // The loop is over the lower block-triangular part
+  TBB::ParallelFor( 0, size, policy );
+
   return covarianceMatrix;
 }
 
