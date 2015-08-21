@@ -21,6 +21,7 @@
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
 #include "Log.hxx"
+#include "HMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -179,6 +180,14 @@ NumericalSample DiracCovarianceModel::discretizeRow(const NumericalSample & vert
     for(UnsignedInteger i = j; i < dimension_; ++i)
       result[p * dimension_ + i][j] = covariance_(i, j);
   return result;
+}
+
+// discretize with use of HMatrix
+HMatrix DiracCovarianceModel::discretizeHMatrix(const NumericalSample & vertices,
+                                                const NumericalScalar nuggetFactor,
+                                                const HMatrixParameters & parameters) const
+{
+  throw NotYetImplementedException(HERE) << "In DiracCovarianceModel::discretizeHMatrix(const NumericalSample & sample)";
 }
 
 /* Gradient */

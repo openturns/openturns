@@ -27,8 +27,11 @@
 #include "RegularGrid.hxx"
 #include "Mesh.hxx"
 #include "Basis.hxx"
+#include "HMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
+class HMatrix;
 
 /**
  * @class CovarianceModelImplementation
@@ -102,6 +105,17 @@ public:
   virtual CovarianceMatrix discretize(const NumericalSample & vertices) const;
   virtual NumericalSample discretizeRow(const NumericalSample & vertices,
                                         const UnsignedInteger p) const;
+
+  /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
+  virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
+                                    const NumericalScalar nuggetFactor,
+                                    const HMatrixParameters & parameters) const;
+  virtual HMatrix discretizeHMatrix(const Mesh & mesh,
+                                    const NumericalScalar nuggetFactor,
+                                    const HMatrixParameters & parameters) const;
+  virtual HMatrix discretizeHMatrix(const NumericalSample & vertices,
+                                    const NumericalScalar nuggetFactor,
+                                    const HMatrixParameters & parameters) const;
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;

@@ -85,6 +85,17 @@ public:
   virtual NumericalSample discretizeRow(const NumericalSample & vertices,
                                         const UnsignedInteger p) const;
 
+  /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
+  virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
+                                    const NumericalScalar nuggetFactor,
+                                    const HMatrixParameters & parameters) const;
+  virtual HMatrix discretizeHMatrix(const Mesh & mesh,
+                                    const NumericalScalar nuggetFactor,
+                                    const HMatrixParameters & parameters) const;
+  virtual HMatrix discretizeHMatrix(const NumericalSample & vertices,
+                                    const NumericalScalar nuggetFactor,
+                                    const HMatrixParameters & parameters) const;
+
   /** Amplitude accessors */
   NumericalPoint getAmplitude() const;
   void setAmplitude(const NumericalPoint & amplitude);

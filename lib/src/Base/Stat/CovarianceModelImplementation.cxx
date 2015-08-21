@@ -24,6 +24,8 @@
 #include "SpecFunc.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "MatrixImplementation.hxx"
+#include "HMatrix.hxx"
+#include "HMatrixFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -341,6 +343,30 @@ NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSamp
   }
   return result;
 }
+
+  /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
+
+HMatrix CovarianceModelImplementation::discretizeHMatrix(const RegularGrid & timeGrid,
+                                                         const NumericalScalar nuggetFactor,
+                                                         const HMatrixParameters & parameters) const
+{
+  return discretizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
+}
+
+HMatrix CovarianceModelImplementation::discretizeHMatrix(const Mesh & mesh,
+                                                         const NumericalScalar nuggetFactor,
+                                                         const HMatrixParameters & parameters) const
+{
+  return discretizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
+}
+
+HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample & vertices,
+                                                         const NumericalScalar nuggetFactor,
+                                                         const HMatrixParameters & parameters) const
+{
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::discretizeHMatrix(const NumericalSample & sample)";
+}
+
 
 /* Amplitude accessor */
 NumericalPoint CovarianceModelImplementation::getAmplitude() const

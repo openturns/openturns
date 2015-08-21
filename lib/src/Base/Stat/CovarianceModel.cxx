@@ -20,6 +20,7 @@
  */
 #include "CovarianceModel.hxx"
 #include "ExponentialModel.hxx"
+#include "HMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -131,6 +132,28 @@ NumericalSample CovarianceModel::discretizeRow(const NumericalSample & vertices,
     const UnsignedInteger p) const
 {
   return getImplementation()->discretizeRow(vertices, p);
+}
+
+  /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
+HMatrix CovarianceModel::discretizeHMatrix(const RegularGrid & timeGrid,
+                                           const NumericalScalar nuggetFactor,
+                                           const HMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeHMatrix(timeGrid, nuggetFactor, parameters);
+}
+
+HMatrix CovarianceModel::discretizeHMatrix(const Mesh & mesh,
+                                           const NumericalScalar nuggetFactor,
+                                           const HMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeHMatrix(mesh, nuggetFactor, parameters);
+}
+
+HMatrix CovarianceModel::discretizeHMatrix(const NumericalSample & vertices,
+                                           const NumericalScalar nuggetFactor,
+                                           const HMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeHMatrix(vertices, nuggetFactor, parameters);
 }
 
 /* Amplitude accessor */
