@@ -7,6 +7,11 @@ Installation
 From binary packages
 ====================
 
+Windows
+-------
+Download the installer matching your python version and architecture from `SourceForge <http://sourceforge.net/projects/openturns/files/openturns/>`_
+
+
 Debian/Ubuntu
 -------------
 
@@ -19,7 +24,7 @@ We support the following Debian-based distributions:
     +=====================================+==============================================+
     | Ubuntu 12.04 LTS 'Precise Pangolin' | deb http://ubuntu.openturns.org precise main |
     +-------------------------------------+----------------------------------------------+
-    | Ubuntu 14.04 'Trusty Tahr'          | deb http://ubuntu.openturns.org trusty main  |
+    | Ubuntu 14.04 LTS 'Trusty Tahr'      | deb http://ubuntu.openturns.org trusty main  |
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 15.04 'Vivid Vervet'         | deb http://ubuntu.openturns.org vivid main   |
     +-------------------------------------+----------------------------------------------+
@@ -67,6 +72,8 @@ The following packages should now be available:
     +----------------------+------------------------------------+
     | python-openturns     | python module                      |
     +----------------------+------------------------------------+
+    | python3-openturns    | python 3 module                    |
+    +----------------------+------------------------------------+
     | openturns-examples   | examples                           |
     +----------------------+------------------------------------+
     | openturns-validation | validation files                   |
@@ -96,16 +103,6 @@ Install the package::
 
     $ yum install python-openturns
 
-Archlinux/Parabola
-------------------
-Install from `AUR <https://aur.archlinux.org/packages/>`_ repository::
-
-    $ yaourt -S openturns
-
-Windows
--------
-Download the installer matching your python version and architecture from `SourceForge <http://sourceforge.net/projects/openturns/files/openturns/>`_
-
 Conda
 -----
 Install binstar support if needed::
@@ -120,14 +117,32 @@ Install the package::
 
     $ conda install openturns
 
+
+Archlinux/Parabola
+------------------
+Install from `AUR <https://aur.archlinux.org/packages/>`_ repository::
+
+    $ yaourt -S openturns
+
+
 From sources
 ============
+
+Checkout the following dependencies:
+
+- `CMake <http://www.cmake.org/>`_
+- `LAPACK <http://www.netlib.org/lapack/>`_
+- `LibXml2 <http://xmlsoft.org/>`_ (optional, for serialization)
+- `muParser <http://muparser.beltoforion.de/>`_ (optional, for analytical parser)
+- `Python <http://www.python.org/>`_ (optional, for python bindings)
+- `SWIG <http://www.swig.org/>`_ (optional, for python bindings)
+
+
 You can checkout the development trunk::
 
     $ git clone https://github.com/openturns/openturns.git
     $ cd openturns
     $ cmake -DCMAKE_INSTALL_PREFIX=~/.local .
-    $ make OT -j$(getconf _NPROCESSORS_CONF)
     $ make install
 
 .. note::
