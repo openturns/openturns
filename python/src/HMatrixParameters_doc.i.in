@@ -1,0 +1,69 @@
+%define OT_HMatrixParameters_doc
+"Parameters for HMatrix class
+
+Notes
+-----
+This class regroups the parameters used by :class:`~openturns.HMatrix`
+"
+
+%enddef
+%feature("docstring") OT::HMatrixParameters
+OT_HMatrixParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrixParameters_getAssemblyEpsilon_doc
+"Returns the epsilon used for the assembly
+
+Returns
+-------
+epsilon : float
+    assembly epsilon for HMatrix.
+"
+%enddef
+%feature("docstring") OT::HMatrixParameters::getAssemblyEpsilon
+OT_HMatrixParameters_getAssemblyEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+  %define OT_HMatrixParameters_setAssemblyEpsilon_doc
+"Sets the epsilon used for the assembly
+
+Parameters
+----------
+epsilon : float
+    assembly epsilon for HMatrix.
+"
+%enddef
+%feature("docstring") OT::HMatrixParameters::setAssemblyEpsilon
+OT_HMatrixParameters_setAssemblyEpsilon_doc
+// ---------------------------------------------------------------------
+
+%define OT_HMatrixParameters_getRecompressionEpsilon_doc
+"Returns the epsilon used for the recompression
+
+Returns
+-------
+epsilon : float
+    recompression epsilon for HMatrix.
+"
+%enddef
+%feature("docstring") OT::HMatrixParameters::getRecompressionEpsilon
+OT_HMatrixParameters_getRecompressionEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrixParameters_setRecompressionEpsilon_doc
+"Set the epsilon used for the recompression
+
+Parameters
+----------
+epsilon : float
+    recompression epsilon for HMatrix.
+"
+%enddef
+%feature("docstring") OT::HMatrixParameters::setRecompressionEpsilon
+OT_HMatrixParameters_setRecompressionEpsilon_doc
+
+// ---------------------------------------------------------------------
+
