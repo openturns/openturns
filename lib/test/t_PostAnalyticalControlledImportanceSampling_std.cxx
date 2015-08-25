@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     Cobyla myCobyla;
+    myCobyla.setMaximumIterationsNumber(400);
     FORM myAlgo(myCobyla, myEvent, mean);
 
     /* Perform the simulation */

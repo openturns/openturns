@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Cobyla myAlgorithm(specific, levelFunction);
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setLevelValue(3.0);
-    myAlgorithm.setMaximumIterationsNumber(100);
+    myAlgorithm.setMaximumIterationsNumber(400);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
     myAlgorithm.setMaximumResidualError(1.0e-10);

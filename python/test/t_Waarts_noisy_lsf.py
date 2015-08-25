@@ -30,7 +30,7 @@ try:
 
     EtatLimite = NumericalMathFunction(inputFunction, outputFunction, formulas)
 
-    dim = EtatLimite.getInputDimension()
+    d * dimim = EtatLimite.getInputDimension()
     print(dim)
 
     #
@@ -132,11 +132,11 @@ try:
     #
     #
     # FORM/SORM Cobyla
-    myCobyla = CobylaObsolete()
+    myCobyla = Cobyla()
     parameters = CobylaSpecificParameters()
     parameters.setRhoBeg(0.1)
     myCobyla.setSpecificParameters(parameters)
-    myCobyla.setMaximumIterationsNumber(1000)
+    myCobyla.setMaximumIterationsNumber(1000 * dim)
     myCobyla.setMaximumAbsoluteError(1.0e-4)
     myCobyla.setMaximumRelativeError(1.0e-4)
     myCobyla.setMaximumResidualError(1.0e-4)
@@ -153,7 +153,7 @@ try:
     myAbdoRackwitz = AbdoRackwitz()
     parameters = AbdoRackwitzSpecificParameters()
     myAbdoRackwitz.setSpecificParameters(parameters)
-    myAbdoRackwitz.setMaximumIterationsNumber(1000)
+    myAbdoRackwitz.setMaximumIterationsNumber(1000 * dim)
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-6)
     myAbdoRackwitz.setMaximumRelativeError(1.0e-6)
     myAbdoRackwitz.setMaximumResidualError(1.0e-6)

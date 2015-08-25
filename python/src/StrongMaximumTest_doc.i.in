@@ -63,7 +63,7 @@ Examples
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # FORM analyse to get the design point
->>> myAlgo = ot.FORM(ot.CobylaObsolete(), myEvent, [50., 1., 10., 5.])
+>>> myAlgo = ot.FORM(ot.Cobyla(), myEvent, [50., 1., 10., 5.])
 >>> myAlgo.run()
 >>> FORMresult = myAlgo.getResult()
 >>> designPoint = FORMresult.getStandardSpaceDesignPoint()

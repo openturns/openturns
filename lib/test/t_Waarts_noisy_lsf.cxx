@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     //   # FORM/SORM Cobyla;
     Cobyla myCobyla;
     myCobyla.setSpecificParameters(CobylaSpecificParameters());
-    myCobyla.setMaximumIterationsNumber(100);
+    myCobyla.setMaximumIterationsNumber(100 * dim);
     myCobyla.setMaximumAbsoluteError(1.0e-4);
     myCobyla.setMaximumRelativeError(1.0e-4);
     myCobyla.setMaximumResidualError(1.0e-4);
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
     //   # FORM/SORM Abdo Rackwitz;
     AbdoRackwitz myAbdoRackwitz;
     myAbdoRackwitz.setSpecificParameters(AbdoRackwitzSpecificParameters());
-    myAbdoRackwitz.setMaximumIterationsNumber(1000);
+    myAbdoRackwitz.setMaximumIterationsNumber(1000 * dim);
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-6);
     myAbdoRackwitz.setMaximumRelativeError(1.0e-6);
     myAbdoRackwitz.setMaximumResidualError(1.0e-6);

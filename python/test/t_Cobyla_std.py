@@ -13,7 +13,7 @@ try:
             ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
         specific = CobylaSpecificParameters()
         startingPoint = NumericalPoint(4, 1.0)
-        myAlgorithm = CobylaObsolete(specific, levelFunction)
+        myAlgorithm = Cobyla(specific, levelFunction)
         myAlgorithm.setStartingPoint(startingPoint)
         myAlgorithm.setLevelValue(3.0)
         myAlgorithm.setMaximumIterationsNumber(100)

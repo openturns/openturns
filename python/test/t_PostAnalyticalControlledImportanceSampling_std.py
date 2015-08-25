@@ -41,7 +41,9 @@ try:
     # The first parameter is a NearestPointAlgorithm
     # The second parameter is an event
     # The third parameter is a starting point for the design point research
-    myAlgo = FORM(CobylaObsolete(), myEvent, mean)
+    myCobyla = Cobyla()
+    myCobyla.setMaximumIterationsNumber(400)
+    myAlgo = FORM(myCobyla, myEvent, mean)
 
     # Perform the simulation
     myAlgo.run()

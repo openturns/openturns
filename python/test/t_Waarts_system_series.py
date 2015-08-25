@@ -71,9 +71,9 @@ try:
 
     #
     # FORM/SORM Cobyla
-    myCobyla = CobylaObsolete()
+    myCobyla = Cobyla()
     myCobyla.setSpecificParameters(CobylaSpecificParameters())
-    myCobyla.setMaximumIterationsNumber(100)
+    myCobyla.setMaximumIterationsNumber(100 * dim)
     myCobyla.setMaximumAbsoluteError(1.0e-10)
     myCobyla.setMaximumRelativeError(1.0e-10)
     myCobyla.setMaximumResidualError(1.0e-10)

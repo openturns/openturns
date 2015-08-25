@@ -56,7 +56,6 @@
 %include AbdoRackwitzSpecificParameters.i
 %include AbdoRackwitz.i
 %include CobylaSpecificParameters.i
-%include CobylaObsolete.i
 %include Cobyla.i
 %include TNCSpecificParameters.i
 %include TNC.i

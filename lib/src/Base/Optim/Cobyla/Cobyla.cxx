@@ -94,7 +94,7 @@ void Cobyla::run()
 
   NumericalScalar rhoBeg(specificParameters_.getRhoBeg());
   NumericalScalar rhoEnd(getMaximumAbsoluteError());
-  int maxFun = getMaximumIterationsNumber() * dimension;
+  int maxFun = getMaximumIterationsNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
   NumericalScalar absoluteError = -1.0;
