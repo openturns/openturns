@@ -64,9 +64,9 @@ done
 echo "-- Creating $pkgname-$pkgver tarball from $path"
 
 rm -rf /tmp/$pkgname-$pkgver
-svn export $path /tmp/$pkgname-$pkgver
+git archive master --prefix=$pkgname-$pkgver/ | bzip2 > /tmp/$pkgname-$pkgver.tar.bz2
 cd /tmp
-tar cjf $pkgname-$pkgver.tar.bz2 $pkgname-$pkgver
+tar xjf $pkgname-$pkgver.tar.bz2
 
 rm -f "$pkgname"_$debver*
 cp $pkgname-$pkgver.tar.bz2 "$pkgname"_$debver.orig.tar.bz2
