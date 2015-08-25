@@ -115,6 +115,31 @@ OT_CovarianceModel_discretize_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_discretizeHMatrix_doc
+"Discretize the covariance function on a given RegularGrid/Mesh using HMatrix result.
+
+Parameters
+----------
+meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
+    Mesh or time grid of size :math:`N` associated with the process.
+
+Returns
+-------
+HMatrix : :class:`~openturns.HMatrix`
+    Covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    dimension :math:`d`), stored in hierarchical format (H-Matrix)
+
+Notes
+-----
+This method si similar to the *discretize* method. This method requires that OpenTURNS has been compiled with the hmat library.
+The method is helpfull for very large parameters (Mesh, grid, NumericalSample) as its compress data.
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeHMatrix
+OT_CovarianceModel_discretizeHMatrix_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_discretizeRow_doc
 "**(TODO)**"
 %enddef

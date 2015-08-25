@@ -6,6 +6,8 @@ OT_CovarianceModel_doc
 OT_CovarianceModel_computeAsScalar_doc
 %feature("docstring") OT::CovarianceModel::discretize
 OT_CovarianceModel_discretize_doc
+%feature("docstring") OT::CovarianceModel::discretizeHMatrix
+OT_CovarianceModel_discretizeHMatrix_doc
 %feature("docstring") OT::CovarianceModel::discretizeRow
 OT_CovarianceModel_discretizeRow_doc
 %feature("docstring") OT::CovarianceModel::getDimension

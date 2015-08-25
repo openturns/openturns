@@ -364,7 +364,30 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample &
                                                          const NumericalScalar nuggetFactor,
                                                          const HMatrixParameters & parameters) const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::discretizeHMatrix(const NumericalSample & sample)";
+#ifdef OPENTURNS_HAVE_HMAT
+  const UnsignedInteger size(vertices.getSize());
+  HMatrixFactory hmatrixFactory;
+  const NumericalScalar assemblyEpsilon = parameters.getAssemblyEpsilon();
+  const NumericalScalar recompressionEpsilon = parameters.getRecompressionEpsilon();
+
+  HMatrix covarianceHMatrix = hmatrixFactory.build(vertices, dimension_, true);
+  // Set assembly & recompression epsilon
+  covarianceHMatrix.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
+  covarianceHMatrix.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+  if (dimension_ == 1)
+  {
+    CovarianceAssemblyFunction simple(*this, vertices, nuggetFactor);
+    covarianceHMatrix.assemble(simple, 'L');
+  }
+  else
+  {
+    CovarianceBlockAssemblyFunction block(*this, vertices, nuggetFactor);
+    covarianceHMatrix.assemble(block, 'L');
+  }
+  return covarianceHMatrix;
+#else
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::discretizeHMatrix, OpenTURNS had been compiled without HMat support";
+#endif
 }
 
 
