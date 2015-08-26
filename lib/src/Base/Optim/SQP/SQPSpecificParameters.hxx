@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SQP
  * SQP is an actual implementation for
- * NearestPointAlgorithm
+ * OptimizationSolverImplementation
  */
 class OT_API SQPSpecificParameters
   : public PersistentObject

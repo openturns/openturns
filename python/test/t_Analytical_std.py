@@ -31,7 +31,7 @@ try:
     # We create an Event from this RandomVector
     myEvent = Event(output, Less(), -3.0)
 
-    # We create a NearestPoint algorithm
+    # We create an OptimizationSolver algorithm
     myCobyla = Cobyla()
     myCobyla.setSpecificParameters(CobylaSpecificParameters())
     myCobyla.setMaximumIterationsNumber(400)
@@ -42,7 +42,7 @@ try:
     print("myCobyla=", myCobyla)
 
     # We create a Analytical algorithm
-    # The first parameter is a NearestPointAlgorithm
+    # The first parameter is an OptimizationSolver
     # The second parameter is an event
     # The third parameter is a starting point for the design point research
     myAlgo = Analytical(myCobyla, myEvent, mean)

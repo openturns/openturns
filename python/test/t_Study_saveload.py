@@ -64,11 +64,6 @@ point = ot.NumericalPoint(2, 1000.)
 point.setName("point")
 myStudy.add("point", point)
 
-# Create a NearestPointAlgorithm::Result
-nearestPointAlgorithmResult = ot.NearestPointAlgorithmImplementationResult(
-    ot.NumericalPoint(4, 1.0), 15, 1e-10, 2e-10, 3e-10, 4e-10)
-myStudy.add("nearestPointAlgorithmResult", nearestPointAlgorithmResult)
-
 # Create a Simulation::Result
 simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
 myStudy.add("simulationResult", simulationResult)
@@ -182,13 +177,6 @@ matrix = ot.Matrix()
 myStudy.fillObject("m", matrix)
 
 print("matrix = ", repr(matrix))
-
-# Create a NearestPointAlgorithm::Result from the one stored in the Study
-nearestPointAlgorithmResult = ot.NearestPointAlgorithmImplementationResult()
-myStudy.fillObject(
-    "nearestPointAlgorithmResult", nearestPointAlgorithmResult)
-
-print("nearestPointAlgorithmResult = ", nearestPointAlgorithmResult)
 
 # Create a Simulation::Result from the one stored in the Study
 simulationResult = ot.SimulationResult()

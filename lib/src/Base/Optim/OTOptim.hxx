@@ -23,9 +23,6 @@
 #define OPENTURNS_OTOPTIM_HXX
 
 #include "PenalizedLeastSquaresAlgorithm.hxx"
-#include "NearestPointAlgorithm.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
-#include "NearestPointAlgorithmImplementationResult.hxx"
 #include "NearestPointCheckerResult.hxx"
 #include "NearestPointChecker.hxx"
 #include "OptimizationProblem.hxx"

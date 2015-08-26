@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief SQP is an actual implementation for
- *         NearestPointAlgorithm using the SQP algorithm.
+ *         OptimizationSolverImplementation using the SQP algorithm.
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *

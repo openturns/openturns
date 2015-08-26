@@ -169,11 +169,6 @@ int main(int argc, char *argv[])
     }
     study.add("staircase", staircase);
 
-    // Create a NearestPointAlgorithm::Result
-    NearestPointAlgorithm::Result nearestPointAlgorithmResult(NumericalPoint(4, 1.0), 15, 1e-10, 2e-10, 3e-10, 4e-10);
-    nearestPointAlgorithmResult.setName("nearestPointAlgorithmResult");
-    study.add("nearestPointAlgorithmResult", nearestPointAlgorithmResult);
-
     // Create a Simulation::Result
     SimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
     simulationResult.setName("simulationResult");
@@ -1001,7 +996,6 @@ int main(int argc, char *argv[])
     compare<NumericalMathFunction >( analytical, study2 , "analytical");
 
     // Optim
-    compare<NearestPointAlgorithm::Result >( nearestPointAlgorithmResult, study2, "nearestPointAlgorithmResult");
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
     compare<Cobyla >( cobyla, study2, "cobyla" );

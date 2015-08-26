@@ -48,9 +48,6 @@
 %include OptimizationSolverImplementationResult.i
 %include OptimizationSolverImplementation.i
 %include OptimizationSolver.i
-%include NearestPointAlgorithmImplementationResult.i
-%include NearestPointAlgorithmImplementation.i
-%include NearestPointAlgorithm.i
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
 %include AbdoRackwitzSpecificParameters.i

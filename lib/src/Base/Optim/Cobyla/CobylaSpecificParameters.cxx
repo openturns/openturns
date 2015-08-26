@@ -22,6 +22,7 @@
 
 #include "CobylaSpecificParameters.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -345,9 +345,6 @@ ot_add_python_module(optim optim_module.i
                       OptimizationSolver.i
                       OptimizationSolverImplementationResult.i
                       OptimizationSolverImplementation.i
-                      NearestPointAlgorithmImplementationResult.i
-                      NearestPointAlgorithmImplementation.i
-                      NearestPointAlgorithm.i
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitzSpecificParameters.i

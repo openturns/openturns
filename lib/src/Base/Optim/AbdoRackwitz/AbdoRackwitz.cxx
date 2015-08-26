@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief AbdoRackwitz is an actual implementation for
- *         NearestPointAlgorithm using the AbdoRackwitz algorithm.
+ *         OptimizationSolverImplementation using the AbdoRackwitz algorithm.
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
