@@ -60,6 +60,7 @@
 %include FunctionalChaosAlgorithm.i
 %include KrigingAlgorithm.i
 %include MetaModelValidation.i
+%include GeneralizedLinearModelResult.i
 
 /* Uncertainty/Model */
 %include RandomVector.i
