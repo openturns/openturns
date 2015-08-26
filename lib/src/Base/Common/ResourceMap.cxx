@@ -673,6 +673,15 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree", 10 );
 
+  // GeneralizedLinearModelAlgorithm parameters //
+  set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
+  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
+  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1e-5 );
+  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 20 );
+  set("GeneralizedLinearModelAlgorithm-DefaultOptimiationSolver", "TNC");
+
   // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );
   setAsNumericalScalar( "KrigingAlgorithm-MaximalScaling", 1.0e5 );

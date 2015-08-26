@@ -12,6 +12,6 @@ GLM algorithm
     :template: class.rst_t
 
     GeneralizedLinearModelResult
-
+    GeneralizedLinearModelAlgorithm
 
 

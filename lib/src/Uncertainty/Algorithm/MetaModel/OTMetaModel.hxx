@@ -29,5 +29,6 @@
 #include "KrigingResult.hxx"
 #include "MetaModelValidation.hxx"
 #include "GeneralizedLinearModelResult.hxx"
+#include "GeneralizedLinearModelAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTMETAMODEL_HXX */

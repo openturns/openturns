@@ -61,6 +61,7 @@
 %include KrigingAlgorithm.i
 %include MetaModelValidation.i
 %include GeneralizedLinearModelResult.i
+%include GeneralizedLinearModelAlgorithm.i
 
 /* Uncertainty/Model */
 %include RandomVector.i
