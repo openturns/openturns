@@ -440,15 +440,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
   setAsNumericalScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
 
-  // NearestPointAlgorithmImplementation parameters //
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultLevelValue", 0.0 );
-  setAsUnsignedInteger( "NearestPointAlgorithmImplementation-DefaultMaximumIteration", 100 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError", 1.0e-5 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumConstraintError", 1.0e-5 );
-
   // OptimizationSolverImplementation parameters //
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultLevelValue", 0.0 );
   setAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration", 100 );
   setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
   setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError", 1.0e-5 );

@@ -120,15 +120,8 @@
   <AbdoRackwitz-DefaultOmega  value="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth value="1.2"    />
 
-  <!-- OT::NearestPointAlgorithmImplementation parameters -->
-  <NearestPointAlgorithmImplementation-DefaultLevelValue              value="0.0"    />
-  <NearestPointAlgorithmImplementation-DefaultMaximumIteration        value="100"    />
-  <NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError    value="1.0e-5" />
-  <NearestPointAlgorithmImplementation-DefaultMaximumRelativeError    value="1.0e-5" />
-  <NearestPointAlgorithmImplementation-DefaultMaximumResidualError    value="1.0e-5" />
-  <NearestPointAlgorithmImplementation-DefaultMaximumConstraintError  value="1.0e-5" />
-
   <!-- OT::OptimizationSolverImplementation parameters -->
+  <OptimizationSolverImplementation-DefaultLevelValue              value="0.0"    />
   <OptimizationSolverImplementation-DefaultMaximumIteration        value="100"    />
   <OptimizationSolverImplementation-DefaultMaximumAbsoluteError    value="1.0e-5" />
   <OptimizationSolverImplementation-DefaultMaximumRelativeError    value="1.0e-5" />
