@@ -62,7 +62,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory()
   , solver_(new Cobyla())
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeCobylaSolverParameter();
 }
 
 /* Standard constructor */
@@ -89,7 +89,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
   dimension_ = dimension;
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeCobylaSolverParameter();
   if ((p != 0) || (q != 0))
   {
     currentP_ = p;
@@ -127,7 +127,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
   dimension_ = dimension;
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeCobylaSolverParameter();
 }
 
 void ARMALikelihoodFactory::initialize()
@@ -412,7 +412,7 @@ NumericalMathFunction ARMALikelihoodFactory::getLogLikelihoodInequalityConstrain
 }
 
 /* Initialize optimization solver parameter using the ResourceMap */
-void ARMALikelihoodFactory::initializeOptimizationSolverParameter()
+void ARMALikelihoodFactory::initializeCobylaSolverParameter()
 {
   static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg")));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));

@@ -185,8 +185,8 @@ private :
   OptimizationSolver getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationSolver & solver);
 
-  /** Initialize optimization solver parameter using the ResourceMap */
-  void initializeOptimizationSolverParameter();
+  /** Initialize default Cobyla solver parameter using the ResourceMap */
+  void initializeCobylaSolverParameter();
 
 protected:
 

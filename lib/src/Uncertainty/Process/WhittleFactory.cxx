@@ -59,7 +59,7 @@ WhittleFactory::WhittleFactory()
   , solver_(new Cobyla())
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeCobylaSolverParameter();
 }
 
 /* Standard constructor */
@@ -82,7 +82,7 @@ WhittleFactory::WhittleFactory(const UnsignedInteger p,
   // Create the set of starting points using the parameters in the ResourceMap
   initializeStartingPoints();
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeCobylaSolverParameter();
 }
 
 /* Standard constructor */
@@ -105,7 +105,7 @@ WhittleFactory::WhittleFactory(const Indices & p,
   // Create the set of starting points using the parameters in the ResourceMap
   initializeStartingPoints();
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeCobylaSolverParameter();
 }
 
 /* Virtual constructor */
@@ -253,7 +253,7 @@ NumericalMathFunction WhittleFactory::getLogLikelihoodInequalityConstraint() con
 }
 
 /* Initialize optimization solver parameter using the ResourceMap */
-void WhittleFactory::initializeOptimizationSolverParameter()
+void WhittleFactory::initializeCobylaSolverParameter()
 {
   static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg")));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
