@@ -46,9 +46,7 @@ public:
   OptimizationSolverImplementation();
 
   /** Constructor with parameters */
-  explicit OptimizationSolverImplementation(const OptimizationProblem & problem,
-      const Bool verbose = false);
-
+  explicit OptimizationSolverImplementation(const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual OptimizationSolverImplementation * clone() const;

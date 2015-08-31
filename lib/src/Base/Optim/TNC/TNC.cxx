@@ -45,9 +45,8 @@ TNC::TNC():
 }
 
 /* Constructor with parameters */
-TNC::TNC(const OptimizationProblem & problem,
-         const Bool verbose):
-  OptimizationSolverImplementation(problem, verbose),
+TNC::TNC(const OptimizationProblem & problem) :
+  OptimizationSolverImplementation(problem),
   specificParameters_()
 {
   // Nothing to do
@@ -55,9 +54,8 @@ TNC::TNC(const OptimizationProblem & problem,
 
 /* Constructor with parameters */
 TNC::TNC(const TNCSpecificParameters & parameters,
-	 const OptimizationProblem & problem,
-         const Bool verbose):
-  OptimizationSolverImplementation(problem, verbose),
+	 const OptimizationProblem & problem) :
+  OptimizationSolverImplementation(problem),
   specificParameters_(parameters)
 {
   // Nothing to do

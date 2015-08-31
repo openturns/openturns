@@ -40,20 +40,8 @@ Cobyla::Cobyla()
   // Nothing to do
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
- *         and a level value
- */
-Cobyla::Cobyla(const NumericalMathFunction & levelFunction, const Bool verbose)
-  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
-  , specificParameters_()
-{
-  // Nothing to do
-}
-
-Cobyla::Cobyla(const OptimizationProblem & problem,
-               const Bool verbose)
-  : OptimizationSolverImplementation(problem, verbose)
+Cobyla::Cobyla(const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
   , specificParameters_()
 {
   // Nothing to do
@@ -64,9 +52,8 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
  *         and a level value
  */
 Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
-               const NumericalMathFunction & levelFunction,
-               const Bool verbose)
-  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+               const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
   , specificParameters_(specificParameters)
 {
   // Nothing to do

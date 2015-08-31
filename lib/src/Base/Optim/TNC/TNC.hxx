@@ -45,13 +45,11 @@ public:
   TNC();
 
   /** Constructor with parameters */
-  explicit TNC(const OptimizationProblem & problem,
-               const Bool verbose = false);
+  explicit TNC(const OptimizationProblem & problem);
 
   /** Constructor with parameters */
   TNC(const TNCSpecificParameters & parameters,
-      const OptimizationProblem & problem,
-      const Bool verbose = false);
+      const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual TNC * clone() const;

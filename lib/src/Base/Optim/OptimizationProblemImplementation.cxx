@@ -53,14 +53,13 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
 OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective,
     const NumericalMathFunction & equalityConstraint,
     const NumericalMathFunction & inequalityConstraint,
-    const Interval & bounds,
-    Bool minimization)
+    const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
   , equalityConstraint_(equalityConstraint)
   , inequalityConstraint_(inequalityConstraint)
   , bounds_(bounds)
-  , minimization_(minimization)
+  , minimization_(true)
   , dimension_(objective.getInputDimension())
 {
   // Check if the input dimension of the objective, the constraints and the bounds are compatible

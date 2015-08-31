@@ -39,9 +39,8 @@ try:
             NonCenteredFiniteDifferenceGradient(myGradient))
         specific = SQPSpecificParameters()
         startingPoint = NumericalPoint(4, 0.0)
-        myAlgorithm = SQP(specific, levelFunction)
+        myAlgorithm = SQP(specific, OptimizationProblem(levelFunction, -0.5))
         myAlgorithm.setStartingPoint(startingPoint)
-        myAlgorithm.setLevelValue(-0.5)
         print("myAlgorithm=", myAlgorithm)
         myAlgorithm.run()
         print("result = ", printNumericalPoint(

@@ -49,10 +49,10 @@ public:
   SQP();
 
   /** Constructor with parameters */
-  SQP(const SQPSpecificParameters & specificParameters,
-      const NumericalMathFunction & levelFunction,
-      const Bool verbose = false);
+  explicit SQP(const OptimizationProblem & problem);
 
+  SQP(const SQPSpecificParameters & specificParameters,
+      const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual SQP * clone() const;

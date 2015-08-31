@@ -42,7 +42,7 @@ OptimizationSolverImplementation::OptimizationSolverImplementation()
 /*
  * @brief Standard constructor: the optimization problem is managed by the optimization solver, and the actual solver is in charge to check if it is able to solve it.
  */
-OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem, const Bool verbose)
+OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem)
   : PersistentObject()
   , problem_(problem)
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
@@ -50,7 +50,7 @@ OptimizationSolverImplementation::OptimizationSolverImplementation(const Optimiz
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
   , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
-  , verbose_(verbose)
+  , verbose_(false)
 {
   // Nothing to do
 }

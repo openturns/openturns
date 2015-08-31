@@ -48,12 +48,11 @@ public:
   OptimizationProblemImplementation(const NumericalMathFunction & objective,
                                     const NumericalMathFunction & equalityConstraint,
                                     const NumericalMathFunction & inequalityConstraint,
-                                    const Interval & bounds,
-                                    Bool minimization = true);
+                                    const Interval & bounds);
 
   /** Constructor with parameters */
-  explicit OptimizationProblemImplementation(const NumericalMathFunction & levelFunction,
-                                             NumericalScalar levelValue = 0.0);
+  OptimizationProblemImplementation(const NumericalMathFunction & levelFunction,
+                                    NumericalScalar levelValue);
 
   /** Virtual constructor */
   virtual OptimizationProblemImplementation * clone() const;

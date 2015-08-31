@@ -157,6 +157,19 @@ void OptimizationSolver::setMaximumConstraintError(const NumericalScalar maximum
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
 }
 
+/* Verbose accessor */
+Bool OptimizationSolver::getVerbose() const
+{
+  return getImplementation()->getVerbose();
+}
+
+/* Verbose accessor */
+void OptimizationSolver::setVerbose(const Bool verbose)
+{
+  copyOnWrite();
+  getImplementation()->setVerbose(verbose);
+}
+
 /* String converter */
 String OptimizationSolver::__repr__() const
 {

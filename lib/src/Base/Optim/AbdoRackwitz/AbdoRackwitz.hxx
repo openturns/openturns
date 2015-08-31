@@ -24,6 +24,7 @@
 
 #include "OTprivate.hxx"
 #include "OptimizationSolverImplementation.hxx"
+#include "OptimizationProblem.hxx"
 #include "NumericalPoint.hxx"
 #include "NumericalMathFunction.hxx"
 #include "AbdoRackwitzSpecificParameters.hxx"
@@ -46,10 +47,10 @@ public:
   AbdoRackwitz();
 
   /** Constructor with parameters */
-  explicit AbdoRackwitz(const NumericalMathFunction & levelFunction, const Bool verbose=false);
+  explicit AbdoRackwitz(const OptimizationProblem & problem);
 
   AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-               const NumericalMathFunction & levelFunction, const Bool verbose=false);
+               const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual AbdoRackwitz * clone() const;

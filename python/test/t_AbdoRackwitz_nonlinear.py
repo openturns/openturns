@@ -40,9 +40,8 @@ try:
         NonCenteredFiniteDifferenceGradient(myGradient))
     specific = AbdoRackwitzSpecificParameters()
     startingPoint = NumericalPoint(4, 0.0)
-    myAlgorithm = AbdoRackwitz(specific, levelFunction)
+    myAlgorithm = AbdoRackwitz(specific, OptimizationProblem(levelFunction, -0.5))
     myAlgorithm.setStartingPoint(startingPoint)
-    myAlgorithm.setLevelValue(-0.5)
     print("myalgorithm=", repr(myAlgorithm))
     myAlgorithm.run()
     print("result = ", printNumericalPoint(

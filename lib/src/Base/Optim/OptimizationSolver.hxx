@@ -90,6 +90,10 @@ public:
   NumericalScalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const NumericalScalar maximumConstraintError);
 
+  /* Verbose accessor */
+  Bool getVerbose() const;
+  void setVerbose(const Bool verbose);
+
   /** String converter */
   virtual String __repr__() const;
 

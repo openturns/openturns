@@ -61,8 +61,8 @@ public:
                       const Interval & bounds);
 
   /** Constructor with parameters */
-  explicit OptimizationProblem(const NumericalMathFunction & levelFunction,
-                               NumericalScalar levelValue = 0.0);
+  OptimizationProblem(const NumericalMathFunction & levelFunction,
+                      NumericalScalar levelValue);
 
   /** Objective functions accessor */
   NumericalMathFunction getObjective() const;

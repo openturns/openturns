@@ -63,9 +63,8 @@ int main(int argc, char *argv[])
     levelFunction.setHessian(new CenteredFiniteDifferenceHessian(myHessian));
     SQPSpecificParameters specific;
     NumericalPoint startingPoint(4, 0.0);
-    SQP mySQPAlgorithm(specific, levelFunction);
+    SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
-    mySQPAlgorithm.setLevelValue(3.0);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
     OptimizationSolverImplementationResult result(mySQPAlgorithm.getResult());

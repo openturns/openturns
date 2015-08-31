@@ -37,8 +37,8 @@ AbdoRackwitz::AbdoRackwitz()
   initialize();
 }
 
-AbdoRackwitz::AbdoRackwitz(const NumericalMathFunction & levelFunction, const Bool verbose)
-  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
   , specificParameters_()
 {
   initialize();
@@ -49,9 +49,8 @@ AbdoRackwitz::AbdoRackwitz(const NumericalMathFunction & levelFunction, const Bo
  *         and a level value
  */
 AbdoRackwitz::AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-                           const NumericalMathFunction & levelFunction,
-                           const Bool verbose)
-  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+                           const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
   , specificParameters_(specificParameters)
   , currentPoint_(getStartingPoint().getDimension())
   , currentDirection_(getStartingPoint().getDimension())

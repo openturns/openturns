@@ -56,9 +56,8 @@ int main(int argc, char *argv[])
       NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
       CobylaSpecificParameters specific;
       NumericalPoint startingPoint(4, 0.0);
-      Cobyla myAlgorithm(specific, levelFunction);
+      Cobyla myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
       myAlgorithm.setStartingPoint(startingPoint);
-      myAlgorithm.setLevelValue(3.0);
       fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
       myAlgorithm.run();
       fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;

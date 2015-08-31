@@ -43,17 +43,21 @@ SQP::SQP():
   initialize();
 }
 
+SQP::SQP(const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
+  , specificParameters_()
+{
+  initialize();
+}
+
 /*
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fonction)
  *         and a level value
  */
 SQP::SQP(const SQPSpecificParameters & specificParameters,
-         const NumericalMathFunction & levelFunction,
-         const Bool verbose)
-  : OptimizationSolverImplementation(OptimizationProblem(levelFunction), verbose)
+         const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
   , specificParameters_(specificParameters)
-  , currentPoint_(getStartingPoint().getDimension())
-  , currentGradient_(getStartingPoint().getDimension())
 {
   initialize();
 }

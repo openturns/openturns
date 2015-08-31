@@ -44,16 +44,11 @@ public:
   Cobyla();
 
   /** Constructor with parameters */
-  explicit Cobyla(const NumericalMathFunction & levelFunction, const Bool verbose = false);
-
-  /** Constructor with parameters */
-  explicit Cobyla(const OptimizationProblem & problem, const Bool verbose = false);
+  explicit Cobyla(const OptimizationProblem & problem);
 
   /** Constructor with parameters */
   Cobyla(const CobylaSpecificParameters & specificParameters,
-         const NumericalMathFunction & levelFunction,
-         const Bool verbose = false);
-
+         const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual Cobyla * clone() const;

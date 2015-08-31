@@ -61,9 +61,8 @@ int main(int argc, char *argv[])
       levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
       AbdoRackwitzSpecificParameters specific;
       NumericalPoint startingPoint(4, 0.0);
-      AbdoRackwitz myAlgorithm(specific, levelFunction);
+      AbdoRackwitz myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
       myAlgorithm.setStartingPoint(startingPoint);
-      myAlgorithm.setLevelValue(3.0);
       fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
       myAlgorithm.run();
       fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
