@@ -56,7 +56,7 @@ public:
   explicit OptimizationSolver(const OptimizationProblem & problem);
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  virtual void run();
+  void run();
 
   /** Starting point accessor */
   NumericalPoint getStartingPoint() const;
