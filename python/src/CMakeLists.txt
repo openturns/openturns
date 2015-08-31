@@ -340,11 +340,11 @@ ot_add_python_module(diff diff_module.i
                     )
 
 ot_add_python_module(optim optim_module.i
-                      OptimizationProblem.i
-                      OptimizationProblemImplementation.i
-                      OptimizationSolver.i
+                      OptimizationProblem.i OptimizationProblem_doc.i.in
+                      OptimizationProblemImplementation.i OptimizationProblemImplementation_doc.i.in
+                      OptimizationSolver.i OptimizationSolver_doc.i.in
                       OptimizationSolverImplementationResult.i
-                      OptimizationSolverImplementation.i
+                      OptimizationSolverImplementation.i OptimizationSolverImplementation_doc.i.in
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitzSpecificParameters.i

@@ -1,0 +1,281 @@
+%define OT_OptimizationSolver_doc
+"Base class for optimization wrappers.
+
+Available constructors:
+    OptimizationSolver(*problem, verbose=False*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem.
+verbose : bool
+    Let solver be more verbose.
+
+Notes
+-----
+
+Class :class:`~openturns.OptimizationSolverImplementation` is an abstract class, which has several implementations.
+The default implementation is :class:`~openturns.Cobyla`, but there are also
+:class:`~openturns.Abdorackwitz`, :class:`~openturns.SQP` and :class:`~openturns.TNC`.
+
+Examples
+--------
+
+Define an optimization problem to find the minimum of the Rosenbrock function:
+
+>>> import openturns as ot
+>>> rosenbrock = ot.NumericalMathFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem()
+>>> problem.setObjective(rosenbrock)
+>>> solver = ot.OptimizationSolver(problem)
+>>> solver.setStartingPoint([0, 0])
+>>> solver.setMaximumResidualError(1.e-8)
+>>> solver.setMaximumIterationsNumber(100000)
+>>> solver.run()
+>>> result = solver.getResult()"
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation
+OT_OptimizationSolver_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getMaximumAbsoluteError_doc
+"Accessor to maximum allowed absolute error.
+
+Returns
+-------
+maximumAbsoluteError : float
+    Maximum allowed absolute error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumAbsoluteError
+OT_OptimizationSolver_getMaximumAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getMaximumConstraintError_doc
+"Accessor to maximum allowed constraint error.
+
+Returns
+-------
+maximumConstraintError : float
+    Maximum allowed constraint error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumConstraintError
+OT_OptimizationSolver_getMaximumConstraintError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getMaximumIterationsNumber_doc
+"Accessor to maximum allowed number of evaluations.
+
+Returns
+-------
+maximumIterationsNumber : int
+    Maximum allowed number of evaluations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumIterationsNumber
+OT_OptimizationSolver_getMaximumIterationsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getMaximumRelativeError_doc
+"Accessor to maximum allowed relative error.
+
+Returns
+-------
+maximumRelativeError : float
+    Maximum allowed relative error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumRelativeError
+OT_OptimizationSolver_getMaximumRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getMaximumResidualError_doc
+"Accessor to maximum allowed residual error.
+
+Returns
+-------
+maximumResidualError : float
+    Maximum allowed residual error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumResidualError
+OT_OptimizationSolver_getMaximumResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getProblem_doc
+"Accessor to optimization problem.
+
+Returns
+-------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getProblem
+OT_OptimizationSolver_getProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getResult_doc
+"Accessor to optimization result.
+
+Returns
+-------
+result : :class:`~openturns.OptimizationSolverImplementationResult`
+    Result class."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getResult
+OT_OptimizationSolver_getResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getStartingPoint_doc
+"Accessor to starting point.
+
+Returns
+-------
+startingPoint : :class:`~openturns.NumericalPoint`
+    Starting point."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getStartingPoint
+OT_OptimizationSolver_getStartingPoint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setMaximumAbsoluteError_doc
+"Accessor to maximum allowed absolute error.
+
+Parameters
+----------
+maximumAbsoluteError : float
+    Maximum allowed absolute error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumAbsoluteError
+OT_OptimizationSolver_setMaximumAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setMaximumConstraintError_doc
+"Accessor to maximum allowed constraint error.
+
+Parameters
+----------
+maximumConstraintError : float
+    Maximum allowed constraint error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumConstraintError
+OT_OptimizationSolver_setMaximumConstraintError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setMaximumIterationsNumber_doc
+"Accessor to maximum allowed number of evaluations.
+
+Parameters
+----------
+maximumIterationsNumber : int
+    Maximum allowed number of evaluations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumIterationsNumber
+OT_OptimizationSolver_setMaximumIterationsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setMaximumRelativeError_doc
+"Accessor to maximum allowed relative error.
+
+Parameters
+----------
+maximumRelativeError : float
+    Maximum allowed relative error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumRelativeError
+OT_OptimizationSolver_setMaximumRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setMaximumResidualError_doc
+"Accessor to maximum allowed residual error.
+
+Parameters
+----------
+maximumResidualError : float
+    Maximum allowed residual error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumResidualError
+OT_OptimizationSolver_setMaximumResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setProblem_doc
+"Accessor to optimization problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setProblem
+OT_OptimizationSolver_setProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setResult_doc
+"Accessor to optimization result.
+
+Parameters
+----------
+result : :class:`~openturns.OptimizationSolverImplementationResult`
+    Result class."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setResult
+OT_OptimizationSolver_setResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setStartingPoint_doc
+"Accessor to starting point.
+
+Parameters
+----------
+startingPoint : :class:`~openturns.NumericalPoint`
+    Starting point."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setStartingPoint
+OT_OptimizationSolver_setStartingPoint_doc
+

@@ -4,6 +4,8 @@
 #include "OptimizationProblem.hxx"
 %}
 
+%include OptimizationProblem_doc.i
+
 %template(OptimizationProblemImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::OptimizationProblemImplementation>;
 
 %include OptimizationProblem.hxx

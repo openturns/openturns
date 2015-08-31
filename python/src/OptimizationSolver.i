@@ -4,6 +4,8 @@
 #include "OptimizationSolver.hxx"
 %}
 
+%include OptimizationSolver_doc.i
+
 OTTypedInterfaceObjectHelper(OptimizationSolver)
 
 %include OptimizationSolver.hxx
