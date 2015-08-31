@@ -255,7 +255,10 @@ NumericalMathFunction WhittleFactory::getLogLikelihoodInequalityConstraint() con
 /* Initialize optimization solver parameter using the ResourceMap */
 void WhittleFactory::initializeCobylaSolverParameter()
 {
-  static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg")));
+  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
+  if (cobyla == NULL) throw InternalException(HERE);
+  cobyla->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg")));
+
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));
 }

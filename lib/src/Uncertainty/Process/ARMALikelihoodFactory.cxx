@@ -414,7 +414,10 @@ NumericalMathFunction ARMALikelihoodFactory::getLogLikelihoodInequalityConstrain
 /* Initialize optimization solver parameter using the ResourceMap */
 void ARMALikelihoodFactory::initializeCobylaSolverParameter()
 {
-  static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg")));
+  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
+  if (cobyla == NULL) throw InternalException(HERE);
+  cobyla->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg")));
+
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun"));
 }
