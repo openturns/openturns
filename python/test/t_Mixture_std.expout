@@ -28,11 +28,11 @@ standard moment n= 4  value= [132.729,294.229,63.6667]
 standard moment n= 5  value= [650.094,711.281,242]
 Standard representative= Mixture((w = 0.333333, d = Normal(mu = [0.5,-0.5,1], sigma = [2,3,1], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
- [ 0   0.5 1   ]]), (w = 0.333333, d = Normal(mu = [1.5,0.5,2], sigma = [2,3,1], R = [[ 1   0.5 0   ]
+ [ 0   0.5 1   ]])), (w = 0.333333, d = Normal(mu = [1.5,0.5,2], sigma = [2,3,1], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
- [ 0   0.5 1   ]]), (w = 0.333333, d = Normal(mu = [2.5,1.5,3], sigma = [2,3,1], R = [[ 1   0.5 0   ]
+ [ 0   0.5 1   ]])), (w = 0.333333, d = Normal(mu = [2.5,1.5,3], sigma = [2,3,1], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
- [ 0   0.5 1   ]]))
+ [ 0   0.5 1   ]])))
 newMixture pdf= 0.135652911626
 atoms kept in mixture= [Normal(mu = 2, sigma = 2),Normal(mu = 3, sigma = 3)]
-newMixture= Mixture((w = 0.0724638, d = Normal(mu = 2, sigma = 2), (w = 0.927536, d = Normal(mu = 3, sigma = 3))
+newMixture= Mixture((w = 0.0724638, d = Normal(mu = 2, sigma = 2)), (w = 0.927536, d = Normal(mu = 3, sigma = 3)))
