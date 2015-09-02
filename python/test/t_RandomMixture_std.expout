@@ -251,9 +251,9 @@ pdf      = 0.110695
 pdf      = 0.0922665
 pdf      = 0.0710676
 3D distribution =  RandomMixture(
-Normal(mu = 0, sigma = 1) - 0.05 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1), (w = 0.5, d = Normal(mu = -2, sigma = 1)) + Uniform(a = 0, b = 1) - 0.5 * Uniform(a = 0, b = 1)
-0.5 * Normal(mu = 0, sigma = 1) + Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1), (w = 0.5, d = Normal(mu = -2, sigma = 1)) - 0.05 * Uniform(a = 0, b = 1) + 0.3 * Uniform(a = 0, b = 1)
--0.5 * Normal(mu = 0, sigma = 1) - 0.1 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1), (w = 0.5, d = Normal(mu = -2, sigma = 1)) + 1.2 * Uniform(a = 0, b = 1) - 0.8 * Uniform(a = 0, b = 1)
+Normal(mu = 0, sigma = 1) - 0.05 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) + Uniform(a = 0, b = 1) - 0.5 * Uniform(a = 0, b = 1)
+0.5 * Normal(mu = 0, sigma = 1) + Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) - 0.05 * Uniform(a = 0, b = 1) + 0.3 * Uniform(a = 0, b = 1)
+-0.5 * Normal(mu = 0, sigma = 1) - 0.1 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) + 1.2 * Uniform(a = 0, b = 1) - 0.8 * Uniform(a = 0, b = 1)
 )
 range =  [-8.63316, 9.13316]
 [-13.5259, 13.7759]

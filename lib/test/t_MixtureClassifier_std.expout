@@ -1,4 +1,4 @@
-mixture=Mixture((w = 0.333333, d = Normal(mu = 0, sigma = 4), (w = 0.333333, d = Uniform(a = 5, b = 7), (w = 0.333333, d = Triangular(a = 7, m = 8, b = 9))
+mixture=Mixture((w = 0.333333, d = Normal(mu = 0, sigma = 4)), (w = 0.333333, d = Uniform(a = 5, b = 7)), (w = 0.333333, d = Triangular(a = 7, m = 8, b = 9)))
 inP=[2] class=0
 inP=[4] class=0
 inP=[6] class=1

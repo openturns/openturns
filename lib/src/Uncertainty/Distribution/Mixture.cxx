@@ -136,7 +136,7 @@ String Mixture::__str__(const String & offset) const
   String separator("");
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-    oss << separator << "(w = " << distributionCollection_[i].getWeight() << ", d = " << distributionCollection_[i];
+    oss << separator << "(w = " << distributionCollection_[i].getWeight() << ", d = " << distributionCollection_[i] << ")";
     separator = ", ";
   }
   oss << ")";
