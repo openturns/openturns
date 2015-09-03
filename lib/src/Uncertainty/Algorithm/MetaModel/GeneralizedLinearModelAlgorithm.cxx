@@ -487,27 +487,203 @@ void GeneralizedLinearModelAlgorithm::run()
 
 NumericalScalar GeneralizedLinearModelAlgorithm::computeLogLikelihood(const NumericalPoint & parameters) const
 {
-  // todo
-  return 0.0;
+  if (parameters.getSize() != covarianceModel_.getParameter().getSize())
+    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeLogLikelihood, could not compute likelihood,"
+                                         << " covariance model requires an argument of size " << covarianceModel_.getParameter().getSize()
+                                         << " but here we got " << parameters.getSize();
+  NumericalScalar logLikelihood;
+  if (method_ == 1)
+    logLikelihood = computeHMatLogLikelihood(parameters);
+  else
+    logLikelihood = computeLapackLogLikelihood(parameters);
+  // The lapack/hmat implementation computes :
+  // 1) The log-determinant of the covariance matrix (log inverse). This is returned by the method
+  // 2) rho_ : the point is updated
+  // The next step is to compute the norm of this last one and added
+  // rho is the residual choleskyFactor * Y-F*beta
+  const NumericalScalar epsilon = rho_.normSquare();
+  if (epsilon <= 0) return SpecFunc::MaxNumericalScalar;
+  // For general case, we could not except a restricted log-likelihood
+  // We use general expression of log-likelihood
+  logLikelihood -= epsilon;
+  LOGINFO(OSS(false) << "Compute the estimated log-likelihood=" << logLikelihood);
+  return logLikelihood / outputSample_.getSize();
 }
 
 
 NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogLikelihood(const NumericalPoint & parameters) const
 {
-  // todo
-  return 0.0;
+  // Using the hypothesis that parameters = scale & model writes : C(s,t) = diag(sigma) * R(s,t) diag(sigma) with R a correlation function
+  LOGINFO(OSS(false) << "Compute the LAPACK log-likelihood for theta=" << parameters);
+  CovarianceModel model(covarianceModel_);
+  model.setParameter(parameters);
+
+  const UnsignedInteger size = inputSample_.getSize();
+
+  LOGINFO("Discretize the covariance model...");
+  CovarianceMatrix R = model.discretize(normalizedInputSample_);
+  LOGINFO("Compute the Cholesky factor of the covariance matrix");
+  Bool continuationCondition = true;
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-MaximalScaling");
+  NumericalScalar cumulatedScaling = 0.0;
+  NumericalScalar scaling = startingScaling;
+  while (continuationCondition && (cumulatedScaling < maximalScaling))
+  {
+    try
+    {
+      covarianceCholeskyFactor_ = R.computeCholesky();
+      continuationCondition = false;
+    }
+    // If it has not yet been computed, compute it and store it
+    catch (InternalException &)
+    {
+      cumulatedScaling += scaling ;
+      // Unroll the regularization to optimize the computation
+      for (UnsignedInteger i = 0; i < R.getDimension(); ++i) R(i, i) += scaling;
+      scaling *= 2.0;
+    }
+  }
+  if (scaling >= maximalScaling)
+    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeLapackLogLikelihood, could not compute the Cholesky factor."
+                                         << " Scaling up to "  << cumulatedScaling << " was not enough";
+  if (cumulatedScaling > 0.0)
+    LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
+
+  // y correspond to output data
+  NumericalPoint y = outputSample_.getImplementation()->getData();
+  LOGINFO("Solve C.psi = y");
+  NumericalPoint psi = covarianceCholeskyFactor_.solveLinearSystem(y);
+  rho_ = NumericalPoint(psi);
+  // If trend to estimate
+  if (basis_.getSize() > 0)
+  {
+    // Phi = C^{-1}F
+    LOGINFO("Solve C.Phi = F");
+    Matrix Phi = covarianceCholeskyFactor_.solveLinearSystem(F_);
+
+    Matrix G;
+    LOGINFO("Decompose Phi = Q.G with G triangular");
+    Matrix Q = Phi.computeQR(G);
+    LOGINFO("Solve Q.b = psi taking into account the orthogonality of Q");
+    // Computing b = Q^t * psi
+    NumericalPoint b = Q.getImplementation()->genVectProd(psi, true);
+    LOGINFO("Solve G.beta = b");
+    beta_ = G.solveLinearSystem(b);
+
+    LOGINFO("Compute rho = psi - Phi.beta");
+    rho_ -= Phi * beta_;
+  }
+  LOGINFO("Compute log(|det(R)|)");
+  NumericalScalar logDetR(0.0);
+  for ( UnsignedInteger i = 0; i < covarianceCholeskyFactor_.getDimension(); ++i )
+  {
+    const NumericalScalar cii = covarianceCholeskyFactor_(i, i);
+    if (cii <= 0.0) return SpecFunc::MaxNumericalScalar;
+    logDetR += log(cii);
+  }
+  return -2.0 * logDetR;
 }
 
 NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood(const NumericalPoint & parameters) const
 {
-  // todo
-  return 0.0;
+  // Using the hypothesis that parameters = scale & model writes : C(s,t) = \sigma^2 * R(s,t) with R a correlation function
+  LOGINFO(OSS(false) << "Compute the HMAT log-likelihood for parameters=" << parameters);
+  CovarianceModel model(covarianceModel_);
+  model.setParameter(parameters);
+
+  const UnsignedInteger size(inputSample_.getSize());
+
+  Bool continuationCondition(true);
+  const NumericalScalar startingScaling(ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-StartingScaling"));
+  const NumericalScalar maximalScaling(ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-MaximalScaling"));
+  NumericalScalar cumulatedScaling(0.0);
+  NumericalScalar scaling(startingScaling);
+  const UnsignedInteger covarianceDimension(model.getDimension());
+
+  HMatrixFactory hmatrixFactory;
+  NumericalScalar assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
+  NumericalScalar recompressionEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon");
+
+  while (continuationCondition && (cumulatedScaling < maximalScaling))
+  {
+    try
+    {
+      covarianceHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true);
+      covarianceHMatrix_.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
+      covarianceHMatrix_.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+      if (covarianceDimension == 1)
+      {
+        CovarianceAssemblyFunction simple(model, normalizedInputSample_, cumulatedScaling);
+        covarianceHMatrix_.assemble(simple, 'L');
+      }
+      else
+      {
+        CovarianceBlockAssemblyFunction block(model, normalizedInputSample_, cumulatedScaling);
+        covarianceHMatrix_.assemble(block, 'L');
+      }
+      // Factorize
+      covarianceHMatrix_.factorize("LLt");
+      continuationCondition = false;
+    }
+    // If it has not yet been computed, compute it and store it
+    catch (InternalException &)
+    {
+      cumulatedScaling += scaling ;
+      scaling *= 2.0;
+      assemblyEpsilon /= 10.0 ;
+      recompressionEpsilon /= 10.0;
+      LOGDEBUG(OSS() <<  "Currently, scaling up to "  << cumulatedScaling << " to get an admissible covariance. Maybe compression & recompression factors are not adapted.");
+      LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );
+      LOGDEBUG(OSS() <<  "Currently, recompression epsilon "  <<  recompressionEpsilon);
+    }
+  }
+  if (scaling >= maximalScaling)
+    throw InvalidArgumentException(HERE) << "In KrigingAlgorithm::computeHMatLogLikelihood, could not compute the Cholesky factor"
+                                         << " Scaling up to "  << cumulatedScaling << " was not enough";
+  if (cumulatedScaling > 0.0)
+    LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
+
+  // y correspond to output data
+  // The PersistentCollection is returned as NumericalPoint with the right memory map
+  NumericalPoint y(outputSample_.getImplementation()->getData());
+  LOGINFO("Solve C.psi = y");
+  NumericalPoint psi(covarianceHMatrix_.solveLower(y));
+  rho_ = psi;
+  // If trend to estimate
+  if (basis_.getSize() > 0)
+  {
+    // Phi = C^{-1}F
+    LOGINFO("Solve C.Phi = F");
+    Matrix Phi(covarianceHMatrix_.solveLower(F_));
+
+    Matrix G;
+    LOGINFO("Decompose Phi = Q.G with G triangular");
+    Matrix Q(Phi.computeQR(G));
+    LOGINFO("Solve Q.b = psi taking into account the orthogonality of Q");
+    NumericalPoint b(Q.transpose() * psi);
+    LOGINFO("Solve G.beta = b");
+    beta_ = G.solveLinearSystem(b);
+
+    LOGINFO("Compute rho = psi - Phi.beta");
+    rho_ -= Phi * beta_;
+  }
+  LOGINFO("Compute log(|det(R)|)");
+  NumericalScalar logDetR(0.0);
+  NumericalPoint diagonal(covarianceHMatrix_.getDiagonal());
+  for ( UnsignedInteger i = 0; i < rho_.getSize(); ++i )
+  {
+    const NumericalScalar cii(diagonal[i]);
+    if (cii <= 0.0) return SpecFunc::MaxNumericalScalar;
+    logDetR += log(cii);
+  }
+  return -2.0 * logDetR;
 }
 
 NumericalPoint GeneralizedLinearModelAlgorithm::optimizeLogLikelihood()
 {
   // initial guess
-  const NumericalPoint initialParameters(covarianceModel_.getParameter());
+  const NumericalPoint initialParameters = covarianceModel_.getParameter();
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
   NumericalMathFunction logLikelihoodFunction = getObjectiveFunction();
   const NumericalScalar initialLogLikelihood = logLikelihoodFunction(initialParameters)[0];
@@ -531,7 +707,6 @@ NumericalPoint GeneralizedLinearModelAlgorithm::optimizeLogLikelihood()
   LOGINFO(OSS() << "Final parameters=" << finalParameters << ", log-likelihood=" << finalLogLikelihood);
 
   return finalParameters;
-
 }
 
 /** Optimization solver accessor */
