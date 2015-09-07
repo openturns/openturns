@@ -43,19 +43,20 @@ Patches are welcome to our library repository: https://github.com/openturns/open
 
 Here are the steps required to propose a modification with git:
 
-1. Register on `GitHub <https://github.com>`_.
-
-2. Fork the library repository https://github.com/openturns/openturns
-
-3. Setup git for first time use::
+1. Setup git for first time use::
 
     $ git config --global user.name "John Doe"
     $ git config --global user.email "johndoe@example.com"
     $ git config --global branch.autosetuprebase remote
 
-3. Clone your personal fork::
+2. Register on `GitHub <https://github.com>`_ and add a new ssh key to https://github.com/settings/ssh::
 
-    $ git clone https://github.com/doe/openturns
+    $ ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa-github -C "johndoe@example.com"
+    $ xclip ~/.ssh/id_rsa-github.pub # copy the public key to clipboard
+
+3. Fork the library repository https://github.com/openturns/openturns and clone it via ssh::
+
+    $ git clone git@github.com:doe/openturns.git
 
 
 4. Create a branch from master with a relevant topic name::
