@@ -47,11 +47,11 @@ Here are the steps required to propose a modification with git:
 
 2. Fork the library repository https://github.com/openturns/openturns
 
-3. Setup git for first use::
+3. Setup git for first time use::
 
     $ git config --global user.name "John Doe"
     $ git config --global user.email "johndoe@example.com"
-
+    $ git config --global branch.autosetuprebase remote
 
 3. Clone your personal fork::
 
@@ -116,6 +116,20 @@ before starting new developments.
 4. Push to your remote personal repository::
 
     $ git push
+
+
+Delete a branch
+---------------
+
+Once your pull-request is merged, you may want to delete the branch.
+
+1. Delete local branch::
+
+    $ git branch -d branch_name
+
+2. Delete remote branch::
+
+    $ git push origin :branch_name
 
 
 Tagging a release
