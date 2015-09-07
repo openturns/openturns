@@ -8,7 +8,7 @@ Contents
 
     install
     user_manual/user_manual
-    examples
+    examples/examples
     theory
     contribute
     bibliography
