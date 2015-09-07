@@ -140,7 +140,7 @@ private:
       if (isZero_)
       {
         if (pdf0_ == 0.0) return NumericalPoint(1, 0.0);
-        return NumericalPoint(absU * pdf0_ * left_.computePDF(point));
+        return NumericalPoint(1, absU * pdf0_ * left_.computePDF(point));
       }
       const NumericalScalar value(left_.computePDF(point));
       // If the given point is outside of the support of left
