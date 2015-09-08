@@ -5,4 +5,4 @@ vect dimension= 1
 vect realization= class=NumericalPoint name=Unnamed dimension=1 values=[-0.0949911]
 parameters value= class=NumericalPoint name=Unnamed dimension=2 values=[0.608202,1.06764]
 dist realization= class=NumericalPoint name=Unnamed dimension=1 values=[-0.0949911]
-vect sample = class=NumericalSample name=Unnamed description=[marginal 1] implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 data=[class=NumericalPoint name=Unnamed dimension=1 values=[-0.807169],class=NumericalPoint name=Unnamed dimension=1 values=[1.37866],class=NumericalPoint name=Unnamed dimension=1 values=[0.691015],class=NumericalPoint name=Unnamed dimension=1 values=[-2.39773],class=NumericalPoint name=Unnamed dimension=1 values=[-1.04373]]
+vect sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 description=[marginal 1] data=[[-0.807169],[1.37866],[0.691015],[-2.39773],[-1.04373]]

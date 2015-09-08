@@ -514,6 +514,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // NumericalSampleImplementation parameters
   setAsUnsignedInteger( "NumericalSampleImplementation-SmallKendallTau", 23 );
+  setAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisThreshold", 1000);
+  setAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisSize", 3);
 
   // DomainImplementation parameters
   setAsNumericalScalar( "DomainImplementation-SmallVolume",   1.0e-12 );
