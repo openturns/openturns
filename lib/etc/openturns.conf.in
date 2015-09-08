@@ -194,7 +194,9 @@
 
   <!-- OT::NumericalSampleImplementation parameters -->
   <NumericalSampleImplementation-SmallKendallTau value="23" />
-  
+  <NumericalSampleImplementation-PrintEllipsisThreshold value="1000" />
+  <NumericalSampleImplementation-PrintEllipsisSize value="3" />
+
   <!-- OT::DomainImplementation parameters -->
   <DomainImplementation-SmallVolume   value="1.0e-12" />
 
