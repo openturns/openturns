@@ -1,5 +1,5 @@
 point =  class=NumericalPoint name=point dimension=2 values=[1000,1000]
-sample =  class=NumericalSample name=mySample description=[,] implementation=class=NumericalSampleImplementation name=mySample size=3 dimension=2 data=[class=NumericalPoint name=Unnamed dimension=2 values=[100,200],class=NumericalPoint name=Unnamed dimension=2 values=[101,201],class=NumericalPoint name=Unnamed dimension=2 values=[102,202]]
+sample =  class=NumericalSample name=mySample implementation=class=NumericalSampleImplementation name=mySample size=3 dimension=2 data=[[100,200],[101,201],[102,202]]
 matrix =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[0,3,1,4,2,5]
 nearestPointAlgorithmResult =  class=NearestPointAlgorithmImplementationResult minimizer=class=NumericalPoint name=Unnamed dimension=4 values=[1,1,1,1] iterationsNumber=15 absoluteError=-1 relativeError=-1 residualError=-1 constraintError=-1
 simulation result =  probabilityEstimate=5.000000e-01 varianceEstimate=1.000000e-02 standard deviation=1.00e-01 coefficient of variation=2.00e-01 confidenceLength(0.95)=3.92e-01 outerSampling=150 blockSize=4

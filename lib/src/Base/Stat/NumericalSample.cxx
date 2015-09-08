@@ -224,7 +224,6 @@ String NumericalSample::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
          << " name=" << getName()
-         << " description=" << getDescription()
          << " implementation=" << getImplementation()->__repr__();
 }
 

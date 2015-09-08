@@ -1,5 +1,5 @@
-sample=class=NumericalSample name=EmptySample description=[,] implementation=class=NumericalSampleImplementation name=EmptySample size=0 dimension=2 data=[]
-sample=class=NumericalSample name=SmallSample description=[,] implementation=class=NumericalSampleImplementation name=SmallSample size=1 dimension=2 data=[class=NumericalPoint name=Unnamed dimension=2 values=[0,0]]
+sample=class=NumericalSample name=EmptySample implementation=class=NumericalSampleImplementation name=EmptySample size=0 dimension=2 data=[]
+sample=class=NumericalSample name=SmallSample implementation=class=NumericalSampleImplementation name=SmallSample size=1 dimension=2 data=[[0,0]]
 p=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
 sample first point=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
 sample last  point=class=NumericalPoint name=Unnamed dimension=2 values=[999999,999999]
