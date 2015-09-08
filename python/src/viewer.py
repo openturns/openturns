@@ -37,6 +37,9 @@ class View(object):
     figure : :class:`matplotlib.figure.Figure`
         The figure to draw on.
 
+    figure_kwargs : dict, optional
+        Passed on to matplotlib.pyplot.figure kwargs
+
     axes : :class:`matplotlib.axes.Axes`
         The axes to draw on.
 
