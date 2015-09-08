@@ -660,10 +660,32 @@ String NumericalSampleImplementation::__repr__() const
   oss << "class=" << NumericalSampleImplementation::GetClassName()
       << " name=" << getName()
       << " size=" << size_
-      << " dimension=" << dimension_
-      << " data=[";
+      << " dimension=" << dimension_;
+
+  const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
+
+  if (printDescription) {
+    const char * sep = "";
+
+    oss << " description=[";
+    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep = ",") {
+      oss << sep << (*p_description_)[j];
+    }
+    oss << "]";
+  }
+
+  oss << " data=[";
   const char * sep = "";
-  for(const_iterator it = begin(); it != end(); ++it, sep = ",") oss << sep << *it;
+
+  for (UnsignedInteger i = 0; i < size_; ++ i, sep = ",") {
+    oss << sep << "[";
+    const char * sep2 = "";
+    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep2 = ",")
+    {
+      oss << sep2 << data_[i * dimension_ + j];
+    }
+    oss << "]";
+  }
   oss << "]";
   return oss;
 }
