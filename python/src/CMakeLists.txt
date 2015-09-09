@@ -407,11 +407,11 @@ ot_add_python_module(experiment experiment_module.i
                       Composite.i Composite_doc.i.in
                       Factorial.i Factorial_doc.i.in
                       Box.i Box_doc.i.in
-                      CombinatorialGeneratorImplementation.i
-                      CombinatorialGenerator.i
-                      Combinations.i
-                      KPermutations.i
-                      Tuples.i
+                      CombinatorialGeneratorImplementation.i CombinatorialGeneratorImplementation_doc.i.in
+                      CombinatorialGenerator.i CombinatorialGenerator_doc.i.in
+                      Combinations.i Combinations_doc.i.in
+                      KPermutations.i KPermutations_doc.i.in
+                      Tuples.i Tuples_doc.i.in
                       BaseExperimentTemplateDefs.i
                    )
 

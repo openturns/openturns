@@ -4,6 +4,8 @@
 #include "CombinatorialGenerator.hxx"
 %}
 
+%include CombinatorialGenerator_doc.i
+
 OTTypedInterfaceObjectHelper(CombinatorialGenerator)
 
 %include CombinatorialGenerator.hxx

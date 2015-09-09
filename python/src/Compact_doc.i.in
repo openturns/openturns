@@ -11,7 +11,7 @@ N : integer
 
 See also
 --------
-HistoryStrategy, Compact, Null, Full
+HistoryStrategy, Null, Full, Last
 
 Notes
 -----
