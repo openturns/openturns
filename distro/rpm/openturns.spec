@@ -122,7 +122,7 @@ rm -rf %{buildroot}
 
 %files libs
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING README
+%doc AUTHORS COPYING README.rst
 %dir %{_sysconfdir}/%{name}
 %config %{_sysconfdir}/%{name}/%{name}.conf
 %{_libdir}/*.so.*
