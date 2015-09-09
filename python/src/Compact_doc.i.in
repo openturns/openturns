@@ -1,0 +1,53 @@
+%feature("docstring") OT::Compact
+"Compact history storage strategy.
+
+Available constructors:
+    Compact(*N*)
+
+Parameters
+----------
+N : integer
+    minimum number of points to store.
+
+See also
+--------
+HistoryStrategy, Compact, Null, Full
+
+Notes
+-----
+The compact strategy stores a regularly spaced sub-sample where the minimum size
+of the stored numerical sample is *N*. OpenTURNS proceeds as follows :
+
+1. it stores the first *2N* simulations : the size of the stored
+   sample is *2N*,
+2. it selects only 1 out of 2 of the stored simulations : then the size of
+   the stored sample decreases to *N* (this is the *compact* step),
+3. it stores the next *N* simulations when selecting 1 out of 2 of the
+   next simulations : the size of the stored sample is *2N*,
+4. it selects only 1 out of 2 of the stored simulations : then the size of
+   the stored sample decreases to *N*,
+5. it stores the next *N* simulations when selecting 1 out of 4 of the
+   next simulations : the size of the stored sample is *2N*,
+6. then it keeps on until reaching the stopping criteria.
+
+The stored numerical sample will have a size within *N* and *2N*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Compact::getHalfMaximumSize
+"Accessor to the half maximum number of points to store.
+
+Returns
+-------
+N : integer
+    The half maximum number of points to store."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Compact::getIndex
+"Accessor to the index.
+
+Returns
+-------
+index : integer
+    The number of the stored points."

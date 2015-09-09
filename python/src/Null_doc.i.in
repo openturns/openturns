@@ -1,0 +1,14 @@
+%feature("docstring") OT::Null
+"Null history storage strategy.
+
+Available constructors:
+    Null()
+
+See also
+--------
+HistoryStrategy, Compact, Full, Last
+
+Notes
+-----
+The null strategy does not store anything.
+"

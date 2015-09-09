@@ -4,6 +4,8 @@
 #include "HistoryStrategy.hxx"
 %}
 
+%include HistoryStrategy_doc.i
+
 OTTypedInterfaceObjectHelper(HistoryStrategy)
 
 %include HistoryStrategy.hxx

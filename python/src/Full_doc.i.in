@@ -1,0 +1,14 @@
+%feature("docstring") OT::Full
+"Full history storage strategy.
+
+Available constructors:
+    Full()
+
+See also
+--------
+HistoryStrategy, Compact, Null, Last
+
+Notes
+-----
+The full strategy stores every points. Be careful! The memory will be exhausted
+for huge samples."

@@ -145,17 +145,17 @@ ot_add_python_module(typ typ_module.i
                       CorrelationMatrix.i
                       IdentityMatrix.i
                       NumericalSample.i NumericalSample_doc.i.in
-                      HistoryStrategyImplementation.i
-                      HistoryStrategy.i
+                      HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
+                      HistoryStrategy.i HistoryStrategy_doc.i.in
                       BaseTypTemplateDefs.i
                    )
 
 ot_add_python_module(statistics statistics_module.i
                       LevelSet.i LevelSet_doc.i.in
-                      Compact.i
-                      Full.i
-                      Last.i
-                      Null.i
+                      Compact.i Compact_doc.i.in
+                      Full.i Full_doc.i.in
+                      Last.i Last_doc.i.in
+                      Null.i Null_doc.i.in
                       ConfidenceInterval.i
                       LinearModel.i LinearModel_doc.i.in
                       LinearModelFactory.i LinearModelFactory_doc.i.in
