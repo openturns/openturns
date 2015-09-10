@@ -223,7 +223,7 @@ ot_add_python_module(geom geom_module.i
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i.in
                       Drawable.i Drawable_doc.i.in
-                      GraphImplementation.i
+                      GraphImplementation.i GraphImplementation_doc.i.in
                       Graph.i Graph_doc.i.in
                       BarPlot.i BarPlot_doc.i.in
                       Cloud.i Cloud_doc.i.in
