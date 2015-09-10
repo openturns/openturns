@@ -68,6 +68,15 @@ SQP * SQP::clone() const
   return new SQP(*this);
 }
 
+/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void SQP::checkProblem(const OptimizationProblem & problem) const
+{
+  if (!problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Error : " << SQP::GetClassName() << " can only solve nearest-point optimization problems";
+  if ( problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support MultiOjective Optimization ";
+}
+
 void SQP::initialize()
 {
   currentSigma_ = 0.0;
@@ -82,7 +91,7 @@ NumericalScalar SQP::computeLineSearch()
   const NumericalScalar tau(specificParameters_.getTau());
   const NumericalScalar omega(specificParameters_.getOmega());
   const NumericalScalar smooth(specificParameters_.getSmooth());
-  /* Logal copy of the level function and the level value */
+  /* Local copy of the level function and the level value */
   const NumericalMathFunction levelFunction(getLevelFunction());
   const NumericalScalar levelValue(getLevelValue());
   /* Actualize sigma */

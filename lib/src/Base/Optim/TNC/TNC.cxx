@@ -67,6 +67,13 @@ TNC * TNC::clone() const
   return new TNC(*this);
 }
 
+/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void TNC::checkProblem(const OptimizationProblem & problem) const
+{
+  if ( problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << TNC::GetClassName() << " does not support MultiOjective Optimization ";
+}
+
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {

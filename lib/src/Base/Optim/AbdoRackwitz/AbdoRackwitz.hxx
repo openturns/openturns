@@ -55,6 +55,9 @@ public:
   /** Virtual constructor */
   virtual AbdoRackwitz * clone() const;
 
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  void checkProblem(const OptimizationProblem & problem) const;
+
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
 

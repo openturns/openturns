@@ -72,6 +72,13 @@ void AbdoRackwitz::initialize()
   currentLambda_ = 0.0;
 }
 
+/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
+{
+  if (!problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Error : " << AbdoRackwitz::GetClassName() << " can only solve nearest-point optimization problems";
+}
+
 /* Line search for globalization of the algorithm */
 NumericalScalar AbdoRackwitz::computeLineSearch()
 {
@@ -228,7 +235,6 @@ void AbdoRackwitz::setLevelValue(const NumericalScalar levelValue)
 {
   getProblem().setLevelValue(levelValue);
 }
-
 
 /* String converter */
 String AbdoRackwitz::__repr__() const

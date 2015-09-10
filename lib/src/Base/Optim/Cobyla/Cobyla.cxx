@@ -65,6 +65,13 @@ Cobyla * Cobyla::clone() const
   return new Cobyla(*this);
 }
 
+/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void Cobyla::checkProblem(const OptimizationProblem & problem) const
+{
+  if ( problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << Cobyla::GetClassName() << " does not support MultiOjective Optimization ";
+}
+
 /* Performs the actual computation by calling the Cobyla algorithm
  */
 void Cobyla::run()
@@ -183,7 +190,6 @@ void Cobyla::setLevelValue(const NumericalScalar levelValue)
   getProblem().setLevelValue(levelValue);
 }
 
-
 /* String converter */
 String Cobyla::__repr__() const
 {
@@ -227,9 +233,6 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
   const OptimizationProblem problem(algorithm->getProblem());
   NumericalPoint outPoint(2);
-
-  if ( problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error : Cobyla does not support Multi-Ojective Optimization ";
 
   const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
 

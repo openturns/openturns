@@ -163,7 +163,14 @@ OptimizationProblem OptimizationSolverImplementation::getProblem() const
 
 void OptimizationSolverImplementation::setProblem(const OptimizationProblem & problem)
 {
+  checkProblem(problem);
   problem_ = problem;
+}
+
+/* Performs the actual checks. Must be overloaded by the actual optimisation algorithm */
+void OptimizationSolverImplementation::checkProblem(const OptimizationProblem & problem) const
+{
+  throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::checkProblem()";
 }
 
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
