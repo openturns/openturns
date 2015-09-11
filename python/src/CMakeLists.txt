@@ -294,7 +294,7 @@ ot_add_python_module(func func_module.i
                       IndicatorNumericalMathEvaluationImplementation.i
                       PiecewiseLinearEvaluationImplementation.i
                       PiecewiseHermiteEvaluationImplementation.i
-                      ProductPolynomialEvaluationImplementation.i
+                      ProductPolynomialEvaluationImplementation.i ProductPolynomialEvaluationImplementation_doc.i.in
                       ParametricEvaluationImplementation.i
                       ParametricGradientImplementation.i
                       ParametricHessianImplementation.i
@@ -694,7 +694,7 @@ ot_add_python_module(metamodel metamodel_module.i
                    )
 
 ot_add_python_module(transformation transformation_module.i
-                      MarginalTransformationEvaluation.i
+                      MarginalTransformationEvaluation.i MarginalTransformationEvaluation_doc.i.in
                       MarginalTransformationGradient.i
                       MarginalTransformationHessian.i
                       NatafEllipticalCopulaEvaluation.i
