@@ -4,6 +4,8 @@
 #include "CorrelationMatrix.hxx"
 %}
 
+%include CorrelationMatrix_doc.i
+
 %apply const NumericalScalarCollection & { const OT::CorrelationMatrix::NumericalScalarCollection & };
 
 %typemap(in) const CorrelationMatrix & ($1_basetype temp) {

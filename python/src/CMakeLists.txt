@@ -95,12 +95,12 @@ ot_add_python_module(common common_module.i
                       Catalog.i
                       ResourceMap.i ResourceMap_doc.i.in
                       ComparisonOperatorImplementation.i
-                      ComparisonOperator.i
-                      Equal.i
-                      Greater.i
-                      GreaterOrEqual.i
-                      Less.i
-                      LessOrEqual.i
+                      ComparisonOperator.i ComparisonOperator_doc.i.in
+                      Equal.i Equal_doc.i.in
+                      Greater.i Greater_doc.i.in
+                      GreaterOrEqual.i GreaterOrEqual_doc.i.in
+                      Less.i Less_doc.i.in
+                      LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
                       PlatformInfo.i
                       SharedPointer.i
@@ -135,14 +135,14 @@ ot_add_python_module(typ typ_module.i
                       SymmetricTensor.i SymmetricTensor_doc.i.in
                       ComplexTensorImplementation.i
                       ComplexTensor.i ComplexTensor_doc.i.in
-                      ComplexMatrixImplementation.i
-                      ComplexMatrix.i
-                      HermitianMatrix.i
+                      ComplexMatrixImplementation.i ComplexMatrixImplementation_doc.i.in
+                      ComplexMatrix.i ComplexMatrix_doc.i.in
+                      HermitianMatrix.i HermitianMatrix_doc.i.in
                       SquareComplexMatrix.i SquareComplexMatrix_doc.i.in
-                      TriangularMatrix.i
-                      TriangularComplexMatrix.i
+                      TriangularMatrix.i TriangularMatrix_doc.i.in
+                      TriangularComplexMatrix.i TriangularComplexMatrix_doc.i.in
                       CovarianceMatrix.i CovarianceMatrix_doc.i.in
-                      CorrelationMatrix.i
+                      CorrelationMatrix.i CorrelationMatrix_doc.i.in
                       IdentityMatrix.i
                       NumericalSample.i NumericalSample_doc.i.in
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in

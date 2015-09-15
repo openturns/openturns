@@ -1,0 +1,22 @@
+// ComplexMatrix docstrings are defined in ComplexMatrixImplementation_doc.i.in
+
+%feature("docstring") OT::ComplexMatrix
+OT_ComplexMatrix_doc
+%feature("docstring") OT::ComplexMatrix::clean
+OT_ComplexMatrix_clean_doc
+%feature("docstring") OT::ComplexMatrix::conjugate
+OT_ComplexMatrix_conjugate_doc
+%feature("docstring") OT::ComplexMatrix::conjugateTranspose
+OT_ComplexMatrix_conjugateTranspose_doc
+%feature("docstring") OT::ComplexMatrix::getNbColumns
+OT_ComplexMatrix_getNbColumns_doc
+%feature("docstring") OT::ComplexMatrix::getNbRows
+OT_ComplexMatrix_getNbRows_doc
+%feature("docstring") OT::ComplexMatrix::imag
+OT_ComplexMatrix_imag_doc
+%feature("docstring") OT::ComplexMatrix::isEmpty
+OT_ComplexMatrix_isEmpty_doc
+%feature("docstring") OT::ComplexMatrix::real
+OT_ComplexMatrix_real_doc
+%feature("docstring") OT::ComplexMatrix::transpose
+OT_ComplexMatrix_transpose_doc

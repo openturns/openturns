@@ -1,0 +1,41 @@
+%feature("docstring") OT::HermitianMatrix
+"Hermitian Matrix.
+
+Available constructors:
+    HermitianMatrix(*dim*)
+
+Parameters
+----------
+dim : integer
+    The dimension of the Hermitian matrix (square matrix with *dim* rows and 
+    *dim* columns).
+
+See also
+--------
+ComplexMatrix
+
+Notes
+-----
+The Hermitian matrix is filled with :math:`(0, 0)`. It is not possible to fill
+the matrix from a collection of complex values (to be done later)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HermitianMatrix::computeCholesky
+"Compute the Cholesky factor.
+
+Returns
+-------
+G : :class:`~openturns.ComplexMatrix`
+    The Cholesky factor :math:`\mat{G}`, i.e. the complex matrix such as
+    :math:`\mat{G} \times \Tr{\mat{G}}` is the initial matrix."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HermitianMatrix::getDimension
+"Accessor to the matrix dimension.
+
+Returns
+-------
+dim : integer
+    The dimension of the Hermitian matrix."

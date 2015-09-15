@@ -1,0 +1,33 @@
+%feature("docstring") OT::CorrelationMatrix
+"Correlation Matrix.
+
+Available constructors:
+    CorrelationMatrix(*dim*)
+
+    CorrelationMatrix(*dim, values*)
+
+Parameters
+----------
+dim : integer
+    The dimension of the correlation matrix (square matrix with *dim* rows and 
+    *dim* columns).
+values : sequence of float
+    Collection of :math:`dim^2` scalar values to put in the correlation matrix,
+    filled by rows. When not specified, the correlation matrix is initialized to
+    the identity matrix.
+
+See also
+--------
+CovarianceMatrix
+
+Notes
+-----
+In the first usage, the correlation matrix is the identity matrix.
+
+In the second usage, the correlation matrix contains the specified values,
+filled by rows.
+
+.. warning::
+    
+    No check is made on the values, in particular the diagonal elements are not
+    forced to be equal to 1 and the positiveness of the matrix is not checked."

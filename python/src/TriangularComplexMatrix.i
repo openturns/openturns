@@ -4,6 +4,8 @@
 #include "TriangularComplexMatrix.hxx"
 %}
 
+%include TriangularComplexMatrix_doc.i
+
 %include TriangularComplexMatrix.hxx
 
 namespace OT { 
