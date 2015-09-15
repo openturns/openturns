@@ -389,7 +389,7 @@ ot_add_python_module(algo algo_module.i
                       PythonNumericalMathEvaluationImplementation.cxx
                       PythonNumericalMathGradientImplementation.cxx
                       PythonNumericalMathHessianImplementation.cxx
-                      KissFFT.i
+                      KissFFT.i KissFFT_doc.i.in
                       IntegrationAlgorithmImplementation.i
                       IntegrationAlgorithm.i
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in

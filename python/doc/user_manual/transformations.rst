@@ -9,6 +9,7 @@ Transformations
     :template: class.rst_t
 
     FFT
+    KissFFT
 
     :template: classWithPlot.rst_t
 
