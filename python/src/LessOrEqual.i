@@ -4,6 +4,8 @@
 #include "LessOrEqual.hxx"
 %}
 
+%include LessOrEqual_doc.i
+
 %include LessOrEqual.hxx
 namespace OT {  
 %extend LessOrEqual {

@@ -1,0 +1,21 @@
+%feature("docstring") OT::Equal
+"Equal comparison operator.
+
+Available constructors:
+    Equal()
+
+See also
+--------
+Greater, GreaterOrEqual, Less, LessOrEqual
+
+Examples
+--------
+>>> import openturns as ot
+>>> operator = ot.Equal()
+>>> print(operator(1, 2))
+False
+>>> print(operator(2, 1))
+False
+>>> print(operator(2, 2))
+True
+"

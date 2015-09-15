@@ -4,6 +4,8 @@
 #include "Less.hxx"
 %}
 
+%include Less_doc.i
+
 %include Less.hxx
 namespace OT {  
 %extend Less {

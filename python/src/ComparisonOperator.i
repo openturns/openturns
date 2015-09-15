@@ -4,6 +4,8 @@
 #include "ComparisonOperator.hxx"
 %}
 
+%include ComparisonOperator_doc.i
+
 OTTypedInterfaceObjectHelper(ComparisonOperator)
 
 %include ComparisonOperator.hxx
