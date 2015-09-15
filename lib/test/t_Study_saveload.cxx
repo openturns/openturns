@@ -377,10 +377,20 @@ int main(int argc, char *argv[])
     OptimizationSolver tnc(new TNC());
     {
       Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
+      Description input2(3);
+      input2[0] = "x";
+      input2[1] = "y";
+      input2[2] = "z";
+      Description output2(1);
+      output2[0] = "d";
+      Description formula2(output2.getSize());
+      formula2[0] = "(x+2*y^2+3*z^3)/6";
+      NumericalMathFunction model(input2, output2, formula2);
+      model.setName("complex");
 
       OptimizationProblem problem;
       problem.setBounds(bounds);
-      problem.setObjective(analytical);
+      problem.setObjective(model);
       problem.setMinimization(true);
 
       tnc.setProblem(problem);
