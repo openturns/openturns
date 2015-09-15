@@ -106,6 +106,12 @@ public:
   /** String converter */
   String __repr__() const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
   /** Verbose accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
