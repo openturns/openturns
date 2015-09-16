@@ -31,6 +31,8 @@ static Factory<HMatrixParameters> RegisteredFactory("HMatrixParameters");
 
 HMatrixParameters::HMatrixParameters()
   : PersistentObject()
+  , assemblyEpsilon_(ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon"))
+  , recompressionEpsilon_(ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon"))
 {
   // Nothing to do
 }
