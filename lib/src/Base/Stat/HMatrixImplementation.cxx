@@ -160,6 +160,7 @@ static void trampoline_compute(void* v_data,
 
     if (lastPoint1 != r_point_e || lastPoint2 != c_point_e)
     {
+      memset( &localMat.getImplementation()->operator[](0), 0, outputDimension * outputDimension * sizeof(NumericalScalar) );
       blockData->f_->compute( r_point_e,  c_point_e, &localMat );
       lastPoint1 = r_point_e;
       lastPoint2 = c_point_e;
