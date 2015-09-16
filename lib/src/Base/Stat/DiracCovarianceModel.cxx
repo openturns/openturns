@@ -22,12 +22,35 @@
 #include "Exception.hxx"
 #include "Log.hxx"
 #include "HMatrix.hxx"
+#include "HMatrixFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DiracCovarianceModel);
 
 static Factory<DiracCovarianceModel> RegisteredFactory("DiracCovarianceModel");
+
+class DiracAssemblyFunction : public HMatrixTensorRealAssemblyFunction
+{
+private:
+  const CovarianceMatrix covarianceMatrix_;
+
+public:
+  DiracAssemblyFunction(const DiracCovarianceModel & covarianceModel)
+    : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
+    , covarianceMatrix_(covarianceModel(NumericalPoint(covarianceModel.getSpatialDimension())))
+  {
+    // Nothing to do
+  }
+
+  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
+  {
+    if (i == j)
+    {
+      memcpy( &localValues->getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    }
+  }
+};
 
 /* Default constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension)
@@ -242,7 +265,21 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const NumericalSample & vertices
                                                 const NumericalScalar nuggetFactor,
                                                 const HMatrixParameters & parameters) const
 {
-  throw NotYetImplementedException(HERE) << "In DiracCovarianceModel::discretizeHMatrix(const NumericalSample & sample)";
+#ifdef OPENTURNS_HAVE_HMAT
+  HMatrixFactory hmatrixFactory;
+  const NumericalScalar assemblyEpsilon = parameters.getAssemblyEpsilon();
+  const NumericalScalar recompressionEpsilon = parameters.getRecompressionEpsilon();
+
+  HMatrix covarianceHMatrix = hmatrixFactory.build(vertices, dimension_, true);
+  // Set assembly & recompression epsilon
+  covarianceHMatrix.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
+  covarianceHMatrix.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+  DiracAssemblyFunction dirac(*this);
+  covarianceHMatrix.assemble(dirac, 'L');
+  return covarianceHMatrix;
+#else
+  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+#endif
 }
 
 /* Gradient */
