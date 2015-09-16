@@ -15,10 +15,10 @@ addons:
     - r-base-core
     - yodl
     - swig
-    - python-dev
-    - python-scipy
-    - python-matplotlib
-    - python-sphinx
+    - python3-dev
+    - python3-scipy
+    - python3-matplotlib
+    - python3-sphinx
     - texlive-latex-recommended
     - texlive-fonts-recommended
     - texlive-latex-extra
@@ -28,7 +28,7 @@ install:
 # sphinx >=1.2 is looking better
   - git clone https://github.com/sphinx-doc/sphinx.git
   - pushd sphinx
-  - python setup.py install --user
+  - python3 setup.py install --user
   - popd
 # keep an eye on swig
   - git clone https://github.com/swig/swig.git
@@ -51,6 +51,7 @@ before_script:
 
 script:
   - cmake -DCMAKE_INSTALL_PREFIX=~/.local
+    -DPYTHON_EXECUTABLE=/usr/bin/python3
     -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
     -DSWIG_EXECUTABLE=~/.local/bin/swig
     -DHMAT_DIR=~/.local/lib/cmake/hmat
