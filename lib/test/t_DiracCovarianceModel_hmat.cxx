@@ -26,6 +26,22 @@
 using namespace OT;
 using namespace OT::Test;
 
+static std::string
+hmatrix__str__(const HMatrix & hmat)
+{
+  if (hmat.getNbRows() == 0 || hmat.getNbColumns() == 0) return "[]";
+
+  NumericalSample res(hmat.getNbRows(), hmat.getNbColumns());
+  for ( UnsignedInteger i = 0; i < hmat.getNbRows(); ++i)
+  {
+    NumericalPoint x(hmat.getNbColumns());
+    x[i] = 1.0;
+    NumericalPoint y(hmat.getNbRows());
+    hmat.gemv('N', 1.0, x, 0.0, y);
+    res[i] = y;
+  }
+  return res.__str__();
+}
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +53,8 @@ int main(int argc, char *argv[])
 
     UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
     PlatformInfo::SetNumericalPrecision(3);
+
+    ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 6);
 
     // Spatial dimension
     const UnsignedInteger spatialDimension = 2;
@@ -66,22 +84,12 @@ int main(int argc, char *argv[])
     Indices levels(spatialDimension, 1);
     Box box(levels);
     const NumericalSample vertices = box.generate();
-    // Two first points of vertices
-    // First is 0, second one different from 0
-    const NumericalPoint tau1 = vertices[0];
-    const NumericalPoint tau2 = vertices[1];
-    fullprint << "Evaluation of the models on the point"  << vertices[0] << std::endl;
-    fullprint << "myModel1("  << tau1.__str__() << ") = " << myModel1.operator()(vertices[0]) << std::endl;
-    fullprint << "myModel2("  << tau2.__str__() << ") = " << myModel2.operator()(vertices[0]) << std::endl;
-
-    fullprint << "Evaluation of the models on the point"  << vertices[1] << std::endl;
-    fullprint << "myModel1("  << tau1.__str__() << ") = " << myModel1.operator()(vertices[1]) << std::endl;
-    fullprint << "myModel2("  << tau2.__str__() << ") = " << myModel2.operator()(vertices[1]) << std::endl;
+    const NumericalScalar nuggetFactor(0.0);
+    const HMatrixParameters parameters;
 
     fullprint << "Discretization on a grid of vertices" << std::endl;
-    fullprint << "Discretization of myModel1 = " << myModel1.discretize(vertices).__str__() << std::endl;
-    fullprint << "Discretization of myModel2 = " << myModel2.discretize(vertices).__str__() << std::endl;
-
+    fullprint << "Discretization of myModel1 = " << hmatrix__str__(myModel1.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
+    fullprint << "Discretization of myModel2 = " << hmatrix__str__(myModel2.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
 
     PlatformInfo::SetNumericalPrecision(precision);
 
