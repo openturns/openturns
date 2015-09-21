@@ -23,9 +23,6 @@
 #include "NoNumericalMathEvaluationImplementation.hxx"
 #include "NoNumericalMathGradientImplementation.hxx"
 #include "NoNumericalMathHessianImplementation.hxx"
-#include "ComputedNumericalMathEvaluationImplementation.hxx"
-#include "ComputedNumericalMathGradientImplementation.hxx"
-#include "ComputedNumericalMathHessianImplementation.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "AnalyticalNumericalMathEvaluationImplementation.hxx"
 #include "AnalyticalNumericalMathGradientImplementation.hxx"
@@ -69,75 +66,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation()
 {
   // Nothing to do
 }
-
-/* Constructor from a wrapper name */
-NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const String & name)
-  : PersistentObject()
-  , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
-  , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
-  , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
-  , p_initialEvaluationImplementation_(p_evaluationImplementation_)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
-  , useDefaultGradientImplementation_(false)
-  , useDefaultHessianImplementation_(false)
-{
-  setName(name);
-  // Read the description file of the wrapper
-  WrapperFile wrapperFile = WrapperFile::FindWrapperByName( name );
-
-  // We set the implementations
-  initImplementations( wrapperFile );
-}
-
-/* Constructor from a wrapper file */
-NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const WrapperFile & wrapperFile)
-  : PersistentObject()
-  , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
-  , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
-  , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
-  , p_initialEvaluationImplementation_(p_evaluationImplementation_)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
-  , useDefaultGradientImplementation_(false)
-  , useDefaultHessianImplementation_(false)
-{
-  setName(wrapperFile.getName());
-  // We set the implementations
-  initImplementations( wrapperFile );
-}
-
-
-/* This method set the implementations with the values listed in the wrapper file */
-void NumericalMathFunctionImplementation::initImplementations(const WrapperFile & wrapperFile)
-{
-  const String name = wrapperFile.getName();
-
-  ComputedNumericalMathEvaluationImplementation * implementation = new ComputedNumericalMathEvaluationImplementation( name, wrapperFile );
-  p_evaluationImplementation_.reset(implementation);
-  try
-  {
-    p_gradientImplementation_.reset(new ComputedNumericalMathGradientImplementation( name, wrapperFile, implementation->getState() ));
-  }
-  catch (Exception & ex)
-  {
-    LOGDEBUG(OSS() << "" << ex.type() << " catched. Using CenteredFiniteDifferenceGradient for gradient");
-    p_gradientImplementation_.reset(new CenteredFiniteDifferenceGradient(sqrt(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" )), p_evaluationImplementation_));
-    useDefaultGradientImplementation_ = true;
-  }
-
-  try
-  {
-    p_hessianImplementation_.reset(new ComputedNumericalMathHessianImplementation( name, wrapperFile, implementation->getState() ));
-  }
-  catch (Exception & ex)
-  {
-    LOGDEBUG(OSS() << "" << ex.type() << " catched. Using CenteredFiniteDifferenceHessian for hessian");
-    p_hessianImplementation_.reset(new CenteredFiniteDifferenceHessian(sqrt(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" )), p_evaluationImplementation_));
-    useDefaultHessianImplementation_ = true;
-  }
-}
-
 
 /* Analytical formula constructor */
 NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const Description & inputVariablesNames,

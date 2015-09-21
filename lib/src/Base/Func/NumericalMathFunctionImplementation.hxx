@@ -32,7 +32,6 @@
 #include "NumericalMathGradientImplementation.hxx"
 #include "NumericalMathHessianImplementation.hxx"
 #include "Description.hxx"
-#include "WrapperFile.hxx"
 #include "Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -87,12 +86,6 @@ public:
 
   /** Default constructor */
   NumericalMathFunctionImplementation();
-
-  /** Constructor from a wrapper name */
-  NumericalMathFunctionImplementation(const String & name);
-
-  /** Constructor from a wrapper file */
-  NumericalMathFunctionImplementation(const WrapperFile & wrapperFile);
 
   /** Analytical formula constructor */
   NumericalMathFunctionImplementation(const Description & inputVariablesNames,
@@ -339,9 +332,6 @@ protected:
 
   /** Initial hessian implementation accessors */
   void setInitialHessianImplementation(const HessianImplementation & p_initialHessianImplementation);
-
-  /** This method set the implementations with the values listed in the wrapper file */
-  void initImplementations(const WrapperFile & wrapperFile);
 
 private:
   /** A pointer on the actual numerical math function implementation */

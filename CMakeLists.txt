@@ -70,10 +70,6 @@ set (OPENTURNS_DATA_PATH
       share
       CACHE PATH "The directory where the common files are installed"
    )
-set (OPENTURNS_WRAPPER_PATH
-      ${CMAKE_INSTALL_LIBDIR}/openturns/wrappers
-      CACHE PATH "The directory where the wrapper files are installed"
-   )
 set (OPENTURNS_EXAMPLE_PATH
       share/openturns/examples
       CACHE PATH "The directory where the example files are installed"
@@ -106,7 +102,7 @@ set (OPENTURNS_TEMPDIR
 set (TEMPDIR ${OPENTURNS_TEMPDIR})
 
 # WARNING: This is where variables without OPENTURNS_ prefix are defined !
-foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH WRAPPER_PATH EXAMPLE_PATH SAMPLE_PATH VALIDATION_PATH DOC_PATH)
+foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH SAMPLE_PATH VALIDATION_PATH DOC_PATH)
   file (TO_NATIVE_PATH "${OPENTURNS_${_var}}" NATIVE_OPENTURNS_${_var})
   if (NOT IS_ABSOLUTE ${NATIVE_OPENTURNS_${_var}})
     file (TO_NATIVE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}} NATIVE_OPENTURNS_${_var})
@@ -155,8 +151,6 @@ if (USE_FLEX)
     set (OPENTURNS_HAVE_FLEX TRUE)
   endif ()
 endif ()
-
-find_program (BC_EXECUTABLE NAMES bc)
 
 if (USE_TBB)
   find_package (TBB)
@@ -214,20 +208,6 @@ find_package (Threads)
 if (Threads_FOUND)
   list (APPEND OPENTURNS_INCLUDE_DIRS ${THREADS_INCLUDE_DIRS})
   list (APPEND OPENTURNS_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
-endif ()
-
-find_package (Libdl)
-if (LIBDL_FOUND)
-  set (OPENTURNS_HAVE_LIBDL TRUE)
-  list (APPEND OPENTURNS_INCLUDE_DIRS ${LIBDL_INCLUDE_DIR})
-  list (APPEND OPENTURNS_LIBRARIES ${LIBDL_LIBRARIES})
-endif ()
-
-find_package (Regex)
-if (REGEX_FOUND)
-  set (OPENTURNS_HAVE_REGEX TRUE)
-  list (APPEND OPENTURNS_INCLUDE_DIRS ${REGEX_INCLUDE_DIR})
-  list (APPEND OPENTURNS_LIBRARIES ${REGEX_LIBRARIES})
 endif ()
 
 if (MSVC OR WINTEL)
@@ -413,9 +393,6 @@ add_custom_target (tests COMMENT "Build tests")
 add_custom_target (check COMMENT "Run pre-installation tests")
 add_custom_target (installcheck COMMENT "Run post-installation tests")
 
-# Recurse in subdirectories
-add_subdirectory (wrappers)
-
 if (BUILD_PYTHON)
   # workaround for cmake bug #0013449
   if (NOT DEFINED CMAKE_FIND_ROOT_PATH)
@@ -479,7 +456,6 @@ endif ()
 if (BUILD_LIB)
   add_subdirectory (lib)
   add_dependencies (check cppcheck)
-  add_dependencies (installcheck cppinstallcheck)
 endif (BUILD_LIB)
 
 if (PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND SWIG_FOUND)

@@ -32,8 +32,6 @@ int main(int argc, char *argv[])
   try
   {
 
-    try
-    {
       // Function
       UnsignedInteger sampleSize(20);
       Description input(4);
@@ -70,13 +68,6 @@ int main(int argc, char *argv[])
       }
       myNearestPointChecker.run();
       fullprint << "myNearestPointChecker = " << myNearestPointChecker << std::endl;
-    }
-    catch (NoWrapperFileFoundException & ex)
-    {
-      throw TestFailed(ex.__repr__());
-    }
-
-
   }
   catch (TestFailed & ex)
   {

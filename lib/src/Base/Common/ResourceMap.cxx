@@ -338,25 +338,8 @@ void ResourceMap::loadDefaultConfiguration()
   set( "temporary-directory", "TEMP" );
   set( "parallel-threads", getenv("NUMBER_OF_PROCESSORS") );
 #endif
-  set( "user-prefix", "openturnsComputation" );
-  set( "real-regexp-shortcut", "\\R" );
-  set( "integer-regexp-shortcut", "\\I" );
-  set( "separator-regexp-shortcut", "\\S" );
-  set( "real-regexp", "([+-]?[ \t]*([0-9]+(\\.[0-9]*)?|\\.[0-9]+)([Ee][+-]?[0-9]+)?)" );
-  set( "integer-regexp", "([+-]?[ \t]*[0-9]+)" );
-  set( "separator-regexp", "([ \t])" );
-  setAsUnsignedInteger( "parallel-execution-grainsize", 1 );
-  setAsUnsignedInteger( "regexp-shortcut-width", 1 );
   setAsUnsignedInteger( "cache-max-size", 1024 );
   setAsUnsignedInteger( "output-files-timeout", 2 );
-  setAsUnsignedInteger( "run-command-retries", 3 );
-  setAsUnsignedInteger( "slow-filesystem-wait-time", 5000 );
-  setAsUnsignedInteger( "slow-filesystem-error-recovery", 500000 );
-  setAsUnsignedInteger( "computation-progression-update-interval", 5 );
-  setAsBool( "computation-progression-visible", true );
-
-  // OT parameters
-  setAsUnsignedInteger( "WrapperFile-version", 1 );
 
   // Os parameters
   setAsUnsignedInteger( "Os-create-process", 0 );

@@ -29,7 +29,6 @@
 #  OPENTURNS_INCLUDE_DIRS       - List of directories of OpenTURNS and it's dependencies
 #  OPENTURNS_LIBRARY            - OpenTURNS library location
 #  OPENTURNS_LIBRARIES          - List of libraries to link against
-#  OPENTURNS_WRAPPER_LIBRARIES  - List of wrapper libraries to link against
 #  OPENTURNS_LIBRARY_DIRS       - List of directories containing OpenTURNS' libraries
 #  OPENTURNS_ROOT_DIR           - The base directory of OpenTURNS
 #  OPENTURNS_VERSION_STRING     - A human-readable string containing the version
@@ -50,7 +49,6 @@ set_and_check ( OPENTURNS_INCLUDE_DIR        "@PACKAGE_OPENTURNS_INCLUDE_DIR@" )
 set ( OPENTURNS_INCLUDE_DIRS "@PACKAGE_OPENTURNS_INCLUDE_DIRS@" )
 set ( OPENTURNS_LIBRARY      "@OPENTURNS_LIBRARY@" )
 set ( OPENTURNS_LIBRARIES    "@OPENTURNS_LIBRARIES@" )
-set ( OPENTURNS_WRAPPER_LIBRARIES    "@OPENTURNS_WRAPPER_LIBRARIES@" )
 set ( OPENTURNS_LIBRARY_DIRS "@PACKAGE_OPENTURNS_LIBRARY_DIRS@" )
 set_and_check ( OPENTURNS_ROOT_DIR   "@PACKAGE_OPENTURNS_ROOT_DIR@" )
 

@@ -64,13 +64,13 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 XMLDoc::XMLDoc(const FileName & pathToFile) : doc_(0)
 {
   doc_ = xmlParseFile( pathToFile.c_str() );
-  if (doc_ == NULL) throw WrapperFileParsingException(HERE) << "Error in parsing wrapper file " << pathToFile;
+  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing wrapper file " << pathToFile;
 }
 
 XMLDoc::XMLDoc(const char * buffer, int size) : doc_(0)
 {
   doc_ = xmlParseMemory( buffer, size );
-  if (doc_ == NULL) throw WrapperFileParsingException(HERE) << "Error in parsing buffer";
+  if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing buffer";
 }
 
 XMLDoc::~XMLDoc() throw()

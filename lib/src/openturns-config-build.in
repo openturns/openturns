@@ -57,7 +57,6 @@ sharedstatedir=@DATA_PATH@
 pkgincludedir=@INCLUDE_PATH@
 pkglibdir=@LIBRARY_PATH@
 pkgswigdir=$pkgincludedir/swig
-wrapperdir=@WRAPPER_PATH@
 
 if test $installed = yes 
 then
@@ -69,7 +68,7 @@ then
   else
     ldflags="-L$pkglibdir @EXTRA_LDFLAGS@"
   fi 
-  libs="-lOT -lOTbind @EXTRA_LIBS@"
+  libs="-lOT @EXTRA_LIBS@"
   swigflags="-I$pkgswigdir @EXTRA_SWIGFLAGS@"
 else
   cppflags=`echo '@OPENTURNS_CPPFLAGS@' | sed -e 's/\$(\([^)]*\))/${\1}/g'`
@@ -109,7 +108,6 @@ where option is:
  --localstatedir   Print 'localstatedir' directory
  --sharedstatedir  Print 'sharedstatedir' directory
  --m4dir           Print autoconf m4 directory
- --wrapperdir      Print wrappers directory
 
 [project]
  --version         Print version number
@@ -226,12 +224,6 @@ print_sharedstatedir()
 print_m4dir()
 {
   echo ${m4dir}
-  return 0
-}
-
-print_wrapperdir()
-{
-  echo ${wrapperdir}
   return 0
 }
 
@@ -354,7 +346,6 @@ case $opt in
   "--localstatedir") print_localstatedir ; rc=$? ;;
   "--sharedstatedir") print_sharedstatedir ; rc=$? ;;
   "--m4dir") print_m4dir ; rc=$? ;;
-  "--wrapperdir") print_wrapperdir ; rc=$? ;;
 
   "--version") print_version ; rc=$? ;;
   "--bugreport") print_bugreport ; rc=$? ;;

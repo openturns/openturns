@@ -203,11 +203,6 @@ Section "!OpenTURNS" SEC01
   !insertmacro PRINT "Install conf files."
   File /r "${OPENTURNS_PREFIX}\etc\openturns\*.*"
 
-
-  !insertmacro PRINT "Install XML template and generic wrapper."
-  File /r "${OPENTURNS_PREFIX}\lib\openturns\wrappers\wrapper.dtd"
-  File /r "${OPENTURNS_PREFIX}\lib\openturns\wrappers\generic*"
-
   !insertmacro PRINT "Install ghostcript and R."
   SetOutPath "$OT_INSTALL_PATH\gs8.64"
   File /r "${WINDEPS}\opt\gs8.64\*.*"
@@ -257,20 +252,12 @@ SectionEnd
 Section "OT python examples" SEC02
   SetOverwrite on
 !ifndef DEBUG
-  !insertmacro PRINT "Install wrapper example in $OT_INSTALL_PATH\examples\WrapperTemplates."
-  SetOutPath "$OT_INSTALL_PATH\examples\WrapperTemplates\*.*"
-  File /r "${OPENTURNS_PREFIX}\share\openturns\WrapperTemplates\*.*"
 
   !insertmacro PRINT "Install Python examples in $OT_INSTALL_PATH\examples."
   SetOutPath "$OT_INSTALL_PATH\examples"
   File "${OPENTURNS_PREFIX}\share\openturns\examples\*.py"
   File "_drag_to_me_to_start_it.bat"
   ${ConfigWrite} "_drag_to_me_to_start_it.bat" "set PYTHON_INSTALL_PATH=" "$\"$Python_INSTALL_PATH$\"" $R0
-  SetOutPath "$OT_INSTALL_PATH\examples\wrappers"
-  File "${OPENTURNS_PREFIX}\lib\openturns\wrappers\*.xml"
-  File "${OPENTURNS_PREFIX}\lib\openturns\wrappers\*.dll"
-  File "${OPENTURNS_PREFIX}\lib\openturns\wrappers\*.so"
-  File "${OPENTURNS_PREFIX}\lib\openturns\wrappers\wrapper.dtd"
 !endif
 SectionEnd
 

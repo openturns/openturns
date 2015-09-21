@@ -1,8 +1,0 @@
-outSample by sample evaluation=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[d] data=[[-0.00267857],[-0.00324107],[-0.00452679],[-0.00452679],[-0.00525],[-0.00602679],[-0.00685714],[-0.00774107],[-0.00867857],[-0.00966964]]
-outSample by point evaluation=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[d] data=[[-0.00267857],[-0.00324107],[-0.00452679],[-0.00452679],[-0.00525],[-0.00602679],[-0.00685714],[-0.00774107],[-0.00867857],[-0.00966964]]
-outSample by analytical function=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[d] data=[[-0.00267857],[-0.00324107],[-0.00452679],[-0.00452679],[-0.00525],[-0.00602679],[-0.00685714],[-0.00774107],[-0.00867857],[-0.00966964]]
-calls = 20 hits = 0
-deviation =class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[d] data=[[-0.00267857],[-0.00324107],[-0.00452679],[-0.00452679],[-0.00525],[-0.00602679],[-0.00685714],[-0.00774107],[-0.00867857],[-0.00966964]]
-calls = 29 hits = 0
-deviation =class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[d] data=[[-0.00267857],[-0.00324107],[-0.00452679],[-0.00452679],[-0.00525],[-0.00602679],[-0.00685714],[-0.00774107],[-0.00867857],[-0.00966964]]
-calls = 29 hits = 10

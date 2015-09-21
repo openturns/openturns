@@ -39,13 +39,6 @@ set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc"
                         ${ADAPT_CHECK_TESTS_EXPONENT} 
    )
 
-set (INSTALLCHECK_ENVIRONMENT "AUTOTEST_PATH=${INSTALL_DESTDIR}${EXAMPLE_PATH}"
-                               "OPENTURNS_WRAPPER_PATH=${INSTALL_DESTDIR}${WRAPPER_PATH}"
-                               "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
-                               "PATH=${NEW_PATH}"
-                               "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}"
-                               ${ADAPT_CHECK_TESTS_EXPONENT} 
-   )
 
 set (EXCLUDE_TEST EXCLUDE_FROM_ALL)
 if (INSTALL_TESTS)
@@ -172,99 +165,6 @@ macro (ot_check_test TESTNAME)
 
 endmacro (ot_check_test)
 
-
-# create a standalone sh file that can launch tests
-if (INSTALL_TESTS)
-  set (EXTERNAL_INSTALLCHECK_FILE "${CMAKE_CURRENT_BINARY_DIR}/start_installcheck_test.sh")
-  create_check_file (${EXTERNAL_INSTALLCHECK_FILE})
-  #file (APPEND ${EXTERNAL_INSTALLCHECK_FILE} "#${INSTALLCHECK_ENVIRONMENT}\n\n")
-  file (APPEND ${EXTERNAL_INSTALLCHECK_FILE} "export OPENTURNS_WRAPPER_PATH=$PWD/wrappers\n")
-  #file (APPEND ${EXTERNAL_INSTALLCHECK_FILE} "export abs_srcdir=$PWD\n")
-  file (APPEND ${EXTERNAL_INSTALLCHECK_FILE} "start_tests() {\n")
-  set (CUR_INSTALLCHECK 0)
-endif ()
-
-
-# This macro compiles on the fly and run the corresponding post-installation test
-# It can have two optional arguments PRE and POST followed by some shell command to be run
-# before or after the test if needed
-# PRE and POST options cn be repeated many times: the arguments will be run one after the other
-# in the order of appearence. If one fails, the whole command fails.
-set (INSTALLCHECK_TO_BE_RUN)
-macro (ot_installcheck_test TESTNAME)
-  set (TESTNAME_TGT t_${TESTNAME})
-  set (TESTNAME_SRC ${TESTNAME_TGT}.cxx)
-  set (TESTNAME_SRCS ${TESTNAME_SRC})
-  add_executable (${TESTNAME_TGT} ${EXCLUDE_TEST} ${TESTNAME_SRCS})
-  add_dependencies(tests ${TESTNAME_TGT}) 
-  target_link_libraries (${TESTNAME_TGT} OT)
-  if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
-    target_link_libraries (${TESTNAME_TGT} CRT_fp8)
-  endif ()
-  set (TESTNAME_LOC ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}${CMAKE_EXECUTABLE_SUFFIX})
-  set (_CMD)
-  set (_PRE)
-  set (_POST)
-  set (_PARAMS)
-  set (_IGNOREOUT OFF)
-  foreach (_ARG ${ARGN})
-    string (TOUPPER ${_ARG} ARG)
-    if (${ARG} MATCHES PRE)
-      set (_CMD PRE)
-    elseif (${ARG} MATCHES POST)
-      set (_CMD POST)
-    elseif (${ARG} MATCHES PARAMS)
-      set (_CMD PARAMS)
-    elseif (${ARG} MATCHES IGNOREOUT)
-      set (_IGNOREOUT ON)
-    else (${ARG} MATCHES PRE)
-      if (${_CMD} MATCHES PRE)
-        set (_PRE "${_PRE} ${_ARG} && ")
-      elseif (${_CMD} MATCHES POST)
-        set (_POST "${_POST} && ${_ARG}")
-      elseif (${_CMD} MATCHES PARAMS)
-        set (_PARAMS "${_PARAMS} ${_ARG}")
-      endif  (${_CMD} MATCHES PRE)
-      set (_CMD)
-    endif (${ARG} MATCHES PRE)
-  endforeach (_ARG)
-
-  if (_IGNOREOUT)
-    set (COMMAND "(${TESTNAME_LOC} ${_PARAMS} > /dev/null)")
-    set (EXTERNAL_COMMAND "./${TESTNAME_TGT} ${_PARAMS} > $DEBUG_FILE 2>&1")
-  else (_IGNOREOUT)
-    set (TESTNAME_OUT ${TESTNAME_TGT}.expout)
-    set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_OUT})
-    set (COMMAND "(${TESTNAME_LOC} ${_PARAMS} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
-    set (EXTERNAL_COMMAND "(./${TESTNAME_TGT} ${_PARAMS} 2>$DEBUG_FILE | tr -d '\\\\r' > ${TESTNAME_TGT}.out) && diff -u ${TESTNAME_OUT} ${TESTNAME_TGT}.out")
-  endif (_IGNOREOUT)
-
-  if (_PRE OR _POST)
-    set (COMMAND "${_PRE}${COMMAND}${_POST}")
-    #not useful
-    #set (EXTERNAL_COMMAND "${_PRE}${EXTERNAL_COMMAND}${_POST}")
-  endif (_PRE OR _POST)
-
-  add_test (cppinstallcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
-  set_tests_properties (cppinstallcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${INSTALLCHECK_ENVIRONMENT}")
-  list (APPEND INSTALLCHECK_TO_BE_RUN ${TESTNAME_TGT})
-  install (FILES ${TESTNAME_SRC}
-            DESTINATION ${EXAMPLE_PATH}
-         )
-
-  if (INSTALL_TESTS)
-    install (FILES ${TESTNAME_OUT}
-              DESTINATION ${EXAMPLE_PATH} 
-           )
-    install (TARGETS ${TESTNAME_TGT}
-              DESTINATION ${EXAMPLE_PATH} 
-           )
-
-    add_check_file (${EXTERNAL_INSTALLCHECK_FILE} ${TESTNAME_TGT} ${EXTERNAL_COMMAND} ${CUR_INSTALLCHECK})
-    math(EXPR CUR_INSTALLCHECK "${CUR_INSTALLCHECK} + 1")
-  endif ()
-
-endmacro (ot_installcheck_test)
 
 include_directories (${INTERNAL_INCLUDE_DIRS})
 
@@ -476,7 +376,7 @@ ot_check_test (FORM_AbdoRackwitz)
 ot_check_test (FORM_SQP)
 ot_check_test (FORM_sensitivity)
 if (R_base_FOUND)
-ot_installcheck_test (FORM_draw)
+ot_check_test (FORM_draw)
 endif ()
 ot_check_test (SORM_std)
 ot_check_test (StrongMaximumTest_std)
@@ -752,156 +652,46 @@ ot_check_test (QuadraticCumul_std)
 ## Post-installation tests
 
 # Common
-ot_installcheck_test (Path_std IGNOREOUT)
+ot_check_test (Path_std IGNOREOUT)
 
 # Func
-ot_installcheck_test (LibraryLoader_std IGNOREOUT)
-ot_installcheck_test (ComputedNumericalMathEvaluationImplementation_std)
-ot_installcheck_test (ComputedNumericalMathEvaluationImplementation_wrongarg)
-ot_installcheck_test (ComputedNumericalMathEvaluationImplementation_copy)
-ot_installcheck_test (ComputedNumericalMathEvaluationImplementation_state)
-ot_installcheck_test (NumericalMathFunction_std)
-ot_installcheck_test (NumericalMathFunction_exec)
-if (BC_EXECUTABLE)
-ot_installcheck_test (NumericalMathFunction_exec_external)
-endif ()
-ot_installcheck_test (NumericalMathFunction_exec_sample)
-ot_installcheck_test (NumericalMathFunction_exec_sample_no_retry)
-ot_installcheck_test (NumericalMathFunction_exec_threads)
-ot_installcheck_test (NumericalMathFunction_composition)
-ot_installcheck_test (NumericalMathFunction_minimal)
+ot_check_test (NumericalMathFunction_std)
+ot_check_test (NumericalMathFunction_composition)
 
 # Stat
-ot_installcheck_test (NumericalSample_csv)
+ot_check_test (NumericalSample_csv)
 
 # Diff
-ot_installcheck_test (NonCenteredFiniteDifferenceGradient_std)
-ot_installcheck_test (CenteredFiniteDifferenceGradient_std)
-ot_installcheck_test (CenteredFiniteDifferenceHessian_std)
-
-# Simulation
-ot_installcheck_test (MonteCarlo_threads)
+ot_check_test (NonCenteredFiniteDifferenceGradient_std)
+ot_check_test (CenteredFiniteDifferenceGradient_std)
+ot_check_test (CenteredFiniteDifferenceHessian_std)
 
 # Experiments
-ot_installcheck_test (LinearTaylor_std)
-ot_installcheck_test (QuadraticLeastSquares_std)
-ot_installcheck_test (LinearLeastSquares_std)
+ot_check_test (LinearTaylor_std)
+ot_check_test (QuadraticLeastSquares_std)
+ot_check_test (LinearLeastSquares_std)
 
 
 # Waarts tests
-# ot_installcheck_test (Waarts_25_quadratic_terms)
-# ot_installcheck_test (Waarts_concave)
-# ot_installcheck_test (Waarts_convex)
-# ot_installcheck_test (Waarts_discontinuous_lsf)
-# ot_installcheck_test (Waarts_noisy_lsf)
-# ot_installcheck_test (Waarts_oblate)
-# ot_installcheck_test (Waarts_RS2)
-# ot_installcheck_test (Waarts_saddle)
-# ot_installcheck_test (Waarts_system_series)
+# ot_check_test (Waarts_25_quadratic_terms)
+# ot_check_test (Waarts_concave)
+# ot_check_test (Waarts_convex)
+# ot_check_test (Waarts_discontinuous_lsf)
+# ot_check_test (Waarts_noisy_lsf)
+# ot_check_test (Waarts_oblate)
+# ot_check_test (Waarts_RS2)
+# ot_check_test (Waarts_saddle)
+# ot_check_test (Waarts_system_series)
 
-
-
-# This macro creates a wrapper from the source file of the same name (suffixed by .cxx)
-# If the source file has a different name or if there are many source files, they all
-# must be listed as optional arguments.
-# The macro installs the wrapper in its destination as well as the description file
-# (named as the wrapper suffixed with .xml). A different name can be specified with
-# the DESCRIPTION argument.
-# ot_add_wrapper (wrappername [ DESCRIPTION xmlfile ] [ SOURCES sourcefile ... ])
-macro (ot_add_wrapper wrappername)
-  set (WRAPPERSOURCES)
-  set (WRAPPERDESCRIPTION)
-
-  if (${ARGC} EQUAL 1)
-    set (WRAPPERSOURCES ${wrappername}.cxx)
-    set (WRAPPERDESCRIPTION ${wrappername}.xml)
-
-  else (${ARGC} EQUAL 1)
-    list (INSERT WRAPPERSOURCES 0 ${ARGN})
-    list (LENGTH WRAPPERSOURCES LEN)
-    list (GET    WRAPPERSOURCES 0 _ARGV0)
-    string (TOUPPER ${_ARGV0} _ARG)
-    if (${_ARG} MATCHES DESCRIPTION)
-      if (${LEN} EQUAL 1)
-        message (FATAL_ERROR "Macro 'ot_add_wrapper(${wrappername} ...)' has incorrect DESCRIPTION argument")
-      endif (${LEN} EQUAL 1)
-      if (${LEN} EQUAL 2)
-        list (GET    WRAPPERSOURCES 1 _ARGV1)
-        set (WRAPPERDESCRIPTION ${_ARGV1})
-        set (WRAPPERSOURCES ${wrappername}.cxx)
-      else (${LEN} EQUAL 2)
-        list (GET    WRAPPERSOURCES 1 _ARGV1)
-        set (WRAPPERDESCRIPTION ${_ARGV1})
-        list (REMOVE_AT WRAPPERSOURCES 0 1)
-      endif (${LEN} EQUAL 2)
-
-    else (${_ARG} MATCHES DESCRIPTION)
-      set (WRAPPERDESCRIPTION ${wrappername}.xml)
-    endif (${_ARG} MATCHES DESCRIPTION)
-  endif (${ARGC} EQUAL 1)
-
-  add_library (${wrappername} ${WRAPPERSOURCES})
-  set_target_properties (${wrappername} PROPERTIES PREFIX "")
-  if (MINGW)
-    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}.dll ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}.so)
-
-    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}.so
-              DESTINATION ${OPENTURNS_WRAPPER_PATH}
-              OPTIONAL
-           )
-  endif ()
-  target_link_libraries (${wrappername} OTbind)
-  install (TARGETS ${wrappername}
-            DESTINATION ${OPENTURNS_WRAPPER_PATH}
-         )
-  install (FILES ${WRAPPERDESCRIPTION} 
-            DESTINATION ${OPENTURNS_WRAPPER_PATH}
-            OPTIONAL
-         )
-endmacro (ot_add_wrapper)
-
-ot_add_wrapper (testwrapper_1 fonction_1.c)
-ot_add_wrapper (testwrapper_2 fonction_2.cxx)
-ot_add_wrapper (testwrapper_3 DESCRIPTION wrapper.xml wrapper_fonction1.cxx)
-ot_add_wrapper (poutre)
-ot_add_wrapper (poutre_fullspeed)
-ot_add_wrapper (poutre_sample)
-ot_add_wrapper (poutre_sample_no_retry)
-ot_add_wrapper (TestResponseSurface)
-ot_add_wrapper (TestIdentity)
-ot_add_wrapper (minimal_wrapper)
-ot_add_wrapper (generic)
-ot_add_wrapper (external_code_threads)
-
-install (FILES poutre_external_LINUX.xml poutre_external_WIN32.xml
-          DESTINATION ${OPENTURNS_WRAPPER_PATH}
-       )
-
-if (MINGW)
-  install (PROGRAMS poutre_files.bat
-            DESTINATION ${OPENTURNS_EXAMPLE_PATH}
-         )
-
-else ()
-  install (PROGRAMS poutre_files.sh 
-            DESTINATION ${OPENTURNS_EXAMPLE_PATH}
-         )
-endif ()
 
 add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^cppcheck_"
                     DEPENDS ${CHECK_TO_BE_RUN}
                     COMMENT "Run C++ pre-installation tests")
 
-add_custom_target (cppinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^cppinstallcheck_"
-                    DEPENDS ${INSTALLCHECK_TO_BE_RUN}
-                    COMMENT "Run C++ post-installation tests")
-
-
 if (INSTALL_TESTS)
   finish_check_file (${EXTERNAL_CHECK_FILE} ${CUR_CHECK})
-  finish_check_file (${EXTERNAL_INSTALLCHECK_FILE} ${CUR_INSTALLCHECK})
 
-  install (FILES ${EXTERNAL_CHECK_FILE} ${EXTERNAL_INSTALLCHECK_FILE}
+  install (FILES ${EXTERNAL_CHECK_FILE}
             DESTINATION ${EXAMPLE_PATH} 
             PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
          )

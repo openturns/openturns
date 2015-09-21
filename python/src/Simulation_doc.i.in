@@ -81,7 +81,7 @@ blockSize : int, :math:`blockSize \geq 1`
 Notes
 -----
 For Monte Carlo, LHS and Importance Sampling methods, this allows to save space
-while allowing multithreading, when available (wrapper function) we recommend
+while allowing multithreading, when available we recommend
 to use the number of available CPUs; for the Directional Sampling, we recommend
 to set it to 1."
 

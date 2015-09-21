@@ -54,16 +54,8 @@ try:
 except:
     print('no')
 
-# check that the sample wrappers are accessible
-print('6: compiled wrappers'.ljust(width), end=' ')
-try:
-    f = ot.NumericalMathFunction('poutre')
-    print('OK')
-except:
-    print('no')
-
 # check that analytical function are available
-print('7: analytical function (muParser)'.ljust(width), end=' ')
+print('6: analytical function (muParser)'.ljust(width), end=' ')
 try:
     f = ot.NumericalMathFunction(['x1', 'x2'], ['y'], ['x1+x2'])
     print('OK')
@@ -71,7 +63,7 @@ except:
     print('no')
 
 # check that hmat library was found
-print('8: HMatrix (hmat-oss)'.ljust(width), end=' ')
+print('7: HMatrix (hmat-oss)'.ljust(width), end=' ')
 try:
     # This is a little bit tricky because HMat 1.0 fails with 1x1 matrices
     ot.ResourceMap.SetAsUnsignedInteger(

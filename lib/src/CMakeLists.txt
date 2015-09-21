@@ -31,11 +31,10 @@ foreach (built_source ${BUILT_SOURCEFILES})
 endforeach (built_source)
 include_directories (${INTERNAL_INCLUDE_DIRS})
 link_directories (${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
-add_library (OTbind bind.c)
 add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES})
 
 if (BUILD_SHARED_LIBS)
-  set_target_properties(OT OTbind PROPERTIES COMPILE_DEFINITIONS "OT_DLL_EXPORTS")
+  set_target_properties(OT PROPERTIES COMPILE_DEFINITIONS "OT_DLL_EXPORTS")
 endif ()
 
 # soversion
@@ -45,8 +44,8 @@ endif ()
 if (NOT DEFINED LIB_SOVERSION) 
   set (LIB_SOVERSION 0)
 endif ()
-set_target_properties (OT OTbind PROPERTIES SOVERSION ${LIB_SOVERSION})
-set_target_properties (OT OTbind PROPERTIES VERSION ${LIB_VERSION})
+set_target_properties (OT PROPERTIES SOVERSION ${LIB_SOVERSION})
+set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
 
 if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_lexer)
@@ -63,7 +62,7 @@ set_target_properties (linktest PROPERTIES
                                  INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${CMAKE_BINARY_DIR}/lib/src")
 
 # Add targets to the build-tree export set
-export(TARGETS OT OTbind FILE "${PROJECT_BINARY_DIR}/OpenTURNS-Targets.cmake")
+export(TARGETS OT FILE "${PROJECT_BINARY_DIR}/OpenTURNS-Targets.cmake")
 
 # Install the export set for use with the install-tree
 install(EXPORT OpenTURNS-Targets DESTINATION
@@ -71,7 +70,7 @@ install(EXPORT OpenTURNS-Targets DESTINATION
     COMPONENT    Development)
 
 # Install rules for library and executable
-install (TARGETS OT OTbind
+install (TARGETS OT
           EXPORT  OpenTURNS-Targets
           RUNTIME DESTINATION bin
           LIBRARY DESTINATION ${LIBRARY_PATH}

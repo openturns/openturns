@@ -155,16 +155,6 @@
 /* Define to the full path where OpenTURNS shared files are installed */
 #define DATA_PATH "@DATA_PATH@"
 
-/* Define to the full path where OpenTURNS wrappers are installed */
-#define WRAPPER_PATH "@WRAPPER_PATH@"
-
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
-#cmakedefine LT_OBJDIR
-
-/* Define to the name that anonymous objects should have. */
-#cmakedefine OBJECT_DEFAULT_NAME
-
 /* Name of OpenTURNS home environment variable. */
 #define OPENTURNS_HOME_ENV_VAR "@OPENTURNS_HOME_ENV_VAR@"
 

@@ -44,9 +44,6 @@ int main(int argc, char *argv[])
 
   try
   {
-
-    try
-    {
       // Test function operator ()
       Description input(4);
       input[0] = "x1";
@@ -63,13 +60,6 @@ int main(int argc, char *argv[])
       myAlgorithm = TNC(specific, levelFunction, bounds, startingPoint, TNC::Result::MAXIMIZATION);
       myAlgorithm.run();
       fullprint << "maximizer = " << printNumericalPoint(myAlgorithm.getResult().getOptimizer(), 4) << " value=" << myAlgorithm.getResult().getOptimalValue() << std::endl;
-    }
-    catch (NoWrapperFileFoundException & ex)
-    {
-      throw TestFailed(ex.__repr__());
-    }
-
-
   }
   catch (TestFailed & ex)
   {

@@ -128,9 +128,6 @@ rm -rf %{buildroot}
 %{_libdir}/*.so.*
 %dir %{_datadir}/%{name}
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/wrappers
-%{_libdir}/%{name}/wrappers/wrapper*.dtd
-%{_libdir}/%{name}/wrappers/generic.*
 %{_datadir}/gdb/auto-load%{_libdir}/libOT*-gdb.py*
 
 %files devel
@@ -141,17 +138,10 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/cmake/
 %{_bindir}/%{name}-*
-%{_datadir}/%{name}/WrapperTemplates/
 
 %files examples
 %defattr(-,root,root,-)
 %{_datadir}/%{name}/examples/
-%{_libdir}/%{name}/wrappers/external_code_threads*
-%{_libdir}/%{name}/wrappers/minimal_wrapper*
-%{_libdir}/%{name}/wrappers/poutre*
-%{_libdir}/%{name}/wrappers/testwrapper*
-%{_libdir}/%{name}/wrappers/Test*
-%{_libdir}/%{name}/wrappers/wrapper.xml
 
 %files validation
 %defattr(-,root,root,-)

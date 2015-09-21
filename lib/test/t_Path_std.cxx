@@ -33,9 +33,6 @@ int main(int argc, char *argv[])
   {
     // As the result of these methods is installation dependent, don't check the output
     fullprint << "Installation directory=" << Path::GetInstallationDirectory() << std::endl;
-    Path::DirectoryList wrapperDirectoryList(Path::GetWrapperDirectoryList());
-    for (UnsignedInteger i = 0; i < wrapperDirectoryList.size(); ++i)
-      fullprint << "wrapperDirectoryList[" << i << "]=" << wrapperDirectoryList[i] << std::endl;
     Path::DirectoryList configDirectoryList(Path::GetConfigDirectoryList());
     for (UnsignedInteger i = 0; i < configDirectoryList.size(); ++i)
       fullprint << "configDirectoryList[" << i << "]=" << configDirectoryList[i] << std::endl;

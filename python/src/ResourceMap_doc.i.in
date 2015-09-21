@@ -73,7 +73,7 @@ value : bool
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.GetAsBool('computation-progression-visible')
+>>> ot.ResourceMap.GetAsBool('MaximumEntropyOrderStatisticsDistribution-CheckMarginals')
 True"
 
 // ---------------------------------------------------------------------
@@ -91,7 +91,7 @@ value : bool
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsBool('computation-progression-visible', True)"
+>>> ot.ResourceMap.SetAsBool('MaximumEntropyOrderStatisticsDistribution-CheckMarginals', True)"
 
 // ---------------------------------------------------------------------
 

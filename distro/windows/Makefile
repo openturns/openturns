@@ -145,24 +145,6 @@ ifeq ($(CHECK_OT),y)
 	touch ot-test
 endif
 
-ot-test-wrapper-template: ot-install
-	rm -rf $(OT_BUILD)/mywrapper
-# 	svn export $(OT_SRC)/wrappers/WrapperTemplates/wrapper_linked_with_C_function $(OT_BUILD)/mywrapper
-	svn export $(OT_SRC)/wrappers/WrapperTemplates/wrapper_linked_with_F77_function $(OT_BUILD)/mywrapper
-# 	svn export $(OT_SRC)/wrappers/WrapperTemplates/wrapper_calling_shell_command $(OT_BUILD)/mywrapper
-	cd $(OT_BUILD)/mywrapper && ./customize zou && mkdir build && cd build && $(CMAKE) \
-	  -DCMAKE_TOOLCHAIN_FILE=$(OT_BUILD)/toolchain-$(TARGET).cmake \
-	  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-	  -DOpenTURNS_DIR=$(OT_PREFIX)/lib/cmake/openturns \
-	  -DREGEX_LIBRARIES=$(MINGW_PREFIX)/$(TARGET)/lib/libgnurx.dll.a \
-	  -DCMAKE_INSTALL_PREFIX=$(OT_BUILD)/mywrapper/build/install \
-	  ..
-	cd $(OT_BUILD)/mywrapper/build && make install
-	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/mywrapper
-	cp $(OT_BUILD)/mywrapper/build/install/bin/* $(OT_BUILD)/mywrapper || :
-	cd $(OT_BUILD)/mywrapper && PYTHONPATH="$(PYTHONPATH);$(OT_PREFIX)/Lib/site-packages" OPENTURNS_WRAPPER_PATH=$(OT_BUILD)/mywrapper/build/install/wrappers $(PYTHON_EXECUTABLE) test.py
-
-
 ot-check-installer: ot-test
 	@echo -n "Check OpenTURNS prefix: "
 	@ls $(OT_PREFIX) > /dev/null

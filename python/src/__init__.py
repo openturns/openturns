@@ -6,7 +6,6 @@ Documentation is available online at http://www.openturns.org.
 Available submodules
 --------------------
 common                                --- Utility classes
-wrapper                               --- Wrapping utilities
 typ                                   --- Internal data types
 statistics                            --- Statistical classes
 graph                                 --- Graphical output
@@ -42,7 +41,6 @@ Environment variables
 ---------------------
 OPENTURNS_HOME                        --- Custom installation path
 OPENTURNS_CONFIG_PATH                 --- Path to configuration file
-OPENTURNS_WRAPPER_PATH                --- Path to custom wrappers
 OPENTURNS_LOG_SEVERITY                --- Log severity flag, for example "ALL"
 """
 import sys
@@ -61,7 +59,6 @@ if not hasattr(sys, 'ps1'):
             pass
 
 from .common import *
-from .wrapper import *
 from .typ import *
 from .graph import *
 from .geom import *

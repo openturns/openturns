@@ -33,10 +33,6 @@ def TESTPREAMBLE():
 %import common_module.i
 %import BaseCommonTemplateDefs.i
 
-/* Wrapper */
-%import wrapper_module.i
-%import BaseWrapperTemplateDefs.i
-
 /* Base/Type */
 %import typ_module.i
 %import BaseTypTemplateDefs.i

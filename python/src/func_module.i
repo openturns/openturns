@@ -24,10 +24,6 @@
 %import common_module.i
 %import BaseCommonTemplateDefs.i
 
-/* Wrapper */
-%import wrapper_module.i
-%import BaseWrapperTemplateDefs.i
-
 /* Base/Type */
 %import typ_module.i
 %import BaseTypTemplateDefs.i
@@ -57,9 +53,6 @@
 %include QuadraticNumericalMathEvaluationImplementation.i
 %include ConstantNumericalMathGradientImplementation.i
 %include ConstantNumericalMathHessianImplementation.i
-%include ComputedNumericalMathEvaluationImplementation.i
-%include ComputedNumericalMathGradientImplementation.i
-%include ComputedNumericalMathHessianImplementation.i
 %include ComposedNumericalMathEvaluationImplementation.i
 %include ComposedNumericalMathGradientImplementation.i
 %include ComposedNumericalMathHessianImplementation.i

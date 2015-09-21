@@ -111,14 +111,8 @@ ot_add_python_module(common common_module.i
                       BaseCommonTemplateDefs.i
                    )
 
-ot_add_python_module(wrapper wrapper_module.i
-                      Collection.i Collection_doc.i.in
-                      WrapperData.i
-                      WrapperFile.i
-                      BaseWrapperTemplateDefs.i
-                   )
-
 ot_add_python_module(typ typ_module.i
+                      Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
                       NumericalPoint.i NumericalPoint_doc.i.in
@@ -258,9 +252,6 @@ ot_add_python_module(func func_module.i
                       QuadraticNumericalMathEvaluationImplementation.i
                       ConstantNumericalMathGradientImplementation.i
                       ConstantNumericalMathHessianImplementation.i
-                      ComputedNumericalMathEvaluationImplementation.i
-                      ComputedNumericalMathGradientImplementation.i
-                      ComputedNumericalMathHessianImplementation.i
                       ComposedNumericalMathEvaluationImplementation.i
                       ComposedNumericalMathGradientImplementation.i
                       ComposedNumericalMathHessianImplementation.i

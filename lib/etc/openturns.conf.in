@@ -19,25 +19,9 @@
        To set manually the number of thread used for parallel computing, uncomment the following line: 
     -->
   <!--<parallel-threads      value="1"                     />-->
-  <user-prefix               value="openturnsComputation"  />
-  <real-regexp-shortcut      value="\R"                    />
-  <integer-regexp-shortcut   value="\I"                    />
-  <separator-regexp-shortcut value="\S"                    />
-  <real-regexp               value="([+-]?[ &#9;]*([0-9]+(\.[0-9]*)?|\.[0-9]+)([Ee][+-]?[0-9]+)?)" />
-  <integer-regexp            value="([+-]?[ &#9;]*[0-9]+)"   />
-  <separator-regexp          value="([ &#9;])"               />
   <cache-max-size            value="1024"                  />
   <output-files-timeout      value="2"                     />
-  <run-command-retries       value="3"                     />
-  <slow-filesystem-wait-time value="5000"                  />
-  <slow-filesystem-error-recovery value="500000"           />
-  <parallel-execution-grainsize value="1"                  />
-  <computation-progression-update-interval value="5"       />
-  <computation-progression-visible value="true"            />
 
-  <!-- OT parameters -->
-  <WrapperFile-version                 value="1"            />
-  
   <!-- OT::Os parameters -->
   <Os-create-process                   value="0"            />
   <Os-RemoveFiles                      value="1"            />
