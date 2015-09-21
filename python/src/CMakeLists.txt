@@ -201,7 +201,7 @@ ot_add_python_module(statistics statistics_module.i
                       NonStationaryCovarianceModelFactory.i
                       SquaredExponential.i SquaredExponential_doc.i.in
                       GeneralizedExponential.i
-                      AbsoluteExponential.i
+                      AbsoluteExponential.i AbsoluteExponential_doc.i.in
                       MaternModel.i MaternModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
                       HMatrixFactory.i
