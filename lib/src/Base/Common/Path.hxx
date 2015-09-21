@@ -63,31 +63,6 @@ public:
 #endif
 
   /**
-   * Analyse the process environment and return the directory where
-   * installed wrappers and DTD are.
-   *
-   * The search rule is: check the following paths, in that order:
-   *    + if the env var OPENTURNS_HOME exists, return ${OPENTURNS_HOME}/share/openturns/wrappers
-   *      if it exists and is a directory,
-   *    + otherwise return the installation path ${prefix}/share/openturns/wrappers, where 'prefix'
-   *      is the installation path of the platform as provided at configuration time.
-   */
-  static FileName GetStandardWrapperDirectory();
-
-  /**
-   * Analyse the process environment
-   * and return a list of directories to search in for wrappers.
-   *
-   * The search rule is :look for the file in the following directories, in that order :
-   *    + if the env var OPENTURNS_WRAPPER_PATH exists, in directories listed in
-   *      ${OPENTURNS_WRAPPER_PATH} (see openturnsWrapperPathVariableName_)
-   *    + in directory ${HOME}/openturns/wrappers (see homeSubdirectory_)
-   *    + in the standard wrapper directory, as defined by the method
-   *      GetStandardWrapperDirectory().
-   */
-  static DirectoryList GetWrapperDirectoryList();
-
-  /**
    * Analyse the process environment
    * and return a list of directories to search in for configuration files.
    *

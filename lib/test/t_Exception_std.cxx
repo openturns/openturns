@@ -102,11 +102,8 @@ int main(int argc, char *argv[])
   rc |= check< InternalException >();
   rc |= check< InvalidArgumentException >();
   rc |= check< InvalidDimensionException >();
-  rc |= check< NoWrapperFileFoundException >();
   rc |= check< NotYetImplementedException >();
   rc |= check< OutOfBoundException >();
-  rc |= check< WrapperFileParsingException >();
-  rc |= check< WrapperInternalException >();
   rc |= check< XMLException >();
   rc |= check< XMLParserException >();
   rc |= check< DynamicLibraryException >();

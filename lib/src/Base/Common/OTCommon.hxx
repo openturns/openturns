@@ -53,7 +53,6 @@
 #include "TypedCollectionInterfaceObject.hxx"
 #include "TypedInterfaceObject.hxx"
 #include "OTconfig.hxx"
-//#include "WrapperCommonFunctions.hxx"
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include "XMLStorageManager.hxx"
 #include "XMLchar_traits.hxx"

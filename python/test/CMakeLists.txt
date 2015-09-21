@@ -13,7 +13,6 @@ endif ()
 
 
 set (PYINSTALLCHECK_ENVIRONMENT "AUTOTEST_PATH=${INSTALL_DESTDIR}${EXAMPLE_PATH}"
-                                 "OPENTURNS_WRAPPER_PATH=${INSTALL_DESTDIR}${WRAPPER_PATH}"
                                  "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
                                  "PATH=${NEW_PATH}"
                                  "LD_LIBRARY_PATH=${INSTALL_DESTDIR}${LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
@@ -57,7 +56,6 @@ if (MINGW)
   set (EXTERNAL_PYTHONINSTALLCHECK_FILE "${CMAKE_CURRENT_BINARY_DIR}/start_pythoninstallcheck_test.sh")
   create_check_file (${EXTERNAL_PYTHONINSTALLCHECK_FILE})
   #file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "#${INSTALLCHECK_ENVIRONMENT}\n\n")
-  file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "export OPENTURNS_WRAPPER_PATH=$PWD/wrappers\n")
   #file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "export abs_srcdir=$PWD\n")
   file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "start_tests() {\n")
   set (CUR_PYTHONINSTALLCHECK 0)
@@ -183,17 +181,8 @@ if (NUMPY_FOUND)
 endif ()
 
 # Func
-ot_pyinstallcheck_test (WrapperFile_std)
-ot_pyinstallcheck_test (WrapperFile_generic)
 ot_pyinstallcheck_test (NumericalMathFunction_std)
 ot_pyinstallcheck_test (NumericalMathFunction_composition)
-ot_pyinstallcheck_test (NumericalMathFunction_exec)
-if (BC_EXECUTABLE)
-ot_pyinstallcheck_test (NumericalMathFunction_exec_external)
-endif ()
-ot_pyinstallcheck_test (NumericalMathFunction_exec_sample)
-ot_pyinstallcheck_test (NumericalMathFunction_exec_threads)
-ot_pyinstallcheck_test (NumericalMathFunction_minimal)
 ot_pyinstallcheck_test (NumericalMathFunction_python)
 if (LIBXML2_FOUND)
 ot_pyinstallcheck_test (NumericalMathFunction_python_saveload)
@@ -616,7 +605,6 @@ ot_pyinstallcheck_test (MonteCarlo_std)
 if (R_base_FOUND)
 ot_pyinstallcheck_test (MonteCarlo_draw)
 endif ()
-ot_pyinstallcheck_test (MonteCarlo_threads)
 ot_pyinstallcheck_test (MonteCarlo_sensitivity)
 
 ot_pyinstallcheck_test (QuasiMonteCarlo_std)

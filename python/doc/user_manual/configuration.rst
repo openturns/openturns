@@ -12,9 +12,6 @@ OpenTURNS uses the following (optional) environment variables.
 OPENTURNS_CONFIG_PATH
     Path to the `openturns.conf` XML file used by the :class:`~openturns.ResourceMap`.
 
-OPENTURNS_WRAPPER_PATH
-    Path to compiled wrappers.
-
 OPENTURNS_HOME
     Path to the OpenTURNS installation directory.
 

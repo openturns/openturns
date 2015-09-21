@@ -1181,36 +1181,6 @@ convert< _PySequence_, ComplexTensor >(PyObject * pyObj)
 }
 
 template <>
-struct traitsPythonType< WrapperDataFile >
-{
-  typedef _PySequence_ Type;
-};
-
-template <>
-inline
-WrapperDataFile
-convert< _PySequence_, WrapperDataFile >(PyObject * pyObj)
-{
-  return WrapperDataFile();
-}
-
-
-
-template <>
-struct traitsPythonType< WrapperDataVariable >
-{
-  typedef _PySequence_ Type;
-};
-
-template <>
-inline
-WrapperDataVariable
-convert< _PySequence_, WrapperDataVariable >(PyObject * pyObj)
-{
-  return WrapperDataVariable();
-}
-
-template <>
 struct traitsPythonType< WhittleFactoryState >
 {
   typedef _PySequence_ Type;

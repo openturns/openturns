@@ -32,8 +32,6 @@ int main(int argc, char *argv[])
   try
   {
 
-    try
-    {
       // Test function operator ()
       Description input(4);
       input[0] = "x1";
@@ -52,14 +50,6 @@ int main(int argc, char *argv[])
       mySQPAlgorithm.setMaximumResidualError(1.0e-10);
       mySQPAlgorithm.setMaximumConstraintError(1.0e-10);
       fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
-
-    }
-    catch (NoWrapperFileFoundException & ex)
-    {
-      throw TestFailed(ex.__repr__());
-    }
-
-
   }
   catch (TestFailed & ex)
   {

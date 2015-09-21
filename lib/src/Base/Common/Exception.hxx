@@ -226,13 +226,6 @@ NEW_EXCEPTION( InvalidArgumentException );
 NEW_EXCEPTION( InvalidDimensionException );
 
 /**
- * @class NoWrapperFileFoundException
- * @brief Raised when a wrapper can not be found on filesystem
- * @internal
- */
-NEW_EXCEPTION( NoWrapperFileFoundException );
-
-/**
  * @class NotYetImplementedException
  * @brief Raised when a method has not been implemented yet though it should be
  * @internal
@@ -245,20 +238,6 @@ NEW_EXCEPTION( NotYetImplementedException );
  * @internal
  */
 NEW_EXCEPTION( OutOfBoundException );
-
-/**
- * @class WrapperFileParsingException
- * @brief Raised when a wrapper description file has a syntax error or a wrong value
- * @internal
- */
-NEW_EXCEPTION( WrapperFileParsingException );
-
-/**
- * @class WrapperInternalException
- * @brief Raised when a wrapper raised an internal error preventing it from going on
- * @internal
- */
-NEW_EXCEPTION( WrapperInternalException );
 
 /**
  * @class XMLException

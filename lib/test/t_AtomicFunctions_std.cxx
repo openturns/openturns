@@ -20,6 +20,11 @@
  */
 #include <unistd.h> // sysconf
 #include <stdlib.h> // getenv
+#ifndef _MSC_VER
+# include <signal.h>
+# include <pthread.h>
+#endif
+
 #include "OT.hxx"
 #include "OTtestcode.hxx"
 

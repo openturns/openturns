@@ -71,7 +71,6 @@ cmake-configure-%:
             -DLIB_SOVERSION=0.7 \
             -DLIB_VERSION=0.7.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.6 \
-            -DOPENTURNS_WRAPPER_PATH:PATH=lib/openturns-1.6/wrappers \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DLINK_PYTHON_LIBRARY:BOOL=OFF \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \

@@ -45,8 +45,6 @@ int main(int argc, char *argv[])
   try
   {
 
-    try
-    {
       // Test function operator ()
       Description input(4);
       input[0] = "x1";
@@ -66,12 +64,6 @@ int main(int argc, char *argv[])
       fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
       myAlgorithm.run();
       fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    }
-    catch (NoWrapperFileFoundException & ex)
-    {
-      throw TestFailed(ex.__repr__());
-    }
-
 
   }
   catch (TestFailed & ex)

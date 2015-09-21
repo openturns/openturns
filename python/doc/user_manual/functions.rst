@@ -78,7 +78,6 @@ Evaluation functions
     AggregatedNumericalMathEvaluationImplementation
     AnalyticalNumericalMathEvaluationImplementation
     ComposedNumericalMathEvaluationImplementation
-    ComputedNumericalMathEvaluationImplementation
     DatabaseNumericalMathEvaluationImplementation
     DualLinearCombinationEvaluationImplementation
     IndicatorNumericalMathEvaluationImplementation
@@ -103,7 +102,6 @@ Gradient functions
     NumericalMathGradientImplementation
     AnalyticalNumericalMathGradientImplementation
     ComposedNumericalMathGradientImplementation
-    ComputedNumericalMathGradientImplementation
     ConstantNumericalMathGradientImplementation
     DualLinearCombinationGradientImplementation
     LinearCombinationGradientImplementation
@@ -122,7 +120,6 @@ Hessian functions
     NumericalMathHessianImplementation
     AnalyticalNumericalMathHessianImplementation
     ComposedNumericalMathHessianImplementation
-    ComputedNumericalMathHessianImplementation
     ConstantNumericalMathHessianImplementation
     DualLinearCombinationHessianImplementation
     LinearCombinationHessianImplementation

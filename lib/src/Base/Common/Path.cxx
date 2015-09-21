@@ -44,7 +44,6 @@
 #include "ResourceMap.hxx"
 #include "Os.hxx"
 #include "Log.hxx"
-#include "WrapperCommonFunctions.hxx"
 
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."
@@ -62,33 +61,17 @@
 #error "DATA_PATH is NOT defined. Check configuration."
 #endif
 
-#ifndef WRAPPER_PATH
-#error "WRAPPER_PATH is NOT defined. Check configuration."
-#endif
-
 #ifndef OPENTURNS_HOME_ENV_VAR
 #error "OPENTURNS_HOME_ENV_VAR is NOT defined. Check configuration."
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
-/* The environment variable name */
-const char * Path::OpenturnsWrapperPathVariableName_ = "OPENTURNS_WRAPPER_PATH";
-
 /* The environment variable name */
 const char * Path::OpenturnsConfigPathVariableName_ = "OPENTURNS_CONFIG_PATH";
 
 /* The HOME subdirectory path */
-const char * Path::HomeWrapperSubdirectory_ = "/openturns/wrappers";
-
-/* The HOME subdirectory path */
 const char * Path::HomeConfigSubdirectory_ = "/openturns/etc";
-
-/* The 'wrapper' subdirectory path */
-const char * Path::PrefixWrapperSubdirectory_ = "/lib/openturns/wrappers";
 
 /* The 'openturns' configuration subdirectory path */
 const char * Path::PrefixConfigSubdirectory_ = "/openturns";
@@ -156,94 +139,6 @@ FileName Path::GetWinDirectory()
 }
 #endif
 
-/**
- * Analyse the process environment and return the directory where
- * installed wrappers and DTD are.
- *
- * The search rule is: check the following paths, in that order:
- *    + if the env var OPENTURNS_HOME exists, return ${OPENTURNS_HOME}/lib/openturns/wrappers
- *      if it exists and is a directory,
- *    + otherwise return the installation path ${prefix}/lib/openturns/wrappers, where 'prefix'
- *      is the installation path of the platform as provided at configuration time.
- */
-FileName Path::GetStandardWrapperDirectory()
-{
-  FileName directory;
-  bool dirExists = false;
-  const char * otHome = getenv(OPENTURNS_HOME_ENV_VAR);
-  if (otHome)
-  {
-    directory = String(otHome);
-#ifndef WIN32
-    directory += PrefixWrapperSubdirectory_;
-#endif
-    struct stat status;
-    dirExists = (stat( directory.c_str(), &status ) == 0 && ( status.st_mode & S_IFDIR ));
-  }
-  if (!dirExists)
-  {
-    directory = String(WRAPPER_PATH);
-  }
-  return directory;
-}
-
-
-/**
- * Analyse the process environment
- * and return a list of directories to search in for wrappers.
- *
- * The search rule is :look for the file in the following directories, in that order :
- *    + if the env var OPENTURNS_WRAPPER_PATH exists, in directories listed in
- *      ${OPENTURNS_WRAPPER_PATH} (see openturnsWrapperPathVariableName_)
- *    + in directory ${HOME}/openturns/wrappers (see homeSubdirectory_)
- *    + in the standard wrapper directory, as defined by the method
- *      GetStandardWrapperDirectory().
- */
-Path::DirectoryList Path::GetWrapperDirectoryList()
-{
-  // Create an empty directory list
-  DirectoryList directoryList;
-
-  // ... search in ${OPENTURNS_WRAPPER_PATH}
-  // Because OPENTURNS_WRAPPER_PATH is a path, we have to split it
-  char * openturnsWrapperDirectory = getenv(Path::OpenturnsWrapperPathVariableName_);
-  if (openturnsWrapperDirectory)
-  {
-    std::string  pathToSplit = openturnsWrapperDirectory;
-    String::size_type lastColonPosition = 0;
-    String::size_type currentColonPosition = 0;
-    while ( ((currentColonPosition = pathToSplit.find(Os::GetDirectoryListSeparator(), lastColonPosition)) != String::npos) &&
-            ( currentColonPosition < pathToSplit.size() ) )
-    {
-      FileName directory(pathToSplit, lastColonPosition, currentColonPosition - lastColonPosition);
-      if (directory.size() == 0) directory = ".";
-      directoryList.push_back(directory);
-      lastColonPosition = currentColonPosition + 1;
-    } /* end while */
-    FileName directory(pathToSplit, lastColonPosition, pathToSplit.size() - lastColonPosition);
-    if (directory.size() == 0) directory = ".";
-    directoryList.push_back(directory);
-  }
-
-  // ... search in ${HOME}/openturns/wrappers
-  char * homeDirectory = getenv("HOME");
-  if (homeDirectory)
-  {
-    FileName directory = homeDirectory;
-    directory += Path::HomeWrapperSubdirectory_;
-    directoryList.push_back(directory);
-  }
-
-#ifdef WIN32
-  directoryList.push_back(Path::GetWinDirectory());
-#endif
-
-  // ... search in standard wrapper directory
-  FileName directory = Path::GetStandardWrapperDirectory();
-  directoryList.push_back(directory);
-
-  return directoryList;
-} /* end getDirectoryList */
 
 /**
  * Analyse the process environment

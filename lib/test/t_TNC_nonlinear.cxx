@@ -45,8 +45,6 @@ int main(int argc, char *argv[])
   try
   {
 
-    try
-    {
       // Test function operator ()
       Description input(4);
       input[0] = "x1";
@@ -89,13 +87,6 @@ int main(int argc, char *argv[])
         solver.run();	
         fullprint << "maximizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
       }
-    }
-    catch (NoWrapperFileFoundException & ex)
-    {
-      throw TestFailed(ex.__repr__());
-    }
-
-
   }
   catch (TestFailed & ex)
   {

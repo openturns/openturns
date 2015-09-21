@@ -19,12 +19,6 @@ echo "./start_check_test.sh"
 ./start_check_test.sh
 check_error "./start_check_test.sh"
 
-
-echo "./start_installcheck_test.sh"
-./start_installcheck_test.sh
-check_error "./start_installcheck_test.sh"
-
-
 echo "./start_pythoninstallcheck_test.sh"
 ./start_pythoninstallcheck_test.sh
 check_error "./start_pythoninstallcheck_test.sh"

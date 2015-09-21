@@ -50,13 +50,6 @@ NumericalMathFunction::NumericalMathFunction()
   // Nothing to do
 }
 
-/* Default constructor */
-NumericalMathFunction::NumericalMathFunction(const String & name)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(name))
-{
-  // Nothing to do
-}
-
 /* Constructor from NumericalMathFunctionImplementation */
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionImplementation & implementation)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(implementation.clone())
@@ -171,13 +164,6 @@ NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & ev
     const GradientImplementation & gradientImplementation,
     const HessianImplementation  & hessianImplementation)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluationImplementation, gradientImplementation, hessianImplementation))
-{
-  // Nothing to do
-}
-
-/* Constructor from a wrapper file */
-NumericalMathFunction::NumericalMathFunction(const WrapperFile & wrapperFile)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(wrapperFile))
 {
   // Nothing to do
 }

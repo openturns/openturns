@@ -141,24 +141,7 @@ Section "!OpenTURNS MinGW" SEC01
 SectionEnd
 
 
-Section "OpenTURNS C examples" SEC02
-
-  SetOverwrite on
-  !insertmacro PRINT "Install simple C examples in $OT_INSTALL_PATH\examples\simple_cxx_example."
-  SetOutPath "$OT_INSTALL_PATH\examples\simple_cxx_example"
-  File /r /x ".svn" "examples\simple_cxx_example\*.*"
-  ${ConfigWrite} "$OT_INSTALL_PATH\examples\simple_cxx_example\make.bat" "set OT_PREFIX=" '"$OT_INSTALL_PATH"' $R0
-
-  !insertmacro PRINT "Install simple C wrapper in $OT_INSTALL_PATH\examples\WrapperTemplates."
-  SetOutPath "$OT_INSTALL_PATH\examples\WrapperTemplates\mingw_wrapper_calling_shell_command"
-  File /r /x ".svn" "examples\mingw_wrapper_calling_shell_command\*.*"
-  SetOutPath "$OT_INSTALL_PATH\examples\WrapperTemplates"
-  File /r "${WINDEPS}\share\WrapperTemplates\*.*"
-
-SectionEnd
-
-
-Section "OpenTURNS checktests" SEC03
+Section "OpenTURNS checktests" SEC02
 
   SetOverwrite on
 
@@ -192,8 +175,7 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Install MinGW + OpenTURNS deps (pthread headers & dlls, ...). Recquired to compile with OT."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Simple example of C application and wrapper compiled with OpenTURNS."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC03} "OpenTURNS checktests.$\r$\rStart them from OT's menu."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "OpenTURNS checktests.$\r$\rStart them from OT's menu."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 

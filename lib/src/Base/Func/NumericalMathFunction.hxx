@@ -55,12 +55,6 @@ public:
   /** Default constructor */
   NumericalMathFunction();
 
-  /** Constructor from a wrapper name
-   * @param name The name of the wrapper expurged of its extension
-   * @see WrapperFile
-   */
-  explicit NumericalMathFunction(const String & name);
-
   /** Constructor from NumericalMathFunctionImplementation */
   NumericalMathFunction(const NumericalMathFunctionImplementation & implementation);
 
@@ -140,9 +134,6 @@ public:
                         const GradientImplementation & gradientImplenmentation,
                         const HessianImplementation  & hessianImplementation);
 #endif
-
-  /** Constructor from a wrapper file */
-  NumericalMathFunction(const WrapperFile & wrapperFile);
 
   /** Constructor from samples */
   NumericalMathFunction(const NumericalSample & inputSample,

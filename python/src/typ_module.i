@@ -51,11 +51,9 @@ def getCorrelationMatrixFromMap(Vars, Map):
 /* Base/Common */
 %import common_module.i
 
-/* Wrapper */
-%import wrapper_module.i
-%import BaseWrapperTemplateDefs.i
-
 /* Base/Type */
+%include Collection.i
+%template (UnsignedIntegerCollection) OT::Collection<OT::UnsignedInteger>;
 %include PersistentCollection.i
 %include Description.i
 %include Indices.i
@@ -88,3 +86,8 @@ def getCorrelationMatrixFromMap(Vars, Map):
 
 /* At last we include template definitions */
 %include BaseTypTemplateDefs.i
+
+%pythoncode %{
+class BoolCollection(UnsignedIntegerCollection):
+    pass
+%}
