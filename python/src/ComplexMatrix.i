@@ -4,6 +4,8 @@
 #include "ComplexMatrix.hxx"
 %}
 
+%include ComplexMatrix_doc.i
+
 %template(ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
 %apply const NumericalScalarCollection & { const OT::ComplexMatrix::NumericalScalarCollection & };

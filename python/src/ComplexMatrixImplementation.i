@@ -4,6 +4,8 @@
 #include "ComplexMatrixImplementation.hxx"
 %}
 
+%include ComplexMatrixImplementation_doc.i
+
 %rename(ComplexMatrixImplementation_operator___eq__) OT::operator ==(const ComplexMatrixImplementation & lhs, const ComplexMatrixImplementation & rhs);
 
 %template(NumericalComplexCollection)                   OT::Collection<OT::NumericalComplex>;

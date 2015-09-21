@@ -95,12 +95,12 @@ ot_add_python_module(common common_module.i
                       Catalog.i
                       ResourceMap.i ResourceMap_doc.i.in
                       ComparisonOperatorImplementation.i
-                      ComparisonOperator.i
-                      Equal.i
-                      Greater.i
-                      GreaterOrEqual.i
-                      Less.i
-                      LessOrEqual.i
+                      ComparisonOperator.i ComparisonOperator_doc.i.in
+                      Equal.i Equal_doc.i.in
+                      Greater.i Greater_doc.i.in
+                      GreaterOrEqual.i GreaterOrEqual_doc.i.in
+                      Less.i Less_doc.i.in
+                      LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
                       PlatformInfo.i
                       SharedPointer.i
@@ -135,27 +135,27 @@ ot_add_python_module(typ typ_module.i
                       SymmetricTensor.i SymmetricTensor_doc.i.in
                       ComplexTensorImplementation.i
                       ComplexTensor.i ComplexTensor_doc.i.in
-                      ComplexMatrixImplementation.i
-                      ComplexMatrix.i
-                      HermitianMatrix.i
+                      ComplexMatrixImplementation.i ComplexMatrixImplementation_doc.i.in
+                      ComplexMatrix.i ComplexMatrix_doc.i.in
+                      HermitianMatrix.i HermitianMatrix_doc.i.in
                       SquareComplexMatrix.i SquareComplexMatrix_doc.i.in
-                      TriangularMatrix.i
-                      TriangularComplexMatrix.i
+                      TriangularMatrix.i TriangularMatrix_doc.i.in
+                      TriangularComplexMatrix.i TriangularComplexMatrix_doc.i.in
                       CovarianceMatrix.i CovarianceMatrix_doc.i.in
-                      CorrelationMatrix.i
+                      CorrelationMatrix.i CorrelationMatrix_doc.i.in
                       IdentityMatrix.i
                       NumericalSample.i NumericalSample_doc.i.in
-                      HistoryStrategyImplementation.i
-                      HistoryStrategy.i
+                      HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
+                      HistoryStrategy.i HistoryStrategy_doc.i.in
                       BaseTypTemplateDefs.i
                    )
 
 ot_add_python_module(statistics statistics_module.i
                       LevelSet.i LevelSet_doc.i.in
-                      Compact.i
-                      Full.i
-                      Last.i
-                      Null.i
+                      Compact.i Compact_doc.i.in
+                      Full.i Full_doc.i.in
+                      Last.i Last_doc.i.in
+                      Null.i Null_doc.i.in
                       ConfidenceInterval.i
                       LinearModel.i LinearModel_doc.i.in
                       LinearModelFactory.i LinearModelFactory_doc.i.in
@@ -223,7 +223,7 @@ ot_add_python_module(geom geom_module.i
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i.in
                       Drawable.i Drawable_doc.i.in
-                      GraphImplementation.i
+                      GraphImplementation.i GraphImplementation_doc.i.in
                       Graph.i Graph_doc.i.in
                       BarPlot.i BarPlot_doc.i.in
                       Cloud.i Cloud_doc.i.in
@@ -294,7 +294,7 @@ ot_add_python_module(func func_module.i
                       IndicatorNumericalMathEvaluationImplementation.i
                       PiecewiseLinearEvaluationImplementation.i
                       PiecewiseHermiteEvaluationImplementation.i
-                      ProductPolynomialEvaluationImplementation.i
+                      ProductPolynomialEvaluationImplementation.i ProductPolynomialEvaluationImplementation_doc.i.in
                       ParametricEvaluationImplementation.i
                       ParametricGradientImplementation.i
                       ParametricHessianImplementation.i
@@ -389,7 +389,7 @@ ot_add_python_module(algo algo_module.i
                       PythonNumericalMathEvaluationImplementation.cxx
                       PythonNumericalMathGradientImplementation.cxx
                       PythonNumericalMathHessianImplementation.cxx
-                      KissFFT.i
+                      KissFFT.i KissFFT_doc.i.in
                       IntegrationAlgorithmImplementation.i
                       IntegrationAlgorithm.i
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
@@ -407,11 +407,11 @@ ot_add_python_module(experiment experiment_module.i
                       Composite.i Composite_doc.i.in
                       Factorial.i Factorial_doc.i.in
                       Box.i Box_doc.i.in
-                      CombinatorialGeneratorImplementation.i
-                      CombinatorialGenerator.i
-                      Combinations.i
-                      KPermutations.i
-                      Tuples.i
+                      CombinatorialGeneratorImplementation.i CombinatorialGeneratorImplementation_doc.i.in
+                      CombinatorialGenerator.i CombinatorialGenerator_doc.i.in
+                      Combinations.i Combinations_doc.i.in
+                      KPermutations.i KPermutations_doc.i.in
+                      Tuples.i Tuples_doc.i.in
                       BaseExperimentTemplateDefs.i
                    )
 
@@ -694,7 +694,7 @@ ot_add_python_module(metamodel metamodel_module.i
                    )
 
 ot_add_python_module(transformation transformation_module.i
-                      MarginalTransformationEvaluation.i
+                      MarginalTransformationEvaluation.i MarginalTransformationEvaluation_doc.i.in
                       MarginalTransformationGradient.i
                       MarginalTransformationHessian.i
                       NatafEllipticalCopulaEvaluation.i

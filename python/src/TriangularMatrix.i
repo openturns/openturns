@@ -4,6 +4,8 @@
 #include "TriangularMatrix.hxx"
 %}
 
+%include TriangularMatrix_doc.i
+
 %include TriangularMatrix.hxx
 
 namespace OT { 

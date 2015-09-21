@@ -4,6 +4,8 @@
 #include "HermitianMatrix.hxx"
 %}
 
+%include HermitianMatrix_doc.i
+
 %ignore OT::HermitianMatrix::checkHermitian;
 
 %include HermitianMatrix.hxx

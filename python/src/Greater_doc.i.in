@@ -1,0 +1,21 @@
+%feature("docstring") OT::Greater
+"Greater comparison operator.
+
+Available constructors:
+    Greater()
+
+See also
+--------
+Equal, GreaterOrEqual, Less, LessOrEqual
+
+Examples
+--------
+>>> import openturns as ot
+>>> operator = ot.Greater()
+>>> print(operator(1, 2))
+False
+>>> print(operator(2, 1))
+True
+>>> print(operator(2, 2))
+False
+"

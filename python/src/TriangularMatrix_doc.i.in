@@ -1,0 +1,34 @@
+%feature("docstring") OT::TriangularMatrix
+"Hermitian Matrix.
+
+Available constructors:
+    TriangularMatrix(*dim*)
+
+    TriangularMatrix(*dim, isLower*)
+
+Parameters
+----------
+dim : integer
+    The dimension of the triangular matrix (square matrix with *dim* rows and 
+    *dim* columns).
+isLower : bool
+    Flag telling if the matrix is triangular lower (*True*) or upper (*False*).
+    Default is *True*.
+
+See also
+--------
+Matrix
+
+Notes
+-----
+The triangular matrix is filled with 0."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TriangularMatrix::isLowerTriangular
+"Test whether the matrix is lower triangular or upper triangular.
+
+Returns
+-------
+isLower : bool
+    Flag telling if the matrix is triangular lower (*True*) or upper (*False*)."

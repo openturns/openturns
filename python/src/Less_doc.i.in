@@ -1,0 +1,21 @@
+%feature("docstring") OT::Less
+"Less comparison operator.
+
+Available constructors:
+    Less()
+
+See also
+--------
+Equal, Greater, GreaterOrEqual, LessOrEqual
+
+Examples
+--------
+>>> import openturns as ot
+>>> operator = ot.Less()
+>>> print(operator(1, 2))
+True
+>>> print(operator(2, 1))
+False
+>>> print(operator(2, 2))
+False
+"

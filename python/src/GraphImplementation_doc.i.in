@@ -1,0 +1,724 @@
+%define OT_Graph_doc
+"Class Graph containing drawable elements and a graphical context.
+
+Available constructors:
+    Graph(*title=''*)
+
+    Graph(*title, xTitle, yTitle, showAxes, legendPosition='', legendFontSize=1.0, logScale=ot.GraphImplementation.NONE*)
+
+Parameters
+----------
+title : str
+    Title of the graph.
+xTitle : str
+    Legend of the X axe.
+yTitle : str
+    Legend of the Y axe.
+showAxes : bool
+    *True* to draw the axes. *False* to hide them.
+legendPosition : str
+    Indication of the legend's position. If *legendPosition* is not specified,
+    the Graph has no legend. The valid strings are given by the
+    :meth:`GetValidLegendPositions` method.
+legendFontSize : float
+    Font size of the legend.
+logScale : int
+    logScale indicates whether the logarithmic scale is used either for one or both axes:
+
+    - ot.GraphImplementation.NONE or 0: no log scale is used,
+
+    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
+
+    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
+
+    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data.
+"
+%enddef
+%feature("docstring") OT::GraphImplementation
+OT_Graph_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getDrawables_doc
+"Accessor to the Drawables included in the Graph.
+
+Returns
+-------
+drawables : list of :class:`~openturns.Drawable`
+    Drawables included in the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getDrawables
+OT_Graph_getDrawables_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setDrawables_doc
+"Accessor to the Drawables included in the Graph.
+
+Parameters
+----------
+drawables : list of :class:`~openturns.Drawable`
+    Drawables included in the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::setDrawables
+OT_Graph_setDrawables_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getDrawable_doc
+"Accessor to a Drawable included in the Graph.
+
+Parameters
+----------
+index : positive int
+    Position of the Drawable.
+
+Returns
+-------
+drawable : :class:`~openturns.Drawable`
+    Drawable included in the Graph at the index."
+%enddef
+%feature("docstring") OT::GraphImplementation::getDrawable
+OT_Graph_getDrawable_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setDrawable_doc
+"Accessor to a Drawable included in the Graph.
+
+Parameters
+----------
+index : int
+    Position of the Drawable.
+drawable : :class:`~openturns.Drawable`
+    Drawable included in the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::setDrawable
+OT_Graph_setDrawable_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getColors_doc
+"Accessor to the colors of the Drawables included in the Graph.
+
+Returns
+-------
+listColors : :class:`~openturns.Description`
+    List of all the colors used for the Drawables contained inside the graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getColors
+OT_Graph_getColors_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setColors_doc
+"Update the colors of the Drawables inside the Graph.
+
+Parameters
+----------
+listColors : sequence of str
+    List of the colors used for each Drawable of the Graph.
+    If the *listColors*'s size is lower than the number of Drawables, the
+    first colors of *listColors* are re-used. If it is greated than
+    the number of Drawables, the last colors of the list are ignored.
+
+    The *listColors* argument can be the result of the static method
+    :meth:`~openturns.Drawable.BuildDefaultPalette` of the Drawable object."
+%enddef
+%feature("docstring") OT::GraphImplementation::setColors
+OT_Graph_setColors_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setDefaultColors_doc
+"Assign colors to a default palette to all the drawables of the Graph.
+
+Notes
+-----
+This method ensures that drawables of the Graph have different colors."
+%enddef
+%feature("docstring") OT::GraphImplementation::setDefaultColors
+OT_Graph_setDefaultColors_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getLegends_doc
+"Accessor to the legends of the Drawables inside the Graph.
+
+Returns
+-------
+legends : :class:`~openturns.Description`
+    Legends used for the drawables contained inside the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getLegends
+OT_Graph_getLegends_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setLegends_doc
+"Accessor to the legends of the Drawables inside the Graph.
+
+Parameters
+----------
+legends : sequence of str
+    Legends used for the drawables contained inside the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::setLegends
+OT_Graph_setLegends_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getLegendFontSize_doc
+"Accessor to the legends' font size of the Drawables inside the Graph.
+
+Returns
+-------
+fontSize : float
+    Legends' font size used for the drawables contained inside the Graph.
+
+See Also
+--------
+setLegendFontSize"
+%enddef
+%feature("docstring") OT::GraphImplementation::getLegendFontSize
+OT_Graph_getLegendFontSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setLegendFontSize_doc
+"Accessor to the legend's font size of the Drawables inside the Graph.
+
+Parameters
+----------
+fontSize : float
+    Legend's font size used for the drawables contained inside the Graph.
+
+Examples
+--------
+>>> import openturns as ot
+>>> fontSize = 1.0
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, 'topright', fontSize, 0)
+>>> myGraph.setLegendFontSize(1.5)
+>>> print(myGraph.getLegendFontSize())
+1.5"
+%enddef
+%feature("docstring") OT::GraphImplementation::setLegendFontSize
+OT_Graph_setLegendFontSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getLegendPosition_doc
+"Accessor to the legend's position of the Drawables inside the Graph.
+
+Returns
+-------
+position : str
+    Legend's position used for the drawables contained inside the Graph.
+
+See Also
+--------
+setLegendPosition, GetValidLegendPositions"
+%enddef
+%feature("docstring") OT::GraphImplementation::getLegendPosition
+OT_Graph_getLegendPosition_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setLegendPosition_doc
+"Accessor to the legend's position of the Drawables inside the Graph.
+
+Parameters
+----------
+position : str
+    Legend's position used for the drawables contained inside the Graph.
+    The valid positions are given by the method :meth:`GetValidLegendPositions`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> position = 'topright'
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
+>>> myGraph.setLegendPosition('bottomleft')
+>>> print(myGraph.getLegendPosition())
+bottomleft"
+%enddef
+%feature("docstring") OT::GraphImplementation::setLegendPosition
+OT_Graph_setLegendPosition_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_GetValidLegendPositions_doc
+"Accessor to the list of valid legend positions.
+
+Returns
+-------
+listPositions : :class:`~openturns.Description`
+    All the valid legend positions.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Graph().GetValidLegendPositions())
+[,bottomright,bottom,bottomleft,left,topleft,top,topright,right,center]#10"
+%enddef
+%feature("docstring") OT::GraphImplementation::GetValidLegendPositions
+OT_Graph_GetValidLegendPositions_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_isValidLegendPosition_doc
+"Test if the proposed legend position is valid or not.
+
+Parameters
+----------
+position : str
+    Proposed legend position of the Drawables inside the Graph.
+
+Returns
+-------
+validity : bool
+    *True* if the proposed legend position is valid, *False* if it is not.
+
+See Also
+--------
+setLegendPosition, GetValidLegendPositions
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Graph().isValidLegendPosition('lefttop'))
+False
+>>> print(ot.Graph().isValidLegendPosition('topleft'))
+True"
+%enddef
+%feature("docstring") OT::GraphImplementation::isValidLegendPosition
+OT_Graph_isValidLegendPosition_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getAxes_doc
+"Accessor to the indication of axes' presence on the Graph.
+
+Returns
+-------
+axes : bool
+    *True* if the axes are drawn, *False* if they are hidden."
+%enddef
+%feature("docstring") OT::GraphImplementation::getAxes
+OT_Graph_getAxes_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setAxes_doc
+"Accessor to the indication of axes' presence on the Graph.
+
+Parameters
+----------
+axes : bool
+    *True* to draw the axes, *False* to hide the axes."
+%enddef
+%feature("docstring") OT::GraphImplementation::setAxes
+OT_Graph_setAxes_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getLogScale_doc
+"Accessor to the indication of axes' scale of the Graph.
+
+Returns
+-------
+scale : int
+    Indicates the type of the axes's scale:
+
+    - 0: no log scale is used,
+
+    - 1: log scale is used only for horizontal data,
+
+    - 2: log scale is used only for vertical data,
+
+    - 3: log scale is used for both data."
+%enddef
+%feature("docstring") OT::GraphImplementation::getLogScale
+OT_Graph_getLogScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setLogScale_doc
+"Accessor to the indication of axes' scale of the Graph.
+
+Parameters
+----------
+scale : int
+    Indicates the type of the axes's scale:
+
+    - ot.GraphImplementation.NONE or 0: no log scale is used,
+
+    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
+
+    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
+
+    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data."
+%enddef
+%feature("docstring") OT::GraphImplementation::setLogScale
+OT_Graph_setLogScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getXTitle_doc
+"Accessor to the title of the X axe.
+
+Returns
+-------
+Xtitle : str
+    Title of the X axe."
+%enddef
+%feature("docstring") OT::GraphImplementation::getXTitle
+OT_Graph_getXTitle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setXTitle_doc
+"Accessor to the title of the X axe.
+
+Parameters
+----------
+Xtitle : str
+    Title of the X axe."
+%enddef
+%feature("docstring") OT::GraphImplementation::setXTitle
+OT_Graph_setXTitle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getYTitle_doc
+"Accessor to the title of the Y axe.
+
+Returns
+-------
+Ytitle : str
+    Title of the Y axe."
+%enddef
+%feature("docstring") OT::GraphImplementation::getYTitle
+OT_Graph_getYTitle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setYTitle_doc
+"Accessor to the title of the Y axe.
+
+Parameters
+----------
+Ytitle : str
+    Title of the Y axe."
+%enddef
+%feature("docstring") OT::GraphImplementation::setYTitle
+OT_Graph_setYTitle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getTitle_doc
+"Accessor to the title of the Graph.
+
+Returns
+-------
+title : str
+    Title of the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getTitle
+OT_Graph_getTitle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setTitle_doc
+"Accessor to the title of the Graph.
+
+Parameters
+----------
+title : str
+    Title of the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::setTitle
+OT_Graph_setTitle_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getName_doc
+"Accessor to the name of the Graph.
+
+Returns
+-------
+name : str
+    Name of the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getName
+OT_Graph_getName_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setName_doc
+"Accessor to the name of the Graph.
+
+Parameters
+----------
+name : str
+    Name of the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::setName
+OT_Graph_setName_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getGrid_doc
+"Accessor to the indication of grid's presence on the Graph.
+
+Returns
+-------
+showGrid : bool
+    *True* to show the grid of the Graph, *False* to hide it.
+    By default there is a gray grid."
+%enddef
+%feature("docstring") OT::GraphImplementation::getGrid
+OT_Graph_getGrid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setGrid_doc
+"Hide or shows grid of the Graph.
+
+Parameters
+----------
+showGrid : bool
+    *True* to show the grid of the Graph, *False* to hide it."
+%enddef
+%feature("docstring") OT::GraphImplementation::setGrid
+OT_Graph_setGrid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getGridColor_doc
+"Accessor to the indication of grid's color on the Graph.
+
+Returns
+-------
+gridColor : str
+    Color of the grid. By default the grid is gray."
+%enddef
+%feature("docstring") OT::GraphImplementation::getGridColor
+OT_Graph_getGridColor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setGridColor_doc
+"Accessor to the indication of grid's color on the Graph.
+
+Parameters
+----------
+gridColor : str
+    Color of the grid. By default the grid is gray."
+%enddef
+%feature("docstring") OT::GraphImplementation::setGridColor
+OT_Graph_setGridColor_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getFileName_doc
+"Accessor to the name of the file containing the Graph.
+
+Returns
+-------
+fileName : str
+    Name of the file containing the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getFileName
+OT_Graph_getFileName_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getPath_doc
+"Accessor to the file path excluding the suffix.
+
+Returns
+-------
+path : str
+    Path of the file containing the Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::getPath
+OT_Graph_getPath_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getBitmap_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::GraphImplementation::getBitmap
+OT_Graph_getBitmap_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getPostscript_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::GraphImplementation::getPostscript
+OT_Graph_getPostscript_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getVectorial_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::GraphImplementation::getVectorial
+OT_Graph_getVectorial_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getPDF_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::GraphImplementation::getPDF
+OT_Graph_getPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getBoundingBox_doc
+"Accessor to the bounding box of the whole plot.
+
+Returns
+-------
+boundingBox : :class:`~openturns.NumericalPoint` of dimension 4
+    Bounding box of the drawable element, which is a rectangle determined
+    by its range along X and its range along Y.
+    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+%enddef
+%feature("docstring") OT::GraphImplementation::getBoundingBox
+OT_Graph_getBoundingBox_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setBoundingBox_doc
+"Accessor to the bounding box of the whole plot.
+
+Parameters
+----------
+boundingBox : sequence of float of dimension 4
+    Bounding box of the drawable element, which is a rectangle determined
+    by its range along X and its range along Y.
+    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+%enddef
+%feature("docstring") OT::GraphImplementation::setBoundingBox
+OT_Graph_setBoundingBox_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getRCommand_doc
+"**(ditch me?)**"
+%enddef
+%feature("docstring") OT::GraphImplementation::getRCommand
+OT_Graph_getRCommand_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getAutomaticBoundingBox_doc
+"Accessor to the indication of automatic bounding box.
+
+Returns
+-------
+autoBoundingBox : bool
+    Indicates if the bounding box is automatically created or not.
+    The bounding box of the drawable element is a rectangle determined
+    by its range along X and its range along Y.
+    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+%enddef
+%feature("docstring") OT::GraphImplementation::getAutomaticBoundingBox
+OT_Graph_getAutomaticBoundingBox_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setAutomaticBoundingBox_doc
+"Accessor to the indication of automatic bounding box.
+
+Parameters
+----------
+autoBoundingBox : bool
+    Indicates if the bounding box is automatically created or not.
+    The bounding box of the drawable element is a rectangle determined
+    by its range along X and its range along Y.
+    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+%enddef
+%feature("docstring") OT::GraphImplementation::setAutomaticBoundingBox
+OT_Graph_setAutomaticBoundingBox_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_draw_doc
+"Generate graphic files.
+
+Parameters
+----------
+file : str
+     Name of the created file. The format is guessed from the extension.
+     Supports png, fig, pdf and eps file formats. When the path is not
+     specified in the file name, the files are created in the current directory.
+width : float
+    Number of pixels fixing the width of the Graph, default value=640.
+height : float
+    Number of pixels fixing the height of the Graph, default value=480."
+%enddef
+%feature("docstring") OT::GraphImplementation::draw
+OT_Graph_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_add_doc
+"Add drawable instances to the collection of drawables contained in Graph.
+
+Available usages:
+    add(*drawables*)
+
+    add(*aGraph*)
+
+Parameters
+----------
+drawables : :class:`~openturns.Drawable` or list of :class:`~openturns.Drawable`
+    Drawable to add in the Graph.
+aGraph : :class:`~openturns.Graph`
+    Graph to add in the Graph.
+
+Notes
+-----
+It adds the new drawables or graph inside the first one, with their legend.
+It keeps the graphical context of the first graph. Each drawable keeps
+its graphical context.
+
+.. warning::
+    Different drawables might be colored the same..."
+%enddef
+%feature("docstring") OT::GraphImplementation::add
+OT_Graph_add_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_clean_doc
+"Clean temporary files.
+
+Notes
+-----
+Cleans all the temporary data created by the drawables during their drawing."
+%enddef
+%feature("docstring") OT::GraphImplementation::clean
+OT_Graph_clean_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_erase_doc
+"Erase a drawable instance from the collection of drawables contained in Graph.
+
+Parameters
+----------
+index : int
+    Index of the drawable instance to erase from the collection of drawables
+    contained in Graph."
+%enddef
+%feature("docstring") OT::GraphImplementation::erase
+OT_Graph_erase_doc

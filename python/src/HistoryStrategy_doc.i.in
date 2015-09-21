@@ -1,0 +1,10 @@
+// HistoryStrategy docstrings are defined in HistoryStrategyImplementation_doc.i.in
+
+%feature("docstring") OT::HistoryStrategy
+OT_HistoryStrategy_doc
+%feature("docstring") OT::HistoryStrategy::getSample
+OT_HistoryStrategy_getSample_doc
+%feature("docstring") OT::HistoryStrategy::clear
+OT_HistoryStrategy_clear_doc
+%feature("docstring") OT::HistoryStrategy::store
+OT_HistoryStrategy_store_doc

@@ -1,0 +1,145 @@
+%feature("docstring") OT::MarginalTransformationEvaluation
+"Marginal transformation evaluation.
+
+Available constructors:
+    MarginalTransformationEvaluation(*distCol*)
+
+    MarginalTransformationEvaluation(*distCol, direction*)
+
+    MarginalTransformationEvaluation(*distCol, outputDistCol*)
+
+
+Parameters
+----------
+distCol : :class:`~openturns.DistributionCollection`
+    A collection of distributions.
+direction : integer
+    Flag for the direction of the transformation, either integer or 
+    *MarginalTransformationEvaluation.FROM* (associated to the integer 0) or 
+    *MarginalTransformationEvaluation.TO* (associated to the integer 1).
+    Default is 0.
+outputDistCol : :class:`~openturns.DistributionCollection`
+    A collection of distributions.
+
+Notes
+-----
+This class contains a :class:`~openturns.NumericalMathFunction` which can be
+evaluated in one point but which proposes no gradient nor hessian implementation.
+
+- In the two first usage, if :math:`direction = 0`, the created operator
+  transforms a :class:`~openturns.NumericalPoint` into its rank according to the
+  marginal distributions described in *distCol*. Let
+  :math:`(F_{X_1}, \ldots, F_{X_n})` be the CDF of the distributions contained
+  in *distCol*, then the created operator works as follows:
+
+  .. math::
+
+      (x_1, \ldots, x_n) \rightarrow (F_{X_1}(x_1), \ldots, F_{X_n}(x_n))
+
+  If :math:`direction = 1`, the created operator works in the opposite direction:
+
+  .. math::
+
+      (x_1, \ldots, x_n) \rightarrow (F^{-1}_{X_1}(x_1), \ldots, F^{-1}_{X_n}(x_n))
+
+  In that case, it requires that all the values :math:`x_i` be in :math:`[0, 1]`.
+
+- In the third usage, the created operator transforms a
+  :class:`~openturns.NumericalPoint` into the following one, where *outputDistCol*
+  contains the :math:`(F_{Y_1}, \ldots, F_{Y_n})` distributions:
+
+  .. math::
+
+      (x_1, \ldots, x_n) \rightarrow (F^{-1}_{Y_1} \circ F_{X_1}(x_1), \ldots, F^{-1}_{Y_n} \circ F_{X_n}(x_n))
+
+Examples
+--------
+>>> import openturns as ot
+>>> distCol = [ot.Normal(), ot.LogNormal()]
+>>> margTransEval = ot.MarginalTransformationEvaluation(distCol, 0)
+>>> print(margTransEval([1, 3]))
+[0.841345,0.864031]
+>>> margTransEvalInverse = ot.MarginalTransformationEvaluation(distCol, 1)
+>>> print(margTransEvalInverse([0.84, 0.86]))
+[0.994458,2.94562]
+>>> outputDistCol = [ot.Weibull(), ot.Exponential()]
+>>> margTransEvalComposed = ot.MarginalTransformationEvaluation(distCol, outputDistCol)
+>>> print(margTransEvalComposed([1, 3]))
+[1.84102,1.99533]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::getDirection
+"Accessor to the direction.
+
+Returns
+-------
+direction : integer
+    The direction of the transformation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::getExpressions
+"Accessor to the numerical math function.
+
+Returns
+-------
+listFunction : :class:`~openturns.NumericalMathFunctionCollection`
+    The collection of numerical math functions if the analytical expressions 
+    exist."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::getInputDistributionCollection
+"Accessor to the input distribution collection.
+
+Returns
+-------
+inputDistCol : :class:`~openturns.DistributionCollection`
+    The input distribution collection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::getOutputDistributionCollection
+"Accessor to the output distribution collection.
+
+Returns
+-------
+outputDistCol : :class:`~openturns.DistributionCollection`
+    The output distribution collection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::getSimplifications
+"Try to simplify the transformations if it is possible."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::setDirection
+"Accessor to the direction.
+
+Parameters
+----------
+direction : integer
+    The direction of the transformation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::setInputDistributionCollection
+"Accessor to the input distribution collection.
+
+Parameters
+----------
+inputDistCol : :class:`~openturns.DistributionCollection`
+    The input distribution collection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::setOutputDistributionCollection
+"Accessor to the output distribution collection.
+
+Parameters
+----------
+outputDistCol : :class:`~openturns.DistributionCollection`
+    The output distribution collection."

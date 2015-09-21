@@ -4,6 +4,8 @@
 #include "GreaterOrEqual.hxx"
 %}
 
+%include GreaterOrEqual_doc.i
+
 %include GreaterOrEqual.hxx
 namespace OT {  
 %extend GreaterOrEqual {

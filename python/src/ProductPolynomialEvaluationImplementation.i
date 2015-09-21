@@ -4,6 +4,8 @@
 #include "ProductPolynomialEvaluationImplementation.hxx"
 %}
 
+%include ProductPolynomialEvaluationImplementation_doc.i
+
 %template(PolynomialCollection) OT::Collection<OT::UniVariatePolynomial>;
 
 %template(PolynomialPersistentCollection) OT::PersistentCollection<OT::UniVariatePolynomial>;

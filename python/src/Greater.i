@@ -4,6 +4,8 @@
 #include "Greater.hxx"
 %}
 
+%include Greater_doc.i
+
 %include Greater.hxx
 namespace OT {  
 %extend Greater {

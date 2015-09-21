@@ -1,0 +1,45 @@
+%feature("docstring") OT::TriangularComplexMatrix
+"Hermitian Matrix.
+
+Available constructors:
+    TriangularComplexMatrix(*dim*)
+
+    TriangularComplexMatrix(*dim, isLower*)
+
+Parameters
+----------
+dim : integer
+    The dimension of the triangular matrix (square matrix with *dim* rows and 
+    *dim* columns).
+isLower : bool
+    Flag telling if the matrix is triangular lower (*True*) or upper (*False*).
+    Default is *True*.
+
+See also
+--------
+ComplexMatrix
+
+Notes
+-----
+The triangular complex matrix is filled with :math:`(0, 0)`. It is not possible to fill
+the matrix from a collection of complex values (to be done later)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TriangularComplexMatrix::isLowerTriangular
+"Test whether the matrix is lower triangular or upper triangular.
+
+Returns
+-------
+isLower : bool
+    Flag telling if the matrix is triangular lower (*True*) or upper (*False*)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TriangularComplexMatrix::getDimension
+"Accessor to the matrix dimension.
+
+Returns
+-------
+dim : integer
+    The dimension of the matrix."

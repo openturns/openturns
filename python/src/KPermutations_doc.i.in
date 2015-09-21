@@ -1,0 +1,93 @@
+%feature("docstring") OT::KPermutations
+"K permutations generator.
+
+Available constructors:
+    KPermutations()
+
+    KPermutations(*n*)
+
+    KPermutations(*k, n*)
+
+Parameters
+----------
+k : integer
+    The cardinal of the origin set
+n : integer
+    The cardinal of the goal set
+
+See also
+--------
+CombinatorialGenerator, Combinations, Tuples
+
+Notes
+-----
+In the first usage, the generator is built using the default values :math:`k = 1`,
+:math:`n = 1`.
+
+In the second usage, the generator is built using the value :math:`k = n`.
+
+In the third usage, the generator produces all the injective functions from a
+set with *k* elements into a set with *n* elements. If :math:`k = n` it means
+all the permutations of a set with *n* elements.
+
+The number of indices generated is:
+
+.. math::
+    
+    \frac{n!}{(n - k)!}
+
+The combinations generator generates a collection of :class:`~openturns.Indices`
+that contains all the :math:`k!` permutations of all the
+:math:`\frac{n!}{k! (n - k)!}` subsets with :math:`k` elements of a set with
+:math:`n` elements.
+
+The subsets are generated in lexical order, and for each subset all the
+corresponding injective functions are generated in lexical order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> kperm = ot.KPermutations(2, 4)
+>>> print(kperm.generate())
+[[0,1],[1,0],[0,2],[2,0],[0,3],[3,0],[1,2],[2,1],[1,3],[3,1],[2,3],[3,2]]#12
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutations::getK
+"Accessor to the cardinal of the subsets.
+
+Returns
+-------
+k : integer
+    The cardinal of the subsets."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutations::getN
+"Accessor to the cardinal of the base set.
+
+Returns
+-------
+n : integer
+    The cardinal of the base set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutations::setK
+"Accessor to the cardinal of the subsets.
+
+Parameters
+----------
+k : integer
+    The cardinal of the subsets."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutations::setN
+"Accessor to the cardinal of the base set.
+
+Parameters
+----------
+n : integer
+    The cardinal of the base set."

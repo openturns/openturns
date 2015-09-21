@@ -4,6 +4,8 @@
 #include "Equal.hxx"
 %}
 
+%include Equal_doc.i
+
 %include Equal.hxx
 namespace OT {  
 %extend Equal {

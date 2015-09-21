@@ -1,0 +1,97 @@
+%define OT_HistoryStrategy_doc
+"History storage strategy.
+
+Available constructors:
+    HistoryStrategy()
+
+    HistoryStrategy(*historyStrategyImp*)
+
+Parameters
+----------
+historyStrategyImp : HistoryStrategyImplementation
+    An implementation of a history strategy which is provided by
+    :class:`~openturns.Compact`, :class:`~openturns.Full`,
+    :class:`~openturns.Last` or :class:`~openturns.Null` class.
+
+See also
+--------
+Compact, Full, Last, Null
+
+Notes
+-----
+In order to prevent a memory problem, the User has the possibility to choose the 
+storage strategy used to save the numerical samples. Four strategies are proposed :
+
+- the :class:`~openturns.Null` strategy where nothing is stored. This class
+  does not require to specify arguments.
+- the :class:`~openturns.Full` strategy where every point is stored. Be careful!
+  The memory will be exhausted for huge samples. This class does not require to
+  specify arguments.
+- the :class:`~openturns.Last` strategy where only the *N* last points are
+  stored, where *N* is specified by the User. This class requires to
+  specify the number of points to store.
+- the :class:`~openturns.Compact` strategy where a regularly spaced sub-sample
+  is stored. The minimum size *N* of the stored numerical sample is
+  specified by the User. OpenTURNS proceeds as follows :
+
+  1. it stores the first *2N* simulations : the size of the stored
+     sample is *2N*,
+  2. it selects only 1 out of 2 of the stored simulations : then the size of
+     the stored sample decreases to *N* (this is the *compact* step),
+  3. it stores the next *N* simulations when selecting 1 out of 2 of the
+     next simulations : the size of the stored sample is *2N*,
+  4. it selects only 1 out of 2 of the stored simulations : then the size of
+     the stored sample decreases to *N*,
+  5. it stores the next *N* simulations when selecting 1 out of 4 of the
+     next simulations : the size of the stored sample is *2N*,
+  6. then it keeps on until reaching the stopping criteria.
+
+  The stored numerical sample will have a size within *N* and *2N*.
+  This class requires to specify the number of points to store."
+%enddef
+%feature("docstring") OT::HistoryStrategyImplementation
+OT_HistoryStrategy_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HistoryStrategy_getSample_doc
+"Accessor to the stored sample.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    Numerical sample which is the collection of points stored by the history
+    strategy."
+%enddef
+%feature("docstring") OT::HistoryStrategyImplementation::getSample
+OT_HistoryStrategy_getSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HistoryStrategy_clear_doc
+"Clear the stored points.
+
+Notes
+-----
+It erases the previously stored points"
+%enddef
+%feature("docstring") OT::HistoryStrategyImplementation::clear
+OT_HistoryStrategy_clear_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HistoryStrategy_store_doc
+"Store points or samples.
+
+Parameters
+----------
+data : sequence of float or 2-d sequence of float
+    Point or sample to store. 
+
+Notes
+-----
+It adds a unique point or all the point of the sample in the natural order to
+the history."
+%enddef
+%feature("docstring") OT::HistoryStrategyImplementation::store
+OT_HistoryStrategy_store_doc

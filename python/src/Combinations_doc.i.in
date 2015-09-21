@@ -1,0 +1,88 @@
+%feature("docstring") OT::Combinations
+"Combinations generator.
+
+Available constructors:
+    Combinations()
+
+    Combinations(*k, n*)
+
+Parameters
+----------
+k : integer
+    The cardinal of the subsets
+n : integer
+    The cardinal of the base set
+
+See also
+--------
+CombinatorialGenerator, KPermutations, Tuples
+
+Notes
+-----
+In the first usage, the generator is built using the default values :math:`k = 1`,
+:math:`n = 1`.
+
+In the second usage, the generator produces all the subsets with *k* elements of
+a base set with *n* elements. The subsets are produced as a collection of 
+:class:`~openturns.Indices` in lexical order, the elements of each subset being
+sorted in increasing order.
+
+The number of indices generated is:
+
+.. math::
+    
+    \frac{n!}{k! (n - k)!}
+
+The combinations generator generates a collection of :class:`~openturns.Indices`
+where:
+
+- the :class:`~openturns.Indices` are sorted in lexical order,
+- the components are sorted within a given :class:`~openturns.Indices`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> tuples = ot.Combinations(2, 5)
+>>> print(tuples.generate())
+[[0,1],[0,2],[0,3],[0,4],[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]#10
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Combinations::getK
+"Accessor to the cardinal of the subsets.
+
+Returns
+-------
+k : integer
+    The cardinal of the subsets."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Combinations::getN
+"Accessor to the cardinal of the base set.
+
+Returns
+-------
+n : integer
+    The cardinal of the base set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Combinations::setK
+"Accessor to the cardinal of the subsets.
+
+Parameters
+----------
+k : integer
+    The cardinal of the subsets."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Combinations::setN
+"Accessor to the cardinal of the base set.
+
+Parameters
+----------
+n : integer
+    The cardinal of the base set."
