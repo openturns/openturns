@@ -200,7 +200,7 @@ ot_add_python_module(statistics statistics_module.i
                       StationaryCovarianceModelFactory.i
                       NonStationaryCovarianceModelFactory.i
                       SquaredExponential.i SquaredExponential_doc.i.in
-                      GeneralizedExponential.i
+                      GeneralizedExponential.i GeneralizedExponential_doc.i.in
                       AbsoluteExponential.i AbsoluteExponential_doc.i.in
                       MaternModel.i MaternModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
