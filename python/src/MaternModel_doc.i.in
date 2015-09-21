@@ -25,7 +25,7 @@ The covariance function of input dimension *dim* is:
 
 See Also
 --------
-CovarianceModel
+CovarianceModel, SquaredExponential, AbsoluteExponential, GeneralizedExponential
 
 Examples
 --------
