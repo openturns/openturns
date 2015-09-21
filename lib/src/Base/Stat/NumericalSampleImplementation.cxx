@@ -660,10 +660,60 @@ String NumericalSampleImplementation::__repr__() const
   oss << "class=" << NumericalSampleImplementation::GetClassName()
       << " name=" << getName()
       << " size=" << size_
-      << " dimension=" << dimension_
-      << " data=[";
+      << " dimension=" << dimension_;
+
+  const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisThreshold");
+  const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisSize");
+  const Bool ellipsis = (data_.getSize() > printEllipsisThreshold);
+
+  const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
+
+  if (printDescription) {
+    const char * sep = "";
+
+    oss << " description=[";
+    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep = ",") {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
+        if (j == printEllipsisSize) {
+          oss << sep << "...";
+        }
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+          continue;
+        }
+      }
+      oss << sep << (*p_description_)[j];
+    }
+    oss << "]";
+  }
+
+  oss << " data=[";
   const char * sep = "";
-  for(const_iterator it = begin(); it != end(); ++it, sep = ",") oss << sep << *it;
+
+  for (UnsignedInteger i = 0; i < size_; ++ i, sep = ",") {
+    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
+      if (i == printEllipsisSize) {
+        oss << sep << "...";
+      }
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+        continue;
+      }
+    }
+    oss << sep << "[";
+    const char * sep2 = "";
+    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep2 = ",")
+    {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
+        if (j == printEllipsisSize) {
+          oss << sep2 << "...";
+        }
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+          continue;
+        }
+      }
+      oss << sep2 << data_[i * dimension_ + j];
+    }
+    oss << "]";
+  }
   oss << "]";
   return oss;
 }
@@ -675,6 +725,10 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   // for the description that is not stored in the sample, producing a spurious output
   const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
 
+  const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisThreshold");
+  const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisSize");
+  const Bool ellipsis = (data_.getSize() > printEllipsisThreshold);
+
   size_t twidth = 0; // column title max width
   size_t lwidth = 0; // LHS number max width
   size_t rwidth = 0; // RHS number max width
@@ -683,17 +737,36 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   if (printDescription)
   {
     for( UnsignedInteger j = 0; j < dimension_; ++j )
+    {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+          continue;
+        }
+      }
       twidth = std::max( twidth, (*p_description_)[j].size() );
+    }
   }
 
   for( UnsignedInteger i = 0; i < size_; ++i )
-    for( UnsignedInteger j = 0; j < dimension_; ++j )
+  {
+    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+        continue;
+      }
+    }
+    for (UnsignedInteger j = 0; j < dimension_; ++ j)
     {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+          continue;
+        }
+      }
       String st = OSS() << data_[i * dimension_ + j];
       size_t dotpos = st.find( '.' );
       lwidth = std::max( lwidth, (dotpos != String::npos) ? dotpos             : st.size() );
       rwidth = std::max( rwidth, (dotpos != String::npos) ? st.size() - dotpos : 0         );
     }
+  }
 
   if (twidth > lwidth + rwidth)
     rwidth = twidth - lwidth;
@@ -714,6 +787,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
+        if (j == printEllipsisSize) {
+          oss << sep << "...";
+        }
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+          continue;
+        }
+      }
       oss << sep << (*p_description_)[j] << String( twidth - (*p_description_)[j].size(), ' ' );
     }
     oss << " ]\n";
@@ -722,11 +803,27 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   const char * newline = "";
   for( UnsignedInteger i = 0; i < size_; ++i, newline = "\n" )
   {
+    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
+      if (i == printEllipsisSize) {
+        oss << "\n...";
+      }
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+        continue;
+      }
+    }
     String sti = OSS() << i;
     oss << newline << offset << String( iwidth - sti.size(), ' ' ) << sti << " : [ ";
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
+        if (j == printEllipsisSize) {
+          oss << sep << "...";
+        }
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+          continue;
+        }
+      }
       String st = OSS() << data_[i * dimension_ + j];
       size_t dotpos = st.find( '.' );
       oss << sep << String( lwidth - ((dotpos != String::npos) ? dotpos : st.size()), ' ' )
