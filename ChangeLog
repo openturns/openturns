@@ -1,5 +1,23 @@
 = New Features =
 
+== 1.7 release (in-progress) == #release-1.7
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+
+=== Python module ===
+
+=== Miscellaneous ===
+ * Enhanced print of samples
+
+=== Bug fixes ===
+
+
 == 1.6 release (2015-08-14) == #release-1.6
 
 === Library ===
