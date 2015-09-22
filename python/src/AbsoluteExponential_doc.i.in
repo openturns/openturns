@@ -1,0 +1,36 @@
+%feature("docstring") OT::AbsoluteExponential
+"Absolute exponential covariance model.
+
+Available constructors:
+    AbsoluteExponential(*dim=1, theta=10*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    Input dimension.
+theta : float
+    Coefficient :math:`\theta` of the covariance function, default is 10.
+
+Notes
+-----
+The covariance function of input dimension *dim* is:
+
+.. math::
+
+    C(s, t) = e^{- \frac{||s-t||}{\theta}}
+
+See Also
+--------
+CovarianceModel, SquaredExponential, GeneralizedExponential, MaternModel
+
+Examples
+--------
+>>> import openturns as ot
+>>> covarianceModel = ot.AbsoluteExponential(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(covarianceModel(s, t))
+[[ 0.985957 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covarianceModel(tau))
+[[ 0.968872 ]]"
