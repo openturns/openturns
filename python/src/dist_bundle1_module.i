@@ -26,6 +26,7 @@
 %include ArcsineMuSigma.i
 %include Bernoulli.i
 %include BernoulliFactory.i
+%include BernsteinCopulaFactory.i
 %include Beta.i
 %include BetaFactory.i
 %include BetaMuSigma.i

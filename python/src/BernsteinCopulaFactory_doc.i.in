@@ -1,0 +1,72 @@
+%feature("docstring") OT::BernsteinCopulaFactory
+"BernsteinCopula copula factory.
+
+Available constructors:
+    BernsteinCopulaFactory()
+
+See also
+--------
+DistributionFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BernsteinCopulaFactory::build
+"Build the nonparametric Bernstein copula estimator based on the empirical copula.
+
+**Available usages**:
+
+    build(*sample*)
+
+    build(*sample, m*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension *d*
+    The sample of size :math:`n>0` from which the copula is estimated.
+m : int
+    The number of sub-intervals in which all the edges of the unit cube :math:`[0, 1]^d` are regularly partitioned. 
+
+Notes
+-----
+If not given, the number of bins is computed by minimizing the asymptotic mean integrated squared error (AMISE), leading to
+
+.. math::
+
+    m = 1+\left\lfloor n^{\dfrac{2}{4+n}} \right\rfloor
+
+where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`.
+
+Then, the copula is estimated by a mixture of products of Beta distributions, ie its density function :math:`\hat{c}` is given by:
+
+.. math::
+
+    \forall (u_1,\hdots,u_d)\in[0,1]^d,\quad\hat{c}(u_1,\hdots,u_d) = \frac{1}{n}\sum_{i=1}^n\prod_{j=1}^d\beta_{\nu^i_j+1, m+1}(u_j)
+
+where :math:`\nu_j=\left\lfloor \dfrac{m}{n}\mathrm{rank}(X^i_j)\right\rfloor` is the index of the bin to which the normalized rank of the component :math:`j` of the observation :math:`j` belongs and :math:`\beta_{r,t}` is the density of the beta distribution supported by [0,1], see :class:`~openturns.Beta`.
+
+This estimator is called the Bernstein estimator because of the fact that, for integer shape parameters :math:`r` and :math:`t`, the density function of the beta distribution is equal to the Bernstein polynomial :math:`P_{r,t}`:
+
+.. math::
+
+    \beta_{r+1,t+1}(u)=(t+1)\binom{t}{r}u^r(1-u)^{t-r-1}=P_{r,t-r-1}(u)
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BernsteinCopulaFactory::computeBinNumber
+"Compute the optimal AMISE number of bins.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the optimal AMISE bin number is computed.
+
+Notes
+-----
+The number of bins is computed by minimizing the asymptotic mean integrated squared error (AMISE), leading to
+
+.. math::
+
+    m = 1+\left\lfloor n^{\dfrac{2}{4+n}} \right\rfloor
+
+where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`.
+"

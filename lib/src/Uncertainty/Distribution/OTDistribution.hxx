@@ -29,6 +29,7 @@
 #include "ArcsineMuSigma.hxx"
 #include "Bernoulli.hxx"
 #include "BernoulliFactory.hxx"
+#include "BernsteinCopulaFactory.hxx"
 #include "Beta.hxx"
 #include "BetaFactory.hxx"
 #include "BetaMuSigma.hxx"
