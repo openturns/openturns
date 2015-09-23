@@ -30,6 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 static pthread_once_t IdFactory_InstanceMutex_once = PTHREAD_ONCE_INIT;
 static AtomicInt IdFactory_NextId_;
+static const IdFactory_init __IdFactory_initializer;
 
 
 static void IdFactory_Initialization()

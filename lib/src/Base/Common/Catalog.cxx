@@ -37,6 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 static pthread_mutex_t Catalog_InstanceMutex_;
 static Catalog * Catalog_P_instance_ = 0;
 static pthread_once_t Catalog_InstanceMutex_once = PTHREAD_ONCE_INIT;
+static const Catalog_init __Catalog_initializer;
 
 Catalog_init::Catalog_init()
 {

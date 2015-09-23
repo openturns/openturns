@@ -247,8 +247,6 @@ struct OT_API Log_init
   ~Log_init();
 }; /* end struct Log_init */
 
-static Log_init __Log_initializer;
-
 
 END_NAMESPACE_OPENTURNS
 

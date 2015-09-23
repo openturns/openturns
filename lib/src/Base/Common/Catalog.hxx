@@ -95,8 +95,6 @@ struct OT_API Catalog_init
   ~Catalog_init();
 }; /* end struct Catalog_init */
 
-static Catalog_init __Catalog_initializer;
-
 
 
 END_NAMESPACE_OPENTURNS

@@ -35,6 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 static pthread_mutex_t TBB_InstanceMutex_;
 static TBB * TBB_P_instance_ = 0;
 static pthread_once_t TBB_InstanceMutex_once = PTHREAD_ONCE_INIT;
+static const TBB_init __TBB_initializer;
 
 #ifdef OPENTURNS_HAVE_TBB
 tbb::task_scheduler_init * TBB_P_scheduler_ = 0;
