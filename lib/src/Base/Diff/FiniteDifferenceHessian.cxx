@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FiniteDifferenceHessian);
 
-static Factory<FiniteDifferenceHessian> RegisteredFactory("FiniteDifferenceHessian");
+static const Factory<FiniteDifferenceHessian> RegisteredFactory;
 
 /* Default constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian()

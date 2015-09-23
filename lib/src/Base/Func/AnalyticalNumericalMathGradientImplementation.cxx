@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AnalyticalNumericalMathGradientImplementation);
 
-static Factory<AnalyticalNumericalMathGradientImplementation> RegisteredFactory("AnalyticalNumericalMathGradientImplementation");
+static const Factory<AnalyticalNumericalMathGradientImplementation> RegisteredFactory;
 
 /* Default constructor */
 AnalyticalNumericalMathGradientImplementation::AnalyticalNumericalMathGradientImplementation()

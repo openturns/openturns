@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Normal);
 
-static Factory<Normal> RegisteredFactory("Normal");
+static const Factory<Normal> RegisteredFactory;
 
 /* Constructor for multiD standard normal distribution */
 Normal::Normal(const UnsignedInteger dimension)

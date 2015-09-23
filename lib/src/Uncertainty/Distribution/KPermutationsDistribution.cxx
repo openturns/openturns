@@ -37,7 +37,7 @@ typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
 
 CLASSNAMEINIT(KPermutationsDistribution);
 
-static Factory<KPermutationsDistribution> RegisteredFactory("KPermutationsDistribution");
+static const Factory<KPermutationsDistribution> RegisteredFactory;
 
 /* Default constructor */
 KPermutationsDistribution::KPermutationsDistribution()

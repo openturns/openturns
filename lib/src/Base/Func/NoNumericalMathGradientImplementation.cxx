@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NoNumericalMathGradientImplementation);
 
-static Factory<NoNumericalMathGradientImplementation> RegisteredFactory("NoNumericalMathGradientImplementation");
+static const Factory<NoNumericalMathGradientImplementation> RegisteredFactory;
 
 /* Default constructor */
 NoNumericalMathGradientImplementation::NoNumericalMathGradientImplementation()

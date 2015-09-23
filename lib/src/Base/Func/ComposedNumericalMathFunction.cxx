@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComposedNumericalMathFunction);
 
-static Factory<ComposedNumericalMathFunction> RegisteredFactory("ComposedNumericalMathFunction");
+static const Factory<ComposedNumericalMathFunction> RegisteredFactory;
 
 /* Default constructor */
 ComposedNumericalMathFunction::ComposedNumericalMathFunction()

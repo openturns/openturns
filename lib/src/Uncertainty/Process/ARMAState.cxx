@@ -25,7 +25,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ARMAState);
-static Factory<ARMAState> RegisteredFactory("ARMAState");
+static const Factory<ARMAState> RegisteredFactory;
 
 /* Default constructor */
 ARMAState::ARMAState()

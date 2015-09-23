@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EllipticalDistribution);
 
-static Factory<EllipticalDistribution> RegisteredFactory("EllipticalDistribution");
+static const Factory<EllipticalDistribution> RegisteredFactory;
 
 /* Default constructor */
 EllipticalDistribution::EllipticalDistribution()

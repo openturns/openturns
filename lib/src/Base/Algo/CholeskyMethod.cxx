@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(CholeskyMethod);
 
 
-static Factory<CholeskyMethod> RegisteredFactory("CholeskyMethod");
+static const Factory<CholeskyMethod> RegisteredFactory;
 
 /* Default constructor */
 CholeskyMethod::CholeskyMethod()

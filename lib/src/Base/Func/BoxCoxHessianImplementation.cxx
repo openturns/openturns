@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BoxCoxHessianImplementation);
 
-static Factory<BoxCoxHessianImplementation> RegisteredFactory("BoxCoxHessianImplementation");
+static const Factory<BoxCoxHessianImplementation> RegisteredFactory;
 
 /* Default constructor */
 BoxCoxHessianImplementation::BoxCoxHessianImplementation()

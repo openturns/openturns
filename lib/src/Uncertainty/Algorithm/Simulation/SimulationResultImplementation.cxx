@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SimulationResultImplementation);
 
-static Factory<SimulationResultImplementation> RegisteredFactory("SimulationResultImplementation");
+static const Factory<SimulationResultImplementation> RegisteredFactory;
 
 /* Default constructor */
 SimulationResultImplementation::SimulationResultImplementation()

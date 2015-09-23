@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AggregatedNumericalMathEvaluationImplementation);
 
-static Factory<AggregatedNumericalMathEvaluationImplementation> RegisteredFactory("AggregatedNumericalMathEvaluationImplementation");
+static const Factory<AggregatedNumericalMathEvaluationImplementation> RegisteredFactory;
 
 
 /* Default constructor */

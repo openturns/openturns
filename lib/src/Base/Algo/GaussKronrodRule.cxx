@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GaussKronrodRule);
 
-static Factory<GaussKronrodRule> RegisteredFactory("GaussKronrodRule");
+static const Factory<GaussKronrodRule> RegisteredFactory;
 
 /* Constructor without parameters */
 GaussKronrodRule::GaussKronrodRule()

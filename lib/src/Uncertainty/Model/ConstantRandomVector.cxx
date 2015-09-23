@@ -30,7 +30,7 @@ typedef Collection<UserDefinedPair>              UserDefinedPairCollection;
 
 CLASSNAMEINIT(ConstantRandomVector);
 
-static Factory<ConstantRandomVector> RegisteredFactory("ConstantRandomVector");
+static const Factory<ConstantRandomVector> RegisteredFactory;
 
 /* Default constructor */
 ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription & point)

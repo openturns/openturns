@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SamplerImplementation);
 
-static Factory<SamplerImplementation> RegisteredFactory("SamplerImplementation");
+static const Factory<SamplerImplementation> RegisteredFactory;
 
 /* Default constructor */
 SamplerImplementation::SamplerImplementation()

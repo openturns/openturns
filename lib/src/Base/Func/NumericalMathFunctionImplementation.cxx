@@ -47,7 +47,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NumericalMathFunctionImplementation);
 
-static Factory<NumericalMathFunctionImplementation> RegisteredFactory("NumericalMathFunctionImplementation");
+static const Factory<NumericalMathFunctionImplementation> RegisteredFactory;
 
 // Inline documentation for analytical functions
 Bool NumericalMathFunctionImplementation::IsDocumentationInitialized_ = false;

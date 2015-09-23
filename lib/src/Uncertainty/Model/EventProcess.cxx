@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EventProcess);
 
-static Factory<EventProcess> RegisteredFactory("EventProcess");
+static const Factory<EventProcess> RegisteredFactory;
 
 /* Default constructor */
 EventProcess::EventProcess()

@@ -33,7 +33,7 @@ typedef Collection< NumericalComplex >         NumericalComplexCollection;
 
 CLASSNAMEINIT(ARMA);
 
-static Factory<ARMA> RegisteredFactory("ARMA");
+static const Factory<ARMA> RegisteredFactory;
 
 ARMA::ARMA()
   : ProcessImplementation()

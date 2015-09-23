@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Dirac);
 
-static Factory<Dirac> RegisteredFactory("Dirac");
+static const Factory<Dirac> RegisteredFactory;
 
 /* Default constructor */
 Dirac::Dirac()

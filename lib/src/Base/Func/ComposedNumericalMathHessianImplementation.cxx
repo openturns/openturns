@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComposedNumericalMathHessianImplementation);
 
-static Factory<ComposedNumericalMathHessianImplementation> RegisteredFactory("ComposedNumericalMathHessianImplementation");
+static const Factory<ComposedNumericalMathHessianImplementation> RegisteredFactory;
 
 /* Default constructor */
 ComposedNumericalMathHessianImplementation::ComposedNumericalMathHessianImplementation(const GradientImplementation & p_leftGradient,

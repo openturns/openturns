@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ChebychevAlgorithm);
 
-static Factory<ChebychevAlgorithm> RegisteredFactory("ChebychevAlgorithm");
+static const Factory<ChebychevAlgorithm> RegisteredFactory;
 
 /* Default constructor */
 ChebychevAlgorithm::ChebychevAlgorithm()

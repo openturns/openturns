@@ -26,12 +26,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory2("PersistentCollection<UnsignedInteger>");
+static const Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory2;
 
 
 
 CLASSNAMEINIT(FunctionalChaosResult);
-static Factory<FunctionalChaosResult> RegisteredFactory("FunctionalChaosResult");
+static const Factory<FunctionalChaosResult> RegisteredFactory;
 
 
 /* Default constructor */

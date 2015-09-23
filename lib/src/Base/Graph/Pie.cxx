@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Pie);
 
-static Factory<Pie> RegisteredFactory("Pie");
+static const Factory<Pie> RegisteredFactory;
 
 /* Default constructor */
 Pie::Pie(const NumericalPoint & data)

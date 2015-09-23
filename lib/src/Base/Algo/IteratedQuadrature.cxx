@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IteratedQuadrature);
 
-static Factory<IteratedQuadrature> RegisteredFactory("IteratedQuadrature");
+static const Factory<IteratedQuadrature> RegisteredFactory;
 
 /* Constructor without parameters */
 IteratedQuadrature::IteratedQuadrature()

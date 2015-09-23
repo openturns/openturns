@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RandomGeneratorState);
 
-static Factory<RandomGeneratorState> RegisteredFactory("RandomGeneratorState");
+static const Factory<RandomGeneratorState> RegisteredFactory;
 
 
 /* Default constructor */

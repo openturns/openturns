@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(IntegrationStrategy);
 
 
-static Factory<IntegrationStrategy> RegisteredFactory("IntegrationStrategy");
+static const Factory<IntegrationStrategy> RegisteredFactory;
 
 /* Default constructor */
 IntegrationStrategy::IntegrationStrategy()

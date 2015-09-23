@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AbdoRackwitz);
 
-static Factory<AbdoRackwitz> RegisteredFactory("AbdoRackwitz");
+static const Factory<AbdoRackwitz> RegisteredFactory;
 
 /* Default constructor */
 AbdoRackwitz::AbdoRackwitz()

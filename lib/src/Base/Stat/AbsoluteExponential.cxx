@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AbsoluteExponential);
 
-static Factory<AbsoluteExponential> RegisteredFactory("AbsoluteExponential");
+static const Factory<AbsoluteExponential> RegisteredFactory;
 
 
 /* Constructor based on spatial dimension */

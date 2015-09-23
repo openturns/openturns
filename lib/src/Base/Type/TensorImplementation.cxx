@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TensorImplementation);
 
-static Factory<TensorImplementation> RegisteredFactory("TensorImplementation");
+static const Factory<TensorImplementation> RegisteredFactory;
 
 /* Default constructor */
 TensorImplementation::TensorImplementation()

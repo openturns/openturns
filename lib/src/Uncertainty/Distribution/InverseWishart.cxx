@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseWishart);
 
-static Factory<InverseWishart> RegisteredFactory("InverseWishart");
+static const Factory<InverseWishart> RegisteredFactory;
 
 
 /* Default constructor */

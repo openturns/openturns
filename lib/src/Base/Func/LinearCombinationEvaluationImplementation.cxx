@@ -27,12 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalMathFunction>);
 
-static Factory<PersistentCollection<NumericalMathFunction> > RegisteredFactory_PC_NMF("PersistentCollection<NumericalMathFunction>");
+static const Factory<PersistentCollection<NumericalMathFunction> > RegisteredFactory_PC_NMF;
 
 
 CLASSNAMEINIT(LinearCombinationEvaluationImplementation);
 
-static Factory<LinearCombinationEvaluationImplementation> RegisteredFactory_LCEI("LinearCombinationEvaluationImplementation");
+static const Factory<LinearCombinationEvaluationImplementation> RegisteredFactory_LCEI;
 
 
 /* Default constructor */

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Contour);
 
-static Factory<Contour> RegisteredFactory("Contour");
+static const Factory<Contour> RegisteredFactory;
 
 /* Default constructor */
 Contour::Contour(const UnsignedInteger dimX,

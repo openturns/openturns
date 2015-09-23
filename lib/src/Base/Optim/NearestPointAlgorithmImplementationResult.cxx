@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NearestPointAlgorithmImplementationResult);
 
-static Factory<NearestPointAlgorithmImplementationResult> RegisteredFactory("NearestPointAlgorithmImplementationResult");
+static const Factory<NearestPointAlgorithmImplementationResult> RegisteredFactory;
 
 /* Default constructor */
 NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationResult()

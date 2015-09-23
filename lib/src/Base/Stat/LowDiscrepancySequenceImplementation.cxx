@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LowDiscrepancySequenceImplementation);
 
-static Factory<LowDiscrepancySequenceImplementation> RegisteredFactory("LowDiscrepancySequenceImplementation");
+static const Factory<LowDiscrepancySequenceImplementation> RegisteredFactory;
 
 /* Constructor with parameters */
 LowDiscrepancySequenceImplementation::LowDiscrepancySequenceImplementation(const UnsignedInteger dimension) :

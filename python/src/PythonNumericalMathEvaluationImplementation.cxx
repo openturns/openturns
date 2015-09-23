@@ -35,7 +35,7 @@ typedef NumericalMathEvaluationImplementation::CacheType                CacheTyp
 
 CLASSNAMEINIT(PythonNumericalMathEvaluationImplementation);
 
-static Factory<PythonNumericalMathEvaluationImplementation> RegisteredFactory("PythonNumericalMathEvaluationImplementation");
+static const Factory<PythonNumericalMathEvaluationImplementation> RegisteredFactory;
 
 
 

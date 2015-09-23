@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BlendedStep);
 
-static Factory<BlendedStep> RegisteredFactory("BlendedStep");
+static const Factory<BlendedStep> RegisteredFactory;
 
 /* Default constructor */
 BlendedStep::BlendedStep()

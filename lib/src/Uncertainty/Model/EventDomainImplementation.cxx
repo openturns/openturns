@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EventDomainImplementation);
 
-static Factory<EventDomainImplementation> RegisteredFactory("EventDomainImplementation");
+static const Factory<EventDomainImplementation> RegisteredFactory;
 /* Default constructor */
 EventDomainImplementation::EventDomainImplementation()
   : CompositeRandomVector()

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TruncatedDistribution);
 
-static Factory<TruncatedDistribution> RegisteredFactory("TruncatedDistribution");
+static const Factory<TruncatedDistribution> RegisteredFactory;
 
 /* Default constructor */
 TruncatedDistribution::TruncatedDistribution()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TrendTransform);
 
-static Factory<TrendTransform> RegisteredFactory("TrendTransform");
+static const Factory<TrendTransform> RegisteredFactory;
 
 /* Default constructor */
 TrendTransform::TrendTransform()

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 CLASSNAMEINIT(Last);
-static Factory<Last> RegisteredFactory("Last");
+static const Factory<Last> RegisteredFactory;
 
 /*Constructor with parameters */
 Last::Last()

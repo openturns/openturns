@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ApproximationAlgorithmImplementation);
 
-static Factory<ApproximationAlgorithmImplementation> RegisteredFactory("ApproximationAlgorithmImplementation");
+static const Factory<ApproximationAlgorithmImplementation> RegisteredFactory;
 
 /* Default constructor */
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()

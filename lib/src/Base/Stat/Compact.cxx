@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Compact);
 
-static Factory<Compact> RegisteredFactory("Compact");
+static const Factory<Compact> RegisteredFactory;
 
 /* Constructor with parameters */
 Compact::Compact()

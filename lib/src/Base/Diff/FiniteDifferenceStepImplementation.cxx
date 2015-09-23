@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FiniteDifferenceStepImplementation);
 
-static Factory<FiniteDifferenceStepImplementation> RegisteredFactory("FiniteDifferenceStepImplementation");
+static const Factory<FiniteDifferenceStepImplementation> RegisteredFactory;
 
 /* Default constructor */
 FiniteDifferenceStepImplementation::FiniteDifferenceStepImplementation()

@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PythonRandomVectorImplementation);
 
-static Factory<PythonRandomVectorImplementation> RegisteredFactory("PythonRandomVectorImplementation");
+static const Factory<PythonRandomVectorImplementation> RegisteredFactory;
 
 
 

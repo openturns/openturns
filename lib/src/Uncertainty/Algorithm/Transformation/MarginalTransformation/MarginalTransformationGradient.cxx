@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MarginalTransformationGradient);
 
-static Factory<MarginalTransformationGradient> RegisteredFactory("MarginalTransformationGradient");
+static const Factory<MarginalTransformationGradient> RegisteredFactory;
 
 /* ParameterDefault constructor */
 MarginalTransformationGradient::MarginalTransformationGradient()

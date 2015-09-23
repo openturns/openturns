@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Beta);
 
-static Factory<Beta> RegisteredFactory("Beta");
+static const Factory<Beta> RegisteredFactory;
 
 
 /* Default constructor */

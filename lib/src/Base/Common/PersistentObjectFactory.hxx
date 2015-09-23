@@ -104,8 +104,18 @@ class Factory
 public:
   /** Constructor
    *
-   * @param className The name of the class the %Factory is bounded to
    * @internal See the CLASSNAME_INIT macro.
+   */
+  Factory()
+  {
+    registerMe(PERSISTENT::GetClassName());
+  }
+
+  /** Constructor
+   *
+   * @param className unused
+   * @internal See the CLASSNAME_INIT macro.
+   * @deprecated
    */
   Factory(const String & /* className */)
   {

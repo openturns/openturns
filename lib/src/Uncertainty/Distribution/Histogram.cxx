@@ -29,11 +29,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<HistogramPair>);
-static Factory<PersistentCollection<HistogramPair> > RegisteredFactory("PersistentCollection<HistogramPair>");
+static const Factory<PersistentCollection<HistogramPair> > RegisteredFactory;
 
 CLASSNAMEINIT(Histogram);
 
-static Factory<Histogram> RegisteredFactory_alt("Histogram");
+static const Factory<Histogram> RegisteredFactory_alt;
 
 /* Default constructor */
 Histogram::Histogram()

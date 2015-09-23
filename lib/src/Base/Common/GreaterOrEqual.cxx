@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GreaterOrEqual);
 
-static Factory<GreaterOrEqual> RegisteredFactory("GreaterOrEqual");
+static const Factory<GreaterOrEqual> RegisteredFactory;
 
 /* Default constructor */
 GreaterOrEqual::GreaterOrEqual()

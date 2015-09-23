@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionParametersImplementation);
 
-// static Factory<DistributionParametersImplementation> RegisteredFactory("DistributionParametersImplementation");
+// static const Factory<DistributionParametersImplementation> RegisteredFactory;
 
 /* Default constructor */
 DistributionParametersImplementation::DistributionParametersImplementation()

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SolverImplementation);
 
-static Factory<SolverImplementation> RegisteredFactory("SolverImplementation");
+static const Factory<SolverImplementation> RegisteredFactory;
 
 /** Second parameter constructor */
 SolverImplementation::SolverImplementation(const NumericalScalar absoluteError,

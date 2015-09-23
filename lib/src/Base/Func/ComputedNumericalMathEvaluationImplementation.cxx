@@ -28,7 +28,7 @@ typedef NumericalMathEvaluationImplementation::CacheType                CacheTyp
 
 CLASSNAMEINIT(ComputedNumericalMathEvaluationImplementation);
 
-static Factory<ComputedNumericalMathEvaluationImplementation> RegisteredFactory("ComputedNumericalMathEvaluationImplementation");
+static const Factory<ComputedNumericalMathEvaluationImplementation> RegisteredFactory;
 
 
 /* Default constructor */

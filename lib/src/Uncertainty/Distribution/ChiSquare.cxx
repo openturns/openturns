@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ChiSquare);
 
-static Factory<ChiSquare> RegisteredFactory("ChiSquare");
+static const Factory<ChiSquare> RegisteredFactory;
 
 /* Default constructor */
 ChiSquare::ChiSquare()

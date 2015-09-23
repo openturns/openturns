@@ -27,7 +27,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SpectralModelImplementation);
-static Factory<SpectralModelImplementation> RegisteredFactory("SpectralModelImplementation");
+static const Factory<SpectralModelImplementation> RegisteredFactory;
 
 /* Constructor with parameters */
 SpectralModelImplementation::SpectralModelImplementation()

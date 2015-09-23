@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PiecewiseLinearEvaluationImplementation);
 
-static Factory<PiecewiseLinearEvaluationImplementation> RegisteredFactory("PiecewiseLinearEvaluationImplementation");
+static const Factory<PiecewiseLinearEvaluationImplementation> RegisteredFactory;
 
 
 /* Default constructor */

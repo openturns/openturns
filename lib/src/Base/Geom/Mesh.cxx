@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Mesh);
 
-static Factory<Mesh> RegisteredFactory("Mesh");
+static const Factory<Mesh> RegisteredFactory;
 
 /* Default constructor */
 Mesh::Mesh(const UnsignedInteger dimension)

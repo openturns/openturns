@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FittingAlgorithmImplementation);
 
-static Factory<FittingAlgorithmImplementation> RegisteredFactory("FittingAlgorithmImplementation");
+static const Factory<FittingAlgorithmImplementation> RegisteredFactory;
 
 /* Default constructor */
 FittingAlgorithmImplementation::FittingAlgorithmImplementation()

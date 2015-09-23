@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MarginalTransformationEvaluation);
 
-static Factory<MarginalTransformationEvaluation> RegisteredFactory("MarginalTransformationEvaluation");
+static const Factory<MarginalTransformationEvaluation> RegisteredFactory;
 
 
 /* Default constructor */

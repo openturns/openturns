@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearCombinationHessianImplementation);
 
-static Factory<LinearCombinationHessianImplementation> RegisteredFactory("LinearCombinationHessianImplementation");
+static const Factory<LinearCombinationHessianImplementation> RegisteredFactory;
 
 
 /* Default constructor */

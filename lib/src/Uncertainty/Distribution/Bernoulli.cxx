@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Bernoulli);
 
-static Factory<Bernoulli> RegisteredFactory("Bernoulli");
+static const Factory<Bernoulli> RegisteredFactory;
 
 /* Default constructor */
 Bernoulli::Bernoulli()

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DirectionalSampling);
 
-static Factory<DirectionalSampling> RegisteredFactory("DirectionalSampling");
+static const Factory<DirectionalSampling> RegisteredFactory;
 
 /* Constructor with parameters */
 DirectionalSampling::DirectionalSampling()

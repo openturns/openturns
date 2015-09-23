@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExponentialCauchy);
 
-static Factory<ExponentialCauchy> RegisteredFactory("ExponentialCauchy");
+static const Factory<ExponentialCauchy> RegisteredFactory;
 
 /* Constructor with parameters */
 ExponentialCauchy::ExponentialCauchy()

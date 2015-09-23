@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseBoxCoxGradientImplementation);
 
-static Factory<InverseBoxCoxGradientImplementation> RegisteredFactory("InverseBoxCoxGradientImplementation");
+static const Factory<InverseBoxCoxGradientImplementation> RegisteredFactory;
 
 /* Default constructor */
 InverseBoxCoxGradientImplementation::InverseBoxCoxGradientImplementation()

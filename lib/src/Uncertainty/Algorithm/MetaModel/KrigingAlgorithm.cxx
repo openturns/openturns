@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KrigingAlgorithm);
 
-static Factory<KrigingAlgorithm> RegisteredFactory("KrigingAlgorithm");
+static const Factory<KrigingAlgorithm> RegisteredFactory;
 
 
 /* Default constructor */

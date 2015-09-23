@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Secant);
 
-static Factory<Secant> RegisteredFactory("Secant");
+static const Factory<Secant> RegisteredFactory;
 
 /* Parameter constructor */
 Secant::Secant(const NumericalScalar absoluteError,

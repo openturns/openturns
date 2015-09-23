@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Chi);
 
-static Factory<Chi> RegisteredFactory("Chi");
+static const Factory<Chi> RegisteredFactory;
 
 /* Default constructor */
 Chi::Chi()

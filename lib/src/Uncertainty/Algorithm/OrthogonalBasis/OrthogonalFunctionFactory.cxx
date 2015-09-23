@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OrthogonalFunctionFactory);
 
-static Factory<OrthogonalFunctionFactory> RegisteredFactory("OrthogonalFunctionFactory");
+static const Factory<OrthogonalFunctionFactory> RegisteredFactory;
 
 
 /* Default constructor */

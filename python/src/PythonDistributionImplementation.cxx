@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PythonDistributionImplementation);
 
-static Factory<PythonDistributionImplementation> RegisteredFactory("PythonDistributionImplementation");
+static const Factory<PythonDistributionImplementation> RegisteredFactory;
 
 
 

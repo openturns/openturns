@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GeneralizedExponential);
 
-static Factory<GeneralizedExponential> RegisteredFactory("GeneralizedExponential");
+static const Factory<GeneralizedExponential> RegisteredFactory;
 
 
 /* Default constructor */

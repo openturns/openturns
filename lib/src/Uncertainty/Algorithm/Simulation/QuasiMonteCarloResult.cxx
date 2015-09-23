@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(QuasiMonteCarloResult);
 
 
-static Factory<QuasiMonteCarloResult> RegisteredFactory("QuasiMonteCarloResult");
+static const Factory<QuasiMonteCarloResult> RegisteredFactory;
 
 /* Default constructor */
 QuasiMonteCarloResult::QuasiMonteCarloResult()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNormal);
 
-static Factory<InverseNormal> RegisteredFactory("InverseNormal");
+static const Factory<InverseNormal> RegisteredFactory;
 
 /* Default constructor */
 InverseNormal::InverseNormal()

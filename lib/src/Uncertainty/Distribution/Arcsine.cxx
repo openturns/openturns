@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Arcsine);
 
-static Factory<Arcsine> RegisteredFactory("Arcsine");
+static const Factory<Arcsine> RegisteredFactory;
 
 
 /* Default constructor */

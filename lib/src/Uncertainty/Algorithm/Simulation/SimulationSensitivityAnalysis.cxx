@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(SimulationSensitivityAnalysis);
 
 
-static Factory<SimulationSensitivityAnalysis> RegisteredFactory("SimulationSensitivityAnalysis");
+static const Factory<SimulationSensitivityAnalysis> RegisteredFactory;
 
 /* Default constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis()

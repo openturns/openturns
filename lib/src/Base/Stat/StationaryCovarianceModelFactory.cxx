@@ -29,9 +29,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(StationaryCovarianceModelFactory);
-static Factory<StationaryCovarianceModelFactory> RegisteredFactory("StationaryCovarianceModelFactory");
+static const Factory<StationaryCovarianceModelFactory> RegisteredFactory;
 
-static Factory<PersistentCollection<NumericalComplex> > RegisteredFactory2("PersistentCollection<NumericalComplex>");
+static const Factory<PersistentCollection<NumericalComplex> > RegisteredFactory2;
 
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 

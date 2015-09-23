@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExponentialModel);
 
-static Factory<ExponentialModel> RegisteredFactory("ExponentialModel");
+static const Factory<ExponentialModel> RegisteredFactory;
 
 /* Constructor from spatial dimension */
 ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)

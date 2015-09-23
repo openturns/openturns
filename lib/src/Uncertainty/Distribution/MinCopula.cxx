@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MinCopula);
 
-static Factory<MinCopula> RegisteredFactory("MinCopula");
+static const Factory<MinCopula> RegisteredFactory;
 
 /* Default constructor */
 MinCopula::MinCopula(const UnsignedInteger dim)

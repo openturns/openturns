@@ -27,7 +27,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CovarianceModelFactoryImplementation);
-static Factory<CovarianceModelFactoryImplementation> RegisteredFactory("CovarianceModelFactoryImplementation");
+static const Factory<CovarianceModelFactoryImplementation> RegisteredFactory;
 
 /* Default constructor */
 CovarianceModelFactoryImplementation::CovarianceModelFactoryImplementation()

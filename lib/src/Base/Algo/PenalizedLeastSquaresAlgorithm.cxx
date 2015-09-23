@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PenalizedLeastSquaresAlgorithm);
 
-static Factory<PenalizedLeastSquaresAlgorithm> RegisteredFactory("PenalizedLeastSquaresAlgorithm");
+static const Factory<PenalizedLeastSquaresAlgorithm> RegisteredFactory;
 
 
 /* Default constructor */

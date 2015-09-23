@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LeastSquaresStrategy);
 
-static Factory<LeastSquaresStrategy> RegisteredFactory("LeastSquaresStrategy");
+static const Factory<LeastSquaresStrategy> RegisteredFactory;
 
 
 /* Default constructor */

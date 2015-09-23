@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductNumericalMathHessianImplementation);
 
-static Factory<ProductNumericalMathHessianImplementation> RegisteredFactory("ProductNumericalMathHessianImplementation");
+static const Factory<ProductNumericalMathHessianImplementation> RegisteredFactory;
 
 /* Default constructor */
 ProductNumericalMathHessianImplementation::ProductNumericalMathHessianImplementation(const EvaluationImplementation & p_leftEvaluation,

@@ -32,14 +32,14 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<ConfidenceInterval>);
 
-static Factory<PersistentCollection<ConfidenceInterval> > RegisteredFactory1("PersistentCollection<ConfidenceInterval>");
-static Factory<PersistentCollection<NumericalScalar> > RegisteredFactory2("PersistentCollection<NumericalScalar>");
+static const Factory<PersistentCollection<ConfidenceInterval> > RegisteredFactory1;
+static const Factory<PersistentCollection<NumericalScalar> > RegisteredFactory2;
 
 
 
 CLASSNAMEINIT(LinearModel);
 
-static Factory<LinearModel> RegisteredFactory("LinearModel");
+static const Factory<LinearModel> RegisteredFactory;
 
 /* Default constructor */
 LinearModel::LinearModel()

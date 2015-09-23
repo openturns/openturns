@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNatafIndependentCopulaGradient);
 
-static Factory<InverseNatafIndependentCopulaGradient> RegisteredFactory("InverseNatafIndependentCopulaGradient");
+static const Factory<InverseNatafIndependentCopulaGradient> RegisteredFactory;
 
 /* Default constructor */
 InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BasisSequenceFactoryImplementation);
 
-static Factory<BasisSequenceFactoryImplementation> RegisteredFactory("BasisSequenceFactoryImplementation");
+static const Factory<BasisSequenceFactoryImplementation> RegisteredFactory;
 
 /* Default constructor */
 BasisSequenceFactoryImplementation::BasisSequenceFactoryImplementation(const Bool verbose)

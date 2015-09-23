@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NoNumericalMathEvaluationImplementation);
 
-static Factory<NoNumericalMathEvaluationImplementation> RegisteredFactory("NoNumericalMathEvaluationImplementation");
+static const Factory<NoNumericalMathEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 NoNumericalMathEvaluationImplementation::NoNumericalMathEvaluationImplementation()

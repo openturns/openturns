@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationProblemImplementation);
 
-static Factory<OptimizationProblemImplementation> RegisteredFactory("OptimizationProblemImplementation");
+static const Factory<OptimizationProblemImplementation> RegisteredFactory;
 
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NatafIndependentCopulaHessian);
 
-static Factory<NatafIndependentCopulaHessian> RegisteredFactory("NatafIndependentCopulaHessian");
+static const Factory<NatafIndependentCopulaHessian> RegisteredFactory;
 
 /* Default constructor */
 NatafIndependentCopulaHessian::NatafIndependentCopulaHessian()

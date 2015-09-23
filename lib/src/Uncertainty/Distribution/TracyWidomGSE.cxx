@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TracyWidomGSE);
 
-static Factory<TracyWidomGSE> RegisteredFactory("TracyWidomGSE");
+static const Factory<TracyWidomGSE> RegisteredFactory;
 
 
 /* Default constructor */

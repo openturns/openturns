@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Frechet);
 
-static Factory<Frechet> RegisteredFactory("Frechet");
+static const Factory<Frechet> RegisteredFactory;
 
 /* Parameters constructor */
 Frechet::Frechet(const NumericalScalar alpha,

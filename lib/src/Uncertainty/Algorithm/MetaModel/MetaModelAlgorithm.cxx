@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MetaModelAlgorithm);
 
-static Factory<MetaModelAlgorithm> RegisteredFactory("MetaModelAlgorithm");
+static const Factory<MetaModelAlgorithm> RegisteredFactory;
 
 /* Default constructor */
 MetaModelAlgorithm::MetaModelAlgorithm()

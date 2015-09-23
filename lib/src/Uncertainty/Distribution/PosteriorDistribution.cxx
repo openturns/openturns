@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PosteriorDistribution);
 
-static Factory<PosteriorDistribution> RegisteredFactory("PosteriorDistribution");
+static const Factory<PosteriorDistribution> RegisteredFactory;
 
 
 /* Default constructor */

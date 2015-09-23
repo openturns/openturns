@@ -19,7 +19,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TrendEvaluationImplementation);
 
-static Factory<TrendEvaluationImplementation> RegisteredFactory("TrendEvaluationImplementation");
+static const Factory<TrendEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 TrendEvaluationImplementation::TrendEvaluationImplementation()
