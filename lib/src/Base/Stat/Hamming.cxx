@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Hamming);
 
-static Factory<Hamming> RegisteredFactory("Hamming");
+static const Factory<Hamming> RegisteredFactory;
 
 /* Constructor with parameters */
 Hamming::Hamming()

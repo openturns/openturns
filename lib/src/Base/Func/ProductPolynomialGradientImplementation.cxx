@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductPolynomialGradientImplementation);
 
-static Factory<ProductPolynomialGradientImplementation> RegisteredFactory("ProductPolynomialGradientImplementation");
+static const Factory<ProductPolynomialGradientImplementation> RegisteredFactory;
 
 
 /* Default constructor */

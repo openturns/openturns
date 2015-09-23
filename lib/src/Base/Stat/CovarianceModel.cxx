@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CovarianceModel);
 
-//   static Factory<CovarianceModel> RegisteredFactory("CovarianceModel");
+//   static const Factory<CovarianceModel> RegisteredFactory;
 
 /* Constructor without parameters */
 CovarianceModel::CovarianceModel()

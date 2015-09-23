@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TracyWidomGUE);
 
-static Factory<TracyWidomGUE> RegisteredFactory("TracyWidomGUE");
+static const Factory<TracyWidomGUE> RegisteredFactory;
 
 
 /* Default constructor */

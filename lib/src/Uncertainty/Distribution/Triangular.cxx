@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Triangular);
 
-static Factory<Triangular> RegisteredFactory("Triangular");
+static const Factory<Triangular> RegisteredFactory;
 
 /* Default constructor */
 Triangular::Triangular()

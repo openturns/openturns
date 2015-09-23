@@ -41,11 +41,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalSample>);
 
-static Factory<PersistentCollection<NumericalSample> > RegisteredFactory1("PersistentCollection<NumericalSample>");
+static const Factory<PersistentCollection<NumericalSample> > RegisteredFactory1;
 
 CLASSNAMEINIT(FieldImplementation);
 
-static Factory<FieldImplementation> RegisteredFactoryFI("FieldImplementation");
+static const Factory<FieldImplementation> RegisteredFactoryFI;
 
 /* Default constructor is private */
 FieldImplementation::FieldImplementation()

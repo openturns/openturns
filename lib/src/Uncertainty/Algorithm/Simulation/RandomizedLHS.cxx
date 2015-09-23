@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RandomizedLHS);
 
-static Factory<RandomizedLHS> RegisteredFactory("RandomizedLHS");
+static const Factory<RandomizedLHS> RegisteredFactory;
 
 /* Default constructor */
 RandomizedLHS::RandomizedLHS():

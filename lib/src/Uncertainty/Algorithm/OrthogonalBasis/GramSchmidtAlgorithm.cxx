@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GramSchmidtAlgorithm);
 
-static Factory<GramSchmidtAlgorithm> RegisteredFactory("GramSchmidtAlgorithm");
+static const Factory<GramSchmidtAlgorithm> RegisteredFactory;
 
 /* Default constructor */
 GramSchmidtAlgorithm::GramSchmidtAlgorithm()

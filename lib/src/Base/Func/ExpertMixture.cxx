@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExpertMixture);
 
-static Factory<ExpertMixture> RegisteredFactory("ExpertMixture");
+static const Factory<ExpertMixture> RegisteredFactory;
 
 
 /* Default constructor */

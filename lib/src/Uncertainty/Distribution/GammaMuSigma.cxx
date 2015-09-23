@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GammaMuSigma);
 
-static Factory<GammaMuSigma> RegisteredFactory("GammaMuSigma");
+static const Factory<GammaMuSigma> RegisteredFactory;
 
 /* Default constructor */
 GammaMuSigma::GammaMuSigma()

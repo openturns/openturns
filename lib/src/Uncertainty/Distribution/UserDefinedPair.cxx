@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(UserDefinedPair);
 
 
-static Factory<UserDefinedPair> RegisteredFactory("UserDefinedPair");
+static const Factory<UserDefinedPair> RegisteredFactory;
 
 /* Default constructor */
 UserDefinedPair::UserDefinedPair()

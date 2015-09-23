@@ -31,7 +31,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NonStationaryCovarianceModelFactory);
-static Factory<NonStationaryCovarianceModelFactory> RegisteredFactory("NonStationaryCovarianceModelFactory");
+static const Factory<NonStationaryCovarianceModelFactory> RegisteredFactory;
 
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ZipfMandelbrot);
 
-static Factory<ZipfMandelbrot> RegisteredFactory("ZipfMandelbrot");
+static const Factory<ZipfMandelbrot> RegisteredFactory;
 
 /* Default constructor */
 ZipfMandelbrot::ZipfMandelbrot()

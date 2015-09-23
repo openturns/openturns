@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AggregatedNumericalMathHessianImplementation);
 
-static Factory<AggregatedNumericalMathHessianImplementation> RegisteredFactory("AggregatedNumericalMathHessianImplementation");
+static const Factory<AggregatedNumericalMathHessianImplementation> RegisteredFactory;
 
 
 /* Default constructor */

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HistoryStrategyImplementation);
 
-static Factory<HistoryStrategyImplementation> RegisteredFactory("HistoryStrategyImplementation");
+static const Factory<HistoryStrategyImplementation> RegisteredFactory;
 
 /* Constructor with parameters */
 HistoryStrategyImplementation::HistoryStrategyImplementation()

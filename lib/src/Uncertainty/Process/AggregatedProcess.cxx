@@ -29,8 +29,8 @@ BEGIN_NAMESPACE_OPENTURNS
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< Process >);
 CLASSNAMEINIT(AggregatedProcess);
 
-static Factory<AggregatedProcess> RegisteredFactory("AggregatedProcess");
-static Factory< PersistentCollection< Process > > RegisteredFactory1("PersistentCollection<Process>");
+static const Factory<AggregatedProcess> RegisteredFactory;
+static const Factory<PersistentCollection<Process> > RegisteredFactory1;
 
 AggregatedProcess::AggregatedProcess()
   : ProcessImplementation()

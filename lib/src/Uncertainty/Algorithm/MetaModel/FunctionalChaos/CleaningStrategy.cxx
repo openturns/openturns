@@ -36,7 +36,7 @@ CLASSNAMEINIT(CleaningStrategy);
 
 typedef Collection<NumericalScalar> NumericalScalarCollection;
 
-static Factory<CleaningStrategy> RegisteredFactory("CleaningStrategy");
+static const Factory<CleaningStrategy> RegisteredFactory;
 
 
 /* Default constructor */

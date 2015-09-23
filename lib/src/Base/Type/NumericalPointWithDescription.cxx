@@ -26,8 +26,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(NumericalPointWithDescription);
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalPointWithDescription>);
 
-static Factory<NumericalPointWithDescription> RegisteredFactory1("NumericalPointWithDescription");
-static Factory<PersistentCollection<NumericalPointWithDescription> > RegisteredFactory2("PersistentCollection<NumericalPointWithDescription>");
+static const Factory<NumericalPointWithDescription> RegisteredFactory1;
+static const Factory<PersistentCollection<NumericalPointWithDescription> > RegisteredFactory2;
 
 /* Default constructor */
 NumericalPointWithDescription::NumericalPointWithDescription()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseChiSquare);
 
-static Factory<InverseChiSquare> RegisteredFactory("InverseChiSquare");
+static const Factory<InverseChiSquare> RegisteredFactory;
 
 /* Default constructor */
 InverseChiSquare::InverseChiSquare()

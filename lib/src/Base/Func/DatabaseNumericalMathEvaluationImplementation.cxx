@@ -33,7 +33,7 @@ typedef NumericalMathEvaluationImplementation::CacheType                CacheTyp
 
 CLASSNAMEINIT(DatabaseNumericalMathEvaluationImplementation);
 
-static Factory<DatabaseNumericalMathEvaluationImplementation> RegisteredFactory("DatabaseNumericalMathEvaluationImplementation");
+static const Factory<DatabaseNumericalMathEvaluationImplementation> RegisteredFactory;
 
 
 /* Default constructor */

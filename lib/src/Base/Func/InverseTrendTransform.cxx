@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseTrendTransform);
 
-static Factory<InverseTrendTransform> RegisteredFactory("InverseTrendTransform");
+static const Factory<InverseTrendTransform> RegisteredFactory;
 
 /* Default constructor */
 InverseTrendTransform::InverseTrendTransform()

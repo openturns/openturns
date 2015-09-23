@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NonCentralChiSquare);
 
-static Factory<NonCentralChiSquare> RegisteredFactory("NonCentralChiSquare");
+static const Factory<NonCentralChiSquare> RegisteredFactory;
 
 
 /* Default constructor */

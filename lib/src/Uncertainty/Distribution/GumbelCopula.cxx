@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GumbelCopula);
 
-static Factory<GumbelCopula> RegisteredFactory("GumbelCopula");
+static const Factory<GumbelCopula> RegisteredFactory;
 
 /* Default constructor */
 GumbelCopula::GumbelCopula()

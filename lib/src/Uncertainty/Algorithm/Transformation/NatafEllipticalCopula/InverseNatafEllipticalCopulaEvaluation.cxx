@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNatafEllipticalCopulaEvaluation);
 
-static Factory<InverseNatafEllipticalCopulaEvaluation> RegisteredFactory("InverseNatafEllipticalCopulaEvaluation");
+static const Factory<InverseNatafEllipticalCopulaEvaluation> RegisteredFactory;
 
 /* Default constructor */
 InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()

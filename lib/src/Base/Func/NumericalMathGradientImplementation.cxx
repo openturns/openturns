@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NumericalMathGradientImplementation);
 
-static Factory<NumericalMathGradientImplementation> RegisteredFactory("NumericalMathGradientImplementation");
+static const Factory<NumericalMathGradientImplementation> RegisteredFactory;
 
 /* Default constructor */
 NumericalMathGradientImplementation::NumericalMathGradientImplementation()

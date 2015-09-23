@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(StationaryCovarianceModel);
 
-static Factory<StationaryCovarianceModel> RegisteredFactory("StationaryCovarianceModel");
+static const Factory<StationaryCovarianceModel> RegisteredFactory;
 
 /* Constructor with parameters */
 StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension)

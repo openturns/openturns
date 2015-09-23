@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CompositeDistribution);
 
-static Factory<CompositeDistribution> RegisteredFactory("CompositeDistribution");
+static const Factory<CompositeDistribution> RegisteredFactory;
 
 /* Default constructor */
 CompositeDistribution::CompositeDistribution()

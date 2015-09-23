@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BoundConstrainedAlgorithmImplementationResult);
 
-static Factory<BoundConstrainedAlgorithmImplementationResult> RegisteredFactory("BoundConstrainedAlgorithmImplementationResult");
+static const Factory<BoundConstrainedAlgorithmImplementationResult> RegisteredFactory;
 
 /* Default constructor */
 BoundConstrainedAlgorithmImplementationResult::BoundConstrainedAlgorithmImplementationResult():

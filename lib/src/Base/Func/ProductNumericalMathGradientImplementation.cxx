@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductNumericalMathGradientImplementation);
 
-static Factory<ProductNumericalMathGradientImplementation> RegisteredFactory("ProductNumericalMathGradientImplementation");
+static const Factory<ProductNumericalMathGradientImplementation> RegisteredFactory;
 
 /* Default constructor */
 ProductNumericalMathGradientImplementation::ProductNumericalMathGradientImplementation(const EvaluationImplementation & p_leftEvaluation,

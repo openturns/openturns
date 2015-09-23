@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AdaptiveStrategyImplementation);
 
-static Factory<AdaptiveStrategyImplementation> RegisteredFactory("AdaptiveStrategyImplementation");
+static const Factory<AdaptiveStrategyImplementation> RegisteredFactory;
 
 
 /* Default constructor */

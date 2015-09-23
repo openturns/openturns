@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FrankCopula);
 
-static Factory<FrankCopula> RegisteredFactory("FrankCopula");
+static const Factory<FrankCopula> RegisteredFactory;
 
 /* Default constructor */
 FrankCopula::FrankCopula()

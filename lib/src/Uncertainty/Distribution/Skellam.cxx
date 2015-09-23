@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Skellam);
 
-static Factory<Skellam> RegisteredFactory("Skellam");
+static const Factory<Skellam> RegisteredFactory;
 
 /* Default constructor */
 Skellam::Skellam()

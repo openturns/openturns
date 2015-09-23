@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AbdoRackwitzSpecificParameters);
 
-static Factory<AbdoRackwitzSpecificParameters> RegisteredFactory("AbdoRackwitzSpecificParameters");
+static const Factory<AbdoRackwitzSpecificParameters> RegisteredFactory;
 
 
 /* Default onstructor */

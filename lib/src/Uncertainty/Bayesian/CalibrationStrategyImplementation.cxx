@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CalibrationStrategyImplementation);
 
-static Factory<CalibrationStrategyImplementation> RegisteredFactory("CalibrationStrategyImplementation");
+static const Factory<CalibrationStrategyImplementation> RegisteredFactory;
 
 /* Default constructor */
 CalibrationStrategyImplementation::CalibrationStrategyImplementation(const Interval & range,

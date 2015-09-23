@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComplexTensorImplementation);
 
-static Factory<ComplexTensorImplementation> RegisteredFactory("ComplexTensorImplementation");
+static const Factory<ComplexTensorImplementation> RegisteredFactory;
 
 /* Default constructor */
 ComplexTensorImplementation::ComplexTensorImplementation()

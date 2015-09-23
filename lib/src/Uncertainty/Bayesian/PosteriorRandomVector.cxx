@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PosteriorRandomVector);
 
-static Factory<PosteriorRandomVector> RegisteredFactory("PosteriorRandomVector");
+static const Factory<PosteriorRandomVector> RegisteredFactory;
 
 /* Default constructor */
 PosteriorRandomVector::PosteriorRandomVector(const Sampler & sampler)

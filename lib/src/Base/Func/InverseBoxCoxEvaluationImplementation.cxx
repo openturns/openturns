@@ -19,7 +19,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseBoxCoxEvaluationImplementation);
 
-static Factory<InverseBoxCoxEvaluationImplementation> RegisteredFactory("InverseBoxCoxEvaluationImplementation");
+static const Factory<InverseBoxCoxEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 InverseBoxCoxEvaluationImplementation::InverseBoxCoxEvaluationImplementation()

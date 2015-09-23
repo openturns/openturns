@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CompositeProcess);
 
-static Factory<CompositeProcess> RegisteredFactory("CompositeProcess");
+static const Factory<CompositeProcess> RegisteredFactory;
 
 CompositeProcess::CompositeProcess()
   : ProcessImplementation()

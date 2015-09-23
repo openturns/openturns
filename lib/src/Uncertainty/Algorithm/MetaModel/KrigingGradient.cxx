@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(KrigingGradient);
 
 
-static Factory<KrigingGradient> RegisteredFactory("KrigingGradient");
+static const Factory<KrigingGradient> RegisteredFactory;
 
 
 /* Constructor with parameters */

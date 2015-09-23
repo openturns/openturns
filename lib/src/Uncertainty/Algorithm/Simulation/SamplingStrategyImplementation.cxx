@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SamplingStrategyImplementation);
 
-static Factory<SamplingStrategyImplementation> RegisteredFactory("SamplingStrategyImplementation");
+static const Factory<SamplingStrategyImplementation> RegisteredFactory;
 
 /* Constructor with parameters */
 SamplingStrategyImplementation::SamplingStrategyImplementation(const UnsignedInteger dimension)

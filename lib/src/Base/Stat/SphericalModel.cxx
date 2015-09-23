@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SphericalModel);
 
-static Factory<SphericalModel> RegisteredFactory("SphericalModel");
+static const Factory<SphericalModel> RegisteredFactory;
 
 /* Constructor from spatial dimension */
 SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DualLinearCombinationHessianImplementation);
 
-static Factory<DualLinearCombinationHessianImplementation> RegisteredFactory("DualLinearCombinationHessianImplementation");
+static const Factory<DualLinearCombinationHessianImplementation> RegisteredFactory;
 
 
 /* Default constructor */

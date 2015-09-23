@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OrthogonalDirection);
 
-static Factory<OrthogonalDirection> RegisteredFactory("OrthogonalDirection");
+static const Factory<OrthogonalDirection> RegisteredFactory;
 
 /* Default constructor */
 OrthogonalDirection::OrthogonalDirection()

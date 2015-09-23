@@ -31,7 +31,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(WelchFactory);
-static Factory<WelchFactory> RegisteredFactory("WelchFactory");
+static const Factory<WelchFactory> RegisteredFactory;
 
 typedef Collection<NumericalComplex> NumericalComplexCollection;
 typedef Collection<HermitianMatrix>  HermitianMatrixCollection;

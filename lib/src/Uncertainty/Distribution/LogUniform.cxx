@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LogUniform);
 
-static Factory<LogUniform> RegisteredFactory("LogUniform");
+static const Factory<LogUniform> RegisteredFactory;
 
 /* Default constructor */
 LogUniform::LogUniform()

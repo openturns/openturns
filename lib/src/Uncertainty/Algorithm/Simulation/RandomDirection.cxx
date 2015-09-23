@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RandomDirection);
 
-static Factory<RandomDirection> RegisteredFactory("RandomDirection");
+static const Factory<RandomDirection> RegisteredFactory;
 
 /* Default constructor */
 RandomDirection::RandomDirection()

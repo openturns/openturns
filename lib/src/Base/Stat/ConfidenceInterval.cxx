@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConfidenceInterval);
 
-static Factory<ConfidenceInterval> RegisteredFactory("ConfidenceInterval");
+static const Factory<ConfidenceInterval> RegisteredFactory;
 
 
 /* Default constructor */

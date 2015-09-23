@@ -40,7 +40,7 @@ typedef NumericalMathFunctionImplementation::HessianImplementation    HessianImp
 
 CLASSNAMEINIT(SklarCopula);
 
-static Factory<SklarCopula> RegisteredFactory("SklarCopula");
+static const Factory<SklarCopula> RegisteredFactory;
 
 /* Default constructor */
 SklarCopula::SklarCopula()

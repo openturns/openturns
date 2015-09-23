@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FisherSnedecor);
 
-static Factory<FisherSnedecor> RegisteredFactory("FisherSnedecor");
+static const Factory<FisherSnedecor> RegisteredFactory;
 
 /* Default constructor */
 FisherSnedecor::FisherSnedecor()

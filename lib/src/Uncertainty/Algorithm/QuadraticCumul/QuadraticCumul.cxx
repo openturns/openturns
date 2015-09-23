@@ -34,7 +34,7 @@ typedef Pointer<RandomVectorImplementation> Implementation;
 
 CLASSNAMEINIT(QuadraticCumul);
 
-static Factory<QuadraticCumul> RegisteredFactory("QuadraticCumul");
+static const Factory<QuadraticCumul> RegisteredFactory;
 
 /*
  * @class QuadraticCumul

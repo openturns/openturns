@@ -34,11 +34,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<WhittleFactoryState>);
-static Factory<PersistentCollection<WhittleFactoryState> > RegisteredFactory2("PersistentCollection<WhittleFactoryState>");
+static const Factory<PersistentCollection<WhittleFactoryState> > RegisteredFactory2;
 
 CLASSNAMEINIT(WhittleFactory);
 
-static Factory<WhittleFactory> RegisteredFactory("WhittleFactory");
+static const Factory<WhittleFactory> RegisteredFactory;
 
 
 /* Default constructor */

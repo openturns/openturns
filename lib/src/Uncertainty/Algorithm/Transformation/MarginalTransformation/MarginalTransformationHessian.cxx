@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MarginalTransformationHessian);
 
-static Factory<MarginalTransformationHessian> RegisteredFactory("MarginalTransformationHessian");
+static const Factory<MarginalTransformationHessian> RegisteredFactory;
 
 /* Default constructor */
 MarginalTransformationHessian::MarginalTransformationHessian():

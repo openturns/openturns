@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(VonMises);
 
-static Factory<VonMises> RegisteredFactory("VonMises");
+static const Factory<VonMises> RegisteredFactory;
 
 /* Default constructor */
 VonMises::VonMises()

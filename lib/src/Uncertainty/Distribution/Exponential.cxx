@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Exponential);
 
-static Factory<Exponential> RegisteredFactory("Exponential");
+static const Factory<Exponential> RegisteredFactory;
 
 /* Default constructor */
 Exponential::Exponential()

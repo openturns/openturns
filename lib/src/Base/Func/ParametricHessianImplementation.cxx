@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ParametricHessianImplementation);
 
-static Factory<ParametricHessianImplementation> RegisteredFactory("ParametricHessianImplementation");
+static const Factory<ParametricHessianImplementation> RegisteredFactory;
 
 
 /* Default constructor */

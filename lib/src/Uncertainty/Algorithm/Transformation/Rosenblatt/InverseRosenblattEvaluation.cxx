@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(InverseRosenblattEvaluation);
 
 
-static Factory<InverseRosenblattEvaluation> RegisteredFactory("InverseRosenblattEvaluation");
+static const Factory<InverseRosenblattEvaluation> RegisteredFactory;
 
 /* Default constructor */
 InverseRosenblattEvaluation::InverseRosenblattEvaluation():

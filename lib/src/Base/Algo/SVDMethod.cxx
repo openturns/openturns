@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(SVDMethod);
 
 
-static Factory<SVDMethod> RegisteredFactory("SVDMethod");
+static const Factory<SVDMethod> RegisteredFactory;
 
 
 /* Default constructor */

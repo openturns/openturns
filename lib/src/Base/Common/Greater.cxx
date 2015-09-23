@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Greater);
 
-static Factory<Greater> RegisteredFactory("Greater");
+static const Factory<Greater> RegisteredFactory;
 
 /* Default constructor */
 Greater::Greater()

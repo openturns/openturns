@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EventRandomVectorImplementation);
 
-static Factory<EventRandomVectorImplementation> RegisteredFactory("EventRandomVectorImplementation");
+static const Factory<EventRandomVectorImplementation> RegisteredFactory;
 
 /* Default constructor */
 EventRandomVectorImplementation::EventRandomVectorImplementation()

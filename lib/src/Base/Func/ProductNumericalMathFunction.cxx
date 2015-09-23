@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductNumericalMathFunction);
 
-static Factory<ProductNumericalMathFunction> RegisteredFactory("ProductNumericalMathFunction");
+static const Factory<ProductNumericalMathFunction> RegisteredFactory;
 
 /* Composition constructor */
 ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation & p_left,
