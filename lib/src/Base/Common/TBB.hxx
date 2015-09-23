@@ -169,8 +169,6 @@ struct OT_API TBB_init
   ~TBB_init();
 }; /* end class TBB_init */
 
-static TBB_init __TBB_initializer;
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_TBB_HXX */

@@ -185,7 +185,6 @@ struct OT_API ResourceMap_init
   ResourceMap_init();
   ~ResourceMap_init();
 };
-static ResourceMap_init __ResourceMap_initializer;
 
 /**
  * @fn std::ostream & operator <<(std::ostream & os, const ResourceMap & obj)

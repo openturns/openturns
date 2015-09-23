@@ -67,8 +67,6 @@ struct OT_API IdFactory_init
   IdFactory_init();
 }; /* end struct IdFactory_init */
 
-static IdFactory_init __IdFactory_initializer;
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_IDFACTORY_HXX */

@@ -30,6 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+static const Log_init __Log_initializer;
 
 
 static inline

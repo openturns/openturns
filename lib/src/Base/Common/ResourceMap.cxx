@@ -38,6 +38,7 @@ static const char * XMLTag_value = "value";
 
 static pthread_mutex_t ResourceMap_InstanceMutex_;
 static ResourceMap * ResourceMap_P_instance_ = 0;
+static const ResourceMap_init __ResourceMap_initializer;
 
 ResourceMap_init::ResourceMap_init()
 {
