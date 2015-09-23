@@ -30,6 +30,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+static pthread_mutex_t Log_InstanceMutex_;
+static Log * Log_P_instance_ = 0;
+static const Log_init static_initializer_Log;
 
 
 static inline
@@ -44,23 +47,30 @@ std::ostream & operator << ( std::ostream & os, const _Prefix & pfx )
 }
 
 
-static pthread_mutex_t Log_InstanceMutex_;
-static Log * Log_P_instance_ = 0;
-static pthread_once_t Log_InstanceMutex_once = PTHREAD_ONCE_INIT;
-
 Log_init::Log_init()
 {
-  int rc = pthread_once( &Log_InstanceMutex_once, Log::Initialization );
-  if (rc != 0)
+  if (!Log_P_instance_)
   {
-    perror("Log_init::Log_init once Initialization failed");
-    exit(1);
+#ifndef OT_MUTEXINIT_NOCHECK
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init( &attr );
+    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
+    pthread_mutex_init( &Log_InstanceMutex_, &attr );
+#else
+    pthread_mutex_init( &Log_InstanceMutex_, NULL );
+#endif
+    Log_P_instance_ = new Log;
+    Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log Beginning ***"));
   }
+  assert(Log_P_instance_);
 }
 
 Log_init::~Log_init()
 {
-  Log::Release();
+  if (Log_P_instance_) Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log End ***"));
+  delete Log_P_instance_;
+  Log_P_instance_ = 0;
+  pthread_mutex_destroy( &Log_InstanceMutex_ );
 }
 
 
@@ -101,8 +111,6 @@ Log::Log()
 
   initSeverityFromEnvironment();
 
-  // Registration of destructor at exit
-  //std::atexit(Log::Release);
 }
 
 
@@ -149,61 +157,29 @@ void Log::initSeverityFromEnvironment()
 }
 
 
-Log & Log::GetInstance()
+template<>
+MutexLockSingleton<Log>::MutexLockSingleton( Log & singleton )  throw()
+  : singleton_(singleton)
+  , lock_(Log_InstanceMutex_) {}
+
+
+/* GetInstance gives a locked access to the singleton */
+MutexLockSingleton<Log> Log::GetInstance()
 {
-  if (!Log_P_instance_)
-  {
-    Log_P_instance_ = new Log;
-    assert(Log_P_instance_);
-    Log_P_instance_->push(Entry(INFO, "*** Log Beginning ***"));
-  }
+  static const Log_init force_instantiation;
+  // Log_InstanceMutex_ is always initialized
   return *Log_P_instance_;
 }
 
-
-void Log::Initialization()
-{
-#ifndef OT_MUTEXINIT_NOCHECK
-  pthread_mutexattr_t attr;
-  pthread_mutexattr_init( &attr );
-  //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
-  pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
-  //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
-  int rc = pthread_mutex_init( &Log_InstanceMutex_, &attr );
-  if (rc != 0)
-  {
-    perror("Log::Initialization mutex initialization failed");
-    exit(1);
-  }
-#else
-  pthread_mutex_init( &Log_InstanceMutex_, NULL );
-#endif
-  Log_P_instance_ = 0;
-}
-
-
-
-void Log::Release()
-{
-  if (Log_P_instance_) Log_P_instance_->push(Entry(INFO, "*** Log End ***"));
-  delete Log_P_instance_;
-  Log_P_instance_ = 0;
-}
-
-
-
 void Log::Reset()
 {
-  //Release();
-  //Initialization();
 }
 
 
 /* Log messages according to its relative severity */
 void Log::Debug(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(DBG, msg));
+  GetInstance().lock().push(Entry(DBG, msg));
 }
 
 
@@ -211,8 +187,7 @@ void Log::Debug(const String & msg)
 /* Log messages according to its relative severity */
 void Log::Wrapper(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(WRAPPER, msg));
+  GetInstance().lock().push(Entry(WRAPPER, msg));
 }
 
 
@@ -220,8 +195,7 @@ void Log::Wrapper(const String & msg)
 /*  Log messages according to its relative severity */
 void Log::Info(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(INFO, msg));
+  GetInstance().lock().push(Entry(INFO, msg));
 }
 
 
@@ -229,8 +203,7 @@ void Log::Info(const String & msg)
 /*  Log messages according to its relative severity */
 void Log::User(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(USER, msg));
+  GetInstance().lock().push(Entry(USER, msg));
 }
 
 
@@ -238,8 +211,7 @@ void Log::User(const String & msg)
 /* Log messages according to its relative severity */
 void Log::Warn(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(WARN, msg));
+  GetInstance().lock().push(Entry(WARN, msg));
 }
 
 
@@ -247,16 +219,14 @@ void Log::Warn(const String & msg)
 /* Log messages according to its relative severity */
 void Log::Error(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(ERROR, msg));
+  GetInstance().lock().push(Entry(ERROR, msg));
 }
 
 
 /* Log messages according to its relative severity */
 void Log::Trace(const String & msg)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().push(Entry(TRACE, msg));
+  GetInstance().lock().push(Entry(TRACE, msg));
 }
 
 
@@ -275,8 +245,7 @@ Log::Severity Log::Flags()
 /* Flush pending messages */
 void Log::Flush()
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().flush();
+  GetInstance().lock().flush();
 }
 
 
@@ -289,8 +258,7 @@ void Log::Flush()
  */
 void Log::Repeat( Bool r )
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().repeat( r );
+  GetInstance().lock().repeat( r );
 }
 
 void Log::repeat( Bool r )
@@ -333,8 +301,7 @@ void Log::printRepeatedMessage(const Entry & entry)
 /* Set the name of the log file */
 void Log::SetFile(const FileName & file)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().setFile(file);
+  GetInstance().lock().setFile(file);
 }
 
 
@@ -354,15 +321,13 @@ void Log::setFile(const FileName & file)
 void Log::SetColor(const Log::Severity severity,
                    const TTY::Color color)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().setColor(severity, String(TTY::GetColor(color)));
+  GetInstance().lock().setColor(severity, String(TTY::GetColor(color)));
 }
 
 void Log::SetColor(const Log::Severity severity,
                    const String & color)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  Log::GetInstance().setColor(severity, color);
+  GetInstance().lock().setColor(severity, color);
 }
 
 
@@ -375,8 +340,7 @@ void Log::setColor(const Log::Severity severity,
 /* Get the color */
 String Log::GetColor(const Log::Severity severity)
 {
-  MutexLock lock( Log_InstanceMutex_ );
-  return Log::GetInstance().getColor(severity);
+  return GetInstance().lock().getColor(severity);
 }
 
 String Log::getColor(const Log::Severity severity) const

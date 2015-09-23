@@ -23,6 +23,7 @@
 
 #include <map>         // for std::map
 #include "OTprivate.hxx"
+#include "MutexLock.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,17 +45,10 @@ class PersistentObjectFactory;
 
 class OT_API Catalog
 {
-private:
-
-  /** These methods allocate and free storage */
-  static void Release();
-  static void Initialize();
-
-
 public:
 
   /** Return the catalog as a singleton */
-  static Catalog & GetInstance();
+  static MutexLockSingleton<Catalog> GetInstance();
 
   /** Return the catalog as a singleton */
   static void Add(const String & factoryName, const PersistentObjectFactory * p_factory);
@@ -94,8 +88,6 @@ struct OT_API Catalog_init
   Catalog_init();
   ~Catalog_init();
 }; /* end struct Catalog_init */
-
-static Catalog_init __Catalog_initializer;
 
 
 

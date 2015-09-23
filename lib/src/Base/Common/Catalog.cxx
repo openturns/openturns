@@ -32,25 +32,32 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
-
 static pthread_mutex_t Catalog_InstanceMutex_;
 static Catalog * Catalog_P_instance_ = 0;
-static pthread_once_t Catalog_InstanceMutex_once = PTHREAD_ONCE_INIT;
+static const Catalog_init static_initializer_Catalog;
 
 Catalog_init::Catalog_init()
 {
-  int rc = pthread_once( &Catalog_InstanceMutex_once, Catalog::Initialize );
-  if (rc != 0)
+  if (!Catalog_P_instance_)
   {
-    perror("Catalog_init::Log_init once Initialization failed");
-    exit(1);
+#ifndef OT_MUTEXINIT_NOCHECK
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init( &attr );
+    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
+    pthread_mutex_init( &Catalog_InstanceMutex_, &attr );
+#else
+    pthread_mutex_init( &Catalog_InstanceMutex_, NULL );
+#endif
+    Catalog_P_instance_ = new Catalog;
   }
+  assert(Catalog_P_instance_);
 }
 
 Catalog_init::~Catalog_init()
 {
-  Catalog::Release();
+  delete Catalog_P_instance_;
+  Catalog_P_instance_ = 0;
+  pthread_mutex_destroy( &Catalog_InstanceMutex_);
 }
 
 
@@ -58,8 +65,7 @@ Catalog_init::~Catalog_init()
 Catalog::Catalog()
   : catalog_()
 {
-  // Registration of destructor at exit
-  // std::atexit( Catalog::Release );
+  // Do nothing
 }
 
 
@@ -74,53 +80,24 @@ Catalog::~Catalog()
 }
 
 
-/* Return the catalog as a singleton */
-Catalog & Catalog::GetInstance()
+template<>
+MutexLockSingleton<Catalog>::MutexLockSingleton( Catalog & singleton )  throw()
+  : singleton_(singleton)
+  , lock_(Catalog_InstanceMutex_) {}
+
+
+MutexLockSingleton<Catalog> Catalog::GetInstance()
 {
-  if (!Catalog_P_instance_)
-  {
-    Catalog_P_instance_ = new Catalog;
-    assert(Catalog_P_instance_);
-  }
+  static const Catalog_init force_instantiation;
+  // Catalog_InstanceMutex_ is always initialized
   return *Catalog_P_instance_;
-}
-
-
-void Catalog::Initialize()
-{
-#ifndef OT_MUTEXINIT_NOCHECK
-  pthread_mutexattr_t attr;
-  pthread_mutexattr_init( &attr );
-  //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
-  pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
-  //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
-  int rc = pthread_mutex_init( &Catalog_InstanceMutex_, &attr );
-  if (rc != 0)
-  {
-    perror("Catalog::Initialize mutex initialization failed");
-    exit(1);
-  }
-#else
-  pthread_mutex_init( &Catalog_InstanceMutex_, NULL );
-#endif
-  Catalog_P_instance_ = new Catalog;
-  assert(Catalog_P_instance_);
-}
-
-
-
-void Catalog::Release()
-{
-  delete Catalog_P_instance_;
-  Catalog_P_instance_ = 0;
 }
 
 
 /* Get the factory from its name */
 const PersistentObjectFactory & Catalog::Get(const String & factoryName)
 {
-  MutexLock lock( Catalog_InstanceMutex_ );
-  return GetInstance().get( factoryName );
+  return GetInstance().lock().get( factoryName );
 }
 
 /* Get the factory from its name */
@@ -137,8 +114,7 @@ const PersistentObjectFactory & Catalog::get(const String & factoryName) const
 /* Add a new factory to the catalog */
 void Catalog::Add(const String & factoryName, const PersistentObjectFactory * p_factory)
 {
-  MutexLock lock( Catalog_InstanceMutex_ );
-  GetInstance().add( factoryName, p_factory );
+  GetInstance().lock().add( factoryName, p_factory );
 }
 
 /* Add a new factory to the catalog */
