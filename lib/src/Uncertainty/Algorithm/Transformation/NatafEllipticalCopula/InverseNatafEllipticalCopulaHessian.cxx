@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNatafEllipticalCopulaHessian);
 
-static Factory<InverseNatafEllipticalCopulaHessian> RegisteredFactory("InverseNatafEllipticalCopulaHessian");
+static const Factory<InverseNatafEllipticalCopulaHessian> RegisteredFactory;
 
 /* Default constructor */
 InverseNatafEllipticalCopulaHessian::InverseNatafEllipticalCopulaHessian()

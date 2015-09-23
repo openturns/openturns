@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TNC);
 
-static Factory<TNC> RegisteredFactory("TNC");
+static const Factory<TNC> RegisteredFactory;
 
 
 /* Default constructor */

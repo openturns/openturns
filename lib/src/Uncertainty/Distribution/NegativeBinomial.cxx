@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NegativeBinomial);
 
-static Factory<NegativeBinomial> RegisteredFactory("NegativeBinomial");
+static const Factory<NegativeBinomial> RegisteredFactory;
 
 /* Default constructor */
 NegativeBinomial::NegativeBinomial()

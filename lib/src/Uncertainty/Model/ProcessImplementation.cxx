@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProcessImplementation);
 
-static Factory<ProcessImplementation> RegisteredFactory("ProcessImplementation");
+static const Factory<ProcessImplementation> RegisteredFactory;
 
 /* Default constructor */
 ProcessImplementation::ProcessImplementation()

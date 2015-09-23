@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IntegrationAlgorithmImplementation);
 
-static Factory<IntegrationAlgorithmImplementation> RegisteredFactory("IntegrationAlgorithmImplementation");
+static const Factory<IntegrationAlgorithmImplementation> RegisteredFactory;
 
 /* Constructor without parameters */
 IntegrationAlgorithmImplementation::IntegrationAlgorithmImplementation()

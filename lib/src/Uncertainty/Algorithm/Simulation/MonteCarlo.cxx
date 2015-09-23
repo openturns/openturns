@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MonteCarlo);
 
-static Factory<MonteCarlo> RegisteredFactory("MonteCarlo");
+static const Factory<MonteCarlo> RegisteredFactory;
 
 /* Constructor with parameters */
 MonteCarlo::MonteCarlo(const Event & event):

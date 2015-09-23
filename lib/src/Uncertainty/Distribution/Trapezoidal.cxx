@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Trapezoidal);
 
-static Factory<Trapezoidal> RegisteredFactory("Trapezoidal");
+static const Factory<Trapezoidal> RegisteredFactory;
 
 /* Default constructor */
 Trapezoidal::Trapezoidal()

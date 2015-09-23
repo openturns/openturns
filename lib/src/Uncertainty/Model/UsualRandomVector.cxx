@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(UsualRandomVector);
 
-static Factory<UsualRandomVector> RegisteredFactory("UsualRandomVector");
+static const Factory<UsualRandomVector> RegisteredFactory;
 
 /* Default constructor */
 UsualRandomVector::UsualRandomVector(const Distribution & distribution)

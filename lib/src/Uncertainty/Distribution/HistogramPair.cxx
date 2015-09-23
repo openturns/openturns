@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HistogramPair);
 
-static Factory<HistogramPair> RegisteredFactory("HistogramPair");
+static const Factory<HistogramPair> RegisteredFactory;
 
 /* Default constructor */
 HistogramPair::HistogramPair()

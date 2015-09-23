@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ParametricGradientImplementation);
 
-static Factory<ParametricGradientImplementation> RegisteredFactory("ParametricGradientImplementation");
+static const Factory<ParametricGradientImplementation> RegisteredFactory;
 
 
 /* Default constructor */

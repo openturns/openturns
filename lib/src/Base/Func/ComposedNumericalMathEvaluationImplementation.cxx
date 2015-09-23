@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComposedNumericalMathEvaluationImplementation);
 
-static Factory<ComposedNumericalMathEvaluationImplementation> RegisteredFactory("ComposedNumericalMathEvaluationImplementation");
+static const Factory<ComposedNumericalMathEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 ComposedNumericalMathEvaluationImplementation::ComposedNumericalMathEvaluationImplementation(const EvaluationImplementation & p_leftFunction,

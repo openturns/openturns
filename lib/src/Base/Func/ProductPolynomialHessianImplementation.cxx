@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductPolynomialHessianImplementation);
 
-static Factory<ProductPolynomialHessianImplementation> RegisteredFactory("ProductPolynomialHessianImplementation");
+static const Factory<ProductPolynomialHessianImplementation> RegisteredFactory;
 
 
 /* Default constructor */

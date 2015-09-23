@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PenalizedLeastSquaresAlgorithmFactory);
 
-static Factory<PenalizedLeastSquaresAlgorithmFactory> RegisteredFactory("PenalizedLeastSquaresAlgorithmFactory");
+static const Factory<PenalizedLeastSquaresAlgorithmFactory> RegisteredFactory;
 
 /* Default constructor */
 PenalizedLeastSquaresAlgorithmFactory::PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal)

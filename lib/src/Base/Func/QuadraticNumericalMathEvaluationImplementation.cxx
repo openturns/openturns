@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(QuadraticNumericalMathEvaluationImplementation);
 
-static Factory<QuadraticNumericalMathEvaluationImplementation> RegisteredFactory("QuadraticNumericalMathEvaluationImplementation");
+static const Factory<QuadraticNumericalMathEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 QuadraticNumericalMathEvaluationImplementation::QuadraticNumericalMathEvaluationImplementation()

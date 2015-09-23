@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DynamicalFunctionImplementation);
 
-static Factory<DynamicalFunctionImplementation> RegisteredFactory("DynamicalFunctionImplementation");
+static const Factory<DynamicalFunctionImplementation> RegisteredFactory;
 
 /* Default constructor */
 DynamicalFunctionImplementation::DynamicalFunctionImplementation(const UnsignedInteger spatialDimension)

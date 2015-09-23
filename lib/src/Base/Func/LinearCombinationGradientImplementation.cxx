@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearCombinationGradientImplementation);
 
-static Factory<LinearCombinationGradientImplementation> RegisteredFactory("LinearCombinationGradientImplementation");
+static const Factory<LinearCombinationGradientImplementation> RegisteredFactory;
 
 
 /* Default constructor */

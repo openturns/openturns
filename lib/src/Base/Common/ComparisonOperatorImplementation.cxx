@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComparisonOperatorImplementation);
 
-static Factory<ComparisonOperatorImplementation> RegisteredFactory("ComparisonOperatorImplementation");
+static const Factory<ComparisonOperatorImplementation> RegisteredFactory;
 
 /* Default constructor */
 ComparisonOperatorImplementation::ComparisonOperatorImplementation()

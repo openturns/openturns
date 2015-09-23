@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BoxCoxFactory);
 
-static Factory<BoxCoxFactory> RegisteredFactory("BoxCoxFactory");
+static const Factory<BoxCoxFactory> RegisteredFactory;
 
 /* Constructor with parameters */
 BoxCoxFactory::BoxCoxFactory()

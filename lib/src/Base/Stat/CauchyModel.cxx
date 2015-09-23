@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CauchyModel);
 
-static Factory<CauchyModel> RegisteredFactory("CauchyModel");
+static const Factory<CauchyModel> RegisteredFactory;
 
 /* Constructor with parameters */
 CauchyModel::CauchyModel()

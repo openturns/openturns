@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ParametricEvaluationImplementation);
 
-static Factory<ParametricEvaluationImplementation> RegisteredFactory("ParametricEvaluationImplementation");
+static const Factory<ParametricEvaluationImplementation> RegisteredFactory;
 
 
 /* Default constructor */

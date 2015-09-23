@@ -21,7 +21,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IndicatorNumericalMathEvaluationImplementation);
 
-static Factory<IndicatorNumericalMathEvaluationImplementation> RegisteredFactory("IndicatorNumericalMathEvaluationImplementation");
+static const Factory<IndicatorNumericalMathEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 IndicatorNumericalMathEvaluationImplementation::IndicatorNumericalMathEvaluationImplementation()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Hanning);
 
-static Factory<Hanning> RegisteredFactory("Hanning");
+static const Factory<Hanning> RegisteredFactory;
 
 /* Constructor with parameters */
 Hanning::Hanning()

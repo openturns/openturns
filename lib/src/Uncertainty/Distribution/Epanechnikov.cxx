@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Epanechnikov);
 
-static Factory<Epanechnikov> RegisteredFactory("Epanechnikov");
+static const Factory<Epanechnikov> RegisteredFactory;
 
 
 /* Default constructor */

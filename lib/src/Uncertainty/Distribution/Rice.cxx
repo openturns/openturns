@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Rice);
 
-static Factory<Rice> RegisteredFactory("Rice");
+static const Factory<Rice> RegisteredFactory;
 
 /* Default constructor */
 Rice::Rice()

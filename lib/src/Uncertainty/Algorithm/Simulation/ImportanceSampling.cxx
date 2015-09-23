@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ImportanceSampling);
 
-static Factory<ImportanceSampling> RegisteredFactory("ImportanceSampling");
+static const Factory<ImportanceSampling> RegisteredFactory;
 
 /* Constructor with parameters */
 ImportanceSampling::ImportanceSampling()

@@ -27,7 +27,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MeshFactoryImplementation);
-static Factory<MeshFactoryImplementation> RegisteredFactory("MeshFactoryImplementation");
+static const Factory<MeshFactoryImplementation> RegisteredFactory;
 
 /* Default constructor */
 MeshFactoryImplementation::MeshFactoryImplementation()

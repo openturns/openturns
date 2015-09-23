@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Mixture);
 
-static Factory<Mixture> RegisteredFactory("Mixture");
+static const Factory<Mixture> RegisteredFactory;
 
 /* Default constructor */
 Mixture::Mixture()

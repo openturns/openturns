@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Cobyla);
 
-static Factory<Cobyla> RegisteredFactory("Cobyla");
+static const Factory<Cobyla> RegisteredFactory;
 
 /* Default constructor */
 Cobyla::Cobyla()

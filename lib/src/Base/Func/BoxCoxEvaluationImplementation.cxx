@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BoxCoxEvaluationImplementation);
 
-static Factory<BoxCoxEvaluationImplementation> RegisteredFactory("BoxCoxEvaluationImplementation");
+static const Factory<BoxCoxEvaluationImplementation> RegisteredFactory;
 
 /* Default constructor */
 BoxCoxEvaluationImplementation::BoxCoxEvaluationImplementation()

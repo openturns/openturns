@@ -26,7 +26,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KrigingResult);
-static Factory<KrigingResult> RegisteredFactory("KrigingResult");
+static const Factory<KrigingResult> RegisteredFactory;
 
 /* Default constructor */
 KrigingResult::KrigingResult()

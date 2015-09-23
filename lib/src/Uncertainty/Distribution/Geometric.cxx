@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Geometric);
 
-static Factory<Geometric> RegisteredFactory("Geometric");
+static const Factory<Geometric> RegisteredFactory;
 
 /* Default constructor */
 Geometric::Geometric()

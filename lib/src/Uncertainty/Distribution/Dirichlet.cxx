@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Dirichlet);
 
-static Factory<Dirichlet> RegisteredFactory("Dirichlet");
+static const Factory<Dirichlet> RegisteredFactory;
 
 
 /* Default constructor */

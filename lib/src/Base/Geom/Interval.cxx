@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Interval);
 
-static Factory<Interval> RegisteredFactory("Interval");
+static const Factory<Interval> RegisteredFactory;
 
 /* Default constructor */
 Interval::Interval(const UnsignedInteger dimension)

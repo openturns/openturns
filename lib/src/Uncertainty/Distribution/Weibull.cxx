@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Weibull);
 
-static Factory<Weibull> RegisteredFactory("Weibull");
+static const Factory<Weibull> RegisteredFactory;
 
 /* Default constructor */
 Weibull::Weibull()

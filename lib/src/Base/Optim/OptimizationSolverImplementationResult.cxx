@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationSolverImplementationResult);
 
-static Factory<OptimizationSolverImplementationResult> RegisteredFactory("OptimizationSolverImplementationResult");
+static const Factory<OptimizationSolverImplementationResult> RegisteredFactory;
 
 /* Default constructor */
 OptimizationSolverImplementationResult::OptimizationSolverImplementationResult()

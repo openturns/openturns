@@ -29,12 +29,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<CalibrationStrategy>);
-static Factory<PersistentCollection<CalibrationStrategy> > RegisteredFactory2("PersistentCollection<CalibrationStrategy>");
+static const Factory<PersistentCollection<CalibrationStrategy> > RegisteredFactory2;
 
 
 CLASSNAMEINIT(RandomWalkMetropolisHastings);
 
-static Factory<RandomWalkMetropolisHastings> RegisteredFactory("RandomWalkMetropolisHastings");
+static const Factory<RandomWalkMetropolisHastings> RegisteredFactory;
 
 /* Default constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()

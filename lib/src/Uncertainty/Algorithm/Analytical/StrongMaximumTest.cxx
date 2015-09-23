@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(StrongMaximumTest);
 
-static Factory< StrongMaximumTest > RegisteredFactory("StrongMaximumTest");
+static const Factory< StrongMaximumTest > RegisteredFactory;
 typedef DistributionImplementation::Implementation                        Implementation;
 typedef DistributionImplementation::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
 

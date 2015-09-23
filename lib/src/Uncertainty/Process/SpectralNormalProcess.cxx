@@ -29,11 +29,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< TriangularComplexMatrix >);
-static Factory< PersistentCollection< TriangularComplexMatrix > > RegisteredFactory1("PersistentCollection< TriangularComplexMatrix >");
+static const Factory<PersistentCollection<TriangularComplexMatrix> > RegisteredFactory1;
 
 CLASSNAMEINIT(SpectralNormalProcess);
 
-static Factory<SpectralNormalProcess> RegisteredFactory("SpectralNormalProcess");
+static const Factory<SpectralNormalProcess> RegisteredFactory;
 
 SpectralNormalProcess::SpectralNormalProcess()
   : ProcessImplementation()

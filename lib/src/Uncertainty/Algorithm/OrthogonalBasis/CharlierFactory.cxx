@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CharlierFactory);
 
-static Factory<CharlierFactory> RegisteredFactory("CharlierFactory");
+static const Factory<CharlierFactory> RegisteredFactory;
 
 
 

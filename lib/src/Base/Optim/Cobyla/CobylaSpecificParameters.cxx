@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CobylaSpecificParameters);
 
-static Factory<CobylaSpecificParameters> RegisteredFactory("CobylaSpecificParameters");
+static const Factory<CobylaSpecificParameters> RegisteredFactory;
 
 
 /* Default with parameters */

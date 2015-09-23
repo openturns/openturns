@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SubSquareCopula);
 
-static Factory<SubSquareCopula> RegisteredFactory("SubSquareCopula");
+static const Factory<SubSquareCopula> RegisteredFactory;
 
 /* Default constructor */
 SubSquareCopula::SubSquareCopula()

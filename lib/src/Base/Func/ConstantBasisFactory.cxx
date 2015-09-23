@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConstantBasisFactory);
 
-static Factory<ConstantBasisFactory> RegisteredFactory("ConstantBasisFactory");
+static const Factory<ConstantBasisFactory> RegisteredFactory;
 
 /* Default constructor */
 ConstantBasisFactory::ConstantBasisFactory (const UnsignedInteger inputDimension)

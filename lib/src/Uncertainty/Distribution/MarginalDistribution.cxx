@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MarginalDistribution);
 
-static Factory<MarginalDistribution> RegisteredFactory("MarginalDistribution");
+static const Factory<MarginalDistribution> RegisteredFactory;
 
 /* Default constructor */
 MarginalDistribution::MarginalDistribution()

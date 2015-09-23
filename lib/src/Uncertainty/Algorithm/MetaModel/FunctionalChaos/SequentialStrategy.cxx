@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SequentialStrategy);
 
-static Factory<SequentialStrategy> RegisteredFactory("SequentialStrategy");
+static const Factory<SequentialStrategy> RegisteredFactory;
 
 
 /* Default constructor */

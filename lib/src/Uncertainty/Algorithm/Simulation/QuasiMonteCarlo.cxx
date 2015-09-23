@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 CLASSNAMEINIT(QuasiMonteCarlo);
 
-static Factory<QuasiMonteCarlo> RegisteredFactory("QuasiMonteCarlo");
+static const Factory<QuasiMonteCarlo> RegisteredFactory;
 
 /* Constructor with parameters */
 QuasiMonteCarlo::QuasiMonteCarlo()

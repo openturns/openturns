@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExponentiallyDampedCosineModel);
 
-static Factory<ExponentiallyDampedCosineModel> RegisteredFactory("ExponentiallyDampedCosineModel");
+static const Factory<ExponentiallyDampedCosineModel> RegisteredFactory;
 
 /* Constructor from spatial dimension */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension)

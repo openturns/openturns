@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Laplace);
 
-static Factory<Laplace> RegisteredFactory("Laplace");
+static const Factory<Laplace> RegisteredFactory;
 
 /* Default constructor */
 Laplace::Laplace()

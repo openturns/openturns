@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ParametrizedDistribution);
 
-static Factory<ParametrizedDistribution> RegisteredFactory("ParametrizedDistribution");
+static const Factory<ParametrizedDistribution> RegisteredFactory;
 
 
 /* Default constructor */

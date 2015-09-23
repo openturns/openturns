@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PolygonArray);
 
-static Factory<PolygonArray> RegisteredFactory("PolygonArray");
+static const Factory<PolygonArray> RegisteredFactory;
 
 /* Default constructor */
 PolygonArray::PolygonArray(const String & legend)

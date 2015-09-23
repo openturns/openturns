@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConstantStep);
 
-static Factory<ConstantStep> RegisteredFactory("ConstantStep");
+static const Factory<ConstantStep> RegisteredFactory;
 
 /* Default constructor */
 ConstantStep::ConstantStep()

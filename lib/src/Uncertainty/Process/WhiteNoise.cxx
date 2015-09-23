@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(WhiteNoise);
 
-static Factory<WhiteNoise> RegisteredFactory("WhiteNoise");
+static const Factory<WhiteNoise> RegisteredFactory;
 
 /* Standard constructor */
 WhiteNoise::WhiteNoise()

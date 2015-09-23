@@ -25,7 +25,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Indices);
-static Factory<Indices> RegisteredFactory("Indices");
+static const Factory<Indices> RegisteredFactory;
 
 /* Check that no value is repeated and no value exceed the given bound */
 Bool Indices::check(const UnsignedInteger bound) const

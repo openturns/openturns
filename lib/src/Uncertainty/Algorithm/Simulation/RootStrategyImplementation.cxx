@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RootStrategyImplementation);
 
-static Factory<RootStrategyImplementation> RegisteredFactory("RootStrategyImplementation");
+static const Factory<RootStrategyImplementation> RegisteredFactory;
 
 /* Default constructor */
 RootStrategyImplementation::RootStrategyImplementation()
