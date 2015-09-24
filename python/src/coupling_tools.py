@@ -165,7 +165,8 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
 
 def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
-            check_exit_code=True, get_stdout=False, get_stderr=False):
+            check_exit_code=True, get_stdout=False, get_stderr=False,
+            timeout=None):
     """
     Launch an external processus in a clean way.
 
@@ -183,6 +184,7 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
         code of process != 0
     get_stdout : bool, whether standard output of the command is returned
     get_stderr : bool, whether standard error of the command is returned
+    timeout : int, child process timeout (Python >= 3.3 only)
 
     Returns
     -------
@@ -204,10 +206,7 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     >>> ## => ret = 0, stdout = '/bin/kill'
     """
     # split cmd if not in a shell before passing it to os.execvp()
-    if not is_shell:
-        process_args = shlex.split(cmd)
-    else:
-        process_args = cmd
+    process_args = cmd if is_shell else shlex.split(cmd)
 
     # override startupinfo to hide windows console
     startupinfo = None
@@ -218,23 +217,27 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
         else:
             startupinfo.dwFlags |= 1
 
-    stdout = None
-    stderr = None
-    if get_stdout:
-        stdout = subprocess.PIPE
-    if get_stderr:
-        stderr = subprocess.PIPE
-    p = subprocess.Popen(process_args, shell=is_shell, cwd=workdir,
-                         executable=shell_exe, stdout=stdout, stderr=stderr,
-                         startupinfo=startupinfo)
-    if get_stdout or get_stderr:
-        stdout_data, stderr_data = p.communicate()
-    ret = p.wait()
+    stdout = subprocess.PIPE if get_stdout else None
+    stderr = subprocess.PIPE if get_stderr else None
+    proc = subprocess.Popen(process_args, shell=is_shell, cwd=workdir,
+                            executable=shell_exe, stdout=stdout, stderr=stderr,
+                            startupinfo=startupinfo)
+    if sys.version_info >= (3, 3,):
+        try:
+            stdout_data, stderr_data = proc.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            stdout_data, stderr_data = proc.communicate()
+            raise RuntimeError('Command (' + cmd + ') times out after ' +
+                               str(timeout) + 's')
+    else:
+        stdout_data, stderr_data = proc.communicate()
+    ret = proc.poll()
 
     # check return code
     if check_exit_code and ret != 0:
-        raise RuntimeError('Command (' + cmd + ') returned exit code ' +
-                           str(ret))
+        raise RuntimeError(
+            'Command (' + cmd + ') returned exit code ' + str(ret))
 
     if get_stdout and get_stderr:
         return ret, stdout_data, stderr_data
