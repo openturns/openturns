@@ -46,9 +46,10 @@ class PersistentObjectFactory;
 class OT_API Catalog
 {
 public:
-
+#ifndef SWIG
   /** Return the catalog as a singleton */
   static MutexLockSingleton<Catalog> GetInstance();
+#endif
 
   /** Return the catalog as a singleton */
   static void Add(const String & factoryName, const PersistentObjectFactory * p_factory);

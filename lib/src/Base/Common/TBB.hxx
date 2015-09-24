@@ -24,7 +24,6 @@
 #include <algorithm>
 #include "OTprivate.hxx"
 #include "OTconfig.hxx"
-#include "MutexLock.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
 #ifdef OPENTURNS_TBB_NO_IMPLICIT_LINKAGE

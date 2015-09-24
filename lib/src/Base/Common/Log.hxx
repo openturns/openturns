@@ -68,11 +68,12 @@ public:
   typedef unsigned long Severity;
 
 private:
+#ifndef SWIG
   /** GetInstance gives a locked access to the singleton */
   static MutexLockSingleton<Log> GetInstance();
+#endif
 
 public:
-
   /** Those flags should be ORed */
   static const Severity DBG;
   static const Severity WRAPPER;

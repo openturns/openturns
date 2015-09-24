@@ -10,8 +10,6 @@
 
 %nodefaultctor ResourceMap;
 
-%ignore OT::ResourceMap::GetInstance;
-
 %include ResourceMap.hxx
 
 namespace OT {

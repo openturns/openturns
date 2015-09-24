@@ -44,10 +44,11 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ResourceMap
 {
 public:
+#ifndef SWIG
   /** GetInstance gives a locked access to the singleton */
   static MutexLockSingleton<ResourceMap> GetInstance();
+#endif
 
-public:
   /** Get a value in the map */
   static String Get(String key);
   static Bool GetAsBool(String key);
@@ -172,8 +173,8 @@ struct OT_API ResourceMap_init
  * Operator << converts the ResourceMap object to an output stream
  * so it is easy to show the content of the resourceMap.
  */
-OT_API std::ostream & operator <<(std::ostream & os, const MutexLockSingleton<ResourceMap> & obj);
 #ifndef SWIG
+OT_API std::ostream & operator <<(std::ostream & os, const MutexLockSingleton<ResourceMap> & obj);
 OT_API OStream & operator <<(OStream & OS, const MutexLockSingleton<ResourceMap> & obj);
 #endif
 
