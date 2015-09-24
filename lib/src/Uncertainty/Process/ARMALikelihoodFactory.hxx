@@ -22,6 +22,7 @@
 #define OPENTURNS_ARMALIKELIHOODFACTORY_HXX
 
 #include "ARMAFactoryImplementation.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -138,14 +139,6 @@ private :
   /** Likelihood function ==> Compute the reduced form of the likelihood */
   NumericalScalar computeLogLikelihood(const NumericalPoint & beta) const;
 
-  /** wrapper function passed to cobyla */
-  static int ComputeObjectiveAndConstraint( int n,
-      int m,
-      double * x,
-      double * f,
-      double * con,
-      void * state);
-
   /** Run the default initilization of coefficients / covariance for the optimization */
   void defaultInitialize() const;
 
@@ -172,6 +165,33 @@ private :
 
   /** Compute I + M^{T} H^{T} H M matrix */
   CovarianceMatrix computeI_MTHTHM(const SymmetricMatrix & matrix_HTH, const Matrix & matV1_Omega_V1TCholesky) const;
+
+  /** Likelihood function accessor */
+  NumericalMathFunction getLogLikelihoodFunction() const;
+
+  /** Likelihood constraint accessor */
+  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+
+  /** likelihood estimate */
+  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & beta ) const;
+
+ /** only used to pass data to be used in computeLogLikelihood and computeLogLikelihoodInequalityConstraint  */
+  mutable UnsignedInteger inputDimension_;
+
+  /** only used to pass data to be used in computeLogLikelihoodInequalityConstraint */
+  mutable UnsignedInteger nbInequalityConstraint_;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
+  /** Initialize default Cobyla solver parameter using the ResourceMap */
+  void initializeCobylaSolverParameter();
+
+protected:
+
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 
 }; /* class ARMALikelihoodFactory */
 

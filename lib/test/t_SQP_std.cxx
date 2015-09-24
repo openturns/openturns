@@ -43,11 +43,9 @@ int main(int argc, char *argv[])
       NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
       SQPSpecificParameters specific;
 
-
       NumericalPoint startingPoint(4, 1.0);
-      SQP mySQPAlgorithm(specific, levelFunction);
+      SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
       mySQPAlgorithm.setStartingPoint(startingPoint);
-      mySQPAlgorithm.setLevelValue(3.0);
       mySQPAlgorithm.setMaximumIterationsNumber(100);
       mySQPAlgorithm.setMaximumAbsoluteError(1.0e-10);
       mySQPAlgorithm.setMaximumRelativeError(1.0e-10);

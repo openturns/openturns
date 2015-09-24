@@ -169,11 +169,6 @@ int main(int argc, char *argv[])
     }
     study.add("staircase", staircase);
 
-    // Create a NearestPointAlgorithm::Result
-    NearestPointAlgorithm::Result nearestPointAlgorithmResult(NumericalPoint(4, 1.0), 15, 1e-10, 2e-10, 3e-10, 4e-10);
-    nearestPointAlgorithmResult.setName("nearestPointAlgorithmResult");
-    study.add("nearestPointAlgorithmResult", nearestPointAlgorithmResult);
-
     // Create a Simulation::Result
     SimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
     simulationResult.setName("simulationResult");
@@ -372,7 +367,6 @@ int main(int argc, char *argv[])
     // Create a Cobyla algorithm
     Cobyla cobyla;
     study.add("cobyla", cobyla);
-    cobyla.setLevelValue(3.0);
     cobyla.setMaximumIterationsNumber(100);
     cobyla.setMaximumAbsoluteError(1.0e-10);
     cobyla.setMaximumRelativeError(1.0e-10);
@@ -380,15 +374,30 @@ int main(int argc, char *argv[])
     cobyla.setMaximumConstraintError(1.0e-10);
 
     // Create a TNC algorithm
-    TNC tnc;
+    OptimizationSolver tnc(new TNC());
     {
-      TNCSpecificParameters specific;
-      NumericalPoint startingPoint(3, 1.0);
       Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
-      tnc = TNC(specific, analytical, bounds, startingPoint, TNC::Result::MINIMIZATION);
+      Description input2(3);
+      input2[0] = "x";
+      input2[1] = "y";
+      input2[2] = "z";
+      Description output2(1);
+      output2[0] = "d";
+      Description formula2(output2.getSize());
+      formula2[0] = "(x+2*y^2+3*z^3)/6";
+      NumericalMathFunction model(input2, output2, formula2);
+      model.setName("complex");
+
+      OptimizationProblem problem;
+      problem.setBounds(bounds);
+      problem.setObjective(model);
+      problem.setMinimization(true);
+
+      tnc.setProblem(problem);
+      tnc.setStartingPoint(NumericalPoint(3, 1.0));
     }
     study.add("tnc", tnc);
-
+ 
     // Create a SORM algorithm
     SORM sorm(abdoRackwitz, event, NumericalPoint(3, 4.));
     study.add("sorm", sorm);
@@ -581,22 +590,6 @@ int main(int argc, char *argv[])
       uniVariatePolynomial = UniVariatePolynomial(coefficients);
     }
     study.add("uniVariatePolynomial", uniVariatePolynomial);
-
-    // Create a BoundConstrainedAlgorithmImplementationResult
-    BoundConstrainedAlgorithmImplementationResult boundConstrainedAlgorithmImplementationResult;
-    {
-      UnsignedInteger dim(4);
-      NumericalPoint optimizer(dim, 1.0);
-      NumericalScalar optimalValue(5.0);
-      BoundConstrainedAlgorithmImplementationResult::OptimizationProblem optimization(BoundConstrainedAlgorithmImplementationResult::MINIMIZATION);
-      UnsignedInteger evaluationsNumber(10);
-      NumericalScalar absoluteError(1e-6);
-      NumericalScalar relativeError(1e-7);
-      NumericalScalar objectiveError(1e-8);
-      NumericalScalar constraintError(1e-10);
-      boundConstrainedAlgorithmImplementationResult = BoundConstrainedAlgorithmImplementationResult(optimizer, optimalValue, optimization, evaluationsNumber, absoluteError, relativeError, objectiveError, constraintError);
-    }
-    study.add("boundConstrainedAlgorithmImplementationResult", boundConstrainedAlgorithmImplementationResult);
 
     // Create a Burr
     Burr burr(1.5, 4.5);
@@ -1013,12 +1006,10 @@ int main(int argc, char *argv[])
     compare<NumericalMathFunction >( analytical, study2 , "analytical");
 
     // Optim
-    compare<NearestPointAlgorithm::Result >( nearestPointAlgorithmResult, study2, "nearestPointAlgorithmResult");
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
     compare<Cobyla >( cobyla, study2, "cobyla" );
-    compare<TNC >( tnc, study2, "tnc" );
-    compare<BoundConstrainedAlgorithmImplementationResult >( boundConstrainedAlgorithmImplementationResult, study2 );
+    compare<OptimizationSolver >( tnc, study2, "tnc" );
 
     // Model
     compare<Event >( event, study2 );

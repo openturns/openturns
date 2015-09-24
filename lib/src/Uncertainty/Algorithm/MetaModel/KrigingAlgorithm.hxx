@@ -24,7 +24,7 @@
 #include "MetaModelAlgorithm.hxx"
 #include "Basis.hxx"
 #include "CovarianceModel.hxx"
-#include "BoundConstrainedAlgorithm.hxx"
+#include "OptimizationSolver.hxx"
 #include "KrigingResult.hxx"
 #include "HMatrix.hxx"
 
@@ -87,10 +87,6 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
-  /** likelihood optimization algorithm */
-  void setOptimizer(const BoundConstrainedAlgorithm & optimizer);
-  BoundConstrainedAlgorithm getOptimizer() const;
-
   /** Perform regression */
   void run();
 
@@ -114,6 +110,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
 
 protected:
   // Optimize the marginal log-likelihood associated to outputIndex_
@@ -156,7 +155,7 @@ private:
   // The member of the covariance model fitted to the data
   CovarianceModel conditionalCovarianceModel_;
   // The optimization algorithm used for the meta-parameters estimation
-  BoundConstrainedAlgorithm optimizer_;
+  mutable OptimizationSolver  solver_;
   Bool optimizerProvided_;
 
   // The coefficients of the current output conditional expectation part

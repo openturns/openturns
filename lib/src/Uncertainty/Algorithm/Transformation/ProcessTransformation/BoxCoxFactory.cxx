@@ -19,18 +19,21 @@
  *
  */
 #include "BoxCoxFactory.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "Exception.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Field.hxx"
 #include "BoxCoxEvaluationImplementation.hxx"
 #include "SpecFunc.hxx"
 #include "algocobyla.h"
-#include "Cobyla.hxx"
 #include "Log.hxx"
 #include "BoxCoxTransform.hxx"
 #include "InverseBoxCoxTransform.hxx"
 #include "Curve.hxx"
 #include "Cloud.hxx"
+#include "OptimizationSolver.hxx"
+#include "Cobyla.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,8 +50,12 @@ BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
   , sample_()
   , sumLog_(0.0)
+  , solver_(new Cobyla())
 {
-  // Nothing to do
+  CobylaSpecificParameters parameters(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoBeg"));
+  static_cast<Cobyla*>(solver_.getImplementation().get())->setSpecificParameters(parameters);
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoEnd"));
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
 }
 
 /* Virtual constructor */
@@ -60,10 +67,10 @@ BoxCoxFactory * BoxCoxFactory::clone() const
 /* Compute the log-likelihood of the Box Cox transformation
    (\lambda-1)\sum\log(X_i)-\frac{n}{2}\log(\frac{n-1}{n}Var(T_\lambda(X_i)))
  */
-NumericalScalar BoxCoxFactory::computeLogLikelihood(const NumericalScalar & lambda) const
+NumericalScalar BoxCoxFactory::computeLogLikelihood(const NumericalPoint & lambda) const
 {
   const UnsignedInteger size(sample_.getSize());
-  BoxCoxEvaluationImplementation myBoxFunction(NumericalPoint(1, lambda));
+  BoxCoxEvaluationImplementation myBoxFunction(NumericalPoint(1, lambda[0]));
   // compute the mean of the sample using the Box-Cox function
   const NumericalSample outSample(myBoxFunction(sample_));
   const NumericalScalar ratio(1.0 - 1.0 / size);
@@ -71,26 +78,27 @@ NumericalScalar BoxCoxFactory::computeLogLikelihood(const NumericalScalar & lamb
   NumericalScalar result(-0.5 * size * log(sigma2 * ratio));
 
   //result is translated
-  result += (lambda - 1.0) * sumLog_;
+  result += (lambda[0] - 1.0) * sumLog_;
   return result;
 }
 
 
-/* objective function */
-int BoxCoxFactory::ComputeObjectiveAndConstraint(int n,
-    int m,
-    double *x,
-    double *f,
-    double *con,
-    void *state)
+/* Compute the log-likelihood function accessor */
+NumericalMathFunction BoxCoxFactory::getLogLikelihoodFunction() const
 {
-  const NumericalScalar lambda(x[0]);
-
-  const BoxCoxFactory * factory = static_cast<BoxCoxFactory *>(state);
-  *f = -factory->computeLogLikelihood( lambda );
-
-  return 0;
+  return bindMethod <BoxCoxFactory, NumericalScalar, NumericalPoint> ( *this, &BoxCoxFactory::computeLogLikelihood, 1, 1);
 }
+
+OptimizationSolver BoxCoxFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void BoxCoxFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
+}
+
 
 /* Build the factory from data */
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries) const
@@ -140,16 +148,13 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   // Sum of the log-data
   NumericalPoint sumLog(dimension);
 
-  // Currently the optimization is done sequently
-  // cobyla rhobeg ==>  a reasonable initial change to the variables
-  // cobyla rhoend ==> the required accuracy for the variables
-  // if the cobyla will be the default method, then we must add these variables in the ResourceMap
-  // maxfun ==> on input, the maximum number of function evaluations on output, the number of function evaluations done
-  NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoBeg"));
-  NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoEnd"));
-  int maxFun(static_cast<int>(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultMaxFun")));
-  // Verbosity level : no msg
-  cobyla_message message( COBYLA_MSG_NONE );
+  // Define optimization problem
+  OptimizationProblem problem;
+  problem.setObjective(getLogLikelihoodFunction());
+  problem.setMinimization(false);
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(NumericalPoint(1, 1.0));
+
   // Keep the shifted marginal samples
   Collection< NumericalSample > marginalSamples(dimension);
   for (UnsignedInteger d = 0; d < dimension; ++d)
@@ -159,21 +164,18 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     // Apply the shift
     sample_ += NumericalPoint(1, shift[d]);
     marginalSamples[d] = sample_;
-    // number of optimized variables
-    int n(1);
-    // number of constraints
-    int m(0);
-    // starting point
-    NumericalPoint x(n, 1.0);
+
     // Compute the sum of the log-data
     for (UnsignedInteger k = 0; k < size; ++k) sumLog[d] += log(sample_[k][0]);
     // Use
     sumLog_ = sumLog[d];
-    // call cobyla algo
-    int returnCode(cobyla( n, m, &x[0], rhoBeg, rhoEnd, message, &maxFun, BoxCoxFactory::ComputeObjectiveAndConstraint, (void*) this ));
-    if (returnCode != 0) LOGWARN(OSS() << "Error solving maximum likelihood problem by cobyla method, message=" << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+
+    // run Optimization problem
+    solver_.run();
+
+    const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
     // Store the result
-    lambda[d] = x[0];
+    lambda[d] = optpoint[0];
   }
   // Graphical inspection
   graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood", true, "topright");
@@ -189,13 +191,13 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     NumericalSample logLikelihoodValues(npts, 1);
     sumLog_ = sumLog[d];
     sample_ = marginalSamples[d];
-    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = computeLogLikelihood(lambdaValues[i][0]);
+    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = computeLogLikelihood(lambdaValues[i]);
     Curve curve(lambdaValues, logLikelihoodValues);
     curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
     graph.add(curve);
     NumericalPoint optimum(2);
     optimum[0] = lambda[d];
-    optimum[1] = computeLogLikelihood(optimum[0]);
+    optimum[1] = computeLogLikelihood(optimum);
     Cloud cloud(NumericalSample(1, optimum));
     cloud.setColor(curve.getColor());
     cloud.setPointStyle("circle");

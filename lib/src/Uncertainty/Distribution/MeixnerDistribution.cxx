@@ -28,6 +28,7 @@
 #include "Brent.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,6 +39,7 @@ static Factory<MeixnerDistribution> RegisteredFactory("MeixnerDistribution");
 /* Default constructor */
 MeixnerDistribution::MeixnerDistribution()
   : ContinuousDistribution()
+  , solver_(new TNC())
   , alpha_(0.0)
   , beta_(0.0)
   , delta_(0.0)
@@ -45,6 +47,8 @@ MeixnerDistribution::MeixnerDistribution()
   , logNormalizationFactor_(0.0)
 {
   setName("MeixnerDistribution");
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
   setAlphaBetaDelta(1.0, 0.0, 1.0);
   setDimension(1);
 }
@@ -55,6 +59,7 @@ MeixnerDistribution::MeixnerDistribution(const NumericalScalar alpha,
     const NumericalScalar delta,
     const NumericalScalar mu)
   : ContinuousDistribution()
+  , solver_(new TNC())
   , alpha_(0.0)
   , beta_(0.0)
   , delta_(0.0)
@@ -62,8 +67,19 @@ MeixnerDistribution::MeixnerDistribution(const NumericalScalar alpha,
   , logNormalizationFactor_(0.0)
 {
   setName("MeixnerDistribution");
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  initializeOptimizationSolverParameter();
   setAlphaBetaDelta(alpha, beta, delta);
   setDimension(1);
+}
+
+/* Initialize optimization solver parameter using the ResourceMap */
+void MeixnerDistribution::initializeOptimizationSolverParameter()
+{
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumConstraintError"));
 }
 
 /* Comparison operator */
@@ -250,34 +266,42 @@ void MeixnerDistribution::update()
   // Fourth, the random generator
   // Update the bounds for the ratio of uniform sampling algorithm
   const MeixnerBounds boundsFunctions(*this);
-  TNC algorithm;
-  algorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumAbsoluteError"));
-  algorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumRelativeError"));
-  algorithm.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumConstraintError"));
-  algorithm.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumObjectiveError"));
-  algorithm.setStartingPoint(getMean());
-  algorithm.setBoundConstraints(getRange());
+
+  // define objectives functions 
   NumericalMathFunction fB(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveB, 1, 1));
   const NumericalPoint epsilon(1.0e-5 * getStandardDeviation());
   const CenteredFiniteDifferenceGradient gradientB(epsilon, fB.getEvaluation());
   fB.setGradient(gradientB.clone());
-  algorithm.setObjectiveFunction(fB);
-  // Tell the algorithm we want to maximize the objective function
-  algorithm.setOptimizationProblem(BoundConstrainedAlgorithmImplementationResult::MAXIMIZATION);
-  algorithm.run();
-  b_ = algorithm.getResult().getOptimalValue();
+
   NumericalMathFunction fCD(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveCD, 1, 1));
   const CenteredFiniteDifferenceGradient gradientCD(epsilon, fCD.getEvaluation());
   fCD.setGradient(gradientCD.clone());
-  algorithm.setObjectiveFunction(fCD);
-  // Tell the algorithm we want to minimize the objective function
-  algorithm.setOptimizationProblem(BoundConstrainedAlgorithmImplementationResult::MINIMIZATION);
-  algorithm.run();
-  c_ = algorithm.getResult().getOptimalValue();
-  // Tell the algorithm we want to maximize the objective function
-  algorithm.setOptimizationProblem(BoundConstrainedAlgorithmImplementationResult::MAXIMIZATION);
-  algorithm.run();
-  dc_ = algorithm.getResult().getOptimalValue() - c_;
+
+  // Initilalyse Optimization problems 
+  OptimizationProblem problem;
+  problem.setBounds(getRange());
+  solver_.setStartingPoint(getMean());
+
+  // Define Optimization problem1 : maximization fB
+  problem.setMinimization(false);	
+  problem.setObjective(fB);
+  solver_.setProblem(problem);
+  solver_.run();
+  b_ = solver_.getResult().getOptimalValue()[0];
+
+  // Define Optimization problem2 : minimization fCD
+  problem.setMinimization(true);
+  problem.setObjective(fCD);	
+  solver_.setProblem(problem);
+  solver_.run();
+  c_ = solver_.getResult().getOptimalValue()[0];
+
+// Define Optimization problem3 : maximization fCD
+  problem.setMinimization(false);	
+  solver_.setProblem(problem);
+  solver_.run();
+  dc_ = solver_.getResult().getOptimalValue()[0] - c_;
+
 }
 
 /* Get one realization of the distribution
@@ -454,6 +478,17 @@ void MeixnerDistribution::load(Advocate & adv)
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
   update();
+}
+
+/* Optimization solver accessor */
+OptimizationSolver MeixnerDistribution::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void MeixnerDistribution::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
 }
 
 END_NAMESPACE_OPENTURNS

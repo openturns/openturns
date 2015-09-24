@@ -29,7 +29,7 @@
 #include "Graph.hxx"
 #include "Description.hxx"
 #include "ResourceMap.hxx"
-#include "NearestPointAlgorithmImplementationResult.hxx"
+#include "OptimizationSolverImplementationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,8 +96,8 @@ public:
   Sensitivity getHasoferReliabilityIndexSensitivity() const;
 
   /** Optimization result accessors */
-  NearestPointAlgorithmImplementationResult getOptimizationResult() const;
-  void setOptimizationResult(const NearestPointAlgorithmImplementationResult & optimizationResult);
+  OptimizationSolverImplementationResult getOptimizationResult() const;
+  void setOptimizationResult(const OptimizationSolverImplementationResult & optimizationResult);
 
   /** HasoferReliabilityIndexSensitivitygraph */
   GraphCollection drawHasoferReliabilityIndexSensitivity(NumericalScalar width = ResourceMap::GetAsNumericalScalar( "AnalyticalResult-DefaultWidth" )) const;
@@ -167,7 +167,7 @@ private:
   mutable Bool isAlreadyComputedPhysicalImportanceFactors_;
   mutable Bool isAlreadyComputedHasoferReliabilityIndexSensitivity_;
   mutable Bool isAlreadyComputedMeanPointInStandardEventDomain_;
-  NearestPointAlgorithmImplementationResult optimizationResult_;
+  OptimizationSolverImplementationResult optimizationResult_;
 }; // class AnalyticalResult
 END_NAMESPACE_OPENTURNS
 

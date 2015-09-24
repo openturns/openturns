@@ -82,9 +82,8 @@ int main(int argc, char *argv[])
     NumericalMathFunction levelFunction(input, Description(1, "d"), Description(1, "x1+2*x2-3*x3+4*x4"));
     AbdoRackwitzSpecificParameters specific;
     NumericalPoint startingPoint(4, 1.0);
-    AbdoRackwitz myAlgorithm(specific, levelFunction);
+    AbdoRackwitz myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
-    myAlgorithm.setLevelValue(3.0);
     myAlgorithm.setMaximumIterationsNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
@@ -92,7 +91,7 @@ int main(int argc, char *argv[])
     myAlgorithm.setMaximumConstraintError(1.0e-10);
 
     /* We create a FORM algorithm */
-    /* The first parameter is a NearestPointAlgorithm */
+    /* The first parameter is an OptimizationSolver */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     FORM myAlgo(myAlgorithm, myEvent, mean);

@@ -22,7 +22,8 @@
 #define OPENTURNS_TNCSPECIFICPARAMETERS_HXX
 
 #include "OTprivate.hxx"
-#include "BoundConstrainedAlgorithmImplementation.hxx"
+#include "PersistentObject.hxx"
+#include "NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

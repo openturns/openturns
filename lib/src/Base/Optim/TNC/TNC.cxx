@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TNC is an actual implementation for a bound-constrained optimization algorithm
+ *  @brief TNC is an actual implementation for OptimizationSolverImplementation using the TNC library
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,28 +39,23 @@ static Factory<TNC> RegisteredFactory("TNC");
 
 /* Default constructor */
 TNC::TNC():
-  BoundConstrainedAlgorithmImplementation()
+  OptimizationSolverImplementation()
 {
   // Nothing to do
 }
 
-/* Constructor with parameters: no constraint, starting from the origin */
-TNC::TNC(const NumericalMathFunction & objectiveFunction,
-         const Bool verbose):
-  BoundConstrainedAlgorithmImplementation(objectiveFunction, verbose)
+/* Constructor with parameters */
+TNC::TNC(const OptimizationProblem & problem) :
+  OptimizationSolverImplementation(problem),
+  specificParameters_()
 {
   // Nothing to do
 }
 
-/* Constructor with parameters: bound constraints, starting from the given point */
+/* Constructor with parameters */
 TNC::TNC(const TNCSpecificParameters & parameters,
-         const NumericalMathFunction & objectiveFunction,
-         const Interval & boundConstraints,
-         const NumericalPoint & startingPoint,
-         const OptimizationProblem optimization,
-         const Bool verbose)
-  :
-  BoundConstrainedAlgorithmImplementation(objectiveFunction, boundConstraints, startingPoint, optimization, verbose),
+	 const OptimizationProblem & problem) :
+  OptimizationSolverImplementation(problem),
   specificParameters_(parameters)
 {
   // Nothing to do
@@ -72,14 +67,25 @@ TNC * TNC::clone() const
   return new TNC(*this);
 }
 
+/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void TNC::checkProblem(const OptimizationProblem & problem) const
+{
+  if ( problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << TNC::GetClassName() << " does not support MultiOjective Optimization ";
+}
+
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {
-  const UnsignedInteger dimension = getObjectiveFunction().getInputDimension();
-  if (dimension == 0) throw InternalException(HERE) << "Error: cannot solve a bound constrained optimization problem with no objective function.";
-  NumericalScalar f = 0.0;
-  Interval boundConstraints(getBoundConstraints());
-  if (boundConstraints.getDimension() != dimension) throw InternalException(HERE) << "Error: cannot solve a bound constrained optimization problem with bounds of dimension=" << boundConstraints.getDimension() << " incompatible with the objective function input dimension=" << dimension << ".";
+  const UnsignedInteger dimension = getStartingPoint().getDimension();
+  Interval boundConstraints(getProblem().getBounds());
+  NumericalPoint x(getStartingPoint());
+
+  /* Compute the objective function at StartingPoint */
+  const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
+  NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
+  
+  if (boundConstraints.getDimension() != dimension) throw InternalException(HERE) << "Error: cannot solve a bound constrained optimization problem with bounds of dimension incompatible with the objective function input dimension.";
   NumericalPoint low(boundConstraints.getLowerBound());
   NumericalPoint up(boundConstraints.getUpperBound());
   Interval::BoolCollection finiteLow(boundConstraints.getFiniteLowerBound());
@@ -90,7 +96,7 @@ void TNC::run()
     if (!finiteLow[i]) low[i] = -HUGE_VAL;
     if (!finiteUp[i]) up[i] = HUGE_VAL;
   }
-  NumericalPoint x(getStartingPoint());
+
   if (x.getDimension() != dimension)
   {
     LOGWARN("Warning! The given starting point has a dimension incompatible with the objective function. Using the midpoint of the constraints as a starting point.");
@@ -105,15 +111,15 @@ void TNC::run()
 
   NumericalScalar absoluteError = -1.0;
   NumericalScalar relativeError = -1.0;
-  NumericalScalar objectiveError = -1.0;
+  NumericalScalar residualError = -1.0;
   NumericalScalar constraintError = -1.0;
 
   // clear result
-  setResult(Result(x, f, getOptimizationProblem(), nfeval, absoluteError, relativeError, objectiveError, constraintError));
+  setResult(OptimizationSolverImplementationResult(x, NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
 
   // clear history
-  evaluationInputHistory_ = NumericalSample(0, dimension);
-  evaluationOutputHistory_.clear();
+  evaluationInputHistory_ = NumericalSample(0.0, dimension);
+  evaluationOutputHistory_ = NumericalSample(0.0, 2);
 
   /*
    * tnc : minimize a function with variables subject to bounds, using
@@ -169,7 +175,8 @@ void TNC::run()
    * On output, x, f and g may be very slightly out of sync because of scaling.
    *
    */
-  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndConstraint, (void*) this, &low[0], &up[0], refScale, refOffset, message, specificParameters_.getMaxCGit(), getMaximumEvaluationsNumber(), specificParameters_.getEta(), specificParameters_.getStepmx(), specificParameters_.getAccuracy(), specificParameters_.getFmin(), getMaximumObjectiveError(), getMaximumAbsoluteError(), getMaximumConstraintError(), specificParameters_.getRescale(), &nfeval);
+  
+  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, specificParameters_.getMaxCGit(), getMaximumIterationsNumber(), specificParameters_.getEta(), specificParameters_.getStepmx(), specificParameters_.getAccuracy(), specificParameters_.getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), specificParameters_.getRescale(), &nfeval);
 
   UnsignedInteger size = evaluationInputHistory_.getSize();
   for (UnsignedInteger i = 1; i < size; ++ i)
@@ -180,7 +187,7 @@ void TNC::run()
     NumericalPoint y_m(evaluationOutputHistory_[i - 1]);
     absoluteError = (xi - x_m).norm();
     relativeError = absoluteError / xi.norm();
-    objectiveError = (y - y_m).norm();
+    residualError = NumericalPoint(1,y[0] - y_m[0]).norm();
     constraintError = 0.0;
     for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {
@@ -195,14 +202,11 @@ void TNC::run()
     }
   }
 
-  /* If it was a maximization problem, we solved the associated minimization problem with -f */
-  if (getOptimizationProblem() == Result::MAXIMIZATION) f = -f;
-
   /* Store the result */
-  setResult(Result(x, f, getOptimizationProblem(), nfeval, absoluteError, relativeError, objectiveError, constraintError));
+  setResult(OptimizationSolverImplementationResult(x, sign*NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
 
   // check the convergence criteria
-  Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((objectiveError < getMaximumObjectiveError()) && (constraintError < getMaximumConstraintError()));
+  Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED))
   {
@@ -231,7 +235,7 @@ String TNC::__repr__() const
 {
   OSS oss;
   oss << "class=" << TNC::GetClassName()
-      << " " << BoundConstrainedAlgorithmImplementation::__repr__()
+      << " " << OptimizationSolverImplementation::__repr__()
       << " specificParameters=" << getSpecificParameters();
   return oss;
 }
@@ -239,14 +243,14 @@ String TNC::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void TNC::save(Advocate & adv) const
 {
-  BoundConstrainedAlgorithmImplementation::save(adv);
+  OptimizationSolverImplementation::save(adv);
   adv.saveAttribute("specificParameters_", specificParameters_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void TNC::load(Advocate & adv)
 {
-  BoundConstrainedAlgorithmImplementation::load(adv);
+  OptimizationSolverImplementation::load(adv);
   adv.loadAttribute("specificParameters_", specificParameters_);
 }
 
@@ -254,32 +258,51 @@ void TNC::load(Advocate & adv)
  * Wrapper of the NumericalMathFunction operator() compatible with
  * TNC signature
  */
-int TNC::ComputeObjectiveAndConstraint(double *x, double *f, double *g, void *state)
+int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state)
 {
   TNC *algorithm = static_cast<TNC *>(state);
 
-  /* Retreive the objective function */
-  NumericalMathFunction objectiveFunction(algorithm->getObjectiveFunction());
-  const UnsignedInteger dimension(objectiveFunction.getInputDimension());
   /* Convert the input vector in OpenTURNS format */
+  const UnsignedInteger dimension = algorithm->getStartingPoint().getDimension();
   NumericalPoint inPoint(dimension);
   for( UnsignedInteger i = 0; i < dimension; ++ i ) inPoint[i] = x[i];
-  /* Change the sign of f if it is a maximization problem */
-  const NumericalScalar sign(algorithm->getOptimizationProblem() == Result::MINIMIZATION ? 1.0 : -1.0);
+
+  const OptimizationProblem problem(algorithm->getProblem());
+  NumericalPoint outPoint(2);
+
+  if ( problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error : TNC does not support Multi-Ojective Optimization ";
+
+  if ( problem.hasInequalityConstraint() or problem.hasEqualityConstraint()  )
+    throw InvalidArgumentException(HERE) << "Error : TNC does not support constraints ";
+
+  /* Compute the objective function at inPoint */
+  const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
+  outPoint[0]= result;
+
+  const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
+  *f = sign * result;
+
   Matrix objectiveGradient;
   try
   {
-    (*f) = sign * objectiveFunction(inPoint)[0];
-    objectiveGradient = objectiveFunction.gradient(inPoint);
+    objectiveGradient = problem.getObjective().gradient(inPoint);
   }
   catch(...)
   {
     return 1;
   }
+  
   for ( UnsignedInteger i = 0; i < dimension; ++ i ) g[i] = sign * objectiveGradient(i, 0);
 
+  /* Compute gradient norm */
+  NumericalPoint gradient(dimension);
+  for ( UnsignedInteger i = 0; i < dimension; ++ i ) gradient[i] = objectiveGradient(i, 0);
+  outPoint[1]= gradient.norm();
+  
+  // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);
-  algorithm->evaluationOutputHistory_.add(NumericalPoint(1, *f));
+  algorithm->evaluationOutputHistory_.add(outPoint);
 
   return 0;
 }

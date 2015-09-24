@@ -37,14 +37,20 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
-    TNCSpecificParameters specific;
     NumericalPoint startingPoint(4, 1.0);
     Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
-    TNC myAlgorithm(specific, levelFunction, bounds, startingPoint, TNC::Result::MINIMIZATION);
-    myAlgorithm.setMaximumEvaluationsNumber(100);
+    OptimizationSolver myAlgorithm(new TNC());
+    OptimizationProblem problem;
+    problem.setBounds(bounds);
+    problem.setObjective(levelFunction);
+    problem.setMinimization(true);
+
+    myAlgorithm.setProblem(problem);
+    myAlgorithm.setStartingPoint(startingPoint);
+    myAlgorithm.setMaximumIterationsNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
-    myAlgorithm.setMaximumObjectiveError(1.0e-10);
+    myAlgorithm.setMaximumResidualError(1.0e-10);
     myAlgorithm.setMaximumConstraintError(1.0e-10);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
 

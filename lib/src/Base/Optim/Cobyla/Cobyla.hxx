@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cobyla is an actual implementation for
+ *  @brief Cobyla is an actual implementation for OptimizationSolverImplementation using the cobyla library
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,7 +23,7 @@
 
 #include "CobylaSpecificParameters.hxx"
 #include "OTprivate.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
+#include "OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,11 +31,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class cobyla
- * cobyla is an actual implementation for
- * NearestPointAlgorithm using the cobyla library
+ * cobyla is an actual implementation for OptimizationSolverImplementation using the cobyla library
  */
 class OT_API Cobyla :
-  public NearestPointAlgorithmImplementation
+  public OptimizationSolverImplementation
 {
   CLASSNAME;
 public:
@@ -45,18 +44,17 @@ public:
   Cobyla();
 
   /** Constructor with parameters */
-  explicit Cobyla(const NumericalMathFunction & levelFunction,
-                  const Bool verbose = false);
-
+  explicit Cobyla(const OptimizationProblem & problem);
 
   /** Constructor with parameters */
   Cobyla(const CobylaSpecificParameters & specificParameters,
-         const NumericalMathFunction & levelFunction,
-         const Bool verbose = false);
-
+         const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual Cobyla * clone() const;
+
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  void checkProblem(const OptimizationProblem & problem) const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
@@ -66,6 +64,18 @@ public:
 
   /** Specific parameters accessor */
   void setSpecificParameters(const CobylaSpecificParameters & specificParameters);
+
+  /** Level function accessor */
+  NumericalMathFunction getLevelFunction() const;
+
+  /** Level function accessor */
+  void setLevelFunction(const NumericalMathFunction & levelFunction);
+
+  /** Level value accessor */
+  NumericalScalar getLevelValue() const;
+
+  /** Level value accessor */
+  void setLevelValue(const NumericalScalar levelValue);
 
   /** String converter */
   String __repr__() const;

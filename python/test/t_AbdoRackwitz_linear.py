@@ -35,9 +35,8 @@ levelFunction.setGradient(
     NonCenteredFiniteDifferenceGradient(myGradient))
 specific = AbdoRackwitzSpecificParameters()
 startingPoint = NumericalPoint(4, 0.0)
-myAlgorithm = AbdoRackwitz(specific, levelFunction)
+myAlgorithm = AbdoRackwitz(specific, OptimizationProblem(levelFunction, 3.0))
 myAlgorithm.setStartingPoint(startingPoint)
-myAlgorithm.setLevelValue(3.0)
 myAlgorithm.run()
 print("result = ", printNumericalPoint(
-    myAlgorithm.getResult().getMinimizer(), 4))
+    myAlgorithm.getResult().getOptimalPoint(), 4))

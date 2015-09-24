@@ -138,22 +138,27 @@ int main(int argc, char *argv[])
       X[7][1] = 4.26386883;
       NumericalSample Y(model(X));
 
-      // create algorithm
-      TNCSpecificParameters specific;
+      // Define Optimization Problem
+      OptimizationProblem problem;
       Interval bounds(NumericalPoint(1, 0.7071067811865475), NumericalPoint(1, 35.60679774997894));
-      TNC optimizer(specific, NumericalMathFunction(Description(1, "x"), Description(1, "y"), Description(1, "x")), bounds, NumericalPoint(1, 22.360679774997898), TNC::Result::MINIMIZATION);
-      optimizer.setMaximumEvaluationsNumber(10000);
-      optimizer.setMaximumAbsoluteError(1.0e-8);
-      optimizer.setMaximumRelativeError(1.0e-8);
-      optimizer.setMaximumObjectiveError(1.0e-8);
-      optimizer.setMaximumConstraintError(1.0e-8);
+      problem.setBounds(bounds);
 
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());
       // To match the parameter value of earlier versions
       SquaredExponential covarianceModel(dimension);
+
       KrigingAlgorithm algo(X, Y, basis, covarianceModel);
-      algo.setOptimizer(optimizer);
+
+      OptimizationSolver solver(algo.getOptimizationSolver());
+      solver.setMaximumIterationsNumber(10000);
+      solver.setMaximumAbsoluteError(1.0e-8);
+      solver.setMaximumRelativeError(1.0e-8);
+      solver.setMaximumResidualError(1.0e-8);
+      solver.setMaximumConstraintError(1.0e-8); 
+      solver.setProblem(problem);
+
+      algo.setOptimizationSolver(solver); 
 
       algo.run();
 

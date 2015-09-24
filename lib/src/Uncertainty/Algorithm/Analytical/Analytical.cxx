@@ -34,7 +34,7 @@ static Factory< Analytical > RegisteredFactory("Analytical");
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
-Analytical::Analytical(const NearestPointAlgorithm & nearestPointAlgorithm,
+Analytical::Analytical(const OptimizationSolver & nearestPointAlgorithm,
                        const Event & event,
                        const NumericalPoint & physicalStartingPoint)
   : PersistentObject(),
@@ -45,7 +45,10 @@ Analytical::Analytical(const NearestPointAlgorithm & nearestPointAlgorithm,
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
   if (physicalStartingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
   result_ = AnalyticalResult(event_.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
+  /* set the level function of the algorithm */
+  nearestPointAlgorithm_.setProblem(OptimizationProblem(event.getImplementation()->getFunction(), event.getThreshold()));
 }
+
 
 /* Virtual constructor */
 Analytical * Analytical::clone() const
@@ -75,18 +78,19 @@ Event Analytical::getEvent() const
 void Analytical::setEvent(const Event & event)
 {
   event_ =  event;
+  nearestPointAlgorithm_.setProblem(OptimizationProblem(event_.getImplementation()->getFunction(), event_.getThreshold()));
 }
 
-/* NearestPointAlgorithm accessor */
-NearestPointAlgorithm Analytical::getNearestPointAlgorithm() const
+/* OptimizationSolver accessor */
+OptimizationSolver Analytical::getNearestPointAlgorithm() const
 {
   return nearestPointAlgorithm_;
 }
 
-/* NearestPointAlgorithm accessor */
-void Analytical::setNearestPointAlgorithm(const NearestPointAlgorithm & nearestPointAlgorithm)
+/* OptimizationSolver accessor */
+void Analytical::setNearestPointAlgorithm(const OptimizationSolver & nearestPointAlgorithm)
 {
-  nearestPointAlgorithm_ = nearestPointAlgorithm;
+  nearestPointAlgorithm_ = nearestPointAlgorithm_;
 }
 
 /* String converter */
@@ -107,10 +111,7 @@ void Analytical::run()
   StandardEvent standardEvent(event_);
 
   /* set the level function of the algorithm */
-  nearestPointAlgorithm_.setLevelFunction(standardEvent.getImplementation()->getFunction());
-
-  /* set the level value of the algorithm in the standard space  */
-  nearestPointAlgorithm_.setLevelValue(event_.getThreshold());
+  nearestPointAlgorithm_.setProblem(OptimizationProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
   /* set the starting point of the algorithm in the standard space  */
   nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
@@ -121,13 +122,13 @@ void Analytical::run()
   /* store the optimization result into the analytical result */
   result_.setOptimizationResult(nearestPointAlgorithm_.getResult());
   /* set standard space design point in Result */
-  NumericalPoint standardSpaceDesignPoint(nearestPointAlgorithm_.getResult().getMinimizer());
+  NumericalPoint standardSpaceDesignPoint(nearestPointAlgorithm_.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
   result_.setStandardSpaceDesignPoint(standardSpaceDesignPoint);
 
   /* set isStandardPointOriginInFailureSpace in Result */
   NumericalPoint origin(standardSpaceDesignPoint.getDimension(), 0.0);
-  NumericalPoint value(standardEvent.getImplementation()->getFunction().operator()(origin));
+  NumericalPoint value(event_.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
 } /* Analytical::run() */

@@ -362,7 +362,6 @@ ot_check_test (ExpertMixture_std)
 ot_check_test (BasisFactory_std)
 
 # Optim
-ot_check_test (BoundConstrainedAlgorithmImplementationResult_std)
 ot_check_test (AbdoRackwitz_std)
 ot_check_test (AbdoRackwitz_linear)
 ot_check_test (AbdoRackwitz_nonlinear)

@@ -22,17 +22,14 @@
 #ifndef OPENTURNS_OTOPTIM_HXX
 #define OPENTURNS_OTOPTIM_HXX
 
-#include "BoundConstrainedAlgorithm.hxx"
-#include "BoundConstrainedAlgorithmImplementation.hxx"
-#include "BoundConstrainedAlgorithmImplementationResult.hxx"
 #include "PenalizedLeastSquaresAlgorithm.hxx"
-#include "NearestPointAlgorithm.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
-#include "NearestPointAlgorithmImplementationResult.hxx"
 #include "NearestPointCheckerResult.hxx"
 #include "NearestPointChecker.hxx"
 #include "OptimizationProblem.hxx"
 #include "OptimizationProblemImplementation.hxx"
+#include "OptimizationSolver.hxx"
+#include "OptimizationSolverImplementation.hxx"
+#include "OptimizationSolverImplementationResult.hxx"
 #include "OTAbdoRackwitz.hxx"
 #include "OTCobyla.hxx"
 #include "OTSQP.hxx"

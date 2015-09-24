@@ -24,6 +24,7 @@
 #include "ARMAFactoryImplementation.hxx"
 #include "SpectralModelFactory.hxx"
 #include "WhittleFactoryState.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -107,14 +108,6 @@ private :
   void buildSpectralDensity(const TimeSeries & timeSeries) const;
   void buildSpectralDensity(const ProcessSample & sample) const;
 
-  /** Wrapper function passed to cobyla */
-  static int ComputeObjectiveAndConstraint( int n,
-      int m,
-      double * x,
-      double * f,
-      double * con,
-      void * state);
-
   /** Initialize the starting points using the ResourceMap */
   void initializeStartingPoints();
 
@@ -147,6 +140,31 @@ private :
 
   /** Starting points for the estimation process */
   PersistentCollection< NumericalPoint > startingPoints_;
+
+  /** Likelihood function accessor */
+  NumericalMathFunction getLogLikelihoodFunction() const;
+
+  /** likelihood estimate */
+  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & theta ) const;
+
+  /** only used to pass data to be used in computeLogLikelihoodInequalityConstraint */
+  mutable UnsignedInteger nbInequalityConstraint_;
+
+  /** Likelihood constraint accessor */
+  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
+  /** Initialize default Cobyla solver parameter using the ResourceMap */
+  void initializeCobylaSolverParameter();
+
+protected:
+
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
+
 }; /* class WhittleFactory */
 
 

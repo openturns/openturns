@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief SQP is an actual implementation for
- *         NearestPointAlgorithm using the SQP algorithm.
+ *         OptimizationSolver using the SQP algorithm.
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -24,7 +24,7 @@
 
 #include "OTprivate.hxx"
 #include "SQPSpecificParameters.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
+#include "OptimizationSolverImplementation.hxx"
 #include "NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,11 +34,11 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SQP
  * SQP is an actual implementation for
- * NearestPointAlgorithm
+ * OptimizationSolver
  */
 
 class OT_API SQP :
-  public NearestPointAlgorithmImplementation
+  public OptimizationSolverImplementation
 {
   CLASSNAME;
 
@@ -49,13 +49,16 @@ public:
   SQP();
 
   /** Constructor with parameters */
-  SQP(const SQPSpecificParameters & specificParameters,
-      const NumericalMathFunction & levelFunction,
-      const Bool verbose = false);
+  explicit SQP(const OptimizationProblem & problem);
 
+  SQP(const SQPSpecificParameters & specificParameters,
+      const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual SQP * clone() const;
+
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  void checkProblem(const OptimizationProblem & problem) const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
@@ -65,6 +68,18 @@ public:
 
   /** Specific parameters accessor */
   void setSpecificParameters(const SQPSpecificParameters & specificParameters);
+
+  /** Level function accessor */
+  NumericalMathFunction getLevelFunction() const;
+
+  /** Level function accessor */
+  void setLevelFunction(const NumericalMathFunction & levelFunction);
+
+  /** Level value accessor */
+  NumericalScalar getLevelValue() const;
+
+  /** Level value accessor */
+  void setLevelValue(const NumericalScalar levelValue);
 
   /** String converter */
   String __repr__() const;

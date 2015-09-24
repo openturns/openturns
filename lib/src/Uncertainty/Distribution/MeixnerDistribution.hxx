@@ -24,6 +24,7 @@
 #include "OTprivate.hxx"
 #include "ContinuousDistribution.hxx"
 #include "PiecewiseHermiteEvaluationImplementation.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -122,9 +123,17 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Initialize optimization solver parameter using the ResourceMap */
+  void initializeOptimizationSolverParameter();
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
 
 protected:
 
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 
 private:
 

@@ -1,0 +1,47 @@
+// OptimizationProblem docstrings are defined in OptimizationProblemImplementation_doc.i.in
+
+%feature("docstring") OT::OptimizationProblem
+OT_OptimizationProblem_doc
+%feature("docstring") OT::OptimizationProblem::getBounds
+OT_OptimizationProblem_getBounds_doc
+%feature("docstring") OT::OptimizationProblem::getDimension
+OT_OptimizationProblem_getDimension_doc
+%feature("docstring") OT::OptimizationProblem::getEqualityConstraint
+OT_OptimizationProblem_getEqualityConstraint_doc
+%feature("docstring") OT::OptimizationProblem::getInequalityConstraint
+OT_OptimizationProblem_getInequalityConstraint_doc
+%feature("docstring") OT::OptimizationProblem::getLevelFunction
+OT_OptimizationProblem_getLevelFunction_doc
+%feature("docstring") OT::OptimizationProblem::getLevelValue
+OT_OptimizationProblem_getLevelValue_doc
+%feature("docstring") OT::OptimizationProblem::getObjective
+OT_OptimizationProblem_getObjective_doc
+
+%feature("docstring") OT::OptimizationProblem::hasBounds
+OT_OptimizationProblem_hasBounds_doc
+%feature("docstring") OT::OptimizationProblem::hasEqualityConstraint
+OT_OptimizationProblem_hasEqualityConstraint_doc
+%feature("docstring") OT::OptimizationProblem::hasInequalityConstraint
+OT_OptimizationProblem_hasInequalityConstraint_doc
+%feature("docstring") OT::OptimizationProblem::hasLevelFunction
+OT_OptimizationProblem_hasLevelFunction_doc
+%feature("docstring") OT::OptimizationProblem::hasMultipleObjective
+OT_OptimizationProblem_hasMultipleObjective_doc
+%feature("docstring") OT::OptimizationProblem::isMinimization
+OT_OptimizationProblem_isMinimization_doc
+
+%feature("docstring") OT::OptimizationProblem::setBounds
+OT_OptimizationProblem_setBounds_doc
+%feature("docstring") OT::OptimizationProblem::setEqualityConstraint
+OT_OptimizationProblem_setEqualityConstraint_doc
+%feature("docstring") OT::OptimizationProblem::setInequalityConstraint
+OT_OptimizationProblem_setInequalityConstraint_doc
+%feature("docstring") OT::OptimizationProblem::setLevelFunction
+OT_OptimizationProblem_setLevelFunction_doc
+%feature("docstring") OT::OptimizationProblem::setLevelValue
+OT_OptimizationProblem_setLevelValue_doc
+%feature("docstring") OT::OptimizationProblem::setMinimization
+OT_OptimizationProblem_setMinimization_doc
+%feature("docstring") OT::OptimizationProblem::setObjective
+OT_OptimizationProblem_setObjective_doc
+

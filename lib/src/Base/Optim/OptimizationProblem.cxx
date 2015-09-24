@@ -58,6 +58,14 @@ OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective
   // Nothing to do
 }
 
+/* Constructor for nearest point problem */
+OptimizationProblem::OptimizationProblem(const NumericalMathFunction & levelFunction,
+    NumericalScalar levelValue)
+  : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(levelFunction, levelValue))
+{
+  // Nothing to do
+}
+
 /* Objective accessor */
 NumericalMathFunction OptimizationProblem::getObjective() const
 {
@@ -126,10 +134,50 @@ Bool OptimizationProblem::hasBounds() const
   return getImplementation()->hasBounds();
 }
 
+/* Level function accessor */
+NumericalMathFunction OptimizationProblem::getLevelFunction() const
+{
+  return getImplementation()->getLevelFunction();
+}
+
+void OptimizationProblem::setLevelFunction(const NumericalMathFunction & levelFunction)
+{
+  copyOnWrite();
+  getImplementation()->setLevelFunction(levelFunction);
+}
+
+Bool OptimizationProblem::hasLevelFunction() const
+{
+  return getImplementation()->hasLevelFunction();
+}
+
+/* Level value accessor */
+NumericalScalar OptimizationProblem::getLevelValue() const
+{
+  return getImplementation()->getLevelValue();
+}
+
+void OptimizationProblem::setLevelValue(NumericalScalar levelValue)
+{
+  getImplementation()->setLevelValue(levelValue);
+}
+
 /* Dimension accessor */
 UnsignedInteger OptimizationProblem::getDimension() const
 {
   return getImplementation()->getDimension();
+}
+
+/* Minimization accessor */
+void OptimizationProblem::setMinimization(Bool minimization)
+{
+  copyOnWrite();
+  getImplementation()->setMinimization(minimization);
+}
+
+Bool OptimizationProblem::isMinimization() const
+{
+  return getImplementation()->isMinimization();
 }
 
 /* String converter */

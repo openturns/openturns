@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointAlgorithmImplementationResult stores the result of a NearestPointAlgorithmImplementationResult
+ *  @brief OptimizationSolverImplementationResult stores the result of a OptimizationSolverImplementation
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NearestPointAlgorithmImplementationResult.hxx"
+#include "OptimizationSolverImplementationResult.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Curve.hxx"
 #include "SpecFunc.hxx"
@@ -27,14 +27,15 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(NearestPointAlgorithmImplementationResult);
+CLASSNAMEINIT(OptimizationSolverImplementationResult);
 
-static Factory<NearestPointAlgorithmImplementationResult> RegisteredFactory("NearestPointAlgorithmImplementationResult");
+static Factory<OptimizationSolverImplementationResult> RegisteredFactory("OptimizationSolverImplementationResult");
 
 /* Default constructor */
-NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationResult()
+OptimizationSolverImplementationResult::OptimizationSolverImplementationResult()
   : PersistentObject()
-  , minimizer_(NumericalPoint(0))
+  , optimalPoint_(NumericalPoint(0))
+  , optimalValue_(NumericalPoint(0))
   , iterationsNumber_(0)
   , absoluteError_(-1.0)
   , relativeError_(-1.0)
@@ -51,19 +52,21 @@ NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationRe
 }
 
 /* Standard constructor */
-NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationResult(const NumericalPoint & minimizer,
+OptimizationSolverImplementationResult::OptimizationSolverImplementationResult(const NumericalPoint & optimalPoint,
+    const NumericalPoint &  optimalValue,
     const UnsignedInteger iterationsNumber,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
     const NumericalScalar residualError,
     const NumericalScalar constraintError)
   : PersistentObject()
-  , minimizer_(minimizer)
+  , optimalPoint_(optimalPoint)
+  , optimalValue_(optimalValue)
   , iterationsNumber_(iterationsNumber)
-  , absoluteError_(-1.0)
-  , relativeError_(-1.0)
-  , residualError_(-1.0)
-  , constraintError_(-1.0)
+  , absoluteError_(absoluteError)
+  , relativeError_(relativeError)
+  , residualError_(residualError)
+  , constraintError_(constraintError)
   , absoluteErrorHistory_()
   , relativeErrorHistory_()
   , residualErrorHistory_()
@@ -75,119 +78,129 @@ NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationRe
 }
 
 /* Virtual constructor */
-NearestPointAlgorithmImplementationResult * NearestPointAlgorithmImplementationResult::clone() const
+OptimizationSolverImplementationResult * OptimizationSolverImplementationResult::clone() const
 {
-  return new NearestPointAlgorithmImplementationResult(*this);
+  return new OptimizationSolverImplementationResult(*this);
 }
 
-/* Minimizer accessors */
-NumericalPoint NearestPointAlgorithmImplementationResult::getMinimizer() const
+/* OptimalPoint accessors */
+NumericalPoint OptimizationSolverImplementationResult::getOptimalPoint() const
 {
-  return minimizer_;
+  return optimalPoint_;
 }
 
-/* Minimizer accessors */
-void NearestPointAlgorithmImplementationResult::setMinimizer(const NumericalPoint & minimizer)
+void OptimizationSolverImplementationResult::setOptimalPoint(const NumericalPoint & optimalPoint)
 {
-  minimizer_ = minimizer;
+  optimalPoint_ = optimalPoint;
+}
+
+/* Optimal value accessors */
+NumericalPoint OptimizationSolverImplementationResult::getOptimalValue() const
+{
+  return optimalValue_;
+}
+
+void OptimizationSolverImplementationResult::setOptimalValue(const NumericalPoint &  optimalValue)
+{
+  optimalValue_ = optimalValue;
 }
 
 /* Iterations number accessor */
-UnsignedInteger NearestPointAlgorithmImplementationResult::getIterationsNumber() const
+UnsignedInteger OptimizationSolverImplementationResult::getIterationsNumber() const
 {
   return iterationsNumber_;
 }
 
-/* Iterations Number accessor */
-void NearestPointAlgorithmImplementationResult::setIterationsNumber(const UnsignedInteger iterationsNumber)
+void OptimizationSolverImplementationResult::setIterationsNumber(const UnsignedInteger iterationsNumber)
 {
   iterationsNumber_ = iterationsNumber;
 }
 
 /* Absolute error accessor */
-NumericalScalar NearestPointAlgorithmImplementationResult::getAbsoluteError() const
+NumericalScalar OptimizationSolverImplementationResult::getAbsoluteError() const
 {
   return absoluteError_;
 }
 
-NumericalSample NearestPointAlgorithmImplementationResult::getAbsoluteErrorHistory() const
+NumericalSample OptimizationSolverImplementationResult::getAbsoluteErrorHistory() const
 {
   return absoluteErrorHistory_.getSample();
 }
 
 /* Absolute error accessor */
-void NearestPointAlgorithmImplementationResult::setAbsoluteError(const NumericalScalar absoluteError)
+void OptimizationSolverImplementationResult::setAbsoluteError(const NumericalScalar absoluteError)
 {
   absoluteError_ = absoluteError;
 }
 
 /* Relative error accessor */
-NumericalScalar NearestPointAlgorithmImplementationResult::getRelativeError() const
+NumericalScalar OptimizationSolverImplementationResult::getRelativeError() const
 {
   return relativeError_;
 }
 
-NumericalSample NearestPointAlgorithmImplementationResult::getRelativeErrorHistory() const
+NumericalSample OptimizationSolverImplementationResult::getRelativeErrorHistory() const
 {
   return relativeErrorHistory_.getSample();
 }
 
 /* Relative error accessor */
-void NearestPointAlgorithmImplementationResult::setRelativeError(const NumericalScalar relativeError)
+void OptimizationSolverImplementationResult::setRelativeError(const NumericalScalar relativeError)
 {
   relativeError_ = relativeError;
 }
 
 /* Residual error accessor */
-NumericalScalar NearestPointAlgorithmImplementationResult::getResidualError() const
+NumericalScalar OptimizationSolverImplementationResult::getResidualError() const
 {
   return residualError_;
 }
 
-NumericalSample NearestPointAlgorithmImplementationResult::getResidualErrorHistory() const
+NumericalSample OptimizationSolverImplementationResult::getResidualErrorHistory() const
 {
   return residualErrorHistory_.getSample();
 }
 
 /* Residual error accessor */
-void NearestPointAlgorithmImplementationResult::setResidualError(const NumericalScalar residualError)
+void OptimizationSolverImplementationResult::setResidualError(const NumericalScalar residualError)
 {
   residualError_ = residualError;
 }
 
 /* Constraint error accessor */
-NumericalScalar NearestPointAlgorithmImplementationResult::getConstraintError() const
+NumericalScalar OptimizationSolverImplementationResult::getConstraintError() const
 {
   return constraintError_;
 }
 
-NumericalSample NearestPointAlgorithmImplementationResult::getConstraintErrorHistory() const
+NumericalSample OptimizationSolverImplementationResult::getConstraintErrorHistory() const
 {
   return constraintErrorHistory_.getSample();
 }
 
 /* Constraint error accessor */
-void NearestPointAlgorithmImplementationResult::setConstraintError(const NumericalScalar constraintError)
+void OptimizationSolverImplementationResult::setConstraintError(const NumericalScalar constraintError)
 {
   constraintError_ = constraintError;
 }
 
-NumericalSample NearestPointAlgorithmImplementationResult::getInputSample() const
+NumericalSample OptimizationSolverImplementationResult::getInputSample() const
 {
   return inputHistory_.getSample();
 }
 
-NumericalSample NearestPointAlgorithmImplementationResult::getOutputSample() const
+NumericalSample OptimizationSolverImplementationResult::getOutputSample() const
 {
   return outputHistory_.getSample();
 }
 
 /* String converter */
-String NearestPointAlgorithmImplementationResult::__repr__() const
+String OptimizationSolverImplementationResult::__repr__() const
 {
   OSS oss;
-  oss << "class=" << NearestPointAlgorithmImplementationResult::GetClassName()
-      << " minimizer=" << minimizer_
+  oss << "class=" << OptimizationSolverImplementationResult::GetClassName()
+      << " optimal point=" << optimalPoint_
+      << " optimal value="        << optimalValue_
       << " iterationsNumber=" << iterationsNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
@@ -197,10 +210,11 @@ String NearestPointAlgorithmImplementationResult::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void NearestPointAlgorithmImplementationResult::save(Advocate & adv) const
+void OptimizationSolverImplementationResult::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "minimizer_", minimizer_ );
+  adv.saveAttribute( "optimalPoint_", optimalPoint_ );
+  adv.saveAttribute( "optimalValue_", optimalValue_ );
   adv.saveAttribute( "iterationsNumber_", iterationsNumber_ );
   adv.saveAttribute( "absoluteError_", absoluteError_ );
   adv.saveAttribute( "relativeError_", relativeError_ );
@@ -217,10 +231,11 @@ void NearestPointAlgorithmImplementationResult::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void NearestPointAlgorithmImplementationResult::load(Advocate & adv)
+void OptimizationSolverImplementationResult::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "minimizer_", minimizer_ );
+  adv.loadAttribute( "optimalPoint_", optimalPoint_ );
+  adv.loadAttribute( "optimalValue_", optimalValue_ );
   adv.loadAttribute( "iterationsNumber_", iterationsNumber_ );
   adv.loadAttribute( "absoluteError_", absoluteError_ );
   adv.loadAttribute( "relativeError_", relativeError_ );
@@ -237,14 +252,14 @@ void NearestPointAlgorithmImplementationResult::load(Advocate & adv)
 }
 
 /* Update current state */
-void NearestPointAlgorithmImplementationResult::update(const NumericalPoint & minimizer, UnsignedInteger iterationNumber)
+void OptimizationSolverImplementationResult::update(const NumericalPoint & OptimalPoint, UnsignedInteger iterationNumber)
 {
-  setMinimizer( minimizer );
+  setOptimalPoint( OptimalPoint );
   setIterationsNumber( iterationNumber );
 }
 
 /* Incremental history storage */
-void NearestPointAlgorithmImplementationResult::store(const NumericalPoint & x,
+void OptimizationSolverImplementationResult::store(const NumericalPoint & x,
     const NumericalPoint & y,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
@@ -252,7 +267,8 @@ void NearestPointAlgorithmImplementationResult::store(const NumericalPoint & x,
     const NumericalScalar constraintError)
 {
   // assume the last point stored is the optimum
-  minimizer_ = x;
+  optimalPoint_ = x;
+  optimalValue_ = y;
 
   // update values
   absoluteError_ = absoluteError;
@@ -270,7 +286,7 @@ void NearestPointAlgorithmImplementationResult::store(const NumericalPoint & x,
   outputHistory_.store(y);
 }
 
-Graph NearestPointAlgorithmImplementationResult::drawErrorHistory() const
+Graph OptimizationSolverImplementationResult::drawErrorHistory() const
 {
   Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);

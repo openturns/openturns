@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-nearestPointAlgorithm : :class:`~openturns.NearestPointAlgorithm`
+nearestPointAlgorithm : :class:`~openturns.OptimizationSolver`
     Optimization algorithm used to research the design point.
 event : :class:`~openturns.Event`
     Failure event.
@@ -92,7 +92,7 @@ Examples
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
->>> # We create a NearestPoint algorithm
+>>> # We create an OptimizationSolver algorithm
 >>> myCobyla = ot.Cobyla()
 >>> myAlgo = ot.Analytical(myCobyla, myEvent, [50., 1., 10., 5.])"
 
@@ -113,7 +113,7 @@ result : :class:`~openturns.AnalyticalResult`
 
 Returns
 -------
-algorithm : :class:`~openturns.NearestPointAlgorithm`
+algorithm : :class:`~openturns.OptimizationSolver`
      Optimization algorithm used to research the design point."
 
 // ---------------------------------------------------------------------
@@ -123,7 +123,7 @@ algorithm : :class:`~openturns.NearestPointAlgorithm`
 
 Parameters
 ----------
-algorithm : :class:`~openturns.NearestPointAlgorithm`
+algorithm : :class:`~openturns.OptimizationSolver`
      Optimization algorithm used to research the design point."
 
 // ---------------------------------------------------------------------

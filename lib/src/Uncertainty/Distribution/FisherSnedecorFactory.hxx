@@ -24,6 +24,7 @@
 #include "OTprivate.hxx"
 #include "DistributionImplementationFactory.hxx"
 #include "FisherSnedecor.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +53,15 @@ public:
   FisherSnedecor buildAsFisherSnedecor(const NumericalPointCollection & parameters) const;
   FisherSnedecor buildAsFisherSnedecor(const NumericalPointWithDescriptionCollection & parameters) const;
   FisherSnedecor buildAsFisherSnedecor() const;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
+protected:
+
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 
 }; /* class FisherSnedecorFactory */
 

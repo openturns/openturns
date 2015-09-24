@@ -1,9 +1,0 @@
-result=class=BoundConstrainedAlgorithmImplementationResult optimizer=class=NumericalPoint name=Unnamed dimension=4 values=[1,1,1,1] optimal value=5 optimization problem=0 evaluationsNumber=10 absoluteError=1e-06 relativeError=1e-07 objectiveError=1e-08 constraintError=1e-10
-minimizer=class=NumericalPoint name=Unnamed dimension=4 values=[1,1,1,1]
-optimal value=5
-optimization problem=minimization
-evaluations number=10
-absolute error=1e-06
-relativeError=1e-07
-objective error=1e-08
-constraint error=1e-10

@@ -31,10 +31,9 @@ try:
         ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
     specific = CobylaSpecificParameters()
     startingPoint = NumericalPoint(4, 0.0)
-    myAlgorithm = Cobyla(specific, levelFunction)
+    myAlgorithm = Cobyla(specific, OptimizationProblem(levelFunction, 3.0))
     myAlgorithm.setStartingPoint(startingPoint)
-    myAlgorithm.setLevelValue(3.0)
-    myAlgorithm.setMaximumIterationsNumber(100)
+    myAlgorithm.setMaximumIterationsNumber(400)
     myAlgorithm.setMaximumAbsoluteError(1.0e-10)
     myAlgorithm.setMaximumRelativeError(1.0e-10)
     myAlgorithm.setMaximumResidualError(1.0e-10)
@@ -42,7 +41,7 @@ try:
     myAlgorithm.run()
 
     print("result = ", printNumericalPoint(
-        myAlgorithm.getResult().getMinimizer(), 4))
+        myAlgorithm.getResult().getOptimalPoint(), 4))
     # print "evaluation history X=", myAlgorithm.getResult().getInputSample()
     # print "evaluation history Y=", myAlgorithm.getResult().getOutputSample()
     # print "absolute error history=", myAlgorithm.getResult().getAbsoluteErrorHistory()

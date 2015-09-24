@@ -330,7 +330,6 @@ ot_pyinstallcheck_test (SQP_nonlinear)
 ot_pyinstallcheck_test (TNC_std)
 ot_pyinstallcheck_test (TNC_linear)
 ot_pyinstallcheck_test (TNC_nonlinear)
-ot_pyinstallcheck_test (BoundConstrainedAlgorithmImplementationResult_std)
 
 ## Solver
 ot_pyinstallcheck_test (Brent_std)

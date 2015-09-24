@@ -19,6 +19,7 @@
  *
  */
 #include "OptimizationSolver.hxx"
+#include "Cobyla.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -72,7 +73,7 @@ OptimizationProblem OptimizationSolver::getProblem() const
   return getImplementation()->getProblem();
 }
 
-void OptimizationSolver::setLevelValue(const OptimizationProblem & problem)
+void OptimizationSolver::setProblem(const OptimizationProblem & problem)
 {
   copyOnWrite();
   getImplementation()->setProblem(problem);
@@ -154,6 +155,19 @@ void OptimizationSolver::setMaximumConstraintError(const NumericalScalar maximum
 {
   copyOnWrite();
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
+}
+
+/* Verbose accessor */
+Bool OptimizationSolver::getVerbose() const
+{
+  return getImplementation()->getVerbose();
+}
+
+/* Verbose accessor */
+void OptimizationSolver::setVerbose(const Bool verbose)
+{
+  copyOnWrite();
+  getImplementation()->setVerbose(verbose);
 }
 
 /* String converter */

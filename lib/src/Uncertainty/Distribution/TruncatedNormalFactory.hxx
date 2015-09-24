@@ -24,6 +24,7 @@
 #include "OTprivate.hxx"
 #include "DistributionImplementationFactory.hxx"
 #include "TruncatedNormal.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +53,15 @@ public:
   TruncatedNormal buildAsTruncatedNormal(const NumericalPointCollection & parameters) const;
   TruncatedNormal buildAsTruncatedNormal(const NumericalPointWithDescriptionCollection & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
+protected:
+
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 
 }; /* class TruncatedNormalFactory */
 

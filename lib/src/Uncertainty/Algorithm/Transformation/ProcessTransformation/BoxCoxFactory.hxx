@@ -27,6 +27,7 @@
 #include "Field.hxx"
 #include "BoxCoxTransform.hxx"
 #include "Graph.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -68,18 +69,17 @@ public:
                         const NumericalPoint & shift,
                         Graph & graph) const;
 
+  /** Likelihood function accessor */
+  NumericalMathFunction getLogLikelihoodFunction() const;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
 protected:
 
   /** Likelihood function */
-  NumericalScalar computeLogLikelihood(const NumericalScalar & lambda) const;
-
-  /** wrapper function passed to cobyla */
-  static int ComputeObjectiveAndConstraint( int n,
-      int m,
-      double * x,
-      double * f,
-      double * con,
-      void * state);
+  NumericalScalar computeLogLikelihood(const NumericalPoint & lambda) const;
 
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalSample sample_;
@@ -87,7 +87,8 @@ protected:
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalScalar sumLog_;
 
-
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 } ; /* class BoxCoxFactory */
 
 END_NAMESPACE_OPENTURNS

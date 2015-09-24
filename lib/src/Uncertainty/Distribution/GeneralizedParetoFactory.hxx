@@ -24,6 +24,7 @@
 #include "OTprivate.hxx"
 #include "DistributionImplementationFactory.hxx"
 #include "GeneralizedPareto.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -61,6 +62,15 @@ public:
 
   /** Algorithm associated with the method of modified moments */
   GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const;
+
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
+protected:
+
+  /** Optimization solver */
+  mutable OptimizationSolver  solver_;
 
 }; /* class GeneralizedParetoFactory */
 

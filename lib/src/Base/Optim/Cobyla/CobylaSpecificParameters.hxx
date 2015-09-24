@@ -23,7 +23,7 @@
 #define OPENTURNS_COBYLASPECIFICPARAMETERS_HXX
 
 #include "OTprivate.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
+#include "PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,8 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NearestPointAlgorithmImplementationResult implements an algorithm for
- *         finding the point of an implicitely defined manifold the nearest
- *         to the origin.
+ *  @brief OptimizationSolverImplementationResult implements the result of an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -20,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NEARESTPOINTALGORITHMIMPLEMENTATIONRESULT_HXX
-#define OPENTURNS_NEARESTPOINTALGORITHMIMPLEMENTATIONRESULT_HXX
+#ifndef OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATIONRESULT_HXX
+#define OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATIONRESULT_HXX
 
 #include "OTprivate.hxx"
 #include "PersistentObject.hxx"
@@ -32,10 +30,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class NearestPointAlgorithmImplementationResult
- * NearestPointAlgorithmImplementationResult stores the optimization result
+ * @class OptimizationSolverImplementationResult
+ * OptimizationSolverImplementationResult stores the optimization result
  */
-class OT_API NearestPointAlgorithmImplementationResult
+class OT_API OptimizationSolverImplementationResult
   : public PersistentObject
 {
   CLASSNAME;
@@ -44,11 +42,12 @@ public:
 
 
   /** Default constructor */
-  NearestPointAlgorithmImplementationResult();
+  OptimizationSolverImplementationResult();
 
 
   /** Standard constructor */
-  NearestPointAlgorithmImplementationResult(const NumericalPoint & minimizer,
+  OptimizationSolverImplementationResult(const NumericalPoint & optimalPoint,
+      const NumericalPoint & optimalValue,
       const UnsignedInteger iterationsNumber,
       const NumericalScalar absoluteError,
       const NumericalScalar relativeError,
@@ -56,10 +55,13 @@ public:
       const NumericalScalar constraintError);
 
   /** Virtual constructor */
-  virtual NearestPointAlgorithmImplementationResult * clone() const;
+  virtual OptimizationSolverImplementationResult * clone() const;
 
-  /** Minimizer accessors */
-  NumericalPoint getMinimizer() const;
+  /** OptimalPoint accessors */
+  NumericalPoint getOptimalPoint() const;
+
+  /** Optimal value accessor */
+  NumericalPoint getOptimalValue() const;
 
   /** Iterations number accessor */
   UnsignedInteger getIterationsNumber() const;
@@ -94,7 +96,7 @@ public:
   void load(Advocate & adv);
 
   /** Update current state */
-  void update(const NumericalPoint & minimizer, UnsignedInteger iterationNumber);
+  void update(const NumericalPoint & optimalPoint, UnsignedInteger iterationNumber);
 
   /** Incremental history storage */
   void store(const NumericalPoint & inP,
@@ -109,11 +111,14 @@ public:
 
 protected:
 
-  /** Minimizer accessors */
-  void setMinimizer(const NumericalPoint & minimizer);
+  /** OptimalPoint accessors */
+  void setOptimalPoint(const NumericalPoint & optimalPoint);
 
   /** Iterations number accessor */
   void setIterationsNumber(const UnsignedInteger iterationsNumber);
+
+  /** Optimal value accessor */
+  void setOptimalValue(const NumericalPoint & optimalValue);
 
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);
@@ -134,7 +139,8 @@ protected:
 
 private:
 
-  NumericalPoint  minimizer_;
+  NumericalPoint  optimalPoint_;
+  NumericalPoint  optimalValue_;
   UnsignedInteger    iterationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
@@ -147,9 +153,9 @@ private:
   Compact inputHistory_;
   Compact outputHistory_;
 
-}; // class NearestPointAlgorithmImplementationResult
+}; // class OptimizationSolverImplementationResult
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NEARESTPOINTALGORITHMIMPLEMENTATIONRESULT_HXX */
+#endif /* OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATIONRESULT_HXX */

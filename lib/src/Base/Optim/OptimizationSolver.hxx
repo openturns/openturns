@@ -56,7 +56,7 @@ public:
   explicit OptimizationSolver(const OptimizationProblem & problem);
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  virtual void run();
+  void run();
 
   /** Starting point accessor */
   NumericalPoint getStartingPoint() const;
@@ -89,6 +89,10 @@ public:
   /** Maximum constraint error accessor */
   NumericalScalar getMaximumConstraintError() const;
   void setMaximumConstraintError(const NumericalScalar maximumConstraintError);
+
+  /* Verbose accessor */
+  Bool getVerbose() const;
+  void setVerbose(const Bool verbose);
 
   /** String converter */
   virtual String __repr__() const;

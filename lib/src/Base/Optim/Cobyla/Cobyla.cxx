@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cobyla is an actual implementation for
+ *  @brief Cobyla is an actual implementation for OptimizationSolverImplementation using the cobyla library
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -22,6 +22,7 @@
 #include "algocobyla.h"
 #include "NumericalPoint.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,8 +34,15 @@ CLASSNAMEINIT(Cobyla);
 static Factory<Cobyla> RegisteredFactory("Cobyla");
 
 /* Default constructor */
-Cobyla::Cobyla():
-  NearestPointAlgorithmImplementation()
+Cobyla::Cobyla()
+  : OptimizationSolverImplementation()
+{
+  // Nothing to do
+}
+
+Cobyla::Cobyla(const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
+  , specificParameters_()
 {
   // Nothing to do
 }
@@ -43,23 +51,10 @@ Cobyla::Cobyla():
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
  *         and a level value
  */
-Cobyla::Cobyla(const NumericalMathFunction & levelFunction,
-               const Bool verbose):
-  NearestPointAlgorithmImplementation(levelFunction, verbose),
-  specificParameters_()
-{
-  // Nothing to do
-}
-
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in vact, a 1-D vector valued fnction)
- *         and a level value
- */
 Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
-               const NumericalMathFunction & levelFunction,
-               const Bool verbose):
-  NearestPointAlgorithmImplementation(levelFunction, verbose),
-  specificParameters_(specificParameters)
+               const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
+  , specificParameters_(specificParameters)
 {
   // Nothing to do
 }
@@ -70,17 +65,30 @@ Cobyla * Cobyla::clone() const
   return new Cobyla(*this);
 }
 
+/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void Cobyla::checkProblem(const OptimizationProblem & problem) const
+{
+  if ( problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << Cobyla::GetClassName() << " does not support MultiOjective Optimization ";
+}
+
 /* Performs the actual computation by calling the Cobyla algorithm
  */
 void Cobyla::run()
 {
   UnsignedInteger dimension = getStartingPoint().getDimension();
   int n = dimension;
-  int m = 2;
+  int m = getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension();
+
   NumericalPoint x(getStartingPoint());
-  NumericalScalar rhoBeg = specificParameters_.getRhoBeg();
-  NumericalScalar rhoEnd = getMaximumAbsoluteError();
-  int maxFun = getMaximumIterationsNumber() * dimension;
+
+  /* Compute the objective function at StartingPoint */
+  const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
+  NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
+
+  NumericalScalar rhoBeg(specificParameters_.getRhoBeg());
+  NumericalScalar rhoEnd(getMaximumAbsoluteError());
+  int maxFun = getMaximumIterationsNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
   NumericalScalar absoluteError = -1.0;
@@ -89,11 +97,11 @@ void Cobyla::run()
   NumericalScalar constraintError = -1.0;
 
   // clear result
-  setResult(NearestPointAlgorithmImplementationResult(x, 0, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationSolverImplementationResult(x, NumericalPoint(1,f), 0, absoluteError, relativeError, residualError, constraintError));
 
-  // clear history
+  // initialize history
   evaluationInputHistory_ = NumericalSample(0, dimension);
-  evaluationOutputHistory_.clear();
+  evaluationOutputHistory_ = NumericalSample(0, 2);
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -117,22 +125,20 @@ void Cobyla::run()
   int returnCode = cobyla(n, m, &x[0], rhoBeg, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
   // Update the result
-  result_.update(x, maxFun / x.getDimension());
-
-  NumericalScalar levelValue = getLevelValue();
+  result_.update(x, maxFun);
   UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  for (UnsignedInteger i = 1; i < size; ++ i)
+  for ( UnsignedInteger i = 1; i < size; ++ i )
   {
-    NumericalPoint inPM(evaluationInputHistory_[i - 1]);
-    NumericalPoint inP(evaluationInputHistory_[i]);
-    NumericalPoint outP(evaluationOutputHistory_[i]);
-    NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+    NumericalPoint inPM( evaluationInputHistory_[i - 1] );
+    NumericalPoint inP( evaluationInputHistory_[i] );
+    NumericalPoint outP( evaluationOutputHistory_[i] );
+    NumericalPoint outPM( evaluationOutputHistory_[i - 1] );
     absoluteError = (inP - inPM).norm();
     relativeError = absoluteError / inP.norm();
-    residualError = (outP - outPM).norm();
-    constraintError = fabs(outP[0] - levelValue);
-    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
+    residualError = fabs(outP[0] - outPM[0]);
+    constraintError =  outP[1];
+    result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError );
   }
 
   // check the convergence criteria
@@ -160,12 +166,36 @@ void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificPara
   specificParameters_ = specificParameters;
 }
 
+/* Level function accessor */
+NumericalMathFunction Cobyla::getLevelFunction() const
+{
+  return getProblem().getLevelFunction();
+}
+
+/* Level function accessor */
+void Cobyla::setLevelFunction(const NumericalMathFunction & levelFunction)
+{
+  getProblem().setLevelFunction(levelFunction);
+}
+
+/* Level value accessor */
+NumericalScalar Cobyla::getLevelValue() const
+{
+  return getProblem().getLevelValue();
+}
+
+/* Level value accessor */
+void Cobyla::setLevelValue(const NumericalScalar levelValue)
+{
+  getProblem().setLevelValue(levelValue);
+}
+
 /* String converter */
 String Cobyla::__repr__() const
 {
   OSS oss;
   oss << "class=" << Cobyla::GetClassName()
-      << " " << NearestPointAlgorithmImplementation::__repr__()
+      << " " << OptimizationSolverImplementation::__repr__()
       << " specificParameters=" << getSpecificParameters();
   return oss;
 }
@@ -173,14 +203,14 @@ String Cobyla::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void Cobyla::save(Advocate & adv) const
 {
-  NearestPointAlgorithmImplementation::save(adv);
+  OptimizationSolverImplementation::save(adv);
   adv.saveAttribute("specificParameters_", specificParameters_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Cobyla::load(Advocate & adv)
 {
-  NearestPointAlgorithmImplementation::load(adv);
+  OptimizationSolverImplementation::load(adv);
   adv.loadAttribute("specificParameters_", specificParameters_);
 }
 
@@ -198,32 +228,49 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Cobyla *algorithm = static_cast<Cobyla *>(state);
 
   /* Convert the input vector in OpenTURNS format */
-  NumericalPoint inPoint((UnsignedInteger)n);
-  for (UnsignedInteger index = 0; index < (UnsignedInteger)(n); ++ index) inPoint[index] = x[index];
-  /* Compute the level function at inPoint */
-  *f = 0.5 * inPoint.normSquare();
-  /* Compute the constraints at inPoint */
-  NumericalPoint constraintValue;
-  try
+  NumericalPoint inPoint(n);
+  for(int index = 0; index < n; ++index) inPoint[index] = x[index];
+
+  const OptimizationProblem problem(algorithm->getProblem());
+  NumericalPoint outPoint(2);
+
+  const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
+
+  outPoint[0]= result;
+
+  UnsignedInteger temp=0;
+  UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
+  UnsignedInteger nbEqConst   = problem.getEqualityConstraint().getOutputDimension();
+  NumericalPoint constraintValue(nbIneqConst+2*nbEqConst,0.0);
+
+  const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
+  *f = sign * result;
+
+    /* Compute the inequality constraints at inPoint */
+  if (problem.hasInequalityConstraint())
   {
-    constraintValue = algorithm->getLevelFunction().operator()(inPoint);
+    NumericalPoint constraintInequalityValue = problem.getInequalityConstraint().operator()(inPoint);
+    for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index+temp] = constraintInequalityValue[index];
+    temp += nbIneqConst;
   }
-  catch (InternalException)
+  /* Compute the equality constraints at inPoint */
+  if (problem.hasEqualityConstraint())
   {
-    return 1;
-  }
-  catch (InvalidArgumentException)
-  {
-    return 1;
+    NumericalPoint constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
+    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
+    temp += nbEqConst;
+    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
   }
 
-  con[0] = constraintValue[0] + algorithm->getMaximumConstraintError() - algorithm->getLevelValue();
-  con[1] = algorithm->getLevelValue() + algorithm->getMaximumConstraintError() - constraintValue[0];
+  /* Convert the constraint vector in double format */
+  for(UnsignedInteger index = 0; index < (UnsignedInteger)(constraintValue.getDimension()); ++index) con[index] = constraintValue[index];
+
+  /* Compute constraints norm */
+  outPoint[1]= constraintValue.norm();
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);
-  algorithm->evaluationOutputHistory_.add(NumericalPoint(1, *f));
-
+  algorithm->evaluationOutputHistory_.add(outPoint);
   return 0;
 }
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementation implements an algorithm for finding the
+ *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -28,14 +28,13 @@ CLASSNAMEINIT(OptimizationSolverImplementation);
 /* Default constructor */
 OptimizationSolverImplementation::OptimizationSolverImplementation()
   : PersistentObject()
-  , levelFunction_(NumericalMathFunction())
   , startingPoint_(NumericalPoint(0))
-  , levelValue_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultLevelValue" ))
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
   , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
+  , verbose_(false)
 {
   // Nothing to do
 }
@@ -43,16 +42,15 @@ OptimizationSolverImplementation::OptimizationSolverImplementation()
 /*
  * @brief Standard constructor: the optimization problem is managed by the optimization solver, and the actual solver is in charge to check if it is able to solve it.
  */
-OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem,
-    const NumericalPoint & startingPoint)
+OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem)
   : PersistentObject()
   , problem_(problem)
-  , startingPoint_(startingPoint)
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
   , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
+  , verbose_(false)
 {
   // Nothing to do
 }
@@ -67,18 +65,6 @@ NumericalPoint OptimizationSolverImplementation::getStartingPoint() const
 void OptimizationSolverImplementation::setStartingPoint(const NumericalPoint & startingPoint)
 {
   startingPoint_ = startingPoint;
-}
-
-/* Level value accessor */
-NumericalScalar OptimizationSolverImplementation::getLevelValue() const
-{
-  return levelValue_;
-}
-
-/* Level value accessor */
-void OptimizationSolverImplementation::setLevelValue(const NumericalScalar levelValue)
-{
-  levelValue_ = levelValue;
 }
 
 /* Result accessor */
@@ -164,7 +150,8 @@ String OptimizationSolverImplementation::__repr__() const
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
-      << " maximumConstraintError=" << maximumConstraintError_;
+      << " maximumConstraintError=" << maximumConstraintError_
+      << " verbose=" << (verbose_ ? "true" : "false");
   return oss;
 }
 
@@ -176,7 +163,14 @@ OptimizationProblem OptimizationSolverImplementation::getProblem() const
 
 void OptimizationSolverImplementation::setProblem(const OptimizationProblem & problem)
 {
+  checkProblem(problem);
   problem_ = problem;
+}
+
+/* Performs the actual checks. Must be overloaded by the actual optimisation algorithm */
+void OptimizationSolverImplementation::checkProblem(const OptimizationProblem & problem) const
+{
+  throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::checkProblem()";
 }
 
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
@@ -189,6 +183,47 @@ void OptimizationSolverImplementation::run()
 OptimizationSolverImplementation * OptimizationSolverImplementation::clone() const
 {
   return new OptimizationSolverImplementation(*this);
+}
+
+/* Verbose accessor */
+Bool OptimizationSolverImplementation::getVerbose() const
+{
+  return verbose_;
+}
+
+/* Verbose accessor */
+void OptimizationSolverImplementation::setVerbose(const Bool verbose)
+{
+  verbose_ = verbose;
+}
+
+/* Method save() stores the object through the StorageManager */
+void OptimizationSolverImplementation::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute( "startingPoint_", startingPoint_);
+  adv.saveAttribute( "problem_", problem_);
+  adv.saveAttribute( "maximumIterationsNumber_", maximumIterationsNumber_);
+  adv.saveAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
+  adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
+  adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
+  adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
+  adv.saveAttribute( "verbose_", verbose_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void OptimizationSolverImplementation::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute( "startingPoint_", startingPoint_);
+  adv.loadAttribute( "problem_", problem_);
+  adv.loadAttribute( "maximumIterationsNumber_", maximumIterationsNumber_);
+  adv.loadAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
+  adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
+  adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
+  adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
+  adv.loadAttribute( "verbose_", verbose_);
 }
 
 END_NAMESPACE_OPENTURNS

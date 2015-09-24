@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class AbdoRackwitz
  * AbdoRackwitz is an actual implementation for
- * NearestPointAlgorithm
+ * OptimizationSolverImplementation
  */
 class OT_API AbdoRackwitzSpecificParameters
   : public PersistentObject

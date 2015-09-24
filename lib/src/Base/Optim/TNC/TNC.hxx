@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TNC is an actual implementation for a bound-constrained optimization algorithm
+ *  @brief TNC is an actual implementation for OptimizationSolverImplementation using the TNC library
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,7 +23,7 @@
 
 #include "OTprivate.hxx"
 #include "TNCSpecificParameters.hxx"
-#include "BoundConstrainedAlgorithmImplementation.hxx"
+#include "OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,10 +32,10 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class TNC
  * TNC is an actual implementation for
- * BoundConstrainedAlgorithm using the TNC library
+ * OptimizationSolverImplementation using the TNC library
  */
 class OT_API TNC :
-  public BoundConstrainedAlgorithmImplementation
+  public OptimizationSolverImplementation
 {
   CLASSNAME;
 public:
@@ -44,20 +44,18 @@ public:
   /** Default constructor */
   TNC();
 
-  /** Constructor with parameters: no constraint, starting from the origin */
-  explicit TNC(const NumericalMathFunction & objectiveFunction,
-               const Bool verbose = false);
+  /** Constructor with parameters */
+  explicit TNC(const OptimizationProblem & problem);
 
-  /** Constructor with parameters: bound constraints, starting from the given point */
+  /** Constructor with parameters */
   TNC(const TNCSpecificParameters & parameters,
-      const NumericalMathFunction & objectiveFunction,
-      const Interval & boundConstraints,
-      const NumericalPoint & startingPoint,
-      const OptimizationProblem optimization  = Result::MINIMIZATION,
-      const Bool verbose = false);
+      const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual TNC * clone() const;
+
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  void checkProblem(const OptimizationProblem & problem) const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
@@ -79,11 +77,8 @@ public:
 
 private:
 
-  /**
-   * Function that computes the objective function and its gradient
-   * corrected to correspond with the optimization problem (minimization or maximization)
-   */
-  static int ComputeObjectiveAndConstraint(double *x, double *f, double *g, void *state);
+  /** Function that computes the objective function and its gradient */
+  static int ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state);
 
   TNCSpecificParameters specificParameters_;
 

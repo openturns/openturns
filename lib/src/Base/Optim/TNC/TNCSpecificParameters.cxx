@@ -21,7 +21,7 @@
  */
 #include <cstdlib>
 
-#include "TNC.hxx"
+#include "TNCSpecificParameters.hxx"
 #include "ResourceMap.hxx"
 #include "PersistentObjectFactory.hxx"
 

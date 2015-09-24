@@ -31,8 +31,14 @@ CLASSNAMEINIT(GeneralizedParetoFactory);
 /* Default constructor */
 GeneralizedParetoFactory::GeneralizedParetoFactory()
   : DistributionImplementationFactory()
+  , solver_(new TNC())
 {
-  // Nothing to do
+  // Create the optimization solver parameters using the parameters in the ResourceMap
+  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */
@@ -176,15 +182,25 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   NumericalMathFunction f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
   f.setGradient(gradient);
-  // Solver
-  TNC optimizationAlgorithm(f);
-  optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-MaximumEvaluationNumber"));
-  optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumAbsoluteError"));
-  optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumRelativeError"));
-  optimizationAlgorithm.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumObjectiveError"));
-  optimizationAlgorithm.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumConstraintError"));
-  optimizationAlgorithm.run();
-  const NumericalScalar xi(optimizationAlgorithm.getResult().getOptimizer()[0]);
+  
+  // Define Optimization problem 
+  OptimizationProblem problem;
+  problem.setObjective(f);
+  
+  const UnsignedInteger dimension = problem.getObjective().getInputDimension();
+  NumericalPoint parametersLowerBound(dimension, -1.0);
+  NumericalPoint parametersUpperBound(dimension,  1.0);
+  problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0))); 
+
+  solver_.setProblem(problem);
+  solver_.setStartingPoint(NumericalPoint(dimension, 0.0));
+  
+  // run Optimization problem
+  solver_.run();
+
+  // optimal point
+  const NumericalScalar xi(solver_.getResult().getOptimalPoint()[0]);
+
   const NumericalScalar mean(sample.computeMean()[0]);
   const NumericalSample sortedSample(sample.sort());
   // Compute the first probability weighted moment
@@ -214,6 +230,17 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());
   return result;
+}
+
+/* Optimization solver accessor */
+OptimizationSolver GeneralizedParetoFactory::getOptimizationSolver() const
+{
+  return solver_;
+}
+
+void GeneralizedParetoFactory::setOptimizationSolver(const OptimizationSolver & solver)
+{
+  solver_ = solver;
 }
 
 

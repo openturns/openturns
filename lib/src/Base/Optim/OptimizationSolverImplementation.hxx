@@ -1,8 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementation implements an algorithm for
- *         finding the point of an implicitely defined manifold the nearest
- *         to the origin.
+ *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -42,16 +40,19 @@ class OptimizationSolverImplementation
   CLASSNAME;
 public:
 
+  typedef OptimizationSolverImplementationResult   Result;
+
   /** Default constructor */
   OptimizationSolverImplementation();
 
   /** Constructor with parameters */
-  explicit OptimizationSolverImplementation(const NumericalMathFunction & levelFunction,
-      const Bool verbose = false);
-
+  explicit OptimizationSolverImplementation(const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual OptimizationSolverImplementation * clone() const;
+
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  virtual void checkProblem(const OptimizationProblem & problem) const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
@@ -62,17 +63,9 @@ public:
   /** Starting point accessor */
   void setStartingPoint(const NumericalPoint & startingPoint);
 
-  /** Level function accessor */
-  NumericalMathFunction getLevelFunction() const;
-
-  /** Level function accessor */
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
-
-  /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-
-  /** Level value accessor */
-  void setLevelValue(const NumericalScalar levelValue);
+  /** Problem accessor */
+  OptimizationProblem getProblem() const;
+  void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
   Result getResult() const;
@@ -113,6 +106,12 @@ public:
   /** String converter */
   String __repr__() const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
   /** Verbose accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
@@ -121,9 +120,8 @@ protected:
   Result result_;
 
 private:
-  NumericalMathFunction levelFunction_;
   NumericalPoint startingPoint_;
-  NumericalScalar levelValue_;
+  OptimizationProblem  problem_;
   UnsignedInteger    maximumIterationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

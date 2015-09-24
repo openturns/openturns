@@ -38,10 +38,12 @@ try:
     myEvent = Event(output, Less(), -3)
 
     # We create a FORM algorithm
-    # The first parameter is a NearestPointAlgorithm
+    # The first parameter is an OptimizationSolver
     # The second parameter is an event
     # The third parameter is a starting point for the design point research
-    myAlgo = FORM(Cobyla(), myEvent, mean)
+    myCobyla = Cobyla()
+    myCobyla.setMaximumIterationsNumber(400)
+    myAlgo = FORM(myCobyla, myEvent, mean)
 
     # Perform the simulation
     myAlgo.run()

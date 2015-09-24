@@ -63,13 +63,12 @@ int main(int argc, char *argv[])
     levelFunction.setHessian(new CenteredFiniteDifferenceHessian(myHessian));
     SQPSpecificParameters specific;
     NumericalPoint startingPoint(4, 0.0);
-    SQP mySQPAlgorithm(specific, levelFunction);
+    SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
-    mySQPAlgorithm.setLevelValue(3.0);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
-    NearestPointAlgorithmImplementationResult result(mySQPAlgorithm.getResult());
-    fullprint << "result = " << printNumericalPoint(result.getMinimizer(), 4) << std::endl;
+    OptimizationSolverImplementationResult result(mySQPAlgorithm.getResult());
+    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

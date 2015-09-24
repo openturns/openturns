@@ -4,6 +4,19 @@ Optimization
 
 .. currentmodule:: openturns
 
+Generic optimization classes
+============================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    OptimizationProblem
+    OptimizationProblemImplementation
+    OptimizationSolver
+    OptimizationSolverImplementation
+    OptimizationSolverImplementationResult
+
 Minimization of the distance under an equality constraint
 =========================================================
 
@@ -11,14 +24,12 @@ Minimization of the distance under an equality constraint
     :toctree: _generated/
     :template: class.rst_t
 
-    NearestPointAlgorithm
     AbdoRackwitz
     AbdoRackwitzSpecificParameters
     Cobyla
     CobylaSpecificParameters
     SQP
     SQPSpecificParameters
-    NearestPointAlgorithmImplementationResult
     NearestPointChecker
     NearestPointCheckerResult
 
@@ -29,7 +40,5 @@ Optimization of a function under bound constraints
     :toctree: _generated/
     :template: class.rst_t
 
-    BoundConstrainedAlgorithm
     TNC
     TNCSpecificParameters
-    BoundConstrainedAlgorithmImplementationResult

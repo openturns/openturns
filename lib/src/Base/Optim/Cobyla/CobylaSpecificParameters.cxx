@@ -20,8 +20,9 @@
  *
  */
 
-#include "Cobyla.hxx"
+#include "CobylaSpecificParameters.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,6 +44,7 @@ CobylaSpecificParameters::CobylaSpecificParameters():
 /* Parameters with parameters */
 CobylaSpecificParameters::CobylaSpecificParameters(const NumericalScalar rhoBeg):
   PersistentObject()
+  , rhoBeg_(rhoBeg)
 {
   // Nothing to do
 } /* SpecificParametersCobyla */

@@ -1,0 +1,365 @@
+%define OT_OptimizationProblem_doc
+"Base class to define an optimization problem
+
+Available constructors:
+    OptimizationProblem()
+
+    OptimizationProblem(*objective, equality, inequality, bounds*)
+
+    OptimizationProblem(*level, value*)
+
+Parameters
+----------
+objective : :class:`~openturns.NumericalMathFunction`
+    Objective function.
+equality : :class:`~openturns.NumericalMathFunction`
+    Equality constraints.
+inequality : :class:`~openturns.NumericalMathFunction`
+    Inequality constraints.
+bounds : :class:`~openturns.Interval`
+    Bounds.
+level : :class:`~openturns.NumericalMathFunction`
+    Level function.
+value : float
+    Level value.
+
+Notes
+-----
+
+The first form represents a general optimization problem:
+
+.. math::
+
+    \min_{x\in B} f(x) \\
+    g(x) = 0 \\
+    h(x) \ge 0
+
+where *B* is problem's bounds, *f* is the objective function, *g* are equality constraints, and *h* are inequality constraints.
+
+The second form represents a nearest point problem:
+
+.. math::
+
+    \min_{x} ||x|| \\
+    g(x) = v
+
+Examples
+--------
+
+Define an optimization problem to find the minimum of the Rosenbrock function:
+
+>>> import openturns as ot
+>>> rosenbrock = ot.NumericalMathFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem()
+>>> problem.setObjective(rosenbrock)
+
+Define an optimization problem to find the point with minimum norm which satisfies :math:`x1+2*x2-3*x3+4*x4=3`.
+
+>>> import openturns as ot
+>>> levelFunction = ot.NumericalMathFunction(
+...     ['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(levelFunction, 3.0)"
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation
+OT_OptimizationProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getBounds_doc
+"Accessor to bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Problem bounds."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getBounds
+OT_OptimizationProblem_getBounds_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getDimension_doc
+"Accessor to spatial dimension.
+
+Returns
+-------
+dimension : int
+    Input dimension of objective function."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getDimension
+OT_OptimizationProblem_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getEqualityConstraint_doc
+"Accessor to equality constraints.
+
+Returns
+-------
+equality : :class:`~openturns.NumericalMathFunction`
+    Describe equality constraints."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getEqualityConstraint
+OT_OptimizationProblem_getEqualityConstraint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getInequalityConstraint_doc
+"Accessor to inequality constraints.
+
+Returns
+-------
+inequality : :class:`~openturns.NumericalMathFunction`
+    Describe inequality constraints."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getInequalityConstraint
+OT_OptimizationProblem_getInequalityConstraint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getLevelFunction_doc
+"Accessor to level function.
+
+Returns
+-------
+level : :class:`~openturns.NumericalMathFunction`
+    Level function."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getLevelFunction
+OT_OptimizationProblem_getLevelFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getLevelValue_doc
+"Accessor to level value.
+
+Returns
+-------
+value : float
+    Level value."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getLevelValue
+OT_OptimizationProblem_getLevelValue_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getObjective_doc
+"Accessor to objective function.
+
+Returns
+-------
+objective : :class:`~openturns.NumericalMathFunction`
+    Objective function."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getObjective
+OT_OptimizationProblem_getObjective_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_hasBounds_doc
+"Test whether bounds had been specified.
+
+Returns
+-------
+value : bool
+    *True* if bounds had been set for this problem, *False* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::hasBounds
+OT_OptimizationProblem_hasBounds_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_hasEqualityConstraint_doc
+"Test whether equality constraints had been specified.
+
+Returns
+-------
+value : bool
+    *True* if equality constraints had been set for this problem, *False* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::hasEqualityConstraint
+OT_OptimizationProblem_hasEqualityConstraint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_hasInequalityConstraint_doc
+"Test whether inequality constraints had been specified.
+
+Returns
+-------
+value : bool
+    *True* if inequality constraints had been set for this problem, *False* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::hasInequalityConstraint
+OT_OptimizationProblem_hasInequalityConstraint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_hasLevelFunction_doc
+"Test whether level function had been specified.
+
+Returns
+-------
+value : bool
+    *True* if level function had been set for this problem, *False* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::hasLevelFunction
+OT_OptimizationProblem_hasLevelFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_hasMultipleObjective_doc
+"Test whether objective function is a scalar or vector function.
+
+Returns
+-------
+value : bool
+    *False* if objective function is scalar, *True* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::hasMultipleObjective
+OT_OptimizationProblem_hasMultipleObjective_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_isMinimization_doc
+"Test whether this is a minimization or maximization problem.
+
+Returns
+-------
+value : bool
+    *True* if this is a minimization problem (default), *False* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::isMinimization
+OT_OptimizationProblem_isMinimization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setBounds_doc
+"Accessor to bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Problem bounds."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setBounds
+OT_OptimizationProblem_setBounds_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setEqualityConstraint_doc
+"Accessor to equality constraints.
+
+Parameters
+----------
+equalityConstraint : :class:`~openturns.NumericalMathFunction`
+    Equality constraints."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setEqualityConstraint
+OT_OptimizationProblem_setEqualityConstraint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setInequalityConstraint_doc
+"Accessor to inequality constraints.
+
+Parameters
+----------
+inequalityConstraint : :class:`~openturns.NumericalMathFunction`
+    Inequality constraints."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setInequalityConstraint
+OT_OptimizationProblem_setInequalityConstraint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setLevelFunction_doc
+"Accessor to level function.
+
+Parameters
+----------
+levelFunction : :class:`~openturns.NumericalMathFunction`
+    Level function."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setLevelFunction
+OT_OptimizationProblem_setLevelFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setLevelValue_doc
+"Accessor to level value.
+
+Parameters
+----------
+levelValue : float
+    Level value."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setLevelValue
+OT_OptimizationProblem_setLevelValue_doc
+
+%define OT_OptimizationProblem_setMinimization_doc
+"Tell whether this is a minimization or maximization problem.
+
+Parameters
+----------
+minimization : bool
+    *True* if this is a minimization problem, *False* otherwise."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setMinimization
+OT_OptimizationProblem_setMinimization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setObjective_doc
+"Accessor to objective function.
+
+Parameters
+----------
+objectiveFunction : :class:`~openturns.NumericalMathFunction`
+    Objective function."
+
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setObjective
+OT_OptimizationProblem_setObjective_doc
+

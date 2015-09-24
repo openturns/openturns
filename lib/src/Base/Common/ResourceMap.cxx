@@ -422,13 +422,6 @@ void ResourceMap::loadDefaultConfiguration()
   // Contour parameters //
   setAsUnsignedInteger( "Contour-DefaultLevelsNumber", 10 );
 
-  // BoundConstrainedAlgorithmImplementation parameters //
-  setAsUnsignedInteger( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber", 100 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumObjectiveError", 1.0e-5 );
-  setAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumConstraintError", 1.0e-5 );
-
   // SQP parameters //
   setAsNumericalScalar( "SQP-DefaultTau", 0.5 );
   setAsNumericalScalar( "SQP-DefaultOmega", 1.0e-4 );
@@ -447,13 +440,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
   setAsNumericalScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
 
-  // NearestPointAlgorithmImplementation parameters //
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultLevelValue", 0.0 );
-  setAsUnsignedInteger( "NearestPointAlgorithmImplementation-DefaultMaximumIteration", 100 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError", 1.0e-5 );
-  setAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumConstraintError", 1.0e-5 );
+  // OptimizationSolverImplementation parameters //
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultLevelValue", 0.0 );
+  setAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration", 100 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError", 1.0e-5 );
+
 
   // Cobyla parameters //
   setAsNumericalScalar( "Cobyla-DefaultRhoBeg", 0.1 );

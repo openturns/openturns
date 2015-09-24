@@ -85,7 +85,7 @@ try:
         # We create a NearestPoint algorithm
         myCobyla = Cobyla()
         myCobyla.setSpecificParameters(CobylaSpecificParameters())
-        myCobyla.setMaximumIterationsNumber(100)
+        myCobyla.setMaximumIterationsNumber(200)
         myCobyla.setMaximumAbsoluteError(1.0e-10)
         myCobyla.setMaximumRelativeError(1.0e-10)
         myCobyla.setMaximumResidualError(1.0e-10)
@@ -93,7 +93,7 @@ try:
         print("myCobyla=", myCobyla)
 
         # We create a FORM algorithm
-        # The first parameter is a NearestPointAlgorithm
+        # The first parameter is an OptimizationSolver
         # The second parameter is an event
         # The third parameter is a starting point for the design point research
         myAlgo = FORM(myCobyla, myEvent, mean)

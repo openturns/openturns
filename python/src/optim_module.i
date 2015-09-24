@@ -43,12 +43,11 @@
 %import BaseDiffTemplateDefs.i
 
 /* Base/Optim */
-%include BoundConstrainedAlgorithmImplementationResult.i
-%include BoundConstrainedAlgorithmImplementation.i
-%include BoundConstrainedAlgorithm.i
-%include NearestPointAlgorithmImplementationResult.i
-%include NearestPointAlgorithmImplementation.i
-%include NearestPointAlgorithm.i
+%include OptimizationProblemImplementation.i
+%include OptimizationProblem.i
+%include OptimizationSolverImplementationResult.i
+%include OptimizationSolverImplementation.i
+%include OptimizationSolver.i
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
 %include AbdoRackwitzSpecificParameters.i

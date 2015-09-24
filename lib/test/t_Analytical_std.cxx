@@ -73,10 +73,10 @@ int main(int argc, char *argv[])
     /* We create an Event from this RandomVector */
     Event myEvent(output, Less(), -3.0);
 
-    /* We create a NearestPoint algorithm */
+    /* We create an OptimizationSolver algorithm */
     Cobyla myCobyla;
     myCobyla.setSpecificParameters(CobylaSpecificParameters());
-    myCobyla.setMaximumIterationsNumber(100);
+    myCobyla.setMaximumIterationsNumber(400);
     myCobyla.setMaximumAbsoluteError(1.0e-10);
     myCobyla.setMaximumRelativeError(1.0e-10);
     myCobyla.setMaximumResidualError(1.0e-10);
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     fullprint << "myCobyla=" << myCobyla << std::endl << std::flush;
 
     /* We create a Analytical algorithm */
-    /* The first parameter is a NearestPointAlgorithm */
+    /* The first parameter is an OptimizationSolver */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     Analytical myAlgo(myCobyla, myEvent, mean);
