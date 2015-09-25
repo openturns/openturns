@@ -339,13 +339,13 @@ ot_add_python_module(optim optim_module.i
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitzSpecificParameters.i
-                      AbdoRackwitz.i
+                      AbdoRackwitz.i AbdoRackwitz_doc.i.in
                       CobylaSpecificParameters.i
-                      Cobyla.i
+                      Cobyla.i Cobyla_doc.i.in
                       TNCSpecificParameters.i
-                      TNC.i
+                      TNC.i TNC_doc.i.in
                       SQPSpecificParameters.i
-                      SQP.i
+                      SQP.i SQP_doc.i.in
                       BaseOptimTemplateDefs.i
                    )
 

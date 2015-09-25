@@ -17,8 +17,8 @@ Generic optimization classes
     OptimizationSolverImplementation
     OptimizationSolverImplementationResult
 
-Minimization of the distance under an equality constraint
-=========================================================
+Optimization solvers
+====================
 
 .. autosummary::
     :toctree: _generated/
@@ -30,15 +30,15 @@ Minimization of the distance under an equality constraint
     CobylaSpecificParameters
     SQP
     SQPSpecificParameters
-    NearestPointChecker
-    NearestPointCheckerResult
+    TNC
+    TNCSpecificParameters
 
-Optimization of a function under bound constraints
-==================================================
+Nearest point assessment
+========================
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
-    TNC
-    TNCSpecificParameters
+    NearestPointChecker
+    NearestPointCheckerResult

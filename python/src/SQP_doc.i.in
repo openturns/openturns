@@ -1,0 +1,31 @@
+%feature("docstring") OT::SQP
+"Sequential Quadratic Programming solver.
+
+Available constructors:
+    SQP(*problem*)
+
+    SQP(*specificParameters, problem*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+specificParameters : :class:`~openturns.SQPSpecificParameters`
+    Parameters for this solver.
+
+Notes
+-----
+SQP methods solve a sequence of optimization subproblems,
+each of which optimizes a quadratic model of the objective
+subject to a linearization of the constraints.
+
+See also
+--------
+AbdoRackwitz, Cobyla, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> problem = ot.OptimizationProblem(model, 5.0)
+>>> algo = ot.SQP(problem)"

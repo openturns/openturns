@@ -1,0 +1,25 @@
+%feature("docstring") OT::AbdoRackwitz
+"Abdo-Rackwitz solver.
+
+Available constructors:
+    AbdoRackwitz(*problem*)
+
+    AbdoRackwitz(*specificParameters, problem*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+specificParameters : :class:`~openturns.AbdoRackwitzSpecificParameters`
+    Parameters for this solver.
+
+See also
+--------
+Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> problem = ot.OptimizationProblem(model, 5.0)
+>>> algo = ot.AbdoRackwitz(problem)"

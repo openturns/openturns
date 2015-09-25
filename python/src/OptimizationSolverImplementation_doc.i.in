@@ -161,6 +161,15 @@ OT_OptimizationSolver_getStartingPoint_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_OptimizationSolver_run_doc
+"Launch the optimization."
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::run
+OT_OptimizationSolver_run_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_OptimizationSolver_setMaximumAbsoluteError_doc
 "Accessor to maximum allowed absolute error.
 
@@ -279,3 +288,32 @@ startingPoint : :class:`~openturns.NumericalPoint`
 %feature("docstring") OT::OptimizationSolverImplementation::setStartingPoint
 OT_OptimizationSolver_setStartingPoint_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setVerbose_doc
+"Accessor to the verbosity flag.
+
+Parameters
+----------
+verbose : bool
+    Verbosity flag state."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setVerbose
+OT_OptimizationSolver_setVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getVerbose_doc
+"Accessor to the verbosity flag.
+
+Returns
+----------
+verbose : bool
+    Verbosity flag state."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getVerbose
+OT_OptimizationSolver_getVerbose_doc

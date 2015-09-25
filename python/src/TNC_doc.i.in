@@ -1,0 +1,30 @@
+%feature("docstring") OT::TNC
+"Truncated Newton Constrained solver.
+
+Available constructors:
+    TNC(*problem*)
+
+    TNC(*specificParameters, problem*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+specificParameters : :class:`~openturns.TNCSpecificParameters`
+    Parameters for this solver.
+
+Notes
+-----
+Non-linear optimizer supporting bound constraints.
+
+See also
+--------
+AbdoRackwitz, SQP, Cobyla
+
+Examples
+--------
+>>> import openturns as ot
+>>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> bounds = ot.Interval([1.]*4, [2.]*4)
+>>> problem = ot.OptimizationProblem(model, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> algo = ot.TNC(problem)"
