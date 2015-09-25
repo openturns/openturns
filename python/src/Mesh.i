@@ -28,7 +28,6 @@ namespace OT {
 %template(IndicesPersistentCollection) OT::PersistentCollection<OT::Indices>;
 
 %typemap(in) const OT::Collection<OT::Indices> & {
-  void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
