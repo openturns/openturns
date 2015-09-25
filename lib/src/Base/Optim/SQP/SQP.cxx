@@ -72,9 +72,11 @@ SQP * SQP::clone() const
 void SQP::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error : " << SQP::GetClassName() << " can only solve nearest-point optimization problems";
-  if ( problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support MultiOjective Optimization ";
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " can only solve nearest-point optimization problems";
+  if (problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+  if (problem.hasBounds())
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
 }
 
 void SQP::initialize()

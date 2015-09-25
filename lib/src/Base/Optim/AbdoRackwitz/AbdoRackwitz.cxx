@@ -76,7 +76,11 @@ void AbdoRackwitz::initialize()
 void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error : " << AbdoRackwitz::GetClassName() << " can only solve nearest-point optimization problems";
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " can only solve nearest-point optimization problems";
+  if (problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization ";
+  if (problem.hasBounds())
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
 }
 
 /* Line search for globalization of the algorithm */
