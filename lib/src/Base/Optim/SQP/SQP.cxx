@@ -269,24 +269,28 @@ void SQP::setSpecificParameters(const SQPSpecificParameters & specificParameters
 /* Level function accessor */
 NumericalMathFunction SQP::getLevelFunction() const
 {
+  Log::Info(OSS() << "SQP::getLevelFunction is deprecated.");
   return getProblem().getLevelFunction();
 }
 
 /* Level function accessor */
 void SQP::setLevelFunction(const NumericalMathFunction & levelFunction)
 {
+  Log::Info(OSS() << "SQP::setLevelFunction is deprecated.");
   getProblem().setLevelFunction(levelFunction);
 }
 
 /* Level value accessor */
 NumericalScalar SQP::getLevelValue() const
 {
+  Log::Info(OSS() << "SQP::getLevelValue is deprecated.");
   return getProblem().getLevelValue();
 }
 
 /* Level value accessor */
 void SQP::setLevelValue(const NumericalScalar levelValue)
 {
+  Log::Info(OSS() << "SQP::setLevelValue is deprecated.");
   getProblem().setLevelValue(levelValue);
 }
 

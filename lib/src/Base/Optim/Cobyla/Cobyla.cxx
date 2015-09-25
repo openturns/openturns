@@ -179,24 +179,28 @@ void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificPara
 /* Level function accessor */
 NumericalMathFunction Cobyla::getLevelFunction() const
 {
+  Log::Info(OSS() << "Cobyla::getLevelFunction is deprecated.");
   return getProblem().getLevelFunction();
 }
 
 /* Level function accessor */
 void Cobyla::setLevelFunction(const NumericalMathFunction & levelFunction)
 {
+  Log::Info(OSS() << "Cobyla::setLevelFunction is deprecated.");
   getProblem().setLevelFunction(levelFunction);
 }
 
 /* Level value accessor */
 NumericalScalar Cobyla::getLevelValue() const
 {
+  Log::Info(OSS() << "Cobyla::getLevelValue is deprecated.");
   return getProblem().getLevelValue();
 }
 
 /* Level value accessor */
 void Cobyla::setLevelValue(const NumericalScalar levelValue)
 {
+  Log::Info(OSS() << "Cobyla::setLevelValue is deprecated.");
   getProblem().setLevelValue(levelValue);
 }
 
