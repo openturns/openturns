@@ -1,30 +1,42 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+levelFunction = ot.NumericalMathFunction(
+    ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
+# Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
+# needs it
+myGradient = ot.NonCenteredFiniteDifferenceGradient(
+    1e-7, levelFunction.getEvaluation())
+print("myGradient = ", repr(myGradient))
+# Substitute the gradient
+levelFunction.setGradient(
+    ot.NonCenteredFiniteDifferenceGradient(myGradient))
+specific = ot.AbdoRackwitzSpecificParameters()
+startingPoint = [0.0] * 4
+algo = ot.AbdoRackwitz(specific, ot.OptimizationProblem(levelFunction, 3.0))
+algo.setStartingPoint(startingPoint)
+algo.run()
+print("result = ", algo.getResult())
 
-try:
-
-    try:
-        # Test function operator ()
-        levelFunction = NumericalMathFunction(
-            ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
-        specific = AbdoRackwitzSpecificParameters()
-        startingPoint = NumericalPoint(4, 1.0)
-        myAlgorithm = AbdoRackwitz(specific, OptimizationProblem(levelFunction, 3.0))
-        myAlgorithm.setStartingPoint(startingPoint)
-        myAlgorithm.setMaximumIterationsNumber(100)
-        myAlgorithm.setMaximumAbsoluteError(1.0e-10)
-        myAlgorithm.setMaximumRelativeError(1.0e-10)
-        myAlgorithm.setMaximumResidualError(1.0e-10)
-        myAlgorithm.setMaximumConstraintError(1.0e-10)
-        print("myAlgorithm = ", myAlgorithm)
-    # except NoWrapperFileFoundException, ex :
-    except:
-        raise
-
-except:
-    import sys
-    print("t_AbdoRackwitz_std.py", sys.exc_info()[0], sys.exc_info()[1])
+levelFunction = ot.NumericalMathFunction(
+        ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
+# Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
+# needs it
+myGradient = ot.NonCenteredFiniteDifferenceGradient(
+    1e-7, levelFunction.getEvaluation())
+print("myGradient = ", repr(myGradient))
+# Substitute the gradient
+levelFunction.setGradient(
+    ot.NonCenteredFiniteDifferenceGradient(myGradient))
+specific = ot.AbdoRackwitzSpecificParameters()
+startingPoint = [0.0] * 4
+algo = ot.AbdoRackwitz(specific, ot.OptimizationProblem(levelFunction, -0.5))
+algo.setStartingPoint(startingPoint)
+print("myalgorithm=", repr(algo))
+algo.run()
+print("result = ",  algo.getResult())
+print("evaluation calls number=", levelFunction.getEvaluationCallsNumber())
+print("gradient   calls number=", levelFunction.getGradientCallsNumber())
+print("hessian    calls number=", levelFunction.getHessianCallsNumber())

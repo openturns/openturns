@@ -24,6 +24,19 @@
 using namespace OT;
 using namespace OT::Test;
 
+inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+{
+  OSS oss;
+  oss << "[";
+  NumericalScalar eps(pow(0.1, 1.0 * digits));
+  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
+  {
+    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>(((fabs(point[i]) < eps) ? fabs(point[i]) : point[i]));
+  }
+  oss << "]";
+  return oss;
+}
+
 int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
@@ -39,17 +52,17 @@ int main(int argc, char *argv[])
       input[2] = "x3";
       input[3] = "x4";
       NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
+      // Add a finite difference gradient to the function,
+      NonCenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
+      /** Substitute the gradient */
+      levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
       SQPSpecificParameters specific;
-
-      NumericalPoint startingPoint(4, 1.0);
+      NumericalPoint startingPoint(4, 0.0);
       SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
       mySQPAlgorithm.setStartingPoint(startingPoint);
-      mySQPAlgorithm.setMaximumIterationsNumber(100);
-      mySQPAlgorithm.setMaximumAbsoluteError(1.0e-10);
-      mySQPAlgorithm.setMaximumRelativeError(1.0e-10);
-      mySQPAlgorithm.setMaximumResidualError(1.0e-10);
-      mySQPAlgorithm.setMaximumConstraintError(1.0e-10);
       fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
+      mySQPAlgorithm.run();
+      fullprint << "result=" << printNumericalPoint(mySQPAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -57,6 +70,43 @@ int main(int argc, char *argv[])
     return ExitCode::Error;
   }
 
+  try
+  {
+    Description input(4);
+    input[0] = "x1";
+    input[1] = "x2";
+    input[2] = "x3";
+    input[3] = "x4";
+    NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
+    // Add a finite difference gradient to the function, as SQP algorithm
+    // needs it
+    CenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
+    /** Substitute the gradient */
+    levelFunction.setGradient(new CenteredFiniteDifferenceGradient(myGradient));
+
+    // Add a finite difference hessian to the function, as SQP algorithm
+    // needs it
+    CenteredFiniteDifferenceHessian myHessian(1e-3, levelFunction.getEvaluation());
+    /** Substitute the hessian */
+    levelFunction.setHessian(new CenteredFiniteDifferenceHessian(myHessian));
+    SQPSpecificParameters specific;
+    NumericalPoint startingPoint(4, 0.0);
+    SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+    mySQPAlgorithm.setStartingPoint(startingPoint);
+    fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
+    mySQPAlgorithm.run();
+    OptimizationSolverImplementationResult result(mySQPAlgorithm.getResult());
+    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
+    Graph convergence(result.drawErrorHistory());
+    fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
+    fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;
+    fullprint << "hessian    calls number=" << levelFunction.getHessianCallsNumber() << std::endl;
+  }
+  catch (TestFailed & ex)
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
   return ExitCode::Success;
 }
