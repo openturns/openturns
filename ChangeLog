@@ -5,10 +5,15 @@
 === Library ===
 
 ==== Major changes ====
+ * Optimization API rework
 
 ==== New classes ====
+ * OptimizationSolver
+ * OptimizationProblem
 
 ==== API changes ====
+ * Removed BoundConstrainedAlgorithm class
+ * Removed NearestPointAlgorithm class
 
 === Python module ===
 
