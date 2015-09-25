@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  */
 
-class OptimizationSolverImplementation
+class OT_API OptimizationSolverImplementation
   : public PersistentObject
 {
 

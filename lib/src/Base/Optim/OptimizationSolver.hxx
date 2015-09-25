@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class provides capabilities to solve optimization problems
  */
 
-class OptimizationSolver
+class OT_API OptimizationSolver
   : public TypedInterfaceObject<OptimizationSolverImplementation>
 {
 

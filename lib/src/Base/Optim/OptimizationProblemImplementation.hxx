@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * OptimizationProblemImplementation allows to describe an optimization problem
  */
 
-class OptimizationProblemImplementation
+class OT_API OptimizationProblemImplementation
   : public PersistentObject
 {
 

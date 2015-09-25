@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * + continuous or discrete (lattice) search spaces
  */
 
-class OptimizationProblem
+class OT_API OptimizationProblem
   : public TypedInterfaceObject<OptimizationProblemImplementation>
 {
 
