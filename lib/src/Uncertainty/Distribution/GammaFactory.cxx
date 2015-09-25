@@ -64,7 +64,7 @@ Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
   const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar mu(sample.computeMean()[0]);
   const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only if sigma >= 0, here sigma=" << sigma;
+  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only if sigma > 0, here sigma=" << sigma;
   NumericalScalar lambda((mu - gamma) / sigma);
   const NumericalScalar k(lambda * lambda);
   lambda /= sigma;
