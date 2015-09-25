@@ -93,6 +93,12 @@ MutexLockSingleton<Catalog> Catalog::GetInstance()
   return *Catalog_P_instance_;
 }
 
+/* Get the list of keys */
+std::vector<String> Catalog::GetKeys()
+{
+  return GetInstance().lock().getKeys();
+}
+
 
 /* Get the factory from its name */
 const PersistentObjectFactory & Catalog::Get(const String & factoryName)
@@ -110,6 +116,17 @@ const PersistentObjectFactory & Catalog::get(const String & factoryName) const
   return *(it->second);
 }
 
+
+/* Get the list of keys */
+std::vector<String> Catalog::getKeys() const
+{
+  std::vector<String> keys;
+  for(CatalogType::const_iterator it = catalog_.begin(); it != catalog_.end(); ++it)
+  {
+    keys.push_back(it->first);
+  }
+  return keys;
+}
 
 /* Add a new factory to the catalog */
 void Catalog::Add(const String & factoryName, const PersistentObjectFactory * p_factory)

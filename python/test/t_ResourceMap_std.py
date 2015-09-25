@@ -5,11 +5,9 @@ from openturns import *
 
 TESTPREAMBLE()
 
-try:
-    resourceMap = ResourceMap.GetInstance()
-    print(resourceMap)
-    print("Extract from ResourceMap : R-executable-command -> ",
-          resourceMap.get("R-executable-command"))
-except:
-    import sys
-    print("t_ResourceMap_std.py", sys.exc_info()[0], sys.exc_info()[1])
+print("ResourceMap={")
+for key in ResourceMap.GetKeys():
+    print("  %s => %s," % (key, ResourceMap.Get(key)))
+print("}")
+print("Extract from ResourceMap : R-executable-command -> ",
+      ResourceMap.Get("R-executable-command"))

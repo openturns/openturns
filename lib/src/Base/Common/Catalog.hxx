@@ -22,6 +22,7 @@
 #define OPENTURNS_CATALOG_HXX
 
 #include <map>         // for std::map
+#include <vector>
 #include "OTprivate.hxx"
 #include "MutexLock.hxx"
 
@@ -57,6 +58,8 @@ public:
   /** Get the factory by name */
   static const PersistentObjectFactory & Get(const String & factoryName);
 
+  /** Get the list of keys */
+  static std::vector<String> GetKeys();
 
   /** Destructor */
   ~Catalog();
@@ -79,6 +82,9 @@ private:
 
   /** Get the factory by name */
   const PersistentObjectFactory & get(const String & factoryName) const;
+
+  /** Get the list of keys */
+  std::vector<String> getKeys() const;
 
   friend struct Catalog_init; /* friendship for static member initialization */
 }; /* end class Catalog */

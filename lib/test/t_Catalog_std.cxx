@@ -29,20 +29,8 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  try
-  {
-
-    // Create a Catalog Object
-    fullprint << Catalog::GetInstance().__repr__() << std::endl;
-  }
-  catch (FileOpenException & ex)
-  {
-    std::cerr << ex << std::endl;
-    return ExitCode::Error;
-  }
-
-
-
+  // Create a Catalog Object
+  fullprint << Catalog::GetInstance().__repr__() << std::endl;
 
   return ExitCode::Success;
 }

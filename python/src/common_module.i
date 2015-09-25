@@ -31,6 +31,7 @@
 %include TTY.i
 %include Log.i
 %include Path.i
+%include Catalog.i
 %include ResourceMap.i
 %include ComparisonOperatorImplementation.i
 %include ComparisonOperator.i
