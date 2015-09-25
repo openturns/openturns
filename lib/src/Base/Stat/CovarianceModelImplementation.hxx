@@ -79,10 +79,10 @@ public:
                                        const NumericalPoint & t) const;
   // Special case for 1D model
   virtual NumericalScalar computeAsScalar (const NumericalScalar s,
-      const NumericalScalar t) const;
+                                           const NumericalScalar t) const;
 
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-      const NumericalPoint & t) const;
+                                           const NumericalPoint & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
@@ -110,20 +110,20 @@ public:
   virtual Bool isDiagonal() const;
 
   /** Amplitude accessors */
-  NumericalPoint getAmplitude() const;
-  void setAmplitude(const NumericalPoint & amplitude);
+  virtual NumericalPoint getAmplitude() const;
+  virtual void setAmplitude(const NumericalPoint & amplitude);
 
   /** Scale accessors */
   virtual NumericalPoint getScale() const;
   virtual void setScale(const NumericalPoint & scale);
 
   /** Spatial correlation accessors */
-  CorrelationMatrix getSpatialCorrelation() const;
-  void setSpatialCorrelation(const CorrelationMatrix & correlation);
+  virtual CorrelationMatrix getSpatialCorrelation() const;
+  virtual void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
   /** Nugget factor accessor */
-  void setNuggetFactor(const NumericalScalar nuggetFactor);
-  NumericalScalar getNuggetFactor() const;
+  virtual void setNuggetFactor(const NumericalScalar nuggetFactor);
+  virtual NumericalScalar getNuggetFactor() const;
 
   /** Parameters accessor */
   virtual void setParameters(const NumericalPoint & parameters);
