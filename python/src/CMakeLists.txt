@@ -334,7 +334,7 @@ ot_add_python_module(optim optim_module.i
                       OptimizationProblem.i OptimizationProblem_doc.i.in
                       OptimizationProblemImplementation.i OptimizationProblemImplementation_doc.i.in
                       OptimizationSolver.i OptimizationSolver_doc.i.in
-                      OptimizationSolverImplementationResult.i
+                      OptimizationSolverImplementationResult.i OptimizationSolverImplementationResult_doc.i.in
                       OptimizationSolverImplementation.i OptimizationSolverImplementation_doc.i.in
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
