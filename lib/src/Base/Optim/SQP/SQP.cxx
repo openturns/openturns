@@ -72,9 +72,11 @@ SQP * SQP::clone() const
 void SQP::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error : " << SQP::GetClassName() << " can only solve nearest-point optimization problems";
-  if ( problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support MultiOjective Optimization ";
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " can only solve nearest-point optimization problems";
+  if (problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+  if (problem.hasBounds())
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
 }
 
 void SQP::initialize()
@@ -267,24 +269,28 @@ void SQP::setSpecificParameters(const SQPSpecificParameters & specificParameters
 /* Level function accessor */
 NumericalMathFunction SQP::getLevelFunction() const
 {
+  Log::Info(OSS() << "SQP::getLevelFunction is deprecated.");
   return getProblem().getLevelFunction();
 }
 
 /* Level function accessor */
 void SQP::setLevelFunction(const NumericalMathFunction & levelFunction)
 {
+  Log::Info(OSS() << "SQP::setLevelFunction is deprecated.");
   getProblem().setLevelFunction(levelFunction);
 }
 
 /* Level value accessor */
 NumericalScalar SQP::getLevelValue() const
 {
+  Log::Info(OSS() << "SQP::getLevelValue is deprecated.");
   return getProblem().getLevelValue();
 }
 
 /* Level value accessor */
 void SQP::setLevelValue(const NumericalScalar levelValue)
 {
+  Log::Info(OSS() << "SQP::setLevelValue is deprecated.");
   getProblem().setLevelValue(levelValue);
 }
 

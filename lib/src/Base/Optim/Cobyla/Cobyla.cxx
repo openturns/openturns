@@ -68,8 +68,8 @@ Cobyla * Cobyla::clone() const
 /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void Cobyla::checkProblem(const OptimizationProblem & problem) const
 {
-  if ( problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << Cobyla::GetClassName() << " does not support MultiOjective Optimization ";
+  if (problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
 }
 
 /* Performs the actual computation by calling the Cobyla algorithm
@@ -79,6 +79,16 @@ void Cobyla::run()
   UnsignedInteger dimension = getStartingPoint().getDimension();
   int n = dimension;
   int m = getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension();
+
+  if (getProblem().hasBounds())
+  {
+    Interval bounds(getProblem().getBounds());
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      if (bounds.getFiniteLowerBound()[i]) ++ m;
+      if (bounds.getFiniteUpperBound()[i]) ++ m;
+    }
+  }
 
   NumericalPoint x(getStartingPoint());
 
@@ -169,24 +179,28 @@ void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificPara
 /* Level function accessor */
 NumericalMathFunction Cobyla::getLevelFunction() const
 {
+  Log::Info(OSS() << "Cobyla::getLevelFunction is deprecated.");
   return getProblem().getLevelFunction();
 }
 
 /* Level function accessor */
 void Cobyla::setLevelFunction(const NumericalMathFunction & levelFunction)
 {
+  Log::Info(OSS() << "Cobyla::setLevelFunction is deprecated.");
   getProblem().setLevelFunction(levelFunction);
 }
 
 /* Level value accessor */
 NumericalScalar Cobyla::getLevelValue() const
 {
+  Log::Info(OSS() << "Cobyla::getLevelValue is deprecated.");
   return getProblem().getLevelValue();
 }
 
 /* Level value accessor */
 void Cobyla::setLevelValue(const NumericalScalar levelValue)
 {
+  Log::Info(OSS() << "Cobyla::setLevelValue is deprecated.");
   getProblem().setLevelValue(levelValue);
 }
 
@@ -262,8 +276,25 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
   }
 
+  /* Compute the bound constraints at inPoint */
+  if (problem.hasBounds())
+  {
+    Interval bounds(algorithm->getProblem().getBounds());
+    for (UnsignedInteger index = 0; index < bounds.getDimension(); ++ index)
+    {
+      if (bounds.getFiniteLowerBound()[index])
+      {
+        constraintValue.add(inPoint[index] - bounds.getLowerBound()[index]);
+      }
+      if (bounds.getFiniteUpperBound()[index])
+      {
+        constraintValue.add(bounds.getUpperBound()[index] - inPoint[index]);
+      }
+    }
+  }
+
   /* Convert the constraint vector in double format */
-  for(UnsignedInteger index = 0; index < (UnsignedInteger)(constraintValue.getDimension()); ++index) con[index] = constraintValue[index];
+  for (UnsignedInteger index = 0; index < constraintValue.getDimension(); ++ index) con[index] = constraintValue[index];
 
   /* Compute constraints norm */
   outPoint[1]= constraintValue.norm();

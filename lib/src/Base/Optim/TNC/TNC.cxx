@@ -70,8 +70,8 @@ TNC * TNC::clone() const
 /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void TNC::checkProblem(const OptimizationProblem & problem) const
 {
-  if ( problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << TNC::GetClassName() << " does not support MultiOjective Optimization ";
+  if (problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
 }
 
 /* Performs the actual computation by calling the TNC algorithm */
@@ -273,7 +273,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   if ( problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error : TNC does not support Multi-Ojective Optimization ";
 
-  if ( problem.hasInequalityConstraint() or problem.hasEqualityConstraint()  )
+  if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error : TNC does not support constraints ";
 
   /* Compute the objective function at inPoint */

@@ -263,18 +263,10 @@ ot_check_test (BasisFactory_std)
 
 # Optim
 ot_check_test (AbdoRackwitz_std)
-ot_check_test (AbdoRackwitz_linear)
-ot_check_test (AbdoRackwitz_nonlinear)
 ot_check_test (Cobyla_std)
-ot_check_test (Cobyla_linear)
-ot_check_test (Cobyla_nonlinear)
 ot_check_test (SQP_std)
-ot_check_test (SQP_linear)
-ot_check_test (SQP_nonlinear)
-ot_check_test (NearestPointChecker_std)
 ot_check_test (TNC_std)
-ot_check_test (TNC_linear)
-ot_check_test (TNC_nonlinear)
+ot_check_test (NearestPointChecker_std)
 
 # Solver
 ot_check_test (Bisection_std)

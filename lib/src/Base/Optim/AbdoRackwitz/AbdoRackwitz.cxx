@@ -76,7 +76,11 @@ void AbdoRackwitz::initialize()
 void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error : " << AbdoRackwitz::GetClassName() << " can only solve nearest-point optimization problems";
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " can only solve nearest-point optimization problems";
+  if (problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization ";
+  if (problem.hasBounds())
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
 }
 
 /* Line search for globalization of the algorithm */
@@ -215,24 +219,28 @@ void AbdoRackwitz::setSpecificParameters(const AbdoRackwitzSpecificParameters & 
 /* Level function accessor */
 NumericalMathFunction AbdoRackwitz::getLevelFunction() const
 {
+  Log::Info(OSS() << "AbdoRackwitz::getLevelFunction is deprecated.");
   return getProblem().getLevelFunction();
 }
 
 /* Level function accessor */
 void AbdoRackwitz::setLevelFunction(const NumericalMathFunction & levelFunction)
 {
+  Log::Info(OSS() << "AbdoRackwitz::setLevelFunction is deprecated.");
   getProblem().setLevelFunction(levelFunction);
 }
 
 /* Level value accessor */
 NumericalScalar AbdoRackwitz::getLevelValue() const
 {
+  Log::Info(OSS() << "AbdoRackwitz::getLevelValue is deprecated.");
   return getProblem().getLevelValue();
 }
 
 /* Level value accessor */
 void AbdoRackwitz::setLevelValue(const NumericalScalar levelValue)
 {
+  Log::Info(OSS() << "AbdoRackwitz::setLevelValue is deprecated.");
   getProblem().setLevelValue(levelValue);
 }
 

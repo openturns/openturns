@@ -18,6 +18,8 @@ OT_OptimizationSolver_getProblem_doc
 OT_OptimizationSolver_getResult_doc
 %feature("docstring") OT::OptimizationSolver::getStartingPoint
 OT_OptimizationSolver_getStartingPoint_doc
+%feature("docstring") OT::OptimizationSolver::run
+OT_OptimizationSolver_run_doc
 
 %feature("docstring") OT::OptimizationSolver::setMaximumAbsoluteError
 OT_OptimizationSolver_setMaximumAbsoluteError_doc
@@ -35,3 +37,7 @@ OT_OptimizationSolver_setProblem_doc
 OT_OptimizationSolver_setResult_doc
 %feature("docstring") OT::OptimizationSolver::setStartingPoint
 OT_OptimizationSolver_setStartingPoint_doc
+%feature("docstring") OT::OptimizationSolver::setVerbose
+OT_OptimizationSolver_setVerbose_doc
+%feature("docstring") OT::OptimizationSolver::getVerbose
+OT_OptimizationSolver_getVerbose_doc

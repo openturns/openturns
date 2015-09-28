@@ -307,18 +307,10 @@ ot_pyinstallcheck_test (NonCenteredFiniteDifferenceGradient_std)
 
 ## Optim
 ot_pyinstallcheck_test (AbdoRackwitz_std)
-ot_pyinstallcheck_test (AbdoRackwitz_linear)
-ot_pyinstallcheck_test (AbdoRackwitz_nonlinear)
-ot_pyinstallcheck_test (NearestPointChecker_std)
 ot_pyinstallcheck_test (Cobyla_std)
-ot_pyinstallcheck_test (Cobyla_linear)
-ot_pyinstallcheck_test (Cobyla_nonlinear)
 ot_pyinstallcheck_test (SQP_std)
-ot_pyinstallcheck_test (SQP_linear)
-ot_pyinstallcheck_test (SQP_nonlinear)
 ot_pyinstallcheck_test (TNC_std)
-ot_pyinstallcheck_test (TNC_linear)
-ot_pyinstallcheck_test (TNC_nonlinear)
+ot_pyinstallcheck_test (NearestPointChecker_std)
 
 ## Solver
 ot_pyinstallcheck_test (Brent_std)

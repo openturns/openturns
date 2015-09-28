@@ -1,0 +1,31 @@
+%feature("docstring") OT::Cobyla
+"Constrained Optimization BY Linear Approximations solver.
+
+Available constructors:
+    Cobyla(*problem*)
+
+    Cobyla(*specificParameters, problem*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+specificParameters : :class:`~openturns.CobylaSpecificParameters`
+    Parameters for this solver.
+
+Notes
+-----
+It constructs successive linear approximations of the objective function and
+constraints via a simplex of :math:`d+1` points, and optimizes these
+approximations in a trust region at each step.
+
+See also
+--------
+AbdoRackwitz, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> problem = ot.OptimizationProblem(model, 5.0)
+>>> algo = ot.Cobyla(problem)"
