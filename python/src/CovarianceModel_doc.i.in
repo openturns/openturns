@@ -10,13 +10,27 @@ OT_CovarianceModel_discretize_doc
 OT_CovarianceModel_discretizeRow_doc
 %feature("docstring") OT::CovarianceModel::getDimension
 OT_CovarianceModel_getDimension_doc
+%feature("docstring") OT::CovarianceModel::getAmplitude
+OT_CovarianceModel_getAmplitude_doc
+%feature("docstring") OT::CovarianceModel::getScale
+OT_CovarianceModel_getScale_doc
 %feature("docstring") OT::CovarianceModel::getParameters
 OT_CovarianceModel_getParameters_doc
+%feature("docstring") OT::CovarianceModel::getSpatialCorrelation
+OT_CovarianceModel_getSpatialCorrelation_doc
+%feature("docstring") OT::CovarianceModel::getSpatialDimension
+OT_CovarianceModel_getSpatialDimension_doc
 %feature("docstring") OT::CovarianceModel::isDiagonal
 OT_CovarianceModel_isDiagonal_doc
 %feature("docstring") OT::CovarianceModel::isStationary
 OT_CovarianceModel_isStationary_doc
 %feature("docstring") OT::CovarianceModel::partialGradient
 OT_CovarianceModel_partialGradient_doc
+%feature("docstring") OT::CovarianceModel::setAmplitude
+OT_CovarianceModel_setAmplitude_doc
+%feature("docstring") OT::CovarianceModel::setScale
+OT_CovarianceModel_setScale_doc
 %feature("docstring") OT::CovarianceModel::setParameters
 OT_CovarianceModel_setParameters_doc
+%feature("docstring") OT::CovarianceModel::setSpatialCorrelation
+OT_CovarianceModel_setSpatialCorrelation_doc
