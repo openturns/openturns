@@ -486,7 +486,6 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample &
                                                          const HMatrixParameters & parameters) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  const UnsignedInteger size(vertices.getSize());
   HMatrixFactory hmatrixFactory;
   const NumericalScalar assemblyEpsilon = parameters.getAssemblyEpsilon();
   const NumericalScalar recompressionEpsilon = parameters.getRecompressionEpsilon();
