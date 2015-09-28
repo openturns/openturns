@@ -26,6 +26,7 @@
 #include "OTprivate.hxx"
 #include "AtomicFunctions.hxx"
 #include "TTY.hxx"
+#include "MutexLock.hxx"
 
 
 #define LOGDEBUG(st)   do { if (OT::Log::HasDebug()  ) OT::Log::Debug(st);   } while(0)
@@ -67,12 +68,12 @@ public:
   typedef unsigned long Severity;
 
 private:
-  static Log & GetInstance();
-  static void Initialization();
-  static void Release();
+#ifndef SWIG
+  /** GetInstance gives a locked access to the singleton */
+  static MutexLockSingleton<Log> GetInstance();
+#endif
 
 public:
-
   /** Those flags should be ORed */
   static const Severity DBG;
   static const Severity WRAPPER;
@@ -246,8 +247,6 @@ struct OT_API Log_init
   Log_init();
   ~Log_init();
 }; /* end struct Log_init */
-
-static Log_init __Log_initializer;
 
 
 END_NAMESPACE_OPENTURNS

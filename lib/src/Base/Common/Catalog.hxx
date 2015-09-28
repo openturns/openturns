@@ -22,7 +22,9 @@
 #define OPENTURNS_CATALOG_HXX
 
 #include <map>         // for std::map
+#include <vector>
 #include "OTprivate.hxx"
+#include "MutexLock.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,17 +46,11 @@ class PersistentObjectFactory;
 
 class OT_API Catalog
 {
-private:
-
-  /** These methods allocate and free storage */
-  static void Release();
-  static void Initialize();
-
-
 public:
-
+#ifndef SWIG
   /** Return the catalog as a singleton */
-  static Catalog & GetInstance();
+  static MutexLockSingleton<Catalog> GetInstance();
+#endif
 
   /** Return the catalog as a singleton */
   static void Add(const String & factoryName, const PersistentObjectFactory * p_factory);
@@ -62,6 +58,8 @@ public:
   /** Get the factory by name */
   static const PersistentObjectFactory & Get(const String & factoryName);
 
+  /** Get the list of keys */
+  static std::vector<String> GetKeys();
 
   /** Destructor */
   ~Catalog();
@@ -85,6 +83,9 @@ private:
   /** Get the factory by name */
   const PersistentObjectFactory & get(const String & factoryName) const;
 
+  /** Get the list of keys */
+  std::vector<String> getKeys() const;
+
   friend struct Catalog_init; /* friendship for static member initialization */
 }; /* end class Catalog */
 
@@ -94,8 +95,6 @@ struct OT_API Catalog_init
   Catalog_init();
   ~Catalog_init();
 }; /* end struct Catalog_init */
-
-static Catalog_init __Catalog_initializer;
 
 
 

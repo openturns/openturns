@@ -32,27 +32,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/** Forward declaration */
-class ResourceMap;
-
-class OT_API ResourceMapInstance
-{
-  ResourceMap & rm_;
-  MutexLock lock_;
-
-public:
-  ResourceMapInstance( ResourceMap & rm ) throw();
-  ResourceMapInstance( const ResourceMapInstance & other );
-
-  /** @copydoc Object::__repr__() const */
-  String __repr__() const;
-
-#ifndef SWIG
-  ResourceMap & lock() throw();
-  const ResourceMap & lock() const throw();
-#endif
-}; // end class ResourceMapInstance
-
 /**
  * @class ResourceMap
  * @brief Defines a catalog containing all default values used by OpenTURNS
@@ -65,13 +44,11 @@ public:
 class OT_API ResourceMap
 {
 public:
-  /** Since ResourceMap is a singleton, GetInstance gives access to the object */
-  static ResourceMapInstance GetInstance();
-private:
-  static void Release();
-  static void Initialize();
+#ifndef SWIG
+  /** GetInstance gives a locked access to the singleton */
+  static MutexLockSingleton<ResourceMap> GetInstance();
+#endif
 
-public:
   /** Get a value in the map */
   static String Get(String key);
   static Bool GetAsBool(String key);
@@ -185,7 +162,6 @@ struct OT_API ResourceMap_init
   ResourceMap_init();
   ~ResourceMap_init();
 };
-static ResourceMap_init __ResourceMap_initializer;
 
 /**
  * @fn std::ostream & operator <<(std::ostream & os, const ResourceMap & obj)
@@ -197,9 +173,9 @@ static ResourceMap_init __ResourceMap_initializer;
  * Operator << converts the ResourceMap object to an output stream
  * so it is easy to show the content of the resourceMap.
  */
-OT_API std::ostream & operator <<(std::ostream & os, const ResourceMapInstance & obj);
 #ifndef SWIG
-OT_API OStream & operator <<(OStream & OS, const ResourceMapInstance & obj);
+OT_API std::ostream & operator <<(std::ostream & os, const MutexLockSingleton<ResourceMap> & obj);
+OT_API OStream & operator <<(OStream & OS, const MutexLockSingleton<ResourceMap> & obj);
 #endif
 
 

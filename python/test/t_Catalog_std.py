@@ -5,10 +5,7 @@ from openturns import *
 
 TESTPREAMBLE()
 
-try:
-    catalog = Catalog.GetInstance()
-    print(catalog)
-
-except:
-    import sys
-    print("t_Catalog_std.py", sys.exc_info()[0], sys.exc_info()[1])
+print("Catalog={")
+for key in Catalog.GetKeys():
+    print("  %s," % key)
+print("}")

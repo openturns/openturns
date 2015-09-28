@@ -69,7 +69,33 @@ public:
 
 }; /* class MutexLock */
 
-END_NAMESPACE_OPENTURNS
+template<class T>
+class MutexLockSingleton
+{
+  T & singleton_;
+  MutexLock lock_;
 
+public:
+  // Default constructor, defined by client classes
+  MutexLockSingleton( T & singleton ) throw();
+  // Default copy-constructor
+  MutexLockSingleton( const MutexLockSingleton<T> & other ) : singleton_(other.singleton_), lock_(other.lock_) {}
+
+private:
+  // Disable copy-assignment
+  MutexLockSingleton& operator=( const MutexLockSingleton<T> & other );
+
+public:
+  /** @copydoc Object::__repr__() const */
+  String __repr__() const { return singleton_.__repr__(); }
+
+#ifndef SWIG
+  T & lock() throw() { return singleton_; }
+  const T & lock() const throw() { return singleton_; }
+#endif
+
+}; /* class MutexLockSingleton */
+
+END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_MUTEXLOCK_HXX */

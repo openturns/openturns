@@ -25,7 +25,7 @@
 #include "OSS.hxx"
 #include "ResourceMap.hxx"
 #include "Exception.hxx"
-//#include "Path.hxx"
+#include "Path.hxx"
 #include "XMLToolbox.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,120 +38,71 @@ static const char * XMLTag_value = "value";
 
 static pthread_mutex_t ResourceMap_InstanceMutex_;
 static ResourceMap * ResourceMap_P_instance_ = 0;
+static const ResourceMap_init static_initializer_ResourceMap;
 
 ResourceMap_init::ResourceMap_init()
 {
-  static pthread_once_t ResourceMap_InstanceMutex_once = PTHREAD_ONCE_INIT;
-  int rc = pthread_once( &ResourceMap_InstanceMutex_once, ResourceMap::Initialize );
-  if (rc != 0)
+  if (!ResourceMap_P_instance_)
   {
-    perror("ResourceMap_init::ResourceMap_init once Initialization failed");
-    exit(1);
+#ifndef OT_MUTEXINIT_NOCHECK
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init( &attr );
+    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
+    pthread_mutex_init( &ResourceMap_InstanceMutex_, &attr );
+#else
+    pthread_mutex_init( &ResourceMap_InstanceMutex_, NULL );
+#endif
+    ResourceMap_P_instance_ = new ResourceMap;
   }
+  assert(ResourceMap_P_instance_);
 }
 
 ResourceMap_init::~ResourceMap_init()
 {
-  ResourceMap::Release();
-}
-
-
-
-ResourceMapInstance::ResourceMapInstance( ResourceMap & rm )  throw() : rm_(rm), lock_(ResourceMap_InstanceMutex_) {}
-ResourceMapInstance::ResourceMapInstance( const ResourceMapInstance & other ) : rm_(other.rm_), lock_(other.lock_) {}
-String ResourceMapInstance::__repr__() const
-{
-  return rm_.__repr__();
-}
-
-ResourceMap & ResourceMapInstance::lock() throw()
-{
-  return rm_;
-}
-
-const ResourceMap & ResourceMapInstance::lock() const throw()
-{
-  return rm_;
-}
-
-
-
-
-/* Since ResourceMap is a singleton, GetInstance gives access to the object */
-ResourceMapInstance ResourceMap::GetInstance()
-{
-#ifdef BOGUS_PTHREAD_LIBRARY
-  if (!ResourceMap_P_instance_)
-  {
-    ResourceMap_P_instance_ = new ResourceMap;
-    assert(ResourceMap_P_instance_);
-  }
-#endif
-  return *ResourceMap_P_instance_;
-}
-
-void ResourceMap::Initialize()
-{
-#ifndef OT_MUTEXINIT_NOCHECK
-  pthread_mutexattr_t attr;
-  pthread_mutexattr_init( &attr );
-  //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
-  //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
-  pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
-  int rc = pthread_mutex_init( &ResourceMap_InstanceMutex_, &attr );
-  if (rc != 0)
-  {
-    perror("ResourceMap::Initialize mutex initialization failed");
-    exit(1);
-  }
-#else
-  pthread_mutex_init( &ResourceMap_InstanceMutex_, NULL );
-#endif
-#ifdef BOGUS_PTHREAD_LIBRARY
-  ResourceMap_P_instance_ = 0;
-#else
-  ResourceMap_P_instance_ = new ResourceMap;
-  assert(ResourceMap_P_instance_);
-#endif
-}
-
-
-
-void ResourceMap::Release()
-{
   delete ResourceMap_P_instance_;
   ResourceMap_P_instance_ = 0;
+  pthread_mutex_destroy( &ResourceMap_InstanceMutex_ );
+}
+
+
+template<>
+MutexLockSingleton<ResourceMap>::MutexLockSingleton( ResourceMap & singleton )  throw()
+  : singleton_(singleton)
+  , lock_(ResourceMap_InstanceMutex_) {}
+
+
+/* GetInstance gives a locked access to the singleton */
+MutexLockSingleton<ResourceMap> ResourceMap::GetInstance()
+{
+  static const ResourceMap_init force_instantiation;
+  // ResourceMap_InstanceMutex_ is always initialized
+  return *ResourceMap_P_instance_;
 }
 
 /* Get the list of keys */
 std::vector<String> ResourceMap::GetKeys()
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   return GetInstance().lock().getKeys();
 }
 
 /* Get a value in the map */
 String ResourceMap::Get(String key)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   return GetInstance().lock().get( key );
 }
 
 Bool ResourceMap::GetAsBool(String key)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   return GetInstance().lock().getAsBool( key );
 }
 
 UnsignedInteger ResourceMap::GetAsUnsignedInteger(String key)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   return GetInstance().lock().getAsUnsignedInteger( key );
 }
 
 NumericalScalar ResourceMap::GetAsNumericalScalar(String key)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   return GetInstance().lock().getAsNumericalScalar( key );
 }
 
@@ -164,25 +115,21 @@ UnsignedInteger ResourceMap::GetSize()
 /* Set a value in the map */
 void ResourceMap::Set(String key, String value)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   GetInstance().lock().set( key, value );
 }
 
 void ResourceMap::SetAsBool(String key, Bool value)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   GetInstance().lock().setAsBool( key, value );
 }
 
 void ResourceMap::SetAsUnsignedInteger(String key, UnsignedInteger value)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   GetInstance().lock().setAsUnsignedInteger( key, value );
 }
 
 void ResourceMap::SetAsNumericalScalar(String key, NumericalScalar value)
 {
-  //MutexLock lock( ResourceMap_InstanceMutex_ );
   GetInstance().lock().setAsNumericalScalar( key, value );
 }
 
@@ -901,12 +848,12 @@ std::vector<String> ResourceMap::getKeys() const
  * Operator << converts the ResourceMap object to an output stream
  * so it is easy to show the content of the resourceMap.
  */
-std::ostream & operator <<(std::ostream & os, const ResourceMapInstance & obj)
+std::ostream & operator <<(std::ostream & os, const MutexLockSingleton<ResourceMap> & obj)
 {
   return os << obj.lock().__repr__();
 }
 
-OStream & operator <<(OStream & OS, const ResourceMapInstance & obj)
+OStream & operator <<(OStream & OS, const MutexLockSingleton<ResourceMap> & obj)
 {
   return OS << obj.lock().__repr__();
 }

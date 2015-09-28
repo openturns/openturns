@@ -29,23 +29,10 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  try
-  {
+  // Create a ResourceMap Object
+  fullprint << ResourceMap::GetInstance() << std::endl;
 
-    // Create a ResourceMap Object
-    fullprint << ResourceMap::GetInstance() << std::endl;
-
-    fullprint << "Extract from ResourceMap : R-executable-command -> " << ResourceMap::Get("R-executable-command") << std::endl;
-
-  }
-  catch (FileOpenException & ex)
-  {
-    std::cerr << ex << std::endl;
-    return ExitCode::Error;
-  }
-
-
-
+  fullprint << "Extract from ResourceMap : R-executable-command -> " << ResourceMap::Get("R-executable-command") << std::endl;
 
   return ExitCode::Success;
 }

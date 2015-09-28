@@ -52,22 +52,12 @@ public:
    */
   static Id BuildId();
 
-
 private:
-
-  /** Default constructor */
+  /** Disable default constructors */
   IdFactory();
-
-  friend struct IdFactory_init;
+  IdFactory(const IdFactory& other);
+  IdFactory & operator=(const IdFactory& other);
 }; /* class IdFactory */
-
-/** This struct initializes all static members of IdFactory */
-struct OT_API IdFactory_init
-{
-  IdFactory_init();
-}; /* end struct IdFactory_init */
-
-static IdFactory_init __IdFactory_initializer;
 
 END_NAMESPACE_OPENTURNS
 

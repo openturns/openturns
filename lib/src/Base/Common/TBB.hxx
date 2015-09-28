@@ -24,7 +24,6 @@
 #include <algorithm>
 #include "OTprivate.hxx"
 #include "OTconfig.hxx"
-#include "ResourceMap.hxx" // ensures correct static initialization order
 
 #ifdef OPENTURNS_HAVE_TBB
 #ifdef OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
@@ -124,16 +123,6 @@ public:
     BlockedRange(const tbb::blocked_range<T> & range) : tbb::blocked_range<T>(range) {}
   };
 
-private:
-
-  /** Start the machinery of multithreading */
-  static void Initialization();
-
-  /** End the machinery of multithreading */
-  static void Release();
-
-public:
-
   template <typename BODY>
   static inline
   void ParallelFor( UnsignedInteger from, UnsignedInteger to, const BODY & body, std::size_t gs = 1 )
@@ -168,8 +157,6 @@ struct OT_API TBB_init
   TBB_init();
   ~TBB_init();
 }; /* end class TBB_init */
-
-static TBB_init __TBB_initializer;
 
 END_NAMESPACE_OPENTURNS
 

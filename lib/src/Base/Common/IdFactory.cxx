@@ -27,41 +27,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
-static pthread_once_t IdFactory_InstanceMutex_once = PTHREAD_ONCE_INIT;
-static AtomicInt IdFactory_NextId_;
-
-
-static void IdFactory_Initialization()
-{
-  // Nothing to do
-}
-
-
-IdFactory_init::IdFactory_init()
-{
-  int rc = pthread_once( &IdFactory_InstanceMutex_once, IdFactory_Initialization );
-  if (rc != 0)
-  {
-    perror("IdFactory_init::IdFactory_init once Initialization failed");
-    exit(1);
-  }
-}
-
-
-/* Default constructor */
-IdFactory::IdFactory()
-{
-  // Nothing to do
-}
-
-
 /* Id accessor */
 Id IdFactory::BuildId()
 {
-  return IdFactory_NextId_.fetchAndAdd( 1 );
+  static AtomicInt IdFactory_NextId;
+  return IdFactory_NextId.fetchAndAdd( 1 );
 }
-
-
 
 END_NAMESPACE_OPENTURNS
