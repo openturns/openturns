@@ -72,7 +72,7 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
     const NumericalScalar x(sample[i][0]);
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
-    if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample made of nonnegative integers, here x=" << x;
+    if (!(std::abs(x - iX) <= supportEpsilon) || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample made of nonnegative integers, here x=" << x;
     // Update the upper bound
     if (iX > static_cast<const int>(upperBound)) upperBound = iX;
     var = i * var / (i + 1.0) + (1.0 - 1.0 / (i + 1.0)) * (mean - x) * (mean - x) / (i + 1.0);
