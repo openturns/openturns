@@ -51,8 +51,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
-    PlatformInfo::SetNumericalPrecision(3);
+    PlatformInfo::SetNumericalPrecision(4);
 
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 6);
 
@@ -84,14 +83,17 @@ int main(int argc, char *argv[])
     Indices levels(spatialDimension, 1);
     Box box(levels);
     const NumericalSample vertices = box.generate();
-    const NumericalScalar nuggetFactor(0.0);
+    const NumericalScalar nuggetFactor = ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor");
     const HMatrixParameters parameters;
 
     fullprint << "Discretization on a grid of vertices" << std::endl;
     fullprint << "Discretization of myModel1 = " << hmatrix__str__(myModel1.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
     fullprint << "Discretization of myModel2 = " << hmatrix__str__(myModel2.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
 
-    PlatformInfo::SetNumericalPrecision(precision);
+    // Evaluation of the Cholesky factor
+    fullprint << "Discretization & factorization on a grid of vertices" << std::endl;
+    fullprint << "Discretization & factorization of myModel1 = " <<  hmatrix__str__(myModel1.discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
+    fullprint << "Discretization  & factorizationof myModel2 = " <<  hmatrix__str__(myModel2.discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
 
   }
   catch (TestFailed & ex)
