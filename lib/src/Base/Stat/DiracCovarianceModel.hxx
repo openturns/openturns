@@ -66,6 +66,8 @@ public:
   NumericalSample discretizeRow(const NumericalSample & vertices,
                                 const UnsignedInteger p) const;
 
+  using StationaryCovarianceModel::discretizeAndFactorize;
+  TriangularMatrix discretizeAndFactorize(const NumericalSample & vertices) const;
   // discretize with use of HMatrix
   using StationaryCovarianceModel::discretizeHMatrix;
   HMatrix discretizeHMatrix(const NumericalSample & vertices,
@@ -103,7 +105,9 @@ public:
 
 protected:
   friend class DiracCovarianceModelDiscretizePolicy;
+  friend class DiracCovarianceModelDiscretizeAndFactorizePolicy;
   CovarianceMatrix covariance_;
+  TriangularMatrix covarianceFactor_;
   void computeCovariance();
 
 } ; /* class DiracCovarianceModel */
