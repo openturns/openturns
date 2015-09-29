@@ -268,6 +268,28 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) co
   return discretize(mesh.getVertices());
 }
 
+/** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
+TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const RegularGrid & timeGrid) const
+{
+  return discretizeAndFactorize(timeGrid.getVertices());
+}
+
+TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Mesh & mesh) const
+{
+  return discretizeAndFactorize(mesh.getVertices());
+}
+
+TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const NumericalSample & vertices) const
+{
+  // We suppose that covariance matrix is symmetric positive definite
+  // We do not catch InternalException
+  // Incremeant nugget factor to make matrix positive definite
+  CovarianceMatrix covariance = discretize(vertices);
+  TriangularMatrix choleskyFactor = covariance.computeCholesky();
+  return choleskyFactor;
+}
+
+
 struct CovarianceModelScalarDiscretizeRowPolicy
 {
   const NumericalSample & input_;
@@ -344,8 +366,7 @@ NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSamp
   return result;
 }
 
-  /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
-
+/** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const RegularGrid & timeGrid,
                                                          const NumericalScalar nuggetFactor,
                                                          const HMatrixParameters & parameters) const
@@ -389,6 +410,33 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample &
 #endif
 }
 
+/** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
+HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
+                                                                     const NumericalScalar nuggetFactor,
+                                                                     const HMatrixParameters & parameters) const
+{
+  return discretizeAndFactorizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
+}
+
+HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Mesh & mesh,
+                                                                     const NumericalScalar nuggetFactor,
+                                                                     const HMatrixParameters & parameters) const
+{
+  return discretizeAndFactorizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
+}
+
+HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
+                                                                     const NumericalScalar nuggetFactor,
+                                                                     const HMatrixParameters & parameters) const
+{
+  // We suppose that covariance matrix is symmetric positive definite
+  // We do not catch InternalException
+  // Incremeant nugget factor to make matrix positive definite
+  // Maybe parameters need to be adapted.
+  HMatrix covarianceFactor = discretizeHMatrix(vertices, nuggetFactor, parameters);
+  covarianceFactor.factorize("LLt");
+  return covarianceFactor;
+}
 
 /* Amplitude accessor */
 NumericalPoint CovarianceModelImplementation::getAmplitude() const
