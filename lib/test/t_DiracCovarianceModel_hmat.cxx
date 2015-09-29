@@ -91,6 +91,12 @@ int main(int argc, char *argv[])
     fullprint << "Discretization of myModel1 = " << hmatrix__str__(myModel1.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
     fullprint << "Discretization of myModel2 = " << hmatrix__str__(myModel2.discretizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
 
+
+    // Evaluation of the Cholesky factor
+    fullprint << "Discretization & factorization on a grid of vertices" << std::endl;
+    fullprint << "Discretization & factorization of myModel1 = " <<  hmatrix__str__(myModel1.discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
+    fullprint << "Discretization  & factorizationof myModel2 = " <<  hmatrix__str__(myModel2.discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters)) << std::endl;
+
     PlatformInfo::SetNumericalPrecision(precision);
 
   }

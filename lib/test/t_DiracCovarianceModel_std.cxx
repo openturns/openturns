@@ -82,6 +82,10 @@ int main(int argc, char *argv[])
     fullprint << "Discretization of myModel1 = " << myModel1.discretize(vertices).__str__() << std::endl;
     fullprint << "Discretization of myModel2 = " << myModel2.discretize(vertices).__str__() << std::endl;
 
+    // Evaluation of the Cholesky factor
+    fullprint << "Discretization & factorization on a grid of vertices" << std::endl;
+    fullprint << "Discretization & factorization of myModel1 = " << myModel1.discretizeAndFactorize(vertices).__str__() << std::endl;
+    fullprint << "Discretization  & factorizationof myModel2 = " << myModel2.discretizeAndFactorize(vertices).__str__() << std::endl;
 
     PlatformInfo::SetNumericalPrecision(precision);
 
