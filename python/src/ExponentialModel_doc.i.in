@@ -19,7 +19,7 @@ scale : sequence of float
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Correlation matrix :math:`C^{stat} \in \mathcal{M}_{d \times d}([-1, 1])`.
+    Covariance matrix :math:`C^{stat} \in \mathcal{M}_{+}^{*}(\Rset^d)`.
 
 Notes
 -----

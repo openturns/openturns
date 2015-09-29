@@ -121,6 +121,20 @@ OT_CovarianceModel_discretize_doc
 %feature("docstring") OT::CovarianceModelImplementation::discretizeRow
 OT_CovarianceModel_discretizeRow_doc
 
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getAmplitude_doc
+"Get the amplitude parameter of the covariance function.
+
+Returns
+-------
+amplitude : :class:`~openturns.NumericalPoint`
+    The amplitude parameter used in the covariance function."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getAmplitde
+OT_CovarianceModel_getAmplitude_doc
+
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getDimension_doc
@@ -147,6 +161,46 @@ parameters : :class:`~openturns.NumericalPointWithDescription`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getParameters
 OT_CovarianceModel_getParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getScale_doc
+"Get the scale parameter of the covariance function.
+
+Returns
+-------
+scale : :class:`~openturns.NumericalPoint`
+    The scale parameter used in the covariance function."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getScale
+OT_CovarianceModel_getScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getSpatialCorrelation_doc
+"Get the spatial correlation matrix of the covariance function.
+
+Returns
+-------
+spatialCorrelation : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{dimension \times dimension}([-1, 1])`."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getSpatialCorrelation
+OT_CovarianceModel_getSpatialCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getSpatialDimension_doc
+"Get the spatial dimension of the covariance function.
+
+Returns
+-------
+spatialDimension : int
+    SpatialDimension of the *CovarianceModel*."
+
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getSpatialDimension
+OT_CovarianceModel_getSpatialDimension_doc
 
 // ---------------------------------------------------------------------
 
@@ -205,6 +259,33 @@ OT_CovarianceModel_partialGradient_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_setAmplitude_doc
+"Set the amplitude parameter of the covariance function.
+
+Parameters
+----------
+amplitude : :class:`~openturns.NumericalPoint`
+    The amplitude parameter to be used in the covariance function."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::setAmplitde
+OT_CovarianceModel_setAmplitude_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_setScale_doc
+"Set the scale parameter of the covariance function.
+
+Parameters
+----------
+scale : :class:`~openturns.NumericalPoint`
+    The scale parameter to be used in the covariance function.
+    It should be of size dimension."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::setScale
+OT_CovarianceModel_setScale_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_setParameters_doc
 "Set the parameters of the covariance function.
 
@@ -217,3 +298,17 @@ parameters : :class:`~openturns.NumericalPointWithDescription`
 %feature("docstring") OT::CovarianceModelImplementation::setParameters
 OT_CovarianceModel_setParameters_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_setSpatialCorrelation_doc
+"Set the spatial correlation matrix of the covariance function.
+
+Parameters
+----------
+spatialCorrelation : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{dimension \times dimension}([-1, 1])`."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::setSpatialCorrelation
+OT_CovarianceModel_setSpatialCorrelation_doc
+
+// ---------------------------------------------------------------------
