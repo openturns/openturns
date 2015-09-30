@@ -1,4 +1,4 @@
-%feature("docstring") OT::OptimizationSolverImplementationResult
+%feature("docstring") OT::OptimizationResult
 "Optimization result.
 
 Returned by optimization solvers, see :class:`~openturns.OptimizationSolver`.
@@ -22,7 +22,7 @@ constraintError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getAbsoluteError
+%feature("docstring") OT::OptimizationResult::getAbsoluteError
 "Accessor to the absolute error.
 
 Returns
@@ -32,7 +32,7 @@ absoluteError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getConstraintError
+%feature("docstring") OT::OptimizationResult::getConstraintError
 "Accessor to the constraint error.
 
 Returns
@@ -42,7 +42,7 @@ constraintError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getIterationsNumber
+%feature("docstring") OT::OptimizationResult::getIterationsNumber
 "Accessor to the number of evaluations.
 
 Returns
@@ -52,7 +52,7 @@ iterationsNumber : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getRelativeError
+%feature("docstring") OT::OptimizationResult::getRelativeError
 "Accessor to the relative error.
 
 Returns
@@ -62,7 +62,7 @@ relativeError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getResidualError
+%feature("docstring") OT::OptimizationResult::getResidualError
 "Accessor to the residual error.
 
 Returns
@@ -72,7 +72,7 @@ residualError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getOptimalPoint
+%feature("docstring") OT::OptimizationResult::getOptimalPoint
 "Accessor to the optimal point.
 
 Returns
@@ -82,7 +82,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getOptimalValue
+%feature("docstring") OT::OptimizationResult::getOptimalValue
 "Accessor to the optimal value.
 
 Returns
@@ -92,7 +92,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getInputSample
+%feature("docstring") OT::OptimizationResult::getInputSample
 "Accessor to the input sample.
 
 Returns
@@ -102,7 +102,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::getOutputSample
+%feature("docstring") OT::OptimizationResult::getOutputSample
 "Accessor to the output sample.
 
 Returns
@@ -112,7 +112,7 @@ outputSample : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationSolverImplementationResult::drawErrorHistory
+%feature("docstring") OT::OptimizationResult::drawErrorHistory
 "Draw the convergence criteria history.
 
 Returns

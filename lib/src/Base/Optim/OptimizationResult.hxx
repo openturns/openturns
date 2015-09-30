@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementationResult implements the result of an algorithm for solving an optimization problem
+ *  @brief OptimizationResult implements the result of an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATIONRESULT_HXX
-#define OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATIONRESULT_HXX
+#ifndef OPENTURNS_OPTIMIZATIONRESULT_HXX
+#define OPENTURNS_OPTIMIZATIONRESULT_HXX
 
 #include "OTprivate.hxx"
 #include "PersistentObject.hxx"
@@ -30,10 +30,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class OptimizationSolverImplementationResult
- * OptimizationSolverImplementationResult stores the optimization result
+ * @class OptimizationResult
+ * OptimizationResult stores the optimization result
  */
-class OT_API OptimizationSolverImplementationResult
+class OT_API OptimizationResult
   : public PersistentObject
 {
   CLASSNAME;
@@ -42,11 +42,11 @@ public:
 
 
   /** Default constructor */
-  OptimizationSolverImplementationResult();
+  OptimizationResult();
 
 
   /** Standard constructor */
-  OptimizationSolverImplementationResult(const NumericalPoint & optimalPoint,
+  OptimizationResult(const NumericalPoint & optimalPoint,
       const NumericalPoint & optimalValue,
       const UnsignedInteger iterationsNumber,
       const NumericalScalar absoluteError,
@@ -55,7 +55,7 @@ public:
       const NumericalScalar constraintError);
 
   /** Virtual constructor */
-  virtual OptimizationSolverImplementationResult * clone() const;
+  virtual OptimizationResult * clone() const;
 
   /** OptimalPoint accessors */
   NumericalPoint getOptimalPoint() const;
@@ -153,9 +153,9 @@ private:
   Compact inputHistory_;
   Compact outputHistory_;
 
-}; // class OptimizationSolverImplementationResult
+}; // class OptimizationResult
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATIONRESULT_HXX */
+#endif /* OPENTURNS_OPTIMIZATIONRESULT_HXX */

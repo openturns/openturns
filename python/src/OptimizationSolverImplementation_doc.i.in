@@ -136,7 +136,7 @@ OT_OptimizationSolver_getProblem_doc
 
 Returns
 -------
-result : :class:`~openturns.OptimizationSolverImplementationResult`
+result : :class:`~openturns.OptimizationResult`
     Result class."
 
 %enddef
@@ -265,7 +265,7 @@ OT_OptimizationSolver_setProblem_doc
 
 Parameters
 ----------
-result : :class:`~openturns.OptimizationSolverImplementationResult`
+result : :class:`~openturns.OptimizationResult`
     Result class."
 
 %enddef

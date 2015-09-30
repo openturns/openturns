@@ -29,7 +29,7 @@
 #include "Graph.hxx"
 #include "Description.hxx"
 #include "ResourceMap.hxx"
-#include "OptimizationSolverImplementationResult.hxx"
+#include "OptimizationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,8 +96,8 @@ public:
   Sensitivity getHasoferReliabilityIndexSensitivity() const;
 
   /** Optimization result accessors */
-  OptimizationSolverImplementationResult getOptimizationResult() const;
-  void setOptimizationResult(const OptimizationSolverImplementationResult & optimizationResult);
+  OptimizationResult getOptimizationResult() const;
+  void setOptimizationResult(const OptimizationResult & optimizationResult);
 
   /** HasoferReliabilityIndexSensitivitygraph */
   GraphCollection drawHasoferReliabilityIndexSensitivity(NumericalScalar width = ResourceMap::GetAsNumericalScalar( "AnalyticalResult-DefaultWidth" )) const;
@@ -167,7 +167,7 @@ private:
   mutable Bool isAlreadyComputedPhysicalImportanceFactors_;
   mutable Bool isAlreadyComputedHasoferReliabilityIndexSensitivity_;
   mutable Bool isAlreadyComputedMeanPointInStandardEventDomain_;
-  OptimizationSolverImplementationResult optimizationResult_;
+  OptimizationResult optimizationResult_;
 }; // class AnalyticalResult
 END_NAMESPACE_OPENTURNS
 

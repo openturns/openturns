@@ -15,7 +15,7 @@ Generic optimization classes
     OptimizationProblemImplementation
     OptimizationSolver
     OptimizationSolverImplementation
-    OptimizationSolverImplementationResult
+    OptimizationResult
 
 Optimization solvers
 ====================

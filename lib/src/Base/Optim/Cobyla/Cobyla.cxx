@@ -114,7 +114,7 @@ void Cobyla::run()
   NumericalScalar constraintError = -1.0;
 
   // clear result
-  setResult(OptimizationSolverImplementationResult(x, NumericalPoint(1,f), 0, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(x, NumericalPoint(1,f), 0, absoluteError, relativeError, residualError, constraintError));
 
   // initialize history
   evaluationInputHistory_ = NumericalSample(0, dimension);

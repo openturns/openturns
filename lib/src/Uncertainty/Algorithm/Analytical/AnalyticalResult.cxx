@@ -461,12 +461,12 @@ AnalyticalResult::Sensitivity AnalyticalResult::getHasoferReliabilityIndexSensit
 }
 
 /* Optimization result accessors */
-OptimizationSolverImplementationResult AnalyticalResult::getOptimizationResult() const
+OptimizationResult AnalyticalResult::getOptimizationResult() const
 {
   return optimizationResult_;
 }
 
-void AnalyticalResult::setOptimizationResult(const OptimizationSolverImplementationResult & optimizationResult)
+void AnalyticalResult::setOptimizationResult(const OptimizationResult & optimizationResult)
 {
   optimizationResult_ = optimizationResult;
 }

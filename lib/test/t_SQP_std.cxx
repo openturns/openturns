@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     mySQPAlgorithm.setStartingPoint(startingPoint);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
-    OptimizationSolverImplementationResult result(mySQPAlgorithm.getResult());
+    OptimizationResult result(mySQPAlgorithm.getResult());
     fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;

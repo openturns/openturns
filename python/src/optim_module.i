@@ -41,7 +41,7 @@
 /* Base/Optim */
 %include OptimizationProblemImplementation.i
 %include OptimizationProblem.i
-%include OptimizationSolverImplementationResult.i
+%include OptimizationResult.i
 %include OptimizationSolverImplementation.i
 %include OptimizationSolver.i
 %include NearestPointCheckerResult.i

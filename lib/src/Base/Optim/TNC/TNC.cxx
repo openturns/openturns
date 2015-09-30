@@ -148,7 +148,7 @@ void TNC::run()
   NumericalScalar constraintError = -1.0;
 
   // clear result
-  setResult(OptimizationSolverImplementationResult(x, NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(x, NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
 
   // clear history
   evaluationInputHistory_ = NumericalSample(0.0, dimension);
@@ -236,7 +236,7 @@ void TNC::run()
   }
 
   /* Store the result */
-  setResult(OptimizationSolverImplementationResult(x, sign*NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(x, sign*NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
 
   // check the convergence criteria
   Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));

@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    OptimizationSolverImplementationResult result(myAlgorithm.getResult());
+    OptimizationResult result(myAlgorithm.getResult());
     fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
