@@ -1,1 +1,2 @@
 Remove Deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
+Remove deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes

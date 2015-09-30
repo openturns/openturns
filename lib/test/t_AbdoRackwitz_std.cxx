@@ -57,9 +57,8 @@ int main(int argc, char *argv[])
       NonCenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
       /** Substitute the gradient */
       levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
-      AbdoRackwitzSpecificParameters specific;
       NumericalPoint startingPoint(4, 0.0);
-      AbdoRackwitz myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+      AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, 3.0));
       myAlgorithm.setStartingPoint(startingPoint);
       fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
       myAlgorithm.run();
@@ -88,9 +87,8 @@ int main(int argc, char *argv[])
     fullprint << "myGradient=" << myGradient << std::endl;
     /** Substitute the gradient */
     levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
-    AbdoRackwitzSpecificParameters specific;
     NumericalPoint startingPoint(4, 0.0);
-    AbdoRackwitz myAlgorithm(specific, OptimizationProblem(levelFunction, -0.5));
+    AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, -0.5));
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();

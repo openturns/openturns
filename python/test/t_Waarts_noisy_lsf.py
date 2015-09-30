@@ -133,9 +133,7 @@ try:
     #
     # FORM/SORM Cobyla
     myCobyla = Cobyla()
-    parameters = CobylaSpecificParameters()
     parameters.setRhoBeg(0.1)
-    myCobyla.setSpecificParameters(parameters)
     myCobyla.setMaximumIterationsNumber(1000 * dim)
     myCobyla.setMaximumAbsoluteError(1.0e-4)
     myCobyla.setMaximumRelativeError(1.0e-4)
@@ -151,8 +149,6 @@ try:
     #
     # FORM/SORM Abdo Rackwitz
     myAbdoRackwitz = AbdoRackwitz()
-    parameters = AbdoRackwitzSpecificParameters()
-    myAbdoRackwitz.setSpecificParameters(parameters)
     myAbdoRackwitz.setMaximumIterationsNumber(1000 * dim)
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-6)
     myAbdoRackwitz.setMaximumRelativeError(1.0e-6)

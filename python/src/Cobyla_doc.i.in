@@ -4,14 +4,14 @@
 Available constructors:
     Cobyla(*problem*)
 
-    Cobyla(*specificParameters, problem*)
+    Cobyla(*problem, rhoBeg*)
 
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
-specificParameters : :class:`~openturns.CobylaSpecificParameters`
-    Parameters for this solver.
+rhoBeg : float
+    A reasonable initial change to the variables.
 
 Notes
 -----
@@ -29,3 +29,23 @@ Examples
 >>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
 >>> problem = ot.OptimizationProblem(model, 5.0)
 >>> algo = ot.Cobyla(problem)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Cobyla::getRhoBeg
+"Accessor to rhoBeg parameter.
+
+Returns
+-------
+rhoBeg : float
+    A reasonable initial change to the variables."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Cobyla::setRhoBeg
+"Accessor to rhoBeg parameter.
+
+Parameters
+----------
+rhoBeg : float
+    A reasonable initial change to the variables."

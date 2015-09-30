@@ -37,15 +37,32 @@ CLASSNAMEINIT(SQP);
 static const Factory<SQP> RegisteredFactory;
 
 /* Default constructor */
-SQP::SQP():
-  OptimizationSolverImplementation()
+SQP::SQP()
+  : OptimizationSolverImplementation()
+  , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
+  , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
 {
   initialize();
 }
 
 SQP::SQP(const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
-  , specificParameters_()
+  , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
+  , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
+{
+  initialize();
+}
+
+SQP::SQP (const OptimizationProblem & problem,
+          const NumericalScalar tau,
+          const NumericalScalar omega,
+          const NumericalScalar smooth)
+  : OptimizationSolverImplementation(problem)
+  , tau_(tau)
+  , omega_(omega)
+  , smooth_(smooth)
 {
   initialize();
 }
@@ -57,9 +74,9 @@ SQP::SQP(const OptimizationProblem & problem)
 SQP::SQP(const SQPSpecificParameters & specificParameters,
          const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
-  , specificParameters_(specificParameters)
 {
   initialize();
+  setSpecificParameters(specificParameters);
 }
 
 /* Virtual constructor */
@@ -89,21 +106,17 @@ void SQP::initialize()
 /* Line search for globalization of the algorithm */
 NumericalScalar SQP::computeLineSearch()
 {
-  /* Local copy of line search parameters */
-  const NumericalScalar tau(specificParameters_.getTau());
-  const NumericalScalar omega(specificParameters_.getOmega());
-  const NumericalScalar smooth(specificParameters_.getSmooth());
   /* Local copy of the level function and the level value */
   const NumericalMathFunction levelFunction(getLevelFunction());
   const NumericalScalar levelValue(getLevelValue());
   /* Actualize sigma */
-  currentSigma_ = std::max(currentSigma_ + 1.0, smooth * currentPoint_.norm() / currentGradient_.norm());
+  currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
   NumericalScalar currentTheta(0.5 * currentPoint_.normSquare() + currentSigma_ * fabs(currentLevelValue_ - levelValue));
   /* Min bound for step */
   const NumericalScalar minStep(getMaximumAbsoluteError() / currentDirection_.norm());
   /* Minimum decrease for the penalized objective function */
-  const NumericalScalar levelIncrement(omega * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_));
+  const NumericalScalar levelIncrement(omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_));
   /* Initialization of the line search */
   /* We start with step=1 */
   NumericalScalar step(1.0);
@@ -118,7 +131,7 @@ NumericalScalar SQP::computeLineSearch()
 
     currentStepTheta = 0.5 * currentStepPoint.normSquare() + currentSigma_ * fabs(currentStepLevelValue - levelValue);
     if (getVerbose()) LOGINFO(OSS() << "line search step=" << step << " currentStepPoint=" << currentStepPoint << " currentStepLevelValue=" << currentStepLevelValue << " currentStepTheta=" << currentStepTheta);
-    step *= tau;
+    step *= tau_;
   }
 
   while ((step >= minStep) && ( currentStepTheta > currentTheta + step * levelIncrement));
@@ -128,7 +141,7 @@ NumericalScalar SQP::computeLineSearch()
   currentLevelValue_ = currentStepLevelValue;
 
   /* We went one step beyond */
-  return step / tau;
+  return step / tau_;
 }
 
 
@@ -254,16 +267,53 @@ void SQP::run()
   }
 } // run()
 
+/* Tau accessor */
+NumericalScalar SQP::getTau() const
+{
+  return tau_;
+}
+
+void SQP::setTau(const NumericalScalar tau)
+{
+  tau_ = tau;
+}
+
+/* Omega accessor */
+NumericalScalar SQP::getOmega() const
+{
+  return omega_;
+}
+
+void SQP::setOmega(const NumericalScalar omega)
+{
+  omega_ = omega;
+}
+
+/* Smooth accessor */
+NumericalScalar SQP::getSmooth() const
+{
+  return smooth_;
+}
+
+void SQP::setSmooth(const NumericalScalar smooth)
+{
+  smooth_ = smooth;
+}
+
 /* Specific parameters accessor */
 SQPSpecificParameters SQP::getSpecificParameters() const
 {
-  return specificParameters_;
+  Log::Info(OSS() << "SQP::getSpecificParameters is deprecated.");
+  return SQPSpecificParameters(tau_, omega_, smooth_);
 }
 
 /* Specific parameters accessor */
 void SQP::setSpecificParameters(const SQPSpecificParameters & specificParameters)
 {
-  specificParameters_ = specificParameters;
+  Log::Info(OSS() << "SQP::setSpecificParameters is deprecated.");
+  tau_ = specificParameters.getTau();
+  omega_ = specificParameters.getOmega();
+  smooth_ = specificParameters.getSmooth();
 }
 
 /* Level function accessor */
@@ -300,7 +350,9 @@ String SQP::__repr__() const
   OSS oss;
   oss << "class=" << SQP::GetClassName()
       << " " << OptimizationSolverImplementation::__repr__()
-      << " specificParameters=" << getSpecificParameters();
+      << " tau=" << tau_
+      << " omega=" << omega_
+      << " smooth=" << smooth_;
   return oss;
 }
 
@@ -308,7 +360,9 @@ String SQP::__repr__() const
 void SQP::save(Advocate & adv) const
 {
   OptimizationSolverImplementation::save(adv);
-  adv.saveAttribute("specificParameters_", specificParameters_);
+  adv.saveAttribute("tau_", tau_);
+  adv.saveAttribute("omega_", omega_);
+  adv.saveAttribute("smooth_", smooth_);
   adv.saveAttribute("currentSigma_", currentSigma_);
   adv.saveAttribute("currentPoint_", currentPoint_);
   adv.saveAttribute("currentDirection_", currentDirection_);
@@ -324,7 +378,9 @@ void SQP::save(Advocate & adv) const
 void SQP::load(Advocate & adv)
 {
   OptimizationSolverImplementation::load(adv);
-  adv.loadAttribute("specificParameters_", specificParameters_);
+  adv.loadAttribute("tau_", tau_);
+  adv.loadAttribute("omega_", omega_);
+  adv.loadAttribute("smooth_", smooth_);
   adv.loadAttribute("currentSigma_", currentSigma_);
   adv.loadAttribute("currentPoint_", currentPoint_);
   adv.loadAttribute("currentDirection_", currentDirection_);

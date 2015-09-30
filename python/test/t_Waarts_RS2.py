@@ -67,7 +67,6 @@ try:
     #
     # FORM/SORM Cobyla
     myCobyla = Cobyla()
-    myCobyla.setSpecificParameters(CobylaSpecificParameters())
     myCobyla.setMaximumIterationsNumber(1000 * dim)
     myCobyla.setMaximumAbsoluteError(1.0e-4)
     myCobyla.setMaximumRelativeError(1.0e-4)
@@ -86,7 +85,6 @@ try:
     #
     # FORM/SORM Abdo Rackwitz
     myAbdoRackwitz = AbdoRackwitz()
-    myAbdoRackwitz.setSpecificParameters(AbdoRackwitzSpecificParameters())
     myAbdoRackwitz.setMaximumIterationsNumber(1000)
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-4)
     myAbdoRackwitz.setMaximumRelativeError(1.0e-4)

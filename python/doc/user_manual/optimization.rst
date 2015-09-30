@@ -25,13 +25,9 @@ Optimization solvers
     :template: class.rst_t
 
     AbdoRackwitz
-    AbdoRackwitzSpecificParameters
     Cobyla
-    CobylaSpecificParameters
     SQP
-    SQPSpecificParameters
     TNC
-    TNCSpecificParameters
 
 Nearest point assessment
 ========================

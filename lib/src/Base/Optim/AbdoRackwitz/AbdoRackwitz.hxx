@@ -49,6 +49,12 @@ public:
   /** Constructor with parameters */
   explicit AbdoRackwitz(const OptimizationProblem & problem);
 
+  /** Constructor with parameters */
+  AbdoRackwitz(const OptimizationProblem & problem,
+               const NumericalScalar tau,
+               const NumericalScalar omega,
+               const NumericalScalar smooth);
+
   AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
                const OptimizationProblem & problem);
 
@@ -60,6 +66,18 @@ public:
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
+
+  /** Tau accessor */
+  NumericalScalar getTau() const;
+  void setTau(const NumericalScalar tau);
+
+  /** Omega accessor */
+  NumericalScalar getOmega() const;
+  void setOmega(const NumericalScalar tau);
+
+  /** Smooth accessor */
+  NumericalScalar getSmooth() const;
+  void setSmooth(const NumericalScalar tau);
 
   /** Specific parameters accessor */
   AbdoRackwitzSpecificParameters getSpecificParameters() const;
@@ -96,8 +114,14 @@ private:
   /** Initialize internal state */
   void initialize();
 
-  /** Abdo Rackwitz specific parameters */
-  AbdoRackwitzSpecificParameters specificParameters_;
+  /** Multiplicative decrease of linear step */
+  NumericalScalar tau_;
+
+  /** Armijo factor */
+  NumericalScalar omega_;
+
+  /** Growing factor in penalization term */
+  NumericalScalar smooth_;
 
   /** Abdo Rackwitz current penalization factor */
   NumericalScalar currentSigma_;

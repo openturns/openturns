@@ -15,6 +15,7 @@
  * Removed BoundConstrainedAlgorithm class
  * Removed NearestPointAlgorithm class
  * Deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
+ * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
 
 === Python module ===
 

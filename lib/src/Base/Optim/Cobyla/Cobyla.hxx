@@ -50,6 +50,10 @@ public:
   Cobyla(const CobylaSpecificParameters & specificParameters,
          const OptimizationProblem & problem);
 
+  /** Constructor with parameters */
+  Cobyla(const OptimizationProblem & problem,
+         const NumericalScalar rhoBeg);
+
   /** Virtual constructor */
   virtual Cobyla * clone() const;
 
@@ -58,6 +62,10 @@ public:
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
+
+  /** RhoBeg accessor */
+  NumericalScalar getRhoBeg() const;
+  void setRhoBeg(const NumericalScalar rhoBeg);
 
   /** Specific parameters accessor */
   CobylaSpecificParameters getSpecificParameters() const;
@@ -98,7 +106,8 @@ private:
       double *f,
       double *con,
       void *state);
-  CobylaSpecificParameters specificParameters_;
+
+  NumericalScalar rhoBeg_;
 
   /// temporary, used to track input/outputs
   NumericalSample evaluationInputHistory_;

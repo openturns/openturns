@@ -15,9 +15,8 @@ print("myGradient = ", repr(myGradient))
 # Substitute the gradient
 levelFunction.setGradient(
     ot.NonCenteredFiniteDifferenceGradient(myGradient))
-specific = ot.SQPSpecificParameters()
 startingPoint = ot.NumericalPoint(4, 0.0)
-algo = ot.SQP(specific, ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.SQP(ot.OptimizationProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()
@@ -37,9 +36,8 @@ myGradient = ot.NonCenteredFiniteDifferenceGradient(
 # Substitute the gradient
 levelFunction.setGradient(
     ot.NonCenteredFiniteDifferenceGradient(myGradient))
-specific = ot.SQPSpecificParameters()
 startingPoint = ot.NumericalPoint(4, 0.0)
-algo = ot.SQP(specific, ot.OptimizationProblem(levelFunction, -0.5))
+algo = ot.SQP(ot.OptimizationProblem(levelFunction, -0.5))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()

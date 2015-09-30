@@ -34,16 +34,16 @@ CLASSNAMEINIT(TNCSpecificParameters);
 static const Factory<TNCSpecificParameters> RegisteredFactory;
 
 /* Default with parameters */
-TNCSpecificParameters::TNCSpecificParameters():
-  PersistentObject(),
-  scale_(0),
-  offset_(0),
-  maxCGit_(ResourceMap::GetAsUnsignedInteger( "TNC-DefaultMaxCGit" )),
-  eta_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultEta" )),
-  stepmx_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultStepmx" )),
-  accuracy_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultAccuracy" )),
-  fmin_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultFmin" )),
-  rescale_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultRescale" ))
+TNCSpecificParameters::TNCSpecificParameters()
+  : PersistentObject()
+  , scale_(0)
+  , offset_(0)
+  , maxCGit_(ResourceMap::GetAsUnsignedInteger( "TNC-DefaultMaxCGit" ))
+  , eta_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultEta" ))
+  , stepmx_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultStepmx" ))
+  , accuracy_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultAccuracy" ))
+  , fmin_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultFmin" ))
+  , rescale_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultRescale" ))
 {
   // Nothing to do
 } /* SpecificParametersTNC */

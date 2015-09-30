@@ -24,9 +24,8 @@ def printNumericalPoint(point, digits):
 # linear
 levelFunction = ot.NumericalMathFunction(
     ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
-specific = ot.CobylaSpecificParameters()
 startingPoint = ot.NumericalPoint(4, 0.0)
-algo = ot.Cobyla(specific, ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.Cobyla(ot.OptimizationProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()
@@ -40,9 +39,8 @@ print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
 # non-linear
 levelFunction = ot.NumericalMathFunction(
     ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
-specific = ot.CobylaSpecificParameters()
 startingPoint = ot.NumericalPoint(4, 0.0)
-algo = ot.Cobyla(specific, ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.Cobyla(ot.OptimizationProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 algo.setMaximumIterationsNumber(400)
 algo.setMaximumAbsoluteError(1.0e-10)
@@ -71,8 +69,7 @@ for minimization in [True, False]:
 
     problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
     problem.setMinimization(minimization)
-    specific = ot.CobylaSpecificParameters()
-    algo = ot.Cobyla(specific, problem)
+    algo = ot.Cobyla(problem)
     algo.setMaximumIterationsNumber(150)
     algo.setStartingPoint(startingPoint)
     print('algo=', algo)

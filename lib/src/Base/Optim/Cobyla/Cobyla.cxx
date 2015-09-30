@@ -36,13 +36,22 @@ static const Factory<Cobyla> RegisteredFactory;
 /* Default constructor */
 Cobyla::Cobyla()
   : OptimizationSolverImplementation()
+  , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
 {
   // Nothing to do
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
-  , specificParameters_()
+  , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
+{
+  // Nothing to do
+}
+
+Cobyla::Cobyla(const OptimizationProblem & problem,
+               const NumericalScalar rhoBeg)
+  : OptimizationSolverImplementation(problem)
+  , rhoBeg_(rhoBeg)
 {
   // Nothing to do
 }
@@ -54,9 +63,8 @@ Cobyla::Cobyla(const OptimizationProblem & problem)
 Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
                const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
-  , specificParameters_(specificParameters)
 {
-  // Nothing to do
+  setSpecificParameters(specificParameters);
 }
 
 /* Virtual constructor */
@@ -96,7 +104,6 @@ void Cobyla::run()
   const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
   NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
 
-  NumericalScalar rhoBeg(specificParameters_.getRhoBeg());
   NumericalScalar rhoEnd(getMaximumAbsoluteError());
   int maxFun = getMaximumIterationsNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
@@ -132,7 +139,7 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = cobyla(n, m, &x[0], rhoBeg, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  int returnCode = cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
   // Update the result
   result_.update(x, maxFun);
@@ -164,16 +171,29 @@ void Cobyla::run()
   }
 }
 
+/* RhoBeg accessor */
+NumericalScalar Cobyla::getRhoBeg() const
+{
+  return rhoBeg_;
+}
+
+void Cobyla::setRhoBeg(const NumericalScalar rhoBeg)
+{
+  rhoBeg_ = rhoBeg;
+}
+
 /* Specific parameters accessor */
 CobylaSpecificParameters Cobyla::getSpecificParameters() const
 {
-  return specificParameters_;
+  Log::Info(OSS() << "Cobyla::getSpecificParameters is deprecated.");
+  return CobylaSpecificParameters(rhoBeg_);
 }
 
 /* Specific parameters accessor */
 void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificParameters)
 {
-  specificParameters_ = specificParameters;
+  Log::Info(OSS() << "Cobyla::setSpecificParameters is deprecated.");
+  rhoBeg_ = specificParameters.getRhoBeg();
 }
 
 /* Level function accessor */
@@ -210,7 +230,7 @@ String Cobyla::__repr__() const
   OSS oss;
   oss << "class=" << Cobyla::GetClassName()
       << " " << OptimizationSolverImplementation::__repr__()
-      << " specificParameters=" << getSpecificParameters();
+      << " rhoBeg=" << rhoBeg_;
   return oss;
 }
 
@@ -218,14 +238,14 @@ String Cobyla::__repr__() const
 void Cobyla::save(Advocate & adv) const
 {
   OptimizationSolverImplementation::save(adv);
-  adv.saveAttribute("specificParameters_", specificParameters_);
+  adv.saveAttribute("rhoBeg_", rhoBeg_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Cobyla::load(Advocate & adv)
 {
   OptimizationSolverImplementation::load(adv);
-  adv.loadAttribute("specificParameters_", specificParameters_);
+  adv.loadAttribute("rhoBeg_", rhoBeg_);
 }
 
 /*

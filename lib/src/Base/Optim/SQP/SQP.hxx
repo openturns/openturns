@@ -51,6 +51,12 @@ public:
   /** Constructor with parameters */
   explicit SQP(const OptimizationProblem & problem);
 
+  /** Constructor with parameters */
+  SQP(const OptimizationProblem & problem,
+      const NumericalScalar tau,
+      const NumericalScalar omega,
+      const NumericalScalar smooth);
+
   SQP(const SQPSpecificParameters & specificParameters,
       const OptimizationProblem & problem);
 
@@ -62,6 +68,18 @@ public:
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
+
+  /** Tau accessor */
+  NumericalScalar getTau() const;
+  void setTau(const NumericalScalar tau);
+
+  /** Omega accessor */
+  NumericalScalar getOmega() const;
+  void setOmega(const NumericalScalar tau);
+
+  /** Smooth accessor */
+  NumericalScalar getSmooth() const;
+  void setSmooth(const NumericalScalar tau);
 
   /** Specific parameters accessor */
   SQPSpecificParameters getSpecificParameters() const;
@@ -99,8 +117,14 @@ private:
   /** Initialize internal state */
   void initialize();
 
-  /** SQP specific parameters */
-  SQPSpecificParameters specificParameters_;
+  /** Multiplicative decrease of linear step */
+  NumericalScalar tau_;
+
+  /** Armijo factor */
+  NumericalScalar omega_;
+
+  /** Growing factor in penalization term */
+  NumericalScalar smooth_;
 
   /** SQP current penalization factor */
   NumericalScalar currentSigma_;

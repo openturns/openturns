@@ -57,7 +57,6 @@ try:
 
     # We create a NearestPoint algorithm
     myCobyla = Cobyla()
-    myCobyla.setSpecificParameters(CobylaSpecificParameters())
     myCobyla.setMaximumIterationsNumber(400)
     myCobyla.setMaximumAbsoluteError(1.0e-10)
     myCobyla.setMaximumRelativeError(1.0e-10)

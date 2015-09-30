@@ -38,27 +38,60 @@ static const Factory<TNC> RegisteredFactory;
 
 
 /* Default constructor */
-TNC::TNC():
-  OptimizationSolverImplementation()
+TNC::TNC()
+  : OptimizationSolverImplementation()
+  , maxCGit_(ResourceMap::GetAsUnsignedInteger("TNC-DefaultMaxCGit"))
+  , eta_(ResourceMap::GetAsNumericalScalar("TNC-DefaultEta"))
+  , stepmx_(ResourceMap::GetAsNumericalScalar("TNC-DefaultStepmx"))
+  , accuracy_(ResourceMap::GetAsNumericalScalar("TNC-DefaultAccuracy"))
+  , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
+  , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-TNC::TNC(const OptimizationProblem & problem) :
-  OptimizationSolverImplementation(problem),
-  specificParameters_()
+TNC::TNC(const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
+  , maxCGit_(ResourceMap::GetAsUnsignedInteger("TNC-DefaultMaxCGit"))
+  , eta_(ResourceMap::GetAsNumericalScalar("TNC-DefaultEta"))
+  , stepmx_(ResourceMap::GetAsNumericalScalar("TNC-DefaultStepmx"))
+  , accuracy_(ResourceMap::GetAsNumericalScalar("TNC-DefaultAccuracy"))
+  , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
+  , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
+{
+  // Nothing to do
+}
+
+/* Constructor with parameters */
+TNC::TNC (const OptimizationProblem & problem,
+          const NumericalPoint & scale,
+          const NumericalPoint & offset,
+          const UnsignedInteger maxCGit,
+          const NumericalScalar eta,
+          const NumericalScalar stepmx,
+          const NumericalScalar accuracy,
+          const NumericalScalar fmin,
+          const NumericalScalar rescale)
+  : OptimizationSolverImplementation(problem)
+  , scale_(scale)
+  , offset_(offset)
+  , maxCGit_(maxCGit)
+  , eta_(eta)
+  , stepmx_(stepmx)
+  , accuracy_(accuracy)
+  , fmin_(fmin)
+  , rescale_(rescale)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 TNC::TNC(const TNCSpecificParameters & parameters,
-	 const OptimizationProblem & problem) :
-  OptimizationSolverImplementation(problem),
-  specificParameters_(parameters)
+         const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
 {
-  // Nothing to do
+  setSpecificParameters(parameters);
 }
 
 /* Virtual constructor */
@@ -103,8 +136,8 @@ void TNC::run()
     x = 0.5 * (low + up);
   }
   tnc_message message((getVerbose() ? TNC_MSG_ALL : TNC_MSG_NONE));
-  NumericalPoint scale(specificParameters_.getScale());
-  NumericalPoint offset(specificParameters_.getOffset());
+  NumericalPoint scale(getScale());
+  NumericalPoint offset(getOffset());
   double *refScale = scale.getDimension() == 0 ? NULL : &scale[0];
   double *refOffset = offset.getDimension() == 0 ? NULL : &offset[0];
   int nfeval = 0;
@@ -175,8 +208,8 @@ void TNC::run()
    * On output, x, f and g may be very slightly out of sync because of scaling.
    *
    */
-  
-  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, specificParameters_.getMaxCGit(), getMaximumIterationsNumber(), specificParameters_.getEta(), specificParameters_.getStepmx(), specificParameters_.getAccuracy(), specificParameters_.getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), specificParameters_.getRescale(), &nfeval);
+
+  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumIterationsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
 
   UnsignedInteger size = evaluationInputHistory_.getSize();
   for (UnsignedInteger i = 1; i < size; ++ i)
@@ -218,16 +251,113 @@ void TNC::run()
   }
 }
 
+/* Scale accessor */
+NumericalPoint TNC::getScale() const
+{
+  return scale_;
+}
+
+void TNC::setScale(const NumericalPoint & scale)
+{
+  scale_ = scale;
+}
+
+/* Offset accessor */
+NumericalPoint TNC::getOffset() const
+{
+  return offset_;
+}
+
+void TNC::setOffset(const NumericalPoint & offset)
+{
+  offset_ = offset;
+}
+
+/* MaxCGit accessor */
+UnsignedInteger TNC::getMaxCGit() const
+{
+  return maxCGit_;
+}
+
+void TNC::setMaxCGit(const UnsignedInteger maxCGit)
+{
+  maxCGit_ = maxCGit;
+}
+
+/* Eta accessor */
+NumericalScalar TNC::getEta() const
+{
+  return eta_;
+}
+
+void TNC::setEta(const NumericalScalar eta)
+{
+  eta_ = eta;
+}
+
+/* Stepmx accessor */
+NumericalScalar TNC::getStepmx() const
+{
+  return stepmx_;
+}
+
+void TNC::setStepmx(const NumericalScalar stepmx)
+{
+  stepmx_ = stepmx;
+}
+
+/* Accuracy accessor */
+NumericalScalar TNC::getAccuracy() const
+{
+  return accuracy_;
+}
+
+void TNC::setAccuracy(const NumericalScalar accuracy)
+{
+  accuracy_ = accuracy;
+}
+
+/* Fmin accessor */
+NumericalScalar TNC::getFmin() const
+{
+  return fmin_;
+}
+
+void TNC::setFmin(const NumericalScalar fmin)
+{
+  fmin_ = fmin;
+}
+
+/* Rescale accessor */
+NumericalScalar TNC::getRescale() const
+{
+  return rescale_;
+}
+
+void TNC::setRescale(const NumericalScalar rescale)
+{
+  rescale_ = rescale;
+}
+
 /* Specific parameters accessor */
 TNCSpecificParameters TNC::getSpecificParameters() const
 {
-  return specificParameters_;
+  Log::Info(OSS() << "TNC::getSpecificParameters is deprecated.");
+  return TNCSpecificParameters(scale_, offset_, maxCGit_, eta_, stepmx_, accuracy_, fmin_, rescale_);
 }
 
 /* Specific parameters accessor */
 void TNC::setSpecificParameters(const TNCSpecificParameters & specificParameters)
 {
-  specificParameters_ = specificParameters;
+  Log::Info(OSS() << "TNC::setSpecificParameters is deprecated.");
+  scale_ = specificParameters.getScale();
+  offset_ = specificParameters.getOffset();
+  maxCGit_ = specificParameters.getMaxCGit();
+  eta_ = specificParameters.getEta();
+  stepmx_ = specificParameters.getStepmx();
+  accuracy_ = specificParameters.getAccuracy();
+  fmin_ = specificParameters.getFmin();
+  rescale_ = specificParameters.getRescale();
 }
 
 /* String converter */
@@ -236,7 +366,14 @@ String TNC::__repr__() const
   OSS oss;
   oss << "class=" << TNC::GetClassName()
       << " " << OptimizationSolverImplementation::__repr__()
-      << " specificParameters=" << getSpecificParameters();
+      << " scale=" << scale_
+      << " offset=" << offset_
+      << " maxCGit=" << maxCGit_
+      << " eta=" << eta_
+      << " stepmx=" << stepmx_
+      << " accuracy=" << accuracy_
+      << " fmin=" << fmin_
+      << " rescale=" << rescale_;
   return oss;
 }
 
@@ -244,14 +381,28 @@ String TNC::__repr__() const
 void TNC::save(Advocate & adv) const
 {
   OptimizationSolverImplementation::save(adv);
-  adv.saveAttribute("specificParameters_", specificParameters_);
+  adv.saveAttribute("scale_", scale_);
+  adv.saveAttribute("offset_", offset_);
+  adv.saveAttribute("maxCGit_", maxCGit_);
+  adv.saveAttribute("eta_", eta_);
+  adv.saveAttribute("stepmx_", stepmx_);
+  adv.saveAttribute("accuracy_", accuracy_);
+  adv.saveAttribute("fmin_", fmin_);
+  adv.saveAttribute("rescale_", rescale_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void TNC::load(Advocate & adv)
 {
   OptimizationSolverImplementation::load(adv);
-  adv.loadAttribute("specificParameters_", specificParameters_);
+  adv.loadAttribute("scale_", scale_);
+  adv.loadAttribute("offset_", offset_);
+  adv.loadAttribute("maxCGit_", maxCGit_);
+  adv.loadAttribute("eta_", eta_);
+  adv.loadAttribute("stepmx_", stepmx_);
+  adv.loadAttribute("accuracy_", accuracy_);
+  adv.loadAttribute("fmin_", fmin_);
+  adv.loadAttribute("rescale_", rescale_);
 }
 
 /*

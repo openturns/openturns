@@ -44,15 +44,13 @@ public:
   CobylaSpecificParameters();
 
   /** Parameters constructor */
-  CobylaSpecificParameters(const NumericalScalar rhoBeg);
+  explicit CobylaSpecificParameters(const NumericalScalar rhoBeg);
 
   /** Virtual constructor */
   virtual CobylaSpecificParameters * clone() const;
 
   /** RhoBeg accessor */
   NumericalScalar getRhoBeg() const;
-
-  /** RhoBeg accessor */
   void setRhoBeg(const NumericalScalar rhoBeg);
 
   /** String converter */

@@ -80,9 +80,8 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     NumericalMathFunction levelFunction(input, Description(1, "d"), Description(1, "x1+2*x2-3*x3+4*x4"));
-    AbdoRackwitzSpecificParameters specific;
     NumericalPoint startingPoint(4, 1.0);
-    AbdoRackwitz myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+    AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setMaximumIterationsNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
