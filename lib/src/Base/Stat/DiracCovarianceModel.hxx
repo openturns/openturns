@@ -106,8 +106,8 @@ public:
 protected:
   friend class DiracCovarianceModelDiscretizePolicy;
   friend class DiracCovarianceModelDiscretizeAndFactorizePolicy;
-  CovarianceMatrix covariance_;
-  TriangularMatrix covarianceFactor_;
+  mutable CovarianceMatrix covariance_;
+  mutable TriangularMatrix covarianceFactor_;
   void computeCovariance();
 
 } ; /* class DiracCovarianceModel */

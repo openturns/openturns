@@ -113,7 +113,7 @@ void DiracCovarianceModel::computeCovariance()
   // Method that helps to compute covariance_ attribut (for tau=0)
   // after setAmplitude, setSpatialCorrelation
   covariance_ = CovarianceMatrix(dimension_);
-  for(UnsignedInteger j = 0; j < dimension_; ++j) covariance_(j, j) = amplitude_[j]* amplitude_[j];
+  for(UnsignedInteger j = 0; j < dimension_; ++j) covariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor_);
   if (!spatialCorrelation_.isDiagonal())
   {
     for(UnsignedInteger j = 0; j < dimension_; ++j)
@@ -274,8 +274,15 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const NumericalSample & vertices
   // Set assembly & recompression epsilon
   covarianceHMatrix.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
   covarianceHMatrix.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+  // Update covariance matrix
+  // Take into account nuggetFactor
+  CovarianceMatrix oldCovariance(covariance_);
+  for(UnsignedInteger j = 0; j < dimension_; ++j) covariance_(j, j) = amplitude_[j]* amplitude_[j] * (1.0 + nuggetFactor);
+  // Compute the covariance
   DiracAssemblyFunction dirac(*this);
   covarianceHMatrix.assemble(dirac, 'L');
+  // Restore old covariance
+  covariance_ = CovarianceMatrix(oldCovariance);
   return covarianceHMatrix;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
