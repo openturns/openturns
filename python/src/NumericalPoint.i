@@ -28,7 +28,7 @@
 %template(NumericalPointPersistentCollection)  OT::PersistentCollection<OT::NumericalPoint>;
 
 
-#define OT_TYPECHECK_NUMERICALPOINT 5
+#define OT_TYPECHECK_NUMERICALPOINT 4
 
 %typemap(in) const NumericalPoint & ($1_basetype temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0)))
