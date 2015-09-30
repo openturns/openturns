@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   {
 
     UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
-    PlatformInfo::SetNumericalPrecision(3);
+    PlatformInfo::SetNumericalPrecision(4);
 
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 6);
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     Indices levels(spatialDimension, 1);
     Box box(levels);
     const NumericalSample vertices = box.generate();
-    const NumericalScalar nuggetFactor(0.0);
+    const NumericalScalar nuggetFactor = ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor");
     const HMatrixParameters parameters;
 
     fullprint << "Discretization on a grid of vertices" << std::endl;

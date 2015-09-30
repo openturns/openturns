@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
 
     UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
-    PlatformInfo::SetNumericalPrecision(3);
+    PlatformInfo::SetNumericalPrecision(4);
 
     // Spatial dimension
     const UnsignedInteger spatialDimension = 2;
