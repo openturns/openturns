@@ -65,9 +65,6 @@ public:
   /** Virtual constructor */
   virtual TNC * clone() const;
 
-  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  void checkProblem(const OptimizationProblem & problem) const;
-
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
 
@@ -117,6 +114,10 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
+
+protected:
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  void checkProblem(const OptimizationProblem & problem) const;
 
 private:
 

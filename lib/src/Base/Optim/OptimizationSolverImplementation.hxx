@@ -49,9 +49,6 @@ public:
   /** Virtual constructor */
   virtual OptimizationSolverImplementation * clone() const;
 
-  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
-
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
 
@@ -115,6 +112,9 @@ public:
   void setVerbose(const Bool verbose);
 
 protected:
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  virtual void checkProblem(const OptimizationProblem & problem) const;
+
   OptimizationResult result_;
 
 private:
