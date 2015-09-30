@@ -12,9 +12,7 @@ Generic optimization classes
     :template: class.rst_t
 
     OptimizationProblem
-    OptimizationProblemImplementation
     OptimizationSolver
-    OptimizationSolverImplementation
     OptimizationResult
 
 Optimization solvers
