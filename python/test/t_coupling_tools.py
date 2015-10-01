@@ -558,7 +558,9 @@ def check_execute():
     # ensure previous print is print before following command output
     sys.stdout.flush()
 
-    if 'win' not in sys.platform:
+    # Care with -darwin systems
+
+    if ('darwin' in sys.platform) or ('win' not in sys.platform):
         coupling_tools.execute('/bin/ls /bin/kill')
         coupling_tools.execute('echo "hi"', is_shell=True)
         coupling_tools.execute('echo "hi"', is_shell=True,
