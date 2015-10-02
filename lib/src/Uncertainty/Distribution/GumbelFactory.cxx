@@ -61,7 +61,7 @@ Gumbel GumbelFactory::buildAsGumbel(const NumericalSample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mu(sample.computeMean()[0]);
   NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only if sigma >= 0, here sigma=" << sigma;
+  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only if sigma > 0, here sigma=" << sigma;
   Gumbel result(mu, sigma, Gumbel::MUSIGMA);
   result.setDescription(sample.getDescription());
   return result;
