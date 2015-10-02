@@ -68,13 +68,13 @@ void OptimizationSolverImplementation::setStartingPoint(const NumericalPoint & s
 }
 
 /* Result accessor */
-OptimizationSolverImplementation::Result OptimizationSolverImplementation::getResult() const
+OptimizationResult OptimizationSolverImplementation::getResult() const
 {
   return result_;
 }
 
 /* Result accessor */
-void OptimizationSolverImplementation::setResult(const Result & result)
+void OptimizationSolverImplementation::setResult(const OptimizationResult & result)
 {
   result_ = result;
 }

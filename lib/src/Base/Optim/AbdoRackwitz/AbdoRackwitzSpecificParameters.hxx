@@ -51,20 +51,14 @@ public:
 
   /** Tau accessor */
   NumericalScalar getTau() const;
-
-  /** Tau accessor */
   void setTau(const NumericalScalar tau);
 
   /** Omega accessor */
   NumericalScalar getOmega() const;
-
-  /** Omega accessor */
   void setOmega(const NumericalScalar tau);
 
   /** Smooth accessor */
   NumericalScalar getSmooth() const;
-
-  /** Smooth accessor */
   void setSmooth(const NumericalScalar tau);
 
   /** String converter */
@@ -86,10 +80,6 @@ private:
 
   /* Growing factor in penalization term */
   NumericalScalar smooth_;
-
-  /* Value of the c parameter */
-  NumericalScalar gamma_;
-
 
 }; /* class AbdoRackwitzSpecificParameters */
 

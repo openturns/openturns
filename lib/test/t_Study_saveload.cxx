@@ -351,7 +351,6 @@ int main(int argc, char *argv[])
     abdoRackwitz.setMaximumRelativeError(1.0e-10);
     abdoRackwitz.setMaximumResidualError(1.0e-10);
     abdoRackwitz.setMaximumConstraintError(1.0e-10);
-    abdoRackwitz.setSpecificParameters(AbdoRackwitzSpecificParameters());
     study.add("abdoRackwitz", abdoRackwitz);
 
     // Create a SQP algorithm

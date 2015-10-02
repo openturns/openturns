@@ -14,9 +14,9 @@ verbose : bool
 Notes
 -----
 
-Class :class:`~openturns.OptimizationSolverImplementation` is an abstract class, which has several implementations.
+Class :class:`~openturns.OptimizationSolver` is an abstract class, which has several implementations.
 The default implementation is :class:`~openturns.Cobyla`, but there are also
-:class:`~openturns.Abdorackwitz`, :class:`~openturns.SQP` and :class:`~openturns.TNC`.
+:class:`~openturns.AbdoRackwitz`, :class:`~openturns.SQP` and :class:`~openturns.TNC`.
 
 Examples
 --------
@@ -136,7 +136,7 @@ OT_OptimizationSolver_getProblem_doc
 
 Returns
 -------
-result : :class:`~openturns.OptimizationSolverImplementationResult`
+result : :class:`~openturns.OptimizationResult`
     Result class."
 
 %enddef
@@ -265,7 +265,7 @@ OT_OptimizationSolver_setProblem_doc
 
 Parameters
 ----------
-result : :class:`~openturns.OptimizationSolverImplementationResult`
+result : :class:`~openturns.OptimizationResult`
     Result class."
 
 %enddef

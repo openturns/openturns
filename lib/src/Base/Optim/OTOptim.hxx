@@ -29,7 +29,7 @@
 #include "OptimizationProblemImplementation.hxx"
 #include "OptimizationSolver.hxx"
 #include "OptimizationSolverImplementation.hxx"
-#include "OptimizationSolverImplementationResult.hxx"
+#include "OptimizationResult.hxx"
 #include "OTAbdoRackwitz.hxx"
 #include "OTCobyla.hxx"
 #include "OTSQP.hxx"

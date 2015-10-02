@@ -56,9 +56,8 @@ int main(int argc, char *argv[])
       NonCenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
       /** Substitute the gradient */
       levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
-      SQPSpecificParameters specific;
       NumericalPoint startingPoint(4, 0.0);
-      SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+      SQP mySQPAlgorithm(OptimizationProblem(levelFunction, 3.0));
       mySQPAlgorithm.setStartingPoint(startingPoint);
       fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
       mySQPAlgorithm.run();
@@ -89,13 +88,12 @@ int main(int argc, char *argv[])
     CenteredFiniteDifferenceHessian myHessian(1e-3, levelFunction.getEvaluation());
     /** Substitute the hessian */
     levelFunction.setHessian(new CenteredFiniteDifferenceHessian(myHessian));
-    SQPSpecificParameters specific;
     NumericalPoint startingPoint(4, 0.0);
-    SQP mySQPAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+    SQP mySQPAlgorithm(OptimizationProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
-    OptimizationSolverImplementationResult result(mySQPAlgorithm.getResult());
+    OptimizationResult result(mySQPAlgorithm.getResult());
     fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;

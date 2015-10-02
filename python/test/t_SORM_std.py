@@ -58,7 +58,6 @@ try:
 
     # We create a NearestPoint algorithm
     myAbdoRackwitz = AbdoRackwitz()
-    myAbdoRackwitz.setSpecificParameters(AbdoRackwitzSpecificParameters())
     myAbdoRackwitz.setMaximumIterationsNumber(100)
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10)
     myAbdoRackwitz.setMaximumRelativeError(1.0e-10)

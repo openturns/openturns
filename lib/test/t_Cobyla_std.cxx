@@ -52,9 +52,8 @@ int main(int argc, char *argv[])
       input[2] = "x3";
       input[3] = "x4";
       NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
-      CobylaSpecificParameters specific;
       NumericalPoint startingPoint(4, 0.0);
-      Cobyla myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+      Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
       myAlgorithm.setStartingPoint(startingPoint);
       fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
       myAlgorithm.run();
@@ -74,9 +73,8 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
-    CobylaSpecificParameters specific;
     NumericalPoint startingPoint(4, 0.0);
-    Cobyla myAlgorithm(specific, OptimizationProblem(levelFunction, 3.0));
+    Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setMaximumIterationsNumber(400);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
@@ -85,7 +83,7 @@ int main(int argc, char *argv[])
     myAlgorithm.setMaximumConstraintError(1.0e-10);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    OptimizationSolverImplementationResult result(myAlgorithm.getResult());
+    OptimizationResult result(myAlgorithm.getResult());
     fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     //FIXME:fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;

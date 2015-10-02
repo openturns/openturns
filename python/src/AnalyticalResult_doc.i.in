@@ -137,7 +137,7 @@ factors : :class:`~openturns.NumericalPointWithDescription`
 
 Returns
 -------
-result : :class:`~openturns.OptimizationSolverImplementationResult`
+result : :class:`~openturns.OptimizationResult`
     Contains the design point in the standard space and information concerning
     the convergence of the optimization algorithm."
 
@@ -148,7 +148,7 @@ result : :class:`~openturns.OptimizationSolverImplementationResult`
 
 Parameters
 ----------
-result : :class:`~openturns.OptimizationSolverImplementationResult`
+result : :class:`~openturns.OptimizationResult`
     Contains the design point in the standard space and information concerning
     the convergence of the optimization algorithm."
 

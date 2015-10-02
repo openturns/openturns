@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementationResult stores the result of a OptimizationSolverImplementation
+ *  @brief OptimizationResult stores the result of a OptimizationSolverImplementation
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OptimizationSolverImplementationResult.hxx"
+#include "OptimizationResult.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Curve.hxx"
 #include "SpecFunc.hxx"
@@ -27,12 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(OptimizationSolverImplementationResult);
+CLASSNAMEINIT(OptimizationResult);
 
-static const Factory<OptimizationSolverImplementationResult> RegisteredFactory;
+static const Factory<OptimizationResult> RegisteredFactory;
 
 /* Default constructor */
-OptimizationSolverImplementationResult::OptimizationSolverImplementationResult()
+OptimizationResult::OptimizationResult()
   : PersistentObject()
   , optimalPoint_(NumericalPoint(0))
   , optimalValue_(NumericalPoint(0))
@@ -52,7 +52,7 @@ OptimizationSolverImplementationResult::OptimizationSolverImplementationResult()
 }
 
 /* Standard constructor */
-OptimizationSolverImplementationResult::OptimizationSolverImplementationResult(const NumericalPoint & optimalPoint,
+OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
     const NumericalPoint &  optimalValue,
     const UnsignedInteger iterationsNumber,
     const NumericalScalar absoluteError,
@@ -78,127 +78,127 @@ OptimizationSolverImplementationResult::OptimizationSolverImplementationResult(c
 }
 
 /* Virtual constructor */
-OptimizationSolverImplementationResult * OptimizationSolverImplementationResult::clone() const
+OptimizationResult * OptimizationResult::clone() const
 {
-  return new OptimizationSolverImplementationResult(*this);
+  return new OptimizationResult(*this);
 }
 
 /* OptimalPoint accessors */
-NumericalPoint OptimizationSolverImplementationResult::getOptimalPoint() const
+NumericalPoint OptimizationResult::getOptimalPoint() const
 {
   return optimalPoint_;
 }
 
-void OptimizationSolverImplementationResult::setOptimalPoint(const NumericalPoint & optimalPoint)
+void OptimizationResult::setOptimalPoint(const NumericalPoint & optimalPoint)
 {
   optimalPoint_ = optimalPoint;
 }
 
 /* Optimal value accessors */
-NumericalPoint OptimizationSolverImplementationResult::getOptimalValue() const
+NumericalPoint OptimizationResult::getOptimalValue() const
 {
   return optimalValue_;
 }
 
-void OptimizationSolverImplementationResult::setOptimalValue(const NumericalPoint &  optimalValue)
+void OptimizationResult::setOptimalValue(const NumericalPoint &  optimalValue)
 {
   optimalValue_ = optimalValue;
 }
 
 /* Iterations number accessor */
-UnsignedInteger OptimizationSolverImplementationResult::getIterationsNumber() const
+UnsignedInteger OptimizationResult::getIterationsNumber() const
 {
   return iterationsNumber_;
 }
 
-void OptimizationSolverImplementationResult::setIterationsNumber(const UnsignedInteger iterationsNumber)
+void OptimizationResult::setIterationsNumber(const UnsignedInteger iterationsNumber)
 {
   iterationsNumber_ = iterationsNumber;
 }
 
 /* Absolute error accessor */
-NumericalScalar OptimizationSolverImplementationResult::getAbsoluteError() const
+NumericalScalar OptimizationResult::getAbsoluteError() const
 {
   return absoluteError_;
 }
 
-NumericalSample OptimizationSolverImplementationResult::getAbsoluteErrorHistory() const
+NumericalSample OptimizationResult::getAbsoluteErrorHistory() const
 {
   return absoluteErrorHistory_.getSample();
 }
 
 /* Absolute error accessor */
-void OptimizationSolverImplementationResult::setAbsoluteError(const NumericalScalar absoluteError)
+void OptimizationResult::setAbsoluteError(const NumericalScalar absoluteError)
 {
   absoluteError_ = absoluteError;
 }
 
 /* Relative error accessor */
-NumericalScalar OptimizationSolverImplementationResult::getRelativeError() const
+NumericalScalar OptimizationResult::getRelativeError() const
 {
   return relativeError_;
 }
 
-NumericalSample OptimizationSolverImplementationResult::getRelativeErrorHistory() const
+NumericalSample OptimizationResult::getRelativeErrorHistory() const
 {
   return relativeErrorHistory_.getSample();
 }
 
 /* Relative error accessor */
-void OptimizationSolverImplementationResult::setRelativeError(const NumericalScalar relativeError)
+void OptimizationResult::setRelativeError(const NumericalScalar relativeError)
 {
   relativeError_ = relativeError;
 }
 
 /* Residual error accessor */
-NumericalScalar OptimizationSolverImplementationResult::getResidualError() const
+NumericalScalar OptimizationResult::getResidualError() const
 {
   return residualError_;
 }
 
-NumericalSample OptimizationSolverImplementationResult::getResidualErrorHistory() const
+NumericalSample OptimizationResult::getResidualErrorHistory() const
 {
   return residualErrorHistory_.getSample();
 }
 
 /* Residual error accessor */
-void OptimizationSolverImplementationResult::setResidualError(const NumericalScalar residualError)
+void OptimizationResult::setResidualError(const NumericalScalar residualError)
 {
   residualError_ = residualError;
 }
 
 /* Constraint error accessor */
-NumericalScalar OptimizationSolverImplementationResult::getConstraintError() const
+NumericalScalar OptimizationResult::getConstraintError() const
 {
   return constraintError_;
 }
 
-NumericalSample OptimizationSolverImplementationResult::getConstraintErrorHistory() const
+NumericalSample OptimizationResult::getConstraintErrorHistory() const
 {
   return constraintErrorHistory_.getSample();
 }
 
 /* Constraint error accessor */
-void OptimizationSolverImplementationResult::setConstraintError(const NumericalScalar constraintError)
+void OptimizationResult::setConstraintError(const NumericalScalar constraintError)
 {
   constraintError_ = constraintError;
 }
 
-NumericalSample OptimizationSolverImplementationResult::getInputSample() const
+NumericalSample OptimizationResult::getInputSample() const
 {
   return inputHistory_.getSample();
 }
 
-NumericalSample OptimizationSolverImplementationResult::getOutputSample() const
+NumericalSample OptimizationResult::getOutputSample() const
 {
   return outputHistory_.getSample();
 }
 
 /* String converter */
-String OptimizationSolverImplementationResult::__repr__() const
+String OptimizationResult::__repr__() const
 {
   OSS oss;
-  oss << "class=" << OptimizationSolverImplementationResult::GetClassName()
+  oss << "class=" << OptimizationResult::GetClassName()
       << " optimal point=" << optimalPoint_
       << " optimal value="        << optimalValue_
       << " iterationsNumber=" << iterationsNumber_
@@ -210,7 +210,7 @@ String OptimizationSolverImplementationResult::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void OptimizationSolverImplementationResult::save(Advocate & adv) const
+void OptimizationResult::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "optimalPoint_", optimalPoint_ );
@@ -231,7 +231,7 @@ void OptimizationSolverImplementationResult::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void OptimizationSolverImplementationResult::load(Advocate & adv)
+void OptimizationResult::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "optimalPoint_", optimalPoint_ );
@@ -252,14 +252,14 @@ void OptimizationSolverImplementationResult::load(Advocate & adv)
 }
 
 /* Update current state */
-void OptimizationSolverImplementationResult::update(const NumericalPoint & OptimalPoint, UnsignedInteger iterationNumber)
+void OptimizationResult::update(const NumericalPoint & OptimalPoint, UnsignedInteger iterationNumber)
 {
   setOptimalPoint( OptimalPoint );
   setIterationsNumber( iterationNumber );
 }
 
 /* Incremental history storage */
-void OptimizationSolverImplementationResult::store(const NumericalPoint & x,
+void OptimizationResult::store(const NumericalPoint & x,
     const NumericalPoint & y,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
@@ -286,7 +286,7 @@ void OptimizationSolverImplementationResult::store(const NumericalPoint & x,
   outputHistory_.store(y);
 }
 
-Graph OptimizationSolverImplementationResult::drawErrorHistory() const
+Graph OptimizationResult::drawErrorHistory() const
 {
   Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);

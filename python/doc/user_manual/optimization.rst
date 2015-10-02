@@ -12,10 +12,8 @@ Generic optimization classes
     :template: class.rst_t
 
     OptimizationProblem
-    OptimizationProblemImplementation
     OptimizationSolver
-    OptimizationSolverImplementation
-    OptimizationSolverImplementationResult
+    OptimizationResult
 
 Optimization solvers
 ====================
@@ -25,13 +23,9 @@ Optimization solvers
     :template: class.rst_t
 
     AbdoRackwitz
-    AbdoRackwitzSpecificParameters
     Cobyla
-    CobylaSpecificParameters
     SQP
-    SQPSpecificParameters
     TNC
-    TNCSpecificParameters
 
 Nearest point assessment
 ========================

@@ -80,7 +80,6 @@ int main(int argc, char *argv[])
     myAbdoRackwitz.setMaximumRelativeError(1.0e-10);
     myAbdoRackwitz.setMaximumResidualError(1.0e-10);
     myAbdoRackwitz.setMaximumConstraintError(1.0e-10);
-    myAbdoRackwitz.setSpecificParameters(AbdoRackwitzSpecificParameters());
     fullprint << "myAbdoRackwitz=" << myAbdoRackwitz << std::endl;
 
     /* We create a SORM algorithm */

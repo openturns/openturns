@@ -33,13 +33,21 @@ static const Factory<AbdoRackwitz> RegisteredFactory;
 /* Default constructor */
 AbdoRackwitz::AbdoRackwitz()
   : OptimizationSolverImplementation()
+  , tau_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultTau"))
+  , omega_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
 {
   initialize();
 }
 
-AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
+AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
+                            const NumericalScalar tau,
+                            const NumericalScalar omega,
+                            const NumericalScalar smooth)
   : OptimizationSolverImplementation(problem)
-  , specificParameters_()
+  , tau_(tau)
+  , omega_(omega)
+  , smooth_(smooth)
 {
   initialize();
 }
@@ -51,10 +59,19 @@ AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
 AbdoRackwitz::AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
                            const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
-  , specificParameters_(specificParameters)
   , currentPoint_(getStartingPoint().getDimension())
   , currentDirection_(getStartingPoint().getDimension())
   , currentGradient_(getStartingPoint().getDimension())
+{
+  initialize();
+  setSpecificParameters(specificParameters);
+}
+
+AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
+  : OptimizationSolverImplementation(problem)
+  , tau_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultTau"))
+  , omega_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
 {
   initialize();
 }
@@ -86,21 +103,17 @@ void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 /* Line search for globalization of the algorithm */
 NumericalScalar AbdoRackwitz::computeLineSearch()
 {
-  /* Local copy of line search parameters */
-  const NumericalScalar tau(specificParameters_.getTau());
-  const NumericalScalar omega(specificParameters_.getOmega());
-  const NumericalScalar smooth(specificParameters_.getSmooth());
   /* Logal copy of the level function and the level value */
   const NumericalMathFunction levelFunction(getLevelFunction());
   const NumericalScalar levelValue(getLevelValue());
   /* Actualize sigma */
-  currentSigma_ = std::max(currentSigma_ + 1.0, smooth * currentPoint_.norm() / currentGradient_.norm());
+  currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
   const NumericalScalar currentTheta(0.5 * currentPoint_.normSquare() + currentSigma_ * fabs(currentLevelValue_ - levelValue));
   /* Min bound for step */
   const NumericalScalar minStep(getMaximumAbsoluteError() / currentDirection_.norm());
   /* Minimum decrease for the penalized objective function */
-  const NumericalScalar levelIncrement(omega * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_));
+  const NumericalScalar levelIncrement(omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_));
   /* Initialization of the line search */
   /* We start with step=1 */
   NumericalScalar step(1.0);
@@ -114,13 +127,13 @@ NumericalScalar AbdoRackwitz::computeLineSearch()
 
     currentStepTheta = 0.5 * currentStepPoint.normSquare() + currentSigma_ * fabs(currentStepLevelValue - levelValue);
     if (getVerbose()) LOGINFO(OSS() << "line search step=" << step << " currentStepPoint=" << currentStepPoint << " currentStepLevelValue=" << currentStepLevelValue << " currentStepTheta=" << currentStepTheta);
-    step *= tau;
+    step *= tau_;
   }
   while ((step >= minStep) && ( currentStepTheta > currentTheta + step * levelIncrement));
   currentPoint_ = currentStepPoint;
   currentLevelValue_ = currentStepLevelValue;
   /* We went one step beyond */
-  return step / tau;
+  return step / tau_;
 }
 
 
@@ -148,7 +161,7 @@ void AbdoRackwitz::run()
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
   // reset result
-  setResult(OptimizationSolverImplementationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError));
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationsNumber()) )
   {
@@ -204,16 +217,53 @@ void AbdoRackwitz::run()
 } // run()
 
 
+/* Tau accessor */
+NumericalScalar AbdoRackwitz::getTau() const
+{
+  return tau_;
+}
+
+void AbdoRackwitz::setTau(const NumericalScalar tau)
+{
+  tau_ = tau;
+}
+
+/* Omega accessor */
+NumericalScalar AbdoRackwitz::getOmega() const
+{
+  return omega_;
+}
+
+void AbdoRackwitz::setOmega(const NumericalScalar omega)
+{
+  omega_ = omega;
+}
+
+/* Smooth accessor */
+NumericalScalar AbdoRackwitz::getSmooth() const
+{
+  return smooth_;
+}
+
+void AbdoRackwitz::setSmooth(const NumericalScalar smooth)
+{
+  smooth_ = smooth;
+}
+
 /* Specific parameters accessor */
 AbdoRackwitzSpecificParameters AbdoRackwitz::getSpecificParameters() const
 {
-  return specificParameters_;
+  Log::Info(OSS() << "AbdoRackwitz::getSpecificParameters is deprecated.");
+  return AbdoRackwitzSpecificParameters(tau_, omega_, smooth_);
 }
 
 /* Specific parameters accessor */
 void AbdoRackwitz::setSpecificParameters(const AbdoRackwitzSpecificParameters & specificParameters)
 {
-  specificParameters_ = specificParameters;
+  Log::Info(OSS() << "AbdoRackwitz::setSpecificParameters is deprecated.");
+  tau_ = specificParameters.getTau();
+  omega_ = specificParameters.getOmega();
+  smooth_ = specificParameters.getSmooth();
 }
 
 /* Level function accessor */
@@ -250,7 +300,9 @@ String AbdoRackwitz::__repr__() const
   OSS oss;
   oss << "class=" << AbdoRackwitz::GetClassName()
       << " " << OptimizationSolverImplementation::__repr__()
-      << " specificParameters=" << getSpecificParameters();
+      << " tau=" << tau_
+      << " omega=" << omega_
+      << " smooth=" << smooth_;
   return oss;
 }
 
@@ -258,7 +310,9 @@ String AbdoRackwitz::__repr__() const
 void AbdoRackwitz::save(Advocate & adv) const
 {
   OptimizationSolverImplementation::save(adv);
-  adv.saveAttribute("specificParameters_", specificParameters_);
+  adv.saveAttribute("tau_", tau_);
+  adv.saveAttribute("omega_", omega_);
+  adv.saveAttribute("smooth_", smooth_);
   adv.saveAttribute("currentSigma_", currentSigma_);
   adv.saveAttribute("currentPoint_", currentPoint_);
   adv.saveAttribute("currentDirection_", currentDirection_);
@@ -271,7 +325,9 @@ void AbdoRackwitz::save(Advocate & adv) const
 void AbdoRackwitz::load(Advocate & adv)
 {
   OptimizationSolverImplementation::load(adv);
-  adv.loadAttribute("specificParameters_", specificParameters_);
+  adv.loadAttribute("tau_", tau_);
+  adv.loadAttribute("omega_", omega_);
+  adv.loadAttribute("smooth_", smooth_);
   adv.loadAttribute("currentSigma_", currentSigma_);
   adv.loadAttribute("currentPoint_", currentPoint_);
   adv.loadAttribute("currentDirection_", currentDirection_);

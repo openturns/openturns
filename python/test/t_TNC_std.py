@@ -6,7 +6,6 @@ import openturns as ot
 # linear
 levelFunction = ot.NumericalMathFunction(
     ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
-specific = ot.TNCSpecificParameters()
 startingPoint = ot.NumericalPoint(4, 0.0)
 bounds = ot.Interval(ot.NumericalPoint(4, -3.0), ot.NumericalPoint(4, 5.0))
 algo = ot.TNC()
@@ -39,7 +38,6 @@ print('result=', result)
 # non-linear
 levelFunction = ot.NumericalMathFunction(
         ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
-specific = ot.TNCSpecificParameters()
 startingPoint = ot.NumericalPoint(4, -0.01)
 
 startingPointNearMinimizationCorner = ot.NumericalPoint(4)

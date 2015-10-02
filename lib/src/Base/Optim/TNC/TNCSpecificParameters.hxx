@@ -47,7 +47,7 @@ public:
   /** Parameters constructor */
   TNCSpecificParameters(const NumericalPoint & scale,
                         const NumericalPoint & offset,
-                        const UnsignedInteger    maxCGit,
+                        const UnsignedInteger maxCGit,
                         const NumericalScalar eta,
                         const NumericalScalar stepmx,
                         const NumericalScalar accuracy,
@@ -99,9 +99,9 @@ public:
   void load(Advocate & adv);
 
 private:
-  NumericalPoint  scale_;
-  NumericalPoint  offset_;
-  UnsignedInteger    maxCGit_;
+  NumericalPoint scale_;
+  NumericalPoint offset_;
+  UnsignedInteger maxCGit_;
   NumericalScalar eta_;
   NumericalScalar stepmx_;
   NumericalScalar accuracy_;

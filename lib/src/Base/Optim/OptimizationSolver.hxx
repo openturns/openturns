@@ -41,7 +41,7 @@ class OT_API OptimizationSolver
 public:
 
   typedef Pointer<OptimizationSolverImplementation>   Implementation;
-  typedef OptimizationSolverImplementationResult              Result;
+  typedef OptimizationResult              Result;
 
   /** Default constructor */
   OptimizationSolver();

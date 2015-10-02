@@ -48,17 +48,57 @@ public:
   explicit TNC(const OptimizationProblem & problem);
 
   /** Constructor with parameters */
+  TNC(const OptimizationProblem & problem,
+      const NumericalPoint & scale,
+      const NumericalPoint & offset,
+      const UnsignedInteger maxCGit,
+      const NumericalScalar eta,
+      const NumericalScalar stepmx,
+      const NumericalScalar accuracy,
+      const NumericalScalar fmin,
+      const NumericalScalar rescale);
+
+  /** Constructor with parameters */
   TNC(const TNCSpecificParameters & parameters,
       const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual TNC * clone() const;
 
-  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  void checkProblem(const OptimizationProblem & problem) const;
-
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
+
+  /** Scale accessor */
+  NumericalPoint getScale() const;
+  void setScale(const NumericalPoint & scale);
+
+  /** Offset accessor */
+  NumericalPoint getOffset() const;
+  void setOffset(const NumericalPoint & offset);
+
+  /** MaxCGit accessor */
+  UnsignedInteger getMaxCGit() const;
+  void setMaxCGit(const UnsignedInteger maxCGit);
+
+  /** Eta accessor */
+  NumericalScalar getEta() const;
+  void setEta(const NumericalScalar eta);
+
+  /** Stepmx accessor */
+  NumericalScalar getStepmx() const;
+  void setStepmx(const NumericalScalar stepmx);
+
+  /** Accuracy accessor */
+  NumericalScalar getAccuracy() const;
+  void setAccuracy(const NumericalScalar accuracy);
+
+  /** Fmin accessor */
+  NumericalScalar getFmin() const;
+  void setFmin(const NumericalScalar fmin);
+
+  /** Rescale accessor */
+  NumericalScalar getRescale() const;
+  void setRescale(const NumericalScalar rescale);
 
   /** Specific parameters accessor */
   TNCSpecificParameters getSpecificParameters() const;
@@ -75,12 +115,24 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+protected:
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  void checkProblem(const OptimizationProblem & problem) const;
+
 private:
 
   /** Function that computes the objective function and its gradient */
   static int ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state);
 
-  TNCSpecificParameters specificParameters_;
+  /** Specific parameters */
+  NumericalPoint scale_;
+  NumericalPoint offset_;
+  UnsignedInteger maxCGit_;
+  NumericalScalar eta_;
+  NumericalScalar stepmx_;
+  NumericalScalar accuracy_;
+  NumericalScalar fmin_;
+  NumericalScalar rescale_;
 
   /// temporary, used to track input/outputs
   NumericalSample evaluationInputHistory_;

@@ -61,7 +61,6 @@ NumericalScalar CobylaSpecificParameters::getRhoBeg() const
   return rhoBeg_;
 }
 
-/* RhoBeg accessor */
 void CobylaSpecificParameters::setRhoBeg(const NumericalScalar rhoBeg)
 {
   rhoBeg_ = rhoBeg;

@@ -24,7 +24,7 @@
 #include "OTprivate.hxx"
 #include "PersistentObject.hxx"
 #include "OptimizationProblem.hxx"
-#include "OptimizationSolverImplementationResult.hxx"
+#include "OptimizationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,8 +40,6 @@ class OT_API OptimizationSolverImplementation
   CLASSNAME;
 public:
 
-  typedef OptimizationSolverImplementationResult   Result;
-
   /** Default constructor */
   OptimizationSolverImplementation();
 
@@ -50,9 +48,6 @@ public:
 
   /** Virtual constructor */
   virtual OptimizationSolverImplementation * clone() const;
-
-  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
@@ -68,10 +63,10 @@ public:
   void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
-  Result getResult() const;
+  OptimizationResult getResult() const;
 
   /** Result accessor */
-  void setResult(const Result & result);
+  void setResult(const OptimizationResult & result);
 
   /** Maximum iterations number accessor */
   UnsignedInteger getMaximumIterationsNumber() const;
@@ -117,7 +112,10 @@ public:
   void setVerbose(const Bool verbose);
 
 protected:
-  Result result_;
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+  virtual void checkProblem(const OptimizationProblem & problem) const;
+
+  OptimizationResult result_;
 
 private:
   NumericalPoint startingPoint_;

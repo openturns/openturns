@@ -68,7 +68,6 @@ NumericalScalar SQPSpecificParameters::getTau() const
   return tau_;
 }
 
-/* Tau accessor */
 void SQPSpecificParameters::setTau(const NumericalScalar tau)
 {
   tau_ = tau;
@@ -80,7 +79,6 @@ NumericalScalar SQPSpecificParameters::getOmega() const
   return omega_;
 }
 
-/* Omega accessor */
 void SQPSpecificParameters::setOmega(const NumericalScalar omega)
 {
   omega_ = omega;
@@ -92,7 +90,6 @@ NumericalScalar SQPSpecificParameters::getSmooth() const
   return smooth_;
 }
 
-/* Smooth accessor */
 void SQPSpecificParameters::setSmooth(const NumericalScalar smooth)
 {
   smooth_ = smooth;

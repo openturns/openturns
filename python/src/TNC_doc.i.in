@@ -4,7 +4,7 @@
 Available constructors:
     TNC(*problem*)
 
-    TNC(*specificParameters, problem*)
+    TNC(*problem, scale, offset, maxCGit, eta, stepmx, accuracy, fmin, rescale*)
 
 Parameters
 ----------
@@ -12,6 +12,22 @@ problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
 specificParameters : :class:`~openturns.TNCSpecificParameters`
     Parameters for this solver.
+scale : sequence of float
+    Scaling factors to apply to each variables
+offset : sequence of float
+    Constant to substract to each variable
+maxCGit : int
+    Maximum number of hessian*vector evaluation per main iteration
+eta : float
+    Severity of the line search.
+stepmx : float
+    Maximum step for the line search. may be increased during call
+accuracy : float
+    Relative precision for finite difference calculations
+fmin : float
+    Minimum function value estimate.
+rescale : float
+    f scaling factor (in log10) used to trigger f value rescaling
 
 Notes
 -----
@@ -28,3 +44,211 @@ Examples
 >>> bounds = ot.Interval([1.]*4, [2.]*4)
 >>> problem = ot.OptimizationProblem(model, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
 >>> algo = ot.TNC(problem)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getScale
+"Accessor to scale parameter.
+
+Returns
+-------
+scale : :class:`~openturns.NumericalPoint`
+    Scaling factors to apply to each variable
+
+    if empty, the factors are min-max for interval bounded variables
+
+    and 1+|x] for the others."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setScale
+"Accessor to scale parameter.
+
+Parameters
+----------
+scale : sequence of float
+    Scaling factors to apply to each variable
+
+    if empty, the factors are min-max for interval bounded variables
+
+    and 1+|x] for the others."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getOffset
+"Accessor to offset parameter.
+
+Returns
+-------
+offset : :class:`~openturns.NumericalPoint`
+    Constant to substract to each variable
+
+    if empty, the constant are (min-max)/2 for interval bounded
+
+    variables and x for the others."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setOffset
+"Accessor to offset parameter.
+
+Parameters
+----------
+offset : sequence of float
+    Constant to substract to each variable
+
+    if empty, the constant are (min-max)/2 for interval bounded
+
+    variables and x for the others."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getMaxCGit
+"Accessor to maxCGit parameter.
+
+Returns
+-------
+maxCGit : int
+    Maximum number of hessian*vector evaluation per main iteration
+
+    if maxCGit = 0, the direction chosen is -gradient
+
+    if maxCGit < 0, maxCGit is set to max(1,min(50,n/2))."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setMaxCGit
+"Accessor to maxCGit parameter.
+
+Parameters
+----------
+maxCGit : int
+    Maximum number of hessian*vector evaluation per main iteration
+
+    if maxCGit = 0, the direction chosen is -gradient
+
+    if maxCGit < 0, maxCGit is set to max(1,min(50,n/2))."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getEta
+"Accessor to eta parameter.
+
+Returns
+-------
+eta : float
+    Severity of the line search.
+
+    if < 0 or > 1, set to 0.25."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setEta
+"Accessor to eta parameter.
+
+Parameters
+----------
+eta : float
+    Severity of the line search.
+
+    if < 0 or > 1, set to 0.25."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getStepmx
+"Accessor to stepmx parameter.
+
+Returns
+-------
+stepmx : float
+    Maximum step for the line search. may be increased during call
+
+    if too small, will be set to 10.0."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setStepmx
+"Accessor to stepmx parameter.
+
+Parameters
+----------
+stepmx : float
+    Maximum step for the line search. may be increased during call
+
+    if too small, will be set to 10.0."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getAccuracy
+"Accessor to accuracy parameter.
+
+Returns
+-------
+accuracy : float
+    Relative precision for finite difference calculations
+
+    if <= machine_precision, set to sqrt(machine_precision)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setAccuracy
+"Accessor to accuracy parameter.
+
+Parameters
+----------
+accuracy : float
+    Relative precision for finite difference calculations
+
+    if <= machine_precision, set to sqrt(machine_precision)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getFmin
+"Accessor to fmin parameter.
+
+Returns
+-------
+fmin : float
+    Minimum function value estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setFmin
+"Accessor to fmin parameter.
+
+Parameters
+----------
+fmin : float
+    Minimum function value estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::getRescale
+"Accessor to rescale parameter.
+
+Returns
+-------
+rescale : float
+    f scaling factor (in log10) used to trigger f value rescaling
+
+    if 0, rescale at each iteration
+
+    if a big value, never rescale
+
+    if < 0, rescale is set to 1.3."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TNC::setRescale
+"Accessor to rescale parameter.
+
+Parameters
+----------
+rescale : float
+    f scaling factor (in log10) used to trigger f value rescaling
+
+    if 0, rescale at each iteration
+
+    if a big value, never rescale
+
+    if < 0, rescale is set to 1.3."
