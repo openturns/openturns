@@ -272,13 +272,6 @@ public:
   OSS_iterator&
   operator=(const _Tp& value)
   {
-#ifdef __GNUC__
-#if ( GCC_VERSION >= 30400 )
-    __glibcxx_requires_cond(_M_stream != 0,
-                            _M_message(__gnu_debug::__msg_output_ostream)
-                            ._M_iterator(*this));
-#endif
-#endif
     if (_UnaryPredicate()(value))
     {
       if (!_M_first) *_M_stream << _M_string;
