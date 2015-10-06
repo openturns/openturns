@@ -1,5 +1,8 @@
 Distribution Parameters  class=BetaMuSigma name=Unnamed mu=0.2 sigma=0.6 a=-1 b=2
 Distribution Parameters  BetaMuSigma(mu = 0.2, sigma = 0.6, a = -1, b = 2)
+non-native= [mu : 0.2, sigma : 0.6, a : -1, b : 2]
+native= [2,5,-1,2]
+non-native= [0.2,0.6,-1,2]
 [[   2.33333    1.66667    0          0        ]
  [  -8        -20          0          0        ]
  [  -3         -5          1          0        ]

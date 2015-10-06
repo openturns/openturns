@@ -130,7 +130,7 @@ NumericalPoint ParametrizedDistribution::computeCDFGradient(const NumericalPoint
 
 ParametrizedDistribution::NumericalPointWithDescriptionCollection ParametrizedDistribution::getParametersCollection() const
 {
-  return distributionParameters_.getParametersCollection();
+  return NumericalPointWithDescriptionCollection(1, distributionParameters_.getParameters());
 }
 
 

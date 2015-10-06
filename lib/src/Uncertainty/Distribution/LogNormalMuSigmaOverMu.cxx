@@ -96,24 +96,29 @@ Matrix LogNormalMuSigmaOverMu::gradient() const
 NumericalPoint LogNormalMuSigmaOverMu::operator () (const NumericalPoint & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigmaOverMu = inP[1];
-  const NumericalScalar gamma = inP[2];
 
-  if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
-  if (sigmaOverMu * mu <= 0.0) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  const NumericalScalar mu = inP[0];
 
   NumericalPoint muSigmaParametersValues(inP);
   muSigmaParametersValues[1] *= mu;
-  const LogNormalMuSigma muSigmaParameters(mu, sigmaOverMu * mu, gamma);
+  const LogNormalMuSigma muSigmaParameters;
 
   return muSigmaParameters(muSigmaParametersValues);
 }
 
 
+NumericalPoint LogNormalMuSigmaOverMu::inverse(const NumericalPoint & inP) const
+{
+  const LogNormalMuSigma muSigmaParameters;
+  NumericalPoint muSigmaOverMuParameters(muSigmaParameters.inverse(inP));
+  const NumericalScalar mu = muSigmaOverMuParameters[0];
+  if (mu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  muSigmaOverMuParameters[1] /= mu;
+  return muSigmaOverMuParameters;
+}
+
 /* Parameters value and description accessor */
-LogNormalMuSigmaOverMu::NumericalPointWithDescriptionCollection LogNormalMuSigmaOverMu::getParametersCollection() const
+NumericalPointWithDescription LogNormalMuSigmaOverMu::getParameters() const
 {
   NumericalPointWithDescription point(3);
   point[0] = mu_;
@@ -124,8 +129,7 @@ LogNormalMuSigmaOverMu::NumericalPointWithDescriptionCollection LogNormalMuSigma
   description[1] = "sigmaOverMu";
   description[2] = "gamma";
   point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
 

@@ -1,5 +1,8 @@
 Distribution Parameters  class=LogNormalMuSigmaOverMu name=Unnamed mu=0.63 sigmaOverMu=5.24 gamma=-0.5
 Distribution Parameters  LogNormalMuSigmaOverMu(mu = 0.63, sigmaOverMu = 5.24, gamma = -0.5)
+non-native= [mu : 0.63, sigmaOverMu : 5.24, gamma : -0.5]
+native= [-1.00525,1.50164,-0.5]
+non-native= [0.63,5.24,-0.5]
 [[  0.256272  0.418663  0        ]
  [ -0.170824  0.113758  0        ]
  [ -1.6771    0.527516  1        ]]

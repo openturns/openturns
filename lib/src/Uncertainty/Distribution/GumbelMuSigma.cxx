@@ -110,8 +110,27 @@ NumericalPoint GumbelMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint GumbelMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  const NumericalScalar alpha = inP[0];
+  const NumericalScalar beta = inP[1];
+
+  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+
+  const NumericalScalar mu = beta + SpecFunc::EulerConstant / alpha;
+  const NumericalScalar sigma = SpecFunc::PI_SQRT6 / alpha;
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
+
 /* Parameters value and description accessor */
-GumbelMuSigma::NumericalPointWithDescriptionCollection GumbelMuSigma::getParametersCollection() const
+NumericalPointWithDescription GumbelMuSigma::getParameters() const
 {
   NumericalPointWithDescription point(2);
   point[0] = mu_;
@@ -120,8 +139,7 @@ GumbelMuSigma::NumericalPointWithDescriptionCollection GumbelMuSigma::getParamet
   description[0] = "mu";
   description[1] = "sigma";
   point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
 

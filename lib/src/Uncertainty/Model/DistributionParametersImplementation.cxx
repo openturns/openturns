@@ -59,17 +59,24 @@ Matrix DistributionParametersImplementation::gradient() const
 }
 
 
-/* Conversion operator */
+/* Conversion to native parameters */
 NumericalPoint DistributionParametersImplementation::operator () (const NumericalPoint & inP) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::operator() const";
 }
 
 
-/* Parameters value and description accessor */
-DistributionParametersImplementation::NumericalPointWithDescriptionCollection DistributionParametersImplementation::getParametersCollection() const
+/* Conversion from native parameters */
+NumericalPoint DistributionParametersImplementation::inverse(const NumericalPoint & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getParametersCollection() const";
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::inverse const";
+}
+
+
+/* Parameters value and description accessor */
+NumericalPointWithDescription DistributionParametersImplementation::getParameters() const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getParameters() const";
 }
 
 

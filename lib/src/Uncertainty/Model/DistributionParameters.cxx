@@ -69,17 +69,24 @@ Matrix DistributionParameters::gradient() const
 }
 
 
-/* Conversion operator */
+/* Conversion to native parameters */
 NumericalPoint DistributionParameters::operator () (const NumericalPoint & inP) const
 {
   return getImplementation()->operator ()(inP);
 }
 
 
-/* Parameters value and description accessor */
-DistributionParameters::NumericalPointWithDescriptionCollection DistributionParameters::getParametersCollection() const
+/* Conversion from native parameters */
+NumericalPoint DistributionParameters::inverse(const NumericalPoint & inP) const
 {
-  return getImplementation()->getParametersCollection();
+  return getImplementation()->inverse(inP);
+}
+
+
+/* Parameters value and description accessor */
+NumericalPointWithDescription DistributionParameters::getParameters() const
+{
+  return getImplementation()->getParameters();
 }
 
 

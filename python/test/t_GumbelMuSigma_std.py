@@ -7,6 +7,13 @@ distParam = ot.GumbelMuSigma(1.5, 1.3)
 print("Distribution Parameters ", repr(distParam))
 print("Distribution Parameters ", distParam)
 
+non_native = distParam.getParameters()
+print('non-native=', non_native)
+native = distParam(non_native)
+print('native=', native)
+non_native = distParam.inverse(native)
+print('non-native=', non_native)
+
 # derivative of the native parameters with regards the parameters of the
 # distribution
 print(distParam.gradient())

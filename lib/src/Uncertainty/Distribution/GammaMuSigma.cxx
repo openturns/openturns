@@ -126,8 +126,29 @@ NumericalPoint GammaMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint GammaMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  const NumericalScalar k = inP[0];
+  const NumericalScalar lambda = inP[1];
+  const NumericalScalar gamma = inP[2];
+
+  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+
+  NumericalScalar mu = gamma + k / lambda;
+  const NumericalScalar sigma = std::sqrt(k) / lambda;
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
+
 /* Parameters value and description accessor */
-GammaMuSigma::NumericalPointWithDescriptionCollection GammaMuSigma::getParametersCollection() const
+NumericalPointWithDescription GammaMuSigma::getParameters() const
 {
   NumericalPointWithDescription point(3);
   point[0] = mu_;
@@ -138,8 +159,7 @@ GammaMuSigma::NumericalPointWithDescriptionCollection GammaMuSigma::getParameter
   description[1] = "sigma";
   description[2] = "gamma";
   point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
 
