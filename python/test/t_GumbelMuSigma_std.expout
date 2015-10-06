@@ -1,9 +1,0 @@
-Distribution Parameters  class=GumbelMuSigma name=Unnamed mu=1.5 sigma=1.3
-Distribution Parameters  GumbelMuSigma(mu = 1.5, sigma = 1.3)
-non-native= [mu : 1.5, sigma : 1.3]
-native= [0.986577,0.914931]
-non-native= [1.5,1.3]
-[[  0         1        ]
- [ -0.758905 -0.450053 ]]
-[[  0         1        ]
- [ -0.75895  -0.450053 ]]
