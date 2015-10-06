@@ -53,5 +53,9 @@ namespace OT {
   
   ComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }
   
+  ComplexMatrix __matmul__(const ComplexMatrix & other) { return *self * other; }
+
+  ComplexMatrix __matmul__(const Matrix & other) { return *self * other; }
+
 } // ComplexMatrix
 } // OT

@@ -18,6 +18,7 @@
  * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
 
 === Python module ===
+ * Support infix operator for matrix multiplication (PEP465)
 
 === Miscellaneous ===
  * Enhanced print of samples
