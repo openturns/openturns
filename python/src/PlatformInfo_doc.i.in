@@ -1,0 +1,44 @@
+%feature("docstring") OT::PlatformInfo
+"Informations about platform.
+
+No constructor, only static methods are available."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetVersion
+"Accessor to the version string.
+
+Returns
+-------
+version : str
+    Version string."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetRevision
+"Accessor to the revision string.
+
+Returns
+-------
+revision : str
+    Git revision."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::SetNumericalPrecision
+"Accessor to the output numerical precision.
+
+Parameters
+----------
+int : precision
+    String ouput numerical precision."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetNumericalPrecision
+"Accessor to the output numerical precision.
+
+Returns
+-------
+int : precision
+    String ouput numerical precision."

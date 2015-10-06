@@ -89,9 +89,9 @@ ot_add_python_module(common common_module.i
                       Study.i Study_doc.i.in
                       StorageManager.i StorageManager_doc.i.in
                       XMLStorageManager.i XMLStorageManager_doc.i.in
-                      Log.i
-                      TTY.i
-                      Path.i
+                      Log.i Log_doc.i.in
+                      TTY.i TTY_doc.i.in
+                      Path.i Path_doc.i.in
                       Catalog.i
                       ResourceMap.i ResourceMap_doc.i.in
                       ComparisonOperatorImplementation.i
@@ -102,7 +102,7 @@ ot_add_python_module(common common_module.i
                       Less.i Less_doc.i.in
                       LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
-                      PlatformInfo.i
+                      PlatformInfo.i PlatformInfo_doc.i.in
                       SharedPointer.i
                       Pointer.i
                       InterfaceObject.i InterfaceObject_doc.i.in

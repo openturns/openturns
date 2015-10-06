@@ -78,7 +78,6 @@ const Log::Severity Log::NONE    =  0;
 const Log::Severity Log::ALL     = ~0;
 
 const Log::Severity Log::DBG     = 1 << 0;
-const Log::Severity Log::WRAPPER = 1 << 1;
 const Log::Severity Log::INFO    = 1 << 2;
 const Log::Severity Log::USER    = 1 << 3;
 const Log::Severity Log::WARN    = 1 << 4;
@@ -102,11 +101,10 @@ Log::Log()
   logName_[NONE]    = make_prefix( String(TTY::GetColor(TTY::DEFAULT))                                    , "", "   " );
   logName_[ALL]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT))                                    , "", "ALL" );
   logName_[DBG]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT))                                    , "", "DBG" );
-  logName_[WRAPPER] = make_prefix( String(TTY::GetColor(TTY::BLUEFG))                                     , "", "WRP" );
   logName_[INFO]    = make_prefix( String(TTY::GetColor(TTY::GREENFG))                                     , "", "INF" );
   logName_[USER]    = make_prefix( String(TTY::GetColor(TTY::CYANFG))                                     , "", "USR" );
-  logName_[WARN]    = make_prefix( String(TTY::GetColor(TTY::PURPLEFG)) + String(TTY::GetColor(TTY::BOLD)), "", "WRN" );
-  logName_[ERROR]   = make_prefix( String(TTY::GetColor(TTY::REDFG))    + String(TTY::GetColor(TTY::BOLD)), "", "ERR" );
+  logName_[WARN]    = make_prefix( String(TTY::GetColor(TTY::BLUEFG)) + String(TTY::GetColor(TTY::BOLD)), "", "WRN" );
+  logName_[ERROR]   = make_prefix( String(TTY::GetColor(TTY::REDFG))  + String(TTY::GetColor(TTY::BOLD)), "", "ERR" );
   logName_[TRACE]   = make_prefix( String(TTY::GetColor(TTY::YELLOWFG))                                   , "", "TRA" );
 
   initSeverityFromEnvironment();
@@ -181,15 +179,6 @@ void Log::Debug(const String & msg)
 {
   GetInstance().lock().push(Entry(DBG, msg));
 }
-
-
-
-/* Log messages according to its relative severity */
-void Log::Wrapper(const String & msg)
-{
-  GetInstance().lock().push(Entry(WRAPPER, msg));
-}
-
 
 
 /*  Log messages according to its relative severity */

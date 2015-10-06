@@ -1,6 +1,7 @@
 %feature("docstring") OT::LinearModelTest::LinearModelAdjustedRSquared
-"Test the quality of the linear regression model based on the adjusted :math:`R^2` 
-indicator.
+"Test the quality of the linear regression model.
+
+Based on the adjusted :math:`R^2` indicator.
 
 **Available usages**:
 

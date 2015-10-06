@@ -30,7 +30,6 @@
 
 
 #define LOGDEBUG(st)   do { if (OT::Log::HasDebug()  ) OT::Log::Debug(st);   } while(0)
-#define LOGWRAPPER(st) do { if (OT::Log::HasWrapper()) OT::Log::Wrapper(st); } while(0)
 #define LOGINFO(st)    do { if (OT::Log::HasInfo()   ) OT::Log::Info(st);    } while(0)
 #define LOGUSER(st)    do { if (OT::Log::HasUser()   ) OT::Log::User(st);    } while(0)
 #define LOGWARN(st)    do { if (OT::Log::HasWarn()   ) OT::Log::Warn(st);    } while(0)
@@ -76,7 +75,6 @@ private:
 public:
   /** Those flags should be ORed */
   static const Severity DBG;
-  static const Severity WRAPPER;
   static const Severity INFO;
   static const Severity USER;
   static const Severity WARN;
@@ -99,15 +97,6 @@ public:
   static inline Bool HasDebug()
   {
     return 0 != (Flags() & Log::DBG);
-  }
-
-  /** Log messages according to the WRAPPER level
-   * @param msg The message to be logged
-   */
-  static void Wrapper(const String & msg);
-  static inline Bool HasWrapper()
-  {
-    return 0 != (Flags() & Log::WRAPPER);
   }
 
   /** Log messages according to the INFO level

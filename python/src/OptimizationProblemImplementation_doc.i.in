@@ -1,5 +1,5 @@
 %define OT_OptimizationProblem_doc
-"Base class to define an optimization problem
+"Base class to define an optimization problem.
 
 Available constructors:
     OptimizationProblem()

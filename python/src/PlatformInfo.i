@@ -4,6 +4,8 @@
 #include "PlatformInfo.hxx"
 %}
 
+%include PlatformInfo_doc.i
+
 %nodefaultctor PlatformInfo;
 
 %include PlatformInfo.hxx

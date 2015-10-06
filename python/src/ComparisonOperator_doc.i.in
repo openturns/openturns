@@ -1,5 +1,5 @@
 %feature("docstring") OT::ComparisonOperator
-"Base class for comparison operators
+"Base class for comparison operators.
 
 Notes
 -----

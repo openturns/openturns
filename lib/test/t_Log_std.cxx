@@ -42,13 +42,6 @@ void* printInfo(void*)
 }
 
 
-void* printWrapper(void*)
-{
-  for(int i = 0; i < N; i++) LOGWRAPPER(OSS() << "Wrapper #" << i);
-  return NULL;
-}
-
-
 void* printUser(void*)
 {
   for(int i = 0; i < N; i++) LOGUSER(OSS() << "User #" << i);
@@ -89,7 +82,7 @@ int main(int argc, char *argv[])
 
   const int nbFunctions = 7;
   typedef void * (*FUNC) (void *);
-  FUNC Functions[nbFunctions] = { printDebug, printInfo, printWrapper, printUser, printWarn, printError, printTrace };
+  FUNC Functions[nbFunctions] = { printDebug, printInfo, printUser, printWarn, printError, printTrace };
 
   Log::Show( Log::ALL );
   Log::SetFile("Log_check.log");

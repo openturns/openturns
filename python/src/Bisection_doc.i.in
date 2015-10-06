@@ -27,7 +27,7 @@ Solver, Brent, Secant"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Bisection::solve
-"Solve an equation
+"Solve an equation.
 
 **Available usages**:
 
