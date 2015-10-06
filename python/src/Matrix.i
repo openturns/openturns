@@ -334,5 +334,7 @@ namespace OT {
     
   Matrix __truediv__(const NumericalScalar s) { return (*self) / s; }
 
+  Matrix __matmul__(const Matrix & other) { return *self * other; }
+
 } // Matrix
 } // OT
