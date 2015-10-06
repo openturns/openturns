@@ -28,13 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<ConfidenceInterval>);
-
-static const Factory<PersistentCollection<ConfidenceInterval> > RegisteredFactory1;
 static const Factory<PersistentCollection<NumericalScalar> > RegisteredFactory2;
-
 
 
 CLASSNAMEINIT(LinearModel);
@@ -49,11 +43,11 @@ LinearModel::LinearModel()
 
 /* Standard constructor */
 LinearModel::LinearModel(const NumericalPoint & vectorR,
-                         const ConfidenceIntervalCollection & intervalsColl,
+                         const Interval & intervals,
                          const NumericalScalarCollection & pValuesOfR)
   : PersistentObject(),
     regression_(vectorR),
-    confidenceIntervals_(intervalsColl),
+    confidenceIntervals_(intervals),
     pValues_(pValuesOfR)
 {
   // Nothing to do
@@ -61,17 +55,12 @@ LinearModel::LinearModel(const NumericalPoint & vectorR,
 
 /* Constructor from NumericalPoint */
 LinearModel::LinearModel(const NumericalPoint & vectorR)
-  : PersistentObject(),
-    regression_(vectorR)
+  : PersistentObject()
+  , regression_(vectorR)
+  , confidenceIntervals_(vectorR, vectorR)
+  , pValues_(vectorR.getDimension(), 0.0)
 {
-  UnsignedInteger dimension(vectorR.getDimension());
-  ConfidenceIntervalCollection intervalsColl(dimension, ConfidenceInterval(0., 0.));
-  NumericalScalarCollection pValuesOfR(dimension, 0);
-
-  for (UnsignedInteger i = 0; i < dimension; i++) intervalsColl[i] = ConfidenceInterval(vectorR[i], vectorR[i]);
-
-  confidenceIntervals_ = intervalsColl;
-  pValues_ = pValuesOfR;
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -100,17 +89,17 @@ String LinearModel::__str__(const String & offset) const
 }
 
 /* get vector, get intervals, get p-Values*/
-const NumericalPoint & LinearModel::getRegression() const
+NumericalPoint LinearModel::getRegression() const
 {
   return regression_;
 }
 
-const LinearModel::ConfidenceIntervalCollection & LinearModel::getConfidenceIntervals() const
+Interval LinearModel::getConfidenceIntervals() const
 {
   return confidenceIntervals_;
 }
 
-const LinearModel::NumericalScalarCollection & LinearModel::getPValues() const
+LinearModel::NumericalScalarCollection LinearModel::getPValues() const
 {
   return pValues_;
 }

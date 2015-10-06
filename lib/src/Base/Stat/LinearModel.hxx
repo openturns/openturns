@@ -25,7 +25,7 @@
 #include "Description.hxx"
 #include "NumericalPoint.hxx"
 #include "NumericalSample.hxx"
-#include "ConfidenceInterval.hxx"
+#include "Interval.hxx"
 #include "PersistentCollection.hxx"
 #include "Collection.hxx"
 #include "TestResult.hxx"
@@ -47,8 +47,6 @@ class OT_API LinearModel :
 
 public:
 
-  typedef Collection<ConfidenceInterval>           ConfidenceIntervalCollection;
-  typedef PersistentCollection<ConfidenceInterval> ConfidenceIntervalPersistentCollection;
   typedef Collection<NumericalScalar>                    NumericalScalarCollection;
   typedef PersistentCollection<NumericalScalar>          NumericalScalarPersistentCollection;
 
@@ -58,7 +56,7 @@ public:
 
   /** Standard constructor */
   LinearModel(const NumericalPoint & vectorR,
-              const ConfidenceIntervalCollection & intervalsColl,
+              const Interval & intervals,
               const NumericalScalarCollection & pValuesOfR);
 
   /** Constructor from NumericalPoint */
@@ -73,9 +71,9 @@ public:
   String __str__(const String & offset = "") const;
 
   /** get vector, get intervals*/
-  const NumericalPoint & getRegression() const;
-  const ConfidenceIntervalCollection & getConfidenceIntervals() const;
-  const NumericalScalarCollection &getPValues() const;
+  NumericalPoint getRegression() const;
+  Interval getConfidenceIntervals() const;
+  NumericalScalarCollection getPValues() const;
 
   /** getPredicted : build an sample of predicted values */
   NumericalSample getPredicted(const NumericalSample & predictor) const;
@@ -97,7 +95,7 @@ protected:
   NumericalPoint regression_;
 
   /** The confidence intervals */
-  ConfidenceIntervalPersistentCollection confidenceIntervals_;
+  Interval confidenceIntervals_;
 
   /** The p-Values  */
   NumericalScalarPersistentCollection pValues_;

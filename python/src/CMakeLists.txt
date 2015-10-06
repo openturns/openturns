@@ -150,7 +150,6 @@ ot_add_python_module(statistics statistics_module.i
                       Full.i Full_doc.i.in
                       Last.i Last_doc.i.in
                       Null.i Null_doc.i.in
-                      ConfidenceInterval.i
                       LinearModel.i LinearModel_doc.i.in
                       LinearModelFactory.i LinearModelFactory_doc.i.in
                       TestResult.i TestResult_doc.i.in

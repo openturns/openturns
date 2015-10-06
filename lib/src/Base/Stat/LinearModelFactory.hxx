@@ -37,7 +37,6 @@ class OT_API LinearModelFactory
 {
 public:
 
-  typedef PersistentCollection<ConfidenceInterval> ConfidenceIntervalPersistentCollection;
   typedef PersistentCollection<NumericalScalar>    NumericalScalarPersistentCollection;
 
   /** Default constructor */

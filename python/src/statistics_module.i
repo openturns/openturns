@@ -42,7 +42,6 @@
 %include Full.i  
 %include Last.i  
 %include Null.i  
-%include ConfidenceInterval.i
 %include LinearModel.i  
 %include LinearModelFactory.i  
 %include TestResult.i  
