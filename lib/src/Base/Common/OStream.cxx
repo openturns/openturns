@@ -166,7 +166,7 @@ OStream & operator << (OStream & OS, std::ios_base & (*manip)(std::ios_base &))
   return OS;
 }
 
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(_LIBCPP_VERSION)
 
 OStream & operator << (OStream & OS, std::_Setw manip)
 {
@@ -209,6 +209,7 @@ OStream & operator << (OStream & OS, std::_Setfill<char> manip)
   OS.getStream() << manip;
   return OS;
 }
+
 #endif
 
 END_NAMESPACE_OPENTURNS

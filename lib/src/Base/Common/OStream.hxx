@@ -118,6 +118,26 @@ inline OStream & operator << (OStream & OS, std::_Fillobj<T> manip)
   return OS;
 }
 
+#elif defined(__clang__) && defined(_LIBCPP_VERSION)
+inline OStream & operator << (OStream & OS, std::__1::__iom_t6 manip)
+{
+  OS.getStream() << manip;
+  return OS;
+}
+
+template <typename T>
+inline OStream & operator << (OStream & OS, std::__1::__iom_t4<T> manip)
+{
+  OS.getStream() << manip;
+  return OS;
+}
+
+
+inline OStream & operator << (OStream & OS, std::__1::__iom_t5 manip)
+{
+    OS.getStream() << manip;
+    return OS;
+}
 #elif defined(__GNUC__)
 
 OT_API
