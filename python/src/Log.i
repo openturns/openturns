@@ -4,6 +4,8 @@
 #include "Log.hxx"
 %}
 
+%include Log_doc.i
+
 %apply UnsignedInteger { OT::Log::Severity };
 
 %nodefaultctor Log;

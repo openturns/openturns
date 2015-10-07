@@ -32,7 +32,7 @@ iterated points."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Secant::solve
-"Solve an equation
+"Solve an equation.
 
 **Available usages**:
 

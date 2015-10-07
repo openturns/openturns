@@ -113,7 +113,7 @@ override_dh_python3:
 	dh_python3 -p python3-openturns
 
 override_dh_compress:
-	dh_compress -X.pdf -X.svn -X.py
+	dh_compress -X.pdf -X.git -X.py
 
 override_dh_auto_test: $(PYALL:python%=cmake-test-%)
 

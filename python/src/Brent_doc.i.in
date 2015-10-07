@@ -32,7 +32,7 @@ interpolation."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Brent::solve
-"Solve an equation
+"Solve an equation.
 
 **Available usages**:
 

@@ -1,0 +1,40 @@
+%feature("docstring") OT::Log
+"Logging utilities.
+
+No constructor, only static methods are available."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Show
+"Accessor to the log flags.
+
+Parameters
+----------
+flags : int
+    Log flags to enable.
+
+    Available values to be ORed:
+      - DBG
+      - INFO
+      - USER
+      - WARN
+      - ERROR
+      - TRACE
+      - DEFAULT
+      - NONE
+      - ALL
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.Log.Show(ot.Log.DEFAULT)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Flags
+"Accessor to the log flags.
+
+Returns
+----------
+flags : int
+    The enabled log flags."

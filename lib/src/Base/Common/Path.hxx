@@ -110,25 +110,11 @@ public:
 protected:
 
   /**
-   * @var static const char * Path::OpenturnsWrapperPathVariableName_
-   *
-   * The environment variable name
-   */
-  static const char * OpenturnsWrapperPathVariableName_;
-
-  /**
    * @var static const char * Path::OpenturnsConfigPathVariableName_
    *
    * The environment variable name
    */
   static const char * OpenturnsConfigPathVariableName_;
-
-  /**
-   * @var static const char * Path::HomeWrapperSubdirectory_
-   *
-   * The HOME subdirectory path
-   */
-  static const char * HomeWrapperSubdirectory_;
 
   /**
    * @var static const char * Path::HomeConfigSubdirectory_

@@ -38,7 +38,7 @@ if (NOT ot_configure_date)
   set (ot_configure_date "${ot_configure_date}" CACHE STRING "First configure date.")
 endif ()
 if (NOT ot_revision)
-  execute_process (COMMAND svnversion
+  execute_process (COMMAND git rev-parse --short HEAD
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                     OUTPUT_VARIABLE ot_revision
                     OUTPUT_STRIP_TRAILING_WHITESPACE
