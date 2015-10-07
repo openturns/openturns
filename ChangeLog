@@ -24,8 +24,10 @@
  * Enhanced print of samples
 
 === Bug fixes ===
+ * #790 (AbdoRackwitz parameters)
  * #796 (Beta distribution: if sample contains Inf, freeze on getSample)
  * #798 (Error message misstyping (Gamma distribution))
+ * #799 (Error message misstyping (Gumbel distribution factory))
 
 == 1.6 release (2015-08-14) == #release-1.6
 
