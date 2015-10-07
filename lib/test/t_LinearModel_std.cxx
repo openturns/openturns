@@ -38,17 +38,14 @@ int main(int argc, char *argv[])
 
   NumericalScalar begin(-1.0);
   NumericalScalar end(36.92);
-  ConfidenceInterval testInterval(begin, end);
+  Interval testInterval(NumericalPoint(1, begin), NumericalPoint(1, end));
   testInterval.setName("testInterval");
-
-  OT::Collection<ConfidenceInterval> coll;
-  coll.add(testInterval);
 
   OT::Collection<NumericalScalar> valColl;
   valColl.add(1.0);
 
   /* Default constructor */
-  LinearModel LM(vectR, coll, valColl);
+  LinearModel LM(vectR, testInterval, valColl);
   LinearModel LMcopy(LM);
 
   /* Constructor from NumericalPoint */

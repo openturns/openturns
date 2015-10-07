@@ -16,6 +16,7 @@
  * Removed NearestPointAlgorithm class
  * Deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
  * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
+ * Removed ConfidenceInterval class
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)

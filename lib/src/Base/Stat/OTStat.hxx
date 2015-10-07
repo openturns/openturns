@@ -23,7 +23,6 @@
 #define OPENTURNS_OTSTAT_HXX
 
 #include "Compact.hxx"
-#include "ConfidenceInterval.hxx"
 #include "CorrelationAnalysis.hxx"
 #include "CorrelationMatrix.hxx"
 #include "CovarianceMatrix.hxx"

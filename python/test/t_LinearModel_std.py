@@ -16,11 +16,8 @@ try:
 
     begin = -1.0
     end = 36.92
-    testInterval = ConfidenceInterval(begin, end)
+    testInterval = Interval([begin], [end])
     testInterval.setName("testInterval")
-
-    coll = ConfidenceIntervalCollection()
-    coll.add(testInterval)
 
     valColl = NumericalScalarCollection()
     valColl.add(1.0)
@@ -28,7 +25,7 @@ try:
     # Constructor from NumericalPoint
     # Y = Somme (ai * Xi), i=0, n
     # linearModel : (ai), i=0, n
-    LM = LinearModel(vectR, coll, valColl)
+    LM = LinearModel(vectR, testInterval, valColl)
     emptyLM = LinearModel(vectR)
 
     # String converter #

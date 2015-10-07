@@ -212,11 +212,3 @@ Linear models
     LinearModel
     LinearModelFactory
 
-Confidence interval
-===================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    ConfidenceInterval

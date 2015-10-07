@@ -13,8 +13,8 @@ LinearModelFactory
 
 Returns
 -------
-confInterval : collection of :class:`~openturns.ConfidenceInterval`
-    The collection of the confidence intervals of the linear model coefficients,
+confInterval : :class:`~openturns.Interval`
+    The confidence intervals of the linear model coefficients,
     corresponding to the level precised when the LinearModel class has been
     created through the method *build*."
 

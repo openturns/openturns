@@ -88,12 +88,8 @@ LinearModel LinearModelFactory::build(const NumericalSample & samplePred,
   {
     resultFile >> upperBounds[i];
   }
-  // Convert the bounds to an interval collection
-  ConfidenceIntervalPersistentCollection confidenceIntervals(dimension, ConfidenceInterval(0.0, 1.0));
-  for (UnsignedInteger i = 0; i < dimension; i++)
-  {
-    confidenceIntervals[i].setValues(lowerBounds[i], upperBounds[i]);
-  }
+  Interval confidenceIntervals(lowerBounds, upperBounds);
+
   // Read the p-values of the coefficients
   NumericalScalarPersistentCollection pValues(dimension);
   for (UnsignedInteger i = 0; i < dimension; i++)
