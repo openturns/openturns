@@ -75,6 +75,9 @@ public:
   using ContinuousDistribution::computeComplementaryCDF;
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
+  /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
+  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;

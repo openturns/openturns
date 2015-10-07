@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include "SpecFunc.hxx"
 #include "LogUniform.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
@@ -147,6 +148,18 @@ NumericalScalar LogUniform::computeComplementaryCDF(const NumericalPoint & point
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
   return (bLog_ - std::log(x)) / (bLog_ - aLog_);
+}
+
+/* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
+NumericalComplex LogUniform::computeCharacteristicFunction(const NumericalScalar x) const
+{
+  NumericalComplex result;
+  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = NumericalComplex((bLog_ - aLog_) / (bLog_ + aLog_), (b_ - a_) * x / (bLog_ - aLog_));
+  else
+  {
+    result = -(SpecFunc::Ei(NumericalComplex(0.0, -x * b_)) - SpecFunc::Ei(NumericalComplex(0.0, -x * a_))) / (b_ - a_);
+  }
+  return result;
 }
 
 /* Get the PDFGradient of the distribution */

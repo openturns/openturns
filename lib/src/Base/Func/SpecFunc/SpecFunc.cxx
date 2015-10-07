@@ -24,10 +24,11 @@
 #include <iostream>
 
 #include "SpecFunc.hxx"
-#include "GammaFunctions.hxx"
 #include "BetaFunctions.hxx"
+#include "ExponentialIntegralFunctions.hxx"
 #include "Debye.hxx"
 #include "Faddeeva.hh"
+#include "GammaFunctions.hxx"
 #include "Exception.hxx"
 #include "ResourceMap.hxx"
 #include "NumericalMathFunction.hxx"
@@ -476,6 +477,18 @@ NumericalScalar SpecFunc::DiLog(const NumericalScalar x)
     value += powerX / (n * n);
   }
   return value;
+}
+
+// Exponential integral function: Ei(x) = -\int_{-x}^{\infty}exp(-t)/t dt
+NumericalScalar SpecFunc::Ei(const NumericalScalar x)
+{
+  return ExponentialIntegralFunctions::Ei(x);
+}
+
+// Complex exponential integral function: Ei(z) = -\int_{-z}^{\infty}exp(-t)/t dt
+NumericalComplex SpecFunc::Ei(const NumericalComplex & z)
+{
+  return ExponentialIntegralFunctions::Ei(z);
 }
 
 // Complex Faddeeva function: faddeeva(z) = \exp(-z^2)\erfc(-I*z)
