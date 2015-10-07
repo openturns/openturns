@@ -77,6 +77,18 @@ public:
                                        const NumericalScalar t) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
                                        const NumericalPoint & t) const;
+
+  // compute standard representative computes the term \rho(s, t)
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
+                                                        const NumericalScalar & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
+
   // Special case for 1D model
   virtual NumericalScalar computeAsScalar (const NumericalScalar s,
                                            const NumericalScalar t) const;
@@ -150,6 +162,9 @@ public:
 
 protected:
 
+  // set the covariance structure
+  void updateSpatialCovariance();
+
   /** Input dimension parameter */
   UnsignedInteger spatialDimension_;
 
@@ -164,6 +179,9 @@ protected:
 
   /** Correlation matrix of the spatial dependence structure */
   CorrelationMatrix spatialCorrelation_;
+
+  /** Covariance matrix of the spatial dependence structure */
+  CovarianceMatrix spatialCovariance_;
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;

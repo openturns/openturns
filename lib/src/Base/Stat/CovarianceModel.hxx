@@ -65,6 +65,17 @@ public:
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
                                        const NumericalPoint & t) const;
 
+  // compute standard representative computes the term \rho(s, t)
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
+                                                        const NumericalScalar & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
+
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
       const NumericalPoint & t) const;
 

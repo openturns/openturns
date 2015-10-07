@@ -80,6 +80,44 @@ OT_CovarianceModel_computeAsScalar_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_computeStandardRepresentative_doc
+"Compute the covariance function for 1-d model.
+
+Available usages:
+    computeStandrdRepresentative(s, t)
+
+    computeStandrdRepresentative(tau)
+
+Parameters
+----------
+s, t : floats or sequences of float
+    Inputs.
+tau : floats orsequence of float
+    Input.
+
+Returns
+-------
+rho : float
+    Scaling covariance.
+
+Notes
+-----
+*computeStandrdRepresentative* evaluates the correlation function on two points:
+:math:`\rho : \cD \times \cD \mapsto \Rset` at :math:`(s,t)\in \Rset^n`:
+
+.. math::
+
+    \rho(\vect{s}, \vect{t})=\rho(\frac{\vect{s}}{\vect{\theta}}, \frac{\vect{t}}{\vect{\theta}})
+
+where `\frac{\vect{s}}{\vect{\theta}} = (\frac{\vect{s}_1}{\vect{\theta}_1},\cdots,\frac{\vect{s}_n}{\vect{\theta}_n}`
+
+In the second usage, the covariance model must be stationary."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::computeStandardRepresentative
+OT_CovarianceModel_computeStandardRepresentative_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_discretize_doc
 "Discretize the covariance function on a given RegularGrid/Mesh.
 
