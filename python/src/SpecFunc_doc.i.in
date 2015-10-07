@@ -327,6 +327,24 @@ result : float"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::Ei
+"Exponential integral function.
+
+.. math::
+
+    \forall z \in \Cset, \quad
+    Ei(z) = -\int_{-z}^{\infty} \frac{\exp(-t)}{t} dt
+
+Parameters
+----------
+z : float or complex
+
+Returns
+-------
+result : float or complex (same as z)"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::Faddeeva
 "Complex Faddeeva function.
 
