@@ -3,6 +3,7 @@
 from __future__ import print_function
 from openturns import *
 from openturns.testing import *
+from math import sqrt
 
 TESTPREAMBLE()
 
@@ -29,7 +30,7 @@ Y2 = f(X2)
 
 # create algorithm
 basis = ConstantBasisFactory(dimension).build()
-covarianceModel = SquaredExponential(dimension, 2.23606797749979)
+covarianceModel = SquaredExponential(dimension, sqrt(2.23606797749979))
 
 algo = KrigingAlgorithm(X, Y, basis, covarianceModel)
 

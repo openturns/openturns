@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(defaultDimension, 1.0);
+    NumericalPoint scale(spatialDimension, 1.0);
 
 
     /* Default constructor */
@@ -69,14 +69,12 @@ int main(int argc, char *argv[])
 
     /* Reallocation of adequate sizes*/
     amplitude.resize(highDimension);
-    scale.resize(highDimension);
 
     CorrelationMatrix spatialCorrelation(highDimension);
     for (UnsignedInteger index = 0 ; index < highDimension; ++index)
     {
       // constant amplitude
       amplitude[index] = 1.0 ;
-      scale[index] = (index + 1.0) / defaultDimension ;
       if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
     }
     fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     RandomGenerator::SetSeed(0);
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger defaultDimension(3);
+    const UnsignedInteger defaultDimension(1);
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -69,6 +69,9 @@ int main(int argc, char *argv[])
     fullprint << "Realization = " << mySpectralProcess1.getRealization().__str__() << std::endl;
 
     /* Second order model with parameters */
+    const UnsignedInteger highDimension(3);
+    amplitude.resize(highDimension);
+    for (UnsignedInteger k = 0; k < highDimension; ++k) amplitude[k] = 1.0;
     CauchyModel mySpecModel(amplitude, scale);
     fullprint << "mySpecModel = " << mySpecModel << std::endl;
 

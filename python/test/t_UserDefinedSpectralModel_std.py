@@ -21,17 +21,17 @@ try:
 
     # Default dimension parameter to evaluate the model
     dimension = 2
+    spatialDimension = 1
 
     # Amplitude values
     amplitude = NumericalPoint(dimension)
     # Scale values
-    scale = NumericalPoint(dimension)
-    # Spatial correclation
+    scale = NumericalPoint(spatialDimension, 1.0)
+    # Spatial correlation
     spatialCorrelation = CorrelationMatrix(dimension)
     for index in range(dimension):
-            # constant amplitude
-        amplitude[index] = 1.0
-        scale[index] = (index + 1.0) / dimension
+        # constant amplitude
+        amplitude[index] = (index + 1.0) / dimension
         if (index > 0):
             spatialCorrelation[index, index - 1] = 1.0 / index
 

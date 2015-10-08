@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Default dimension parameter to evaluate the model
-    defaultDimension = 3
+    defaultDimension = 1
 
     # Amplitude values
     amplitude = NumericalPoint(defaultDimension, 1.0)
@@ -41,6 +41,10 @@ try:
 
     print("mySpectralProcess1 = ", mySpectralProcess1)
     print("Realization = ", mySpectralProcess1.getRealization())
+
+    # 3D model
+    highDimension = 3
+    amplitude = NumericalPoint(highDimension, 1.0)
 
     # Second order model with parameters
     mySpecModel = CauchyModel(amplitude, scale)

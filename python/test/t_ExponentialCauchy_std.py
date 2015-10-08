@@ -11,11 +11,14 @@ try:
     # Default dimension parameter to evaluate the model
     defaultDimension = 1
 
+    # Default spatial dimension
+    spatialDimension = 1
+
     # Amplitude values
     amplitude = NumericalPoint(defaultDimension, 1.0)
 
     # Scale values
-    scale = NumericalPoint(defaultDimension, 1.0)
+    scale = NumericalPoint(spatialDimension, 1.0)
 
     # Default constructor
     myDefautModel = ExponentialCauchy()
@@ -39,38 +42,6 @@ try:
     timeGrid = RegularGrid(0.0, 1.0 / 3.0, 4)
     print("discretized covariance over the time grid=",
           timeGrid, "is=", myModel.discretize(timeGrid))
-
-    # Default dimension parameter to evaluate the model
-    highDimension = 3
-
-    # Reallocation of adequate sizes
-    amplitude.resize(highDimension)
-    scale.resize(highDimension)
-    spatialCorrelation = CorrelationMatrix(highDimension)
-    for index in range(highDimension):
-        amplitude[index] = 1.0
-        scale[index] = (index + 1.0) / (defaultDimension * defaultDimension)
-        if index > 0:
-            spatialCorrelation[index, index - 1] = 1.0 / (index * index)
-
-    # check the cast
-    mySecondOrderModel = SecondOrderModel(
-        ExponentialCauchy(amplitude, scale, spatialCorrelation))
-    print("mySecondOrderModel = ", mySecondOrderModel)
-
-    # Second order model  - dimension 10
-    myHighModel = ExponentialCauchy(amplitude, scale, spatialCorrelation)
-    print("myHighModel = ", myHighModel)
-
-    print("covariance matrix at t = ", timeValueOne, " : ",
-          myHighModel.computeCovariance(timeValueOne))
-    print("covariance matrix at t = ", -1.0 * timeValueOne, " : ",
-          myHighModel.computeCovariance(-1.0 * timeValueOne))
-    print("covariance matrix at t = ", timeValueHigh, " : ",
-          myHighModel.computeCovariance(timeValueHigh))
-
-    print("discretized covariance over the time grid=",
-          timeGrid, "is=", myHighModel.discretize(timeGrid))
 
 except:
     import sys

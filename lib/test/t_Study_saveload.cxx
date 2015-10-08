@@ -600,31 +600,23 @@ int main(int argc, char *argv[])
     CauchyModel cauchyModel;
     // Create an ExponentialCauchy
     ExponentialCauchy exponentialCauchy;
-    // Create an ExponentialModel
-    ExponentialModel exponentialModel;
+    // Create an AbsoluteExponential
+    AbsoluteExponential absoluteExponential;
     {
       const UnsignedInteger defaultDimension(1);
-      const UnsignedInteger highDimension(3);
       const UnsignedInteger spatialDimension(1);
-      NumericalPoint amplitude(highDimension, 1.0);
-      NumericalPoint scale(highDimension, 1.0);
-      CorrelationMatrix spatialCorrelation(highDimension);
-      for (UnsignedInteger index = 0 ; index < highDimension; ++index)
-      {
-        amplitude[index] = 1.0 ;
-        scale[index] = (index + 1.0) / defaultDimension ;
-        if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
-      }
-      cauchyModel = CauchyModel (amplitude, scale, spatialCorrelation);
-      exponentialCauchy = ExponentialCauchy (amplitude, scale, spatialCorrelation);
-      exponentialModel = ExponentialModel (spatialDimension, amplitude, scale, spatialCorrelation);
+      NumericalPoint amplitude(defaultDimension, 1.0);
+      NumericalPoint scale(spatialDimension, 1.0);
+      cauchyModel = CauchyModel (amplitude, scale);
+      exponentialCauchy = ExponentialCauchy (amplitude, scale);
+      absoluteExponential = AbsoluteExponential(scale, amplitude);
     }
     study.add("cauchyModel", cauchyModel);
     study.add("exponentialCauchy", exponentialCauchy);
-    study.add("exponentialModel", exponentialModel);
+    study.add("absoluteExponential", absoluteExponential);
 
     // Create an ExponentialModel
-    SecondOrderModel secondOrderModel(exponentialModel, cauchyModel);
+    SecondOrderModel secondOrderModel(absoluteExponential, cauchyModel);
     study.add("secondOrderModel", secondOrderModel);
 
     // Create a SpectralNormalProcess
@@ -920,14 +912,15 @@ int main(int argc, char *argv[])
       const UnsignedInteger dimension(1);
       const UnsignedInteger spatialDimension(1);
       NumericalPoint amplitude(dimension);
-      NumericalPoint scale(dimension);
+      NumericalPoint scale(spatialDimension);
       CorrelationMatrix spatialCorrelation(dimension);
       for (UnsignedInteger index = 0 ; index < dimension; ++index)
       {
         amplitude[index] = 1.0 ;
-        scale[index] = (index + 1.0) / dimension ;
         if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
       }
+      for (UnsignedInteger index = 0 ; index < spatialDimension; ++index)
+        scale[index] = (index + 1.0) / dimension ;
       ExponentialModel referenceModel(spatialDimension, amplitude, scale, spatialCorrelation);
       UnsignedInteger size(20);
       RegularGrid timeGrid(0.0, 0.1, size);
@@ -1075,7 +1068,7 @@ int main(int argc, char *argv[])
     compare<UniVariatePolynomial >( uniVariatePolynomial, study2 );
     compare<CauchyModel >( cauchyModel, study2 );
     compare<ExponentialCauchy >( exponentialCauchy, study2 );
-    compare<ExponentialModel >( exponentialModel, study2 );
+    compare<AbsoluteExponential >( absoluteExponential, study2 );
     compare<SecondOrderModel >( secondOrderModel, study2 );
     compare<CompositeProcess >( compositeProcess, study2 );
     compare<SpectralNormalProcess >( spectralNormalProcess, study2 );
