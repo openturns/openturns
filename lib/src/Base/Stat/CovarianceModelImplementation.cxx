@@ -516,12 +516,38 @@ void CovarianceModelImplementation::setNuggetFactor(const NumericalScalar nugget
 /* Parameters accessor */
 void CovarianceModelImplementation::setParameters(const NumericalPoint & parameters)
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::setParameters(const NumericalPoint & parameters)";
+  // Default parameter setter
+  // By convention, the first points corresponds to scale parameters
+  // it follows amplitude parameters
+  if (parameters.getDimension() != spatialDimension_ + 1)
+    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameters: parameters dimension should be " << spatialDimension_ + dimension_
+                                         << "(got " << parameters.getDimension() << ")";
+  NumericalPoint scale(spatialDimension_);
+  NumericalPoint amplitude(dimension_);
+  for (UnsignedInteger j = 0; j < spatialDimension_; ++j) scale[j] = parameters[j];
+  for (UnsignedInteger j = 0; j < dimension_; ++j) amplitude[j] = parameters[spatialDimension_ + j];
+  setScale(scale);
+  setAmplitude(amplitude);
 }
 
 NumericalPointWithDescription CovarianceModelImplementation::getParameters() const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::getParameters() const";
+  // Convention : scale parameters + amplitude parameters
+  NumericalPointWithDescription result(spatialDimension_ + dimension_);
+  Description description(spatialDimension_ + dimension_);
+  for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
+  {
+    result[j] = scale_[j];
+    description[j] = OSS() << "theta_" << j;
+  }
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+  {
+    result[spatialDimension_ + j] = amplitude_[j];
+    description[spatialDimension_ + j] = OSS() << "sigma_" << j;
+  }
+  // Set description & return result
+  result.setDescription(description);
+  return result;
 }
 
 /* Is it a stationary model ? */

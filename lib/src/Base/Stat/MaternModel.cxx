@@ -106,20 +106,6 @@ Matrix MaternModel::partialGradient(const NumericalPoint & s,
   return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0];
 }
 
-/* Parameters accessor */
-void MaternModel::setParameters(const NumericalPoint & parameters)
-{
-  if (parameters.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameters.getDimension() << ")";
-  setScale(parameters);
-}
-
-NumericalPointWithDescription MaternModel::getParameters() const
-{
-  NumericalPointWithDescription result(1, scale_[0]);
-  result.setDescription(Description(1, "theta"));
-  return result;
-}
-
 /* String converter */
 String MaternModel::__repr__() const
 {

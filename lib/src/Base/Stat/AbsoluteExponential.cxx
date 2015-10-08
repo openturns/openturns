@@ -90,20 +90,6 @@ Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
   return Matrix(spatialDimension_, 1, factor * value) ;
 }
 
-/* Parameters accessor */
-void AbsoluteExponential::setParameters(const NumericalPoint & parameters)
-{
-  if (parameters.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameters.getDimension() << ")";
-  setScale(parameters);
-}
-
-NumericalPointWithDescription AbsoluteExponential::getParameters() const
-{
-  NumericalPointWithDescription result(1, scale_[0]);
-  result.setDescription(Description(1, "theta"));
-  return result;
-}
-
 /* String converter */
 String AbsoluteExponential::__repr__() const
 {

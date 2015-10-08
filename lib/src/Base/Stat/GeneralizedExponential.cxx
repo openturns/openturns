@@ -96,20 +96,6 @@ Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
   return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0];
 }
 
-/* Parameters accessor */
-void GeneralizedExponential::setParameters(const NumericalPoint & parameters)
-{
-  if (parameters.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameters.getDimension() << ")";
-  setScale(parameters);
-}
-
-NumericalPointWithDescription GeneralizedExponential::getParameters() const
-{
-  NumericalPointWithDescription result(1, scale_[0]);
-  result.setDescription(Description(1, "theta"));
-  return result;
-}
-
 /* String converter */
 String GeneralizedExponential::__repr__() const
 {

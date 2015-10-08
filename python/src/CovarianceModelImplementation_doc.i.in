@@ -203,7 +203,9 @@ Returns
 -------
 parameters : :class:`~openturns.NumericalPointWithDescription`
     Sequence containing the parameters of the covariance function with a
-    description for each component."
+    description for each component.
+    Usually the parameters is of size (spatialDim + dim) : the spatialDim first elements correpond
+    to the scale, the dim following to the amplitude."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getParameters
 OT_CovarianceModel_getParameters_doc
@@ -339,7 +341,9 @@ Returns
 -------
 parameters : :class:`~openturns.NumericalPointWithDescription`
     Sequence containing the parameters of the covariance function with a
-    description for each component."
+    description for each component.
+    The parameters should be of size (spatialDim + dim) : it sets the spatialDim first elements to scale
+    and the dim following to amplitude."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setParameters
 OT_CovarianceModel_setParameters_doc

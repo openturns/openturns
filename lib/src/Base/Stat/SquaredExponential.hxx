@@ -54,10 +54,6 @@ public:
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
 
-  /** Parameters accessor */
-  void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
-
   /** String converter */
   String __repr__() const;
 
