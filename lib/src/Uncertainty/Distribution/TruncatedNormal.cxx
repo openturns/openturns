@@ -360,10 +360,12 @@ TruncatedNormal::NumericalPointWithDescriptionCollection TruncatedNormal::getPar
   return parameters;
 }
 
-void TruncatedNormal::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void TruncatedNormal::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = TruncatedNormal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize();
+
+  const NumericalScalar w = getWeight();
+  *this = TruncatedNormal(parameters[0], parameters[1], parameters[2], parameters[3]);
   setWeight(w);
 }
 

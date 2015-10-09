@@ -213,10 +213,12 @@ NegativeBinomial::NumericalPointWithDescriptionCollection NegativeBinomial::getP
   return parameters;
 }
 
-void NegativeBinomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void NegativeBinomial::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = NegativeBinomial(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = NegativeBinomial(parameters[0], parameters[1]);
   setWeight(w);
 }
 

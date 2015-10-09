@@ -287,10 +287,12 @@ Chi::NumericalPointWithDescriptionCollection Chi::getParametersCollection() cons
   return parameters;
 }
 
-void Chi::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Chi::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Chi(parametersCollection[0][0]);
+  *this = Chi(parameters[0]);
   setWeight(w);
 }
 

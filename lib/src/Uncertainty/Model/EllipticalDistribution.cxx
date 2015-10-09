@@ -599,60 +599,38 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
   return parameters;
 } // getParametersCollection
 
-void EllipticalDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+
+void EllipticalDistribution::setParameters(const NumericalPoint & parameters)
 {
-  const UnsignedInteger size(parametersCollection.getSize());
-  const UnsignedInteger dimension(size > 1 ? size - 1 : size);
-  setDimension(dimension);
-  mean_ = NumericalPoint(dimension);
-  sigma_ = NumericalPoint(dimension);
-  R_ = CorrelationMatrix(dimension);
-  if (dimension == 1)
+  const UnsignedInteger dimension = getDimension();
+  UnsignedInteger size = dimension * 2 + ((dimension > 1) ? (dimension * (dimension - 1)) / 2 : 0);
+  if (parameters.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the given parameters point has an invalid size (" << parameters.getSize() << "), it should be " << size;
+  UnsignedInteger parameterIndex = 0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    mean_[0] = parametersCollection[0][0];
-    sigma_[0] = parametersCollection[0][1];
-    if (sigma_[0] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
+    mean_[i] = parameters[parameterIndex];
+    ++ parameterIndex;
+    sigma_[i] = parameters[parameterIndex];
+    ++ parameterIndex;
+    if (sigma_[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
   }
-  else
+  if (dimension > 1)
   {
-    for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      mean_[i] = parametersCollection[i][0];
-      sigma_[i] = parametersCollection[i][1];
-      if (sigma_[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
-    }
-    UnsignedInteger parameterIndex(0);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      for (UnsignedInteger j = 0; j < i; ++j)
+      for (UnsignedInteger j = 0; j < i; ++ j)
       {
-        R_(i, j) = parametersCollection[size - 1][parameterIndex];
-        ++parameterIndex;
+        R_(i, j) = parameters[parameterIndex];
+        ++ parameterIndex;
       }
     }
-    if ( !R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+    if (!R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
   }
   update();
   computeRange();
   isAlreadyComputedCovariance_ = false;
 }
 
-void EllipticalDistribution::setParametersCollection(const NumericalPoint & flattenCollection)
-{
-  const UnsignedInteger dimension(getDimension());
-  if (dimension == 1)
-  {
-    if (flattenCollection.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given parameters point has an invalid dimension (" << flattenCollection.getDimension() << "), it should be 2";
-
-    mean_[0] = flattenCollection[0];
-    sigma_[0] = flattenCollection[1];
-    if (sigma_[0] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
-    update();
-    computeRange();
-    isAlreadyComputedCovariance_ = false;
-  }
-  else DistributionImplementation::setParametersCollection(flattenCollection);
-}
 
 /* Method save() stores the object through the StorageManager */
 void EllipticalDistribution::save(Advocate & adv) const

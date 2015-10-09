@@ -862,16 +862,29 @@ ComposedDistribution::NumericalPointWithDescriptionCollection ComposedDistributi
 } // getParametersCollection
 
 
-void ComposedDistribution::setParametersCollection(const NumericalPointCollection& parametersCollection)
+void ComposedDistribution::setParameters(const NumericalPoint & parameters)
 {
-  const UnsignedInteger dimension(getDimension());
-  const UnsignedInteger parametersSize(dimension + (dimension > 1 ? 1 : 0));
-  if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
+  const UnsignedInteger dimension = getDimension();
 
   // set marginal parameters
-  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParametersCollection(parametersCollection[marginalIndex]);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++ marginalIndex)
+  {
+    UnsignedInteger marginalSize = distributionCollection_[marginalIndex].getParametersNumber();
+    NumericalPoint newParameters(marginalSize);
+    std::copy(parameters.begin() + index, parameters.begin() + index + marginalSize, newParameters.begin());
+    distributionCollection_[marginalIndex].setParameters(newParameters);
+    index += marginalSize;
+  }
+
   // set copula parameters
-  if (dimension > 1) copula_.setParametersCollection(parametersCollection[dimension]);
+  if (dimension > 1)
+  {
+    UnsignedInteger copulaSize = copula_.getParametersNumber();
+    NumericalPoint newParameters(copulaSize);
+    std::copy(parameters.begin() + index, parameters.begin() + index + copulaSize, newParameters.begin());
+    copula_.setParameters(newParameters);
+  }
 }
 
 

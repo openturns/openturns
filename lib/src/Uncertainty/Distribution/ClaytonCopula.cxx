@@ -358,10 +358,12 @@ ClaytonCopula::NumericalPointWithDescriptionCollection ClaytonCopula::getParamet
   return parameters;
 }
 
-void ClaytonCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ClaytonCopula::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = ClaytonCopula(parametersCollection[0][0]);
+  *this = ClaytonCopula(parameters[0]);
   setWeight(w);
 }
 

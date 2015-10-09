@@ -95,8 +95,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using ContinuousDistribution::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
   /** Nu accessor */
   void setNu(const NumericalScalar nu);

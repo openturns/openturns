@@ -332,11 +332,10 @@ ProductDistribution::NumericalPointWithDescriptionCollection ProductDistribution
   return parameters;
 }
 
-void ProductDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ProductDistribution::setParameters(const NumericalPoint & parameters)
 {
-  const UnsignedInteger leftSize(left_.getParametersCollection()[0].getSize());
-  const UnsignedInteger rightSize(right_.getParametersCollection()[0].getSize());
-  NumericalPoint parameters(parametersCollection[0]);
+  const UnsignedInteger leftSize = left_.getParametersNumber();
+  const UnsignedInteger rightSize = right_.getParametersNumber();
   if (parameters.getSize() != leftSize + rightSize) throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " parameters, got " << parameters.getSize();
   NumericalPoint newLeftParameters(leftSize);
   std::copy(parameters.begin(), parameters.begin() + leftSize, newLeftParameters.begin());
@@ -344,8 +343,8 @@ void ProductDistribution::setParametersCollection(const NumericalPointCollection
   std::copy(parameters.begin() + leftSize, parameters.end(), newRightParameters.begin());
   Distribution newLeft(left_);
   Distribution newRight(right_);
-  newLeft.setParametersCollection(NumericalPointCollection(1, newLeftParameters));
-  newRight.setParametersCollection(NumericalPointCollection(1, newRightParameters));
+  newLeft.setParameters(newLeftParameters);
+  newRight.setParameters(newRightParameters);
   const NumericalScalar w(getWeight());
   *this = ProductDistribution(newLeft, newRight);
   setWeight(w);

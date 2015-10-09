@@ -339,6 +339,24 @@ RatioDistribution::NumericalPointWithDescriptionCollection RatioDistribution::ge
   return parameters;
 }
 
+void RatioDistribution::setParameters(const NumericalPoint & parameters)
+{
+  const UnsignedInteger leftSize = left_.getParametersNumber();
+  const UnsignedInteger rightSize = right_.getParametersNumber();
+  if (parameters.getSize() != leftSize + rightSize) throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " parameters, got " << parameters.getSize();
+  NumericalPoint newLeftParameters(leftSize);
+  std::copy(parameters.begin(), parameters.begin() + leftSize, newLeftParameters.begin());
+  NumericalPoint newRightParameters(rightSize);
+  std::copy(parameters.begin() + leftSize, parameters.end(), newRightParameters.begin());
+  Distribution newLeft(left_);
+  Distribution newRight(right_);
+  newLeft.setParameters(newLeftParameters);
+  newRight.setParameters(newRightParameters);
+  const NumericalScalar w(getWeight());
+  *this = RatioDistribution(newLeft, newRight);
+  setWeight(w);
+}
+
 /* Left accessor */
 void RatioDistribution::setLeft(const Distribution & left)
 {

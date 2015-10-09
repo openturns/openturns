@@ -392,10 +392,12 @@ Trapezoidal::NumericalPointWithDescriptionCollection Trapezoidal::getParametersC
   return parameters;
 }
 
-void Trapezoidal::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Trapezoidal::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Trapezoidal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  *this = Trapezoidal(parameters[0], parameters[1], parameters[2], parameters[3]);
   setWeight(w);
 }
 

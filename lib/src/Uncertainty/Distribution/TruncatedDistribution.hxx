@@ -98,7 +98,7 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-
+  void setParameters(const NumericalPoint & parameters);
 
   /* Interface specific to TruncatedDistribution */
 

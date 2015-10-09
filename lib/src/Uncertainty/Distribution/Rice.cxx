@@ -217,10 +217,12 @@ Rice::NumericalPointWithDescriptionCollection Rice::getParametersCollection() co
   return parameters;
 }
 
-void Rice::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Rice::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Rice(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = Rice(parameters[0], parameters[1]);
   setWeight(w);
 }
 

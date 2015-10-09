@@ -289,10 +289,12 @@ GeneralizedPareto::NumericalPointWithDescriptionCollection GeneralizedPareto::ge
   return parameters;
 }
 
-void GeneralizedPareto::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void GeneralizedPareto::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = GeneralizedPareto(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = GeneralizedPareto(parameters[0], parameters[1]);
   setWeight(w);
 }
 

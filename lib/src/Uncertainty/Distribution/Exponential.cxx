@@ -251,10 +251,12 @@ Exponential::NumericalPointWithDescriptionCollection Exponential::getParametersC
   return parameters;
 }
 
-void Exponential::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Exponential::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Exponential(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = Exponential(parameters[0], parameters[1]);
   setWeight(w);
 }
 

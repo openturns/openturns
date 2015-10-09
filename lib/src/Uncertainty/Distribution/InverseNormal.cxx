@@ -255,10 +255,12 @@ InverseNormal::NumericalPointWithDescriptionCollection InverseNormal::getParamet
   return parameters;
 }
 
-void InverseNormal::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void InverseNormal::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = InverseNormal(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = InverseNormal(parameters[0], parameters[1]);
   setWeight(w);
 }
 

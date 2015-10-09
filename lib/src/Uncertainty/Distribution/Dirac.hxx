@@ -111,8 +111,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using DiscreteDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using DiscreteDistribution::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
   /* Interface specific to Dirac */
 

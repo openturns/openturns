@@ -253,16 +253,10 @@ Dirac::NumericalPointWithDescriptionCollection Dirac::getParametersCollection() 
   return parameters;
 }
 
-void Dirac::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Dirac::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  const UnsignedInteger dimension(parametersCollection.getSize());
-  NumericalPoint point(dimension);
-  // The ith component of the point is supposed to be the first component of the point
-  // at position i in the parameters collection
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    point[i] = parametersCollection[i][0];
-  *this = Dirac(point);
+  const NumericalScalar w = getWeight();
+  *this = Dirac(parameters);
   setWeight(w);
 }
 

@@ -271,10 +271,9 @@ IndependentCopula::NumericalPointWithDescriptionCollection IndependentCopula::ge
   return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
 }
 
-void IndependentCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void IndependentCopula::setParameters(const NumericalPoint & parameters)
 {
-  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection is of size=" << parametersCollection.getSize() << ", expected a size=1.";
-  if (parametersCollection[0].getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: expected no parameters for the IndependentCopula, got " << parametersCollection[0].getDimension() << " parameters instead.";
+  if (parameters.getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: expected no parameters for the IndependentCopula, got " << parameters.getDimension() << " parameters instead.";
 }
 
 /* Method save() stores the object through the StorageManager */

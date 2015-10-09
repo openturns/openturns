@@ -286,10 +286,10 @@ ZipfMandelbrot::NumericalPointWithDescriptionCollection ZipfMandelbrot::getParam
   return parameters;
 }
 
-void ZipfMandelbrot::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ZipfMandelbrot::setParameters(const NumericalPoint & parameters)
 {
   const NumericalScalar w(getWeight());
-  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parametersCollection[0][0])), parametersCollection[0][1], parametersCollection[0][2]);
+  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parameters[0])), parameters[1], parameters[2]);
   setWeight(w);
 }
 

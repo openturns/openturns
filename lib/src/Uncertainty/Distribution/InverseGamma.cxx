@@ -347,10 +347,12 @@ InverseGamma::NumericalPointWithDescriptionCollection InverseGamma::getParameter
   return parameters;
 }
 
-void InverseGamma::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void InverseGamma::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = InverseGamma(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = InverseGamma(parameters[0], parameters[1]);
   setWeight(w);
 }
 

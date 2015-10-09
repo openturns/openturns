@@ -217,10 +217,12 @@ FisherSnedecor::NumericalPointWithDescriptionCollection FisherSnedecor::getParam
   return parameters;
 }
 
-void FisherSnedecor::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void FisherSnedecor::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = FisherSnedecor(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = FisherSnedecor(parameters[0], parameters[1]);
   setWeight(w);
 }
 /* D1 accessor */
