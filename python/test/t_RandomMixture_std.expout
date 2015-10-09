@@ -69,7 +69,7 @@ kurtosis      = [3]
 kurtosis (ref)= [3]
 covariance      = [[ 9 ]]
 covariance (ref)= [[ 9 ]]
-parameters= [[Normal_mean : -1, Normal_standard deviation : 3]]
+parameters= [[Normal_mean_0 : -1, Normal_standard_deviation_0 : 3]]
 Standard representative= RandomMixture(Normal(mu = -1, sigma = 3))
 blockMin= 5
 blockMax= 20

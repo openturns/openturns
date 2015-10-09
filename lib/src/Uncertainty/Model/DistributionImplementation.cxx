@@ -3129,18 +3129,16 @@ NumericalPointWithDescription DistributionImplementation::getParameters() const
   Description description;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-//     const UnsignedInteger subSize = parametersCollection[i].getSize();
-//     const Description subDescription(parametersCollection[i].getDescription());
-//     for (UnsignedInteger j = 0; j < subSize; ++ j)
-//     {
-//       if (!description.__contains__(subDescription[j]))
-//       {
-//         parameters.add(parametersCollection[i][j]);
-//         description.add(subDescription[j]);
-//       }
-//     }
-    parameters.add(parametersCollection[i]);
-    description.add(parametersCollection[i].getDescription());
+    const UnsignedInteger subSize = parametersCollection[i].getSize();
+    const Description subDescription(parametersCollection[i].getDescription());
+    for (UnsignedInteger j = 0; j < subSize; ++ j)
+    {
+      if (!description.__contains__(subDescription[j]))
+      {
+        parameters.add(parametersCollection[i][j]);
+        description.add(subDescription[j]);
+      }
+    }
   }
   parameters.setDescription(description);
   return parameters;

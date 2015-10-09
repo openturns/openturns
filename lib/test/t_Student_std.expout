@@ -40,7 +40,7 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[nu : 6.5, mean : -0.5, standard deviation : 5]]
+parameters=[[nu : 6.5, mean_0 : -0.5, standard_deviation_0 : 5]]
 standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
 standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.44444]

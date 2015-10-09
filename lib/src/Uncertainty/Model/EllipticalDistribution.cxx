@@ -571,8 +571,8 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
     Description marginalDescription(point.getDimension());
     point[0] = mean_[marginalIndex];
     point[1] = sigma_[marginalIndex];
-    marginalDescription[0] = "mean";
-    marginalDescription[1] = "standard deviation";
+    marginalDescription[0] = OSS() << "mean_" << marginalIndex;
+    marginalDescription[1] = OSS() << "standard_deviation_" << marginalIndex;
     point.setDescription(marginalDescription);
     point.setName(description[marginalIndex]);
     parameters[marginalIndex] = point;
