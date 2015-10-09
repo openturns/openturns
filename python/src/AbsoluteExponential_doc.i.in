@@ -17,7 +17,9 @@ The covariance function of input dimension *dim* is:
 
 .. math::
 
-    C(s, t) = e^{- \frac{||s-t||}{\theta}}
+    C(s, t) = \sigma^2 e^{- ||\frac{s-t}{\theta}||_{1} }
+
+where the division is vectorial, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional.
 
 See Also
 --------
@@ -30,7 +32,7 @@ Examples
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
 >>> print(covarianceModel(s, t))
-[[ 0.985957 ]]
+[[ 0.980199 ]]
 >>> tau = [0.1, 0.3]
 >>> print(covarianceModel(tau))
-[[ 0.968872 ]]"
+[[ 0.960789 ]]"

@@ -167,7 +167,7 @@ ot_add_python_module(statistics statistics_module.i
                       SecondOrderModelImplementation.i
                       SecondOrderModel.i
                       ExponentialCauchy.i
-                      SphericalModel.i
+                      SphericalModel.i SphericalModel_doc.i.in
                       FilteringWindowsImplementation.i FilteringWindowsImplementation_doc.i.in
                       FilteringWindows.i FilteringWindows_doc.i.in
                       Hamming.i Hamming_doc.i.in
@@ -184,7 +184,7 @@ ot_add_python_module(statistics statistics_module.i
                       UserDefinedSpectralModel.i
                       WelchFactory.i WelchFactory_doc.i.in
                       ExponentialModel.i ExponentialModel_doc.i.in
-                      ExponentiallyDampedCosineModel.i
+                      ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
                       CauchyModel.i
                       CovarianceModelFactoryImplementation.i
                       CovarianceModelFactory.i

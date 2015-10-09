@@ -54,10 +54,17 @@ public:
                                  const NumericalScalar scale,
                                  const NumericalScalar frequency);
 
+  /** Standard constructor with amplitude and scale parameters */
+  ExponentiallyDampedCosineModel(const NumericalPoint & amplitude,
+                                 const NumericalPoint & scale,
+                                 const NumericalScalar frequency);
+
   /** Virtual copy constructor */
   virtual ExponentiallyDampedCosineModel * clone() const;
 
   /** Computation of the covariance function, stationary interface */
+  using StationaryCovarianceModel::computeStandardRepresentative;
+  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
   using StationaryCovarianceModel::operator();
   CovarianceMatrix operator() (const NumericalPoint & tau) const;
   NumericalScalar computeAsScalar(const NumericalPoint & tau) const;

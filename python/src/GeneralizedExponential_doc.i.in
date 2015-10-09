@@ -20,7 +20,9 @@ The covariance function of input dimension *dim* is:
 
 .. math::
 
-    C(s, t) = e^{- \left(\frac{||s-t||}{\theta}\right)^p}
+    C(s, t) = \sigma^2 e^{- \left(||\frac{s-t}{\theta}\right||_{2})^p}
+
+where the division is vectorial, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional.
 
 See Also
 --------

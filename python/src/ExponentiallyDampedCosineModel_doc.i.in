@@ -1,0 +1,45 @@
+%feature("docstring") OT::ExponentiallyDampedCosineModel
+"Spherical covariance model.
+
+Available constructors:
+    ExponentiallyDampedCosineModel(*dim=1*)
+    ExponentiallyDampedCosineModel(*dim=1, amplitude, scale, frequency*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    Input dimension (spatial dimension).
+amplitude : sequence of float
+    Vector :math:`\vect{a}` of dimension :math:`d`.
+    Amplitude of the covariance model
+scale : sequence of float
+    Vector :math:`\vect{\lambda}` of dimension :math:`spatialDim`.
+    Scale parameter
+frequency : float
+    Frequency parameter
+
+Notes
+-----
+The covariance function of input dimension *dim* is defined as follows:
+
+.. math::
+
+    C(s, t) = \sigma^2 exp(-||\frac{s-t}{\theta}||) * cos(2 * \pi * frequency * ||\frac{s-t}{\theta}||)
+
+where the division is vectorial, :math:`\theta` is the scale parameter, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional.
+
+See Also
+--------
+CovarianceModel, SquaredExponential, GeneralizedExponential, MaternModel
+
+Examples
+--------
+>>> import openturns as ot
+>>> covarianceModel = ot.ExponentiallyDampedCosineModel([1.0], [0.2, 0.3], 2)
+>>> t = [0.1, 0.3]
+>>> s = [0.5, 0.4]
+>>> print(covarianceModel(s, t))
+[[ 0.12968 ]]
+>>> tau = [0.1, 0.1]
+>>> print(covarianceModel(tau))
+[[ -0.441706 ]]"

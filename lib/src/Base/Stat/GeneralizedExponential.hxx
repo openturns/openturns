@@ -48,8 +48,8 @@ public:
   GeneralizedExponential * clone() const;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  using StationaryCovarianceModel::computeStandardRepresentative;
+  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const NumericalPoint & s,

@@ -73,41 +73,25 @@ ExponentialModel * ExponentialModel::clone() const
 
 
 /* Computation of the covariance function, stationary interface
- * C_{i,j}(tau) = amplitude_i * exp(-|tau| / scale_i) * R_{i,j} * amplitude_j * exp(-|tau| / scale_j)
- * C_{i,i}(tau) = amplitude_i^2 * exp(-|tau| / scale_i)
+ * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
+ * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
+NumericalScalar ExponentialModel::computeStandardRepresentative(const NumericalPoint & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  CovarianceMatrix covarianceMatrix(dimension_);
-  // Absolute value of tau
-  const NumericalScalar absTau(tau.norm());
-  NumericalPoint exponentialTerms(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    const NumericalScalar value(amplitude_[i] * exp(-0.5 * absTau / scale_[i]));
-    exponentialTerms[i] = value;
-    covarianceMatrix(i, i) = value * value * (1.0 + nuggetFactor_);
-  }
-  if (!isDiagonal_)
-    for (UnsignedInteger j = 0; j < dimension_ ; ++j)
-      for (UnsignedInteger i = j + 1; i < dimension_ ; ++i)
-        covarianceMatrix(i, j) = exponentialTerms[i] * spatialCorrelation_(i, j) * exponentialTerms[j];
-
-  return covarianceMatrix;
+  if (tau.getDimension() != spatialDimension_)
+    throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
+  // Absolute value of tau / scale
+  NumericalPoint tauOverTheta(spatialDimension_);
+  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
+  // Return value
+  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
 }
 
-NumericalScalar ExponentialModel::computeAsScalar(const NumericalPoint & tau) const
-{
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
-  const NumericalScalar tauNorm(tau.norm());
-  return (tauNorm == 0.0 ? amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * exp(-tauNorm / scale_[0]));
-}
 
 /** Gradient */
 Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+                                         const NumericalPoint & t) const
 {
   /* Computation of the gradient
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
@@ -115,32 +99,32 @@ Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
    */
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
-  NumericalPoint tau(s - t);
+  const NumericalPoint tau(s - t);
   const NumericalScalar absTau = tau.norm();
+  NumericalPoint tauOverTheta(spatialDimension_);
+  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  const NumericalScalar absTauOverTheta = tauOverTheta.norm();
+
+  // TODO check
   if (absTau == 0)
     throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
-  NumericalPoint factor(spatialDimension_);
+  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'dot',
+  // i.e. dC/dk= Sigma_{i,j} * drho/dk
   CovarianceMatrix covariance(operator()(tau));
-  // Matrix should be scaled
-  for (UnsignedInteger j = 0; j < covariance.getDimension(); ++j)
-  {
-    covariance(j, j) *= -1.0 / scale_[j];
-    if (!isDiagonal_)
-    {
-      for (UnsignedInteger i = j + 1; i < covariance.getDimension(); ++i)
-        covariance(i, j) *= -0.5 * (1.0 / scale_[i] + 1.0 / scale_[j]);
-    }
-  }
   // symmetrize if not diagonal
   if (!isDiagonal_) covariance.getImplementation()->symmetrize();
   NumericalPoint covariancePoint(*covariance.getImplementation());
-  Matrix gradient(spatialDimension_, covariancePoint.getDimension());
+  // Compute the gradient part (gradient of rho)
+  NumericalPoint factor(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
-    if ((spatialDimension_ == 1.0) && (tau[i] < 0))  factor[i] = -1.0;
-    else if ((spatialDimension_ == 1.0) && (tau[i] > 0))  factor[i] = 1.0;
-    else factor[i] = tau[i] / absTau;
+    if ((spatialDimension_ == 1.0) && (tau[i] < 0))  factor[i] = 1.0 / scale_[i] ;
+    else if ((spatialDimension_ == 1.0) && (tau[i] > 0))  factor[i] = -1.0 / scale_[i];
+    // General case
+    else factor[i] = -1.0 * tau[i] / (absTauOverTheta * scale_[i] * scale_[i]);
   }
+  // Finally assemble the final matrix
+  Matrix gradient(spatialDimension_, covariancePoint.getDimension());
   for (UnsignedInteger j = 0; j < covariancePoint.getDimension(); ++ j)
     for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
       gradient(i, j) = covariancePoint[j] * factor[i];

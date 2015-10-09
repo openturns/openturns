@@ -15,7 +15,7 @@ spatialDim : int
 amplitude : sequence of float
     Vector :math:`\vect{a}` of dimension :math:`d`.
 scale : sequence of float
-    Vector :math:`\vect{\lambda}` of dimension :math:`d`.
+    Vector :math:`\vect{\lambda}` of dimension :math:`spatialDim`.
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
@@ -78,9 +78,7 @@ Create an *ExponentialModel* from the amplitude and scale:
 >>> import openturns as ot
 >>> amplitude = [1., 2.]
 >>> scale = [4., 5.]
->>> spatialCorrelation = ot.CorrelationMatrix(2)
->>> spatialCorrelation[0,1] = 0.8
->>> spatialDimension = 1
+>>> spatialDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
 
 Create an *ExponentialModel* from the amplitude, scale and correlation matrix:
@@ -89,7 +87,7 @@ Create an *ExponentialModel* from the amplitude, scale and correlation matrix:
 >>> scale = [4., 5.]
 >>> spatialCorrelation = ot.CorrelationMatrix(2)
 >>> spatialCorrelation[0,1] = 0.8
->>> spatialDimension = 1
+>>> spatialDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
 
 Create an *ExponentialModel* from the amplitude, scale and covariance matrix:
@@ -100,6 +98,6 @@ Create an *ExponentialModel* from the amplitude, scale and covariance matrix:
 >>> spatialCovariance[0,0] = 4.0
 >>> spatialCovariance[1,1] = 5.0
 >>> spatialCovariance[0,1] = 1.2
->>> spatialDimension = 1
+>>> spatialDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(spatialDimension, scale, spatialCovariance)"
 
