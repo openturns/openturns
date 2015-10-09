@@ -230,10 +230,11 @@ Geometric::NumericalPointWithDescriptionCollection Geometric::getParametersColle
   return parameters;
 }
 
-void Geometric::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Geometric::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Geometric(parametersCollection[0][0]);
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+  const NumericalScalar w = getWeight();
+  *this = Geometric(parameters[0]);
   setWeight(w);
 }
 

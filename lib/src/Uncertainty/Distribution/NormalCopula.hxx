@@ -123,8 +123,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using CopulaImplementation::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
   /** Compute the correlation matrix of a Normal Copula from its Spearman correlation matrix */
   static CorrelationMatrix GetCorrelationFromSpearmanCorrelation(const CorrelationMatrix & matrix);

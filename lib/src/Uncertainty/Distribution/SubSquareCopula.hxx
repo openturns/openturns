@@ -91,8 +91,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using CopulaImplementation::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

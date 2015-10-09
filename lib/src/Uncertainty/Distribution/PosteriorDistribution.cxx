@@ -136,9 +136,9 @@ PosteriorDistribution::NumericalPointWithDescriptionCollection PosteriorDistribu
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::getParametersCollection() const";
 }
 
-void PosteriorDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void PosteriorDistribution::setParameters(const NumericalPoint & parameters)
 {
-  throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)";
+  throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParameters(const NumericalPoint & parameters)";
 }
 
 

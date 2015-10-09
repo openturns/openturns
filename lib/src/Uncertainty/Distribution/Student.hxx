@@ -130,8 +130,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using EllipticalDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using EllipticalDistribution::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;

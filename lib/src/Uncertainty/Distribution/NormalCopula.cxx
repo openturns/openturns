@@ -513,15 +513,11 @@ NormalCopula::NumericalPointWithDescriptionCollection NormalCopula::getParameter
   return parameters;
 } // getParametersCollection
 
-void NormalCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void NormalCopula::setParameters(const NumericalPoint & parameters)
 {
-  // Check if the given parameters are ok
-  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
-  const NumericalPoint parameters(parametersCollection[0]);
-  const UnsignedInteger dimension(getDimension());
-  if (parameters.getDimension() != dimension * (dimension - 1) / 2) throw InvalidArgumentException(HERE) << "Error: got " << parameters.getDimension() << " parameters instead of " << dimension * (dimension - 1) / 2;
-  if (dimension == 1) return;
-  UnsignedInteger dependenceIndex(0);
+  const UnsignedInteger dimension = getDimension();
+  if (parameters.getDimension() != (dimension * (dimension - 1)) / 2) throw InvalidArgumentException(HERE) << "Error: got " << parameters.getDimension() << " parameters instead of " << (dimension * (dimension - 1)) / 2;
+  UnsignedInteger dependenceIndex = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     for (UnsignedInteger j = 0; j < i; ++j)

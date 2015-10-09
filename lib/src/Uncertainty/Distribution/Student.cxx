@@ -513,34 +513,34 @@ Student::NumericalPointWithDescriptionCollection Student::getParametersCollectio
   return parameters;
 }
 
-void Student::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Student::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  const UnsignedInteger size(parametersCollection.getSize());
-  const UnsignedInteger dimension(size > 1 ? size - 1 : size);
-  if (dimension == 1) *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
-  else
+  const UnsignedInteger size = parameters.getSize();
+  NumericalScalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) - 1.5;
+  if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for Student";
+
+  const UnsignedInteger dimension = dimReal;
+
+  const NumericalScalar nu = parameters[0];
+  NumericalPoint mean(dimension);
+  NumericalPoint sigma(dimension);
+  CorrelationMatrix R(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar nu(parametersCollection[0][0]);
-    NumericalPoint mean(dimension);
-    NumericalPoint sigma(dimension);
-    CorrelationMatrix R(dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      mean[i] = parametersCollection[i][1];
-      sigma[i] = parametersCollection[i][2];
-    }
-    UnsignedInteger parameterIndex(1);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      for (UnsignedInteger j = 0; j < i; ++j)
-      {
-        R(i, j) = parametersCollection[size - 1][parameterIndex];
-        ++parameterIndex;
-      }
-    }
-    *this = Student(nu, mean, sigma, R);
+    mean[i]  = parameters[1 + 2 * i];
+    sigma[i] = parameters[1 + 2 * i + 1];
   }
+  UnsignedInteger parameterIndex = 1 + 2 * dimension;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      R(i, j) = parameters[parameterIndex];
+      ++ parameterIndex;
+    }
+  }
+  const NumericalScalar w = getWeight();
+  *this = Student(nu, mean, sigma, R);
   setWeight(w);
 }
 
