@@ -33,7 +33,11 @@ A CovarianceModel object can be created only through its derived classes:
 :class:`~openturns.UserDefinedCovarianceModel`,
 :class:`~openturns.GeneralizedExponential`,
 :class:`~openturns.AbsoluteExponential`,
-:class:`~openturns.SquaredExponential`."
+:class:`~openturns.SquaredExponential`,
+:class:`~openturns.ExponentialModel`,
+:class:`~openturns.MaternModel`,
+:class:`~openturns.SphericalModel`,
+:class:`~openturns.ExponentiallyDampedCosineModel`."
 
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation
@@ -102,14 +106,18 @@ rho : float
 
 Notes
 -----
-*computeStandrdRepresentative* evaluates the correlation function on two points:
-:math:`\rho : \cD \times \cD \mapsto \Rset` at :math:`(s,t)\in \Rset^n`:
+*computeStandrdRepresentative* evaluates the correlation function on two spatial points:
+:math:`\rho : \cD \times \cD \mapsto \Rset`.
+
+A covariance function express as fllows at :math:`(s,t)\in \Rset^n`:
+
 
 .. math::
 
-    \rho(\vect{s}, \vect{t})=\rho(\frac{\vect{s}}{\vect{\theta}}, \frac{\vect{t}}{\vect{\theta}})
+    C(\vect{s}, \vect{t}) = \mat{\Sigma} \rho(\frac{\vect{s}}{\vect{\theta}}, \frac{\vect{t}}{\vect{\theta}})
 
-where `\frac{\vect{s}}{\vect{\theta}} = (\frac{\vect{s}_1}{\vect{\theta}_1},\cdots,\frac{\vect{s}_n}{\vect{\theta}_n}`
+where :math:`\frac{\vect{s}}{\vect{\theta}} = (\frac{\vect{s}_1}{\vect{\theta}_1},\cdots,\frac{\vect{s}_n}{\vect{\theta}_n})` is the scaled point and
+:math:`\mat{\Sigma}` is a covariance matrix that explains the covariance structure.
 
 In the second usage, the covariance model must be stationary."
 %enddef
@@ -289,7 +297,7 @@ s, t : sequence of float
 
 Returns
 -------
-gradient : :class:`~openturns.SymmetricTensor`
+gradient : :class:`~openturns.Matrix`
     Gradient of the covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::partialGradient

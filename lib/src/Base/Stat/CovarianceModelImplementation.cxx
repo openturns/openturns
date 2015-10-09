@@ -41,13 +41,13 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , spatialDimension_(spatialDimension)
   , dimension_(1)
   , amplitude_(1, 1.0)
-  , scale_(1, 1.0)
+  , scale_(spatialDimension, 1.0)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
 {
-  // Nothing to do
+  updateSpatialCovariance();
 }
 
 /* Constructor with parameters */
@@ -64,10 +64,11 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
 {
-  if (scale.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
+  if (scale.getDimension() != spatialDimension_)
+    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, incompatible dimensions between spatial dimension and scale";
   setAmplitude(amplitude);
   setScale(scale);
+  updateSpatialCovariance();
 }
 
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
@@ -84,7 +85,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
 {
-  if (scale.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
+  if (scale.getDimension() != spatialDimension_)
+    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, incompatible dimensions between spatial dimension and scale";
   if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
   setAmplitude(amplitude);
   setScale(scale);
@@ -96,21 +98,19 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
                                                              const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
-  , dimension_(scale.getDimension())
-  , amplitude_(scale.getDimension())
-  , scale_(scale)
+  , dimension_(spatialCovariance.getDimension())
+  , amplitude_(spatialCovariance.getDimension())
+  , scale_(0)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
 {
-  if (spatialCovariance.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial covariance has a dimension different from the scales and amplitudes.";
   setScale(scale);
   // spatialCovariance
   spatialCovariance_ = spatialCovariance;
   NumericalPoint amplitude(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-    amplitude[i] = sqrt(spatialCovariance(i, i));
+  for (UnsignedInteger i = 0; i < dimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
   // Check that the amplitudes are valid
   setAmplitude(amplitude);
   // Convert the spatial covariance into a spatial correlation
@@ -381,9 +381,10 @@ NumericalPoint CovarianceModelImplementation::getAmplitude() const
 
 void CovarianceModelImplementation::setAmplitude(const NumericalPoint & amplitude)
 {
+  if (amplitude.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << dimension_;
   for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (amplitude[index] <= 0)
-      throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude is non positive" ;
   amplitude_ = amplitude;
   updateSpatialCovariance();
 }
@@ -396,9 +397,10 @@ NumericalPoint CovarianceModelImplementation::getScale() const
 
 void CovarianceModelImplementation::setScale(const NumericalPoint & scale)
 {
-  for (UnsignedInteger index = 0; index < dimension_; ++index)
+  if (scale.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the given scale has a dimension=" << scale.getDimension() << " different from the input dimension=" << spatialDimension_;
+  for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
     if (scale[index] <= 0)
-      throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the component " << index << " of scale is non positive" ;
   scale_ = scale;
 }
 
