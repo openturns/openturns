@@ -39,110 +39,108 @@ int main(int argc, char *argv[])
   setRandomGenerator();
 
   try
+  {
+    // Test basic functionnalities
+    checkClassWithClassName<TestObject>();
+
+    // Instanciate one distribution object
+    LogUniform distribution(-0.5, 1.5);
+    fullprint << "Distribution " << distribution << std::endl;
+    std::cout << "Distribution " << distribution << std::endl;
+
+    // Is this distribution elliptical ?
+    fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
+
+    // Is this distribution continuous ?
+    fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
+
+    // Test for realization of distribution
+    NumericalPoint oneRealization = distribution.getRealization();
+    fullprint << "oneRealization=" << oneRealization << std::endl;
+
+    // Test for sampling
+    UnsignedInteger size = 10000;
+    NumericalSample oneSample = distribution.getSample( size );
+    fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
+    fullprint << "mean=" << oneSample.computeMean() << std::endl;
+    fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
+    size = 100;
+    for (UnsignedInteger i = 0; i < 2; ++i)
     {
-      // Test basic functionnalities
-      checkClassWithClassName<TestObject>();
-
-      // Instanciate one distribution object
-      LogUniform distribution(-0.5, 1.5);
-      fullprint << "Distribution " << distribution << std::endl;
-      std::cout << "Distribution " << distribution << std::endl;
-
-      // Is this distribution elliptical ?
-      fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
-
-      // Is this distribution continuous ?
-      fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
-
-      // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
-      fullprint << "oneRealization=" << oneRealization << std::endl;
-
-      // Test for sampling
-      UnsignedInteger size = 10000;
-      NumericalSample oneSample = distribution.getSample( size );
-      fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
-      fullprint << "mean=" << oneSample.computeMean() << std::endl;
-      fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
-      size = 100;
-      for (UnsignedInteger i = 0; i < 2; ++i)
-        {
-          fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
-          size *= 10;
-        }
-
-      // Define a point
-      NumericalPoint point( distribution.getDimension(), 1.0 );
-      fullprint << "Point= " << point << std::endl;
-
-      // Show PDF and CDF of point
-      NumericalScalar eps(1e-5);
-      NumericalPoint DDF = distribution.computeDDF( point );
-      fullprint << "ddf     =" << DDF << std::endl;
-      fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
-      NumericalScalar LPDF = distribution.computeLogPDF( point );
-      fullprint << "log pdf=" << LPDF << std::endl;
-      NumericalScalar PDF = distribution.computePDF( point );
-      fullprint << "pdf     =" << PDF << std::endl;
-      fullprint << "pdf (FD)=" << (distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps) << std::endl;
-      NumericalScalar CDF = distribution.computeCDF( point );
-      fullprint << "cdf=" << CDF << std::endl;
-      NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
-      fullprint << "ccdf=" << CCDF << std::endl;
-      NumericalScalar Survival = distribution.computeSurvivalFunction( point );
-      fullprint << "survival=" << Survival << std::endl;
-      NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
-      fullprint << "characteristic function=" << CF << std::endl;
-      NumericalPoint PDFgr = distribution.computePDFGradient( point );
-      fullprint << "pdf gradient     =" << PDFgr << std::endl;
-      NumericalPoint PDFgrFD(2);
-      PDFgrFD[0] = (LogUniform(distribution.getALog() + eps, distribution.getBLog()).computePDF(point) -
-                    LogUniform(distribution.getALog() - eps, distribution.getBLog()).computePDF(point)) / (2.0 * eps);
-      PDFgrFD[1] = (LogUniform(distribution.getALog(), distribution.getBLog() + eps).computePDF(point) -
-                    LogUniform(distribution.getALog(), distribution.getBLog() - eps).computePDF(point)) / (2.0 * eps);
-      fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-      NumericalPoint CDFgr = distribution.computeCDFGradient( point );
-      fullprint << "cdf gradient     =" << CDFgr << std::endl;
-      NumericalPoint CDFgrFD(2);
-      CDFgrFD[0] = (LogUniform(distribution.getALog() + eps, distribution.getBLog()).computeCDF(point) -
-                    LogUniform(distribution.getALog() - eps, distribution.getBLog()).computeCDF(point)) / (2.0 * eps);
-      CDFgrFD[1] = (LogUniform(distribution.getALog(), distribution.getBLog() + eps).computeCDF(point) -
-                    LogUniform(distribution.getALog(), distribution.getBLog() - eps).computeCDF(point)) / (2.0 * eps);
-      fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
-      NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
-      fullprint << "characteristic function=" << CF << std::endl;
-      NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
-      fullprint << "log characteristic function=" << LCF << std::endl;
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
-      fullprint << "quantile=" << quantile << std::endl;
-      fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-      NumericalPoint mean = distribution.getMean();
-      fullprint << "mean=" << mean << std::endl;
-      NumericalPoint standardDeviation = distribution.getStandardDeviation();
-      fullprint << "standard deviation=" << standardDeviation << std::endl;
-      NumericalPoint skewness = distribution.getSkewness();
-      fullprint << "skewness=" << skewness << std::endl;
-      NumericalPoint kurtosis = distribution.getKurtosis();
-      fullprint << "kurtosis=" << kurtosis << std::endl;
-      CovarianceMatrix covariance = distribution.getCovariance();
-      fullprint << "covariance=" << covariance << std::endl;
-      CovarianceMatrix correlation = distribution.getCorrelation();
-      fullprint << "correlation=" << correlation << std::endl;
-      CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
-      fullprint << "spearman=" << spearman << std::endl;
-      CovarianceMatrix kendall = distribution.getKendallTau();
-      fullprint << "kendall=" << kendall << std::endl;
-      LogUniform::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
-      fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
-      fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
-
+      fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
+      size *= 10;
     }
+
+    // Define a point
+    NumericalPoint point( distribution.getDimension(), 1.0 );
+    fullprint << "Point= " << point << std::endl;
+
+    // Show PDF and CDF of point
+    NumericalScalar eps(1e-5);
+    NumericalPoint DDF = distribution.computeDDF( point );
+    fullprint << "ddf     =" << DDF << std::endl;
+    fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
+    NumericalScalar LPDF = distribution.computeLogPDF( point );
+    fullprint << "log pdf=" << LPDF << std::endl;
+    NumericalScalar PDF = distribution.computePDF( point );
+    fullprint << "pdf     =" << PDF << std::endl;
+    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps) << std::endl;
+    NumericalScalar CDF = distribution.computeCDF( point );
+    fullprint << "cdf=" << CDF << std::endl;
+    NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+    fullprint << "ccdf=" << CCDF << std::endl;
+    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    fullprint << "survival=" << Survival << std::endl;
+    NumericalPoint PDFgr = distribution.computePDFGradient( point );
+    fullprint << "pdf gradient     =" << PDFgr << std::endl;
+    NumericalPoint PDFgrFD(2);
+    PDFgrFD[0] = (LogUniform(distribution.getALog() + eps, distribution.getBLog()).computePDF(point) -
+                  LogUniform(distribution.getALog() - eps, distribution.getBLog()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (LogUniform(distribution.getALog(), distribution.getBLog() + eps).computePDF(point) -
+                  LogUniform(distribution.getALog(), distribution.getBLog() - eps).computePDF(point)) / (2.0 * eps);
+    fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
+    NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+    fullprint << "cdf gradient     =" << CDFgr << std::endl;
+    NumericalPoint CDFgrFD(2);
+    CDFgrFD[0] = (LogUniform(distribution.getALog() + eps, distribution.getBLog()).computeCDF(point) -
+                  LogUniform(distribution.getALog() - eps, distribution.getBLog()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (LogUniform(distribution.getALog(), distribution.getBLog() + eps).computeCDF(point) -
+                  LogUniform(distribution.getALog(), distribution.getBLog() - eps).computeCDF(point)) / (2.0 * eps);
+    fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
+    NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
+    fullprint << "characteristic function=" << CF << std::endl;
+    NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+    fullprint << "log characteristic function=" << LCF << std::endl;
+    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    fullprint << "quantile=" << quantile << std::endl;
+    fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    NumericalPoint mean = distribution.getMean();
+    fullprint << "mean=" << mean << std::endl;
+    NumericalPoint standardDeviation = distribution.getStandardDeviation();
+    fullprint << "standard deviation=" << standardDeviation << std::endl;
+    NumericalPoint skewness = distribution.getSkewness();
+    fullprint << "skewness=" << skewness << std::endl;
+    NumericalPoint kurtosis = distribution.getKurtosis();
+    fullprint << "kurtosis=" << kurtosis << std::endl;
+    CovarianceMatrix covariance = distribution.getCovariance();
+    fullprint << "covariance=" << covariance << std::endl;
+    CovarianceMatrix correlation = distribution.getCorrelation();
+    fullprint << "correlation=" << correlation << std::endl;
+    CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
+    fullprint << "spearman=" << spearman << std::endl;
+    CovarianceMatrix kendall = distribution.getKendallTau();
+    fullprint << "kendall=" << kendall << std::endl;
+    LogUniform::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    fullprint << "parameters=" << parameters << std::endl;
+    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+    fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
+
+  }
   catch (TestFailed & ex)
-    {
-      std::cerr << ex << std::endl;
-      return ExitCode::Error;
-    }
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
 
   return ExitCode::Success;
