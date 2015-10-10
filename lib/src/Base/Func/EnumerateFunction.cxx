@@ -54,7 +54,8 @@ EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
                                      const NumericalScalar q)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(dimension, q))
 {
-  // Nothing to do
+  // Switch to the linear enumerate function when q = 1.0 as it is much more efficient
+  if (q == 1.0) *this = EnumerateFunction(dimension);
 }
 
 /* Parameter constructor */
@@ -118,6 +119,7 @@ void EnumerateFunction::setDimension(const UnsignedInteger dimension)
   copyOnWrite();
   getImplementation()->setDimension( dimension );
 }
+
 
 UnsignedInteger EnumerateFunction::getDimension() const
 {
