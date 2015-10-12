@@ -43,6 +43,7 @@ VonMises::VonMises()
   // This call also call update and computeRange()
   setKappa(1.0);
   setDimension(1);
+  setParallel(false);
   computeRange();
 }
 
@@ -60,6 +61,7 @@ VonMises::VonMises(const NumericalScalar mu,
   setMu(mu);
   setKappa(kappa);
   setDimension(1);
+  setParallel(false);
   computeRange();
 }
 
