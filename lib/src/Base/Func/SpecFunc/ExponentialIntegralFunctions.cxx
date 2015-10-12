@@ -28,6 +28,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+/* Algorithms to compute the Exponential Integral function as described in:
+   Vincent Pegoraro and Philipp Slusallek, On the Evaluation of the Complex-Valued Exponential Integral, Journal of Graphics, GPU, and Game Tools, 15(3), 183-198, 2011.
+*/
 namespace ExponentialIntegralFunctions
 {
 

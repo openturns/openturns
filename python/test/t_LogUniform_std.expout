@@ -17,6 +17,8 @@ pdf     =0.500000
 pdf (FD)=0.500000
 cdf=0.250000
 ccdf=0.750000
+characteristic function=-0.089620+0.531924j
+log characteristic function=-0.617260+1.737711j
 pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
 pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
 cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
