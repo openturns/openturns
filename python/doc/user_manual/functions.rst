@@ -202,6 +202,7 @@ as Python functions.
     SpecFunc_DiGamma
     SpecFunc_DiGammaInv
     SpecFunc_DiLog
+    SpecFunc_Ei
     SpecFunc_Erf
     SpecFunc_ErfC
     SpecFunc_ErfCX
