@@ -31,11 +31,76 @@ static const Factory<SpectralModelImplementation> RegisteredFactory;
 
 /* Constructor with parameters */
 SpectralModelImplementation::SpectralModelImplementation()
-  : PersistentObject(),
-    dimension_(0),
-    frequencyGrid_()
+  : PersistentObject()
+  , dimension_(1)
+  , amplitude_(NumericalPoint(1, 1.0))
+  , scale_(NumericalPoint(1, 1.0))
+  , spatialDimension_(1)
+  , spatialCorrelation_(0)
+  , isDiagonal_(true)
+  , frequencyGrid_()
 {
   // Nothing to do
+}
+
+SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & amplitude,
+                                                         const NumericalPoint & scale)
+  : PersistentObject()
+  , amplitude_(0)
+  , scale_(0)
+  , spatialDimension_(scale.getDimension())
+  , spatialCorrelation_(0)
+  , isDiagonal_(true)
+{
+  setAmplitude(amplitude);
+  setScale(scale);
+  dimension_ = amplitude.getDimension();
+}
+
+SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & amplitude,
+                                                         const NumericalPoint & scale,
+                                                         const CorrelationMatrix & spatialCorrelation)
+  : PersistentObject()
+  , amplitude_(0)
+  , scale_(0)
+  , spatialDimension_(scale.getDimension())
+  , spatialCorrelation_(0)
+  , isDiagonal_(false)
+{
+  dimension_ = amplitude.getDimension();
+  if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
+  setAmplitude(amplitude);
+  setScale(scale);
+  isDiagonal_ = spatialCorrelation.isDiagonal();
+  if (!isDiagonal_) spatialCorrelation_ = spatialCorrelation;
+}
+
+SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
+                                                         const CovarianceMatrix & spatialCovariance)
+  : PersistentObject()
+  , amplitude_(0)
+  , scale_(scale)
+  , spatialDimension_(scale.getDimension())
+  , spatialCorrelation_(0)
+  , isDiagonal_(false)
+{
+  dimension_ = spatialCovariance.getDimension();
+  // Check scale values
+  setScale(scale);
+  NumericalPoint amplitude(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    amplitude[i] = sqrt(spatialCovariance(i, i));
+  // Check that the amplitudes are valid
+  setAmplitude(amplitude);
+  // Convert the spatial covariance into a spatial correlation
+  isDiagonal_ = spatialCovariance.isDiagonal();
+  if (!isDiagonal_)
+  {
+    spatialCorrelation_ = CorrelationMatrix(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
+  } // !isDiagonal
 }
 
 /* Virtual constructor */
@@ -56,6 +121,12 @@ void SpectralModelImplementation::setDimension(const UnsignedInteger dimension)
   dimension_ = dimension;
 }
 
+/* Dimension accessor */
+UnsignedInteger SpectralModelImplementation::getSpatialDimension() const
+{
+  return spatialDimension_;
+}
+
 /* Frequency grid accessors */
 RegularGrid SpectralModelImplementation::getFrequencyGrid() const
 {
@@ -73,6 +144,40 @@ HermitianMatrix SpectralModelImplementation::operator() (const NumericalScalar f
   throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::operator() (const NumericalScalar frequency) const";
 }
 
+/* Amplitude accessor */
+NumericalPoint SpectralModelImplementation::getAmplitude() const
+{
+  return amplitude_;
+}
+
+void SpectralModelImplementation::setAmplitude(const NumericalPoint & amplitude)
+{
+  for (UnsignedInteger index = 0; index < dimension_; ++index)
+    if (amplitude[index] <= 0)
+      throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
+  amplitude_ = amplitude;
+}
+
+/* Scale accessor */
+NumericalPoint SpectralModelImplementation::getScale() const
+{
+  return scale_;
+}
+
+void SpectralModelImplementation::setScale(const NumericalPoint & scale)
+{
+  for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
+    if (scale[index] <= 0)
+      throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
+  scale_ = scale;
+}
+
+/* Spatial correlation accessor */
+CorrelationMatrix SpectralModelImplementation::getSpatialCorrelation() const
+{
+  if (!isDiagonal_) return spatialCorrelation_;
+  return CorrelationMatrix(dimension_);
+}
 
 /* String converter */
 String SpectralModelImplementation::__repr__() const
@@ -123,6 +228,11 @@ void SpectralModelImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("dimension_", dimension_);
+  adv.saveAttribute( "amplitude_", amplitude_);
+  adv.saveAttribute( "scale_", scale_);
+  adv.saveAttribute( "spatialDimension_", spatialDimension_);
+  adv.saveAttribute( "spatialCorrelation_", spatialCorrelation_);
+  adv.saveAttribute( "isDiagonal_", isDiagonal_);
   adv.saveAttribute("frequencyGrid_", frequencyGrid_);
 }
 
@@ -131,6 +241,11 @@ void SpectralModelImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("dimension_", dimension_);
+  adv.loadAttribute( "amplitude_", amplitude_);
+  adv.loadAttribute( "scale_", scale_);
+  adv.loadAttribute( "spatialDimension_", spatialDimension_);
+  adv.loadAttribute( "spatialCorrelation_", spatialCorrelation_);
+  adv.loadAttribute( "isDiagonal_", isDiagonal_);
   adv.loadAttribute("frequencyGrid_", frequencyGrid_);
 }
 

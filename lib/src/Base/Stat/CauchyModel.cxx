@@ -38,72 +38,30 @@ static const Factory<CauchyModel> RegisteredFactory;
 /* Constructor with parameters */
 CauchyModel::CauchyModel()
   : SpectralModelImplementation()
-  , amplitude_(NumericalPoint(1, 1.0))
-  , scale_(NumericalPoint(1, 1.0))
-  , spatialCorrelation_(0)
-  , isDiagonal_(true)
 {
-  dimension_ = 1;
+  // Nothing to do
 }
 
 CauchyModel::CauchyModel(const NumericalPoint & amplitude,
                          const NumericalPoint & scale)
-  : SpectralModelImplementation()
-  , amplitude_(0)
-  , scale_(0)
-  , spatialCorrelation_(0)
-  , isDiagonal_(true)
+  : SpectralModelImplementation(amplitude, scale)
 {
-  if (amplitude.getDimension() != scale.getDimension() )
-    throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
-  setAmplitude(amplitude);
-  setScale(scale);
-  dimension_ = amplitude.getDimension();
+  // Nothing to do
 }
 
 CauchyModel::CauchyModel(const NumericalPoint & amplitude,
                          const NumericalPoint & scale,
                          const CorrelationMatrix & spatialCorrelation)
-  : SpectralModelImplementation()
-  , amplitude_(0)
-  , scale_(0)
-  , spatialCorrelation_(0)
-  , isDiagonal_(false)
+  : SpectralModelImplementation(amplitude, scale, spatialCorrelation)
 {
-  dimension_ = amplitude.getDimension();
-  if (scale.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
-  if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
-  setAmplitude(amplitude);
-  setScale(scale);
-  isDiagonal_ = spatialCorrelation.isDiagonal();
-  if (!isDiagonal_) spatialCorrelation_ = spatialCorrelation;
+  // Nothing to do
 }
 
 CauchyModel::CauchyModel(const NumericalPoint & scale,
                          const CovarianceMatrix & spatialCovariance)
-  : SpectralModelImplementation()
-  , amplitude_(0)
-  , scale_(scale)
-  , spatialCorrelation_(0)
-  , isDiagonal_(false)
+  : SpectralModelImplementation(scale, spatialCovariance)
 {
-  dimension_ = scale.getDimension();
-  if (spatialCovariance.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial covariance has a dimension different from the scales and amplitudes.";
-  setScale(scale);
-  NumericalPoint amplitude(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-    amplitude[i] = sqrt(spatialCovariance(i, i));
-  // Check that the amplitudes are valid
-  setAmplitude(amplitude);
-  // Convert the spatial covariance into a spatial correlation
-  isDiagonal_ = spatialCovariance.isDiagonal();
-  if (!isDiagonal_)
-  {
-    spatialCorrelation_ = CorrelationMatrix(dimension_);
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j)
-        spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
-  } // !isDiagonal
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -115,6 +73,7 @@ CauchyModel * CauchyModel::clone() const
 /* Computation of the spectral density function */
 HermitianMatrix CauchyModel::operator() (const NumericalScalar frequency) const
 {
+  // TODO change the implementation
   const NumericalScalar scaledFrequencySquared(pow(2.0 * M_PI * fabs(frequency), 2));
   HermitianMatrix spectralDensityMatrix(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
@@ -153,59 +112,16 @@ String CauchyModel::__str__(const String & offset) const
   return oss;
 }
 
-/* Amplitude accessor */
-NumericalPoint CauchyModel::getAmplitude() const
-{
-  return amplitude_;
-}
-
-void CauchyModel::setAmplitude(const NumericalPoint & amplitude)
-{
-  for (UnsignedInteger index = 0; index < dimension_; ++index)
-    if (amplitude[index] <= 0)
-      throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
-  amplitude_ = amplitude;
-}
-
-/* Scale accessor */
-NumericalPoint CauchyModel::getScale() const
-{
-  return scale_;
-}
-
-void CauchyModel::setScale(const NumericalPoint & scale)
-{
-  for (UnsignedInteger index = 0; index < dimension_; ++index)
-    if (scale[index] <= 0)
-      throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
-  scale_ = scale;
-}
-
-/* Spatial correlation accessor */
-CorrelationMatrix CauchyModel::getSpatialCorrelation() const
-{
-  if (!isDiagonal_) return spatialCorrelation_;
-  return CorrelationMatrix(dimension_);
-}
-
 /* Method save() stores the object through the StorageManager */
 void CauchyModel::save(Advocate & adv) const
 {
   SpectralModelImplementation::save(adv);
-  adv.saveAttribute( "amplitude_", amplitude_);
-  adv.saveAttribute( "scale_", scale_);
-  adv.saveAttribute( "spatialCorrelation_", spatialCorrelation_);
-  adv.saveAttribute( "isDiagonal_", isDiagonal_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CauchyModel::load(Advocate & adv)
 {
   SpectralModelImplementation::load(adv);
-  adv.loadAttribute( "amplitude_", amplitude_);
-  adv.loadAttribute( "scale_", scale_);
-  adv.loadAttribute( "spatialCorrelation_", spatialCorrelation_);
-  adv.loadAttribute( "isDiagonal_", isDiagonal_);
 }
 
 END_NAMESPACE_OPENTURNS

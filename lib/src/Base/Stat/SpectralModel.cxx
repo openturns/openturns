@@ -63,10 +63,9 @@ UnsignedInteger SpectralModel::getDimension() const
 }
 
 /* Dimension accessor */
-void SpectralModel::setDimension(const UnsignedInteger dimension)
+UnsignedInteger SpectralModel::getSpatialDimension() const
 {
-  copyOnWrite();
-  getImplementation()->setDimension(dimension);
+  return getImplementation()->getSpatialDimension();
 }
 
 /* Frequency grid accessors */
@@ -92,6 +91,36 @@ Graph SpectralModel::draw(const UnsignedInteger rowIndex,
                           const Bool module) const
 {
   return getImplementation()->draw(rowIndex, columnIndex, module);
+}
+
+/** Amplitude accessor */
+NumericalPoint SpectralModel::getAmplitude() const
+{
+  return getImplementation()->getAmplitude();
+}
+
+void SpectralModel::setAmplitude(const NumericalPoint & amplitude)
+{
+  copyOnWrite();
+  return getImplementation()->setAmplitude(amplitude);
+}
+
+/** Scale accessor */
+NumericalPoint SpectralModel::getScale() const
+{
+  return getImplementation()->getScale();
+}
+
+void SpectralModel::setScale(const NumericalPoint & scale)
+{
+  copyOnWrite();
+  return getImplementation()->setScale(scale);
+}
+
+/** Spatial correlation accessor */
+CorrelationMatrix SpectralModel::getSpatialCorrelation() const
+{
+  return getImplementation()->getSpatialCorrelation();
 }
 
 /* String converter */

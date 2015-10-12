@@ -46,12 +46,26 @@ public:
   /** Default constructor */
   SpectralModelImplementation();
 
+    /** Standard constructor with amplitude and scale parameters parameters */
+  SpectralModelImplementation(const NumericalPoint & amplitude,
+                              const NumericalPoint & scale);
+
+  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+  SpectralModelImplementation(const NumericalPoint & amplitude,
+                              const NumericalPoint & scale,
+                              const CorrelationMatrix & spatialCorrelation);
+
+  /** Standard constructor with scale and spatial covariance parameters parameters */
+  SpectralModelImplementation(const NumericalPoint & scale,
+                              const CovarianceMatrix & spatialCovariance);
+
+
   /** Virtual copy constructor */
   virtual SpectralModelImplementation * clone() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
-  void setDimension(const UnsignedInteger dimension);
+  UnsignedInteger getSpatialDimension() const;
 
   /** Computation of the spectral density function */
   virtual HermitianMatrix operator() (const NumericalScalar frequency) const;
@@ -59,6 +73,19 @@ public:
   /** Frequency grid accessors */
   virtual RegularGrid getFrequencyGrid() const;
   virtual void setFrequencyGrid(const RegularGrid & frequencyGrid);
+
+  /** Amplitude accessor */
+  virtual NumericalPoint getAmplitude() const;
+
+  virtual void setAmplitude(const NumericalPoint & amplitude);
+
+  /** Scale accessor */
+  virtual NumericalPoint getScale() const;
+
+  virtual void setScale(const NumericalPoint & scale);
+
+  /** Spatial correlation accessor */
+  virtual CorrelationMatrix getSpatialCorrelation() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -73,14 +100,31 @@ public:
   virtual void load(Advocate & adv);
 
   /** Drawing method */
-  Graph draw(const UnsignedInteger rowIndex = 0,
+  virtual Graph draw(const UnsignedInteger rowIndex = 0,
              const UnsignedInteger columnIndex = 0,
              const Bool module = true) const;
 
 protected:
 
+  void setDimension(const UnsignedInteger dimension);
+
   /** dimension parameter */
   UnsignedInteger dimension_;
+
+  /** Collection - Container for amplitude values  */
+  NumericalPoint amplitude_;
+
+  /** Collection - Container for scale values  */
+  NumericalPoint scale_;
+
+  /** Spatial dimension parameter */
+  UnsignedInteger spatialDimension_;
+
+  /** Correlation matrix of the spatial dependence structure */
+  CorrelationMatrix spatialCorrelation_;
+
+  /** Flag to tell if the model is diagonal */
+  Bool isDiagonal_;
 
   /** Frequency grid */
   RegularGrid frequencyGrid_;
