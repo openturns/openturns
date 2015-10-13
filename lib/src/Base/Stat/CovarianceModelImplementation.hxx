@@ -52,15 +52,28 @@ public:
                                 const NumericalPoint & amplitude,
                                 const NumericalPoint & scale);
 
+  /** Standard constructor with amplitude and scale parameters parameters */
+  CovarianceModelImplementation(const NumericalPoint & amplitude,
+                                const NumericalPoint & scale);
+
   /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
   CovarianceModelImplementation(const UnsignedInteger spatialDimension,
                                 const NumericalPoint & amplitude,
                                 const NumericalPoint & scale,
                                 const CorrelationMatrix & spatialCorrelation);
 
+  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+  CovarianceModelImplementation(const NumericalPoint & amplitude,
+                                const NumericalPoint & scale,
+                                const CorrelationMatrix & spatialCorrelation);
+
   /** Standard constructor with scale and spatial covariance parameters parameters */
   CovarianceModelImplementation(const UnsignedInteger spatialDimension,
                                 const NumericalPoint & scale,
+                                const CovarianceMatrix & spatialCovariance);
+
+  /** Standard constructor with scale and spatial covariance parameters parameters */
+  CovarianceModelImplementation(const NumericalPoint & scale,
                                 const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */

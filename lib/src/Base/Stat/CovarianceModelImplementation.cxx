@@ -71,6 +71,24 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   updateSpatialCovariance();
 }
 
+/** Standard constructor with amplitude and scale parameters parameters */
+CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
+                                                             const NumericalPoint & scale)
+ : PersistentObject()
+ , spatialDimension_(scale.getDimension())
+ , dimension_(amplitude.getDimension())
+ , amplitude_(0)
+ , scale_(0)
+ , spatialCorrelation_(0)
+ , spatialCovariance_(0)
+ , isDiagonal_(true)
+ , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+{
+  setAmplitude(amplitude);
+  setScale(scale);
+  updateSpatialCovariance();
+}
+
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
                                                              const NumericalPoint & amplitude,
                                                              const NumericalPoint & scale,
@@ -90,6 +108,27 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
   setAmplitude(amplitude);
   setScale(scale);
+  setSpatialCorrelation(spatialCorrelation);
+}
+
+/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
+                                                             const NumericalPoint & scale,
+                                                             const CorrelationMatrix & spatialCorrelation)
+ : PersistentObject()
+ , spatialDimension_(scale.getDimension())
+ , dimension_(amplitude.getDimension())
+ , amplitude_(0)
+ , scale_(0)
+ , spatialCorrelation_(0)
+ , spatialCovariance_(0)
+ , isDiagonal_(true)
+ , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+{
+  setAmplitude(amplitude);
+  setScale(scale);
+  if (spatialCorrelation.getDimension() != dimension_)
+    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, the given spatial correlation has a dimension different from the scales and amplitudes.";
   setSpatialCorrelation(spatialCorrelation);
 }
 
@@ -121,6 +160,36 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
       for (UnsignedInteger j = 0; j < i; ++j)
         spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
   } // !isDiagonal
+}
+
+/** Standard constructor with scale and spatial covariance parameters parameters */
+CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
+                                                             const CovarianceMatrix & spatialCovariance)
+ : PersistentObject()
+ , spatialDimension_(scale.getDimension())
+ , dimension_(spatialCovariance.getDimension())
+ , amplitude_(0)
+ , scale_(0)
+ , spatialCorrelation_(0)
+ , spatialCovariance_(0)
+ , isDiagonal_(true)
+ , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+{
+  // spatialCovariance
+  spatialCovariance_ = spatialCovariance;
+  NumericalPoint amplitude(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
+  // Check that the amplitudes are valid
+  setAmplitude(amplitude);
+  // Convert the spatial covariance into a spatial correlation
+  if (!spatialCovariance.isDiagonal())
+  {
+    spatialCorrelation_ = CorrelationMatrix(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
+  } // !isDiagonal
+  setScale(scale);
 }
 
 /* Virtual constructor */

@@ -57,6 +57,19 @@ public:
                             const NumericalPoint & scale,
                             const CovarianceMatrix & spatialCovariance);
 
+  /** Standard constructor with amplitude and scale parameters parameters */
+  StationaryCovarianceModel(const NumericalPoint & amplitude,
+                            const NumericalPoint & scale);
+
+  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+  StationaryCovarianceModel(const NumericalPoint & amplitude,
+                            const NumericalPoint & scale,
+                            const CorrelationMatrix & spatialCorrelation);
+
+  /** Standard constructor with scale and spatial covariance parameters parameters */
+  StationaryCovarianceModel(const NumericalPoint & scale,
+                            const CovarianceMatrix & spatialCovariance);
+
   /** Virtual copy constructor */
   virtual StationaryCovarianceModel * clone() const;
 
