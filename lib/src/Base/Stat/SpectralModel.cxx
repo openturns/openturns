@@ -85,6 +85,11 @@ HermitianMatrix SpectralModel::operator() (const NumericalScalar frequency) cons
   return getImplementation()->operator()(frequency);
 }
 
+NumericalComplex SpectralModel::computeStandardRepresentative(const NumericalScalar frequency) const
+{
+  return getImplementation()->computeStandardRepresentative(frequency);
+}
+
 /* Drawing method */
 Graph SpectralModel::draw(const UnsignedInteger rowIndex,
                           const UnsignedInteger columnIndex,

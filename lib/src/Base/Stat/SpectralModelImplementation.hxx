@@ -70,6 +70,9 @@ public:
   /** Computation of the spectral density function */
   virtual HermitianMatrix operator() (const NumericalScalar frequency) const;
 
+  /** Standard representative */
+  virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
+
   /** Frequency grid accessors */
   virtual RegularGrid getFrequencyGrid() const;
   virtual void setFrequencyGrid(const RegularGrid & frequencyGrid);
@@ -106,6 +109,9 @@ public:
 
 protected:
 
+  // set the covariance structure
+  void updateSpatialCovariance();
+
   void setDimension(const UnsignedInteger dimension);
 
   /** dimension parameter */
@@ -122,6 +128,9 @@ protected:
 
   /** Correlation matrix of the spatial dependence structure */
   CorrelationMatrix spatialCorrelation_;
+
+  /** Covariance matrix of the spatial dependence structure */
+  HermitianMatrix spatialCovariance_;
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;

@@ -63,6 +63,9 @@ public:
   /** Computation of the spectral density function */
   virtual HermitianMatrix operator() (const NumericalScalar frequency) const;
 
+  /** Standard representative */
+  virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
+
   /** Frequency grid accessors */
   virtual RegularGrid getFrequencyGrid() const;
   virtual void setFrequencyGrid(const RegularGrid & frequencyGrid);
