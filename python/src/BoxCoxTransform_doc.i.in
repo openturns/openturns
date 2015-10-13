@@ -77,7 +77,7 @@ Apply it to a field:
 >>> myInterval = ot.Interval([0., 0.], [2., 1.])
 >>> myMesh=myMesher.build(myInterval)
 >>> amplitude=[1.0]
->>> scale=[0.2]
+>>> scale=[0.2, 0.2]
 >>> myCovModel=ot.ExponentialModel(myMesh.getDimension(),amplitude, scale)
 >>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
 >>> g = ot.NumericalMathFunction(['x1'],  ['exp(x1)'])

@@ -13,7 +13,7 @@ Available constructors:
 Parameters
 ----------
 secondOrderModel : :class:`~openturns.SecondOrderModel`
-    
+
 timeGrid : :class:`~openturns.RegularGrid`
     The time grid associated to the process. OpenTURNS has only implemented
     the algorithm when the mesh is a regular grid.
@@ -63,12 +63,10 @@ Create a *SpectralNormalProcess* from a spectral model and a time grid:
 Create a *SpectralNormalProcess* from a second order model and a time grid:
 
 >>> import openturns as ot
->>> amplitude = [1., 2.]
->>> scale = [4., 5.]
->>> spatialCorrelation = ot.CorrelationMatrix(2)
->>> spatialCorrelation[0,1] = 0.8
+>>> amplitude = [1.0]
+>>> scale = [4.0, 5.0]
 >>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
->>> mySecondOrderModel = ot.ExponentialCauchy(amplitude, scale, spatialCorrelation)
+>>> mySecondOrderModel = ot.ExponentialCauchy(amplitude, scale)
 >>> mySpectNormProc2 = ot.SpectralNormalProcess(mySecondOrderModel, myTimeGrid)
 "
 // ---------------------------------------------------------------------
