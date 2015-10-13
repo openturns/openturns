@@ -185,7 +185,7 @@ ot_add_python_module(statistics statistics_module.i
                       WelchFactory.i WelchFactory_doc.i.in
                       ExponentialModel.i ExponentialModel_doc.i.in
                       ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
-                      CauchyModel.i
+                      CauchyModel.i CauchyModel_doc.i.in
                       CovarianceModelFactoryImplementation.i
                       CovarianceModelFactory.i
                       UserDefinedCovarianceModel.i

@@ -64,7 +64,8 @@ public:
   virtual CauchyModel * clone() const;
 
   /** Computation of the spectral density function */
-  HermitianMatrix operator()(const NumericalScalar frequency) const;
+  using SpectralModelImplementation::computeStandardRepresentative;
+  NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
 
   /** String converter */
   String __repr__() const;

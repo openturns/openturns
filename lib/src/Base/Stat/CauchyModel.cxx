@@ -71,19 +71,17 @@ CauchyModel * CauchyModel::clone() const
 }
 
 /* Computation of the spectral density function */
-HermitianMatrix CauchyModel::operator() (const NumericalScalar frequency) const
-{
-  // TODO change the implementation
-  const NumericalScalar scaledFrequencySquared(pow(2.0 * M_PI * fabs(frequency), 2));
-  HermitianMatrix spectralDensityMatrix(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-    spectralDensityMatrix(i, i) = 2.0 * amplitude_[i] * amplitude_[i] * scale_[i] / (1.0 + scale_[i] * scale_[i] * scaledFrequencySquared);
-  if (!isDiagonal_)
-    for (UnsignedInteger j = 0; j < dimension_ ; ++j)
-      for (UnsignedInteger i = j + 1; i < dimension_ ; ++i)
-        spectralDensityMatrix(i, j) = amplitude_[i] * spatialCorrelation_(i, j) * amplitude_[j] * (scale_[i] + scale_[j]) / (0.25 * (scale_[i] / scale_[j] + 2.0 + scale_[j] / scale_[i]) + scale_[i] * scale_[j] * scaledFrequencySquared);
+NumericalComplex CauchyModel::computeStandardRepresentative(const NumericalScalar frequency) const
 
-  return spectralDensityMatrix;
+{
+  NumericalComplex value = 1.0;
+  for (UnsignedInteger k = 0; k < spatialDimension_; ++k)
+  {
+    const NumericalScalar scaledFrequency = 2.0 * M_PI * scale_[k] * fabs(frequency);
+    const NumericalScalar scaledFrequencySquared = scaledFrequency * scaledFrequency;
+    value *= (2.0 * scale_[k]) / (1.0 + scaledFrequencySquared);
+  }
+  return value;
 }
 
 /* String converter */
