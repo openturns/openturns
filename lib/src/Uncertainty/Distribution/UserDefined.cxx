@@ -77,6 +77,7 @@ UserDefined::UserDefined(const NumericalSample & sample)
   setPairCollection( collection );
   if ((getDimension() == 1) || (collection_.getSize() <= ResourceMap::GetAsUnsignedInteger("UserDefined-SmallSize"))) compactSupport();
   setName(sample.getName());
+  if(!sample.getDescription().isBlank()) setDescription(sample.getDescription());
 }
 
 /* Constructor from a sample and the associated weights */
@@ -100,6 +101,7 @@ UserDefined::UserDefined(const NumericalSample & sample,
   setPairCollection( collection );
   if ((getDimension() == 1) || (collection_.getSize() <= ResourceMap::GetAsUnsignedInteger("UserDefined-SmallSize"))) compactSupport();
   setName(sample.getName());
+  if(!sample.getDescription().isBlank()) setDescription(sample.getDescription());
 }
 
 /* Comparison operator */
