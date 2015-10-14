@@ -881,10 +881,12 @@ NumericalSampleImplementation & NumericalSampleImplementation::stack(const Numer
     for (UnsignedInteger j = 0; j < otherDimension; ++j) result[i][dimension_ + j] = sample[i][j];
   }
   // Second, the description
-  Description description(getDescription());
-  const Description otherDescription(sample.getDescription());
-  for (UnsignedInteger i = 0; i < otherDimension; ++i) description.add(otherDescription[i]);
-  result.setDescription(description);
+  if (!p_description_.isNull() || !sample.p_description_.isNull()) {
+    Description description(getDescription());
+    const Description otherDescription(sample.getDescription());
+    for (UnsignedInteger i = 0; i < otherDimension; ++i) description.add(otherDescription[i]);
+    result.setDescription(description);
+  }
   *this = result;
   return *this;
 }
@@ -1210,7 +1212,7 @@ NumericalSampleImplementation NumericalSampleImplementation::rank() const
       for (UnsignedInteger k = lastIndex; k < size_; ++k) rankedSample[ sortedMarginalSamples[k].index_ ][i] = rankValue;
     }
   }
-  rankedSample.setDescription(getDescription());
+  if (!p_description_.isNull()) rankedSample.setDescription(getDescription());
   return rankedSample;
 }
 
@@ -1245,7 +1247,7 @@ NumericalSampleImplementation NumericalSampleImplementation::sort() const
     // copy
     for (UnsignedInteger j = 0; j < size_; ++j) sortedSample[j][i] = data[j];
   } // loop over dimension
-  sortedSample.setDescription(getDescription());
+  if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
 }
 
@@ -1282,7 +1284,7 @@ NumericalSampleImplementation NumericalSampleImplementation::sortAccordingToACom
   TBB::ParallelSort(sortables.begin(), sortables.end());
   NumericalSampleImplementation sortedSample(size_, dimension_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = NumericalPoint(sortables[i].values_);
-  sortedSample.setDescription(getDescription());
+  if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
 }
 
@@ -2039,12 +2041,10 @@ NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const U
 
   // General case
   NumericalSampleImplementation marginalSample(size_, 1);
-  const Description description(getDescription());
 
   // If the sample has a description, extract the marginal description
-  if (description.getSize() == dimension_)
+  if (!p_description_.isNull())
     marginalSample.setDescription(Description(1, getDescription()[index]));
-
   for (UnsignedInteger i = 0; i < size_; ++i)
     marginalSample[i][0] = operator[](i)[index];
 
@@ -2062,13 +2062,13 @@ NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const I
   // General case
   const UnsignedInteger outputDimension(indices.getSize());
   NumericalSampleImplementation marginalSample(size_, outputDimension);
-  const Description description(getDescription());
 
   // If the sample has a description, extract the marginal description
-  if (description.getSize() == dimension_)
+  if (!p_description_.isNull())
   {
+    const Description description(getDescription());
     Description marginalDescription(outputDimension);
-    for (UnsignedInteger i = 0; i < outputDimension; ++i)
+    for (UnsignedInteger i = 0; i < outputDimension; ++ i)
       marginalDescription[i] = description[indices[i]];
     marginalSample.setDescription(marginalDescription);
   }
