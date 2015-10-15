@@ -372,7 +372,7 @@ else ()
 endif ()
 
 # Selectively add or remove RPATH from executable
-if (NOT SYSTEM_INSTALL)
+if (NOT SYSTEM_INSTALL AND NOT DEFINED CMAKE_INSTALL_RPATH)
   set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH}
                             ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES}
      )
