@@ -158,10 +158,12 @@ Frechet::NumericalPointWithDescriptionCollection Frechet::getParametersCollectio
   return parameters;
 }
 
-void Frechet::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Frechet::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Frechet(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  *this = Frechet(parameters[0], parameters[1], parameters[2]);
   setWeight(w);
 }
 

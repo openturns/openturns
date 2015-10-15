@@ -322,24 +322,36 @@ NumericalScalar TruncatedDistribution::computeScalarQuantile(const NumericalScal
 /* Parameters value and description accessor */
 TruncatedDistribution::NumericalPointWithDescriptionCollection TruncatedDistribution::getParametersCollection() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(distribution_.getParametersCollection()[0]);
+  NumericalPointWithDescription point(distribution_.getParameters());
   Description description(point.getDescription());
-  if (finiteLowerBound_)
-  {
-    point.add(lowerBound_);
-    description.add("lowerBound");
-  }
-  if (finiteUpperBound_)
-  {
-    point.add(upperBound_);
-    description.add("upperBound");
-  }
+  point.add(finiteLowerBound_ ? 1.0 : 0.0);
+  description.add("finiteLowerBound");
+  point.add(lowerBound_);
+  description.add("lowerBound");
+  point.add(finiteUpperBound_ ? 1.0 : 0.0);
+  description.add("finiteUpperBound");
+  point.add(upperBound_);
+  description.add("upperBound");
   point.setDescription(description);
   point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPointWithDescriptionCollection(1, point);
 }
+
+void TruncatedDistribution::setParameters(const NumericalPoint & parameters)
+{
+  UnsignedInteger distSize = distribution_.getParametersNumber();
+  if (parameters.getSize() != 4 + distSize) throw InvalidArgumentException(HERE) << "Error: expected " << 4 + distSize << " parameters, got " << parameters.getSize();
+
+  NumericalPoint newDistParameters(distSize);
+  std::copy(parameters.begin(), parameters.begin() + distSize, newDistParameters.begin());
+  distribution_.setParameters(parameters);
+
+  finiteLowerBound_ = (parameters[distSize] == 1.0);
+  lowerBound_ = parameters[distSize + 1];
+  finiteUpperBound_ = (parameters[distSize + 2] == 1.0);
+  upperBound_ = parameters[distSize + 3];
+}
+
 
 /* distribution accessor */
 void TruncatedDistribution::setDistribution(const Distribution & distribution)

@@ -251,10 +251,12 @@ Laplace::NumericalPointWithDescriptionCollection Laplace::getParametersCollectio
   return parameters;
 }
 
-void Laplace::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Laplace::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Laplace(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = Laplace(parameters[0], parameters[1]);
   setWeight(w);
 }
 

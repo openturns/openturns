@@ -148,9 +148,9 @@ MaximumDistribution::NumericalPointWithDescriptionCollection MaximumDistribution
   return distribution_.getParametersCollection();
 }
 
-void MaximumDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void MaximumDistribution::setParameters(const NumericalPoint & parameters)
 {
-  distribution_.setParametersCollection(parametersCollection);
+  distribution_.setParameters(parameters);
 }
 
 /* Distribution accessor */

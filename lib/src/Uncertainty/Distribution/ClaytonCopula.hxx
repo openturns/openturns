@@ -106,8 +106,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using ArchimedeanCopula::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using ArchimedeanCopula::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;

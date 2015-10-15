@@ -332,10 +332,10 @@ Weibull::NumericalPointWithDescriptionCollection Weibull::getParametersCollectio
   return parameters;
 }
 
-void Weibull::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Weibull::setParameters(const NumericalPoint & parameters)
 {
   const NumericalScalar w(getWeight());
-  *this = Weibull(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  *this = Weibull(parameters[0], parameters[1], parameters[2]);
   setWeight(w);
 }
 

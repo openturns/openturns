@@ -1474,6 +1474,32 @@ OT_Distribution_getParametersCollection_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_getParameters_doc
+"Accessor to the distribution's compact parameters.
+
+Returns
+-------
+parameters : :class:`~openturns.NumericalPointWithDescription`
+    Dictionary-like object with parameters names and values."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getParameters
+OT_Distribution_getParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_setParameters_doc
+"Accessor to the distribution's compact parameters.
+
+Parameters
+----------
+parameters : sequence of float
+    Parameters values."
+%enddef
+%feature("docstring") OT::DistributionImplementation::setParameters
+OT_Distribution_setParameters_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_getParametersNumber_doc
 "Accessor to the number of parameters in the distribution.
 

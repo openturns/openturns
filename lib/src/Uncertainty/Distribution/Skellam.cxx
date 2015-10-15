@@ -226,10 +226,12 @@ Skellam::NumericalPointWithDescriptionCollection Skellam::getParametersCollectio
   return parameters;
 }
 
-void Skellam::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Skellam::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Skellam(parametersCollection[0][0], parametersCollection[0][1]);
+  *this = Skellam(parameters[0], parameters[1]);
   setWeight(w);
 }
 

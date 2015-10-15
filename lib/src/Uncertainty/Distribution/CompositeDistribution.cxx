@@ -403,9 +403,9 @@ CompositeDistribution::NumericalPointWithDescriptionCollection CompositeDistribu
   return antecedent_.getParametersCollection();
 }
 
-void CompositeDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void CompositeDistribution::setParameters(const NumericalPoint & parameters)
 {
-  antecedent_.setParametersCollection(parametersCollection);
+  antecedent_.setParameters(parameters);
   setFunctionAndAntecedent(function_, antecedent_);
 }
 

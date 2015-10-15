@@ -310,10 +310,12 @@ InverseChiSquare::NumericalPointWithDescriptionCollection InverseChiSquare::getP
   return parameters;
 }
 
-void InverseChiSquare::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void InverseChiSquare::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = InverseChiSquare(parametersCollection[0][0]);
+  *this = InverseChiSquare(parameters[0]);
   setWeight(w);
 }
 

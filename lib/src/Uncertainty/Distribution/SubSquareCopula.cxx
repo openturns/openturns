@@ -228,10 +228,9 @@ SubSquareCopula::NumericalPointWithDescriptionCollection SubSquareCopula::getPar
   return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
 } // getParametersCollection
 
-void SubSquareCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void SubSquareCopula::setParameters(const NumericalPoint & parameters)
 {
-  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection is of size=" << parametersCollection.getSize() << ", expected a size=1.";
-  if (parametersCollection[0].getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: expected no parameters for the SubSquareCopula, got " << parametersCollection[0].getDimension() << " parameters instead.";
+  if (parameters.getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: expected no parameters for the SubSquareCopula, got " << parameters.getDimension() << " parameters instead.";
 }
 
 /* Method save() stores the object through the StorageManager */

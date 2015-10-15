@@ -534,8 +534,8 @@ DistributionImplementation::NumericalPointWithDescriptionCollection Dirichlet::g
     Description marginalDescription(point.getDimension());
     point[0] = theta_[marginalIndex];
     point[1] = sumTheta_ - theta_[marginalIndex];
-    marginalDescription[0] = "theta";
-    marginalDescription[1] = "sum theta";
+    marginalDescription[0] = OSS() << "theta_" << marginalIndex;
+    marginalDescription[1] = OSS() << "sum_theta_" << marginalIndex;
     point.setDescription(marginalDescription);
     point.setName(description[marginalIndex]);
     parameters[marginalIndex] = point;
@@ -544,17 +544,16 @@ DistributionImplementation::NumericalPointWithDescriptionCollection Dirichlet::g
 }
 
 
-void Dirichlet::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Dirichlet::setParameters(const NumericalPoint & parameters)
 {
-  const UnsignedInteger size(parametersCollection.getSize());
-  const UnsignedInteger dimension(size);
+  if (parameters.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
+  const UnsignedInteger dimension = parameters.getSize() / 2;
   NumericalPoint theta(dimension + 1);
-  if ( size == 0 ) throw InvalidArgumentException(HERE) << "The collection is empty.";
-  if ( parametersCollection[0].getSize() < 2 ) throw InvalidArgumentException(HERE) << "The collection is too small.";
-  NumericalScalar lastTheta = parametersCollection[0][0] + parametersCollection[0][1];// sum of all thetas
+  NumericalScalar lastTheta = parameters[0] + parameters[1];// sum of all thetas
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    theta[i] = parametersCollection[i][0];
+    theta[i] = parameters[2 * i];
     lastTheta -= theta[i]; // substract each theta except the last one
   }
   theta[dimension] = lastTheta;

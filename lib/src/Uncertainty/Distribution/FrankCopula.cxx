@@ -333,10 +333,12 @@ FrankCopula::NumericalPointWithDescriptionCollection FrankCopula::getParametersC
   return parameters;
 }
 
-void FrankCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void FrankCopula::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = FrankCopula(parametersCollection[0][0]);
+  *this = FrankCopula(parameters[0]);
   setWeight(w);
 }
 

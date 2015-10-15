@@ -313,10 +313,12 @@ GumbelCopula::NumericalPointWithDescriptionCollection GumbelCopula::getParameter
   return parameters;
 }
 
-void GumbelCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void GumbelCopula::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = GumbelCopula(parametersCollection[0][0]);
+  *this = GumbelCopula(parameters[0]);
   setWeight(w);
 }
 

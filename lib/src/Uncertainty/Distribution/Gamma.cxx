@@ -401,10 +401,12 @@ Gamma::NumericalPointWithDescriptionCollection Gamma::getParametersCollection() 
   return parameters;
 }
 
-void Gamma::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Gamma::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Gamma(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize();
+
+  const NumericalScalar w = getWeight();
+  *this = Gamma(parameters[0], parameters[1], parameters[2]);
   setWeight(w);
 }
 

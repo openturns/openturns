@@ -112,8 +112,8 @@ public:
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & setParametersCollection);
+  using CopulaImplementation::setParameters;
+  void setParameters(const NumericalPoint & setParameters);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

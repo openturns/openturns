@@ -72,8 +72,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using Mixture::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  using Mixture::setParameters;
+  void setParameters(const NumericalPoint & parameters);
 
 
   /* Interface specific to ConditionalDistribution */

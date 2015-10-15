@@ -276,10 +276,12 @@ ChiSquare::NumericalPointWithDescriptionCollection ChiSquare::getParametersColle
   return parameters;
 }
 
-void ChiSquare::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ChiSquare::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = ChiSquare(parametersCollection[0][0]);
+  *this = ChiSquare(parameters[0]);
   setWeight(w);
 }
 

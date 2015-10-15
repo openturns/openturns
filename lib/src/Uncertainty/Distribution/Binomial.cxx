@@ -216,10 +216,12 @@ Binomial::NumericalPointWithDescriptionCollection Binomial::getParametersCollect
   return parameters;
 }
 
-void Binomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Binomial::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Binomial(static_cast<UnsignedInteger>(parametersCollection[0][0]), parametersCollection[0][1]);
+  *this = Binomial(static_cast<UnsignedInteger>(parameters[0]), parameters[1]);
   setWeight(w);
 }
 

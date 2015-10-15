@@ -145,9 +145,9 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
-  void setParametersCollection(const NumericalPoint & flattenCollection);
+
+  /** Compact parameters representation accessor */
+  void setParameters(const NumericalPoint & parameters);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

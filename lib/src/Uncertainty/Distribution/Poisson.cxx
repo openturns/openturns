@@ -232,10 +232,12 @@ Poisson::NumericalPointWithDescriptionCollection Poisson::getParametersCollectio
   return parameters;
 }
 
-void Poisson::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Poisson::setParameters(const NumericalPoint & parameters)
 {
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize();
+
   const NumericalScalar w(getWeight());
-  *this = Poisson(parametersCollection[0][0]);
+  *this = Poisson(parameters[0]);
   setWeight(w);
 }
 

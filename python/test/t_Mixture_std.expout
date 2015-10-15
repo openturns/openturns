@@ -19,7 +19,7 @@ quantile= class=NumericalPoint name=Unnamed dimension=3 values=[5.96551,6.93727,
 cdf(quantile)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,3.66667,0.666667,3.66667,9.66667,2.16667,0.666667,2.16667,1.66667]
-parameters= [class=NumericalPointWithDescription name=Normal dimension=2 description=[mean,standard deviation] values=[0.5,2],class=NumericalPointWithDescription name=Normal dimension=2 description=[mean,standard deviation] values=[1.5,2],class=NumericalPointWithDescription name=Normal dimension=2 description=[mean,standard deviation] values=[2.5,2],class=NumericalPointWithDescription name=dependence dimension=9 description=[atom_0_R_1_0,atom_0_R_2_0,atom_0_R_2_1,atom_1_R_1_0,atom_1_R_2_0,atom_1_R_2_1,atom_2_R_1_0,atom_2_R_2_0,atom_2_R_2_1] values=[0.5,0,0.5,0.5,0,0.5,0.5,0,0.5]]
+parameters= [class=NumericalPointWithDescription name=Normal dimension=2 description=[mean_0,standard_deviation_0] values=[0.5,2],class=NumericalPointWithDescription name=Normal dimension=2 description=[mean_0,standard_deviation_0] values=[1.5,2],class=NumericalPointWithDescription name=Normal dimension=2 description=[mean_0,standard_deviation_0] values=[2.5,2],class=NumericalPointWithDescription name=dependence dimension=9 description=[atom_0_R_1_0,atom_0_R_2_0,atom_0_R_2_1,atom_1_R_1_0,atom_1_R_2_0,atom_1_R_2_1,atom_2_R_1_0,atom_2_R_2_0,atom_2_R_2_1] values=[0.5,0,0.5,0.5,0,0.5,0.5,0,0.5]]
 standard moment n= 0  value= [1,1,1]
 standard moment n= 1  value= [1.5,0.5,2]
 standard moment n= 2  value= [6.91667,9.91667,5.66667]
