@@ -57,8 +57,10 @@ public:
   /** Conversion operator */
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
+  NumericalPoint inverse(const NumericalPoint & inP) const;
+
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  NumericalPointWithDescription getParameters() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;

@@ -37,16 +37,34 @@ OT_DistributionParameters_getDistribution_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionParameters_getParametersCollection_doc
+%define OT_DistributionParameters_getParameters_doc
 "Get the value and the description of the parameters.
 
 Returns
 -------
-collection : :class:`~openturns.NumericalPointWithDescriptionCollection`
+collection : :class:`~openturns.NumericalPointWithDescription`
     List of the value and the description of the parameters."
 %enddef
-%feature("docstring") OT::DistributionParametersImplementation::getParametersCollection
-OT_DistributionParameters_getParametersCollection_doc
+%feature("docstring") OT::DistributionParametersImplementation::getParameters
+OT_DistributionParameters_getParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_inverse_doc
+"Convert to native parameters.
+
+Parameters
+----------
+inP : float sequence
+    The non-native parameters.
+
+Returns
+-------
+outP : :class:`~openturns.NumericalPoint`
+    The native parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::inverse
+OT_DistributionParameters_inverse_doc
 
 // ---------------------------------------------------------------------
 

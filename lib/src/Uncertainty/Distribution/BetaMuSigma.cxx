@@ -137,8 +137,30 @@ NumericalPoint BetaMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
+  const NumericalScalar r = inP[0];
+  const NumericalScalar t = inP[1];
+  const NumericalScalar a = inP[2];
+  const NumericalScalar b = inP[3];
+
+  if (r <= 0.) throw InvalidArgumentException(HERE) << "R MUST be positive";
+  if (t <= 0.) throw InvalidArgumentException(HERE) << "T MUST be positive";
+  if (t <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r;
+
+  const NumericalScalar mu = a + (b - a) * r / t;
+  const NumericalScalar sigma = (b - a) / t * std::sqrt(r * (t - r) / (t + 1.0));
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
 /* Parameters value and description accessor */
-BetaMuSigma::NumericalPointWithDescriptionCollection BetaMuSigma::getParametersCollection() const
+NumericalPointWithDescription BetaMuSigma::getParameters() const
 {
   NumericalPointWithDescription point(4);
   point[0] = mu_;
@@ -151,8 +173,7 @@ BetaMuSigma::NumericalPointWithDescriptionCollection BetaMuSigma::getParametersC
   description[2] = "a";
   description[3] = "b";
   point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
 

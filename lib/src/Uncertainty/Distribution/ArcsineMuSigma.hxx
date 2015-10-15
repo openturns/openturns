@@ -57,8 +57,10 @@ public:
   /** Conversion operator */
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
+  NumericalPoint inverse(const NumericalPoint & inP) const;
+
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  NumericalPointWithDescription getParameters() const;
 
   /** String converter */
   String __repr__() const;

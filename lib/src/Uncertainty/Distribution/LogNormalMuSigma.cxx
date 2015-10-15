@@ -119,17 +119,38 @@ NumericalPoint LogNormalMuSigma::operator () (const NumericalPoint & inP) const
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
   NumericalPoint nativeParameters(inP);
-  NumericalScalar sigmalog = sqrt(log(1 + sigma * sigma / ((mu - gamma) * (mu - gamma))));
-  NumericalScalar mulog = log(mu - gamma) - sigmalog * sigmalog / 2;
-  nativeParameters[0] = mulog;
-  nativeParameters[1] = sigmalog;
+  NumericalScalar sigmaLog = sqrt(log(1 + sigma * sigma / ((mu - gamma) * (mu - gamma))));
+  NumericalScalar muLog = log(mu - gamma) - sigmaLog * sigmaLog / 2;
+  nativeParameters[0] = muLog;
+  nativeParameters[1] = sigmaLog;
 
   return nativeParameters;
 }
 
 
+NumericalPoint LogNormalMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  const NumericalScalar muLog = inP[0];
+  const NumericalScalar sigmaLog = inP[1];
+  const NumericalScalar gamma = inP[2];
+
+  if (sigmaLog <= 0.0) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
+
+  const NumericalScalar mu = gamma + std::exp(muLog + 0.5 * sigmaLog * sigmaLog);
+  const NumericalScalar expSigmaLog2 = std::exp(sigmaLog * sigmaLog);
+  const NumericalScalar sigma = std::exp(muLog) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
+
 /* Parameters value and description accessor */
-LogNormalMuSigma::NumericalPointWithDescriptionCollection LogNormalMuSigma::getParametersCollection() const
+NumericalPointWithDescription LogNormalMuSigma::getParameters() const
 {
   NumericalPointWithDescription point(3);
   point[0] = mu_;
@@ -140,8 +161,7 @@ LogNormalMuSigma::NumericalPointWithDescriptionCollection LogNormalMuSigma::getP
   description[1] = "sigma";
   description[2] = "gamma";
   point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
 
