@@ -8,3 +8,5 @@ OT_DistributionParameters_getDistribution_doc
 OT_DistributionParameters_getParametersCollection_doc
 %feature("docstring") OT::DistributionParameters::gradient
 OT_DistributionParameters_gradient_doc
+%feature("docstring") OT::DistributionParameters::inverse
+OT_DistributionParameters_inverse_doc

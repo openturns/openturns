@@ -110,6 +110,24 @@ NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  const NumericalScalar alpha = inP[0];
+  const NumericalScalar beta = inP[1];
+
+  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
+
+  const NumericalScalar a = beta;
+  const NumericalScalar b = 1.0 / alpha;
+
+  NumericalPoint abParameters(inP);
+  abParameters[0] = a;
+  abParameters[1] = b;
+
+  return abParameters;
+}
+
 /* Parameters value and description accessor */
 GumbelAB::NumericalPointWithDescriptionCollection GumbelAB::getParametersCollection() const
 {

@@ -60,6 +60,9 @@ public:
   /** Conversion operator */
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
+  /** Conversion from native parameters */
+  NumericalPoint inverse(const NumericalPoint & inP) const;
+
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
 

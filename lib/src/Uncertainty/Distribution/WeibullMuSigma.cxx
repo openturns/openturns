@@ -185,6 +185,27 @@ NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint WeibullMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  const NumericalScalar alpha = inP[0];
+  const NumericalScalar beta = inP[1];
+  const NumericalScalar gamma = inP[2];
+
+  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+
+  const NumericalScalar mu = gamma + alpha * SpecFunc::Gamma(1.0 + 1.0 / beta);
+  const NumericalScalar sigma = alpha * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta), 2.0));
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
+
 /* Parameters value and description accessor */
 WeibullMuSigma::NumericalPointWithDescriptionCollection WeibullMuSigma::getParametersCollection() const
 {

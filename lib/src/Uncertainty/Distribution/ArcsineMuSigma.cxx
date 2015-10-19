@@ -110,6 +110,25 @@ NumericalPoint ArcsineMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint ArcsineMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  const NumericalScalar a = inP[0];
+  const NumericalScalar b = inP[1];
+
+  if (a >= b) throw InvalidArgumentException(HERE) << "a must be smaller than b";
+
+  const NumericalScalar mu = (a + b) / 2.0;
+  const NumericalScalar sigma = 0.5 * (b - a) * M_SQRT1_2;
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
+
 /* Parameters value and description accessor */
 ArcsineMuSigma::NumericalPointWithDescriptionCollection ArcsineMuSigma::getParametersCollection() const
 {
