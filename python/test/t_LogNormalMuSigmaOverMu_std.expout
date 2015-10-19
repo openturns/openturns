@@ -1,8 +1,0 @@
-Distribution Parameters  class=LogNormalMuSigmaOverMu name=Unnamed mu=0.63 sigmaOverMu=5.24 gamma=-0.5
-Distribution Parameters  LogNormalMuSigmaOverMu(mu = 0.63, sigmaOverMu = 5.24, gamma = -0.5)
-[[  0.256272  0.418663  0        ]
- [ -0.170824  0.113758  0        ]
- [ -1.6771    0.527516  1        ]]
-[[  0.256272  0.418663  0        ]
- [ -0.170824  0.113758  0        ]
- [ -1.6771    0.527516  1        ]]
