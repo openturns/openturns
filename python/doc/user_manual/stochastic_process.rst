@@ -44,7 +44,9 @@ Spectral information
     :template: class.rst_t
 
      SpectralModel
+    :template: SpectralModel.rst_t
      CauchyModel
+    :template: class.rst_t
      UserDefinedSpectralModel
      SpectralModelFactory
      WelchFactory
