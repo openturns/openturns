@@ -59,6 +59,9 @@ public:
   /** Conversion operator */
   virtual NumericalPoint operator () (const NumericalPoint & inP) const;
 
+  /** Conversion from native parameters */
+  virtual NumericalPoint inverse(const NumericalPoint & inP) const;
+
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
 

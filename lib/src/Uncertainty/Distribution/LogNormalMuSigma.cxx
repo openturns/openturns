@@ -128,6 +128,27 @@ NumericalPoint LogNormalMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
+NumericalPoint LogNormalMuSigma::inverse(const NumericalPoint & inP) const
+{
+  if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  const NumericalScalar muLog = inP[0];
+  const NumericalScalar sigmaLog = inP[1];
+  const NumericalScalar gamma = inP[2];
+
+  if (sigmaLog <= 0.0) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
+
+  const NumericalScalar mu = gamma + std::exp(muLog + 0.5 * sigmaLog * sigmaLog);
+  const NumericalScalar expSigmaLog2 = std::exp(sigmaLog * sigmaLog);
+  const NumericalScalar sigma = std::exp(muLog) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
+
+  NumericalPoint muSigmaParameters(inP);
+  muSigmaParameters[0] = mu;
+  muSigmaParameters[1] = sigma;
+
+  return muSigmaParameters;
+}
+
+
 /* Parameters value and description accessor */
 LogNormalMuSigma::NumericalPointWithDescriptionCollection LogNormalMuSigma::getParametersCollection() const
 {

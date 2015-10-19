@@ -61,3 +61,22 @@ gradient : :class:`~openturns.Matrix`
 %enddef
 %feature("docstring") OT::DistributionParametersImplementation::gradient
 OT_DistributionParameters_gradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_inverse_doc
+"Convert to native parameters.
+
+Parameters
+----------
+inP : sequence of float
+    The non-native parameters.
+
+Returns
+-------
+outP : :class:`~openturns.NumericalPoint`
+    The native parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::inverse
+OT_DistributionParameters_inverse_doc
+

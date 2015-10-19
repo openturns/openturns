@@ -66,6 +66,13 @@ NumericalPoint DistributionParametersImplementation::operator () (const Numerica
 }
 
 
+/* Conversion from native parameters */
+NumericalPoint DistributionParametersImplementation::inverse(const NumericalPoint & inP) const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::inverse const";
+}
+
+
 /* Parameters value and description accessor */
 DistributionParametersImplementation::NumericalPointWithDescriptionCollection DistributionParametersImplementation::getParametersCollection() const
 {

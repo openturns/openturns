@@ -112,6 +112,16 @@ NumericalPoint LogNormalMuSigmaOverMu::operator () (const NumericalPoint & inP) 
 }
 
 
+NumericalPoint LogNormalMuSigmaOverMu::inverse(const NumericalPoint & inP) const
+{
+  const LogNormalMuSigma muSigmaParameters;
+  NumericalPoint muSigmaOverMuParameters(muSigmaParameters.inverse(inP));
+  const NumericalScalar mu = muSigmaOverMuParameters[0];
+  if (mu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  muSigmaOverMuParameters[1] /= mu;
+  return muSigmaOverMuParameters;
+}
+
 /* Parameters value and description accessor */
 LogNormalMuSigmaOverMu::NumericalPointWithDescriptionCollection LogNormalMuSigmaOverMu::getParametersCollection() const
 {
