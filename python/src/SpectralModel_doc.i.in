@@ -1,0 +1,28 @@
+// SpectralModel docstrings are defined in SpectralModelImplementation_doc.i.in
+
+%feature("docstring") OT::SpectralModel
+OT_SpectralModel_doc
+%feature("docstring") OT::SpectralModel::computeStandardRepresentative
+OT_SpectralModel_computeStandardRepresentative_doc
+%feature("docstring") OT::SpectralModel::draw
+OT_SpectralModel_draw_doc
+%feature("docstring") OT::SpectralModel::getFrequencyGrid
+OT_SpectralModel_get_frequency_grid_doc
+%feature("docstring") OT::SpectralModel::getDimension
+OT_SpectralModel_getDimension_doc
+%feature("docstring") OT::SpectralModel::getAmplitude
+OT_SpectralModel_getAmplitude_doc
+%feature("docstring") OT::SpectralModel::getScale
+OT_SpectralModel_getScale_doc
+%feature("docstring") OT::SpectralModel::getSpatialCorrelation
+OT_SpectralModel_getSpatialCorrelation_doc
+%feature("docstring") OT::SpectralModel::getSpatialDimension
+OT_SpectralModel_get_spatial_dimension_doc
+%feature("docstring") OT::SpectralModel::setAmplitude
+OT_SpectralModel_setAmplitude_doc
+%feature("docstring") OT::SpectralModel::setFrequencyGrid
+OT_SpectralModel_set_frequency_grid_doc
+%feature("docstring") OT::SpectralModel::setScale
+OT_SpectralModel_setScale_doc
+%feature("docstring") OT::SpectralModel::operator()
+OT_SpectralModel_operator_doc

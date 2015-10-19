@@ -174,8 +174,8 @@ ot_add_python_module(statistics statistics_module.i
                       Hanning.i Hanning_doc.i.in
                       FFTImplementation.i FFTImplementation_doc.i.in
                       FFT.i FFT_doc.i.in
-                      SpectralModelImplementation.i
-                      SpectralModel.i
+                      SpectralModelImplementation.i SpectralModelImplementation_doc.i.in
+                      SpectralModel.i SpectralModel_doc.i.in
                       CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
                       CovarianceModel.i CovarianceModel_doc.i.in
                       StationaryCovarianceModel.i
