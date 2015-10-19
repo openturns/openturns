@@ -85,7 +85,7 @@ OT_CovarianceModel_computeAsScalar_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_computeStandardRepresentative_doc
-"Compute the covariance function for 1-d model.
+"Compute the standard representative function of the covariance model.
 
 Available usages:
     computeStandrdRepresentative(s, t)
@@ -109,7 +109,7 @@ Notes
 *computeStandrdRepresentative* evaluates the correlation function on two spatial points:
 :math:`\rho : \cD \times \cD \mapsto \Rset`.
 
-A covariance function express as fllows at :math:`(s,t)\in \Rset^n`:
+A covariance function express at :math:`(s,t)\in \Rset^n` as fllows :
 
 
 .. math::
