@@ -178,7 +178,7 @@ Returns
 amplitude : :class:`~openturns.NumericalPoint`
     The amplitude parameter used in the covariance function."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::getAmplitde
+%feature("docstring") OT::CovarianceModelImplementation::getAmplitude
 OT_CovarianceModel_getAmplitude_doc
 
 // ---------------------------------------------------------------------
@@ -193,6 +193,34 @@ dimension : int
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getDimension
 OT_CovarianceModel_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_get_marginal
+"Get the ith marginal of the model.
+
+Returns
+-------
+marginal : int
+    index of marginal of the model."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getMarginal
+OT_CovarianceModel_get_marginal
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_get_nugget_factor_doc
+"Get the nugget factor, i.e. parameter that allow smooth predictions from noisy
+data. The nugget is added to the diagonal of the assumed training covariance (thanks to discretize)
+and acts as a Tikhonov regularization in the problem.
+
+Returns
+-------
+nuggetFactor : float
+    nugget factor used for the regularization of the discretized covariance matrix."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getNuggetFactor
+OT_CovarianceModel_get_nugget_factor_doc
 
 // ---------------------------------------------------------------------
 
@@ -315,7 +343,7 @@ Parameters
 amplitude : :class:`~openturns.NumericalPoint`
     The amplitude parameter to be used in the covariance function."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::setAmplitde
+%feature("docstring") OT::CovarianceModelImplementation::setAmplitude
 OT_CovarianceModel_setAmplitude_doc
 
 // ---------------------------------------------------------------------
@@ -331,6 +359,19 @@ scale : :class:`~openturns.NumericalPoint`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setScale
 OT_CovarianceModel_setScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_set_nugget_factor_doc
+"Set the nugget factor for the regularization of the discretized covariance matrix.
+
+Parameters
+----------
+nuggetFactor : float
+    nugget factor to be used for the regularization of the discretized covariance matrix."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::setNuggetFactor
+OT_CovarianceModel_set_nugget_factor_doc
 
 // ---------------------------------------------------------------------
 
@@ -360,5 +401,32 @@ spatialCorrelation : :class:`~openturns.CorrelationMatrix`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setSpatialCorrelation
 OT_CovarianceModel_setSpatialCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_operator_doc
+"Evaluate the covariance function.
+
+Available usages:
+    __call__(s, t)
+
+    __call__(tau)
+
+Parameters
+----------
+s, t : sequences of float
+    Inputs.
+tau : sequence of float
+    Input.
+
+Returns
+-------
+covariance : CovarianceMatrix
+    The evaluation of the covariance function.
+
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::operator()
+OT_CovarianceModel_operator_doc
 
 // ---------------------------------------------------------------------
