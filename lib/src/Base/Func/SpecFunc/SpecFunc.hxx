@@ -173,6 +173,10 @@ public:
                                const UnsignedInteger n);
   // DiLog function: Dilog(x) = -\int_0^x \log(1-t)/t dt
   static NumericalScalar DiLog(const NumericalScalar x);
+  // Exponential integral function: Ei(x) = -\int_{-x}^{\infty}exp(-t)/t dt
+  static NumericalScalar Ei(const NumericalScalar x);
+  // Complex exponential integral function: Ei(z) = -\int_{-z}^{\infty}exp(-t)/t dt
+  static NumericalComplex Ei(const NumericalComplex & z);
   // Complex Faddeeva function: Faddeeva(z) = exp(-z^2)\erfc(-I*z)
   static NumericalComplex Faddeeva(const NumericalComplex & z);
   // Imaginary part of the Faddeeva function: FaddeevaIm(z) = Im(Faddeeva(x))

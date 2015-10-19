@@ -70,8 +70,10 @@ try:
     print("cdf=%.6f" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
     print("ccdf=%.6f" % CCDF)
-    # CF = distribution.computeCharacteristicFunction(point[0])
-    # print "characteristic function=", CF
+    CF = distribution.computeCharacteristicFunction(point[0])
+    print("characteristic function=%.6f+%.6fj" % (CF.real, CF.imag))
+    logCF = distribution.computeLogCharacteristicFunction(point[0])
+    print("log characteristic function=%.6f+%.6fj" % (logCF.real, logCF.imag))
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
