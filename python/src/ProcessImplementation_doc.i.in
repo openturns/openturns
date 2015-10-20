@@ -97,8 +97,8 @@ OT_Process_setDescription_doc
 
 Returns
 -------
-n : int
-    Dimension of the values: :math:`d`."
+d : int
+    Dimension of the domain :math:`\cD`."
 %enddef
 %feature("docstring") OT::ProcessImplementation::getDimension
 OT_Process_getDimension_doc
