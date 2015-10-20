@@ -40,7 +40,7 @@ namespace ExponentialIntegralFunctions
     return (std::abs(std::real(current) - std::real(previous)) <= SpecFunc::Precision * std::abs(std::real(current))) && (std::abs(std::imag(current) - std::imag(previous)) <= SpecFunc::Precision * std::abs(std::imag(current)));
   }
 
-  NumericalScalar sign(const NumericalScalar x)
+  inline NumericalScalar sign(const NumericalScalar x)
   {
     return (x > 0.0) - (x < 0.0);
   }
@@ -55,7 +55,7 @@ namespace ExponentialIntegralFunctions
     return -SpecFunc::MaxNumericalScalar;
   }
 
-  NumericalScalar Ei(const NumericalScalar & z)
+  NumericalScalar Ei(const NumericalScalar z)
   {
     return std::real(Ei(NumericalComplex(z, 0.0)));
   }
@@ -127,8 +127,8 @@ namespace ExponentialIntegralFunctions
       }
     for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
       {
-	const NumericalScalar l(2 * k + 1);
-	const NumericalScalar k2(k * k);
+        const NumericalScalar l(2 * k + 1);
+        const NumericalScalar k2(k * k);
         c = 1.0 / (l - z - k2 * c);
         d = 1.0 / (l - z - k2 * d);
         const NumericalComplex old(ei);
