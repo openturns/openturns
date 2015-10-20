@@ -1,0 +1,66 @@
+%feature("docstring") OT::ExponentialCauchy
+"Absolute exponential covariance model.
+
+Available constructors:
+
+    ExponentialCauchy(*sigma, theta*)
+
+Parameters
+----------
+sigma : sequence of floats
+    Amplitude coefficients :math:`\sigma`.
+    Should be of size 1
+theta : sequence of floats
+    Scale coefficients.
+    The spatial dimension is the size of vector.
+
+Notes
+-----
+The second order model instanciate both a :class:`openturns.AbsoluteExponential` as covariance function and :class:`openturns.CauchyModel` as
+spectral model.
+
+Examples
+--------
+>>> import openturns as ot
+>>> model = ot.ExponentialCauchy([1.0], [10.0, 10.0])
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(model.computeCovariance(s, t))
+[[ 0.980199 ]]
+>>> tau = [0.1, 0.3]
+>>> print(model.computeCovariance(tau))
+[[ 0.960789 ]]
+>>> f = 0.3
+>>> print(model.computeSpectralDensity(f))
+[[ (0.00315075,0) ]]
+>>> f = 10
+>>> print(model.computeSpectralDensity(f))
+[[ (2.56648e-09,0) ]]"
+
+// ---------------------------------------------------------------------
+
+%define OT_ExponentialCauchy_getAmplitude_doc
+"Get the amplitude parameter of the the second order model.
+
+Returns
+-------
+amplitude : :class:`~openturns.NumericalPoint`
+    The used amplitude parameter."
+%enddef
+%feature("docstring") OT::ExponentialCauchy::getAmplitude
+OT_ExponentialCauchy_getAmplitude_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ExponentialCauchy_getScale_doc
+"Get the scale parameter of the second order model.
+
+Returns
+-------
+scale : :class:`~openturns.NumericalPoint`
+    The used scale parameter."
+%enddef
+%feature("docstring") OT::ExponentialCauchy::getScale
+OT_ExponentialCauchy_getScale_doc
+
+// ---------------------------------------------------------------------

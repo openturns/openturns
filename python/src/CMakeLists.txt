@@ -164,9 +164,9 @@ ot_add_python_module(statistics statistics_module.i
                       HaltonSequence.i HaltonSequence_doc.i.in
                       HaselgroveSequence.i HaselgroveSequence_doc.i.in
                       ReverseHaltonSequence.i ReverseHaltonSequence_doc.i.in
-                      SecondOrderModelImplementation.i
-                      SecondOrderModel.i
-                      ExponentialCauchy.i
+                      SecondOrderModelImplementation.i SecondOrderModelImplementation_doc.i.in
+                      SecondOrderModel.i SecondOrderModel_doc.i.in
+                      ExponentialCauchy.i ExponentialCauchy_doc.i.in
                       SphericalModel.i SphericalModel_doc.i.in
                       FilteringWindowsImplementation.i FilteringWindowsImplementation_doc.i.in
                       FilteringWindows.i FilteringWindows_doc.i.in
