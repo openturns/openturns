@@ -23,6 +23,7 @@
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "SpecFunc.hxx"
+#include "DistFunc.hxx"
 #include "Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -88,12 +89,12 @@ ClaytonCopula * ClaytonCopula::clone() const
 NumericalPoint ClaytonCopula::getRealization() const
 {
   NumericalPoint realization(2);
-  // We use the general algorithm based on conditional CDF inversion
   const NumericalScalar u1(RandomGenerator::Generate());
-  realization[0] = u1;
+  // We use the general algorithm based on conditional CDF inversion
   // W case
   if (theta_ == -1.0)
   {
+    realization[0] = u1;
     realization[1] = 1.0 - u1;
     return realization;
   }
@@ -102,9 +103,20 @@ NumericalPoint ClaytonCopula::getRealization() const
   // Independent case
   if (theta_ == 0.0)
   {
+    realization[0] = u1;
     realization[1] = u2;
     return realization;
   }
+  if (theta_ > 0.0)
+    {
+      const NumericalScalar x(-std::log(u1));
+      const NumericalScalar y(-std::log(u2));
+      const NumericalScalar z(DistFunc::rGamma(1.0 / theta_));
+      realization[0] = std::exp(-theta_ * log1p(x / z));
+      realization[1] = std::exp(-theta_ * log1p(y / z));
+      return realization;
+    }
+  realization[0] = u1;
   realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
   return realization;
 }
