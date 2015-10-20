@@ -43,7 +43,7 @@ SecondOrderModelImplementation::SecondOrderModelImplementation()
 }
 
 SecondOrderModelImplementation::SecondOrderModelImplementation(const CovarianceModel & covarianceModel,
-    const SpectralModel & spectralModel)
+                                                               const SpectralModel & spectralModel)
   : PersistentObject(),
     covarianceModel_(),
     spectralModel_()
@@ -70,12 +70,24 @@ UnsignedInteger SecondOrderModelImplementation::getDimension() const
 
 /* Computation of the covariance function */
 CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalScalar s,
-    const NumericalScalar t) const
+                                                                   const NumericalScalar t) const
+{
+  return covarianceModel_(s, t);
+}
+
+/* Computation of the covariance function */
+CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalPoint & s,
+                                                                   const NumericalPoint & t) const
 {
   return covarianceModel_(s, t);
 }
 
 CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalScalar tau) const
+{
+  return covarianceModel_(tau);
+}
+
+CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalPoint & tau) const
 {
   return covarianceModel_(tau);
 }
@@ -114,12 +126,17 @@ CovarianceModel SecondOrderModelImplementation::getCovarianceModel() const
 }
 
 void SecondOrderModelImplementation::setModels(const CovarianceModel & covarianceModel,
-    const SpectralModel & spectralModel)
+                                               const SpectralModel & spectralModel)
 {
   if (!covarianceModel.isStationary()) throw InvalidArgumentException(HERE) << "Error: the covariance model is not stationary.";
-  if (covarianceModel.getDimension() != spectralModel.getDimension()) throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different dimensions"
-        << " spectral dimension = " << spectralModel.getDimension()
-        << " covariance dimension = " << covarianceModel.getDimension();
+  if (covarianceModel.getDimension() != spectralModel.getDimension())
+    throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different dimensions"
+                                          << " spectral dimension = " << spectralModel.getDimension()
+                                          << " covariance dimension = " << covarianceModel.getDimension();
+  if (covarianceModel.getSpatialDimension() != spectralModel.getSpatialDimension())
+    throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different spatial dimensions"
+                                          << " spectral spatial dimension = " << spectralModel.getSpatialDimension()
+                                          << " covariance spatial dimension = " << covarianceModel.getSpatialDimension();
   covarianceModel_ = covarianceModel;
   spectralModel_ = spectralModel;
 }

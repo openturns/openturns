@@ -76,9 +76,15 @@ public:
 
   /** Computation of the covariance matrix */
   virtual CovarianceMatrix computeCovariance(const NumericalScalar s,
-      const NumericalScalar t) const;
+                                             const NumericalScalar t) const;
 
   virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
+
+
+  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
+                                             const NumericalPoint & t) const;
+
+  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
 
   /** Computation of the spectral density function */
   virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;
