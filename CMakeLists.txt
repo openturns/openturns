@@ -365,19 +365,13 @@ add_custom_target (uninstall
   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
 
-if (CMAKE_INSTALL_PREFIX MATCHES "^/usr")
-  set (SYSTEM_INSTALL ON)
-else ()
-  set (SYSTEM_INSTALL OFF)
-endif ()
-
-# Selectively add or remove RPATH from executable
-if (NOT SYSTEM_INSTALL)
-  set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH}
-                            ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES}
-     )
-  set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-endif ()
+# RPATH settings
+set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH} ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
+set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+if(POLICY CMP0042)
+  # Set MACOSX_RPATH to ON
+  cmake_policy(SET CMP0042 NEW)
+endif()
 
 set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/swig)
 set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns)
