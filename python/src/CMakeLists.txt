@@ -237,7 +237,7 @@ ot_add_python_module(func func_module.i
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
-                      ProcessSample.i
+                      ProcessSample.i ProcessSample_doc.i.in
                       TimeSeries.i TimeSeries_doc.i.in
                       SpecFunc.i SpecFunc_doc.i.in
                       NumericalMathEvaluationImplementation.i NumericalMathEvaluationImplementation_doc.i.in

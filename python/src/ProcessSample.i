@@ -4,6 +4,8 @@
 #include "ProcessSample.hxx"
 %}
 
+%include ProcessSample_doc.i
+
 %include ProcessSample.hxx
 
 
