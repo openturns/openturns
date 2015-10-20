@@ -188,7 +188,7 @@ ot_add_python_module(statistics statistics_module.i
                       CauchyModel.i CauchyModel_doc.i.in
                       CovarianceModelFactoryImplementation.i
                       CovarianceModelFactory.i
-                      UserDefinedCovarianceModel.i
+                      UserDefinedCovarianceModel.i UserDefinedCovarianceModel_doc.i.in
                       UserDefinedStationaryCovarianceModel.i
                       StationaryCovarianceModelFactory.i
                       NonStationaryCovarianceModelFactory.i
