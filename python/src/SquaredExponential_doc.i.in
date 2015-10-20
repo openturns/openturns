@@ -4,12 +4,22 @@
 Available constructors:
     SquaredExponential(*dim=1, theta=0.1*)
 
+    SquaredExponential(*scale*)
+
+    SquaredExponential(*scale, sigma*)
+
 Parameters
 ----------
 dim : int, :math:`dim \geq 0`
     Input dimension.
 theta : float
     Coefficient :math:`\theta` of the covariance function.
+scale : sequence of floats
+    Scale coefficients :math:`\theta`.
+    The spatial dimension is the size of vector.
+sigma : sequence of floats
+    Amplitude coefficients :math:`\sigma`.
+    Should be of size 1
 
 Notes
 -----

@@ -47,7 +47,36 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension,
   , nu_(nu)
   , sqrt2nuOverTheta_(NumericalPoint(spatialDimension, 0.0))
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
+  initialize();
+}
+
+/** Parameters constructor */
+MaternModel::MaternModel(const NumericalPoint & theta,
+                         const NumericalScalar nu)
+  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+  , nu_(nu)
+  , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
+{
+  initialize();
+}
+
+/** Parameters constructor */
+MaternModel::MaternModel(const NumericalPoint & theta,
+                         const NumericalPoint & sigma,
+                         const NumericalScalar nu)
+  : StationaryCovarianceModel(sigma, theta)
+  , nu_(nu)
+  , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
+{
+  if (getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
+                                         << " Here, (got dimension=" << getDimension() <<")";
+  initialize();
+}
+
+void MaternModel::initialize()
+{
+  if (nu_ <= 0.0) throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, nu must be positive, here nu=" << nu_;
   // Compute the normalization factor
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
   // Compute usefull scaling factor

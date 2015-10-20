@@ -44,6 +44,13 @@ public:
               const NumericalScalar theta,
               const NumericalScalar nu);
 
+  MaternModel(const NumericalPoint & theta,
+              const NumericalScalar nu);
+
+  MaternModel(const NumericalPoint & theta,
+              const NumericalPoint & sigma,
+              const NumericalScalar nu);
+
   /** Virtual copy constructor */
   MaternModel * clone() const;
 
@@ -68,6 +75,8 @@ public:
   void load(Advocate & adv);
 
 private:
+
+  void initialize();
 
   // The shape parameter
   NumericalScalar nu_;

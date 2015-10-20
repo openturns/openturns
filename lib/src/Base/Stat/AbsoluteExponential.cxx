@@ -43,6 +43,23 @@ AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension,
   // Nothing to do
 }
 
+/** Parameters constructor */
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
+  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+{
+  // Nothing to do
+}
+
+/** Parameters constructor */
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta,
+                                         const NumericalPoint & sigma)
+  : StationaryCovarianceModel(sigma, theta)
+{
+  if (getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
+                                         << " Here, (got dimension=" << getDimension() <<")";
+}
+
 /* Virtual constructor */
 AbsoluteExponential * AbsoluteExponential::clone() const
 {

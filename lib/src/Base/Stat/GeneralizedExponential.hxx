@@ -44,6 +44,13 @@ public:
                          const NumericalScalar theta,
                          const NumericalScalar p);
 
+  GeneralizedExponential(const NumericalPoint & theta,
+                         const NumericalScalar p);
+
+  GeneralizedExponential(const NumericalPoint & theta,
+                         const NumericalPoint & sigma,
+                         const NumericalScalar p);
+
   /** Virtual copy constructor */
   GeneralizedExponential * clone() const;
 

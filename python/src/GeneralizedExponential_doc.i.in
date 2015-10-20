@@ -4,6 +4,10 @@
 Available constructors:
     GeneralizedExponential(*dim=1, theta=10, p=1*)
 
+    GeneralizedExponential(*scale, p*)
+
+    GeneralizedExponential(*scale, sigma, p*)
+
 Parameters
 ----------
 dim : int, :math:`dim \geq 0`
@@ -12,6 +16,12 @@ theta : float
     Coefficient :math:`\theta` of the covariance function, default is 10.
 p : float
     Exponent :math:`p` of the covariance function, default is 1.
+scale : sequence of floats
+    Scale coefficients :math:`\theta`.
+    The spatial dimension is the size of vector.
+sigma : sequence of floats
+    Amplitude coefficients :math:`\sigma`.
+    Should be of size 1
 
 
 Notes

@@ -43,6 +43,13 @@ public:
   AbsoluteExponential(const UnsignedInteger spatialDimension,
                       const NumericalScalar theta);
 
+  /** Parameters constructor */
+  AbsoluteExponential(const NumericalPoint & theta);
+
+  /** Parameters constructor */
+  AbsoluteExponential(const NumericalPoint & theta,
+                      const NumericalPoint & sigma);
+
   /** Virtual copy constructor */
   AbsoluteExponential * clone() const;
 

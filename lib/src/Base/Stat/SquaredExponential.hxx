@@ -43,6 +43,13 @@ public:
   SquaredExponential(const UnsignedInteger spatialDimension,
                      const NumericalScalar theta);
 
+  /** Parameters constructor */
+  SquaredExponential(const NumericalPoint & theta);
+
+  /** Parameters constructor */
+  SquaredExponential(const NumericalPoint & theta,
+                     const NumericalPoint & sigma);
+
   /** Virtual copy constructor */
   SquaredExponential * clone() const;
 

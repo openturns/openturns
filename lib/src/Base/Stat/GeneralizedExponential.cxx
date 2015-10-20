@@ -47,6 +47,27 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
   // Nothing to do
 }
 
+/** Parameters constructor */
+GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
+                                               const NumericalScalar p)
+  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+  , p_(p)
+{
+  // Nothing to do
+}
+
+/** Parameters constructor */
+GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
+                                               const NumericalPoint & sigma,
+                                               const NumericalScalar p)
+  : StationaryCovarianceModel(sigma, theta)
+  , p_(p)
+{
+  if (getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
+                                         << " Here, (got dimension=" << getDimension() <<")";
+}
+
 /* Virtual constructor */
 GeneralizedExponential * GeneralizedExponential::clone() const
 {
