@@ -6,6 +6,8 @@
 
 ==== Major changes ====
  * Optimization API rework
+ * New parametrization of covariance models
+ * Changed behaviour of ExponentialCauchy
 
 ==== New classes ====
  * OptimizationSolver
@@ -17,6 +19,7 @@
  * Deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
  * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
  * Removed ConfidenceInterval class
+ * Removed draw method to CovarianceModel
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)
