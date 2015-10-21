@@ -154,10 +154,6 @@ public:
   virtual void setParameters(const NumericalPoint & parameters);
   virtual NumericalPointWithDescription getParameters() const;
 
-  /** Drawing method */
-  Graph draw(const UnsignedInteger rowIndex = 0,
-             const UnsignedInteger columnIndex = 0) const;
-
   /** String converter */
   virtual String __repr__() const;
 

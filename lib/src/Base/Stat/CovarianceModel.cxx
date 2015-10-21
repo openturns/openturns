@@ -228,13 +228,6 @@ Bool CovarianceModel::isDiagonal() const
   return getImplementation()->isDiagonal();
 }
 
-/* Drawing method */
-Graph CovarianceModel::draw(const UnsignedInteger rowIndex,
-                            const UnsignedInteger columnIndex) const
-{
-  return getImplementation()->draw(rowIndex, columnIndex);
-}
-
 /* String converter */
 String CovarianceModel::__repr__() const
 {

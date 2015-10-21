@@ -570,15 +570,6 @@ CovarianceModelImplementation::Implementation CovarianceModelImplementation::get
   return clone();
 }
 
-/* Drawing method for 1D models */
-Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
-    const UnsignedInteger columnIndex) const
-{
-  if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
-  if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::draw()";
-}
-
 /* String converter */
 String CovarianceModelImplementation::__repr__() const
 {
