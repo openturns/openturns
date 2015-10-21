@@ -189,7 +189,7 @@ ot_add_python_module(statistics statistics_module.i
                       CovarianceModelFactoryImplementation.i
                       CovarianceModelFactory.i
                       UserDefinedCovarianceModel.i UserDefinedCovarianceModel_doc.i.in
-                      UserDefinedStationaryCovarianceModel.i
+                      UserDefinedStationaryCovarianceModel.i UserDefinedStationaryCovarianceModel_doc.i.in
                       StationaryCovarianceModelFactory.i
                       NonStationaryCovarianceModelFactory.i NonStationaryCovarianceModelFactory_doc.i.in
                       SquaredExponential.i SquaredExponential_doc.i.in

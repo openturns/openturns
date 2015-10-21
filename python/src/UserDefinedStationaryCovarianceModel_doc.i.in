@@ -1,0 +1,81 @@
+%feature("docstring") OT::UserDefinedStationaryCovarianceModel
+"Stationary covariance model defined by the User.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    A mesh that contains `N` vertices.
+sample : :class:`~openturns.CovarianceMatrixCollection`
+    A collection of *N* covariance matrices.
+
+Notes
+-----
+The covariance model is built as follows.
+
+We consider a process :math:`X: \Omega \times\cD \mapsto \Rset^d` with :math:`\cD \in \Rset^n`. 
+
+We note :math:`(\vect{t}_0,\dots, \vect{t}_{N-1})` the vertices of :math:`\cM \in \cD` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` where :math:`\mat{C}_{k} \in \mathcal{M}_{d \times d}(\Rset)` the collection of covariance matrices fixed by the User.
+
+Then we build a stationary covariance function :math:`C^{stat}` which is a  piecewise constant function defined on :math:`\cD \times \cD` by:
+
+.. math::
+
+    \forall \vect{\tau} \in \cD, \, \quad C^{stat}(\vect{\tau}) =  \mat{C}_k
+
+
+where *k* is such that :math:`\vect{t}_k` is the  vertex of :math:`\cM` the nearest to :math:`\vect{\tau}`.
+
+Examples
+--------
+Create a mesh:
+
+>>> import openturns as ot
+>>> # Create the time grid
+>>> t0 = 0.0
+>>> dt = 0.5
+>>> N = int((20.0 - t0)/ dt)
+>>> myShiftMesh =  ot.RegularGrid(t0, dt, N)
+
+Create the stationary covariance function:
+
+>>> def gamma(tau):
+...     return 1.0 / (1.0 + tau * tau)
+
+Create the collection of N covariance matrices:
+
+>>> myCovarianceCollection = ot.CovarianceMatrixCollection()
+>>> for k in range(N):
+...     t = myShiftMesh.getValue(k)
+...     matrix = ot.CovarianceMatrix(1)
+...     matrix[0, 0] = gamma(t)
+...     myCovarianceCollection.add(matrix)
+
+Create the User defined stationary covariance model:
+
+>>> myCovarianceModel = ot.UserDefinedStationaryCovarianceModel(myShiftMesh,myCovarianceCollection)
+
+Compute the covariance function at the vertex tau:
+
+>>> tau = 1.5
+>>> myCovModelMatrix = myCovarianceModel(tau)
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::UserDefinedStationaryCovarianceModel::getMesh
+"Accessor to the mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh associated to the collection of covariance matrices.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::UserDefinedStationaryCovarianceModel::getTimeGrid
+"Accessor to the time grid.
+
+Returns
+-------
+mesh : :class:`~openturns.RegularGrid`
+    The time grid associated to the collection of covariance matrices when the mesh can be interpreted as a reglar time grid.
+"
