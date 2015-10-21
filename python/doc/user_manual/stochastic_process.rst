@@ -65,6 +65,7 @@ Link Temporal - Spectral information
     :template: class.rst_t
 
      SecondOrderModel
+    :template: SecondOrderModel.rst_t
      ExponentialCauchy
 
 Normal process
