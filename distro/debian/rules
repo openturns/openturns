@@ -66,6 +66,7 @@ cmake-configure-%:
             -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
+            -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
             -DLIB_SOVERSION=0.7 \
@@ -91,10 +92,8 @@ cmake-install-%:
 	dh_auto_install -Bbuild-python$*
 	mkdir -p debian/libopenturns0.7-dbg/usr/lib/debug/usr/lib
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	# CTestTestfile.cmake sets LD_LIBRARY_PATH to find libraries in debian/tmp.
-	# But it overrides current value, which breaks when run by fakeroot.
-	[ -z "$$LD_LIBRARY_PATH" ] || sed -i -e "s#;LD_LIBRARY_PATH=[^;]*#&:$$LD_LIBRARY_PATH#" build-python$*/python/test/CTestTestfile.cmake
-	CTEST_OUTPUT_ON_FAILURE=1 \
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
+	  CTEST_OUTPUT_ON_FAILURE=1 \
 	  R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
 	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) -R pyinstallcheck"
 endif
@@ -121,7 +120,9 @@ cmake-test-%:
 	# 'make test' does not build binary tests
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	$(MAKE) $(test_makeflags) -C build-python$* tests
-	CTEST_OUTPUT_ON_FAILURE=1 $(MAKE) -C build-python$* test ARGS="$(test_makeflags) -R cppcheck"
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
+	  CTEST_OUTPUT_ON_FAILURE=1 \
+	  $(MAKE) -C build-python$* test ARGS="$(test_makeflags) -R cppcheck"
 endif
 
 get-orig-source:
