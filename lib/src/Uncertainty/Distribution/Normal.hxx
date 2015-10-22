@@ -42,15 +42,15 @@ public:
   explicit Normal(const UnsignedInteger dimension = 1);
 
   /** Dimension 1 constructor */
-  explicit Normal(const NumericalScalar mu, const NumericalScalar sd);
+  Normal(const NumericalScalar mu, const NumericalScalar sd);
 
   /** Constructor for multiD normal distribution */
-  explicit Normal(const NumericalPoint & mean,
-                  const NumericalPoint & sigma,
-                  const CorrelationMatrix & R);
+  Normal(const NumericalPoint & mean,
+         const NumericalPoint & sigma,
+         const CorrelationMatrix & R);
 
-  explicit Normal(const NumericalPoint & mean,
-                  const CovarianceMatrix & C);
+  Normal(const NumericalPoint & mean,
+         const CovarianceMatrix & C);
 
 
   /** String converter */
