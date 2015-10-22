@@ -33,12 +33,13 @@ FAST::FAST(const NumericalMathFunction & model,
            const UnsignedInteger samplingSize,
            const UnsignedInteger resamplingSize,
            const UnsignedInteger interferenceFactor)
-  : model_(model),
-    inputsDistribution_(inputsDistribution),
-    samplingSize_(samplingSize),
-    resamplingSize_(resamplingSize),
-    interferenceFactor_(interferenceFactor),
-    alreadyComputedIndices_(false)
+  : model_(model)
+  , inputsDistribution_(inputsDistribution)
+  , samplingSize_(samplingSize)
+  , blockSize_(1)
+  , resamplingSize_(resamplingSize)
+  , interferenceFactor_(interferenceFactor)
+  , alreadyComputedIndices_(false)
 {
   if (inputsDistribution_.getDimension() != model_.getInputDimension())
     throw InvalidArgumentException(HERE) << "Error: The distribution's dimension " << inputsDistribution_.getDimension()
@@ -65,9 +66,14 @@ void FAST::run() const
   firstOrderIndice_ = NumericalSample(nbOut, nbIn);
   totalOrderIndice_ = NumericalSample(nbOut, nbIn);
 
-  // Sample of s-space
+  // this avoids to store huge input samples while allowing for multi-threading
+  const UnsignedInteger maximumOuterSampling = static_cast<UnsignedInteger>(ceil(1.0 * samplingSize_ / blockSize_));
+  const UnsignedInteger modulo = samplingSize_ % blockSize_;
+  const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize_ : modulo;
+
+  // S-space discretization
   NumericalPoint s(samplingSize_);
-  for ( UnsignedInteger i = 1; i < samplingSize_; ++ i ) s[i] = 2. * M_PI * i / samplingSize_;
+  for (UnsignedInteger i = 1; i < samplingSize_; ++ i) s[i] = 2. * M_PI * i / samplingSize_;
 
   // Set of frequencies definition
   Indices w_i_0(nbIn);
@@ -79,13 +85,13 @@ void FAST::run() const
   if ( max_w_l >= nbIn - 1 )
   {
     const NumericalScalar step = (max_w_l - 1.) / (nbIn - 2.);
-    for ( UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp )
+    for (UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp)
       w_i_0[inp + 1] = inp * step + 1;
     w_i_0[nbIn - 1] = max_w_l;
   }
   else
   {
-    for ( UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp )
+    for (UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp)
       w_i_0[inp + 1] = inp % max_w_l + 1;
   }
 
@@ -94,57 +100,64 @@ void FAST::run() const
   NumericalSample D_l(nbOut, nbIn);
 
   // For each input, compute first order and total order indices for each model's output
-  for ( UnsignedInteger inp = 0; inp < nbIn; ++ inp )
+  for (UnsignedInteger inp = 0; inp < nbIn; ++ inp)
   {
     NumericalPoint D(nbOut, 0.);
 
     // Frequencies assignment
     Indices w_i(w_i_0);
     w_i[inp] = omega;
-    for ( UnsignedInteger i = 0; i < inp; ++ i )
+    for (UnsignedInteger i = 0; i < inp; ++ i)
       w_i[i] = w_i_0[i + 1];
 
     // Loop of resampling
-    for ( UnsignedInteger t = 0; t < resamplingSize_; ++ t )
+    for (UnsignedInteger t = 0; t < resamplingSize_; ++ t)
     {
       // Random phase-shift
       NumericalPoint phi_i(nbIn);
-      for ( UnsignedInteger i = 0; i < nbIn; ++ i )
+      for (UnsignedInteger i = 0; i < nbIn; ++ i)
         phi_i[i] = 2. * M_PI * RandomGenerator::Generate();
 
       NumericalPoint xi_s(nbIn);
-      NumericalSample y(nbOut, samplingSize_);
+      NumericalSample output(0, nbOut);
 
-      for ( UnsignedInteger j = 0; j < samplingSize_; ++ j )
+      // for each block ...
+      for (UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++ outerSampling)
       {
-        // Search-curve x_i(s)=g_i(w_i,s) definition
-        for ( UnsignedInteger i = 0; i < nbIn; ++ i )
-        {
-          const NumericalScalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[j] + phi_i[i])) / M_PI;
-          xi_s[i] = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
-        }
+        // the last block can be smaller
+        const UnsignedInteger effectiveBlockSize = outerSampling < (maximumOuterSampling - 1) ? blockSize_ : lastBlockSize;
 
-        // Model evaluations
-        for ( UnsignedInteger out = 0; out < nbOut; ++ out )
-          y[out][j] = model_(xi_s)[out];
+        NumericalSample inputBlock(effectiveBlockSize, nbIn);
+
+        for (UnsignedInteger blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex)
+        {
+          // Search-curve x_i(s)=g_i(w_i,s) definition
+          for (UnsignedInteger i = 0; i < nbIn; ++ i)
+          {
+            const NumericalScalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
+            inputBlock[blockIndex][i] = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
+          }
+        }
+        output.add(model_(inputBlock));
       }
 
       // For each model's output
-      for ( UnsignedInteger out = 0; out < nbOut; ++ out )
+      for (UnsignedInteger out = 0; out < nbOut; ++ out)
       {
         // Fourier transformation
-        NumericalComplexCollection coefficients(fftAlgorithm_.transform(y[out]));
+        NumericalPoint y(output.getMarginal(out).getImplementation()->getData());
+        NumericalComplexCollection coefficients(fftAlgorithm_.transform(y));
 
         // Total variance
-        for ( UnsignedInteger j = 0; j < (samplingSize_ - 1) / 2; ++ j )
+        for (UnsignedInteger j = 0; j < (samplingSize_ - 1) / 2; ++ j)
           D[out] += std::norm(coefficients[j + 1]);
 
         // Partial variance of all factors except the factor of interest
-        for ( UnsignedInteger j = 0; j < omega / 2; ++ j )
+        for (UnsignedInteger j = 0; j < omega / 2; ++ j)
           D_l[out][inp] += std::norm(coefficients[j + 1]);
 
         // Partial variance of the factor of interest
-        for ( UnsignedInteger j = 0; j < interferenceFactor_; ++ j )
+        for (UnsignedInteger j = 0; j < interferenceFactor_; ++ j)
           D_i[out][inp] += std::norm(coefficients[(j + 1) * omega]);
       }
     }
@@ -185,6 +198,17 @@ FFT FAST::getFFTAlgorithm() const
 void FAST::setFFTAlgorithm(const FFT & fft)
 {
   fftAlgorithm_ = fft;
+}
+
+/* Block size accessor */
+void FAST::setBlockSize(const UnsignedInteger blockSize)
+{
+  blockSize_ = blockSize;
+}
+
+UnsignedInteger FAST::getBlockSize() const
+{
+  return blockSize_;
 }
 
 END_NAMESPACE_OPENTURNS

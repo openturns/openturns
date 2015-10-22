@@ -153,3 +153,27 @@ Returns
 -------
 fft : a :class:`~openturns.FFT`
     A FFT algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FAST::getBlockSize
+"Get the block size.
+
+Returns
+-------
+k : positive int
+    Size of each block the sample is splitted into, this allows to save space
+    while allowing multithreading, when available we recommend to use
+    the number of available CPUs, set by default to 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FAST::setBlockSize
+"Set the block size.
+
+Parameters
+----------
+k : positive int
+    Size of each block the sample is splitted into, this allows to save space
+    while allowing multithreading, when available we recommend to use
+    the number of available CPUs, set by default to :math:`1`."
