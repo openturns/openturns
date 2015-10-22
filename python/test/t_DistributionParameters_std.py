@@ -18,10 +18,9 @@ for distParam in distParams:
     print('Distribution Parameters ', repr(distParam))
     print('Distribution Parameters ', distParam)
 
-    non_native = ot.NumericalPoint()
-    for i in range(len(distParam.getParametersCollection()[0])):
-        non_native.add(distParam.getParametersCollection()[0][i])
-    print('non-native=', non_native)
+    non_native = distParam.getValues()
+    desc = distParam.getDescription()
+    print('non-native=', non_native, desc)
     native = distParam(non_native)
     print('native=', native)
     non_native = distParam.inverse(native)

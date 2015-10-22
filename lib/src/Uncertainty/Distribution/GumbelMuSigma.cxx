@@ -130,19 +130,21 @@ NumericalPoint GumbelMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-GumbelMuSigma::NumericalPointWithDescriptionCollection GumbelMuSigma::getParametersCollection() const
+NumericalPoint GumbelMuSigma::getValues() const
 {
-  NumericalPointWithDescription point(2);
+  NumericalPoint point(2);
   point[0] = mu_;
   point[1] = sigma_;
-  Description description(point.getDimension());
-  description[0] = "mu";
-  description[1] = "sigma";
-  point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
+Description GumbelMuSigma::getDescription() const
+{
+  Description description(2);
+  description[0] = "mu";
+  description[1] = "sigma";
+  return description;
+}
 
 /* String converter */
 String GumbelMuSigma::__repr__() const

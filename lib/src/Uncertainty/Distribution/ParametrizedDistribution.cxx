@@ -130,7 +130,7 @@ NumericalPoint ParametrizedDistribution::computeCDFGradient(const NumericalPoint
 
 NumericalPoint ParametrizedDistribution::getParameters() const
 {
-  return distributionParameters_.getParametersCollection()[0];
+  return distributionParameters_.inverse(distribution_.getParameters());
 }
 
 void ParametrizedDistribution::setParameters(const NumericalPoint & parameters)
@@ -140,7 +140,7 @@ void ParametrizedDistribution::setParameters(const NumericalPoint & parameters)
 
 Description ParametrizedDistribution::getParametersDescription() const
 {
-  return distributionParameters_.getParametersCollection()[0].getDescription();
+  return distributionParameters_.getDescription();
 }
 
 /* Check if the distribution is elliptical */

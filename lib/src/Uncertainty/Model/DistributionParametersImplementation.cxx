@@ -74,11 +74,15 @@ NumericalPoint DistributionParametersImplementation::inverse(const NumericalPoin
 
 
 /* Parameters value and description accessor */
-DistributionParametersImplementation::NumericalPointWithDescriptionCollection DistributionParametersImplementation::getParametersCollection() const
+NumericalPoint DistributionParametersImplementation::getValues() const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getParametersCollection() const";
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getValues() const";
 }
 
+Description DistributionParametersImplementation::getDescription() const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getDescription() const";
+}
 
 /* String converter */
 String DistributionParametersImplementation::__repr__() const

@@ -60,7 +60,8 @@ public:
   NumericalPoint inverse(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  virtual NumericalPoint getValues() const;
+  virtual Description getDescription() const;
 
   /** String converter */
   String __repr__() const;

@@ -63,7 +63,8 @@ public:
   virtual NumericalPoint inverse(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
-  virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
+  virtual NumericalPoint getValues() const;
+  virtual Description getDescription() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

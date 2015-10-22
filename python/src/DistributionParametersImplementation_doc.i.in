@@ -37,16 +37,29 @@ OT_DistributionParameters_getDistribution_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DistributionParameters_getParametersCollection_doc
-"Get the value and the description of the parameters.
+%define OT_DistributionParameters_getValues_doc
+"Get the values of the parameters.
 
 Returns
 -------
-collection : :class:`~openturns.NumericalPointWithDescriptionCollection`
-    List of the value and the description of the parameters."
+collection : :class:`~openturns.NumericalPoint`
+    List of parameters values."
 %enddef
-%feature("docstring") OT::DistributionParametersImplementation::getParametersCollection
-OT_DistributionParameters_getParametersCollection_doc
+%feature("docstring") OT::DistributionParametersImplementation::getValues
+OT_DistributionParameters_getValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_getDescription_doc
+"Get the description of the parameters.
+
+Returns
+-------
+collection : :class:`~openturns.Description`
+    List of parameters names."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::getDescription
+OT_DistributionParameters_getDescription_doc
 
 // ---------------------------------------------------------------------
 

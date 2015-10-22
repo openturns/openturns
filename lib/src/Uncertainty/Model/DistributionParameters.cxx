@@ -84,11 +84,15 @@ NumericalPoint DistributionParameters::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-DistributionParameters::NumericalPointWithDescriptionCollection DistributionParameters::getParametersCollection() const
+NumericalPoint DistributionParameters::getValues() const
 {
-  return getImplementation()->getParametersCollection();
+  return getImplementation()->getValues();
 }
 
+Description DistributionParameters::getDescription() const
+{
+  return getImplementation()->getDescription();
+}
 
 /* String converter */
 String DistributionParameters::__repr__() const
