@@ -41,7 +41,6 @@ class OT_API DistributionFactory
 public:
 
   typedef Collection<NumericalPoint>                NumericalPointCollection;
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
   typedef Collection<DistributionFactory>           DistributionFactoryCollection;
 
   /** Default constructor */
@@ -59,8 +58,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   virtual Distribution build(const NumericalSample & sample) const;
-  virtual Distribution build(const NumericalPointCollection & parameters) const;
-  virtual Distribution build(const NumericalPointWithDescriptionCollection & parameters) const;
+  virtual Distribution build(const NumericalPoint & parameters) const;
   virtual Distribution build() const;
 
   /** Catalog of factories */

@@ -47,7 +47,7 @@ GeometricFactory::Implementation GeometricFactory::build(const NumericalSample &
   return buildAsGeometric(sample).clone();
 }
 
-GeometricFactory::Implementation GeometricFactory::build(const NumericalPointCollection & parameters) const
+GeometricFactory::Implementation GeometricFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsGeometric(parameters).clone();
 }
@@ -75,17 +75,12 @@ Geometric GeometricFactory::buildAsGeometric(const NumericalSample & sample) con
   return result;
 }
 
-Geometric GeometricFactory::buildAsGeometric(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsGeometric(RemoveDescriptionFromCollection(parameters));
-}
-
-Geometric GeometricFactory::buildAsGeometric(const NumericalPointCollection & parameters) const
+Geometric GeometricFactory::buildAsGeometric(const NumericalPoint & parameters) const
 {
   try
   {
     Geometric distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

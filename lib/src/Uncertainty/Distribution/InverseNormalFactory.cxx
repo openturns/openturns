@@ -46,7 +46,7 @@ InverseNormalFactory::Implementation InverseNormalFactory::build(const Numerical
   return buildAsInverseNormal(sample).clone();
 }
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const NumericalPointCollection & parameters) const
+InverseNormalFactory::Implementation InverseNormalFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsInverseNormal(parameters).clone();
 }
@@ -82,17 +82,12 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample &
   return result;
 }
 
-InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsInverseNormal(RemoveDescriptionFromCollection(parameters));
-}
-
-InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalPointCollection & parameters) const
+InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalPoint & parameters) const
 {
   try
   {
     InverseNormal distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

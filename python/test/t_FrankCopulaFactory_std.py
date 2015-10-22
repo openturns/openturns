@@ -20,7 +20,7 @@ try:
     estimatedFrankCopula = factory.buildAsFrankCopula()
     print("Default frankCopula=", estimatedFrankCopula)
     estimatedFrankCopula = factory.buildAsFrankCopula(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("FrankCopula from parameters=", estimatedFrankCopula)
 
 except:

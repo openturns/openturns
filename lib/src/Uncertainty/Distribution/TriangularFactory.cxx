@@ -50,7 +50,7 @@ TriangularFactory::Implementation TriangularFactory::build() const
   return buildAsTriangular().clone();
 }
 
-TriangularFactory::Implementation TriangularFactory::build(const NumericalPointCollection & parameters) const
+TriangularFactory::Implementation TriangularFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsTriangular(parameters).clone();
 }
@@ -71,17 +71,12 @@ Triangular TriangularFactory::buildAsTriangular(const NumericalSample & sample) 
   return result;
 }
 
-Triangular TriangularFactory::buildAsTriangular(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsTriangular(RemoveDescriptionFromCollection(parameters));
-}
-
-Triangular TriangularFactory::buildAsTriangular(const NumericalPointCollection & parameters) const
+Triangular TriangularFactory::buildAsTriangular(const NumericalPoint & parameters) const
 {
   try
   {
     Triangular distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

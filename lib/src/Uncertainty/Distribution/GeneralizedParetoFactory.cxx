@@ -54,7 +54,7 @@ GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const N
   return buildAsGeneralizedPareto(sample).clone();
 }
 
-GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const NumericalPointCollection & parameters) const
+GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsGeneralizedPareto(parameters).clone();
 }
@@ -87,18 +87,12 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Numer
   return buildMethodOfExponentialRegression(sample);
 }
 
-
-GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsGeneralizedPareto(RemoveDescriptionFromCollection(parameters));
-}
-
-GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalPointCollection & parameters) const
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalPoint & parameters) const
 {
   try
   {
     GeneralizedPareto distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

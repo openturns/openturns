@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   ClaytonCopula buildAsClaytonCopula(const NumericalSample & sample) const;
-  ClaytonCopula buildAsClaytonCopula(const NumericalPointCollection & parameters) const;
-  ClaytonCopula buildAsClaytonCopula(const NumericalPointWithDescriptionCollection & parameters) const;
+  ClaytonCopula buildAsClaytonCopula(const NumericalPoint & parameters) const;
   ClaytonCopula buildAsClaytonCopula() const;
 
 }; /* class ClaytonCopulaFactory */

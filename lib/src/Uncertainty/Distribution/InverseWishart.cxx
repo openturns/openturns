@@ -275,45 +275,56 @@ NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedEx
 }
 
 
-/* Parameters value and description accessor */
-InverseWishart::NumericalPointWithDescriptionCollection InverseWishart::getParametersCollection() const
+NumericalPoint InverseWishart::getParameters() const
 {
-  NumericalPointWithDescription point(getDimension() + 1);
-  Description description(point.getDimension());
-  const UnsignedInteger p(cholesky_.getDimension());
-  UnsignedInteger index(0);
   const CovarianceMatrix V(getCovariance());
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
+  const UnsignedInteger p = V.getDimension();
+  NumericalPoint point((p*(p+1))/2+1);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++ i)
+    for (UnsignedInteger j = 0; j <= i; ++ j)
     {
       point[index] = V(i, j);
-      description[index] = String(OSS() << "v_" << i << "_" << j);
-      ++index;
+      ++ index;
     }
   point[index] = nu_;
-  description[index] = "nu";
-  point.setDescription(description);
-  NumericalPointWithDescriptionCollection parameters(point.getDimension());
-  return parameters;
+  return point;
 }
 
-void InverseWishart::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void InverseWishart::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  const NumericalScalar pReal(0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5);
+  const UnsignedInteger size = parameters.getSize();
+  const NumericalScalar pReal(0.5 * std::sqrt(8.0 * size - 7.0) - 0.5);
   const UnsignedInteger p(static_cast< UnsignedInteger >(pReal));
   if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
   CovarianceMatrix V(p);
-  UnsignedInteger index(0);
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++ i)
+    for (UnsignedInteger j = 0; j <= i; ++ j)
     {
-      V(i, j) = parametersCollection[0][index];
-      ++index;
+      V(i, j) = parameters[index];
+      ++ index;
     }
-  const NumericalScalar nu(parametersCollection[0][index]);
+  const NumericalScalar nu = parameters[size - 1];
+  const NumericalScalar w = getWeight();
   *this = InverseWishart(V, nu);
   setWeight(w);
+}
+
+Description InverseWishart::getParametersDescription() const
+{
+  const UnsignedInteger p = getDimension();
+  Description description((p*(p+1))/2+1);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      description[index] = (OSS() << "v_" << i << "_" << j);
+    }
+  }
+  description[index] = "nu";
+  return description;
 }
 
 

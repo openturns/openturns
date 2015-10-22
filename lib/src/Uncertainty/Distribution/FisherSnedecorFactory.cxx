@@ -54,7 +54,7 @@ FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Numeric
   return buildAsFisherSnedecor(sample).clone();
 }
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const NumericalPointCollection & parameters) const
+FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsFisherSnedecor(parameters).clone();
 }
@@ -121,17 +121,12 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   return FisherSnedecor(optpoint[0], optpoint[1]);	
 }
 
-FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsFisherSnedecor(RemoveDescriptionFromCollection(parameters));
-}
-
-FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPointCollection & parameters) const
+FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPoint & parameters) const
 {
   try
   {
     FisherSnedecor distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -266,6 +266,29 @@ void Dirac::setParametersCollection(const NumericalPointCollection & parametersC
   setWeight(w);
 }
 
+NumericalPoint Dirac::getParameters() const
+{
+  return point_;
+}
+
+void Dirac::setParameters(const NumericalPoint & parameters)
+{
+  const NumericalScalar w = getWeight();
+  *this = Dirac(parameters);
+  setWeight(w);
+}
+
+Description Dirac::getParametersDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  Description description(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    description[i] = (OSS() << "point_" << i);
+  }
+  return description;
+}
+
 /* Point accessor */
 void Dirac::setPoint(const NumericalPoint & point)
 {

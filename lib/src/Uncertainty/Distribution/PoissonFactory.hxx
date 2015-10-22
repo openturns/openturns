@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Poisson buildAsPoisson(const NumericalSample & sample) const;
-  Poisson buildAsPoisson(const NumericalPointCollection & parameters) const;
-  Poisson buildAsPoisson(const NumericalPointWithDescriptionCollection & parameters) const;
+  Poisson buildAsPoisson(const NumericalPoint & parameters) const;
   Poisson buildAsPoisson() const;
 
 }; /* class PoissonFactory */

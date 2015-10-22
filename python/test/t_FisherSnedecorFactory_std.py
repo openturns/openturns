@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedFisherSnedecor = factory.buildAsFisherSnedecor(sample)
     print("FisherSnedecor          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedFisherSnedecor = factory.buildAsFisherSnedecor()
     print("Default fisherSnedecor=", estimatedFisherSnedecor)
     estimatedFisherSnedecor = factory.buildAsFisherSnedecor(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("FisherSnedecor from parameters=", estimatedFisherSnedecor)
 
 except:

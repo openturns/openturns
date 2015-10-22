@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   NormalCopula buildAsNormalCopula(const NumericalSample & sample) const;
-  NormalCopula buildAsNormalCopula(const NumericalPointCollection & parameters) const;
-  NormalCopula buildAsNormalCopula(const NumericalPointWithDescriptionCollection & parameters) const;
+  NormalCopula buildAsNormalCopula(const NumericalPoint & parameters) const;
   NormalCopula buildAsNormalCopula() const;
 
 }; /* class NormalCopulaFactory */

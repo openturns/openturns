@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Binomial buildAsBinomial(const NumericalSample & sample) const;
-  Binomial buildAsBinomial(const NumericalPointCollection & parameters) const;
-  Binomial buildAsBinomial(const NumericalPointWithDescriptionCollection & parameters) const;
+  Binomial buildAsBinomial(const NumericalPoint & parameters) const;
   Binomial buildAsBinomial() const;
 
   //      private:

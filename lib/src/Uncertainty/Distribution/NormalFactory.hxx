@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Normal buildAsNormal(const NumericalSample & sample) const;
-  Normal buildAsNormal(const NumericalPointCollection & parameters) const;
-  Normal buildAsNormal(const NumericalPointWithDescriptionCollection & parameters) const;
+  Normal buildAsNormal(const NumericalPoint & parameters) const;
   Normal buildAsNormal() const;
 
 

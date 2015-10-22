@@ -71,7 +71,7 @@ Distribution BetaMuSigma::getDistribution() const
   newParameters[2] = a_;
   newParameters[3] = b_;
 
-  NumericalPointCollection nativeParameters(1, operator()(newParameters));
+  NumericalPoint nativeParameters(operator()(newParameters));
 
   return BetaFactory().build(nativeParameters);
 }

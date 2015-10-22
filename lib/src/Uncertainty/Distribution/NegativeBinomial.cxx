@@ -197,27 +197,30 @@ NumericalSample NegativeBinomial::getSupport(const Interval & interval) const
   return result;
 }
 
-/* Parameters value and description accessor */
-NegativeBinomial::NumericalPointWithDescriptionCollection NegativeBinomial::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint NegativeBinomial::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = r_;
-  description[0] = "r";
   point[1] = p_;
-  description[1] = "p";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void NegativeBinomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void NegativeBinomial::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = NegativeBinomial(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = NegativeBinomial(parameters[0], parameters[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description NegativeBinomial::getParametersDescription() const
+{
+  Description description(2);
+  description[0] = "r";
+  description[1] = "p";
+  return description;
 }
 
 /* P accessor */

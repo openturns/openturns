@@ -45,7 +45,7 @@ GumbelFactory::Implementation GumbelFactory::build(const NumericalSample & sampl
   return buildAsGumbel(sample).clone();
 }
 
-GumbelFactory::Implementation GumbelFactory::build(const NumericalPointCollection & parameters) const
+GumbelFactory::Implementation GumbelFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsGumbel(parameters).clone();
 }
@@ -67,17 +67,12 @@ Gumbel GumbelFactory::buildAsGumbel(const NumericalSample & sample) const
   return result;
 }
 
-Gumbel GumbelFactory::buildAsGumbel(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsGumbel(RemoveDescriptionFromCollection(parameters));
-}
-
-Gumbel GumbelFactory::buildAsGumbel(const NumericalPointCollection & parameters) const
+Gumbel GumbelFactory::buildAsGumbel(const NumericalPoint & parameters) const
 {
   try
   {
     Gumbel distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

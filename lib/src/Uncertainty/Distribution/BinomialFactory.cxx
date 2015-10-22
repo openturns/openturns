@@ -47,7 +47,7 @@ BinomialFactory::Implementation BinomialFactory::build(const NumericalSample & s
   return buildAsBinomial(sample).clone();
 }
 
-BinomialFactory::Implementation BinomialFactory::build(const NumericalPointCollection & parameters) const
+BinomialFactory::Implementation BinomialFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsBinomial(parameters).clone();
 }
@@ -153,17 +153,13 @@ NumericalScalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
   return logLikelihood;
 }
 
-Binomial BinomialFactory::buildAsBinomial(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsBinomial(RemoveDescriptionFromCollection(parameters));
-}
 
-Binomial BinomialFactory::buildAsBinomial(const NumericalPointCollection & parameters) const
+Binomial BinomialFactory::buildAsBinomial(const NumericalPoint & parameters) const
 {
   try
   {
     Binomial distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

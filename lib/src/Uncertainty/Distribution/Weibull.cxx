@@ -314,31 +314,33 @@ Weibull::Implementation Weibull::getStandardRepresentative() const
   return Weibull(1.0, beta_, 0.0).clone();
 }
 
-/* Parameters value and description accessor */
-Weibull::NumericalPointWithDescriptionCollection Weibull::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Weibull::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = alpha_;
   point[1] = beta_;
   point[2] = gamma_;
-  description[0] = "alpha";
-  description[1] = "beta";
-  description[2] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Weibull::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Weibull::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Weibull(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Weibull(parameters[0], parameters[1], parameters[2]);
   setWeight(w);
 }
 
+/* Parameters description accessor */
+Description Weibull::getParametersDescription() const
+{
+  Description description(3);
+  description[0] = "alpha";
+  description[1] = "beta";
+  description[2] = "gamma";
+  return description;
+}
 
 /* Beta accessor */
 void Weibull::setBeta(const NumericalScalar beta)

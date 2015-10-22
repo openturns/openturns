@@ -253,29 +253,31 @@ void Rayleigh::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-Rayleigh::NumericalPointWithDescriptionCollection Rayleigh::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Rayleigh::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = sigma_;
-  description[0] = "sigma";
   point[1] = gamma_;
-  description[1] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Rayleigh::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Rayleigh::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Rayleigh(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Rayleigh(parameters[0], parameters[1]);
   setWeight(w);
 }
 
+/* Parameters description accessor */
+Description Rayleigh::getParametersDescription() const
+{
+  Description description(2);
+  description[0] = "sigma";
+  description[1] = "gamma";
+  return description;
+}
 
 /* Sigma accessor */
 void Rayleigh::setSigma(const NumericalScalar sigma)

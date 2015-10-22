@@ -51,7 +51,7 @@ FrankCopulaFactory::Implementation FrankCopulaFactory::build(const NumericalSamp
   return buildAsFrankCopula(sample).clone();
 }
 
-FrankCopulaFactory::Implementation FrankCopulaFactory::build(const NumericalPointCollection & parameters) const
+FrankCopulaFactory::Implementation FrankCopulaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsFrankCopula(parameters).clone();
 }
@@ -102,17 +102,12 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalSample & sampl
   return result;
 }
 
-FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsFrankCopula(RemoveDescriptionFromCollection(parameters));
-}
-
-FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalPointCollection & parameters) const
+FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalPoint & parameters) const
 {
   try
   {
     FrankCopula copula;
-    copula.setParametersCollection(parameters);
+    copula.setParameters(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

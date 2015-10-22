@@ -45,7 +45,7 @@ ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Numerical
   return buildAsClaytonCopula(sample).clone();
 }
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const NumericalPointCollection & parameters) const
+ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsClaytonCopula(parameters).clone();
 }
@@ -66,17 +66,12 @@ ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalSample &
   return result;
 }
 
-ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsClaytonCopula(RemoveDescriptionFromCollection(parameters));
-}
-
-ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalPointCollection & parameters) const
+ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalPoint & parameters) const
 {
   try
   {
     ClaytonCopula copula;
-    copula.setParametersCollection(parameters);
+    copula.setParameters(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

@@ -46,7 +46,7 @@ PoissonFactory::Implementation PoissonFactory::build(const NumericalSample & sam
   return buildAsPoisson(sample).clone();
 }
 
-PoissonFactory::Implementation PoissonFactory::build(const NumericalPointCollection & parameters) const
+PoissonFactory::Implementation PoissonFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsPoisson(parameters).clone();
 }
@@ -75,17 +75,12 @@ Poisson PoissonFactory::buildAsPoisson(const NumericalSample & sample) const
   return result;
 }
 
-Poisson PoissonFactory::buildAsPoisson(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsPoisson(RemoveDescriptionFromCollection(parameters));
-}
-
-Poisson PoissonFactory::buildAsPoisson(const NumericalPointCollection & parameters) const
+Poisson PoissonFactory::buildAsPoisson(const NumericalPoint & parameters) const
 {
   try
   {
     Poisson distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

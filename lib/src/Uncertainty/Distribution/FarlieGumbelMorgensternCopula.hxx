@@ -85,10 +85,12 @@ public:
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  /** Parameters value accessors */
+  void setParameters(const NumericalPoint & parameters);
+  NumericalPoint getParameters() const;
+
+  /** Parameters description accessor */
+  Description getParametersDescription() const;
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;

@@ -1000,7 +1000,7 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Nu
 
   // set marginal parameters
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
-    distributionCollection_[marginalIndex].setParametersCollection(parametersCollection[marginalIndex]);
+    distributionCollection_[marginalIndex].setParameters(parametersCollection[marginalIndex]);
 }
 
 

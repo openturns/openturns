@@ -91,7 +91,7 @@ BurrFactory::Implementation BurrFactory::build(const NumericalSample & sample) c
   return buildAsBurr(sample).clone();
 }
 
-BurrFactory::Implementation BurrFactory::build(const NumericalPointCollection & parameters) const
+BurrFactory::Implementation BurrFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsBurr(parameters).clone();
 }
@@ -137,17 +137,12 @@ Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
   return result;
 }
 
-Burr BurrFactory::buildAsBurr(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsBurr(RemoveDescriptionFromCollection(parameters));
-}
-
-Burr BurrFactory::buildAsBurr(const NumericalPointCollection & parameters) const
+Burr BurrFactory::buildAsBurr(const NumericalPoint & parameters) const
 {
   try
   {
     Burr distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

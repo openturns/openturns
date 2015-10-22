@@ -561,6 +561,28 @@ void Dirichlet::setParametersCollection(const NumericalPointCollection & paramet
   setTheta(theta);
 }
 
+NumericalPoint Dirichlet::getParameters() const
+{
+  return theta_;
+}
+
+void Dirichlet::setParameters(const NumericalPoint & parameters)
+{
+  const NumericalScalar w = getWeight();
+  *this = Dirichlet(parameters);
+  setWeight(w);
+}
+
+Description Dirichlet::getParametersDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  Description description(dimension + 1);
+  for (UnsignedInteger i = 0; i <= dimension; ++ i)
+  {
+    description[i] = (OSS() << "theta_" << i);
+  }
+  return description;
+}
 
 /* Method save() stores the object through the StorageManager */
 void Dirichlet::save(Advocate & adv) const

@@ -52,8 +52,8 @@ public:
   explicit ComposedDistribution(const DistributionCollection & coll);
 
   /** Default constructor */
-  explicit ComposedDistribution(const DistributionCollection & coll,
-                                const Distribution & copula);
+  ComposedDistribution(const DistributionCollection & coll,
+                       const Distribution & copula);
 
 
   /** Comparison operator */
@@ -151,6 +151,13 @@ public:
   NumericalPointWithDescriptionCollection getParametersCollection() const;
   using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
+
+  /** Parameters value accessors */
+  void setParameters(const NumericalPoint & parameters);
+  NumericalPoint getParameters() const;
+
+  /** Parameters description accessor */
+  Description getParametersDescription() const;
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;

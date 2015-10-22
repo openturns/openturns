@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision( oldPrecision );
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Trapezoidal estimatedTrapezoidal(factory.buildAsTrapezoidal(sample));
     fullprint << "Trapezoidal          =" << distribution << std::endl;
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision( oldPrecision );
     estimatedTrapezoidal = factory.buildAsTrapezoidal();
     fullprint << "Default trapezoidal=" << estimatedTrapezoidal << std::endl;
-    estimatedTrapezoidal = factory.buildAsTrapezoidal(distribution.getParametersCollection());
+    estimatedTrapezoidal = factory.buildAsTrapezoidal(distribution.getParameters());
     fullprint << "Trapezoidal from parameters=" << estimatedTrapezoidal << std::endl;
   }
   catch (TestFailed & ex)

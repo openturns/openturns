@@ -47,11 +47,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   GeneralizedPareto buildAsGeneralizedPareto(const NumericalSample & sample) const;
-  GeneralizedPareto buildAsGeneralizedPareto(const NumericalPointCollection & parameters) const;
-  GeneralizedPareto buildAsGeneralizedPareto(const NumericalPointWithDescriptionCollection & parameters) const;
+  GeneralizedPareto buildAsGeneralizedPareto(const NumericalPoint & parameters) const;
   GeneralizedPareto buildAsGeneralizedPareto() const;
 
   /** Algorithm associated with the method of moments */

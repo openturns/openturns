@@ -296,25 +296,24 @@ void InverseChiSquare::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-InverseChiSquare::NumericalPointWithDescriptionCollection InverseChiSquare::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint InverseChiSquare::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = nu_;
-  description[0] = "nu";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, nu_);
 }
 
-void InverseChiSquare::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void InverseChiSquare::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = InverseChiSquare(parametersCollection[0][0]);
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = InverseChiSquare(parameters[0]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description InverseChiSquare::getParametersDescription() const
+{
+  return Description(1, "nu");
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedUniform = factory.buildAsUniform(sample)
     print("Uniform          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedUniform = factory.buildAsUniform()
     print("Default uniform=", estimatedUniform)
     estimatedUniform = factory.buildAsUniform(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Uniform from parameters=", estimatedUniform)
 
 except:

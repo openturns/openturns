@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedLogistic = factory.buildAsLogistic(sample)
     print("Logistic          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedLogistic = factory.buildAsLogistic()
     print("Default logistic=", estimatedLogistic)
     estimatedLogistic = factory.buildAsLogistic(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Logistic from parameters=", estimatedLogistic)
 
 except:

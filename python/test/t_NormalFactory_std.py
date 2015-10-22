@@ -26,7 +26,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedNormal = factory.buildAsNormal(sample)
     print("Normal          =", distribution)
@@ -34,7 +34,7 @@ try:
     estimatedNormal = factory.buildAsNormal()
     print("Default normal=", estimatedNormal)
     estimatedNormal = factory.buildAsNormal(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Normal from parameters=", estimatedNormal)
 
 except:

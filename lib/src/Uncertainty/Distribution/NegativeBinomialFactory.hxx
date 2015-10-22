@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   NegativeBinomial buildAsNegativeBinomial(const NumericalSample & sample) const;
-  NegativeBinomial buildAsNegativeBinomial(const NumericalPointCollection & parameters) const;
-  NegativeBinomial buildAsNegativeBinomial(const NumericalPointWithDescriptionCollection & parameters) const;
+  NegativeBinomial buildAsNegativeBinomial(const NumericalPoint & parameters) const;
   NegativeBinomial buildAsNegativeBinomial() const;
 
 }; /* class NegativeBinomialFactory */

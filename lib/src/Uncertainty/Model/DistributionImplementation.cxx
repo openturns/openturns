@@ -195,26 +195,26 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   // Special case: LogNormal distributions
   if ((getClassName() == "LogNormal") && (other->getClassName() == "LogNormal"))
   {
-    const NumericalPoint parameters(getParametersCollection()[0]);
-    const NumericalPoint otherParameters(other->getParametersCollection()[0]);
+    const NumericalPoint parameters(getParameters());
+    const NumericalPoint otherParameters(other->getParameters());
     return LogNormal(parameters[0] + otherParameters[0], std::sqrt(parameters[1] * parameters[1] + otherParameters[1] * otherParameters[1])).clone();
   }
   if ((getClassName() == "LogUniform") && (other->getClassName() == "LogUniform"))
   {
-    const NumericalPoint parameters(getParametersCollection()[0]);
-    const NumericalPoint otherParameters(other->getParametersCollection()[0]);
+    const NumericalPoint parameters(getParameters());
+    const NumericalPoint otherParameters(other->getParameters());
     return (Uniform(parameters[0], parameters[1]) + Uniform(otherParameters[0], otherParameters[1]))->exp();
   }
   if ((getClassName() == "LogUniform") && (other->getClassName() == "LogNormal"))
   {
-    const NumericalPoint parameters(getParametersCollection()[0]);
-    const NumericalPoint otherParameters(other->getParametersCollection()[0]);
+    const NumericalPoint parameters(getParameters());
+    const NumericalPoint otherParameters(other->getParameters());
     return (Uniform(parameters[0], parameters[1]) + Normal(otherParameters[0], otherParameters[1]))->exp();
   }
   if ((getClassName() == "LogNormal") && (other->getClassName() == "LogUniform"))
   {
-    const NumericalPoint parameters(getParametersCollection()[0]);
-    const NumericalPoint otherParameters(other->getParametersCollection()[0]);
+    const NumericalPoint parameters(getParameters());
+    const NumericalPoint otherParameters(other->getParameters());
     return (Normal(parameters[0], parameters[1]) + Uniform(otherParameters[0], otherParameters[1]))->exp();
   }
   return ProductDistribution(*this, *other).clone();
@@ -1319,7 +1319,7 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
 {
   if (dimension_ > 1) throw NotYetImplementedException(HERE) << "DistributionImplementation::computePDFGradient(const NumericalPoint & point) const";
   // As we are in 1D, we know that the collection contains exactly one point
-  const NumericalPointWithDescription initialParameters(getParametersCollection()[0]);
+  const NumericalPoint initialParameters(getParameters());
   const UnsignedInteger parametersDimension(initialParameters.getDimension());
   NumericalPoint PDFGradient(parametersDimension);
   // Clone the distribution
@@ -1328,7 +1328,7 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
   const NumericalScalar eps(std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
   // Increment for noncentered differences
   const NumericalScalar eps2(std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0));
-  NumericalPointWithDescription newParameters(initialParameters);
+  NumericalPoint newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
     NumericalScalar delta(0.0);
@@ -1337,7 +1337,7 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
     try
     {
       newParameters[i] = initialParameters[i] + eps;
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       rightPDF = cloneDistribution->computePDF(point);
       delta += eps;
     }
@@ -1345,7 +1345,7 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
     {
       // If something went wrong with the right point, stay at the center point
       newParameters[i] = initialParameters[i];
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       rightPDF = cloneDistribution->computePDF(point);
     }
     NumericalScalar leftPDF(0.0);
@@ -1354,7 +1354,7 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
       // If something is wrong with the right point, use non-centered finite differences
       const NumericalScalar leftEpsilon(delta == 0.0 ? eps2 : eps);
       newParameters[i] = initialParameters[i] - leftEpsilon;
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       leftPDF = cloneDistribution->computePDF(point);
       delta += leftEpsilon;
     }
@@ -1363,12 +1363,12 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
       // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
       if (delta == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute the PDF gradient at x=" << point << " for the current values of the parameters=" << initialParameters;
       newParameters[i] = initialParameters[i] + eps2;
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       rightPDF = cloneDistribution->computePDF(point);
       delta += eps2;
       // And the left point will be the center point
       newParameters[i] = initialParameters[i];
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       leftPDF = cloneDistribution->computePDF(point);
     }
     PDFGradient[i] = (rightPDF - leftPDF) / delta;
@@ -1400,7 +1400,7 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
 {
   if (dimension_ > 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCDFGradient(const NumericalPoint & point) const";
   // As we are in 1D, we know that the collection contains exactly one point
-  const NumericalPointWithDescription initialParameters(getParametersCollection()[0]);
+  const NumericalPoint initialParameters(getParameters());
   const UnsignedInteger parametersDimension(initialParameters.getDimension());
   NumericalPoint CDFGradient(parametersDimension);
   // Clone the distribution
@@ -1409,7 +1409,7 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
   const NumericalScalar eps(std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
   // Increment for noncentered differences
   const NumericalScalar eps2(std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0));
-  NumericalPointWithDescription newParameters(initialParameters);
+  NumericalPoint newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
     NumericalScalar delta(0.0);
@@ -1418,7 +1418,7 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
     try
     {
       newParameters[i] = initialParameters[i] + eps;
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       rightCDF = cloneDistribution->computeCDF(point);
       delta += eps;
     }
@@ -1426,7 +1426,7 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
     {
       // If something went wrong with the right point, stay at the center point
       newParameters[i] = initialParameters[i];
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       rightCDF = cloneDistribution->computeCDF(point);
     }
     NumericalScalar leftCDF(0.0);
@@ -1435,7 +1435,7 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
       // If something is wrong with the right point, use non-centered finite differences
       const NumericalScalar leftEpsilon(delta == 0.0 ? eps2 : eps);
       newParameters[i] = initialParameters[i] - leftEpsilon;
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       leftCDF = cloneDistribution->computeCDF(point);
       delta += leftEpsilon;
     }
@@ -1444,12 +1444,12 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
       // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
       if (delta == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute the CDF gradient at x=" << point << " for the current values of the parameters=" << initialParameters;
       newParameters[i] = initialParameters[i] + eps2;
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       rightCDF = cloneDistribution->computeCDF(point);
       delta += eps2;
       // And the left point will be the center point
       newParameters[i] = initialParameters[i];
-      cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+      cloneDistribution->setParameters(newParameters);
       leftCDF = cloneDistribution->computeCDF(point);
     }
     CDFGradient[i] = (rightCDF - leftCDF) / delta;
@@ -2521,7 +2521,7 @@ DistributionImplementation::IsoProbabilisticTransformation DistributionImplement
     // Get the marginal transformation hessian implementation
     const HessianImplementation p_hessian = new MarginalTransformationHessian(evaluation);
     InverseIsoProbabilisticTransformation inverseTransformation(p_evaluation, p_gradient, p_hessian);
-    NumericalPointWithDescription parameters(getParametersCollection()[0]);
+    NumericalPointWithDescription parameters(getParameters());
     const UnsignedInteger parametersDimension(parameters.getDimension());
     Description parametersDescription(parameters.getDescription());
     const String name(parameters.getName());
@@ -2552,7 +2552,7 @@ DistributionImplementation::InverseIsoProbabilisticTransformation DistributionIm
     // Get the marginal transformation hessian implementation
     const HessianImplementation p_hessian = new MarginalTransformationHessian(evaluation);
     InverseIsoProbabilisticTransformation inverseTransformation(p_evaluation, p_gradient, p_hessian);
-    NumericalPointWithDescription parameters(getParametersCollection()[0]);
+    NumericalPointWithDescription parameters(getParameters());
     const UnsignedInteger parametersDimension(parameters.getDimension());
     Description parametersDescription(parameters.getDescription());
     const String name(parameters.getName());
@@ -3092,12 +3092,20 @@ Graph DistributionImplementation::drawQuantile2D(const NumericalScalar qMin,
 /* Parameters value and description accessor */
 DistributionImplementation::NumericalPointWithDescriptionCollection DistributionImplementation::getParametersCollection() const
 {
-  // By default, assume an empty set of parameters for a 1D distribution or a copula
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
+  // Use compact accessor
+  NumericalPointWithDescription parameters(getParameters());
+  parameters.setDescription(getParametersDescription());
+  parameters.setName(getDescription()[0]);
+  return NumericalPointWithDescriptionCollection(1, parameters);
 }
 
 void DistributionImplementation::setParametersCollection(const NumericalPointWithDescriptionCollection & parametersCollection)
 {
+  if (getDimension() == 1) {
+    if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Expected collection of size 1, got " << parametersCollection.getSize();
+    setParameters(parametersCollection[0]);
+  }
+
   // Get the actual collection of parameters to check the description and the size
   const NumericalPointWithDescriptionCollection actualParameters(getParametersCollection());
   const UnsignedInteger size(actualParameters.getSize());
@@ -3114,51 +3122,48 @@ void DistributionImplementation::setParametersCollection(const NumericalPointWit
 
 void DistributionImplementation::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
-  const UnsignedInteger size(parametersCollection.getSize());
-  NumericalPointWithDescriptionCollection newParameters(size);
-  for (UnsignedInteger i = 0; i < size; ++i) newParameters[i] = parametersCollection[i];
-  setParametersCollection(newParameters);
+  const UnsignedInteger size = parametersCollection.getSize();
+  NumericalPoint newParameters;
+  for (UnsignedInteger i = 0; i < size; ++ i) newParameters.add(parametersCollection[i]);
+  setParameters(newParameters);
 }
 
-void DistributionImplementation::setParametersCollection(const NumericalPoint & flattenCollection)
+/* Parameters value accessor */
+NumericalPoint DistributionImplementation::getParameters() const
 {
-  const NumericalPointWithDescriptionCollection currentParameters(getParametersCollection());
-  UnsignedInteger size(currentParameters.getSize());
-  NumericalPointCollection parametersCollection;
-  UnsignedInteger flattenSize = 0;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const UnsignedInteger subSize(currentParameters[i].getSize());
-    NumericalPoint subCollection(subSize);
-    // copy parameters into the collection if the flatten collection is large enough
-    if ( (flattenSize + subSize) <= flattenCollection.getSize() )
-    {
-      for (UnsignedInteger j = 0; j < subSize; ++j) subCollection[j] = flattenCollection[flattenSize + j];
-    }
-    parametersCollection.add(subCollection);
-    flattenSize += subSize;
-  }
-  if (flattenCollection.getSize() != flattenSize) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an invalid size (" << flattenCollection.getSize() << "), it should be " << flattenSize;
-  setParametersCollection(parametersCollection);
+  return NumericalPoint();
 }
+
+void DistributionImplementation::setParameters(const NumericalPoint & parameters)
+{
+  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize(); 
+}
+
+/* Parameters description accessor */
+Description DistributionImplementation::getParametersDescription() const
+{
+  return Description();
+}
+
 
 /* Parameters number */
 UnsignedInteger DistributionImplementation::getParametersNumber() const
 {
-  const NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
-  const UnsignedInteger size(parametersCollection.getSize());
-  if (size == 1) return parametersCollection[0].getDimension();
-  // The number of parameters is non-trivial to compute in the multidimensional case as a given parameter can appear in different marginal parameters description and even in the dependence description. Thus, we have to get the number of unique parameters based on their description.
-  // First, aggregate all the descriptions
-  Description globalDescription(0);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Description localDescription(parametersCollection[i].getDescription());
-    for (UnsignedInteger j = 0; j < localDescription.getSize(); ++j) globalDescription.add(localDescription[j]);
-  }
-  std::sort(globalDescription.begin(), globalDescription.end());
-  Description::iterator iter(std::unique(globalDescription.begin(), globalDescription.end()));
-  return static_cast<UnsignedInteger>(iter - globalDescription.begin());
+//   const NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
+//   const UnsignedInteger size(parametersCollection.getSize());
+//   if (size == 1) return parametersCollection[0].getDimension();
+//   // The number of parameters is non-trivial to compute in the multidimensional case as a given parameter can appear in different marginal parameters description and even in the dependence description. Thus, we have to get the number of unique parameters based on their description.
+//   // First, aggregate all the descriptions
+//   Description globalDescription(0);
+//   for (UnsignedInteger i = 0; i < size; ++i)
+//   {
+//     const Description localDescription(parametersCollection[i].getDescription());
+//     for (UnsignedInteger j = 0; j < localDescription.getSize(); ++j) globalDescription.add(localDescription[j]);
+//   }
+//   std::sort(globalDescription.begin(), globalDescription.end());
+//   Description::iterator iter(std::unique(globalDescription.begin(), globalDescription.end()));
+//   return static_cast<UnsignedInteger>(iter - globalDescription.begin());
+  return getParameters().getSize();
 }
 
 /* Description accessor */
@@ -3475,12 +3480,12 @@ DistributionImplementation::Implementation DistributionImplementation::exp() con
   // Check if we can reuse an existing class
   if (getClassName() == "Normal")
   {
-    NumericalPoint parameters(getParametersCollection()[0]);
+    NumericalPoint parameters(getParameters());
     return LogNormal(parameters[0], parameters[1]).clone();
   }
   if (getClassName() == "Uniform")
   {
-    NumericalPoint parameters(getParametersCollection()[0]);
+    NumericalPoint parameters(getParameters());
     return LogUniform(parameters[0], parameters[1]).clone();
   }
   const NumericalScalar a(getRange().getLowerBound()[0]);
@@ -3498,12 +3503,12 @@ DistributionImplementation::Implementation DistributionImplementation::log() con
   // Check if we can reuse an existing class
   if (getClassName() == "LogNormal")
   {
-    NumericalPoint parameters(getParametersCollection()[0]);
+    NumericalPoint parameters(getParameters());
     if (parameters[2] == 0.0) return Normal(parameters[0], parameters[1]).clone();
   }
   if (getClassName() == "LogUniform")
   {
-    NumericalPoint parameters(getParametersCollection()[0]);
+    NumericalPoint parameters(getParameters());
     return Uniform(parameters[0], parameters[1]).clone();
   }
   const NumericalScalar a(getRange().getLowerBound()[0]);
@@ -3597,7 +3602,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqr() con
   // Check if we can reuse an existing class
   if (getClassName() == "Chi")
   {
-    NumericalPoint parameters(getParametersCollection()[0]);
+    NumericalPoint parameters(getParameters());
     return ChiSquare(parameters[0]).clone();
   }
   return pow(static_cast< SignedInteger >(2));
@@ -3659,7 +3664,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqrt() co
   // Check if we can reuse an existing class
   if (getClassName() == "ChiSquare")
   {
-    NumericalPoint parameters(getParametersCollection()[0]);
+    NumericalPoint parameters(getParameters());
     return Chi(parameters[0]).clone();
   }
   const NumericalScalar a(getRange().getLowerBound()[0]);

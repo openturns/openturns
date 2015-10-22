@@ -49,7 +49,7 @@ BernoulliFactory::Implementation BernoulliFactory::build(const NumericalSample &
   return buildAsBernoulli(sample).clone();
 }
 
-BernoulliFactory::Implementation BernoulliFactory::build(const NumericalPointCollection & parameters) const
+BernoulliFactory::Implementation BernoulliFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsBernoulli(parameters).clone();
 }
@@ -78,17 +78,12 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalSample & sample) con
   return result;
 }
 
-Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsBernoulli(RemoveDescriptionFromCollection(parameters));
-}
-
-Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPointCollection & parameters) const
+Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPoint & parameters) const
 {
   try
   {
     Bernoulli distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

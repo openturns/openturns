@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Triangular estimatedTriangular(factory.buildAsTriangular(sample));
     fullprint << "Triangular          =" << distribution << std::endl;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedTriangular = factory.buildAsTriangular();
     fullprint << "Default triangular=" << estimatedTriangular << std::endl;
-    estimatedTriangular = factory.buildAsTriangular(distribution.getParametersCollection());
+    estimatedTriangular = factory.buildAsTriangular(distribution.getParameters());
     fullprint << "Triangular from parameters=" << estimatedTriangular << std::endl;
   }
   catch (TestFailed & ex)

@@ -147,7 +147,13 @@ public:
   NumericalPointWithDescriptionCollection getParametersCollection() const;
   using ContinuousDistribution::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
-  void setParametersCollection(const NumericalPoint & flattenCollection);
+
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameters() const;
+  virtual void setParameters(const NumericalPoint & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParametersDescription() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

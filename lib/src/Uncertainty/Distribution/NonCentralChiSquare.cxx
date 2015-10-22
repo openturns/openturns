@@ -192,27 +192,28 @@ NumericalComplex NonCentralChiSquare::computeLogCharacteristicFunction(const Num
   return NumericalComplex(0.0, lambda_ * x) / denominator - 0.5 * nu_ * std::log(denominator);
 }
 
-/* Parameters value and description accessor */
-NonCentralChiSquare::NumericalPointWithDescriptionCollection NonCentralChiSquare::getParametersCollection() const
+NumericalPoint NonCentralChiSquare::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = nu_;
   point[1] = lambda_;
-  description[0] = "nu";
-  description[1] = "lambda";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void NonCentralChiSquare::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void NonCentralChiSquare::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = NonCentralChiSquare(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = NonCentralChiSquare(parameters[0], parameters[1]);
   setWeight(w);
+}
+
+Description NonCentralChiSquare::getParametersDescription() const
+{
+  Description description(2);
+  description[0] = "nu";
+  description[1] = "lambda";
+  return description;
 }
 
 /* Nu accessor */

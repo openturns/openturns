@@ -47,11 +47,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build( const NumericalSample & sample ) const;
-  Implementation build( const NumericalPointCollection & parameters ) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Trapezoidal buildAsTrapezoidal( const NumericalSample & sample ) const;
-  Trapezoidal buildAsTrapezoidal( const NumericalPointCollection & parameters ) const;
-  Trapezoidal buildAsTrapezoidal( const NumericalPointWithDescriptionCollection & parameters ) const;
+  Trapezoidal buildAsTrapezoidal(const NumericalPoint & parameters) const;
   Trapezoidal buildAsTrapezoidal() const;
 
   /** Likelihood function accessor */

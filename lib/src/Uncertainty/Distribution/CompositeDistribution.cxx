@@ -409,6 +409,24 @@ void CompositeDistribution::setParametersCollection(const NumericalPointCollecti
   setFunctionAndAntecedent(function_, antecedent_);
 }
 
+/* Parameters value accessor */
+NumericalPoint CompositeDistribution::getParameters() const
+{
+  return antecedent_.getParameters();
+}
+
+void CompositeDistribution::setParameters(const NumericalPoint & parameters)
+{
+  antecedent_.setParameters(parameters);
+  setFunctionAndAntecedent(function_, antecedent_);
+}
+
+/* Parameters description accessor */
+Description CompositeDistribution::getParametersDescription() const
+{
+  return antecedent_.getParametersDescription();
+}
+
 /* Tell if the distribution is continuous */
 Bool CompositeDistribution::isContinuous() const
 {

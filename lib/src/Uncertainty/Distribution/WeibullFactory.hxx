@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Weibull buildAsWeibull(const NumericalSample & sample) const;
-  Weibull buildAsWeibull(const NumericalPointCollection & parameters) const;
-  Weibull buildAsWeibull(const NumericalPointWithDescriptionCollection & parameters) const;
+  Weibull buildAsWeibull(const NumericalPoint & parameters) const;
   Weibull buildAsWeibull() const;
 
 }; /* class WeibullFactory */

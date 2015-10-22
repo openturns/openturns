@@ -17,14 +17,14 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedWeibull = factory.buildAsWeibull(sample)
     print("Estimated weibull=", estimatedWeibull)
     estimatedWeibull = factory.buildAsWeibull()
     print("Default weibull=", estimatedWeibull)
     estimatedWeibull = factory.buildAsWeibull(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Weibull from parameters=", estimatedWeibull)
 
 except:

@@ -64,10 +64,9 @@ Distribution GumbelAB::getDistribution() const
   newParameters[0] = a_;
   newParameters[1] = b_;
 
-  NumericalPointCollection nativeParameters = NumericalPointCollection(1, newParameters);
-  nativeParameters[0] = operator()(newParameters);
+  NumericalPoint nativeParameters(operator()(newParameters));
 
-  return GumbelFactory().build(nativeParameters);
+  return GumbelFactory().build(operator()(nativeParameters));
 }
 
 

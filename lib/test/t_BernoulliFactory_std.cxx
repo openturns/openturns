@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Bernoulli estimatedBernoulli(factory.buildAsBernoulli(sample));
     fullprint << "Bernoulli          =" << distribution << std::endl;
     fullprint << "Estimated Bernoulli=" << estimatedBernoulli << std::endl;
     estimatedBernoulli = factory.buildAsBernoulli();
     fullprint << "Default Bernoulli=" << estimatedBernoulli << std::endl;
-    estimatedBernoulli = factory.buildAsBernoulli(distribution.getParametersCollection());
+    estimatedBernoulli = factory.buildAsBernoulli(distribution.getParameters());
     fullprint << "Bernoulli from parameters=" << estimatedBernoulli << std::endl;
   }
   catch (TestFailed & ex)

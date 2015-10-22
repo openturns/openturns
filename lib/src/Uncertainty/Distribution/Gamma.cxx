@@ -383,29 +383,32 @@ void Gamma::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-Gamma::NumericalPointWithDescriptionCollection Gamma::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Gamma::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = k_;
   point[1] = lambda_;
   point[2] = gamma_;
+  return point;
+}
+
+void Gamma::setParameters(const NumericalPoint & parameters)
+{
+  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Gamma(parameters[0], parameters[1], parameters[2]);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Gamma::getParametersDescription() const
+{
+  Description description(3);
   description[0] = "k";
   description[1] = "lambda";
   description[2] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-void Gamma::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  const NumericalScalar w(getWeight());
-  *this = Gamma(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
-  setWeight(w);
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     // Test the specific build method
     Weibull estimatedWeibull(factory.buildAsWeibull(sample));
     fullprint << "Estimated weibull=" << estimatedWeibull << std::endl;
     estimatedWeibull = factory.buildAsWeibull();
     fullprint << "Default weibull=" << estimatedWeibull << std::endl;
-    estimatedWeibull = factory.buildAsWeibull(distribution.getParametersCollection());
+    estimatedWeibull = factory.buildAsWeibull(distribution.getParameters());
     fullprint << "Weibull from parameters=" << estimatedWeibull << std::endl;
 
   }

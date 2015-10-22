@@ -97,14 +97,9 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
 
 
 /* Build a distribution based on a set of parameters */
-DistributionImplementationFactory::Implementation DistributionImplementationFactory::build(const NumericalPointCollection & parameters) const
+DistributionImplementationFactory::Implementation DistributionImplementationFactory::build(const NumericalPoint & parameters) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementationFactory::build(const NumericalPointCollection & parameters) const";
-}
-
-DistributionImplementationFactory::Implementation DistributionImplementationFactory::build(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return build(RemoveDescriptionFromCollection(parameters));
 }
 
 /* Build a distribution using its default constructor */

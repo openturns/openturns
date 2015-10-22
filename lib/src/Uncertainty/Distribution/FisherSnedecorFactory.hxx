@@ -47,11 +47,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   FisherSnedecor buildAsFisherSnedecor(const NumericalSample & sample) const;
-  FisherSnedecor buildAsFisherSnedecor(const NumericalPointCollection & parameters) const;
-  FisherSnedecor buildAsFisherSnedecor(const NumericalPointWithDescriptionCollection & parameters) const;
+  FisherSnedecor buildAsFisherSnedecor(const NumericalPoint & parameters) const;
   FisherSnedecor buildAsFisherSnedecor() const;
 
   /** Optimization solver accessor */

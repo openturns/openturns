@@ -45,7 +45,7 @@ LogUniformFactory::Implementation LogUniformFactory::build(const NumericalSample
   return buildAsLogUniform(sample).clone();
 }
 
-LogUniformFactory::Implementation LogUniformFactory::build(const NumericalPointCollection & parameters) const
+LogUniformFactory::Implementation LogUniformFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsLogUniform(parameters).clone();
 }
@@ -73,17 +73,12 @@ LogUniform LogUniformFactory::buildAsLogUniform(const NumericalSample & sample) 
   return result;
 }
 
-LogUniform LogUniformFactory::buildAsLogUniform(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsLogUniform(RemoveDescriptionFromCollection(parameters));
-}
-
-LogUniform LogUniformFactory::buildAsLogUniform(const NumericalPointCollection & parameters) const
+LogUniform LogUniformFactory::buildAsLogUniform(const NumericalPoint & parameters) const
 {
   try
   {
     LogUniform distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

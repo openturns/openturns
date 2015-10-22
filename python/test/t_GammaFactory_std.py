@@ -27,7 +27,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedGamma = factory.buildAsGamma(sample)
     print("Gamma          =", distribution)
@@ -35,7 +35,7 @@ try:
     estimatedGamma = factory.buildAsGamma()
     print("Default gamma=", estimatedGamma)
     estimatedGamma = factory.buildAsGamma(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Gamma from parameters=", estimatedGamma)
 
 except:

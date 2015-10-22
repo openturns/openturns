@@ -235,27 +235,30 @@ Exponential::Implementation Exponential::getStandardRepresentative() const
   return Exponential(1.0).clone();
 }
 
-/* Parameters value and description accessor */
-Exponential::NumericalPointWithDescriptionCollection Exponential::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Exponential::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = lambda_;
   point[1] = gamma_;
-  description[0] = "lambda";
-  description[1] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Exponential::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Exponential::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Exponential(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Exponential(parameters[0], parameters[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Exponential::getParametersDescription() const
+{
+  Description description(2);
+  description[0] = "lambda";
+  description[1] = "gamma";
+  return description;
 }
 
 /* Lambda accessor */

@@ -46,7 +46,7 @@ LogisticFactory::Implementation LogisticFactory::build(const NumericalSample & s
   return buildAsLogistic(sample).clone();
 }
 
-LogisticFactory::Implementation LogisticFactory::build(const NumericalPointCollection & parameters) const
+LogisticFactory::Implementation LogisticFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsLogistic(parameters).clone();
 }
@@ -68,17 +68,12 @@ Logistic LogisticFactory::buildAsLogistic(const NumericalSample & sample) const
   return result;
 }
 
-Logistic LogisticFactory::buildAsLogistic(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsLogistic(RemoveDescriptionFromCollection(parameters));
-}
-
-Logistic LogisticFactory::buildAsLogistic(const NumericalPointCollection & parameters) const
+Logistic LogisticFactory::buildAsLogistic(const NumericalPoint & parameters) const
 {
   try
   {
     Logistic distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

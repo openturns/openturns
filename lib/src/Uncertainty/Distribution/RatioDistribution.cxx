@@ -325,18 +325,39 @@ void RatioDistribution::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-RatioDistribution::NumericalPointWithDescriptionCollection RatioDistribution::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint RatioDistribution::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(left_.getParametersCollection()[0]);
-  point.add(right_.getParametersCollection()[0]);
-  Description description(left_.getDescription());
-  description.add(right_.getDescription());
-  point.setDescription(description);
-  point.setName(getName());
-  parameters[0] = point;
-  return parameters;
+  NumericalPoint point(left_.getParameters());
+  point.add(right_.getParameters());
+  return point;
+}
+
+void RatioDistribution::setParameters(const NumericalPoint & parameters)
+{
+  const UnsignedInteger leftSize = left_.getParameters().getSize();
+  const UnsignedInteger rightSize = right_.getParameters().getSize();
+  if (parameters.getSize() != leftSize + rightSize)
+    throw InvalidArgumentException(HERE) << "Error: expected "<< leftSize + rightSize << " parameters, got " << parameters.getSize();
+  NumericalPoint newLeftParameters(leftSize);
+  NumericalPoint newRightParameters(rightSize);
+  std::copy(parameters.begin(), parameters.begin() + leftSize, newLeftParameters.begin());
+  std::copy(parameters.begin() + leftSize, parameters.end(), newRightParameters.begin());
+  Distribution newLeft(left_);
+  Distribution newRight(right_);
+  newLeft.setParameters(newLeftParameters);
+  newRight.setParameters(newRightParameters);
+  const NumericalScalar w = getWeight();
+  *this = RatioDistribution(newLeft, newRight);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description RatioDistribution::getParametersDescription() const
+{
+  Description description(left_.getParametersDescription());
+  description.add(right_.getParametersDescription());
+  return description;
 }
 
 /* Left accessor */

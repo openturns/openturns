@@ -45,7 +45,7 @@ ChiSquareFactory::Implementation ChiSquareFactory::build(const NumericalSample &
   return buildAsChiSquare(sample).clone();
 }
 
-ChiSquareFactory::Implementation ChiSquareFactory::build(const NumericalPointCollection & parameters) const
+ChiSquareFactory::Implementation ChiSquareFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsChiSquare(parameters).clone();
 }
@@ -65,17 +65,12 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalSample & sample) con
   return result;
 }
 
-ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsChiSquare(RemoveDescriptionFromCollection(parameters));
-}
-
-ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalPointCollection & parameters) const
+ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalPoint & parameters) const
 {
   try
   {
     ChiSquare distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

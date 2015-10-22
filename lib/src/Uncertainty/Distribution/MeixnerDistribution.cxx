@@ -431,30 +431,33 @@ void MeixnerDistribution::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-MeixnerDistribution::NumericalPointWithDescriptionCollection MeixnerDistribution::getParametersCollection() const
+NumericalPoint MeixnerDistribution::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(4);
-  Description description(point.getDimension());
+  NumericalPoint point(4);
   point[0] = alpha_;
   point[1] = beta_;
   point[2] = delta_;
   point[3] = mu_;
+  return point;
+}
+
+void MeixnerDistribution::setParameters(const NumericalPoint & parameters)
+{
+  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = MeixnerDistribution(parameters[0], parameters[1], parameters[2], parameters[3]);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description MeixnerDistribution::getParametersDescription() const
+{
+  Description description(4);
   description[0] = "alpha";
   description[1] = "beta";
   description[2] = "delta";
   description[2] = "mu";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-void MeixnerDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  const NumericalScalar w(getWeight());
-  *this = MeixnerDistribution(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
-  setWeight(w);
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

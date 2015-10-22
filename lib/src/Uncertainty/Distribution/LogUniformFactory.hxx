@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   LogUniform buildAsLogUniform(const NumericalSample & sample) const;
-  LogUniform buildAsLogUniform(const NumericalPointCollection & parameters) const;
-  LogUniform buildAsLogUniform(const NumericalPointWithDescriptionCollection & parameters) const;
+  LogUniform buildAsLogUniform(const NumericalPoint & parameters) const;
   LogUniform buildAsLogUniform() const;
 
 }; /* class LogUniformFactory */

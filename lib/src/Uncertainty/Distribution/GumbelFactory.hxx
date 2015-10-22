@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Gumbel buildAsGumbel(const NumericalSample & sample) const;
-  Gumbel buildAsGumbel(const NumericalPointCollection & parameters) const;
-  Gumbel buildAsGumbel(const NumericalPointWithDescriptionCollection & parameters) const;
+  Gumbel buildAsGumbel(const NumericalPoint & parameters) const;
   Gumbel buildAsGumbel() const;
 
 

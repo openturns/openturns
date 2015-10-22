@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Beta buildAsBeta(const NumericalSample & sample) const;
-  Beta buildAsBeta(const NumericalPointCollection & parameters) const;
-  Beta buildAsBeta(const NumericalPointWithDescriptionCollection & parameters) const;
+  Beta buildAsBeta(const NumericalPoint & parameters) const;
   Beta buildAsBeta() const;
 
 }; /* class BetaFactory */

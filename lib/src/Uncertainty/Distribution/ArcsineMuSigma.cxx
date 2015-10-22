@@ -65,7 +65,7 @@ Distribution ArcsineMuSigma::getDistribution() const
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
 
-  NumericalPointCollection nativeParameters(1, operator()(newParameters));
+  NumericalPoint nativeParameters(operator()(newParameters));
 
   return ArcsineFactory().build(nativeParameters);
 }

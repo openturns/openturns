@@ -104,6 +104,12 @@ public:
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
 
+  /** Parameters value accessors */
+  NumericalPoint getParameters() const;
+
+  /** Parameters description accessor */
+  Description getParametersDescription() const;
+
   /* Interface specific to UserDefined */
 
   /** Pair collection accessor */

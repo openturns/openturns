@@ -372,31 +372,34 @@ void Trapezoidal::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-Trapezoidal::NumericalPointWithDescriptionCollection Trapezoidal::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Trapezoidal::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(4);
-  Description description(point.getDimension());
+  NumericalPoint point(4);
   point[0] = a_;
   point[1] = b_;
   point[2] = c_;
   point[3] = d_;
+  return point;
+}
+
+void Trapezoidal::setParameters(const NumericalPoint & parameters)
+{
+  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Trapezoidal(parameters[0], parameters[1], parameters[2], parameters[3]);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Trapezoidal::getParametersDescription() const
+{
+  Description description(4);
   description[0] = "a";
   description[1] = "b";
   description[2] = "c";
   description[3] = "d";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-void Trapezoidal::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  const NumericalScalar w(getWeight());
-  *this = Trapezoidal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
-  setWeight(w);
+  return description;
 }
 
 /* Sigma accessor */

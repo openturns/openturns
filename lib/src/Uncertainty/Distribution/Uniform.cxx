@@ -258,27 +258,30 @@ Uniform::Implementation Uniform::getStandardRepresentative() const
   return Uniform(-1.0, 1.0).clone();
 }
 
-/* Parameters value and description accessor */
-Uniform::NumericalPointWithDescriptionCollection Uniform::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Uniform::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = a_;
   point[1] = b_;
-  description[0] = "a";
-  description[1] = "b";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Uniform::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Uniform::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Uniform(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Uniform(parameters[0], parameters[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Uniform::getParametersDescription() const
+{
+  Description description(2);
+  description[0] = "a";
+  description[1] = "b";
+  return description;
 }
 
 /* Check if the distribution is elliptical */

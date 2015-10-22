@@ -46,7 +46,7 @@ GammaFactory::Implementation GammaFactory::build(const NumericalSample & sample)
   return buildAsGamma(sample).clone();
 }
 
-GammaFactory::Implementation GammaFactory::build(const NumericalPointCollection & parameters) const
+GammaFactory::Implementation GammaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsGamma(parameters).clone();
 }
@@ -74,17 +74,12 @@ Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
   return result;
 }
 
-Gamma GammaFactory::buildAsGamma(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsGamma(RemoveDescriptionFromCollection(parameters));
-}
-
-Gamma GammaFactory::buildAsGamma(const NumericalPointCollection & parameters) const
+Gamma GammaFactory::buildAsGamma(const NumericalPoint & parameters) const
 {
   try
   {
     Gamma distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -99,10 +99,12 @@ public:
   using DistributionImplementation::getSupport;
   NumericalSample getSupport(const Interval & interval) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using DiscreteDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  /** Parameters value accessors */
+  void setParameters(const NumericalPoint & parameters);
+  NumericalPoint getParameters() const;
+
+  /** Parameters description accessor */
+  Description getParametersDescription() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

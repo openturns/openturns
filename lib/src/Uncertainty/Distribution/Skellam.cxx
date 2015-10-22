@@ -210,29 +210,31 @@ NumericalSample Skellam::getSupport(const Interval & interval) const
   return result;
 }
 
-/* Parameters value and description accessor */
-Skellam::NumericalPointWithDescriptionCollection Skellam::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Skellam::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = lambda1_;
-  description[0] = "lambda1";
   point[1] = lambda2_;
-  description[1] = "lambda2";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Skellam::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Skellam::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Skellam(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Skellam(parameters[0], parameters[1]);
   setWeight(w);
 }
 
+/* Parameters  description accessor */
+Description Skellam::getParametersDescription() const
+{
+  Description description(2);
+  description[0] = "lambda1";
+  description[1] = "lambda2";
+  return description;
+}
 
 /* Lambda1/Lambda2 accessor */
 void Skellam::setLambda1Lambda2(const NumericalScalar lambda1,

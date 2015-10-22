@@ -216,28 +216,25 @@ void Geometric::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-Geometric::NumericalPointWithDescriptionCollection Geometric::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Geometric::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = p_;
-  description[0] = "p";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, p_);
 }
 
-void Geometric::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Geometric::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Geometric(parametersCollection[0][0]);
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Geometric(parameters[0]);
   setWeight(w);
 }
 
-
+/* Parameters description accessor */
+Description Geometric::getParametersDescription() const
+{
+  return Description(1, "p");
+}
 
 /* P accessor */
 void Geometric::setP(const NumericalScalar p)

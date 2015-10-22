@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedGeometric = factory.buildAsGeometric(sample)
     print("Geometric          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedGeometric = factory.buildAsGeometric()
     print("Default geometric=", estimatedGeometric)
     estimatedGeometric = factory.buildAsGeometric(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Geometric from parameters=", estimatedGeometric)
 
 except:

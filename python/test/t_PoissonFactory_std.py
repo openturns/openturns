@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedPoisson = factory.buildAsPoisson(sample)
     print("Poisson          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedPoisson = factory.buildAsPoisson()
     print("Default poisson=", estimatedPoisson)
     estimatedPoisson = factory.buildAsPoisson(
-        distribution.getParametersCollection())
+        distribution.getParameters())
     print("Poisson from parameters=", estimatedPoisson)
 
 except:

@@ -93,10 +93,12 @@ public:
   /** Get the raw moments of the standardized distribution */
   NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  /** Parameters value accessors */
+  void setParameters(const NumericalPoint & parameters);
+  NumericalPoint getParameters() const;
+
+  /** Parameters description accessor */
+  Description getParametersDescription() const;
 
   /** Nu accessor */
   void setNu(const NumericalScalar nu);

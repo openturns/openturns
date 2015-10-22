@@ -76,7 +76,7 @@ RiceFactory::Implementation RiceFactory::build(const NumericalSample & sample) c
   return buildAsRice(sample).clone();
 }
 
-RiceFactory::Implementation RiceFactory::build(const NumericalPointCollection & parameters) const
+RiceFactory::Implementation RiceFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsRice(parameters).clone();
 }
@@ -140,17 +140,12 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
   }
 }
 
-Rice RiceFactory::buildAsRice(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsRice(RemoveDescriptionFromCollection(parameters));
-}
-
-Rice RiceFactory::buildAsRice(const NumericalPointCollection & parameters) const
+Rice RiceFactory::buildAsRice(const NumericalPoint & parameters) const
 {
   try
   {
     Rice distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameters(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

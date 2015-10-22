@@ -519,7 +519,13 @@ public:
   virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
   virtual void setParametersCollection(const NumericalPointWithDescriptionCollection & parametersCollection);
   virtual void setParametersCollection(const NumericalPointCollection & parametersCollection);
-  virtual void setParametersCollection(const NumericalPoint & parameters);
+
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameters() const;
+  virtual void setParameters(const NumericalPoint & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParametersDescription() const;
 
   /** Total number of parameters */
   virtual UnsignedInteger getParametersNumber() const;

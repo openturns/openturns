@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Burr buildAsBurr(const NumericalSample & sample) const;
-  Burr buildAsBurr(const NumericalPointCollection & parameters) const;
-  Burr buildAsBurr(const NumericalPointWithDescriptionCollection & parameters) const;
+  Burr buildAsBurr(const NumericalPoint & parameters) const;
   Burr buildAsBurr() const;
 
 }; /* class BurrFactory */

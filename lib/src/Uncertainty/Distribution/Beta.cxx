@@ -297,31 +297,34 @@ Beta::Implementation Beta::getStandardRepresentative() const
   return Beta(r_, t_, -1.0, 1.0).clone();
 }
 
-/* Parameters value and description accessor */
-Beta::NumericalPointWithDescriptionCollection Beta::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Beta::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(4);
-  Description description(point.getDimension());
+  NumericalPoint point(4);
   point[0] = r_;
   point[1] = t_;
   point[2] = a_;
   point[3] = b_;
+  return point;
+}
+
+void Beta::setParameters(const NumericalPoint & parameters)
+{
+  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Beta(parameters[0], parameters[1], parameters[2], parameters[3]);
+  setWeight(w);
+}
+
+/* Parameters value and description accessor */
+Description Beta::getParametersDescription() const
+{
+  Description description(4);
   description[0] = "r";
   description[1] = "t";
   description[2] = "a";
   description[3] = "b";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-void Beta::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  const NumericalScalar w(getWeight());
-  *this = Beta(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
-  setWeight(w);
+  return description;
 }
 
 /* Check if the distribution is elliptical */

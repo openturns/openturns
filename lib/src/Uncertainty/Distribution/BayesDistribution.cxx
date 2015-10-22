@@ -136,7 +136,7 @@ NumericalPoint BayesDistribution::getRealization() const
 {
   const NumericalPoint y(conditioningDistribution_.getRealization());
   Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParametersCollection(linkFunction_(y));
+  deconditioned.setParameters(linkFunction_(y));
   NumericalPoint x(deconditioned.getRealization());
   x.add(y);
   return x;
@@ -155,7 +155,7 @@ NumericalScalar BayesDistribution::computePDF(const NumericalPoint & point) cons
   if (conditioningPDF == 0.0) return 0.0;
   Distribution deconditioned(conditionedDistribution_);
   const NumericalPoint parameters(linkFunction_(y));
-  deconditioned.setParametersCollection(parameters);
+  deconditioned.setParameters(parameters);
   NumericalPoint x(conditionedDimension);
   std::copy(point.begin(), point.begin() + conditionedDimension, x.begin());
   const NumericalScalar deconditionedPDF(deconditioned.computePDF(x));

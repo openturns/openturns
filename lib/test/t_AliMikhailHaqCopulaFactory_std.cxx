@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     AliMikhailHaqCopula estimatedAliMikhailHaqCopula(factory.buildAsAliMikhailHaqCopula(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated AliMikhailHaqCopula=" << estimatedAliMikhailHaqCopula << std::endl;
     estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula();
     fullprint << "Default AliMikhailHaqCopula=" << estimatedAliMikhailHaqCopula << std::endl;
-    estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula(distribution.getParametersCollection());
+    estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula(distribution.getParameters());
     fullprint << "AliMikhailHaqCopula from parameters=" << estimatedAliMikhailHaqCopula << std::endl;
   }
   catch (TestFailed & ex)

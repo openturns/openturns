@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Arcsine estimatedArcsine(factory.buildAsArcsine(sample));
     fullprint << "Arcsine          =" << distribution << std::endl;
     fullprint << "Estimated Arcsine=" << estimatedArcsine << std::endl;
     estimatedArcsine = factory.buildAsArcsine();
     fullprint << "Default Arcsine=" << estimatedArcsine << std::endl;
-    estimatedArcsine = factory.buildAsArcsine(distribution.getParametersCollection());
+    estimatedArcsine = factory.buildAsArcsine(distribution.getParameters());
     fullprint << "Arcsine from parameters=" << estimatedArcsine << std::endl;
   }
   catch (TestFailed & ex)

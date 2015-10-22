@@ -216,24 +216,22 @@ NumericalSample Bernoulli::getSupport(const Interval & interval) const
 }
 
 /* Parameters value and description accessor */
-Bernoulli::NumericalPointWithDescriptionCollection Bernoulli::getParametersCollection() const
+NumericalPoint Bernoulli::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = p_;
-  description[0] = "p";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, p_);
 }
 
-void Bernoulli::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Bernoulli::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = Bernoulli(parametersCollection[0][0]);
+  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Bernoulli(parameters[0]);
   setWeight(w);
+}
+
+Description Bernoulli::getParametersDescription() const
+{
+  return Description(1, "p");
 }
 
 /* P accessor */

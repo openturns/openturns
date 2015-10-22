@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Geometric buildAsGeometric(const NumericalSample & sample) const;
-  Geometric buildAsGeometric(const NumericalPointCollection & parameters) const;
-  Geometric buildAsGeometric(const NumericalPointWithDescriptionCollection & parameters) const;
+  Geometric buildAsGeometric(const NumericalPoint & parameters) const;
   Geometric buildAsGeometric() const;
 
 }; /* class GeometricFactory */

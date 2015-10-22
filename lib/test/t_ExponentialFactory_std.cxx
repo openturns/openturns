@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameters());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Exponential estimatedExponential(factory.buildAsExponential(sample));
     fullprint << "Exponential          =" << distribution << std::endl;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedExponential = factory.buildAsExponential();
     fullprint << "Default exponential=" << estimatedExponential << std::endl;
-    estimatedExponential = factory.buildAsExponential(distribution.getParametersCollection());
+    estimatedExponential = factory.buildAsExponential(distribution.getParameters());
     fullprint << "Exponential from parameters=" << estimatedExponential << std::endl;
   }
   catch (TestFailed & ex)

@@ -363,31 +363,33 @@ void LogNormal::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-LogNormal::NumericalPointWithDescriptionCollection LogNormal::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint LogNormal::getParameters() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = muLog_;
   point[1] = sigmaLog_;
   point[2] = gamma_;
-  description[0] = "muLog";
-  description[1] = "sigmaLog";
-  description[2] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void LogNormal::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void LogNormal::setParameters(const NumericalPoint & parameters)
 {
-  const NumericalScalar w(getWeight());
-  *this = LogNormal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = LogNormal(parameters[0], parameters[1], parameters[2]);
   setWeight(w);
 }
 
+/* Parameters description accessor */
+Description LogNormal::getParametersDescription() const
+{
+  Description description(3);
+  description[0] = "muLog";
+  description[1] = "sigmaLog";
+  description[2] = "gamma";
+  return description;
+}
 
 /* Interface specific to LogNormal */
 

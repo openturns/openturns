@@ -45,11 +45,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Chi buildAsChi(const NumericalSample & sample) const;
-  Chi buildAsChi(const NumericalPointCollection & parameters) const;
-  Chi buildAsChi(const NumericalPointWithDescriptionCollection & parameters) const;
+  Chi buildAsChi(const NumericalPoint & parameters) const;
   Chi buildAsChi() const;
 
 
