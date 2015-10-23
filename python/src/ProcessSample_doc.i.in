@@ -2,11 +2,9 @@
 "Collection of fields.
 
 Available constructors:
-    ProcessSample()
-
     ProcessSample(*mesh, K, d*)
 
-    ProcessSample(*size, field*)
+    ProcessSample(*K, field*)
 
 Parameters
 ----------
@@ -36,17 +34,17 @@ Examples
 Create a bi dimensional mesh as a box:
 
 >>> import openturns as ot
->>> myIndices= ot.Indices([100,40])
->>> myMesher=ot.IntervalMesher(myIndices)
->>> lowerBound=[0., 0.]
->>> upperBound=[2., 1.]
+>>> myIndices = [100,40]
+>>> myMesher = ot.IntervalMesher(myIndices)
+>>> lowerBound = [0., 0.]
+>>> upperBound = [2., 1.]
 >>> myInterval = ot.Interval(lowerBound, upperBound)
->>> myMesh=myMesher.build(myInterval)
+>>> myMesh = myMesher.build(myInterval)
 
 Create a second order normal porcess of dimension 3:
 
 >>> amplitude = [5]
->>> scale =[3]
+>>> scale = [3]
 >>> model = ot.ExponentialModel(myMesh.getDimension(), amplitude, scale)
 >>> myProcess = ot.TemporalNormalProcess(model, myMesh)
 
@@ -150,7 +148,6 @@ quantileField : :class:`~openturns.Field`
     This field has the same size and the same dimension as the fields of the collection. At each vertex of the mesh, we estimate the component-wise quantile of order `p`, using the empirical quantile.
 "
 
-
 // ---------------------------------------------------------------------
 %feature("docstring") OT::ProcessSample::getSize
 " Get the size of the collection of fields.
@@ -159,9 +156,8 @@ quantileField : :class:`~openturns.Field`
 Returns
 -------
 K : int,
-    Number of fileds in the collection.
+    Number of fields in the collection.
 "
-
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::ProcessSample::getMesh
