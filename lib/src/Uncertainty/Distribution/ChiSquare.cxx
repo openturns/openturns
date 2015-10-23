@@ -263,21 +263,21 @@ NumericalPoint ChiSquare::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Parameters value accessor */
-NumericalPoint ChiSquare::getParameters() const
+NumericalPoint ChiSquare::getParameter() const
 {
   return NumericalPoint(1, nu_);
 }
 
-void ChiSquare::setParameters(const NumericalPoint & parameters)
+void ChiSquare::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = ChiSquare(parameters[0]);
+  *this = ChiSquare(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description ChiSquare::getParametersDescription() const
+Description ChiSquare::getParameterDescription() const
 {
   return Description(1, "nu");
 }

@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Uniform estimatedUniform(factory.buildAsUniform(sample));
     fullprint << "Uniform          =" << distribution << std::endl;
     fullprint << "Estimated uniform=" << estimatedUniform << std::endl;
     estimatedUniform = factory.buildAsUniform();
     fullprint << "Default uniform=" << estimatedUniform << std::endl;
-    estimatedUniform = factory.buildAsUniform(distribution.getParameters());
+    estimatedUniform = factory.buildAsUniform(distribution.getParameter());
     fullprint << "Uniform from parameters=" << estimatedUniform << std::endl;
   }
   catch (TestFailed & ex)

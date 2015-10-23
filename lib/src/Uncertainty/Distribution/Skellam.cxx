@@ -211,7 +211,7 @@ NumericalSample Skellam::getSupport(const Interval & interval) const
 }
 
 /* Parameters value accessor */
-NumericalPoint Skellam::getParameters() const
+NumericalPoint Skellam::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = lambda1_;
@@ -219,16 +219,16 @@ NumericalPoint Skellam::getParameters() const
   return point;
 }
 
-void Skellam::setParameters(const NumericalPoint & parameters)
+void Skellam::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Skellam(parameters[0], parameters[1]);
+  *this = Skellam(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters  description accessor */
-Description Skellam::getParametersDescription() const
+Description Skellam::getParameterDescription() const
 {
   Description description(2);
   description[0] = "lambda1";

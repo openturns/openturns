@@ -637,7 +637,7 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
   isAlreadyComputedCovariance_ = false;
 }
 
-NumericalPoint EllipticalDistribution::getParameters() const
+NumericalPoint EllipticalDistribution::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
   NumericalPoint point(2 * dimension + (dimension > 1 ? ((dimension-1)*dimension)/2 : 0));
@@ -647,7 +647,7 @@ NumericalPoint EllipticalDistribution::getParameters() const
     point[2*i+1] = sigma_[i];
   }
   UnsignedInteger index = 2 * dimension;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < i; ++j)
     {
@@ -658,7 +658,7 @@ NumericalPoint EllipticalDistribution::getParameters() const
   return point;
 }
 
-void EllipticalDistribution::setParameters(const NumericalPoint & parameters)
+void EllipticalDistribution::setParameter(const NumericalPoint & parameters)
 {
   // N = 2*d+((d-1)*d)/2
   const UnsignedInteger size = parameters.getSize();
@@ -690,7 +690,7 @@ void EllipticalDistribution::setParameters(const NumericalPoint & parameters)
   isAlreadyComputedCovariance_ = false;
 }
 
-Description EllipticalDistribution::getParametersDescription() const
+Description EllipticalDistribution::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   Description description(2 * dimension + (dimension > 1 ? ((dimension-1)*dimension)/2 : 0));

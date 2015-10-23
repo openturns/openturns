@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedRayleigh = factory.buildAsRayleigh(sample)
     print("Rayleigh          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedRayleigh = factory.buildAsRayleigh()
     print("Default rayleigh=", estimatedRayleigh)
     estimatedRayleigh = factory.buildAsRayleigh(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Rayleigh from parameters=", estimatedRayleigh)
 
 except:

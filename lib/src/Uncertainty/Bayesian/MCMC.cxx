@@ -136,7 +136,7 @@ NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
     const NumericalPoint zi(model_(xi, parameters_[i]));
 
     Distribution pI(conditional_);
-    pI.setParameters(zi);
+    pI.setParameter(zi);
     NumericalScalar logPdf = pI.computeLogPDF(observations_[i]);
     if (logPdf == -SpecFunc::MaxNumericalScalar) return -SpecFunc::MaxNumericalScalar;
     value += logPdf;

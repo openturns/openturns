@@ -546,25 +546,25 @@ void Student::setParametersCollection(const NumericalPointCollection & parameter
 
 
 /* Parameters value accessor */
-NumericalPoint Student::getParameters() const
+NumericalPoint Student::getParameter() const
 {
-  NumericalPoint point(EllipticalDistribution::getParameters());
+  NumericalPoint point(EllipticalDistribution::getParameter());
   point.add(nu_);
   return point;
 }
 
-void Student::setParameters(const NumericalPoint & parameters)
+void Student::setParameter(const NumericalPoint & parameter)
 {
   // N = 2*d+((d-1)*d)/2+1
-  const UnsignedInteger size = parameters.getSize();
+  const UnsignedInteger size = parameter.getSize();
   NumericalScalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) - 1.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for Student";
   const UnsignedInteger dimension = dimReal;
-  const NumericalScalar nu = parameters[size - 1];
+  const NumericalScalar nu = parameter[size - 1];
 
   if (dimension == 1)
   {
-    *this = Student(nu, parameters[0], parameters[1]);
+    *this = Student(nu, parameter[0], parameter[1]);
   }
   else
   {
@@ -573,15 +573,15 @@ void Student::setParameters(const NumericalPoint & parameters)
     CorrelationMatrix R(dimension);
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      mean[i] = parameters[2 * i];
-      sigma[i] = parameters[2 * i + 1];
+      mean[i] = parameter[2 * i];
+      sigma[i] = parameter[2 * i + 1];
     }
     UnsignedInteger parameterIndex = 2 * dimension;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       for (UnsignedInteger j = 0; j < i; ++ j)
       {
-        R(i, j) = parameters[parameterIndex];
+        R(i, j) = parameter[parameterIndex];
         ++ parameterIndex;
       }
     }
@@ -590,9 +590,9 @@ void Student::setParameters(const NumericalPoint & parameters)
 }
 
 /* Parameters description accessor */
-Description Student::getParametersDescription() const
+Description Student::getParameterDescription() const
 {
-  Description description(EllipticalDistribution::getParametersDescription());
+  Description description(EllipticalDistribution::getParameterDescription());
   description.add("nu");
   return description;
 }

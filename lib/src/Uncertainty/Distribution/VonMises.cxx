@@ -214,7 +214,7 @@ NumericalScalar VonMises::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Parameters value accessor */
-NumericalPoint VonMises::getParameters() const
+NumericalPoint VonMises::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = mu_;
@@ -222,16 +222,16 @@ NumericalPoint VonMises::getParameters() const
   return point;
 }
 
-void VonMises::setParameters(const NumericalPoint & parameters)
+void VonMises::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = VonMises(parameters[0], parameters[1]);
+  *this = VonMises(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description VonMises::getParametersDescription() const
+Description VonMises::getParameterDescription() const
 {
   Description description(2);
   description[0] = "mu";

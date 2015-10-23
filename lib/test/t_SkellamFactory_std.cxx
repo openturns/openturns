@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Skellam estimatedSkellam(factory.buildAsSkellam(sample));
     fullprint << "Skellam          =" << distribution << std::endl;
     fullprint << "Estimated skellam=" << estimatedSkellam << std::endl;
     estimatedSkellam = factory.buildAsSkellam();
     fullprint << "Default skellam=" << estimatedSkellam << std::endl;
-    estimatedSkellam = factory.buildAsSkellam(distribution.getParameters());
+    estimatedSkellam = factory.buildAsSkellam(distribution.getParameter());
     fullprint << "Skellam from parameters=" << estimatedSkellam << std::endl;
   }
   catch (TestFailed & ex)

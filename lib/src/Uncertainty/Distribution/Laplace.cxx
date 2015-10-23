@@ -236,7 +236,7 @@ void Laplace::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint Laplace::getParameters() const
+NumericalPoint Laplace::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = lambda_;
@@ -244,16 +244,16 @@ NumericalPoint Laplace::getParameters() const
   return point;
 }
 
-void Laplace::setParameters(const NumericalPoint & parameters)
+void Laplace::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Laplace(parameters[0], parameters[1]);
+  *this = Laplace(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Laplace::getParametersDescription() const
+Description Laplace::getParameterDescription() const
 {
   Description description(2);
   description[0] = "lambda";

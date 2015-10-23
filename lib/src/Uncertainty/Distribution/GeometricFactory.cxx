@@ -80,7 +80,7 @@ Geometric GeometricFactory::buildAsGeometric(const NumericalPoint & parameters) 
   try
   {
     Geometric distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

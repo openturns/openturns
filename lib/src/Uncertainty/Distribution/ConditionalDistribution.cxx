@@ -143,7 +143,7 @@ ConditionalDistribution * ConditionalDistribution::clone() const
 NumericalPoint ConditionalDistribution::getRealization() const
 {
   Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParameters(linkFunction_(conditioningDistribution_.getRealization()));
+  deconditioned.setParameter(linkFunction_(conditioningDistribution_.getRealization()));
   return deconditioned.getRealization();
 }
 
@@ -153,24 +153,24 @@ ConditionalDistribution::NumericalPointWithDescriptionCollection ConditionalDist
 }
 
 /* Parameters value accessor */
-NumericalPoint ConditionalDistribution::getParameters() const
+NumericalPoint ConditionalDistribution::getParameter() const
 {
-  return conditioningDistribution_.getParameters();
+  return conditioningDistribution_.getParameter();
 }
 
-void ConditionalDistribution::setParameters(const NumericalPoint & parameters)
+void ConditionalDistribution::setParameter(const NumericalPoint & parameter)
 {
   Distribution conditioningDistribution(conditioningDistribution_);
-  conditioningDistribution.setParameters(parameters);
+  conditioningDistribution.setParameter(parameter);
   const NumericalScalar w = getWeight();
   Distribution conditionedDistribution(conditionedDistribution_);
   *this = ConditionalDistribution(conditionedDistribution, conditioningDistribution);
   setWeight(w);
 }
 
-Description ConditionalDistribution::getParametersDescription() const
+Description ConditionalDistribution::getParameterDescription() const
 {
-  return conditioningDistribution_.getParametersDescription();
+  return conditioningDistribution_.getParameterDescription();
 }
 
 /* Conditioned distribution accessor */
@@ -306,7 +306,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   if (diracDimension == conditioningDimension)
   {
     Collection< Distribution > atoms(1, conditionedDistribution);
-    atoms[0].setParameters(diracValues_);
+    atoms[0].setParameter(diracValues_);
     setDistributionCollection(atoms);
     return;
   }
@@ -332,7 +332,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const NumericalScalar w(conditioningDistribution.computePDF(currentY));
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParameters(linkFunction_(currentY));
+      dist.setParameter(linkFunction_(currentY));
       atoms[atomIndex] = dist;
       ++atomIndex;
     } // Discrete measure
@@ -361,7 +361,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const NumericalScalar w(conditioningDistribution.computePDF(currentY) * continuousWeights_[i]);
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParameters(linkFunction_(currentY));
+      dist.setParameter(linkFunction_(currentY));
       atoms[atomIndex] = dist;
       LOGDEBUG(OSS() << "i=" << i << ", w=" << w << ", Y=" << currentY << ", dist=" << dist.__str__());
       ++atomIndex;
@@ -397,7 +397,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const NumericalScalar w(conditioningDistribution.computePDF(currentY) * continuousWeights_[j]);
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParameters(linkFunction_(currentY));
+      dist.setParameter(linkFunction_(currentY));
       atoms[atomIndex] = dist;
       ++atomIndex;
     } // Continuous atoms

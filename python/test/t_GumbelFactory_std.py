@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedGumbel = factory.buildAsGumbel(sample)
     print("Gumbel          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedGumbel = factory.buildAsGumbel()
     print("Default gumbel=", estimatedGumbel)
     estimatedGumbel = factory.buildAsGumbel(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Gumbel from parameters=", estimatedGumbel)
 
 except:

@@ -70,7 +70,7 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalPoint & parameters) 
   try
   {
     ChiSquare distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

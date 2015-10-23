@@ -85,7 +85,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const NumericalPoint & parameters) con
   try
   {
     Rayleigh distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

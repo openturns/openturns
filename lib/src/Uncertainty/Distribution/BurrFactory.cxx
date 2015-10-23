@@ -142,7 +142,7 @@ Burr BurrFactory::buildAsBurr(const NumericalPoint & parameters) const
   try
   {
     Burr distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -236,7 +236,7 @@ Exponential::Implementation Exponential::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Exponential::getParameters() const
+NumericalPoint Exponential::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = lambda_;
@@ -244,16 +244,16 @@ NumericalPoint Exponential::getParameters() const
   return point;
 }
 
-void Exponential::setParameters(const NumericalPoint & parameters)
+void Exponential::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Exponential(parameters[0], parameters[1]);
+  *this = Exponential(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Exponential::getParametersDescription() const
+Description Exponential::getParameterDescription() const
 {
   Description description(2);
   description[0] = "lambda";

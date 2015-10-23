@@ -32,14 +32,14 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedBeta = factory.buildAsBeta(sample)
     print("Beta          =", distribution)
     print("Estimated Beta=", estimatedBeta)
     estimatedBeta = factory.buildAsBeta()
     print("Default Beta=", estimatedBeta)
-    estimatedBeta = factory.buildAsBeta(distribution.getParameters())
+    estimatedBeta = factory.buildAsBeta(distribution.getParameter())
     print("Beta from parameters=", estimatedBeta)
 
 except:

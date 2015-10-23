@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Geometric estimatedGeometric(factory.buildAsGeometric(sample));
     fullprint << "Geometric          =" << distribution << std::endl;
     fullprint << "Estimated geometric=" << estimatedGeometric << std::endl;
     estimatedGeometric = factory.buildAsGeometric();
     fullprint << "Default geometric=" << estimatedGeometric << std::endl;
-    estimatedGeometric = factory.buildAsGeometric(distribution.getParameters());
+    estimatedGeometric = factory.buildAsGeometric(distribution.getParameter());
     fullprint << "Geometric from parameters=" << estimatedGeometric << std::endl;
   }
   catch (TestFailed & ex)

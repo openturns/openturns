@@ -76,7 +76,7 @@ Triangular TriangularFactory::buildAsTriangular(const NumericalPoint & parameter
   try
   {
     Triangular distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

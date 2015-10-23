@@ -126,7 +126,7 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPoint
   try
   {
     FisherSnedecor distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

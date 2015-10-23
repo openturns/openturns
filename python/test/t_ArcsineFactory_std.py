@@ -21,7 +21,7 @@ myde = MonteCarloExperiment(mydist, 10)
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
 estimatedDistribution = factory.build(
-    distribution.getParameters())
+    distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
 estimatedArcsine = factory.buildAsArcsine(sample)
 print("Arcsine          =", distribution)
@@ -29,6 +29,6 @@ print("Estimated Arcsine=", estimatedArcsine)
 estimatedArcsine = factory.buildAsArcsine()
 print("Default Arcsine=", estimatedArcsine)
 estimatedArcsine = factory.buildAsArcsine(
-    distribution.getParameters())
+    distribution.getParameter())
 print("Arcsine from parameters=", estimatedArcsine)
 

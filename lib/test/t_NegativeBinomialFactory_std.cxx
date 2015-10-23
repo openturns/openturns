@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     NegativeBinomial estimatedNegativeBinomial(factory.buildAsNegativeBinomial(sample));
     fullprint << "NegativeBinomial          =" << distribution << std::endl;
     fullprint << "Estimated negativeBinomial=" << estimatedNegativeBinomial << std::endl;
     estimatedNegativeBinomial = factory.buildAsNegativeBinomial();
     fullprint << "Default negativeBinomial=" << estimatedNegativeBinomial << std::endl;
-    estimatedNegativeBinomial = factory.buildAsNegativeBinomial(distribution.getParameters());
+    estimatedNegativeBinomial = factory.buildAsNegativeBinomial(distribution.getParameter());
     fullprint << "NegativeBinomial from parameters=" << estimatedNegativeBinomial << std::endl;
   }
   catch (TestFailed & ex)

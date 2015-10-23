@@ -158,7 +158,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalPo
   try
   {
     TruncatedNormal distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

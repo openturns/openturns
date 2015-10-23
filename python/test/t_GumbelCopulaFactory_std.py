@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedGumbelCopula = factory.buildAsGumbelCopula(sample)
     print("GumbelCopula          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedGumbelCopula = factory.buildAsGumbelCopula()
     print("Default gumbelCopula=", estimatedGumbelCopula)
     estimatedGumbelCopula = factory.buildAsGumbelCopula(
-        distribution.getParameters())
+        distribution.getParameter())
     print("GumbelCopula from parameters=", estimatedGumbelCopula)
 
 except:

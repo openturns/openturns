@@ -20,7 +20,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedTrapezoidal = factory.buildAsTrapezoidal(sample)
     print("Trapezoidal          =", distribution)
@@ -31,7 +31,7 @@ try:
     estimatedTrapezoidal = factory.buildAsTrapezoidal()
     print("Default trapezoidal=", estimatedTrapezoidal)
     estimatedTrapezoidal = factory.buildAsTrapezoidal(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Trapezoidal from parameters=", estimatedTrapezoidal)
 except:
     import sys

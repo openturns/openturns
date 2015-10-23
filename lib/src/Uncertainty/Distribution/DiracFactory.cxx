@@ -74,7 +74,7 @@ Dirac DiracFactory::buildAsDirac(const NumericalPoint & parameters) const
   try
   {
     Dirac distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

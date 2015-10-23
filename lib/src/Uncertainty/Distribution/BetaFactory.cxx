@@ -82,7 +82,7 @@ Beta BetaFactory::buildAsBeta(const NumericalPoint & parameters) const
   try
   {
     Beta distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

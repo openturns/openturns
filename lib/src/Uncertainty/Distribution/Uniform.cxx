@@ -259,7 +259,7 @@ Uniform::Implementation Uniform::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Uniform::getParameters() const
+NumericalPoint Uniform::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = a_;
@@ -267,16 +267,16 @@ NumericalPoint Uniform::getParameters() const
   return point;
 }
 
-void Uniform::setParameters(const NumericalPoint & parameters)
+void Uniform::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Uniform(parameters[0], parameters[1]);
+  *this = Uniform(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Uniform::getParametersDescription() const
+Description Uniform::getParameterDescription() const
 {
   Description description(2);
   description[0] = "a";

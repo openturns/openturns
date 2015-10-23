@@ -279,7 +279,7 @@ void Arcsine::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-NumericalPoint Arcsine::getParameters() const
+NumericalPoint Arcsine::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = a_;
@@ -287,15 +287,15 @@ NumericalPoint Arcsine::getParameters() const
   return point;
 }
 
-void Arcsine::setParameters(const NumericalPoint & parameters)
+void Arcsine::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize();
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
-  *this = Arcsine(parameters[0], parameters[1]);
+  *this = Arcsine(parameter[0], parameter[1]);
   setWeight(w);
 }
 
-Description Arcsine::getParametersDescription() const
+Description Arcsine::getParameterDescription() const
 {
   Description description(2);
   description[0] = "a";

@@ -42,14 +42,14 @@ int main(int argc, char *argv[])
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     // fullprint << "Covariance=" << covariance << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     Rice estimatedRice(factory.buildAsRice(sample));
     fullprint << "Rice          =" << distribution << std::endl;
     fullprint << "Estimated rice=" << estimatedRice << std::endl;
-    estimatedRice = factory.buildAsRice(distribution.getParameters());
+    estimatedRice = factory.buildAsRice(distribution.getParameter());
     fullprint << "Rice from parameters=" << estimatedRice << std::endl;
     estimatedRice = factory.buildAsRice();
     fullprint << "Default rice=" << estimatedRice << std::endl;

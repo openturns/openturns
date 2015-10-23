@@ -81,7 +81,7 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   try
   {
     MeixnerDistribution distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

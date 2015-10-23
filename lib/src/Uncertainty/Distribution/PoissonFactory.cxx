@@ -80,7 +80,7 @@ Poisson PoissonFactory::buildAsPoisson(const NumericalPoint & parameters) const
   try
   {
     Poisson distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

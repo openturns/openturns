@@ -159,7 +159,7 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalPoint & parameters) con
   try
   {
     Binomial distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

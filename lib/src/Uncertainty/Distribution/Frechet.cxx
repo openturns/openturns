@@ -141,7 +141,7 @@ NumericalScalar Frechet::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint Frechet::getParameters() const
+NumericalPoint Frechet::getParameter() const
 {
   NumericalPoint point(3);
   point[0] = alpha_;
@@ -150,16 +150,16 @@ NumericalPoint Frechet::getParameters() const
   return point;
 }
 
-void Frechet::setParameters(const NumericalPoint & parameters)
+void Frechet::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Frechet(parameters[0], parameters[1], parameters[2]);
+  *this = Frechet(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Frechet::getParametersDescription() const
+Description Frechet::getParameterDescription() const
 {
   Description description(3);
   description[0] = "alpha";

@@ -107,7 +107,7 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalPoint & parame
   try
   {
     FrankCopula copula;
-    copula.setParameters(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

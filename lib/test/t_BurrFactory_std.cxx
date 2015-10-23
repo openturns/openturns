@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Burr estimatedBurr(factory.buildAsBurr(sample));
     fullprint << "Burr          =" << distribution << std::endl;
     fullprint << "Estimated burr=" << estimatedBurr << std::endl;
     estimatedBurr = factory.buildAsBurr();
     fullprint << "Default burr=" << estimatedBurr << std::endl;
-    estimatedBurr = factory.buildAsBurr(distribution.getParameters());
+    estimatedBurr = factory.buildAsBurr(distribution.getParameter());
     fullprint << "Burr from parameters=" << estimatedBurr << std::endl;
   }
   catch (TestFailed & ex)

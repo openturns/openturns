@@ -75,7 +75,7 @@ Uniform UniformFactory::buildAsUniform(const NumericalPoint & parameters) const
   try
   {
     Uniform distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

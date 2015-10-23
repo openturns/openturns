@@ -165,7 +165,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalPoint & parameters) 
   try
   {
     Dirichlet distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

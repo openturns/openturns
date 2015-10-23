@@ -192,7 +192,7 @@ NumericalComplex NonCentralChiSquare::computeLogCharacteristicFunction(const Num
   return NumericalComplex(0.0, lambda_ * x) / denominator - 0.5 * nu_ * std::log(denominator);
 }
 
-NumericalPoint NonCentralChiSquare::getParameters() const
+NumericalPoint NonCentralChiSquare::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = nu_;
@@ -200,15 +200,15 @@ NumericalPoint NonCentralChiSquare::getParameters() const
   return point;
 }
 
-void NonCentralChiSquare::setParameters(const NumericalPoint & parameters)
+void NonCentralChiSquare::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = NonCentralChiSquare(parameters[0], parameters[1]);
+  *this = NonCentralChiSquare(parameter[0], parameter[1]);
   setWeight(w);
 }
 
-Description NonCentralChiSquare::getParametersDescription() const
+Description NonCentralChiSquare::getParameterDescription() const
 {
   Description description(2);
   description[0] = "nu";

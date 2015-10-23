@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedLogNormal = factory.buildAsLogNormal(sample)
     print("LogNormal          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedLogNormal = factory.buildAsLogNormal()
     print("Default logNormal=", estimatedLogNormal)
     estimatedLogNormal = factory.buildAsLogNormal(
-        distribution.getParameters())
+        distribution.getParameter())
     print("LogNormal from parameters=", estimatedLogNormal)
 
 except:

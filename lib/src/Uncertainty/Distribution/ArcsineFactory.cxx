@@ -72,7 +72,7 @@ Arcsine ArcsineFactory::buildAsArcsine(const NumericalPoint & parameters) const
   try
   {
     Arcsine distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

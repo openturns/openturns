@@ -239,21 +239,21 @@ Bool FarlieGumbelMorgensternCopula::hasIndependentCopula() const
 }
 
 /* Parameters value accessor */
-NumericalPoint FarlieGumbelMorgensternCopula::getParameters() const
+NumericalPoint FarlieGumbelMorgensternCopula::getParameter() const
 {
   return NumericalPoint(1, theta_);
 }
 
-void FarlieGumbelMorgensternCopula::setParameters(const NumericalPoint & parameters)
+void FarlieGumbelMorgensternCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = FarlieGumbelMorgensternCopula(parameters[0]);
+  *this = FarlieGumbelMorgensternCopula(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description FarlieGumbelMorgensternCopula::getParametersDescription() const
+Description FarlieGumbelMorgensternCopula::getParameterDescription() const
 {
   return Description(1, "theta");
 }

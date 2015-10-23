@@ -345,21 +345,21 @@ NumericalScalar ClaytonCopula::computeArchimedeanGeneratorSecondDerivative(const
 }
 
 /* Parameters value accessor */
-NumericalPoint ClaytonCopula::getParameters() const
+NumericalPoint ClaytonCopula::getParameter() const
 {
   return NumericalPoint(1, theta_);
 }
 
-void ClaytonCopula::setParameters(const NumericalPoint & parameters)
+void ClaytonCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = ClaytonCopula(parameters[0]);
+  *this = ClaytonCopula(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description ClaytonCopula::getParametersDescription() const
+Description ClaytonCopula::getParameterDescription() const
 {
   return Description(1, "theta");
 }

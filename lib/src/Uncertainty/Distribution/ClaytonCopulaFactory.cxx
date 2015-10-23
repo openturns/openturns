@@ -71,7 +71,7 @@ ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalPoint & 
   try
   {
     ClaytonCopula copula;
-    copula.setParameters(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

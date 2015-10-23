@@ -82,7 +82,7 @@ NumericalPoint ConditionalRandomVector::getRealization() const
 NumericalPoint ConditionalRandomVector::getRealization(NumericalPoint & parameters) const
 {
   parameters = randomParameters_.getRealization();
-  distribution_.setParameters(parameters);
+  distribution_.setParameter(parameters);
   return distribution_.getRealization();
 }
 

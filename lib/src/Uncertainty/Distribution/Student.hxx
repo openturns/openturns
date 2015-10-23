@@ -134,11 +134,11 @@ public:
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
 
   /** Parameters value accessor */
-  NumericalPoint getParameters() const;
-  void setParameters(const NumericalPoint & parameters);
+  NumericalPoint getParameter() const;
+  void setParameter(const NumericalPoint & parameter);
 
   /** Parameters description accessor */
-  Description getParametersDescription() const;
+  Description getParameterDescription() const;
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;

@@ -319,37 +319,37 @@ void ProductDistribution::computeCovariance() const
 
 
 /* Parameters value accessor */
-NumericalPoint ProductDistribution::getParameters() const
+NumericalPoint ProductDistribution::getParameter() const
 {
-  NumericalPoint point(left_.getParameters());
-  point.add(right_.getParameters());
+  NumericalPoint point(left_.getParameter());
+  point.add(right_.getParameter());
   return point;
 }
 
-void ProductDistribution::setParameters(const NumericalPoint & parameters)
+void ProductDistribution::setParameter(const NumericalPoint & parameter)
 {
-  const UnsignedInteger leftSize = left_.getParameters().getSize();
-  const UnsignedInteger rightSize = right_.getParameters().getSize();
-  if (parameters.getSize() != leftSize + rightSize)
-    throw InvalidArgumentException(HERE) << "Error: expected "<< leftSize + rightSize << " parameters, got " << parameters.getSize();
+  const UnsignedInteger leftSize = left_.getParameterDimension();
+  const UnsignedInteger rightSize = right_.getParameterDimension();
+  if (parameter.getSize() != leftSize + rightSize)
+    throw InvalidArgumentException(HERE) << "Error: expected "<< leftSize + rightSize << " values, got " << parameter.getSize();
   NumericalPoint newLeftParameters(leftSize);
   NumericalPoint newRightParameters(rightSize);
-  std::copy(parameters.begin(), parameters.begin() + leftSize, newLeftParameters.begin());
-  std::copy(parameters.begin() + leftSize, parameters.end(), newRightParameters.begin());
+  std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
+  std::copy(parameter.begin() + leftSize, parameter.end(), newRightParameters.begin());
   Distribution newLeft(left_);
   Distribution newRight(right_);
-  newLeft.setParameters(newLeftParameters);
-  newRight.setParameters(newRightParameters);
+  newLeft.setParameter(newLeftParameters);
+  newRight.setParameter(newRightParameters);
   const NumericalScalar w = getWeight();
   *this = ProductDistribution(newLeft, newRight);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description ProductDistribution::getParametersDescription() const
+Description ProductDistribution::getParameterDescription() const
 {
-  Description description(left_.getParametersDescription());
-  description.add(right_.getParametersDescription());
+  Description description(left_.getParameterDescription());
+  description.add(right_.getParameterDescription());
   return description;
 }
 

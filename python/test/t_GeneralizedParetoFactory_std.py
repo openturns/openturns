@@ -25,12 +25,12 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto()
     print("Default generalizedPareto=", estimatedGeneralizedPareto)
     estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(
-        distribution.getParameters())
+        distribution.getParameter())
     print("GeneralizedPareto from parameters=", estimatedGeneralizedPareto)
 
 except:

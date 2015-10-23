@@ -315,7 +315,7 @@ Weibull::Implementation Weibull::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Weibull::getParameters() const
+NumericalPoint Weibull::getParameter() const
 {
   NumericalPoint point(3);
   point[0] = alpha_;
@@ -324,16 +324,16 @@ NumericalPoint Weibull::getParameters() const
   return point;
 }
 
-void Weibull::setParameters(const NumericalPoint & parameters)
+void Weibull::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Weibull(parameters[0], parameters[1], parameters[2]);
+  *this = Weibull(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Weibull::getParametersDescription() const
+Description Weibull::getParameterDescription() const
 {
   Description description(3);
   description[0] = "alpha";

@@ -332,7 +332,7 @@ void InverseGamma::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint InverseGamma::getParameters() const
+NumericalPoint InverseGamma::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = k_;
@@ -340,16 +340,16 @@ NumericalPoint InverseGamma::getParameters() const
   return point;
 }
 
-void InverseGamma::setParameters(const NumericalPoint & parameters)
+void InverseGamma::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = InverseGamma(parameters[0], parameters[1]);
+  *this = InverseGamma(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description InverseGamma::getParametersDescription() const
+Description InverseGamma::getParameterDescription() const
 {
   Description description(2);
   description[0] = "k";

@@ -128,17 +128,17 @@ NumericalPoint ParametrizedDistribution::computeCDFGradient(const NumericalPoint
 }
 
 
-NumericalPoint ParametrizedDistribution::getParameters() const
+NumericalPoint ParametrizedDistribution::getParameter() const
 {
-  return distributionParameters_.inverse(distribution_.getParameters());
+  return distributionParameters_.inverse(distribution_.getParameter());
 }
 
-void ParametrizedDistribution::setParameters(const NumericalPoint & parameters)
+void ParametrizedDistribution::setParameter(const NumericalPoint & parameter)
 {
-  distribution_.setParameters(distributionParameters_(parameters));
+  distribution_.setParameter(distributionParameters_(parameter));
 }
 
-Description ParametrizedDistribution::getParametersDescription() const
+Description ParametrizedDistribution::getParameterDescription() const
 {
   return distributionParameters_.getDescription();
 }

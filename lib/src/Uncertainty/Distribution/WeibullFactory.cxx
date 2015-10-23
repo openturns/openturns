@@ -80,7 +80,7 @@ Weibull WeibullFactory::buildAsWeibull(const NumericalPoint & parameters) const
   try
   {
     Weibull distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

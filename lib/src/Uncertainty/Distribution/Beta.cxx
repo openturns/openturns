@@ -298,7 +298,7 @@ Beta::Implementation Beta::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Beta::getParameters() const
+NumericalPoint Beta::getParameter() const
 {
   NumericalPoint point(4);
   point[0] = r_;
@@ -308,16 +308,16 @@ NumericalPoint Beta::getParameters() const
   return point;
 }
 
-void Beta::setParameters(const NumericalPoint & parameters)
+void Beta::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Beta(parameters[0], parameters[1], parameters[2], parameters[3]);
+  *this = Beta(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
 }
 
 /* Parameters value and description accessor */
-Description Beta::getParametersDescription() const
+Description Beta::getParameterDescription() const
 {
   Description description(4);
   description[0] = "r";

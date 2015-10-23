@@ -269,7 +269,7 @@ NumericalSample ZipfMandelbrot::getSupport(const Interval & interval) const
 }
 
 /* Parameters value accessor */
-NumericalPoint ZipfMandelbrot::getParameters() const
+NumericalPoint ZipfMandelbrot::getParameter() const
 {
   NumericalPoint point(3);
   point[0] = n_;
@@ -278,16 +278,16 @@ NumericalPoint ZipfMandelbrot::getParameters() const
   return point;
 }
 
-void ZipfMandelbrot::setParameters(const NumericalPoint & parameters)
+void ZipfMandelbrot::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parameters[0])), parameters[1], parameters[2]);
+  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parameter[0])), parameter[1], parameter[2]);
   setWeight(w);
 }
 
 /* Parametersdescription accessor */
-Description ZipfMandelbrot::getParametersDescription() const
+Description ZipfMandelbrot::getParameterDescription() const
 {
   Description description(3);
   description[0] = "n";

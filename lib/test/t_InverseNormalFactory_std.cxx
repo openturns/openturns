@@ -49,14 +49,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     InverseNormal estimatedInverseNormal(factory.buildAsInverseNormal(sample));
     fullprint << "InverseNormal          =" << distribution << std::endl;
     fullprint << "Estimated inverseNormal=" << estimatedInverseNormal << std::endl;
     estimatedInverseNormal = factory.buildAsInverseNormal();
     fullprint << "Default inverseNormal=" << estimatedInverseNormal << std::endl;
-    estimatedInverseNormal = factory.buildAsInverseNormal(distribution.getParameters());
+    estimatedInverseNormal = factory.buildAsInverseNormal(distribution.getParameter());
     fullprint << "InverseNormal from parameters=" << estimatedInverseNormal << std::endl;
   }
   catch (TestFailed & ex)

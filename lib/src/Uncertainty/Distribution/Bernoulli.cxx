@@ -216,20 +216,20 @@ NumericalSample Bernoulli::getSupport(const Interval & interval) const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint Bernoulli::getParameters() const
+NumericalPoint Bernoulli::getParameter() const
 {
   return NumericalPoint(1, p_);
 }
 
-void Bernoulli::setParameters(const NumericalPoint & parameters)
+void Bernoulli::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Bernoulli(parameters[0]);
+  *this = Bernoulli(parameter[0]);
   setWeight(w);
 }
 
-Description Bernoulli::getParametersDescription() const
+Description Bernoulli::getParameterDescription() const
 {
   return Description(1, "p");
 }

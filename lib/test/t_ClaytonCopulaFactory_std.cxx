@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     ClaytonCopula estimatedClaytonCopula(factory.buildAsClaytonCopula(sample));
     fullprint << "ClaytonCopula          =" << distribution << std::endl;
     fullprint << "Estimated claytonCopula=" << estimatedClaytonCopula << std::endl;
     estimatedClaytonCopula = factory.buildAsClaytonCopula();
     fullprint << "Default claytonCopula=" << estimatedClaytonCopula << std::endl;
-    estimatedClaytonCopula = factory.buildAsClaytonCopula(distribution.getParameters());
+    estimatedClaytonCopula = factory.buildAsClaytonCopula(distribution.getParameter());
     fullprint << "ClaytonCopula from parameters=" << estimatedClaytonCopula << std::endl;
   }
   catch (TestFailed & ex)

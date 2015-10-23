@@ -20,7 +20,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedDirac = factory.buildAsDirac(sample)
     print("Dirac          =", distribution)
@@ -28,7 +28,7 @@ try:
     estimatedDirac = factory.buildAsDirac()
     print("Default dirac=", estimatedDirac)
     estimatedDirac = factory.buildAsDirac(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Dirac from parameters=", estimatedDirac)
 
 except:

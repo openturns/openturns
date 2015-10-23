@@ -187,7 +187,7 @@ void NonCentralStudent::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint NonCentralStudent::getParameters() const
+NumericalPoint NonCentralStudent::getParameter() const
 {
   NumericalPoint point(3);
   point[0] = nu_;
@@ -196,16 +196,16 @@ NumericalPoint NonCentralStudent::getParameters() const
   return point;
 }
 
-void NonCentralStudent::setParameters(const NumericalPoint & parameters)
+void NonCentralStudent::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = NonCentralStudent(parameters[0], parameters[1], parameters[2]);
+  *this = NonCentralStudent(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description NonCentralStudent::getParametersDescription() const
+Description NonCentralStudent::getParameterDescription() const
 {
   Description description(3);
   description[0] = "nu";

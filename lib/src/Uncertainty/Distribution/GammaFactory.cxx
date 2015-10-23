@@ -79,7 +79,7 @@ Gamma GammaFactory::buildAsGamma(const NumericalPoint & parameters) const
   try
   {
     Gamma distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

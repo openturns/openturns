@@ -219,21 +219,21 @@ NumericalSample Poisson::getSupport(const Interval & interval) const
 }
 
 /* Parameters value accessor */
-NumericalPoint Poisson::getParameters() const
+NumericalPoint Poisson::getParameter() const
 {
   return NumericalPoint(1, lambda_);
 }
 
-void Poisson::setParameters(const NumericalPoint & parameters)
+void Poisson::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Poisson(parameters[0]);
+  *this = Poisson(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Poisson::getParametersDescription() const
+Description Poisson::getParameterDescription() const
 {
   return Description(1, "lambda");
 }

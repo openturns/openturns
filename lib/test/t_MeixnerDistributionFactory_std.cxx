@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     MeixnerDistribution estimatedMeixnerDistribution(factory.buildAsMeixnerDistribution(sample));
     fullprint << "MeixnerDistribution          =" << distribution << std::endl;
     fullprint << "Estimated meixnerDistribution=" << estimatedMeixnerDistribution << std::endl;
     estimatedMeixnerDistribution = factory.buildAsMeixnerDistribution();
     fullprint << "Default meixnerDistribution=" << estimatedMeixnerDistribution << std::endl;
-    estimatedMeixnerDistribution = factory.buildAsMeixnerDistribution(distribution.getParameters());
+    estimatedMeixnerDistribution = factory.buildAsMeixnerDistribution(distribution.getParameter());
     fullprint << "MeixnerDistribution from parameters=" << estimatedMeixnerDistribution << std::endl;
   }
   catch (TestFailed & ex)

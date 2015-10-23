@@ -87,7 +87,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalPoint & 
   try
   {
     InverseNormal distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

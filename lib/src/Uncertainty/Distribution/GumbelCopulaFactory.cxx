@@ -71,7 +71,7 @@ GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalPoint & par
   try
   {
     GumbelCopula copula;
-    copula.setParameters(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

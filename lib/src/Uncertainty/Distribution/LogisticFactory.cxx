@@ -73,7 +73,7 @@ Logistic LogisticFactory::buildAsLogistic(const NumericalPoint & parameters) con
   try
   {
     Logistic distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

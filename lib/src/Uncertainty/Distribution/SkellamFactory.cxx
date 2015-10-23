@@ -82,7 +82,7 @@ Skellam SkellamFactory::buildAsSkellam(const NumericalPoint & parameters) const
   try
   {
     Skellam distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

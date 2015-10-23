@@ -83,7 +83,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPoint & parameters) 
   try
   {
     Bernoulli distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

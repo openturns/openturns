@@ -26,7 +26,7 @@ p = ot.NumericalPoint()
 r = vect.getRealization(p)
 print('vect realization=', repr(r))
 print('parameters value=', repr(p))
-distribution.setParameters(p)
+distribution.setParameter(p)
 ot.RandomGenerator.SetSeed(0)
 # Generate a parameter set to put the random generator into the proper
 # state

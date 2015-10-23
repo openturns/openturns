@@ -92,7 +92,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Numer
   try
   {
     GeneralizedPareto distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

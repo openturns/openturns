@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedSkellam = factory.buildAsSkellam(sample)
     print("Skellam          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedSkellam = factory.buildAsSkellam()
     print("Default skellam=", estimatedSkellam)
     estimatedSkellam = factory.buildAsSkellam(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Skellam from parameters=", estimatedSkellam)
 
 except:

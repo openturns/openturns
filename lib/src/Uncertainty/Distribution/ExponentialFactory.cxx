@@ -74,7 +74,7 @@ Exponential ExponentialFactory::buildAsExponential(const NumericalPoint & parame
   try
   {
     Exponential distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

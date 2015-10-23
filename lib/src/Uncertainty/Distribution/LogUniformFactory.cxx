@@ -78,7 +78,7 @@ LogUniform LogUniformFactory::buildAsLogUniform(const NumericalPoint & parameter
   try
   {
     LogUniform distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

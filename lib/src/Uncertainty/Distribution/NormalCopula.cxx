@@ -532,7 +532,7 @@ void NormalCopula::setParametersCollection(const NumericalPointCollection & para
   }
 }
 
-NumericalPoint NormalCopula::getParameters() const
+NumericalPoint NormalCopula::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
   NumericalPoint point;
@@ -546,12 +546,12 @@ NumericalPoint NormalCopula::getParameters() const
   return point;
 }
 
-void NormalCopula::setParameters(const NumericalPoint & parameters)
+void NormalCopula::setParameter(const NumericalPoint & parameter)
 {
   // N = ((d-1)*d)/2
-  const UnsignedInteger size = parameters.getSize();
+  const UnsignedInteger size = parameter.getSize();
   NumericalScalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) + 0.5;
-  if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for NormalCopula";
+  if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid value number for NormalCopula";
   const UnsignedInteger dimension = dimReal;
   const NumericalScalar w = getWeight();
   if (dimension > 1)
@@ -562,7 +562,7 @@ void NormalCopula::setParameters(const NumericalPoint & parameters)
     {
       for (UnsignedInteger j = 0; j < i; ++ j)
       {
-        R(i, j) = parameters[dependenceIndex];
+        R(i, j) = parameter[dependenceIndex];
         ++ dependenceIndex;
       }
     }
@@ -575,7 +575,7 @@ void NormalCopula::setParameters(const NumericalPoint & parameters)
   setWeight(w);
 }
 
-Description NormalCopula::getParametersDescription() const
+Description NormalCopula::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   Description description;

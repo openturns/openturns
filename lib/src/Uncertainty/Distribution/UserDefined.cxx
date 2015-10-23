@@ -427,7 +427,7 @@ UserDefined::NumericalPointWithDescriptionCollection UserDefined::getParametersC
 }
 
 /* Parameters value accessor */
-NumericalPoint UserDefined::getParameters() const
+NumericalPoint UserDefined::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = collection_.getSize();
@@ -447,7 +447,7 @@ NumericalPoint UserDefined::getParameters() const
 }
 
 /* Parameters description accessor */
-Description UserDefined::getParametersDescription() const
+Description UserDefined::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = collection_.getSize();

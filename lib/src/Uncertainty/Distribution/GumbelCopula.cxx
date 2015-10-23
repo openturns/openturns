@@ -300,21 +300,21 @@ CorrelationMatrix GumbelCopula::getKendallTau() const
 }
 
 /* Parameters value accessor */
-NumericalPoint GumbelCopula::getParameters() const
+NumericalPoint GumbelCopula::getParameter() const
 {
   return NumericalPoint(1, theta_);
 }
 
-void GumbelCopula::setParameters(const NumericalPoint & parameters)
+void GumbelCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = GumbelCopula(parameters[0]);
+  *this = GumbelCopula(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description GumbelCopula::getParametersDescription() const
+Description GumbelCopula::getParameterDescription() const
 {
   return Description(1, "theta");
 }

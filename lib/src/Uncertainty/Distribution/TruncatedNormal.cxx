@@ -341,7 +341,7 @@ void TruncatedNormal::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint TruncatedNormal::getParameters() const
+NumericalPoint TruncatedNormal::getParameter() const
 {
   NumericalPoint point(4);
   point[0] = mu_;
@@ -351,16 +351,16 @@ NumericalPoint TruncatedNormal::getParameters() const
   return point;
 }
 
-void TruncatedNormal::setParameters(const NumericalPoint & parameters)
+void TruncatedNormal::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = TruncatedNormal(parameters[0], parameters[1], parameters[2], parameters[3]);
+  *this = TruncatedNormal(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description TruncatedNormal::getParametersDescription() const
+Description TruncatedNormal::getParameterDescription() const
 {
   Description description(4);
   description[0] = "mu";

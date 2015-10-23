@@ -268,7 +268,7 @@ NumericalPoint LogUniform::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Parameters value accessor */
-NumericalPoint LogUniform::getParameters() const
+NumericalPoint LogUniform::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = aLog_;
@@ -276,16 +276,16 @@ NumericalPoint LogUniform::getParameters() const
   return point;
 }
 
-void LogUniform::setParameters(const NumericalPoint & parameters)
+void LogUniform::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = LogUniform(parameters[0], parameters[1]);
+  *this = LogUniform(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description LogUniform::getParametersDescription() const
+Description LogUniform::getParameterDescription() const
 {
   Description description(2);
   description[0] = "aLog";

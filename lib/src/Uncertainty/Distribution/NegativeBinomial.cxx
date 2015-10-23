@@ -198,7 +198,7 @@ NumericalSample NegativeBinomial::getSupport(const Interval & interval) const
 }
 
 /* Parameters value accessor */
-NumericalPoint NegativeBinomial::getParameters() const
+NumericalPoint NegativeBinomial::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = r_;
@@ -206,16 +206,16 @@ NumericalPoint NegativeBinomial::getParameters() const
   return point;
 }
 
-void NegativeBinomial::setParameters(const NumericalPoint & parameters)
+void NegativeBinomial::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = NegativeBinomial(parameters[0], parameters[1]);
+  *this = NegativeBinomial(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description NegativeBinomial::getParametersDescription() const
+Description NegativeBinomial::getParameterDescription() const
 {
   Description description(2);
   description[0] = "r";

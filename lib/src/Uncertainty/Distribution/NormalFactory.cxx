@@ -73,7 +73,7 @@ Normal NormalFactory::buildAsNormal(const NumericalPoint & parameters) const
     // see EllipticalDistribution::setParameters
     const UnsignedInteger dimension = 0.5 * std::sqrt(9.0 + 8.0 * size) - 1.5;
     Normal distribution(dimension);
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException & ex)

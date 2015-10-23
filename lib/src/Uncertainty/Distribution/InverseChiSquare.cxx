@@ -297,21 +297,21 @@ void InverseChiSquare::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint InverseChiSquare::getParameters() const
+NumericalPoint InverseChiSquare::getParameter() const
 {
   return NumericalPoint(1, nu_);
 }
 
-void InverseChiSquare::setParameters(const NumericalPoint & parameters)
+void InverseChiSquare::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = InverseChiSquare(parameters[0]);
+  *this = InverseChiSquare(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description InverseChiSquare::getParametersDescription() const
+Description InverseChiSquare::getParameterDescription() const
 {
   return Description(1, "nu");
 }

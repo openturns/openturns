@@ -223,18 +223,18 @@ Bool SubSquareCopula::hasIndependentCopula() const
 }
 
 /* Parameters value accessor */
-NumericalPoint MinCopula::getParameters() const
+NumericalPoint MinCopula::getParameter() const
 {
   return NumericalPoint();
 }
 
-void MinCopula::setParameters(const NumericalPoint & parameters)
+void MinCopula::setParameter(const NumericalPoint & parameter)
 {
   if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize(); 
 }
 
 /* Parameters description accessor */
-Description MinCopula::getParametersDescription() const
+Description MinCopula::getParameterDescription() const
 {
   return Description();
 }

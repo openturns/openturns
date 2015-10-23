@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     FarlieGumbelMorgensternCopula estimatedFarlieGumbelMorgensternCopula(factory.buildAsFarlieGumbelMorgensternCopula(sample));
     fullprint << "FarlieGumbelMorgensternCopula          =" << distribution << std::endl;
     fullprint << "Estimated farlieGumbelMorgensternCopula=" << estimatedFarlieGumbelMorgensternCopula << std::endl;
     estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula();
     fullprint << "Default farlieGumbelMorgensternCopula=" << estimatedFarlieGumbelMorgensternCopula << std::endl;
-    estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula(distribution.getParameters());
+    estimatedFarlieGumbelMorgensternCopula = factory.buildAsFarlieGumbelMorgensternCopula(distribution.getParameter());
     fullprint << "FarlieGumbelMorgensternCopula from parameters=" << estimatedFarlieGumbelMorgensternCopula << std::endl;
   }
   catch (TestFailed & ex)

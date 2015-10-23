@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedExponential = factory.buildAsExponential(sample)
     print("Exponential          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedExponential = factory.buildAsExponential()
     print("Default exponential=", estimatedExponential)
     estimatedExponential = factory.buildAsExponential(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Exponential from parameters=", estimatedExponential)
 
 except:

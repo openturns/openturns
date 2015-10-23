@@ -561,19 +561,19 @@ void Dirichlet::setParametersCollection(const NumericalPointCollection & paramet
   setTheta(theta);
 }
 
-NumericalPoint Dirichlet::getParameters() const
+NumericalPoint Dirichlet::getParameter() const
 {
   return theta_;
 }
 
-void Dirichlet::setParameters(const NumericalPoint & parameters)
+void Dirichlet::setParameter(const NumericalPoint & parameter)
 {
   const NumericalScalar w = getWeight();
-  *this = Dirichlet(parameters);
+  *this = Dirichlet(parameter);
   setWeight(w);
 }
 
-Description Dirichlet::getParametersDescription() const
+Description Dirichlet::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   Description description(dimension + 1);

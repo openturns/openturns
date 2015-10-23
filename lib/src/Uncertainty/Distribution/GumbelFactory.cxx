@@ -72,7 +72,7 @@ Gumbel GumbelFactory::buildAsGumbel(const NumericalPoint & parameters) const
   try
   {
     Gumbel distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -279,21 +279,21 @@ NumericalScalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative
 }
 
 /* Parameters value accessor */
-NumericalPoint AliMikhailHaqCopula::getParameters() const
+NumericalPoint AliMikhailHaqCopula::getParameter() const
 {
   return NumericalPoint(1, theta_);
 }
 
-void AliMikhailHaqCopula::setParameters(const NumericalPoint & parameters)
+void AliMikhailHaqCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = AliMikhailHaqCopula(parameters[0]);
+  *this = AliMikhailHaqCopula(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description AliMikhailHaqCopula::getParametersDescription() const
+Description AliMikhailHaqCopula::getParameterDescription() const
 {
   return Description(1, "theta");
 }

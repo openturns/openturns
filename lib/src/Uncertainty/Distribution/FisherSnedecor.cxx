@@ -202,7 +202,7 @@ void FisherSnedecor::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint FisherSnedecor::getParameters() const
+NumericalPoint FisherSnedecor::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = d1_;
@@ -210,16 +210,16 @@ NumericalPoint FisherSnedecor::getParameters() const
   return point;
 }
 
-void FisherSnedecor::setParameters(const NumericalPoint & parameters)
+void FisherSnedecor::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = FisherSnedecor(parameters[0], parameters[1]);
+  *this = FisherSnedecor(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description FisherSnedecor::getParametersDescription() const
+Description FisherSnedecor::getParameterDescription() const
 {
   Description description(2);
   description[0] = "d1";

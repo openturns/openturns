@@ -266,19 +266,19 @@ void Dirac::setParametersCollection(const NumericalPointCollection & parametersC
   setWeight(w);
 }
 
-NumericalPoint Dirac::getParameters() const
+NumericalPoint Dirac::getParameter() const
 {
   return point_;
 }
 
-void Dirac::setParameters(const NumericalPoint & parameters)
+void Dirac::setParameter(const NumericalPoint & parameter)
 {
   const NumericalScalar w = getWeight();
-  *this = Dirac(parameters);
+  *this = Dirac(parameter);
   setWeight(w);
 }
 
-Description Dirac::getParametersDescription() const
+Description Dirac::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   Description description(dimension);

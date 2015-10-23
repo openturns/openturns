@@ -274,21 +274,21 @@ NumericalPoint Chi::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Parameters value accessor */
-NumericalPoint Chi::getParameters() const
+NumericalPoint Chi::getParameter() const
 {
   return NumericalPoint(1, nu_);
 }
 
-void Chi::setParameters(const NumericalPoint & parameters)
+void Chi::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Chi(parameters[0]);
+  *this = Chi(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Chi::getParametersDescription() const
+Description Chi::getParameterDescription() const
 {
   return Description(1, "nu");
 }

@@ -521,11 +521,11 @@ public:
   virtual void setParametersCollection(const NumericalPointCollection & parametersCollection);
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameters() const;
-  virtual void setParameters(const NumericalPoint & parameters);
+  virtual NumericalPoint getParameter() const;
+  virtual void setParameter(const NumericalPoint & parameters);
 
   /** Parameters description accessor */
-  virtual Description getParametersDescription() const;
+  virtual Description getParameterDescription() const;
 
   /** Total number of parameters */
   virtual UnsignedInteger getParameterDimension() const;

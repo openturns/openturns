@@ -17,12 +17,12 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", repr(estimatedDistribution))
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", repr(estimatedDistribution))
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedNegativeBinomial = factory.buildAsNegativeBinomial(sample)
     print("NegativeBinomial          =", distribution)
@@ -30,7 +30,7 @@ try:
     estimatedNegativeBinomial = factory.buildAsNegativeBinomial()
     print("Default negativeBinomial=", estimatedNegativeBinomial)
     estimatedNegativeBinomial = factory.buildAsNegativeBinomial(
-        distribution.getParameters())
+        distribution.getParameter())
     print("NegativeBinomial from parameters=", estimatedNegativeBinomial)
 
 except:

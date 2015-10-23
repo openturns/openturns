@@ -86,11 +86,11 @@ public:
   NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
 
   /** Parameters value accessors */
-  void setParameters(const NumericalPoint & parameters);
-  NumericalPoint getParameters() const;
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
 
   /** Parameters description accessor */
-  Description getParametersDescription() const;
+  Description getParameterDescription() const;
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;

@@ -275,7 +275,7 @@ NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedEx
 }
 
 
-NumericalPoint InverseWishart::getParameters() const
+NumericalPoint InverseWishart::getParameter() const
 {
   const CovarianceMatrix V(getCovariance());
   const UnsignedInteger p = V.getDimension();
@@ -291,27 +291,27 @@ NumericalPoint InverseWishart::getParameters() const
   return point;
 }
 
-void InverseWishart::setParameters(const NumericalPoint & parameters)
+void InverseWishart::setParameter(const NumericalPoint & parameter)
 {
-  const UnsignedInteger size = parameters.getSize();
+  const UnsignedInteger size = parameter.getSize();
   const NumericalScalar pReal(0.5 * std::sqrt(8.0 * size - 7.0) - 0.5);
   const UnsignedInteger p(static_cast< UnsignedInteger >(pReal));
-  if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
+  if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameter cannot be converted into a covariance matrix and a number of degrees of freedom.";
   CovarianceMatrix V(p);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++ i)
     for (UnsignedInteger j = 0; j <= i; ++ j)
     {
-      V(i, j) = parameters[index];
+      V(i, j) = parameter[index];
       ++ index;
     }
-  const NumericalScalar nu = parameters[size - 1];
+  const NumericalScalar nu = parameter[size - 1];
   const NumericalScalar w = getWeight();
   *this = InverseWishart(V, nu);
   setWeight(w);
 }
 
-Description InverseWishart::getParametersDescription() const
+Description InverseWishart::getParameterDescription() const
 {
   const UnsignedInteger p = getDimension();
   Description description((p*(p+1))/2+1);

@@ -431,7 +431,7 @@ void MeixnerDistribution::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint MeixnerDistribution::getParameters() const
+NumericalPoint MeixnerDistribution::getParameter() const
 {
   NumericalPoint point(4);
   point[0] = alpha_;
@@ -441,16 +441,16 @@ NumericalPoint MeixnerDistribution::getParameters() const
   return point;
 }
 
-void MeixnerDistribution::setParameters(const NumericalPoint & parameters)
+void MeixnerDistribution::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = MeixnerDistribution(parameters[0], parameters[1], parameters[2], parameters[3]);
+  *this = MeixnerDistribution(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description MeixnerDistribution::getParametersDescription() const
+Description MeixnerDistribution::getParameterDescription() const
 {
   Description description(4);
   description[0] = "alpha";

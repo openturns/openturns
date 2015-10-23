@@ -117,11 +117,11 @@ public:
   Implementation getStandardRepresentative() const;
 
   /** Parameters value accessors */
-  void setParameters(const NumericalPoint & parameters);
-  NumericalPoint getParameters() const;
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
 
   /** Parameters description accessor */
-  Description getParametersDescription() const;
+  Description getParameterDescription() const;
 
   /* Interface specific to Weibull */
 

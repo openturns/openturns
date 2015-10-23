@@ -320,21 +320,21 @@ NumericalScalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const N
 }
 
 /* Parameters value accessor */
-NumericalPoint FrankCopula::getParameters() const
+NumericalPoint FrankCopula::getParameter() const
 {
   return NumericalPoint(1, theta_);
 }
 
-void FrankCopula::setParameters(const NumericalPoint & parameters)
+void FrankCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = FrankCopula(parameters[0]);
+  *this = FrankCopula(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description FrankCopula::getParametersDescription() const
+Description FrankCopula::getParameterDescription() const
 {
   return Description(1, "theta");
 }

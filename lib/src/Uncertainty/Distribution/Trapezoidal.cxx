@@ -373,7 +373,7 @@ void Trapezoidal::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Trapezoidal::getParameters() const
+NumericalPoint Trapezoidal::getParameter() const
 {
   NumericalPoint point(4);
   point[0] = a_;
@@ -383,16 +383,16 @@ NumericalPoint Trapezoidal::getParameters() const
   return point;
 }
 
-void Trapezoidal::setParameters(const NumericalPoint & parameters)
+void Trapezoidal::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Trapezoidal(parameters[0], parameters[1], parameters[2], parameters[3]);
+  *this = Trapezoidal(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Trapezoidal::getParametersDescription() const
+Description Trapezoidal::getParameterDescription() const
 {
   Description description(4);
   description[0] = "a";

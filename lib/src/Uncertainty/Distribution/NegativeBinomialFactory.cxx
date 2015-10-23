@@ -145,7 +145,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
   try
   {
     NegativeBinomial distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

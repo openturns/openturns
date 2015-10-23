@@ -82,7 +82,7 @@ Chi ChiFactory::buildAsChi(const NumericalPoint & parameters) const
   try
   {
     Chi distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

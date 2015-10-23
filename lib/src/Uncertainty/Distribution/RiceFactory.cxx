@@ -145,7 +145,7 @@ Rice RiceFactory::buildAsRice(const NumericalPoint & parameters) const
   try
   {
     Rice distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

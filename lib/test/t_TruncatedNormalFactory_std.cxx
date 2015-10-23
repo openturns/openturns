@@ -59,14 +59,14 @@ int main(int argc, char *argv[])
       // fullprint << "Covariance=" << covariance << std::endl;
       estimatedDistribution = factory.build();
       fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-      estimatedDistribution = factory.build(distribution.getParameters());
+      estimatedDistribution = factory.build(distribution.getParameter());
       fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
       TruncatedNormal estimatedTruncatedNormal(factory.buildAsTruncatedNormal(sample));
       fullprint << "TruncatedNormal          =" << distribution << std::endl;
       fullprint << "Estimated TruncatedNormal=" << estimatedTruncatedNormal << std::endl;
       estimatedTruncatedNormal = factory.buildAsTruncatedNormal();
       fullprint << "Default TruncatedNormal=" << estimatedTruncatedNormal << std::endl;
-      estimatedTruncatedNormal = factory.buildAsTruncatedNormal(distribution.getParameters());
+      estimatedTruncatedNormal = factory.buildAsTruncatedNormal(distribution.getParameter());
       fullprint << "TruncatedNormal from parameters=" << estimatedTruncatedNormal << std::endl;
     }
   }

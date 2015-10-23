@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     NumericalPoint r(vect.getRealization(p));
     fullprint << "vect realization=" << r << std::endl;
     fullprint << "parameters value=" << p << std::endl;
-    distribution.setParameters(p);
+    distribution.setParameter(p);
     RandomGenerator::SetSeed(0);
     /* Generate a parameter set to put the random generator into the proper state */
     randomParameters.getRealization();

@@ -296,7 +296,7 @@ Logistic::Implementation Logistic::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Logistic::getParameters() const
+NumericalPoint Logistic::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = alpha_;
@@ -304,16 +304,16 @@ NumericalPoint Logistic::getParameters() const
   return point;
 }
 
-void Logistic::setParameters(const NumericalPoint & parameters)
+void Logistic::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Logistic(parameters[0], parameters[1]);
+  *this = Logistic(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Logistic::getParametersDescription() const
+Description Logistic::getParameterDescription() const
 {
   Description description(2);
   description[0] = "alpha";

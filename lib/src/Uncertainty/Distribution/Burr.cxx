@@ -229,7 +229,7 @@ NumericalPoint Burr::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Parameters value accessor */
-NumericalPoint Burr::getParameters() const
+NumericalPoint Burr::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = c_;
@@ -237,16 +237,16 @@ NumericalPoint Burr::getParameters() const
   return point;
 }
 
-void Burr::setParameters(const NumericalPoint & parameters)
+void Burr::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Burr(parameters[0], parameters[1]);
+  *this = Burr(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Burr::getParametersDescription() const
+Description Burr::getParameterDescription() const
 {
   Description description(2);
   description[0] = "c";

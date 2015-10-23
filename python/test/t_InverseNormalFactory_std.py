@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParameters())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedInverseNormal = factory.buildAsInverseNormal(sample)
     print("InverseNormal          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedInverseNormal = factory.buildAsInverseNormal()
     print("Default inverseNormal=", estimatedInverseNormal)
     estimatedInverseNormal = factory.buildAsInverseNormal(
-        distribution.getParameters())
+        distribution.getParameter())
     print("InverseNormal from parameters=", estimatedInverseNormal)
 
 except:

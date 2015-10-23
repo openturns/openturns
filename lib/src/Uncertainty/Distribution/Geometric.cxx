@@ -217,21 +217,21 @@ void Geometric::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Geometric::getParameters() const
+NumericalPoint Geometric::getParameter() const
 {
   return NumericalPoint(1, p_);
 }
 
-void Geometric::setParameters(const NumericalPoint & parameters)
+void Geometric::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameters.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Geometric(parameters[0]);
+  *this = Geometric(parameter[0]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Geometric::getParametersDescription() const
+Description Geometric::getParameterDescription() const
 {
   return Description(1, "p");
 }

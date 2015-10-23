@@ -300,7 +300,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const NumericalPoint & parameters) 
   try
   {
     LogNormal distribution;
-    distribution.setParameters(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

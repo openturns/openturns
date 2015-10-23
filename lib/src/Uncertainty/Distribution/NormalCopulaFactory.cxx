@@ -76,7 +76,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalPoint & par
   try
   {
     NormalCopula copula;
-    copula.setParameters(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

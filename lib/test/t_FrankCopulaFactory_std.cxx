@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParameters());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     FrankCopula estimatedFrankCopula(factory.buildAsFrankCopula(sample));
     fullprint << "FrankCopula          =" << distribution << std::endl;
     fullprint << "Estimated frankCopula=" << estimatedFrankCopula << std::endl;
     estimatedFrankCopula = factory.buildAsFrankCopula();
     fullprint << "Default frankCopula=" << estimatedFrankCopula << std::endl;
-    estimatedFrankCopula = factory.buildAsFrankCopula(distribution.getParameters());
+    estimatedFrankCopula = factory.buildAsFrankCopula(distribution.getParameter());
     fullprint << "FrankCopula from parameters=" << estimatedFrankCopula << std::endl;
   }
   catch (TestFailed & ex)

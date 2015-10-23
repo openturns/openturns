@@ -260,7 +260,7 @@ void Gumbel::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Gumbel::getParameters() const
+NumericalPoint Gumbel::getParameter() const
 {
   NumericalPoint point(2);
   point[0] = alpha_;
@@ -268,16 +268,16 @@ NumericalPoint Gumbel::getParameters() const
   return point;
 }
 
-void Gumbel::setParameters(const NumericalPoint & parameters)
+void Gumbel::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameters.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize(); 
   const NumericalScalar w = getWeight();
-  *this = Gumbel(parameters[0], parameters[1]);
+  *this = Gumbel(parameter[0], parameter[1]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Gumbel::getParametersDescription() const
+Description Gumbel::getParameterDescription() const
 {
   Description description(2);
   description[0] = "alpha";
