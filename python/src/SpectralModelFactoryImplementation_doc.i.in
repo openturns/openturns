@@ -1,10 +1,38 @@
 %define OT_SpectralModelFactory_doc
-"Base class for spectral model factory."
+"Base class for spectral model factory.
+
+Parameters
+----------
+mySpectralModelFactoryImplementation : :class:`~openturns.SpectralModelFactoryImplementation`
+    One spectral factory algorithm.
+
+    By default, the Welch factory algorithm :class:`~openturns.WelchFactory`.
+   
+Notes
+-----
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (*n=1*).
+
+If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^n \rightarrow \Rset^n` is :math:`\cL^1(\Rset^n)` (ie :math:`\int_{\Rset^n} |C^{stat}_{i,j}(\vect{\tau})|\, d\vect{\tau}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`. 
+
+The bilateral spectral density function :math:`S : \Rset^n \rightarrow \mathcal{H}^+(d)` exists and is defined as the Fourier transform of the covariance function :math:`C^{stat}` :
+
+.. math::
+
+    \forall \vect{f} \in \Rset^n, \,S(\vect{f}) = \int_{\Rset^n}\exp\left\{  -2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\, d\vect{\tau}
+
+
+where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+
+Depending on the available data, we proceed differently :
+
+    -if the data correspond to  several independent  realizations of the  process, the estimation is done using the empirical estimator;
+
+    - if the data correspond to one realization of the  process,  we suppose the process is ergodic to split the realization into several ones.
+"
 
 %enddef
 %feature("docstring") OT::SpectralModelFactoryImplementation
 OT_SpectralModelFactory_doc
-
 
 // ---------------------------------------------------------------------
 
@@ -83,7 +111,7 @@ myProcessSample : :class:`~openturns.ProcessSample`
 Returns
 -------
 mySpectralModel : :class:`~openturns.SpectralModel`
-    The estimatd spectral model.
+    The estimated spectral model.
  "
 %enddef
 %feature("docstring") OT::SpectralModelFactoryImplementation::build
