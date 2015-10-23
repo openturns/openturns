@@ -2,7 +2,7 @@
 "Weighted experiment.
 
 Available constructor:
-    WeightedExperiment(`distribution=ot.Uniform(), size=100`)
+    WeightedExperiment(*distribution=ot.Uniform(), size=100*)
 
 Parameters
 ----------

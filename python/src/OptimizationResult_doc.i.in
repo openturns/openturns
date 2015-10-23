@@ -5,20 +5,20 @@ Returned by optimization solvers, see :class:`~openturns.OptimizationSolver`.
 
 Parameters
 ----------
-optimalPoint : 1-d float array
-    Optimal point
-optimalValue : 1-d float array
-    Value at optimal point
+optimalPoint : sequence of float
+    Optimal point.
+optimalValue : sequence of float
+    Value at optimal point.
 iterationsNumber : int
-    Number of iterations
+    Number of iterations.
 absoluteError : float
-    Parameters for this solver
+    Parameters for this solver.
 relativeError : float
-    Relative error
+    Relative error.
 residualError : float
-    Residual error
+    Residual error.
 constraintError : float
-    Constraint error"
+    Constraint error."
 
 // ---------------------------------------------------------------------
 

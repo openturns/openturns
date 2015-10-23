@@ -17,6 +17,7 @@ Notes
 A MetaModelValidation object is used for the validation process of a metamodel.
 For that purpose, a dataset independent of the learning step, is used to score the surrogate model.
 Its main functionalities are :
+
 - To compute the predictivity factor :math:`Q_2`
 - To get the residual sample, its non parametric distribution
 - To draw a `model vs metamodel` validation graph.
@@ -27,7 +28,7 @@ Currently only one dimensional output models are available.
 Examples
 --------
 >>> import openturns as ot
->>> from math import sqrt, sin, pi
+>>> from math import pi
 >>> dist = ot.Uniform(-pi/2, pi/2)
 >>> # Model here is sin(x)
 >>> model = ot.NumericalMathFunction('x', 'sin(x)')
@@ -93,7 +94,7 @@ The predictivity factor :math:`Q_2` is given by :
 Returns
 -------
 residual : :class:`~openturns.NumericalSample`
-    The residual sample
+    The residual sample.
 
 Notes
 -----
@@ -111,17 +112,17 @@ The residual sample is given by :
 Parameters
 ----------
 smooth : bool
-    Tells if distribution is smooth (true) or not
-    Default argument is true
+    Tells if distribution is smooth (true) or not.
+    Default argument is true.
 
 Returns
 -------
 residualDistribution : :class:`~openturns.Distribution`
-    The residual distribution
+    The residual distribution.
 
 Notes
 -----
-The residual distribution is built thanks to :class:`~openturns.KernelSmoothing` if `smooth` argument is true. Otherwise, an histogram distribution is returned, thanks to :class:`~openturns.HistogramFactory`"
+The residual distribution is built thanks to :class:`~openturns.KernelSmoothing` if `smooth` argument is true. Otherwise, an histogram distribution is returned, thanks to :class:`~openturns.HistogramFactory`."
 
 
 // ---------------------------------------------------------------------
@@ -132,4 +133,4 @@ The residual distribution is built thanks to :class:`~openturns.KernelSmoothing`
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The visual validation graph"
+    The visual validation graph."

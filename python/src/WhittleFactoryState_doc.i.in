@@ -3,13 +3,13 @@
 
 Parameters
 ----------
-p : int, 
+p : int
     AR order of the estimated :math:`ARMA(p,q)`.
-ARMACoeff : :class:`~openturns.NumericalPoint` of dimension :math:`p+q`
-    Coefficients of the AR then MA part of the estimated  :math:`ARMA(p,q)` process.
-sigma2 : float,
+ARMACoeff : sequence of float of dimension :math:`p+q`
+    Coefficients of the AR then MA part of the estimated :math:`ARMA(p,q)` process.
+sigma2 : float
     Variance of the white noise.
-criteria : :class:`~openturns.NumericalPoint` of dimension 3
+criteria : sequence of float of dimension 3
     The values of the criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* on the estimated :math:`ARMA(p,q)` process.
 timeGrid : :class:`~openturns.RegularGrid`
     Time grid of the :math:`ARMA(p,q)` process.

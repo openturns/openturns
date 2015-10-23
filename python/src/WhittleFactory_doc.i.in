@@ -63,7 +63,7 @@ We estimate the :math:`(p+q+1)` scalar coefficients by maximizing the log-likeli
 
     \sigma^{2*} = \frac{1}{m} \sum_{j=1}^{m} \frac{I(\lambda_j)}{g(\lambda_j, \vect{\theta}^{*})}
 
-where :math:` \vect{\theta}^{*}` maximizes :
+where :math:`\vect{\theta}^{*}` maximizes :
 
 .. math::
 
@@ -71,13 +71,12 @@ where :math:` \vect{\theta}^{*}` maximizes :
 
 The Whitle estimation requires that :
 
-
 - the determinant of the eigen values of the companion matrix associated to the polynomial  :math:`1 + a_1X + \dots + a_pX^p` are  outside the unit disc, which garantees the stationarity of the process;
 
 - the determinant of the eigen values of thez companion matrix associated to the polynomial  :math:`1 + ba_1X + \dots + b_qX^q` are outside the unit disc, which garantees the invertibility of the process.
 
 
-The  criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* are evaluated to help the model selection:
+The criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* are evaluated to help the model selection:
 
 .. math::
     :nowrap:
@@ -114,7 +113,7 @@ Check the default SpectralModelFactory:
 
 >>> #print(myFactory_42.getSpectralModelFactory())
 
-Set a particluar spectral model: WelchFactory as SpectralModelFactory with the Hanning filtering window:
+Set a particular spectral model: WelchFactory as SpectralModelFactory with the Hanning filtering window:
 
 >>> myFilteringWindow = ot. Hanning()
 >>> mySpectralFactory = ot.WelchFactory(myFilteringWindow, 4, 0)

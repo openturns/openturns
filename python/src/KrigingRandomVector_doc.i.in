@@ -9,7 +9,7 @@ Parameters
 ----------
 krigingResult : :class:`~openturns.KrigingResult`
     Structure that contains elements of computation of a kriging algorithm
-points : 1D or 2D float sequences
+points : 1-d or 2-d sequence of float
     Sequence of values defining a :class:`~openturns.NumericalPoint` or a :class:`~openturns.NumericalSample`.
 
 Notes
@@ -29,7 +29,7 @@ with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a generalized linear model, :m
 
     \mathbb{E}[Z(\vect{x}), Z(\vect{\tilde{x}})] = \sigma^2 \cC^{stat}_{\theta}(\vect{x} - \vect{\tilde{x}})
 
-The objective is to generate realizations of the random vector  :math:`Y`, on new points :math:`\vect{\tilde{x}}`, conditionally to these observations. For that purpose, :class:`~openturns.KrigingAlgorithm` build such a prior and stores results in a :class:`~openturns.KrigingResult` structure on a first step. This structure is given as input argument.
+The objective is to generate realizations of the random vector :math:`Y`, on new points :math:`\vect{\tilde{x}}`, conditionally to these observations. For that purpose, :class:`~openturns.KrigingAlgorithm` build such a prior and stores results in a :class:`~openturns.KrigingResult` structure on a first step. This structure is given as input argument.
 
 Then, in a second step, both the prior and the covariance on input points :math:`\vect{\tilde{x}}`, conditionally to the previous observations, are evaluated (respectively :math:`Y(\vect{\tilde{x}})` and :math:`\cC^{stat}_{\theta}(\vect{\tilde{x}})`).
 
@@ -52,7 +52,7 @@ The realization predicts the value on the given input *points*.
 Returns
 -------
 realization : :class:`~openturns.NumericalPoint`
-    Sequence of values of the Gaussian process
+    Sequence of values of the Gaussian process.
 
 See also
 --------
@@ -99,7 +99,7 @@ The realization predicts the value on the given input *points*.
 Returns
 -------
 realizations : :class:`~openturns.NumericalSample`
-    2D float sequence of values of the Gaussian process
+    2-d float sequence of values of the Gaussian process.
 
 See also
 --------
@@ -150,7 +150,7 @@ OT_KrigingRandomVector_getSample_doc
 Returns
 -------
 krigResult : :class:`~openturns.KrigingResult`
-    The structure containing the elements of a KrigingAlgorithm
+    The structure containing the elements of a KrigingAlgorithm.
 
 
 Examples

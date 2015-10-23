@@ -12,7 +12,7 @@ Available constructors:
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.NumericalSample`
+inputSample, outputSample : 2-d sequence of float
     The input and output samples of a model evaluated apart.
 inputTransformation : :class:`~openturns.NumericalMathFunction`
     Function that helps to normalize the input sample.
@@ -47,7 +47,7 @@ Notes
 -----
 We note :math:`\cM:\Rset^d \mapsto \Rset^p` with :math:`\cM(\vect{x})= \vect{y}`.
 
-We suppose  we have an input sample :math:`(\vect{x}_1, \dots, \vect{x}_m)` associated to the output sample :math:`(\vect{y}_1, \dots, \vect{y}_m)` where :math:`\vect{y}_i = \cM(\vect{x}_i)` for all *i*.
+We suppose we have an input sample :math:`(\vect{x}_1, \dots, \vect{x}_m)` associated to the output sample :math:`(\vect{y}_1, \dots, \vect{y}_m)` where :math:`\vect{y}_i = \cM(\vect{x}_i)` for all *i*.
 
 Kriging method builds a metamodel of :math:`\tilde{\cM}` supposing that the output is a realization of a Normal process :math:`Y: \Omega \times \cD \mapsto \Rset^p` with :math:`\cD \in \Rset^d` that writes:
 
@@ -55,7 +55,7 @@ Kriging method builds a metamodel of :math:`\tilde{\cM}` supposing that the outp
 
     Y(\omega, \vect{x}) = \sum_{i=1}^M \beta_i f_i(\vect{x}) + Z(\omega, \vect{x})
 
-where :math:`(f_1, \dots, f_M)` is a functional basis whith :math:`f_i: \Rset^d \mapsto \Rset^p` and :math:`\beta_i \in _Rset` for all *i*  and :math:`Z(\omega, \vect{x})` is a zero-mean Normal process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}: \Rset^d \times \Rset^d \mapsto \mathcal{S}^{+}_{p}(\Rset)`:
+where :math:`(f_1, \dots, f_M)` is a functional basis with :math:`f_i: \Rset^d \mapsto \Rset^p` and :math:`\beta_i \in _Rset` for all *i*  and :math:`Z(\omega, \vect{x})` is a zero-mean Normal process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}: \Rset^d \times \Rset^d \mapsto \mathcal{S}^{+}_{p}(\Rset)`:
 
 .. math::
     C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{x}, \vect{y}) = \Expect{Z(\omega, \vect{x})Z(\omega, \vect{y})}
@@ -76,7 +76,7 @@ If the covariance model fixed by the User has a spatial dimension (*d*)  equal t
 .. math::
     C_{\sigma, \theta, \vect{\lambda}}(\vect{\tau}) = \prod_{i=1}^d C_{\sigma, \theta, \vect{\lambda}}(\tau_i)
 
-The User can fix any other multi-dimensional covariance models for example built with the :class:`~openturns.PoductCovarianceModel` class.
+The User can fix any other multi-dimensional covariance models for example built with the :class:`~openturns.ProductCovarianceModel` class.
 
 OpenTURNS estimates with the maximum likelihood method the following parameters:
 

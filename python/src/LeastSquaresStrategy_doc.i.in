@@ -23,7 +23,7 @@ approxAlgoImpFact : ApproximationAlgorithmImplementationFactory
     The factory that builds the desired :class:`~openturns.ApproximationAlgorithm`.
     When not precised, OpenTURNS uses the 
     :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory`.
-measure : Distribution
+measure : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with respect to which the basis is orthonormal.
     When not precised, OpenTURNS uses the limit measure defined within the
     :class:`~openturns.WeightedExperiment`.
@@ -45,7 +45,7 @@ Notes
 -----
 This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm` : the least squares strategy
-evaluates the coefcients :math:`(a_k)_{k \in K}` of the polynomials
+evaluates the coefficients :math:`(a_k)_{k \in K}` of the polynomials
 decomposition as follows:
 
 .. math::
@@ -55,7 +55,7 @@ decomposition as follows:
 
 where :math:`\vect{U} = T(\vect{X})`.
 
-The esperance :math:`E_{\mu}` is approximated by a relation of type:
+The mean expectation :math:`E_{\mu}` is approximated by a relation of type:
 
 .. math::
     
@@ -68,6 +68,6 @@ where is a function :math:`L_1(\mu)` defined as:
     f(\vect{U} = \left( g \circ T^{-1} (\vect{U}) - \vect{b}^{\intercal}
                                  \vect{\Psi}(\vect{U}) \right)^2 
 
-In the approximation of the esperance, the set *I*, the points 
+In the approximation of the mean expectation, the set *I*, the points 
 :math:`(\Xi_i)_{i \in I}` and the weights :math:`(\omega_i)_{i \in I}` are
 evaluated from methods implemented in the :class:`~openturns.WeightedExperiment`."

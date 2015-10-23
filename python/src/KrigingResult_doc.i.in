@@ -9,26 +9,26 @@ Available constructors:
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.NumericalSample`
+inputSample, outputSample : 2-d sequence of float
     The input and output samples of a model evaluated apart.
-metaModel: :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.NumericalMathFunction`
     The surrogate model built thanks to the kriging algorithm.
-residuals: :class:`~openturns.NumericalPoint`
+residuals : sequence of float
     The residual errors.
-relativeErrors: :class:`~openturns.NumericalPoint`
+relativeErrors : sequence of float
     The relative errors.
 basis : collection of :class:`~openturns.Basis`
     Its size should be equal to the output dimension or zero if no trend is estimated.
     The n-th basis is the functional basis (or the generalized linear model) for the n-th output marginal.
-trendCoefficients : collection of :class:`~openturns.NumericalPoint`
+trendCoefficients : collection of sequence of float
     The trend coeffients associated to the generalized linear model.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance function.
-covarianceCoefficients: :class:`~openturns.NumericalSample`
+covarianceCoefficients : 2-d sequence of float
     The covariance coefficients.
 covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
     The Cholesky factor of associated to the evaluation of the covariance function evaluated at the inputSample.
-covarianceHMatrix :  :class:`~openturns.HMatrix`
+covarianceHMatrix : :class:`~openturns.HMatrix`
     The *hmat* implementation of the Cholesky factor of the covariance matrix obtained by the discretization of the covariance function on the input sample.
 
 
@@ -239,7 +239,6 @@ Create the algorithm:
 Get the results:
 
 >>> result = algo.getResult()
->>> # Get the covariance model
 
 Get the covariance model:
 
@@ -297,9 +296,9 @@ Available usages:
 
 Parameters
 ----------
-x : :class:`~openturns.NumericalPoint`
+x : sequence of float
      The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
-sampleX : :class:`~openturns.NumericalSample`
+sampleX : 2-d sequence of float
      The sample :math:`(\vect{x}_1, \dots, \vect{x}_h)` where the conditional mean of the output has to be evaluated (*h* can be equal to 1).
 
 Returns
@@ -325,7 +324,7 @@ Create the algorithm:
 >>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
 >>> algo.run()
 
-Get the conditional mean evaluated at pont 0:
+Get the conditional mean evaluated at point 0:
 
 >>> result = algo.getResult()
 >>> mu = result.getConditionalMean([0.0])"
@@ -343,9 +342,9 @@ Available usages:
 
 Parameters
 ----------
-x : :class:`~openturns.NumericalPoint`
+x : sequence of float
      The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
-sampleX : :class:`~openturns.NumericalSample`
+sampleX : 2-d sequence of float
      The sample :math:`(\vect{x}_1, \dots, \vect{x}_h)` where the conditional mean of the output has to be evaluated (*h* can be equal to 1).
 
 Returns
@@ -386,6 +385,7 @@ Create the algorithm:
 >>> algo.run()
 
 Get the conditional covariance matrix on a new point:
+
 >>> result = algo.getResult()
 >>> cov = result.getConditionalCovariance([0.0])"
 

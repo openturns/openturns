@@ -8,14 +8,14 @@ myTrendFunc : :class:`~openturns.NumericalMathFunction`
 
 Notes
 -----
-A multivariate stochastic  process :math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` may write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* as follows:
+A multivariate stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` may write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* as follows:
 
 .. math::
 
     X(\omega,\vect{t}) = X_{stat}(\omega,\vect{t}) + f_{trend}(\vect{t})
     
 
-We note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values of one field of the ocess *X*, associated to the mesh :math:`\cM = (\vect{t}_0, \dots, \vect{t}_{N-1})` of :math:`\cD`. We note :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})` the values of the resulting stationary field. Then we have:
+We note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values of one field of the process *X*, associated to the mesh :math:`\cM = (\vect{t}_0, \dots, \vect{t}_{N-1})` of :math:`\cD`. We note :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})` the values of the resulting stationary field. Then we have:
 
 .. math::
 
