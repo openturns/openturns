@@ -179,7 +179,7 @@ ot_add_python_module(statistics statistics_module.i
                       SpectralModel.i SpectralModel_doc.i.in
                       CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
                       CovarianceModel.i CovarianceModel_doc.i.in
-                      StationaryCovarianceModel.i
+                      StationaryCovarianceModel.i 
                       SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i
@@ -191,7 +191,7 @@ ot_add_python_module(statistics statistics_module.i
                       CovarianceModelFactory.i
                       UserDefinedCovarianceModel.i UserDefinedCovarianceModel_doc.i.in
                       UserDefinedStationaryCovarianceModel.i UserDefinedStationaryCovarianceModel_doc.i.in
-                      StationaryCovarianceModelFactory.i
+                      StationaryCovarianceModelFactory.i StationaryCovarianceModelFactory_doc.i.in
                       NonStationaryCovarianceModelFactory.i NonStationaryCovarianceModelFactory_doc.i.in
                       SquaredExponential.i SquaredExponential_doc.i.in
                       GeneralizedExponential.i GeneralizedExponential_doc.i.in

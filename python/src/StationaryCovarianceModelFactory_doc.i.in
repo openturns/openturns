@@ -1,0 +1,224 @@
+%feature("docstring") OT::StationaryCovarianceModelFactory
+"Estimation of a stationary covariance model.
+
+Parameters
+----------
+spectralModelFactory : :class:`~openturns.SpectralModelFactory`
+    The spectral model factory. 
+
+    By default, it is the Welch factory model.
+
+Notes
+-----
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate   process of dimension *d* where :math:`\cD \in \Rset^n`.  We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`). 
+We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of the  mesh :math:`\cM \in \cD` which is a time grid supposed regular.
+
+*X* is supposed to be a stationary second order process with zero mean. We note its covariance function :math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`, defined by :math:`C^{stat}(\tau)=\Expect{X_sX_{s+\tau}^t}` for all :math:`s\in \cD`.
+
+In addition, we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` is defined,  where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+
+OpenTURNS estimates  :math:`C^{stat}` from a field or a sample of fields of *X*, using first the estimation of the spectral density function and then mapping *S* into :math:`C^{stat}` using the inversion relation :
+
+.. math::
+    :label: eq1
+
+    C^{stat}(\vect{\tau})  = \int_{\Rset^n}\exp\left\{  2i\pi <\vect{f}, \vect{\tau}> \right\}S(\vect{f})\, d\vect{f}
+
+when it is possible.
+
+As the mesh is a time grid (:math:`n=1`), the fields can be interpreted as time series.
+
+The estimation  algorithm is outlined hereafter.
+
+Let :math:`(\vect{X}^0, \dots, , \vect{X}^{M-1})` be *M* independent realizations of *X* or *M* segments of one realization of the process. 
+
+Using the relation between the covariance model end the spectral function, the covariance function writes:
+
+.. math::
+    :label: eq2
+
+    C_{i,j}^{stat}(\tau)  = \int_{\mathbb{R}}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df
+
+where :math:`C_{i,j}^{stat}` is the element *(i,j)* of the matrix :math:`C^{stat}(\tau)` and :math:`S_{i,j}(f)` the one of :math:`S(f)`. The integral :eq:`eq2` is approximated by its evaluation on the finite domain :math:`\Omega \in \Rset`:
+
+.. math::
+    :label: eq3
+
+    C_{i,j}^{stat}(\tau)  = \int_{\Omega}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df
+
+
+Let us consider the partition of the domain as follows:
+
+    - :math:`\Omega =[-\Omega_c, \Omega_c]` is subdivised into *M* segments :math:`\Omega = \cup_{k=1}^{M} \mathcal{M}_k` with :math:`\mathcal{M}_k=[f_k - \frac{\Delta f}{2}, f_k + \frac{\Delta f}{2}]`
+
+    - :math:`\Delta f` be the frequency step, :math:`\Delta f = \frac{2 \Omega_c}{M}`
+
+    - :math:`f_k` be the frequences on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,2,\hdots,M`
+
+The equation :eq:`eq3` can be rewritten as:
+
+.. math::
+
+    C_{i,j}^{stat}(\tau)  = \sum_{k=1}^{M}\int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df
+
+We focus on the integral on each subdomain :math:`\mathcal{M}_k`. Using numerical approximation, we have:
+
+.. math::
+
+    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau \right\}
+
+:math:`\tau` must be in correspondance with frequency values with respect to the Shannon criteria. Thus the temporal domain of estimation is the following:
+
+    - :math:`\Delta t` is the time step, :math:`\Delta t = \frac{1}{2 \Omega_c}` such as :math:`\Delta f \Delta t = \frac{1}{M}`
+
+    - :math:`\tilde{\mathcal{T}} = [-T, T]` is subdivised into *M* segments :math:`\tilde{{\mathcal{T}}} = \cup_{m=1}^{M} \mathcal{T}_m` with :math:`\mathcal{T}_m=[t_m - \frac{\Delta t}{2}, t_m + \frac{\Delta t}{2}]`
+
+    - :math:`t_m` be the time values on which the covariance is estimated, :math:`t_m = -\frac{M}{2 \Omega_c} + \left(m - \frac{1}{2} \right) \Delta t = \left(2 m - 1 - M \right) \frac{\Delta t}{2}`
+
+The estimate of the covariance value at time value :math:`\tau_{m}` depends on the quantities of form:
+
+.. math::
+    :label: eq4
+
+    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau_{m} \right\} S_{i,j}(f)\, df \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau_{m} \right\}
+
+
+We develop the expression of :math:`f_k` and :math:`\tau_{m}` and we get:
+
+.. math::
+
+    \left\{
+     \begin{array}{l}
+       2m - 1 - M = 2 (m-1) - (M-1) \\
+       2k - 1 - M = 2 (k-1) - (M-1)
+     \end{array}
+     \right.
+
+Thus:
+
+.. math::
+
+    (2m - 1 - M) (2k - 1 - M) = 4 (m-1)(k-1) - (M-1)(2m -1 -M) - 2 (k-1)(M-1)
+
+and:
+
+.. math::
+
+    (2m - 1 - M) (2k - 1 - M)\frac{\Delta t}{2}\frac{\Delta f}{2} = \frac{(m-1)(k-1)}{M} - \frac{(M-1)(2m -1 -M)}{4M} - \frac{(k-1)(M-1)}{2M}
+
+
+We denote:
+
+.. math::
+
+    \left\{
+      \begin{array}{l}
+        \delta(m) = \exp\left\{-i \frac{\pi}{2M} (M-1)(2m -1 -M) \right\}\\
+        \phi_k = \exp\left\{-i \frac{\pi}{M} (k-1)(M-1) \right\} S_{i,j}(f_k)
+      \end{array}
+      \right.
+
+
+Finally, we get the followig expression for integral in :eq:`eq4`:
+
+.. math::
+
+    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau_{m} \right\} S_{i,j}(f)\, df \approx \Delta f \exp\left\{2i \frac{\pi}{M} (m-1)(k-1)  \right\} \delta(m) \phi_k
+
+It follows that:
+
+.. math::
+    :label: eq5
+
+    C_{i,j}^{stat}(\tau_m)  = \Delta f \delta(m) \sum_{k=1}^{M} \phi_k \exp\left\{2i \frac{\pi}{M} (m-1)(k-1)  \right\}
+
+In the equation :eq:`eq5`, we notice a discret inverse Fourier transform.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::StationaryCovarianceModelFactory::build
+"Estimate a stationary covariance model.
+
+Available usages:
+    build(*sampleFields*)
+
+    build(*myField*)
+
+Parameters
+----------
+sampleFields : :class:`~openturns.ProcessSample`
+    The fields used to estimate the covariance model.
+myField : :class:`~openturns.Field`
+    One field used to estimate the covariance model. 
+
+Returns
+-------
+covEst : :class:`~openturns.CovarianceModelImplementation`
+    The estimated covariance model.
+
+Notes
+-----
+The fields are in fact time series.
+
+The estimated :class:`~openturns.CovarianceModelImplementation` which is a :class:`~openturns.UserDefinedStationaryCovarianceModel` composed of a time grid and a collection of *K* square matrices of dimension *d* where *K* corresponds to the number of time steps of the final time grid on which the covariance is estimated.
+
+When estimated from a time series, the :class:`~openturns.UserDefinedStationaryCovarianceModel` may have a  time grid different from the initial time grid of the time series.
+
+Examples
+--------
+Create the stationary covariance model, a mesh and a process:
+
+>>> import openturns as ot
+>>> myModel = ot.AbsoluteExponential(1, 0.1)
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 10)
+>>> myProcess = ot.TemporalNormalProcess(myModel, myTimeGrid)
+
+Generate 100 fields:
+
+>>> mySample = myProcess.getSample(100)
+
+Estimate the covariance model  supposing the stationarity:
+
+>>> myEstCov = ot.StationaryCovarianceModelFactory().build(mySample)
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel
+"Estimate the covariance model as a User defined covariance model.
+
+Available usages:
+    buildAsUserDefinedStationaryCovarianceModel(*sampleFields*)
+
+    buildAsUserDefinedStationaryCovarianceModel(*myField*)
+
+Parameters
+----------
+sampleFields : :class:`~openturns.ProcessSample`
+    The fields used to estimate the covariance model which is  supposed to be stationary.
+
+Returns
+-------
+covEst : :class:`~openturns.UserDefinedStationaryCovarianceModel`
+    The estimated covariance model that can be used as  a :class:`~openturns.UserDefinedStationaryCovarianceModel`.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::StationaryCovarianceModelFactory::getSpectralModelFactory
+"Accessor to the spectral factory algorithm.
+
+Returns
+-------
+spectModel : :class:`~openturns.SpectralModelFactory`
+    The spectral factory algorithm.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::StationaryCovarianceModelFactory::setSpectralModelFactory
+"Accessor to the spectral factory algorithm.
+
+Parameters
+----------
+spectModel : :class:`~openturns.SpectralModelFactory`
+    The spectral factory algorithm.
+"
+
