@@ -135,6 +135,14 @@ Matrix MaternModel::partialGradient(const NumericalPoint & s,
   return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0];
 }
 
+void MaternModel::setScale(const NumericalPoint & scale)
+{
+  // First set scale
+  StationaryCovarianceModel::setScale(scale);
+  // Update scaling factor
+  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+}
+
 /* String converter */
 String MaternModel::__repr__() const
 {

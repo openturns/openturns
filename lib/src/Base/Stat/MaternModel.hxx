@@ -62,6 +62,10 @@ public:
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
 
+  // Reimplement the setScale method
+  using StationaryCovarianceModel::setScale;
+  void setScale(const NumericalPoint & scale);
+
   /** String converter */
   String __repr__() const;
 
