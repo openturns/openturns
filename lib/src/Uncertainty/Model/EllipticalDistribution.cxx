@@ -637,24 +637,6 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
   isAlreadyComputedCovariance_ = false;
 }
 
-// void EllipticalDistribution::setParametersCollection(const NumericalPoint & flattenCollection)
-// {
-//   const UnsignedInteger dimension(getDimension());
-//   if (dimension == 1)
-//   {
-//     if (flattenCollection.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given parameters point has an invalid dimension (" << flattenCollection.getDimension() << "), it should be 2";
-// 
-//     mean_[0] = flattenCollection[0];
-//     sigma_[0] = flattenCollection[1];
-//     if (sigma_[0] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
-//     update();
-//     computeRange();
-//     isAlreadyComputedCovariance_ = false;
-//   }
-//   else DistributionImplementation::setParametersCollection(flattenCollection);
-// }
-
-
 NumericalPoint EllipticalDistribution::getParameters() const
 {
   const UnsignedInteger dimension = getDimension();
