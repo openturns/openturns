@@ -1,55 +1,57 @@
 %feature("docstring") OT::IntervalMesher
-"Creation of mesh of type box in dimension :math:`\leq 3`.
+"Creation of mesh of box type.
 
 Available constructor:
     IntervalMesher(*discretization*)
 
 Parameters
 ----------
-discretization :  :class:`~openturns.Indices`, of dimension :math:`\leq 3`.
-    List of number of intervals in each direction of the box.
+discretization : sequence of int, of dimension :math:`\leq 3`.
+    Number of intervals in each direction of the box.
 
 Examples
 --------
-Create an interval mesher:
+Create a mesh:
 
 >>> import openturns as ot
->>> myMesher = ot.IntervalMesher(ot.Indices([5,10]))
+>>> mesher = ot.IntervalMesher([5, 10])
 >>> lowerbound = [0.0, 0.0]
 >>> upperBound = [2.0, 4.0]
->>> myInterval = ot.Interval(lowerbound, upperBound)
->>> myMesh = myMesher.build(myInterval)
+>>> interval = ot.Interval(lowerbound, upperBound)
+>>> mesh = mesher.build(interval)"
 
-Draw the mesh:
->>> graph = myMesh.draw()
-"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IntervalMesher::build
-"Build the mesh of type box.
+"Build the mesh of box type.
 
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
-    The bounds defining the interval must be of dimension equal to the dimension  of `discretization`.
-"
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::IntervalMesher::getDiscretization
-"Build the mesh of type box.
+    The bounds defining the interval, of dimension equal to the dimension
+    of `discretization`.
 
 Returns
 -------
-discretization :  :class:`~openturns.Indices`
-    List of number of intervals in each direction of the box.
-"
+mesh : :class:`~openturns.Mesh`
+    The mesh built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntervalMesher::getDiscretization
+"Accessor to the discretization.
+
+Returns
+-------
+discretization : :class:`~openturns.Indices`
+    Number of intervals in each direction of the box."
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IntervalMesher::setDiscretization
-"Build the mesh of type box.
+"Accessor to the discretization.
 
 Parameters
 ----------
-discretization :  :class:`~openturns.Indices`
-    List of number of intervals in each direction of the box.
-"
+discretization : sequence of int
+    Number of intervals in each direction of the box."
