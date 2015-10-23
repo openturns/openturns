@@ -53,8 +53,11 @@ Spectral information
     :template: class.rst_t
 
     SpectralModel
+    :template: SpectralModel.rst_t
     CauchyModel
+    :template: classWithPlot.rst_t
     UserDefinedSpectralModel
+    :template: class.rst_t
     SpectralModelFactory
     WelchFactory
     FilteringWindows
