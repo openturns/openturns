@@ -67,7 +67,8 @@ public:
 
   /** Parameters accessor */
   void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
+  NumericalPoint getParameter() const;
+  Description getParameterDescription() const;
 
   /** Scale accessor */
   void setScale(const NumericalPoint & scale);

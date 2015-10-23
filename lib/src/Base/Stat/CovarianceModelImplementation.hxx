@@ -152,7 +152,8 @@ public:
 
   /** Parameters accessor */
   virtual void setParameters(const NumericalPoint & parameters);
-  virtual NumericalPointWithDescription getParameters() const;
+  virtual NumericalPoint getParameter() const;
+  virtual Description getParameterDescription() const;
 
   /** String converter */
   virtual String __repr__() const;

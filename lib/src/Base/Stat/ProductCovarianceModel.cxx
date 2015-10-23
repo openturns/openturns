@@ -163,12 +163,12 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
 /* Parameters accessor */
 void ProductCovarianceModel::setParameters(const NumericalPoint & parameters)
 {
-  const UnsignedInteger parametersDimension(getParameters().getDimension());
+  const UnsignedInteger parametersDimension(getParameter().getDimension());
   if (parameters.getDimension() != parametersDimension) throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameters.getDimension() << ")";
   UnsignedInteger start(0);
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    const UnsignedInteger atomParametersDimension(collection_[i].getParameters().getDimension());
+    const UnsignedInteger atomParametersDimension(collection_[i].getParameter().getDimension());
     const UnsignedInteger stop(start + atomParametersDimension);
     NumericalPoint atomParameters(atomParametersDimension);
     std::copy(parameters.begin() + start, parameters.begin() + stop, atomParameters.begin());
@@ -177,21 +177,29 @@ void ProductCovarianceModel::setParameters(const NumericalPoint & parameters)
   }
 }
 
-NumericalPointWithDescription ProductCovarianceModel::getParameters() const
+NumericalPoint ProductCovarianceModel::getParameter() const
 {
-  NumericalPointWithDescription result(0);
+  NumericalPoint result(0);
+  const UnsignedInteger size(collection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const NumericalPoint atomParameters(collection_[i].getParameter());
+    result.add(atomParameters);
+  }
+  return result;
+}
+
+Description ProductCovarianceModel::getParameterDescription() const
+{
   Description description(0);
   const UnsignedInteger size(collection_.getSize());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPointWithDescription atomParameters(collection_[i].getParameters());
-    const Description atomDescription(atomParameters.getDescription());
-    result.add(atomParameters);
+    const Description atomDescription(collection_[i].getParameterDescription());
     for (UnsignedInteger j = 0; j < atomDescription.getSize(); ++j)
       description.add(OSS() << "model_" << i << "_" << atomDescription[j]);
   }
-  result.setDescription(description);
-  return result;
+  return description;
 }
 
 void ProductCovarianceModel::setScale(const NumericalPoint & scale)

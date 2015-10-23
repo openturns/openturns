@@ -530,24 +530,29 @@ void CovarianceModelImplementation::setParameters(const NumericalPoint & paramet
   setAmplitude(amplitude);
 }
 
-NumericalPointWithDescription CovarianceModelImplementation::getParameters() const
+NumericalPoint CovarianceModelImplementation::getParameter() const
 {
   // Convention : scale parameters + amplitude parameters
-  NumericalPointWithDescription result(spatialDimension_ + dimension_);
+  NumericalPoint result(getScale());
+  result.add(getAmplitude());
+  // return result
+  return result;
+}
+
+Description CovarianceModelImplementation::getParameterDescription() const
+{
+  // Convention : scale parameters + amplitude parameters
   Description description(spatialDimension_ + dimension_);
   for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
   {
-    result[j] = scale_[j];
     description[j] = OSS() << "theta_" << j;
   }
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    result[spatialDimension_ + j] = amplitude_[j];
     description[spatialDimension_ + j] = OSS() << "sigma_" << j;
   }
-  // Set description & return result
-  result.setDescription(description);
-  return result;
+  // return description
+  return description;
 }
 
 /* Is it a stationary model ? */

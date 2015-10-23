@@ -211,9 +211,14 @@ void CovarianceModel::setParameters(const NumericalPoint& parameters)
   getImplementation()->setParameters(parameters);
 }
 
-NumericalPointWithDescription CovarianceModel::getParameters() const
+NumericalPoint CovarianceModel::getParameter() const
 {
-  return getImplementation()->getParameters();
+  return getImplementation()->getParameter();
+}
+
+Description CovarianceModel::getParameterDescription() const
+{
+  return getImplementation()->getParameterDescription();
 }
 
 /* Is it a stationary covariance model ? */

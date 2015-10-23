@@ -114,7 +114,8 @@ public:
 
   /** Parameters accessor */
   void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
+  NumericalPoint getParameter() const;
+  Description getParameterDescription() const;
 
   /** Is it a stationary model ? */
   virtual Bool isStationary() const;

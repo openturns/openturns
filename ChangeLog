@@ -20,6 +20,9 @@
  * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
  * Removed ConfidenceInterval class
  * Removed draw method to CovarianceModel
+ * Removed CovarianceModel::getParameters
+ * Added CovarianceModel::getParameter
+ * Added CovarianceModel::getParameterDescription
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)

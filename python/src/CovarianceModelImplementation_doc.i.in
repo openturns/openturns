@@ -224,19 +224,31 @@ OT_CovarianceModel_get_nugget_factor_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_getParameters_doc
+%define OT_CovarianceModel_getParameter_doc
 "Get the parameters of the covariance function.
 
 Returns
 -------
-parameters : :class:`~openturns.NumericalPointWithDescription`
-    Sequence containing the parameters of the covariance function with a
-    description for each component.
+parameters : :class:`~openturns.NumericalPoint`
+    Sequence containing the parameters of the covariance function.
     Usually the parameters is of size (spatialDim + dim) : the spatialDim first elements correpond
     to the scale, the dim following to the amplitude."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::getParameters
-OT_CovarianceModel_getParameters_doc
+%feature("docstring") OT::CovarianceModelImplementation::getParameter
+OT_CovarianceModel_getParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getParameterDescription_doc
+"Get the description of the covariance function parameters.
+
+Returns
+-------
+descriptionParam : :class:`~openturns.Description`
+    Sequence containing the description for each component of the parameters."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getParameterDescription
+OT_CovarianceModel_getParameterDescription_doc
 
 // ---------------------------------------------------------------------
 

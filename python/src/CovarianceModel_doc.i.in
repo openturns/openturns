@@ -20,8 +20,10 @@ OT_CovarianceModel_getScale_doc
 OT_CovarianceModel_get_marginal
 %feature("docstring") OT::CovarianceModel::getNuggetFactor
 OT_CovarianceModel_get_nugget_factor_doc
-%feature("docstring") OT::CovarianceModel::getParameters
-OT_CovarianceModel_getParameters_doc
+%feature("docstring") OT::CovarianceModel::getParameter
+OT_CovarianceModel_getParameter_doc
+%feature("docstring") OT::CovarianceModel::getParameterDescription
+OT_CovarianceModel_getParameterDescription_doc
 %feature("docstring") OT::CovarianceModel::getSpatialCorrelation
 OT_CovarianceModel_getSpatialCorrelation_doc
 %feature("docstring") OT::CovarianceModel::getSpatialDimension
