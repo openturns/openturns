@@ -202,7 +202,7 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
     const NumericalMathFunction & linkFunction)
 {
   const UnsignedInteger conditioningDimension(conditioningDistribution.getDimension());
-  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParametersNumber());
+  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParameterDimension());
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution.";
   if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";

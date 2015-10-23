@@ -911,9 +911,9 @@ Description Distribution::getParametersDescription() const
 }
 
 /* Parameters number */
-UnsignedInteger Distribution::getParametersNumber() const
+UnsignedInteger Distribution::getParameterDimension() const
 {
-  return getImplementation()->getParametersNumber();
+  return getImplementation()->getParameterDimension();
 }
 
 /* Description accessor */

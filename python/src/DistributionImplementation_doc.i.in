@@ -1513,7 +1513,7 @@ OT_Distribution_getParametersDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_getParametersNumber_doc
+%define OT_Distribution_getParameterDimension_doc
 "Accessor to the number of parameters in the distribution.
 
 Returns
@@ -1525,8 +1525,8 @@ See Also
 --------
 getParametersCollection"
 %enddef
-%feature("docstring") OT::DistributionImplementation::getParametersNumber
-OT_Distribution_getParametersNumber_doc
+%feature("docstring") OT::DistributionImplementation::getParameterDimension
+OT_Distribution_getParameterDimension_doc
 
 // ---------------------------------------------------------------------
 

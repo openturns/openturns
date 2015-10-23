@@ -1381,7 +1381,7 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
 NumericalSample DistributionImplementation::computePDFGradient(const NumericalSample & inSample) const
 {
   const UnsignedInteger size(inSample.getSize());
-  NumericalSample outSample(size, getParametersNumber());
+  NumericalSample outSample(size, getParameterDimension());
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computePDFGradient(inSample[i]);
   return outSample;
 }
@@ -1390,7 +1390,7 @@ NumericalSample DistributionImplementation::computePDFGradient(const NumericalSa
 NumericalSample DistributionImplementation::computeCDFGradient(const NumericalSample & inSample) const
 {
   const UnsignedInteger size(inSample.getSize());
-  NumericalSample outSample(size, getParametersNumber());
+  NumericalSample outSample(size, getParameterDimension());
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeCDFGradient(inSample[i]);
   return outSample;
 }
@@ -3147,7 +3147,7 @@ Description DistributionImplementation::getParametersDescription() const
 
 
 /* Parameters number */
-UnsignedInteger DistributionImplementation::getParametersNumber() const
+UnsignedInteger DistributionImplementation::getParameterDimension() const
 {
 //   const NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
 //   const UnsignedInteger size(parametersCollection.getSize());

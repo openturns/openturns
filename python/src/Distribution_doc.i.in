@@ -108,8 +108,8 @@ OT_Distribution_setParameters_doc
 OT_Distribution_getParameters_doc
 %feature("docstring") OT::Distribution::getParametersDescription
 OT_Distribution_getParametersDescription_doc
-%feature("docstring") OT::Distribution::getParametersNumber
-OT_Distribution_getParametersNumber_doc
+%feature("docstring") OT::Distribution::getParameterDimension
+OT_Distribution_getParameterDimension_doc
 %feature("docstring") OT::Distribution::getPearsonCorrelation
 OT_Distribution_getPearsonCorrelation_doc
 %feature("docstring") OT::Distribution::getPositionIndicator

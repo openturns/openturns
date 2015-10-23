@@ -528,7 +528,7 @@ public:
   virtual Description getParametersDescription() const;
 
   /** Total number of parameters */
-  virtual UnsignedInteger getParametersNumber() const;
+  virtual UnsignedInteger getParameterDimension() const;
 
   /** Description accessor */
   void setDescription(const Description & description);

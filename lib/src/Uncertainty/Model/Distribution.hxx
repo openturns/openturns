@@ -425,7 +425,7 @@ public:
   virtual Description getParametersDescription() const;
 
   /** Parameters number */
-  UnsignedInteger getParametersNumber() const;
+  UnsignedInteger getParameterDimension() const;
 
   /** Description accessor */
   void setDescription(const Description & description);
