@@ -10,6 +10,8 @@
 ==== New classes ====
  * OptimizationSolver
  * OptimizationProblem
+ * DiracCovarianceModel
+ * HMatrixParameters
 
 ==== API changes ====
  * Removed BoundConstrainedAlgorithm class
@@ -17,6 +19,9 @@
  * Deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
  * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
  * Removed ConfidenceInterval class
+ * Added discretizeAndFactorize method to covariance model classes
+ * Added discretizeHMatrix method to covariance model classes
+ * Added discretizeAndFactorizeHMatrix method to covariance model classes
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)

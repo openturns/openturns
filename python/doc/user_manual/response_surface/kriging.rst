@@ -37,6 +37,7 @@ Construction of the covariance function
     AbsoluteExponential
     GeneralizedExponential
     MaternModel
+    DiracCovarianceModel
     ProductCovarianceModel
 
 Kriging random vector

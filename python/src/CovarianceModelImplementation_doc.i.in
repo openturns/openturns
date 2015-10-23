@@ -115,6 +115,81 @@ OT_CovarianceModel_discretize_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_discretizeAndFactorize_doc
+"Discretize and factorize the covariance function on a given RegularGrid/Mesh.
+
+Parameters
+----------
+meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
+    Mesh or time grid of size :math:`N` associated with the process.
+
+Returns
+-------
+CholeskyMatrix : :class:`~openturns.TriangularMatrix`
+    Cholesky factor of the covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    dimension :math:`d`).
+
+Notes
+-----
+This method makes a discretization of the model on *meshOrGrid* composed of
+the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` thanks to the `discretize`
+method and returns its Cholesky factor."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorize
+OT_CovarianceModel_discretizeAndFactorize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_discretizeHMatrix_doc
+"Discretize the covariance function on a given RegularGrid/Mesh using HMatrix result.
+
+Parameters
+----------
+meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
+    Mesh or time grid of size :math:`N` associated with the process.
+
+Returns
+-------
+HMatrix : :class:`~openturns.HMatrix`
+    Covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    dimension :math:`d`), stored in hierarchical format (H-Matrix)
+
+Notes
+-----
+This method si similar to the *discretize* method. This method requires that OpenTURNS has been compiled with the hmat library.
+The method is helpfull for very large parameters (Mesh, grid, NumericalSample) as its compress data.
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeHMatrix
+OT_CovarianceModel_discretizeHMatrix_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
+"Discretize and factorize the covariance function on a given RegularGrid/Mesh using HMatrix result.
+
+Parameters
+----------
+meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
+    Mesh or time grid of size :math:`N` associated with the process.
+
+Returns
+-------
+HMatrix : :class:`~openturns.HMatrix`
+    Cholesk matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    dimension :math:`d`), stored in hierarchical format (H-Matrix)
+
+Notes
+-----
+This method si similar to the *discretizeAndFactorize* method. This method requires that OpenTURNS has been compiled with the hmat library.
+The method is helpfull for very large parameters (Mesh, grid, NumericalSample) as its compress data.
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorizeHMatrix
+OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_discretizeRow_doc
 "**(TODO)**"
 %enddef
