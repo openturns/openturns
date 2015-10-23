@@ -34,5 +34,6 @@
 #include "OTCobyla.hxx"
 #include "OTSQP.hxx"
 #include "OTTNC.hxx"
+#include "NLopt.hxx"
 
 #endif /* OPENTURNS_OTOPTIM_HXX */

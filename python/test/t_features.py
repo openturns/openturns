@@ -68,8 +68,7 @@ try:
     # This is a little bit tricky because HMat 1.0 fails with 1x1 matrices
     ot.ResourceMap.SetAsUnsignedInteger(
         'TemporalNormalProcess-SamplingMethod', 1)
-    vertices = []
-    vertices.append([0.0, 0.0, 0.0])
+    vertices = [[0.0, 0.0, 0.0]]
     vertices.append([1.0, 0.0, 0.0])
     vertices.append([0.0, 1.0, 0.0])
     vertices.append([0.0, 0.0, 1.0])
@@ -79,6 +78,16 @@ try:
     process = ot.TemporalNormalProcess(
         ot.ExponentialModel(3), ot.Mesh(vertices, simplices))
     f = process.getRealization()
+    print('OK')
+except:
+    print('no')
+
+# check that nlopt library was found
+print('8: optimization (NLopt)'.ljust(width), end=' ')
+try:
+    problem = ot.OptimizationProblem()
+    algo = ot.SLSQP()
+    algo.setProblem(problem)
     print('OK')
 except:
     print('no')

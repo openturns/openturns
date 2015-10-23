@@ -26,6 +26,9 @@ Optimization solvers
     Cobyla
     SQP
     TNC
+    SLSQP
+    LBFGS
+    NelderMead
 
 Nearest point assessment
 ========================

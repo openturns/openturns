@@ -30,6 +30,7 @@ OptimizationSolverImplementation::OptimizationSolverImplementation()
   : PersistentObject()
   , startingPoint_(NumericalPoint(0))
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
+  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationSolverImplementation-DefaultMaximumEvaluationNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
@@ -46,6 +47,7 @@ OptimizationSolverImplementation::OptimizationSolverImplementation(const Optimiz
   : PersistentObject()
   , problem_(problem)
   , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
+  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationSolverImplementation-DefaultMaximumEvaluationNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
   , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
   , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
@@ -89,6 +91,16 @@ UnsignedInteger OptimizationSolverImplementation::getMaximumIterationsNumber() c
 void OptimizationSolverImplementation::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
 {
   maximumIterationsNumber_ = maximumIterationsNumber;
+}
+
+void OptimizationSolverImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
+{
+  maximumEvaluationNumber_ = maximumEvaluationNumber;
+}
+
+UnsignedInteger OptimizationSolverImplementation::getMaximumEvaluationNumber() const
+{
+  return maximumEvaluationNumber_;
 }
 
 /* Maximum absolute error accessor */
@@ -147,6 +159,7 @@ String OptimizationSolverImplementation::__repr__() const
       << " problem=" << problem_
       << " startingPoint=" << startingPoint_
       << " maximumIterationsNumber=" << maximumIterationsNumber_
+      << " maximumEvaluationNumber=" << maximumEvaluationNumber_
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
@@ -204,6 +217,7 @@ void OptimizationSolverImplementation::save(Advocate & adv) const
   adv.saveAttribute( "startingPoint_", startingPoint_);
   adv.saveAttribute( "problem_", problem_);
   adv.saveAttribute( "maximumIterationsNumber_", maximumIterationsNumber_);
+  adv.saveAttribute( "maximumEvaluationNumber_", maximumEvaluationNumber_);
   adv.saveAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
   adv.saveAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
@@ -219,6 +233,7 @@ void OptimizationSolverImplementation::load(Advocate & adv)
   adv.loadAttribute( "startingPoint_", startingPoint_);
   adv.loadAttribute( "problem_", problem_);
   adv.loadAttribute( "maximumIterationsNumber_", maximumIterationsNumber_);
+  adv.loadAttribute( "maximumEvaluationNumber_", maximumEvaluationNumber_);
   adv.loadAttribute( "maximumAbsoluteError_", maximumAbsoluteError_);
   adv.loadAttribute( "maximumRelativeError_", maximumRelativeError_);
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);

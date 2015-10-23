@@ -28,6 +28,7 @@ option (USE_OPENMP                   "Use OpenMP for multithreading"            
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
 option (USE_SPHINX                    "Use sphinx for documentation"                                          ON)
 option (USE_DOXYGEN                   "Use Doxygen for API documentation"                                     ON)
+option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ON)
 
 option (BUILD_LIB                    "Build the library"                                                     ON)
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
@@ -232,6 +233,15 @@ if (USE_OPENMP)
   find_package (OpenMP)
   if (OPENMP_FOUND)
     set (CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
+  endif ()
+endif ()
+
+if (USE_NLOPT)
+  find_package (NLopt)
+  if (NLOPT_FOUND)
+    set (OPENTURNS_HAVE_NLOPT TRUE)
+    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${NLOPT_INCLUDE_DIRS})
+    list (APPEND OPENTURNS_LIBRARIES ${NLOPT_LIBRARIES})
   endif ()
 endif ()
 

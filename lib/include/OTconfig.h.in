@@ -94,6 +94,9 @@
 /* Define to 1 if you have the <regex.h> header file. */
 #cmakedefine OPENTURNS_HAVE_REGEX_H
 
+/* Define to 1 if you have the NLopt library. */
+#cmakedefine OPENTURNS_HAVE_NLOPT
+
 /* Define to 1 if R has package base. */
 #cmakedefine HAVE_R_PACKAGE_BASE
 

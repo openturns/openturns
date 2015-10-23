@@ -44,6 +44,14 @@ install:
   - cmake -DCMAKE_INSTALL_PREFIX=~/.local .
   - make install -j2
   - popd
+# use latest nlopt
+  - git clone https://github.com/stevengj/nlopt.git
+  - pushd nlopt
+  - ./autogen.sh --no-configure
+  - ./configure --prefix=$HOME/.local --enable-maintainer-mode --enable-shared
+  - make -j2
+  - make install
+  - popd
 
 before_script:
   - R CMD INSTALL --library=$PWD utils/rot_1.4.6.tar.gz
@@ -54,6 +62,7 @@ script:
     -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
     -DSWIG_EXECUTABLE=~/.local/bin/swig
     -DHMAT_DIR=~/.local/lib/cmake/hmat
+    -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so -DNLOPT_INCLUDE_DIR=~/.local/include
     .
   - make install -j2
   - make tests -j2

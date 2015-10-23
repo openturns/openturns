@@ -72,17 +72,33 @@ OT_OptimizationSolver_getMaximumConstraintError_doc
 // ---------------------------------------------------------------------
 
 %define OT_OptimizationSolver_getMaximumIterationsNumber_doc
-"Accessor to maximum allowed number of evaluations.
+"Accessor to maximum allowed number of iterations.
 
 Returns
 -------
-maximumIterationsNumber : int
-    Maximum allowed number of evaluations."
+N : int
+    Maximum allowed number of iterations."
 
 %enddef
 
 %feature("docstring") OT::OptimizationSolverImplementation::getMaximumIterationsNumber
 OT_OptimizationSolver_getMaximumIterationsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_getMaximumEvaluationNumber_doc
+"Accessor to maximum allowed number of evaluations.
+
+Returns
+-------
+N : int
+    Maximum allowed number of evaluations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumEvaluationNumber
+OT_OptimizationSolver_getMaximumEvaluationNumber_doc
+
 
 // ---------------------------------------------------------------------
 
@@ -201,17 +217,32 @@ OT_OptimizationSolver_setMaximumConstraintError_doc
 // ---------------------------------------------------------------------
 
 %define OT_OptimizationSolver_setMaximumIterationsNumber_doc
-"Accessor to maximum allowed number of evaluations.
+"Accessor to maximum allowed number of iterations.
 
 Parameters
 ----------
-maximumIterationsNumber : int
-    Maximum allowed number of evaluations."
+N : int
+    Maximum allowed number of iterations."
 
 %enddef
 
 %feature("docstring") OT::OptimizationSolverImplementation::setMaximumIterationsNumber
 OT_OptimizationSolver_setMaximumIterationsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationSolver_setMaximumEvaluationNumber_doc
+"Accessor to maximum allowed number of evaluations.
+
+Parameters
+----------
+N : int
+    Maximum allowed number of evaluations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumEvaluationNumber
+OT_OptimizationSolver_setMaximumEvaluationNumber_doc
 
 // ---------------------------------------------------------------------
 
