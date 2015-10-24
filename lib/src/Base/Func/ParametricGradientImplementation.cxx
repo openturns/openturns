@@ -95,9 +95,9 @@ UnsignedInteger ParametricGradientImplementation::getInputDimension() const
   return p_evaluation_->getInputDimension();
 }
 
-UnsignedInteger ParametricGradientImplementation::getParametersDimension() const
+UnsignedInteger ParametricGradientImplementation::getParameterDimension() const
 {
-  return p_evaluation_->getParametersDimension();
+  return p_evaluation_->getParameterDimension();
 }
 
 UnsignedInteger ParametricGradientImplementation::getOutputDimension() const

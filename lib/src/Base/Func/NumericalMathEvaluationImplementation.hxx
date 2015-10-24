@@ -152,9 +152,6 @@ public:
   /** Operator () on a time series, not pure virtual because a generic implementation is given */
   virtual Field operator() (const Field & inField) const;
 
-  /** Accessor for parameter dimension */
-  virtual UnsignedInteger getParameterDimension() const;
-
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 
@@ -162,7 +159,7 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for parameters dimension */
-  virtual UnsignedInteger getParametersDimension() const;
+  virtual UnsignedInteger getParameterDimension() const;
 
   /** Get the i-th marginal evaluation */
   virtual Implementation getMarginal(const UnsignedInteger i) const;

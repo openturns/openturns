@@ -3149,20 +3149,6 @@ Description DistributionImplementation::getParameterDescription() const
 /* Parameters number */
 UnsignedInteger DistributionImplementation::getParameterDimension() const
 {
-//   const NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
-//   const UnsignedInteger size(parametersCollection.getSize());
-//   if (size == 1) return parametersCollection[0].getDimension();
-//   // The number of parameters is non-trivial to compute in the multidimensional case as a given parameter can appear in different marginal parameters description and even in the dependence description. Thus, we have to get the number of unique parameters based on their description.
-//   // First, aggregate all the descriptions
-//   Description globalDescription(0);
-//   for (UnsignedInteger i = 0; i < size; ++i)
-//   {
-//     const Description localDescription(parametersCollection[i].getDescription());
-//     for (UnsignedInteger j = 0; j < localDescription.getSize(); ++j) globalDescription.add(localDescription[j]);
-//   }
-//   std::sort(globalDescription.begin(), globalDescription.end());
-//   Description::iterator iter(std::unique(globalDescription.begin(), globalDescription.end()));
-//   return static_cast<UnsignedInteger>(iter - globalDescription.begin());
   return getParameter().getSize();
 }
 

@@ -68,7 +68,7 @@ public:
 
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const;
-  UnsignedInteger getParametersDimension() const;
+  UnsignedInteger getParameterDimension() const;
   UnsignedInteger getOutputDimension() const;
 
   /** Parameters accessor */

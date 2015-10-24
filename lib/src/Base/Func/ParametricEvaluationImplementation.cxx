@@ -151,7 +151,7 @@ NumericalPoint ParametricEvaluationImplementation::operator() (const NumericalPo
 {
   const UnsignedInteger inputDimension(function_.getInputDimension());
   const UnsignedInteger pointDimension(point.getDimension());
-  const UnsignedInteger parametersDimension(getParametersDimension());
+  const UnsignedInteger parametersDimension(getParameterDimension());
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
   NumericalPoint x(inputDimension);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameters_[i];
@@ -172,7 +172,7 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalS
   const UnsignedInteger size(inSample.getSize());
   const UnsignedInteger inputDimension(function_.getInputDimension());
   const UnsignedInteger sampleDimension(inSample.getDimension());
-  const UnsignedInteger parametersDimension(getParametersDimension());
+  const UnsignedInteger parametersDimension(getParameterDimension());
   if (sampleDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << inputDimension - parametersDimension << ", got dimension=" << sampleDimension;
   NumericalSample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -230,7 +230,7 @@ UnsignedInteger ParametricEvaluationImplementation::getInputDimension() const
   return inputPositions_.getSize();
 }
 
-UnsignedInteger ParametricEvaluationImplementation::getParametersDimension() const
+UnsignedInteger ParametricEvaluationImplementation::getParameterDimension() const
 {
   return parametersPositions_.getSize();
 }
