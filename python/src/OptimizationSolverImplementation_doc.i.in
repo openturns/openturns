@@ -30,7 +30,7 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 >>> solver = ot.OptimizationSolver(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-8)
->>> solver.setMaximumIterationsNumber(100000)
+>>> solver.setMaximumIterationNumber(100000)
 >>> solver.run()
 >>> result = solver.getResult()"
 
@@ -71,7 +71,7 @@ OT_OptimizationSolver_getMaximumConstraintError_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationSolver_getMaximumIterationsNumber_doc
+%define OT_OptimizationSolver_getMaximumIterationNumber_doc
 "Accessor to maximum allowed number of iterations.
 
 Returns
@@ -81,8 +81,8 @@ N : int
 
 %enddef
 
-%feature("docstring") OT::OptimizationSolverImplementation::getMaximumIterationsNumber
-OT_OptimizationSolver_getMaximumIterationsNumber_doc
+%feature("docstring") OT::OptimizationSolverImplementation::getMaximumIterationNumber
+OT_OptimizationSolver_getMaximumIterationNumber_doc
 
 // ---------------------------------------------------------------------
 
@@ -216,7 +216,7 @@ OT_OptimizationSolver_setMaximumConstraintError_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationSolver_setMaximumIterationsNumber_doc
+%define OT_OptimizationSolver_setMaximumIterationNumber_doc
 "Accessor to maximum allowed number of iterations.
 
 Parameters
@@ -226,8 +226,8 @@ N : int
 
 %enddef
 
-%feature("docstring") OT::OptimizationSolverImplementation::setMaximumIterationsNumber
-OT_OptimizationSolver_setMaximumIterationsNumber_doc
+%feature("docstring") OT::OptimizationSolverImplementation::setMaximumIterationNumber
+OT_OptimizationSolver_setMaximumIterationNumber_doc
 
 // ---------------------------------------------------------------------
 

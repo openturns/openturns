@@ -93,6 +93,19 @@ void OptimizationSolver::setResult(const Result & result)
 }
 
 /* Maximum iterations number accessor */
+UnsignedInteger OptimizationSolver::getMaximumIterationNumber() const
+{
+  return getImplementation()->getMaximumIterationNumber();
+}
+
+/* Maximum iterations number accessor */
+void OptimizationSolver::setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber)
+{
+  copyOnWrite();
+  getImplementation()->setMaximumIterationNumber(maximumIterationNumber);
+}
+
+/* Maximum iterations number accessor */
 UnsignedInteger OptimizationSolver::getMaximumIterationsNumber() const
 {
   return getImplementation()->getMaximumIterationsNumber();

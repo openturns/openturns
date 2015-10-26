@@ -69,10 +69,14 @@ public:
   void setResult(const OptimizationResult & result);
 
   /** Maximum iterations number accessor */
-  UnsignedInteger getMaximumIterationsNumber() const;
+  void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
+  UnsignedInteger getMaximumIterationNumber() const;
 
-  /** Maximum iterations number accessor */
+  /** Maximum iterations number accessor
+   * @deprecated
+   */
   void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
+  UnsignedInteger getMaximumIterationsNumber() const;
 
   /** Maximum evaluations number accessor */
   void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
@@ -126,7 +130,7 @@ private:
   OptimizationProblem  problem_;
 
   /** Number of outermost iterations (in case of nested iterations) */
-  UnsignedInteger maximumIterationsNumber_;
+  UnsignedInteger maximumIterationNumber_;
 
   /** Maximum function calls */
   UnsignedInteger maximumEvaluationNumber_;

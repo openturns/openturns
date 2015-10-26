@@ -346,7 +346,7 @@ int main(int argc, char *argv[])
 
     // Create an AbdoRackwitz algorithm
     AbdoRackwitz abdoRackwitz;
-    abdoRackwitz.setMaximumIterationsNumber(100);
+    abdoRackwitz.setMaximumIterationNumber(100);
     abdoRackwitz.setMaximumAbsoluteError(1.0e-10);
     abdoRackwitz.setMaximumRelativeError(1.0e-10);
     abdoRackwitz.setMaximumResidualError(1.0e-10);
@@ -356,7 +356,7 @@ int main(int argc, char *argv[])
     // Create a SQP algorithm
     SQP sqp;
     sqp.setLevelValue(3.0);
-    sqp.setMaximumIterationsNumber(100);
+    sqp.setMaximumIterationNumber(100);
     sqp.setMaximumAbsoluteError(1.0e-10);
     sqp.setMaximumRelativeError(1.0e-10);
     sqp.setMaximumResidualError(1.0e-10);
@@ -366,7 +366,7 @@ int main(int argc, char *argv[])
     // Create a Cobyla algorithm
     Cobyla cobyla;
     study.add("cobyla", cobyla);
-    cobyla.setMaximumIterationsNumber(100);
+    cobyla.setMaximumIterationNumber(100);
     cobyla.setMaximumAbsoluteError(1.0e-10);
     cobyla.setMaximumRelativeError(1.0e-10);
     cobyla.setMaximumResidualError(1.0e-10);

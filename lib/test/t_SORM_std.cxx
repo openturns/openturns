@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
     /* We create a NearestPoint algorithm */
     AbdoRackwitz myAbdoRackwitz;
-    myAbdoRackwitz.setMaximumIterationsNumber(100);
+    myAbdoRackwitz.setMaximumIterationNumber(100);
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10);
     myAbdoRackwitz.setMaximumRelativeError(1.0e-10);
     myAbdoRackwitz.setMaximumResidualError(1.0e-10);
