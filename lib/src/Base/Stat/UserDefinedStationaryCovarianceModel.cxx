@@ -45,7 +45,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const Mesh & mesh,
-    const CovarianceMatrixCollection & covarianceFunction)
+                                                                           const CovarianceMatrixCollection & covarianceFunction)
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
 {
@@ -61,11 +61,11 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   dimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < size; ++k)
-  {
-    if (covarianceFunction[k].getDimension() != dimension_)
-      throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";
-    covarianceCollection_[k] = covarianceFunction[k];
-  }
+    {
+      if (covarianceFunction[k].getDimension() != dimension_)
+        throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";
+      covarianceCollection_[k] = covarianceFunction[k];
+    }
 }
 
 /* Virtual constructor */
@@ -79,9 +79,10 @@ CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Numerica
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   // If the grid size is one, return the covariance function
-  // else find in the grid the nearest instant values
+  // else find in the grid the nearest instant values with nonnegative first component
   if (p_mesh_->getVerticesNumber() == 1) return covarianceCollection_[0];
 
+  if (tau[0] < 0.0) return covarianceCollection_[p_mesh_->getNearestVertexIndex(tau * (-1.0))];
   return covarianceCollection_[p_mesh_->getNearestVertexIndex(tau)];
 }
 
