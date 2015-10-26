@@ -387,7 +387,7 @@ OT_CovarianceModel_set_nugget_factor_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_setParameters_doc
+%define OT_CovarianceModel_setParameter_doc
 "Set the parameters of the covariance function.
 
 Returns
@@ -398,8 +398,8 @@ parameters : :class:`~openturns.NumericalPointWithDescription`
     The parameters should be of size (spatialDim + dim) : it sets the spatialDim first elements to scale
     and the dim following to amplitude."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::setParameters
-OT_CovarianceModel_setParameters_doc
+%feature("docstring") OT::CovarianceModelImplementation::setParameter
+OT_CovarianceModel_setParameter_doc
 
 // ---------------------------------------------------------------------
 
