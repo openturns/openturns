@@ -25,7 +25,6 @@
 #include "PersistentObject.hxx"
 #include "SecondOrderModelImplementation.hxx"
 #include "NumericalPoint.hxx"
-#include "CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,15 +51,6 @@ public:
   ExponentialCauchy(const NumericalPoint & amplitude,
                     const NumericalPoint & scale);
 
-  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
-  ExponentialCauchy(const NumericalPoint & amplitude,
-                    const NumericalPoint & scale,
-                    const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with scale and spatial covariance parameters parameters */
-  ExponentialCauchy(const NumericalPoint & scale,
-                    const CovarianceMatrix & spatialCovariance);
-
   /** Virtual copy constructor */
   virtual ExponentialCauchy * clone() const;
 
@@ -75,9 +65,6 @@ public:
 
   /** Scale accessor */
   NumericalPoint getScale() const;
-
-  /** Spatial correlation accessor */
-  CorrelationMatrix getSpatialCorrelation() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

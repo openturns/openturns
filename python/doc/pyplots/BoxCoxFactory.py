@@ -17,7 +17,7 @@ myMesh = myMesher.build(myInterval)
 # this process is stationary
 # myXproc R^2 --> R
 amplitude = [1.0]
-scale = [0.2]
+scale = [0.2, 0.2]
 myCovModel = ot.ExponentialModel(myMesh.getDimension(), amplitude, scale)
 myXproc = ot.TemporalNormalProcess(myCovModel, myMesh)
 

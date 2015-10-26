@@ -35,10 +35,13 @@ int main(int argc, char *argv[])
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger defaultDimension(1);
 
+    /* Default spatial dimension parameter  */
+    const UnsignedInteger spatialDimension(1);
+
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(defaultDimension, 1.0);
+    NumericalPoint scale(spatialDimension, 1.0);
 
 
     /* Default constructor */
@@ -61,14 +64,12 @@ int main(int argc, char *argv[])
 
     /* Reallocation of adequate sizes*/
     amplitude.resize(highDimension);
-    scale.resize(highDimension);
 
     CorrelationMatrix spatialCorrelation(highDimension);
     for (UnsignedInteger index = 0 ; index < highDimension; ++index)
     {
-      // constant amplitude
-      amplitude[index] = 1.0 ;
-      scale[index] = (index + 1.0) / defaultDimension ;
+      // amplitude
+      amplitude[index] = (index + 1.0) / defaultDimension ;
       if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
     }
     fullprint << "spatialCorrelation=\n" << spatialCorrelation << std::endl;
@@ -90,10 +91,8 @@ int main(int argc, char *argv[])
     CovarianceMatrix spatialCovariance(highDimension);
     for (UnsignedInteger index = 0 ; index < highDimension; ++index)
     {
-      // constant amplitude
-      scale[index] = (index + 1.0) / defaultDimension ;
       spatialCovariance(index, index) = 1.0;
-      if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
+      if (index > 0) spatialCovariance(index, index - 1) = 1.0 / index;
     }
 
     /* constructor based on spatial covariance */

@@ -44,7 +44,9 @@ Spectral information
     :template: class.rst_t
 
      SpectralModel
+    :template: SpectralModel.rst_t
      CauchyModel
+    :template: class.rst_t
      UserDefinedSpectralModel
      SpectralModelFactory
      WelchFactory
@@ -63,6 +65,7 @@ Link Temporal - Spectral information
     :template: class.rst_t
 
      SecondOrderModel
+    :template: SecondOrderModel.rst_t
      ExponentialCauchy
 
 Normal process

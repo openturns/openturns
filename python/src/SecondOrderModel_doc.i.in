@@ -1,0 +1,21 @@
+// SecondOrderModel docstrings are defined in SecondOrderModelImplementation_doc.i.in
+
+%feature("docstring") OT::SecondOrderModel
+OT_SecondOrderModel_doc
+
+%feature("docstring") OT::SecondOrderModel::computeCovariance
+OT_SecondOrderModel_compute_covariance_doc
+%feature("docstring") OT::SecondOrderModel::computeSpectralDensity
+OT_SecondOrderModel_compute_spectral_density_doc
+%feature("docstring") OT::SecondOrderModel::discretize
+OT_SecondOrderModel_discretize_doc
+%feature("docstring") OT::SecondOrderModel::getCovarianceModel
+OT_SecondOrderModel_get_covariance_model_doc
+%feature("docstring") OT::SecondOrderModel::getDimension
+OT_SecondOrderModel_getDimension_doc
+%feature("docstring") OT::SecondOrderModel::getSpatialDimension
+OT_SecondOrderModel_get_spatial_dimension_doc
+%feature("docstring") OT::SecondOrderModel::getSpectralModel
+OT_SecondOrderModel_get_spectral_model_doc
+%feature("docstring") OT::SecondOrderModel::setModels
+OT_SecondOrderModel_set_models_doc

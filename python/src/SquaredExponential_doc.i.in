@@ -4,12 +4,22 @@
 Available constructors:
     SquaredExponential(*dim=1, theta=0.1*)
 
+    SquaredExponential(*scale*)
+
+    SquaredExponential(*scale, sigma*)
+
 Parameters
 ----------
 dim : int, :math:`dim \geq 0`
     Input dimension.
 theta : float
     Coefficient :math:`\theta` of the covariance function.
+scale : sequence of floats
+    Scale coefficients :math:`\theta`.
+    The spatial dimension is the size of vector.
+sigma : sequence of floats
+    Amplitude coefficients :math:`\sigma`.
+    Should be of size 1
 
 Notes
 -----
@@ -17,7 +27,9 @@ The covariance function of input dimension *dim* is:
 
 .. math::
 
-    C(s, t) = e^{-\frac{1}{2} \frac{||s-t||^2}{\theta^2}}
+    C(s, t) = \sigma^2 e^{-\frac{1}{2} ||\frac{s-t}{\theta}||_{2}^{2}}
+
+where the division is vectorial, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional.
 
 See Also
 --------

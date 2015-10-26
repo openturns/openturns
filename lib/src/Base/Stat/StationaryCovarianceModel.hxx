@@ -57,6 +57,19 @@ public:
                             const NumericalPoint & scale,
                             const CovarianceMatrix & spatialCovariance);
 
+  /** Standard constructor with amplitude and scale parameters parameters */
+  StationaryCovarianceModel(const NumericalPoint & amplitude,
+                            const NumericalPoint & scale);
+
+  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+  StationaryCovarianceModel(const NumericalPoint & amplitude,
+                            const NumericalPoint & scale,
+                            const CorrelationMatrix & spatialCorrelation);
+
+  /** Standard constructor with scale and spatial covariance parameters parameters */
+  StationaryCovarianceModel(const NumericalPoint & scale,
+                            const CovarianceMatrix & spatialCovariance);
+
   /** Virtual copy constructor */
   virtual StationaryCovarianceModel * clone() const;
 
@@ -67,8 +80,15 @@ public:
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
   using CovarianceModelImplementation::computeAsScalar;
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-      const NumericalPoint & t) const;
+                                           const NumericalPoint & t) const;
   virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
+
+  /** Computation of the covariance matrix */
+  using CovarianceModelImplementation::computeStandardRepresentative;
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;

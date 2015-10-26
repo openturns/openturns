@@ -4,6 +4,8 @@
 OT_CovarianceModel_doc
 %feature("docstring") OT::CovarianceModel::computeAsScalar
 OT_CovarianceModel_computeAsScalar_doc
+%feature("docstring") OT::CovarianceModel::computeStandardRepresentative
+OT_CovarianceModel_computeStandardRepresentative_doc
 %feature("docstring") OT::CovarianceModel::discretize
 OT_CovarianceModel_discretize_doc
 %feature("docstring") OT::CovarianceModel::discretizeRow
@@ -14,8 +16,14 @@ OT_CovarianceModel_getDimension_doc
 OT_CovarianceModel_getAmplitude_doc
 %feature("docstring") OT::CovarianceModel::getScale
 OT_CovarianceModel_getScale_doc
-%feature("docstring") OT::CovarianceModel::getParameters
-OT_CovarianceModel_getParameters_doc
+%feature("docstring") OT::CovarianceModel::getMarginal
+OT_CovarianceModel_get_marginal
+%feature("docstring") OT::CovarianceModel::getNuggetFactor
+OT_CovarianceModel_get_nugget_factor_doc
+%feature("docstring") OT::CovarianceModel::getParameter
+OT_CovarianceModel_getParameter_doc
+%feature("docstring") OT::CovarianceModel::getParameterDescription
+OT_CovarianceModel_getParameterDescription_doc
 %feature("docstring") OT::CovarianceModel::getSpatialCorrelation
 OT_CovarianceModel_getSpatialCorrelation_doc
 %feature("docstring") OT::CovarianceModel::getSpatialDimension
@@ -30,7 +38,11 @@ OT_CovarianceModel_partialGradient_doc
 OT_CovarianceModel_setAmplitude_doc
 %feature("docstring") OT::CovarianceModel::setScale
 OT_CovarianceModel_setScale_doc
+%feature("docstring") OT::CovarianceModel::setNuggetFactor
+OT_CovarianceModel_set_nugget_factor_doc
 %feature("docstring") OT::CovarianceModel::setParameters
 OT_CovarianceModel_setParameters_doc
 %feature("docstring") OT::CovarianceModel::setSpatialCorrelation
 OT_CovarianceModel_setSpatialCorrelation_doc
+%feature("docstring") OT::CovarianceModel::operator()
+OT_CovarianceModel_operator_doc

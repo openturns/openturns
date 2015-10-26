@@ -35,10 +35,12 @@ int main(int argc, char *argv[])
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger defaultDimension(1);
 
+    /* Default spaatial dimension parameter */
+    const UnsignedInteger spatialDimension(1);
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(defaultDimension, 1.0);
+    NumericalPoint scale(spatialDimension, 1.0);
 
 
     /* Default constructor */
@@ -69,41 +71,6 @@ int main(int argc, char *argv[])
     RegularGrid timeGrid(0.0, 1.0 / 3.0, 4);
     fullprint << "discretized covariance over the time grid=" << timeGrid << " is" << std::endl;
     fullprint << myModel.discretize(timeGrid) << std::endl;
-    /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger highDimension(3);
-
-    /* Reallocation of adequate sizes*/
-    amplitude.resize(highDimension);
-    scale.resize(highDimension);
-
-    CorrelationMatrix spatialCorrelation(highDimension);
-
-    for (UnsignedInteger index = 0 ; index < highDimension; ++index)
-    {
-      // constant amplitude
-      amplitude[index] = 1.0 ;
-      scale[index] = (index + 1.0) / defaultDimension ;
-      for (UnsignedInteger k = 0; k < index; ++k) spatialCorrelation(index, k) = 1.0 / pow(1.0 + index + k, 2.0);
-    }
-    //fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;
-    /* checking the cast*/
-    SecondOrderModel mySecondOrderModel(ExponentialCauchy(amplitude, scale, spatialCorrelation));
-    fullprint << "mySecondOrderModel = " << mySecondOrderModel << std::endl;
-
-    /* Second order model - high dimension */
-    ExponentialCauchy myHighModel(amplitude, scale, spatialCorrelation);
-    fullprint << "myHighModel = " << myHighModel << std::endl;
-
-    fullprint << "spectral density matrix at f = " << frequencyValueOne << " : " << myModel.computeSpectralDensity(frequencyValueOne) << std::endl;
-    fullprint << "spectral density matrix at f = " << -frequencyValueOne << " : " << myModel.computeSpectralDensity(-frequencyValueOne) << std::endl;
-    fullprint << "covariance matrix at t = " << timeValueOne << " : " << myHighModel.computeCovariance(0, timeValueOne) << std::endl;
-    fullprint << "covariance matrix at t = " << -1.0 * timeValueOne << " : " << myHighModel.computeCovariance(0, -1.0 * timeValueOne) << std::endl;
-    fullprint << "spectral density matrix at f = " << frequencyValueHigh << " : " << myModel.computeSpectralDensity(frequencyValueHigh) << std::endl;
-    fullprint << "spectral density matrix at f = " << -frequencyValueHigh << " : " << myModel.computeSpectralDensity(-frequencyValueHigh) << std::endl;
-    fullprint << "covariance matrix at t = "  << timeValueHigh << " : " << myHighModel.computeCovariance(0, timeValueHigh) << std::endl;
-
-    fullprint << "discretized covariance over the time grid=" << timeGrid << " is" << std::endl;
-    fullprint << myHighModel.discretize(timeGrid) << std::endl;
 
   }
   catch (TestFailed & ex)

@@ -4,6 +4,8 @@
 #include "SpectralModel.hxx"
 %}
 
+%include SpectralModel_doc.i
+
 OTTypedInterfaceObjectHelper(SpectralModel)
 
 %include SpectralModel.hxx

@@ -51,7 +51,7 @@ outputValidSample = model(inputValidSample)
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
 amplitude = [1.0, 1.0, 1.0]
-scale = [200.0, 0.10816268444376931, 0.7949236545501321]
+scale = [2]
 expCovModel = ExponentialModel(spatialDimension, amplitude, scale)
 
 # 3) Basis definition

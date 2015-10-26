@@ -21,7 +21,7 @@
 #include "ExponentialCauchy.hxx"
 #include "Exception.hxx"
 #include "PersistentObjectFactory.hxx"
-#include "ExponentialModel.hxx"
+#include "AbsoluteExponential.hxx"
 #include "CauchyModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -36,29 +36,14 @@ static const Factory<ExponentialCauchy> RegisteredFactory;
 
 /* Constructor with parameters */
 ExponentialCauchy::ExponentialCauchy()
-  : SecondOrderModelImplementation(ExponentialModel(), CauchyModel())
+  : SecondOrderModelImplementation(AbsoluteExponential(), CauchyModel())
 {
   // Nothing to do
 }
 
 ExponentialCauchy::ExponentialCauchy(const NumericalPoint & amplitude,
                                      const NumericalPoint & scale)
-  : SecondOrderModelImplementation(ExponentialModel(1, amplitude, scale), CauchyModel(amplitude, scale))
-{
-  // Nothing to do
-}
-
-ExponentialCauchy::ExponentialCauchy(const NumericalPoint & amplitude,
-                                     const NumericalPoint & scale,
-                                     const CorrelationMatrix & spatialCorrelation)
-  : SecondOrderModelImplementation(ExponentialModel(1, amplitude, scale, spatialCorrelation), CauchyModel(amplitude, scale, spatialCorrelation))
-{
-  // Nothing to do
-}
-
-ExponentialCauchy::ExponentialCauchy(const NumericalPoint & scale,
-                                     const CovarianceMatrix & spatialCovariance)
-  : SecondOrderModelImplementation(ExponentialModel(1, scale, spatialCovariance), CauchyModel(scale, spatialCovariance))
+  : SecondOrderModelImplementation(AbsoluteExponential(scale, amplitude), CauchyModel(amplitude, scale))
 {
   // Nothing to do
 }
@@ -84,27 +69,20 @@ String ExponentialCauchy::__str__(const String & offset) const
   OSS oss(false);
   oss << offset << "class=" << ExponentialCauchy::GetClassName();
   oss << " amplitude=" << getAmplitude()
-      << " scale=" << getScale()
-      << " spatial correlation=" << getSpatialCorrelation();
+      << " scale=" << getScale();
   return oss;
 }
 
 /* Amplitude accessor */
 NumericalPoint ExponentialCauchy::getAmplitude() const
 {
-  return static_cast<ExponentialModel*>(covarianceModel_.getImplementation().get())->getAmplitude();
+  return static_cast<AbsoluteExponential*>(covarianceModel_.getImplementation().get())->getAmplitude();
 }
 
 /* Scale accessor */
 NumericalPoint ExponentialCauchy::getScale() const
 {
-  return static_cast<ExponentialModel*>(covarianceModel_.getImplementation().get())->getScale();
-}
-
-/* Spatial correlation accessor */
-CorrelationMatrix ExponentialCauchy::getSpatialCorrelation() const
-{
-  return static_cast<ExponentialModel*>(covarianceModel_.getImplementation().get())->getSpatialCorrelation();
+  return static_cast<AbsoluteExponential*>(covarianceModel_.getImplementation().get())->getScale();
 }
 
 /* Method save() stores the object through the StorageManager */

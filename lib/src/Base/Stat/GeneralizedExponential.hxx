@@ -44,20 +44,23 @@ public:
                          const NumericalScalar theta,
                          const NumericalScalar p);
 
+  GeneralizedExponential(const NumericalPoint & theta,
+                         const NumericalScalar p);
+
+  GeneralizedExponential(const NumericalPoint & theta,
+                         const NumericalPoint & sigma,
+                         const NumericalScalar p);
+
   /** Virtual copy constructor */
   GeneralizedExponential * clone() const;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  using StationaryCovarianceModel::computeStandardRepresentative;
+  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
-
-  /** Parameters accessor */
-  void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
 
   /** String converter */
   String __repr__() const;

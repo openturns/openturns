@@ -71,10 +71,7 @@ int main(int argc, char *argv[])
     // The parameters have been calibrated using TNC optimization
     // and AbsoluteExponential models
     NumericalPoint amplitude(3, 1.0);
-    NumericalPoint scale(3);
-    scale[0] = 200.0;
-    scale[1] = 0.10816268444376931;
-    scale[2] = 0.7949236545501321;
+    NumericalPoint scale(spatialDimension, 2.0);
 
     // The covariance model
     ExponentialModel expCovModel(spatialDimension, amplitude, scale);

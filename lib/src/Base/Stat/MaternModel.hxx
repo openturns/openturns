@@ -44,19 +44,27 @@ public:
               const NumericalScalar theta,
               const NumericalScalar nu);
 
+  MaternModel(const NumericalPoint & theta,
+              const NumericalScalar nu);
+
+  MaternModel(const NumericalPoint & theta,
+              const NumericalPoint & sigma,
+              const NumericalScalar nu);
+
   /** Virtual copy constructor */
   MaternModel * clone() const;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  using StationaryCovarianceModel::computeStandardRepresentative;
+  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+
   /** Gradient */
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
 
-  /** Parameters accessor */
-  void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
+  // Reimplement the setScale method
+  using StationaryCovarianceModel::setScale;
+  void setScale(const NumericalPoint & scale);
 
   /** String converter */
   String __repr__() const;
@@ -72,14 +80,16 @@ public:
 
 private:
 
+  void initialize();
+
   // The shape parameter
   NumericalScalar nu_;
 
   // The normalization factor
   NumericalScalar logNormalizationFactor_;
 
-  // Scaling constant
-  NumericalScalar sqrt2nuOverTheta_;
+  // Scaling factor
+  NumericalPoint sqrt2nuOverTheta_;
 
 } ; /* class MaternModel */
 

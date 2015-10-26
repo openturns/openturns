@@ -138,11 +138,6 @@ int main(int argc, char *argv[])
       X[7][1] = 4.26386883;
       NumericalSample Y(model(X));
 
-      // Define Optimization Problem
-      OptimizationProblem problem;
-      Interval bounds(NumericalPoint(1, 0.7071067811865475), NumericalPoint(1, 35.60679774997894));
-      problem.setBounds(bounds);
-
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());
       // To match the parameter value of earlier versions
@@ -150,16 +145,21 @@ int main(int argc, char *argv[])
 
       KrigingAlgorithm algo(X, Y, basis, covarianceModel);
 
+      // Define Optimization Problem
+      OptimizationProblem problem;
+      Interval bounds(NumericalPoint(2, 0.7071067811865475), NumericalPoint(2, 35.60679774997894));
+      problem.setBounds(bounds);
+
       OptimizationSolver solver(algo.getOptimizationSolver());
       solver.setMaximumIterationsNumber(10000);
       solver.setMaximumAbsoluteError(1.0e-8);
       solver.setMaximumRelativeError(1.0e-8);
       solver.setMaximumResidualError(1.0e-8);
-      solver.setMaximumConstraintError(1.0e-8); 
+      solver.setMaximumConstraintError(1.0e-8);
+      solver.setStartingPoint(NumericalPoint(2, 22.360679774997898));
       solver.setProblem(problem);
 
-      algo.setOptimizationSolver(solver); 
-
+      algo.setOptimizationSolver(solver);
       algo.run();
 
       // perform an evaluation
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      NumericalPoint residualRef(1, 1.17e-05);
+      NumericalPoint residualRef(1, 1.17e-07);
       assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-5);
 
       NumericalPoint relativeErrorRef(1, 1.48e-11);

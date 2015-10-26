@@ -72,19 +72,42 @@ UnsignedInteger CovarianceModel::getDimension() const
 
 /* Computation of the covariance function */
 CovarianceMatrix CovarianceModel::operator() (const NumericalScalar s,
-    const NumericalScalar t) const
+                                              const NumericalScalar t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
 CovarianceMatrix CovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+                                              const NumericalPoint & t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
+NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalPoint & s,
+                                                               const NumericalPoint & t) const
+{
+  return getImplementation()->computeStandardRepresentative(s, t);
+}
+
+NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalScalar & s,
+                                                               const NumericalScalar & t) const
+{
+  return getImplementation()->computeStandardRepresentative(s, t);
+}
+
+NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalPoint & tau) const
+{
+  return getImplementation()->computeStandardRepresentative(tau);
+}
+
+
+NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalScalar & tau) const
+{
+  return getImplementation()->computeStandardRepresentative(tau);
+}
+
 NumericalScalar CovarianceModel::computeAsScalar (const NumericalPoint & s,
-    const NumericalPoint & t) const
+                                                  const NumericalPoint & t) const
 {
   return getImplementation()->computeAsScalar(s, t);
 }
@@ -188,9 +211,14 @@ void CovarianceModel::setParameters(const NumericalPoint& parameters)
   getImplementation()->setParameters(parameters);
 }
 
-NumericalPointWithDescription CovarianceModel::getParameters() const
+NumericalPoint CovarianceModel::getParameter() const
 {
-  return getImplementation()->getParameters();
+  return getImplementation()->getParameter();
+}
+
+Description CovarianceModel::getParameterDescription() const
+{
+  return getImplementation()->getParameterDescription();
 }
 
 /* Is it a stationary covariance model ? */
@@ -203,13 +231,6 @@ Bool CovarianceModel::isStationary() const
 Bool CovarianceModel::isDiagonal() const
 {
   return getImplementation()->isDiagonal();
-}
-
-/* Drawing method */
-Graph CovarianceModel::draw(const UnsignedInteger rowIndex,
-                            const UnsignedInteger columnIndex) const
-{
-  return getImplementation()->draw(rowIndex, columnIndex);
 }
 
 /* String converter */

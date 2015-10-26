@@ -45,7 +45,7 @@ Create a bi dimensional mesh as a box:
 Create a second order normal porcess of dimension 3:
 
 >>> amplitude = [5]
->>> scale = [3]
+>>> scale = [3, 3]
 >>> model = ot.ExponentialModel(myMesh.getDimension(), amplitude, scale)
 >>> myProcess = ot.TemporalNormalProcess(model, myMesh)
 
@@ -58,7 +58,7 @@ Duplicate the same field:
 
 >>> myField = myProcess.getRealization()
 >>> n = 10
->>> mySampleFields2 = ProcessSample(n, myField)
+>>> mySampleFields2 = ot.ProcessSample(n, myField)
 "
 
 // ---------------------------------------------------------------------

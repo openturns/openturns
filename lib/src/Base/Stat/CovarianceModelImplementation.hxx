@@ -52,15 +52,28 @@ public:
                                 const NumericalPoint & amplitude,
                                 const NumericalPoint & scale);
 
+  /** Standard constructor with amplitude and scale parameters parameters */
+  CovarianceModelImplementation(const NumericalPoint & amplitude,
+                                const NumericalPoint & scale);
+
   /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
   CovarianceModelImplementation(const UnsignedInteger spatialDimension,
                                 const NumericalPoint & amplitude,
                                 const NumericalPoint & scale,
                                 const CorrelationMatrix & spatialCorrelation);
 
+  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+  CovarianceModelImplementation(const NumericalPoint & amplitude,
+                                const NumericalPoint & scale,
+                                const CorrelationMatrix & spatialCorrelation);
+
   /** Standard constructor with scale and spatial covariance parameters parameters */
   CovarianceModelImplementation(const UnsignedInteger spatialDimension,
                                 const NumericalPoint & scale,
+                                const CovarianceMatrix & spatialCovariance);
+
+  /** Standard constructor with scale and spatial covariance parameters parameters */
+  CovarianceModelImplementation(const NumericalPoint & scale,
                                 const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
@@ -77,6 +90,18 @@ public:
                                        const NumericalScalar t) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
                                        const NumericalPoint & t) const;
+
+  // compute standard representative computes the term \rho(s, t)
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
+                                                        const NumericalScalar & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
+
   // Special case for 1D model
   virtual NumericalScalar computeAsScalar (const NumericalScalar s,
                                            const NumericalScalar t) const;
@@ -127,11 +152,8 @@ public:
 
   /** Parameters accessor */
   virtual void setParameters(const NumericalPoint & parameters);
-  virtual NumericalPointWithDescription getParameters() const;
-
-  /** Drawing method */
-  Graph draw(const UnsignedInteger rowIndex = 0,
-             const UnsignedInteger columnIndex = 0) const;
+  virtual NumericalPoint getParameter() const;
+  virtual Description getParameterDescription() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -150,6 +172,9 @@ public:
 
 protected:
 
+  // set the covariance structure
+  void updateSpatialCovariance();
+
   /** Input dimension parameter */
   UnsignedInteger spatialDimension_;
 
@@ -164,6 +189,9 @@ protected:
 
   /** Correlation matrix of the spatial dependence structure */
   CorrelationMatrix spatialCorrelation_;
+
+  /** Covariance matrix of the spatial dependence structure */
+  CovarianceMatrix spatialCovariance_;
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;

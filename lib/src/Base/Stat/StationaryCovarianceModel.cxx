@@ -42,26 +42,51 @@ StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spati
 
 /* Constructor with parameters */
 StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude,
-    const NumericalPoint & scale)
+                                                     const NumericalPoint & amplitude,
+                                                     const NumericalPoint & scale)
   : CovarianceModelImplementation(spatialDimension, amplitude, scale)
 {
   // Nothing to do
 }
 
-StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude,
-    const NumericalPoint & scale,
-    const CorrelationMatrix & spatialCorrelation)
-  : CovarianceModelImplementation(spatialDimension, amplitude, scale, spatialCorrelation)
+/** Standard constructor with amplitude and scale parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & amplitude,
+                                                     const NumericalPoint & scale)
+  : CovarianceModelImplementation(amplitude, scale)
 {
   // Nothing to do
 }
 
 StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & scale,
-    const CovarianceMatrix & spatialCovariance)
+                                                     const NumericalPoint & amplitude,
+                                                     const NumericalPoint & scale,
+                                                     const CorrelationMatrix & spatialCorrelation)
+  : CovarianceModelImplementation(spatialDimension, amplitude, scale, spatialCorrelation)
+{
+  // Nothing to do
+}
+
+/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & amplitude,
+                                                     const NumericalPoint & scale,
+                                                     const CorrelationMatrix & spatialCorrelation)
+  : CovarianceModelImplementation(amplitude, scale, spatialCorrelation)
+{
+  // Nothing to do
+}
+
+StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
+                                                     const NumericalPoint & scale,
+                                                     const CovarianceMatrix & spatialCovariance)
   : CovarianceModelImplementation(spatialDimension, scale, spatialCovariance)
+{
+  // Nothing to do
+}
+
+/** Standard constructor with scale and spatial covariance parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & scale,
+                                                     const CovarianceMatrix & spatialCovariance)
+  : CovarianceModelImplementation(scale, spatialCovariance)
 {
   // Nothing to do
 }
@@ -74,18 +99,19 @@ StationaryCovarianceModel * StationaryCovarianceModel::clone() const
 
 /* Computation of the covariance function */
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+                                                        const NumericalPoint & t) const
 {
   return (*this)(t - s);
 }
 
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & tau) const
 {
-  throw NotYetImplementedException(HERE) << "In StationaryCovarianceModel::operator() (const NumericalPoint & tau) const";
+  const NumericalScalar rho = computeStandardRepresentative(tau);
+  return CovarianceMatrix((spatialCovariance_ * rho).getImplementation());
 }
 
 NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & s,
-    const NumericalPoint & t) const
+                                                           const NumericalPoint & t) const
 {
   return computeAsScalar(t - s);
 }
@@ -93,6 +119,17 @@ NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint 
 NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & tau) const
 {
   return (*this)(tau)(0, 0);
+}
+
+NumericalScalar StationaryCovarianceModel::computeStandardRepresentative(const NumericalPoint & s,
+                                                                         const NumericalPoint & t) const
+{
+  return computeStandardRepresentative(t - s);
+}
+
+NumericalScalar StationaryCovarianceModel::computeStandardRepresentative(const NumericalPoint & tau) const
+{
+  throw NotYetImplementedException(HERE) << "In StationaryCovarianceModel::computeStandardRepresentative (const NumericalPoint & tau) const";
 }
 
 /* Discretize the covariance function on a given TimeGrid */

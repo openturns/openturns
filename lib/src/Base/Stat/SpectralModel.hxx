@@ -58,10 +58,13 @@ public:
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
-  void setDimension(const UnsignedInteger dimension);
+  UnsignedInteger getSpatialDimension() const;
 
   /** Computation of the spectral density function */
   virtual HermitianMatrix operator() (const NumericalScalar frequency) const;
+
+  /** Standard representative */
+  virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
 
   /** Frequency grid accessors */
   virtual RegularGrid getFrequencyGrid() const;
@@ -72,7 +75,20 @@ public:
              const UnsignedInteger columnIndex = 0,
              const Bool module = true) const;
 
-  /** String converter */
+  /** Amplitude accessor */
+  NumericalPoint getAmplitude() const;
+
+  void setAmplitude(const NumericalPoint & amplitude);
+
+  /** Scale accessor */
+  NumericalPoint getScale() const;
+
+  void setScale(const NumericalPoint & scale);
+
+  /** Spatial correlation accessor */
+  CorrelationMatrix getSpatialCorrelation() const;
+
+/** String converter */
   virtual String __repr__() const;
 
   /** String converter */

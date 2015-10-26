@@ -64,7 +64,8 @@ public:
   virtual CauchyModel * clone() const;
 
   /** Computation of the spectral density function */
-  HermitianMatrix operator()(const NumericalScalar frequency) const;
+  using SpectralModelImplementation::computeStandardRepresentative;
+  NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
 
   /** String converter */
   String __repr__() const;
@@ -72,46 +73,11 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const;
 
-  /** Amplitude accessor */
-  NumericalPoint getAmplitude() const;
-
-protected:
-
-  void setAmplitude(const NumericalPoint & amplitude);
-
-public:
-
-  /** Scale accessor */
-  NumericalPoint getScale() const;
-
-protected:
-
-  void setScale(const NumericalPoint & scale);
-
-public:
-
-  /** Spatial correlation accessor */
-  CorrelationMatrix getSpatialCorrelation() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-private :
-
-  /** Collection - Container for amplitude values  */
-  NumericalPoint amplitude_;
-
-  /** Collection - Container for scale values  */
-  NumericalPoint scale_;
-
-  /** Correlation matrix of the spatial dependence structure */
-  CorrelationMatrix spatialCorrelation_;
-
-  /** Flag to tell if the model is diagonal */
-  Bool isDiagonal_;
 
 } ; /* class CauchyModel */
 

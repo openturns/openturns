@@ -16,7 +16,7 @@ try:
     amplitude = NumericalPoint(defaultDimension, 1.0)
 
     # Scale values
-    scale = NumericalPoint(defaultDimension, 1.0)
+    scale = NumericalPoint(spatialDimension, 1.0)
 
     # Default constructor
     myDefautModel = ExponentialModel()
@@ -46,11 +46,9 @@ try:
 
     # Reallocation of adequate sizes
     amplitude.resize(highDimension)
-    scale.resize(highDimension)
     spatialCorrelation = CorrelationMatrix(highDimension)
     for index in range(highDimension):
-        amplitude[index] = 1.0
-        scale[index] = (index + 1.0) / (defaultDimension * defaultDimension)
+        amplitude[index] = (index + 1) / (defaultDimension * defaultDimension)
         if index > 0:
             spatialCorrelation[index, index - 1] = 1.0 / (index * index)
 

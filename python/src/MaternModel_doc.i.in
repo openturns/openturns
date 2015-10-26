@@ -6,6 +6,10 @@ Available constructors:
 
     MaternModel(*dim, theta, nu*)
 
+    MaternModel(*scale, nu*)
+
+    MaternModel(*scale, sigma, nu*)
+
 Parameters
 ----------
 dim : int, :math:`dim \geq 0`
@@ -14,6 +18,12 @@ theta : float
     Scale coefficient :math:`\theta` of the covariance function.
 nu : float
     Coefficient :math:`\nu` of the covariance function.
+scale : sequence of floats
+    Scale coefficients :math:`\theta`.
+    The spatial dimension is the size of vector.
+sigma : sequence of floats
+    Amplitude coefficients :math:`\sigma`.
+    Should be of size 1
 
 Notes
 -----
@@ -21,7 +31,9 @@ The covariance function of input dimension *dim* is:
 
 .. math::
 
-    C(s, t) = \frac{1}{\Gamma(\nu) 2^{\nu-1}} \left(\sqrt{2 \nu} \frac{||s-t||}{\theta}\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} \frac{||s-t||}{\theta}\right)
+    C(s, t) = \sigma^2 \frac{1}{\Gamma(\nu) 2^{\nu-1}} \left(\sqrt{2 \nu} ||\frac{s-t}{\theta}||\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} ||\frac{s-t}{\theta}||\right)
+
+where the division is vectorial, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional.
 
 See Also
 --------

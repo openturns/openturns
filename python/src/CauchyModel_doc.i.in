@@ -1,0 +1,64 @@
+%feature("docstring") OT::CauchyModel
+"Cauchy spectral model.
+
+Available constructors:
+    CauchyModel(*sigma, theta*)
+
+Parameters
+----------
+sigma : sequence of float
+    Amplitude coefficients :math:`\sigma` of the spectral density function.
+    Vector of size p
+theta : sequence of float
+    Scale coefficients :math:`\theta` of the spectral density function.
+    Vector of size n
+
+Notes
+-----
+The spectral density function of input dimension **n** and output dimension **p** writes:
+
+.. math::
+
+   \forall (i,j) \in [0,p-1]^2, S(f)_{i,j} =  \Sigma_{i,j} \prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> spectralModel = ot.CauchyModel([2.0], [3.0, 2.0])
+>>> f = 0.3
+>>> print(spectralModel(f))
+[[ (0.191364,0) ]]
+>>> f = 10
+>>> print(spectralModel(f))
+[[ (1.71084e-07,0) ]]"
+
+// ---------------------------------------------------------------------
+
+%define OT_CauchyModel_computeStandardRepresentative_doc
+"Compute the standard representant of the spectral density function.
+
+Parameters
+----------
+tau : float
+    Frequency value.
+
+Returns
+-------
+rho : Complex
+     Standard representant factor of the spectral density function.
+
+Notes
+-----
+Using definitions in :class:`~openturns.SpectralModel`: the standard representative function writes:
+
+.. math::
+
+  \forall \vect{f} \in \Rset^n, \rho(\vect{f} \odot \vect{\theta}) =  \prod_{k=1}^{n} \frac{1}{1 + (2\pi \theta_k f)^2}
+
+where :math:`(\vect{f} \odot \vect{\theta})_k = \vect{f}_k \vect{\theta}_k`"
+%enddef
+%feature("docstring") OT::CauchyModel::computeStandardRepresentative
+OT_CauchyModel_computeStandardRepresentative_doc
+
+// ---------------------------------------------------------------------

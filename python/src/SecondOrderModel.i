@@ -4,6 +4,8 @@
 #include "SecondOrderModel.hxx"
 %}
 
+%include SecondOrderModel_doc.i
+
 OTTypedInterfaceObjectHelper(SecondOrderModel)
 
 %include SecondOrderModel.hxx

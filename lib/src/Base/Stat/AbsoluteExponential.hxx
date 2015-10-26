@@ -43,19 +43,22 @@ public:
   AbsoluteExponential(const UnsignedInteger spatialDimension,
                       const NumericalScalar theta);
 
+  /** Parameters constructor */
+  AbsoluteExponential(const NumericalPoint & theta);
+
+  /** Parameters constructor */
+  AbsoluteExponential(const NumericalPoint & theta,
+                      const NumericalPoint & sigma);
+
   /** Virtual copy constructor */
   AbsoluteExponential * clone() const;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  using StationaryCovarianceModel::computeStandardRepresentative;
+  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
   /** Gradient */
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
-
-  /** Parameters accessor */
-  void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
 
   /** String converter */
   String __repr__() const;

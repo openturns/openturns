@@ -35,6 +35,7 @@ static const Factory<SphericalModel> RegisteredFactory;
 /* Constructor from spatial dimension */
 SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   : StationaryCovarianceModel(spatialDimension)
+  , a_(1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
 }
@@ -42,10 +43,14 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
 /* Constructor with parameters */
 SphericalModel::SphericalModel(const UnsignedInteger spatialDimension,
                                const NumericalPoint & amplitude,
-                               const NumericalPoint & scale)
+                               const NumericalPoint & scale,
+                               const NumericalScalar a)
   : StationaryCovarianceModel(spatialDimension, amplitude, scale)
+  , a_(a)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  if (a <= 0)
+    throw InvalidArgumentException(HERE) << "In SphericalModel::SphericalModel, the ray parameter a should be stricly positive. Here, got (a=" << a << ")";
 }
 
 /* Virtual constructor */
@@ -54,10 +59,6 @@ SphericalModel * SphericalModel::clone() const
   return new SphericalModel(*this);
 }
 
-
-/* Computation of the covariance function, stationary interface
- * C_{0,0}(tau) = amplitude_ * (1 - |tau|/(2a)(3 - |tau|^2/a^2)) for 0<=|tau<=a, 0 otherwise
- */
 CovarianceMatrix SphericalModel::operator() (const NumericalPoint & tau) const
 {
   CovarianceMatrix covarianceMatrix(dimension_);
@@ -67,9 +68,22 @@ CovarianceMatrix SphericalModel::operator() (const NumericalPoint & tau) const
 
 NumericalScalar SphericalModel::computeAsScalar(const NumericalPoint & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  const NumericalScalar absTau(tau.norm1());
-  return (absTau == 0.0 ? amplitude_[0] * (1.0 + nuggetFactor_) : (absTau >= scale_[0] ? 0.0 : amplitude_[0] * (1.0 - 0.5 * absTau / scale_[0] * (3.0 - absTau * absTau / (scale_[0] * scale_[0])))));
+  return amplitude_[0] * computeStandardRepresentative(tau);
+}
+
+/* Computation of the representative function:
+ * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| / a) (3 - (|tau/a| / a)^2)) for 0<=|tau/scale|<=a, 0 otherwise
+ */
+NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoint & tau) const
+{
+  if (tau.getDimension() != spatialDimension_)
+    throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
+  NumericalPoint tauOverTheta(spatialDimension_);
+  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  const NumericalScalar absTau(tauOverTheta.norm1());
+  if (absTau == 0.0) return 1.0 + nuggetFactor_;
+  if (absTau >= 1.0) return 0.0;
+  return 1.0 - 0.5 * absTau * (3.0 - absTau * absTau);
 }
 
 /* Discretize the covariance function on a given TimeGrid */
@@ -104,7 +118,8 @@ String SphericalModel::__repr__() const
   oss << "class=" << SphericalModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
       << " amplitude=" << amplitude_
-      << " scale=" << scale_;
+      << " scale=" << scale_
+      << " a=" << a_;
   return oss;
 }
 
@@ -114,8 +129,9 @@ String SphericalModel::__str__(const String & offset) const
   OSS oss(false);
   oss << "class=" << SphericalModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << amplitude_[0]
-      << " scale=" << scale_[0];
+      << " amplitude=" << amplitude_
+      << " scale=" << scale_
+      << " a=" << a_;
   return oss;
 }
 
@@ -123,12 +139,14 @@ String SphericalModel::__str__(const String & offset) const
 void SphericalModel::save(Advocate & adv) const
 {
   StationaryCovarianceModel::save(adv);
+  adv.saveAttribute("a_", a_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SphericalModel::load(Advocate & adv)
 {
   StationaryCovarianceModel::load(adv);
+  adv.loadAttribute("a_", a_);
 }
 
 END_NAMESPACE_OPENTURNS

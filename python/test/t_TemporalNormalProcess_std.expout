@@ -1,6 +1,6 @@
-myModel =  class=ExponentialCauchy amplitude=[1] scale=[1] spatial correlation=[[ 1 ]]
-mySecondOrderModel =  class=SecondOrderModel implementation=class=ExponentialCauchy amplitude=[1] scale=[1] spatial correlation=[[ 1 ]]
-myProcess =  TemporalNormalProcess(trend=[x]->[0.0], covariance=class=ExponentialModel input dimension=1 amplitude=[1] scale=[1] no spatial correlation)
+myModel =  class=ExponentialCauchy amplitude=[1] scale=[1]
+mySecondOrderModel =  class=SecondOrderModel implementation=class=ExponentialCauchy amplitude=[1] scale=[1]
+myProcess =  TemporalNormalProcess(trend=[x]->[0.0], covariance=class=AbsoluteExponential input dimension=1 theta=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1])
 is stationary?  True
 mean over  100  realizations =       [            y0         ]
  0 : [  0         -0.0836695 ]

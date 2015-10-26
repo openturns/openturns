@@ -1,0 +1,241 @@
+%define OT_SpectralModel_doc
+"Spectral density model.
+
+Notes
+-----
+We consider :math:`X: \Omega \times\cD \mapsto \Rset^d` a multivariate
+stochastic process of dimension :math:`d`, where :math:`\omega \in \Omega`
+is an event, :math:`\cD` is a domain of :math:`\Rset^n`,
+:math:`\vect{t}\in \cD` is a multivariate index and
+:math:`X(\omega, \vect{t}) \in \Rset^d`.
+
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` the random variable at
+index :math:`\vect{t} \in \cD` defined by
+:math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})` and
+:math:`X(\omega): \cD  \mapsto \Rset^d` a realization of the process
+:math:`X`, for a given :math:`\omega \in \Omega` defined by
+:math:`X(\omega)(\vect{t})=X(\omega, \vect{t})`.
+
+If the process is a second order process, zero-mean and weakly **stationary**, we define its *bilateral spectral density function*
+:math:`S : \Rset^n \mapsto  \cH^+_{d}` with:
+
+- :math:`\cH^+(d) \in \cM^+(d)(\Cset)` is the set of *d-dimensional* positive hermitian matrices
+
+Using the *stationary covariance function* :math:`C^{stat}` with :math:`C^{stat} : \cD \mapsto  \cM_{d \times d}(\Rset)` and the Fourier transform, the spectral density writes:
+
+
+.. math::
+
+   \forall \vect{f} \in \Rset^n, \cS(\vect{f}) = \int_{\Rset^n} \exp\left(-2\imath \pi <\vect{f}, \vect{\tau}>\right) C^{stat}(\vect{\tau}) d\vect{\tau}
+
+A SpectralModel object can be created only through its derived classes:
+:class:`~openturns.CauchyModel`"
+
+%enddef
+%feature("docstring") OT::SpectralModelImplementation
+OT_SpectralModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_computeStandardRepresentative_doc
+"Compute the standard representant of the spectral density function.
+
+Parameters
+----------
+tau : float
+    Frequency value.
+
+Returns
+-------
+rho : Complex
+     Standard representant factor of the spectral density function.
+
+Notes
+-----
+According to definitions in :class:`~openturns.CovarianceModel`, as the spectral density function is the Fourier transform of the stationary covariance function and using the expression of the last one, the spectral density function writes as a matrix-complex product where the matrix is the constant spatial covariance structure and the complex represents the standard representative:
+
+Thus,
+
+.. math::
+
+  \forall \vect{f} \in \Rset^n, \cS(\vect{f}) = \prod_{k=1}^{n} \vect{\theta}_k \mat{\Sigma} \rho(\vect{f} \odot \vect{\theta})
+
+where :math:`\mat{\Sigma}` is a covariance matrix that explains the covariance structure and
+:math:`(\vect{f} \odot \vect{\theta})_k = \vect{f}_k \vect{\theta}_k`"
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::computeStandardRepresentative
+OT_SpectralModel_computeStandardRepresentative_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_draw_doc
+"Draw a specific component of the spectral density function .
+
+
+Parameters
+----------
+rowIndex : int
+    i-th row component to draw.
+    Default value is 0
+
+columnIndex : int
+    j-th column component to draw .
+    Default value is 0
+
+module : bool
+    Tells if module has to be drawn(True) or if it is
+    the argument to be drawn (False).
+    Default value is True.
+
+Returns
+-------
+graph : Graph
+     Graphic of the specified component
+
+Notes
+-----
+The method plots a specific component of the spectral density function over a frequency grid. Thus, this last one should be specified thanks to the `setFrequencyGrid` method."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::draw
+OT_SpectralModel_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_get_frequency_grid_doc
+"Returns the RegularGrid associated to the SpectralModel.
+
+Returns
+-------
+grid : :class:`~openturns.RegularGrid`
+    Associated frequency grid of the SpectralModel."
+
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::getFrequencyGrid
+OT_SpectralModel_get_frequency_grid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_getAmplitude_doc
+"Get the amplitude parameter of the spectral density function.
+
+Returns
+-------
+amplitude : :class:`~openturns.NumericalPoint`
+    The used amplitude parameter."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::getAmplitude
+OT_SpectralModel_getAmplitude_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_getDimension_doc
+"Get the dimension of the *SpectralModel*.
+
+Returns
+-------
+dimension : int
+    Dimension of the *SpectralModel*."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::getDimension
+OT_SpectralModel_getDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_getScale_doc
+"Get the scale parameter of the spectral density function.
+
+Returns
+-------
+scale : :class:`~openturns.NumericalPoint`
+    The used scale parameter."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::getScale
+OT_SpectralModel_getScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_getSpatialCorrelation_doc
+"Get the spatial correlation matrix of the spectral density function.
+
+Returns
+-------
+spatialCorrelation : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{dimension \times dimension}([-1, 1])`."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::getSpatialCorrelation
+OT_SpectralModel_getSpatialCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_get_spatial_dimension_doc
+"Get the spatial dimension of the spectral density function.
+
+Returns
+-------
+spatialDimension : int
+    SpatialDimension of the *SpectralModel*."
+
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::getSpatialDimension
+OT_SpectralModel_get_spatial_dimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_setAmplitude_doc
+"Set the amplitude parameter of the spectral density function.
+
+Parameters
+----------
+amplitude : :class:`~openturns.NumericalPoint`
+    The amplitude parameter to be used in the spectral density function."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::setAmplitude
+OT_SpectralModel_setAmplitude_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_set_frequency_grid_doc
+"Sets the RegularGrid associated to the SpectralModel.
+
+Parameters
+----------
+grid : :class:`~openturns.RegularGrid`
+    Associated frequency grid of the SpectralModel."
+
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::setFrequencyGrid
+OT_SpectralModel_set_frequency_grid_doc
+
+// ---------------------------------------------------------------------
+
+
+%define OT_SpectralModel_setScale_doc
+"Set the scale parameter of the spectral density function.
+
+Parameters
+----------
+scale : :class:`~openturns.NumericalPoint`
+    The scale parameter to be used in the spectral density function.
+    It should be of size dimension."
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::setScale
+OT_SpectralModel_setScale_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpectralModel_operator_doc
+"Evaluate the spectral density function for a specific frequency.
+
+Parameters
+----------
+f : float
+    Frequency value.
+
+Returns
+-------
+spd : HermitianMatrixs
+    The evaluation of spectral density function at frequency f."
+
+%enddef
+%feature("docstring") OT::SpectralModelImplementation::operator()
+OT_SpectralModel_operator_doc

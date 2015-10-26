@@ -49,14 +49,13 @@ int main(int argc, char *argv[])
     NumericalPoint amplitude(dimension);
 
     /* Scale values */
-    NumericalPoint scale(dimension);
+    NumericalPoint scale(spatialDimension, 1.0);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       // constant amplitude
-      amplitude[index] = 1.0 ;
-      scale[index] = (index + 1.0) / dimension ;
+      amplitude[index] = (index + 1.0) / dimension ;
       if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
     }
 

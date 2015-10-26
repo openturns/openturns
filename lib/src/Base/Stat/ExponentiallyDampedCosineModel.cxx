@@ -41,10 +41,21 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
 }
 
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension,
-    const NumericalScalar amplitude,
-    const NumericalScalar scale,
-    const NumericalScalar frequency)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, amplitude), NumericalPoint(1, scale))
+                                                               const NumericalScalar amplitude,
+                                                               const NumericalScalar scale,
+                                                               const NumericalScalar frequency)
+  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, amplitude), NumericalPoint(spatialDimension, scale))
+  , frequency_(0.0)
+{
+  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  setFrequency(frequency);
+}
+
+/** Standard constructor with amplitude and scale parameters */
+ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & amplitude,
+                                                               const NumericalPoint & scale,
+                                                               const NumericalScalar frequency)
+  : StationaryCovarianceModel(amplitude, scale)
   , frequency_(0.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
@@ -57,9 +68,8 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
   return new ExponentiallyDampedCosineModel(*this);
 }
 
-
 /* Computation of the covariance function, stationary interface
- * C_{0,0}(tau) = amplitude_ * exp(-|tau| / scale_) * cos(2 * pi * frequency_ * |tau|)
+ * C_{0,0}(tau) = amplitude_ * exp(-|tau / scale_|) * cos(2 * pi * frequency_ * |tau / scale|)
  */
 CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const NumericalPoint & tau) const
 {
@@ -71,9 +81,19 @@ CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const NumericalPoin
 
 NumericalScalar ExponentiallyDampedCosineModel::computeAsScalar(const NumericalPoint & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  const NumericalScalar tauNorm(tau.norm());
-  return (tauNorm == 0.0 ? amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * exp(-tauNorm / scale_[0]) * cos(2.0 * M_PI * tauNorm));
+  return amplitude_[0] * computeStandardRepresentative(tau);
+}
+
+NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const NumericalPoint & tau) const
+{
+  if (tau.getDimension() != spatialDimension_)
+    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
+  NumericalPoint tauOverTheta(spatialDimension_);
+  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+
+  const NumericalScalar absTau(tauOverTheta.norm());
+  if (absTau == 0.0) return 1.0 + nuggetFactor_;
+  return exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 
 /* Discretize the covariance function on a given TimeGrid */

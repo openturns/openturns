@@ -65,6 +65,17 @@ public:
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
                                        const NumericalPoint & t) const;
 
+  // compute standard representative computes the term \rho(s, t)
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
+                                                        const NumericalScalar & t) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+
+  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
+
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
       const NumericalPoint & t) const;
 
@@ -103,17 +114,14 @@ public:
 
   /** Parameters accessor */
   void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
+  NumericalPoint getParameter() const;
+  Description getParameterDescription() const;
 
   /** Is it a stationary model ? */
   virtual Bool isStationary() const;
 
   /** Is it a diagonal model ? */
   virtual Bool isDiagonal() const;
-
-  /** Drawing method */
-  Graph draw(const UnsignedInteger rowIndex = 0,
-             const UnsignedInteger columnIndex = 0) const;
 
   /** String converter */
   virtual String __repr__() const;

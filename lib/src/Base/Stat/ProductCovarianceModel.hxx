@@ -51,9 +51,9 @@ public:
   ProductCovarianceModel * clone() const;
 
   /** Computation of the covariance function */
-  using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const NumericalPoint & s,
-                               const NumericalPoint & t) const;
+  using CovarianceModelImplementation::computeStandardRepresentative;
+  NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
+                                                const NumericalPoint & t) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const NumericalPoint & s,
@@ -67,7 +67,8 @@ public:
 
   /** Parameters accessor */
   void setParameters(const NumericalPoint & parameters);
-  NumericalPointWithDescription getParameters() const;
+  NumericalPoint getParameter() const;
+  Description getParameterDescription() const;
 
   /** Scale accessor */
   void setScale(const NumericalPoint & scale);
