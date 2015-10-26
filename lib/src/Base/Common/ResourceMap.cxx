@@ -459,7 +459,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "ComplexTensor-size-visible-in-str-from", 6 );
 
   // MatrixImplementation parameters //
-  setAsNumericalScalar( "MatrixImplementation-DefaultSmallPivot", 1.0e-7 );
+  setAsNumericalScalar( "MatrixImplementation-DefaultSmallPivot", 1.0e-7  );
+  setAsNumericalScalar( "MatrixImplementation-SymmetryThreshold", 1.0e-12 );
 
   // BurrFactory parameters //
   setAsNumericalScalar( "BurrFactory-AbsolutePrecision", 1.0e-12 );

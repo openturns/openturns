@@ -520,11 +520,12 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
 
 Bool MatrixImplementation::isSymmetric() const
 {
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("MatrixImplementation-SymmetryThreshold"));
   if ( nbRows_ == nbColumns_ )
   {
     for ( UnsignedInteger i = 1; i < nbRows_; ++ i )
       for ( UnsignedInteger j = 0; j < i; ++ j )
-        if ( this->operator[](convertPosition(i, j)) != operator[](convertPosition(j, i)) )
+        if ( std::abs(this->operator[](convertPosition(i, j)) - operator[](convertPosition(j, i))) > epsilon)
           return false;
     return true;
   }
