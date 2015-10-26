@@ -57,6 +57,10 @@ public:
   FFT getFFTAlgorithm() const;
   void setFFTAlgorithm(const FFT & fft);
 
+  /** Block size accessor */
+  void setBlockSize(const UnsignedInteger blockSize);
+  UnsignedInteger getBlockSize() const;
+
 private:
   /** Compute all the FAST indices */
   void run() const;
@@ -69,6 +73,7 @@ private:
 
   /** Parameters of FAST method */
   UnsignedInteger samplingSize_;
+  UnsignedInteger blockSize_;
   UnsignedInteger resamplingSize_;
   UnsignedInteger interferenceFactor_;
 

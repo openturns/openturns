@@ -109,6 +109,7 @@ int main(int argc, char *argv[])
     distributions = ComposedDistribution(marginals);
 
     sensitivityFast = FAST(modelGSobol, distributions, 400);
+    sensitivityFast.setBlockSize(7);
 
     // Comparaison with reference analytical values
     firstOrderFastIndices = sensitivityFast.getFirstOrderIndices();

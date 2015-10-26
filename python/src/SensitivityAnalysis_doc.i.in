@@ -109,8 +109,8 @@ Returns
 -------
 k : positive int
     Size of each block the sample is splitted into, this allows to save space
-    while allowing multithreading, when available (wrapper function) we
-    recommend to use the number of available CPUs, set by default to 1."
+    while allowing multithreading, when available we recommend to use
+    the number of available CPUs, set by default to 1."
 
 // ---------------------------------------------------------------------
 
@@ -121,9 +121,8 @@ Parameters
 ----------
 k : positive int
     Size of each block the sample is splitted into, this allows to save space
-    while allowing multithreading, when available (wrapper function) we
-    recommend to use the number of available CPUs, set by default to
-    :math:`1`."
+    while allowing multithreading, when available we recommend to use
+    the number of available CPUs, set by default to :math:`1`."
 
 // ---------------------------------------------------------------------
 
