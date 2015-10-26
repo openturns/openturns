@@ -225,7 +225,7 @@ The 3D Inverse Fast Fourier Transform writes as following:
 
     {\rm Y_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} \frac{1}{M\times N \times P} Z_{m,n,p} exp(2 \imath \pi \frac{km}{M}) exp(2 \imath \pi \frac{ln}{N}) exp(2 \imath \pi \frac{rp}{P})
 
-where :math:`Z` denotes the data to be transformed with shape (:math:`M`,:math:`N`, :math:`P`)
+where :math:`Z` denotes the data to be transformed with shape (:math:`M`, :math:`N`, :math:`P`)
 
 
 Examples

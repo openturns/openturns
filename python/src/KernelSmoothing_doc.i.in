@@ -45,7 +45,7 @@ sample : 2-d sequence of float
 bandwidth : :class:`~openturns.NumericalPoint`, optional
     Contains the bandwith in each direction. If not specified, the bandwith is calculated using the mixed rule from data.
 boundaryCorrection : bool, optional
-    Activates the boundary correction using the mirroring technique.  By dafault, the correction is not provided.
+    Activates the boundary correction using the mirroring technique. By default, the correction is not provided.
 
 Returns
 -------
@@ -60,7 +60,7 @@ According to the dimension of the data and the specified treatments, the type of
 
     - if only the bining mecanism is activated, a :class:`~openturns.Mixture` is produced (all the weights differ).
     - if only the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.KernelMixture`  (all the weights are identical). 
-    - if the bining mecanism  and the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.Mixture` (all the weights differ).
+    - if the bining mecanism and the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.Mixture` (all the weights differ).
 
 
 Examples
