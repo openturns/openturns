@@ -100,9 +100,11 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger n(discretization_[0]);
     NumericalSample vertices(n + 1, 1);
     // First the vertices
-    vertices[0] = interval.getLowerBound();
-    vertices[n] = interval.getUpperBound();
-    for (UnsignedInteger i = 0; i <= n; ++i) vertices[i][0] = (i * vertices[0][0] + (n - i) * vertices[0][n]) / n;
+    const NumericalScalar a(interval.getLowerBound()[0]);
+    const NumericalScalar b(interval.getUpperBound()[0]);
+    vertices[0][0] = a;
+    vertices[n][0] = b;
+    for (UnsignedInteger i = 1; i < n; ++i) vertices[i][0] = (i * b + (n - i) * a) / n;
     // Second the simplices
     Mesh::IndicesCollection simplices(n);
     Indices simplex(2);
