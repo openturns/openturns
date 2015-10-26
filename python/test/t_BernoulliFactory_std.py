@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedBernoulli = factory.buildAsBernoulli(sample)
     print("Bernoulli          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedBernoulli = factory.buildAsBernoulli()
     print("Default Bernoulli=", estimatedBernoulli)
     estimatedBernoulli = factory.buildAsBernoulli(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Bernoulli from parameters=", estimatedBernoulli)
 
 except:

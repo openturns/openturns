@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedTriangular = factory.buildAsTriangular(sample)
     print("Triangular          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedTriangular = factory.buildAsTriangular()
     print("Default triangular=", estimatedTriangular)
     estimatedTriangular = factory.buildAsTriangular(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Triangular from parameters=", estimatedTriangular)
 
 except:

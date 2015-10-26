@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const NumericalSample & sample) const;
-  FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const NumericalPointCollection & parameters) const;
-  FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const NumericalPointWithDescriptionCollection & parameters) const;
+  FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const NumericalPoint & parameters) const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula() const;
 
 private:

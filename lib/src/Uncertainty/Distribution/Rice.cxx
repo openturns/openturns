@@ -201,29 +201,31 @@ void Rice::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-Rice::NumericalPointWithDescriptionCollection Rice::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Rice::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = sigma_;
-  description[0] = "sigma";
   point[1] = nu_;
-  description[1] = "nu";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Rice::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Rice::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = Rice(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Rice(parameter[0], parameter[1]);
   setWeight(w);
 }
 
+/* Parameters description accessor */
+Description Rice::getParameterDescription() const
+{
+  Description description(2);
+  description[0] = "sigma";
+  description[1] = "nu";
+  return description;
+}
 
 /* Sigma accessor */
 void Rice::setSigma(const NumericalScalar sigma)

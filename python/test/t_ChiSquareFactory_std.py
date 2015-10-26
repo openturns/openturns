@@ -27,7 +27,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedChiSquare = factory.buildAsChiSquare(sample)
     print("ChiSquare          =", distribution)
@@ -35,7 +35,7 @@ try:
     estimatedChiSquare = factory.buildAsChiSquare()
     print("Default chiSquare=", estimatedChiSquare)
     estimatedChiSquare = factory.buildAsChiSquare(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("ChiSquare from parameters=", estimatedChiSquare)
 
 except:

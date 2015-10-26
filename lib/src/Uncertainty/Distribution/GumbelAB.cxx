@@ -64,10 +64,9 @@ Distribution GumbelAB::getDistribution() const
   newParameters[0] = a_;
   newParameters[1] = b_;
 
-  NumericalPointCollection nativeParameters = NumericalPointCollection(1, newParameters);
-  nativeParameters[0] = operator()(newParameters);
+  NumericalPoint nativeParameters(operator()(newParameters));
 
-  return GumbelFactory().build(nativeParameters);
+  return GumbelFactory().build(operator()(nativeParameters));
 }
 
 
@@ -129,19 +128,21 @@ NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
-GumbelAB::NumericalPointWithDescriptionCollection GumbelAB::getParametersCollection() const
+NumericalPoint GumbelAB::getValues() const
 {
-  NumericalPointWithDescription point(2);
+  NumericalPoint point(2);
   point[0] = a_;
   point[1] = b_;
-  Description description(point.getDimension());
-  description[0] = "a";
-  description[1] = "b";
-  point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return point;
 }
 
+Description GumbelAB::getDescription() const
+{
+  Description description(2);
+  description[0] = "a";
+  description[1] = "b";
+  return description;
+}
 
 /* String converter */
 String GumbelAB::__repr__() const

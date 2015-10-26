@@ -45,7 +45,7 @@ GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalSa
   return buildAsGumbelCopula(sample).clone();
 }
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalPointCollection & parameters) const
+GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsGumbelCopula(parameters).clone();
 }
@@ -66,17 +66,12 @@ GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalSample & sa
   return result;
 }
 
-GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsGumbelCopula(RemoveDescriptionFromCollection(parameters));
-}
-
-GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalPointCollection & parameters) const
+GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalPoint & parameters) const
 {
   try
   {
     GumbelCopula copula;
-    copula.setParametersCollection(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

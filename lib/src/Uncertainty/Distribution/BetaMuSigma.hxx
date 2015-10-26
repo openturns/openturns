@@ -60,7 +60,8 @@ public:
   NumericalPoint inverse(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  virtual NumericalPoint getValues() const;
+  virtual Description getDescription() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;

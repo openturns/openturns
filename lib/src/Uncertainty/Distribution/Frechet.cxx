@@ -141,28 +141,31 @@ NumericalScalar Frechet::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Parameters value and description accessor */
-Frechet::NumericalPointWithDescriptionCollection Frechet::getParametersCollection() const
+NumericalPoint Frechet::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = alpha_;
-  description[0] = "alpha";
   point[1] = beta_;
-  description[1] = "beta";
   point[2] = gamma_;
-  description[2] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Frechet::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Frechet::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = Frechet(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Frechet(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Frechet::getParameterDescription() const
+{
+  Description description(3);
+  description[0] = "alpha";
+  description[1] = "beta";
+  description[2] = "gamma";
+  return description;
 }
 
 /* Get the PDFGradient of the distribution */

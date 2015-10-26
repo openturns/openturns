@@ -40,9 +40,9 @@ VonMises::VonMises()
   , ratioOfUniformsBound_(0.0)
 {
   setName("VonMises");
+  setDimension(1);
   // This call also call update and computeRange()
   setKappa(1.0);
-  setDimension(1);
   computeRange();
 }
 
@@ -56,10 +56,10 @@ VonMises::VonMises(const NumericalScalar mu,
   , ratioOfUniformsBound_(0.0)
 {
   setName("VonMises");
+  setDimension(1);
   // This call also call update() and computeRange()
   setMu(mu);
   setKappa(kappa);
-  setDimension(1);
   computeRange();
 }
 
@@ -213,27 +213,30 @@ NumericalScalar VonMises::computeLogPDF(const NumericalPoint & point) const
   return normalizationFactor_ + kappa_ * std::cos(x - mu_);
 }
 
-/* Parameters value and description accessor */
-VonMises::NumericalPointWithDescriptionCollection VonMises::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint VonMises::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = mu_;
-  description[0] = "mu";
   point[1] = kappa_;
-  description[1] = "kappa";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void VonMises::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void VonMises::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = VonMises(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = VonMises(parameter[0], parameter[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description VonMises::getParameterDescription() const
+{
+  Description description(2);
+  description[0] = "mu";
+  description[1] = "kappa";
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

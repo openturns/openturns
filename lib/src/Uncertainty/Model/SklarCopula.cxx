@@ -355,6 +355,25 @@ SklarCopula::NumericalPointWithDescriptionCollection SklarCopula::getParametersC
   return parameters;
 }
 
+NumericalPoint SklarCopula::getParameter() const
+{
+  return distribution_.getParameter();
+}
+
+void SklarCopula::setParameter(const NumericalPoint & parameters)
+{
+  Distribution newDistribution(distribution_);
+  newDistribution.setParameter(parameters);
+  const NumericalScalar w = getWeight();
+  *this = SklarCopula(newDistribution);
+  setWeight(w);
+}
+
+Description SklarCopula::getParameterDescription() const
+{
+  return distribution_.getParameterDescription();
+}
+
 /* Tell if the distribution has independent copula */
 Bool SklarCopula::hasIndependentCopula() const
 {

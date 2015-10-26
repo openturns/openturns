@@ -200,27 +200,30 @@ NumericalSample Binomial::getSupport(const Interval & interval) const
   return result;
 }
 
-/* Parameters value and description accessor */
-Binomial::NumericalPointWithDescriptionCollection Binomial::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Binomial::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = n_;
-  description[0] = "n";
   point[1] = p_;
-  description[1] = "p";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Binomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Binomial::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = Binomial(static_cast<UnsignedInteger>(parametersCollection[0][0]), parametersCollection[0][1]);
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Binomial(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Binomial::getParameterDescription() const
+{
+  Description description(2);
+  description[0] = "n";
+  description[1] = "p";
+  return description;
 }
 
 /* P accessor */

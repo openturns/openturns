@@ -532,6 +532,63 @@ void NormalCopula::setParametersCollection(const NumericalPointCollection & para
   }
 }
 
+NumericalPoint NormalCopula::getParameter() const
+{
+  const UnsignedInteger dimension = getDimension();
+  NumericalPoint point;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      point.add(correlation_(i, j));
+    }
+  }
+  return point;
+}
+
+void NormalCopula::setParameter(const NumericalPoint & parameter)
+{
+  // N = ((d-1)*d)/2
+  const UnsignedInteger size = parameter.getSize();
+  NumericalScalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) + 0.5;
+  if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid value number for NormalCopula";
+  const UnsignedInteger dimension = dimReal;
+  const NumericalScalar w = getWeight();
+  if (dimension > 1)
+  {
+    CorrelationMatrix R(dimension);
+    UnsignedInteger dependenceIndex = 0;
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      for (UnsignedInteger j = 0; j < i; ++ j)
+      {
+        R(i, j) = parameter[dependenceIndex];
+        ++ dependenceIndex;
+      }
+    }
+    *this = NormalCopula(R);
+  }
+  else
+  {
+    *this = NormalCopula(dimension);
+  }
+  setWeight(w);
+}
+
+Description NormalCopula::getParameterDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  Description description;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      description.add(OSS() << "R_" << i + 1 << "_" << j + 1);
+    }
+  }
+  return description;
+}
+
 /* Compute the correlation matrix of a Normal Copula from its Spearman correlation matrix */
 CorrelationMatrix NormalCopula::GetCorrelationFromSpearmanCorrelation(const CorrelationMatrix & matrix)
 {

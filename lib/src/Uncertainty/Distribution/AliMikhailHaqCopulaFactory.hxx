@@ -48,11 +48,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalSample & sample) const;
-  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalPointCollection & parameters) const;
-  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalPointWithDescriptionCollection & parameters) const;
+  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalPoint & parameters) const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula() const;
 
 private:

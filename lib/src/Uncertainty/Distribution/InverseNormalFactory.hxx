@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   InverseNormal buildAsInverseNormal(const NumericalSample & sample) const;
-  InverseNormal buildAsInverseNormal(const NumericalPointCollection & parameters) const;
-  InverseNormal buildAsInverseNormal(const NumericalPointWithDescriptionCollection & parameters) const;
+  InverseNormal buildAsInverseNormal(const NumericalPoint & parameters) const;
   InverseNormal buildAsInverseNormal() const;
 
 }; /* class InverseNormalFactory */

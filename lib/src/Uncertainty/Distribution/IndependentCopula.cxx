@@ -264,19 +264,6 @@ IndependentCopula::InverseIsoProbabilisticTransformation IndependentCopula::getI
   return transformation;
 }
 
-/* Parameters value and description accessor */
-IndependentCopula::NumericalPointWithDescriptionCollection IndependentCopula::getParametersCollection() const
-{
-  // No parameter: empty NumericalPointWithDescription
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
-}
-
-void IndependentCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection is of size=" << parametersCollection.getSize() << ", expected a size=1.";
-  if (parametersCollection[0].getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: expected no parameters for the IndependentCopula, got " << parametersCollection[0].getDimension() << " parameters instead.";
-}
-
 /* Method save() stores the object through the StorageManager */
 void IndependentCopula::save(Advocate & adv) const
 {

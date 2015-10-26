@@ -317,38 +317,40 @@ void ProductDistribution::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-ProductDistribution::NumericalPointWithDescriptionCollection ProductDistribution::getParametersCollection() const
+
+/* Parameters value accessor */
+NumericalPoint ProductDistribution::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription pointLeft(left_.getParametersCollection()[0]);
-  NumericalPointWithDescription pointRight(right_.getParametersCollection()[0]);
-  pointLeft.add(pointRight);
-  Description description(pointLeft.getDescription());
-  description.add(pointRight.getDescription());
-  pointLeft.setDescription(description);
-  pointLeft.setName(getName());
-  parameters[0] = pointLeft;
-  return parameters;
+  NumericalPoint point(left_.getParameter());
+  point.add(right_.getParameter());
+  return point;
 }
 
-void ProductDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ProductDistribution::setParameter(const NumericalPoint & parameter)
 {
-  const UnsignedInteger leftSize(left_.getParametersCollection()[0].getSize());
-  const UnsignedInteger rightSize(right_.getParametersCollection()[0].getSize());
-  NumericalPoint parameters(parametersCollection[0]);
-  if (parameters.getSize() != leftSize + rightSize) throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " parameters, got " << parameters.getSize();
+  const UnsignedInteger leftSize = left_.getParameterDimension();
+  const UnsignedInteger rightSize = right_.getParameterDimension();
+  if (parameter.getSize() != leftSize + rightSize)
+    throw InvalidArgumentException(HERE) << "Error: expected "<< leftSize + rightSize << " values, got " << parameter.getSize();
   NumericalPoint newLeftParameters(leftSize);
-  std::copy(parameters.begin(), parameters.begin() + leftSize, newLeftParameters.begin());
   NumericalPoint newRightParameters(rightSize);
-  std::copy(parameters.begin() + leftSize, parameters.end(), newRightParameters.begin());
+  std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
+  std::copy(parameter.begin() + leftSize, parameter.end(), newRightParameters.begin());
   Distribution newLeft(left_);
   Distribution newRight(right_);
-  newLeft.setParametersCollection(NumericalPointCollection(1, newLeftParameters));
-  newRight.setParametersCollection(NumericalPointCollection(1, newRightParameters));
-  const NumericalScalar w(getWeight());
+  newLeft.setParameter(newLeftParameters);
+  newRight.setParameter(newRightParameters);
+  const NumericalScalar w = getWeight();
   *this = ProductDistribution(newLeft, newRight);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description ProductDistribution::getParameterDescription() const
+{
+  Description description(left_.getParameterDescription());
+  description.add(right_.getParameterDescription());
+  return description;
 }
 
 /* Left accessor */

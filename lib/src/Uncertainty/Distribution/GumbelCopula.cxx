@@ -299,25 +299,24 @@ CorrelationMatrix GumbelCopula::getKendallTau() const
   return tau;
 }
 
-/* Parameters value and description accessor */
-GumbelCopula::NumericalPointWithDescriptionCollection GumbelCopula::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint GumbelCopula::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = theta_;
-  description[0] = "theta";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, theta_);
 }
 
-void GumbelCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void GumbelCopula::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = GumbelCopula(parametersCollection[0][0]);
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = GumbelCopula(parameter[0]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description GumbelCopula::getParameterDescription() const
+{
+  return Description(1, "theta");
 }
 
 /* Compute the archimedean generator of the archimedean copula, i.e.

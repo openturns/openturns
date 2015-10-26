@@ -56,7 +56,7 @@ TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Numer
   return buildAsTruncatedNormal(sample).clone();
 }
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const NumericalPointCollection & parameters) const
+TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsTruncatedNormal(parameters).clone();
 }
@@ -153,17 +153,12 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   }
 }
 
-TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsTruncatedNormal(RemoveDescriptionFromCollection(parameters));
-}
-
-TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalPointCollection & parameters) const
+TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalPoint & parameters) const
 {
   try
   {
     TruncatedNormal distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

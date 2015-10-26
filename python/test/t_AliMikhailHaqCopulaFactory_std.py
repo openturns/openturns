@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula(sample)
     print("Distribution          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula()
     print("Default AliMikhailHaqCopula=", estimatedAliMikhailHaqCopula)
     estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("AliMikhailHaqCopula from parameters=", estimatedAliMikhailHaqCopula)
 
 except:

@@ -50,7 +50,7 @@ NormalFactory::Implementation NormalFactory::build() const
   return buildAsNormal().clone();
 }
 
-NormalFactory::Implementation NormalFactory::build(const NumericalPointCollection & parameters) const
+NormalFactory::Implementation NormalFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsNormal(parameters).clone();
 }
@@ -65,18 +65,15 @@ Normal NormalFactory::buildAsNormal(const NumericalSample & sample) const
   return result;
 }
 
-Normal NormalFactory::buildAsNormal(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsNormal(RemoveDescriptionFromCollection(parameters));
-}
-
-Normal NormalFactory::buildAsNormal(const NumericalPointCollection & parameters) const
+Normal NormalFactory::buildAsNormal(const NumericalPoint & parameters) const
 {
   try
   {
-    UnsignedInteger dimension(parameters.getSize() == 1 ? 1 : parameters.getSize() - 1);
+    const UnsignedInteger size = parameters.getSize();
+    // see EllipticalDistribution::setParameters
+    const UnsignedInteger dimension = 0.5 * std::sqrt(9.0 + 8.0 * size) - 1.5;
     Normal distribution(dimension);
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException & ex)

@@ -126,6 +126,13 @@ public:
   using CopulaImplementation::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
 
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Compute the correlation matrix of a Normal Copula from its Spearman correlation matrix */
   static CorrelationMatrix GetCorrelationFromSpearmanCorrelation(const CorrelationMatrix & matrix);
 

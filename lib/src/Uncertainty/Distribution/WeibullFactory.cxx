@@ -44,7 +44,7 @@ WeibullFactory::Implementation WeibullFactory::build(const NumericalSample & sam
   return buildAsWeibull(sample).clone();
 }
 
-WeibullFactory::Implementation WeibullFactory::build(const NumericalPointCollection & parameters) const
+WeibullFactory::Implementation WeibullFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsWeibull(parameters).clone();
 }
@@ -75,17 +75,12 @@ Weibull WeibullFactory::buildAsWeibull(const NumericalSample & sample) const
   }
 }
 
-Weibull WeibullFactory::buildAsWeibull(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsWeibull(RemoveDescriptionFromCollection(parameters));
-}
-
-Weibull WeibullFactory::buildAsWeibull(const NumericalPointCollection & parameters) const
+Weibull WeibullFactory::buildAsWeibull(const NumericalPoint & parameters) const
 {
   try
   {
     Weibull distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

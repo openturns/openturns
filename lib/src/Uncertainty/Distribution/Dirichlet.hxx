@@ -83,6 +83,13 @@ public:
   using ContinuousDistribution::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
 
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /* Interface specific to Dirichlet */
 
   /** Theta accessor */

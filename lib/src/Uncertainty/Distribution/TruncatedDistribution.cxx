@@ -319,26 +319,46 @@ NumericalScalar TruncatedDistribution::computeScalarQuantile(const NumericalScal
   return distribution_.computeQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_))[0];
 }
 
-/* Parameters value and description accessor */
-TruncatedDistribution::NumericalPointWithDescriptionCollection TruncatedDistribution::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint TruncatedDistribution::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(distribution_.getParametersCollection()[0]);
-  Description description(point.getDescription());
-  if (finiteLowerBound_)
-  {
-    point.add(lowerBound_);
-    description.add("lowerBound");
-  }
-  if (finiteUpperBound_)
-  {
-    point.add(upperBound_);
-    description.add("upperBound");
-  }
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  NumericalPoint point(distribution_.getParameter());
+  point.add(finiteLowerBound_ ? 1.0 : 0.0);
+  point.add(lowerBound_);
+  point.add(finiteUpperBound_ ? 1.0 : 0.0);
+  point.add(upperBound_);
+  return point;
+}
+
+void TruncatedDistribution::setParameter(const NumericalPoint & parameter)
+{
+  const UnsignedInteger parametersSize = distribution_.getParameterDimension();
+  if (parameter.getSize() != parametersSize + 4) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + 4 << " values, got " << parameter.getSize();
+  NumericalPoint newParameters;
+  std::copy(parameter.begin(), parameter.begin() + parametersSize, newParameters.begin());
+  Distribution newDistribution(distribution_);
+  newDistribution.setParameter(newParameters);
+  const Bool finiteLowerBound = parameter[parametersSize] == 1.0;
+  const NumericalScalar lowerBound = parameter[parametersSize + 1];
+  const Bool finiteUpperBound = parameter[parametersSize + 2] == 1.0;
+  const NumericalScalar upperBound = parameter[parametersSize + 3];
+  const NumericalScalar w = getWeight();
+  if (finiteLowerBound && finiteUpperBound) *this = TruncatedDistribution(newDistribution, lowerBound, upperBound);
+  else if (finiteLowerBound) *this = TruncatedDistribution(newDistribution, lowerBound, LOWER);
+  else if (finiteUpperBound) *this = TruncatedDistribution(newDistribution, upperBound, UPPER);
+  else throw InvalidArgumentException(HERE) << "Error: no bound";
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description TruncatedDistribution::getParameterDescription() const
+{
+  Description description(distribution_.getParameterDescription());
+  description.add("finiteLowerBound");
+  description.add("lowerBound");
+  description.add("finiteUpperBound");
+  description.add("upperBound");
+  return description;
 }
 
 /* distribution accessor */

@@ -344,25 +344,24 @@ NumericalScalar ClaytonCopula::computeArchimedeanGeneratorSecondDerivative(const
   return (theta_ + 1) * std::pow(t, -theta_ - 2.0);
 }
 
-/* Parameters value and description accessor */
-ClaytonCopula::NumericalPointWithDescriptionCollection ClaytonCopula::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint ClaytonCopula::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = theta_;
-  description[0] = "theta";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, theta_);
 }
 
-void ClaytonCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ClaytonCopula::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = ClaytonCopula(parametersCollection[0][0]);
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = ClaytonCopula(parameter[0]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description ClaytonCopula::getParameterDescription() const
+{
+  return Description(1, "theta");
 }
 
 /* Theta accessor */

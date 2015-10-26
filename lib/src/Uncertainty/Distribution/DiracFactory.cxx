@@ -46,7 +46,7 @@ DiracFactory::Implementation DiracFactory::build(const NumericalSample & sample)
   return buildAsDirac(sample).clone();
 }
 
-DiracFactory::Implementation DiracFactory::build(const NumericalPointCollection & parameters) const
+DiracFactory::Implementation DiracFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsDirac(parameters).clone();
 }
@@ -69,17 +69,12 @@ Dirac DiracFactory::buildAsDirac(const NumericalSample & sample) const
   return result;
 }
 
-Dirac DiracFactory::buildAsDirac(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsDirac(RemoveDescriptionFromCollection(parameters));
-}
-
-Dirac DiracFactory::buildAsDirac(const NumericalPointCollection & parameters) const
+Dirac DiracFactory::buildAsDirac(const NumericalPoint & parameters) const
 {
   try
   {
     Dirac distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

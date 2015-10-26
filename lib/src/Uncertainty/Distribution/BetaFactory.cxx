@@ -47,7 +47,7 @@ BetaFactory::Implementation BetaFactory::build(const NumericalSample & sample) c
   return buildAsBeta(sample).clone();
 }
 
-BetaFactory::Implementation BetaFactory::build(const NumericalPointCollection & parameters) const
+BetaFactory::Implementation BetaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsBeta(parameters).clone();
 }
@@ -77,17 +77,12 @@ Beta BetaFactory::buildAsBeta(const NumericalSample & sample) const
   return result;
 }
 
-Beta BetaFactory::buildAsBeta(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsBeta(RemoveDescriptionFromCollection(parameters));
-}
-
-Beta BetaFactory::buildAsBeta(const NumericalPointCollection & parameters) const
+Beta BetaFactory::buildAsBeta(const NumericalPoint & parameters) const
 {
   try
   {
     Beta distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

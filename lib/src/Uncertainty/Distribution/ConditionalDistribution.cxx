@@ -143,21 +143,34 @@ ConditionalDistribution * ConditionalDistribution::clone() const
 NumericalPoint ConditionalDistribution::getRealization() const
 {
   Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParametersCollection(linkFunction_(conditioningDistribution_.getRealization()));
+  deconditioned.setParameter(linkFunction_(conditioningDistribution_.getRealization()));
   return deconditioned.getRealization();
 }
 
-/* Parameters value and description accessor */
 ConditionalDistribution::NumericalPointWithDescriptionCollection ConditionalDistribution::getParametersCollection() const
 {
   return conditioningDistribution_.getParametersCollection();
 }
 
-void ConditionalDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+/* Parameters value accessor */
+NumericalPoint ConditionalDistribution::getParameter() const
+{
+  return conditioningDistribution_.getParameter();
+}
+
+void ConditionalDistribution::setParameter(const NumericalPoint & parameter)
 {
   Distribution conditioningDistribution(conditioningDistribution_);
-  conditioningDistribution.setParametersCollection(parametersCollection);
-  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution, linkFunction_);
+  conditioningDistribution.setParameter(parameter);
+  const NumericalScalar w = getWeight();
+  Distribution conditionedDistribution(conditionedDistribution_);
+  *this = ConditionalDistribution(conditionedDistribution, conditioningDistribution);
+  setWeight(w);
+}
+
+Description ConditionalDistribution::getParameterDescription() const
+{
+  return conditioningDistribution_.getParameterDescription();
 }
 
 /* Conditioned distribution accessor */
@@ -200,7 +213,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     const NumericalMathFunction & linkFunction)
 {
   const UnsignedInteger conditioningDimension(conditioningDistribution.getDimension());
-  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParametersNumber());
+  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParameterDimension());
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution.";
   if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";
@@ -293,7 +306,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   if (diracDimension == conditioningDimension)
   {
     Collection< Distribution > atoms(1, conditionedDistribution);
-    atoms[0].setParametersCollection(diracValues_);
+    atoms[0].setParameter(diracValues_);
     setDistributionCollection(atoms);
     return;
   }
@@ -319,7 +332,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const NumericalScalar w(conditioningDistribution.computePDF(currentY));
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParametersCollection(linkFunction_(currentY));
+      dist.setParameter(linkFunction_(currentY));
       atoms[atomIndex] = dist;
       ++atomIndex;
     } // Discrete measure
@@ -348,7 +361,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const NumericalScalar w(conditioningDistribution.computePDF(currentY) * continuousWeights_[i]);
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParametersCollection(linkFunction_(currentY));
+      dist.setParameter(linkFunction_(currentY));
       atoms[atomIndex] = dist;
       LOGDEBUG(OSS() << "i=" << i << ", w=" << w << ", Y=" << currentY << ", dist=" << dist.__str__());
       ++atomIndex;
@@ -384,7 +397,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const NumericalScalar w(conditioningDistribution.computePDF(currentY) * continuousWeights_[j]);
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParametersCollection(linkFunction_(currentY));
+      dist.setParameter(linkFunction_(currentY));
       atoms[atomIndex] = dist;
       ++atomIndex;
     } // Continuous atoms

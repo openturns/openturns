@@ -110,11 +110,6 @@ public:
   /** Get the inverse isoprobabilistic transformation */
   InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
-  /** Parameters value and description accessor */
-  virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & setParametersCollection);
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

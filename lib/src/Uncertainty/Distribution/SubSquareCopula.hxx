@@ -89,10 +89,12 @@ public:
   /** Mass accessor */
   NumericalScalar getMass();
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

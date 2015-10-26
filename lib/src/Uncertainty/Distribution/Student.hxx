@@ -133,6 +133,13 @@ public:
   using EllipticalDistribution::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
 
+  /** Parameters value accessor */
+  NumericalPoint getParameter() const;
+  void setParameter(const NumericalPoint & parameter);
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 

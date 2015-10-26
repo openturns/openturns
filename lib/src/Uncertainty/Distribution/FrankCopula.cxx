@@ -319,25 +319,24 @@ NumericalScalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const N
   return ratio * ratio * std::exp(thetaT);
 }
 
-/* Parameters value and description accessor */
-FrankCopula::NumericalPointWithDescriptionCollection FrankCopula::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint FrankCopula::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = theta_;
-  description[0] = "theta";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, theta_);
 }
 
-void FrankCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void FrankCopula::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = FrankCopula(parametersCollection[0][0]);
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = FrankCopula(parameter[0]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description FrankCopula::getParameterDescription() const
+{
+  return Description(1, "theta");
 }
 
 /* Tell if the distribution has independent copula */

@@ -44,7 +44,7 @@ ExponentialFactory::Implementation ExponentialFactory::build(const NumericalSamp
   return buildAsExponential(sample).clone();
 }
 
-ExponentialFactory::Implementation ExponentialFactory::build(const NumericalPointCollection & parameters) const
+ExponentialFactory::Implementation ExponentialFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsExponential(parameters).clone();
 }
@@ -69,17 +69,12 @@ Exponential ExponentialFactory::buildAsExponential(const NumericalSample & sampl
   return result;
 }
 
-Exponential ExponentialFactory::buildAsExponential(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsExponential(RemoveDescriptionFromCollection(parameters));
-}
-
-Exponential ExponentialFactory::buildAsExponential(const NumericalPointCollection & parameters) const
+Exponential ExponentialFactory::buildAsExponential(const NumericalPoint & parameters) const
 {
   try
   {
     Exponential distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

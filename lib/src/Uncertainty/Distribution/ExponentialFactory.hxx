@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Exponential buildAsExponential(const NumericalSample & sample) const;
-  Exponential buildAsExponential(const NumericalPointCollection & parameters) const;
-  Exponential buildAsExponential(const NumericalPointWithDescriptionCollection & parameters) const;
+  Exponential buildAsExponential(const NumericalPoint & parameters) const;
   Exponential buildAsExponential() const;
 
 }; /* class ExponentialFactory */

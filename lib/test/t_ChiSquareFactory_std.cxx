@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     ChiSquare estimatedChiSquare(factory.buildAsChiSquare(sample));
     fullprint << "ChiSquare          =" << distribution << std::endl;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedChiSquare = factory.buildAsChiSquare();
     fullprint << "Default chiSquare=" << estimatedChiSquare << std::endl;
-    estimatedChiSquare = factory.buildAsChiSquare(distribution.getParametersCollection());
+    estimatedChiSquare = factory.buildAsChiSquare(distribution.getParameter());
     fullprint << "ChiSquare from parameters=" << estimatedChiSquare << std::endl;
   }
   catch (TestFailed & ex)

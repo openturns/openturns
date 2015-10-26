@@ -869,11 +869,68 @@ void ComposedDistribution::setParametersCollection(const NumericalPointCollectio
   if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
 
   // set marginal parameters
-  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParametersCollection(parametersCollection[marginalIndex]);
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
   // set copula parameters
-  if (dimension > 1) copula_.setParametersCollection(parametersCollection[dimension]);
+  if (dimension > 1) copula_.setParameter(parametersCollection[dimension]);
 }
 
+
+NumericalPoint ComposedDistribution::getParameter() const
+{
+  const UnsignedInteger dimension = getDimension();
+  NumericalPoint point;
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++ marginalIndex)
+  {
+    point.add(distributionCollection_[marginalIndex].getParameter());
+  }
+  if (dimension > 1)
+  {
+    point.add(copula_.getParameter());
+  }
+  return point;
+}
+
+void ComposedDistribution::setParameter(const NumericalPoint & parameter)
+{
+  const UnsignedInteger dimension = getDimension();
+  UnsignedInteger globalIndex = 0;
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++ marginalIndex)
+  {
+    const UnsignedInteger parametersSize = distributionCollection_[marginalIndex].getParameterDimension();
+    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for marginal " << marginalIndex;
+    NumericalPoint newParameters(parametersSize);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
+    distributionCollection_[marginalIndex].setParameter(newParameters);
+    globalIndex += parametersSize;
+  }
+  if (dimension > 1)
+  {
+    const UnsignedInteger parametersSize = copula_.getParameterDimension();
+    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for copula";
+    NumericalPoint newParameters(parametersSize);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
+    copula_.setParameter(newParameters);
+  }
+}
+
+Description ComposedDistribution::getParameterDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  Description description;
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++ marginalIndex)
+  {
+    Description marginalParametersDescription(distributionCollection_[marginalIndex].getParameterDescription());
+    for (UnsignedInteger i = 0; i < marginalParametersDescription.getSize(); ++ i)
+      description.add(OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
+  }
+  if (dimension > 1)
+  {
+    Description copulaParametersDescription(copula_.getParameterDescription());
+    for (UnsignedInteger i = 0; i < copulaParametersDescription.getSize(); ++ i)
+      description.add(OSS() << copulaParametersDescription[i] << "_copula");
+  }
+  return description;
+}
 
 /* Tell if the distribution has independent copula */
 Bool ComposedDistribution::hasIndependentCopula() const

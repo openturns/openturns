@@ -70,7 +70,7 @@ Distribution WeibullMuSigma::getDistribution() const
   newParameters[1] = sigma_;
   newParameters[2] = gamma_;
 
-  NumericalPointCollection nativeParameters(1, operator()(newParameters));
+  NumericalPoint nativeParameters(operator()(newParameters));
 
   return WeibullFactory().build(nativeParameters);
 }
@@ -207,21 +207,23 @@ NumericalPoint WeibullMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-WeibullMuSigma::NumericalPointWithDescriptionCollection WeibullMuSigma::getParametersCollection() const
+NumericalPoint WeibullMuSigma::getValues() const
 {
-  NumericalPointWithDescription point(3);
+  NumericalPoint point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = gamma_;
-  Description description(point.getDimension());
+  return point;
+}
+
+Description WeibullMuSigma::getDescription() const
+{
+  Description description(3);
   description[0] = "mu";
   description[1] = "sigma";
   description[2] = "gamma";
-  point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return description;
 }
-
 
 /* String converter */
 String WeibullMuSigma::__repr__() const

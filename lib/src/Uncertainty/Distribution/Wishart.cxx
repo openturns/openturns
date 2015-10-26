@@ -282,6 +282,57 @@ void Wishart::setParametersCollection(const NumericalPointCollection & parameter
   setWeight(w);
 }
 
+NumericalPoint Wishart::getParameter() const
+{
+  const CovarianceMatrix V(getCovariance());
+  const UnsignedInteger p = V.getDimension();
+  NumericalPoint point((p*(p+1))/2+1);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++ i)
+    for (UnsignedInteger j = 0; j <= i; ++ j)
+    {
+      point[index] = V(i, j);
+      ++ index;
+    }
+  point[index] = nu_;
+  return point;
+}
+
+void Wishart::setParameter(const NumericalPoint & parameter)
+{
+  const UnsignedInteger size = parameter.getSize();
+  const NumericalScalar pReal(0.5 * std::sqrt(8.0 * size - 7.0) - 0.5);
+  const UnsignedInteger p(static_cast< UnsignedInteger >(pReal));
+  if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameter cannot be converted into a covariance matrix and a number of degrees of freedom.";
+  CovarianceMatrix V(p);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++ i)
+    for (UnsignedInteger j = 0; j <= i; ++ j)
+    {
+      V(i, j) = parameter[index];
+      ++ index;
+    }
+  const NumericalScalar nu = parameter[size - 1];
+  const NumericalScalar w = getWeight();
+  *this = Wishart(V, nu);
+  setWeight(w);
+}
+
+Description Wishart::getParameterDescription() const
+{
+  const UnsignedInteger p = getDimension();
+  Description description((p*(p+1))/2+1);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      description[index] = (OSS() << "v_" << i << "_" << j);
+    }
+  }
+  description[index] = "nu";
+  return description;
+}
 
 /* V accessor */
 void Wishart::setV(const CovarianceMatrix & v)

@@ -187,20 +187,6 @@ Bool MinCopula::hasIndependentCopula() const
   return (getDimension() == 1);
 }
 
-/* Parameters value and description accessor */
-MinCopula::NumericalPointWithDescriptionCollection MinCopula::getParametersCollection() const
-{
-  // No parameter, return a collection with an empty NumericalPointWithDescription
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
-} // getParametersCollection
-
-void MinCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  // Check if the given parameters are ok
-  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
-  if (parametersCollection[0].getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: got " << parametersCollection[0].getDimension() << " instead of 0.";
-}
-
 /* Method save() stores the object through the StorageManager */
 void MinCopula::save(Advocate & adv) const
 {

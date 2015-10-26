@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedLogUniform = factory.buildAsLogUniform(sample)
     print("LogUniform          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedLogUniform = factory.buildAsLogUniform()
     print("Default logUniform=", estimatedLogUniform)
     estimatedLogUniform = factory.buildAsLogUniform(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("LogUniform from parameters=", estimatedLogUniform)
 
 except:

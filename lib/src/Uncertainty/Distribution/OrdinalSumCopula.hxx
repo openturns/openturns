@@ -117,6 +117,13 @@ public:
   using CopulaImplementation::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & setParametersCollection);
 
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;
 

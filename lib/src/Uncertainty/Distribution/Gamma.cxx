@@ -383,29 +383,32 @@ void Gamma::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-Gamma::NumericalPointWithDescriptionCollection Gamma::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Gamma::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = k_;
   point[1] = lambda_;
   point[2] = gamma_;
+  return point;
+}
+
+void Gamma::setParameter(const NumericalPoint & parameter)
+{
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Gamma(parameter[0], parameter[1], parameter[2]);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Gamma::getParameterDescription() const
+{
+  Description description(3);
   description[0] = "k";
   description[1] = "lambda";
   description[2] = "gamma";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-void Gamma::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  const NumericalScalar w(getWeight());
-  *this = Gamma(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
-  setWeight(w);
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

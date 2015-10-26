@@ -273,25 +273,24 @@ NumericalPoint Chi::getStandardMoment(const UnsignedInteger n) const
   return NumericalPoint(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
-/* Parameters value and description accessor */
-Chi::NumericalPointWithDescriptionCollection Chi::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Chi::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(1);
-  Description description(point.getDimension());
-  point[0] = nu_;
-  description[0] = "nu";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return NumericalPoint(1, nu_);
 }
 
-void Chi::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Chi::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = Chi(parametersCollection[0][0]);
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Chi(parameter[0]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Chi::getParameterDescription() const
+{
+  return Description(1, "nu");
 }
 
 /* Method save() stores the object through the StorageManager */

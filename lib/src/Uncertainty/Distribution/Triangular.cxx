@@ -311,29 +311,33 @@ Triangular::Implementation Triangular::getStandardRepresentative() const
   return Triangular(-1.0, ((m_ - a_) + (m_ - b_)) / (b_ - a_), 1.0).clone();
 }
 
-/* Parameters value and description accessor */
-Triangular::NumericalPointWithDescriptionCollection Triangular::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Triangular::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = a_;
   point[1] = m_;
   point[2] = b_;
+  return point;
+}
+
+void Triangular::setParameter(const NumericalPoint & parameter)
+{
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Triangular(parameter[0], parameter[1], parameter[2]);
+  setWeight(w);
+}
+
+
+/* Parameters description accessor */
+Description Triangular::getParameterDescription() const
+{
+  Description description(3);
   description[0] = "a";
   description[1] = "m";
   description[2] = "b";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-void Triangular::setParametersCollection(const NumericalPointCollection & parametersCollection)
-{
-  const NumericalScalar w(getWeight());
-  *this = Triangular(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
-  setWeight(w);
+  return description;
 }
 
 /* Interface specific to Triangular */

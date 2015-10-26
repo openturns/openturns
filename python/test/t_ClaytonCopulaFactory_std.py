@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedClaytonCopula = factory.buildAsClaytonCopula(sample)
     print("ClaytonCopula          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedClaytonCopula = factory.buildAsClaytonCopula()
     print("Default claytonCopula=", estimatedClaytonCopula)
     estimatedClaytonCopula = factory.buildAsClaytonCopula(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("ClaytonCopula from parameters=", estimatedClaytonCopula)
 
 except:

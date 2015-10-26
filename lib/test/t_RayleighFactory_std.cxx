@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Rayleigh estimatedRayleigh(factory.buildAsRayleigh(sample));
     fullprint << "Rayleigh          =" << distribution << std::endl;
     fullprint << "Estimated rayleigh=" << estimatedRayleigh << std::endl;
     estimatedRayleigh = factory.buildAsRayleigh();
     fullprint << "Default rayleigh=" << estimatedRayleigh << std::endl;
-    estimatedRayleigh = factory.buildAsRayleigh(distribution.getParametersCollection());
+    estimatedRayleigh = factory.buildAsRayleigh(distribution.getParameter());
     fullprint << "Rayleigh from parameters=" << estimatedRayleigh << std::endl;
   }
   catch (TestFailed & ex)

@@ -59,7 +59,7 @@ Distribution FittingTest::BestModelBIC(const NumericalSample & sample,
       const Distribution distribution(factory.build(sample));
       if (i == 0) continuousCase = distribution.isContinuous();
       else if (distribution.isContinuous() != continuousCase) throw InvalidArgumentException(HERE) << "Error: cannot merge continuous and non-continuous models for BIC selection.";
-      const NumericalScalar concordanceMeasure(BIC(sample, distribution, distribution.getParametersNumber()));
+      const NumericalScalar concordanceMeasure(BIC(sample, distribution, distribution.getParameterDimension()));
       LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", BIC=" << concordanceMeasure);
       if (concordanceMeasure < bestConcordanceMeasure)
       {
@@ -123,7 +123,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
     {
       LOGINFO(OSS(false) << "Trying factory " << factory);
       const Distribution distribution(factoryCollection[i].build(sample));
-      const TestResult result(Kolmogorov(sample, distribution, fakeLevel, distribution.getParametersNumber()));
+      const TestResult result(Kolmogorov(sample, distribution, fakeLevel, distribution.getParameterDimension()));
       LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", test result=" << result);
       if (result.getPValue() > bestPValue)
       {
@@ -179,11 +179,11 @@ Distribution FittingTest::BestModelChiSquared(const NumericalSample & sample,
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   const NumericalScalar fakeLevel(0.5);
   Distribution bestDistribution(factoryCollection[0].build(sample));
-  bestResult = ChiSquared(sample, bestDistribution, fakeLevel, bestDistribution.getParametersNumber());
+  bestResult = ChiSquared(sample, bestDistribution, fakeLevel, bestDistribution.getParameterDimension());
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     const Distribution distribution(factoryCollection[i].build(sample));
-    const TestResult result(ChiSquared(sample, distribution, fakeLevel, distribution.getParametersNumber()));
+    const TestResult result(ChiSquared(sample, distribution, fakeLevel, distribution.getParameterDimension()));
     if (result.getPValue() > bestResult.getPValue())
     {
       bestResult = result;
@@ -225,7 +225,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
   if (sample.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample dimension and the distribution dimension must be equal";
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
   const UnsignedInteger size(sample.getSize());
-  const UnsignedInteger parametersNumber(distribution.getParametersNumber());
+  const UnsignedInteger parametersNumber(distribution.getParameterDimension());
   if (parametersNumber < estimatedParameters) throw InvalidArgumentException(HERE) << "Error: the number of estimated parameters cannot exceed the number of parameters of the distribution";
   NumericalScalar logLikelihood(0.0);
   const NumericalSample logPDF(distribution.computeLogPDF(sample));
@@ -242,7 +242,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
                                  const DistributionFactory & factory)
 {
   const Distribution distribution(factory.build(sample));
-  return BIC(sample, distribution, distribution.getParametersNumber());
+  return BIC(sample, distribution, distribution.getParameterDimension());
 }
 
 
@@ -256,7 +256,7 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
   const Distribution distribution(factory.build(sample));
   if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
-  return Kolmogorov(sample, distribution, level, distribution.getParametersNumber());
+  return Kolmogorov(sample, distribution, level, distribution.getParameterDimension());
 }
 
 
@@ -298,7 +298,7 @@ TestResult FittingTest::ChiSquared(const NumericalSample & sample,
   const Distribution distribution(factory.build(sample));
   if (distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Chi-squared test cannot be applied to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D distribution";
-  return ChiSquared(sample, distribution, level, distribution.getParametersNumber());
+  return ChiSquared(sample, distribution, level, distribution.getParameterDimension());
 }
 
 

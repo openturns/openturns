@@ -97,7 +97,7 @@ PosteriorDistribution * PosteriorDistribution::clone() const
 NumericalPoint PosteriorDistribution::computeLikelihood(const NumericalPoint & theta) const
 {
   Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
-  conditionedDistribution.setParametersCollection(theta);
+  conditionedDistribution.setParameter(theta);
   NumericalScalar likelihood(1.0);
   const UnsignedInteger size(observations_.getSize());
   for (UnsignedInteger i = 0; i < size; ++i)

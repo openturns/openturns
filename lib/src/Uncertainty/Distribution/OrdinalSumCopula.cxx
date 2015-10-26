@@ -489,6 +489,50 @@ void OrdinalSumCopula::setParametersCollection(const NumericalPointCollection & 
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
 }
 
+NumericalPoint OrdinalSumCopula::getParameter() const
+{
+  NumericalPoint point;
+  const UnsignedInteger size = copulaCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    point.add(copulaCollection_[i].getParameter());
+  }
+  return point;
+}
+
+void OrdinalSumCopula::setParameter(const NumericalPoint & parameter)
+{
+  UnsignedInteger globalIndex = 0;
+  const UnsignedInteger size = copulaCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
+    // even if the NumericalPoint are empty
+    const UnsignedInteger atomParametersDimension = copulaCollection_[i].getParameterDimension();
+    if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
+    // ith copula parameters
+    NumericalPoint newParameter(atomParametersDimension);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    copulaCollection_[i].setParameter(newParameter);
+  } // atoms
+}
+
+Description OrdinalSumCopula::getParameterDescription() const
+{
+  Description description;
+  const UnsignedInteger size = copulaCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Description parameterDescription(copulaCollection_[i].getParameterDescription());
+    const UnsignedInteger parameterDimension(parameterDescription.getSize());
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    {
+      description.add(OSS() << parameterDescription[j] << "_copula_" << i);
+    }
+  }
+  return description;
+}
+
 /* Tell if the distribution has elliptical copula */
 Bool OrdinalSumCopula::hasEllipticalCopula() const
 {

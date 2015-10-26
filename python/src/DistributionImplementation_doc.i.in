@@ -1474,7 +1474,46 @@ OT_Distribution_getParametersCollection_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_getParametersNumber_doc
+%define OT_Distribution_setParameter_doc
+"Accessor to the distribution's parameter.
+
+Parameters
+----------
+parameter : sequence of float
+    Parameter values."
+%enddef
+%feature("docstring") OT::DistributionImplementation::setParameter
+OT_Distribution_setParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getParameter_doc
+"Accessor to the distribution's parameter.
+
+Returns
+-------
+parameter : :class:`~openturns.NumericalPoint`
+    Parameter values."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getParameter
+OT_Distribution_getParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getParameterDescription_doc
+"Accessor to the distribution's parameter description.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Parameter names."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getParameterDescription
+OT_Distribution_getParameterDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getParameterDimension_doc
 "Accessor to the number of parameters in the distribution.
 
 Returns
@@ -1486,8 +1525,8 @@ See Also
 --------
 getParametersCollection"
 %enddef
-%feature("docstring") OT::DistributionImplementation::getParametersNumber
-OT_Distribution_getParametersNumber_doc
+%feature("docstring") OT::DistributionImplementation::getParameterDimension
+OT_Distribution_getParameterDimension_doc
 
 // ---------------------------------------------------------------------
 

@@ -45,7 +45,7 @@ UniformFactory::Implementation UniformFactory::build(const NumericalSample & sam
   return buildAsUniform(sample).clone();
 }
 
-UniformFactory::Implementation UniformFactory::build(const NumericalPointCollection & parameters) const
+UniformFactory::Implementation UniformFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsUniform(parameters).clone();
 }
@@ -70,17 +70,12 @@ Uniform UniformFactory::buildAsUniform(const NumericalSample & sample) const
   return result;
 }
 
-Uniform UniformFactory::buildAsUniform(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsUniform(RemoveDescriptionFromCollection(parameters));
-}
-
-Uniform UniformFactory::buildAsUniform(const NumericalPointCollection & parameters) const
+Uniform UniformFactory::buildAsUniform(const NumericalPoint & parameters) const
 {
   try
   {
     Uniform distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

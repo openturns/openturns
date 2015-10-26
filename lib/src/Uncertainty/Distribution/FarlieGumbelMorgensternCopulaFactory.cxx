@@ -49,7 +49,7 @@ FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopu
   return buildAsFarlieGumbelMorgensternCopula(sample).clone();
 }
 
-FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const NumericalPointCollection & parameters) const
+FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsFarlieGumbelMorgensternCopula(parameters).clone();
 }
@@ -76,17 +76,12 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
   return result;
 }
 
-FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsFarlieGumbelMorgensternCopula(RemoveDescriptionFromCollection(parameters));
-}
-
-FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const NumericalPointCollection & parameters) const
+FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const NumericalPoint & parameters) const
 {
   try
   {
     FarlieGumbelMorgensternCopula copula;
-    copula.setParametersCollection(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

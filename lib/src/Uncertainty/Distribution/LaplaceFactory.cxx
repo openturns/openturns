@@ -44,7 +44,7 @@ LaplaceFactory::Implementation LaplaceFactory::build(const NumericalSample & sam
   return buildAsLaplace(sample).clone();
 }
 
-LaplaceFactory::Implementation LaplaceFactory::build(const NumericalPointCollection & parameters) const
+LaplaceFactory::Implementation LaplaceFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsLaplace(parameters).clone();
 }
@@ -68,17 +68,12 @@ Laplace LaplaceFactory::buildAsLaplace(const NumericalSample & sample) const
   return result;
 }
 
-Laplace LaplaceFactory::buildAsLaplace(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsLaplace(RemoveDescriptionFromCollection(parameters));
-}
-
-Laplace LaplaceFactory::buildAsLaplace(const NumericalPointCollection & parameters) const
+Laplace LaplaceFactory::buildAsLaplace(const NumericalPoint & parameters) const
 {
   try
   {
     Laplace distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

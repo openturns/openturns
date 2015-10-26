@@ -45,7 +45,7 @@ NormalCopulaFactory::Implementation NormalCopulaFactory::build(const NumericalSa
   return buildAsNormalCopula(sample).clone();
 }
 
-NormalCopulaFactory::Implementation NormalCopulaFactory::build(const NumericalPointCollection & parameters) const
+NormalCopulaFactory::Implementation NormalCopulaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsNormalCopula(parameters).clone();
 }
@@ -71,17 +71,12 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalSample & sa
   }
 }
 
-NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsNormalCopula(RemoveDescriptionFromCollection(parameters));
-}
-
-NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalPointCollection & parameters) const
+NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalPoint & parameters) const
 {
   try
   {
     NormalCopula copula;
-    copula.setParametersCollection(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

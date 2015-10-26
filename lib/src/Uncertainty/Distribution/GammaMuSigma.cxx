@@ -71,7 +71,7 @@ Distribution GammaMuSigma::getDistribution() const
   newParameters[1] = sigma_;
   newParameters[2] = gamma_;
 
-  NumericalPointCollection nativeParameters(1, operator()(newParameters));
+  NumericalPoint nativeParameters(operator()(newParameters));
 
   return GammaFactory().build(nativeParameters);
 }
@@ -148,21 +148,23 @@ NumericalPoint GammaMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-GammaMuSigma::NumericalPointWithDescriptionCollection GammaMuSigma::getParametersCollection() const
+NumericalPoint GammaMuSigma::getValues() const
 {
-  NumericalPointWithDescription point(3);
+  NumericalPoint point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = gamma_;
-  Description description(point.getDimension());
+  return point;
+}
+
+Description GammaMuSigma::getDescription() const
+{
+  Description description(3);
   description[0] = "mu";
   description[1] = "sigma";
   description[2] = "gamma";
-  point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return description;
 }
-
 
 /* String converter */
 String GammaMuSigma::__repr__() const

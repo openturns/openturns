@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Dirichlet buildAsDirichlet(const NumericalSample & sample) const;
-  Dirichlet buildAsDirichlet(const NumericalPointCollection & parameters) const;
-  Dirichlet buildAsDirichlet(const NumericalPointWithDescriptionCollection & parameters) const;
+  Dirichlet buildAsDirichlet(const NumericalPoint & parameters) const;
   Dirichlet buildAsDirichlet() const;
 
 }; /* class DirichletFactory */

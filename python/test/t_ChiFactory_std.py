@@ -28,14 +28,14 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedChi = factory.buildAsChi(sample)
     print("Chi          =", distribution)
     print("Estimated chi=", estimatedChi)
     estimatedChi = factory.buildAsChi()
     print("Default chi=", estimatedChi)
-    estimatedChi = factory.buildAsChi(distribution.getParametersCollection())
+    estimatedChi = factory.buildAsChi(distribution.getParameter())
     print("Chi from parameters=", estimatedChi)
 
 except:

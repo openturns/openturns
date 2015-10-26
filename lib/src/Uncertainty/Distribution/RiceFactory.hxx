@@ -45,11 +45,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Rice buildAsRice(const NumericalSample & sample) const;
-  Rice buildAsRice(const NumericalPointCollection & parameters) const;
-  Rice buildAsRice(const NumericalPointWithDescriptionCollection & parameters) const;
+  Rice buildAsRice(const NumericalPoint & parameters) const;
   Rice buildAsRice() const;
 
 }; /* class RiceFactory */

@@ -892,16 +892,28 @@ void Distribution::setParametersCollection(const NumericalPointCollection & para
   getImplementation()->setParametersCollection(parametersCollection);
 }
 
-void Distribution::setParametersCollection(const NumericalPoint & parameters)
+/* Parameters value accessor */
+void Distribution::setParameter(const NumericalPoint & parameters)
 {
   copyOnWrite();
-  getImplementation()->setParametersCollection(parameters);
+  getImplementation()->setParameter(parameters);
+}
+
+NumericalPoint Distribution::getParameter() const
+{
+  return getImplementation()->getParameter();
+}
+
+/* Parameters description accessor */
+Description Distribution::getParameterDescription() const
+{
+  return getImplementation()->getParameterDescription();
 }
 
 /* Parameters number */
-UnsignedInteger Distribution::getParametersNumber() const
+UnsignedInteger Distribution::getParameterDimension() const
 {
-  return getImplementation()->getParametersNumber();
+  return getImplementation()->getParameterDimension();
 }
 
 /* Description accessor */

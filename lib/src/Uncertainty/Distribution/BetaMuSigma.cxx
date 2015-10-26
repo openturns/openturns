@@ -71,7 +71,7 @@ Distribution BetaMuSigma::getDistribution() const
   newParameters[2] = a_;
   newParameters[3] = b_;
 
-  NumericalPointCollection nativeParameters(1, operator()(newParameters));
+  NumericalPoint nativeParameters(operator()(newParameters));
 
   return BetaFactory().build(nativeParameters);
 }
@@ -160,23 +160,25 @@ NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
-BetaMuSigma::NumericalPointWithDescriptionCollection BetaMuSigma::getParametersCollection() const
+NumericalPoint BetaMuSigma::getValues() const
 {
-  NumericalPointWithDescription point(4);
+  NumericalPoint point(4);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = a_;
   point[3] = b_;
-  Description description(point.getDimension());
+  return point;
+}
+
+Description BetaMuSigma::getDescription() const
+{
+  Description description(4);
   description[0] = "mu";
   description[1] = "sigma";
   description[2] = "a";
   description[3] = "b";
-  point.setDescription(description);
-
-  return NumericalPointWithDescriptionCollection(1, point);
+  return description;
 }
-
 
 /* Check if the distribution is elliptical */
 Bool BetaMuSigma::isElliptical() const

@@ -17,14 +17,14 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedBurr = factory.buildAsBurr(sample)
     print("Burr          =", distribution)
     print("Estimated burr=", estimatedBurr)
     estimatedBurr = factory.buildAsBurr()
     print("Default burr=", estimatedBurr)
-    estimatedBurr = factory.buildAsBurr(distribution.getParametersCollection())
+    estimatedBurr = factory.buildAsBurr(distribution.getParameter())
     print("Burr from parameters=", estimatedBurr)
 
     try:

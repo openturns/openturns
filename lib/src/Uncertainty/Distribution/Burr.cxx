@@ -228,27 +228,30 @@ NumericalPoint Burr::getStandardMoment(const UnsignedInteger n) const
   return NumericalPoint(1, std::exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
 }
 
-/* Parameters value and description accessor */
-Burr::NumericalPointWithDescriptionCollection Burr::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint Burr::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = c_;
   point[1] = k_;
-  description[0] = "c";
-  description[1] = "k";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void Burr::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Burr::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = Burr(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = Burr(parameter[0], parameter[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Burr::getParameterDescription() const
+{
+  Description description(2);
+  description[0] = "c";
+  description[1] = "k";
+  return description;
 }
 
 /* C accessor */

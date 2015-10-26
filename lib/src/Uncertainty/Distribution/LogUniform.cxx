@@ -267,30 +267,31 @@ NumericalPoint LogUniform::getStandardMoment(const UnsignedInteger n) const
   return NumericalPoint(1, (std::pow(b_, static_cast<int>(n)) - std::pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
 }
 
-/* Parameters value and description accessor */
-LogUniform::NumericalPointWithDescriptionCollection LogUniform::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint LogUniform::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = aLog_;
   point[1] = bLog_;
-  description[0] = "aLog";
-  description[1] = "bLog";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void LogUniform::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void LogUniform::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = LogUniform(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = LogUniform(parameter[0], parameter[1]);
   setWeight(w);
 }
 
-
+/* Parameters description accessor */
+Description LogUniform::getParameterDescription() const
+{
+  Description description(2);
+  description[0] = "aLog";
+  description[1] = "bLog";
+  return description;
+}
 
 /* A accessor */
 void LogUniform::setALog(const NumericalScalar aLog)

@@ -47,7 +47,7 @@ DirichletFactory::Implementation DirichletFactory::build(const NumericalSample &
   return buildAsDirichlet(sample).clone();
 }
 
-DirichletFactory::Implementation DirichletFactory::build(const NumericalPointCollection & parameters) const
+DirichletFactory::Implementation DirichletFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsDirichlet(parameters).clone();
 }
@@ -160,17 +160,12 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
   return result;
 }
 
-Dirichlet DirichletFactory::buildAsDirichlet(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsDirichlet(RemoveDescriptionFromCollection(parameters));
-}
-
-Dirichlet DirichletFactory::buildAsDirichlet(const NumericalPointCollection & parameters) const
+Dirichlet DirichletFactory::buildAsDirichlet(const NumericalPoint & parameters) const
 {
   try
   {
     Dirichlet distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

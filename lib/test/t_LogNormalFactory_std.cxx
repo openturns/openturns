@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     LogNormal estimatedLogNormal(factory.buildAsLogNormal(sample));
     fullprint << "LogNormal          =" << distribution << std::endl;
     fullprint << "Estimated logNormal=" << estimatedLogNormal << std::endl;
     estimatedLogNormal = factory.buildAsLogNormal();
     fullprint << "Default logNormal=" << estimatedLogNormal << std::endl;
-    estimatedLogNormal = factory.buildAsLogNormal(distribution.getParametersCollection());
+    estimatedLogNormal = factory.buildAsLogNormal(distribution.getParameter());
     fullprint << "LogNormal from parameters=" << estimatedLogNormal << std::endl;
   }
   catch (TestFailed & ex)

@@ -84,8 +84,12 @@ public:
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /** Check if the distribution is elliptical */
   virtual Bool isElliptical() const;

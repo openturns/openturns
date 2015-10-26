@@ -101,11 +101,6 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & setParametersCollection);
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

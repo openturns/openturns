@@ -186,13 +186,6 @@ void Epanechnikov::computeCovariance() const
   isAlreadyComputedCovariance_ = 0;
 }
 
-/* Parameters value and description accessor */
-Epanechnikov::NumericalPointWithDescriptionCollection Epanechnikov::getParametersCollection() const
-{
-  // No parameter, return a collection with an empty NumericalPointWithDescription
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
-}
-
 /* Method save() stores the object through the StorageManager */
 void Epanechnikov::save(Advocate & adv) const
 {

@@ -245,7 +245,7 @@ LogNormalFactory::Implementation LogNormalFactory::build() const
   return buildAsLogNormal().clone();
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const NumericalPointCollection & parameters) const
+LogNormalFactory::Implementation LogNormalFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsLogNormal(parameters).clone();
 }
@@ -295,17 +295,12 @@ LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample,
   }
 }
 
-LogNormal LogNormalFactory::buildAsLogNormal(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsLogNormal(RemoveDescriptionFromCollection(parameters));
-}
-
-LogNormal LogNormalFactory::buildAsLogNormal(const NumericalPointCollection & parameters) const
+LogNormal LogNormalFactory::buildAsLogNormal(const NumericalPoint & parameters) const
 {
   try
   {
     LogNormal distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -273,27 +273,30 @@ void GeneralizedPareto::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-GeneralizedPareto::NumericalPointWithDescriptionCollection GeneralizedPareto::getParametersCollection() const
+/* Parameters value  accessor */
+NumericalPoint GeneralizedPareto::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(2);
-  Description description(point.getDimension());
+  NumericalPoint point(2);
   point[0] = sigma_;
   point[1] = xi_;
-  description[0] = "sigma";
-  description[1] = "xi";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void GeneralizedPareto::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void GeneralizedPareto::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = GeneralizedPareto(parametersCollection[0][0], parametersCollection[0][1]);
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = GeneralizedPareto(parameter[0], parameter[1]);
   setWeight(w);
+}
+
+/* Parameters description accessor */
+Description GeneralizedPareto::getParameterDescription() const
+{
+  Description description(2);
+  description[0] = "sigma";
+  description[1] = "xi";
+  return description;
 }
 
 /* Sigma accessor */

@@ -325,18 +325,39 @@ void RatioDistribution::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Parameters value and description accessor */
-RatioDistribution::NumericalPointWithDescriptionCollection RatioDistribution::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint RatioDistribution::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(left_.getParametersCollection()[0]);
-  point.add(right_.getParametersCollection()[0]);
-  Description description(left_.getDescription());
-  description.add(right_.getDescription());
-  point.setDescription(description);
-  point.setName(getName());
-  parameters[0] = point;
-  return parameters;
+  NumericalPoint point(left_.getParameter());
+  point.add(right_.getParameter());
+  return point;
+}
+
+void RatioDistribution::setParameter(const NumericalPoint & parameter)
+{
+  const UnsignedInteger leftSize = left_.getParameterDimension();
+  const UnsignedInteger rightSize = right_.getParameterDimension();
+  if (parameter.getSize() != leftSize + rightSize)
+    throw InvalidArgumentException(HERE) << "Error: expected "<< leftSize + rightSize << " values, got " << parameter.getSize();
+  NumericalPoint newLeftParameters(leftSize);
+  NumericalPoint newRightParameters(rightSize);
+  std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
+  std::copy(parameter.begin() + leftSize, parameter.end(), newRightParameters.begin());
+  Distribution newLeft(left_);
+  Distribution newRight(right_);
+  newLeft.setParameter(newLeftParameters);
+  newRight.setParameter(newRightParameters);
+  const NumericalScalar w = getWeight();
+  *this = RatioDistribution(newLeft, newRight);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description RatioDistribution::getParameterDescription() const
+{
+  Description description(left_.getParameterDescription());
+  description.add(right_.getParameterDescription());
+  return description;
 }
 
 /* Left accessor */

@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   GumbelCopula buildAsGumbelCopula(const NumericalSample & sample) const;
-  GumbelCopula buildAsGumbelCopula(const NumericalPointCollection & parameters) const;
-  GumbelCopula buildAsGumbelCopula(const NumericalPointWithDescriptionCollection & parameters) const;
+  GumbelCopula buildAsGumbelCopula(const NumericalPoint & parameters) const;
   GumbelCopula buildAsGumbelCopula() const;
 
 }; /* class GumbelCopulaFactory */

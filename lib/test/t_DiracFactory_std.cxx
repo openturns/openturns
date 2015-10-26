@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Dirac estimatedDirac(factory.buildAsDirac(sample));
     fullprint << "Dirac          =" << distribution << std::endl;
     fullprint << "Estimated dirac=" << estimatedDirac << std::endl;
     estimatedDirac = factory.buildAsDirac();
     fullprint << "Default dirac=" << estimatedDirac << std::endl;
-    estimatedDirac = factory.buildAsDirac(distribution.getParametersCollection());
+    estimatedDirac = factory.buildAsDirac(distribution.getParameter());
     fullprint << "Dirac from parameters=" << estimatedDirac << std::endl;
   }
   catch (TestFailed & ex)

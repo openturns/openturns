@@ -64,9 +64,7 @@ public:
                                CovarianceMatrix & covariance) const;
 
   /** Build a distribution based on a set of parameters */
-  virtual Implementation build(const NumericalPointCollection & parameters) const;
-  /** Build a distribution based on a set of parameters */
-  virtual Implementation build(const NumericalPointWithDescriptionCollection & parameters) const;
+  virtual Implementation build(const NumericalPoint & parameters) const;
 
   /** Build a distribution using its default constructor */
   virtual Implementation build() const;

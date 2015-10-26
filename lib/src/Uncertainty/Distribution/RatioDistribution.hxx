@@ -88,8 +88,12 @@ public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /* Interface specific to RatioDistribution */
 

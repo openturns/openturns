@@ -39,7 +39,7 @@ ConditionalRandomVector::ConditionalRandomVector(const Distribution & distributi
 {
   // Check if the random parameters random vector has a dimension compatible with
   // the number of parameters of the distribution
-  if (randomParameters.getDimension() != distribution.getParametersNumber()) throw InvalidArgumentException(HERE) << "Error: the random parameters dimension must be equal with the number of parameters of the distribution.";
+  if (randomParameters.getDimension() != distribution.getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: the random parameters dimension must be equal with the number of parameters of the distribution.";
   // Get the description from the underlying distribution
   setDescription(distribution.getDescription());
 }
@@ -82,7 +82,7 @@ NumericalPoint ConditionalRandomVector::getRealization() const
 NumericalPoint ConditionalRandomVector::getRealization(NumericalPoint & parameters) const
 {
   parameters = randomParameters_.getRealization();
-  distribution_.setParametersCollection(parameters);
+  distribution_.setParameter(parameters);
   return distribution_.getRealization();
 }
 

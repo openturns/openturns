@@ -96,9 +96,12 @@ public:
   using DistributionImplementation::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
 
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /* Interface specific to TruncatedDistribution */
 

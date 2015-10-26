@@ -416,10 +416,16 @@ public:
   NumericalPointWithDescriptionCollection getParametersCollection() const;
   void setParametersCollection(const NumericalPointWithDescriptionCollection & parametersCollection);
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
-  void setParametersCollection(const NumericalPoint & parameters);
+
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameter() const;
+  virtual void setParameter(const NumericalPoint & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
 
   /** Parameters number */
-  UnsignedInteger getParametersNumber() const;
+  UnsignedInteger getParameterDimension() const;
 
   /** Description accessor */
   void setDescription(const Description & description);

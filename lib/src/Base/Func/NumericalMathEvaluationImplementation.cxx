@@ -314,12 +314,6 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
   return (*this)(inP);
 }
 
-/* Accessor for parameter dimension */
-UnsignedInteger NumericalMathEvaluationImplementation::getParameterDimension() const
-{
-  return parameters_.getDimension();
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger NumericalMathEvaluationImplementation::getInputDimension() const
 {
@@ -333,7 +327,7 @@ UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() cons
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger NumericalMathEvaluationImplementation::getParametersDimension() const
+UnsignedInteger NumericalMathEvaluationImplementation::getParameterDimension() const
 {
   return parameters_.getDimension();
 }

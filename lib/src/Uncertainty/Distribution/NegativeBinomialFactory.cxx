@@ -78,7 +78,7 @@ NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Num
   return buildAsNegativeBinomial(sample).clone();
 }
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const NumericalPointCollection & parameters) const
+NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsNegativeBinomial(parameters).clone();
 }
@@ -140,17 +140,12 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
   return result;
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsNegativeBinomial(RemoveDescriptionFromCollection(parameters));
-}
-
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalPointCollection & parameters) const
+NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalPoint & parameters) const
 {
   try
   {
     NegativeBinomial distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

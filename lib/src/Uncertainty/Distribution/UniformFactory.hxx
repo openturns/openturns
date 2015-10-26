@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   Uniform buildAsUniform(const NumericalSample & sample) const;
-  Uniform buildAsUniform(const NumericalPointCollection & parameters) const;
-  Uniform buildAsUniform(const NumericalPointWithDescriptionCollection & parameters) const;
+  Uniform buildAsUniform(const NumericalPoint & parameters) const;
   Uniform buildAsUniform() const;
 
 }; /* class UniformFactory */

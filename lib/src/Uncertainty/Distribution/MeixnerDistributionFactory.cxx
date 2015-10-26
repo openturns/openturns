@@ -46,7 +46,7 @@ MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(con
   return buildAsMeixnerDistribution(sample).clone();
 }
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const NumericalPointCollection & parameters) const
+MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsMeixnerDistribution(parameters).clone();
 }
@@ -76,17 +76,12 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   return result;
 }
 
-MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsMeixnerDistribution(RemoveDescriptionFromCollection(parameters));
-}
-
-MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalPointCollection & parameters) const
+MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalPoint & parameters) const
 {
   try
   {
     MeixnerDistribution distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -45,7 +45,7 @@ RayleighFactory::Implementation RayleighFactory::build(const NumericalSample & s
   return buildAsRayleigh(sample).clone();
 }
 
-RayleighFactory::Implementation RayleighFactory::build(const NumericalPointCollection & parameters) const
+RayleighFactory::Implementation RayleighFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsRayleigh(parameters).clone();
 }
@@ -80,17 +80,12 @@ Rayleigh RayleighFactory::buildAsRayleigh(const NumericalSample & sample) const
   }
 }
 
-Rayleigh RayleighFactory::buildAsRayleigh(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsRayleigh(RemoveDescriptionFromCollection(parameters));
-}
-
-Rayleigh RayleighFactory::buildAsRayleigh(const NumericalPointCollection & parameters) const
+Rayleigh RayleighFactory::buildAsRayleigh(const NumericalPoint & parameters) const
 {
   try
   {
     Rayleigh distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -44,7 +44,7 @@ public:
   explicit Dirac(const NumericalScalar p);
 
   /** Parameters constructor */
-  Dirac(const NumericalPoint & point);
+  explicit Dirac(const NumericalPoint & point);
 
   /** Comparison operator */
   Bool operator ==(const Dirac & other) const;
@@ -113,6 +113,13 @@ public:
   NumericalPointWithDescriptionCollection getParametersCollection() const;
   using DiscreteDistribution::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
+
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /* Interface specific to Dirac */
 

@@ -222,16 +222,21 @@ Bool SubSquareCopula::hasIndependentCopula() const
   return nullPhi_;
 }
 
-/* Parameters value and description accessor */
-SubSquareCopula::NumericalPointWithDescriptionCollection SubSquareCopula::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint MinCopula::getParameter() const
 {
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
-} // getParametersCollection
+  return NumericalPoint();
+}
 
-void SubSquareCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void MinCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection is of size=" << parametersCollection.getSize() << ", expected a size=1.";
-  if (parametersCollection[0].getDimension() != 0) throw InvalidArgumentException(HERE) << "Error: expected no parameters for the SubSquareCopula, got " << parametersCollection[0].getDimension() << " parameters instead.";
+  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize(); 
+}
+
+/* Parameters description accessor */
+Description MinCopula::getParameterDescription() const
+{
+  return Description();
 }
 
 /* Method save() stores the object through the StorageManager */

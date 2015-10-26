@@ -49,7 +49,7 @@ AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(con
   return buildAsAliMikhailHaqCopula(sample).clone();
 }
 
-AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const NumericalPointCollection & parameters) const
+AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsAliMikhailHaqCopula(parameters).clone();
 }
@@ -109,17 +109,12 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
   return result;
 }
 
-AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsAliMikhailHaqCopula(RemoveDescriptionFromCollection(parameters));
-}
-
-AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const NumericalPointCollection & parameters) const
+AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const NumericalPoint & parameters) const
 {
   try
   {
     AliMikhailHaqCopula copula;
-    copula.setParametersCollection(parameters);
+    copula.setParameter(parameters);
     return copula;
   }
   catch (InvalidArgumentException)

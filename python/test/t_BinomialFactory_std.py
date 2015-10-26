@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", repr(estimatedDistribution))
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", repr(estimatedDistribution))
     estimatedBinomial = factory.buildAsBinomial(sample)
     print("Binomial          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedBinomial = factory.buildAsBinomial()
     print("Default binomial=", estimatedBinomial)
     estimatedBinomial = factory.buildAsBinomial(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Binomial from parameters=", estimatedBinomial)
 
 except:

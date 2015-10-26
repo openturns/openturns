@@ -136,7 +136,7 @@ NumericalPoint BayesDistribution::getRealization() const
 {
   const NumericalPoint y(conditioningDistribution_.getRealization());
   Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParametersCollection(linkFunction_(y));
+  deconditioned.setParameter(linkFunction_(y));
   NumericalPoint x(deconditioned.getRealization());
   x.add(y);
   return x;
@@ -155,7 +155,7 @@ NumericalScalar BayesDistribution::computePDF(const NumericalPoint & point) cons
   if (conditioningPDF == 0.0) return 0.0;
   Distribution deconditioned(conditionedDistribution_);
   const NumericalPoint parameters(linkFunction_(y));
-  deconditioned.setParametersCollection(parameters);
+  deconditioned.setParameter(parameters);
   NumericalPoint x(conditionedDimension);
   std::copy(point.begin(), point.begin() + conditionedDimension, x.begin());
   const NumericalScalar deconditionedPDF(deconditioned.computePDF(x));
@@ -202,7 +202,7 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
     const NumericalMathFunction & linkFunction)
 {
   const UnsignedInteger conditioningDimension(conditioningDistribution.getDimension());
-  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParametersNumber());
+  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParameterDimension());
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution.";
   if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";

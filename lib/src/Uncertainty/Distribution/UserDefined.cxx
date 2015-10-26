@@ -426,6 +426,47 @@ UserDefined::NumericalPointWithDescriptionCollection UserDefined::getParametersC
   return parameters;
 }
 
+/* Parameters value accessor */
+NumericalPoint UserDefined::getParameter() const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = collection_.getSize();
+  NumericalPoint point((dimension + 1) * size);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < size; ++ j)
+    {
+      point[i * size + j] = collection_[j].getX()[i];
+    }
+  }
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    point[dimension * size + i] = collection_[i].getP();
+  }
+  return point;
+}
+
+/* Parameters description accessor */
+Description UserDefined::getParameterDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = collection_.getSize();
+  Description description((dimension + 1) * size);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < size; ++ j)
+    {
+      description[i * size + j] = (OSS() << "X^" << i << "_" << j);
+    }
+  }
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    description[dimension * size + i] = (OSS() << "p_" << i);
+  }
+  return description;
+}
+
+
 /* Get the i-th marginal distribution */
 UserDefined::Implementation UserDefined::getMarginal(const UnsignedInteger i) const
 {

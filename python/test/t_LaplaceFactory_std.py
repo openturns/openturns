@@ -17,7 +17,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedLaplace = factory.buildAsLaplace(sample)
     print("Laplace          =", distribution)
@@ -25,7 +25,7 @@ try:
     estimatedLaplace = factory.buildAsLaplace()
     print("Default laplace=", estimatedLaplace)
     estimatedLaplace = factory.buildAsLaplace(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Laplace from parameters=", estimatedLaplace)
 
 except:

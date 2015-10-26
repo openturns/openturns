@@ -114,6 +114,13 @@ public:
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
 
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameters);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 

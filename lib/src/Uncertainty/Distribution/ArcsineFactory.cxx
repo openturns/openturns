@@ -46,7 +46,7 @@ ArcsineFactory::Implementation ArcsineFactory::build(const NumericalSample & sam
   return buildAsArcsine(sample).clone();
 }
 
-ArcsineFactory::Implementation ArcsineFactory::build(const NumericalPointCollection & parameters) const
+ArcsineFactory::Implementation ArcsineFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsArcsine(parameters).clone();
 }
@@ -67,17 +67,12 @@ Arcsine ArcsineFactory::buildAsArcsine(const NumericalSample & sample) const
   return result;
 }
 
-Arcsine ArcsineFactory::buildAsArcsine(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsArcsine(RemoveDescriptionFromCollection(parameters));
-}
-
-Arcsine ArcsineFactory::buildAsArcsine(const NumericalPointCollection & parameters) const
+Arcsine ArcsineFactory::buildAsArcsine(const NumericalPoint & parameters) const
 {
   try
   {
     Arcsine distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

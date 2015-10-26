@@ -46,11 +46,10 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPointCollection & parameters) const;
+  Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
   FrankCopula buildAsFrankCopula(const NumericalSample & sample) const;
-  FrankCopula buildAsFrankCopula(const NumericalPointCollection & parameters) const;
-  FrankCopula buildAsFrankCopula(const NumericalPointWithDescriptionCollection & parameters) const;
+  FrankCopula buildAsFrankCopula(const NumericalPoint & parameters) const;
   FrankCopula buildAsFrankCopula() const;
 
 private:

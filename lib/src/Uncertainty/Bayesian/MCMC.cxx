@@ -66,7 +66,7 @@ MCMC::MCMC( const Distribution & prior,
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
   setParameters(NumericalSample(observations.getSize(), 0));
   setObservations(observations);
-  if (conditional.getParametersNumber() != model_.getOutputDimension()) throw InvalidDimensionException(HERE) << "The parameter dimension" << conditional.getParametersNumber() << " does not match the output dimension of the model (" << model_.getOutputDimension() << ").";
+  if (conditional.getParameterDimension() != model_.getOutputDimension()) throw InvalidDimensionException(HERE) << "The parameter dimension" << conditional.getParameterDimension() << " does not match the output dimension of the model (" << model_.getOutputDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
 
 }
@@ -136,7 +136,7 @@ NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
     const NumericalPoint zi(model_(xi, parameters_[i]));
 
     Distribution pI(conditional_);
-    pI.setParametersCollection(zi);
+    pI.setParameter(zi);
     NumericalScalar logPdf = pI.computeLogPDF(observations_[i]);
     if (logPdf == -SpecFunc::MaxNumericalScalar) return -SpecFunc::MaxNumericalScalar;
     value += logPdf;

@@ -20,7 +20,7 @@ try:
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
     estimatedMeixnerDistribution = factory.buildAsMeixnerDistribution(sample)
     print("MeixnerDistribution          =", distribution)
@@ -28,7 +28,7 @@ try:
     estimatedMeixnerDistribution = factory.buildAsMeixnerDistribution()
     print("Default meixnerDistribution=", estimatedMeixnerDistribution)
     estimatedMeixnerDistribution = factory.buildAsMeixnerDistribution(
-        distribution.getParametersCollection())
+        distribution.getParameter())
     print("MeixnerDistribution from parameters=", estimatedMeixnerDistribution)
 
 except:

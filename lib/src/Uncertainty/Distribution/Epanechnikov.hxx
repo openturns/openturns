@@ -89,9 +89,6 @@ public:
   /** Get the raw moments of the standardized distribution */
   NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

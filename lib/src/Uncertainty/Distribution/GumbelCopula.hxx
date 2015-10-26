@@ -103,10 +103,12 @@ public:
   /** Compute the second derivative of the archimedean generator */
   NumericalScalar computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using ArchimedeanCopula::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;

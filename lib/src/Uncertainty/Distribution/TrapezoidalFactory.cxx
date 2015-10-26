@@ -56,9 +56,7 @@ NumericalScalar TrapezoidalFactory::computeLogLikelihood(const NumericalPoint & 
 {
   NumericalScalar result(0.0);
   const UnsignedInteger size(sample_.getSize());
-  NumericalPointCollection coll;
-  coll.add(x);
-  const Trapezoidal distribution(buildAsTrapezoidal( coll ));
+  const Trapezoidal distribution(buildAsTrapezoidal(x));
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const NumericalScalar pdf(distribution.computePDF(sample_[i]));
@@ -108,7 +106,7 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalSamp
   return buildAsTrapezoidal(sample).clone();
 }
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalPointCollection & parameters) const
+TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsTrapezoidal(parameters).clone();
 }
@@ -159,17 +157,12 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   return result;
 }
 
-Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsTrapezoidal(RemoveDescriptionFromCollection(parameters));
-}
-
-Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalPointCollection & parameters) const
+Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalPoint & parameters) const
 {
   try
   {
     Trapezoidal distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

@@ -55,11 +55,11 @@ int main(int argc, char *argv[])
     }
     Distribution estimatedDistribution(factory.build());
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     GeneralizedPareto estimatedGeneralizedPareto(factory.buildAsGeneralizedPareto());
     fullprint << "Default generalizedPareto=" << estimatedGeneralizedPareto << std::endl;
-    estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(distribution.getParametersCollection());
+    estimatedGeneralizedPareto = factory.buildAsGeneralizedPareto(distribution.getParameter());
     fullprint << "GeneralizedPareto from parameters=" << estimatedGeneralizedPareto << std::endl;
   }
   catch (TestFailed & ex)

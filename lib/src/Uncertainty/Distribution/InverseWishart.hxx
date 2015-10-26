@@ -79,11 +79,12 @@ public:
   /** Get the standard deviation of the distribution */
   NumericalPoint getStandardDeviation() const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
-  using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  /** Parameters value accessors */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
 
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /* Interface specific to InverseWishart */
 

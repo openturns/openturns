@@ -571,8 +571,8 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
     Description marginalDescription(point.getDimension());
     point[0] = mean_[marginalIndex];
     point[1] = sigma_[marginalIndex];
-    marginalDescription[0] = "mean";
-    marginalDescription[1] = "standard deviation";
+    marginalDescription[0] = OSS() << "mean_" << marginalIndex;
+    marginalDescription[1] = OSS() << "standard_deviation_" << marginalIndex;
     point.setDescription(marginalDescription);
     point.setName(description[marginalIndex]);
     parameters[marginalIndex] = point;
@@ -637,22 +637,80 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
   isAlreadyComputedCovariance_ = false;
 }
 
-void EllipticalDistribution::setParametersCollection(const NumericalPoint & flattenCollection)
+NumericalPoint EllipticalDistribution::getParameter() const
 {
-  const UnsignedInteger dimension(getDimension());
-  if (dimension == 1)
+  const UnsignedInteger dimension = getDimension();
+  NumericalPoint point(2 * dimension + (dimension > 1 ? ((dimension-1)*dimension)/2 : 0));
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (flattenCollection.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given parameters point has an invalid dimension (" << flattenCollection.getDimension() << "), it should be 2";
-
-    mean_[0] = flattenCollection[0];
-    sigma_[0] = flattenCollection[1];
-    if (sigma_[0] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
-    update();
-    computeRange();
-    isAlreadyComputedCovariance_ = false;
+    point[2*i] = mean_[i];
+    point[2*i+1] = sigma_[i];
   }
-  else DistributionImplementation::setParametersCollection(flattenCollection);
+  UnsignedInteger index = 2 * dimension;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      point[index] = R_(i, j);
+      ++ index;
+    }
+  }
+  return point;
 }
+
+void EllipticalDistribution::setParameter(const NumericalPoint & parameters)
+{
+  // N = 2*d+((d-1)*d)/2
+  const UnsignedInteger size = parameters.getSize();
+  NumericalScalar dimReal = 0.5 * std::sqrt(9.0 + 8.0 * size) - 1.5;
+  if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for EllipticalDistribution";
+  const UnsignedInteger dimension = dimReal;
+  mean_ = NumericalPoint(dimension);
+  sigma_ = NumericalPoint(dimension);
+  R_ = CorrelationMatrix(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    mean_[i] = parameters[2*i];
+    sigma_[i] = parameters[2*i+1];
+  }
+  if (dimension > 1) {
+    UnsignedInteger index = 2 * dimension;
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      for (UnsignedInteger j = 0; j < i; ++ j)
+      {
+        R_(i, j) = parameters[index];
+        ++ index;
+      }
+    }
+    if (!R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+  }
+  update();
+  computeRange();
+  isAlreadyComputedCovariance_ = false;
+}
+
+Description EllipticalDistribution::getParameterDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  Description description(2 * dimension + (dimension > 1 ? ((dimension-1)*dimension)/2 : 0));
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    description[2*i] = OSS() << "mean_" << i;
+    description[2*i+1] = OSS() << "standard_deviation_" << i;
+  }
+  UnsignedInteger index = 2 * dimension;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      description[index] = OSS() << "R_" << i << "_" << j;
+      ++ index;
+    }
+  }
+  return description;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void EllipticalDistribution::save(Advocate & adv) const

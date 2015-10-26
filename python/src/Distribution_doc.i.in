@@ -102,8 +102,14 @@ OT_Distribution_getMoment_doc
 OT_Distribution_getPDFEpsilon_doc
 %feature("docstring") OT::Distribution::getParametersCollection
 OT_Distribution_getParametersCollection_doc
-%feature("docstring") OT::Distribution::getParametersNumber
-OT_Distribution_getParametersNumber_doc
+%feature("docstring") OT::Distribution::setParameter
+OT_Distribution_setParameter_doc
+%feature("docstring") OT::Distribution::getParameter
+OT_Distribution_getParameter_doc
+%feature("docstring") OT::Distribution::getParameterDescription
+OT_Distribution_getParameterDescription_doc
+%feature("docstring") OT::Distribution::getParameterDimension
+OT_Distribution_getParameterDimension_doc
 %feature("docstring") OT::Distribution::getPearsonCorrelation
 OT_Distribution_getPearsonCorrelation_doc
 %feature("docstring") OT::Distribution::getPositionIndicator

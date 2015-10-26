@@ -46,7 +46,7 @@ SkellamFactory::Implementation SkellamFactory::build(const NumericalSample & sam
   return buildAsSkellam(sample).clone();
 }
 
-SkellamFactory::Implementation SkellamFactory::build(const NumericalPointCollection & parameters) const
+SkellamFactory::Implementation SkellamFactory::build(const NumericalPoint & parameters) const
 {
   return buildAsSkellam(parameters).clone();
 }
@@ -77,17 +77,12 @@ Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
   return result;
 }
 
-Skellam SkellamFactory::buildAsSkellam(const NumericalPointWithDescriptionCollection & parameters) const
-{
-  return buildAsSkellam(RemoveDescriptionFromCollection(parameters));
-}
-
-Skellam SkellamFactory::buildAsSkellam(const NumericalPointCollection & parameters) const
+Skellam SkellamFactory::buildAsSkellam(const NumericalPoint & parameters) const
 {
   try
   {
     Skellam distribution;
-    distribution.setParametersCollection(parameters);
+    distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException)

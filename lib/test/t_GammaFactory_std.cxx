@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    estimatedDistribution = factory.build(distribution.getParametersCollection());
+    estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     Gamma estimatedGamma(factory.buildAsGamma(sample));
     fullprint << "Gamma          =" << distribution << std::endl;
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedGamma = factory.buildAsGamma();
     fullprint << "Default gamma=" << estimatedGamma << std::endl;
-    estimatedGamma = factory.buildAsGamma(distribution.getParametersCollection());
+    estimatedGamma = factory.buildAsGamma(distribution.getParameter());
     fullprint << "Gamma from parameters=" << estimatedGamma << std::endl;
   }
   catch (TestFailed & ex)

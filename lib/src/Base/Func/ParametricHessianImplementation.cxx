@@ -101,9 +101,9 @@ UnsignedInteger ParametricHessianImplementation::getInputDimension() const
   return p_evaluation_->getInputDimension();
 }
 
-UnsignedInteger ParametricHessianImplementation::getParametersDimension() const
+UnsignedInteger ParametricHessianImplementation::getParameterDimension() const
 {
-  return p_evaluation_->getParametersDimension();
+  return p_evaluation_->getParameterDimension();
 }
 
 UnsignedInteger ParametricHessianImplementation::getOutputDimension() const

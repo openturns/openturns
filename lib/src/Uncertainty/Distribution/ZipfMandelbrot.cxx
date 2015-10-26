@@ -268,31 +268,33 @@ NumericalSample ZipfMandelbrot::getSupport(const Interval & interval) const
   return result;
 }
 
-/* Parameters value and description accessor */
-ZipfMandelbrot::NumericalPointWithDescriptionCollection ZipfMandelbrot::getParametersCollection() const
+/* Parameters value accessor */
+NumericalPoint ZipfMandelbrot::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(3);
-  Description description(point.getDimension());
+  NumericalPoint point(3);
   point[0] = n_;
   point[1] = q_;
   point[2] = s_;
-  description[0] = "n";
-  description[1] = "q";
-  description[2] = "s";
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return point;
 }
 
-void ZipfMandelbrot::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ZipfMandelbrot::setParameter(const NumericalPoint & parameter)
 {
-  const NumericalScalar w(getWeight());
-  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parametersCollection[0][0])), parametersCollection[0][1], parametersCollection[0][2]);
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  const NumericalScalar w = getWeight();
+  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parameter[0])), parameter[1], parameter[2]);
   setWeight(w);
 }
 
+/* Parametersdescription accessor */
+Description ZipfMandelbrot::getParameterDescription() const
+{
+  Description description(3);
+  description[0] = "n";
+  description[1] = "q";
+  description[2] = "s";
+  return description;
+}
 
 /* Method save() stores the object through the StorageManager */
 void ZipfMandelbrot::save(Advocate & adv) const
