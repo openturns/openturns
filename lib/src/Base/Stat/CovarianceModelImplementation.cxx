@@ -50,7 +50,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   updateSpatialCovariance();
 }
 
-/* Constructor with parameters */
+/* Constructor with parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
                                                              const NumericalPoint & amplitude,
                                                              const NumericalPoint & scale)
@@ -71,7 +71,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   updateSpatialCovariance();
 }
 
-/** Standard constructor with amplitude and scale parameters parameters */
+/** Standard constructor with amplitude and scale parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
                                                              const NumericalPoint & scale)
  : PersistentObject()
@@ -111,7 +111,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   setSpatialCorrelation(spatialCorrelation);
 }
 
-/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+/** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
                                                              const NumericalPoint & scale,
                                                              const CorrelationMatrix & spatialCorrelation)
@@ -162,7 +162,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   } // !isDiagonal
 }
 
-/** Standard constructor with scale and spatial covariance parameters parameters */
+/** Standard constructor with scale and spatial covariance parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
                                                              const CovarianceMatrix & spatialCovariance)
  : PersistentObject()
@@ -514,25 +514,25 @@ void CovarianceModelImplementation::setNuggetFactor(const NumericalScalar nugget
 }
 
 /* Parameters accessor */
-void CovarianceModelImplementation::setParameters(const NumericalPoint & parameters)
+void CovarianceModelImplementation::setParameter(const NumericalPoint & parameter)
 {
   // Default parameter setter
-  // By convention, the first points corresponds to scale parameters
-  // it follows amplitude parameters
-  if (parameters.getDimension() != spatialDimension_ + 1)
-    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameters: parameters dimension should be " << spatialDimension_ + dimension_
-                                         << "(got " << parameters.getDimension() << ")";
+  // By convention, the first points corresponds to scale parameter
+  // it follows amplitude parameter
+  if (parameter.getDimension() != spatialDimension_ + 1)
+    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter: parameter dimension should be " << spatialDimension_ + dimension_
+                                         << "(got " << parameter.getDimension() << ")";
   NumericalPoint scale(spatialDimension_);
   NumericalPoint amplitude(dimension_);
-  for (UnsignedInteger j = 0; j < spatialDimension_; ++j) scale[j] = parameters[j];
-  for (UnsignedInteger j = 0; j < dimension_; ++j) amplitude[j] = parameters[spatialDimension_ + j];
+  for (UnsignedInteger j = 0; j < spatialDimension_; ++j) scale[j] = parameter[j];
+  for (UnsignedInteger j = 0; j < dimension_; ++j) amplitude[j] = parameter[spatialDimension_ + j];
   setScale(scale);
   setAmplitude(amplitude);
 }
 
 NumericalPoint CovarianceModelImplementation::getParameter() const
 {
-  // Convention : scale parameters + amplitude parameters
+  // Convention : scale parameter + amplitude parameter
   NumericalPoint result(getScale());
   result.add(getAmplitude());
   // return result
@@ -541,7 +541,7 @@ NumericalPoint CovarianceModelImplementation::getParameter() const
 
 Description CovarianceModelImplementation::getParameterDescription() const
 {
-  // Convention : scale parameters + amplitude parameters
+  // Convention : scale parameter + amplitude parameter
   Description description(spatialDimension_ + dimension_);
   for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
   {

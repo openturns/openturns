@@ -161,7 +161,7 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void ProductCovarianceModel::setParameters(const NumericalPoint & parameters)
+void ProductCovarianceModel::setParameter(const NumericalPoint & parameters)
 {
   const UnsignedInteger parametersDimension(getParameter().getDimension());
   if (parameters.getDimension() != parametersDimension) throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameters.getDimension() << ")";
@@ -173,7 +173,7 @@ void ProductCovarianceModel::setParameters(const NumericalPoint & parameters)
     NumericalPoint atomParameters(atomParametersDimension);
     std::copy(parameters.begin() + start, parameters.begin() + stop, atomParameters.begin());
     start = stop;
-    collection_[i].setParameters(atomParameters);
+    collection_[i].setParameter(atomParameters);
   }
 }
 

@@ -24,6 +24,7 @@
  * Removed CovarianceModel::getParameters
  * Added CovarianceModel::getParameter
  * Added CovarianceModel::getParameterDescription
+ * Moved CovarianceModel::setParameters to CovarianceModel::setParameter
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)

@@ -40,8 +40,8 @@ OT_CovarianceModel_setAmplitude_doc
 OT_CovarianceModel_setScale_doc
 %feature("docstring") OT::CovarianceModel::setNuggetFactor
 OT_CovarianceModel_set_nugget_factor_doc
-%feature("docstring") OT::CovarianceModel::setParameters
-OT_CovarianceModel_setParameters_doc
+%feature("docstring") OT::CovarianceModel::setParameter
+OT_CovarianceModel_setParameter_doc
 %feature("docstring") OT::CovarianceModel::setSpatialCorrelation
 OT_CovarianceModel_setSpatialCorrelation_doc
 %feature("docstring") OT::CovarianceModel::operator()

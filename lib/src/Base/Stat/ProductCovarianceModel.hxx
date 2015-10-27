@@ -66,7 +66,7 @@ public:
   virtual Implementation getMarginal(const UnsignedInteger index) const;
 
   /** Parameters accessor */
-  void setParameters(const NumericalPoint & parameters);
+  void setParameter(const NumericalPoint & parameters);
   NumericalPoint getParameter() const;
   Description getParameterDescription() const;
 

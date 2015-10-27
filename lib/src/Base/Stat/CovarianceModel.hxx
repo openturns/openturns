@@ -40,7 +40,7 @@ public:
 
   typedef CovarianceModelImplementation::Implementation    Implementation;
 
-  /** Default constructor without parameters */
+  /** Default constructor without parameter */
   CovarianceModel();
 
   /** Copy constructors */
@@ -113,7 +113,7 @@ public:
   NumericalScalar getNuggetFactor() const;
 
   /** Parameters accessor */
-  void setParameters(const NumericalPoint & parameters);
+  void setParameter(const NumericalPoint & parameter);
   NumericalPoint getParameter() const;
   Description getParameterDescription() const;
 

@@ -31,7 +31,7 @@ CLASSNAMEINIT(CovarianceModel);
 
 //   static const Factory<CovarianceModel> RegisteredFactory;
 
-/* Constructor without parameters */
+/* Constructor without parameter */
 CovarianceModel::CovarianceModel()
   : TypedInterfaceObject<CovarianceModelImplementation>(new ExponentialModel())
 {
@@ -205,10 +205,10 @@ void CovarianceModel::setNuggetFactor(const NumericalScalar nuggetFactor)
 }
 
 /* Parameters accessor */
-void CovarianceModel::setParameters(const NumericalPoint& parameters)
+void CovarianceModel::setParameter(const NumericalPoint& parameter)
 {
   copyOnWrite();
-  getImplementation()->setParameters(parameters);
+  getImplementation()->setParameter(parameter);
 }
 
 NumericalPoint CovarianceModel::getParameter() const
