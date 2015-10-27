@@ -191,7 +191,7 @@ ot_add_python_module(statistics statistics_module.i
                       UserDefinedCovarianceModel.i UserDefinedCovarianceModel_doc.i.in
                       UserDefinedStationaryCovarianceModel.i
                       StationaryCovarianceModelFactory.i
-                      NonStationaryCovarianceModelFactory.i
+                      NonStationaryCovarianceModelFactory.i NonStationaryCovarianceModelFactory_doc.i.in
                       SquaredExponential.i SquaredExponential_doc.i.in
                       GeneralizedExponential.i GeneralizedExponential_doc.i.in
                       AbsoluteExponential.i AbsoluteExponential_doc.i.in
