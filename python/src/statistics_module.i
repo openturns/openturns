@@ -37,11 +37,12 @@
 %import BaseGeomTemplateDefs.i
 %include LevelSet.i
 
-/* Base/Stat */ 
+/* Base/Stat */
 %include Compact.i  
 %include Full.i  
 %include Last.i  
 %include Null.i  
+%include HMatrixParameters.i
 %include LinearModel.i  
 %include LinearModelFactory.i  
 %include TestResult.i  
@@ -88,6 +89,7 @@
 %include GeneralizedExponential.i
 %include AbsoluteExponential.i
 %include MaternModel.i
+%include DiracCovarianceModel.i
 %include ProductCovarianceModel.i
 %include HMatrixFactory.i
 %include HMatrixImplementation.i

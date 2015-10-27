@@ -12,6 +12,8 @@
 ==== New classes ====
  * OptimizationSolver
  * OptimizationProblem
+ * DiracCovarianceModel
+ * HMatrixParameters
 
 ==== API changes ====
  * Removed BoundConstrainedAlgorithm class
@@ -25,6 +27,9 @@
  * Added CovarianceModel::getParameter
  * Added CovarianceModel::getParameterDescription
  * Moved CovarianceModel::setParameters to CovarianceModel::setParameter
+ * Added discretizeAndFactorize method to covariance model classes
+ * Added discretizeHMatrix method to covariance model classes
+ * Added discretizeAndFactorizeHMatrix method to covariance model classes
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)
