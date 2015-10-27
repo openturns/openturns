@@ -4,6 +4,8 @@
 OT_DistributionFactory_doc
 %feature("docstring") OT::DistributionFactory::build
 OT_DistributionFactory_build_doc
+%feature("docstring") OT::DistributionFactory::buildEstimator
+OT_DistributionFactory_buildEstimator_doc
 %feature("docstring") OT::DistributionFactory::GetContinuousMultiVariateFactories
 OT_DistributionFactory_GetContinuousMultiVariateFactories_doc
 %feature("docstring") OT::DistributionFactory::GetContinuousUniVariateFactories

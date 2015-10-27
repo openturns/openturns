@@ -21,10 +21,7 @@
 #ifndef OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 
-#include "DistributionImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "CovarianceMatrix.hxx"
+#include "DistributionFactoryResult.hxx"
 #include "PersistentObject.hxx"
 #include "ResourceMap.hxx"
 
@@ -69,12 +66,18 @@ public:
   /** Build a distribution using its default constructor */
   virtual Implementation build() const;
 
+  /** Build the distribution and the parameter distribution */
+  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
 
 protected:
+  /* Bootstrap estimator */
+  virtual DistributionFactoryResult buildBootStrapEstimator(const NumericalSample & sample, const Bool isGaussian = false) const;
+
   /* Execute a R script */
   virtual NumericalPoint runRFactory(const NumericalSample & sample,
                                      const DistributionImplementation & distribution) const;

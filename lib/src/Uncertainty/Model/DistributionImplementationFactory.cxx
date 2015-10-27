@@ -29,6 +29,8 @@
 #include "Log.hxx"
 #include "Os.hxx"
 #include "BootstrapExperiment.hxx"
+#include "NormalFactory.hxx"
+#include "KernelSmoothing.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -106,6 +108,36 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
 DistributionImplementationFactory::Implementation DistributionImplementationFactory::build() const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementationFactory::build() const";
+}
+
+DistributionFactoryResult DistributionImplementationFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample);
+}
+
+DistributionFactoryResult DistributionImplementationFactory::buildBootStrapEstimator(const NumericalSample & sample,
+                                                                                     const Bool isGaussian) const
+{
+  Distribution distribution(build(sample));
+  UnsignedInteger bootstrapSize = getBootstrapSize();
+  BootstrapExperiment experiment(sample);
+  NumericalSample parameterSample(0, distribution.getParameterDimension());
+  for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
+  {
+    NumericalSample bootstrapSample(experiment.generate());
+    Distribution estimatedDistribution(build(bootstrapSample));
+    parameterSample.add(estimatedDistribution.getParameter());
+  }
+  Distribution parameterDistribution;
+  if (isGaussian) {
+    NormalFactory factory;
+    parameterDistribution = factory.build(parameterSample);
+  } else {
+    KernelSmoothing factory;
+    parameterDistribution = factory.build(parameterSample);
+  }
+  DistributionFactoryResult result(distribution, parameterDistribution);
+  return result;
 }
 
 /* Execute a R script */

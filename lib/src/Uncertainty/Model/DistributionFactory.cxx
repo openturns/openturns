@@ -202,4 +202,9 @@ Distribution DistributionFactory::build() const
   return getImplementation()->build();
 }
 
+DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return getImplementation()->buildEstimator(sample);
+}
+
 END_NAMESPACE_OPENTURNS

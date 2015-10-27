@@ -39,6 +39,29 @@ OT_DistributionFactory_build_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_DistributionFactory_buildEstimator_doc
+"Build the distribution and the distribution of its parameter.
+
+If the distribution is estimated by method of moments, the distribution of the
+parameter is gaussian and estimated by bootstrap.
+In other cases, the distribution of parameter is estimated by bootstrap with
+:class:`~openturns.KernelSmoothing`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.DistributionFactoryResult`
+    The results."
+%enddef
+%feature("docstring") OT::DistributionFactoryImplementation::buildEstimator
+OT_DistributionFactory_buildEstimator_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_DistributionFactory_GetContinuousMultiVariateFactories_doc
 "Accessor to the list of continuous multivariate factories.
 
