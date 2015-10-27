@@ -18,6 +18,7 @@
  * Removed NearestPointAlgorithm class
  * Deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
  * Deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
+ * Replaced KrigingAlgorithm::[gs]etOptimizer methods by KrigingAlgorithm::[gs]etOptimizationSolver
  * Removed ConfidenceInterval class
  * Removed draw method to CovarianceModel
  * Removed CovarianceModel::getParameters

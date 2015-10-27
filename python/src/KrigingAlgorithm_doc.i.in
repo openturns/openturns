@@ -83,7 +83,7 @@ OpenTURNS estimates with the maximum likelihood method the following parameters:
     - :math:`(\beta_1, \dots, \beta_M)`
     - :math:`\vect{\sigma}` if :math:`\sigma_i=\sigma` for all *i*.
 
-The parameter :math:`\vect{\theta}` is fixed by the User. However, :math:`\vect{\theta}` and :math:`\vect{\sigma}` can be estimated using the maximum likelihood estimators if an optimizer is fixed by the User with the method *setOptimizer*.
+The parameter :math:`\vect{\theta}` is fixed by the User. However, :math:`\vect{\theta}` and :math:`\vect{\sigma}` can be estimated using the maximum likelihood estimators if an optimizer is fixed by the User with the method *setOptimizationSolver*.
 
 It is also possible to proceed as follows:
 
@@ -121,22 +121,22 @@ Get the resulting meta model:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::getOptimizer
+%feature("docstring") OT::KrigingAlgorithm::getOptimizationSolver
 "Accessor to solver used to optimize the covariance model parameters.
 
 Returns
 -------
-algorithm : :class:`~openturns.BoundConstrainedAlgorithm`
+algorithm : :class:`~openturns.OptimizationSolver`
     Solver used to optimize the covariance model parameters."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::setOptimizer
+%feature("docstring") OT::KrigingAlgorithm::setOptimizationSolver
 "Accessor to the solver used to optimize the covariance model parameters.
 
 Parameters
 ----------
-algorithm : :class:`~openturns.BoundConstrainedAlgorithm`
+algorithm : :class:`~openturns.OptimizationSolver`
     Solver used to optimize the covariance model parameters.
 
 Examples
@@ -155,9 +155,11 @@ Create the Kriging algorithm with the optimizer option:
 >>> covariance = ot.GeneralizedExponential(1, thetaInit, 2.0)
 >>> optimizer = ot.TNC()
 >>> bounds = ot.Interval(1e-2,1e2)
->>> optimizer.setBoundConstraints(bounds)
+>>> optimProblem = ot.OptimizationProblem()
+>>> optimProblem.setBounds(bounds)
+>>> optimizer.setProblem(optimProblem)
 >>> algo = ot.KrigingAlgorithm(input_data, output_data, basis, covariance)
->>> algo.setOptimizer(optimizer)
+>>> algo.setOptimizationSolver(optimizer)
 
 Launch the algorithm and get the result:
 
