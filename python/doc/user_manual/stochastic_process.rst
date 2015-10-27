@@ -11,10 +11,10 @@ General objects
     :toctree: _generated/
     :template: class.rst_t
 
-     Process
-     Field
-     TimeSeries
-     ProcessSample
+    Process
+    Field
+    TimeSeries
+    ProcessSample
 
 Temporal information
 ====================
@@ -23,18 +23,22 @@ Temporal information
     :toctree: _generated/
     :template: class.rst_t
 
-     CovarianceModel
-     CovarianceModelFactory
+    CovarianceModel
+    CovarianceModelFactory
+
     :template: CovarianceModel.rst_t
-     ExponentialModel
-     ExponentiallyDampedCosineModel
-     SphericalModel
+    ExponentialModel
+    ExponentiallyDampedCosineModel
+    SphericalModel
+
+    :template: classWithPlot.rst_t
+    UserDefinedCovarianceModel
+
     :template: class.rst_t
-     StationaryCovarianceModel
-     UserDefinedCovarianceModel
-     UserDefinedStationaryCovarianceModel
-     NonStationaryCovarianceModelFactory
-     StationaryCovarianceModelFactory
+    StationaryCovarianceModel
+    UserDefinedStationaryCovarianceModel
+    NonStationaryCovarianceModelFactory
+    StationaryCovarianceModelFactory
 
 Spectral information
 ====================
@@ -43,19 +47,17 @@ Spectral information
     :toctree: _generated/
     :template: class.rst_t
 
-     SpectralModel
-    :template: SpectralModel.rst_t
-     CauchyModel
-    :template: class.rst_t
-     UserDefinedSpectralModel
-     SpectralModelFactory
-     WelchFactory
-     FilteringWindows
+    SpectralModel
+    CauchyModel
+    UserDefinedSpectralModel
+    SpectralModelFactory
+    WelchFactory
+    FilteringWindows
 
     :template: FilteringWindow.rst_t
 
-     Hanning
-     Hamming
+    Hanning
+    Hamming
 
 Link Temporal - Spectral information
 ====================================
@@ -64,9 +66,8 @@ Link Temporal - Spectral information
     :toctree: _generated/
     :template: class.rst_t
 
-     SecondOrderModel
-    :template: SecondOrderModel.rst_t
-     ExponentialCauchy
+    SecondOrderModel
+    ExponentialCauchy
 
 Normal process
 ==============
@@ -75,8 +76,8 @@ Normal process
     :toctree: _generated/
     :template: Process.rst_t
 
-     SpectralNormalProcess
-     TemporalNormalProcess
+    SpectralNormalProcess
+    TemporalNormalProcess
 
     :template: class.rst_t
     ConditionedNormalProcess
@@ -88,7 +89,7 @@ Functional basis process
     :toctree: _generated/
     :template: Process.rst_t
 
-     FunctionalBasisProcess
+    FunctionalBasisProcess
 
 Composite process
 =================
@@ -106,7 +107,7 @@ Aggregated process
     :toctree: _generated/
     :template: Process.rst_t
 
-     AggregatedProcess
+    AggregatedProcess
 
 ARMA
 ====
@@ -115,11 +116,11 @@ ARMA
     :toctree: _generated/
     :template: Process.rst_t
 
-     ARMA
+    ARMA
 
     :template: class.rst_t
-     ARMACoefficients
-     ARMAState
+    ARMACoefficients
+    ARMAState
 
 ARMA factory
 ============
@@ -128,14 +129,14 @@ ARMA factory
     :toctree: _generated/
     :template: class.rst_t
 
-     ARMAFactory
-     WhittleFactoryState
-     WhittleFactory
-     ARMALikelihoodFactory
-     BoxCoxEvaluationImplementation
-     InverseBoxCoxEvaluationImplementation
-     TrendEvaluationImplementation
-     InverseTrendEvaluationImplementation
+    ARMAFactory
+    WhittleFactoryState
+    WhittleFactory
+    ARMALikelihoodFactory
+    BoxCoxEvaluationImplementation
+    InverseBoxCoxEvaluationImplementation
+    TrendEvaluationImplementation
+    InverseTrendEvaluationImplementation
 
 RandomWalk
 ==========
@@ -144,7 +145,7 @@ RandomWalk
     :toctree: _generated/
     :template: Process.rst_t
 
-     RandomWalk
+    RandomWalk
 
 WhiteNoise
 ==========
@@ -153,7 +154,7 @@ WhiteNoise
     :toctree: _generated/
     :template: Process.rst_t
 
-     WhiteNoise
+    WhiteNoise
 
 Check hypothesis on time series
 ===============================
@@ -162,4 +163,4 @@ Check hypothesis on time series
     :toctree: _generated/
     :template: class.rst_t
 
-     DickeyFullerTest
+    DickeyFullerTest

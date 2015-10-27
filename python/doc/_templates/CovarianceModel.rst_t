@@ -24,7 +24,7 @@
             def f(x):
                 return [covarianceModel([x[0]], [x[1]])[0, 0]]
             func = ot.PythonFunction(2,1,f)
-            func.setDescripion(['$s$', '$t$', '$cov$'])
+            func.setDescription(['$s$', '$t$', '$cov$'])
             cov_graph = func.draw([-3.0 * scale]*2, [3.0 * scale]*2, [129]*2)
             fig = plt.figure(figsize=(10, 4))
             plt.suptitle(str(covarianceModel))

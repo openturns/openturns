@@ -1,0 +1,109 @@
+%feature("docstring") OT::UserDefinedCovarianceModel
+"Covariance model defined by the User.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    A mesh which contains `N` vertices.
+sample : :class:`~openturns.CovarianceMatrixCollection`
+    A collection of :math:`N(N+1)/2` covariance matrices.
+
+Notes
+-----
+The covariance model is built as follows.
+We consider a process :math:`X: \Omega \times\cD \mapsto \Rset^d` with :math:`\cD \in \Rset^n`. We note :math:`(\vect{t}_0,\dots, \vect{t}_{N-1})` the vertices of :math:`\cM \in \cD` and :math:`(\mat{C}_{k,\ell})_{0 \leq \ell \leq k \leq N-1}` where :math:`\mat{C}_{k,\ell} \in \mathcal{M}_{d \times d}(\Rset)` the collection of covariance matrices fixed by the User.
+
+Care: The covariance matrices :math:`(\mat{C}_{i,j})_{0 \leq j \leq i \leq N-1}` must be given in the following order:
+
+.. math::
+
+    \mat{C}_{0,0}, \, \mat{C}_{1, 0}, \, \mat{C}_{1,1}, \, \mat{C}_{2,0},  \,\mat{C}_{2,1},\, \mat{C}_{2,2}, \,\dots
+
+which corresponds to the global covariance matrix, which lower part is:
+
+.. math::
+
+    \left(
+    \begin{array}{cccc}
+    \mat{C}_{0,0}& & & \\
+    \mat{C}_{1,0}&  \mat{C}_{1,1}& & \\
+    \mat{C}_{2,0}&   \mat{C}_{2,1}& \mat{C}_{2,2}& \\
+    \dots & \dots & \dots & \dots
+    \end{array}
+    \right)
+
+
+We build a covariance function which is a  piecewise constant function defined on :math:`\cD \times \cD` by:
+
+.. math::
+
+    \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \, \quad C(\vect{s}, \vect{t}) =  \mat{C}_{k(\vect{s}),k(\vect{t})}
+
+
+where :math:`k(\vect{s})` is such that :math:`\vect{t}_{k(\vect{s})}` is the  vertex of :math:`\cM` the nearest to :math:`\vect{s}`.
+
+Note that:
+
+    - the  matrix :math:`\mat{C}_{k,\ell}` has the index :math:`n=\ell +\dfrac{k(k+1)}{2}` in the collection of covariance matrcies fixed by the User;
+    - inversely, the matrix stored at index `n` in the collection is the matrix :math:`\mat{C}_{k,\ell}` where:
+
+.. math::
+
+    k=\left\lfloor \dfrac{1}{2}\left( \sqrt{8n+1}-1 \right) \right\rfloor, \quad  \ell= n-\dfrac{k(k+1)}{2}
+
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> import math as m
+
+Create the covariance function at (s,t):
+
+>>> def C(s, t):
+...     return m.exp( -4.0 * abs(s - t) / (1 + (s * s + t * t)))
+
+Create the time grid:
+
+>>> N = 128
+>>> a = 4.0
+>>> myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
+
+Create the collection of elementary covariance matrices 
+ie the n(n+1)/2 small covariance matrices quantifying
+the covariance between X(s) and X(t) for s, t in the
+vertices of the mesh and index(s) <= index(t):
+
+>>> myCovarianceCollection = ot.CovarianceMatrixCollection()
+>>> for k in range(myMesh.getVerticesNumber()):
+...     t = myMesh.getVertices()[k]
+...     for l in range(k + 1):
+...         s = myMesh.getVertices()[l]
+...         matrix = ot.CovarianceMatrix(1)
+...         matrix[0, 0] = C(s[0], t[0])
+...         myCovarianceCollection.add(matrix)
+
+Create the covariance model:
+
+>>> myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovarianceCollection)
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::UserDefinedCovarianceModel::getMesh
+"Accessor to the mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh associated to the collection of covariance matrices.
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::UserDefinedCovarianceModel::getTimeGrid
+"Accessor to the time grid.
+
+Returns
+-------
+mesh : :class:`~openturns.RegularGrid`
+    The time grid associated to the collection of covariance matrices when the mesh can be interpreted as a regular time grid.
+"
