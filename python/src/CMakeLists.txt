@@ -417,6 +417,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       DistributionImplementation.i DistributionImplementation_doc.i.in
                       DistributionImplementationFactory.i DistributionImplementationFactory_doc.i.in
                       Distribution.i Distribution_doc.i.in
+                      DistributionFactoryResult.i DistributionFactoryResult_doc.i.in
                       DistributionFactory.i DistributionFactory_doc.i.in
                       DistributionParametersImplementation.i DistributionParametersImplementation_doc.i.in
                       DistributionParameters.i DistributionParameters_doc.i.in

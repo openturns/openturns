@@ -21,6 +21,7 @@ Building distributions from samples
     :template: class.rst_t
 
     DistributionFactory
+    DistributionFactoryResult
 
     :template: DistributionFactory.rst_t
 
