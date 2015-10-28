@@ -4,9 +4,19 @@
 Available constructor:
     LogisticFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\alpha} = \bar{x}\\
+      \displaystyle\Hat{\beta} = \Hat{\sigma}_x
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Logistic"
 
 
 
