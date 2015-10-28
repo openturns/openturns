@@ -4,6 +4,8 @@
 #include "StationaryCovarianceModelFactory.hxx"
 %}
 
+%include StationaryCovarianceModelFactory_doc.i
+
 %include StationaryCovarianceModelFactory.hxx
 namespace OT { 
 
