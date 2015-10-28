@@ -1009,19 +1009,29 @@ OT_NumericalMathFunction_draw_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getParameters_doc
-"**(ditch me?)**"
+%define OT_NumericalMathFunction_getParameter_doc
+"Accessor to the parameter.
+
+Returns
+-------
+parameter : :class:`~openturns.NumericalPointWithDescription`
+    The parameter values."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getParameters
-OT_NumericalMathFunction_getParameters_doc
+%feature("docstring") OT::NumericalMathFunctionImplementation::getParameter
+OT_NumericalMathFunction_getParameter_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setParameters_doc
-"**(ditch me?)**"
+%define OT_NumericalMathFunction_setParameter_doc
+"Accessor to the parameter.
+
+Parameters
+----------
+parameter : :class:`~openturns.NumericalPointWithDescription`
+    The parameter values."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setParameters
-OT_NumericalMathFunction_setParameters_doc
+%feature("docstring") OT::NumericalMathFunctionImplementation::setParameter
+OT_NumericalMathFunction_setParameter_doc
 
 // ---------------------------------------------------------------------
 

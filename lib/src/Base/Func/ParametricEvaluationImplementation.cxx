@@ -112,7 +112,7 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Par
   // The parameters position will be enlarged
   parametersPositions_ = evaluation.parametersPositions_;
   // The parameters values too
-  parameters_ = evaluation.getParameters();
+  parameters_ = evaluation.getParameter();
   // And their description
   Description parametersDescription(parameters_.getDescription());
   const Description inputDescription(evaluation.getInputDescription());
@@ -191,7 +191,7 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalS
 }
 
 /* Parameters accessor */
-void ParametricEvaluationImplementation::setParameters(const NumericalPointWithDescription & parameters)
+void ParametricEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
   if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;
@@ -199,7 +199,7 @@ void ParametricEvaluationImplementation::setParameters(const NumericalPointWithD
 }
 
 /* Parameters accessor */
-void ParametricEvaluationImplementation::setParameters(const NumericalPoint & parameters)
+void ParametricEvaluationImplementation::setParameter(const NumericalPoint & parameters)
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
   if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;

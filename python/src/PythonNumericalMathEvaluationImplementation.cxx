@@ -135,7 +135,7 @@ String PythonNumericalMathEvaluationImplementation::__repr__() const
   oss << "class=" << PythonNumericalMathEvaluationImplementation::GetClassName()
       << " name=" << getName()
       << " description=" << getDescription()
-      << " parameters=" << getParameters();
+      << " parameter=" << getParameter();
   return oss;
 }
 

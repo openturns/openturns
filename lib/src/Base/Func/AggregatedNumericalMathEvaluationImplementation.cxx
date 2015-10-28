@@ -221,13 +221,13 @@ UnsignedInteger AggregatedNumericalMathEvaluationImplementation::getOutputDimens
 /* Gradient according to the marginal parameters */
 Matrix AggregatedNumericalMathEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
 {
-  Matrix result(getParameters().getDimension(), getOutputDimension());
+  Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size(functionsCollection_.getSize());
   UnsignedInteger rowShift(0);
   UnsignedInteger columnShift(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Matrix currentGradient(functionsCollection_[i].parametersGradient(functionsCollection_[i].getParameters()));
+    const Matrix currentGradient(functionsCollection_[i].parametersGradient(functionsCollection_[i].getParameter()));
     const UnsignedInteger currentRowDim(currentGradient.getNbRows());
     const UnsignedInteger currentColumnDim(currentGradient.getNbColumns());
     for (UnsignedInteger j = 0; j < currentRowDim; ++j)
@@ -240,14 +240,14 @@ Matrix AggregatedNumericalMathEvaluationImplementation::parametersGradient(const
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription AggregatedNumericalMathEvaluationImplementation::getParameters() const
+NumericalPointWithDescription AggregatedNumericalMathEvaluationImplementation::getParameter() const
 {
   NumericalPointWithDescription parametersValues(0);
   Description parametersDescription(0);
   const UnsignedInteger size(functionsCollection_.getSize());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPointWithDescription currentParameters(functionsCollection_[i].getParameters());
+    const NumericalPointWithDescription currentParameters(functionsCollection_[i].getParameter());
     const Description currentDescription(currentParameters.getDescription());
     const UnsignedInteger dimension(currentParameters.getDimension());
     for (UnsignedInteger j = 0; j < dimension; ++j)

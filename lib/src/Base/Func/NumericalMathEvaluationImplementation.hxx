@@ -171,9 +171,9 @@ public:
   virtual Matrix parametersGradient(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameters() const;
-  virtual void setParameters(const NumericalPointWithDescription & parameters);
-  virtual void setParameters(const NumericalPoint & parameters);
+  virtual NumericalPointWithDescription getParameter() const;
+  virtual void setParameter(const NumericalPointWithDescription & parameters);
+  virtual void setParameter(const NumericalPoint & parameters);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;

@@ -90,7 +90,7 @@ Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP)
 Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
-  setParameters(parameters);
+  setParameter(parameters);
   return gradient(inP);
 }
 
@@ -113,12 +113,12 @@ UnsignedInteger NumericalMathGradientImplementation::getCallsNumber() const
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathGradientImplementation::getParameters() const
+NumericalPointWithDescription NumericalMathGradientImplementation::getParameter() const
 {
   return parameters_;
 }
 
-void NumericalMathGradientImplementation::setParameters(const NumericalPointWithDescription & parameters)
+void NumericalMathGradientImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
   parameters_ = parameters;
 }

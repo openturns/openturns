@@ -113,12 +113,12 @@ NumericalSample ComposedNumericalMathEvaluationImplementation::operator() (const
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::getParameters() const
+NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::getParameter() const
 {
-  const NumericalPointWithDescription rightParameters(p_rightFunction_->getParameters());
+  const NumericalPointWithDescription rightParameters(p_rightFunction_->getParameter());
   const UnsignedInteger rightDimension(rightParameters.getDimension());
   const Description rightDescription(rightParameters.getDescription());
-  const NumericalPointWithDescription leftParameters(p_leftFunction_->getParameters());
+  const NumericalPointWithDescription leftParameters(p_leftFunction_->getParameter());
   const UnsignedInteger leftDimension(leftParameters.getDimension());
   const Description leftDescription(leftParameters.getDescription());
   const UnsignedInteger dimension(rightDimension + leftDimension);
@@ -141,11 +141,11 @@ NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::get
   return parameters;
 }
 
-void ComposedNumericalMathEvaluationImplementation::setParameters(const NumericalPointWithDescription & parameters)
+void ComposedNumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
-  NumericalPointWithDescription rightParameters(p_rightFunction_->getParameters());
+  NumericalPointWithDescription rightParameters(p_rightFunction_->getParameter());
   const UnsignedInteger rightDimension(rightParameters.getDimension());
-  NumericalPointWithDescription leftParameters(p_leftFunction_->getParameters());
+  NumericalPointWithDescription leftParameters(p_leftFunction_->getParameter());
   const UnsignedInteger leftDimension(leftParameters.getDimension());
   const Description description(parameters.getDescription());
   Description rightDescription(rightDimension);
@@ -158,7 +158,7 @@ void ComposedNumericalMathEvaluationImplementation::setParameters(const Numerica
     ++index;
   }
   rightParameters.setDescription(rightDescription);
-  p_rightFunction_->setParameters(rightParameters);
+  p_rightFunction_->setParameter(rightParameters);
   for (UnsignedInteger i = 0; i < leftDimension; ++i)
   {
     leftParameters[i] = parameters[index];
@@ -166,7 +166,7 @@ void ComposedNumericalMathEvaluationImplementation::setParameters(const Numerica
     ++index;
   }
   leftParameters.setDescription(leftDescription);
-  p_leftFunction_->setParameters(leftParameters);
+  p_leftFunction_->setParameter(leftParameters);
 }
 
 /* Accessor for input point dimension */

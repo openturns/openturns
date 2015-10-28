@@ -2527,7 +2527,7 @@ DistributionImplementation::IsoProbabilisticTransformation DistributionImplement
     const String name(parameters.getName());
     for (UnsignedInteger i = 0; i < parametersDimension; i++) parametersDescription[i] = OSS() << name << "_" << parametersDescription[i];
     parameters.setDescription(parametersDescription);
-    inverseTransformation.setParameters(parameters);
+    inverseTransformation.setParameter(parameters);
     return inverseTransformation;
   }
   // General case, Rosenblatt transformation
@@ -2558,7 +2558,7 @@ DistributionImplementation::InverseIsoProbabilisticTransformation DistributionIm
     const String name(parameters.getName());
     for (UnsignedInteger i = 0; i < parametersDimension; i++) parametersDescription[i] = OSS() << name << "_" << parametersDescription[i];
     parameters.setDescription(parametersDescription);
-    inverseTransformation.setParameters(parameters);
+    inverseTransformation.setParameter(parameters);
     return inverseTransformation;
   }
   // General case, inverse Rosenblatt transformation

@@ -82,7 +82,7 @@ public:
   Matrix parametersGradient(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescription getParameters() const;
+  NumericalPointWithDescription getParameter() const;
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;

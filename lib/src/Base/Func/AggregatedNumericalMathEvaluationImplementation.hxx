@@ -82,7 +82,7 @@ public:
   Matrix parametersGradient(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescription getParameters() const;
+  NumericalPointWithDescription getParameter() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

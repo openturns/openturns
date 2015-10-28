@@ -512,7 +512,7 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
     description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
   }
   parameters.setDescription(description);
-  transform.setParameters(parameters);
+  transform.setParameter(parameters);
   return transform;
 }
 
@@ -542,7 +542,7 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
     description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
   }
   parameters.setDescription(description);
-  inverseTransform.setParameters(parameters);
+  inverseTransform.setParameter(parameters);
   return inverseTransform;
 }
 

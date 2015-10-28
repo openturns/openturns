@@ -84,10 +84,10 @@ OT_NumericalMathFunction_getInputDimension_doc
 OT_NumericalMathFunction_getOutputDimension_doc
 %feature("docstring") OT::NumericalMathFunction::draw
 OT_NumericalMathFunction_draw_doc
-%feature("docstring") OT::NumericalMathFunction::getParameters
-OT_NumericalMathFunction_getParameters_doc
-%feature("docstring") OT::NumericalMathFunction::setParameters
-OT_NumericalMathFunction_setParameters_doc
+%feature("docstring") OT::NumericalMathFunction::getParameter
+OT_NumericalMathFunction_getParameter_doc
+%feature("docstring") OT::NumericalMathFunction::setParameter
+OT_NumericalMathFunction_setParameter_doc
 %feature("docstring") OT::NumericalMathFunction::parametersGradient
 OT_NumericalMathFunction_parametersGradient_doc
 %feature("docstring") OT::NumericalMathFunction::getUseDefaultGradientImplementation

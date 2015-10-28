@@ -90,7 +90,7 @@ String PythonNumericalMathGradientImplementation::__repr__() const
   OSS oss;
   oss << "class=" << PythonNumericalMathGradientImplementation::GetClassName()
       << " name=" << getName()
-      << " parameters=" << getParameters();
+      << " parameter=" << getParameter();
   return oss;
 }
 

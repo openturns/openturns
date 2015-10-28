@@ -294,7 +294,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
     }
     parameters.setDescription(parametersDescription);
   } // get all the parameters
-  setParameters(parameters);
+  setParameter(parameters);
 }
 
 /* Virtual constructor */
@@ -372,7 +372,7 @@ NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoi
  */
 Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint & inP) const
 {
-  const NumericalPoint parameters(getParameters());
+  const NumericalPoint parameters(getParameter());
   const UnsignedInteger parametersDimension(parameters.getDimension());
   const UnsignedInteger inputDimension(getInputDimension());
   Matrix result(parametersDimension, inputDimension);

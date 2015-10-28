@@ -304,8 +304,8 @@ public:
                                     const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameters() const;
-  virtual void setParameters(const NumericalPointWithDescription & parameters);
+  virtual NumericalPointWithDescription getParameter() const;
+  virtual void setParameter(const NumericalPointWithDescription & parameters);
 
   /** Accessor for parameter dimension */
   UnsignedInteger getParameterDimension() const;

@@ -72,9 +72,9 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Parameters accessor */
-  using NumericalMathEvaluationImplementation::setParameters;
-  void setParameters(const NumericalPointWithDescription & parameters);
-  void setParameters(const NumericalPoint & parameters);
+  using NumericalMathEvaluationImplementation::setParameter;
+  void setParameter(const NumericalPointWithDescription & parameters);
+  void setParameter(const NumericalPoint & parameters);
 
   /** String converter */
   String __repr__() const;

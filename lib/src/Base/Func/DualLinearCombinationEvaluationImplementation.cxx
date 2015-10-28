@@ -314,7 +314,7 @@ UnsignedInteger DualLinearCombinationEvaluationImplementation::getOutputDimensio
 /* Gradient according to the marginal parameters */
 Matrix DualLinearCombinationEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
 {
-  Matrix result(getParameters().getDimension(), getOutputDimension());
+  Matrix result(getParameter().getDimension(), getOutputDimension());
   // const UnsignedInteger size(functionsCollection_.getSize());
   // // Get the parameters gradients for each atom and stack them into the result
   // UnsignedInteger rowIndex(0);
@@ -339,7 +339,7 @@ Matrix DualLinearCombinationEvaluationImplementation::parametersGradient(const N
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription DualLinearCombinationEvaluationImplementation::getParameters() const
+NumericalPointWithDescription DualLinearCombinationEvaluationImplementation::getParameter() const
 {
   NumericalPointWithDescription parameters(0);
   Description description(0);
@@ -347,7 +347,7 @@ NumericalPointWithDescription DualLinearCombinationEvaluationImplementation::get
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Extract the parameters of the current atom
-    NumericalPointWithDescription atomParameters(functionsCollection_[i].getParameters());
+    NumericalPointWithDescription atomParameters(functionsCollection_[i].getParameter());
     Description atomDescription(atomParameters.getDescription());
     const UnsignedInteger atomSize(atomParameters.getDimension());
     // Copy the parameters value and description
