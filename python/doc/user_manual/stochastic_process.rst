@@ -36,7 +36,12 @@ Temporal information
 
     :template: class.rst_t
     StationaryCovarianceModel
+    UserDefinedCovarianceModel
+
+    :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel
+
+    :template: class.rst_t
     NonStationaryCovarianceModelFactory
     StationaryCovarianceModelFactory
 
