@@ -1,4 +1,4 @@
-// DistributionFactory docstrings are defined in DistributionImplementationFactory_doc.i.in
+// DistributionFactory docstrings are defined in DistributionFactory_doc.i.in
 
 %feature("docstring") OT::DistributionFactory
 OT_DistributionFactory_doc
@@ -6,20 +6,68 @@ OT_DistributionFactory_doc
 OT_DistributionFactory_build_doc
 %feature("docstring") OT::DistributionFactory::buildEstimator
 OT_DistributionFactory_buildEstimator_doc
-%feature("docstring") OT::DistributionFactory::GetContinuousMultiVariateFactories
-OT_DistributionFactory_GetContinuousMultiVariateFactories_doc
-%feature("docstring") OT::DistributionFactory::GetContinuousUniVariateFactories
-OT_DistributionFactory_GetContinuousUniVariateFactories_doc
-%feature("docstring") OT::DistributionFactory::GetDiscreteMultiVariateFactories
-OT_DistributionFactory_GetDiscreteMultiVariateFactories_doc
-%feature("docstring") OT::DistributionFactory::GetDiscreteUniVariateFactories
-OT_DistributionFactory_GetDiscreteUniVariateFactories_doc
-%feature("docstring") OT::DistributionFactory::GetMultiVariateFactories
-OT_DistributionFactory_GetMultiVariateFactories_doc
-%feature("docstring") OT::DistributionFactory::GetUniVariateFactories
-OT_DistributionFactory_GetUniVariateFactories_doc
 %feature("docstring") OT::DistributionFactory::getBootstrapSize
 OT_DistributionFactory_getBootstrapSize_doc
 %feature("docstring") OT::DistributionFactory::setBootstrapSize
 OT_DistributionFactory_setBootstrapSize_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetContinuousMultiVariateFactories
+"Accessor to the list of continuous multivariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid continuous multivariate factories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetContinuousUniVariateFactories
+"Accessor to the list of continuous univariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid continuous univariate factories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetDiscreteMultiVariateFactories
+"Accessor to the list of discrete multivariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid discrete multivariate factories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetDiscreteUniVariateFactories
+"Accessor to the list of discrete univariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid discrete univariate factories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetMultiVariateFactories
+"Accessor to the list of multivariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid multivariate factories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactory::GetUniVariateFactories
+"Accessor to the list of univariate factories.
+
+Returns
+-------
+listFactories : collection of :class:`~openturns.DistributionFactory`
+    All the valid univariate factories."
 
