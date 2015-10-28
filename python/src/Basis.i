@@ -8,7 +8,6 @@
 %include BaseFuncCollection.i
 
 %typemap(in) const BasisCollection & {
-  void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   }
