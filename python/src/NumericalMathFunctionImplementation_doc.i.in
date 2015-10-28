@@ -931,6 +931,19 @@ OT_NumericalMathFunction_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_NumericalMathFunction_getParameterDimension_doc
+"Accessor to the dimension of the parameter.
+
+Returns
+-------
+parameterDimension : int
+    Dimension of the parameter."
+%enddef
+%feature("docstring") OT::NumericalMathFunctionImplementation::getParameterDimension
+OT_NumericalMathFunction_getParameterDimension_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_NumericalMathFunction_draw_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 

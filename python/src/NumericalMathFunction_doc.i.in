@@ -82,6 +82,8 @@ OT_NumericalMathFunction_getOutputDescription_doc
 OT_NumericalMathFunction_getInputDimension_doc
 %feature("docstring") OT::NumericalMathFunction::getOutputDimension
 OT_NumericalMathFunction_getOutputDimension_doc
+%feature("docstring") OT::NumericalMathFunction::getParameterDimension
+OT_NumericalMathFunction_getParameterDimension_doc
 %feature("docstring") OT::NumericalMathFunction::draw
 OT_NumericalMathFunction_draw_doc
 %feature("docstring") OT::NumericalMathFunction::getParameter
