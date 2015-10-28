@@ -115,7 +115,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
   const NumericalScalar fakeLevel(0.5);
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  NumericalScalar bestPValue(0.0);
+  NumericalScalar bestPValue(-1.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const DistributionFactory factory(factoryCollection[i]);
@@ -151,7 +151,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
   const UnsignedInteger size(distributionCollection.getSize());
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  NumericalScalar bestPValue(0.0);
+  NumericalScalar bestPValue(-1.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
