@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     fullprint << "transformation=" << transformation << std::endl;
     NumericalPoint point(dim, 0.75);
     fullprint << "transformation(" << point << ")=" << transformation(point) << std::endl;
-    fullprint << "transformation parameters gradient=" << transformation.parametersGradient(point) << std::endl;
+    fullprint << "transformation parameters gradient=" << transformation.parameterGradient(point) << std::endl;
     fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;
     fullprint << "output dimension=" << transformation.getOutputDimension() << std::endl;
   }

@@ -236,7 +236,7 @@ UnsignedInteger LinearCombinationEvaluationImplementation::getOutputDimension() 
 
 
 /* Gradient according to the marginal parameters */
-Matrix LinearCombinationEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
+Matrix LinearCombinationEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size(functionsCollection_.getSize());
@@ -245,7 +245,7 @@ Matrix LinearCombinationEvaluationImplementation::parametersGradient(const Numer
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Extract the atom gradient
-    const Matrix atomParametersGradient(functionsCollection_[i].parametersGradient(inP));
+    const Matrix atomParametersGradient(functionsCollection_[i].parameterGradient(inP));
     const UnsignedInteger rowDimension(atomParametersGradient.getNbRows());
     const UnsignedInteger columnDimension(atomParametersGradient.getNbColumns());
     // Scale the atom gradient and copy it into the result

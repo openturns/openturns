@@ -370,7 +370,7 @@ NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoi
  * the needed gradient is [(dH/dp)(x,p)]^t
  *
  */
-Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
   const NumericalPoint parameters(getParameter());
   const UnsignedInteger parametersDimension(parameters.getDimension());
@@ -442,7 +442,7 @@ Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint
       return result;
     default:
       // Should never go there
-      throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parametersGradient(const NumericalPoint & inP) const";
+      throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const";
   }
 }
 

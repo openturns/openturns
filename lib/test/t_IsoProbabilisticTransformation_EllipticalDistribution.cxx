@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     fullprint << "inverse transform hessian at transformed point (FD) =" << clean(CenteredFiniteDifferenceHessian(1.0e-4, inverseTransform.getEvaluation()).hessian(transformedPoint)) << std::endl;
 
     // Test for parameters
-    fullprint << "parameters gradient at point=" << transform.parametersGradient(point).clean(1.0e-6) << std::endl;
+    fullprint << "parameters gradient at point=" << transform.parameterGradient(point).clean(1.0e-6) << std::endl;
   }
   catch (TestFailed & ex)
   {

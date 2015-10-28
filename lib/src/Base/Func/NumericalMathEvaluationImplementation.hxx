@@ -168,7 +168,7 @@ public:
   virtual Implementation getMarginal(const Indices & indices) const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parametersGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameter() const;

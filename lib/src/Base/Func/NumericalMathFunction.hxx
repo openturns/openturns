@@ -299,8 +299,8 @@ public:
                           const NumericalPoint & parameters);
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parametersGradient(const NumericalPoint & inP) const;
-  virtual Matrix parametersGradient(const NumericalPoint & inP,
+  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const NumericalPoint & inP,
                                     const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */

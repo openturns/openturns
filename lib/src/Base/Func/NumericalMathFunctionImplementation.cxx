@@ -393,17 +393,17 @@ void NumericalMathFunctionImplementation::setUseDefaultHessianImplementation(con
 
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathFunctionImplementation::parametersGradient(const NumericalPoint & inP) const
+Matrix NumericalMathFunctionImplementation::parameterGradient(const NumericalPoint & inP) const
 {
-  return p_evaluationImplementation_->parametersGradient(inP);
+  return p_evaluationImplementation_->parameterGradient(inP);
 }
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathFunctionImplementation::parametersGradient(const NumericalPoint & inP,
+Matrix NumericalMathFunctionImplementation::parameterGradient(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
   setParameter(parameters);
-  return p_evaluationImplementation_->parametersGradient(inP);
+  return p_evaluationImplementation_->parameterGradient(inP);
 }
 
 /* Parameters value and description accessor */

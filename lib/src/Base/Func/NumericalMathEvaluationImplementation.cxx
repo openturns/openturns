@@ -280,7 +280,7 @@ HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
 }
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
+Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
   return Matrix(parameters_.getDimension(), getOutputDimension());
 }

@@ -69,7 +69,7 @@ public:
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
   /** Gradient according to the marginal parameters */
-  Matrix parametersGradient(const NumericalPoint & inP) const;
+  Matrix parameterGradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

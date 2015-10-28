@@ -126,9 +126,9 @@ int main(int argc, char *argv[])
         gradientHigh(4, 0) = dTdp[0];
         gradientHigh(4, 1) = dTdp[1];
       }
-      fullprint << "transformation    parameters gradient=" << transformation.parametersGradient(pointLow) << std::endl;
+      fullprint << "transformation    parameters gradient=" << transformation.parameterGradient(pointLow) << std::endl;
       fullprint << "finite difference parameters gradient=" << gradientLow << std::endl;
-      fullprint << "transformation    parameters gradient=" << transformation.parametersGradient(pointHigh) << std::endl;
+      fullprint << "transformation    parameters gradient=" << transformation.parameterGradient(pointHigh) << std::endl;
       fullprint << "finite difference parameters gradient=" << gradientHigh << std::endl;
       fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;
       fullprint << "output dimension=" << transformation.getOutputDimension() << std::endl;
@@ -217,9 +217,9 @@ int main(int argc, char *argv[])
         gradientHigh(4, 0) = dTdp[0];
         gradientHigh(4, 1) = dTdp[1];
       }
-      fullprint << "transformation    parameters gradient=" << transformation.parametersGradient(uLow) << std::endl;
+      fullprint << "transformation    parameters gradient=" << transformation.parameterGradient(uLow) << std::endl;
       fullprint << "finite difference parameters gradient=" << gradientLow << std::endl;
-      fullprint << "transformation    parameters gradient=" << transformation.parametersGradient(uHigh) << std::endl;
+      fullprint << "transformation    parameters gradient=" << transformation.parameterGradient(uHigh) << std::endl;
       fullprint << "finite difference parameters gradient=" << gradientHigh << std::endl;
       fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;
       fullprint << "output dimension=" << transformation.getOutputDimension() << std::endl;

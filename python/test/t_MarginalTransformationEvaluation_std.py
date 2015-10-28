@@ -98,10 +98,10 @@ try:
     gradientHigh[4, 1] = dTdp[1]
 
     print("transformation    parameters gradient=", repr(
-        transformation.parametersGradient(pointLow)))
+        transformation.parameterGradient(pointLow)))
     print("finite difference parameters gradient=", repr(gradientLow))
     print("transformation    parameters gradient=", repr(
-        transformation.parametersGradient(pointHigh)))
+        transformation.parameterGradient(pointHigh)))
     print("finite difference parameters gradient=", repr(gradientHigh))
     print("input dimension=", transformation.getInputDimension())
     print("output dimension=", transformation.getOutputDimension())
@@ -192,10 +192,10 @@ try:
     gradientHigh[4, 1] = dTdp[1]
 
     print("transformation    parameters gradient=", repr(
-        transformation.parametersGradient(uLow)))
+        transformation.parameterGradient(uLow)))
     print("finite difference parameters gradient=", repr(gradientLow))
     print("transformation    parameters gradient=", repr(
-        transformation.parametersGradient(uHigh)))
+        transformation.parameterGradient(uHigh)))
     print("finite difference parameters gradient=", repr(gradientHigh))
     print("input dimension=", transformation.getInputDimension())
     print("output dimension=", transformation.getOutputDimension())

@@ -1035,11 +1035,16 @@ OT_NumericalMathFunction_setParameter_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_parametersGradient_doc
-"**(ditch me?)**"
+%define OT_NumericalMathFunction_parameterGradient_doc
+"Accessor to the gradient against the parameter.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    The gradient."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::parametersGradient
-OT_NumericalMathFunction_parametersGradient_doc
+%feature("docstring") OT::NumericalMathFunctionImplementation::parameterGradient
+OT_NumericalMathFunction_parameterGradient_doc
 
 // ---------------------------------------------------------------------
 

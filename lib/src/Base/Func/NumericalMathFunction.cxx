@@ -440,16 +440,16 @@ void NumericalMathFunction::setUseDefaultHessianImplementation(const Bool hessia
 
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
+Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
 {
-  return getImplementation()->parametersGradient(inP);
+  return getImplementation()->parameterGradient(inP);
 }
 
-Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP,
+Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
   copyOnWrite();
-  return getImplementation()->parametersGradient(inP, parameters);
+  return getImplementation()->parameterGradient(inP, parameters);
 }
 
 /* Parameters value and description accessor */

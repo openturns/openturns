@@ -151,18 +151,18 @@ String ComposedNumericalMathFunction::__repr__() const
  *
  * the needed gradient is [(dH/dp)(x,p)]^t
  */
-Matrix ComposedNumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
+Matrix ComposedNumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // y = G(x, pg)
   const NumericalPoint y(p_rightFunction_->operator()(inP));
   // (dG/dpg)(x, pg)
-  const Matrix rightGradientP(p_rightFunction_->parametersGradient(inP));
+  const Matrix rightGradientP(p_rightFunction_->parameterGradient(inP));
   // (dF/dy)(y, pf)
   const Matrix leftGradientY(p_leftFunction_->gradient(y));
   // (dF/dpf)(G(x, pg), pf)
-  const Matrix leftGradientP(p_leftFunction_->parametersGradient(y));
+  const Matrix leftGradientP(p_leftFunction_->parameterGradient(y));
   // (dF/dy)(G(x, pg), pf) . (dG/dpg)(x, pg)
   const Matrix upper(rightGradientP * leftGradientY);
   // Build the full gradient

@@ -91,9 +91,9 @@ NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & 
  *       = 0
  * => dQ/dp(y, p) = - dF/dp(Q(y, p), p) / f(Q(y, p), p)
  */
-Matrix InverseRosenblattEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix InverseRosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parametersGradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const";
 }
 
 /* Accessor for input point dimension */

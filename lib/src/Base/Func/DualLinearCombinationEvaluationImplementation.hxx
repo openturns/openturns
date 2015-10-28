@@ -85,7 +85,7 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Gradient according to the marginal parameters */
-  Matrix parametersGradient(const NumericalPoint & inP) const;
+  Matrix parameterGradient(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
   NumericalPointWithDescription getParameter() const;

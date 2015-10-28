@@ -219,7 +219,7 @@ UnsignedInteger AggregatedNumericalMathEvaluationImplementation::getOutputDimens
 
 
 /* Gradient according to the marginal parameters */
-Matrix AggregatedNumericalMathEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
+Matrix AggregatedNumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size(functionsCollection_.getSize());
@@ -227,7 +227,7 @@ Matrix AggregatedNumericalMathEvaluationImplementation::parametersGradient(const
   UnsignedInteger columnShift(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Matrix currentGradient(functionsCollection_[i].parametersGradient(functionsCollection_[i].getParameter()));
+    const Matrix currentGradient(functionsCollection_[i].parameterGradient(functionsCollection_[i].getParameter()));
     const UnsignedInteger currentRowDim(currentGradient.getNbRows());
     const UnsignedInteger currentColumnDim(currentGradient.getNbColumns());
     for (UnsignedInteger j = 0; j < currentRowDim; ++j)
