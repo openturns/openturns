@@ -273,22 +273,18 @@ String TensorizedCovarianceModel::__str__(const String & offset) const
 /* Marginal accessor */
 TensorizedCovarianceModel::Implementation TensorizedCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= dimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << dimension_;
+  if (index >= dimension_)
+      throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << dimension_;
+  UnsignedInteger size = collection_.getSize();
   UnsignedInteger start = 0;
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localDimension(collection_[i].getDimension());
-    const UnsignedInteger stop(start + localDimension);
-    // index is between [0, dimension_[, so it is always upper than start
-    if (index < stop)
-    {
-      // Index is between start and stop
-      // We check the "localIndex"
-      const UnsignedInteger localIndex = index - start;
-      return collection_[localIndex].getImplementation();
-    }
+    const UnsignedInteger localDimension = collection_[i].getDimension();
+    const UnsignedInteger stop = start + localDimension;
+    if (index < stop) return collection_[i].getMarginal(index - start).getImplementation();
     start = stop;
   }
+  throw InternalException(HERE) << "In TensorizedCovarianceModel::getMarginal: could not return the marginal";
 }
 
 /* Method save() stores the object through the StorageManager */
