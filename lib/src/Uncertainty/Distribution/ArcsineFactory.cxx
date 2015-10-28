@@ -56,6 +56,11 @@ ArcsineFactory::Implementation ArcsineFactory::build() const
   return buildAsArcsine().clone();
 }
 
+DistributionFactoryResult ArcsineFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
+}
+
 Arcsine ArcsineFactory::buildAsArcsine(const NumericalSample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Arcsine distribution from an empty sample";

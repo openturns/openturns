@@ -56,6 +56,11 @@ GammaFactory::Implementation GammaFactory::build() const
   return buildAsGamma().clone();
 }
 
+DistributionFactoryResult GammaFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
+}
+
 Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
 {
   UnsignedInteger size(sample.getSize());

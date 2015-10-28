@@ -48,6 +48,7 @@ public:
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
+  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
   Skellam buildAsSkellam(const NumericalSample & sample) const;
   Skellam buildAsSkellam(const NumericalPoint & parameters) const;
   Skellam buildAsSkellam() const;

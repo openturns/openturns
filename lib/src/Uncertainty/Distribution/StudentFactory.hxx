@@ -46,8 +46,11 @@ public:
   using DistributionImplementationFactory::build;
 
   Implementation build(const NumericalSample & sample) const;
+  Implementation build(const NumericalPoint & parameter) const;
   Implementation build() const;
+  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
   Student buildAsStudent(const NumericalSample & sample) const;
+  Student buildAsStudent(const NumericalPoint & parameter) const;
   Student buildAsStudent() const;
 
 }; /* class StudentFactory */

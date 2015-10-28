@@ -1,8 +1,9 @@
-distribution= class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
-Estimated distribution= class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Default distribution= Gumbel(alpha = 1, beta = 0)
-Distribution from parameters= Gumbel(alpha = 2, beta = 2.5)
-Gumbel          = Gumbel(alpha = 2, beta = 2.5)
-Estimated gumbel= Gumbel(alpha = 1.98682, beta = 2.50626)
-Default gumbel= Gumbel(alpha = 1, beta = 0)
-Gumbel from parameters= Gumbel(alpha = 2, beta = 2.5)
+Distribution                      = class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
+Estimated distribution            = class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
+Parameter distribution            = Normal(mu = [1.98645,2.5058], sigma = [0.0197004,0.00534587], R = [[  1         -0.0721044 ]
+ [ -0.0721044  1         ]])
+Default distribution              = Gumbel(alpha = 1, beta = 0)
+Distribution from parameters      = Gumbel(alpha = 2, beta = 2.5)
+Typed estimated distribution      = Gumbel(alpha = 1.98682, beta = 2.50626)
+Default typed distribution        = Gumbel(alpha = 1, beta = 0)
+Typed distribution from parameters= Gumbel(alpha = 2, beta = 2.5)
