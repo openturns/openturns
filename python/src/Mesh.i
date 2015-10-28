@@ -31,7 +31,11 @@ namespace OT {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
-    $1 = OT::buildCollectionFromPySequence<OT::Indices>($input);
+    try {
+      $1 = OT::buildCollectionFromPySequence<OT::Indices>($input);
+    } catch (OT::InvalidArgumentException & ex) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Indices");
+    }
   }
 }
 

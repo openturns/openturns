@@ -10,8 +10,12 @@
 
 %typemap(in) const CorrelationMatrix & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
-    temp = OT::convert<OT::_PySequence_, OT::CorrelationMatrix>($input);
-    $1 = &temp;
+    try {
+      temp = OT::convert<OT::_PySequence_, OT::CorrelationMatrix>($input);
+      $1 = &temp;
+    } catch (OT::InvalidArgumentException & ex) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a CorrelationMatrix");
+    }
   }
 }
 

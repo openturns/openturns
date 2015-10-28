@@ -22,6 +22,8 @@
     // From Pointer<Implementation>
     OT::Pointer<OT::Implementation> * p_impl = reinterpret_cast< OT::Pointer<OT::Implementation> * >( ptr );
     $1 = new OT::Interface( **p_impl );
+  } else {
+    SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a " # Interface);
   }
 }
 

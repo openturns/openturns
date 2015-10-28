@@ -13,7 +13,11 @@
     // From interface class, ok
   }
   else {
-    $1 = OT::buildCollectionFromPySequence< OT::Basis >( $input );
+    try {
+      $1 = OT::buildCollectionFromPySequence< OT::Basis >( $input );
+    } catch (OT::InvalidArgumentException & ex) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Basis");
+    }
   }
 }
 
