@@ -182,7 +182,7 @@ ot_add_python_module(statistics statistics_module.i
                       StationaryCovarianceModel.i 
                       SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
-                      UserDefinedSpectralModel.i
+                      UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
                       WelchFactory.i WelchFactory_doc.i.in
                       ExponentialModel.i ExponentialModel_doc.i.in
                       ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
