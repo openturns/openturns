@@ -39,6 +39,7 @@ Construction of the covariance function
     MaternModel
     DiracCovarianceModel
     ProductCovarianceModel
+    TensorizedCovarianceModel
 
 Kriging random vector
 =====================

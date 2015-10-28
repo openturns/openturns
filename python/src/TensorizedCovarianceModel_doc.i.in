@@ -1,0 +1,63 @@
+%feature("docstring") OT::TensorizedCovarianceModel
+"Multivariate covariance function defined as a tensorization of covariance models.
+
+Parameters
+----------
+covModelCollection : :class:`~openturns.CovarianceModelCollection`
+    Collection of covariance models.
+
+Notes
+-----
+The tensorized covariance model defines a multivariate covariance model from the tensorization of a given collection as follows.
+
+We consider :math:`X_k: \Omega \times\cD \mapsto \Rset^{d_k}` a multivariate
+stochastic process of dimension :math:`d_k`, where :math:`\omega \in \Omega`
+is an event, :math:`\cD` is a domain of :math:`\Rset^n`, :math:`\vect{t}\in \cD` is a multivariate index and :math:`X_k(\omega, \vect{t}) \in \Rset^{d_k}`.
+
+We define :math:`X: \Omega \times\cD \mapsto \Rset^{d}` a multivariate stochastic process of dimension :math:`d`, with its associated covariance function :math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` defined as :
+
+.. math::
+    C(\vect{s}, \vect{t}) =  diag(C_1(\vect{s}, \vect{t}),\cdots, C_K(\vect{s}, \vect{t}))
+
+which could be written as:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \left(
+        \begin{array}{cccc}
+        C_1(\vect{s}, \vect{t}) & 0 & \dots & 0 \\
+        0 & C_2(\vect{s}, \vect{t}) & 0 &  \\
+        \dots & \dots & \ddots & \dots \\
+        0 & \dots & \dots &  C_K(\vect{s}, \vect{t})
+        \end{array} \right)
+
+where :math:`C_k : \cD \times \cD \mapsto  \cM_{d_k \times d_k}(\Rset)`, :math:`\vect{s} = (\vect{s}_1, \dots, \vect{s}_n)`,  :math:`\vect{t} = (\vect{t}_1, \dots, \vect{t}_n)` are spatial points and :math:`d_1+\dots+d_k=d`.
+
+Examples
+--------
+
+Create a **TensorizedCovarianceModel** from tensorization of an *AbsoluteExponential*, a *SquaredExponential* and an *ExponentialModel*
+
+>>> import openturns as ot
+>>> spatialDimension = 2
+>>> # Tensorized covariance model
+>>> coll = ot.CovarianceModelCollection()
+>>> # Add AbsoluteExponentialModel to the collection
+>>> myAbsoluteExponential = ot.AbsoluteExponential(spatialDimension, 3.0)
+>>> coll.add(myAbsoluteExponential)
+>>> # Add SquaredExponentialModel to the collection
+>>> mySquaredExponential = ot.SquaredExponential(spatialDimension, 2.0)
+>>> coll.add(mySquaredExponential)
+>>> # Add exponentialModel to the collection
+>>> amplitude= [4.0, 2.0]
+>>> scale = [1.0, 1.0]
+>>> # Define a spatial correlation
+>>> spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
+>>> spatialCorrelation[1,0] = 0.3
+>>> myExponentialModel = ot.ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation)
+>>> myExponentialModel.setAmplitude(amplitude)
+>>> myExponentialModel.setSpatialCorrelation(spatialCorrelation)
+>>> coll.add(myExponentialModel);
+>>> scale = [0.3, 0.8]
+>>> covarianceModel = ot.TensorizedCovarianceModel(coll, scale)
+"
