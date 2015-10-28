@@ -123,7 +123,7 @@ UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) con
   const RegularGrid timeGrid(sample.getTimeGrid());
   const UnsignedInteger N(timeGrid.getN());
   const NumericalScalar timeStep(timeGrid.getStep());
-  const NumericalScalar T(timeGrid.getEnd());
+  const NumericalScalar T(timeGrid.getEnd() - timeGrid.getStart());
   // Preprocessing: the scaling factor, including the tappering window
   NumericalComplexCollection alpha(N);
   const NumericalScalar factor(timeStep / sqrt(sampleSize * T));
