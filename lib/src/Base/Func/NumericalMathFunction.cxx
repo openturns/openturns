@@ -396,24 +396,6 @@ const NumericalMathFunction::HessianImplementation & NumericalMathFunction::getH
   return getImplementation()->getHessian();
 }
 
-/* Initial Function implementation accessors */
-const NumericalMathFunction::EvaluationImplementation & NumericalMathFunction::getInitialEvaluationImplementation() const
-{
-  return getImplementation()->getInitialEvaluationImplementation();
-}
-
-/* Initial gradient implementation accessors */
-const NumericalMathFunction::GradientImplementation & NumericalMathFunction::getInitialGradientImplementation() const
-{
-  return getImplementation()->getInitialGradientImplementation();
-}
-
-/* Initial hessian implementation accessors */
-const NumericalMathFunction::HessianImplementation & NumericalMathFunction::getInitialHessianImplementation() const
-{
-  return getImplementation()->getInitialHessianImplementation();
-}
-
 /* Flag for default gradient accessors */
 Bool NumericalMathFunction::getUseDefaultGradientImplementation() const
 {

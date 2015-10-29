@@ -251,15 +251,6 @@ public:
 #endif
   const HessianImplementation & getHessian() const;
 
-  /** Initial function implementation accessors */
-  const EvaluationImplementation & getInitialEvaluationImplementation() const;
-
-  /** Initial gradient implementation accessors */
-  const GradientImplementation & getInitialGradientImplementation() const;
-
-  /** Initial hessian implementation accessors */
-  const HessianImplementation & getInitialHessianImplementation() const;
-
   /** Flag for default gradient accessors */
   Bool getUseDefaultGradientImplementation() const;
   void setUseDefaultGradientImplementation(const Bool gradientFlag);

@@ -54,12 +54,6 @@ OT_NumericalMathFunction_getEvaluation_doc
 OT_NumericalMathFunction_getGradient_doc
 %feature("docstring") OT::NumericalMathFunction::getHessian
 OT_NumericalMathFunction_getHessian_doc
-%feature("docstring") OT::NumericalMathFunction::getInitialEvaluationImplementation
-OT_NumericalMathFunction_getInitialEvaluationImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::getInitialGradientImplementation
-OT_NumericalMathFunction_getInitialGradientImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::getInitialHessianImplementation
-OT_NumericalMathFunction_getInitialHessianImplementation_doc
 %feature("docstring") OT::NumericalMathFunction::setEvaluation
 OT_NumericalMathFunction_setEvaluation_doc
 %feature("docstring") OT::NumericalMathFunction::setGradient

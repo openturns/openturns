@@ -203,15 +203,6 @@ public:
   void setHessian(const HessianImplementation & hessian);
   const HessianImplementation & getHessian() const;
 
-  /** Initial function implementation accessors */
-  const EvaluationImplementation & getInitialEvaluationImplementation() const;
-
-  /** Initial gradient implementation accessors */
-  const GradientImplementation & getInitialGradientImplementation() const;
-
-  /** Initial hessian implementation accessors */
-  const HessianImplementation & getInitialHessianImplementation() const;
-
   /** Flag for default gradient accessors */
   Bool getUseDefaultGradientImplementation() const;
   void setUseDefaultGradientImplementation(const Bool gradientFlag);
@@ -322,17 +313,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-
-protected:
-  /** Initial function implementation accessors */
-  void setInitialEvaluationImplementation(const EvaluationImplementation & p_initialEvaluationImplementation);
-
-  /** Initial gradient implementation accessors */
-  void setInitialGradientImplementation(const GradientImplementation & p_initialGradientImplementation);
-
-  /** Initial hessian implementation accessors */
-  void setInitialHessianImplementation(const HessianImplementation & p_initialHessianImplementation);
-
 private:
   /** A pointer on the actual numerical math function implementation */
   EvaluationImplementation p_evaluationImplementation_;
@@ -342,15 +322,6 @@ private:
 
   /** A pointer on the actual numerical math hessian implementation */
   HessianImplementation p_hessianImplementation_;
-
-  /** A pointer on the initial actual numerical math function implementation */
-  EvaluationImplementation p_initialEvaluationImplementation_;
-
-  /** A pointer on the initial actual numerical math gradient implementation */
-  GradientImplementation p_initialGradientImplementation_;
-
-  /** A pointer on the initial actual numerical math hessian implementation */
-  HessianImplementation p_initialHessianImplementation_;
 
 protected:
 

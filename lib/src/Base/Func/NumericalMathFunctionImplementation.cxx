@@ -58,9 +58,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation()
   , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
   , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
   , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
-  , p_initialEvaluationImplementation_(p_evaluationImplementation_)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
@@ -75,9 +72,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
   , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
   , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
   , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
-  , p_initialEvaluationImplementation_(p_evaluationImplementation_)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
@@ -95,7 +89,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
     LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
     p_gradientImplementation_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
   }
-  p_initialGradientImplementation_ = p_gradientImplementation_;
   try
   {
     p_hessianImplementation_ = new AnalyticalNumericalMathHessianImplementation(evaluation);
@@ -106,7 +99,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
     LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
     p_hessianImplementation_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
   }
-  p_initialHessianImplementation_ = p_hessianImplementation_;
 #else
   throw NotYetImplementedException(HERE) << "In NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const Description & inputVariablesNames, const Description & outputVariablesNames, const Description & formulas): Analytical function requires muParser";
 #endif
@@ -119,13 +111,10 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const N
   : PersistentObject()
   , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
   , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
   p_evaluationImplementation_ = new DatabaseNumericalMathEvaluationImplementation( inputSample, outputSample );
-  p_initialEvaluationImplementation_ = p_evaluationImplementation_;
 }
 
 
@@ -135,9 +124,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const E
   , p_evaluationImplementation_(evaluationImplementation)
   , p_gradientImplementation_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_))
   , p_hessianImplementation_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_))
-  , p_initialEvaluationImplementation_(p_evaluationImplementation_)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
@@ -152,9 +138,6 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const E
   , p_evaluationImplementation_(evaluationImplementation)
   , p_gradientImplementation_(gradientImplementation)
   , p_hessianImplementation_(hessianImplementation)
-  , p_initialEvaluationImplementation_(p_evaluationImplementation_)
-  , p_initialGradientImplementation_(p_gradientImplementation_)
-  , p_initialHessianImplementation_(p_hessianImplementation_)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
@@ -336,37 +319,6 @@ void NumericalMathFunctionImplementation::setHessian(const HessianImplementation
 const NumericalMathFunctionImplementation::HessianImplementation & NumericalMathFunctionImplementation::getHessian() const
 {
   return p_hessianImplementation_;
-}
-
-/* Initial Function implementation accessors */
-const NumericalMathFunctionImplementation::EvaluationImplementation & NumericalMathFunctionImplementation::getInitialEvaluationImplementation() const
-{
-  return p_initialEvaluationImplementation_;
-}
-
-void NumericalMathFunctionImplementation::setInitialEvaluationImplementation(const EvaluationImplementation & initialEvaluationImplementation)
-{
-  p_evaluationImplementation_ = initialEvaluationImplementation;
-}
-
-/* Initial gradient implementation accessors */
-const NumericalMathFunctionImplementation::GradientImplementation & NumericalMathFunctionImplementation::getInitialGradientImplementation() const
-{
-  return p_initialGradientImplementation_;
-}
-void NumericalMathFunctionImplementation::setInitialGradientImplementation(const GradientImplementation & initialGradientImplementation)
-{
-  p_gradientImplementation_ = initialGradientImplementation;
-}
-
-/* Initial hessian implementation accessors */
-const NumericalMathFunctionImplementation::HessianImplementation & NumericalMathFunctionImplementation::getInitialHessianImplementation() const
-{
-  return p_initialHessianImplementation_;
-}
-void NumericalMathFunctionImplementation::setInitialHessianImplementation(const HessianImplementation & initialHessianImplementation)
-{
-  p_hessianImplementation_ = initialHessianImplementation;
 }
 
 /* Flag for default gradient accessors */
@@ -678,9 +630,6 @@ void NumericalMathFunctionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "evaluationImplementation_", *p_evaluationImplementation_ );
   adv.saveAttribute( "gradientImplementation_", *p_gradientImplementation_ );
   adv.saveAttribute( "hessianImplementation_", *p_hessianImplementation_ );
-  adv.saveAttribute( "initialEvaluationImplementation_", *p_initialEvaluationImplementation_ );
-  adv.saveAttribute( "initialGradientImplementation_", *p_initialGradientImplementation_ );
-  adv.saveAttribute( "initialHessianImplementation_", *p_initialHessianImplementation_ );
   adv.saveAttribute( "useDefaultGradientImplementation_", useDefaultGradientImplementation_ );
   adv.saveAttribute( "useDefaultHessianImplementation_", useDefaultHessianImplementation_ );
 }
@@ -698,12 +647,6 @@ void NumericalMathFunctionImplementation::load(Advocate & adv)
   p_gradientImplementation_ = gradientValue.getImplementation();
   adv.loadAttribute( "hessianImplementation_", hessianValue );
   p_hessianImplementation_ = hessianValue.getImplementation();
-  adv.loadAttribute( "initialEvaluationImplementation_", evaluationValue );
-  p_initialEvaluationImplementation_ = evaluationValue.getImplementation();
-  adv.loadAttribute( "initialGradientImplementation_", gradientValue );
-  p_initialGradientImplementation_ = gradientValue.getImplementation();
-  adv.loadAttribute( "initialHessianImplementation_", hessianValue );
-  p_initialHessianImplementation_ = hessianValue.getImplementation();
   adv.loadAttribute( "useDefaultGradientImplementation_", useDefaultGradientImplementation_ );
   adv.loadAttribute( "useDefaultHessianImplementation_", useDefaultHessianImplementation_ );
 }

@@ -53,7 +53,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const Implementatio
   try
   {
     GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
-    setInitialGradientImplementation(p_gradientImplementation);
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(p_left->getUseDefaultGradientImplementation() || p_right->getUseDefaultGradientImplementation());
   }
@@ -64,7 +63,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const Implementatio
   try
   {
     HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
-    setInitialHessianImplementation(p_hessianImplementation);
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(p_left->getUseDefaultHessianImplementation() || p_right->getUseDefaultHessianImplementation());
   }
@@ -86,7 +84,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const NumericalMath
   try
   {
     GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(left.getGradient(), right.getEvaluation(), right.getGradient()));
-    setInitialGradientImplementation(p_gradientImplementation);
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(left.getUseDefaultGradientImplementation() || right.getUseDefaultGradientImplementation());
   }
@@ -97,7 +94,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const NumericalMath
   try
   {
     HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
-    setInitialHessianImplementation(p_hessianImplementation);
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(left.getUseDefaultHessianImplementation() || right.getUseDefaultHessianImplementation());
   }

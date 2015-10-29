@@ -37,6 +37,7 @@
  * Deprecated OptimizationSolver::setMaximumIterationsNumber in favor of OptimizationSolver::[sg]etMaximumIterationNumber
  * Moved NumericalMathFunction::[sg]etParameters to NumericalMathFunction::[sg]etParameter
  * Moved NumericalMathFunction::parametersGradient to NumericalMathFunction::parameterGradient
+ * Removed NumericalMathFunction::[sg]etInitial(Evaluation|Gradient|Hessian)Implementation
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)

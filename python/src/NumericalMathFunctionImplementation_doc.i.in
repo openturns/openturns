@@ -648,45 +648,6 @@ OT_NumericalMathFunction_getHessian_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getInitialEvaluationImplementation_doc
-"Accessor to the initial evaluation function.
-
-Returns
--------
-function : :class:`~openturns.NumericalMathEvaluationImplementation`
-    The initial evaluation function."
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInitialEvaluationImplementation
-OT_NumericalMathFunction_getInitialEvaluationImplementation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_getInitialGradientImplementation_doc
-"Accessor to the initial gradient function.
-
-Returns
--------
-gradient : :class:`~openturns.NumericalMathGradientImplementation`
-    The initial gradient function."
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInitialGradientImplementation
-OT_NumericalMathFunction_getInitialGradientImplementation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_getInitialHessianImplementation_doc
-"Accessor to the initial hessian function.
-
-Returns
--------
-hessian : :class:`~openturns.NumericalMathHessianImplementation`
-    The initial hessian function."
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInitialHessianImplementation
-OT_NumericalMathFunction_getInitialHessianImplementation_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_NumericalMathFunction_setEvaluation_doc
 "Accessor to the evaluation function.
 

@@ -43,7 +43,6 @@ ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation 
 {
   //  try{
   GradientImplementation p_gradientImplementation(new ProductNumericalMathGradientImplementation(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
-  setInitialGradientImplementation(p_gradientImplementation);
   setGradient(p_gradientImplementation);
   //  }
   //  catch(InvalidArgumentException &) {
@@ -51,7 +50,6 @@ ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation 
   //  }
   //  try{
   HessianImplementation p_hessianImplementation(new ProductNumericalMathHessianImplementation(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
-  setInitialHessianImplementation(p_hessianImplementation);
   setHessian(p_hessianImplementation);
   //  }
   //  catch(InvalidArgumentException & ex) {
