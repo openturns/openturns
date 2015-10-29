@@ -1058,35 +1058,3 @@ gradient : :class:`~openturns.Matrix`
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::parameterGradient
 OT_NumericalMathFunction_parameterGradient_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_getUseDefaultGradientImplementation_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getUseDefaultGradientImplementation
-OT_NumericalMathFunction_getUseDefaultGradientImplementation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_getUseDefaultHessianImplementation_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getUseDefaultHessianImplementation
-OT_NumericalMathFunction_getUseDefaultHessianImplementation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_setUseDefaultGradientImplementation_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setUseDefaultGradientImplementation
-OT_NumericalMathFunction_setUseDefaultGradientImplementation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_setUseDefaultHessianImplementation_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setUseDefaultHessianImplementation
-OT_NumericalMathFunction_setUseDefaultHessianImplementation_doc

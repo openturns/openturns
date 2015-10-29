@@ -92,11 +92,3 @@ OT_NumericalMathFunction_getParameter_doc
 OT_NumericalMathFunction_setParameter_doc
 %feature("docstring") OT::NumericalMathFunction::parameterGradient
 OT_NumericalMathFunction_parameterGradient_doc
-%feature("docstring") OT::NumericalMathFunction::getUseDefaultGradientImplementation
-OT_NumericalMathFunction_getUseDefaultGradientImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::getUseDefaultHessianImplementation
-OT_NumericalMathFunction_getUseDefaultHessianImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::setUseDefaultGradientImplementation
-OT_NumericalMathFunction_setUseDefaultGradientImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::setUseDefaultHessianImplementation
-OT_NumericalMathFunction_setUseDefaultHessianImplementation_doc

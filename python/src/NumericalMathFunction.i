@@ -43,6 +43,11 @@ OTTypedInterfaceObjectHelper(NumericalMathFunction)
 
 %include NumericalMathFunction_doc.i
 
+%ignore OT::NumericalMathFunction::getUseDefaultGradientImplementation;
+%ignore OT::NumericalMathFunction::setUseDefaultGradientImplementation;
+%ignore OT::NumericalMathFunction::getUseDefaultHessianImplementation;
+%ignore OT::NumericalMathFunction::setUseDefaultHessianImplementation;
+
 %include NumericalMathFunction.hxx
 
 namespace OT {  
