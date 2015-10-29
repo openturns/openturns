@@ -193,6 +193,7 @@
 
   <!-- OT::MatrixImplementation parameters -->
   <MatrixImplementation-DefaultSmallPivot value="1.0e-7"     />
+  <MatrixImplementation-SymmetryThreshold value="1.0e-12"    />
 
   <!-- OT::BurrFactory parameters -->
   <BurrFactory-AbsolutePrecision value="1e-12" />
