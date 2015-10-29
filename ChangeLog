@@ -15,6 +15,9 @@
  * DiracCovarianceModel
  * HMatrixParameters
  * TensorizedCovarianceModel
+ * SLSQP
+ * LBFGS
+ * NelderMead
 
 ==== API changes ====
  * Removed BoundConstrainedAlgorithm class
@@ -31,6 +34,7 @@
  * Added discretizeAndFactorize method to covariance model classes
  * Added discretizeHMatrix method to covariance model classes
  * Added discretizeAndFactorizeHMatrix method to covariance model classes
+ * Deprecated OptimizationSolver::setMaximumIterationsNumber in favor of OptimizationSolver::[sg]etMaximumIterationNumber
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)
@@ -43,7 +47,9 @@
  * #796 (Beta distribution: if sample contains Inf, freeze on getSample)
  * #798 (Error message misstyping (Gamma distribution))
  * #799 (Error message misstyping (Gumbel distribution factory))
-
+ * #804 (no IntervalMesher documentation content)
+ * #805 (Python segfault in computeSilvermanBandwidth)
+ 
 == 1.6 release (2015-08-14) == #release-1.6
 
 === Library ===
