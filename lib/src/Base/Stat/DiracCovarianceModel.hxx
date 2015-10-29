@@ -104,8 +104,8 @@ public:
   void load(Advocate & adv);
 
 protected:
-  friend class DiracCovarianceModelDiscretizePolicy;
-  friend class DiracCovarianceModelDiscretizeAndFactorizePolicy;
+  friend struct DiracCovarianceModelDiscretizePolicy;
+  friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
   mutable CovarianceMatrix covariance_;
   mutable TriangularMatrix covarianceFactor_;
   void computeCovariance();
