@@ -634,6 +634,7 @@ if (NOT WIN32)
   ot_pyinstallcheck_test (coupling_tools)
 endif ()
 
+
 if (MUPARSER_FOUND AND MATPLOTLIB_FOUND AND SCIPY_FOUND AND R_rot_FOUND AND NLOPT_FOUND)
   if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2")
     ot_pyinstallcheck_test (docstring)
