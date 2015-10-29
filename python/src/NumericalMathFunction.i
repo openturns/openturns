@@ -21,7 +21,11 @@ OTTypedInterfaceObjectHelper(NumericalMathFunction)
     OT::Basis * p_impl = reinterpret_cast< OT::Basis * >( ptr );
     $1 = new OT::Collection<OT::NumericalMathFunction>(*p_impl);
   } else {
-    $1 = OT::buildCollectionFromPySequence< OT::NumericalMathFunction >( $input );
+    try {
+      $1 = OT::buildCollectionFromPySequence< OT::NumericalMathFunction >( $input );
+    } catch (OT::InvalidArgumentException & ex) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of NumericalMathFunction");
+    }
   }
 }
 

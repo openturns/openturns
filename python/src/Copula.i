@@ -83,6 +83,8 @@ namespace OT {
     // From DistributionImplementation
     OT::DistributionImplementation * p_impl = reinterpret_cast< OT::DistributionImplementation * >( ptr );
     $1 = new OT::Copula( *p_impl );
+  } else {
+    SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a Copula");
   }
 }
 
