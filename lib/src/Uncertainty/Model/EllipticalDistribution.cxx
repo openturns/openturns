@@ -494,7 +494,7 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
   transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky_));
   transform.setHessian(new NatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
-  // The result of parametersGradient is given
+  // The result of parameterGradient is given
   // in the following form:
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
@@ -512,7 +512,7 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
     description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
   }
   parameters.setDescription(description);
-  transform.setParameters(parameters);
+  transform.setParameter(parameters);
   return transform;
 }
 
@@ -524,7 +524,7 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
   inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky_));
   inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
-  // The result of parametersGradient is given
+  // The result of parameterGradient is given
   // in the following form:
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
@@ -542,7 +542,7 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
     description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
   }
   parameters.setDescription(description);
-  inverseTransform.setParameters(parameters);
+  inverseTransform.setParameter(parameters);
   return inverseTransform;
 }
 

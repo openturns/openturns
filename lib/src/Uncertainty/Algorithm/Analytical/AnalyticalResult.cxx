@@ -322,11 +322,11 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   const NumericalPointWithDescriptionCollection set1(physicalDistribution.getParametersCollection());
   /* get Set2 : parameters of the physical model */
   const NumericalMathFunction physicalModel(limitStateVariable_.getImplementation()->getFunction());
-  const NumericalPointWithDescription set2(physicalModel.getParameters());
+  const NumericalPointWithDescription set2(physicalModel.getParameter());
   const Bool isSet2Empty(set2.getDimension() == 0);
   /* get SetIso : parameters included in the isoprobabilistic transformation which is a subset of Set1 */
   const InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(physicalDistribution.getInverseIsoProbabilisticTransformation());
-  const NumericalPointWithDescription setIso(inverseIsoProbabilisticTransformation.getParameters());
+  const NumericalPointWithDescription setIso(inverseIsoProbabilisticTransformation.getParameter());
   /* scaling factor between sensitivity and gradients (ref doc : factor = -lambda/beta) */
   /* gradient of the standard limite state function */
   const Matrix physicalGradientMatrix(physicalModel.gradient(physicalSpaceDesignPoint_));
@@ -337,10 +337,10 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   if (gradientNorm > 0.0) gradientToSensitivity = -(limitStateVariable_.getOperator().compare(1.0, 0.0) ? 1.0 : -1.0) / gradientNorm;
   /* evaluate the gradients of the physical model with respect to Set2 (ref doc : K2) */
   NumericalPoint physicalGradient;
-  if (!isSet2Empty) physicalGradient = physicalModel.parametersGradient(physicalSpaceDesignPoint_) * NumericalPoint(1, 1.0);
+  if (!isSet2Empty) physicalGradient = physicalModel.parameterGradient(physicalSpaceDesignPoint_) * NumericalPoint(1, 1.0);
   /* evaluate the gradients of the isoprobabilistic transformation with respect to SetIso (ref doc : KS) */
   NumericalPoint isoProbabilisticGradient;
-  if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parametersGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * NumericalPoint(1, 1.0));
+  if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parameterGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * NumericalPoint(1, 1.0));
   /* associate to each element of Set1 the gradient value */
   /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection wich is Set2 */
   const UnsignedInteger set1Size(set1.getSize());

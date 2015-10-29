@@ -57,8 +57,8 @@ public:
   NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameters() const;
-  virtual void setParameters(const NumericalPointWithDescription & parameters);
+  virtual NumericalPointWithDescription getParameter() const;
+  virtual void setParameter(const NumericalPointWithDescription & parameters);
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

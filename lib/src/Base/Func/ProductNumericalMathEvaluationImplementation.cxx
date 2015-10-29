@@ -109,12 +109,12 @@ NumericalSample ProductNumericalMathEvaluationImplementation::operator() (const 
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription ProductNumericalMathEvaluationImplementation::getParameters() const
+NumericalPointWithDescription ProductNumericalMathEvaluationImplementation::getParameter() const
 {
-  NumericalPointWithDescription rightParameters(p_rightEvaluation_->getParameters());
+  NumericalPointWithDescription rightParameters(p_rightEvaluation_->getParameter());
   UnsignedInteger rightDimension(rightParameters.getDimension());
   Description rightDescription(rightParameters.getDescription());
-  NumericalPointWithDescription leftParameters(p_leftEvaluation_->getParameters());
+  NumericalPointWithDescription leftParameters(p_leftEvaluation_->getParameter());
   UnsignedInteger leftDimension(leftParameters.getDimension());
   Description leftDescription(leftParameters.getDescription());
   UnsignedInteger dimension(rightDimension + leftDimension);
@@ -137,11 +137,11 @@ NumericalPointWithDescription ProductNumericalMathEvaluationImplementation::getP
   return parameters;
 }
 
-void ProductNumericalMathEvaluationImplementation::setParameters(const NumericalPointWithDescription & parameters)
+void ProductNumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
-  NumericalPointWithDescription rightParameters(p_rightEvaluation_->getParameters());
+  NumericalPointWithDescription rightParameters(p_rightEvaluation_->getParameter());
   UnsignedInteger rightDimension(rightParameters.getDimension());
-  NumericalPointWithDescription leftParameters(p_leftEvaluation_->getParameters());
+  NumericalPointWithDescription leftParameters(p_leftEvaluation_->getParameter());
   UnsignedInteger leftDimension(leftParameters.getDimension());
   Description description(parameters.getDescription());
   Description rightDescription(rightDimension);
@@ -154,7 +154,7 @@ void ProductNumericalMathEvaluationImplementation::setParameters(const Numerical
     index++;
   }
   leftParameters.setDescription(leftDescription);
-  p_leftEvaluation_->setParameters(leftParameters);
+  p_leftEvaluation_->setParameter(leftParameters);
   for (UnsignedInteger i = 0; i < rightDimension; ++i)
   {
     rightParameters[i] = parameters[index];
@@ -162,7 +162,7 @@ void ProductNumericalMathEvaluationImplementation::setParameters(const Numerical
     index++;
   }
   rightParameters.setDescription(rightDescription);
-  p_rightEvaluation_->setParameters(rightParameters);
+  p_rightEvaluation_->setParameter(rightParameters);
 }
 
 /* Accessor for input point dimension */

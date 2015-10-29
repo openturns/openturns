@@ -396,24 +396,6 @@ const NumericalMathFunction::HessianImplementation & NumericalMathFunction::getH
   return getImplementation()->getHessian();
 }
 
-/* Initial Function implementation accessors */
-const NumericalMathFunction::EvaluationImplementation & NumericalMathFunction::getInitialEvaluationImplementation() const
-{
-  return getImplementation()->getInitialEvaluationImplementation();
-}
-
-/* Initial gradient implementation accessors */
-const NumericalMathFunction::GradientImplementation & NumericalMathFunction::getInitialGradientImplementation() const
-{
-  return getImplementation()->getInitialGradientImplementation();
-}
-
-/* Initial hessian implementation accessors */
-const NumericalMathFunction::HessianImplementation & NumericalMathFunction::getInitialHessianImplementation() const
-{
-  return getImplementation()->getInitialHessianImplementation();
-}
-
 /* Flag for default gradient accessors */
 Bool NumericalMathFunction::getUseDefaultGradientImplementation() const
 {
@@ -440,28 +422,28 @@ void NumericalMathFunction::setUseDefaultHessianImplementation(const Bool hessia
 
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
+Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
 {
-  return getImplementation()->parametersGradient(inP);
+  return getImplementation()->parameterGradient(inP);
 }
 
-Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP,
+Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
   copyOnWrite();
-  return getImplementation()->parametersGradient(inP, parameters);
+  return getImplementation()->parameterGradient(inP, parameters);
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathFunction::getParameters() const
+NumericalPointWithDescription NumericalMathFunction::getParameter() const
 {
-  return getImplementation()->getParameters();
+  return getImplementation()->getParameter();
 }
 
-void NumericalMathFunction::setParameters(const NumericalPointWithDescription & parameters)
+void NumericalMathFunction::setParameter(const NumericalPointWithDescription & parameters)
 {
   copyOnWrite();
-  getImplementation()->setParameters(parameters);
+  getImplementation()->setParameter(parameters);
 }
 
 

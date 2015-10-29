@@ -280,23 +280,23 @@ HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
 }
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
+Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
   return Matrix(parameters_.getDimension(), getOutputDimension());
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathEvaluationImplementation::getParameters() const
+NumericalPointWithDescription NumericalMathEvaluationImplementation::getParameter() const
 {
   return parameters_;
 }
 
-void NumericalMathEvaluationImplementation::setParameters(const NumericalPointWithDescription & parameters)
+void NumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
   parameters_ = parameters;
 }
 
-void NumericalMathEvaluationImplementation::setParameters(const NumericalPoint & parameters)
+void NumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameters)
 {
   parameters_ = parameters;
 }
@@ -310,7 +310,7 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
-  setParameters(parameters);
+  setParameter(parameters);
   return (*this)(inP);
 }
 

@@ -89,7 +89,7 @@ SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint
 SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
-  setParameters(parameters);
+  setParameter(parameters);
   return hessian(inP);
 }
 
@@ -112,12 +112,12 @@ UnsignedInteger NumericalMathHessianImplementation::getCallsNumber() const
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathHessianImplementation::getParameters() const
+NumericalPointWithDescription NumericalMathHessianImplementation::getParameter() const
 {
   return parameters_;
 }
 
-void NumericalMathHessianImplementation::setParameters(const NumericalPointWithDescription & parameters)
+void NumericalMathHessianImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
   parameters_ = parameters;
 }

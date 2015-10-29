@@ -63,7 +63,7 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getDimension();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
-  setParameters(NumericalPointWithDescription(getInputDimension()));
+  setParameter(NumericalPointWithDescription(getInputDimension()));
 }
 
 

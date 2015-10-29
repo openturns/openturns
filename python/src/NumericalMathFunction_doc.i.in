@@ -54,12 +54,6 @@ OT_NumericalMathFunction_getEvaluation_doc
 OT_NumericalMathFunction_getGradient_doc
 %feature("docstring") OT::NumericalMathFunction::getHessian
 OT_NumericalMathFunction_getHessian_doc
-%feature("docstring") OT::NumericalMathFunction::getInitialEvaluationImplementation
-OT_NumericalMathFunction_getInitialEvaluationImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::getInitialGradientImplementation
-OT_NumericalMathFunction_getInitialGradientImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::getInitialHessianImplementation
-OT_NumericalMathFunction_getInitialHessianImplementation_doc
 %feature("docstring") OT::NumericalMathFunction::setEvaluation
 OT_NumericalMathFunction_setEvaluation_doc
 %feature("docstring") OT::NumericalMathFunction::setGradient
@@ -82,19 +76,13 @@ OT_NumericalMathFunction_getOutputDescription_doc
 OT_NumericalMathFunction_getInputDimension_doc
 %feature("docstring") OT::NumericalMathFunction::getOutputDimension
 OT_NumericalMathFunction_getOutputDimension_doc
+%feature("docstring") OT::NumericalMathFunction::getParameterDimension
+OT_NumericalMathFunction_getParameterDimension_doc
 %feature("docstring") OT::NumericalMathFunction::draw
 OT_NumericalMathFunction_draw_doc
-%feature("docstring") OT::NumericalMathFunction::getParameters
-OT_NumericalMathFunction_getParameters_doc
-%feature("docstring") OT::NumericalMathFunction::setParameters
-OT_NumericalMathFunction_setParameters_doc
-%feature("docstring") OT::NumericalMathFunction::parametersGradient
-OT_NumericalMathFunction_parametersGradient_doc
-%feature("docstring") OT::NumericalMathFunction::getUseDefaultGradientImplementation
-OT_NumericalMathFunction_getUseDefaultGradientImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::getUseDefaultHessianImplementation
-OT_NumericalMathFunction_getUseDefaultHessianImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::setUseDefaultGradientImplementation
-OT_NumericalMathFunction_setUseDefaultGradientImplementation_doc
-%feature("docstring") OT::NumericalMathFunction::setUseDefaultHessianImplementation
-OT_NumericalMathFunction_setUseDefaultHessianImplementation_doc
+%feature("docstring") OT::NumericalMathFunction::getParameter
+OT_NumericalMathFunction_getParameter_doc
+%feature("docstring") OT::NumericalMathFunction::setParameter
+OT_NumericalMathFunction_setParameter_doc
+%feature("docstring") OT::NumericalMathFunction::parameterGradient
+OT_NumericalMathFunction_parameterGradient_doc

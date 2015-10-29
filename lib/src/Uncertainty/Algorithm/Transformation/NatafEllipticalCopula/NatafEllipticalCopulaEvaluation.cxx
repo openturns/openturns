@@ -101,7 +101,7 @@ NumericalPoint NatafEllipticalCopulaEvaluation::operator () (const NumericalPoin
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafEllipticalCopulaEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix NatafEllipticalCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
   return Matrix(0, getInputDimension());
 }

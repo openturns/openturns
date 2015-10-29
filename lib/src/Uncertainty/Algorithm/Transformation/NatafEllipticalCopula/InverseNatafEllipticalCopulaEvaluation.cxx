@@ -98,7 +98,7 @@ NumericalPoint InverseNatafEllipticalCopulaEvaluation::operator () (const Numeri
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameter are not taken into account. */
 
-Matrix InverseNatafEllipticalCopulaEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix InverseNatafEllipticalCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
   return Matrix(0, getInputDimension());
 }

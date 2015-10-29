@@ -91,7 +91,7 @@ String NatafEllipticalDistributionEvaluation::__repr__() const
  *
  */
 
-Matrix NatafEllipticalDistributionEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix NatafEllipticalDistributionEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
   NumericalPoint center(getCenter()); // \mu
   Matrix linear(getLinear()); // \Gamma^t, transposed inverse Cholesky

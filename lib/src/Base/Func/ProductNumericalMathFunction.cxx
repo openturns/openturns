@@ -43,7 +43,6 @@ ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation 
 {
   //  try{
   GradientImplementation p_gradientImplementation(new ProductNumericalMathGradientImplementation(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
-  setInitialGradientImplementation(p_gradientImplementation);
   setGradient(p_gradientImplementation);
   //  }
   //  catch(InvalidArgumentException &) {
@@ -51,7 +50,6 @@ ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation 
   //  }
   //  try{
   HessianImplementation p_hessianImplementation(new ProductNumericalMathHessianImplementation(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
-  setInitialHessianImplementation(p_hessianImplementation);
   setHessian(p_hessianImplementation);
   //  }
   //  catch(InvalidArgumentException & ex) {
@@ -104,7 +102,7 @@ String ProductNumericalMathFunction::__str__(const String & offset) const
  * dH/dp = [dF/dpf(x, pf) . G(x, pg), dG/dpg(x, pg) . F(x, pf)]
  * and the needed gradient is (dH/dp)^t
  */
-Matrix ProductNumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
+Matrix ProductNumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
@@ -112,8 +110,8 @@ Matrix ProductNumericalMathFunction::parametersGradient(const NumericalPoint & i
   NumericalScalar leftValue = p_leftFunction_->operator()(inP)[0];
   NumericalScalar rightValue = p_rightFunction_->operator()(inP)[0];
   // Parameters gradient of the functions scaled by the value of there product term
-  Matrix upper(p_leftFunction_->parametersGradient(inP) * leftValue);
-  Matrix lower(p_rightFunction_->parametersGradient(inP) * rightValue);
+  Matrix upper(p_leftFunction_->parameterGradient(inP) * leftValue);
+  Matrix lower(p_rightFunction_->parameterGradient(inP) * rightValue);
   // Fill-in the result
   UnsignedInteger leftParametersDimension = upper.getNbRows();
   UnsignedInteger rightParametersDimension = lower.getNbRows();

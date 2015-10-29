@@ -53,7 +53,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const Implementatio
   try
   {
     GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
-    setInitialGradientImplementation(p_gradientImplementation);
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(p_left->getUseDefaultGradientImplementation() || p_right->getUseDefaultGradientImplementation());
   }
@@ -64,7 +63,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const Implementatio
   try
   {
     HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
-    setInitialHessianImplementation(p_hessianImplementation);
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(p_left->getUseDefaultHessianImplementation() || p_right->getUseDefaultHessianImplementation());
   }
@@ -86,7 +84,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const NumericalMath
   try
   {
     GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(left.getGradient(), right.getEvaluation(), right.getGradient()));
-    setInitialGradientImplementation(p_gradientImplementation);
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(left.getUseDefaultGradientImplementation() || right.getUseDefaultGradientImplementation());
   }
@@ -97,7 +94,6 @@ ComposedNumericalMathFunction::ComposedNumericalMathFunction(const NumericalMath
   try
   {
     HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
-    setInitialHessianImplementation(p_hessianImplementation);
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(left.getUseDefaultHessianImplementation() || right.getUseDefaultHessianImplementation());
   }
@@ -151,18 +147,18 @@ String ComposedNumericalMathFunction::__repr__() const
  *
  * the needed gradient is [(dH/dp)(x,p)]^t
  */
-Matrix ComposedNumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
+Matrix ComposedNumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // y = G(x, pg)
   const NumericalPoint y(p_rightFunction_->operator()(inP));
   // (dG/dpg)(x, pg)
-  const Matrix rightGradientP(p_rightFunction_->parametersGradient(inP));
+  const Matrix rightGradientP(p_rightFunction_->parameterGradient(inP));
   // (dF/dy)(y, pf)
   const Matrix leftGradientY(p_leftFunction_->gradient(y));
   // (dF/dpf)(G(x, pg), pf)
-  const Matrix leftGradientP(p_leftFunction_->parametersGradient(y));
+  const Matrix leftGradientP(p_leftFunction_->parameterGradient(y));
   // (dF/dy)(G(x, pg), pf) . (dG/dpg)(x, pg)
   const Matrix upper(rightGradientP * leftGradientY);
   // Build the full gradient

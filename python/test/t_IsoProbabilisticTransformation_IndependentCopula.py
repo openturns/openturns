@@ -88,7 +88,7 @@ try:
 
     # Test for parameters
     print("parameters gradient at point=", repr(
-        transform.parametersGradient(point)))
+        transform.parameterGradient(point)))
 
     # Validation using finite difference
     eps = 1e-5
@@ -152,7 +152,7 @@ try:
 
     # Test for parameters
     print("(inverse) parameters gradient at point=", repr(
-        inverseTransform.parametersGradient(point)))
+        inverseTransform.parameterGradient(point)))
 
     # dT/dp0
     coll = DistributionCollection(dim)

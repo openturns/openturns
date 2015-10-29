@@ -86,7 +86,7 @@ SymmetricTensor ParametricHessianImplementation::hessian(const NumericalPoint & 
 SymmetricTensor ParametricHessianImplementation::hessian(const OT::NumericalPoint & point) const
 {
   // Use the current parameters value
-  return hessian(point, p_evaluation_->getParameters());
+  return hessian(point, p_evaluation_->getParameter());
 }
 
 /* Evaluation accessors */

@@ -80,7 +80,7 @@ Matrix ParametricGradientImplementation::gradient(const NumericalPoint & point,
 Matrix ParametricGradientImplementation::gradient(const OT::NumericalPoint & point) const
 {
   // Use the current parameters value
-  return gradient(point, p_evaluation_->getParameters());
+  return gradient(point, p_evaluation_->getParameter());
 }
 
 /* Evaluation accessor */

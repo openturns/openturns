@@ -106,7 +106,7 @@ NumericalPoint NatafIndependentCopulaEvaluation::operator () (const NumericalPoi
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafIndependentCopulaEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix NatafIndependentCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
   return Matrix(0, dimension_);
 }

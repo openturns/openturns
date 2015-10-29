@@ -236,16 +236,16 @@ UnsignedInteger LinearCombinationEvaluationImplementation::getOutputDimension() 
 
 
 /* Gradient according to the marginal parameters */
-Matrix LinearCombinationEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
+Matrix LinearCombinationEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
-  Matrix result(getParameters().getDimension(), getOutputDimension());
+  Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size(functionsCollection_.getSize());
   // Get the parameters gradients for each atom and stack them into the result
   UnsignedInteger rowIndex(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Extract the atom gradient
-    const Matrix atomParametersGradient(functionsCollection_[i].parametersGradient(inP));
+    const Matrix atomParametersGradient(functionsCollection_[i].parameterGradient(inP));
     const UnsignedInteger rowDimension(atomParametersGradient.getNbRows());
     const UnsignedInteger columnDimension(atomParametersGradient.getNbColumns());
     // Scale the atom gradient and copy it into the result
@@ -263,7 +263,7 @@ Matrix LinearCombinationEvaluationImplementation::parametersGradient(const Numer
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription LinearCombinationEvaluationImplementation::getParameters() const
+NumericalPointWithDescription LinearCombinationEvaluationImplementation::getParameter() const
 {
   NumericalPointWithDescription parameters(0);
   Description description(0);
@@ -271,7 +271,7 @@ NumericalPointWithDescription LinearCombinationEvaluationImplementation::getPara
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Extract the parameters of the current atom
-    NumericalPointWithDescription atomParameters(functionsCollection_[i].getParameters());
+    NumericalPointWithDescription atomParameters(functionsCollection_[i].getParameter());
     Description atomDescription(atomParameters.getDescription());
     const UnsignedInteger atomSize(atomParameters.getDimension());
     // Copy the parameters value and description

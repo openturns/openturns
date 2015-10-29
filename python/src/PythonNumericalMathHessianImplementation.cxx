@@ -90,7 +90,7 @@ String PythonNumericalMathHessianImplementation::__repr__() const
   OSS oss;
   oss << "class=" << PythonNumericalMathHessianImplementation::GetClassName()
       << " name=" << getName()
-      << " parameters=" << getParameters();
+      << " parameter=" << getParameter();
   return oss;
 }
 

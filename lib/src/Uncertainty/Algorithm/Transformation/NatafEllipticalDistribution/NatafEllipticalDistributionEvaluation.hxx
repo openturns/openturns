@@ -52,7 +52,7 @@ public:
   virtual NatafEllipticalDistributionEvaluation * clone() const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parametersGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
 
   /** String converter */
   virtual String __repr__() const;

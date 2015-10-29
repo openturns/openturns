@@ -83,9 +83,9 @@ NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) co
 }
 
 /* Gradient according to the marginal parameters. */
-Matrix RosenblattEvaluation::parametersGradient(const NumericalPoint & inP) const
+Matrix RosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parametersGradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const";
 }
 
 /* Accessor for input point dimension */

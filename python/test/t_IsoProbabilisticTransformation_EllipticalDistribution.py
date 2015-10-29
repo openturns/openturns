@@ -85,7 +85,7 @@ try:
 
     # Test for parameters
     print("parameters gradient at point=", repr(
-        transform.parametersGradient(point)))
+        transform.parameterGradient(point)))
 
 except:
     import sys
