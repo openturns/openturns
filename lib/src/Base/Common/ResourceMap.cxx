@@ -373,6 +373,7 @@ void ResourceMap::loadDefaultConfiguration()
   // OptimizationSolverImplementation parameters //
   setAsNumericalScalar( "OptimizationSolverImplementation-DefaultLevelValue", 0.0 );
   setAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration", 100 );
+  setAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumEvaluationNumber", 100000);
   setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError", 1.0e-5 );
   setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError", 1.0e-5 );
   setAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError", 1.0e-5 );

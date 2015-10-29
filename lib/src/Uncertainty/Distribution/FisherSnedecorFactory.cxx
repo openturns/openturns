@@ -34,7 +34,7 @@ FisherSnedecorFactory::FisherSnedecorFactory():
   , solver_(new TNC())
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("FisherSnedecorFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("FisherSnedecorFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumObjectiveError"));

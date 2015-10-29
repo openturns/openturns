@@ -5,7 +5,7 @@ Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.
 Uploaders: Christophe Prud'homme <prudhomm@debian.org>, Denis Barbier <barbier@debian.org>
 Build-Depends: debhelper (>= 8), quilt, gfortran, bison, flex, cmake, bc,
  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev,
- libboost-math-dev, libhmat-oss-dev,
+ libboost-math-dev, libhmat-oss-dev, libnlopt-dev,
  libtbb-dev [i386 amd64 ia64],
  r-base-core, python-dev, python3-dev, swig (>= 2.0.9)
 Standards-Version: 3.9.6
@@ -51,7 +51,7 @@ Package: libopenturns-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends}, libopenturns0.7 (= ${binary:Version}),
-  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev
+  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev, libnlopt-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
 Description: headers and development libraries for OpenTURNS

@@ -16,5 +16,5 @@ Index: openturns/python/test/CMakeLists.txt
 -  ot_pyinstallcheck_test (coupling_tools)
 +#DEB#ot_pyinstallcheck_test (coupling_tools)
  endif ()
- 
- if (MUPARSER_FOUND AND MATPLOTLIB_FOUND AND SCIPY_FOUND AND R_rot_FOUND)
+
+

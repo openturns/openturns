@@ -209,7 +209,7 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumIterationsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumIterationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
 
   UnsignedInteger size = evaluationInputHistory_.getSize();
   for (UnsignedInteger i = 1; i < size; ++ i)

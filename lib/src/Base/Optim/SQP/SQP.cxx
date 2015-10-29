@@ -181,7 +181,7 @@ void SQP::run()
   // reset result
   setResult(OptimizationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError));
 
-  while ( (!convergence) && (iterationNumber <= getMaximumIterationsNumber()) )
+  while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
     /* Go to next iteration */
     ++ iterationNumber;
@@ -263,7 +263,7 @@ void SQP::run()
 
   if (!convergence)
   {
-    LOGWARN(OSS() << "Warning! The SQP algorithm failed to converge after " << getMaximumIterationsNumber() << " iterations");
+    LOGWARN(OSS() << "Warning! The SQP algorithm failed to converge after " << getMaximumIterationNumber() << " iterations");
   }
 } // run()
 

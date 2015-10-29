@@ -55,7 +55,7 @@ BoxCoxFactory::BoxCoxFactory()
   CobylaSpecificParameters parameters(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoBeg"));
   static_cast<Cobyla*>(solver_.getImplementation().get())->setSpecificParameters(parameters);
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoEnd"));
-  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
+  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
 }
 
 /* Virtual constructor */

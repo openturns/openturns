@@ -6,8 +6,10 @@ OT_OptimizationSolver_doc
 OT_OptimizationSolver_getMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationSolver::getMaximumConstraintError
 OT_OptimizationSolver_getMaximumConstraintError_doc
-%feature("docstring") OT::OptimizationSolver::getMaximumIterationsNumber
-OT_OptimizationSolver_getMaximumIterationsNumber_doc
+%feature("docstring") OT::OptimizationSolver::getMaximumIterationNumber
+OT_OptimizationSolver_getMaximumIterationNumber_doc
+%feature("docstring") OT::OptimizationSolver::getMaximumEvaluationNumber
+OT_OptimizationSolver_getMaximumEvaluationNumber_doc
 %feature("docstring") OT::OptimizationSolver::getMaximumRelativeError
 OT_OptimizationSolver_getMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationSolver::getMaximumResidualError
@@ -25,8 +27,10 @@ OT_OptimizationSolver_run_doc
 OT_OptimizationSolver_setMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationSolver::setMaximumConstraintError
 OT_OptimizationSolver_setMaximumConstraintError_doc
-%feature("docstring") OT::OptimizationSolver::setMaximumIterationsNumber
-OT_OptimizationSolver_setMaximumIterationsNumber_doc
+%feature("docstring") OT::OptimizationSolver::setMaximumIterationNumber
+OT_OptimizationSolver_setMaximumIterationNumber_doc
+%feature("docstring") OT::OptimizationSolver::setMaximumEvaluationNumber
+OT_OptimizationSolver_setMaximumEvaluationNumber_doc
 %feature("docstring") OT::OptimizationSolver::setMaximumRelativeError
 OT_OptimizationSolver_setMaximumRelativeError_doc
 %feature("docstring") OT::OptimizationSolver::setMaximumResidualError

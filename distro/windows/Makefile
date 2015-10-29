@@ -129,6 +129,7 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgnurx-0.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/*muparser*.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/zlib1.dll $(OT_PREFIX)/bin
+	cp $(MINGW_PREFIX)/$(TARGET)/bin/libnlopt-0.dll $(OT_PREFIX)/bin
 # 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libtbb.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgomp-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libcblas.dll $(OT_PREFIX)/bin
@@ -195,6 +196,7 @@ ot-vc:
 	  -DUSE_MUPARSER=OFF \
 	  -DUSE_LIBXML2=OFF \
 	  -DUSE_R=OFF \
+	  -DUSE_NLOPT=OFF \
 	  -DBOOST_ROOT=\"C:\\local\\\\boost_1_58_0\" \
 	  -DCMAKE_SHARED_LINKER_FLAGS_RELEASE:STRING=\"/OPT:NOREF /INCREMENTAL:NO\" \
 	  -DLAPACKE_FOUND=TRUE \

@@ -71,6 +71,12 @@ public:
   void setResult(const Result & result);
 
   /** Maximum iterations number accessor */
+  UnsignedInteger getMaximumIterationNumber() const;
+  void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
+
+  /** Maximum iterations number accessor
+   * @deprecated
+   */
   UnsignedInteger getMaximumIterationsNumber() const;
   void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
 

@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
       problem.setBounds(bounds);
 
       TNC solver;
-      solver.setMaximumIterationsNumber(10000);
+      solver.setMaximumIterationNumber(10000);
       solver.setMaximumAbsoluteError(1.0e-8);
       solver.setMaximumRelativeError(1.0e-8);
       solver.setMaximumResidualError(1.0e-8);

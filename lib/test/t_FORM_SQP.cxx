@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     NumericalPoint startingPoint(4, 1.0);
     SQP myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
-    myAlgorithm.setMaximumIterationsNumber(100);
+    myAlgorithm.setMaximumIterationNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
     myAlgorithm.setMaximumResidualError(1.0e-10);

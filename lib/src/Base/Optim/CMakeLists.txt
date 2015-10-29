@@ -10,6 +10,7 @@ ot_add_source_file (OptimizationProblemImplementation.cxx)
 ot_add_source_file (OptimizationSolver.cxx)
 ot_add_source_file (OptimizationSolverImplementation.cxx)
 ot_add_source_file (OptimizationResult.cxx)
+ot_add_source_file (NLopt.cxx)
 
 ot_install_header_file (OTOptim.hxx)
 ot_install_header_file (NearestPointChecker.hxx)
@@ -19,6 +20,7 @@ ot_install_header_file (OptimizationProblemImplementation.hxx)
 ot_install_header_file (OptimizationSolver.hxx)
 ot_install_header_file (OptimizationSolverImplementation.hxx)
 ot_install_header_file (OptimizationResult.hxx)
+ot_install_header_file (NLopt.hxx)
 
 # Recurse in subdirectories
 add_subdirectory (Cobyla)

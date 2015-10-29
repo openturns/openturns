@@ -35,7 +35,7 @@ TruncatedNormalFactory::TruncatedNormalFactory()
   , solver_(new TNC())
 {
   // Initialize optimization solver parameter using the ResourceMap 
-  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("TruncatedNormalFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TruncatedNormalFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("TruncatedNormalFactory-MaximumObjectiveError"));

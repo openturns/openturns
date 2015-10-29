@@ -80,6 +80,7 @@ endif ()
 if (MUPARSER_FOUND)
   list (APPEND SWIG_MODULE_func_EXTRA_FLAGS -DOPENTURNS_HAVE_MUPARSER=1)
 endif ()
+
 ot_add_python_module(common common_module.i
                       OTtypes.i
                       OTexceptions.i
@@ -348,6 +349,7 @@ ot_add_python_module(optim optim_module.i
                       TNC.i TNC_doc.i.in
                       SQPSpecificParameters.i
                       SQP.i SQP_doc.i.in
+                      NLopt.i NLopt_doc.i.in
                       BaseOptimTemplateDefs.i
                    )
 

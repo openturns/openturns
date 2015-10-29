@@ -105,7 +105,7 @@ void Cobyla::run()
   NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
 
   NumericalScalar rhoEnd(getMaximumAbsoluteError());
-  int maxFun = getMaximumIterationsNumber();
+  int maxFun = getMaximumIterationNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
   NumericalScalar absoluteError = -1.0;

@@ -42,7 +42,7 @@ TrapezoidalFactory::TrapezoidalFactory()
   // At last, allocate memory space if needed, but go to destructor to free it
   static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoBeg")));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
-  solver_.setMaximumIterationsNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
+  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
 }
 
 /* Virtual constructor */

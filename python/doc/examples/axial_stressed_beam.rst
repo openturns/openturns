@@ -177,7 +177,7 @@ The numerical application gives:
     myCobyla = ot.Cobyla()
     # Resolution options:
     eps = 1e-3
-    myCobyla.setMaximumIterationsNumber(100)
+    myCobyla.setMaximumIterationNumber(100)
     myCobyla.setMaximumAbsoluteError(eps)
     myCobyla.setMaximumRelativeError(eps)
     myCobyla.setMaximumResidualError(eps)

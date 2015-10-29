@@ -64,7 +64,7 @@ done
 echo "-- Creating $pkgname-$pkgver tarball from $path"
 
 rm -rf /tmp/$pkgname-$pkgver
-git archive master --prefix=$pkgname-$pkgver/ | bzip2 > /tmp/$pkgname-$pkgver.tar.bz2
+git archive HEAD --prefix=$pkgname-$pkgver/ | bzip2 > /tmp/$pkgname-$pkgver.tar.bz2
 cd /tmp
 tar xjf $pkgname-$pkgver.tar.bz2
 

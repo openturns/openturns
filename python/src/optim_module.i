@@ -54,6 +54,7 @@
 %include TNC.i
 %include SQPSpecificParameters.i
 %include SQP.i
+%include NLopt.i
 
 /* At last we include template definitions */
 %include BaseOptimTemplateDefs.i

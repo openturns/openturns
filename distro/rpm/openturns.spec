@@ -22,11 +22,13 @@ Group:          System Environment/Libraries
 License:        LGPLv3+
 URL:            http://www.openturns.org
 Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%{version}.tar.bz2
+Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, bc, swig
 BuildRequires:  muParser-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  boost-devel
+BuildRequires:  nlopt-devel
 #BuildRequires:  hmat-oss-devel
 %if 0%{?suse_version}
 BuildRequires:  lapack
@@ -49,6 +51,9 @@ Group:          Development/Libraries/C and C++
 Requires:       muParser
 Requires:       libxml2
 Requires:       lapack
+%if ! 0%{?suse_version}
+Requires:       nlopt
+%endif
 #Requires:       libhmat-oss1
 
 %description libs
@@ -63,6 +68,7 @@ Requires:       libxml2-devel
 %if ! 0%{?suse_version}
 Requires:       lapack-devel
 %endif
+Requires:       nlopt-devel
 
 %description devel
 Development files for OpenTURNS uncertainty library
@@ -96,6 +102,7 @@ Python textual interface to OpenTURNS uncertainty library
 
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
+       -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
 %ifarch i586 i686
        -DCMAKE_C_FLAGS_RELEASE="%optflags -O0" \
 %endif
@@ -107,7 +114,6 @@ make
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/%{name}/doc
-rm %{buildroot}%{_datadir}/%{name}/examples/*.sh
 
 %check
 make tests %{?_smp_mflags}
@@ -127,7 +133,6 @@ rm -rf %{buildroot}
 %config %{_sysconfdir}/%{name}/%{name}.conf
 %{_libdir}/*.so.*
 %dir %{_datadir}/%{name}
-%dir %{_libdir}/%{name}
 %{_datadir}/gdb/auto-load%{_libdir}/libOT*-gdb.py*
 
 %files devel

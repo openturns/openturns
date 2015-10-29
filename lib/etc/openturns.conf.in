@@ -107,6 +107,7 @@
   <!-- OT::OptimizationSolverImplementation parameters -->
   <OptimizationSolverImplementation-DefaultLevelValue              value="0.0"    />
   <OptimizationSolverImplementation-DefaultMaximumIteration        value="100"    />
+  <OptimizationSolverImplementation-DefaultMaximumEvaluationNumber value="100000" />
   <OptimizationSolverImplementation-DefaultMaximumAbsoluteError    value="1.0e-5" />
   <OptimizationSolverImplementation-DefaultMaximumRelativeError    value="1.0e-5" />
   <OptimizationSolverImplementation-DefaultMaximumResidualError    value="1.0e-5" />
