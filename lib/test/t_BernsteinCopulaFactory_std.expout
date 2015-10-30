@@ -1,0 +1,6 @@
+Reference copulaclass=GumbelCopula name=GumbelCopula dimension=2 theta=3
+Max. error=0.039628
+Reference copulaclass=ClaytonCopula name=ClaytonCopula dimension=2 theta=3
+Max. error=0.0378453
+Reference copulaclass=FrankCopula name=FrankCopula dimension=2 theta=3
+Max. error=0.0174008

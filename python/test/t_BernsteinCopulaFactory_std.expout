@@ -1,0 +1,6 @@
+Reference copula GumbelCopula(theta = 3)
+Max. error=0.03963
+Reference copula ClaytonCopula(theta = 3)
+Max. error=0.03785
+Reference copula FrankCopula(theta = 3)
+Max. error=0.01740

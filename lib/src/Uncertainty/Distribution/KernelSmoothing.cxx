@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cmath>
 #include "KernelSmoothing.hxx"
 #include "Normal.hxx"
 #include "Dirac.hxx"

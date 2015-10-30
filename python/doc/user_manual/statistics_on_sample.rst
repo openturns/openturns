@@ -82,6 +82,7 @@ Building copulas from samples
     :template: class.rst_t
 
     AliMikhailHaqCopulaFactory
+    BernsteinCopulaFactory
 
     :template: DistributionFactory.rst_t
 
