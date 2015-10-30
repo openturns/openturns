@@ -45,7 +45,7 @@ public:
   explicit ProductCovarianceModel(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  ProductCovarianceModel(const CovarianceModelCollection & collection);
+  explicit ProductCovarianceModel(const CovarianceModelCollection & collection);
 
   /** Virtual copy constructor */
   ProductCovarianceModel * clone() const;
@@ -66,13 +66,12 @@ public:
   virtual Implementation getMarginal(const UnsignedInteger index) const;
 
   /** Parameters accessor */
-  void setParameter(const NumericalPoint & parameters);
+  void setParameter(const NumericalPoint & parameter);
   NumericalPoint getParameter() const;
   Description getParameterDescription() const;
 
   /** Scale accessor */
   void setScale(const NumericalPoint & scale);
-  NumericalPoint getScale() const;
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;
