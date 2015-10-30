@@ -125,8 +125,6 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/liblapack.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libiconv-2.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libxml2-2.dll $(OT_PREFIX)/bin
-	cp $(MINGW_PREFIX)/$(TARGET)/bin/libdl*.dll $(OT_PREFIX)/bin
-	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgnurx-0.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/*muparser*.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/zlib1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libnlopt-0.dll $(OT_PREFIX)/bin

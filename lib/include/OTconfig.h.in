@@ -39,9 +39,6 @@
 /* Define to 1 if you have the <dirent.h> header file. */
 #cmakedefine OPENTURNS_HAVE_DIRENT_H
 
-/* Define to 1 if you have the <dlfcn.h> header file. */
-#cmakedefine OPENTURNS_HAVE_DLFCN_H
-
 /* Define to 1 if you have the <errno.h> header file. */
 #cmakedefine OPENTURNS_HAVE_ERRNO_H
 
@@ -59,9 +56,6 @@
 
 /* Define if you have LAPACK library. */
 #cmakedefine HAVE_LAPACK
-
-/* Support for libdl library */
-#cmakedefine OPENTURNS_HAVE_LIBDL
 
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
@@ -87,12 +81,6 @@
 
 /* Define to 1 if you have the <pthread.h> header file. */
 #cmakedefine OPENTURNS_HAVE_PTHREAD_H
-
-/* Support for regular expression library */
-#cmakedefine OPENTURNS_HAVE_REGEX
-
-/* Define to 1 if you have the <regex.h> header file. */
-#cmakedefine OPENTURNS_HAVE_REGEX_H
 
 /* Define to 1 if you have the NLopt library. */
 #cmakedefine OPENTURNS_HAVE_NLOPT
