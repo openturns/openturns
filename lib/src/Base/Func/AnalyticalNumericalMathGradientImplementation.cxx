@@ -29,24 +29,20 @@ static const Factory<AnalyticalNumericalMathGradientImplementation> RegisteredFa
 
 /* Default constructor */
 AnalyticalNumericalMathGradientImplementation::AnalyticalNumericalMathGradientImplementation()
-  : NumericalMathGradientImplementation(),
-    isInitialized_(false),
-    isAnalytical_(true),
-    inputVariables_(0),
-    evaluation_(),
-    parsers_(0)
+  : NumericalMathGradientImplementation()
+  , isInitialized_(false)
+  , isAnalytical_(true)
+  , evaluation_()
 {
   // Nothing to do
 } // AnalyticalNumericalMathGradientImplementation
 
 /* Default constructor */
 AnalyticalNumericalMathGradientImplementation::AnalyticalNumericalMathGradientImplementation(const AnalyticalNumericalMathEvaluationImplementation & evaluation)
-  : NumericalMathGradientImplementation(),
-    isInitialized_(false),
-    isAnalytical_(true),
-    inputVariables_(0),
-    evaluation_(evaluation),
-    parsers_(ParserCollection(0))
+  : NumericalMathGradientImplementation()
+  , isInitialized_(false)
+  , isAnalytical_(true)
+  , evaluation_(evaluation)
 {
   // Nothing to do
 } // AnalyticalNumericalMathGradientImplementation
@@ -123,60 +119,48 @@ String AnalyticalNumericalMathGradientImplementation::__str__(const String & off
 void AnalyticalNumericalMathGradientImplementation::initialize() const
 {
   if (isInitialized_) return;
-  try
+  isAnalytical_ = false;
+  const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
+  const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
+  const UnsignedInteger gradientSize(inputSize * outputSize);
+  Description gradientFormulas(gradientSize);
+  // For each element of the gradient, do
+  UnsignedInteger gradientIndex(0);
+  for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
   {
-    isAnalytical_ = false;
-    const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
-    const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
-    const UnsignedInteger gradientSize(inputSize * outputSize);
-    parsers_ = ParserCollection(gradientSize);
-    inputVariables_ = NumericalScalarCollection(inputSize);
-    // For each element of the gradient, do
-    UnsignedInteger gradientIndex(0);
-    for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
+    // Parse the current formula with Ev3
+    int nerr(0);
+    Ev3::ExpressionParser ev3Parser;
+    // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+    Ev3::Expression ev3Expression;
+    try
     {
-      // Parse the current formula with Ev3
-      int nerr(0);
-      Ev3::ExpressionParser ev3Parser;
-      // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-      for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
-      Ev3::Expression ev3Expression;
+      ev3Expression = ev3Parser.Parse(evaluation_.formulas_[columnIndex].c_str(), nerr);
+    }
+    catch (Ev3::ErrBase & exc)
+    {
+      throw InternalException(HERE) << exc.description_;
+    }
+    if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[columnIndex] << " with Ev3. No analytical gradient.";
+    //                Ev3::Simplify(&ev3Expression);
+    for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
+    {
       try
       {
-        ev3Expression = ev3Parser.Parse(evaluation_.formulas_[columnIndex].c_str(), nerr);
+        Ev3::Expression derivative(Ev3::Diff(ev3Expression, rowIndex));
+        //                    Ev3::Simplify(&derivative);
+        LOGINFO(OSS() << "d(" << ev3Expression->ToString() << ")/d(" << evaluation_.inputVariablesNames_[rowIndex] << ")=" << derivative->ToString());
+        gradientFormulas[gradientIndex] = derivative->ToString();
+        ++ gradientIndex;
       }
-      catch (Ev3::ErrBase & exc)
+      catch(...)
       {
-        throw InternalException(HERE) << exc.description_;
-      }
-      if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[columnIndex] << " with Ev3. No analytical gradient.";
-      //                Ev3::Simplify(&ev3Expression);
-      for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
-      {
-        // First, define all the variable names and associate them
-        // to the corresponding component of the input vector
-        for(UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) parsers_[gradientIndex].DefineVar(evaluation_.inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex]);
-        // Second, define the formula
-        try
-        {
-          Ev3::Expression derivative(Ev3::Diff(ev3Expression, rowIndex));
-          //                    Ev3::Simplify(&derivative);
-          LOGINFO(OSS() << "d(" << ev3Expression->ToString() << ")/d(" << evaluation_.inputVariablesNames_[rowIndex] << ")=" << derivative->ToString());
-          parsers_[gradientIndex].SetExpr(derivative->ToString().c_str());
-          ++gradientIndex;
-        }
-        catch(...)
-        {
-          throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << evaluation_.inputVariablesNames_[rowIndex];
-        }
+        throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << evaluation_.inputVariablesNames_[rowIndex];
       }
     }
   }
-  catch(mu::Parser::exception_type & ex)
-  {
-    // Here, we know that both isAnalytical_ and isInitialized_ are false
-    throw InvalidArgumentException(HERE) << "Error constructing the gradient of an analytical function, message=" << ex.GetMsg() << " formula=" << ex.GetExpr() << " token=" << ex.GetToken() << " position=" << ex.GetPos();
-  }
+  parser_.setVariablesFormulas(evaluation_.inputVariablesNames_, gradientFormulas);
   // Everything is ok (no exception)
   isAnalytical_ = true;
   isInitialized_ = true;
@@ -189,25 +173,18 @@ Matrix AnalyticalNumericalMathGradientImplementation::gradient(const NumericalPo
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The gradient does not have an analytical expression.";
-  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i) inputVariables_[i] = inP[i];
   const UnsignedInteger outputDimension(getOutputDimension());
   Matrix out(inputDimension, outputDimension);
-  ++callsNumber_;
-  try
+  NumericalPoint outP(parser_(inP));
+  ++ callsNumber_;
+  UnsignedInteger parserIndex = 0;
+  for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++ columnIndex)
   {
-    UnsignedInteger parserIndex(0);
-    for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++columnIndex)
+    for (UnsignedInteger rowIndex = 0; rowIndex < inputDimension; ++ rowIndex)
     {
-      for (UnsignedInteger rowIndex = 0; rowIndex < inputDimension; ++rowIndex)
-      {
-        out(rowIndex, columnIndex) = parsers_[parserIndex].Eval();
-        ++parserIndex;
-      }
+      out(rowIndex, columnIndex) = outP[parserIndex];
+      ++ parserIndex;
     }
-  }
-  catch(mu::Parser::exception_type & ex)
-  {
-    throw InternalException(HERE) << ex.GetMsg();
   }
   return out;
 }
@@ -231,7 +208,7 @@ String AnalyticalNumericalMathGradientImplementation::getFormula(const UnsignedI
   const UnsignedInteger inputDimension(getInputDimension());
   if ((i >= inputDimension) || (j >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
   if (!isInitialized_) initialize();
-  return parsers_[i + j * inputDimension].GetExpr();
+  return parser_.getFormulas()[i + j * inputDimension];
 }
 
 /* Get the i-th marginal function */

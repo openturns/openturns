@@ -79,9 +79,6 @@
 /* Define to 1 if you have the <muparser.h> header file. */
 #cmakedefine OPENTURNS_HAVE_MUPARSER
 
-/* Define to 1 if you have muparser >= 2 library. */
-#cmakedefine OPENTURNS_HAVE_MUPARSER2
-
 /* Define to 1 if you have the <hmat.h> header file. */
 #cmakedefine OPENTURNS_HAVE_HMAT
 

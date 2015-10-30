@@ -32,11 +32,6 @@ class OT_API AnalyticalNumericalMathEvaluationImplementation
   CLASSNAME;
 public:
 
-  /* Some typedefs for easy reading */
-  typedef AnalyticalParser            Parser;
-  typedef Collection<Parser>          ParserCollection;
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
-
   /** Default constructor */
   AnalyticalNumericalMathEvaluationImplementation();
 
@@ -92,18 +87,13 @@ protected:
 private:
   friend class AnalyticalNumericalMathGradientImplementation;
   friend class AnalyticalNumericalMathHessianImplementation;
-  /* Must initialize the parser at the first call to operator() as the
-     reference associated with the variables may have change after the construction */
-  void initialize(UnsignedInteger inputDimension) const;
 
-  mutable Bool isInitialized_;
-  mutable NumericalSample inputVariables_;
   Description inputVariablesNames_;
   Description outputVariablesNames_;
   Description formulas_;
 
   /** A mathematical expression parser from the muParser library */
-  mutable ParserCollection parsers_;
+  mutable AnalyticalParser parser_;
 
 }; /* class AnalyticalNumericalMathEvaluationImplementation */
 

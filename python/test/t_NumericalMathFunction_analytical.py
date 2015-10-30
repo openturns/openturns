@@ -2,12 +2,9 @@
 
 from __future__ import print_function
 import openturns as ot
-from math import pi
+import math as m
 
-elementaryFunctions = []
-elementaryFunctions.append('sin')
-elementaryFunctions.append('cos')
-elementaryFunctions.append('tan')
+elementaryFunctions = ['sin', 'cos', 'tan']
 elementaryFunctions.append('asin')
 elementaryFunctions.append('acos')
 elementaryFunctions.append('atan')
@@ -96,11 +93,10 @@ formula = ['sin(xi1) + 7. * (sin(xi2)) ^ 2 + 0.1 * xi3^4 * sin(xi1)']
 model = ot.NumericalMathFunction(['xi1', 'xi2', 'xi3'], ['y'], formula)
 
 # Create an input distribution to calculate reference values
-distribution = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * 3)
-inSample = ot.NumericalSample(distribution.getSample(100))
-resultSample = ot.NumericalSample(model(inSample))
-refResultValues = [ot.NumericalPoint(model([inSample[i][0], inSample[i][1], inSample[i][2]]))
-                   for i in range(100)]
+distribution = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3)
+inSample = distribution.getSample(100)
+resultSample = model(inSample)
+refResultValues = [m.sin(inSample[i][0])+7.0*(m.sin(inSample[i][1]))**2 + 0.1 * (inSample[i][2])**4 * m.sin(inSample[i][0]) for i in range(100)]
 
-print('First reference value : %.4e' % refResultValues[0][0])
+print('First reference value : %.4e' % refResultValues[0])
 print('First result calculated : %.4e' % resultSample[0][0])
