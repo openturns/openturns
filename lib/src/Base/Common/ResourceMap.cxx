@@ -486,11 +486,6 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "DirichletFactory-MaximumIteration", 10 );
 
   // FisherSnedecorFactory parameters //
-  setAsUnsignedInteger( "FisherSnedecorFactory-MaximumEvaluationNumber", 1000 );
-  setAsNumericalScalar( "FisherSnedecorFactory-MaximumAbsoluteError", 1.0e-10 );
-  setAsNumericalScalar( "FisherSnedecorFactory-MaximumRelativeError", 1.0e-10 );
-  setAsNumericalScalar( "FisherSnedecorFactory-MaximumObjectiveError", 1.0e-10 );
-  setAsNumericalScalar( "FisherSnedecorFactory-MaximumConstraintError", 1.0e-10 );
   setAsNumericalScalar( "FisherSnedecorFactory-D1LowerBound", 1.0e-2 );
   setAsNumericalScalar( "FisherSnedecorFactory-D2LowerBound", 1.0e-2 );
 
@@ -580,12 +575,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "TruncatedDistribution-DefaultThresholdRealization", 0.5 );
 
   // TruncatedNormalFactory parameters //
-  setAsUnsignedInteger( "TruncatedNormalFactory-MaximumEvaluationNumber", 1000 );
-  setAsNumericalScalar( "TruncatedNormalFactory-MaximumAbsoluteError", 1.0e-10 );
-  setAsNumericalScalar( "TruncatedNormalFactory-MaximumRelativeError", 1.0e-10 );
-  setAsNumericalScalar( "TruncatedNormalFactory-MaximumObjectiveError", 1.0e-10 );
-  setAsNumericalScalar( "TruncatedNormalFactory-MaximumConstraintError", 1.0e-10 );
   setAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound", 1.0e-4 );
+
+  // MaximumLikelihoodFactory parameters //
+  setAsUnsignedInteger( "MaximumLikelihoodFactory-MaximumEvaluationNumber", 1000 );
+  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10 );
+  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10 );
+  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10 );
+  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10 );
 
   // Student parameters //
   setAsUnsignedInteger( "Student-MaximumNumberOfPoints", 10000000 );

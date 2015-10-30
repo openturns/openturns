@@ -24,6 +24,7 @@
 #include "DistributionFactoryResult.hxx"
 #include "PersistentObject.hxx"
 #include "ResourceMap.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -73,10 +74,17 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
+  /** Accessor to known parameter */
+  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
+  NumericalPoint getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
 
 protected:
   /* Bootstrap estimator */
   virtual DistributionFactoryResult buildBootStrapEstimator(const NumericalSample & sample, const Bool isGaussian = false) const;
+
+  /* Build the distribution and the parameter distribution */
+  virtual DistributionFactoryResult buildMaximumLikelihoodEstimator(const NumericalSample & sample, const Bool isRegular = false) const;
 
   /* Execute a R script */
   virtual NumericalPoint runRFactory(const NumericalSample & sample,
@@ -84,6 +92,10 @@ protected:
 
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
+
+  /* Known parameter */
+  NumericalPoint knownParameterValues_;
+  Indices knownParameterIndices_;
 
   /* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
   static NumericalPointCollection RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll);

@@ -23,9 +23,8 @@
 #include "Distribution.hxx"
 #include "SpecFunc.hxx"
 #include "ResourceMap.hxx"
-#include "algocobyla.h"
 #include "Log.hxx"
-#include "OptimizationSolver.hxx"
+#include "MaximumLikelihoodFactory.hxx"
 #include "Cobyla.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 
@@ -36,34 +35,13 @@ CLASSNAMEINIT(TrapezoidalFactory);
 /* Default constructor */
 TrapezoidalFactory::TrapezoidalFactory()
   : DistributionImplementationFactory()
-  , solver_(new Cobyla())
 {
-  // Initialize any other class members here
-  // At last, allocate memory space if needed, but go to destructor to free it
-  static_cast<Cobyla *>(solver_.getImplementation().get())->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoBeg")));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
-  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
 }
 
 /* Virtual constructor */
 TrapezoidalFactory * TrapezoidalFactory::clone() const
 {
   return new TrapezoidalFactory(*this);
-}
-
-/* Compute the log-likelihood function */
-NumericalScalar TrapezoidalFactory::computeLogLikelihood(const NumericalPoint & x) const
-{
-  NumericalScalar result(0.0);
-  const UnsignedInteger size(sample_.getSize());
-  const Trapezoidal distribution(buildAsTrapezoidal(x));
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const NumericalScalar pdf(distribution.computePDF(sample_[i]));
-    if ( pdf > 0.0 ) result += std::log(pdf);
-    else result += SpecFunc::LogMinNumericalScalar;
-  }
-  return result;
 }
 
 /* Compute the log-likelihood constraint */
@@ -76,16 +54,10 @@ NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(cons
   return result;
 }
 
-/* Compute the log-likelihood function accessor */
-NumericalMathFunction TrapezoidalFactory::getLogLikelihoodFunction() const
-{
-  return bindMethod <TrapezoidalFactory, NumericalScalar, NumericalPoint> ( *this, &TrapezoidalFactory::computeLogLikelihood, 4, 1);
-}
-
 /* Compute the log-likelihood constraint accessor */
 NumericalMathFunction TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
 {
-  return bindMethod <TrapezoidalFactory, NumericalPoint, NumericalPoint> ( *this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
+  return bindMethod <TrapezoidalFactory, NumericalPoint, NumericalPoint> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
 }
 
 /* Optimization solver accessor */
@@ -118,41 +90,39 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build() const
 
 Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
-  if (size == 0)
-    throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution from an empty sample";
+
+  const UnsignedInteger size = sample.getSize();
 
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a Trapezoidal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
+  const UnsignedInteger dimension = build()->getParameterDimension();
+
   // starting point
-  NumericalPoint x(4);
+  NumericalPoint startingPoint(dimension);
+  const NumericalScalar min = sample.getMin()[0];
+  const NumericalScalar max = sample.getMax()[0];
+  startingPoint[0] = min - std::abs(min) / (2.0 + size);// a
+  startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
+  startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
+  startingPoint[3] = max + std::abs(max) / (2.0 + size);// d
 
-  const NumericalScalar min(sample.getMin()[0]);
-  const NumericalScalar max(sample.getMax()[0]);
-  x[0] = min - std::abs( min ) / ( 2.0 + size );// a
-  x[1] = sample.computeQuantilePerComponent( 0.25 )[0];// b
-  x[2] = sample.computeQuantilePerComponent( 0.75 )[0];// c
-  x[3] = max + std::abs( max ) / ( 2.0 + size );// d
+  MaximumLikelihoodFactory factory(*this);
 
-  // use attributes to pass the data
-  sample_ = sample;
+  // override starting point
+  Cobyla solver;
+  solver.setRhoBeg(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoBeg"));
+  solver.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
+  solver.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
+  solver.setStartingPoint(startingPoint);
+  factory.setOptimizationSolver(solver);
 
-  // Define Optimization problem 
+  // override constraint
   OptimizationProblem problem;
-  problem.setObjective(getLogLikelihoodFunction());
   problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  problem.setMinimization(false);
-  solver_.setProblem(problem);
-  solver_.setStartingPoint(x);
+  factory.setOptimizationProblem(problem);
 
-  // run Optimization problem
-  solver_.run();
-
-  // optimal point
-  const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
-  Trapezoidal result(optpoint[0], optpoint[1], optpoint[2], optpoint[3]);
-
+  Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());
   return result;
 }

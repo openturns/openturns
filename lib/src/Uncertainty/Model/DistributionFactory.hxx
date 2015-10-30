@@ -64,6 +64,11 @@ public:
   /** Build the distribution and the parameter distribution */
   virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
 
+  /** Accessor to known parameter */
+  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
+  NumericalPoint getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
+
   /** Catalog of factories */
   static DistributionFactoryCollection GetContinuousUniVariateFactories();
   static DistributionFactoryCollection GetContinuousMultiVariateFactories();

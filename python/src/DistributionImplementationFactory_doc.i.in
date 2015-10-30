@@ -44,6 +44,9 @@ OT_DistributionFactory_build_doc
 
 If the distribution is estimated by method of moments, the distribution of the
 parameter is gaussian and estimated by bootstrap.
+If the distribution is estimated by maximum likelihood and the distribution
+is regular the distribution of the parameter is gaussian and its covariance
+matrix is the Fisher information matrix.
 In other cases, the distribution of parameter is estimated by bootstrap with
 :class:`~openturns.KernelSmoothing`.
 

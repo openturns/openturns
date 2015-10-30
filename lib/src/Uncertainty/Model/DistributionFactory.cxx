@@ -207,4 +207,21 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSam
   return getImplementation()->buildEstimator(sample);
 }
 
+void DistributionFactory::setKnownParameter(const NumericalPoint & values,
+                                            const Indices & indices)
+{
+  copyOnWrite();
+  getImplementation()->setKnownParameter(values, indices);
+}
+
+Indices DistributionFactory::getKnownParameterIndices() const
+{
+  return getImplementation()->getKnownParameterIndices();
+}
+
+NumericalPoint DistributionFactory::getKnownParameterValues() const
+{
+  return getImplementation()->getKnownParameterValues();
+}
+
 END_NAMESPACE_OPENTURNS

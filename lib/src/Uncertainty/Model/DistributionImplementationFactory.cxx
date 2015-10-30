@@ -31,6 +31,10 @@
 #include "BootstrapExperiment.hxx"
 #include "NormalFactory.hxx"
 #include "KernelSmoothing.hxx"
+#include "SpecFunc.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "CenteredFiniteDifferenceGradient.hxx"
+#include "Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -139,6 +143,61 @@ DistributionFactoryResult DistributionImplementationFactory::buildBootStrapEstim
   DistributionFactoryResult result(distribution, parameterDistribution);
   return result;
 }
+
+DistributionFactoryResult DistributionImplementationFactory::buildMaximumLikelihoodEstimator (const NumericalSample & sample,
+                                                                                              const Bool isRegular) const
+{
+  const UnsignedInteger size = sample.getSize();
+  const Distribution distribution(build(sample));
+  const UnsignedInteger parameterDimension = distribution.getParameterDimension();
+  Distribution parameterDistribution;
+  if (isRegular) {
+    Matrix theta(parameterDimension, parameterDimension);
+    const NumericalSample pdf(distribution.computePDF(sample));
+    const NumericalSample dpdf(distribution.computePDFGradient(sample));
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
+      dpdfi = dpdfi / pdf[i][0];
+      theta = theta + dpdfi * dpdfi.transpose() / size;
+    }
+    CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
+    parameterDistribution = Normal(distribution.getParameter(), covariance);
+  } else {
+    const UnsignedInteger bootstrapSize = getBootstrapSize();
+    BootstrapExperiment experiment(sample);
+    NumericalSample parameterSample(0, distribution.getParameterDimension());
+    for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
+    {
+      NumericalSample bootstrapSample(experiment.generate());
+      Distribution estimatedDistribution(build(bootstrapSample));
+      parameterSample.add(estimatedDistribution.getParameter());
+    }
+    KernelSmoothing factory;
+    parameterDistribution = factory.build(parameterSample);
+  }
+  DistributionFactoryResult result(distribution, parameterDistribution);
+  return result;
+}
+
+void DistributionImplementationFactory::setKnownParameter(const NumericalPoint & values,
+                                                          const Indices & indices)
+{
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
+  knownParameterValues_ = values;
+  knownParameterIndices_ = indices;
+}
+
+Indices DistributionImplementationFactory::getKnownParameterIndices() const
+{
+  return knownParameterIndices_;
+}
+
+NumericalPoint DistributionImplementationFactory::getKnownParameterValues() const
+{
+  return knownParameterValues_;
+}
+
 
 /* Execute a R script */
 NumericalPoint DistributionImplementationFactory::runRFactory(const NumericalSample & sample,
