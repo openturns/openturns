@@ -334,6 +334,34 @@ NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
 
+/* Compute P1 stiffness matrix */
+CovarianceMatrix Mesh::computeP1Stiffness() const
+{
+  // If no simplex, the P1 stiffness matrix is null
+  if (simplices_.getSize() == 0) return CovarianceMatrix(0);
+  const UnsignedInteger simplexSize(getVertices().getDimension() + 1);
+  SquareMatrix elementaryStiffness(simplexSize, NumericalPoint(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
+  for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryStiffness(i, i) *= 2.0;
+  const UnsignedInteger verticesSize(vertices_.getSize());
+  const UnsignedInteger simplicesSize(simplices_.getSize());
+  SquareMatrix stiffness(verticesSize);
+  for (UnsignedInteger i = 0; i < simplicesSize; ++i)
+    {
+      const Indices simplex(getSimplex(i));
+      const NumericalScalar delta(computeSimplexVolume(i));
+      for (UnsignedInteger j = 0; j < simplexSize; ++j)
+	{
+	  const UnsignedInteger newJ(simplex[j]);
+	  for (UnsignedInteger k = 0; k < simplexSize; ++k)
+	    {
+	      const UnsignedInteger newK(simplex[k]);
+	      stiffness(newJ, newK) += delta * elementaryStiffness(j, k);
+	    } // Loop over second vertex
+	} // Loop over first vertex
+    } // Loop over simplices
+  return CovarianceMatrix(stiffness.getImplementation());
+}
+
 /* TBB functor to speed-up volume computation */
 struct VolumeFunctor
 {

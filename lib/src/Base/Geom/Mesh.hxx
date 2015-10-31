@@ -119,6 +119,9 @@ public:
   /** Compute the volume of a given simplex */
   NumericalScalar computeSimplexVolume(const UnsignedInteger index) const;
 
+  /** Compute P1 stiffness matrix */
+  CovarianceMatrix computeP1Stiffness() const;
+
   /** Tells if the mesh is regular */
   Bool isRegular() const;
 

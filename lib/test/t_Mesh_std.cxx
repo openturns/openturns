@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
       points[0] = NumericalPoint(1, -0.25);
       points[1] = NumericalPoint(1, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh1D.getNearestVertexIndex(points) << std::endl;
+      fullprint << "P1 Stiffness=" << mesh1D.computeP1Stiffness() << std::endl;
     }
     {
       NumericalSample vertices(0, 2);
@@ -120,6 +121,7 @@ int main(int argc, char *argv[])
       points[0] = NumericalPoint(2, -0.25);
       points[1] = NumericalPoint(2, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh2D.getNearestVertexIndex(points) << std::endl;
+      fullprint << "P1 Stiffness=" << mesh2D.computeP1Stiffness() << std::endl;
     }
     {
       NumericalSample vertices(0, 3);
@@ -204,6 +206,7 @@ int main(int argc, char *argv[])
       points[0] = NumericalPoint(3, -0.25);
       points[1] = NumericalPoint(3, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh3D.getNearestVertexIndex(points) << std::endl;
+      fullprint << "P1 Stiffness=" << mesh3D.computeP1Stiffness() << std::endl;
     }
   }
   catch (TestFailed & ex)
