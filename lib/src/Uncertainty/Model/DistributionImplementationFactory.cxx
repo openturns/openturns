@@ -86,7 +86,7 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
   /* Build the distribution based on the given sample */
   DistributionImplementationFactory::Implementation distribution(build(sample));
   const UnsignedInteger bootstrapSize(ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
-  NumericalSample parametersSample(bootstrapSize, ParametersAsNumericalPoint(distribution->getParametersCollection()));
+  NumericalSample parametersSample(bootstrapSize, distribution->getParameter());
   for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
   {
     /* Draw a bootstrap sample */
@@ -94,7 +94,7 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
     /* Build the associated distribution */
     const DistributionImplementation::Implementation newDistribution(build(bootstrapSample));
     /* Add the parameters to the parameters sample */
-    parametersSample.add(ParametersAsNumericalPoint(newDistribution->getParametersCollection()));
+    parametersSample.add(newDistribution->getParameter());
   }
   /* Compute the bootstrap covariance */
   covariance = parametersSample.computeCovariance();
@@ -196,43 +196,6 @@ Indices DistributionImplementationFactory::getKnownParameterIndices() const
 NumericalPoint DistributionImplementationFactory::getKnownParameterValues() const
 {
   return knownParameterValues_;
-}
-
-
-/* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
-DistributionImplementationFactory::NumericalPointCollection DistributionImplementationFactory::RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll)
-{
-  const UnsignedInteger size(coll.getSize());
-  NumericalPointCollection newColl(size);
-  for (UnsignedInteger i = 0; i < size; ++i) newColl[i] = coll[i];
-  return newColl;
-}
-
-/* Convert a NumericalPointCollection into a NumericalPointWithDescriptionCollection */
-DistributionImplementationFactory::NumericalPointWithDescriptionCollection DistributionImplementationFactory::AddDescriptionToCollection(const NumericalPointCollection & coll)
-{
-  const UnsignedInteger size(coll.getSize());
-  NumericalPointWithDescriptionCollection newColl(size);
-  for (UnsignedInteger i = 0; i < size; ++i) newColl[i] = coll[i];
-  return newColl;
-}
-
-/* Convert a parameters collection into a NumericalPoint */
-NumericalPoint DistributionImplementationFactory::ParametersAsNumericalPoint(const NumericalPointWithDescriptionCollection & parameters)
-{
-  const UnsignedInteger size(parameters.getSize());
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot convert an empty collection of parameters.";
-  // Early exit if dimension 1
-  if (size == 1) return parameters[0];
-  // Concatenate the parameters
-  NumericalPoint allParameters(0);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const NumericalPoint marginalParameters(parameters[i]);
-    const UnsignedInteger marginalSize(marginalParameters.getSize());
-    for (UnsignedInteger j = 0; j < marginalSize; ++j) allParameters.add(marginalParameters[j]);
-  }
-  return allParameters;
 }
 
 /* Bootstrap size accessor */

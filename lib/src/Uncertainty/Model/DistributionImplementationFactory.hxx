@@ -93,15 +93,6 @@ protected:
   NumericalPoint knownParameterValues_;
   Indices knownParameterIndices_;
 
-  /* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
-  static NumericalPointCollection RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll);
-
-  /* Convert a NumericalPointCollection into a NumericalPointWithDescriptionCollection */
-  static NumericalPointWithDescriptionCollection AddDescriptionToCollection(const NumericalPointCollection & coll);
-
-  /* Convert a parameters collection into a NumericalPoint */
-  static NumericalPoint ParametersAsNumericalPoint(const NumericalPointWithDescriptionCollection & parametersCollection);
-
 }; /* class DistributionImplementationFactory */
 
 
