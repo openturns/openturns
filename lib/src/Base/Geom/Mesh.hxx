@@ -86,6 +86,9 @@ public:
   /** Get the nearest vertex for a set of points */
   NumericalSample getNearestVertex(const NumericalSample & points) const;
 
+  /** Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
+  IndicesCollection getVerticesToSimplicesMap() const;
+
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
 
@@ -99,6 +102,11 @@ public:
   /** Check if the given point is in the given simplex */
   Bool checkPointInSimplex(const NumericalPoint & point,
                            const UnsignedInteger index) const;
+
+  /** Check if the given point is in the given simplex and returns its barycentric coordinates */
+  Bool checkPointInSimplex(const NumericalPoint & point,
+                           const UnsignedInteger index,
+			   NumericalPoint & coordinates) const;
 
   /** Vertices accessor */
   NumericalSample getVertices() const;

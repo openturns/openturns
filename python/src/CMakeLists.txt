@@ -292,6 +292,7 @@ ot_add_python_module(func func_module.i
                       ParametricEvaluationImplementation.i
                       ParametricGradientImplementation.i
                       ParametricHessianImplementation.i
+                      P1LagrangeEvaluationImplementation.i P1LagrangeEvaluationImplementation_doc.i.in
                       BasisImplementation.i BasisImplementation_doc.i.in
                       Basis.i Basis_doc.i.in
                       BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in

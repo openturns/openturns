@@ -35,6 +35,7 @@
 #include "ParametricEvaluationImplementation.hxx"
 #include "ParametricGradientImplementation.hxx"
 #include "ParametricHessianImplementation.hxx"
+#include "P1LagrangeEvaluationImplementation.hxx"
 #include "Log.hxx"
 #include "Os.hxx"
 
@@ -172,6 +173,13 @@ NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & ev
 NumericalMathFunction::NumericalMathFunction(const NumericalSample & inputSample,
     const NumericalSample & outputSample)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation( inputSample, outputSample ))
+{
+  // Nothing to do
+}
+
+/* Constructor from field */
+NumericalMathFunction::NumericalMathFunction(const Field & field)
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new P1LagrangeEvaluationImplementation( field )))
 {
   // Nothing to do
 }

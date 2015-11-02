@@ -88,6 +88,7 @@ Evaluation functions
     ParametricEvaluationImplementation
     PiecewiseHermiteEvaluationImplementation
     PiecewiseLinearEvaluationImplementation
+    P1LagrangeEvaluationImplementation
     ProductNumericalMathEvaluationImplementation
     ProductPolynomialEvaluationImplementation
     QuadraticNumericalMathEvaluationImplementation
