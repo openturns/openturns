@@ -1,12 +1,14 @@
 %feature("docstring") OT::FisherSnedecorFactory
-"Fisher Snedecor factory.
+"Fisher-Snedecor factory.
 
 Available constructor:
     FisherSnedecorFactory()
 
+The parameters are estimated by numerical maximum likelihood estimation.
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, FisherSnedecor"
 
 
 

@@ -58,6 +58,10 @@ FisherSnedecorFactory::Implementation FisherSnedecorFactory::build() const
   return buildAsFisherSnedecor().clone();
 }
 
+DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildMaximumLikelihoodEstimator(sample, true);
+}
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSample & sample) const
 {

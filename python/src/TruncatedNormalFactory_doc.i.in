@@ -4,6 +4,8 @@
 Available constructor:
     TruncatedNormalFactory()
 
+The parameters are estimated by numerical maximum likelihood estimation.
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, TruncatedNormal"

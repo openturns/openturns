@@ -4,15 +4,15 @@
 Available constructor:
     GammaFactory()
 
-The parameters are estimated by method of moments:
+The parameters are estimated by maximum likelihood:
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{\gamma}_n = (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
+      \displaystyle\Hat{k}_n= \frac{(\bar{x}_n-\Hat{\gamma}_n)^2}{(\sigma_n^X)^2}\\
       \displaystyle\Hat{\lambda}_n= \frac{\bar{x}_n-\Hat{\gamma}_n}{(\sigma_n^X)^2}\\
-      \displaystyle\Hat{k}_n= \frac{(\bar{x}_n-\Hat{\gamma}_n)^2}{(\sigma_n^X)^2}
+      \displaystyle\Hat{\gamma}_n = (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}
     \end{eqnarray*}
 
 See also
