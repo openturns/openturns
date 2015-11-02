@@ -113,6 +113,7 @@ ot_add_python_module(common common_module.i
                    )
 
 ot_add_python_module(typ typ_module.i
+                      BipartiteGraph.i
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
