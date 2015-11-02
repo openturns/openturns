@@ -82,6 +82,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   // Set amplitude & scale
   scale_ = scale;
   setAmplitude(amplitude);
+  // Fix all submodels as correlation models
   for (UnsignedInteger i = 0; i < size; ++i) collection_[i].setAmplitude(NumericalPoint(1, 1.0));
 }
 
@@ -161,31 +162,32 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void ProductCovarianceModel::setParameter(const NumericalPoint & parameters)
+void ProductCovarianceModel::setParameter(const NumericalPoint & parameter)
 {
-  const UnsignedInteger parametersDimension(getParameter().getDimension());
-  if (parameters.getDimension() != parametersDimension) throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameters.getDimension() << ")";
-  UnsignedInteger start(0);
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  const UnsignedInteger parameterDimension = getParameter().getDimension();
+  if (parameter.getDimension() != parameterDimension)
+      throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameter.getDimension() << ")";
+  // Convention is the following :
+  // Scale parameters than amplitude parameter
+  // As it is a 1 d model, scale size = parameterDimension - 1
+  NumericalPoint scale(parameterDimension - 1);
+  for (UnsignedInteger i = 0; i < parameterDimension - 1; ++i)
   {
-    const UnsignedInteger atomParametersDimension(collection_[i].getParameter().getDimension());
-    const UnsignedInteger stop(start + atomParametersDimension);
-    NumericalPoint atomParameters(atomParametersDimension);
-    std::copy(parameters.begin() + start, parameters.begin() + stop, atomParameters.begin());
-    start = stop;
-    collection_[i].setParameter(atomParameters);
+    scale[i] = parameter[i];
   }
+  setScale(scale);
+  // last value of corresponds to amplitude
+  setAmplitude(NumericalPoint(1, parameter[parameterDimension - 1]));
 }
 
 NumericalPoint ProductCovarianceModel::getParameter() const
 {
+  // Convention scale + amplitude
+  // local amplitudes is 1
+  // amplitude vector is of size 1
   NumericalPoint result(0);
-  const UnsignedInteger size(collection_.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const NumericalPoint atomParameters(collection_[i].getParameter());
-    result.add(atomParameters);
-  }
+  result.add(scale_);
+  result.add(amplitude_);
   return result;
 }
 
@@ -219,11 +221,6 @@ void ProductCovarianceModel::setScale(const NumericalPoint & scale)
   }
   // Copy scale (for get accessor)
   scale_ = scale;
-}
-
-NumericalPoint ProductCovarianceModel::getScale() const
-{
-  return scale_;
 }
 
 /* Is it a stationary model ? */
