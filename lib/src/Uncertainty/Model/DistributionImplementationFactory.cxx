@@ -199,47 +199,6 @@ NumericalPoint DistributionImplementationFactory::getKnownParameterValues() cons
 }
 
 
-/* Execute a R script */
-NumericalPoint DistributionImplementationFactory::runRFactory(const NumericalSample & sample,
-    const DistributionImplementation & distribution) const
-{
-  const String distributionName(distribution.getClassName());
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution of type " << distributionName << " using R methods";
-  const String dataFileName(sample.storeToTemporaryFile());
-  const String resultFileName(Path::BuildTemporaryFileName("RResult.txt.XXXXXX"));
-  const String commandFileName(Path::BuildTemporaryFileName("RCmd.R.XXXXXX"));
-  std::ofstream cmdFile(commandFileName.c_str(), std::ios::out);
-  // Fill-in the command file
-  cmdFile << "library(rot)" << std::endl;
-  cmdFile << "options(digits=17)" << std::endl;
-  cmdFile << "options(warn=-1)" << std::endl;
-  cmdFile << "options(stringsAsFactors = F)" << std::endl;
-  cmdFile << "sample <- data.matrix(read.table(\"" << dataFileName << "\"))" << std::endl;
-  cmdFile << "res <- estimate" << distributionName << "Parameters(sample)" << std::endl;
-  cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
-  cmdFile << "cat(";
-  const Description parametersDescription(distribution.getParametersCollection()[0].getDescription());
-  const UnsignedInteger parametersNumber(parametersDescription.getSize());
-  for (UnsignedInteger i = 0; i < parametersNumber; ++i) cmdFile << "res$" << parametersDescription[i] << ", ";
-  cmdFile << "sep=\"\\n\", file=f)" << std::endl;
-  cmdFile << "close(f)" << std::endl;
-  cmdFile.close();
-  const String RExecutable(ResourceMap::Get("R-executable-command"));
-  OSS systemCommand;
-  if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In DistributionImplementationFactory::runRFactory(const NumericalSample & sample, const DistributionImplementation & distribution) const: needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
-  int returnCode(Os::ExecuteCommand(systemCommand));
-  if (returnCode != 0) throw InvalidArgumentException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode << ". Your data are not compatible with the factory.";
-  // Parse result file
-  std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
-  NumericalPoint parametersValue(parametersNumber);
-  for (UnsignedInteger i = 0; i < parametersNumber; ++i) resultFile >> parametersValue[i];
-  Os::Remove(dataFileName);
-  Os::Remove(resultFileName);
-  Os::Remove(commandFileName);
-  return parametersValue;
-}
-
 /* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
 DistributionImplementationFactory::NumericalPointCollection DistributionImplementationFactory::RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll)
 {

@@ -86,10 +86,6 @@ protected:
   /* Build the distribution and the parameter distribution */
   virtual DistributionFactoryResult buildMaximumLikelihoodEstimator(const NumericalSample & sample, const Bool isRegular = false) const;
 
-  /* Execute a R script */
-  virtual NumericalPoint runRFactory(const NumericalSample & sample,
-                                     const DistributionImplementation & distribution) const;
-
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
 
