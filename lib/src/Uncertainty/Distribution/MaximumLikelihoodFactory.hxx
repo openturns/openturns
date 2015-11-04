@@ -63,11 +63,13 @@ public:
   void setOptimizationProblem(const OptimizationProblem & problem);
   OptimizationProblem getOptimizationProblem() const;
 
+  void setParallel(const Bool parallel);
 protected:
-//   DistributionFactory factory_;
   DistributionFactory factory_;
   OptimizationSolver solver_;
   OptimizationProblem problem_;
+
+  Bool isParallel_;
 }; /* class MaximumLikelihoodFactory */
 
 

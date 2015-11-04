@@ -44,6 +44,7 @@ CLASSNAMEINIT(MaximumLikelihoodFactory);
 /* Default constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory()
   : DistributionImplementationFactory()
+  , isParallel_(true)
 {
 
 }
@@ -54,6 +55,7 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const DistributionFactory & f
   : DistributionImplementationFactory()
   , factory_(factory)
   , solver_(new TNC())
+  , isParallel_(true)
 {
   // Initialize optimization solver parameter using the ResourceMap 
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
@@ -86,34 +88,25 @@ String MaximumLikelihoodFactory::__str__(const String & offset) const
 
 /* Here is the interface that all derived class must implement */
 
-/* Build a distribution based on a sample */
-// MaximumLikelihoodFactory::Implementation MaximumLikelihoodFactory::build() const
-// {
-//   return factory_.getImplementation()->build();
-// }
-// 
-// MaximumLikelihoodFactory::Implementation MaximumLikelihoodFactory::build(const NumericalPoint & parameter) const
-// {
-//   return factory_.getImplementation()->build(parameter);
-// }
-
 
 struct MaximumLikelihoodFactoryLogLikelihood
 {
   MaximumLikelihoodFactoryLogLikelihood(const NumericalSample & sample,
                                         const DistributionFactory & factory,
                                         const NumericalPoint & knownParameterValues,
-                                        const Indices & knownParameterIndices)
+                                        const Indices & knownParameterIndices,
+                                        const Bool & isParallel)
   : sample_(sample)
   , factory_(factory)
   , knownParameterValues_(knownParameterValues)
   , knownParameterIndices_(knownParameterIndices)
+  , isParallel_(isParallel)
   {
   }
 
   NumericalScalar computeLogLikelihood(const NumericalPoint & parameter) const
   {
-    NumericalScalar result = SpecFunc::LogMaxNumericalScalar;
+    NumericalScalar result = 0.0;
     try
     {
       NumericalPoint effectiveParameter(parameter);
@@ -123,20 +116,33 @@ struct MaximumLikelihoodFactoryLogLikelihood
         effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
       }
       const Distribution distribution(factory_.build(effectiveParameter));
-      // parallel version breaks TrapezoidalFactory test:
-//       const NumericalScalar logLikelihood = -distribution.computeLogPDF(sample_).computeMean()[0];
-//       if (SpecFunc::IsNormal(logLikelihood)) result = logLikelihood;
-      const UnsignedInteger size = sample_.getSize();
-      result = 0.0;
-      for (UnsignedInteger i = 0; i < size; ++ i)
+
+      if (isParallel_)
       {
-        const NumericalScalar logPdf = distribution.computeLogPDF(sample_[i]);
-        if (logPdf == -SpecFunc::MaxNumericalScalar) result -= SpecFunc::LogMinNumericalScalar;
-        else result -= logPdf;
+        const NumericalScalar logLikelihood = distribution.computeLogPDF(sample_).computeMean()[0];
+        result = SpecFunc::IsNormal(logLikelihood) ? logLikelihood : -SpecFunc::MaxNumericalScalar;
+      }
+      else
+      {
+        const UnsignedInteger size = sample_.getSize();
+        for (UnsignedInteger i = 0; i < size; ++ i)
+        {
+          const NumericalScalar logPdf = distribution.computeLogPDF(sample_[i]);
+          if (logPdf == -SpecFunc::MaxNumericalScalar)
+          {
+            result = -SpecFunc::MaxNumericalScalar;
+            break;
+          }
+          else
+          {
+            result += logPdf;
+          }
+        }
       }
     }
     catch (...)
     {
+      result = -SpecFunc::MaxNumericalScalar;
     }
     return result;
   }
@@ -145,6 +151,7 @@ struct MaximumLikelihoodFactoryLogLikelihood
   const DistributionFactory factory_;
   const NumericalPoint knownParameterValues_;
   const Indices knownParameterIndices_;
+  const Bool isParallel_;
 };
 
 
@@ -154,13 +161,13 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   UnsignedInteger parameterDimension = factory_.build().getParameterDimension();
-  MaximumLikelihoodFactoryLogLikelihood logLikelihoodWrapper(sample, factory_, knownParameterValues_, knownParameterIndices_);
+  MaximumLikelihoodFactoryLogLikelihood logLikelihoodWrapper(sample, factory_, knownParameterValues_, knownParameterIndices_, isParallel_);
 
   NumericalMathFunction logLikelihood(bindMethod<MaximumLikelihoodFactoryLogLikelihood, NumericalScalar, NumericalPoint>(logLikelihoodWrapper, &MaximumLikelihoodFactoryLogLikelihood::computeLogLikelihood, parameterDimension, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
   logLikelihood.setGradient(gradient);
   OptimizationProblem problem(problem_);
-  problem.setMinimization(true);
+  problem.setMinimization(false);
   problem.setObjective(logLikelihood);
   OptimizationSolver solver(solver_);
   if (solver.getStartingPoint().getDimension() != parameterDimension) {
@@ -207,6 +214,10 @@ OptimizationSolver MaximumLikelihoodFactory::getOptimizationSolver() const
 }
 
 
+void MaximumLikelihoodFactory::setParallel(const Bool parallel)
+{
+  isParallel_ = parallel;
+}
 
 
 END_NAMESPACE_OPENTURNS

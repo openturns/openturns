@@ -47,10 +47,10 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
 /* Compute the log-likelihood constraint */
 NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & x) const
 {
-  NumericalPoint result(3,0.0);
+  NumericalPoint result(3, 0.0);
   result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
   result[1] = x[2] - x[1] - SpecFunc::MinNumericalScalar;  // x[1] <  x[2]
-  result[2] = x[3] - x[2] ;                                // x[3] <= x[2]
+  result[2] = x[3] - x[2] ;                                // x[2] <= x[3]
   return result;
 }
 
@@ -108,6 +108,8 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   startingPoint[3] = max + std::abs(max) / (2.0 + size);// d
 
   MaximumLikelihoodFactory factory(*this);
+  // parallel version breaks TrapezoidalFactory test:
+  factory.setParallel(false);
 
   // override starting point
   Cobyla solver;
