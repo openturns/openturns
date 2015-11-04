@@ -27,6 +27,9 @@
  * Replaced KrigingAlgorithm::[gs]etOptimizer methods by KrigingAlgorithm::[gs]etOptimizationSolver
  * Removed ConfidenceInterval class
  * Removed draw method to CovarianceModel
+ * Added Distribution::[sg]etParameter parameter value accessors
+ * Added Distribution::getParameterDescription parameter description accessor
+ * Deprecated method Distribution::setParametersCollection(NP)
  * Removed CovarianceModel::getParameters
  * Added CovarianceModel::getParameter
  * Added CovarianceModel::getParameterDescription

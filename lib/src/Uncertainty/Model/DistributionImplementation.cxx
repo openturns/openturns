@@ -3128,6 +3128,12 @@ void DistributionImplementation::setParametersCollection(const NumericalPointCol
   setParameter(newParameters);
 }
 
+void DistributionImplementation::setParametersCollection(const NumericalPoint & parameter)
+{
+  Log::Info(OSS() << "DistributionImplementation::setParametersCollection(NP) is deprecated.");
+  setParameter(parameter);
+}
+
 /* Parameters value accessor */
 NumericalPoint DistributionImplementation::getParameter() const
 {
