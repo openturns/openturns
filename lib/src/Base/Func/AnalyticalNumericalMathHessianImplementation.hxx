@@ -31,11 +31,6 @@ class OT_API AnalyticalNumericalMathHessianImplementation
   CLASSNAME;
 public:
 
-  /* Some typedefs for easy reading */
-  typedef AnalyticalNumericalMathEvaluationImplementation::Parser Parser;
-  typedef Collection<Parser>          ParserCollection;
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
-
   /** Default constructor */
   AnalyticalNumericalMathHessianImplementation();
 
@@ -89,11 +84,10 @@ private:
 
   mutable Bool isInitialized_;
   mutable Bool isAnalytical_;
-  mutable NumericalScalarCollection inputVariables_;
   AnalyticalNumericalMathEvaluationImplementation evaluation_;
 
   /** A mathematical expression parser from the muParser library */
-  mutable ParserCollection parsers_;
+  mutable AnalyticalParser parser_;
 
 }; /* class AnalyticalNumericalMathHessianImplementation */
 

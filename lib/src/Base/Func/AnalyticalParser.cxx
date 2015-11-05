@@ -22,11 +22,118 @@
 #include "AnalyticalParser.hxx"
 #include "SpecFunc.hxx"
 
+#include "muParser.h"
+
 using namespace mu;
 
 BEGIN_NAMESPACE_OPENTURNS
 
+class MuParser : public mu::Parser
+{
+
+public:
+  /** Default constructor */
+  MuParser();
+
+protected:
+  static mu::value_type Cotan(mu::value_type v);
+  static mu::value_type ACotan(mu::value_type v);
+  static mu::value_type ASinh(mu::value_type v);
+  static mu::value_type ACosh(mu::value_type v);
+  static mu::value_type ATanh(mu::value_type v);
+  static mu::value_type Ln(mu::value_type v);
+  static mu::value_type Log2(mu::value_type v);
+  static mu::value_type LnGamma(mu::value_type v);
+  static mu::value_type Gamma(mu::value_type v);
+  static mu::value_type Erf(mu::value_type v);
+  static mu::value_type Erfc(mu::value_type v);
+  static mu::value_type Abs(mu::value_type v);
+  static mu::value_type Cbrt(mu::value_type v);
+  static mu::value_type J0(mu::value_type v);
+  static mu::value_type J1(mu::value_type v);
+  static mu::value_type Y0(mu::value_type v);
+  static mu::value_type Y1(mu::value_type v);
+  static mu::value_type Rint(mu::value_type v);
+  static mu::value_type Floor(mu::value_type v);
+  static mu::value_type Ceil(mu::value_type v);
+  static mu::value_type Trunc(mu::value_type v);
+  static mu::value_type Round(mu::value_type v);
+};
+
+
 AnalyticalParser::AnalyticalParser()
+: Object()
+{
+}
+
+
+void AnalyticalParser::setVariablesFormulas(const Description & inputVariablesNames,
+                                    const Description & formulas)
+{
+  inputVariablesNames_ = inputVariablesNames;
+  formulas_ = formulas;
+}
+
+
+void AnalyticalParser::initialize() const
+{
+  const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
+  const UnsignedInteger outputDimension = formulas_.getSize();
+  if (parsers_.getSize() == outputDimension) return;
+  parsers_ = Collection<Pointer<MuParser> >(outputDimension);
+  inputStack_ = NumericalPoint(inputDimension);
+  try
+  {
+    // For each parser of a formula, do
+    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+    {
+      parsers_[outputIndex] = new MuParser;
+      for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
+      {
+        // DefineVar defines all the values given to variables
+        parsers_[outputIndex].get()->DefineVar(inputVariablesNames_[inputIndex].c_str(), &inputStack_[inputIndex]);
+      }
+      parsers_[outputIndex].get()->SetExpr(formulas_[outputIndex].c_str());
+    }
+  }
+  catch (mu::Parser::exception_type & ex)
+  {
+    throw InvalidArgumentException(HERE) << "Error constructing an analytical function, message=" << ex.GetMsg() << " formula=" << ex.GetExpr() << " token=" << ex.GetToken() << " position=" << ex.GetPos();
+  }
+}
+
+
+NumericalPoint AnalyticalParser::operator() (const NumericalPoint & inP) const
+{
+  const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
+  const UnsignedInteger outputDimension = formulas_.getSize();
+  if (inP.getDimension() != inputDimension)
+    throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
+  initialize();
+  std::copy(inP.begin(), inP.end(), inputStack_.begin());
+  NumericalPoint result(outputDimension);
+  try
+  {
+    for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
+    {
+      result[outputIndex] = parsers_[outputIndex].get()->Eval();
+    }
+  }
+  catch (mu::Parser::exception_type & ex)
+  {
+    throw InternalException(HERE) << ex.GetMsg();
+  }
+  return result;
+}
+
+
+Description AnalyticalParser::getFormulas() const
+{
+  return formulas_;
+}
+
+
+MuParser::MuParser()
   : Parser()
 {
   DefineFun(_T("cotan"), Cotan); // modified
@@ -53,113 +160,113 @@ AnalyticalParser::AnalyticalParser()
   DefineFun(_T("round"), Round); // added
 }
 
-value_type AnalyticalParser::Cotan(value_type v)
+value_type MuParser::Cotan(value_type v)
 {
   return 1.0 / tan(v);
 }
 
-value_type AnalyticalParser::ACotan(value_type v)
+value_type MuParser::ACotan(value_type v)
 {
   if (v < 0.0) return -M_PI_2 - atan(v);
   return M_PI_2 - atan(v);
 }
 
-value_type AnalyticalParser::ASinh(value_type v)
+value_type MuParser::ASinh(value_type v)
 {
   return asinh(v);
 }
 
-value_type AnalyticalParser::ACosh(value_type v)
+value_type MuParser::ACosh(value_type v)
 {
   return acosh(v);
 }
 
-value_type AnalyticalParser::ATanh(value_type v)
+value_type MuParser::ATanh(value_type v)
 {
   return atanh(v);
 }
 
-value_type AnalyticalParser::Ln(value_type v)
+value_type MuParser::Ln(value_type v)
 {
   return log(v);
 }
 
-value_type AnalyticalParser::Log2(value_type v)
+value_type MuParser::Log2(value_type v)
 {
   return log2(v);
 }
 
-value_type AnalyticalParser::LnGamma(value_type v)
+value_type MuParser::LnGamma(value_type v)
 {
   return lgamma(v);
 }
 
-value_type AnalyticalParser::Gamma(value_type v)
+value_type MuParser::Gamma(value_type v)
 {
   return tgamma(v);
 }
 
-value_type AnalyticalParser::Erf(value_type v)
+value_type MuParser::Erf(value_type v)
 {
   return erf(v);
 }
 
-value_type AnalyticalParser::Erfc(value_type v)
+value_type MuParser::Erfc(value_type v)
 {
   return erfc(v);
 }
 
-value_type AnalyticalParser::Abs(value_type v)
+value_type MuParser::Abs(value_type v)
 {
   return fabs(v);
 }
 
-value_type AnalyticalParser::Cbrt(value_type v)
+value_type MuParser::Cbrt(value_type v)
 {
   return cbrt(v);
 }
 
-value_type AnalyticalParser::J0(value_type v)
+value_type MuParser::J0(value_type v)
 {
   return j0(v);
 }
 
-value_type AnalyticalParser::J1(value_type v)
+value_type MuParser::J1(value_type v)
 {
   return j1(v);
 }
 
-value_type AnalyticalParser::Y0(value_type v)
+value_type MuParser::Y0(value_type v)
 {
   return y0(v);
 }
 
-value_type AnalyticalParser::Y1(value_type v)
+value_type MuParser::Y1(value_type v)
 {
   return y1(v);
 }
 
-value_type AnalyticalParser::Rint(value_type v)
+value_type MuParser::Rint(value_type v)
 {
   return rint(v);
 }
 
-value_type AnalyticalParser::Floor(value_type v)
+value_type MuParser::Floor(value_type v)
 {
   return floor(v);
 }
 
-value_type AnalyticalParser::Ceil(value_type v)
+value_type MuParser::Ceil(value_type v)
 {
   return ceil(v);
 }
 
-value_type AnalyticalParser::Trunc(value_type v)
+value_type MuParser::Trunc(value_type v)
 {
   return trunc(v);
 }
 
-value_type AnalyticalParser::Round(value_type v)
+value_type MuParser::Round(value_type v)
 {
   return round(v);
 }

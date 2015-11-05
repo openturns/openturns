@@ -22,44 +22,36 @@
 #ifndef OPENTURNS_ANALYTICALPARSER_HXX
 #define OPENTURNS_ANALYTICALPARSER_HXX
 
-#include "Object.hxx"
-#include "muParser.h"
+#include "NumericalSample.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
-class OT_API AnalyticalParser : public mu::Parser
-{
+class MuParser;
 
+class AnalyticalParser : public Object
+{
 public:
   /** Default constructor */
   AnalyticalParser();
 
-protected:
-  static mu::value_type Cotan(mu::value_type v);
-  static mu::value_type ACotan(mu::value_type v);
-  static mu::value_type ASinh(mu::value_type v);
-  static mu::value_type ACosh(mu::value_type v);
-  static mu::value_type ATanh(mu::value_type v);
-  static mu::value_type Ln(mu::value_type v);
-  static mu::value_type Log2(mu::value_type v);
-  static mu::value_type LnGamma(mu::value_type v);
-  static mu::value_type Gamma(mu::value_type v);
-  static mu::value_type Erf(mu::value_type v);
-  static mu::value_type Erfc(mu::value_type v);
-  static mu::value_type Abs(mu::value_type v);
-  static mu::value_type Cbrt(mu::value_type v);
-  static mu::value_type J0(mu::value_type v);
-  static mu::value_type J1(mu::value_type v);
-  static mu::value_type Y0(mu::value_type v);
-  static mu::value_type Y1(mu::value_type v);
-  static mu::value_type Rint(mu::value_type v);
-  static mu::value_type Floor(mu::value_type v);
-  static mu::value_type Ceil(mu::value_type v);
-  static mu::value_type Trunc(mu::value_type v);
-  static mu::value_type Round(mu::value_type v);
-}; /* class AnalyticalParser */
+  NumericalPoint operator()(const NumericalPoint & inP) const;
 
+  void setVariablesFormulas(const Description & inputVariablesNames,
+                            const Description & formulas);
+
+  Description getFormulas() const;
+
+protected:
+  void initialize() const;
+
+  Description inputVariablesNames_;
+  Description formulas_;
+  mutable Collection<Pointer<MuParser> > parsers_;
+  mutable NumericalPoint inputStack_;
+
+};
 
 END_NAMESPACE_OPENTURNS
 

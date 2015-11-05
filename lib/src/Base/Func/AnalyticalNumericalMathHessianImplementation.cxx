@@ -31,24 +31,20 @@ static const Factory<AnalyticalNumericalMathHessianImplementation> RegisteredFac
 
 /* Default constructor */
 AnalyticalNumericalMathHessianImplementation::AnalyticalNumericalMathHessianImplementation()
-  : NumericalMathHessianImplementation(),
-    isInitialized_(false),
-    isAnalytical_(true),
-    inputVariables_(0),
-    evaluation_(),
-    parsers_(0)
+  : NumericalMathHessianImplementation()
+  , isInitialized_(false)
+  , isAnalytical_(true)
+  , evaluation_()
 {
   // Nothing to do
 } // AnalyticalNumericalMathHessianImplementation
 
 /* Default constructor */
 AnalyticalNumericalMathHessianImplementation::AnalyticalNumericalMathHessianImplementation(const AnalyticalNumericalMathEvaluationImplementation & evaluation)
-  : NumericalMathHessianImplementation(),
-    isInitialized_(false),
-    isAnalytical_(true),
-    inputVariables_(0),
-    evaluation_(evaluation),
-    parsers_(ParserCollection(0))
+  : NumericalMathHessianImplementation()
+  , isInitialized_(false)
+  , isAnalytical_(true)
+  , evaluation_(evaluation)
 {
   // Nothing to do
 } // AnalyticalNumericalMathHessianImplementation
@@ -134,74 +130,64 @@ String AnalyticalNumericalMathHessianImplementation::__str__(const String & offs
 void AnalyticalNumericalMathHessianImplementation::initialize() const
 {
   if (isInitialized_) return;
-  try
+
+  isAnalytical_ = false;
+  const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
+  const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
+  const UnsignedInteger hessianSize(inputSize * (inputSize + 1) * outputSize / 2);
+  // For each element of the hessian, do
+  UnsignedInteger hessianIndex(0);
+  Description hessianFormulas(hessianSize);
+  for (UnsignedInteger sheetIndex = 0; sheetIndex < outputSize; ++sheetIndex)
   {
-    isAnalytical_ = false;
-    const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
-    const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
-    const UnsignedInteger hessianSize(inputSize * (inputSize + 1) * outputSize / 2);
-    parsers_ = ParserCollection(hessianSize);
-    inputVariables_ = NumericalScalarCollection(inputSize);
-    // For each element of the hessian, do
-    UnsignedInteger hessianIndex(0);
-    for (UnsignedInteger sheetIndex = 0; sheetIndex < outputSize; ++sheetIndex)
+    // Parse the current formula with Ev3
+    int nerr(0);
+    Ev3::ExpressionParser ev3Parser;
+    // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+    Ev3::Expression ev3Expression;
+    try
     {
-      // Parse the current formula with Ev3
-      int nerr(0);
-      Ev3::ExpressionParser ev3Parser;
-      // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-      for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
-      Ev3::Expression ev3Expression;
+      ev3Expression = ev3Parser.Parse(evaluation_.formulas_[sheetIndex].c_str(), nerr);
+    }
+    catch (Ev3::ErrBase & exc)
+    {
+      throw InternalException(HERE) << exc.description_;
+    }
+    if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
+    //                Ev3::Simplify(&ev3Expression);
+    for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
+    {
+      Ev3::Expression firstDerivative;
       try
       {
-        ev3Expression = ev3Parser.Parse(evaluation_.formulas_[sheetIndex].c_str(), nerr);
+        firstDerivative = Ev3::Diff(ev3Expression, rowIndex);
+        //                    Ev3::Simplify(&firstDerivative);
+        LOGINFO(OSS() << "First variable=" << evaluation_.inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
       }
-      catch (Ev3::ErrBase & exc)
+      catch(...)
       {
-        throw InternalException(HERE) << exc.description_;
+        throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << evaluation_.inputVariablesNames_[rowIndex];
       }
-      if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
-      //                Ev3::Simplify(&ev3Expression);
-      for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
+      for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
       {
-        Ev3::Expression firstDerivative;
         try
         {
-          firstDerivative = Ev3::Diff(ev3Expression, rowIndex);
-          //                    Ev3::Simplify(&firstDerivative);
-          LOGINFO(OSS() << "First variable=" << evaluation_.inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
+          Ev3::Expression secondDerivative(Ev3::Diff(firstDerivative, columnIndex));
+          //                        Ev3::Simplify(&secondDerivative);
+          LOGINFO(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << evaluation_.inputVariablesNames_[rowIndex] << ")d(" << evaluation_.inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
+          hessianFormulas[hessianIndex] = secondDerivative->ToString();
+          ++ hessianIndex;
         }
         catch(...)
         {
-          throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << evaluation_.inputVariablesNames_[rowIndex];
+          throw InternalException(HERE) << "Error: cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << evaluation_.inputVariablesNames_[columnIndex];
         }
-        for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
-        {
-          // First, define all the variable names and associate them
-          // to the corresponding component of the input vector
-          for(UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) parsers_[hessianIndex].DefineVar(evaluation_.inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex]);
-          // Second, define the formula
-          try
-          {
-            Ev3::Expression secondDerivative(Ev3::Diff(firstDerivative, columnIndex));
-            //                        Ev3::Simplify(&secondDerivative);
-            LOGINFO(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << evaluation_.inputVariablesNames_[rowIndex] << ")d(" << evaluation_.inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
-            parsers_[hessianIndex].SetExpr(secondDerivative->ToString().c_str());
-            ++hessianIndex;
-          }
-          catch(...)
-          {
-            throw InternalException(HERE) << "Error: cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << evaluation_.inputVariablesNames_[columnIndex];
-          }
-        } // columnIndex
-      } // rowIndex
-    } // sheetIndex
-  }
-  catch(mu::Parser::exception_type & ex)
-  {
-    // Here, we know that both isAnalytical_ and isInitialized_ are false
-    throw InvalidArgumentException(HERE) << "Error constructing the hessian of an analytical function, message=" << ex.GetMsg() << " formula=" << ex.GetExpr() << " token=" << ex.GetToken() << " position=" << ex.GetPos();
-  }
+      } // columnIndex
+    } // rowIndex
+  } // sheetIndex
+
+  parser_.setVariablesFormulas(evaluation_.inputVariablesNames_, hessianFormulas);
   // Everything is ok (no exception)
   isAnalytical_ = true;
   isInitialized_ = true;
@@ -214,29 +200,22 @@ SymmetricTensor AnalyticalNumericalMathHessianImplementation::hessian(const Nume
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The hessian does not have an analytical expression.";
-  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i) inputVariables_[i] = inP[i];
   const UnsignedInteger outputDimension(getOutputDimension());
   SymmetricTensor out(inputDimension, outputDimension);
-  ++callsNumber_;
-  try
+  ++ callsNumber_;
+  NumericalPoint outP(parser_(inP));
+  UnsignedInteger parserIndex = 0;
+  for (UnsignedInteger sheetIndex = 0; sheetIndex < outputDimension; ++ sheetIndex)
   {
-    UnsignedInteger parserIndex(0);
-    for (UnsignedInteger sheetIndex = 0; sheetIndex < outputDimension; ++sheetIndex)
+    for (UnsignedInteger rowIndex = 0; rowIndex < inputDimension; ++ rowIndex)
     {
-      for (UnsignedInteger rowIndex = 0; rowIndex < inputDimension; ++rowIndex)
+      for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++ columnIndex)
       {
-        for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
-        {
-          out(rowIndex, columnIndex, sheetIndex) = parsers_[parserIndex].Eval();
-          ++parserIndex;
-        } // columnIndex
-      } // rowIndex
-    } // sheetIndex
-  }
-  catch(mu::Parser::exception_type & ex)
-  {
-    throw InternalException(HERE) << ex.GetMsg();
-  }
+        out(rowIndex, columnIndex, sheetIndex) = outP[parserIndex];
+        ++ parserIndex;
+      } // columnIndex
+    } // rowIndex
+  } // sheetIndex
   return out;
 }
 
@@ -264,7 +243,7 @@ String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedIn
   linearIndex += ((inputDimension * (inputDimension + 1)) / 2) * sheetIndex;
   // Compute the linear sub-index into the triangle
   linearIndex += (rowIndex * (rowIndex + 1)) / 2 + columnIndex;
-  return parsers_[linearIndex].GetExpr();
+  return parser_.getFormulas()[linearIndex];
 }
 
 /* Accessor for input point dimension */

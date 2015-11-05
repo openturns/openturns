@@ -141,16 +141,12 @@ int main(int argc, char *argv[])
     marginals[1] = Uniform(-M_PI, M_PI);
     marginals[2] = Uniform(-M_PI, M_PI);
     ComposedDistribution distribution(marginals);
-    NumericalSample inputsSample(distribution.getSample( 100 ));
+    NumericalSample inputsSample(distribution.getSample(100));
 
     NumericalPoint refResultValues(100, 0.);
-    NumericalPoint pt(3, 0.);
-    for (UnsignedInteger i = 0; i < 100; ++i)
+    for (UnsignedInteger i = 0; i < 100; ++ i)
     {
-      pt[0] = inputsSample[i][0];
-      pt[1] = inputsSample[i][1];
-      pt[2] = inputsSample[i][2];
-      refResultValues[i] = model(pt)[0];
+      refResultValues[i] = model(inputsSample[i])[0];
     }
 
     NumericalSample resultSample(model(inputsSample));
