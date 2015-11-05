@@ -61,6 +61,8 @@ public:
   /** Partial copy constructor */
   void add(const Field & field);
 
+  void add(const NumericalSample & sample);
+
 #ifndef SWIG
 
   /** Operators accessors */

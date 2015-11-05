@@ -93,6 +93,7 @@ String ProcessSample::__str__(const String & offset) const
   return oss;
 }
 
+/* Partial copy constructor */
 void ProcessSample::add(const Field & field)
 {
   if (getSize() == 0)
@@ -101,7 +102,14 @@ void ProcessSample::add(const Field & field)
     mesh_ = field.getMesh();
   }
   else if ((data_[0].getDimension() == field.getDimension()) && (mesh_ == field.getMesh())) data_.add(field.getValues());
-  else throw InvalidArgumentException(HERE) << "Error: could not add the fiels. Either its dimenson or its mesh are incompatible.";
+  else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimenson or its mesh are incompatible.";
+}
+
+void ProcessSample::add(const NumericalSample & values)
+{
+  if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their size=" << values.getSize() << " does not match the number of vertices=" << mesh_.getVerticesNumber() << " of the mesh.";
+  if ((getSize() > 0) && (data_[0].getDimension() != values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << data_[0].getDimension();
+  data_.add(values);
 }
 
 
