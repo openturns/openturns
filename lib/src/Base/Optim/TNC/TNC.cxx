@@ -100,11 +100,15 @@ TNC * TNC::clone() const
   return new TNC(*this);
 }
 
-/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+/* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void TNC::checkProblem(const OptimizationProblem & problem) const
 {
+  if (problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+  if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support constraints";
 }
 
 /* Performs the actual computation by calling the TNC algorithm */
@@ -112,13 +116,16 @@ void TNC::run()
 {
   const UnsignedInteger dimension = getStartingPoint().getDimension();
   Interval boundConstraints(getProblem().getBounds());
+  if (!getProblem().hasBounds()) {
+    boundConstraints = Interval(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 1.0), Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false));
+  }
+
   NumericalPoint x(getStartingPoint());
 
   /* Compute the objective function at StartingPoint */
   const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
   NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
-  
-  if (boundConstraints.getDimension() != dimension) throw InternalException(HERE) << "Error: cannot solve a bound constrained optimization problem with bounds of dimension incompatible with the objective function input dimension.";
+
   NumericalPoint low(boundConstraints.getLowerBound());
   NumericalPoint up(boundConstraints.getUpperBound());
   Interval::BoolCollection finiteLow(boundConstraints.getFiniteLowerBound());
@@ -130,11 +137,6 @@ void TNC::run()
     if (!finiteUp[i]) up[i] = HUGE_VAL;
   }
 
-  if (x.getDimension() != dimension)
-  {
-    LOGWARN("Warning! The given starting point has a dimension incompatible with the objective function. Using the midpoint of the constraints as a starting point.");
-    x = 0.5 * (low + up);
-  }
   tnc_message message((getVerbose() ? TNC_MSG_ALL : TNC_MSG_NONE));
   NumericalPoint scale(getScale());
   NumericalPoint offset(getOffset());
@@ -420,12 +422,6 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
   const OptimizationProblem problem(algorithm->getProblem());
   NumericalPoint outPoint(2);
-
-  if ( problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error : TNC does not support Multi-Ojective Optimization ";
-
-  if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
-    throw InvalidArgumentException(HERE) << "Error : TNC does not support constraints ";
 
   /* Compute the objective function at inPoint */
   const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
