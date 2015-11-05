@@ -22,7 +22,6 @@
 #include "NumericalMathFunction.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "CorrectedLeaveOneOut.hxx"
-#include "RandomGenerator.hxx"
 #include "SVDMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
