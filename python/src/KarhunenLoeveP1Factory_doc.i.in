@@ -1,0 +1,62 @@
+%feature("docstring") OT::KarhunenLoeveP1Factory
+"Computation of Karhunen-Loeve decomposition using P1 approximation.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    The mesh on which the covariance model and the Karhunen-Loeve eigenfunctions (modes) are discretized.
+threshold : float
+    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+
+Notes
+-----
+The Karhunen-Loeve decomposition using P1 approximation allows to approximate the solution of the second kind Fredholm equation:
+
+.. math::
+
+    \int_{\cD} C(\vect{s},\vect{t})\phi_n(\vect{s})\, d\vect{s}=\lambda_n\phi_n(\vect{t})
+
+
+with :math:`C: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\phi_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\phi_n(\vect{s})\|^2\,d\vect{s}=1`.
+
+The Karhunen-Loeve P1 approximation consists in replacing the covariance model :math:`C` by its P1 approximation :math:`\hat{C}` on a mesh :math:`\cD_N` which approximates the domain :math:`\cD`:
+
+.. math::
+    \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{C}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}C(\vect{\xi}_i,\vect{\xi}_j)\vect{\theta}_i(\vect{s})\Tr{\vect{\theta}}_j(\vect{t})
+
+Where :math:`\theta_n: \cD_N \mapsto \Rset^d` are the basis functions of the P1 finite element space associated to :math:`\cD_N`.
+
+Examples
+--------
+Create a Karhunen-Loeve P1 factory:
+
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> factory = ot.KarhunenLoeveP1Factory(mesh, threshold)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveP1Factory::buildAsProcessSample
+"Computation of the eigenvalues and eigen functions values at nodes.
+
+Parameters
+----------
+C : :class:`~openturns.CovarianceModel`, :math:`C: \cD\times\cD \mapsto \cS^+_d(\Rset)`
+    The covariance model.
+ev : :class:`~openturns.NumericalPoint`
+    The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n\geq\mathrm{threshold}\,\lambda_0`
+
+Returns
+-------
+modes : :class:`~openturns.ProcessSample`
+    Values of the eigen functions at the nodes :math:`\cV_N` of the mesh :math:`\cD_N`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> factory = ot.KarhunenLoeveP1Factory(mesh, threshold)
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> ev = ot.NumericalPoint()
+>>> modes = factory.buildAsProcessSample(model, ev)"

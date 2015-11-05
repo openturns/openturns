@@ -140,6 +140,10 @@ ot_add_python_module(typ typ_module.i
                       CorrelationMatrix.i CorrelationMatrix_doc.i.in
                       IdentityMatrix.i
                       NumericalSample.i NumericalSample_doc.i.in
+                      FieldImplementation.i FieldImplementation_doc.i.in
+                      Field.i Field_doc.i.in
+                      ProcessSample.i ProcessSample_doc.i.in
+                      TimeSeries.i TimeSeries_doc.i.in
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
                       HistoryStrategy.i HistoryStrategy_doc.i.in
                       BaseTypTemplateDefs.i
@@ -239,10 +243,6 @@ ot_add_python_module(func func_module.i
                       EnumerateFunctionImplementation.i EnumerateFunctionImplementation_doc.i.in
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
-                      FieldImplementation.i FieldImplementation_doc.i.in
-                      Field.i Field_doc.i.in
-                      ProcessSample.i ProcessSample_doc.i.in
-                      TimeSeries.i TimeSeries_doc.i.in
                       SpecFunc.i SpecFunc_doc.i.in
                       NumericalMathEvaluationImplementation.i NumericalMathEvaluationImplementation_doc.i.in
                       NumericalMathGradientImplementation.i NumericalMathGradientImplementation_doc.i.in
@@ -390,6 +390,7 @@ ot_add_python_module(algo algo_module.i
                       GaussKronrod.i GaussKronrod_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
+		      KarhunenLoeveP1Factory.i KarhunenLoeveP1Factory_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )
 
