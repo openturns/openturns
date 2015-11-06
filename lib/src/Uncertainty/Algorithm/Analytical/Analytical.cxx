@@ -128,7 +128,7 @@ void Analytical::run()
 
   /* set isStandardPointOriginInFailureSpace in Result */
   NumericalPoint origin(standardSpaceDesignPoint.getDimension(), 0.0);
-  NumericalPoint value(event_.getImplementation()->getFunction().operator()(origin));
+  NumericalPoint value(standardEvent.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
 } /* Analytical::run() */
