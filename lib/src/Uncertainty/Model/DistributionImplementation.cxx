@@ -1640,6 +1640,7 @@ NumericalScalar DistributionImplementation::computeConditionalQuantile(const Num
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   const Implementation marginalDistribution(getMarginal(conditioningDimension));
   NumericalScalar quantile(marginalDistribution->computeQuantile(q)[0]);
+  LOGINFO(OSS() << "marginal distribution=" << marginalDistribution->__str__() << ", quantile=" << quantile);
   // Special case for bording values
   if ((q == 0.0) || (q == 1.0)) return quantile;
   // Special case when no contitioning or independent copula
@@ -1650,7 +1651,9 @@ NumericalScalar DistributionImplementation::computeConditionalQuantile(const Num
   Indices conditioned(conditioning);
   conditioned.add(conditioningDimension);
   const Implementation conditioningDistribution(getMarginal(conditioning));
+  LOGINFO(OSS() << "conditioning distribution=" << conditioningDistribution->__str__() << ", quantile=" << quantile);
   const Implementation conditionedDistribution(getMarginal(conditioned));
+  LOGINFO(OSS() << "conditioned distribution=" << conditionedDistribution->__str__() << ", quantile=" << quantile);
   const NumericalScalar xMin(conditionedDistribution->getRange().getLowerBound()[conditioningDimension]);
   const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
   // Start with the largest bracketing interval
@@ -1678,6 +1681,7 @@ NumericalScalar DistributionImplementation::computeConditionalQuantile(const Num
       quantile += residual;
     }
     convergence = fabs(residual) < quantileEpsilon_ * (1.0 + fabs(quantile)) || (fabs(cdf - q) < 2.0 * cdfEpsilon_) || (b - a < quantileEpsilon_ * (1.0 + fabs(quantile)));
+    LOGINFO(OSS() << "quantile=" << quantile << ", a=" << a << ", b=" << b << ", iteration=" << iteration);
     ++iteration;
   }
   return quantile;

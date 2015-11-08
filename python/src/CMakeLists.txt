@@ -448,6 +448,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       GumbelCopulaFactory.i GumbelCopulaFactory_doc.i.in
                       ComposedDistribution.i ComposedDistribution_doc.i.in
                       ComposedCopula.i ComposedCopula_doc.i.in
+                      CumulativeDistributionNetwork.i
                       PythonDistributionImplementation.cxx
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
