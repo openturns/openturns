@@ -36,7 +36,7 @@
 #include <sys/types.h>            // for stat
 #include <sys/stat.h>             // for stat
 #include <unistd.h>               // for stat
-#include <OTconfig.hxx>
+#include "OTconfig.hxx"
 #include "OTthread.hxx"
 #include "OSS.hxx"
 #include "Path.hxx"

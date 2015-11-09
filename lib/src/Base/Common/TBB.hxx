@@ -34,7 +34,7 @@
 #  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
 # endif
 #endif
-#include "tbb/tbb.h"
+#include <tbb/tbb.h>
 #include "OTwindows.h"
 #else /* OPENTURNS_HAVE_TBB */
 #include "Exception.hxx"
