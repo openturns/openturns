@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_PYTHONRANDOMVECTORIMPLEMENTATION_HXX
 #define OPENTURNS_PYTHONRANDOMVECTORIMPLEMENTATION_HXX
 
-#include "Python.h"
+#include <Python.h>
 #include "RandomVectorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

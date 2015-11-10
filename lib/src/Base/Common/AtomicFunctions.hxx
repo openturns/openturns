@@ -26,7 +26,7 @@
 #include "MutexLock.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
-#include "tbb/tbb.h"
+#include <tbb/tbb.h>
 #include "OTwindows.h"
 #endif
 

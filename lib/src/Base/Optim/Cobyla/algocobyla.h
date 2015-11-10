@@ -37,7 +37,7 @@
 #ifndef _COBYLA_
 #define _COBYLA_
 
-#include <OTdebug.h>
+#include "OTdebug.h"
 
 BEGIN_C_DECLS
 
