@@ -65,14 +65,18 @@ NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) 
   const UnsignedInteger dimension(getDimension());
   NumericalPoint ddf(dimension);
   const NumericalScalar h(std::pow(pdfEpsilon_, 1.0 / 3.0));
-  const NumericalScalar idenom(1.0 / (2.0 * h));
+  LOGINFO(OSS() << "h=" << h);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalPoint left(point);
     left[i] += h;
     NumericalPoint right(point);
     right[i] -= h;
-    ddf[i] = (computePDF(left) - computePDF(right)) * idenom;
+    const NumericalScalar denom(left[i] - right[i]);
+    const NumericalScalar pdfLeft(computePDF(left));
+    const NumericalScalar pdfRight(computePDF(right));
+    ddf[i] = (pdfLeft - pdfRight) / denom;
+    LOGINFO(OSS() << "left=" << left << ", right=" << right << ", pdfLeft=" << pdfLeft << ", pdfRight=" << pdfRight);
   }
   return ddf;
 }

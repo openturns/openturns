@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
     NumericalScalar pointPDF = copula.computePDF( point );
     NumericalScalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
-              << " ddf=" << pointDDF
-              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
+              << " ddf=" << pointDDF.__str__()
+              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point).__str__()
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
@@ -116,6 +116,33 @@ int main(int argc, char *argv[])
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
+
+    // Additional tests for PDF/CDF in extreme cases
+    NumericalSample points(0, 2);
+    points.add(NumericalPoint(2, 1.0e-12));
+    points.add(NumericalPoint(2, 1.0e-7));
+    points.add(NumericalPoint(2, 0.1));
+    points.add(NumericalPoint(2, 0.5));
+    points.add(NumericalPoint(2, 0.1));
+    points.add(NumericalPoint(2, 0.1));
+    points.add(NumericalPoint(2, 0.1));
+
+    NumericalPoint thetas;
+    thetas.add(1.0e-12);
+    thetas.add(0.9e-8);
+    thetas.add(1.1e-8);
+    thetas.add(-0.99);
+    thetas.add(9.9e1);
+    thetas.add(1.1e2);
+    thetas.add(1.0e5);
+    for (UnsignedInteger i = 0; i < thetas.getSize(); ++i)
+    {
+      NumericalPoint x(points[i]);
+      ClaytonCopula copula(thetas[i]);
+      fullprint << copula.__str__() << std::endl;
+      fullprint << "PDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computePDF(x) << std::endl;
+      fullprint << "CDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computeCDF(x) << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {
