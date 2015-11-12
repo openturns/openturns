@@ -615,9 +615,9 @@ void CovarianceModelImplementation::setParameter(const NumericalPoint & paramete
   // Default parameter setter
   // By convention, the first points corresponds to scale parameter
   // it follows amplitude parameter
-  if (parameter.getDimension() != spatialDimension_ + 1)
+  if (parameter.getDimension() != spatialDimension_ + dimension_)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter: parameter dimension should be " << spatialDimension_ + dimension_
-                                         << "(got " << parameter.getDimension() << ")";
+                                         << " (got " << parameter.getDimension() << ")";
   NumericalPoint scale(spatialDimension_);
   NumericalPoint amplitude(dimension_);
   for (UnsignedInteger j = 0; j < spatialDimension_; ++j) scale[j] = parameter[j];
