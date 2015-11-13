@@ -482,7 +482,90 @@ void GeneralizedLinearModelAlgorithm::computeF()
 /* Perform regression */
 void GeneralizedLinearModelAlgorithm::run()
 {
-  // todo
+  // Do not crun again if already computed
+  if (hasRun_) return;
+  LOGINFO("normalize the data");
+  normalizeInputSample();
+  LOGINFO("Compute the design matrix");
+  computeF();
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  NumericalPointWithDescription covarianceModelParameters;
+  // optimization of likelihood function if provided
+  LOGINFO("Optimize the parameter of the marginal covariance model");
+  covarianceModelParameters = optimizeLogLikelihood();
+  LOGINFO("Store the estimates");
+  // Here we do the work twice:
+  // 1) To get a collection of NumericalPoint for the result class
+  // 2) To get same results as NumericalSample for the trend NMF
+  Collection<NumericalPoint> trendCoefficients(basis_.getSize());
+  NumericalSample trendCoefficientsSample(beta_.getSize(), covarianceModel_.getDimension());
+
+  UnsignedInteger cumulatedSize(0);
+  for (UnsignedInteger outputIndex = 0; outputIndex < basis_.getSize(); ++ outputIndex)
+  {
+    const UnsignedInteger localBasisSize(basis_[outputIndex].getSize());
+    NumericalPoint beta_i(localBasisSize);
+    for(UnsignedInteger basisElement = 0; basisElement < localBasisSize; ++ basisElement)
+    {
+      beta_i[basisElement] = beta_[cumulatedSize];
+      trendCoefficientsSample[cumulatedSize][outputIndex] =  beta_[cumulatedSize];
+      cumulatedSize += 1;
+    }
+    trendCoefficients[outputIndex] = beta_i;
+  }
+
+  CovarianceModel conditionalCovarianceModel(covarianceModel_);
+  conditionalCovarianceModel.setParameter(covarianceModelParameters);
+
+  LOGINFO("Build the output meta-model");
+  // The meta model is of type DualLinearCombination function
+  // We should write the coefficients into a NumericalSample and build the basis into a collection
+  Collection<NumericalMathFunction> allFunctionsCollection;
+  for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)
+    for (UnsignedInteger l = 0; l < basis_[k].getSize(); ++l)
+      allFunctionsCollection.add(basis_[k].build(l));
+  NumericalMathFunction metaModel;
+
+  if (basis_.getSize() > 0)
+  {
+    // Care ! collection should be non empty
+    metaModel = NumericalMathFunction(allFunctionsCollection, trendCoefficientsSample);
+  }
+  else
+  {
+    // If no basis ==> zero function
+    #ifdef OPENTURNS_HAVE_MUPARSER
+      metaModel = NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
+    #else
+      metaModel = NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, covarianceModel_.getDimension()));
+    #endif
+  }
+
+  // Add transformation if needed
+  if (normalize_) metaModel = NumericalMathFunction(metaModel, inputTransformation_);
+
+  // compute residual, relative error
+  const NumericalPoint outputVariance = outputSample_.computeVariance();
+  const NumericalSample mY = metaModel(inputSample_);
+  const NumericalPoint squaredResiduals = (outputSample_ - mY).computeRawMoment(2);
+
+  NumericalPoint residuals(outputDimension);
+  NumericalPoint relativeErrors(outputDimension);
+
+  const UnsignedInteger size(inputSample_.getSize());
+  for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
+  {
+    residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
+    relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
+  }
+
+  if (isEnabledKeepCovariance_)
+    result_ = GeneralizedLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, trendCoefficients, conditionalCovarianceModel, covarianceCholeskyFactor_, covarianceHMatrix_);
+  else
+    result_ = GeneralizedLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, trendCoefficients, conditionalCovarianceModel);
+  // If normalize, set input transformation
+  if (normalize_) result_.setTransformation(inputTransformation_);
+  hasRun_ = true;
 }
 
 NumericalScalar GeneralizedLinearModelAlgorithm::computeLogLikelihood(const NumericalPoint & parameters) const
