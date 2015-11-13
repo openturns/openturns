@@ -763,7 +763,7 @@ ot_add_python_module(stattests stattests_module.i
                       HypothesisTest.i HypothesisTest_doc.i.in
                       LinearModelTest.i LinearModelTest_doc.i.in
                       NormalityTest.i NormalityTest_doc.i.in
-                      DickeyFullerTest.i
+                      DickeyFullerTest.i DickeyFullerTest_doc.i.in
                       UncertaintyStatTestsTemplateDefs.i
                     )
 
