@@ -14,7 +14,7 @@ We recall that the covariance function *C* writes:
 
 .. math::
 
-    \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \quad C(\vect{s}, \vect{t}) = \Expect{\left(X_{\vect{s}}-m(\vect{s})\right)\left(X_{\vect{t}}-m(\vect{t})\right)^t}
+    \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \quad C(\vect{s}, \vect{t}) = \Expect{\left(X_{\vect{s}}-m(\vect{s})\right)\Tr{\left(X_{\vect{t}}-m(\vect{t})\right)}}
 
 
 where the mean function :math:`m: \cD \rightarrow \Rset^d` is defined by:
@@ -31,7 +31,7 @@ First, we estimate the covariance function *C* on the vertices of the mesh :math
 
     \begin{eqnarray*}
         & \forall \vect{t}_i \in \cM, \quad m(\vect{t}_i) \simeq \frac{1}{K} \sum_{k=1}^{K} \vect{x}_i^k \\
-        & \forall (\vect{t}_i, \vect{t}_j) \in \cD \times \cD, \quad C(\vect{t}_i, \vect{t}_j) \simeq \frac{1}{K} \sum_{k=1}^{K} \left( \vect{x}_i^k - m(\vect{t}_i) \right) \left( \vect{x}_j^k - m(\vect{t}_j) \right)^t
+        & \forall (\vect{t}_i, \vect{t}_j) \in \cD \times \cD, \quad C(\vect{t}_i, \vect{t}_j) \simeq \frac{1}{K} \sum_{k=1}^{K} \left( \vect{x}_i^k - m(\vect{t}_i) \right) \Tr{\left( \vect{x}_j^k - m(\vect{t}_j) \right)}
     \end{eqnarray*}
 
 

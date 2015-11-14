@@ -12,7 +12,7 @@ Notes
 -----
 Let :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (*n=1*).
 
-If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^n \rightarrow \Rset^n` is :math:`\cL^1(\Rset^n)` (ie :math:`\int_{\Rset^n} |C^{stat}_{i,j}(\vect{\tau})|\, d\vect{\tau}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`. 
+If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^n \rightarrow \Rset^n` is :math:`\cL^1(\Rset^n)` (ie :math:`\int_{\Rset^n} |C^{stat}_{i,j}(\vect{\tau})|\, d\vect{\tau}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`. 
 
 The bilateral spectral density function :math:`S : \Rset^n \rightarrow \mathcal{H}^+(d)` exists and is defined as the Fourier transform of the covariance function :math:`C^{stat}` :
 

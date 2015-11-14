@@ -62,7 +62,7 @@ We define the spatial covariance matrix :math:`\mat{C}^{spat}` by:
 .. math::
 
     \forall \vect{t} \in \cD,\quad
-    \mat{C}^{spat} = \Expect{X_{\vect{t}}X^t_{\vect{t}}}
+    \mat{C}^{spat} = \Expect{X_{\vect{t}}\Tr{X}_{\vect{t}}}
                    = \mat{A}\,\mat{R}\, \mat{A}
 
 - In the first usage, we fix the dimension spatial dimension :math:`n`, the

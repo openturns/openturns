@@ -59,7 +59,7 @@ Its first moments are:
     \begin{eqnarray*}
         \vect{\Expect{X}} & = & \vect{\mu} \quad \text{ if }\nu>1\\
         \mat{\Cov{X}} & = & \displaystyle \frac{\nu}{\nu-2}
-                            \mat{\Delta}^t\,\mat{R}\,\mat{\Delta}
+                            \Tr{\mat{\Delta}}\,\mat{R}\,\mat{\Delta}
                           \quad \text{ if }\nu>2
     \end{eqnarray*}
 

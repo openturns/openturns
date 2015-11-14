@@ -55,7 +55,7 @@ Notes
 
 .. math::
 
-    C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}
+    C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}
 
 
 We note that the first usage calls the second as model is stationary. Thus,

@@ -193,10 +193,10 @@ vector :  :class:`~openturns.RandomVector`
 
 Notes
 -----
-Let's note :math:`\vect{Y}=(Y_1,\dots,Y_n)^t` a random vector and
+Let's note :math:`\vect{Y}=\Tr{(Y_1,\dots,Y_n)}` a random vector and
 :math:`I \in [1,n]` a set of indices. If :math:`\vect{Y}` is a
 :class:`~openturns.UsualRandomVector`, the subvector is defined by
-:math:`\tilde{\vect{Y}}=(Y_i)_{i \in I}^t`. If :math:`\vect{Y}` is a
+:math:`\tilde{\vect{Y}}=\Tr{(Y_i)}_{i \in I}`. If :math:`\vect{Y}` is a
 :class:`~openturns.CompositeRandomVector`, defined by
 :math:`\vect{Y}=f(\vect{X})` with :math:`f=(f_1,\dots,f_n)`,
 :math:`f_i` some scalar functions, the subvector is

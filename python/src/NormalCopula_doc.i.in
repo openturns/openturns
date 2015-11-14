@@ -11,8 +11,8 @@ Parameters
 n : int, :math:`n \geq 1`
     Dimension of the copula.
 R : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mathbf R` which is not the Kendall nor the
-    Spearman rank correlation matrix of the distribution. The :math:`\mathbf R`
+    Correlation matrix :math:`\mat{R}` which is not the Kendall nor the
+    Spearman rank correlation matrix of the distribution. The :math:`\mat{R}`
     matrix can be evaluated from the Spearman or Kendall correlation matrix.
 
 Notes
@@ -21,18 +21,18 @@ The Normal copula is defined by :
 
 .. math::
 
-    C(u_1, \cdots, u_n) = \Phi_{\mathbf R}^n(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_n))
+    C(u_1, \cdots, u_n) = \Phi_{\mat{R}}^n(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_n))
 
-where :math:`\Phi_{\mathbf R}^n` is the multinormal cumulative density function in
+where :math:`\Phi_{\mat{R}}^n` is the multinormal cumulative density function in
 dimension :math:`n` :
 
 .. math::
 
-    \Phi_{\mathbf R}^n(\vect{x}) = \int_{-\infty}^{x_1} \ldots
+    \Phi_{\mat{R}}^n(\vect{x}) = \int_{-\infty}^{x_1} \ldots
                                    \int_{-\infty}^{x_n}
                                    \frac{1}
-                                        {{(2\pi.\det{\mathbf R})}^{\frac{n}{2}}}
-                          \: . \: \exp \left(-\frac{^t\vect{u}.\mathbf R.\vect{u}}{2} \right)
+                                        {{(2\pi.\det{\mat{R}})}^{\frac{n}{2}}}
+                          \: . \: \exp \left(-\frac{\Tr{\vect{u}}.\mat{R}.\vect{u}}{2} \right)
 
 with :math:`\Phi` is the cumulative distribution function of the normal law in
 dimension 1:
@@ -41,16 +41,16 @@ dimension 1:
 
       \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} \: e^{-\frac{t^2}{2}} \: dt
 
-and with :math:`\mathbf R` is the correlation matrix. This matrix is defined
+and with :math:`\mat{R}` is the correlation matrix. This matrix is defined
 by its algebric properties: symmetric, definite and positive.
 
-The correlation matrix :math:`\mathbf R` is obtainable by different ways:
+The correlation matrix :math:`\mat{R}` is obtainable by different ways:
 
 - If the Spearman correlation matrix is known :
 
   .. math ::
 
-      \mathbf R_{ij} = 2 \sin \left( \frac{\pi}{6}\rho_{ij}^S \right)
+      \mat{R}_{ij} = 2 \sin \left( \frac{\pi}{6}\rho_{ij}^S \right)
 
   where :math:`\rho_{ij}^S = \rho^S(X_i,X_j) = \rho^P(F_{X_i}(X_i),F_{X_j}(X_j))`
 
@@ -58,7 +58,7 @@ The correlation matrix :math:`\mathbf R` is obtainable by different ways:
 
   .. math::
 
-      \mathbf R_{ij} = \sin \left( \frac{\pi}{2} . \tau_{ij} \right)
+      \mat{R}_{ij} = \sin \left( \frac{\pi}{2} . \tau_{ij} \right)
 
   with
 
@@ -102,7 +102,7 @@ K : :class:`~openturns.CorrelationMatrix`
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mathbf R` of the normal copula evaluated from
+    Correlation matrix :math:`\mat{R}` of the normal copula evaluated from
     the Kendall correlation matrix :math:`K`."
 
 // ---------------------------------------------------------------------
@@ -118,6 +118,6 @@ S : :class:`~openturns.CorrelationMatrix`
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mathbf R` of the normal copula evaluated from
+    Correlation matrix :math:`\mat{R}` of the normal copula evaluated from
     the Spearman correlation matrix :math:`S`."
 

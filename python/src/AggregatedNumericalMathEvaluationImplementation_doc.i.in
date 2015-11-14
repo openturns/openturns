@@ -22,7 +22,7 @@ It implements a :class:`~openturns.NumericalMathFunction`
 :math:`f : \Rset^n \rightarrow \Rset^{p_1 + \ldots + p_l}` defined by:
 
 .. math::
-    \forall \vect{x} \in \Rset^n, f(\vect{x}) = (f_1(\vect{x}), \ldots, f_l(\vect{x}))^t
+    \forall \vect{x} \in \Rset^n, f(\vect{x}) = \Tr{(f_1(\vect{x}), \ldots, f_l(\vect{x}))}
 "
 
 // ---------------------------------------------------------------------

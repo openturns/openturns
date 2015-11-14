@@ -41,7 +41,7 @@ where:
   elements are the followings :
   :math:`(\Cov \uX)_{ij} = \Expect{\left(X^i - \Expect{X^i} \right)^2}`
 
-- :math:`\vect{\vect{\nabla}} h(\muX) = \: ^t \left( \frac{\partial y^i}{\partial x^j}\right)_{\ux\: =\: \muX} = \: ^t \left( \frac{\partial h^i(\ux)}{\partial x^j}\right)_{\ux\: =\: \muX}`
+- :math:`\vect{\vect{\nabla}} h(\muX) = \: \Tr{\left( \frac{\partial y^i}{\partial x^j}\right)}_{\ux\: =\: \muX} = \: \Tr{\left( \frac{\partial h^i(\ux)}{\partial x^j}\right)}_{\ux\: =\: \muX}`
   is the transposed Jacobian matrix with :math:`i=1,\ldots,n_Y` and
   :math:`j=1,\ldots,n_X`.
 
@@ -57,7 +57,7 @@ where:
 -
   .. math::
 
-      <<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> = \left( ^t (\uX^i - \muX^i). \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}
+      <<\vect{\vect{\vect{\nabla }}}^2 h(\muX,\: \vect{\mu}_{X}),\: \uX - \muX>,\: \uX - \muX> = \left( \Tr{(\uX^i - \muX^i)}. \left(\frac{\partial^2 y^k}{\partial x^i \partial x^k}\right)_{\ux = \muX}. (\uX^j - \muX^j) \right)_{ijk}
 
 **Approximation at the order 1:**
 
@@ -76,7 +76,7 @@ Variance:
 
 .. math::
 
-    \Cov \uY \approx ^t\vect{\vect{\nabla}}\:\vect{h}(\muX).\Cov \uX.\vect{\vect{\nabla}}\:\vect{h}(\muX)
+    \Cov \uY \approx \Tr{\vect{\vect{\nabla}}}\:\vect{h}(\muX).\Cov \uX.\vect{\vect{\nabla}}\:\vect{h}(\muX)
 
 **Approximation at the order 2:**
 

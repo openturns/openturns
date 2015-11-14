@@ -22,7 +22,7 @@ If the process is a second order process, we note:
   :math:`m(\vect{t})=\Expect{X_{\vect{t}}}`,
 - :math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` its
   *covariance function*, defined by
-  :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}`,
+  :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}`,
 - :math:`R : \cD \times \cD \mapsto  \mathcal{M}_{d \times d}(\Rset)` its
   *correlation function*, defined for all :math:`(\vect{s}, \vect{t})`,
   by :math:`R(\vect{s}, \vect{t})` such that for all :math:`(i,j)`,
@@ -73,7 +73,7 @@ Notes
 
 .. math::
 
-    C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))^t}
+    C(\vect{s}, \vect{t})=\Expect{\Tr{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))}}
 
 In the second usage, the covariance model must be stationary. Then we note
 :math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})` as
@@ -114,7 +114,7 @@ A covariance function express at :math:`(s,t)\in \Rset^n` as fllows :
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \mat{\Sigma} \rho(\frac{\vect{s}}{\vect{\theta}}, \frac{\vect{t}}{\vect{\theta}})
+    C(\vect{s}, \vect{t}) = \mat{\Sigma} \rho\left(\frac{\vect{s}}{\vect{\theta}}, \frac{\vect{t}}{\vect{\theta}}\right)
 
 where :math:`\frac{\vect{s}}{\vect{\theta}} = (\frac{\vect{s}_1}{\vect{\theta}_1},\cdots,\frac{\vect{s}_n}{\vect{\theta}_n})` is the scaled point and
 :math:`\mat{\Sigma}` is a covariance matrix that explains the covariance structure.
@@ -346,7 +346,7 @@ OT_CovarianceModel_getScale_doc
 Returns
 -------
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{dimension \times dimension}([-1, 1])`."
+    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}(\Rset)`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getSpatialCorrelation
 OT_CovarianceModel_getSpatialCorrelation_doc
@@ -484,7 +484,7 @@ OT_CovarianceModel_setParameter_doc
 Parameters
 ----------
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{dimension \times dimension}([-1, 1])`."
+    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}(\Rset)`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setSpatialCorrelation
 OT_CovarianceModel_setSpatialCorrelation_doc
