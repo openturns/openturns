@@ -15,10 +15,7 @@ project (OpenTURNS CXX)
 option (USE_BISON                    "Looks for Bison if true and then build parser"                         ON)
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
 option (USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON)
-
-# still a bit new: provided by 3.5.0 but the cmake config file is only in the dev version
-option (USE_LAPACKE                  "Use LAPACKE C interface to LAPACK"                                     OFF)
-
+option (USE_LAPACKE                  "Use LAPACKE C interface to LAPACK"                                     ON)
 option (USE_HMAT                     "Use HMat library"                                                      ON)
 option (USE_MUPARSER                 "Use muParser libraries"                                                ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
