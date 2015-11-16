@@ -8,6 +8,12 @@ Available constructors:
 
     ExponentialModel(*spatialDim, scale, spatialCovariance*)
 
+    ExponentialModel(*scale, amplitude*)
+
+    ExponentialModel(*scale, amplitude, spatialCorrelation*)
+
+    ExponentialModel(*scale, amplitude, spatialCovariance*)
+
 Parameters
 ----------
 spatialDim : int
@@ -17,7 +23,7 @@ amplitude : sequence of float
 scale : sequence of float
     Vector :math:`\vect{\lambda}` of dimension :math:`spatialDim`.
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])`.
+    Correlation matrix :math:`\mat{R} \in \mathcal{S}^{+}_{d}(\Rset)`, with values in [-1,1]
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`C^{stat} \in \mathcal{M}_{+}^{*}(\Rset^d)`.
 
