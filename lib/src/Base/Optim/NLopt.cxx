@@ -89,6 +89,14 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 #endif
 }
 
+// Struct to store class ptr and marginal index as well
+struct MarginalData {
+  MarginalData(NLopt * p_algo, const UnsignedInteger marginalIndex)
+  : p_algo_(p_algo), marginalIndex_(marginalIndex) {}
+  NLopt * p_algo_;
+  int marginalIndex_;
+};
+
 /* Performs the actual computation by calling the NLopt library
  */
 void NLopt::run()
@@ -130,14 +138,28 @@ void NLopt::run()
     opt.set_upper_bounds(ub);
   }
 
+  Collection<Pointer<MarginalData> > inequalityData;
   if (getProblem().hasInequalityConstraint())
   {
-    opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, this, 1e-8);
+    const UnsignedInteger inequalityDimension = getProblem().getInequalityConstraint().getOutputDimension();
+    inequalityData.resize(inequalityDimension);
+    for (UnsignedInteger i = 0; i < inequalityDimension; ++ i)
+    {
+      inequalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
+      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, inequalityData[i].get(), 1e-8);
+    }
   }
 
+  Collection<Pointer<MarginalData> > equalityData;
   if (getProblem().hasEqualityConstraint())
   {
-    opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, this, 1e-8);
+    const UnsignedInteger equalityDimension = getProblem().getEqualityConstraint().getOutputDimension();
+    equalityData.resize(equalityDimension);
+    for (UnsignedInteger i = 0; i < equalityDimension; ++ i)
+    {
+      equalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
+      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), 1e-8);
+    }
   }
 
   std::vector<double> x(dimension, 0.0);
@@ -203,7 +225,9 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 
 double NLopt::ComputeInequalityConstraint(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
 {
-  NLopt *algorithm = static_cast<NLopt *>(f_data);
+  MarginalData * mData = static_cast<MarginalData *>(f_data);
+  NLopt *algorithm = mData->p_algo_;
+  const UnsignedInteger marginalIndex = mData->marginalIndex_;
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
   NumericalPoint inP(dimension);
   std::copy(x.begin(), x.end(), inP.begin());
@@ -218,17 +242,19 @@ double NLopt::ComputeInequalityConstraint(const std::vector< double >& x, std::v
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       // nlopt solves h(x)<=0
-      grad[i] = -gradient(i, 0);
+      grad[i] = -gradient(i, marginalIndex);
     }
   }
   // nlopt solves h(x)<=0
-  return -outP[0];
+  return -outP[marginalIndex];
 }
 
 
 double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
 {
-  NLopt *algorithm = static_cast<NLopt *>(f_data);
+  MarginalData * mData = static_cast<MarginalData *>(f_data);
+  NLopt *algorithm = mData->p_algo_;
+  const UnsignedInteger marginalIndex = mData->marginalIndex_;
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
   NumericalPoint inP(dimension);
   std::copy(x.begin(), x.end(), inP.begin());
@@ -242,10 +268,10 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
     Matrix gradient(algorithm->getProblem().getEqualityConstraint().gradient(inP));
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      grad[i] = gradient(i, 0);
+      grad[i] = gradient(i, marginalIndex);
     }
   }
-  return outP[0];
+  return outP[marginalIndex];
 }
 
 
