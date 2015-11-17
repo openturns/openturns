@@ -71,7 +71,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   {
     try {
       opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, 0);
-    } catch (std::invalid_argument & ex) {
+    } catch (std::invalid_argument) {
       throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support inequality constraints";
     }
   }
@@ -80,7 +80,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   {
     try {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
-    } catch (std::invalid_argument & ex) {
+    } catch (std::invalid_argument) {
       throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support equality constraints";
     }
   }
