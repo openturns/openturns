@@ -22,9 +22,8 @@
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 
 #include "DistributionFactoryResult.hxx"
-#include "PersistentObject.hxx"
 #include "ResourceMap.hxx"
-#include "OptimizationSolver.hxx"
+#include "DistributionParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -69,6 +68,10 @@ public:
 
   /** Build the distribution and the parameter distribution */
   virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
+  /** Build the distribution and the parameter distribution in a new parametrization */
+  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample,
+                                                   const DistributionParameters & parameters) const;
 
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;

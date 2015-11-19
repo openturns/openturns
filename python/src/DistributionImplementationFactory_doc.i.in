@@ -49,11 +49,17 @@ is regular the distribution of the parameter is gaussian and its covariance
 matrix is the Fisher information matrix.
 In other cases, the distribution of parameter is estimated by bootstrap with
 :class:`~openturns.KernelSmoothing`.
+When specifying the parametrization, the distribution of the parameters is
+estimated by :class:`~openturns.KernelSmoothing` unless the distribution of
+parameters is gaussian, in which case the parameters distribution is gaussian
+too.
 
 Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
+parameters : :class:`~openturns.DistributionParamters`
+    Optional, the parametrization.
 
 Returns
 -------

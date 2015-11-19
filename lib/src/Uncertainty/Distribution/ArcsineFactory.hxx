@@ -48,7 +48,10 @@ public:
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
+
+  using DistributionImplementationFactory::buildEstimator;
   DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
   Arcsine buildAsArcsine(const NumericalSample & sample) const;
   Arcsine buildAsArcsine(const NumericalPoint & parameters) const;
   Arcsine buildAsArcsine() const;

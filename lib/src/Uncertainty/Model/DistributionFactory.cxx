@@ -207,6 +207,11 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSam
   return getImplementation()->buildEstimator(sample);
 }
 
+DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample, const DistributionParameters & parameters) const
+{
+  return getImplementation()->buildEstimator(sample, parameters);
+}
+
 void DistributionFactory::setKnownParameter(const NumericalPoint & values,
                                             const Indices & indices)
 {

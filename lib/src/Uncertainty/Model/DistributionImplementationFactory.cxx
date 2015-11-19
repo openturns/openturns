@@ -35,6 +35,7 @@
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "Normal.hxx"
+#include "ParametrizedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -117,6 +118,42 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
 DistributionFactoryResult DistributionImplementationFactory::buildEstimator(const NumericalSample & sample) const
 {
   return buildBootStrapEstimator(sample);
+}
+
+DistributionFactoryResult DistributionImplementationFactory::buildEstimator(const NumericalSample & sample,
+                                                                            const DistributionParameters & parameters) const
+{
+  DistributionFactoryResult nativeResult(buildEstimator(sample));
+  Distribution nativeDistribution(nativeResult.getDistribution());
+  DistributionParameters parameters2(parameters);
+  NumericalPoint newParameter(parameters.inverse(nativeDistribution.getParameter()));
+  parameters2.setValues(newParameter);
+  ParametrizedDistribution distribution(parameters2);
+  Distribution parameterDistribution;
+  Distribution nativeParameterDistribution(nativeResult.getParameterDistribution());
+  if (nativeParameterDistribution.getImplementation()->getClassName() == "Normal")
+  {
+    Matrix delta(parameters2.gradient());
+    Matrix sigma(nativeParameterDistribution.getCovariance());
+    parameterDistribution = Normal(newParameter, CovarianceMatrix((delta * sigma * delta.transpose()).getImplementation()));
+  }
+  else
+  {
+    UnsignedInteger bootstrapSize = getBootstrapSize();
+    BootstrapExperiment experiment(sample);
+    NumericalSample parameterSample(0, distribution.getParameterDimension());
+    for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
+    {
+      NumericalSample bootstrapSample(experiment.generate());
+      Distribution estimatedDistribution(build(bootstrapSample));
+      NumericalPoint newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
+      parameterSample.add(newEstimatedParameter);
+    }
+    KernelSmoothing factory;
+    parameterDistribution = factory.build(parameterSample);
+  }
+  DistributionFactoryResult result(distribution, parameterDistribution);
+  return result;
 }
 
 DistributionFactoryResult DistributionImplementationFactory::buildBootStrapEstimator(const NumericalSample & sample,
