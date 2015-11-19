@@ -273,6 +273,9 @@ NumericalScalar SpecFunc::DeltaLogBesselI10(const NumericalScalar x)
 NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
                                      const NumericalScalar x)
 {
+#ifdef OPENTURNS_HAVE_BOOST
+  return std::log(boost::math::cyl_bessel_k(nu, x));
+#else
   if (x <= 0.0) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
   // Reflection formula
   if (nu < 0.0) return LogBesselK(-nu, x);
@@ -298,6 +301,7 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
   PlatformInfo::SetNumericalPrecision(precision);
   if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxNumericalScalar;
   return logFactor + std::log(integral);
+#endif
 }
 
 // Modified second kind Bessel function of order nu: BesselK(nu, x)=\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}}
