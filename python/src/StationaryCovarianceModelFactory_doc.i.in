@@ -13,14 +13,13 @@ Notes
 We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate   process of dimension *d* where :math:`\cD \in \Rset^n`.  We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`). 
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of the  mesh :math:`\cM \in \cD` which is a time grid supposed regular.
 
-*X* is supposed to be a stationary second order process with zero mean. We note its covariance function :math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`, defined by :math:`C^{stat}(\tau)=\Expect{X_sX_{s+\tau}^t}` for all :math:`s\in \cD`.
+*X* is supposed to be a stationary second order process with zero mean. We note its covariance function :math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`, defined by :math:`C^{stat}(\tau)=\Expect{X_s\Tr{X_{s+\tau}}}` for all :math:`s\in \cD`.
 
 In addition, we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` is defined,  where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
 
 OpenTURNS estimates  :math:`C^{stat}` from a field or a sample of fields of *X*, using first the estimation of the spectral density function and then mapping *S* into :math:`C^{stat}` using the inversion relation :
 
 .. math::
-    :label: eq1
 
     C^{stat}(\vect{\tau})  = \int_{\Rset^n}\exp\left\{  2i\pi <\vect{f}, \vect{\tau}> \right\}S(\vect{f})\, d\vect{f}
 

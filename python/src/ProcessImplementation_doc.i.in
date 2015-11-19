@@ -297,12 +297,12 @@ distributions are normal, which means that for all :math:`k \in \Nset` and
 
 .. math::
 
-    \Expect{\exp\left\{i\vect{X}_{I_k}^t \vect{U}_{k}  \right\}} =
-    \exp{\left\{i\vect{U}_{k}^t\vect{M}_{k}-\frac{1}{2}\vect{U}_{k}^t\mat{C}_{1,\dots,k}\vect{U}_{k}\right\}}
+    \Expect{\exp\left\{i\Tr{\vect{X}}_{I_k} \vect{U}_{k}  \right\}} =
+    \exp{\left\{i\Tr{\vect{U}}_{k}\vect{M}_{k}-\frac{1}{2}\Tr{\vect{U}}_{k}\mat{C}_{1,\dots,k}\vect{U}_{k}\right\}}
 
-where :math:`\vect{X}_{I_k}^t = (X_{\vect{t}_1}^t, \hdots, X_{\vect{t}_k}^t)`,
-:math:`\vect{U}_{k}^t = (\vect{u}_{1}^t, \hdots, \vect{u}_{k}^t)` and
-:math:`\vect{M}_{k}^t = (\vect{m}_{1}^t, \hdots, \vect{m}_{k}^t)` and
+where :math:`\Tr{\vect{X}}_{I_k} = (\Tr{X}_{\vect{t}_1}, \hdots, \Tr{X}_{\vect{t}_k})`,
+:math:`\\Tr{vect{U}}_{k} = (\Tr{\vect{u}}_{1}, \hdots, \Tr{\vect{u}}_{k})` and
+:math:`\Tr{\vect{M}}_{k} = (\Tr{\vect{m}}_{1}, \hdots, \Tr{\vect{m}}_{k})` and
 :math:`\mat{C}_{1,\dots,k}` is the symmetric matrix:
 
 .. math::
