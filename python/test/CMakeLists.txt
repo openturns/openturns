@@ -261,7 +261,6 @@ ot_pyinstallcheck_test (HaltonSequence_std)
 ot_pyinstallcheck_test (HaselgroveSequence_std)
 ot_pyinstallcheck_test (ReverseHaltonSequence_std)
 ot_pyinstallcheck_test (TestResult_std)
-ot_pyinstallcheck_test (SensitivityAnalysis_std)
 ot_pyinstallcheck_test (CorrelationAnalysis_std)
 ot_pyinstallcheck_test (TimeSeries_std)
 ot_pyinstallcheck_test (ExponentialCauchy_std)
@@ -598,6 +597,7 @@ endif ()
 ## Sensitivity
 ot_pyinstallcheck_test (ANCOVA_std)
 ot_pyinstallcheck_test (FAST_std)
+ot_pyinstallcheck_test (SobolIndicesAlgorithm_std)
 
 ## Simulation
 ot_pyinstallcheck_test (Wilks_std)

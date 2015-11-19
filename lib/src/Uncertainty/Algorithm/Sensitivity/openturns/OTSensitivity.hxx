@@ -24,5 +24,11 @@
 
 #include "openturns/ANCOVA.hxx"
 #include "openturns/FAST.hxx"
+#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
+#include "openturns/SobolIndicesAlgorithm.hxx"
+#include "openturns/SaltelliSensitivityAlgorithm.hxx"
+#include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
+#include "openturns/MartinezSensitivityAlgorithm.hxx"
+#include "openturns/JansenSensitivityAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSENSITIVITY_HXX */

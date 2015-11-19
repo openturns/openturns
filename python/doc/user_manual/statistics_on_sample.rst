@@ -127,9 +127,13 @@ Sensitivity Analysis
     :toctree: _generated/
     :template: class.rst_t
 
-    SensitivityAnalysis
     ANCOVA
     FAST
+    SobolIndicesAlgorithm
+    MartinezSensitivityAlgorithm
+    SaltelliSensitivityAlgorithm
+    JansenSensitivityAlgorithm
+    MauntzKucherenkoSensitivityAlgorithm
 
 Statistical tests
 =================

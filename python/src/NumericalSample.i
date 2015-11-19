@@ -11,6 +11,7 @@
 %include NumericalSample_doc.i
 
 %template(NumericalSampleImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::NumericalSampleImplementation>;
+%template(NumericalSampleCollection)            OT::Collection<OT::NumericalSample>;
 
 #define OT_TYPECHECK_NUMERICALSAMPLE 5
 

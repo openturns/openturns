@@ -25,7 +25,7 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SensitivityAnalysis.hxx"
+#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -152,7 +152,7 @@ Graph TaylorExpansionMoments::drawImportanceFactors() const
   getImportanceFactors();
   OSS oss;
   oss << "Importance Factors from Quadratic Cumul - " << limitStateVariable_.getDescription()[0];
-  return SensitivityAnalysis::DrawImportanceFactors(importanceFactors_, String(oss));
+  return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(importanceFactors_, String(oss));
 }
 
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */

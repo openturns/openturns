@@ -11,6 +11,10 @@ Bibliography
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
     `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
+.. [Gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
+    analysis for multidimensional and functional outputs.* 2013
+.. [Jansen1999] Jansen, M.J.W. *Analysis of variance designs for model output*,
+    Computer Physics Communication, 1999, 117, 35-43.
 .. [Knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
@@ -27,6 +31,9 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <http://doc.openturns.org/papers/lebrun2009c.pdf>`__
+.. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par
+    decomposition de la variance*, Presentation in the meeting of GdR Ondes and
+    GdR MASCOT-NUM, January, 13th, 2011, Institut Henri Poincare, Paris, France
 .. [Munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
@@ -42,6 +49,15 @@ Bibliography
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
     `pdf <http://doc.openturns.org/papers/saltelli1999.pdf>`__
+.. [Saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
+    sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
+    `pdf <http://doc.openturns.org/papers/saltelli2002.pdf>`__
 .. [Simard2011] Simard, R. & L'Ecuyer, P. *Computing the Two-Sided Kolmogorov-
     Smirnov Distribution.* Journal of Statistical Software, 2011, 39(11), 1-18.
     `pdf <http://doc.openturns.org/papers/simard2011.pdf>`__
+.. [Sobol1993] Sobol, I. M. *Sensitivity analysis for non-linear mathematical
+    model* Math. Modelling Comput. Exp., 1993, 1, 407-414.
+.. [Sobol2007] Sobol, I.M., Tarantola, S., Gatelli, D., Kucherenko, S.S. and
+    Mauntz, W.  *Estimating the approximation errors when fixing unessential
+    factors in global sensitivity analysis*, Reliability Engineering and System
+    Safety, 2007, 92, 957-960.

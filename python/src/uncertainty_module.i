@@ -28,7 +28,6 @@
 /* FIXME: Wrong place in Base/Stat */
 /* Base/Stat */
 %include CorrelationAnalysis.i
-%include SensitivityAnalysis.i
 
 /* Uncertainty/Algorithm/Experiment */
 %import weightedexperiment_module.i
@@ -51,8 +50,14 @@
 /* Uncertainty/Algorithm/Sensitivity */
 %include ANCOVA.i
 %include FAST.i
+%include SobolIndicesAlgorithmImplementation.i
+%include SobolIndicesAlgorithm.i
+%include MartinezSensitivityAlgorithm.i
+%include SaltelliSensitivityAlgorithm.i
+%include JansenSensitivityAlgorithm.i
+%include MauntzKucherenkoSensitivityAlgorithm.i
 
-/* Uncertainty/Algorithm/Transformation */
+ /* Uncertainty/Algorithm/Transformation */
 %import transformation_module.i
 %import UncertaintyTransformationTemplateDefs.i
 
