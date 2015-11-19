@@ -27,6 +27,9 @@
 #include "Log.hxx"
 #include "SpecFunc.hxx"
 #include "LinearNumericalMathFunction.hxx"
+#include "CenteredFiniteDifferenceHessian.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "NonCenteredFiniteDifferenceGradient.hxx"
 #include "TNC.hxx"
 #include "NLopt.hxx"
 
@@ -503,7 +506,32 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood(const 
 
 NumericalPoint GeneralizedLinearModelAlgorithm::optimizeLogLikelihood()
 {
-  // todo
+  // initial guess
+  const NumericalPoint initialParameters(covarianceModel_.getParameter());
+  // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
+  NumericalMathFunction logLikelihoodFunction = getObjectiveFunction();
+  const NumericalScalar initialLogLikelihood = logLikelihoodFunction(initialParameters)[0];
+  LOGINFO(OSS() << "Initial parameters=" << initialParameters << ", log-likelihood=" << initialLogLikelihood);
+
+  // Define Optimization problem
+  OptimizationProblem problem = solver_.getProblem();
+  problem.setObjective(logLikelihoodFunction);
+  problem.setMinimization(false);
+  solver_.setStartingPoint(initialParameters);
+  solver_.setProblem(problem);
+  solver_.run();
+
+  // check result
+  const NumericalScalar optimizedLogLikelihood = solver_.getResult().getOptimalValue()[0];
+  const NumericalPoint optimizedParameters = solver_.getResult().getOptimalPoint();
+  LOGINFO(OSS() << "Optimized parameters=" << optimizedParameters << ", log-likelihood=" << optimizedLogLikelihood);
+  const NumericalPoint finalParameters(optimizedLogLikelihood > initialLogLikelihood ? optimizedParameters : initialParameters);
+  // the last optimized point is not necessarily the last evaluated, so update intermediate results
+  const NumericalScalar finalLogLikelihood = logLikelihoodFunction(finalParameters)[0];
+  LOGINFO(OSS() << "Final parameters=" << finalParameters << ", log-likelihood=" << finalLogLikelihood);
+
+  return finalParameters;
+
 }
 
 /** Optimization solver accessor */
@@ -584,7 +612,15 @@ GeneralizedLinearModelResult GeneralizedLinearModelAlgorithm::getResult()
 
 NumericalMathFunction GeneralizedLinearModelAlgorithm::getObjectiveFunction()
 {
-  // todo
+  LOGINFO("Normalizing the data...");
+  normalizeInputSample();
+  LOGINFO("Compute the design matrix");
+  computeF();
+  NumericalMathFunction logLikelihood(bindMethod <GeneralizedLinearModelAlgorithm, NumericalScalar, NumericalPoint> ( *this, &GeneralizedLinearModelAlgorithm::computeLogLikelihood, covarianceModel_.getParameter().getSize(), 1 ));
+  // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
+  logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
+  logLikelihood.enableCache();
+  return logLikelihood;
 }
 
 Bool GeneralizedLinearModelAlgorithm::isEnabledKeepCovariance() const
