@@ -74,6 +74,12 @@ NumericalPoint DistributionParametersImplementation::inverse(const NumericalPoin
 
 
 /* Parameters value and description accessor */
+void DistributionParametersImplementation::setValues(const NumericalPoint & values)
+{
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::setValues()";
+}
+
+
 NumericalPoint DistributionParametersImplementation::getValues() const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getValues() const";

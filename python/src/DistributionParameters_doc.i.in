@@ -4,6 +4,8 @@
 OT_DistributionParameters_doc
 %feature("docstring") OT::DistributionParameters::getDistribution
 OT_DistributionParameters_getDistribution_doc
+%feature("docstring") OT::DistributionParameters::setValues
+OT_DistributionParameters_setValues_doc
 %feature("docstring") OT::DistributionParameters::getValues
 OT_DistributionParameters_getValues_doc
 %feature("docstring") OT::DistributionParameters::getDescription

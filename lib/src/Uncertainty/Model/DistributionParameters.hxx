@@ -64,6 +64,7 @@ public:
   NumericalPoint inverse(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
+  void setValues(const NumericalPoint & values);
   NumericalPoint getValues() const;
   Description getDescription() const;
 

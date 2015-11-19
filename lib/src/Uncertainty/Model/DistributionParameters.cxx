@@ -84,6 +84,12 @@ NumericalPoint DistributionParameters::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
+void DistributionParameters::setValues(const NumericalPoint & values)
+{
+  copyOnWrite();
+  getImplementation()->setValues(values);
+}
+
 NumericalPoint DistributionParameters::getValues() const
 {
   return getImplementation()->getValues();

@@ -123,6 +123,14 @@ NumericalPoint LogNormalMuSigmaOverMu::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
+void LogNormalMuSigmaOverMu::setValues(const NumericalPoint & inP)
+{
+  if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  mu_ = inP[0];
+  sigmaOverMu_ = inP[1];
+  gamma_ =  inP[2];
+}
+
 NumericalPoint LogNormalMuSigmaOverMu::getValues() const
 {
   NumericalPoint point(3);
