@@ -23,6 +23,8 @@ OT::NumericalPoint OT::DistributionImplementation::getGaussNodesAndWeights(OT::N
 %include DistributionImplementation_doc.i
 
 %ignore OT::DistributionImplementation::pow;
+%ignore OT::DistributionImplementation::setWeight;
+%ignore OT::DistributionImplementation::getWeight;
 
 %include DistributionImplementation.hxx
 

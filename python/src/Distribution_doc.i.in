@@ -138,8 +138,6 @@ OT_Distribution_getStandardMoment_doc
 OT_Distribution_getStandardRepresentative_doc
 %feature("docstring") OT::Distribution::getSupport
 OT_Distribution_getSupport_doc
-%feature("docstring") OT::Distribution::getWeight
-OT_Distribution_getWeight_doc
 %feature("docstring") OT::Distribution::hasEllipticalCopula
 OT_Distribution_hasEllipticalCopula_doc
 %feature("docstring") OT::Distribution::hasIndependentCopula
@@ -158,8 +156,6 @@ OT_Distribution_isIntegral_doc
 OT_Distribution_setDescription_doc
 %feature("docstring") OT::Distribution::setParametersCollection
 OT_Distribution_setParametersCollection_doc
-%feature("docstring") OT::Distribution::setWeight
-OT_Distribution_setWeight_doc
 %feature("docstring") OT::Distribution::cos
 OT_Distribution_cos_doc
 %feature("docstring") OT::Distribution::sin

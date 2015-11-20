@@ -134,8 +134,7 @@ OT_SecondOrderModel_discretize_doc
 // ---------------------------------------------------------------------
 
 %define OT_SecondOrderModel_get_covariance_model_doc
-"Returns the covariance model
-
+"Return the covariance model.
 
 Returns
 -------
@@ -175,7 +174,7 @@ OT_SecondOrderModel_get_spatial_dimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_SecondOrderModel_get_spectral_model_doc
-"Returns the spectral model
+"Return the spectral model.
 
 Returns
 -------
@@ -188,7 +187,7 @@ OT_SecondOrderModel_get_spectral_model_doc
 // ---------------------------------------------------------------------
 
 %define OT_SecondOrderModel_set_models_doc
-"Sets both the covariance and spectral models of a second order model
+"Set both the covariance and spectral models of a second order model.
 
 Parameters
 ----------

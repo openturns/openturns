@@ -106,6 +106,8 @@ OTTypedInterfaceObjectHelper(Distribution)
 OTTypedCollectionInterfaceObjectHelper(Distribution)
 
 %ignore OT::Distribution::pow;
+%ignore OT::Distribution::setWeight;
+%ignore OT::Distribution::getWeight;
 
 %include Distribution.hxx
 
