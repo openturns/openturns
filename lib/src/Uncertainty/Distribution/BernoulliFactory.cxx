@@ -30,7 +30,7 @@ CLASSNAMEINIT(BernoulliFactory);
 
 /* Default constructor */
 BernoulliFactory::BernoulliFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

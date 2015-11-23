@@ -37,7 +37,7 @@ CLASSNAMEINIT(BernsteinCopulaFactory);
 
 /* Default constructor */
 BernsteinCopulaFactory::BernsteinCopulaFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   setName("BernsteinCopulaFactory");
 }

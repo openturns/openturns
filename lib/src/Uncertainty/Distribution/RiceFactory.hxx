@@ -22,7 +22,7 @@
 #define OPENTURNS_RICEFACTORY_HXX
 
 #include "Rice.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RiceFactory
  */
 class OT_API RiceFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -42,7 +42,7 @@ public:
   virtual RiceFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;

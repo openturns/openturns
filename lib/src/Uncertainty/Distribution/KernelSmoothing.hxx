@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_KERNELSMOOTHING_HXX
 #define OPENTURNS_KERNELSMOOTHING_HXX
 
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Distribution.hxx"
 #include "NumericalSample.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of KernelSmoothing.
  */
 class OT_API KernelSmoothing
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:

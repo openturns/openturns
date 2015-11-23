@@ -28,7 +28,7 @@ CLASSNAMEINIT(GeometricFactory);
 
 /* Default constructor */
 GeometricFactory::GeometricFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

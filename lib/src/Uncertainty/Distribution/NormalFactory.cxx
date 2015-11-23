@@ -27,7 +27,7 @@ CLASSNAMEINIT(NormalFactory);
 
 /* Default constructor */
 NormalFactory::NormalFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

@@ -30,7 +30,7 @@ CLASSNAMEINIT(NegativeBinomialFactory);
 
 /* Default constructor */
 NegativeBinomialFactory::NegativeBinomialFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

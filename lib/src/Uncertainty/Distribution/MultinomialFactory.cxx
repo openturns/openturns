@@ -28,7 +28,7 @@ CLASSNAMEINIT(MultinomialFactory);
 
 /* Default constructor */
 MultinomialFactory::MultinomialFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

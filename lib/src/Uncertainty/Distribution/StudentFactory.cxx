@@ -26,7 +26,7 @@ CLASSNAMEINIT(StudentFactory);
 
 /* Default constructor */
 StudentFactory::StudentFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

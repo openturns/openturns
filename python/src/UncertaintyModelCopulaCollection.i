@@ -1,5 +1,5 @@
 // SWIG file UncertaintyModelCopulaCollection.i
 
 OTDefaultCollectionConvertFunctions(Distribution)
-OTDefaultCollectionConvertFunctionsMisnamed(DistributionFactory, DistributionImplementationFactory)
+OTDefaultCollectionConvertFunctionsMisnamed(DistributionFactory, DistributionFactoryImplementation)
 

@@ -26,7 +26,7 @@ CLASSNAMEINIT(ArcsineFactory);
 
 /* Default constructor */
 ArcsineFactory::ArcsineFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Initialize any other class members here
   // At last, allocate memory space if needed, but go to destructor to free it

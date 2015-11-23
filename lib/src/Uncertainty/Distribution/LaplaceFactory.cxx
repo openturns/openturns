@@ -26,7 +26,7 @@ CLASSNAMEINIT(LaplaceFactory);
 
 /* Default constructor */
 LaplaceFactory::LaplaceFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

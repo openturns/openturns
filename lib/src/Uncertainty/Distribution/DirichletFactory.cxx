@@ -28,7 +28,7 @@ CLASSNAMEINIT(DirichletFactory);
 
 /* Default constructor */
 DirichletFactory::DirichletFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

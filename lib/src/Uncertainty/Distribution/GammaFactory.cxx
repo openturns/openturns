@@ -27,7 +27,7 @@ CLASSNAMEINIT(GammaFactory);
 
 /* Default constructor */
 GammaFactory::GammaFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

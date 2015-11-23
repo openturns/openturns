@@ -8,7 +8,7 @@ distribution. Refer to the Reference Guide to have information on the specific
 estimators used for each distribution.
 "
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory
+%feature("docstring") OT::DistributionFactoryImplementation
 OT_DistributionFactory_doc
 
 // ---------------------------------------------------------------------
@@ -34,7 +34,7 @@ Returns
 dist : :class:`~openturns.Distribution`
     The built distribution."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::build
+%feature("docstring") OT::DistributionFactoryImplementation::build
 OT_DistributionFactory_build_doc
 
 // ---------------------------------------------------------------------
@@ -66,7 +66,7 @@ Returns
 parameterDistribution : :class:`~openturns.DistributionFactoryResult`
     The results."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::buildEstimator
+%feature("docstring") OT::DistributionFactoryImplementation::buildEstimator
 OT_DistributionFactory_buildEstimator_doc
 
 // ---------------------------------------------------------------------
@@ -79,7 +79,7 @@ Returns
 size : integer
     Size of the bootstrap."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::getBootstrapSize
+%feature("docstring") OT::DistributionFactoryImplementation::getBootstrapSize
 OT_DistributionFactory_getBootstrapSize_doc
 
 // ---------------------------------------------------------------------
@@ -92,7 +92,7 @@ Parameters
 size : integer
     Size of the bootstrap."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::setBootstrapSize
+%feature("docstring") OT::DistributionFactoryImplementation::setBootstrapSize
 OT_DistributionFactory_setBootstrapSize_doc
 
 // ---------------------------------------------------------------------
@@ -107,7 +107,7 @@ values : sequence of float
 indices : sequence of int
     Indices of fixed parameters."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::setKnownParameter
+%feature("docstring") OT::DistributionFactoryImplementation::setKnownParameter
 OT_DistributionFactory_setKnownParameter_doc
 
 // ---------------------------------------------------------------------
@@ -120,7 +120,7 @@ Returns
 values : :class:`~openturns.NumericalPoint`
     Values of fixed parameters."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::getKnownParameterValues
+%feature("docstring") OT::DistributionFactoryImplementation::getKnownParameterValues
 OT_DistributionFactory_getKnownParameterValues_doc
 
 // ---------------------------------------------------------------------
@@ -133,6 +133,6 @@ Returns
 indices : :class:`~openturns.Indices`
     Indices of fixed parameters."
 %enddef
-%feature("docstring") OT::DistributionImplementationFactory::getKnownParameterIndices
+%feature("docstring") OT::DistributionFactoryImplementation::getKnownParameterIndices
 OT_DistributionFactory_getKnownParameterIndices_doc
 

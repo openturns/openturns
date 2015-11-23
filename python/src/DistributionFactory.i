@@ -8,12 +8,12 @@
 
 %include UncertaintyModelCopulaCollection.i
 
-OTTypedInterfaceObjectImplementationHelper(DistributionFactory, DistributionImplementationFactory)
+OTTypedInterfaceObjectHelper(DistributionFactory)
 OTTypedCollectionInterfaceObjectHelper(DistributionFactory)
 
 %include DistributionFactory.hxx
 
-namespace OT {  
+namespace OT {
 
 %extend DistributionFactory {
 

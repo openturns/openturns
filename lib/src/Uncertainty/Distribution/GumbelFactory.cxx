@@ -27,7 +27,7 @@ CLASSNAMEINIT(GumbelFactory);
 
 /* Default constructor */
 GumbelFactory::GumbelFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

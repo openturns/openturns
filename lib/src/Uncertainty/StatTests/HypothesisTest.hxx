@@ -27,7 +27,7 @@
 #include "NumericalSample.hxx"
 #include "LinearModel.hxx"
 #include "Distribution.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

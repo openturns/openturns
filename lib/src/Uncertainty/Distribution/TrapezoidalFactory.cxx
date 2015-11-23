@@ -34,7 +34,7 @@ CLASSNAMEINIT(TrapezoidalFactory);
 
 /* Default constructor */
 TrapezoidalFactory::TrapezoidalFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
 }
 

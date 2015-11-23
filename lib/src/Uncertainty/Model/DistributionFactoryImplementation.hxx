@@ -28,9 +28,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class DistributionImplementationFactory
+ * @class DistributionFactoryImplementation
  */
-class OT_API DistributionImplementationFactory
+class OT_API DistributionFactoryImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -41,10 +41,10 @@ public:
   typedef DistributionImplementation::Implementation Implementation;
 
   /** Default constructor */
-  explicit DistributionImplementationFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
+  explicit DistributionFactoryImplementation(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactoryImplementation-DefaultBootstrapSize"));
 
   /** Virtual constructor */
-  virtual DistributionImplementationFactory * clone() const;
+  virtual DistributionFactoryImplementation * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -96,7 +96,7 @@ protected:
   NumericalPoint knownParameterValues_;
   Indices knownParameterIndices_;
 
-}; /* class DistributionImplementationFactory */
+}; /* class DistributionFactoryImplementation */
 
 
 END_NAMESPACE_OPENTURNS

@@ -465,8 +465,8 @@
   <!-- OT::DiscreteDistribution parameters -->
   <DiscreteDistribution-SupportEpsilon value="1.0e-14" />
 
-  <!-- OT::DistributionImplementationFactory parameters -->
-  <DistributionImplementationFactory-DefaultBootstrapSize value="100" />
+  <!-- OT::DistributionFactoryImplementation parameters -->
+  <DistributionFactoryImplementation-DefaultBootstrapSize value="100" />
 
   <!-- OT::OrderStatisticsMarginalChecker parameters -->
   <OrderStatisticsMarginalChecker-QuantileIteration   value="100"    />

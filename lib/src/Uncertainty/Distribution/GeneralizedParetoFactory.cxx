@@ -30,7 +30,7 @@ CLASSNAMEINIT(GeneralizedParetoFactory);
 
 /* Default constructor */
 GeneralizedParetoFactory::GeneralizedParetoFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
   , solver_(new TNC())
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap

@@ -27,7 +27,7 @@ CLASSNAMEINIT(LogisticFactory);
 
 /* Default constructor */
 LogisticFactory::LogisticFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

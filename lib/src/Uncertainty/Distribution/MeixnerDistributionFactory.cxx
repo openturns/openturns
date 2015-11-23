@@ -27,7 +27,7 @@ CLASSNAMEINIT(MeixnerDistributionFactory);
 
 /* Default constructor */
 MeixnerDistributionFactory::MeixnerDistributionFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

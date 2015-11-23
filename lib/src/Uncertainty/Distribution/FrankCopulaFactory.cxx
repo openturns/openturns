@@ -33,7 +33,7 @@ CLASSNAMEINIT(FrankCopulaFactory);
 
 /* Default constructor */
 FrankCopulaFactory::FrankCopulaFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

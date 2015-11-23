@@ -43,7 +43,7 @@ CLASSNAMEINIT(MaximumLikelihoodFactory);
 
 /* Default constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
   , isParallel_(true)
 {
 
@@ -52,7 +52,7 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory()
 
 /* Default constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory(const DistributionFactory & factory)
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
   , factory_(factory)
   , solver_(new TNC())
   , isParallel_(true)
@@ -185,7 +185,7 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 }
 
 
-DistributionImplementationFactory::Implementation MaximumLikelihoodFactory::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const NumericalSample & sample) const
 {
   Distribution result(factory_.build(buildParameter(sample)));
   result.setDescription(sample.getDescription());

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX
 #define OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX
 
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "DistributionFactory.hxx"
 #include "OptimizationSolver.hxx"
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class MaximumLikelihoodFactory
  */
 class OT_API MaximumLikelihoodFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -48,7 +48,7 @@ public:
   /** String converter */
   virtual String __str__(const String & offset = "") const;
 
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */

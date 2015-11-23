@@ -27,7 +27,7 @@ CLASSNAMEINIT(GumbelCopulaFactory);
 
 /* Default constructor */
 GumbelCopulaFactory::GumbelCopulaFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

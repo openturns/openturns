@@ -26,7 +26,7 @@ CLASSNAMEINIT(WeibullFactory);
 
 /* Default constructor */
 WeibullFactory::WeibullFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

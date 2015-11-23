@@ -27,7 +27,7 @@ CLASSNAMEINIT(ClaytonCopulaFactory);
 
 /* Default constructor */
 ClaytonCopulaFactory::ClaytonCopulaFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_DISTRIBUTIONFACTORY_HXX
 #define OPENTURNS_DISTRIBUTIONFACTORY_HXX
 
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "DistributionFactoryResult.hxx"
 #include "TypedInterfaceObject.hxx"
 #include "ResourceMap.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class DistributionFactory
  */
 class OT_API DistributionFactory
-  : public TypedInterfaceObject<DistributionImplementationFactory>
+  : public TypedInterfaceObject<DistributionFactoryImplementation>
 {
   CLASSNAME;
 public:
@@ -44,10 +44,10 @@ public:
   typedef Collection<DistributionFactory>           DistributionFactoryCollection;
 
   /** Default constructor */
-  explicit DistributionFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
+  explicit DistributionFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactoryImplementation-DefaultBootstrapSize"));
 
   /** Parameter constructor */
-  DistributionFactory(const DistributionImplementationFactory & factory);
+  DistributionFactory(const DistributionFactoryImplementation & factory);
 
   /** String converter */
   virtual String __repr__() const;

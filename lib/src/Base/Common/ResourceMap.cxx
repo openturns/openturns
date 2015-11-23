@@ -732,8 +732,8 @@ void ResourceMap::loadDefaultConfiguration()
   // DiscreteDistribution parameters //
   setAsNumericalScalar( "DiscreteDistribution-SupportEpsilon", 1.0e-14 );
 
-  // DistributionImplementationFactory parameters //
-  setAsUnsignedInteger( "DistributionImplementationFactory-DefaultBootstrapSize", 100 );
+  // DistributionFactoryImplementation parameters //
+  setAsUnsignedInteger( "DistributionFactoryImplementation-DefaultBootstrapSize", 100 );
 
   // OrderStatisticsMarginalChecker //
   setAsUnsignedInteger( "OrderStatisticsMarginalChecker-QuantileIteration", 100 );

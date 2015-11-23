@@ -26,7 +26,7 @@ CLASSNAMEINIT(TriangularFactory);
 
 /* Default constructor */
 TriangularFactory::TriangularFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

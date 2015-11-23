@@ -31,7 +31,7 @@ CLASSNAMEINIT(FisherSnedecorFactory);
 
 /* Default constructor */
 FisherSnedecorFactory::FisherSnedecorFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
 }
 

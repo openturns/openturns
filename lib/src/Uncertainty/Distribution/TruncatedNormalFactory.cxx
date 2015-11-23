@@ -28,7 +28,7 @@ CLASSNAMEINIT(TruncatedNormalFactory);
 
 /* Default constructor */
 TruncatedNormalFactory::TruncatedNormalFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
 }
 
