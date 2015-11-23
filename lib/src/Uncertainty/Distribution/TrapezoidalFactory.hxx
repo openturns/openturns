@@ -53,14 +53,14 @@ public:
   Trapezoidal buildAsTrapezoidal(const NumericalPoint & parameters) const;
   Trapezoidal buildAsTrapezoidal() const;
 
-  /** Likelihood constraint accessor */
-  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
-
   /** Optimization solver accessor */
   OptimizationSolver getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationSolver & solver);
 
 protected:
+  /** Likelihood constraint accessor */
+  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+
   /** likelihood estimate */
   NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & x ) const;
 
