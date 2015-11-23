@@ -69,8 +69,7 @@ OT_SpectralModel_computeStandardRepresentative_doc
 // ---------------------------------------------------------------------
 
 %define OT_SpectralModel_draw_doc
-"Draw a specific component of the spectral density function .
-
+"Draw a specific component of the spectral density function.
 
 Parameters
 ----------
@@ -102,7 +101,7 @@ OT_SpectralModel_draw_doc
 // ---------------------------------------------------------------------
 
 %define OT_SpectralModel_get_frequency_grid_doc
-"Returns the RegularGrid associated to the SpectralModel.
+"Return the RegularGrid associated to the SpectralModel.
 
 Returns
 -------
@@ -195,7 +194,7 @@ OT_SpectralModel_setAmplitude_doc
 // ---------------------------------------------------------------------
 
 %define OT_SpectralModel_set_frequency_grid_doc
-"Sets the RegularGrid associated to the SpectralModel.
+"Set the RegularGrid associated to the SpectralModel.
 
 Parameters
 ----------

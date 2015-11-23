@@ -1,6 +1,6 @@
 // SWIG file model_copula_module.i
 
-%module(package="openturns", docstring="Copulas") model_copula
+%module(package="openturns", docstring="Copulas.") model_copula
 #pragma SWIG nowarn=302,509
 //%feature("autodoc","1");
 

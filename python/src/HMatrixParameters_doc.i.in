@@ -1,5 +1,5 @@
 %define OT_HMatrixParameters_doc
-"Parameters for HMatrix class
+"Parameters for HMatrix class.
 
 Notes
 -----
@@ -13,7 +13,7 @@ OT_HMatrixParameters_doc
 // ---------------------------------------------------------------------
 
 %define OT_HMatrixParameters_getAssemblyEpsilon_doc
-"Returns the epsilon used for the assembly
+"Return the epsilon used for the assembly.
 
 Returns
 -------
@@ -26,8 +26,8 @@ OT_HMatrixParameters_getAssemblyEpsilon_doc
 
 // ---------------------------------------------------------------------
 
-  %define OT_HMatrixParameters_setAssemblyEpsilon_doc
-"Sets the epsilon used for the assembly
+%define OT_HMatrixParameters_setAssemblyEpsilon_doc
+"Set the epsilon used for the assembly.
 
 Parameters
 ----------
@@ -40,7 +40,7 @@ OT_HMatrixParameters_setAssemblyEpsilon_doc
 // ---------------------------------------------------------------------
 
 %define OT_HMatrixParameters_getRecompressionEpsilon_doc
-"Returns the epsilon used for the recompression
+"Return the epsilon used for the recompression.
 
 Returns
 -------
@@ -54,7 +54,7 @@ OT_HMatrixParameters_getRecompressionEpsilon_doc
 // ---------------------------------------------------------------------
 
 %define OT_HMatrixParameters_setRecompressionEpsilon_doc
-"Set the epsilon used for the recompression
+"Set the epsilon used for the recompression.
 
 Parameters
 ----------

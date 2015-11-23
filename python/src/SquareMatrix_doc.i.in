@@ -199,11 +199,6 @@ test : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SquareMatrix::power
-"**(ditch me?)**"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SquareMatrix::solveLinearSystem
 "Solve a square linear system whose the present matrix is the operator.
 
