@@ -56,6 +56,11 @@ LogisticFactory::Implementation LogisticFactory::build() const
   return buildAsLogistic().clone();
 }
 
+DistributionFactoryResult LogisticFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
+}
+
 Logistic LogisticFactory::buildAsLogistic(const NumericalSample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Logistic distribution from an empty sample";

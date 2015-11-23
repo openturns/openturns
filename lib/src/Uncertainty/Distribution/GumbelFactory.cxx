@@ -55,6 +55,11 @@ GumbelFactory::Implementation GumbelFactory::build() const
   return buildAsGumbel().clone();
 }
 
+DistributionFactoryResult GumbelFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
+}
+
 Gumbel GumbelFactory::buildAsGumbel(const NumericalSample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gumbel distribution from an empty sample";

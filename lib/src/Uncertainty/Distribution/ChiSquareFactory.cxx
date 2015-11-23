@@ -55,6 +55,11 @@ ChiSquareFactory::Implementation ChiSquareFactory::build() const
   return buildAsChiSquare().clone();
 }
 
+DistributionFactoryResult ChiSquareFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
+}
+
 ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalSample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ChiSquare distribution from an empty sample";

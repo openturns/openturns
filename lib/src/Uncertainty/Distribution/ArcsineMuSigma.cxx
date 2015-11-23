@@ -130,6 +130,13 @@ NumericalPoint ArcsineMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
+void ArcsineMuSigma::setValues(const NumericalPoint & inP)
+{
+  if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  mu_ = inP[0];
+  sigma_ = inP[1];
+}
+
 NumericalPoint ArcsineMuSigma::getValues() const
 {
   NumericalPoint point(2);

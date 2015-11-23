@@ -49,6 +49,10 @@ public:
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
+
+  using DistributionImplementationFactory::buildEstimator;
+  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
   FisherSnedecor buildAsFisherSnedecor(const NumericalSample & sample) const;
   FisherSnedecor buildAsFisherSnedecor(const NumericalPoint & parameters) const;
   FisherSnedecor buildAsFisherSnedecor() const;

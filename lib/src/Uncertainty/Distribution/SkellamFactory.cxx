@@ -56,6 +56,11 @@ SkellamFactory::Implementation SkellamFactory::build() const
   return buildAsSkellam().clone();
 }
 
+DistributionFactoryResult SkellamFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
+}
+
 Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Skellam distribution from an empty sample";

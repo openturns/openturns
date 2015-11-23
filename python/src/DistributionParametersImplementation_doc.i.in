@@ -37,12 +37,25 @@ OT_DistributionParameters_getDistribution_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_DistributionParameters_setValues_doc
+"Accessor to the parameters values.
+
+Parameters
+----------
+values : sequence of float
+    List of parameters values."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::setValues
+OT_DistributionParameters_setValues_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_DistributionParameters_getValues_doc
-"Get the values of the parameters.
+"Accessor to the parameters values.
 
 Returns
 -------
-collection : :class:`~openturns.NumericalPoint`
+values : :class:`~openturns.NumericalPoint`
     List of parameters values."
 %enddef
 %feature("docstring") OT::DistributionParametersImplementation::getValues

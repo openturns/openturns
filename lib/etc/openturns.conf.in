@@ -219,14 +219,9 @@
   <DirichletFactory-MaximumIteration  value="10"    />
 
   <!-- OT::FisherSnedecorFactory parameters -->
-  <FisherSnedecorFactory-MaximumEvaluationNumber value="1000"    />
-  <FisherSnedecorFactory-MaximumAbsoluteError    value="1.0e-10" />
-  <FisherSnedecorFactory-MaximumRelativeError    value="1.0e-10" />
-  <FisherSnedecorFactory-MaximumObjectiveError   value="1.0e-10" />
-  <FisherSnedecorFactory-MaximumConstraintError  value="1.0e-10" />
   <FisherSnedecorFactory-D1LowerBound            value="1.0e-2"  />
   <FisherSnedecorFactory-D2LowerBound            value="1.0e-2"  />
-  
+
   <!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-SmallSize               value="20"      />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value="1000"    />
@@ -308,17 +303,19 @@
   <TrapezoidalFactory-RhoBeg           value="0.1"    />
   <TrapezoidalFactory-RhoEnd           value="1.0e-5" />
   <TrapezoidalFactory-MaximumIteration value="10000"  />
-  
+
   <!-- OT::TruncatedDistribution parameters -->
   <TruncatedDistribution-DefaultThresholdRealization value="0.5" />
 
   <!-- OT::TruncatedNormalFactory parameters -->
-  <TruncatedNormalFactory-MaximumEvaluationNumber value="1000"    />
-  <TruncatedNormalFactory-MaximumAbsoluteError    value="1.0e-10" />
-  <TruncatedNormalFactory-MaximumRelativeError    value="1.0e-10" />
-  <TruncatedNormalFactory-MaximumObjectiveError   value="1.0e-10" />
-  <TruncatedNormalFactory-MaximumConstraintError  value="1.0e-10" />
   <TruncatedNormalFactory-SigmaLowerBound         value="1.0e-4"  />
+
+  <!-- OT::TruncatedNormalFactory parameters -->
+  <MaximumLikelihoodFactory-MaximumEvaluationNumber value="1000"    />
+  <MaximumLikelihoodFactory-MaximumAbsoluteError    value="1.0e-10" />
+  <MaximumLikelihoodFactory-MaximumRelativeError    value="1.0e-10" />
+  <MaximumLikelihoodFactory-MaximumObjectiveError   value="1.0e-10" />
+  <MaximumLikelihoodFactory-MaximumConstraintError  value="1.0e-10" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumNumberOfPoints          value="10000000" />

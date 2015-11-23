@@ -23,6 +23,7 @@
 #include "CenteredFiniteDifferenceGradient.hxx"
 #include "SpecFunc.hxx"
 #include "TNC.hxx"
+#include "MaximumLikelihoodFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,14 +32,7 @@ CLASSNAMEINIT(FisherSnedecorFactory);
 /* Default constructor */
 FisherSnedecorFactory::FisherSnedecorFactory():
   DistributionImplementationFactory()
-  , solver_(new TNC())
 {
-  // Create the optimization solver parameters using the parameters in the ResourceMap
-  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("FisherSnedecorFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */
@@ -64,61 +58,30 @@ FisherSnedecorFactory::Implementation FisherSnedecorFactory::build() const
   return buildAsFisherSnedecor().clone();
 }
 
-struct FisherSnedecorFactoryLogLikelihood
+DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const NumericalSample & sample) const
 {
-  /** Constructor from a sample */
-  FisherSnedecorFactoryLogLikelihood(const NumericalSample & sample)
-    : sample_(sample)
-  {
-    // Nothing to do
-  };
-
-  NumericalPoint computeLogLikelihood(const NumericalPoint & parameters) const
-  {
-    try
-    {
-      const FisherSnedecor distribution(parameters[0], parameters[1]);
-      const NumericalScalar logLikelihood(-distribution.computeLogPDF(sample_).computeMean()[0]);
-      if (SpecFunc::IsNormal(logLikelihood)) return NumericalPoint(1, logLikelihood);
-      return NumericalPoint(1, SpecFunc::MaxNumericalScalar);
-    }
-    catch (...)
-    {
-      return NumericalPoint(1, SpecFunc::MaxNumericalScalar);
-    }
-  }
-
-  const NumericalSample & sample_;
-};
+  return buildMaximumLikelihoodEstimator(sample, true);
+}
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FisherSnedecor distribution from an empty sample";
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an FisherSnedecor distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  FisherSnedecorFactoryLogLikelihood logLikelihoodWrapper(sample);
-  NumericalMathFunction logLikelihood(bindMethod<FisherSnedecorFactoryLogLikelihood, NumericalPoint, NumericalPoint>(logLikelihoodWrapper, &FisherSnedecorFactoryLogLikelihood::computeLogLikelihood, 2, 1));
-  CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
-  logLikelihood.setGradient(gradient);
+  const UnsignedInteger dimension = build()->getParameterDimension();
+  MaximumLikelihoodFactory factory(*this);
 
-  // Define Optimization problem 
+  // override starting point
+  OptimizationSolver solver(factory.getOptimizationSolver());
+  solver.setStartingPoint(NumericalPoint(dimension, 0.0));
+  factory.setOptimizationSolver(solver);
+
+  // override bounds
   OptimizationProblem problem;
-  problem.setObjective(logLikelihood);
+  NumericalPoint parametersLowerBound;
+  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D1LowerBound"));
+  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D2LowerBound"));
+  problem.setBounds(Interval(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false)));
+  factory.setOptimizationProblem(problem);
 
-  NumericalPoint parametersLowerBound(0);
-  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-D1LowerBound"));
-  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar( "FisherSnedecorFactory-D2LowerBound"));
-  problem.setBounds(Interval(parametersLowerBound, NumericalPoint(2, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(2, true), Interval::BoolCollection(2, false)));
-  
-  solver_.setProblem(problem);
-  solver_.setStartingPoint(NumericalPoint(problem.getObjective().getInputDimension(), 0.0));
-  
-  // run Optimization problem
-  solver_.run();
-
-  // optimal point
-  const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
-  return FisherSnedecor(optpoint[0], optpoint[1]);	
+  return buildAsFisherSnedecor(factory.buildParameter(sample));
 }
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPoint & parameters) const

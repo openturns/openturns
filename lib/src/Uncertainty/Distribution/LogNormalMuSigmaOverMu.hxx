@@ -60,6 +60,7 @@ public:
   NumericalPoint inverse(const NumericalPoint & inP) const;
 
   /** Parameters value and description accessor */
+  virtual void setValues(const NumericalPoint & values);
   virtual NumericalPoint getValues() const;
   virtual Description getDescription() const;
 

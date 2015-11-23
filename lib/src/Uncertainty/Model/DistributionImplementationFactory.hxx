@@ -21,12 +21,9 @@
 #ifndef OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 
-#include "DistributionImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "CovarianceMatrix.hxx"
-#include "PersistentObject.hxx"
+#include "DistributionFactoryResult.hxx"
 #include "ResourceMap.hxx"
+#include "DistributionParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -69,27 +66,35 @@ public:
   /** Build a distribution using its default constructor */
   virtual Implementation build() const;
 
+  /** Build the distribution and the parameter distribution */
+  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
+  /** Build the distribution and the parameter distribution in a new parametrization */
+  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample,
+                                                   const DistributionParameters & parameters) const;
+
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
+  /** Accessor to known parameter */
+  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
+  NumericalPoint getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
 
 protected:
-  /* Execute a R script */
-  virtual NumericalPoint runRFactory(const NumericalSample & sample,
-                                     const DistributionImplementation & distribution) const;
+  /* Bootstrap estimator */
+  virtual DistributionFactoryResult buildBootStrapEstimator(const NumericalSample & sample, const Bool isGaussian = false) const;
+
+  /* Build the distribution and the parameter distribution */
+  virtual DistributionFactoryResult buildMaximumLikelihoodEstimator(const NumericalSample & sample, const Bool isRegular = false) const;
 
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
 
-  /* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
-  static NumericalPointCollection RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll);
-
-  /* Convert a NumericalPointCollection into a NumericalPointWithDescriptionCollection */
-  static NumericalPointWithDescriptionCollection AddDescriptionToCollection(const NumericalPointCollection & coll);
-
-  /* Convert a parameters collection into a NumericalPoint */
-  static NumericalPoint ParametersAsNumericalPoint(const NumericalPointWithDescriptionCollection & parametersCollection);
+  /* Known parameter */
+  NumericalPoint knownParameterValues_;
+  Indices knownParameterIndices_;
 
 }; /* class DistributionImplementationFactory */
 

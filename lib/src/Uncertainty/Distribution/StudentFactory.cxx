@@ -44,9 +44,19 @@ StudentFactory::Implementation StudentFactory::build(const NumericalSample & sam
   return buildAsStudent(sample).clone();
 }
 
+StudentFactory::Implementation StudentFactory::build(const NumericalPoint & parameter) const
+{
+  return buildAsStudent(parameter).clone();
+}
+
 StudentFactory::Implementation StudentFactory::build() const
 {
   return buildAsStudent().clone();
+}
+
+DistributionFactoryResult StudentFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return buildBootStrapEstimator(sample, true);
 }
 
 Student StudentFactory::buildAsStudent(const NumericalSample & sample) const
@@ -60,6 +70,20 @@ Student StudentFactory::buildAsStudent(const NumericalSample & sample) const
   Student result(nu, mu);
   result.setDescription(sample.getDescription());
   return result;
+}
+
+Student StudentFactory::buildAsStudent(const NumericalPoint & parameter) const
+{
+  try
+  {
+    Student distribution;
+    distribution.setParameter(parameter);
+    return distribution;
+  }
+  catch (InvalidArgumentException)
+  {
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from the given parameters";
+  }
 }
 
 Student StudentFactory::buildAsStudent() const

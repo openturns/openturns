@@ -23,7 +23,7 @@
 #define OPENTURNS_DISTRIBUTIONFACTORY_HXX
 
 #include "DistributionImplementationFactory.hxx"
-#include "Distribution.hxx"
+#include "DistributionFactoryResult.hxx"
 #include "TypedInterfaceObject.hxx"
 #include "ResourceMap.hxx"
 
@@ -60,6 +60,18 @@ public:
   virtual Distribution build(const NumericalSample & sample) const;
   virtual Distribution build(const NumericalPoint & parameters) const;
   virtual Distribution build() const;
+
+  /** Build the distribution and the parameter distribution */
+  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
+  /** Build the distribution and the parameter distribution in a new parametrization */
+  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample,
+                                                   const DistributionParameters & parameters) const;
+
+  /** Accessor to known parameter */
+  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
+  NumericalPoint getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
 
   /** Catalog of factories */
   static DistributionFactoryCollection GetContinuousUniVariateFactories();

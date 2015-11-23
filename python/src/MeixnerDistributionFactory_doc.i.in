@@ -4,6 +4,19 @@
 Available constructor:
     MeixnerDistributionFactory()
 
+The parameters are estimated using the following moments estimators:
+
+.. math::
+    :nowrap:
+
+    \begin{align}
+      \displaystyle\Hat{\gamma_1} = \frac{\frac{1}{n}\sum_{i=1}^{n} (x_i-\Hat{x}_n)^3}{\Hat{\sigma}_n^3}\\
+      \displaystyle\Hat{\gamma_2} = \frac{\frac{1}{n}\sum_{i=1}^{n} (x_i-\Hat{x}_n)^4}{\Hat{\sigma}_n^4}\\
+      \displaystyle\Hat{\delta} =   \frac{1}{\Hat{\gamma_2}_n-\Hat{\gamma_1}_n^2-3}\\
+      \displaystyle\Hat{\beta} =    sign(\Hat{\gamma_1}_n)arcos( 2-\Hat{\delta}_n (\Hat{\gamma_2}_n-3))\\
+      \displaystyle\Hat{\alpha} =   (\Hat{\sigma}_n^2(\cos\Hat{\beta}_n+1) )^{1/3}
+    \end{align}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, MeixnerDistribution"

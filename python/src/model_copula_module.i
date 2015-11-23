@@ -20,11 +20,12 @@
 
 /* Uncertainty/Model */
 %include DistributionImplementation.i
-%include DistributionImplementationFactory.i
 %include Distribution.i
-%include DistributionFactory.i
+%include DistributionFactoryResult.i
 %include DistributionParametersImplementation.i
 %include DistributionParameters.i
+%include DistributionImplementationFactory.i
+%include DistributionFactory.i
 %include ContinuousDistribution.i
 %include EllipticalDistribution.i
 %include DiscreteDistribution.i

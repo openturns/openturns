@@ -4,6 +4,16 @@
 Available constructor:
     SkellamFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \Hat{\lambda_1} & = \frac{1}{2}(\Hat{\sigma}_x + \Hat{x}_n) \\
+      \displaystyle \Hat{\lambda_2} & = \frac{1}{2}(\Hat{\sigma}_x - \Hat{x}_n)
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Skellam"

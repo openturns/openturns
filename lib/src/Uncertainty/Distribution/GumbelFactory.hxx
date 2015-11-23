@@ -48,6 +48,8 @@ public:
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
+  using DistributionImplementationFactory::buildEstimator;
+  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
   Gumbel buildAsGumbel(const NumericalSample & sample) const;
   Gumbel buildAsGumbel(const NumericalPoint & parameters) const;
   Gumbel buildAsGumbel() const;

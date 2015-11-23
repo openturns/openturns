@@ -4,6 +4,8 @@
 Available constructor:
     TrapezoidalFactory()
 
+The parameters are estimated by numerical maximum likelihood estimation.
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Trapezoidal"

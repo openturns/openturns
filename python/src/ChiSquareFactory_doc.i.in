@@ -1,12 +1,21 @@
 %feature("docstring") OT::ChiSquareFactory
-"Chi Square factory.
+"Chi-Square factory.
 
 Available constructor:
     ChiSquareFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \Hat{\nu} = \bar{x}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, ChiSquare"
 
 
 

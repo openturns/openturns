@@ -4,6 +4,16 @@
 Available constructor:
     ArcsineFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{a} = \Hat{\mu}_x - \Hat{\sigma}_x \sqrt{2}\\
+      \displaystyle\Hat{b} = \Hat{\mu}_x + \Hat{\sigma}_x \sqrt{2}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Arcsine"

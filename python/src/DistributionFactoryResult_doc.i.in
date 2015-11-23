@@ -1,0 +1,56 @@
+%feature("docstring") OT::DistributionFactoryResult
+"Results of distribution estimation.
+
+This class is the result of a distribution estimation through a
+:class:`~openturns.DistributionFactory`.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The estimated distribution.
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter.
+
+See also
+--------
+DistributionFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactoryResult::getDistribution
+"Accessor to the estimated distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The estimated distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactoryResult::setDistribution
+"Accessor to the estimated distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The estimated distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactoryResult::getParameterDistribution
+"Accessor to the distribution of the parameter.
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionFactoryResult::setParameterDistribution
+"Accessor to the distribution of the parameter.
+
+Parameters
+----------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the parameter."

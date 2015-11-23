@@ -202,4 +202,31 @@ Distribution DistributionFactory::build() const
   return getImplementation()->build();
 }
 
+DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample) const
+{
+  return getImplementation()->buildEstimator(sample);
+}
+
+DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample, const DistributionParameters & parameters) const
+{
+  return getImplementation()->buildEstimator(sample, parameters);
+}
+
+void DistributionFactory::setKnownParameter(const NumericalPoint & values,
+                                            const Indices & indices)
+{
+  copyOnWrite();
+  getImplementation()->setKnownParameter(values, indices);
+}
+
+Indices DistributionFactory::getKnownParameterIndices() const
+{
+  return getImplementation()->getKnownParameterIndices();
+}
+
+NumericalPoint DistributionFactory::getKnownParameterValues() const
+{
+  return getImplementation()->getKnownParameterValues();
+}
+
 END_NAMESPACE_OPENTURNS

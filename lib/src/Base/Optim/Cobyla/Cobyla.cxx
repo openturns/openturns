@@ -20,9 +20,9 @@
  */
 #include "Cobyla.hxx"
 #include "algocobyla.h"
-#include "NumericalPoint.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Log.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -268,9 +268,10 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   const OptimizationProblem problem(algorithm->getProblem());
   NumericalPoint outPoint(2);
 
-  const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
-
-  outPoint[0]= result;
+  NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
+  // cobyla freezes when dealing with MaxNumericalScalar
+  if (fabs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
+  outPoint[0] = result;
 
   UnsignedInteger temp=0;
   UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
