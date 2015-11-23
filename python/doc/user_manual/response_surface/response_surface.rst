@@ -29,3 +29,5 @@ Non-parametric
 
     functional_chaos_expansion
     kriging
+    glm
+

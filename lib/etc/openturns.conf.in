@@ -403,7 +403,16 @@
   <FunctionalChaosAlgorithm-LargeSampleSize           value="10000"  />
   <FunctionalChaosAlgorithm-MaximumTotalDegree        value="10"     />
 
-  <!-- OT::KrigingAlgorithm parameters -->
+  <!-- OT::GeneralizedLinearModelAlgorithm parameters -->
+  <GeneralizedLinearModelAlgorithm-LinearAlgebra   value="LAPACK"  />
+  <GeneralizedLinearModelAlgorithm-MeanEpsilon  value="1.0e-12" />
+  <GeneralizedLinearModelAlgorithm-StartingScaling value="1.0e-13" />
+  <GeneralizedLinearModelAlgorithm-MaximalScaling  value="1.0e5"   />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound value="1e-5" />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound value="20"  />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver   value="TNC"  />
+
+<!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />
   <KrigingAlgorithm-MaximalScaling  value="1.0e5"   />
   <KrigingAlgorithm-LinearAlgebra   value="LAPACK"  />

@@ -657,6 +657,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       MetaModelAlgorithm.i MetaModelAlgorithm_doc.i.in
                       KrigingResult.i KrigingResult_doc.i.in
                       MetaModelValidation.i MetaModelValidation_doc.i.in
+		      GeneralizedLinearModelResult.i GeneralizedLinearModelResult_doc.i.in
+		      GeneralizedLinearModelAlgorithm.i GeneralizedLinearModelAlgorithm_doc.i.in
                       LinearTaylor.i LinearTaylor_doc.i.in
                       QuadraticTaylor.i QuadraticTaylor_doc.i.in
                       LinearLeastSquares.i LinearLeastSquares_doc.i.in
