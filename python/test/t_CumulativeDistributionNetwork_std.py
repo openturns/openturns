@@ -3,8 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
@@ -54,7 +53,7 @@ try:
     print("standard deviation=", standardDeviation)
     skewness = distribution.getSkewness()
     print("skewness=", skewness)
-    NumericalPoint kurtosis = distribution.getKurtosis()
+    kurtosis = distribution.getKurtosis()
     print("kurtosis=", kurtosis)
     covariance = distribution.getCovariance()
     print("covariance=", covariance)

@@ -413,11 +413,7 @@ void DistributionImplementation::setDimension(const UnsignedInteger dim)
 /* Get one realization of the distributionImplementation */
 NumericalPoint DistributionImplementation::getRealization() const
 {
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate());
-  NumericalPoint point(0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i) point.add(computeConditionalQuantile(RandomGenerator::Generate(), point));
-  return point;
+  return getRealizationByInversion();
 }
 
 /* Get a numerical sample whose elements follow the distributionImplementation */
@@ -429,6 +425,40 @@ NumericalSample DistributionImplementation::getSample(const UnsignedInteger size
   returnSample.setName(getName());
   returnSample.setDescription(getDescription());
   return returnSample;
+}
+
+/* Get one realization of the distributionImplementation */
+NumericalPoint DistributionImplementation::getRealizationByInversion() const
+{
+  // Use CDF inversion in the 1D case
+  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate());
+  // Use conditional CDF inversion in the 1D case
+  NumericalPoint point(0);
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  {
+    const NumericalScalar u(RandomGenerator::Generate());
+    LOGINFO(OSS(false) << "i=" << i << ", u=" << u);
+    point.add(computeConditionalQuantile(u, point));
+    LOGINFO(OSS(false) << "i=" << i << ", u=" << u << ", point=" << point);
+  }
+  return point;
+}
+
+/* Get a numerical sample whose elements follow the distributionImplementation */
+NumericalSample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
+{
+  // Use CDF inversion in the 1D case
+  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate(size));
+  // Use conditional CDF inversion in the 1D case
+  NumericalSample result(size, 0);
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  {
+    const NumericalPoint u(RandomGenerator::Generate(size));
+    NumericalSampleImplementation q(size, 1);
+    q.setData(computeConditionalQuantile(u, result));
+    result.stack(q);
+  }
+  return result;
 }
 
 /* Get the DDF of the distributionImplementation */
@@ -448,7 +478,7 @@ NumericalPoint DistributionImplementation::computeDDF(const NumericalPoint & poi
     }
     return ddf;
   }
-  throw InvalidArgumentException(HERE) << "In DistributionImplementation::computeDDF()";
+  throw NotDefinedException(HERE) << "In DistributionImplementation::computeDDF()";
 }
 
 /* Get the PDF of the distributionImplementation */
@@ -1532,6 +1562,36 @@ NumericalScalar DistributionImplementation::computeConditionalPDF(const Numerica
   return pdfConditioned / pdfConditioning;
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+NumericalPoint DistributionImplementation::computeConditionalPDF(const NumericalPoint & x,
+    const NumericalSample & y) const
+{
+  const UnsignedInteger conditioningDimension(y.getDimension());
+  if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Convert the values in x into a NumericalSample
+  const UnsignedInteger size(x.getDimension());
+  NumericalSampleImplementation xAsSample(size, 1);
+  xAsSample.setData(x);
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula()))
+    return getMarginal(conditioningDimension)->computePDF(xAsSample).getImplementation()->getData();
+  // General case
+  Indices conditioning(conditioningDimension);
+  conditioning.fill();
+  Indices conditioned(conditioning);
+  conditioned.add(conditioningDimension);
+  const Implementation conditioningDistribution(getMarginal(conditioning));
+  const NumericalSample pdfConditioning(conditioningDistribution->computePDF(y));
+  NumericalSample z(y);
+  z.stack(xAsSample);
+  const Implementation conditionedDistribution(getMarginal(conditioned));
+  const NumericalSample pdfConditioned(conditionedDistribution->computePDF(z));
+  NumericalPoint result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (pdfConditioning[i][0] > 0.0) result[i] = pdfConditioned[i][0] / pdfConditioning[i][0];
+  return result;
+}
+
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar DistributionImplementation::computeConditionalCDF(const NumericalScalar x,
     const NumericalPoint & y) const
@@ -1554,137 +1614,89 @@ NumericalScalar DistributionImplementation::computeConditionalCDF(const Numerica
   const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
   if (x >= xMax) return 1.0;
   // Numerical integration with respect to x
-  ConditionalPDFWrapper wrapper(y, conditionedDistribution);
+  const ConditionalPDFWrapper wrapper(y, conditionedDistribution);
   const NumericalMathFunction f(bindMethod<ConditionalPDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &ConditionalPDFWrapper::computeConditionalPDF, 1, 1));
   GaussKronrod algo;
-  NumericalPoint ai;
-  NumericalPoint bi;
-  NumericalSample fi;
-  NumericalPoint ei;
-  const NumericalPoint value(algo.integrate(f, xMin, x, cdfEpsilon_, ai, bi, fi, ei));
+  const NumericalPoint value(algo.integrate(f, Interval(xMin, x)));
   return std::min(1.0, std::max(0.0, value[0] / pdfConditioning));
 }
 
-/* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) with reuse of expansive data */
-NumericalScalar DistributionImplementation::computeConditionalCDFForQuantile(const NumericalScalar x,
-    const NumericalPoint & y,
-    const Implementation & conditioningDistribution,
-    const Implementation & conditionedDistribution,
-    const NumericalScalar xMin) const
+/* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+NumericalPoint DistributionImplementation::computeConditionalCDF(const NumericalPoint & x,
+    const NumericalSample & y) const
 {
   const UnsignedInteger conditioningDimension(y.getDimension());
-  const NumericalScalar pdfConditioning(conditioningDistribution->computePDF(y));
-  if (pdfConditioning <= 0.0) return 0.0;
-  // Numerical integration with respect to x
-  NumericalPoint z(y);
-  z.add(x);
-  pdfEpsilon_ = conditionedDistribution->getPDFEpsilon() + conditioningDistribution->getPDFEpsilon();
-  NumericalPoint legendreWeights;
-  const NumericalPoint legendreNodes(getGaussNodesAndWeights(legendreWeights));
-  const NumericalScalar halfLength(0.5 * (x - xMin));
-  cdfEpsilon_ = conditioningDistribution->getPDFEpsilon();
-  NumericalScalar value(0.0);
-  for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
+  if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Convert the values in x into a NumericalSample
+  const UnsignedInteger size(x.getDimension());
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
-    const NumericalScalar xi(xMin + (1.0 + legendreNodes[i]) * halfLength);
-    z[conditioningDimension] = xi;
-    value += legendreWeights[i] * conditionedDistribution->computePDF(z);
-    cdfEpsilon_ += legendreWeights[i] * conditionedDistribution->getPDFEpsilon();
+    NumericalSampleImplementation xAsSample(size, 1);
+    xAsSample.setData(x);
+    return getMarginal(conditioningDimension)->computeCDF(xAsSample).getImplementation()->getData();
   }
-  value *= (halfLength / pdfConditioning);
-  return value;
-}
-
-/* Compute the PDF and CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar DistributionImplementation::computeConditionalPDFAndCDF(const NumericalScalar x,
-    const NumericalPoint & y,
-    NumericalScalar & cdf,
-    const Implementation & conditioningDistribution,
-    const Implementation & conditionedDistribution,
-    const NumericalScalar xMin) const
-{
-  const UnsignedInteger conditioningDimension(y.getDimension());
-  const NumericalScalar pdfConditioning(conditioningDistribution->computePDF(y));
-  if (pdfConditioning <= 0.0)
-  {
-    cdf = 0.0;
-    return 0.0;
-  }
-  // Numerical integration with respect to x
-  NumericalPoint z(y);
-  z.add(x);
-  const NumericalScalar pdfConditioned(conditionedDistribution->computePDF(z));
-  cdf = 0.0;
-  NumericalPoint legendreWeights;
-  const NumericalPoint legendreNodes(getGaussNodesAndWeights(legendreWeights));
-  const NumericalScalar halfLength(0.5 * (x - xMin));
-  cdfEpsilon_ = conditioningDistribution->getPDFEpsilon();
-  for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
-  {
-    const NumericalScalar xi(xMin + (1.0 + legendreNodes[i]) * halfLength);
-    z[conditioningDimension] = xi;
-    cdf += legendreWeights[i] * conditionedDistribution->computePDF(z);
-    cdfEpsilon_ += legendreWeights[i] * conditionedDistribution->getPDFEpsilon();
-  }
-  cdf *= (halfLength / pdfConditioning);
-  return pdfConditioned / pdfConditioning;
+  // General case
+  Indices conditioning(conditioningDimension);
+  conditioning.fill();
+  Indices conditioned(conditioning);
+  conditioned.add(conditioningDimension);
+  const Implementation conditioningDistribution(getMarginal(conditioning));
+  const NumericalSample pdfConditioning(conditioningDistribution->computePDF(y));
+  const Implementation conditionedDistribution(getMarginal(conditioned));
+  const NumericalScalar xMin(conditionedDistribution->getRange().getLowerBound()[conditioningDimension]);
+  const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
+  NumericalPoint result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (pdfConditioning[i][0] > 0.0)
+    {
+      if (x[i] >= xMax) result[i] = 1.0;
+      else if (x[i] > xMin)
+      {
+        // Numerical integration with respect to x
+        const ConditionalPDFWrapper wrapper(y[i], conditionedDistribution);
+        const NumericalMathFunction f(bindMethod<ConditionalPDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &ConditionalPDFWrapper::computeConditionalPDF, 1, 1));
+        GaussKronrod algo;
+        const NumericalPoint value(algo.integrate(f, Interval(xMin, x[i])));
+        result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning[i][0]));
+      } // xMin < x < xMax
+    } // pdfConditioning[i][0] > 0
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar DistributionImplementation::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
+  return computeConditionalQuantile(NumericalPoint(1, q), NumericalSample(1, y))[0];
+}
+
+/* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
+NumericalPoint DistributionImplementation::computeConditionalQuantile(const NumericalPoint & q,
+    const NumericalSample & y) const
+{
   const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  // Initialize the conditional quantile with the quantile of the i-th marginal distribution
-  const Implementation marginalDistribution(getMarginal(conditioningDimension));
-  NumericalScalar quantile(marginalDistribution->computeQuantile(q)[0]);
-  LOGINFO(OSS() << "marginal distribution=" << marginalDistribution->__str__() << ", quantile=" << quantile);
-  // Special case for bording values
-  if ((q == 0.0) || (q == 1.0)) return quantile;
-  // Special case when no contitioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return quantile;
-  //NumericalScalar step(marginalDistribution->getDispersionIndicator());
-  Indices conditioning(conditioningDimension);
-  conditioning.fill();
-  Indices conditioned(conditioning);
-  conditioned.add(conditioningDimension);
-  const Implementation conditioningDistribution(getMarginal(conditioning));
-  LOGINFO(OSS() << "conditioning distribution=" << conditioningDistribution->__str__() << ", quantile=" << quantile);
-  const Implementation conditionedDistribution(getMarginal(conditioned));
-  LOGINFO(OSS() << "conditioned distribution=" << conditionedDistribution->__str__() << ", quantile=" << quantile);
-  const NumericalScalar xMin(conditionedDistribution->getRange().getLowerBound()[conditioningDimension]);
-  const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
-  // Start with the largest bracketing interval
-  NumericalScalar a(xMin);
-  NumericalScalar b(xMax);
-  Bool convergence(false);
-  NumericalScalar residual(0.0);
-  UnsignedInteger iteration(0);
-  while (!convergence && (iteration < quantileIterations_))
+  const UnsignedInteger size(q.getDimension());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar cdf(0.0);
-    const NumericalScalar pdf(computeConditionalPDFAndCDF(quantile, y, cdf, conditioningDistribution, conditionedDistribution, xMin));
-    // Do we have to perform a bisection step?
-    if ((pdf == 0.0) || (quantile > b) || (quantile < a))
-    {
-      quantile = 0.5 * (a + b);
-      cdf = computeConditionalCDFForQuantile(quantile, y, conditioningDistribution, conditionedDistribution, xMin);
-      if (cdf > q) b = quantile;
-      else a = quantile;
-    }
-    else
-    {
-      // No, so do a Newton step
-      residual = (q - cdf) / pdf;
-      quantile += residual;
-    }
-    convergence = fabs(residual) < quantileEpsilon_ * (1.0 + fabs(quantile)) || (fabs(cdf - q) < 2.0 * cdfEpsilon_) || (b - a < quantileEpsilon_ * (1.0 + fabs(quantile)));
-    LOGINFO(OSS() << "quantile=" << quantile << ", a=" << a << ", b=" << b << ", iteration=" << iteration);
-    ++iteration;
+    if ((q[i] < 0.0) || (q[i] > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
   }
-  return quantile;
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula()))
+    return getMarginal(conditioningDimension)->computeQuantile(q).getImplementation()->getData();
+  // General case
+  const NumericalScalar xMin(range_.getLowerBound()[conditioningDimension]);
+  const NumericalScalar xMax(range_.getUpperBound()[conditioningDimension]);
+  NumericalPoint result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const ConditionalCDFWrapper wrapper(y[i], this);
+    const NumericalMathFunction f(bindMethod<ConditionalCDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &ConditionalCDFWrapper::computeConditionalCDF, 1, 1));
+    Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
+    result[i] = solver.solve(f, q[i], xMin, xMax, 0.0, 1.0);
+  }
+  return result;
 }
 
 /* Quantile computation for dimension=1 */
@@ -1770,7 +1782,7 @@ NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar
   // max(n\tau - n + 1, 0) <= C(\tau,...,\tau) <= \tau
   // from which we deduce that q <= \tau and \tau <= 1 - (1 - q) / n
   // Lower bound of the bracketing interval
-  QuantileWrapper wrapper(marginals, this);
+  const QuantileWrapper wrapper(marginals, this);
   const NumericalMathFunction f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
   NumericalScalar leftTau(q);
   NumericalScalar leftCDF(f(NumericalPoint(1, leftTau))[0]);
@@ -1845,8 +1857,8 @@ Interval DistributionImplementation::computeMinimumVolumeInterval(const Numerica
     return Interval(median, median);
   }
   if (prob >= 1.0) return range_;
-  MinimumVolumeWrapper minimumVolumeWrapper(this, prob);
-  NumericalMathFunction function(bindMethod<MinimumVolumeWrapper, NumericalPoint, NumericalPoint>(minimumVolumeWrapper, &MinimumVolumeWrapper::operator(), 1, 1));
+  const MinimumVolumeWrapper minimumVolumeWrapper(this, prob);
+  const NumericalMathFunction function(bindMethod<MinimumVolumeWrapper, NumericalPoint, NumericalPoint>(minimumVolumeWrapper, &MinimumVolumeWrapper::operator(), 1, 1));
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   const NumericalScalar a(solver.solve(function, 0.0, range_.getLowerBound()[0], computeScalarQuantile(prob, true)));
   return Interval(a, minimumVolumeWrapper.getLastB());
@@ -1993,6 +2005,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
   // We need this to initialize the covariance matrix in two cases:
   // + this is the first call to this routine (which could be checked by testing the dimension of the distribution and the dimension of the matrix
   // + the copula has changed from a non-independent one to the independent copula
+  mean_ = getMean();
   covariance_ = CovarianceMatrix(dimension_);
   // First the diagonal terms, which are the marginal covariances
   // Marginal covariances
@@ -2001,9 +2014,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())
   {
-    const IteratedQuadrature integrator;
-    // To ensure that the mean is up to date
-    mean_ = getMean();
+    const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
     // We first loop over the coefficients because the most expensive task is to get the 2D marginal distributions
 
@@ -2020,8 +2031,8 @@ void DistributionImplementation::computeCovarianceContinuous() const
         if (!marginalDistribution->hasIndependentCopula())
         {
           // Build the integrand
-          DistributionImplementationCovarianceWrapper functionWrapper(marginalDistribution, muI, muJ);
-          NumericalMathFunction function(bindMethod<DistributionImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &DistributionImplementationCovarianceWrapper::kernel, 2, 1));
+          const DistributionImplementationCovarianceWrapper functionWrapper(marginalDistribution, muI, muJ);
+          const NumericalMathFunction function(bindMethod<DistributionImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &DistributionImplementationCovarianceWrapper::kernel, 2, 1));
           // Compute the covariance element
           covariance_(rowIndex, columnIndex) = integrator.integrate(function, marginalDistribution->getRange())[0];
         }
@@ -2303,28 +2314,17 @@ NumericalPoint DistributionImplementation::computeShiftedMomentContinuous(const 
 {
   if (shift.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
   if (n == 0) return NumericalPoint(dimension_, 1.0);
-  setIntegrationNodesNumber(std::max(ResourceMap::GetAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber" ), 20 * n + 1));
-  NumericalPoint gaussWeights;
-  const NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
-  const UnsignedInteger numberOfNodes(gaussNodes.getDimension());
-  NumericalPoint moment(dimension_, 0.0);
+  NumericalPoint moment(dimension_);
   // For each component
+  GaussKronrod algo;
   for(UnsignedInteger component = 0; component < dimension_; ++component)
   {
     const Implementation marginalDistribution(getMarginal(component));
+    const ShiftedMomentWrapper kernel(n, shift[component], marginalDistribution);
+    const NumericalMathFunction integrand(bindMethod<ShiftedMomentWrapper, NumericalPoint, NumericalPoint>(kernel, &ShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
     const NumericalScalar a(marginalDistribution->getRange().getLowerBound()[0]);
     const NumericalScalar b(marginalDistribution->getRange().getUpperBound()[0]);
-    const NumericalScalar halfLength(0.5 * (b - a));
-    const NumericalScalar shiftComponent(shift[component]);
-    NumericalScalar value(0.0);
-    for (UnsignedInteger i = 0; i < numberOfNodes; ++i)
-    {
-      const NumericalScalar w(gaussWeights[i]);
-      const NumericalScalar xi(gaussNodes[i]);
-      const NumericalScalar z(a + (1.0 + xi) * halfLength);
-      value += w * std::pow(z - shiftComponent, static_cast<int>(n)) * marginalDistribution->computePDF(z);
-    } // Integration nodes
-    moment[component] = value * halfLength;
+    moment[component] = algo.integrate(integrand, Interval(a, b))[0];
   } // End of each component
   return moment;
 }
@@ -3106,7 +3106,8 @@ DistributionImplementation::NumericalPointWithDescriptionCollection Distribution
 
 void DistributionImplementation::setParametersCollection(const NumericalPointWithDescriptionCollection & parametersCollection)
 {
-  if (getDimension() == 1) {
+  if (getDimension() == 1)
+  {
     if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Expected collection of size 1, got " << parametersCollection.getSize();
     setParameter(parametersCollection[0]);
   }
@@ -3147,7 +3148,7 @@ NumericalPoint DistributionImplementation::getParameter() const
 
 void DistributionImplementation::setParameter(const NumericalPoint & parameters)
 {
-  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize(); 
+  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize();
 }
 
 /* Parameters description accessor */

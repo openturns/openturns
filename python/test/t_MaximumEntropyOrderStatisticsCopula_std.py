@@ -82,9 +82,6 @@ covariance = copula.getCovariance()
 print("covariance=", repr(covariance))
 parameters = copula.getParametersCollection()
 print("parameters=", repr(parameters))
-for i in range(6):
-    print("standard moment n=", i, " value=", copula.getStandardMoment(i))
-print("Standard representative=", copula.getStandardRepresentative())
 
 # Extract the marginals
 for i in range(dim):

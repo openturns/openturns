@@ -1,39 +1,31 @@
-Distribution  class=Uniform name=Uniform dimension=1 a=-0.5 b=1.5
-Distribution  Uniform(a = -0.5, b = 1.5)
-Mean=  class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
-Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.333333]
-Elliptical =  True
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.759753]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1.26561]  last= class=NumericalPoint name=Unnamed dimension=1 values=[0.349444]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.506426]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.339061]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[0]
-ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[0]
-log pdf=-0.693147
-pdf     =0.500000
-pdf (FD)=0.500000
-cdf=0.750000
-ccdf=0.250000
-characteristic function= (0.738460262604+0.403422680111j)
-pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
-cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
-cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1.4]
-cdf(quantile)=0.950000
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.57735]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[1.8]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.333333]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[a,b] values=[-0.5,1.5]]
-standard moment n= 0  value= [1]
-standard moment n= 1  value= [0]
-standard moment n= 2  value= [0.333333]
-standard moment n= 3  value= [0]
-standard moment n= 4  value= [0.2]
-standard moment n= 5  value= [0]
-Standard representative= Uniform(a = -1, b = 1)
+Distribution  class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=2 distributionCollection=[class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1],class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]] graph=[[0,1],[0,1]]
+Distribution  CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]))][[0,1],[0,1]])
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.819143,1.55123]
+oneSample first= [-0.337688,0.500922]  last= [-0.31133,-0.29406]
+mean= [0.57312,0.562745]
+covariance= [[  0.693077  -0.0044764 ]
+ [ -0.0044764  0.685993  ]]
+Point=  [1.0, 1.0]
+log pdf= -1.79709014642
+pdf     = 0.165780584276
+cdf= 0.501067169466
+ccdf= 0.498932830534
+survival= 0.0853452059916
+quantile= [2.234,2.234]
+cdf(quantile)= 0.95
+mean= [0.56419,0.56419]
+standard deviation= [0.825645,0.825645]
+skewness= [0.136949,0.136949]
+kurtosis= [3.06174,3.06174]
+covariance= [[ 0.68169 0       ]
+ [ 0       0.68169 ]]
+correlation= [[ 1 0 ]
+ [ 0 1 ]]
+spearman= [[ 1 0 ]
+ [ 0 1 ]]
+kendall= [[ 1 0 ]
+ [ 0 1 ]]
