@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# -*- coding: iso-8859-15 -*-
 
 from __future__ import print_function
 from openturns import *
