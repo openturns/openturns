@@ -2828,6 +2828,7 @@ Graph DistributionImplementation::drawDiscreteCDF(const NumericalScalar xMin,
   const NumericalSample support(getSupport(Interval(xMin, xMax)));
   const NumericalSample gridY(computeCDF(support));
   const UnsignedInteger size(support.getSize());
+  if (size == 0) throw InvalidArgumentException(HERE) << "empty range (" << xMin << ", " << xMax << ")" << ", support is (" << getSupport().getMin()[0] << ", " << getSupport().getMax()[0] << ")";
   const String xName(getDescription()[0]);
   Graph graphCDF(title, xName, "CDF", true, "topleft");
   NumericalSample data(size + 2, 2);
