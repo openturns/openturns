@@ -1,5 +1,5 @@
 %feature("docstring") OT::StationaryCovarianceModelFactory
-"Estimation of a stationary covariance model.
+"Estimation of the covariance model of a stationary process.
 
 Parameters
 ----------

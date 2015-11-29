@@ -3,8 +3,7 @@
 
 Notes
 -----
-In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution* for which an *analytical* description of its main properties is known, in contrast to the :class:`~openturns.RandomVector` which distribution is *unknown* and which characteristics can only be *estimated* by means of Monte Carlo simulation.
-"
+In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution*."
 %enddef
 %feature("docstring") OT::DistributionImplementation
 OT_Distribution_doc
