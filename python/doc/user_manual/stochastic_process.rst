@@ -12,6 +12,8 @@ General objects
     :template: class.rst_t
 
     Process
+
+    :template: classWithPlot.rst_t
     Field
     TimeSeries
     ProcessSample
