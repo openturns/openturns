@@ -41,7 +41,7 @@ Temporal information
     :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
     NonStationaryCovarianceModelFactory
 
     :template: classWithPlot.rst_t
@@ -55,13 +55,16 @@ Spectral information
     :template: class.rst_t
 
     SpectralModel
+
     :template: SpectralModel.rst_t
     CauchyModel
+
     :template: classWithPlot.rst_t
     UserDefinedSpectralModel
-    :template: class.rst_t
     SpectralModelFactory
     WelchFactory
+
+    :template: class.rst_t
     FilteringWindows
 
     :template: FilteringWindow.rst_t
@@ -97,7 +100,7 @@ Functional basis process
 
 .. autosummary::
     :toctree: _generated/
-    :template: Process.rst_t
+    :template: classWithPlot.rst_t
 
     FunctionalBasisProcess
 
@@ -106,7 +109,7 @@ Composite process
 
 .. autosummary::
     :toctree: _generated/
-    :template: Process.rst_t
+    :template: classWithPlot.rst_t
 
      CompositeProcess
 

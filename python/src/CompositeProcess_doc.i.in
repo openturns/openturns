@@ -1,0 +1,88 @@
+%feature("docstring") OT::CompositeProcess
+"Process obtained by transformation.
+
+Parameters
+----------
+fdyn : :class:`~openturns.DynamicalFunction`
+    A dynamical function.
+inputProc : :class:`~openturns.Process`
+    The input process.
+
+Notes
+-----
+A composite process is the image of  process :math:`X: \Omega \times\cD \mapsto \Rset^d` by the dynamical function :math:`f_{dyn}:\cD \times \Rset^d \rightarrow \cD' \times \Rset^q`:
+
+.. math::
+
+    Y = fdyn(X)
+
+
+where :math:`\cD \in \Rset^n` and  :math:`\cD' \in \Rset^p`, defined by:
+
+.. math::
+
+    f_{dyn}(\vect{t}, \vect{x}) = (t'(\vect{t}), v'(\vect{t}, \vect{x}))
+
+
+with :math:`t': \cD \rightarrow \cD'` and :math:`v': \cD \times \Rset^d \rightarrow \Rset^q`.
+
+The process :math:`Y: \Omega \times \cD' \rightarrow \Rset^q` is defined on the domain :math:`\cD'` associated to the mesh :math:`\cM'`.
+
+Examples
+--------
+Create the process X:
+
+>>> import openturns as ot
+>>> amplitude = [1.0, 1.0]
+>>> scale = [0.2, 0.3]
+>>> myCovModel = ot.ExponentialModel(2,amplitude,scale)
+>>> myMesh = ot.IntervalMesher([100]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+>>> myXProcess = ot.TemporalNormalProcess(myCovModel, myMesh)
+
+Create a spatial  dynamical function :math:`g_{dyn}` associated to :math:`g: \Rset^2 \mapsto \Rset^2` where :math:`g(x_1,x_2)= (x_1^2, x_1+x_2)`:
+
+>>> g = ot.NumericalMathFunction(['x1', 'x2'],  ['x1^2', 'x1+x2'])
+>>> nSpat = 2
+>>> gdyn = ot.SpatialFunction(g, nSpat)
+
+Create the Y process :math:`Y = g_{dyn}(X)`:
+
+>>> myYProcess = ot.CompositeProcess(gdyn, myXProcess)
+
+Add the trend :math:`f_{trend}: \Rset^2 \mapsto \Rset^2` where :math:`f_{trend}(x_1,x_2)= (1+2x_1, 1+3x_2^2)`:
+
+>>> f = ot.NumericalMathFunction(['x1', 'x2'], ['1+2*x1', '1+3*x2^2'])
+>>> fTrend = ot.TrendTransform(f)
+
+Create the process :math:`Y(\omega, \vect{t}) = X(\omega, \vect{t}) + f_{trend}(\vect{t})`:
+
+>>> myYProcess2 = ot.CompositeProcess(fTrend, myXProcess)
+
+Apply the Box Cox transformation :math:`h=(h_1,h_2): \Rset\mapsto \Rset^2` where :math:`h_i(x) = \dfrac{x^3-1}{3}`:
+
+>>> h = ot.BoxCoxTransform([3.0, 0.0])
+>>> hBoxCox = ot.SpatialFunction(h, nSpat)
+
+Create the Y process :math:`Y = hBoxCox(X)`:
+
+>>> myYProcess3 = ot.CompositeProcess(hBoxCox,  myXProcess)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeProcess::getAntecedent
+"Get the antecedent process.
+
+Returns
+-------
+XProcess : :class:`~openturns.Process`
+    The process :math:`X`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeProcess::getFunction
+"Get the dynamical function.
+
+Returns
+-------
+fdyn : :class:`~openturns.DynamicalFunction`
+    The dynamical function :math:`f_{dyn}`."

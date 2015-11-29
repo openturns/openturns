@@ -468,8 +468,8 @@ ot_add_python_module(model_process model_process_module.i
                       SpectralNormalProcess.i SpectralNormalProcess_doc.i.in
                       TemporalNormalProcess.i TemporalNormalProcess_doc.i.in
                       AggregatedProcess.i AggregatedProcess_doc.i.in
-                      CompositeProcess.i
-                      FunctionalBasisProcess.i
+                      CompositeProcess.i CompositeProcess_doc.i.in
+                      FunctionalBasisProcess.i FunctionalBasisProcess_doc.i.in
                       ARMAFactoryImplementation.i ARMAFactoryImplementation_doc.i.in
                       WhittleFactory.i WhittleFactory_doc.i.in
                       WhittleFactoryState.i WhittleFactoryState_doc.i.in
