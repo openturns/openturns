@@ -236,14 +236,15 @@ String ExponentialModel::__repr__() const
 String ExponentialModel::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ExponentialModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << getAmplitude()
-      << " scale=" << getScale();
+  oss << ExponentialModel::GetClassName();
+  oss << "(input dimension=" << spatialDimension_
+      << ", amplitude=" << getAmplitude()
+      << ", scale=" << getScale();
   if (!isDiagonal_)
-    oss << " spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
+    oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
   else
-    oss << " no spatial correlation";
+    oss << ", no spatial correlation";
+  oss << ")";
   return oss;
 }
 

@@ -126,12 +126,14 @@ String SphericalModel::__repr__() const
 /* String converter */
 String SphericalModel::__str__(const String & offset) const
 {
-  OSS oss(false);
-  oss << "class=" << SphericalModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << amplitude_
-      << " scale=" << scale_
-      << " a=" << a_;
+  OSS oss;
+  oss << SphericalModel::GetClassName()
+      << "(input dimension=" << spatialDimension_
+      << ", theta=" << scale_.__str__()
+      << ", sigma=" << amplitude_.__str__()
+      << ", scale=" << scale_
+      << ", a=" << a_
+      << ")";
   return oss;
 }
 

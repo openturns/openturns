@@ -132,7 +132,14 @@ String GeneralizedExponential::__repr__() const
 /* String converter */
 String GeneralizedExponential::__str__(const String & offset) const
 {
-  return __repr__();
+  OSS oss;
+  oss << GeneralizedExponential::GetClassName()
+      << "(input dimension=" << spatialDimension_
+      << ", theta=" << scale_.__str__()
+      << ", sigma=" << amplitude_.__str__()
+      << ", p=" << p_
+      << ")";
+  return oss;
 }
 
 /* Method save() stores the object through the StorageManager */
