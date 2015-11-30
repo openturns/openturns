@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #                                               -*- Python -*-
 #
 # @brief Gives functions that help coupling against external code,
