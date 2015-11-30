@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-if (CMAKE_Fortran_COMPILER)
+if (CMAKE_Fortran_COMPILER_WORKS)
   # workaround for bug #0014358
   if (CMAKE_VERSION VERSION_LESS 2.8.13 AND NOT DEFINED FortranCInterface_EXE)
     set (FortranCInterface_EXE ${CMAKE_BINARY_DIR}/CMakeFiles/FortranCInterface/FortranCInterface${CMAKE_EXECUTABLE_SUFFIX})
