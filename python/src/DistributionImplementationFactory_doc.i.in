@@ -58,7 +58,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-parameters : :class:`~openturns.DistributionParamters`
+parameters : :class:`~openturns.DistributionParameters`
     Optional, the parametrization.
 
 Returns
@@ -94,3 +94,45 @@ size : integer
 %enddef
 %feature("docstring") OT::DistributionImplementationFactory::setBootstrapSize
 OT_DistributionFactory_setBootstrapSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_setKnownParameter_doc
+"Accessor to the known parameters.
+
+Parameters
+----------
+values : sequence of float
+    Values of fixed parameters.
+indices : sequence of int
+    Indices of fixed parameters."
+%enddef
+%feature("docstring") OT::DistributionImplementationFactory::setKnownParameter
+OT_DistributionFactory_setKnownParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_getKnownParameterValues_doc
+"Accessor to the known parameters indices.
+
+Returns
+-------
+values : :class:`~openturns.NumericalPoint`
+    Values of fixed parameters."
+%enddef
+%feature("docstring") OT::DistributionImplementationFactory::getKnownParameterValues
+OT_DistributionFactory_getKnownParameterValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_getKnownParameterIndices_doc
+"Accessor to the known parameters indices.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of fixed parameters."
+%enddef
+%feature("docstring") OT::DistributionImplementationFactory::getKnownParameterIndices
+OT_DistributionFactory_getKnownParameterIndices_doc
+
