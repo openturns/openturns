@@ -4,6 +4,8 @@
 #include "CovarianceModelFactory.hxx"
 %}
 
+%include CovarianceModelFactory_doc.i
+
 OTTypedInterfaceObjectHelper(CovarianceModelFactory)
 
 %include CovarianceModelFactory.hxx
