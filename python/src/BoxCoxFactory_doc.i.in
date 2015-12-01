@@ -21,6 +21,10 @@ In the multivariate case, OpenTURNS proceeds component by component: :math:`h_{\
 
 for all :math:`x+\alpha_i >0`.
 
+|
+
+BoxCox transformation could alse be performed in the case of the estimation of a generalized linear model through :class:`~openturns.GeneralizedLinearModelAlgorithm`.
+The objective is to estimate the most likely surrogate model (generalized linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the generalized linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
 "
 
 // ---------------------------------------------------------------------
@@ -41,6 +45,10 @@ Available usages:
 
     build(*mySample, shift, likelihoodGraph*)
 
+    build(*inputSample, outputSample, covarianceModel, basis, shift, generalizedLinearModelResult*)
+
+    build(*inputSample, outputSample, covarianceModel, shift, generalizedLinearModelResult*)
+
 Parameters
 ----------
 myTimeSeries : :class:`~openturns.TimeSeries`
@@ -51,6 +59,20 @@ shift : :class:`~openturns.NumericalPoint`
     It ensures that when shifted, the data are all positive. If not precised, OpenTURNS uses the opposite of the min vector of the data if some data are negative.
 likelihoodGraph : :class:`~openturns.Graph`
     An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
+inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
+    The input and output samples of a model evaluated apart.
+basis : :class:`~openturns.Basis`
+    Functional basis to estimate the trend.
+    If the output dimension is greater than 1, the same basis is used for all marginals.
+multivariateBasis : collection of :class:`~openturns.Basis`
+    Collection of functional basis: one basis for each marginal output.
+    If the trend is not estimated, the collection must be empty.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance model.
+    Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
+    See note for some particular applications.
+generalizedLinearModelResult : :class:`~openturns.GeneralizedLinearModelResult`
+    Empty structure that contains results of generalized linear model algorithm.
 
 Returns
 -------
@@ -60,7 +82,7 @@ myBoxCoxTransform : :class:`~openturns.BoxCoxTransform`
 Notes
 -----
 
-We describe the estimation in the univariate case. Only the parameter :math:`\lambda` is estimated. To clarify the notations, we omit the mention of :math:`\alpha` in :math:`h_\lambda`.
+We describe the estimation in the univariate case, in the case of no surrogate model estimate. Only the parameter :math:`\lambda` is estimated. To clarify the notations, we omit the mention of :math:`\alpha` in :math:`h_\lambda`.
 
 We note :math:`(x_0, \dots, x_{N-1})` a sample of :math:`X`. We suppose that :math:`h_\lambda(X) \sim \cN(\beta , \sigma^2 )`.
 
@@ -135,6 +157,37 @@ The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell(\lambda)`.
 
 When the empty graph *likelihoodGraph* is precised, it is fulfilled with the evolution of the likelihood with respect to the value of :math:`\lambda` for each component  *i*. It enables to graphically detect the optimal values.
 
+|
+
+In the case of surrogate model estimate, we note :math:`(x_0, \dots, x_{N-1})` the input sample of :math:`X`, :math:`(y_0, \dots, y_{N-1})` the input sample of :math:`Y`.
+We suppose the generalized linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{x}) \vect{\beta} + \vect{Z}` with :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`:
+
+.. math::
+    \mat{F}(\vect{x}) = \left(
+      \begin{array}{lcl}
+        \vect{f}_1(\vect{x}_1) & \dots & \vect{f}_M(\vect{x}_1) \\
+        \dots & \dots & \\
+        \vect{f}_1(\vect{x}_n) & \dots & \vect{f}_M(\vect{x}_n)
+       \end{array}
+     \right)
+
+:math:`(f_1, \dots, f_M)` is a functional basis whith :math:`f_i: \Rset^d \mapsto \Rset^p` for all *i*, :math:`\beta` are the coefficients of the linear combination and :math:`Z` is a zero-mean gaussian process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}}`
+Thus implies that :math:`h_\lambda(Y) \sim \cN(\vect{F}^t(\vect{x}) \vect{\beta}, C_{\vect{\sigma}, \vect{\theta}})`.
+
+The likelihood function to be maximized writes as follows:
+
+.. math::
+
+    \begin{array}{lcl}
+      \ell_{glm}(\lambda) = \log L(\lambda ) & = & C - \log\left( |C^{\lambda}_{\vect{\sigma}, \vect{\theta}} | \right)
+      \;-\;
+    \left( h_\lambda(Y) - \vect{F}^t(\vect{x}) \vect{\beta} \right) {C^{\lambda}_{\vect{\sigma}, \vect{\theta}}}^{-1}
+    \left( h_\lambda(Y) - \vect{F}^t(\vect{x}) \vect{\beta} \right)^t
+    \end{array}
+
+where :math:`C^{\lambda}_{\vect{\sigma}, \vect{\theta}}` is the matrix resulted from the discretization of the covariance model over :math:`X`.
+The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell_{glm}(\lambda)`.
+
 Examples
 --------
 Estimate the Box Cox transformation from a sample:
@@ -161,4 +214,21 @@ Estimate the Box Cox transformation from a field:
 
 >>> myField = myXtProcess.getRealization()
 >>> myModelTransform = ot.BoxCoxFactory().build(myField)
+
+Estimation of a generalized linear model:
+
+>>> inputSample = ot.Uniform(-1.0, 1.0).getSample(200)
+>>> outputSample = ot.NumericalSample(inputSample)
+>>> # Evaluation of y = ax + b (a: scale, b: translate)
+>>> outputSample = outputSample * [3] + [3.1]
+>>> # inverse transfo + small noise
+>>> def f(x): import math; return [math.exp(x[0])]
+>>> inv_transfo = ot.PythonFunction(1,1, f)
+>>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1e-2).getSample(200)
+>>> # Estimation
+>>> result = ot.GeneralizedLinearModelResult()
+>>> basis = ot.LinearBasisFactory(1).build()
+>>> covarianceModel = ot.DiracCovarianceModel()
+>>> shift = [1.0e-1]
+>>> myBoxCox = ot.BoxCoxFactory().build(inputSample, outputSample, covarianceModel, basis, shift, result)
 "

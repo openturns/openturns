@@ -17,6 +17,7 @@
 %include OTexceptions.i
 %include std_vector.i
 
+%include BaseFuncCollection.i
 %import base_module.i
 
 /* Uncertainty/Model */
@@ -51,6 +52,7 @@
 %include InverseRosenblattEvaluation.i
 
 /* Uncertainty/Algorithm/Transformation/ProcessTransformation */
+%import metamodel_module.i
 %include BoxCoxFactory.i
 %include TrendFactory.i
 

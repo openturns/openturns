@@ -28,6 +28,9 @@
 #include "BoxCoxTransform.hxx"
 #include "Graph.hxx"
 #include "OptimizationSolver.hxx"
+#include "CovarianceModel.hxx"
+#include "Basis.hxx"
+#include "GeneralizedLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,6 +45,8 @@ class OT_API BoxCoxFactory
   CLASSNAME;
 
 public:
+
+  typedef GeneralizedLinearModelResult::BasisCollection BasisCollection;
 
   /** Default constructor without parameters */
   BoxCoxFactory();
@@ -69,6 +74,27 @@ public:
                         const NumericalPoint & shift,
                         Graph & graph) const;
 
+  /** Build the factory from data by estimating the best generalized linear model */
+  BoxCoxTransform build(const NumericalSample & inputSample,
+                        const NumericalSample & outputSample,
+                        const CovarianceModel & covarianceModel,
+                        const Basis & basis,
+                        const NumericalPoint & shift,
+                        GeneralizedLinearModelResult & result);
+
+  BoxCoxTransform build(const NumericalSample & inputSample,
+                        const NumericalSample & outputSample,
+                        const CovarianceModel & covarianceModel,
+                        const BasisCollection & basis,
+                        const NumericalPoint & shift,
+                        GeneralizedLinearModelResult & result);
+
+  BoxCoxTransform build(const NumericalSample & inputSample,
+                        const NumericalSample & outputSample,
+                        const CovarianceModel & covarianceModel,
+                        const NumericalPoint & shift,
+                        GeneralizedLinearModelResult & result);
+
   /** Optimization solver accessor */
   OptimizationSolver getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationSolver & solver);
@@ -77,6 +103,12 @@ protected:
 
   /** Optimization solver */
   OptimizationSolver  solver_;
+
+  void checkGLMData(const NumericalSample & inputSample,
+                    const NumericalSample & outputSample,
+                    const CovarianceModel & covarianceModel,
+                    const BasisCollection & basis);
+
 } ; /* class BoxCoxFactory */
 
 END_NAMESPACE_OPENTURNS
