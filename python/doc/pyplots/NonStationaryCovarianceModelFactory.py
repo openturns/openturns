@@ -62,7 +62,7 @@ myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovarianceCollection
 myProcess = ot.TemporalNormalProcess(myCovarianceModel, myMesh)
 
 # Create a  sample of fields
-size = 10**7
+size = 10**4
 myFieldSample = myProcess.getSample(size)
 
 # Build a covariance model factory
@@ -92,6 +92,6 @@ for i in range(alld.getSize()):
 fig = plt.figure(figsize=(10, 4))
 plt.suptitle('Non stationary covariance model estimation')
 cov_axis = fig.add_subplot(111)
-view = View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
-view.show()
+View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+
 
