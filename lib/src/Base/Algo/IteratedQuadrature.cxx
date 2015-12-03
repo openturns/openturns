@@ -139,14 +139,6 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
 {
   const UnsignedInteger inputDimension(function.getInputDimension());
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
-  // Check that all the bounds are finite
-  const Interval::BoolCollection finiteLowerBounds(interval.getFiniteLowerBound());
-  const Interval::BoolCollection finiteUpperBounds(interval.getFiniteUpperBound());
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-  {
-    if (!finiteLowerBounds[i]) throw InvalidArgumentException(HERE) << "Error: expected finite bounds for the interval, here the " << i << "th lower bound is infinite.";
-    if (!finiteUpperBounds[i]) throw InvalidArgumentException(HERE) << "Error: expected finite bounds for the interval, here the " << i << "th upper bound is infinite.";
-  }
   // Build the bound functions associated with the interval
   const NumericalPoint lower(interval.getLowerBound());
   const NumericalPoint upper(interval.getUpperBound());
