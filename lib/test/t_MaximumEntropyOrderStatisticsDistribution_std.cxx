@@ -45,10 +45,10 @@ int main(int argc, char *argv[])
     checkClassWithClassName<TestObject>();
 
     ComposedDistribution::DistributionCollection coll;
-    coll.add(Trapezoidal(-2., -1.1, -1., 1.));
-    coll.add(LogUniform(1., 1.2));
-    coll.add(Triangular(3., 4., 5.));
-    coll.add(Arcsine(3.5, 5.5));
+    coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
+    coll.add(LogUniform(1.0, 1.2));
+    coll.add(Triangular(3.0, 4.5, 5.0));
+    coll.add(Beta(2.5, 6.0, 4.7, 5.2));
 
     // Instanciate one distribution object
     MaximumEntropyOrderStatisticsDistribution distribution(coll);

@@ -9,10 +9,10 @@ ot.RandomGenerator.SetSeed(0)
 
 # Instanciate one distribution object
 distribution = ot.MaximumEntropyOrderStatisticsDistribution(
-    [ot.Trapezoidal(-2., -1.1, -1., 1.),
-     ot.LogUniform(1., 1.2),
-     ot.Triangular(3., 4., 5.),
-     ot.Arcsine(3.5, 5.5)])
+    [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
+     ot.LogUniform(1.0, 1.2),
+     ot.Triangular(3.0, 4.5, 5.0),
+     ot.Beta(2.5, 6.0, 4.7, 5.2)])
 
 dim = distribution.getDimension()
 print("Distribution ", distribution)

@@ -25,6 +25,7 @@
 #include "Distribution.hxx"
 #include "NumericalMathFunction.hxx"
 #include "Solver.hxx"
+#include "GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,7 @@ class OT_API CompositeDistribution
   : public DistributionImplementation
 {
   CLASSNAME;
-public:
+ public:
 
   /** Default constructor */
   CompositeDistribution();
@@ -107,6 +108,10 @@ public:
   void setSolver(const Solver & solver);
   Solver getSolver() const;
 
+  /** Compute the shifted moments of the distribution */
+  NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
+                                                const NumericalPoint & shift) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -132,7 +137,7 @@ public:
     NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
     {
       const NumericalScalar y(p_distribution_->function_(point)[0]);
-      const NumericalScalar power(std::pow(y - shift_, n_));
+      const NumericalScalar power(std::pow(y - shift_, static_cast<NumericalScalar>(n_)));
       const NumericalScalar pdf(p_distribution_->antecedent_.computePDF(point));
       const NumericalScalar value(power * pdf);
       return NumericalPoint(1, value);
@@ -160,7 +165,6 @@ public:
 
   };
 
-private:
   /** update all the derivative attributes */
   void update();
 
