@@ -26,7 +26,7 @@ CLASSNAMEINIT(LogUniformFactory);
 
 /* Default constructor */
 LogUniformFactory::LogUniformFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

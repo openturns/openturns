@@ -24,7 +24,7 @@
 %include DistributionFactoryResult.i
 %include DistributionParametersImplementation.i
 %include DistributionParameters.i
-%include DistributionImplementationFactory.i
+%include DistributionFactoryImplementation.i
 %include DistributionFactory.i
 %include ContinuousDistribution.i
 %include EllipticalDistribution.i

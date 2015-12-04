@@ -28,7 +28,7 @@ CLASSNAMEINIT(BinomialFactory);
 
 /* Default constructor */
 BinomialFactory::BinomialFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

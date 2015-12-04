@@ -22,7 +22,7 @@
 #define OPENTURNS_LAPLACEFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Laplace.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LaplaceFactory
  */
 class OT_API LaplaceFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -43,7 +43,7 @@ public:
   virtual LaplaceFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;

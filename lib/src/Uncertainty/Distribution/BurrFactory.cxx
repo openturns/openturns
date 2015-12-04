@@ -30,7 +30,7 @@ CLASSNAMEINIT(BurrFactory);
 
 /* Default constructor */
 BurrFactory::BurrFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

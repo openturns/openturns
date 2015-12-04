@@ -159,14 +159,14 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetMulti
 
 /* Default constructor */
 DistributionFactory::DistributionFactory(const UnsignedInteger bootstrapSize)
-  : TypedInterfaceObject<DistributionImplementationFactory>(new DistributionImplementationFactory(bootstrapSize))
+  : TypedInterfaceObject<DistributionFactoryImplementation>(new DistributionFactoryImplementation(bootstrapSize))
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-DistributionFactory::DistributionFactory(const DistributionImplementationFactory & factory)
-  : TypedInterfaceObject<DistributionImplementationFactory>(factory.clone())
+DistributionFactory::DistributionFactory(const DistributionFactoryImplementation & factory)
+  : TypedInterfaceObject<DistributionFactoryImplementation>(factory.clone())
 {
   // Nothing to do
 }

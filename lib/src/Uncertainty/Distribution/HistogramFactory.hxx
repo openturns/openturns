@@ -22,7 +22,7 @@
 #define OPENTURNS_HISTOGRAMFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Histogram.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HistogramFactory
  */
 class OT_API HistogramFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -43,7 +43,7 @@ public:
   virtual HistogramFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build() const;

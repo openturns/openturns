@@ -22,7 +22,7 @@
 #define OPENTURNS_FISHERSNEDECORFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "FisherSnedecor.hxx"
 #include "OptimizationSolver.hxx"
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FisherSnedecorFactory
  */
 class OT_API FisherSnedecorFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -44,13 +44,13 @@ public:
   virtual FisherSnedecorFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
 
-  using DistributionImplementationFactory::buildEstimator;
+  using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
 
   FisherSnedecor buildAsFisherSnedecor(const NumericalSample & sample) const;

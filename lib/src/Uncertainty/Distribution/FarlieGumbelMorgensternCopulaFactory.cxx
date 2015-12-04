@@ -31,7 +31,7 @@ CLASSNAMEINIT(FarlieGumbelMorgensternCopulaFactory);
 
 /* Default constructor */
 FarlieGumbelMorgensternCopulaFactory::FarlieGumbelMorgensternCopulaFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

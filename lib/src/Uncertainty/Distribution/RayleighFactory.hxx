@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RAYLEIGHFACTORY_HXX
 #define OPENTURNS_RAYLEIGHFACTORY_HXX
 
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Rayleigh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RayleighFactory
  */
 class OT_API RayleighFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -42,7 +42,7 @@ public:
   virtual RayleighFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;

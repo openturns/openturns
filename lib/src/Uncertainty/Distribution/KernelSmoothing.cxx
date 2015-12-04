@@ -48,7 +48,7 @@ static const Factory<KernelSmoothing> RegisteredFactory;
 
 /* Default constructor */
 KernelSmoothing::KernelSmoothing()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
   , bandwidth_(NumericalPoint(0))
   , kernel_(Normal())
   , bined_(true)
@@ -62,7 +62,7 @@ KernelSmoothing::KernelSmoothing()
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
                                  const Bool & bined,
                                  const UnsignedInteger binNumber)
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
   , bandwidth_(NumericalPoint(0))
   , kernel_(kernel)
   , bined_(bined)
@@ -383,14 +383,14 @@ Distribution KernelSmoothing::getKernel() const
 /* Method save() stores the object through the StorageManager */
 void KernelSmoothing::save(Advocate & adv) const
 {
-  DistributionImplementationFactory::save(adv);
+  DistributionFactoryImplementation::save(adv);
   adv.saveAttribute( "bandwidth_", bandwidth_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void KernelSmoothing::load(Advocate & adv)
 {
-  DistributionImplementationFactory::load(adv);
+  DistributionFactoryImplementation::load(adv);
   adv.loadAttribute( "bandwidth_", bandwidth_ );
 }
 

@@ -28,7 +28,7 @@ CLASSNAMEINIT(SkellamFactory);
 
 /* Default constructor */
 SkellamFactory::SkellamFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

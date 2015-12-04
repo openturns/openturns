@@ -29,7 +29,7 @@ CLASSNAMEINIT(HistogramFactory);
 
 /* Default constructor */
 HistogramFactory::HistogramFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

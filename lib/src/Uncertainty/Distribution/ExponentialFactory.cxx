@@ -26,7 +26,7 @@ CLASSNAMEINIT(ExponentialFactory);
 
 /* Default constructor */
 ExponentialFactory::ExponentialFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

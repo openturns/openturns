@@ -22,7 +22,7 @@
 #define OPENTURNS_TRIANGULARFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Triangular.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TriangularFactory
  */
 class OT_API TriangularFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -43,7 +43,7 @@ public:
   virtual TriangularFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;

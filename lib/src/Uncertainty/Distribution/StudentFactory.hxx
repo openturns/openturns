@@ -22,7 +22,7 @@
 #define OPENTURNS_STUDENTFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Student.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class StudentFactory
  */
 class OT_API StudentFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -43,13 +43,13 @@ public:
   virtual StudentFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameter) const;
   Implementation build() const;
 
-  using DistributionImplementationFactory::buildEstimator;
+  using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
 
   Student buildAsStudent(const NumericalSample & sample) const;

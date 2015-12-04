@@ -27,7 +27,7 @@ CLASSNAMEINIT(DiracFactory);
 
 /* Default constructor */
 DiracFactory::DiracFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

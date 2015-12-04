@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CHISQUAREFACTORY_HXX
 #define OPENTURNS_CHISQUAREFACTORY_HXX
 
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "ChiSquare.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ChiSquareFactory
  */
 class OT_API ChiSquareFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -42,13 +42,13 @@ public:
   virtual ChiSquareFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
 
-  using DistributionImplementationFactory::buildEstimator;
+  using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
 
   ChiSquare buildAsChiSquare(const NumericalSample & sample) const;

@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_BERNSTEINCOPULAFACTORY_HXX
 #define OPENTURNS_BERNSTEINCOPULAFACTORY_HXX
 
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Distribution.hxx"
 #include "NumericalSample.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of BernsteinCopulaFactory.
  */
 class OT_API BernsteinCopulaFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:

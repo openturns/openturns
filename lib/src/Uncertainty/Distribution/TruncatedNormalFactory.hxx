@@ -22,7 +22,7 @@
 #define OPENTURNS_TRUNCATEDNORMALFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "TruncatedNormal.hxx"
 #include "OptimizationSolver.hxx"
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TruncatedNormalFactory
  */
 class OT_API TruncatedNormalFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -44,7 +44,7 @@ public:
   TruncatedNormalFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;

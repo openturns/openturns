@@ -27,7 +27,7 @@ CLASSNAMEINIT(RayleighFactory);
 
 /* Default constructor */
 RayleighFactory::RayleighFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

@@ -21,7 +21,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Description.hxx"
 #include "Path.hxx"
 #include "Exception.hxx"
@@ -39,10 +39,10 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DistributionImplementationFactory);
+CLASSNAMEINIT(DistributionFactoryImplementation);
 
 /* Default constructor */
-DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedInteger bootstrapSize)
+DistributionFactoryImplementation::DistributionFactoryImplementation(const UnsignedInteger bootstrapSize)
   : PersistentObject()
   , bootstrapSize_(bootstrapSize)
 {
@@ -50,13 +50,13 @@ DistributionImplementationFactory::DistributionImplementationFactory(const Unsig
 }
 
 /* Virtual constructor */
-DistributionImplementationFactory * DistributionImplementationFactory::clone() const
+DistributionFactoryImplementation * DistributionFactoryImplementation::clone() const
 {
-  return new DistributionImplementationFactory(*this);
+  return new DistributionFactoryImplementation(*this);
 }
 
 /* String converter */
-String DistributionImplementationFactory::__repr__() const
+String DistributionFactoryImplementation::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << this->getClassName();
@@ -64,7 +64,7 @@ String DistributionImplementationFactory::__repr__() const
 }
 
 /* String converter */
-String DistributionImplementationFactory::__str__(const String & offset) const
+String DistributionFactoryImplementation::__str__(const String & offset) const
 {
   return this->getClassName();
 }
@@ -73,20 +73,20 @@ String DistributionImplementationFactory::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Build a distribution based on a sample */
-DistributionImplementationFactory::Implementation DistributionImplementationFactory::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalSample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionImplementationFactory::build(const NumericalSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const NumericalSample & sample) const";
 }
 
 /* Build a distribution based on a sample and gives the covariance matrix of the estimate */
-DistributionImplementationFactory::Implementation DistributionImplementationFactory::build(const NumericalSample & sample,
+DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalSample & sample,
     CovarianceMatrix & covariance) const
 {
   /* The bootstrap sampler */
   BootstrapExperiment bootstrap(sample);
   /* Build the distribution based on the given sample */
-  DistributionImplementationFactory::Implementation distribution(build(sample));
-  const UnsignedInteger bootstrapSize(ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
+  DistributionFactoryImplementation::Implementation distribution(build(sample));
+  const UnsignedInteger bootstrapSize(ResourceMap::GetAsUnsignedInteger("DistributionFactoryImplementation-DefaultBootstrapSize"));
   NumericalSample parametersSample(bootstrapSize, distribution->getParameter());
   for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
   {
@@ -104,23 +104,23 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
 
 
 /* Build a distribution based on a set of parameters */
-DistributionImplementationFactory::Implementation DistributionImplementationFactory::build(const NumericalPoint & parameters) const
+DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalPoint & parameters) const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionImplementationFactory::build(const NumericalPointCollection & parameters) const";
+  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const NumericalPointCollection & parameters) const";
 }
 
 /* Build a distribution using its default constructor */
-DistributionImplementationFactory::Implementation DistributionImplementationFactory::build() const
+DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build() const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionImplementationFactory::build() const";
+  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build() const";
 }
 
-DistributionFactoryResult DistributionImplementationFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample) const
 {
   return buildBootStrapEstimator(sample);
 }
 
-DistributionFactoryResult DistributionImplementationFactory::buildEstimator(const NumericalSample & sample,
+DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample,
                                                                             const DistributionParameters & parameters) const
 {
   DistributionFactoryResult nativeResult(buildEstimator(sample));
@@ -156,7 +156,7 @@ DistributionFactoryResult DistributionImplementationFactory::buildEstimator(cons
   return result;
 }
 
-DistributionFactoryResult DistributionImplementationFactory::buildBootStrapEstimator(const NumericalSample & sample,
+DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstimator(const NumericalSample & sample,
                                                                                      const Bool isGaussian) const
 {
   Distribution distribution(build(sample));
@@ -181,7 +181,7 @@ DistributionFactoryResult DistributionImplementationFactory::buildBootStrapEstim
   return result;
 }
 
-DistributionFactoryResult DistributionImplementationFactory::buildMaximumLikelihoodEstimator (const NumericalSample & sample,
+DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelihoodEstimator (const NumericalSample & sample,
                                                                                               const Bool isRegular) const
 {
   const UnsignedInteger size = sample.getSize();
@@ -217,7 +217,7 @@ DistributionFactoryResult DistributionImplementationFactory::buildMaximumLikelih
   return result;
 }
 
-void DistributionImplementationFactory::setKnownParameter(const NumericalPoint & values,
+void DistributionFactoryImplementation::setKnownParameter(const NumericalPoint & values,
                                                           const Indices & indices)
 {
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
@@ -225,23 +225,23 @@ void DistributionImplementationFactory::setKnownParameter(const NumericalPoint &
   knownParameterIndices_ = indices;
 }
 
-Indices DistributionImplementationFactory::getKnownParameterIndices() const
+Indices DistributionFactoryImplementation::getKnownParameterIndices() const
 {
   return knownParameterIndices_;
 }
 
-NumericalPoint DistributionImplementationFactory::getKnownParameterValues() const
+NumericalPoint DistributionFactoryImplementation::getKnownParameterValues() const
 {
   return knownParameterValues_;
 }
 
 /* Bootstrap size accessor */
-UnsignedInteger DistributionImplementationFactory::getBootstrapSize() const
+UnsignedInteger DistributionFactoryImplementation::getBootstrapSize() const
 {
   return bootstrapSize_;
 }
 
-void DistributionImplementationFactory::setBootstrapSize(const UnsignedInteger bootstrapSize)
+void DistributionFactoryImplementation::setBootstrapSize(const UnsignedInteger bootstrapSize)
 {
   if (bootstrapSize == 0) throw InvalidArgumentException(HERE) << "Error: the bootstrap size must be > 0.";
   bootstrapSize_ = bootstrapSize;

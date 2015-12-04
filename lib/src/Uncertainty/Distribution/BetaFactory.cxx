@@ -28,7 +28,7 @@ CLASSNAMEINIT(BetaFactory);
 
 /* Default constructor */
 BetaFactory::BetaFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

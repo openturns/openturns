@@ -30,7 +30,7 @@ CLASSNAMEINIT(RiceFactory);
 
 /* Default constructor */
 RiceFactory::RiceFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

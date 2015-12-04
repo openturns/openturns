@@ -22,7 +22,7 @@
 #define OPENTURNS_ALIMIKHAILHAQCOPULAFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "AliMikhailHaqCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class AliMikhailHaqCopulaFactory
  */
 class OT_API AliMikhailHaqCopulaFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -45,7 +45,7 @@ public:
   virtual AliMikhailHaqCopulaFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;

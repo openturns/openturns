@@ -22,7 +22,7 @@
 #define OPENTURNS_GUMBELFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Gumbel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GumbelFactory
  */
 class OT_API GumbelFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -43,12 +43,12 @@ public:
   virtual GumbelFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  using DistributionImplementationFactory::buildEstimator;
+  using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
   Gumbel buildAsGumbel(const NumericalSample & sample) const;
   Gumbel buildAsGumbel(const NumericalPoint & parameters) const;

@@ -22,7 +22,7 @@
 #define OPENTURNS_SKELLAMFACTORY_HXX
 
 #include "OTprivate.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "Skellam.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SkellamFactory
  */
 class OT_API SkellamFactory
-  : public DistributionImplementationFactory
+  : public DistributionFactoryImplementation
 {
   CLASSNAME;
 public:
@@ -43,13 +43,13 @@ public:
   virtual SkellamFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
-  using DistributionImplementationFactory::build;
+  using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
 
-  using DistributionImplementationFactory::buildEstimator;
+  using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
 
   Skellam buildAsSkellam(const NumericalSample & sample) const;

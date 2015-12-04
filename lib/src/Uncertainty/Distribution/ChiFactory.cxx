@@ -26,7 +26,7 @@ CLASSNAMEINIT(ChiFactory);
 
 /* Default constructor */
 ChiFactory::ChiFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

@@ -27,7 +27,7 @@ CLASSNAMEINIT(NormalCopulaFactory);
 
 /* Default constructor */
 NormalCopulaFactory::NormalCopulaFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

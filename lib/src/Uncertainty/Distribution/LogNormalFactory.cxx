@@ -32,7 +32,7 @@ CLASSNAMEINIT(LogNormalFactory);
 
 /* Default constructor */
 LogNormalFactory::LogNormalFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

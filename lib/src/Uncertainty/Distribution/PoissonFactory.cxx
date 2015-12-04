@@ -28,7 +28,7 @@ CLASSNAMEINIT(PoissonFactory);
 
 /* Default constructor */
 PoissonFactory::PoissonFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

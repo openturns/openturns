@@ -28,7 +28,7 @@ CLASSNAMEINIT(InverseNormalFactory);
 
 /* Default constructor */
 InverseNormalFactory::InverseNormalFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

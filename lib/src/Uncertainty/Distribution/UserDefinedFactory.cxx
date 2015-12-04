@@ -28,7 +28,7 @@ CLASSNAMEINIT(UserDefinedFactory);
 
 /* Default constructor */
 UserDefinedFactory::UserDefinedFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }

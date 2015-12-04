@@ -31,7 +31,7 @@ CLASSNAMEINIT(AliMikhailHaqCopulaFactory);
 
 /* Default constructor */
 AliMikhailHaqCopulaFactory::AliMikhailHaqCopulaFactory():
-  DistributionImplementationFactory()
+  DistributionFactoryImplementation()
 {
   // Nothing to do
 }

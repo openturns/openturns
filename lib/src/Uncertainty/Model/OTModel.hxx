@@ -33,7 +33,7 @@
 #include "Distribution.hxx"
 #include "DistributionFactory.hxx"
 #include "DistributionImplementation.hxx"
-#include "DistributionImplementationFactory.hxx"
+#include "DistributionFactoryImplementation.hxx"
 #include "DistributionParametersImplementation.hxx"
 #include "DistributionParameters.hxx"
 #include "EllipticalDistribution.hxx"

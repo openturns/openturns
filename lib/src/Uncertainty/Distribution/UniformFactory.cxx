@@ -26,7 +26,7 @@ CLASSNAMEINIT(UniformFactory);
 
 /* Default constructor */
 UniformFactory::UniformFactory()
-  : DistributionImplementationFactory()
+  : DistributionFactoryImplementation()
 {
   // Nothing to do
 }
