@@ -6,6 +6,8 @@
 
 OTTypedInterfaceObjectHelper(MeshFactory)
 
+%include MeshFactory_doc.i
+
 %include MeshFactory.hxx
 
 namespace OT { 

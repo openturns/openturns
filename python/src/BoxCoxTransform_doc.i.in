@@ -31,7 +31,7 @@ The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \ri
     h_{\lambda_i, \alpha_i} (x)= 
     \left\{
     \begin{array}{ll}
-    \dfrac{(x+\alpha_i)^\lambda_i-1}{\lambda} & \lambda_i \neq 0 \\
+    \dfrac{(x+\alpha_i)^{\lambda_i}-1}{\lambda} & \lambda_i \neq 0 \\
     \log(x+\alpha_i)                        & \lambda_i = 0
     \end{array}
     \right.
@@ -61,10 +61,13 @@ Create a Box Cox tranformation:
 >>> myLambda = 0.1
 >>> myBoxCox = ot.BoxCoxTransform(myLambda)
 
-Apply the transformation to a sample:
+Estimate a transformation from a sample:
 
 >>> mySample = ot.Exponential(2).getSample(1000)
 >>> myModelTransform = ot.BoxCoxFactory().build(mySample)
+
+Apply ot to the sample:
+
 >>> myNormalSample = myModelTransform(mySample)
 
 >>> hist = ot.HistogramFactory().build(myNormalSample)

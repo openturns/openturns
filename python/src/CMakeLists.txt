@@ -188,8 +188,8 @@ ot_add_python_module(statistics statistics_module.i
                       ExponentialModel.i ExponentialModel_doc.i.in
                       ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
                       CauchyModel.i CauchyModel_doc.i.in
-                      CovarianceModelFactoryImplementation.i
-                      CovarianceModelFactory.i
+                      CovarianceModelFactoryImplementation.i CovarianceModelFactoryImplementation_doc.i.in
+                      CovarianceModelFactory.i CovarianceModelFactory_doc.i.in
                       UserDefinedCovarianceModel.i UserDefinedCovarianceModel_doc.i.in
                       UserDefinedStationaryCovarianceModel.i UserDefinedStationaryCovarianceModel_doc.i.in
                       StationaryCovarianceModelFactory.i StationaryCovarianceModelFactory_doc.i.in
@@ -210,9 +210,9 @@ ot_add_python_module(statistics statistics_module.i
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in
                       Mesh.i Mesh_doc.i.in
-                      RegularGrid.i
-                      MeshFactoryImplementation.i
-                      MeshFactory.i
+                      RegularGrid.i RegularGrid_doc.i.in
+                      MeshFactoryImplementation.i MeshFactoryImplementation_doc.i.in
+                      MeshFactory.i MeshFactory_doc.i.in
                       IntervalMesher.i IntervalMesher_doc.i.in
                       BaseGeomTemplateDefs.i
                     )
@@ -468,8 +468,8 @@ ot_add_python_module(model_process model_process_module.i
                       SpectralNormalProcess.i SpectralNormalProcess_doc.i.in
                       TemporalNormalProcess.i TemporalNormalProcess_doc.i.in
                       AggregatedProcess.i AggregatedProcess_doc.i.in
-                      CompositeProcess.i
-                      FunctionalBasisProcess.i
+                      CompositeProcess.i CompositeProcess_doc.i.in
+                      FunctionalBasisProcess.i FunctionalBasisProcess_doc.i.in
                       ARMAFactoryImplementation.i ARMAFactoryImplementation_doc.i.in
                       WhittleFactory.i WhittleFactory_doc.i.in
                       WhittleFactoryState.i WhittleFactoryState_doc.i.in
