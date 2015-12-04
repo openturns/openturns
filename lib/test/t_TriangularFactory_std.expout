@@ -6,3 +6,5 @@ Triangular          =class=Triangular name=Triangular dimension=1 a=1 m=2.5 b=4
 Estimated triangular=class=Triangular name=Triangular dimension=1 a=1.02699 m=2.51471 b=3.97879
 Default triangular=class=Triangular name=Triangular dimension=1 a=-1 m=0 b=1
 Triangular from parameters=class=Triangular name=Triangular dimension=1 a=1 m=2.5 b=4
+Estimated distribution=class=Triangular name=Triangular dimension=1 a=-2.22045e-15 m=0 b=2.22045e-15
+Estimated distribution=class=Triangular name=Triangular dimension=1 a=1 m=1 b=1

@@ -19,6 +19,7 @@
  *
  */
 #include "ExponentialFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,9 +61,16 @@ Exponential ExponentialFactory::buildAsExponential(const NumericalSample & sampl
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Exponential distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Exponential distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
+  if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMin)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
+ const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar mean(sample.computeMean()[0]);
-  if (mean == gamma) throw InvalidArgumentException(HERE) << "Error: can build an Exponential distribution only from a sample with mean > min, here mean=" << mean << " and min=" << gamma;
+  // If sample with constant null data, build an approximation of Dirac(0) by hand
+  if (mean == gamma)
+    {
+      Exponential result(SpecFunc::MaxNumericalScalar / SpecFunc::LogMaxNumericalScalar, 0.0);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   const NumericalScalar lambda(1.0 / (mean - gamma));
   Exponential result(lambda, gamma);
   result.setDescription(sample.getDescription());

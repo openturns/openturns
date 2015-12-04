@@ -65,7 +65,13 @@ Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
   const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar mu(sample.computeMean()[0]);
   const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
-  if (!(sigma > 0.0) || SpecFunc::IsInf(sigma)) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only if sigma > 0, here sigma=" << sigma;
+  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution if data contains NaN or Inf";
+  if (sigma == 0.0)
+    {
+      Gamma result(SpecFunc::MaxNumericalScalar / SpecFunc::LogMaxNumericalScalar, 1.0, gamma);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   NumericalScalar lambda((mu - gamma) / sigma);
   const NumericalScalar k(lambda * lambda);
   lambda /= sigma;

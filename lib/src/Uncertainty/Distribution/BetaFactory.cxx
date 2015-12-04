@@ -66,8 +66,14 @@ Beta BetaFactory::buildAsBeta(const NumericalSample & sample) const
   const NumericalScalar a(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar xMax(sample.getMax()[0]);
   const NumericalScalar b(xMax + std::abs(xMax) / (2.0 + size));
-  // Check that 1.) a and b are not NaN, 2.) a < b, 3.) b is not +Inf
-  if (!(a < b) || SpecFunc::IsInf(b)) throw InvalidArgumentException(HERE) << "Error: can build a Beta distribution only if a < b, here a=" << a << " and b=" << b;
+  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
+  if (xMin == xMax)
+    {
+      const NumericalScalar delta(std::max(std::abs(xMin), 100.0) * SpecFunc::NumericalScalarEpsilon);
+      Beta result(1.0, 2.0, xMin - delta, xMax + delta);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   const NumericalScalar mean(sample.computeMean()[0]);
   const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
   const NumericalScalar t((b - mean) * (mean - a) / (sigma * sigma) - 1.0);

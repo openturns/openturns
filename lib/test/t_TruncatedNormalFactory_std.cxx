@@ -69,6 +69,17 @@ int main(int argc, char *argv[])
       estimatedTruncatedNormal = factory.buildAsTruncatedNormal(distribution.getParameter());
       fullprint << "TruncatedNormal from parameters=" << estimatedTruncatedNormal << std::endl;
     }
+    // Test for constant sample
+    TruncatedNormalFactory factory;
+    UnsignedInteger size(10000);
+    NumericalSample sample(size, NumericalPoint(1, 0.0));
+    // Test for constant sample
+    sample = NumericalSample(size, NumericalPoint(1, 0.0));
+    Distribution estimatedDistribution(factory.build(sample));
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    estimatedDistribution = factory.build(sample);
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

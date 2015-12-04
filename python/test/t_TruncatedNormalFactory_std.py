@@ -34,3 +34,9 @@ for i in range(4):
     estimatedTruncatedNormal = factory.buildAsTruncatedNormal(
         distribution.getParameter())
     print("TruncatedNormal from parameters=", estimatedTruncatedNormal)
+sample = [[0.0]]*size
+estimatedDistribution = factory.build(sample)
+print("Estimated distribution=", repr(estimatedDistribution))
+sample = [[1.0]]*size
+estimatedDistribution = factory.build(sample)
+print("Estimated distribution=", repr(estimatedDistribution))

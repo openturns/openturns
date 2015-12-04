@@ -52,6 +52,13 @@ int main(int argc, char *argv[])
     fullprint << "Estimated histogram=" << estimatedHistogram << std::endl;
     estimatedHistogram = factory.buildAsHistogram();
     fullprint << "Default histogram=" << estimatedHistogram << std::endl;
+    // Test for constant sample
+    sample = NumericalSample(size, NumericalPoint(1, 0.0));
+    estimatedDistribution = factory.build(sample);
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    estimatedDistribution = factory.build(sample);
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

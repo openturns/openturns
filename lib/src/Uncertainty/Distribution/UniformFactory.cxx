@@ -19,6 +19,7 @@
  *
  */
 #include "UniformFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,7 +65,14 @@ Uniform UniformFactory::buildAsUniform(const NumericalSample & sample) const
   const NumericalScalar a(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar xMax(sample.getMax()[0]);
   const NumericalScalar b(xMax + std::abs(xMax) / (2.0 + size));
-  if (a >= b) throw InvalidArgumentException(HERE) << "Error: can build a Uniform distribution only if a < b, here a=" << a << " and b=" << b;
+  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution if data contains NaN or Inf";
+  if (xMin == xMax)
+    {
+      const NumericalScalar delta(std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon);
+      Uniform result(xMin - delta, xMax + delta);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   Uniform result(a, b);
   result.setDescription(sample.getDescription());
   return result;

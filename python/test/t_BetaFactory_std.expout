@@ -12,3 +12,5 @@ Beta          = Beta(r = 1.5, t = 4.3, a = -1, b = 2)
 Estimated Beta= Beta(r = 1.43176, t = 3.95068, a = -0.995542, b = 1.87405)
 Default Beta= Beta(r = 2, t = 4, a = -1, b = 1)
 Beta from parameters= Beta(r = 1.5, t = 4.3, a = -1, b = 2)
+Estimated distribution= class=Beta name=Beta dimension=1 r=1 t=2 a=-2.22045e-14 b=2.22045e-14
+Estimated distribution= class=Beta name=Beta dimension=1 r=1 t=2 a=1 b=1

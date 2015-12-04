@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "RayleighFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,34 +65,42 @@ Rayleigh RayleighFactory::buildAsRayleigh(const NumericalSample & sample) const
   const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   NumericalScalar sumSquares(0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const NumericalScalar xI(sample[i][0] - gamma);
-    sumSquares += xI * xI;
-  }
+    {
+      const NumericalScalar xI(sample[i][0] - gamma);
+      sumSquares += xI * xI;
+    }
+  // Here we test on sumSquares in order to detect also overflows
+  if (!SpecFunc::IsNormal(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
+  if (sumSquares == 0.0)
+    {
+      Rayleigh result(100.0 * (std::max(std::abs(gamma), SpecFunc::NumericalScalarEpsilon) * SpecFunc::NumericalScalarEpsilon), gamma);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   try
-  {
-    Rayleigh result(std::sqrt(0.5 * sumSquares / size), gamma);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+    {
+      Rayleigh result(std::sqrt(0.5 * sumSquares / size), gamma);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   catch (InvalidArgumentException)
-  {
-    throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rayleigh distribution from the given sample";
-  }
+    {
+      throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rayleigh distribution from the given sample";
+    }
 }
 
 Rayleigh RayleighFactory::buildAsRayleigh(const NumericalPoint & parameters) const
 {
   try
-  {
-    Rayleigh distribution;
-    distribution.setParameter(parameters);
-    return distribution;
-  }
+    {
+      Rayleigh distribution;
+      distribution.setParameter(parameters);
+      return distribution;
+    }
   catch (InvalidArgumentException)
-  {
-    throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution from the given parameters";
-  }
+    {
+      throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution from the given parameters";
+    }
 }
 
 Rayleigh RayleighFactory::buildAsRayleigh() const
