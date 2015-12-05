@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     KarhunenLoeveP1Factory factory(mesh, 0.0);
     NumericalPoint lambda;
     ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(1, 1.0), lambda));
-    fullprint << "KL modes=" << KLModes;
-    fullprint << "KL eigenvalues=" << lambda;
+    fullprint << "KL modes=" << KLModes << std::endl;
+    fullprint << "KL eigenvalues=" << lambda << std::endl;
   }
   catch (TestFailed & ex)
   {
