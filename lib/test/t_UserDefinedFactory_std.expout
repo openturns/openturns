@@ -4,3 +4,4 @@ Default distribution=class=UserDefined name=UserDefined dimension=1 collection=[
 Sample                =class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=2 data=[[1,1.5],[2,2.5],[3,3.5]]
 Estimated UserDefined=class=UserDefined name=UserDefined dimension=2 collection=[(class=NumericalPoint name=Unnamed dimension=2 values=[1,1.5],0.333333),(class=NumericalPoint name=Unnamed dimension=2 values=[2,2.5],0.333333),(class=NumericalPoint name=Unnamed dimension=2 values=[3,3.5],0.333333)]
 Default UserDefined=class=UserDefined name=UserDefined dimension=1 collection=[(class=NumericalPoint name=Unnamed dimension=1 values=[0],1)]
+Estimated distribution=class=UserDefined name=UserDefined dimension=1 collection=[(class=NumericalPoint name=Unnamed dimension=1 values=[0],1)]

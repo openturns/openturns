@@ -555,7 +555,7 @@ void UserDefined::setPairCollection(const UserDefinedPairCollection & collection
   {
     NumericalPoint x(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++j) x[j] = weightedData[i][j];
-    collection_[i] = UserDefinedPair(x, weightedData[i][dimension]);
+    collection_[i] = UserDefinedPair(x, std::max(0.0, std::min(1.0, weightedData[i][dimension])));
   }
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0. It stabilizes the sampling procedures without affecting their correctness (i.e. the algoritms are exact, not approximative)
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;
@@ -669,12 +669,12 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
     if (std::abs(currentLocation - lastLocation) <= epsilon) lastWeight += collection_[i].getP();
     else
     {
-      compactCollection.add(UserDefinedPair(NumericalPoint(1, lastLocation), lastWeight));
+      compactCollection.add(UserDefinedPair(NumericalPoint(1, lastLocation), std::max(0.0, std::min(1.0, lastWeight))));
       lastLocation = currentLocation;
       lastWeight = currentWeight;
     }
   }
-  compactCollection.add(UserDefinedPair(NumericalPoint(1, lastLocation), lastWeight));
+  compactCollection.add(UserDefinedPair(NumericalPoint(1, lastLocation), std::max(0.0, std::min(1.0, lastWeight))));
   setPairCollection(compactCollection);
 }
 
