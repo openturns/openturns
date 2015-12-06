@@ -37,9 +37,9 @@ class OT_API Frechet
 public:
 
   /** Parameters constructor */
-  explicit Frechet(const NumericalScalar alpha = 1.,
-                   const NumericalScalar beta = 1.,
-                   const NumericalScalar gamma = 0.);
+  explicit Frechet(const NumericalScalar alpha = 1.0,
+                   const NumericalScalar beta = 1.0,
+                   const NumericalScalar gamma = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const Frechet & other) const;
@@ -87,6 +87,12 @@ public:
 
   /** Get the kurtosis of the distribution */
   NumericalPoint getKurtosis() const;
+
+  /** Get the raw moments of the standardized distribution */
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+
+  /** Get the standard representative in the parametric family, associated with the standard moments */
+  Implementation getStandardRepresentative() const;
 
   /** Parameters value accessors */
   void setParameter(const NumericalPoint & parameter);

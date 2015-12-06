@@ -7,7 +7,7 @@ ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
 # Instanciate one distribution object
-distribution = ot.Frechet(3.)
+distribution = ot.Frechet(6.0, 1.5, -1.0)
 print("Distribution ", distribution)
 
 # Is this distribution elliptical ?
