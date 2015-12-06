@@ -226,13 +226,14 @@ PyObject * __getitem__(PyObject * args) const {
       return OT::convert< OT::NumericalScalar, OT::_PyFloat_>( self->at(arg2, arg3) );
     }
   }
+
 fail:
   return NULL;
 }
 
 
 
-void __setitem__(PyObject * args, PyObject * valObj) {
+PyObject * __setitem__(PyObject * args, PyObject * valObj) {
 
   Py_ssize_t start1;
   Py_ssize_t stop1;
@@ -254,7 +255,7 @@ void __setitem__(PyObject * args, PyObject * valObj) {
     {
       self->at( start1 + i*step1 ) = val2->at(i);
     }
-    return;
+    return SWIG_Py_Void();
   }
 
   PyObject * obj1 = 0 ;
@@ -373,8 +374,10 @@ void __setitem__(PyObject * args, PyObject * valObj) {
       self->at(arg2, arg3) = val;
     }
   }
+
+  return SWIG_Py_Void();
 fail:
-  return;
+  return NULL;
 }
 
 NumericalSample(const NumericalSample & other)
