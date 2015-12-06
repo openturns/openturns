@@ -105,7 +105,7 @@ DistributionImplementation::DistributionImplementation()
   // The range is empty by default
   , range_(Interval(1.0, -1.0))
   , description_(1)
-  , isParallel_(ResourceMap::GetAsUnsignedInteger("DistributionImplementation-Parallel") != 0)
+  , isParallel_(ResourceMap::GetAsBool("DistributionImplementation-Parallel"))
   , isInitializedCF_(false)
   , pdfGrid_(0)
 {

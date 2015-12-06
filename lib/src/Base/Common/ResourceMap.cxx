@@ -583,6 +583,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10 );
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10 );
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10 );
+  setAsBool("MaximumLikelihoodFactory-Parallel", true);
 
   // Student parameters //
   setAsUnsignedInteger( "Student-MaximumNumberOfPoints", 10000000 );
@@ -722,7 +723,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "DistributionImplementation-DefaultIntegrationNodesNumber", 255 );
   setAsUnsignedInteger( "DistributionImplementation-DefaultLevelNumber", 10 );
   setAsUnsignedInteger( "DistributionImplementation-DefaultQuantileCacheSize", 128 );
-  setAsUnsignedInteger( "DistributionImplementation-Parallel", 0 );
+  setAsBool("DistributionImplementation-Parallel", false);
   setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionBlockMax", 20 );
   setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionNMax", 1000000 );
 

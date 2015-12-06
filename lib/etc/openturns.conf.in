@@ -316,6 +316,7 @@
   <MaximumLikelihoodFactory-MaximumRelativeError    value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumObjectiveError   value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumConstraintError  value="1.0e-10" />
+  <MaximumLikelihoodFactory-Parallel                value="true" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumNumberOfPoints          value="10000000" />
@@ -455,7 +456,7 @@
   <DistributionImplementation-DefaultIntegrationNodesNumber  value="255"     />
   <DistributionImplementation-DefaultLevelNumber             value="10"      />
   <DistributionImplementation-DefaultQuantileCacheSize       value="128"     />
-  <DistributionImplementation-Parallel                       value="1"       />
+  <DistributionImplementation-Parallel                       value="true"    />
   <DistributionImplementation-CharacteristicFunctionBlockMax value="20"      />
   <DistributionImplementation-CharacteristicFunctionNMax     value="1000000" />
 
