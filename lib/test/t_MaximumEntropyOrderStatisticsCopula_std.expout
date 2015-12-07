@@ -30,6 +30,9 @@ mean=class=NumericalPoint name=Unnamed dimension=4 values=[0.5,0.5,0.5,0.5]
 standard deviation=class=NumericalPoint name=Unnamed dimension=4 values=[0.2887,0.2887,0.2887,0.2887]
 skewness=class=NumericalPoint name=Unnamed dimension=4 values=[0,0,0,0]
 kurtosis=class=NumericalPoint name=Unnamed dimension=4 values=[1.8,1.8,1.8,1.8]
+covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.08333,0,0,0,0,0.08333,0.001405,0,0,0.001405,0.08333,0.004074,0,0,0.004074,0.08333]
+correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01686,0,0,0.01686,1,0.04889,0,0,0.04889,1]
+spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01686,0,0,0.01686,1,0.04889,0,0,0.04889,1]
 parameters=[[a_marginal_0 : -2, b_marginal_0 : -1.1, c_marginal_0 : -1, d_marginal_0 : 1],[aLog_marginal_1 : 1, bLog_marginal_1 : 1.2],[a_marginal_2 : 3, m_marginal_2 : 4.5, b_marginal_2 : 5],[r_marginal_3 : 2.5, t_marginal_3 : 6, a_marginal_3 : 4.7, b_marginal_3 : 5.2]]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1

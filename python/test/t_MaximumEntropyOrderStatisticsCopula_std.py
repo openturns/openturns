@@ -39,8 +39,8 @@ print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
 # Define a point
-point = [0.3 + i * 0.1 for i in range(dim)]
-print("Point= ", repr(ot.NumericalPoint(point)))
+point = ot.NumericalPoint([0.35, 0.15, 0.02, 0.33])
+print("Point= ", point)
 
 # Show PDF and CDF of point
 eps = 1e-5

@@ -2,19 +2,19 @@ Copula  MaximumEntropyOrderStatisticsCopula(collection = [Trapezoidal(a = -2, b 
 Elliptical copula=  False
 Elliptical copula=  False
 Independent copula=  False
-oneRealization= class=NumericalPoint name=Unnamed dimension=4 values=[0.629877,0.882805,0.159663,0.116931]
-oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[0.347057,0.969423,0.924238,0.764586]  last= class=NumericalPoint name=Unnamed dimension=4 values=[0.450413,0.630137,0.135818,0.130268]
-mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.499014,0.499206,0.505609,0.503548]
-covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0849644,-0.000136295,0.000166964,0.000103713,-0.000136295,0.0831311,0.00170779,0.00123735,0.000166964,0.00170779,0.0847751,0.0666844,0.000103713,0.00123735,0.0666844,0.0836533]
-Point=  class=NumericalPoint name=Unnamed dimension=4 values=[0.3,0.4,0.5,0.6]
-ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[0.31919,0.216791,2.04622,-0.319358]
-log pdf=-0.448822
-pdf     =0.638380
-condPDF     =2.512553
-cdf=0.052448
-ccdf=0.947552
-condCDF     =0.581241
-quantile= class=NumericalPoint name=Unnamed dimension=4 values=[0.986684,0.986684,0.986684,0.986684]
+oneRealization= class=NumericalPoint name=Unnamed dimension=4 values=[0.629877,0.882805,0.151547,0.0302348]
+oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[0.347057,0.969423,0.923052,0.492666]  last= class=NumericalPoint name=Unnamed dimension=4 values=[0.450413,0.630137,0.137583,0.707768]
+mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.499014,0.499206,0.5056,0.499316]
+covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0849644,-0.000136295,0.000187446,7.82855e-05,-0.000136295,0.0831311,0.00100951,-1.89497e-05,0.000187446,0.00100951,0.0847861,0.00446144,7.82855e-05,-1.89497e-05,0.00446144,0.0831515]
+Point=  [0.35,0.15,0.02,0.33]
+ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[0.318639,0.227512,-1.13455,-0.276473]
+log pdf=-0.450551
+pdf     =0.637277
+condPDF     =19.425306
+cdf=0.000482
+ccdf=0.999518
+condCDF     =0.611494
+quantile= class=NumericalPoint name=Unnamed dimension=4 values=[0.987341,0.987341,0.987341,0.987341]
 cdf(quantile)=0.950000
 condQuantile     =0.617304
 mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.5,0.5,0.5,0.5]

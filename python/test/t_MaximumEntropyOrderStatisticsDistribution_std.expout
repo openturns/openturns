@@ -4,10 +4,10 @@ oneRealization= class=NumericalPoint name=Unnamed dimension=4 values=[-0.514848,
 oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[-1.01206,3.29988,4.7226,4.9015]  last= class=NumericalPoint name=Unnamed dimension=4 values=[-0.845925,3.08338,3.64246,4.96147]
 mean= class=NumericalPoint name=Unnamed dimension=4 values=[-0.690223,3.00869,4.17387,4.90804]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.403946,-0.00036587,0.000932395,-5.81027e-05,-0.00036587,0.0300943,0.00129843,-2.28507e-05,0.000932395,0.00129843,0.183603,0.00207535,-5.81027e-05,-2.28507e-05,0.00207535,0.00865565]
-Point=  [0.0, 3.0, 4.0, 5.0]
-ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.527617,3.84216e-06,0.527617,-3.95716]
-log pdf=-0.639385
-pdf     =0.527617
+Point=  [0,3.2,4.2,5]
+ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.645398,0.107242,0.537832,-4.84052]
+log pdf=-0.437888
+pdf     =0.645398
 condPDF     =0.000000
 cdf=0.115600
 ccdf=0.884400
