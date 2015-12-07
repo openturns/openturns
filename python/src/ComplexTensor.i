@@ -9,94 +9,6 @@
 %template(ComplexTensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexTensorImplementation>;
 %apply const NumericalComplexCollection & { const OT::ComplexTensor::NumericalComplexCollection & };
 
-%define OT_COMPLEXTENSOR_ACCESSORS(tensorType)
-
-NumericalComplex __getitem__(PyObject * args) const {
-
-  OT::UnsignedInteger arg2 ;
-  OT::UnsignedInteger arg3 ;
-  OT::UnsignedInteger arg4 ;
-  unsigned long val2 ;
-  int ecode2 = 0 ;
-  unsigned long val3 ;
-  int ecode3 = 0 ;
-  unsigned long val4 ;
-  int ecode4 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-
-  if (!PyArg_ParseTuple(args,(char *)"OOO:" #tensorType "___getitem__",&obj1,&obj2,&obj3)) SWIG_fail;
-
-  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #tensorType "___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
-  }
-  arg2 = static_cast< OT::UnsignedInteger >(val2);
-
-
-  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" #tensorType "___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
-  }
-  arg3 = static_cast< OT::UnsignedInteger >(val3);
-
-
-  ecode4 = SWIG_AsVal_unsigned_SS_long(obj3, &val4);
-  if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" #tensorType "___getitem__" "', argument " "4"" of type '" "OT::UnsignedInteger""'");
-  }
-  arg4 = static_cast< OT::UnsignedInteger >(val4);
-
-  return (*self)(arg2,arg3,arg4);
-fail:
-  return 0.;
-}
-
-void __setitem__(PyObject * args, NumericalComplex val) {
-
-  OT::UnsignedInteger arg2 ;
-  OT::UnsignedInteger arg3 ;
-  OT::UnsignedInteger arg4 ;
-  unsigned long val2 ;
-  int ecode2 = 0 ;
-  unsigned long val3 ;
-  int ecode3 = 0 ;
-  unsigned long val4 ;
-  int ecode4 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-
-  if (!PyArg_ParseTuple(args,(char *)"OOO:" #tensorType "___setitem__",&obj1,&obj2,&obj3)) SWIG_fail;
-
-  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #tensorType "___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
-  }
-  arg2 = static_cast< OT::UnsignedInteger >(val2);
-
-
-  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" #tensorType "___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
-  }
-  arg3 = static_cast< OT::UnsignedInteger >(val3);
-
-
-  ecode4 = SWIG_AsVal_unsigned_SS_long(obj3, &val4);
-  if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" #tensorType "___setitem__" "', argument " "4"" of type '" "OT::UnsignedInteger""'");
-  }
-  arg4 = static_cast< OT::UnsignedInteger >(val4);
-
-  (*self)(arg2,arg3,arg4) = val;
-fail:
-  return;
-}
-%enddef
-
-
 %include ComplexTensor.hxx
 
 %pythoncode %{
@@ -127,7 +39,7 @@ namespace OT {
 
   ComplexTensor(PyObject * pyObj) { return new OT::ComplexTensor( OT::convert<OT::_PySequence_,OT::ComplexTensor>(pyObj) ); }
 
-  OT_COMPLEXTENSOR_ACCESSORS(ComplexTensor)
+  OTTensorAccessors(ComplexTensor, NumericalComplex, _PyComplex_)
 
 } // ComplexTensor
 } // OT

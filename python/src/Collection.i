@@ -64,7 +64,7 @@ fail:
 
 
 %define OT_COLLECTION_SETITEM(collectionType, elementType)
-void __setitem__(PyObject * arg, PyObject * valObj)
+PyObject * __setitem__(PyObject * arg, PyObject * valObj)
 {
   if (PySlice_Check(arg))
   {
@@ -100,8 +100,10 @@ void __setitem__(PyObject * arg, PyObject * valObj)
     elementType val = OT::convert< OT::traitsPythonType<elementType>::Type, elementType >( valObj );
     self->at(arg2) = val;
   }
+
+  return SWIG_Py_Void();
 fail:
-  return;
+  return NULL;
 }
 %enddef
 

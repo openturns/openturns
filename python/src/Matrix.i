@@ -148,7 +148,7 @@ fail:
 %enddef
 
 %define OTMatrixSetAccessor(baseType, elementType, pythonElementType)
-void __setitem__(PyObject * args, PyObject * valObj) {
+PyObject * __setitem__(PyObject * args, PyObject * valObj) {
 
   Py_ssize_t start1;
   Py_ssize_t stop1;
@@ -173,7 +173,7 @@ void __setitem__(PyObject * args, PyObject * valObj) {
         self->operator()( start1 + i*step1, j ) = val2->operator()(i, j);
       }
     }
-    return;
+    return SWIG_Py_Void();
   }
 
   PyObject * obj1 = 0 ;
@@ -287,8 +287,10 @@ void __setitem__(PyObject * args, PyObject * valObj) {
       self->operator()(arg2, arg3) = OT::convert< OT::pythonElementType, OT::elementType >(valObj);
     }
   }
+
+  return SWIG_Py_Void();
 fail:
-  return;
+  return NULL;
 }
 %enddef
 

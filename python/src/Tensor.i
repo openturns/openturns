@@ -9,10 +9,9 @@
 %template(TensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::TensorImplementation>;
 %apply const NumericalScalarCollection & { const OT::Tensor::NumericalScalarCollection & };
 
-%define OT_TENSOR_ACCESSORS(tensorType)
+%define OTTensorAccessors(baseType, elementType, pythonElementType)
 
-NumericalScalar __getitem__(PyObject * args) const {
-
+PyObject * __getitem__(PyObject * args) const {
   OT::UnsignedInteger arg2 ;
   OT::UnsignedInteger arg3 ;
   OT::UnsignedInteger arg4 ;
@@ -26,34 +25,34 @@ NumericalScalar __getitem__(PyObject * args) const {
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
 
-  if (!PyArg_ParseTuple(args,(char *)"OOO:" #tensorType "___getitem__",&obj1,&obj2,&obj3)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:" #baseType "___getitem__",&obj1,&obj2,&obj3)) SWIG_fail;
 
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #tensorType "___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #baseType "___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
   }
   arg2 = static_cast< OT::UnsignedInteger >(val2);
 
 
   ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" #tensorType "___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" #baseType "___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
   }
   arg3 = static_cast< OT::UnsignedInteger >(val3);
 
 
   ecode4 = SWIG_AsVal_unsigned_SS_long(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" #tensorType "___getitem__" "', argument " "4"" of type '" "OT::UnsignedInteger""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" #baseType "___getitem__" "', argument " "4"" of type '" "OT::UnsignedInteger""'");
   }
   arg4 = static_cast< OT::UnsignedInteger >(val4);
 
-  return (*self)(arg2,arg3,arg4);
+  return OT::convert<OT::elementType, OT::pythonElementType>((*self)(arg2,arg3,arg4));
 fail:
-  return 0.;
+  return NULL;
 }
 
-void __setitem__(PyObject * args, NumericalScalar val) {
+PyObject * __setitem__(PyObject * args, elementType val) {
 
   OT::UnsignedInteger arg2 ;
   OT::UnsignedInteger arg3 ;
@@ -68,31 +67,33 @@ void __setitem__(PyObject * args, NumericalScalar val) {
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
 
-  if (!PyArg_ParseTuple(args,(char *)"OOO:" #tensorType "___setitem__",&obj1,&obj2,&obj3)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:" #baseType "___setitem__",&obj1,&obj2,&obj3)) SWIG_fail;
 
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #tensorType "___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #baseType "___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
   }
   arg2 = static_cast< OT::UnsignedInteger >(val2);
 
 
   ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" #tensorType "___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" #baseType "___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
   }
   arg3 = static_cast< OT::UnsignedInteger >(val3);
 
 
   ecode4 = SWIG_AsVal_unsigned_SS_long(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" #tensorType "___setitem__" "', argument " "4"" of type '" "OT::UnsignedInteger""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" #baseType "___setitem__" "', argument " "4"" of type '" "OT::UnsignedInteger""'");
   }
   arg4 = static_cast< OT::UnsignedInteger >(val4);
 
   (*self)(arg2,arg3,arg4) = val;
+
+  return SWIG_Py_Void();
 fail:
-  return;
+  return NULL;
 }
 %enddef
 
@@ -127,7 +128,7 @@ namespace OT {
 
   Tensor(PyObject * pyObj) { return new OT::Tensor( OT::convert<OT::_PySequence_,OT::Tensor>(pyObj) ); }
 
-  OT_TENSOR_ACCESSORS(Tensor)
+  OTTensorAccessors(Tensor, NumericalScalar, _PyFloat_)
 
 } // Tensor
 } // OT
