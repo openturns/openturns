@@ -53,6 +53,12 @@ public:
   GeneralizedPareto buildAsGeneralizedPareto(const NumericalPoint & parameters) const;
   GeneralizedPareto buildAsGeneralizedPareto() const;
 
+  /** Optimization solver accessor */
+  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationSolver & solver);
+
+protected:
+
   /** Algorithm associated with the method of moments */
   GeneralizedPareto buildMethodOfMoments(const NumericalSample & sample) const;
 
@@ -61,12 +67,6 @@ public:
 
   /** Algorithm associated with the method of modified moments */
   GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const;
-
-  /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
-
-protected:
 
   /** Optimization solver */
   mutable OptimizationSolver  solver_;

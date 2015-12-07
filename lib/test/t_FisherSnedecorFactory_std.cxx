@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
 
   try
   {
+    PlatformInfo::SetNumericalPrecision(5);
+    ResourceMap::SetAsBool("MaximumLikelihoodFactory-Parallel", false);
     FisherSnedecor distribution(4.5, 8.4);
     UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));

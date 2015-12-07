@@ -44,7 +44,7 @@ CLASSNAMEINIT(MaximumLikelihoodFactory);
 /* Default constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory()
   : DistributionFactoryImplementation()
-  , isParallel_(true)
+  , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
 
 }
@@ -55,7 +55,7 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const DistributionFactory & f
   : DistributionFactoryImplementation()
   , factory_(factory)
   , solver_(new TNC())
-  , isParallel_(true)
+  , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
   // Initialize optimization solver parameter using the ResourceMap 
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
@@ -75,7 +75,9 @@ MaximumLikelihoodFactory * MaximumLikelihoodFactory::clone() const
 String MaximumLikelihoodFactory::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << this->getClassName();
+  oss << "class=" << this->getClassName()
+      << " factory=" << factory_
+      << " solver=" << solver_;
   return oss;
 }
 

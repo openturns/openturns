@@ -8,5 +8,23 @@ See also
 --------
 DistributionFactory"
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::GeneralizedParetoFactory::setOptimizationSolver
+"Accessor to the solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationSolver`
+    The solver used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::getOptimizationSolver
+"Accessor to the solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationSolver`
+    The solver used for numerical optimization of the likelihood."
 

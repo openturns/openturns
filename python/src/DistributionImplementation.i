@@ -25,6 +25,8 @@ OT::NumericalPoint OT::DistributionImplementation::getGaussNodesAndWeights(OT::N
 %ignore OT::DistributionImplementation::pow;
 %ignore OT::DistributionImplementation::setWeight;
 %ignore OT::DistributionImplementation::getWeight;
+%ignore OT::DistributionImplementation::setParallel;
+%ignore OT::DistributionImplementation::isParallel;
 
 %include DistributionImplementation.hxx
 

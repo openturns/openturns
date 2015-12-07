@@ -10,6 +10,8 @@ See also
 --------
 DistributionFactory, Trapezoidal"
 
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::TrapezoidalFactory::setOptimizationSolver
 "Accessor to the solver.
 
@@ -17,6 +19,8 @@ Parameters
 ----------
 solver : :class:`~openturns.OptimizationSolver`
     The solver used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::TrapezoidalFactory::getOptimizationSolver
 "Accessor to the solver.

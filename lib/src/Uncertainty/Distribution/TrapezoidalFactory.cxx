@@ -108,8 +108,6 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   startingPoint[3] = max + std::abs(max) / (2.0 + size);// d
 
   MaximumLikelihoodFactory factory(*this);
-  // parallel version breaks TrapezoidalFactory test:
-  factory.setParallel(false);
 
   // override starting point
   Cobyla solver;
