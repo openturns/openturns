@@ -54,6 +54,7 @@
 %include GaussKronrod.i
 %include IteratedQuadrature.i
 %include ExpertMixture.i
+%include KarhunenLoeveP1Factory.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

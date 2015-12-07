@@ -1,5 +1,5 @@
 %feature("docstring") OT::GaussKronrod
-"Integration algorithm of .
+"Adaptive integration algorithm of Gauss-Kronrod.
 
 Parameters
 ----------
@@ -41,18 +41,9 @@ The final integral is the sum of the integrals evaluated on the subintervals.
 
 Examples
 --------
-Create an Gauss-Kronrod algorithm:
+Create a Gauss-Kronrod algorithm:
 
 >>> import openturns as ot
-
-First, a piecewise smooth function:
-
->>> f = ot.NumericalMathFunction('x', 'abs(sin(x))')
->>> a = -2.5
->>> b = 4.5
-
-Then, create the algorithm:
-
 >>> algo = ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))"
 
 // ---------------------------------------------------------------------

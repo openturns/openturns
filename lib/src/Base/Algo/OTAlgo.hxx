@@ -45,5 +45,6 @@
 #include "GaussKronrod.hxx"
 #include "GaussKronrodRule.hxx"
 #include "IteratedQuadrature.hxx"
+#include "KarhunenLoeveP1Factory.hxx"
 
 #endif /* OPENTURNS_OTALGO_HXX */

@@ -359,6 +359,7 @@ ot_check_test (LeastSquaresMetaModelSelectionFactory_std)
 ot_check_test (KissFFT_std)
 ot_check_test (GaussKronrod_std)
 ot_check_test (IteratedQuadrature_std)
+ot_check_test (KarhunenLoeveP1Factory_std)
 
 # Analytical
 ot_check_test (Analytical_std)

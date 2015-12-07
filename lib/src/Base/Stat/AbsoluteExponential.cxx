@@ -121,7 +121,13 @@ String AbsoluteExponential::__repr__() const
 /* String converter */
 String AbsoluteExponential::__str__(const String & offset) const
 {
-  return __repr__();
+  OSS oss;
+  oss << AbsoluteExponential::GetClassName()
+      << "(input dimension=" << spatialDimension_
+      << ", theta=" << scale_.__str__()
+      << ", sigma=" << amplitude_.__str__()
+      << ")";
+  return oss;
 }
 
 /* Method save() stores the object through the StorageManager */

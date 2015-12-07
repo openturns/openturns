@@ -179,3 +179,12 @@ Check hypothesis on time series
     :template: class.rst_t
 
     DickeyFullerTest
+
+Karhunen Loeve decomposition
+============================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: classWithPlot.rst_t
+
+    KarhunenLoeveP1Factory

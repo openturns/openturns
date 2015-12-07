@@ -158,7 +158,14 @@ String MaternModel::__repr__() const
 /* String converter */
 String MaternModel::__str__(const String & offset) const
 {
-  return __repr__();
+  OSS oss;
+  oss << MaternModel::GetClassName()
+      << "(input dimension=" << spatialDimension_
+      << ", theta=" << scale_.__str__()
+      << ", sigma=" << amplitude_.__str__()
+      << ", nu=" << nu_
+      << ")";
+  return oss;
 }
 
 /* Method save() stores the object through the StorageManager */

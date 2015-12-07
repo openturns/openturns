@@ -1,5 +1,5 @@
-myDefautModel =  class=ExponentialModel input dimension=1 amplitude=[1] scale=[1] no spatial correlation
-myModel =  class=ExponentialModel input dimension=1 amplitude=[1] scale=[1] no spatial correlation
+myDefautModel =  ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation)
+myModel =  ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation)
 covariance matrix at t =  1.0  :  [[ 0.367879 ]]
 covariance matrix at t =  -1.0  :  [[ 0.367879 ]]
 covariance matrix at t =  15.0  :  [[ 3.05902e-07 ]]
@@ -8,10 +8,10 @@ discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n
  [ 0.513417 0.716531 1        0.716531 ]
  [ 0.367879 0.513417 0.716531 1        ]]
 mySecondOrderModel =  class= StationaryCovarianceModel
-myHighModel =  class=ExponentialModel input dimension=1 amplitude=[1,2,3] scale=[1] spatial correlation=
+myHighModel =  ExponentialModel(input dimension=1, amplitude=[1,2,3], scale=[1], spatial correlation=
 [[ 1    1    0    ]
  [ 1    1    0.25 ]
- [ 0    0.25 1    ]]
+ [ 0    0.25 1    ]])
 covariance matrix at t =  1.0  :  [[ 0.367879 0.735759 0        ]
  [ 0.735759 1.47152  0.551819 ]
  [ 0        0.551819 3.31091  ]]

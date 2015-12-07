@@ -31,6 +31,7 @@ ot_add_source_file (LeastSquaresMethod.cxx)
 ot_add_source_file (QRMethod.cxx)
 ot_add_source_file (SVDMethod.cxx)
 ot_add_source_file (CholeskyMethod.cxx)
+ot_add_source_file (KarhunenLoeveP1Factory.cxx)
 
 ot_install_header_file (OTAlgo.hxx)
 ot_install_header_file (ApproximationAlgorithmImplementation.hxx)
@@ -62,4 +63,5 @@ ot_install_header_file (LeastSquaresMethod.hxx)
 ot_install_header_file (QRMethod.hxx)
 ot_install_header_file (SVDMethod.hxx)
 ot_install_header_file (CholeskyMethod.hxx)
+ot_install_header_file (KarhunenLoeveP1Factory.hxx)
 
