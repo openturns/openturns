@@ -10,14 +10,12 @@
  * Changed behaviour of ExponentialCauchy
 
 ==== New classes ====
- * OptimizationSolver
- * OptimizationProblem
- * DiracCovarianceModel
+ * OptimizationSolver, OptimizationProblem
+ * SLSQP, LBFGS, NelderMead algorithms from NLopt
+ * DiracCovarianceModel, TensorizedCovarianceModel
  * HMatrixParameters
- * TensorizedCovarianceModel
- * SLSQP
- * LBFGS
- * NelderMead
+ * KarhunenLoeveP1Factory: Karhunen-Loeve decomposition of a covariance model using a P1 Lagrange interpolation
+ * GeneralizedLinearModelAlgorithm, GeneralizedLinearModelResult: estimate parameters of a generalized linear model
 
 ==== API changes ====
  * Removed BoundConstrainedAlgorithm class
@@ -48,15 +46,19 @@
 
 === Miscellaneous ===
  * Enhanced print of samples
+ * Use newer LAPACKE C-interface to LAPACK instead of Fortran libraries
+ * Dropped old library wrappers
 
 === Bug fixes ===
+ * #784 (Troubles with UserDefinedFactory/UserDefined)
  * #790 (AbdoRackwitz parameters)
- * #796 (Beta distribution: if sample contains Inf, freeze on getSample)
  * #798 (Error message misstyping (Gamma distribution))
  * #799 (Error message misstyping (Gumbel distribution factory))
+ * #800 (Exponential distribution built on constant sample)
  * #804 (no IntervalMesher documentation content)
  * #805 (Python segfault in computeSilvermanBandwidth)
- 
+ * #808 (Index check of SymmetricTensor fails when embedded within a PythonFunction)
+
 == 1.6 release (2015-08-14) == #release-1.6
 
 === Library ===
