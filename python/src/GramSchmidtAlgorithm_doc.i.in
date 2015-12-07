@@ -1,7 +1,7 @@
 %feature("docstring") OT::GramSchmidtAlgorithm
 "GramSchmidt algorithm used to build the orthonormal basis.
 
-The algorithm builds the basis With respect to a specific distribution.
+The algorithm builds the basis with respect to a specific distribution.
 
 Available constructors:
     GramSchmidtAlgorithm(*measure*)

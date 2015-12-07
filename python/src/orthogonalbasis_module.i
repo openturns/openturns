@@ -39,6 +39,7 @@
 %include OrthogonalUniVariatePolynomialFamily.i
 %include OrthonormalizationAlgorithmImplementation.i
 %include OrthonormalizationAlgorithm.i
+%include AdaptiveStieltjesAlgorithm.i
 %include ChebychevAlgorithm.i
 %include GramSchmidtAlgorithm.i
 %include StandardDistributionPolynomialFactory.i

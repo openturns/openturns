@@ -59,11 +59,11 @@ try:
 
         # Show PDF and CDF of point
         LPDF = distribution.computeLogPDF(point)
-        print("log pdf= %.12g" % LPDF)
+        print("log pdf= %.8g" % LPDF)
         PDF = distribution.computePDF(point)
-        print("pdf     = %.12g" % PDF)
+        print("pdf     = %.8g" % PDF)
         CDF = distribution.computeCDF(point)
-        print("cdf= %.12g" % CDF)
+        print("cdf= %.8g" % CDF)
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", repr(quantile))
         print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
