@@ -27,6 +27,12 @@ try:
     print("Estimated histogram=", estimatedHistogram)
     estimatedHistogram = factory.buildAsHistogram()
     print("Default histogram=", estimatedHistogram)
+    sample = [[0.0]]*size
+    estimatedDistribution = factory.build(sample)
+    print("Estimated distribution=", repr(estimatedDistribution))
+    sample = [[1.0]]*size
+    estimatedDistribution = factory.build(sample)
+    print("Estimated distribution=", repr(estimatedDistribution))
 
 except:
     import sys

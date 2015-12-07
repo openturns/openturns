@@ -21,6 +21,7 @@
 #include "HistogramFactory.hxx"
 #include "HistogramPair.hxx"
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 #include "Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -60,7 +61,15 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
   // It will extends from min to max.
   const NumericalScalar min(sample.getMin()[0]);
   const NumericalScalar max(sample.getMax()[0]);
-  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram for a sample with constant realizations";
+  if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  if (max == min)
+    {
+      const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultCDFEpsilon"));
+      const NumericalScalar delta(std::max(std::abs(min), 10.0) * epsilon);
+      Histogram result(min - 0.5 * delta, Histogram::HistogramPairCollection(1, HistogramPair(delta, 1.0)));
+      result.setDescription(sample.getDescription());
+      return result;      
+    }
   const UnsignedInteger size(sample.getSize());
   // First, try to use the robust estimation of dispersion based on inter-quartile
   NumericalScalar hOpt((sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75)));

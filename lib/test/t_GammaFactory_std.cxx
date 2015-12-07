@@ -61,6 +61,13 @@ int main(int argc, char *argv[])
     fullprint << "Default gamma=" << estimatedGamma << std::endl;
     estimatedGamma = factory.buildAsGamma(distribution.getParameter());
     fullprint << "Gamma from parameters=" << estimatedGamma << std::endl;
+    // Test for constant sample
+    sample = NumericalSample(size, NumericalPoint(1, 0.0));
+    estimatedDistribution = factory.build(sample);
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    estimatedDistribution = factory.build(sample);
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

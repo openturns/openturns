@@ -19,6 +19,7 @@
  *
  */
 #include "WeibullFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,18 +61,23 @@ Weibull WeibullFactory::buildAsWeibull(const NumericalSample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Weibull distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
+  NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar mean(sample.computeMean()[0]);
   const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
+  if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution if data contains NaN or Inf";
   try
   {
     Weibull result(mean, sigma, gamma, Weibull::MUSIGMA);
     result.setDescription(sample.getDescription());
     return result;
   }
+  // Here we are in the case of a (nearly) Dirac distribution
   catch (InvalidArgumentException)
   {
-    throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Weibull distribution from the given sample";
+    if (gamma == 0.0) gamma = SpecFunc::NumericalScalarEpsilon;
+    Weibull result(100.0 * std::abs(gamma) * SpecFunc::NumericalScalarEpsilon, 1.0, gamma);
+    result.setDescription(sample.getDescription());
+    return result;
   }
 }
 

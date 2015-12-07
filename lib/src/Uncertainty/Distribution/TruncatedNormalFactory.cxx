@@ -30,6 +30,7 @@ CLASSNAMEINIT(TruncatedNormalFactory);
 TruncatedNormalFactory::TruncatedNormalFactory()
   : DistributionFactoryImplementation()
 {
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -65,7 +66,14 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   // In order to avoid numerical stability issues, we normalize the data to [-1, 1]
   const NumericalScalar xMin = sample.getMin()[0];
   const NumericalScalar xMax = sample.getMax()[0];
-  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution based on a constant sample.";
+  if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
+  if (xMin == xMax)
+    {
+      const NumericalScalar delta(std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon);
+      TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
+      result.setDescription(sample.getDescription());
+      return result;
+    }
   // X_norm = alpha * (X - beta)
   const NumericalScalar alpha = 2.0 / (xMax - xMin);
   const NumericalScalar beta = 0.5 * (xMin + xMax);
