@@ -19,7 +19,6 @@ t0 = -4.0
 tmax = 4.0
 
 # Draw the isocontours of the discretized covariance function
-print "draw the reference"
 myGraphRef = myFuncCovarianceRef.draw([t0, t0], [tmax, tmax])
 alld = myGraphRef.getDrawables()
 levels = ot.NumericalPoint(alld.getSize())
