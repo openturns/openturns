@@ -53,6 +53,9 @@ int main(int argc, char *argv[])
     fullprint << "Estimated UserDefined=" << estimatedUserDefined << std::endl;
     estimatedUserDefined = factory.buildAsUserDefined();
     fullprint << "Default UserDefined=" << estimatedUserDefined << std::endl;
+    // For ticket 784
+    estimatedDistribution = factory.build(NumericalSample(2000, NumericalPoint(1, 0.0)));
+    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {
