@@ -105,7 +105,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   selectedEV = NumericalPoint(0);
   ProcessSample result(mesh_, 0, covarianceModel.getDimension());
   UnsignedInteger j(0);
-  while ((j < eigenValues.getSize()) && (eigenValues[j] > threshold_ * abs(eigenValues[0])))
+  while ((j < eigenValues.getSize()) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
     {
       selectedEV.add(eigenValues[j]);
       NumericalSample values(numVertices, 1);

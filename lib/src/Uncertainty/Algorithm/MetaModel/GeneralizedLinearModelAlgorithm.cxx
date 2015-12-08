@@ -398,7 +398,7 @@ void GeneralizedLinearModelAlgorithm::checkYCentered(const NumericalSample & Y)
   const NumericalPoint meanY = Y.computeMean();
   for (UnsignedInteger k = 0; k < meanY.getDimension(); ++k)
   {
-    if (abs(meanY[k]) > meanEpsilon)
+    if (std::abs(meanY[k]) > meanEpsilon)
       throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, basis is empty and output sample is not centered";
   }
 }
