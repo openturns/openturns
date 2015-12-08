@@ -374,8 +374,10 @@ NumericalScalar Beta::getT() const
 void Beta::setRT(const NumericalScalar r,
                  const NumericalScalar t)
 {
-  if (r <= 0.) throw InvalidArgumentException(HERE) << "R MUST be positive";
-  if (t <= 0.) throw InvalidArgumentException(HERE) << "T MUST be positive";
+  if (!SpecFunc::IsNormal(r)) throw InvalidArgumentException(HERE) << "The first shape parameter must be a real value, here r=" << r;
+  if (!SpecFunc::IsNormal(t)) throw InvalidArgumentException(HERE) << "The second shape parameter must be a real value, here t=" << t;
+  if (r <= 0.0) throw InvalidArgumentException(HERE) << "R MUST be positive";
+  if (t <= 0.0) throw InvalidArgumentException(HERE) << "T MUST be positive";
   if (t <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r;
   if ((r != r_) || (t != t_))
   {
@@ -408,7 +410,8 @@ NumericalScalar Beta::getSigma() const
 /* A accessor */
 void Beta::setA(const NumericalScalar a)
 {
-  if (b_ <= a) throw InvalidArgumentException(HERE) << "The upper bound must be greater than the lower bound, here a=" << a << " and b=" << b_;
+  if (!SpecFunc::IsNormal(a)) throw InvalidArgumentException(HERE) << "The lower bound must be a real value, here a=" << a;
+  if (b_ <= a) throw InvalidArgumentException(HERE) << "The lower bound must be less than the upper bound, here a=" << a << " and b=" << b_;
   if (a != a_)
   {
     a_ = a;
@@ -426,6 +429,7 @@ NumericalScalar Beta::getA() const
 /* B accessor */
 void Beta::setB(const NumericalScalar b)
 {
+  if (!SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "The upper bound must be a real value, here b=" << b;
   if (b <= a_) throw InvalidArgumentException(HERE) << "The upper bound must be greater than the lower bound, here a=" << a_ << " and b=" << b;
   if (b != b_)
   {

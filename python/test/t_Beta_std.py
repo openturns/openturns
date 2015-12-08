@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
-    distribution = Beta(2., 5., -1., 2.)
+    distribution = Beta(2.0, 5.0, -1.0, 2.0)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -127,7 +127,42 @@ try:
         mu, sigma, distribution.getA(), distribution.getB(), 1)
     print("r from (mu, sigma)=%.6f" % newDistribution.getR())
     print("t from (mu, sigma)=%.6f" % newDistribution.getT())
-
+    # Test for non-normal parameters
+    inf = float("inf")
+    nan = float("nan")
+    import sys
+    try:
+        d = Beta(inf, 1.0, 0.0, 1.0)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(nan, 1.0, 0.0, 1.0)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(1.0, inf, 0.0, 1.0)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(1.0, nan, 0.0, 1.0)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(1.0, 2.0, inf, 1.0)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(1.0, 2.0, nan, 1.0)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(1.0, 2.0, 1.0, inf)
+    except:
+        print(sys.exc_info()[1])
+    try:
+        d = Beta(1.0, 2.0, 1.0, nan)
+    except:
+        print(sys.exc_info()[1])
 except:
     import sys
     print("t_Beta_std.py", sys.exc_info()[0], sys.exc_info()[1])
