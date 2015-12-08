@@ -42,5 +42,7 @@ namespace OT {
     || OT::canConvertCollectionObjectFromPySequence<OT::Indices>($input);
 }
 
+%include BipartiteGraph_doc.i
+
 %include BipartiteGraph.hxx
 namespace OT { %extend BipartiteGraph { BipartiteGraph(const BipartiteGraph & other) { return new OT::BipartiteGraph(other); } } }

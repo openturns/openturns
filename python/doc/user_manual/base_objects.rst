@@ -4,6 +4,15 @@ Base objects
 
 .. currentmodule:: openturns
 
+Combinatorial structures
+========================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: classWithPlot.rst_t
+
+    BipartiteGraph
+
 Domains
 =======
 
