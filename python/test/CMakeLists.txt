@@ -367,6 +367,7 @@ ot_pyinstallcheck_test (IsoProbabilisticTransformation_EllipticalDistribution)
 ot_pyinstallcheck_test (IsoProbabilisticTransformation_EllipticalCopula)
 ot_pyinstallcheck_test (IsoProbabilisticTransformation_IndependentCopula)
 ot_pyinstallcheck_test (BoxCoxFactory_std)
+ot_pyinstallcheck_test (BoxCoxFactory_glm)
 ot_pyinstallcheck_test (TrendFactory_std)
 
 ## Distribution
