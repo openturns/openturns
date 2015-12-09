@@ -2209,6 +2209,15 @@ CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix DistributionImplementation::getKendallTau() const
 {
+  if (isElliptical())
+    {
+      const CorrelationMatrix shape(getCorrelation());
+      CorrelationMatrix tau(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	for(UnsignedInteger j = 0; j < i; ++j)
+	  tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
+      return tau;
+    }
   return getCopula()->getKendallTau();
 }
 
