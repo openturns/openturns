@@ -24,6 +24,7 @@
 #include "Os.hxx"
 #include "Exception.hxx"
 #include "Mesh.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -106,12 +107,12 @@ Interval Interval::intersect(const Interval & other) const
   NumericalPoint intersectUpper(getDimension());
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
-  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
-    intersectLower[i] = std::max(lowerBound_[i], otherLower[i]);
-    intersectUpper[i] = std::min(upperBound_[i], otherUpper[i]);
     intersectFiniteLower[i] = finiteLowerBound_[i] || otherFiniteLower[i];
     intersectFiniteUpper[i] = finiteUpperBound_[i] || otherFiniteUpper[i];
+    intersectLower[i] = std::max(finiteLowerBound_[i] ? lowerBound_[i] : -SpecFunc::MaxNumericalScalar, otherFiniteLower[i] ? otherLower[i] : -SpecFunc::MaxNumericalScalar);
+    intersectUpper[i] = std::min(finiteUpperBound_[i] ? upperBound_[i] : SpecFunc::MaxNumericalScalar, otherFiniteUpper[i] ? otherUpper[i] : SpecFunc::MaxNumericalScalar);
   }
   return Interval(intersectLower, intersectUpper, intersectFiniteLower, intersectFiniteUpper);
 }
