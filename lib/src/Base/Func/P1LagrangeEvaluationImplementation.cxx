@@ -146,7 +146,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
     for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
     {
       const UnsignedInteger simplexIndex(simplicesCandidates[i]);
-      if (mesh.checkPointInSimplex(inP, simplexIndex, coordinates))
+      if (mesh.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
       {
         const Indices simplex(simplices[simplexIndex]);
         result = values[simplex[0]] * coordinates[0];

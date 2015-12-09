@@ -104,9 +104,9 @@ public:
                            const UnsignedInteger index) const;
 
   /** Check if the given point is in the given simplex and returns its barycentric coordinates */
-  Bool checkPointInSimplex(const NumericalPoint & point,
-                           const UnsignedInteger index,
-			   NumericalPoint & coordinates) const;
+  Bool checkPointInSimplexWithCoordinates(const NumericalPoint & point,
+					  const UnsignedInteger index,
+					  NumericalPoint & coordinates) const;
 
   /** Vertices accessor */
   NumericalSample getVertices() const;

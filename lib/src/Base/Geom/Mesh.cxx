@@ -188,13 +188,13 @@ Bool Mesh::checkPointInSimplex(const NumericalPoint & point,
                                const UnsignedInteger index) const
 {
   NumericalPoint alpha;
-  return checkPointInSimplex(point, index, alpha);
+  return checkPointInSimplexWithCoordinates(point, index, alpha);
 }
 
 /* Check if the given point is in the given simplex and returns its barycentric coordinates */
-Bool Mesh::checkPointInSimplex(const NumericalPoint & point,
-                               const UnsignedInteger index,
-			       NumericalPoint & coordinates) const
+Bool Mesh::checkPointInSimplexWithCoordinates(const NumericalPoint & point,
+					      const UnsignedInteger index,
+					      NumericalPoint & coordinates) const
 {
   SquareMatrix matrix(buildSimplexMatrix(index));
   NumericalPoint v(point);

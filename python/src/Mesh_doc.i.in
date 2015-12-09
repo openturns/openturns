@@ -54,7 +54,7 @@ mesh : :class:`~openturns.Mesh`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Mesh::checkPointInSimplex
-"Check whether the given point is inside a simplex.
+"Check if a point is inside a simplex.
 
 Parameters
 ----------
@@ -82,6 +82,41 @@ True
 >>> pointB = [1.1, 0.6]
 >>> print(mesh2d.checkPointInSimplex(pointB, 0))
 False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::checkPointInSimplexWithCoordinates
+"Check if a point is inside a simplex and returns its barycentric coordinates.
+
+Parameters
+----------
+point : sequence of float
+    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
+index : int
+    Integer characterizes one simplex of the mesh.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether *point* is inside the simplex of index *index*.
+coordinates : :class:`~openturns.NumericalPoint`
+    The barycentric coordinates of the given point wrt the vertices of the simplex
+.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> # Create a point A inside the simplex
+>>> pointA = [0.6, 0.3]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointA, 0))
+[True, class=NumericalPoint name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+>>> # Create a point B outside the simplex
+>>> pointB = [1.1, 0.6]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
+[False, class=NumericalPoint name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
 
 // ---------------------------------------------------------------------
 
