@@ -76,19 +76,20 @@ int main(int argc, char *argv[])
       // Define a point
       NumericalPoint point( distribution.getDimension(), 1.0 );
       fullprint << "Point= " << point << std::endl;
-
+      UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+      PlatformInfo::SetNumericalPrecision(5);
       // Show PDF and CDF of point
       NumericalScalar LPDF = distribution.computeLogPDF( point );
-      fullprint << "log pdf=" << LPDF << std::endl;
+      fullprint << std::setprecision(5) << "log pdf=" << LPDF << std::endl;
       NumericalScalar PDF = distribution.computePDF( point );
-      fullprint << "pdf     =" << PDF << std::endl;
-      fullprint << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point) << std::endl;
+      fullprint << std::setprecision(5) << "pdf     =" << PDF << std::endl;
+      fullprint << std::setprecision(5) << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point) << std::endl;
       NumericalScalar CDF = distribution.computeCDF( point );
-      fullprint << "cdf=" << CDF << std::endl;
+      fullprint << std::setprecision(5) << "cdf=" << CDF << std::endl;
       NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
-      fullprint << "ccdf=" << CCDF << std::endl;
+      fullprint << std::setprecision(5) << "ccdf=" << CCDF << std::endl;
       NumericalScalar Survival = distribution.computeSurvivalFunction( point );
-      fullprint << "survival=" << Survival << std::endl;
+      fullprint << std::setprecision(5) << "survival=" << Survival << std::endl;
       NumericalPoint quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile=" << quantile << std::endl;
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
@@ -108,6 +109,7 @@ int main(int argc, char *argv[])
       fullprint << "spearman=" << spearman << std::endl;
       CovarianceMatrix kendall = distribution.getKendallTau();
       fullprint << "kendall=" << kendall << std::endl;
+      PlatformInfo::SetNumericalPrecision(oldPrecision);
     }
   catch (TestFailed & ex)
     {

@@ -18,18 +18,18 @@ oneSample first=class=NumericalPoint name=Unnamed dimension=2 values=[-0.337688,
 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.57312,0.562745]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.693077,-0.0044764,-0.0044764,0.685993]
 Point= class=NumericalPoint name=Unnamed dimension=2 values=[1,1]
-log pdf=-1.79709
-pdf     =0.165781
-pdf (FD)=0.165781
-cdf=0.501067
-ccdf=0.498933
-survival=0.0853452
+log pdf=-1.7971
+pdf     =0.16578
+pdf (FD)=0.16578
+cdf=0.50107
+ccdf=0.49893
+survival=0.085345
 quantile=class=NumericalPoint name=Unnamed dimension=2 values=[2.234,2.234]
 cdf(quantile)=0.95
 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.56419,0.56419]
-standard deviation=class=NumericalPoint name=Unnamed dimension=2 values=[0.825645,0.825645]
-skewness=class=NumericalPoint name=Unnamed dimension=2 values=[0.136949,0.136949]
-kurtosis=class=NumericalPoint name=Unnamed dimension=2 values=[3.06174,3.06174]
+standard deviation=class=NumericalPoint name=Unnamed dimension=2 values=[0.82565,0.82565]
+skewness=class=NumericalPoint name=Unnamed dimension=2 values=[0.13695,0.13695]
+kurtosis=class=NumericalPoint name=Unnamed dimension=2 values=[3.0617,3.0617]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.68169,0,0,0.68169]
 correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
 spearman=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]

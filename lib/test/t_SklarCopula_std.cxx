@@ -99,6 +99,8 @@ int main(int argc, char *argv[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "QuantileRef=" << quantileRef << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
+    ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 );
+    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 );
     // Covariance and correlation
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
@@ -108,6 +110,8 @@ int main(int argc, char *argv[])
     fullprint << "spearman=" << spearman << std::endl;
     CorrelationMatrix kendall = copula.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
+    ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
+    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
 
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)

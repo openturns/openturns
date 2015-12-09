@@ -16,12 +16,12 @@ mean=class=NumericalPoint name=Unnamed dimension=4 values=[-0.6902,3.009,4.174,4
 covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.4039,-0.0003659,0.0009324,-5.81e-05,-0.0003659,0.03009,0.001298,-2.285e-05,0.0009324,0.001298,0.1836,0.002075,-5.81e-05,-2.285e-05,0.002075,0.008656]
 skewness=class=NumericalPoint name=Unnamed dimension=4 values=[0.3364,0.07714,-0.4349,0.2198]
 kurtosis=class=NumericalPoint name=Unnamed dimension=4 values=[2.384,1.809,2.408,2.405]
-Point= class=NumericalPoint name=Unnamed dimension=4 values=[0,3,4,5]
-ddf     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.5276,3.842e-06,0.5276,-3.957]
-log pdf=-0.639385
-pdf     =0.527617
-cdf=0.1156
-ccdf=0.8844
+Point= class=NumericalPoint name=Unnamed dimension=4 values=[0,3.2,4.2,5]
+ddf     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.6454,0.1072,0.5378,-4.841]
+log pdf=-0.437888
+pdf     =0.645398
+cdf=0.27253
+ccdf=0.72747
 quantile=class=NumericalPoint name=Unnamed dimension=4 values=[0.7199,3.312,4.887,5.115]
 cdf(quantile)=0.95
 quantile (tail)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.8149,2.985,4.186,4.895]
@@ -30,9 +30,9 @@ mean=class=NumericalPoint name=Unnamed dimension=4 values=[-0.6892,3.009,4.167,4
 standard deviation=class=NumericalPoint name=Unnamed dimension=4 values=[0.6271,0.1737,0.4249,0.09317]
 skewness=class=NumericalPoint name=Unnamed dimension=4 values=[0.3392,0.06926,-0.4224,0.2236]
 kurtosis=class=NumericalPoint name=Unnamed dimension=4 values=[2.398,1.805,2.4,2.4]
-covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.3933,0,0,0,0,0.03016,0.001766,0,0,0.001766,0.1806,0.00189,0,0,0.00189,0.008681]
-correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.02393,0,0,0.02393,1,0.04773,0,0,0.04773,1]
-spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01686,0,0,0.01686,1,0.04889,0,0,0.04889,1]
+covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.3933,0,0,0,0,0.03016,0.001766,0,0,0.001766,0.1806,0.001888,0,0,0.001888,0.008681]
+correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.02392,0,0,0.02392,1,0.04769,0,0,0.04769,1]
+spearman=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.01685,0,0,0.01685,1,0.04888,0,0,0.04888,1]
 parameters=[[a_marginal_0 : -2, b_marginal_0 : -1.1, c_marginal_0 : -1, d_marginal_0 : 1],[aLog_marginal_1 : 1, bLog_marginal_1 : 1.2],[a_marginal_2 : 3, m_marginal_2 : 4.5, b_marginal_2 : 5],[r_marginal_3 : 2.5, t_marginal_3 : 6, a_marginal_3 : 4.7, b_marginal_3 : 5.2]]
 margin=class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.6452
 margin PDF=0.322581
@@ -41,14 +41,14 @@ margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.4432]
 margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[-0.7934]
 margin range=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] finite lower bound=[1] finite upper bound=[1]
 margin=class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.718 b=3.32
-margin PDF=1.66667
-margin CDF=0.493061
+margin PDF=1.5625
+margin CDF=0.815754
 margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.287]
 margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[2.755]
 margin range=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.718] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.32] finite lower bound=[1] finite upper bound=[1]
 margin=class=Triangular name=Triangular dimension=1 a=3 m=4.5 b=5
-margin PDF=0.666667
-margin CDF=0.333333
+margin PDF=0.8
+margin CDF=0.48
 margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[4.776]
 margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[4.12]
 margin range=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[3] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5] finite lower bound=[1] finite upper bound=[1]

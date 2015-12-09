@@ -9,10 +9,10 @@ ot.RandomGenerator.SetSeed(0)
 
 # Instanciate one copula object
 copula = ot.MaximumEntropyOrderStatisticsCopula(
-    [ot.Trapezoidal(-2., -1.1, -1., 1.),
-     ot.LogUniform(1., 1.2),
-     ot.Triangular(3., 4., 5.),
-     ot.Arcsine(3.5, 5.5)])
+    [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
+     ot.LogUniform(1.0, 1.2),
+     ot.Triangular(3.0, 4.5, 5.0),
+     ot.Beta(2.5, 6.0, 4.7, 5.2)])
 
 dim = copula.getDimension()
 print("Copula ", copula)
@@ -78,8 +78,16 @@ skewness = copula.getSkewness()
 print("skewness=", repr(skewness))
 kurtosis = copula.getKurtosis()
 print("kurtosis=", repr(kurtosis))
+ot.ResourceMap.SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 )
+ot.ResourceMap.SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 )
 covariance = copula.getCovariance()
 print("covariance=", repr(covariance))
+correlation = copula.getCorrelation()
+print("correlation=", repr(correlation))
+spearman = copula.getSpearmanCorrelation()
+print("spearman=", repr(spearman))
+ot.ResourceMap.SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 )
+ot.ResourceMap.SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 )
 parameters = copula.getParametersCollection()
 print("parameters=", repr(parameters))
 
