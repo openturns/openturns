@@ -216,8 +216,6 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  return DistributionImplementation::getMarginal(i);
-  /*
   DistributionCollection contributors(0);
   BipartiteGraph marginalGraph(0);
   for (UnsignedInteger j = 0; j < distributionCollection_.getSize(); ++j)
@@ -239,9 +237,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
 	}
     } // Loop over the CDFs
   if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
-  LOGINFO(OSS() << "in getMarginal(" << i << "), marginal contributors=" << contributors << ", marginalGraph=" << marginalGraph);
   return CumulativeDistributionNetwork(contributors, marginalGraph).clone();
-  */
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
