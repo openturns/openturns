@@ -40,6 +40,7 @@
  * Moved NumericalMathFunction::parametersGradient to NumericalMathFunction::parameterGradient
  * Removed NumericalMathFunction::[sg]etInitial(Evaluation|Gradient|Hessian)Implementation
  * Renamed DistributionImplementationFactory to DistributionFactoryImplementation
+ * Extended BoxCoxFactory::build to generalized linear models
 
 === Python module ===
  * Support infix operator for matrix multiplication (PEP465)
