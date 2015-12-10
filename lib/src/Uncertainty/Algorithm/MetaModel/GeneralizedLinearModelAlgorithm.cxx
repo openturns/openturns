@@ -601,8 +601,6 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogLikelihood(cons
   CovarianceModel model(covarianceModel_);
   model.setParameter(parameters);
 
-  const UnsignedInteger size = inputSample_.getSize();
-
   LOGINFO("Discretize the covariance model...");
   CovarianceMatrix R = model.discretize(normalizedInputSample_);
   LOGINFO("Compute the Cholesky factor of the covariance matrix");
@@ -674,8 +672,6 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood(const 
   LOGINFO(OSS(false) << "Compute the HMAT log-likelihood for parameters=" << parameters);
   CovarianceModel model(covarianceModel_);
   model.setParameter(parameters);
-
-  const UnsignedInteger size(inputSample_.getSize());
 
   Bool continuationCondition(true);
   const NumericalScalar startingScaling(ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-StartingScaling"));
