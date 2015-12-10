@@ -142,13 +142,22 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   setThresholdRealization(thresholdRealization);
   setDimension(1);
   setDescription(distribution.getDescription());
+  lowerBound_ = truncationInterval.getLowerBound()[0];
+  upperBound_ = truncationInterval.getUpperBound()[0];
+  finiteLowerBound_ = truncationInterval.getFiniteLowerBound()[0];
+  finiteUpperBound_ = truncationInterval.getFiniteUpperBound()[0];
+  cdfLowerBound_ = distribution.computeCDF(NumericalPoint(1, lowerBound_));
+  cdfUpperBound_ = distribution.computeCDF(NumericalPoint(1, upperBound_));
+  if (cdfLowerBound_ >= cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
+  pdfLowerBound_ = distribution.computePDF(NumericalPoint(1, lowerBound_));
+  pdfUpperBound_ = distribution.computePDF(NumericalPoint(1, upperBound_));
+  normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
   // Adjust the truncation interval and the distribution range
-  const Interval range(distribution_.getRange().intersect(truncationInterval));
-  lowerBound_ = range.getLowerBound()[0];
-  upperBound_ = range.getUpperBound()[0];
-  finiteLowerBound_ = range.getFiniteLowerBound()[0];
-  finiteUpperBound_ = range.getFiniteUpperBound()[0];
   computeRange();
+  lowerBound_ = getRange().getLowerBound()[0];
+  upperBound_ = getRange().getUpperBound()[0];
+  finiteLowerBound_ = getRange().getFiniteLowerBound()[0];
+  finiteUpperBound_ = getRange().getFiniteUpperBound()[0];
 }
 
 
