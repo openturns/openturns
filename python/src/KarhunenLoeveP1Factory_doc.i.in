@@ -24,7 +24,7 @@ The Karhunen-Loeve P1 approximation consists in replacing the covariance model :
 .. math::
     \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{C}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}C(\vect{\xi}_i,\vect{\xi}_j)\vect{\theta}_i(\vect{s})\Tr{\vect{\theta}}_j(\vect{t})
 
-Where :math:`\theta_n: \cD_N \mapsto \Rset^d` are the basis functions of the P1 finite element space associated to :math:`\cD_N`.
+Where :math:`\theta_n: \cD_N \mapsto \Rset^d` are the basis functions of the P1 finite element space associated to :math:`\cD_N`, see :class:`~openturns.P1LagrangeEvaluationImplementation`.
 
 Examples
 --------
@@ -34,6 +34,32 @@ Create a Karhunen-Loeve P1 factory:
 >>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
 >>> threshold = 0.01
 >>> factory = ot.KarhunenLoeveP1Factory(mesh, threshold)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveP1Factory::build
+"Computation of the eigenvalues and eigen functions.
+
+Parameters
+----------
+C : :class:`~openturns.CovarianceModel`, :math:`C: \cD\times\cD \mapsto \cS^+_d(\Rset)`
+    The covariance model.
+ev : :class:`~openturns.NumericalPoint`
+    The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n\geq\mathrm{threshold}\,\lambda_0`
+
+Returns
+-------
+functions : :class:`~openturns.Basis`
+    Eigen functions of the covariance model as a basis of functions using :class:`~openturns.P1LagrangeEvaluationImplementation`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> factory = ot.KarhunenLoeveP1Factory(mesh, threshold)
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> ev = ot.NumericalPoint()
+>>> functions = factory.build(model, ev)"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveP1Factory::buildAsProcessSample

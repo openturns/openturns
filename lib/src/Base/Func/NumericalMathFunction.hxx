@@ -139,6 +139,9 @@ public:
   NumericalMathFunction(const NumericalSample & inputSample,
                         const NumericalSample & outputSample);
 
+  /** Constructor from field using P1 Lagrange interpolation */
+  NumericalMathFunction(const Field & field);
+
   /** Constructor by splitting the input of a function between variables and parameters */
   NumericalMathFunction(const NumericalMathFunction & function,
                         const Indices & set,

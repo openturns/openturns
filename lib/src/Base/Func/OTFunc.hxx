@@ -73,6 +73,7 @@
 #include "ParametricEvaluationImplementation.hxx"
 #include "ParametricGradientImplementation.hxx"
 #include "ParametricHessianImplementation.hxx"
+#include "P1LagrangeEvaluationImplementation.hxx"
 #include "PiecewiseLinearEvaluationImplementation.hxx"
 #include "PiecewiseHermiteEvaluationImplementation.hxx"
 #include "ProductNumericalMathEvaluationImplementation.hxx"

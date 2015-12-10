@@ -197,6 +197,7 @@ void TemporalNormalProcess::initialize() const
       try
       {
         covarianceHMatrix_.factorize("LLt");
+	continuationCondition = false;
       }
       catch (InternalException)
       {
@@ -208,7 +209,6 @@ void TemporalNormalProcess::initialize() const
         LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );
         LOGDEBUG(OSS() <<  "Currently, recompression epsilon "  <<  recompressionEpsilon);
       }
-      continuationCondition = false;
     }
     else
     {
@@ -218,13 +218,13 @@ void TemporalNormalProcess::initialize() const
       try
       {
         choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
+	continuationCondition = false;
       }
       catch (...)
       {
         cumulatedScaling += scaling ;
         scaling *= 2.0;
       }
-      continuationCondition = false;
     }
   } // While
 
@@ -358,7 +358,9 @@ NumericalSample TemporalNormalProcess::getRealizationCholesky() const
   const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
 
   NumericalSampleImplementation values(size, dimension_);
-  values.setData(choleskyFactorCovarianceMatrix_ * gaussianPoint);
+  const NumericalPoint rawResult(choleskyFactorCovarianceMatrix_ * gaussianPoint);
+  LOGINFO(OSS() << "In TemporalNormalProcess::getRealizationCholesky(), size=" << size << ", fullSize=" << fullSize << ", gaussianPoint dimension=" << gaussianPoint.getDimension() << ", rawResult dimension=" << rawResult.getDimension());
+  values.setData(rawResult);
   return values;
 }
 

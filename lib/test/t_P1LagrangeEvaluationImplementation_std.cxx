@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class GaussKronrod
+ * @brief The test file of class P1LagrangeEvaluationImplementation for standard methods
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -20,7 +20,6 @@
  */
 #include "OT.hxx"
 #include "OTtestcode.hxx"
-#include <cmath>
 
 using namespace OT;
 using namespace OT::Test;
@@ -29,26 +28,25 @@ int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   try
   {
-    Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));
-    KarhunenLoeveP1Factory factory(mesh, 0.0);
-    NumericalPoint lambda;
-    ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(1, 1.0), lambda));
-    fullprint << "KL modes=" << KLModes << std::endl;
-    fullprint << "KL eigenvalues=" << lambda << std::endl;
-    Basis KLFunctions(factory.build(AbsoluteExponential(1, 1.0), lambda));
-    fullprint << "KL functions=" << KLFunctions << std::endl;
-    fullprint << "KL eigenvalues=" << lambda << std::endl;
+    RegularGrid mesh(0.0, 1.0, 4);
+    NumericalSample values(0, 1);
+    values.add(NumericalPoint(1, 0.5));
+    values.add(NumericalPoint(1, 1.5));
+    values.add(NumericalPoint(1, 1.0));
+    values.add(NumericalPoint(1,-0.5));
+    P1LagrangeEvaluationImplementation evaluation(Field(mesh, values));
+    fullprint << "Evaluation=" << evaluation << std::endl;
+    NumericalPoint inPoint(1, 2.3);
+    fullprint << "Value at " << inPoint << "=" << evaluation(inPoint) << std::endl;
   }
   catch (TestFailed & ex)
   {
     std::cerr << ex << std::endl;
     return ExitCode::Error;
   }
-
 
   return ExitCode::Success;
 }

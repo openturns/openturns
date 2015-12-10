@@ -91,6 +91,7 @@
 %include ParametricEvaluationImplementation.i
 %include ParametricGradientImplementation.i
 %include ParametricHessianImplementation.i
+%include P1LagrangeEvaluationImplementation.i
 %include BasisImplementation.i
 %include Basis.i
 %include BasisSequenceImplementation.i

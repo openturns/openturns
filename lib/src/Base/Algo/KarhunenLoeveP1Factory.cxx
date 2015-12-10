@@ -25,6 +25,7 @@
 #include "SquareMatrix.hxx"
 #include "SquareComplexMatrix.hxx"
 #include "NumericalSample.hxx"
+#include "P1LagrangeEvaluationImplementation.hxx"
 #include "PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -74,7 +75,7 @@ Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
   const ProcessSample resultAsProcessSample(buildAsProcessSample(covarianceModel, selectedEV));
   Basis result(0);
   for (UnsignedInteger i = 0; i < resultAsProcessSample.getSize(); ++i)
-    //    result.add(P1LagrangeEvaluationImplementation(resultAsProcessSample.getField(i)));
+    result.add(P1LagrangeEvaluationImplementation(resultAsProcessSample.getField(i)));
   return result;
 }
 

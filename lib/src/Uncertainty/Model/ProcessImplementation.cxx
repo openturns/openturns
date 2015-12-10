@@ -23,7 +23,7 @@
 #include "Exception.hxx"
 #include "NumericalMathFunction.hxx"
 #include "PiecewiseLinearEvaluationImplementation.hxx"
-#include "DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "P1LagrangeEvaluationImplementation.hxx"
 #include "RegularGrid.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -150,15 +150,15 @@ Field ProcessImplementation::getRealization() const
 /* Continuous realization accessor */
 NumericalMathFunction ProcessImplementation::getContinuousRealization() const
 {
+  // The continuous realization is obtained by a piecewise linear interpolation
   const Field field(getRealization());
   const NumericalSample values(field.getValues());
   if (getSpatialDimension() == 1)
   {
-    // The continuous realization will be obtained by a piecewise linear interpolation
     const NumericalPoint locations(mesh_.getVertices().getImplementation()->getData());
     return PiecewiseLinearEvaluationImplementation(locations, values);
   }
-  return DatabaseNumericalMathEvaluationImplementation(mesh_.getVertices(), values);
+  return P1LagrangeEvaluationImplementation(field);
 }
 
 ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const

@@ -10,6 +10,9 @@ try:
     KLModes = factory.buildAsProcessSample(ot.AbsoluteExponential(1, 1.0), eigenValues)
     print("KL modes=", KLModes)
     print("KL eigenvalues=", eigenValues)
+    KLFunctions = factory.build(ot.AbsoluteExponential(1, 1.0), eigenValues)
+    print("KL functions=", KLFunctions)
+    print("KL eigenvalues=", eigenValues)
 
 except:
     import sys

@@ -187,11 +187,20 @@ SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
 Bool Mesh::checkPointInSimplex(const NumericalPoint & point,
                                const UnsignedInteger index) const
 {
+  NumericalPoint alpha;
+  return checkPointInSimplexWithCoordinates(point, index, alpha);
+}
+
+/* Check if the given point is in the given simplex and returns its barycentric coordinates */
+Bool Mesh::checkPointInSimplexWithCoordinates(const NumericalPoint & point,
+					      const UnsignedInteger index,
+					      NumericalPoint & coordinates) const
+{
   SquareMatrix matrix(buildSimplexMatrix(index));
   NumericalPoint v(point);
   v.add(1.0);
-  const NumericalPoint alpha(matrix.solveLinearSystem(v, false));
-  for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((alpha[i] < 0.0) || (alpha[i] > 1.0)) return false;
+  coordinates = matrix.solveLinearSystem(v, false);
+  for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < 0.0) || (coordinates[i] > 1.0)) return false;
   return true;
 }
 
@@ -411,6 +420,24 @@ Bool Mesh::isRegular() const
     if (!regular) break;
   }
   return regular;
+}
+
+/* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
+Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
+{
+  const UnsignedInteger numSimplices(getSimplicesNumber());
+  const UnsignedInteger numVertices(getVerticesNumber());
+  IndicesCollection verticesToSimplices(numVertices, Indices(0));
+  for (UnsignedInteger i = 0; i < numSimplices; ++i)
+    {
+      const Indices simplex(simplices_[i]);
+      for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
+        {
+          const UnsignedInteger index(simplex[j]);
+          verticesToSimplices[index].add(i);
+        }
+    } // Loop over simplices
+  return verticesToSimplices;
 }
 
 /* Comparison operator */
