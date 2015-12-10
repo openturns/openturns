@@ -9,13 +9,13 @@ ot.TESTPREAMBLE()
 try:
 
     # Fix numerical precision
-    ot.PlatformInfo.SetNumericalPrecision(3)
+    ot.PlatformInfo.SetNumericalPrecision(2)
 
     # Kriging use case
     spatialDimension = 2
 
     # Learning data
-    levels = [8., 5.]
+    levels = [8, 5]
     box = ot.Box(levels)
     inputSample = box.generate()
     # Scale each direction
@@ -27,7 +27,7 @@ try:
     outputSample = model(inputSample)
 
     # 2) Definition of exponential model
-    covarianceModel = ot.SquaredExponential(spatialDimension, 0.95)
+    covarianceModel = ot.SquaredExponential([1.98824,0.924731], [3.15352])
 
     # 3) Basis definition
     basisCollection = ot.BasisCollection(

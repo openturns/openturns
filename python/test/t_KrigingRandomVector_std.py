@@ -6,90 +6,59 @@ from openturns.testing import *
 
 TESTPREAMBLE()
 
-# The objective is the validation of KrigingAlgorithm & KrigingEvaluation with ExponentialModel
-# For that purpose, we use a 3d model which have been calibrated in comparison with 1d-exponential models
-# This last one returns the same covariance matrix if amplitude=1, scale
-# are similars and nugget factor value fixed to 0
-ResourceMap.SetAsNumericalScalar(
-    "CovarianceModelImplementation-DefaultNuggetFactor", 0)
-
-
-# 1) Definition of use case: spatial data, numerical functions
-
+PlatformInfo.SetNumericalPrecision(3)
 # Kriging use case
-spatialDimension = 1
-sampleSize = 201
-
-xMax = 10.0
-xMin = 0.0
-dX = xMax - xMin
-dx = dX / (sampleSize - 1.0)
+spatialDimension = 2
 
 # Learning data
-inputSample = NumericalSample(sampleSize, spatialDimension)
-# Validation data
-inputValidSample = NumericalSample(sampleSize, spatialDimension)
-for k in range(sampleSize):
-    inputSample[k, 0] = k * dx
-    inputValidSample[k, 0] = 0.5 * (2.0 * k + 1.0) * dx
+levels = [8., 5.]
+box = Box(levels)
+inputSample = box.generate()
+# Scale each direction
+inputSample *= 10
 
-f = NumericalMathFunction(['x0'], ['y'], ['x0 * sin(x0)'])
-g = NumericalMathFunction(['x0'], ['y'], ['3 + cos(x0*x0)'])
-h = NumericalMathFunction(['x0'], ['y'], ['cos(0.5*x0*x0) + sin(x0)'])
-model = NumericalMathFunctionCollection()
-model.add(f)
-model.add(g)
-model.add(h)
-model = NumericalMathFunction(model)
 
+model = NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
 outputSample = model(inputSample)
+
+# Validation data
+sampleSize = 10
+inputValidSample = ComposedDistribution(2 * [Uniform(0, 10.0)]).getSample(sampleSize)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
-amplitude = [1.0, 1.0, 1.0]
-scale = [2]
-expCovModel = ExponentialModel(spatialDimension, amplitude, scale)
+covarianceModel = SquaredExponential([1.98824,0.924731], [3.15352])
 
 # 3) Basis definition
-basisCollection = BasisCollection()
-basisCollection.add(ConstantBasisFactory(spatialDimension).build())
-basisCollection.add(LinearBasisFactory(spatialDimension).build())
-basisCollection.add(Basis())
+basisCollection = BasisCollection(1, ConstantBasisFactory(spatialDimension).build())
 
-# Kriging algorithm
-algo = KrigingAlgorithm(
-    inputSample, outputSample, basisCollection, expCovModel)
+# Kriring algorithm
+algo = KrigingAlgorithm(inputSample, outputSample, basisCollection, covarianceModel)
 algo.run()
 result = algo.getResult()
-print("KrigingResult=", repr(result))
 # Get meta model
 metaModel = result.getMetaModel()
 outData = metaModel(inputValidSample)
 
+
 # 4) Errors
 # Interpolation
-assert_almost_equal(outputSample,  metaModel(inputSample))
-# Estimation
-# rtol & a tol fixed to 1e-1
-assert_almost_equal(
-    outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1)
+assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 
-# 5) Kriging variance
-# It should be 0 on learning points
+
+# 5) Kriging variance is 0 on learning points
 var = result.getConditionalCovariance(inputSample)
 
 # assert_almost_equal could not be applied to matrices
 # application to NumericalPoint
 covariancePoint = NumericalPoint(var.getImplementation())
-covSize = expCovModel.getDimension() * sampleSize
-theoricalVariance = NumericalPoint(covSize * covSize)
-assert_almost_equal(covariancePoint, theoricalVariance, 1e-12, 1e-12)
+theoricalVariance = NumericalPoint(covariancePoint.getSize(), 0.0)
+assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 
 # Random vector evaluation
 rvector = KrigingRandomVector(result, inputValidSample[0])
-print("KRV=", rvector)
 
 # Realization of the random vector
 realization = rvector.getRealization()

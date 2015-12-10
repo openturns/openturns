@@ -1,6 +1,6 @@
 Sparse chaos scoring
-Q2 = 0.999996
-Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.0090419],[-0.0142595],[0.00548193],[-0.0029178],[0.00091562],[-0.00101208],[-0.00267126],[0.00384759],[0.0087359],[-0.016447]]
+Q2 = 1.000
+Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.00904],[-0.0143],[0.00548],[-0.00292],[0.000916],[-0.00101],[-0.00267],[0.00385],[0.00874],[-0.0164]]
 Kriging scoring
-Q2 = 0.926121
-Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.456518],[0.578546],[-2.75241],[-0.560692],[0.0232144],[-0.751244],[0.793678],[-1.43402],[0.870011],[-0.134152]]
+Q2 = 0.956
+Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.822],[-0.0652],[-2.12],[0.314],[-0.0656],[0.293],[0.637],[-1.01],[0.356],[0.308]]

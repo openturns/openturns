@@ -79,8 +79,7 @@ int main(int argc, char *argv[])
       NumericalSample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
-      // To match the parameter value of earlier versions
-      SquaredExponential covarianceModel(dimension, 2.23606797749979);
+      SquaredExponential covarianceModel(NumericalPoint(1, 1e-05), NumericalPoint(1, 4.11749));
       KrigingAlgorithm algo(X, Y, basis, covarianceModel);
 
       algo.run();
@@ -102,7 +101,7 @@ int main(int argc, char *argv[])
       CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
       // Validation of the covariance ==> should be null on the learning set
-      assert_almost_equal(NumericalPoint(*covMatrix.getImplementation()), NumericalPoint(sampleSize * sampleSize), 1e-10);
+      assert_almost_equal(NumericalPoint(*covMatrix.getImplementation()), NumericalPoint(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
 
     }
 
@@ -139,32 +138,20 @@ int main(int argc, char *argv[])
 
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());
-      // To match the parameter value of earlier versions
-      SquaredExponential covarianceModel(dimension);
+      NumericalPoint scale(2);
+      scale[0] = 1e-05;
+      scale[1] = 18.9;
+      NumericalPoint amplitude(1,  8.05);
+      SquaredExponential covarianceModel(scale, amplitude);
 
       KrigingAlgorithm algo(X, Y, basis, covarianceModel);
-
-      // Define Optimization Problem
-      OptimizationProblem problem;
-      Interval bounds(NumericalPoint(2, 0.7071067811865475), NumericalPoint(2, 35.60679774997894));
-      problem.setBounds(bounds);
-
-      TNC solver;
-      solver.setMaximumIterationNumber(10000);
-      solver.setMaximumAbsoluteError(1.0e-8);
-      solver.setMaximumRelativeError(1.0e-8);
-      solver.setMaximumResidualError(1.0e-8);
-      solver.setMaximumConstraintError(1.0e-8);
-      solver.setStartingPoint(NumericalPoint(2, 22.360679774997898));
-      solver.setProblem(problem);
-
-      algo.setOptimizationSolver(solver);
       algo.run();
 
       // perform an evaluation
       KrigingResult result(algo.getResult());
       std::cout << "X=" << X << std::endl;
       std::cout << "f(X)=" << Y << std::endl;
+      std::cout << "covariance parameter=" << result.getCovarianceModel().getParameter() << std::endl;
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 

@@ -27,10 +27,9 @@ Y2 = f(X2)
 
 # create algorithm
 basis = ConstantBasisFactory(dimension).build()
-covarianceModel = SquaredExponential(dimension, 2.23606797749979)
+covarianceModel = SquaredExponential([1e-05], [4.11749])
 
 algo = KrigingAlgorithm(X, Y, basis, covarianceModel)
-
 algo.run()
 
 # perform an evaluation
@@ -39,7 +38,7 @@ print("X=", X)
 print("f(X)=", Y)
 
 assert_almost_equal(result.getMetaModel()(X), Y)
-assert_almost_equal(result.getResiduals(), [1.32804e-10])
+assert_almost_equal(result.getResiduals(), [1.32804e-07], 1e-3, 1e-3)
 assert_almost_equal(result.getRelativeErrors(), [5.20873e-21])
 
 # Kriging variance is 0 on learning points
@@ -49,7 +48,7 @@ var = result.getConditionalCovariance(X)
 # application to NumericalPoint
 covariancePoint = NumericalPoint(var.getImplementation())
 theoricalVariance = NumericalPoint(sampleSize * sampleSize)
-assert_almost_equal(covariancePoint, theoricalVariance, 1e-10, 1e-10)
+assert_almost_equal(covariancePoint, theoricalVariance, 8.95e-7, 8.95e-7)
 
 # Test 2
 
@@ -57,11 +56,11 @@ assert_almost_equal(covariancePoint, theoricalVariance, 1e-10, 1e-10)
 spatialDimension = 2
 
 # Learning data
-levels = [8., 5.]
+levels = [8, 5]
 box = Box(levels)
 inputSample = box.generate()
 # Scale each direction
-inputSample *= 10
+inputSample *= 10.0
 
 
 model = NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
@@ -69,22 +68,19 @@ outputSample = model(inputSample)
 
 # Validation
 sampleSize = 10
-inputValidSample = ComposedDistribution(
-    2 * [Uniform(0, 10.0)]).getSample(sampleSize)
+inputValidSample = ComposedDistribution(2 * [Uniform(0, 10.0)]).getSample(sampleSize)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
-covarianceModel = SquaredExponential(spatialDimension, 0.95)
+covarianceModel = SquaredExponential([1.98824,0.924731], [3.15352])
 
 # 3) Basis definition
-basisCollection = BasisCollection(
-    1, ConstantBasisFactory(spatialDimension).build())
+basisCollection = BasisCollection(1, ConstantBasisFactory(spatialDimension).build())
 
 # Kriring algorithm
-algo = KrigingAlgorithm(
-    inputSample, outputSample, basisCollection, covarianceModel)
+algo = KrigingAlgorithm(inputSample, outputSample, basisCollection, covarianceModel)
 algo.run()
 result = algo.getResult()
 # Get meta model
@@ -94,7 +90,7 @@ outData = metaModel(inputValidSample)
 
 # 4) Errors
 # Interpolation
-assert_almost_equal(outputSample,  metaModel(inputSample), 1e-5, 1e-5)
+assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 
 
 # 5) Kriging variance is 0 on learning points
@@ -104,9 +100,7 @@ var = result.getConditionalCovariance(inputSample)
 # application to NumericalPoint
 covariancePoint = NumericalPoint(var.getImplementation())
 theoricalVariance = NumericalPoint(covariancePoint.getSize(), 0.0)
-assert_almost_equal(covariancePoint, theoricalVariance, 1e-10, 1e-10)
+assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 
 # Estimation
-# rtol & a tol fixed to 1e-1
-assert_almost_equal(
-    outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1)
+assert_almost_equal(outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1)

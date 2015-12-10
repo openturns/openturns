@@ -61,7 +61,11 @@ int main(int argc, char *argv[])
   const NumericalSample  outputSample( model(inputSample) );
 
   // 2) Definition of exponential model
-  SquaredExponential covarianceModel(2, 0.95);
+  NumericalPoint scale(2);
+  scale[0] = 1.98824;
+  scale[1] = 0.924731;
+  NumericalPoint amplitude(1, 3.15352);
+  SquaredExponential covarianceModel(scale, amplitude);
 
   // 3) Basis definition
   Basis basis(ConstantBasisFactory(2).build());
