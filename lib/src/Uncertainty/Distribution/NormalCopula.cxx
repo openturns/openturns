@@ -50,13 +50,6 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
   setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(dim);
-  NumericalScalar rho(0.5);
-  for (UnsignedInteger i = 1; i < dim; ++i)
-  {
-    for (UnsignedInteger j = 0; j < i; ++j) correlation_(i, j) = rho;
-    rho *= 0.5;
-  }
-  normal_ = Normal(NumericalPoint(dim, 0.0), NumericalPoint(dim, 1.0), correlation_);
   computeRange();
 }
 
