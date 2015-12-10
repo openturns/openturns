@@ -58,7 +58,7 @@ where :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`.
         \dots \\
         \vect{y}_n
        \end{array}
-     \right) \in \Rset^{np}, \quad 
+     \right) \in \Rset^{np}, \quad
     \vect{Z} = \left(
       \begin{array}{l}
         \vect{Y}\\
@@ -105,7 +105,7 @@ If evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_h)`, then the mat
         \Cov{\vect{y}_h|\vect{Y}}
        \end{array}
      \right) \in \mathcal{M}_{ph, p}(\Rset)
-    
+
 Examples
 --------
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
@@ -144,7 +144,7 @@ Get the meta model:
 
 Returns
 -------
-covCoeff : :class:`~openturns.NumericalSample` 
+covCoeff : :class:`~openturns.NumericalSample`
     Returns as a sample the columns of the matrix :math:`\mat{\Sigma}_{1:n,1:n}^{-1}\,\left(\vect{Y}- \mat{F}\vect{\beta}\right)`.
 
 Examples
@@ -179,10 +179,10 @@ Get the covariance coefficients:
 
 Returns
 -------
-trendCoef : collection of :class:`~openturns.NumericalPoint` 
+trendCoef : collection of :class:`~openturns.NumericalPoint`
     For each output marginal *j*, the list of :math:`\vect{\beta}_j`.
 
-    If a collection of basis has been fixed by the User, the vectors :math:`\vect{\beta}_j` don't have the same dimension according to the output marginal *j*. 
+    If a collection of basis has been fixed by the User, the vectors :math:`\vect{\beta}_j` don't have the same dimension according to the output marginal *j*.
 
 Examples
 --------
@@ -215,7 +215,7 @@ Get the trend coefficients:
 
 Returns
 -------
-covModel : :class:`~openturns.CovarianceModel` 
+covModel : :class:`~openturns.CovarianceModel`
     The covariance model of the Normal process *Z*, noted :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}`.
 
     Its spatial dimension is *d* and its dimension is *p*.
@@ -350,7 +350,7 @@ sampleX : 2-d sequence of float
 Returns
 -------
 condCov : :class:`~openturns.CovarianceMatrix`
-    Returns: :math:`\Cov{\vect{y}}` or 
+    Returns: :math:`\Cov{\vect{y}}` or
 
 .. math::
     \left(
@@ -361,10 +361,15 @@ condCov : :class:`~openturns.CovarianceMatrix`
        \end{array}
      \right) \in \mathcal{M}_{ph, p}(\Rset)
 
-where
+where, for a :math:`\vect{x}`:
 
 .. math::
-    \Cov{\vect{y}|\vect{Y}} = \mat{\Sigma}_{n+1,1:n}(\vect{x})\,\mat{\Sigma}_{1:n,1:n}^{-1}\, \Tr{\mat{\Sigma}_{n+1,1:n}(\vect{x})} \in \mathcal{M}_{p}(\Rset)
+      \begin{array}{ccc}
+      \Cov{\vect{y(x)}|\vect{Y}} & = & \mat{\Sigma}_{n+1,n+1}(\vect{x})- \mat{\Sigma}_{n+1,1:n}(\vect{x})\,\mat{\Sigma}_{1:n,1:n}^{-1}\, \Tr{\mat{\Sigma}_{n+1,1:n}(\vect{x})}\\
+      & - &  \Tr{u(\vect{x})} \left(\Tr{F} \mat{\Sigma}_{1:n,1:n}^{-1} F\right)^{-1} u(\vect{x})
+      \end{array}
+
+with :math:`\Cov{\vect{y(x)}|\vect{Y}} \in \mathcal{M}_{p}(\Rset)`, :math:`u(\vect{x})=f(\vect{x})-\Tr{F} \mat{\Sigma}_{1:n,1:n}^{-1} \Tr{\mat{\Sigma}_{n+1,1:n}(\vect{x})}`
 
 Examples
 --------
