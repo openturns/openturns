@@ -57,7 +57,6 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
   , hasCholeskyFactor_(false)
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , sigma2_(1.0)
   , F_()
   , phiT_()
   , Gt_()
@@ -92,7 +91,6 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
   , hasCholeskyFactor_(true)
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
-  , sigma2_(1.0)
   , F_()
   , phiT_()
   , Gt_()
@@ -178,19 +176,6 @@ void KrigingResult::setTransformation(const NumericalMathFunction & transformati
   // Map inputData using the transformation
   inputTransformedData_ = transformation(inputData_);
   hasTransformation_ = true;
-}
-
-/** Sigma2 accessor */
-NumericalScalar KrigingResult::getSigma2() const
-{
-  return sigma2_;
-}
-
-void KrigingResult::setSigma2(const NumericalScalar & sigma2)
-{
-  if (sigma2_ < 0)
-    throw InvalidArgumentException(HERE) << "in KrigingResult::setSigma2, sigma2 should be > 0";
-  sigma2_ = sigma2;
 }
 
 /* Compute mean of new points conditionnaly to observations */
@@ -347,8 +332,8 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditionned data & xi
   LOGINFO("Compute cross-interactions sigmaYX");
-  const Matrix crossCovariance(getCrossMatrix(sample));
-  // 3) Compute r^t R^{-1} r'x)
+  const Matrix crossCovariance = getCrossMatrix(sample);
+  // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
   // We define B = L^{-1} * r(x)
   Matrix B;
@@ -374,7 +359,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
   // Symmeric : ok but not necessary definite. Here by definition it is!
   // So should we define  operator - & operator -= with covariances?
   LOGINFO("Compute Sigma_xx-BtB");
-  CovarianceMatrix result(*sigmaXX.getImplementation() * sigma2_ - *BtB.getImplementation() * sigma2_);
+  CovarianceMatrix result(*sigmaXX.getImplementation() - *BtB.getImplementation() );
 
   // Case of simple Kriging
   if(basis_.getSize() == 0) return result;
@@ -431,7 +416,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
 
   // interest now is to solve  G rho = ux
   LOGINFO("Solve linear system G * rho = ux");
-  Matrix rho(Gt_.solveLinearSystem(ux * std::sqrt(sigma2_)));
+  Matrix rho = Gt_.solveLinearSystem(ux);
   LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
   result = result + rho.computeGram(true);
   return result;
@@ -481,7 +466,6 @@ void KrigingResult::save(Advocate & adv) const
   adv.saveAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
   adv.saveAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
-  adv.saveAttribute( "sigma2_", sigma2_ );
   adv.saveAttribute( "F_", F_);
   adv.saveAttribute( "phiT_", phiT_);
   adv.saveAttribute( "Gt_", Gt_);
@@ -502,7 +486,6 @@ void KrigingResult::load(Advocate & adv)
   adv.loadAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
   adv.loadAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
-  adv.loadAttribute( "sigma2_", sigma2_ );
   adv.loadAttribute( "F_", F_);
   adv.loadAttribute( "phiT_", phiT_);
   adv.loadAttribute( "Gt_", Gt_);

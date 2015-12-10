@@ -24,16 +24,17 @@
 #include "MetaModelAlgorithm.hxx"
 #include "Basis.hxx"
 #include "CovarianceModel.hxx"
-#include "OptimizationSolver.hxx"
 #include "KrigingResult.hxx"
 #include "HMatrix.hxx"
+#include "GeneralizedLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class KrigingAlgorithm
  *
- * The class building kriging process
+ * The class building kriging process, relying on generalized linear model class (GeneralizedLinearModelAlgorithm)
+ * for the evaluation of the coefficients of the parameters.
  */
 
 class OT_API KrigingAlgorithm
@@ -82,7 +83,7 @@ public:
                     const Bool keepCovariance = true);
 
   /** Virtual constructor */
-  virtual KrigingAlgorithm * clone() const;
+  KrigingAlgorithm * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -90,82 +91,49 @@ public:
   /** Perform regression */
   void run();
 
-  /** input transformation accessor */
-  void setInputTransformation(const NumericalMathFunction & inputTransformation);
-  NumericalMathFunction getInputTransformation() const;
-
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  NumericalSample getInputSample() const;
+  NumericalSample getOutputSample() const;
 
   /** result accessor */
-  virtual KrigingResult getResult();
-
-  /** Marginal log-Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction();
-
-  /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
-
-  /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  KrigingResult getResult();
 
   /** Optimization solver accessor */
   OptimizationSolver getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationSolver & solver);
 
+  /** Log-Likelihood function accessor */
+  NumericalMathFunction getLogLikelihoodFunction();
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
+
 protected:
-  // Optimize the marginal log-likelihood associated to outputIndex_
-  NumericalPoint optimizeLogLikelihood();
-  // Compute the marginal output log-likelihood function
-  NumericalScalar computeLogLikelihood(const NumericalPoint & theta) const;
-  NumericalScalar computeLapackLogLikelihood(const NumericalPoint & theta) const;
-  NumericalScalar computeHMatLogLikelihood(const NumericalPoint & theta) const;
-  // Compute the design matrix on the normalized input sample
-  void computeF();
-  // Normalize the input sample
-  void normalizeInputSample();
+
+  /** The method helps to compute the gamma point */
+  void computeGamma();
 
   friend class Factory<KrigingAlgorithm>;
 
 private:
 
-  /** set sample & covariance method */
-  void setDataAndCovariance(const NumericalSample & inputSample,
-                            const NumericalSample & outputSample,
-                            const CovarianceModel & covarianceModel);
-
-  /** Set basis collection method */
-  void setBasisCollection(const BasisCollection & basisCollection);
-
-  /** The method helps to compute the gamma point */
-  void computeGamma();
-
   // The input data
   NumericalSample inputSample_;
-  // Standardized version of the input data
-  NumericalSample normalizedInputSample_;
-  // Standardization funtion
-  NumericalMathFunction inputTransformation_;
-  mutable Bool normalize_;
   // The associated output data
   NumericalSample outputSample_;
+  Bool normalize_;
   // The covariance model parametric family
   CovarianceModel covarianceModel_;
-  // The member of the covariance model fitted to the data
-  CovarianceModel conditionalCovarianceModel_;
-  // The optimization algorithm used for the meta-parameters estimation
-  mutable OptimizationSolver  solver_;
-  Bool optimizerProvided_;
-
-  // The coefficients of the current output conditional expectation part
-  mutable NumericalPoint beta_;
+  // Underlying algo used for the evaluation of parameters
+  GeneralizedLinearModelAlgorithm glmAlgo_;
   // The coefficients of the current output deterministic trend
   mutable NumericalPoint gamma_;
   // Temporarly used to compute gamma
   mutable NumericalPoint rho_;
-  // The current output Gram matrix
-  mutable Matrix F_;
 
   /** Result */
   KrigingResult result_;
@@ -173,18 +141,11 @@ private:
   /** Bool for keeping or not covariance factor */
   Bool keepCovariance_;
 
-  /** BasisCollection */
-  BasisPersistentCollection basis_;
-
   /** Cholesky factor ==>  TriangularMatrix */
-  // Argument is mutable as beta/gamma
   mutable TriangularMatrix covarianceCholeskyFactor_;
 
   /** Cholesky factor when using hmat-oss */
   mutable HMatrix covarianceHMatrix_;
-
-  /** sigma2 factor */
-  mutable NumericalScalar sigma2_;
 
 }; // class KrigingAlgorithm
 
