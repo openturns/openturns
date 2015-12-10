@@ -20,7 +20,7 @@
     dimension = distribution.getDimension()
     if dimension <= 2:
         if distribution.getDimension() == 1:
-            distribution.setDescription(['$t$'])
+            distribution.setDescription(['$x$'])
             pdf_graph = distribution.drawPDF()
             cdf_graph = distribution.drawCDF()
             fig = plt.figure(figsize=(10, 4))
@@ -30,7 +30,7 @@
             View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
             View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False)
         else:
-            distribution.setDescription(['$t_0$', '$t_1$'])
+            distribution.setDescription(['$x_1$', '$x_2$'])
             pdf_graph = distribution.drawPDF()
             fig = plt.figure(figsize=(10, 5))
             plt.suptitle(str(distribution))

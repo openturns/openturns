@@ -30,15 +30,16 @@ Examples
 Create a random vector:
 
 >>> import openturns as ot
->>> conditionedDist = ot.Normal()
->>> linkFunc = ot.NumericalMathFunction(['y'], ['m', 's'], ['y', 'y^2'])
->>> rvTheta = ot.CompositeRandomVector(linkFunc, ot.RandomVector(ot.Normal()))
->>> finalDist = ot.ConditionalRandomVector(conditionedDist, rvTheta)
+>>> distXgivenT = ot.Exponential()
+>>> distGamma = ot.Uniform(1.0, 2.0)
+>>> distAlpha = ot.Uniform(0.0, 0.1)
+>>> distTheta = ot.ComposedDistribution([distGamma, distAlpha])
+>>> rvTheta = ot.RandomVector(distTheta)
+>>> rvX = ot.ConditionalRandomVector(distXgivenT, rvTheta)
 
 Draw a sample:
 
->>> sample = finalDist.getSample(10)
-"
+>>> sample = rvX.getSample(100)"
 
 // ---------------------------------------------------------------------
 

@@ -42,11 +42,7 @@ Temporal information
 
     :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel
-
-    :template: classWithPlot.rst_t
     NonStationaryCovarianceModelFactory
-
-    :template: classWithPlot.rst_t
     StationaryCovarianceModelFactory
 
 Spectral information

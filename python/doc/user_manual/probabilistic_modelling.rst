@@ -103,9 +103,15 @@ Combining and transforming distributions
 
     BayesDistribution
     ComposedDistribution
+
+    :template: classWithPlot.rst_t
     CompositeDistribution
+
+    :template: Distribution.rst_t
     ConditionalDistribution
     CumulativeDistributionNetwork
+
+    :template: classWithPlot.rst_t
     MaximumEntropyOrderStatisticsDistribution
 
 .. autosummary::
@@ -132,6 +138,8 @@ Combining and transforming distributions
 
     TruncatedDistribution
     KernelMixture
+
+    :template: classWithPlot.rst_t
     Mixture
 
 
@@ -155,7 +163,11 @@ Copulas
     FrankCopula
     GumbelCopula
     IndependentCopula
+
+    :template: classWithPlot.rst_t
     MaximumEntropyOrderStatisticsCopula
+
+    :template: class.rst_t
     MinCopula
     NormalCopula
 
@@ -165,15 +177,14 @@ Combining and transforming copulas
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     ComposedCopula
 
-.. autosummary::
-    :toctree: _generated/
     :template: Copula.rst_t
-
     SklarCopula
+
+    :template: classWithPlot.rst_t
     OrdinalSumCopula
 
 Random vectors
@@ -186,7 +197,11 @@ Random vectors
     RandomVector
     PythonRandomVector
     CompositeRandomVector
+
+    :template: classWithPlot.rst_t
     ConditionalRandomVector
+
+    :template: class.rst_t
     ConstantRandomVector
     PosteriorRandomVector
     UsualRandomVector

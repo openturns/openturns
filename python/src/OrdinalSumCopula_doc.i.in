@@ -23,8 +23,8 @@ writes:
 
     C(\vect{u}) = \left\{
     \begin{array}{ll}
-       \alpha_i+C_i \left( \dfrac{u_1-\alpha_i}{\alpha_{i+1} - \alpha_i} \right)
-           & \mbox{ if } \vect{u} \in [\alpha_i, \alpha_{i+1}[ \\
+       \alpha_i+C_i \left( \dfrac{u_1-\alpha_i}{\alpha_{i+1} - \alpha_i}, \dot,  \dfrac{u_d-\alpha_i}{\alpha_{i+1} - \alpha_i} \right)
+           & \mbox{ if } \vect{u} \in [\alpha_i, \alpha_{i+1}[^d \\
        M_d(\vect{u}) & \mbox{ else }
     \end{array}
     \right.
