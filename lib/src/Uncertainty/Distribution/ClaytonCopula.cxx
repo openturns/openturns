@@ -115,17 +115,24 @@ NumericalPoint ClaytonCopula::getRealization() const
   // Laplace transform:    speed= 2719399.57105 rng/s, t= 0.367728233337 s
 #ifdef CLAYTON_USE_LAPLACE
   if (theta_ > 0.0)
-   {
-     const NumericalScalar x(-std::log(u1));
-     const NumericalScalar y(-std::log(u2));
-     const NumericalScalar z(DistFunc::rGamma(1.0 / theta_));
-     realization[0] = std::exp(-theta_ * log1p(x / z));
-     realization[1] = std::exp(-theta_ * log1p(y / z));
-     return realization;
-   }
+  {
+    const NumericalScalar x(-std::log(u1));
+    const NumericalScalar y(-std::log(u2));
+    const NumericalScalar z(DistFunc::rGamma(1.0 / theta_));
+    realization[0] = std::exp(-theta_ * log1p(x / z));
+    realization[1] = std::exp(-theta_ * log1p(y / z));
+    return realization;
+  }
 #endif
   realization[0] = u1;
-  realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
+  if (theta_ < 1.0e-8)
+  {
+    const NumericalScalar logU1(std::log(u1));
+    const NumericalScalar logU2(std::log(u2));
+    realization[1] = u2 * (1.0 - logU2 * theta_ * (1.0 + logU1 - 0.5 * theta_ * ((1.0 + logU2) * logU1 * logU1 + (2.0 + logU2) * (1.0 + logU1))));
+  }
+  if (theta_ < 1.0e8) realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
+  else realization[1] = u1 * (1.0 - (log1p(-u2) + std::log(u2)) / theta_);
   return realization;
 }
 
@@ -135,26 +142,81 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  // Optimized version given by Maple 11, as there are a lot of std::pow's involved
-  const NumericalScalar u(point[0]);
-  const NumericalScalar v(point[1]);
-  // A copula has a null DDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+  NumericalScalar u(point[0]);
+  NumericalScalar v(point[1]);
+  // A copula has a null PDF outside of ]0, 1[^2
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(2, 0.0);
+  // We can impose u <= v as the copula is symmetric in (u, v)
+  Bool exchanged(false);
+  if (u > v)
   {
+    std::swap(u, v);
+    exchanged = true;
+  }
+  // W case (Frechet lower bound)
+  if (theta_ == -1.0)
+  {
+    if (u == 1.0 - v) return NumericalPoint(2, -SpecFunc::MaxNumericalScalar);
     return NumericalPoint(2, 0.0);
   }
+  NumericalPoint ddf(2);
   // Independent case
-  if (theta_ == 0.0) return NumericalPoint(2, 0.0);
-  // General case
-  const NumericalScalar powUMinusTheta(std::pow(u, -theta_));
-  const NumericalScalar powVMinusTheta(std::pow(v, -theta_));
-  const NumericalScalar sum1(powUMinusTheta + powVMinusTheta - 1.0);
-  const NumericalScalar factor1(std::pow(sum1, -1.0 / theta_));
-  const NumericalScalar factor2(factor1 * powUMinusTheta * powVMinusTheta * (theta_ + 1.0) / (sum1 * sum1 * sum1 * u * v));
-  NumericalPoint result(2);
-  result[0] =  factor2 * (theta_ * (powUMinusTheta - powVMinusTheta + 1.0) + 1.0 - powVMinusTheta) / u;
-  result[1] = -factor2 * (theta_ * (powUMinusTheta - powVMinusTheta - 1.0) - 1.0 + powUMinusTheta) / v;
-  return result;
+  if (theta_ == 0.0) return ddf;
+  // Nearly independent cases. The formula defining the copula suffers from
+  // cancellation for |theta|<<1 so we use a truncated series of order 2
+  if (std::abs(theta_) < 1.0e-8)
+  {
+    const NumericalScalar logU(std::log(u));
+    const NumericalScalar logV(std::log(v));
+    if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return ddf;
+    const NumericalScalar ddfU(0.5 * theta_ * (2.0 * (logV + 1.0) + theta_ * (2.0 + 2.0 * logU + 8.0 * logV + 3.0 * logV * logV + 6.0 * logU * logV + 2.0 * logU * logV * logV)) / u);
+    const NumericalScalar ddfV(0.5 * theta_ * (2.0 * (logU + 1.0) + theta_ * (2.0 + 2.0 * logV + 8.0 * logU + 3.0 * logU * logU + 6.0 * logV * logU + 2.0 * logV * logU * logU)) / v);
+    if (exchanged)
+    {
+      ddf[0] = ddfV;
+      ddf[1] = ddfU;
+    }
+    else
+    {
+      ddf[0] = ddfU;
+      ddf[1] = ddfV;
+    }
+    return ddf;
+  }
+  // General case, we factor out u^(-theta) in order to prevent under/owerflow
+  // for theta>>1
+  // dc(u,v)/du = (u^(-theta)+v^(-theta)-1)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*(u^(-theta)*theta-theta*v^(-theta)-v^(-theta)+theta+1)/(u^2*v*(u^(-theta)+v^(-theta)-1)^3
+  // = u*(1+(u/v)^theta-u^theta)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*theta*u^(-theta)*(1-(1+1/theta)*((u/v)^theta-u^theta))/(u^2*v*u^(-3*theta)*(1+(u/v)^theta-u^theta)^3
+  // = theta*(theta+1)*(1+K)^(-1/theta-3)*u^(theta-1)*v^(-theta-1)*(1-(1+1/theta)*K)
+  //
+  // dc(u,v)/dv=-(u^(-theta)+v^(-theta)-1)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*(u^(-theta)*theta-theta*v^(-theta)-u^(-theta)-theta-1)/(v^2*u*(u^(-theta)+v^(-theta)-1)^3
+  // = -(u^(-theta)+v^(-theta)-1)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*(u^(-theta)*theta-theta*v^(-theta)-u^(-theta)-theta-1)/(v^2*u*(u^(-theta)+v^(-theta)-1)^3
+  // = -u*(1+(u/v)^theta-u^theta)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*theta*u^(-theta)*(1-(u/v)^theta-1/theta-(1+1/theta)*u^theta)/(v^2*u*u^(-3*theta)*(1+(u/v)^theta-u^theta)^3
+  // = -(1+K)^(-1/theta)*u^theta*v^(-theta-2)*(theta+1)*theta*(1-(u/v)^theta-1/theta-(1+1/theta)*u^theta)/(1+K)^3
+
+  // For moderate theta, this form is cancellation-free
+  NumericalScalar factor;
+  const NumericalScalar logU(std::log(u));
+  const NumericalScalar logV(std::log(v));
+  const NumericalScalar logUOverV(std::log(u / v));
+  if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
+  // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
+  else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
+  if (factor <= -1.0) return ddf;
+  const NumericalScalar ddfU( theta_ * (1.0 + theta_) * (1.0 - (1.0 + 1.0 / theta_) * factor) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + (theta_ - 1.0) * logUOverV - 2.0 * logV));
+  const NumericalScalar t(-std::exp(theta_ * logUOverV) + 1.0 / theta_ - (1.0 + 1.0 / theta_) * std::exp(theta_ * logU));
+  const NumericalScalar ddfV(-theta_ * (1.0 + theta_) * (1.0 + t) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + theta_ * logUOverV - 2.0 * logV));
+  if (exchanged)
+  {
+    ddf[0] = ddfV;
+    ddf[1] = ddfU;
+  }
+  else
+  {
+    ddf[0] = ddfU;
+    ddf[1] = ddfV;
+  }
+  return ddf;
 }
 
 /* Get the PDF of the distribution */
@@ -163,21 +225,43 @@ NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u(point[0]);
-  const NumericalScalar v(point[1]);
+  NumericalScalar u(point[0]);
+  NumericalScalar v(point[1]);
   // A copula has a null PDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return 0.0;
+  // We can impose u <= v as the copula is symmetric in (u, v)
+  if (u > v) std::swap(u, v);
+  // W case (Frechet lower bound)
+  if (theta_ == -1.0)
   {
+    if (u == 1.0 - v) return SpecFunc::MaxNumericalScalar;
     return 0.0;
   }
   // Independent case
   if (theta_ == 0.0) return 1.0;
-  // W case (Frechet lower bound)
-  if (theta_ == -1.0) return 0.0;
-  // General case
-  const NumericalScalar factor(std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0);
-  if (factor <= 0.0) return 0.0;
-  return std::pow(factor, -1.0 / theta_ - 2.0) * (1.0 + theta_) * std::pow(u * v, -theta_ - 1.0);
+  // Nearly independent cases. The formula defining the copula suffers from
+  // cancellation for |theta|<<1 so we use a truncated series of order 2
+  if (std::abs(theta_) < 1.0e-8)
+  {
+    const NumericalScalar logU(std::log(u));
+    const NumericalScalar logV(std::log(v));
+    if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return 0.0;
+    return 1.0 + theta_ * (1.0 + logU + logV + logU * logV + theta_ * (logU + logV + 0.5 * (logU * logU + logV * logV + logU * logV * (8.0 + 3.0 * (logU + logV) + logU * logV))));
+  }
+  // General case, we factor out u^(-theta) in order to prevent under/owerflow
+  // for theta>>1
+  // c(u,v)=(theta+1)(u^(-theta)+v^(-theta)-1)^(-(1+2theta)/theta)(uv)^(-theta-1)
+  // = (theta+1)exp(theta*log(u)-log(v)-(1/theta+2)log1p(expm1(theta*log(u/v))-expm1(theta*log(u))))
+  // For moderate theta, this form is cancellation-free
+  NumericalScalar factor;
+  const NumericalScalar logU(std::log(u));
+  const NumericalScalar logV(std::log(v));
+  const NumericalScalar logUOverV(std::log(u / v));
+  if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
+  // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
+  else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
+  if (factor <= -1.0) return 0.0;
+  return (1.0 + theta_) * std::exp(theta_ * logUOverV - logV - (1.0 / theta_ + 2.0) * log1p(factor));
 }
 
 /* Get the CDF of the distribution */
@@ -186,25 +270,40 @@ NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u(point[0]);
-  const NumericalScalar v(point[1]);
+  NumericalScalar u(point[0]);
+  NumericalScalar v(point[1]);
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0)) return 0.0;
+  // We can impose u <= v as the copula is symmetric in (u, v)
+  if (u > v) std::swap(u, v);
   // If we are outside of the support, in the upper part
-  if ((u >= 1.0) && (v >= 1.0)) return 1.0;
+  if (u >= 1.0) return 1.0;
   // If we are outside of the support for u, in the upper part
-  if (u >= 1.0) return v;
-  // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return u;
   // If we are in the support
-  // Independent case
-  if (theta_ == 0.0) return u * v;
   // W case (Frechet lower bound)
   if (theta_ == -1.0) return std::max(u + v - 1.0, 0.0);
-  // General case
-  const NumericalScalar factor(std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0);
-  if (factor <= 0.0) return 0.0;
-  return std::pow(factor, -1.0 / theta_);
+  // Independent case
+  if (theta_ == 0.0) return u * v;
+  // Nearly independent cases. The formula defining the copula suffers from
+  // cancellation for |theta|<<1 so we use a truncated series
+  if (std::abs(theta_) < 1.0e-8)
+  {
+    const NumericalScalar logU(std::log(u));
+    const NumericalScalar logV(std::log(v));
+    if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return 0.0;
+    return u * v * (1.0 + theta_ * logU * logV * (1.0 + 0.5 * theta_ * (logU * logV + logU + logV)));
+  }
+  // General case, we factor out u^(-theta) in order to prevent under/owerflow
+  // for theta>>1
+  // C(u,v)=u(1+(u/v)^theta-u^theta)^(-1/theta)
+  // For moderate theta, this form is cancellation-free
+  NumericalScalar factor;
+  if (theta_ < 100.0) factor = std::exp(theta_ * std::log(u)) * expm1(-theta_ * std::log(v));
+  // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
+  else factor = expm1(theta_ * std::log(u / v)) - expm1(theta_ * std::log(u));
+  if (factor <= -1.0) return 0.0;
+  return u * std::exp(-(log1p(factor)) / theta_);
 }
 
 /* Compute the covariance of the distribution */
@@ -372,7 +471,7 @@ NumericalPoint ClaytonCopula::getParameter() const
 
 void ClaytonCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameter.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = ClaytonCopula(parameter[0]);
   setWeight(w);

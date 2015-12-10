@@ -29,3 +29,24 @@ margins CDF=0.190662
 margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.973879,0.973879]
 margins CDF(qantile)=0.950000
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.243714,0.761003]
+ClaytonCopula(theta = 1e-12)
+PDF( [1e-12,1e-12] )=1.000000000709e+00
+CDF( [1e-12,1e-12] )=1.000000000763e-24
+ClaytonCopula(theta = 9e-09)
+PDF( [1e-07,1e-07] )=1.000002057013e+00
+CDF( [1e-07,1e-07] )=1.000002338139e-14
+ClaytonCopula(theta = 1.1e-08)
+PDF( [0.1,0.1] )=1.000000018664e+00
+CDF( [0.1,0.1] )=1.000000058321e-02
+ClaytonCopula(theta = -0.99)
+PDF( [0.5,0.5] )=1.386418956876e+00
+CDF( [0.5,0.5] )=6.615106628117e-03
+ClaytonCopula(theta = 99)
+PDF( [0.1,0.1] )=2.482557416581e+02
+CDF( [0.1,0.1] )=9.930229666324e-02
+ClaytonCopula(theta = 110)
+PDF( [0.1,0.1] )=2.757568764767e+02
+CDF( [0.1,0.1] )=9.937184737898e-02
+ClaytonCopula(theta = 100000)
+PDF( [0.1,0.1] )=2.500007671207e+05
+CDF( [0.1,0.1] )=9.999930685522e-02

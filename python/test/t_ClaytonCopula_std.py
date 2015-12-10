@@ -77,6 +77,22 @@ try:
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))
 
+    # Additional tests for PDF/CDF in extreme cases
+    # We focus on the main diagonal as it is the most challenging computation
+    points = [[1.0e-12] * 2, [1.0e-7] * 2, [0.1] * 2,
+              [0.5] * 2, [0.1] * 2, [0.1] * 2, [0.1] * 2]
+
+    thetas = [1.0e-12, 0.9e-8, 1.1e-8, -0.99, 9.9e1, 1.1e2, 1.0e5]
+    c_py = list()
+    C_py = list()
+    for i in range(len(thetas)):
+        x = NumericalPoint(points[i])
+        copula = ClaytonCopula(thetas[i])
+        print(copula)
+        c_py.append(copula.computePDF(x))
+        C_py.append(copula.computeCDF(x))
+        print("PDF(", x, ")=%.12e" % c_py[i])
+        print("CDF(", x, ")=%.12e" % C_py[i])
 except:
     import sys
-    print("t_NormalCopula_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_ClaytonCopula_std.py", sys.exc_info()[0], sys.exc_info()[1])
