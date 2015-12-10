@@ -2,13 +2,13 @@
 "Algorithm for the evaluation of general linear models.
 
 Available constructors:
-    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True*)
+    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis*)
+    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, multivariateBasis, normalize=True*)
+    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, multivariateBasis, normalize=True, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, multivariateBasis*)
+    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, multivariateBasis, keepCovariance=True*)
 
 Parameters
 ----------
@@ -35,12 +35,11 @@ normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
-    Default is *True*.
+    Default is set in resource map key `GeneralizedLinearModelAlgorithm-NormalizeData`
 
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *GeneralizedLinearModelResult*.
-
-    Default is *False*.
+    Default is set in resource map key `GeneralizedLinearModelAlgorithm-KeepCovariance`
 
 Notes
 -----
@@ -244,28 +243,6 @@ Notes
 -----
 It computes the response surface and creates a
 :class:`~openturns.GeneralizedLinearModelResult` structure containing all the results."
-
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::enableKeepCovariance
-"Enable the mechanism of storing the covariance Cholesky factor"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::disableKeepCovariance
-"Disable the mechanism of storing the covariance Cholesky factor"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::isEnabledKeepCovariance
-"Test whether the store mechanism of covariance Cholesky factor is enabled or not.
-
-Returns
--------
-isEnabled : bool
-    Flag telling whether the store mechanism of covariance is enabled.
-    It is disabled by default."
 
 // ---------------------------------------------------------------------
 

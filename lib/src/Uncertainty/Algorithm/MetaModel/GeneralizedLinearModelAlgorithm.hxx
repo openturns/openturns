@@ -54,34 +54,39 @@ public:
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const Bool normalize = true);
+                                   const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
+                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
-                                   const Bool normalize = true);
+                                   const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
+                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const Basis & basis);
+                                   const Basis & basis,
+                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & multivariateBasis,
-                                   const Bool normalize = true);
+                                   const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
+                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const BasisCollection & multivariateBasis);
+                                   const BasisCollection & multivariateBasis,
+                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
   GeneralizedLinearModelAlgorithm * clone() const;
@@ -105,11 +110,6 @@ public:
 
   /** Objective function (log-Likelihood) accessor */
   NumericalMathFunction getObjectiveFunction();
-
-  /** keep covariance */
-  void enableKeepCovariance() const;
-  void disableKeepCovariance() const;
-  Bool isEnabledKeepCovariance() const;
 
   /** Optimization solver accessor */
   OptimizationSolver getOptimizationSolver() const;
@@ -141,6 +141,10 @@ protected:
   // Initialize default optimization solver
   void initializeDefaultOptimizationSolver();
   friend class Factory<GeneralizedLinearModelAlgorithm>;
+
+
+  friend class KrigingAlgorithm;
+  NumericalPoint getRho() const;
 
 private:
 
@@ -194,7 +198,7 @@ private:
   mutable HMatrix covarianceHMatrix_;
 
   /** Boolean argument for keep covariance */
-  mutable Bool isEnabledKeepCovariance_;
+  mutable Bool keepCovariance_;
 
   /** Method : 0 (lapack), 1 (hmat) */
   UnsignedInteger method_;

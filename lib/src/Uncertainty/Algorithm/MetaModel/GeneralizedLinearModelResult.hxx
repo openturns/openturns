@@ -116,6 +116,9 @@ public:
   /** Method that returns the covariance factor - hmat */
   HMatrix getHMatCholeskyFactor() const;
 
+  // Return input sample transformed
+  NumericalSample getInputTransformedSample() const;
+
  private:
 
   /** inputData should be keeped*/

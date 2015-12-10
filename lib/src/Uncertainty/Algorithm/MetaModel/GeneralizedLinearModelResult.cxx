@@ -194,6 +194,12 @@ HMatrix GeneralizedLinearModelResult::getHMatCholeskyFactor() const
   return covarianceHMatrix_;
 }
 
+// Return input sample transformed
+NumericalSample GeneralizedLinearModelResult::getInputTransformedSample() const
+{
+  return inputTransformedData_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void GeneralizedLinearModelResult::save(Advocate & adv) const
 {

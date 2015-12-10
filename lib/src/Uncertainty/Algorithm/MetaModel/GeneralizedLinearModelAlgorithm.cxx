@@ -56,7 +56,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm ()
   , basis_()
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , isEnabledKeepCovariance_(false)
+  , keepCovariance_(false)
   , method_(0)
   , hasRun_(false)
 {
@@ -67,7 +67,8 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm ()
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                                                   const NumericalSample & outputSample,
                                                                   const CovarianceModel & covarianceModel,
-                                                                  const Bool normalize)
+                                                                  const Bool normalize,
+                                                                  const Bool keepCovariance)
   : MetaModelAlgorithm()
   , inputSample_(0, 0)
   , normalizedInputSample_(0, 0)
@@ -83,7 +84,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   , basis_()
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , isEnabledKeepCovariance_(false)
+  , keepCovariance_(keepCovariance)
   , method_(0)
   , hasRun_(false)
 {
@@ -116,7 +117,8 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
                                                                   const NumericalSample & outputSample,
                                                                   const CovarianceModel & covarianceModel,
                                                                   const Basis & basis,
-                                                                  const Bool normalize)
+                                                                  const Bool normalize,
+                                                                  const Bool keepCovariance)
   : MetaModelAlgorithm()
   , inputSample_()
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -132,7 +134,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   , basis_()
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , isEnabledKeepCovariance_(false)
+  , keepCovariance_(keepCovariance)
   , method_(0)
   , hasRun_(false)
 {
@@ -177,7 +179,8 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
                                                                   const NumericalMathFunction & inputTransformation,
                                                                   const NumericalSample & outputSample,
                                                                   const CovarianceModel & covarianceModel,
-                                                                  const Basis & basis)
+                                                                  const Basis & basis,
+                                                                  const Bool keepCovariance)
   : MetaModelAlgorithm()
   , inputSample_()
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -193,7 +196,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   , basis_()
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , isEnabledKeepCovariance_(false)
+  , keepCovariance_(keepCovariance)
   , method_(0)
   , hasRun_(false)
 {
@@ -226,7 +229,8 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
                                                                   const NumericalSample & outputSample,
                                                                   const CovarianceModel & covarianceModel,
                                                                   const BasisCollection & multivariateBasis,
-                                                                  const Bool normalize)
+                                                                  const Bool normalize,
+                                                                  const Bool keepCovariance)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -242,7 +246,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   , basis_()
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , isEnabledKeepCovariance_(false)
+  , keepCovariance_(keepCovariance)
   , method_(0)
   , hasRun_(false)
 {
@@ -277,7 +281,8 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
                                                                   const NumericalMathFunction & inputTransformation,
                                                                   const NumericalSample & outputSample,
                                                                   const CovarianceModel & covarianceModel,
-                                                                  const BasisCollection & multivariateBasis)
+                                                                  const BasisCollection & multivariateBasis,
+                                                                  const Bool keepCovariance)
   : MetaModelAlgorithm()
   , inputSample_()
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -293,7 +298,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   , basis_()
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
-  , isEnabledKeepCovariance_(false)
+  , keepCovariance_(keepCovariance)
   , method_(0)
   , hasRun_(false)
 {
@@ -559,7 +564,7 @@ void GeneralizedLinearModelAlgorithm::run()
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
 
-  if (isEnabledKeepCovariance_)
+  if (keepCovariance_)
     result_ = GeneralizedLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, trendCoefficients, conditionalCovarianceModel, covarianceCholeskyFactor_, covarianceHMatrix_);
   else
     result_ = GeneralizedLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, trendCoefficients, conditionalCovarianceModel);
@@ -589,8 +594,9 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLogLikelihood(const Nume
   // For general case, we could not except a restricted log-likelihood
   // We use general expression of log-likelihood
   logLikelihood -= epsilon;
+  logLikelihood /= outputSample_.getSize();
   LOGINFO(OSS(false) << "Compute the estimated log-likelihood=" << logLikelihood);
-  return logLikelihood / outputSample_.getSize();
+  return logLikelihood;
 }
 
 
@@ -835,6 +841,11 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() 
   return inputTransformation_;
 }
 
+NumericalPoint GeneralizedLinearModelAlgorithm::getRho() const
+{
+  return rho_;
+}
+
 /* String converter */
 String GeneralizedLinearModelAlgorithm::__repr__() const
 {
@@ -881,22 +892,6 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getObjectiveFunction()
   return logLikelihood;
 }
 
-Bool GeneralizedLinearModelAlgorithm::isEnabledKeepCovariance() const
-{
-  return isEnabledKeepCovariance_;
-}
-
-/** keep covariance */
-void GeneralizedLinearModelAlgorithm::enableKeepCovariance() const
-{
-  isEnabledKeepCovariance_ = true;
-}
-
-void GeneralizedLinearModelAlgorithm::disableKeepCovariance() const
-{
-  isEnabledKeepCovariance_ = false;
-}
-
 void GeneralizedLinearModelAlgorithm::initializeMethod()
 {
 
@@ -923,7 +918,7 @@ void GeneralizedLinearModelAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "result_", result_ );
   adv.saveAttribute( "method", method_ );
-  adv.saveAttribute( "isEnabledKeepCovariance_", isEnabledKeepCovariance_ );
+  adv.saveAttribute( "keepCovariance_", keepCovariance_ );
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
 }
 
@@ -941,7 +936,7 @@ void GeneralizedLinearModelAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "result_", result_ );
   adv.loadAttribute( "method", method_ );
-  adv.loadAttribute( "isEnabledKeepCovariance_", isEnabledKeepCovariance_ );
+  adv.loadAttribute( "keepCovariance_", keepCovariance_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
 }
 
