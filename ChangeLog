@@ -48,7 +48,6 @@
 
 === Miscellaneous ===
  * Enhanced print of samples
- * Use newer LAPACKE C-interface to LAPACK instead of Fortran libraries
  * Dropped old library wrappers
 
 === Bug fixes ===

@@ -55,7 +55,7 @@
 #cmakedefine OPENTURNS_HAVE_INTTYPES_H
 
 /* Define if you have LAPACK library. */
-#cmakedefine HAVE_LAPACK
+#cmakedefine OPENTURNS_HAVE_LAPACK
 
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
