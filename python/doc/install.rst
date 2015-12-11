@@ -26,7 +26,7 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 14.04 LTS 'Trusty Tahr'      | deb http://ubuntu.openturns.org trusty main  |
     +-------------------------------------+----------------------------------------------+
-    | Ubuntu 15.04 'Vivid Vervet'         | deb http://ubuntu.openturns.org vivid main   |
+    | Ubuntu 15.10 'Wily Werewolf'        | deb http://ubuntu.openturns.org wily main    |
     +-------------------------------------+----------------------------------------------+
     | Debian 7.0 'Wheezy'                 | deb http://debian.openturns.org wheezy main  |
     +-------------------------------------+----------------------------------------------+
@@ -35,7 +35,7 @@ We support the following Debian-based distributions:
 
 Add OpenTURNS' mirror signature::
 
-    $ curl http://debian.openturns.org/openturns.org-repo.key | sudo apt-key add -
+    curl http://debian.openturns.org/openturns.org-repo.key | sudo apt-key add -
 
 To be able to retrieve OpenTURNS packages, you must add the appropriate
 repository address to your sources list. To do so, you may either use the
@@ -55,7 +55,7 @@ add the following source to your sources list::
 After editing aptitude's sources-list, you must update your packages database
 using either the graphical interface or by issuing the following command::
 
-    $ sudo aptitude update
+    sudo aptitude update
 
 The following packages should now be available:
 
@@ -70,9 +70,9 @@ The following packages should now be available:
     +----------------------+------------------------------------+
     | libopenturns0.x-dbg  | debug package                      |
     +----------------------+------------------------------------+
-    | python-openturns     | python module                      |
+    | python-openturns     | Python module                      |
     +----------------------+------------------------------------+
-    | python3-openturns    | python 3 module                    |
+    | python3-openturns    | Python 3 module                    |
     +----------------------+------------------------------------+
     | openturns-examples   | examples                           |
     +----------------------+------------------------------------+
@@ -83,46 +83,46 @@ The following packages should now be available:
 
 Use the following command to check::
 
-    $ apt-cache search openturns
+    apt-cache search openturns
 
 RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
-    $ curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    $ curl http://download.opensuse.org/repositories/science:/openturns/Fedora_22/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    $ curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_13.2/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_23/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.1/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
-    $ rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
-    $ rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_22/repodata/repomd.xml.key
-    $ rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_13.2/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_23/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.1/repodata/repomd.xml.key
 
 Install the package::
 
-    $ yum install python-openturns
+    yum install python-openturns
 
 Conda
 -----
-Install binstar support if needed::
+Install Anaconda cloud support if needed::
 
-    $ conda install anaconda-client
+    conda install anaconda-client
 
-Configure openturns binstar repository::
+Configure openturns Anaconda cloud repository::
 
-    $ conda config --add channels https://conda.binstar.org/openturns
+    conda config --add channels https://conda.anaconda.org/openturns
 
 Install the package::
 
-    $ conda install openturns
+    conda install openturns
 
 
 Archlinux/Parabola
 ------------------
 Install from `AUR <https://aur.archlinux.org/packages/>`_ repository::
 
-    $ yaourt -S openturns
+    yaourt -S openturns
 
 
 From sources
@@ -134,18 +134,22 @@ Checkout the following dependencies:
 - `LAPACK <http://www.netlib.org/lapack/>`_
 - `LibXml2 <http://xmlsoft.org/>`_ (optional, for serialization)
 - `muParser <http://muparser.beltoforion.de/>`_ (optional, for analytical parser)
-- `Python <http://www.python.org/>`_ (optional, for python bindings)
 - `SWIG <http://www.swig.org/>`_ (optional, for python bindings)
-
+- `NLopt <http://ab-initio.mit.edu/nlopt>`_ (optional, for additional optimization algorithms)
+- `Boost <http://www.boost.org/>`_ (optional, for efficient numerical functions)
+- `TBB <http://www.threadingbuildingblocks.org/>`_ (optional, for multithreading)
+- `Python <http://www.python.org/>`_ (optional, for python bindings)
+- `Matplotlib <http://matplotlib.org/>`_ (optional, for viewer module)
+- `Sphinx <http://sphinx-doc.org/>`_ (optional, for documentation)
 
 You can checkout the development trunk::
 
-    $ git clone https://github.com/openturns/openturns.git
-    $ cd openturns
-    $ cmake -DCMAKE_INSTALL_PREFIX=~/.local .
-    $ make install
+    git clone https://github.com/openturns/openturns.git
+    cd openturns
+    cmake -DCMAKE_INSTALL_PREFIX=~/.local .
+    make install
 
 .. note::
 
     When installing into `~/.local` you will not need to set PYTHONPATH
-    for python to be able to import openturns
+    environment variable for Python to be able to import openturns
