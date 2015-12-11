@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.7 release (in-progress) == #release-1.7
+== 1.7rc1 release (2015-12-14) == #release-1.7rc1
 
 === Library ===
 
@@ -12,11 +12,16 @@
 
 ==== New classes ====
  * OptimizationSolver, OptimizationProblem
- * SLSQP, LBFGS, NelderMead algorithms from NLopt
+ * SLSQP, LBFGS, NelderMead optimization algorithms from NLopt
  * DiracCovarianceModel, TensorizedCovarianceModel
- * HMatrixParameters
+ * HMatrixParameters: support class for HMat
  * KarhunenLoeveP1Factory: Karhunen-Loeve decomposition of a covariance model using a P1 Lagrange interpolation
  * GeneralizedLinearModelAlgorithm, GeneralizedLinearModelResult: estimate parameters of a generalized linear model
+ * BipartiteGraph: red/black graph
+ * CumulativeDistributionNetwork: high dimensional distribution using a collection of (usually) small dimension
+   distributions and a bipartite graph describing the interactions between these distributions
+ * AdaptiveStieltjesAlgorithm: orthonormal polynomials wrt arbitrary measures using adaptive integration
+ * MaximumLikelihoodFactory: generic maximum likelihood distribution estimation service
 
 ==== API changes ====
  * Removed BoundConstrainedAlgorithm class
@@ -53,6 +58,7 @@
 === Bug fixes ===
  * #784 (Troubles with UserDefinedFactory/UserDefined)
  * #790 (AbdoRackwitz parameters)
+ * #796 (Beta distribution: if sample contains Inf, freeze on getSample)
  * #798 (Error message misstyping (Gamma distribution))
  * #799 (Error message misstyping (Gumbel distribution factory))
  * #800 (Exponential distribution built on constant sample)
