@@ -113,6 +113,7 @@ ot_add_python_module(common common_module.i
                    )
 
 ot_add_python_module(typ typ_module.i
+                      BipartiteGraph.i BipartiteGraph_doc.i.in
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
@@ -447,6 +448,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       GumbelCopulaFactory.i GumbelCopulaFactory_doc.i.in
                       ComposedDistribution.i ComposedDistribution_doc.i.in
                       ComposedCopula.i ComposedCopula_doc.i.in
+                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
                       PythonDistributionImplementation.cxx
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i

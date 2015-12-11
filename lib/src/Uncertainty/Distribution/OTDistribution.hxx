@@ -47,6 +47,7 @@
 #include "ComposedDistribution.hxx"
 #include "CompositeDistribution.hxx"
 #include "ConditionalDistribution.hxx"
+#include "CumulativeDistributionNetwork.hxx"
 #include "BayesDistribution.hxx"
 #include "Dirac.hxx"
 #include "DiracFactory.hxx"

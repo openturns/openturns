@@ -127,22 +127,6 @@ void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction
   update();
 }
 
-struct DerivativeWrapper
-{
-  const NumericalMathFunction & function_;
-
-  DerivativeWrapper(const NumericalMathFunction & function)
-    : function_(function)
-  {}
-
-  NumericalPoint computeDerivative(const NumericalPoint & point) const
-  {
-    NumericalPoint value(1, function_.gradient(point)(0, 0));
-    return value;
-  }
-
-};
-
 /* Compute all the derivative attributes */
 void CompositeDistribution::update()
 {
@@ -437,6 +421,23 @@ Bool CompositeDistribution::isContinuous() const
 Bool CompositeDistribution::isDiscrete() const
 {
   return antecedent_.isDiscrete();
+}
+
+/* Compute the shifted moments of the distribution */
+NumericalPoint CompositeDistribution::computeShiftedMomentContinuous(const UnsignedInteger n,
+								     const NumericalPoint & shift) const
+{
+  if (shift.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
+  if (n == 0) return NumericalPoint(1, 1.0);
+  NumericalPoint moment(1);
+  // For each component
+  GaussKronrod algo;
+  const CompositeDistributionShiftedMomentWrapper kernel(n, shift[0], this);
+  const NumericalMathFunction integrand(bindMethod<CompositeDistributionShiftedMomentWrapper, NumericalPoint, NumericalPoint>(kernel, &CompositeDistributionShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
+  const NumericalScalar a(antecedent_.getRange().getLowerBound()[0]);
+  const NumericalScalar b(antecedent_.getRange().getUpperBound()[0]);
+  moment[0] = algo.integrate(integrand, Interval(a, b))[0];
+  return moment;
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -1,39 +1,39 @@
-Distribution  Frechet(alpha = 3, beta = 1, gamma = 0)
+Distribution  Frechet(alpha = 6, beta = 1.5, gamma = -1)
 Elliptical =  False
 Continuous =  True
-oneRealization= [1.29334]
-oneSample first= [2.00187]  last= [1.05306]
-mean= [1.36009]
-covariance= [[ 0.713234 ]]
+oneRealization= [0.705878]
+oneSample first= [1.12231]  last= [0.539283]
+mean= [0.698001]
+covariance= [[ 0.177003 ]]
 Kolmogorov test for the generator, sample size= 100  is  True
 Kolmogorov test for the generator, sample size= 1000  is  True
 Point=  [1]
-ddf     = [1.10364]
-log pdf= 0.0986122886681
-pdf     =1.103638
-pdf (FD)=1.103638
-cdf= 0.367879441171
-ccdf= 0.632120558829
-survival= 0.632120558829
-characteristic function=(0.285108, 0.794726)
-log characteristic function=(-0.169224, 1.22635)
-pdf gradient     = [0.367879,0,1.10364]
-pdf gradient (FD)= [0.367879,0,1.10364]
-cdf gradient     = [0,-1.10364,-1.10364]
-cdf gradient (FD)= [0,-1.10364,-1.10364]
-quantile= [2.69141]
+ddf     = [-1.32548]
+log pdf= -0.805458661668
+pdf     =0.446883
+pdf (FD)=0.446883
+cdf= 0.836960404867
+ccdf= 0.163039595133
+survival= 0.163039595133
+characteristic function=(0.72659, 0.574653)
+log characteristic function=(-0.0764829, 0.669162)
+pdf gradient     = [-0.0311988,1.46939,1.32548]
+pdf gradient (FD)= [-0.0311988,1.46939,1.32548]
+cdf gradient     = [0.0428534,-0.595844,-0.446883]
+cdf gradient (FD)= [0.0428534,-0.595844,-0.446883]
+quantile= [1.46083]
 cdf(quantile)= 0.95
-mean= [1.35412]
-standard deviation= [0.919404]
-covariance= [[ 0.845303 ]]
+mean= [0.693181]
+standard deviation= [0.424152]
+covariance= [[ 0.179905 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
-parameters= [[alpha : 3, beta : 1, gamma : 0]]
+parameters= [[alpha : 6, beta : 1.5, gamma : -1]]
 standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [3.01804]
-standard moment n= 2 , value= [3.89522]
-standard moment n= 3 , value= [32.0269]
-standard moment n= 4 , value= [139280]
-standard moment n= 5 , value= [3.23338e+09]
-Standard representative= Frechet(alpha = 3, beta = 1, gamma = 0)
+standard moment n= 1 , value= [1.12879]
+standard moment n= 2 , value= [1.35412]
+standard moment n= 3 , value= [1.77245]
+standard moment n= 4 , value= [2.67894]
+standard moment n= 5 , value= [5.56632]
+Standard representative= Frechet(alpha = 6, beta = 1, gamma = 0)

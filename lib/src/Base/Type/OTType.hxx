@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTTYPE_HXX
 #define OPENTURNS_OTTYPE_HXX
 
+#include "BipartiteGraph.hxx"
 #include "Cache.hxx"
 #include "Collection.hxx"
 #include "Description.hxx"

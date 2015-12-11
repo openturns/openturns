@@ -29,6 +29,7 @@
 
 /* Base/Geom */
 %include Domain.i
+%include BipartiteGraph.i
 %include Mesh.i
 %include RegularGrid.i
 %include MeshFactoryImplementation.i

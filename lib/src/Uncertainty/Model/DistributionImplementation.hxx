@@ -137,10 +137,16 @@ public:
 
   /** Get one realization of the distributionImplementation */
   virtual NumericalPoint getRealization() const;
+ protected:
+  virtual NumericalPoint getRealizationByInversion() const;
 
+ public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual NumericalSample getSample(const UnsignedInteger size) const;
+ protected:
+  virtual NumericalSample getSampleByInversion(const UnsignedInteger size) const;
 
+ public:
   /** Get the DDF of the distributionImplementation */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
   virtual NumericalPoint  computeDDF(const NumericalPoint & point) const;
@@ -403,13 +409,22 @@ public:
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
       const NumericalPoint & y) const;
 
+  virtual NumericalPoint computeConditionalPDF(const NumericalPoint & x,
+      const NumericalSample & y) const;
+
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
       const NumericalPoint & y) const;
 
+  virtual NumericalPoint computeConditionalCDF(const NumericalPoint & x,
+      const NumericalSample & y) const;
+
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
       const NumericalPoint & y) const;
+
+  virtual NumericalPoint computeConditionalQuantile(const NumericalPoint & q,
+      const NumericalSample & y) const;
 
   /** Get the isoprobabilist transformation */
   virtual IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
@@ -570,22 +585,6 @@ protected:
                         const NumericalScalar xMax,
                         const UnsignedInteger pointNumber) const;
 
-  /** Compute the PDF and CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
-      Used to speed-up the computeConditionalQuantile() method */
-  NumericalScalar computeConditionalPDFAndCDF(const NumericalScalar x,
-      const NumericalPoint & y,
-      NumericalScalar & cdf,
-      const Implementation & conditioningDistribution,
-      const Implementation & conditionedDistribution,
-      const NumericalScalar xMin) const;
-
-  /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) with reuse of expansive data */
-  NumericalScalar computeConditionalCDFForQuantile(const NumericalScalar x,
-      const NumericalPoint & y,
-      const Implementation & conditioningDistribution,
-      const Implementation & conditionedDistribution,
-      const NumericalScalar xMin) const;
-
   /** Compute the characteristic function of 1D distributions in a regular pattern with cache */
   virtual NumericalComplex computeCharacteristicFunction(const UnsignedInteger index,
       const NumericalScalar step) const;
@@ -680,26 +679,6 @@ protected:
     const DistributionImplementation * p_distribution_;
   }; // struct PDFWrapper
 
-  // Structure used to wrap the computePDF() method for the computation of the conditional CDF
-  struct ConditionalPDFWrapper
-  {
-    ConditionalPDFWrapper(const NumericalPoint & y,
-                          const Implementation p_distribution)
-      : y_(y)
-      , p_distribution_(p_distribution)
-    {};
-
-    NumericalPoint computeConditionalPDF(const NumericalPoint & point) const
-    {
-      NumericalPoint z(y_);
-      z.add(point[0]);
-      return NumericalPoint(1, p_distribution_->computePDF(z));
-    };
-
-    const NumericalPoint y_;
-    const Implementation p_distribution_;
-  }; // struct ConditionalPDFWrapper
-
   // Structure used to wrap the computeCDF() method for interpolation purpose
   struct CDFWrapper
   {
@@ -745,6 +724,67 @@ protected:
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
+
+  // Structure used to compute shifted moments
+  struct ShiftedMomentWrapper
+  {
+    ShiftedMomentWrapper(const UnsignedInteger n,
+			  const NumericalScalar shift,
+			  const Implementation p_distribution):
+      n_(n),
+      shift_(shift),
+      p_distribution_(p_distribution) {};
+
+    NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
+    {
+      const NumericalScalar power(std::pow(point[0] - shift_, static_cast<NumericalScalar>(n_)));
+      const NumericalScalar pdf(p_distribution_->computePDF(point));
+      LOGINFO(OSS() << "computeShiftedMomentKernel, n=" << n_ << ", shift=" << shift_ << ", point=" << point[0] << ", power=" << power << ", pdf=" << pdf << ", power*pdf=" << power*pdf);
+      return NumericalPoint(1, power * pdf);
+    };
+    
+    const UnsignedInteger n_;
+    const NumericalScalar shift_;
+    const Implementation p_distribution_;
+  }; // struct ShiftedMomentWrapper
+
+  // Structure used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
+  struct ConditionalPDFWrapper
+  {
+    ConditionalPDFWrapper(const NumericalPoint & y,
+                          const Implementation p_distribution)
+      : y_(y)
+      , p_distribution_(p_distribution)
+    {};
+
+    NumericalPoint computeConditionalPDF(const NumericalPoint & point) const
+    {
+      NumericalPoint z(y_);
+      z.add(point[0]);
+      return NumericalPoint(1, p_distribution_->computePDF(z));
+    };
+
+    const NumericalPoint y_;
+    const Implementation p_distribution_;
+  }; // struct ConditionalPDFWrapper
+
+  // Structure used to wrap the computeConditionalPDF() method for the computation of the conditional quantile
+  struct ConditionalCDFWrapper
+  {
+    ConditionalCDFWrapper(const NumericalPoint & y,
+                          const DistributionImplementation * p_distribution)
+      : y_(y)
+      , p_distribution_(p_distribution)
+    {};
+
+    NumericalPoint computeConditionalCDF(const NumericalPoint & point) const
+    {
+      return NumericalPoint(1, p_distribution_->computeConditionalCDF(point[0], y_));
+    };
+
+    const NumericalPoint y_;
+    const DistributionImplementation * p_distribution_;
+  }; // struct ConditionalCDFWrapper
 
 #endif
 

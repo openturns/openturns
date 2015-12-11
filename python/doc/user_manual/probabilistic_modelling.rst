@@ -105,6 +105,7 @@ Combining and transforming distributions
     ComposedDistribution
     CompositeDistribution
     ConditionalDistribution
+    CumulativeDistributionNetwork
     MaximumEntropyOrderStatisticsDistribution
 
 .. autosummary::

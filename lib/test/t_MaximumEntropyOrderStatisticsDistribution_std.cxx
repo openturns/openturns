@@ -45,10 +45,10 @@ int main(int argc, char *argv[])
     checkClassWithClassName<TestObject>();
 
     ComposedDistribution::DistributionCollection coll;
-    coll.add(Trapezoidal(-2., -1.1, -1., 1.));
-    coll.add(LogUniform(1., 1.2));
-    coll.add(Triangular(3., 4., 5.));
-    coll.add(Arcsine(3.5, 5.5));
+    coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
+    coll.add(LogUniform(1.0, 1.2));
+    coll.add(Triangular(3.0, 4.5, 5.0));
+    coll.add(Beta(2.5, 6.0, 4.7, 5.2));
 
     // Instanciate one distribution object
     MaximumEntropyOrderStatisticsDistribution distribution(coll);
@@ -76,9 +76,9 @@ int main(int argc, char *argv[])
 
     // Define a point
     NumericalPoint point(distribution.getDimension());
-    point[1] = 3.;
-    point[2] = 4.;
-    point[3] = 5.;
+    point[1] = 3.2;
+    point[2] = 4.2;
+    point[3] = 5.0;
     fullprint << "Point= " << point << std::endl;
 //
 //     // Show PDF and CDF of point
@@ -115,14 +115,18 @@ int main(int argc, char *argv[])
     fullprint << "skewness=" << skewness << std::endl;
     NumericalPoint kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis=" << kurtosis << std::endl;
-    // CovarianceMatrix covariance = distribution.getCovariance();
-    // fullprint << "covariance=" << covariance << std::endl;
-    // CovarianceMatrix correlation = distribution.getCorrelation();
-    // fullprint << "correlation=" << correlation << std::endl;
-    // CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
-    // fullprint << "spearman=" << spearman << std::endl;
+    ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 );
+    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 );
+    CovarianceMatrix covariance = distribution.getCovariance();
+    fullprint << "covariance=" << covariance << std::endl;
+    CovarianceMatrix correlation = distribution.getCorrelation();
+    fullprint << "correlation=" << correlation << std::endl;
+    CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
+    fullprint << "spearman=" << spearman << std::endl;
     // CovarianceMatrix kendall = distribution.getKendallTau();
     // fullprint << "kendall=" << kendall << std::endl;
+    ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
+    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
     MaximumEntropyOrderStatisticsDistribution::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
 //     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;

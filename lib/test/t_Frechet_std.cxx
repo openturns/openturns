@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class MaximumEntropyOrderStatisticsCopula for standard methods
+ *  @brief The test file of class Frechet for standard methods
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -24,10 +24,10 @@
 using namespace OT;
 using namespace OT::Test;
 
-class TestObject : public MaximumEntropyOrderStatisticsCopula
+class TestObject : public Frechet
 {
 public:
-  TestObject() : MaximumEntropyOrderStatisticsCopula() {}
+  TestObject() : Frechet(6.0, 1.5, -1.0) {}
   virtual ~TestObject() {}
 };
 
@@ -37,23 +37,16 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-  PlatformInfo::SetNumericalPrecision(4);
 
   try
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    ComposedDistribution::DistributionCollection coll;
-    coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
-    coll.add(LogUniform(1.0, 1.2));
-    coll.add(Triangular(3.0, 4.5, 5.0));
-    coll.add(Beta(2.5, 6.0, 4.7, 5.2));
-
     // Instanciate one distribution object
-    MaximumEntropyOrderStatisticsCopula distribution(coll);
-    UnsignedInteger dim = distribution.getDimension();
+    Frechet distribution(6.0, 1.5, -1.0);
     fullprint << "Distribution " << distribution << std::endl;
+    std::cout << "Distribution " << distribution << std::endl;
 
     // Is this distribution elliptical ?
     fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
@@ -71,41 +64,60 @@ int main(int argc, char *argv[])
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
-    fullprint << "skewness=" << oneSample.computeSkewness() << std::endl;
-    fullprint << "kurtosis=" << oneSample.computeKurtosis() << std::endl;
+    size = 100;
+    for (UnsignedInteger i = 0; i < 2; ++i)
+    {
+      fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
+      size *= 10;
+    }
 
     // Define a point
-    NumericalPoint point(distribution.getDimension());
-    point[0] = 0.35;
-    point[1] = 0.15;
-    point[2] = 0.02;
-    point[3] = 0.33;
+    NumericalPoint point( distribution.getDimension(), 1.0 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-//     NumericalScalar eps(1e-5);
+    NumericalScalar eps(1e-5);
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-//     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
+    fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
     NumericalScalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     NumericalScalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
+    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps) << std::endl;
     NumericalScalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
     NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
-//     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
-//     fullprint << "survival=" << Survival << std::endl;
+    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    fullprint << "survival=" << Survival << std::endl;
+    NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
+    fullprint << "characteristic function=" << CF << std::endl;
+    NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+    fullprint << "log characteristic function=" << LCF << std::endl;
+      NumericalPoint PDFgr = distribution.computePDFGradient( point );
+      fullprint << "pdf gradient     =" << PDFgr << std::endl;
+      NumericalPoint PDFgrFD(3);
+      PDFgrFD[0] = (Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
+                    Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+      PDFgrFD[1] = (Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                    Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+      PDFgrFD[2] = (Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                    Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
+      fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
+      NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+      fullprint << "cdf gradient     =" << CDFgr << std::endl;
+      NumericalPoint CDFgrFD(3);
+      CDFgrFD[0] = (Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
+                    Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+      CDFgrFD[1] = (Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                    Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+      CDFgrFD[2] = (Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                    Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
+      fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-    NumericalPoint quantileTail = distribution.computeQuantile( 0.95, true );
-    fullprint << "quantile (tail)=" << quantileTail << std::endl;
-    NumericalScalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
-    fullprint << "cdf (tail)=" << CDFTail << std::endl;
-//     NumericalPoint PDFgr = distribution.computePDFGradient( point );
-//     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     NumericalPoint standardDeviation = distribution.getStandardDeviation();
@@ -114,48 +126,18 @@ int main(int argc, char *argv[])
     fullprint << "skewness=" << skewness << std::endl;
     NumericalPoint kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis=" << kurtosis << std::endl;
-    ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 );
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CovarianceMatrix correlation = distribution.getCorrelation();
     fullprint << "correlation=" << correlation << std::endl;
     CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
     fullprint << "spearman=" << spearman << std::endl;
-    // CovarianceMatrix kendall = distribution.getKendallTau();
-    // fullprint << "kendall=" << kendall << std::endl;
-    ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
-    MaximumEntropyOrderStatisticsCopula::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    CovarianceMatrix kendall = distribution.getKendallTau();
+    fullprint << "kendall=" << kendall << std::endl;
+    Frechet::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
-//     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
-//     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
-
-    // Extract the marginals
-    for (UnsignedInteger i = 0; i < dim; ++ i)
-    {
-      Distribution margin(distribution.getMarginal(i));
-      fullprint << "margin=" << margin << std::endl;
-      fullprint << "margin PDF=" << margin.computePDF(point[i]) << std::endl;
-      fullprint << "margin CDF=" << margin.computeCDF(point[i]) << std::endl;
-      fullprint << "margin quantile=" << margin.computeQuantile(0.95) << std::endl;
-      fullprint << "margin realization=" << margin.getRealization() << std::endl;
-      fullprint << "margin range=" << margin.getRange() << std::endl;
-    }
-
-    // Extract a 2-D marginal
-    Indices indices(2, 0);
-    indices[1] = 1;
-    fullprint << "indices=" << indices << std::endl;
-    Distribution margins(distribution.getMarginal(indices));
-    fullprint << "margins=" << margins << std::endl;
-    fullprint << "independent?=" << (margins.hasIndependentCopula() ? "true" : "false") << std::endl;
-    fullprint << "margins PDF=" << margins.computePDF(NumericalPoint(2, 0.5)) << std::endl;
-    fullprint << "margins CDF=" << margins.computeCDF(NumericalPoint(2, 0.5)) << std::endl;
-    quantile = margins.computeQuantile(0.5);
-    fullprint << "margins quantile=" << quantile << std::endl;
-    fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
-    fullprint << "margins realization=" << margins.getRealization() << std::endl;
+    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+    fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
   }
   catch (TestFailed & ex)

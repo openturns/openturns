@@ -401,27 +401,14 @@ Distribution SklarCopula::getDistribution() const
 /* Get the Kendall concordance of the copula */
 CorrelationMatrix SklarCopula::getKendallTau() const
 {
-  // Check that we are not in a loop, ie the distribution underlying the Sklar copula has a copula which is its Sklar copula! The test is not the most accurate one as it will detect a SklarCopula built on a ComposedDistribution built using the SklarCopula of another distribution as a SklarCopula with a loop.
-  if (distribution_.getCopula().getImplementation()->getClassName() == GetClassName()) return CopulaImplementation::getKendallTau();
-  return distribution_.getKendallTau();
+  if (distribution_.isElliptical()) return distribution_.getKendallTau();
+  return CopulaImplementation::getKendallTau();
 }
 
 /* Compute the covariance of the copula */
 void SklarCopula::computeCovariance() const
 {
-  // Check that we are not in a loop, ie the distribution underlying the Sklar copula has a copula which is its Sklar copula! The test is not the most accurate one as it will detect a SklarCopula built on a ComposedDistribution built using the SklarCopula of another distribution as a SklarCopula with a loop.
-  if (distribution_.getCopula().getImplementation()->getClassName() == GetClassName())
-  {
-    DistributionImplementation::computeCovariance();
-    return;
-  }
-  const CorrelationMatrix rho(distribution_.getSpearmanCorrelation());
-  const UnsignedInteger dimension(getDimension());
-  covariance_ = CovarianceMatrix(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-      covariance_(i, j) = rho(i, j) / 12.0;
-  isAlreadyComputedCovariance_ = true;
+  DistributionImplementation::computeCovariance();
 }
 
 /* Method save() stores the object through the StorageManager */

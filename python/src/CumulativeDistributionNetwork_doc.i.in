@@ -1,0 +1,72 @@
+%feature("docstring") OT::CumulativeDistributionNetwork
+"Composed distribution.
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of :math:`n` distributions associated to the red nodes of a bipartite graph.
+graph : :class:`~openturns.BipartiteGraph`
+    A bipartite graph. It must have :math:`n` red nodes, and the red node :math:`i` must have a clique of size the dimension of the :math:`i` th distribution.
+
+Notes
+-----
+A cumulative distribution network (CDN) is a :math:`p`-dimensional distribution which cumulative distribution function is given as a product of lower dimensional cumulative distribution functions:
+
+.. math::
+
+    F(x_1, \cdots, x_p) = \prod_{i=1}^n(F_i(\vect{x}_i))
+
+Where :math:`\vect{x}_i` is the vector :math:`(x_{j}, j\in J_i)`, :math:`J_i` being the clique of black nodes linked to the red node :math:`i`.
+
+The dimension :math:`p` is the cardinal of the union of the cliques, ie the number of black nodes in the bipartite graph.
+
+Examples
+--------
+>>> import openturns as ot
+>>> graph = ot.BipartiteGraph([[0, 1], [1, 2], [2, 0]])
+>>> distribution = ot.CumulativeDistributionNetwork([ot.Normal(2)]*3, graph)
+
+Compute the CDF:
+
+>>> distribution.computeCDF([1.0, 2.0, -0.5])"
+0.0643539541103
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CumulativeDistributionNetwork::getDistributionCollection
+"Get the distributions defining the CDN.
+
+Returns
+-------
+distributions : list of :class:`~openturns.Distribution`
+    List of the distributions in the CDN."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CumulativeDistributionNetwork::setDistributionCollection
+"Set the distributions defining the CDN.
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of the distributions in the CDN."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CumulativeDistributionNetwork::getGraph
+"Get the bipartite graph defining the CDN.
+
+Returns
+-------
+graph : a :class:`~openturns.BipartiteGraph`
+    The bipartite graph defining the CDN."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CumulativeDistributionNetwork::setGraph
+"Set the bipartite graph defining the CDN.
+
+Parameters
+----------
+graph : a :class:`~openturns.BipartiteGraph`
+    The bipartite graph defining the CDN."
+

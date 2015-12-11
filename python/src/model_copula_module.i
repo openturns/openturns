@@ -50,6 +50,7 @@
 %include GumbelCopula.i
 %include GumbelCopulaFactory.i
 %include ComposedDistribution.i
+%include CumulativeDistributionNetwork.i
 %include ComposedCopula.i
 %include OrdinalSumCopula.i
 

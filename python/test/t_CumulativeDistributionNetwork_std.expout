@@ -1,0 +1,31 @@
+Distribution  class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=2 distributionCollection=[class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1],class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]] graph=[[0,1],[0,1]]
+Distribution  CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]))][[0,1],[0,1]])
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.819143,1.55123]
+oneSample first= [-0.337688,0.500922]  last= [-0.31133,-0.29406]
+mean= [0.57312,0.562745]
+covariance= [[  0.693077  -0.0044764 ]
+ [ -0.0044764  0.685993  ]]
+Point=  [1.0, 1.0]
+log pdf =-1.7971e+00
+pdf     =1.6578e-01
+cdf     =5.0107e-01
+ccdf    =4.9893e-01
+survival=8.5345e-02
+quantile= [2.234,2.234]
+cdf(quantile)= 0.95
+mean= [0.56419,0.56419]
+standard deviation= [0.825645,0.825645]
+skewness= [0.136949,0.136949]
+kurtosis= [3.06174,3.06174]
+covariance= [[ 0.68169 0       ]
+ [ 0       0.68169 ]]
+correlation= [[ 1 0 ]
+ [ 0 1 ]]
+spearman= [[ 1 0 ]
+ [ 0 1 ]]
+kendall= [[ 1 0 ]
+ [ 0 1 ]]

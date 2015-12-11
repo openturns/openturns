@@ -1,63 +1,58 @@
-Copula  MaximumEntropyOrderStatisticsCopula(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4, b = 5),Arcsine(a = 3.5, b = 5.5)])
+Copula  MaximumEntropyOrderStatisticsCopula(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4.5, b = 5),Beta(r = 2.5, t = 6, a = 4.7, b = 5.2)])
 Elliptical copula=  False
 Elliptical copula=  False
 Independent copula=  False
-oneRealization= class=NumericalPoint name=Unnamed dimension=4 values=[0.629877,0.882805,0.159663,0.116931]
-oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[0.347057,0.969423,0.924238,0.764586]  last= class=NumericalPoint name=Unnamed dimension=4 values=[0.450413,0.630137,0.135818,0.130268]
-mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.499014,0.499206,0.505609,0.503548]
-covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0849644,-0.000136295,0.000166964,0.000103713,-0.000136295,0.0831311,0.00170779,0.00123735,0.000166964,0.00170779,0.0847751,0.0666844,0.000103713,0.00123735,0.0666844,0.0836533]
-Point=  class=NumericalPoint name=Unnamed dimension=4 values=[0.3,0.4,0.5,0.6]
-ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[0.31919,0.216791,2.04622,-0.319358]
-log pdf=-0.448822
-pdf     =0.638380
-condPDF     =2.512553
-cdf=0.052448
-ccdf=0.947552
-condCDF     =0.581241
-quantile= class=NumericalPoint name=Unnamed dimension=4 values=[0.986684,0.986684,0.986684,0.986684]
+oneRealization= class=NumericalPoint name=Unnamed dimension=4 values=[0.629877,0.882805,0.151547,0.0302348]
+oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[0.347057,0.969423,0.923052,0.492666]  last= class=NumericalPoint name=Unnamed dimension=4 values=[0.450413,0.630137,0.137583,0.707768]
+mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.499014,0.499206,0.5056,0.499316]
+covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0849644,-0.000136295,0.000187446,7.82855e-05,-0.000136295,0.0831311,0.00100951,-1.89497e-05,0.000187446,0.00100951,0.0847861,0.00446144,7.82855e-05,-1.89497e-05,0.00446144,0.0831515]
+Point=  [0.35,0.15,0.02,0.33]
+ddf     = class=NumericalPoint name=Unnamed dimension=4 values=[0.318639,0.227512,-1.13455,-0.276473]
+log pdf=-0.450551
+pdf     =0.637277
+condPDF     =19.425306
+cdf=0.000482
+ccdf=0.999518
+condCDF     =0.611494
+quantile= class=NumericalPoint name=Unnamed dimension=4 values=[0.987341,0.987341,0.987341,0.987341]
 cdf(quantile)=0.950000
-condQuantile     =0.617304
+condQuantile     =0.588317
 mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.5,0.5,0.5,0.5]
 standard deviation= class=NumericalPoint name=Unnamed dimension=4 values=[0.288675,0.288675,0.288675,0.288675]
 skewness= class=NumericalPoint name=Unnamed dimension=4 values=[0,0,0,0]
 kurtosis= class=NumericalPoint name=Unnamed dimension=4 values=[1.8,1.8,1.8,1.8]
-covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0833333,0,0,0,0,0.0833333,0.00194692,0,0,0.00194692,0.0833333,0.0606379,0,0,0.0606379,0.0833333]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=NumericalPointWithDescription name=marginal 2 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=NumericalPointWithDescription name=marginal 3 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4,5],class=NumericalPointWithDescription name=marginal 4 dimension=2 description=[a_marginal_3,b_marginal_3] values=[3.5,5.5]]
-standard moment n= 0  value= [1,1,1,1]
-standard moment n= 1  value= [0.5,0.5,0.5,0.5]
-standard moment n= 2  value= [0.333333,0.333333,0.333333,0.333333]
-standard moment n= 3  value= [0.25,0.25,0.25,0.25]
-standard moment n= 4  value= [0.2,0.2,0.2,0.2]
-standard moment n= 5  value= [0.166667,0.166667,0.166667,0.166667]
-Standard representative= MaximumEntropyOrderStatisticsCopula(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4, b = 5),Arcsine(a = 3.5, b = 5.5)])
+covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0833333,0,0,0,0,0.0833333,0.00140456,0,0,0.00140456,0.0833333,0.00407363,0,0,0.00407363,0.0833333]
+correlation= class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.0168547,0,0,0.0168547,1,0.0488836,0,0,0.0488836,1]
+spearman= class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.0168547,0,0,0.0168547,1,0.0488836,0,0,0.0488836,1]
+parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=NumericalPointWithDescription name=marginal 2 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=NumericalPointWithDescription name=marginal 3 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4.5,5],class=NumericalPointWithDescription name=marginal 4 dimension=4 description=[r_marginal_3,t_marginal_3,a_marginal_3,b_marginal_3] values=[2.5,6,4.7,5.2]]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
-margin CDF=0.300000
+margin CDF=0.350000
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.481221]
 margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] finite lower bound=[1] finite upper bound=[1]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
-margin CDF=0.400000
+margin CDF=0.150000
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.0673249]
 margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] finite lower bound=[1] finite upper bound=[1]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
-margin CDF=0.500000
+margin CDF=0.020000
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.418102]
 margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] finite lower bound=[1] finite upper bound=[1]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
-margin CDF=0.600000
+margin CDF=0.330000
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.286734]
 margin range= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] finite lower bound=[1] finite upper bound=[1]
 indices= [0, 1]
 margins= class=MaximumEntropyOrderStatisticsCopula name=MaximumEntropyOrderStatisticsCopula dimension=2 distribution=class=MaximumEntropyOrderStatisticsDistribution name=Unnamed dimension=2 collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.645161,class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=1.2 a=2.71828 b=3.32012]
 margins PDF=1.000000
-margins CDF=0.120000
+margins CDF=0.052500
 margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.894427,0.894427]
 margins CDF(qantile)=0.800000
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.699898,0.209943]

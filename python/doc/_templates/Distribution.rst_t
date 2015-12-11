@@ -13,6 +13,8 @@
         aCopula = ot.NormalCopula(correlation)
         marginals = [ot.Normal(1.0, 2.0), ot.Normal(2.0, 3.0)]
         distribution = ot.ComposedDistribution(marginals, aCopula)
+    elif (ot.{{ objname }}().__class__.__name__=='CumulativeDistributionNetwork'):
+        distribution = ot.CumulativeDistributionNetwork([ot.Normal(2),ot.Dirichlet([0.5, 1.0, 1.5])], ot.BipartiteGraph([[0,1], [0,1]]))
     else:
         distribution = ot.{{ objname }}()
     dimension = distribution.getDimension()

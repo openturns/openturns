@@ -9,10 +9,10 @@ ot.RandomGenerator.SetSeed(0)
 
 # Instanciate one distribution object
 distribution = ot.MaximumEntropyOrderStatisticsDistribution(
-    [ot.Trapezoidal(-2., -1.1, -1., 1.),
-     ot.LogUniform(1., 1.2),
-     ot.Triangular(3., 4., 5.),
-     ot.Arcsine(3.5, 5.5)])
+    [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
+     ot.LogUniform(1.0, 1.2),
+     ot.Triangular(3.0, 4.5, 5.0),
+     ot.Beta(2.5, 6.0, 4.7, 5.2)])
 
 dim = distribution.getDimension()
 print("Distribution ", distribution)
@@ -33,8 +33,8 @@ print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
 
 # Define a point
-point = [0., 3., 4., 5.]
-print("Point= ", repr(point))
+point = ot.NumericalPoint([0.0, 3.2, 4.2, 5.0])
+print("Point= ", point)
 
 # Show PDF and CDF of point
 #eps = 1e-5
@@ -46,7 +46,7 @@ LPDF = distribution.computeLogPDF(point)
 print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-condPDF = distribution.computeConditionalPDF(4., [0., 2.])
+condPDF = distribution.computeConditionalPDF(4.0, [0.0, 2.0])
 print("condPDF     =%.6f" % condPDF)
 
 # derivative of the PDF with regards the parameters of the distribution
@@ -54,7 +54,7 @@ CDF = distribution.computeCDF(point)
 print("cdf=%.6f" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
-condCDF = distribution.computeConditionalCDF(4., [0., 2.])
+condCDF = distribution.computeConditionalCDF(4.0, [0.0, 2.0])
 print("condCDF     =%.6f" % condCDF)
 #PDFgr = distribution.computePDFGradient(point)
 # print "pdf gradient     =", repr(PDFgr)
@@ -62,7 +62,7 @@ print("condCDF     =%.6f" % condCDF)
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", repr(quantile))
 print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-condQuantile = distribution.computeConditionalQuantile(0.4, [0., 2.])
+condQuantile = distribution.computeConditionalQuantile(0.4, [0.0, 2.0])
 print("condQuantile     =%.6f" % condQuantile)
 mean = distribution.getMean()
 print("mean=", repr(mean))
@@ -72,13 +72,18 @@ skewness = distribution.getSkewness()
 print("skewness=", repr(skewness))
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
+ot.ResourceMap.SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 )
+ot.ResourceMap.SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 )
 covariance = distribution.getCovariance()
 print("covariance=", repr(covariance))
+correlation = distribution.getCorrelation()
+print("correlation=", repr(correlation))
+spearman = distribution.getSpearmanCorrelation()
+print("spearman=", repr(spearman))
+ot.ResourceMap.SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 )
+ot.ResourceMap.SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 )
 parameters = distribution.getParametersCollection()
 print("parameters=", repr(parameters))
-# for i in range(6):
-# print "standard moment n=", i, " value=", distribution.getStandardMoment(i)
-# print "Standard representative=", distribution.getStandardRepresentative()
 
 # Extract the marginals
 for i in range(dim):

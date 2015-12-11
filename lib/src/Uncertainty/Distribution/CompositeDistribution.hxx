@@ -25,6 +25,7 @@
 #include "Distribution.hxx"
 #include "NumericalMathFunction.hxx"
 #include "Solver.hxx"
+#include "GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,7 @@ class OT_API CompositeDistribution
   : public DistributionImplementation
 {
   CLASSNAME;
-public:
+ public:
 
   /** Default constructor */
   CompositeDistribution();
@@ -107,15 +108,63 @@ public:
   void setSolver(const Solver & solver);
   Solver getSolver() const;
 
+  /** Compute the shifted moments of the distribution */
+  NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
+                                                const NumericalPoint & shift) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
+ protected:
 
-private:
+ private:
+  
+  friend class CompositeDistributionShiftedMomentWrapper;
+
+  // Structure used to compute shifted moments
+  struct CompositeDistributionShiftedMomentWrapper
+  {
+    CompositeDistributionShiftedMomentWrapper(const UnsignedInteger n,
+					      const NumericalScalar shift,
+					      const CompositeDistribution * p_distribution):
+      n_(n),
+      shift_(shift),
+      p_distribution_(p_distribution) {};
+    
+    NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
+    {
+      const NumericalScalar y(p_distribution_->function_(point)[0]);
+      const NumericalScalar power(std::pow(y - shift_, static_cast<NumericalScalar>(n_)));
+      const NumericalScalar pdf(p_distribution_->antecedent_.computePDF(point));
+      const NumericalScalar value(power * pdf);
+      return NumericalPoint(1, value);
+    };
+    
+    const UnsignedInteger n_;
+    const NumericalScalar shift_;
+    const CompositeDistribution * p_distribution_;
+  }; // struct CompositeDistributionShiftedMomentWrapper
+
+  // Structure used to wrap the gradient of the function into a NumericalMathFunction
+  struct DerivativeWrapper
+  {
+    const NumericalMathFunction & function_;
+
+    DerivativeWrapper(const NumericalMathFunction & function)
+      : function_(function)
+    {}
+
+    NumericalPoint computeDerivative(const NumericalPoint & point) const
+    {
+      NumericalPoint value(1, function_.gradient(point)(0, 0));
+      return value;
+    }
+
+  };
+
   /** update all the derivative attributes */
   void update();
 

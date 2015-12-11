@@ -1,0 +1,36 @@
+Testing class CumulativeDistributionNetwork
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=1 distributionCollection=[class=Uniform name=Uniform dimension=1 a=-1 b=1] graph=[[0]]
+streamObject(const T & anObject)
+class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=1 distributionCollection=[class=Uniform name=Uniform dimension=1 a=-1 b=1] graph=[[0]]
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=2 distributionCollection=[class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1],class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]] graph=[[0,1],[0,1]]
+Distribution CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]))][[0,1],[0,1]])
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=2 values=[0.819143,1.55123]
+oneSample first=class=NumericalPoint name=Unnamed dimension=2 values=[-0.337688,0.500922] last=class=NumericalPoint name=Unnamed dimension=2 values=[-0.31133,-0.29406]
+mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.57312,0.562745]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.693077,-0.0044764,-0.0044764,0.685993]
+Point= class=NumericalPoint name=Unnamed dimension=2 values=[1,1]
+log pdf=-1.7971
+pdf     =0.16578
+pdf (FD)=0.16578
+cdf=0.50107
+ccdf=0.49893
+survival=0.085345
+quantile=class=NumericalPoint name=Unnamed dimension=2 values=[2.234,2.234]
+cdf(quantile)=0.95
+mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.56419,0.56419]
+standard deviation=class=NumericalPoint name=Unnamed dimension=2 values=[0.82565,0.82565]
+skewness=class=NumericalPoint name=Unnamed dimension=2 values=[0.13695,0.13695]
+kurtosis=class=NumericalPoint name=Unnamed dimension=2 values=[3.0617,3.0617]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.68169,0,0,0.68169]
+correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
+spearman=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
+kendall=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
