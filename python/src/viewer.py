@@ -215,17 +215,17 @@ class View(object):
             text_kwargs = dict(text_kwargs_default)
 
             # set color
-            if (not 'color' in plot_kwargs_default) and (not 'c' in plot_kwargs_default):
+            if ('color' not in plot_kwargs_default) and ('c' not in plot_kwargs_default):
                 plot_kwargs['color'] = drawable.getColorCode()
-            if (not 'color' in bar_kwargs_default) and (not 'c' in bar_kwargs_default):
+            if ('color' not in bar_kwargs_default) and ('c' not in bar_kwargs_default):
                 bar_kwargs['color'] = drawable.getColorCode()
-            if (not 'color' in step_kwargs_default) and (not 'c' in step_kwargs_default):
+            if ('color' not in step_kwargs_default) and ('c' not in step_kwargs_default):
                 step_kwargs['color'] = drawable.getColorCode()
 
             # set marker
             pointStyleDict = {'square': 's', 'circle': 'o', 'triangleup': '2', 'plus': '+', 'times': '+', 'diamond': '+', 'triangledown':
                               'v', 'star': '*', 'fsquare': 's', 'fcircle': 'o', 'ftriangleup': '2', 'fdiamond': 'D', 'bullet': '.', 'dot': ',', 'none': 'None'}
-            if not 'marker' in plot_kwargs_default:
+            if 'marker' not in plot_kwargs_default:
                 try:
                     plot_kwargs['marker'] = pointStyleDict[
                         drawable.getPointStyle()]
@@ -236,13 +236,13 @@ class View(object):
             # set line style
             lineStyleDict = {'solid': '-', 'dashed': '--', 'dotted':
                              ':', 'dotdash': '-.', 'longdash': '--', 'twodash': '--'}
-            if (not 'linestyle' in plot_kwargs_default) and (not 'ls' in plot_kwargs_default):
+            if ('linestyle' not in plot_kwargs_default) and ('ls' not in plot_kwargs_default):
                 try:
                     plot_kwargs['linestyle'] = lineStyleDict[
                         drawable.getLineStyle()]
                 except:
                     warnings.warn('-- Unknown line style')
-            if (not 'linestyle' in step_kwargs_default) and (not 'ls' in step_kwargs_default):
+            if ('linestyle' not in step_kwargs_default) and ('ls' not in step_kwargs_default):
                 try:
                     step_kwargs['linestyle'] = lineStyleDict[
                         drawable.getLineStyle()]
@@ -250,9 +250,9 @@ class View(object):
                     warnings.warn('-- Unknown line style')
 
             # set line width
-            if (not 'linewidth' in plot_kwargs_default) and (not 'lw' in plot_kwargs_default):
+            if ('linewidth' not in plot_kwargs_default) and ('lw' not in plot_kwargs_default):
                 plot_kwargs['linewidth'] = drawable.getLineWidth()
-            if (not 'linewidth' in step_kwargs_default) and (not 'lw' in step_kwargs_default):
+            if ('linewidth' not in step_kwargs_default) and ('lw' not in step_kwargs_default):
                 step_kwargs['linewidth'] = drawable.getLineWidth()
 
             # retrieve data
@@ -278,7 +278,7 @@ class View(object):
                 # linestyle for bar() is different than the one for plot()
                 if 'linestyle' in bar_kwargs_default:
                     bar_kwargs.pop('linestyle')
-                if (not 'linestyle' in plot_kwargs_default) and (not 'ls' in plot_kwargs_default):
+                if ('linestyle' not in plot_kwargs_default) and ('ls' not in plot_kwargs_default):
                     lineStyleDict = {'solid': 'solid', 'dashed': 'dashed', 'dotted':
                                      'dotted', 'dotdash': 'dashdot', 'longdash': 'dashed', 'twodash': 'dashed'}
                     if drawable.getLineStyle() in lineStyleDict:
@@ -307,10 +307,10 @@ class View(object):
 
             elif drawableKind == 'Polygon':
 
-                if (not 'facecolor' in polygon_kwargs_default) and (not 'fc' in polygon_kwargs_default):
+                if ('facecolor' not in polygon_kwargs_default) and ('fc' not in polygon_kwargs_default):
                     polygon_kwargs['facecolor'] = drawable.getColorCode()
 
-                if (not 'edgecolor' in polygon_kwargs_default) and (not 'ec' in polygon_kwargs_default):
+                if ('edgecolor' not in polygon_kwargs_default) and ('ec' not in polygon_kwargs_default):
                     polygon_kwargs['edgecolor'] = drawable.ConvertFromName(
                         drawable.getEdgeColor())
                 self._ax[0].add_patch(
@@ -326,10 +326,10 @@ class View(object):
                     rgba = drawable.ConvertToRGBA(colors[i])
                     colorsRGBA.append(
                         (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
-                if (not 'facecolors' in polygoncollection_kwargs_default):
+                if 'facecolors' not in polygoncollection_kwargs_default:
                     polygoncollection_kwargs['facecolors'] = colorsRGBA
 
-                if (not 'edgecolors' in polygon_kwargs_default):
+                if 'edgecolors' not in polygon_kwargs_default:
                     polygoncollection_kwargs['edgecolors'] = colorsRGBA
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(np.array(data).reshape((polygonsNumber, verticesNumber, 2)), **polygoncollection_kwargs))
@@ -349,13 +349,13 @@ class View(object):
                     contour_kwargs.setdefault('levels', drawable.getLevels())
                     clabel_kwargs.setdefault('fontsize', 8)
                     clabel_kwargs.setdefault('fmt', '%g')
-                if (not 'linestyles' in contour_kwargs_default) and (not 'ls' in contour_kwargs_default):
+                if ('linestyles' not in contour_kwargs_default) and ('ls' not in contour_kwargs_default):
                     try:
                         contour_kwargs['linestyles'] = lineStyleDict[
                             drawable.getLineStyle()]
                     except:
                         warnings.warn('-- Unknown line style')
-                if (not 'color' in contour_kwargs_default):
+                if 'color' not in contour_kwargs_default:
                     contour_kwargs['color'] = drawable.getColor()
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kwargs)
                 plt.clabel(contourset, **clabel_kwargs)
@@ -376,7 +376,7 @@ class View(object):
                 labels = drawable.getLabels()
 
                 # adjust font
-                if (not 'fontsize' in text_kwargs_default) and (not 'size' in text_kwargs_default):
+                if ('fontsize' not in text_kwargs_default) and ('size' not in text_kwargs_default):
                     text_kwargs['fontsize'] = max(16 - dim, 4)
                 text_kwargs.setdefault('horizontalalignment', 'center')
                 text_kwargs.setdefault('verticalalignment', 'center')
@@ -413,7 +413,7 @@ class View(object):
         # Add legend
         if add_legend and has_labels and (graph.getLegendPosition() != ''):
             # set legend position
-            if not 'loc' in legend_kwargs:
+            if 'loc' not in legend_kwargs:
                 try:
                     legendPositionDict = {'bottomright': 'lower right',
                                           'bottom': 'lower center',
