@@ -8,6 +8,7 @@
  * Optimization API rework
  * New parametrization of covariance models
  * Changed behaviour of ExponentialCauchy
+ * KrigingAlgorithm rework
 
 ==== New classes ====
  * OptimizationSolver, OptimizationProblem
