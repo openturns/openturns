@@ -186,7 +186,6 @@ ot-vc:
 	-mkdir -p $(OT_BUILD_VC)
 	cd $(OT_BUILD_VC) && rm -f CMakeCache.txt && $(VCBOTTLE)/vc-cmake \
 	  -DBUILD_PYTHON=OFF \
-	  -DUSE_LAPACKE=OFF \
 	  -DUSE_DOXYGEN=OFF \
 	  -DUSE_BISON=OFF \
 	  -DUSE_FLEX=OFF \
