@@ -101,10 +101,6 @@ public:
   virtual NumericalMathFunction getTransformation() const;
   virtual void setTransformation(const NumericalMathFunction & transformation);
 
-  /** Sigma2 accessor */
-  virtual NumericalScalar getSigma2() const;
-  virtual void setSigma2(const NumericalScalar & sigma2);
-
   /** Compute mean of new points conditionnaly to observations */
   virtual NumericalPoint getConditionalMean(const NumericalSample & xi) const;
 
@@ -173,9 +169,6 @@ private:
 
   /** Cholesky factor when using hmat-oss */
   mutable HMatrix covarianceHMatrix_;
-
-  /** Sigma2 parameter */
-  NumericalScalar sigma2_;
 
   /** Matrix F : the regression matrix */
   mutable Matrix F_;

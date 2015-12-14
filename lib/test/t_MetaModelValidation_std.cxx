@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
   try
   {
 
+    PlatformInfo::SetNumericalPrecision(3);
     // Problem parameters
     UnsignedInteger dimension(3);
     NumericalScalar a(7.0);
@@ -101,15 +102,22 @@ int main(int argc, char *argv[])
     MetaModelValidation metaModelValidationSPC(inputValidation, outputValidation, result.getMetaModel());
 
     fullprint << "Sparse chaos scoring" << std::endl;
-    fullprint << "Q2 = " << metaModelValidationSPC.computePredictivityFactor() << std::endl;
+    fullprint << "Q2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationSPC.computePredictivityFactor() << std::endl;
     fullprint << "Residual sample = " << metaModelValidationSPC.getResidualSample() << std::endl;
 
     // 2) Kriging algorithm
     // KrigingAlgorithm
     Basis basis(QuadraticBasisFactory(dimension).build());
     // model computed
-    CovarianceModel covarianceModel = GeneralizedExponential(dimension, 2.07207, 2.0);
-    KrigingAlgorithm algo2(inputSample, outputSample, basis, covarianceModel, false, false);
+    NumericalPoint scale(3);
+    scale[0] = 1.933;
+    scale[1] = 1.18;
+    scale[2] = 1.644;
+    NumericalPoint amplitude(1, 10.85);
+    CovarianceModel covarianceModel = GeneralizedExponential(scale, amplitude, 2.0);
+
+
+    KrigingAlgorithm algo2(inputSample, outputSample, basis, covarianceModel, true, true);
     algo2.run();
 
     KrigingResult result2 = algo2.getResult();
@@ -118,7 +126,7 @@ int main(int argc, char *argv[])
     MetaModelValidation metaModelValidationKG(inputValidation, outputValidation, result2.getMetaModel());
 
     fullprint << "Kriging scoring" << std::endl;
-    fullprint << "Q2 = " << metaModelValidationKG.computePredictivityFactor() << std::endl;
+    fullprint << "Q2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationKG.computePredictivityFactor() << std::endl;
     fullprint << "Residual sample = " << metaModelValidationKG.getResidualSample() << std::endl;
 
   }

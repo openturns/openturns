@@ -31,94 +31,69 @@ int main(int argc, char *argv[])
 
   try
   {
-
-    // Kriging use case
-    UnsignedInteger spatialDimension(1);
-    UnsignedInteger sampleSize(201);
-
-    const NumericalScalar xMax(10.0);
-    const NumericalScalar xMin(0.0);
-    const NumericalScalar dx = (xMax - xMin) / (sampleSize - 1.0);
+    PlatformInfo::SetNumericalPrecision(2);
 
     // Learning data
-    NumericalSample inputSample(sampleSize, spatialDimension);
-    // Validation data
-    NumericalSample inputValidSample(sampleSize, spatialDimension);
-    for (UnsignedInteger k = 0; k < sampleSize; ++k)
-    {
-      inputSample[k][0] = k * dx;
-      inputValidSample[k][0] = 0.5 * (2.0 * k + 1.0) * dx;
-    }
+    NumericalPoint levels(2);
+    levels[0] = 8;
+    levels[1] = 5;
+    // Define the Box
+    Box box(levels);
+    // Get the input sample
+    NumericalSample inputSample( box.generate() );
+    // Scale each direction
+    inputSample *= 10;
 
-    // Set the functions
-    NumericalMathFunction f(Description(1, "x0"), Description(1, "y"), Description(1, "x0 * sin(x0)"));
-    NumericalMathFunction g(Description(1, "x0"), Description(1, "y"), Description(1, "3 + cos(x0*x0)"));
-    NumericalMathFunction h(Description(1, "x0"), Description(1, "y"), Description(1, "cos(0.5*x0*x0) + sin(x0)"));
-    // The final function
-    Collection<NumericalMathFunction> modelColl(0);
-    // add functions
-    modelColl.add(f);
-    modelColl.add(g);
-    modelColl.add(h);
-    // finally, the model
-    NumericalMathFunction model(modelColl);
+    // Define model
+    Description inputDescription(2);
+    inputDescription[0] = "x";
+    inputDescription[1] = "y";
 
-    // Evaluation of the model on input samples
-    NumericalSample outputSample(model(inputSample));
-    NumericalSample outputValidSample( model(inputValidSample));
+    Description formula(1);
+    formula[0] = "cos(0.5*x) + sin(y)" ;
+    const NumericalMathFunction model(inputDescription, formula);
+
+    // Build the output sample
+    const NumericalSample  outputSample( model(inputSample) );
 
     // 2) Definition of exponential model
-    // The parameters have been calibrated using TNC optimization
-    // and AbsoluteExponential models
-    NumericalPoint amplitude(3, 1.0);
-    NumericalPoint scale(spatialDimension, 2.0);
-
-    // The covariance model
-    ExponentialModel expCovModel(spatialDimension, amplitude, scale);
+    NumericalPoint scale(2);
+    scale[0] = 1.98824;
+    scale[1] =0.924731;
+    NumericalPoint amplitude(1, 3.15352);
+    SquaredExponential covarianceModel(scale, amplitude);
 
     // 3) Basis definition
-    Collection<Basis> basisCollection;
-    basisCollection.add(ConstantBasisFactory(spatialDimension).build());
-    basisCollection.add(LinearBasisFactory(spatialDimension).build());
-    basisCollection.add(Basis());
+    Basis basis(ConstantBasisFactory(2).build());
 
-    // Kriging algorithm
-    KrigingAlgorithm algo(inputSample, outputSample, basisCollection, expCovModel);
+    // Kriring algorithm
+    KrigingAlgorithm algo(inputSample, outputSample, basis, covarianceModel);
     algo.run();
+
+    // Get result
     KrigingResult result(algo.getResult());
-    //print("KrigingResult=", repr(result))
+
     // Get meta model
     NumericalMathFunction metaModel(result.getMetaModel());
-    // Evaluation of kriging model on data
-    NumericalSample outData(metaModel(inputValidSample));
 
-    // 4) Errors
-    // Interpolation
-    assert_almost_equal(outputSample,  metaModel(inputSample));
-    // Estimation
-    // rtol & a tol fixed to 1e-1
-    assert_almost_equal(outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1);
+    // Interpolation error
+    assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5);
 
-    // 5) Kriging variance
-    // It should be 0 on learning points
-    CovarianceMatrix covMatrix( result.getConditionalCovariance(inputSample));
 
-    //# assert_almost_equal could not be applied to matrices
-    //# application to NumericalPoint
-    NumericalPoint covariancePoint(covMatrix.getImplementation());
-    // Total size
-    UnsignedInteger covSize(  expCovModel.getDimension() * sampleSize );
-    // Build the theoretical covariance
-    NumericalPoint theoricalVariance(covSize * covSize);
-    assert_almost_equal(covariancePoint, theoricalVariance, 1e-12, 1e-12);
+    // Kriging variance is 0 on learning points
+    CovarianceMatrix var(result.getConditionalCovariance(inputSample));
 
+    // assert_almost_equal could not be applied to matrices
+    NumericalPoint covariancePoint(*var.getImplementation());
+    assert_almost_equal(covariancePoint, NumericalPoint(covariancePoint.getSize()), 7e-7, 7e-7);
 
     // Random vector evaluation
-    KrigingRandomVector rvector(result, inputValidSample[0]);
-    std::cout << "KRV=" << rvector << std::endl;
+    NumericalSample unifRealization(Uniform(0.0, 10.0).getSample(2));
+    NumericalPoint validationPoint(unifRealization.getImplementation()->getData());
+    KrigingRandomVector rvector(result, validationPoint);
 
-    NumericalPoint realization(rvector.getRealization());
-
+    // Realization of the random vector
+    NumericalPoint realization (rvector.getRealization());
     std::cout << "Realization of the KRV=" << realization << std::endl;
 
     // Get a sample of size 10

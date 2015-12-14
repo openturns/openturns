@@ -8,7 +8,7 @@ ot.TESTPREAMBLE()
 
 try:
 
-    ot.PlatformInfo.SetNumericalPrecision(4)
+    ot.PlatformInfo.SetNumericalPrecision(3)
     # Problem parameters
     dimension = 3
     a = 7.0
@@ -81,9 +81,9 @@ try:
     # KrigingAlgorithm
     basis = ot.QuadraticBasisFactory(dimension).build()
     # model already computed, separatly
-    covarianceModel = ot.GeneralizedExponential(dimension, 2.07207, 2.0)
+    covarianceModel = ot.GeneralizedExponential([1.933,1.18,1.644], [10.85] , 2.0)
     algo2 = ot.KrigingAlgorithm(
-        inputSample, outputSample, basis, covarianceModel, False, False)
+        inputSample, outputSample, basis, covarianceModel, True, True)
     algo2.run()
     result2 = algo2.getResult()
 
@@ -92,7 +92,7 @@ try:
         inputValidation, outputValidation, result2.getMetaModel())
     print("")
     print("Kriging scoring")
-    print("Q2 = ", round(metaModelValidationKG.computePredictivityFactor(), 5))
+    print("Q2 = ", round(metaModelValidationKG.computePredictivityFactor(), 3))
     print("Residual sample = ", repr(
         metaModelValidationKG.getResidualSample()))
 

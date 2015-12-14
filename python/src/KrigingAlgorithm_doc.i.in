@@ -18,29 +18,21 @@ inputTransformation : :class:`~openturns.NumericalMathFunction`
     Function that helps to normalize the input sample.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
-
     If the output dimension is greater than 1, the same basis is used for all marginals.
 multivariateBasis : collection of :class:`~openturns.Basis`
-    Collection of functional basis: one basis for each marginal output.    
-
+    Collection of functional basis: one basis for each marginal output.
     If the trend is not estimated, the collection must be empty.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
-
-    If the spatial dimension (*d*) is greater than the input sample dimension, a product covariance model (:class:`~openturns.ProductCovarianceModel`) is built, with the same covariance model in each marginal.
- 
-    Otherwise, the spatial dimension must be equal to the input sample dimension.
-
-    Its dimension (*p*) must be equal to the output sample dimension.
+    Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
+    See note for some particular applications.
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
-
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
-
     Default is *True*.
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *KrigingResult*.
- 
+
     Default is *True*.
 
 Notes
@@ -76,20 +68,25 @@ If the covariance model fixed by the User has a spatial dimension (*d*)  equal t
 .. math::
     C_{\sigma, \theta, \vect{\lambda}}(\vect{\tau}) = \prod_{i=1}^d C_{\sigma, \theta, \vect{\lambda}}(\tau_i)
 
-The User can fix any other multi-dimensional covariance models for example built with the :class:`~openturns.ProductCovarianceModel` class.
+Note also that covariance model's dimensions should be equal to input/output sample's dimension. Otherwise:
+
+   - If the covariance model fixed by the User has a spatial dimension (*d*)  equal to 1 with parameters :math:`(\sigma, \theta, \vect{\lambda})` whereas the input sample dimension has a greater dimension, then OpenTURNS builds a product model covariance (see :class:`~openturns.ProductCovarianceModel`) that writes :math:`C_{\sigma, \theta, \vect{\lambda}}(\vect{\tau}) = \prod_{i=1}^d C_{\sigma, \theta, \vect{\lambda}}(\tau_i)`
+
+   - If output dimension (*p*) is greater than one, it is possible to build a tensorized covariance model thanks to the :class:`~openturns.TensorizedCovarianceModel`
 
 OpenTURNS estimates with the maximum likelihood method the following parameters:
 
-    - :math:`(\beta_1, \dots, \beta_M)`
-    - :math:`\vect{\sigma}` if :math:`\sigma_i=\sigma` for all *i*.
+    - :math:`(\beta_1, \dots, \beta_M)`,
+    - :math:`\sigma_1, \dots, \sigma_p`,
+    - :math:`\theta_1= \dots, \theta_d`
 
-The parameter :math:`\vect{\theta}` is fixed by the User. However, :math:`\vect{\theta}` and :math:`\vect{\sigma}` can be estimated using the maximum likelihood estimators if an optimizer is fixed by the User with the method *setOptimizationSolver*.
+The class rely on :class:`~openturns.GeneralizedLinearModelAlgorithm` for the estimation of these parameters. It uses then the default optimizer defined by the `GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver` resource map key, which is set to :class:`~openturns.TNC`.
 
 It is also possible to proceed as follows:
 
     - ask for the log-likelihood function to the *KrigingAlgorithm* after having launched the method *run()*
     - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimisation algorithms (that can take into account some additional constraints if needed)
-    - fulfill the *KrigingAlgorithm* with the optimized value of these parameters. 
+    - fulfill the *KrigingAlgorithm* with the optimized value of these parameters.
 
 The *KrigingAlgorithm* class provides methods to build such a meta model using different input arguments. With huge data, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
@@ -148,7 +145,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 >>> model = ot.NumericalMathFunction('x', 'x-1+sin(_pi*x/(1+0.25*x^2))')
 >>> output_data = model(input_data)
 
-Create the Kriging algorithm with the optimizer option: 
+Create the Kriging algorithm with the optimizer option:
 
 >>> basis = ot.Basis([ot.NumericalMathFunction('x', '0.0')])
 >>> thetaInit = 1.0
@@ -160,28 +157,7 @@ Create the Kriging algorithm with the optimizer option:
 >>> optimizer.setProblem(optimProblem)
 >>> algo = ot.KrigingAlgorithm(input_data, output_data, basis, covariance)
 >>> algo.setOptimizationSolver(optimizer)
-
-Launch the algorithm and get the result:
-
->>> algo.run()
->>> thetaOptimized = algo.getResult().getCovarianceModel().getScale()
->>> log_likelihood = algo.getLogLikelihoodFunction()
->>> graph_ll = log_likelihood.draw(bounds.getLowerBound()[0], bounds.getUpperBound()[0], 1024)
->>> cloud = ot.Cloud([[thetaOptimized[0], log_likelihood(thetaOptimized)[0]]])
->>> cloud.setColor('red')
->>> cloud.setPointStyle('bullet')
->>> graph_ll.add(cloud)
->>> graph_ll.setLogScale(1)
 "
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingAlgorithm::getInputTransformation
-"Get the function normalizing the input.
-
-Returns
--------
-transformation : :class:`~openturns.NumericalMathFunction`
-    Function that normalizes the input."
 
 // ---------------------------------------------------------------------
 
