@@ -67,10 +67,13 @@ Log_init::Log_init()
 
 Log_init::~Log_init()
 {
-  if (Log_P_instance_) Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log End ***"));
+  if (Log_P_instance_)
+  {
+    Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log End ***"));
+    pthread_mutex_destroy(&Log_InstanceMutex_);
+  }
   delete Log_P_instance_;
   Log_P_instance_ = 0;
-  pthread_mutex_destroy( &Log_InstanceMutex_ );
 }
 
 

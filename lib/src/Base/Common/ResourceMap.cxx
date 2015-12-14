@@ -59,9 +59,10 @@ ResourceMap_init::ResourceMap_init()
 
 ResourceMap_init::~ResourceMap_init()
 {
+  if (ResourceMap_P_instance_)
+    pthread_mutex_destroy(&ResourceMap_InstanceMutex_);
   delete ResourceMap_P_instance_;
   ResourceMap_P_instance_ = 0;
-  pthread_mutex_destroy( &ResourceMap_InstanceMutex_ );
 }
 
 

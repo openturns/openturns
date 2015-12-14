@@ -55,9 +55,10 @@ Catalog_init::Catalog_init()
 
 Catalog_init::~Catalog_init()
 {
+  if (Catalog_P_instance_)
+    pthread_mutex_destroy(&Catalog_InstanceMutex_);
   delete Catalog_P_instance_;
   Catalog_P_instance_ = 0;
-  pthread_mutex_destroy( &Catalog_InstanceMutex_);
 }
 
 
