@@ -172,8 +172,9 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   problem.setMinimization(false);
   problem.setObjective(logLikelihood);
   OptimizationSolver solver(solver_);
-  if (solver.getStartingPoint().getDimension() != parameterDimension) {
-    throw InvalidArgumentException(HERE) << "Invalid starting point";
+  if (solver.getStartingPoint().getDimension() != parameterDimension)
+  {
+    solver.setStartingPoint(factory_.build(sample).getParameter());
   }
   solver.setProblem(problem);
   solver.run();
