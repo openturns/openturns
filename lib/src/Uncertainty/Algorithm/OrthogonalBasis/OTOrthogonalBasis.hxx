@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTORTHOGONALBASIS_HXX
 #define OPENTURNS_OTORTHOGONALBASIS_HXX
 
+#include "AdaptiveStieltjesAlgorithm.hxx"
 #include "ChebychevAlgorithm.hxx"
 #include "GramSchmidtAlgorithm.hxx"
 #include "OrthogonalUniVariatePolynomial.hxx"

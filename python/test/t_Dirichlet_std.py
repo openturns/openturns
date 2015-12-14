@@ -59,11 +59,11 @@ try:
 
         # Show PDF and CDF of point
         LPDF = distribution.computeLogPDF(point)
-        print("log pdf= %.12g" % LPDF)
+        print("log pdf= %.8g" % LPDF)
         PDF = distribution.computePDF(point)
-        print("pdf     = %.12g" % PDF)
+        print("pdf     = %.8g" % PDF)
         CDF = distribution.computeCDF(point)
-        print("cdf= %.12g" % CDF)
+        print("cdf= %.8g" % CDF)
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", repr(quantile))
         print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
@@ -81,9 +81,9 @@ try:
         for i in range(dim):
             margin = distribution.getMarginal(i)
             print("margin=", margin)
-            print("margin PDF= %.12g" %
+            print("margin PDF= %.8g" %
                   margin.computePDF(NumericalPoint(1, 0.5)))
-            print("margin CDF= %.12g" %
+            print("margin CDF= %.8g" %
                   margin.computeCDF(NumericalPoint(1, 0.5)))
             print("margin quantile=", repr(margin.computeQuantile(0.95)))
             print("margin realization=", repr(margin.getRealization()))
@@ -96,7 +96,7 @@ try:
             margins = distribution.getMarginal(indices)
             print("margins=", margins)
             print("margins PDF=", margins.computePDF(NumericalPoint(2, 0.5)))
-            print("margins CDF= %.12g" %
+            print("margins CDF= %.8g" %
                   margins.computeCDF(NumericalPoint(2, 0.5)))
             quantile = margins.computeQuantile(0.95)
             print("margins quantile=", repr(quantile))

@@ -647,6 +647,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalUniVariatePolynomialFamily.i OrthogonalUniVariatePolynomialFamily_doc.i.in
                       OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in 
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i.in
+                      AdaptiveStieltjesAlgorithm.i AdaptiveStieltjesAlgorithm_doc.i.in
                       ChebychevAlgorithm.i ChebychevAlgorithm_doc.i.in
                       GramSchmidtAlgorithm.i GramSchmidtAlgorithm_doc.i.in
                       StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i.in

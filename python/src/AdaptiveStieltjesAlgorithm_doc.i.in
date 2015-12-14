@@ -1,0 +1,19 @@
+%feature("docstring") OT::AdaptiveStieltjesAlgorithm
+"AdaptiveStieltjes algorithm used to build the orthonormal basis.
+
+The algorithm builds the basis with respect to a specific distribution.
+
+Parameters
+----------
+measure : :class:`~openturns.Distribution`
+    A measure for which the orthonormal polynomial basis is built. 
+
+See also
+--------
+OrthonormalizationAlgorithm, ChebychevAlgorithm, GramSchmidtAlgorithm
+
+Notes
+-----
+It implements an adaptive Stieltjes algorithm that builds the orthonormalized
+polynomial family with respect to the distribution *measure*, using the :class:`~openturns.GaussKronrod` adaptive integration method to compute the needed dot products. "
+

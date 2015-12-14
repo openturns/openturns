@@ -21,6 +21,7 @@ Orthonormalization algorithms
     :template: class.rst_t
 
     OrthonormalizationAlgorithm
+    AdaptiveStieltjesAlgorithm
     GramSchmidtAlgorithm
     ChebychevAlgorithm
 

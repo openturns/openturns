@@ -9,9 +9,9 @@ covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplem
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
-log pdf= -0.790672540492
-pdf     = 0.453539668897
-cdf= 0.683112899326
+log pdf= -0.79067254
+pdf     = 0.45353967
+cdf= 0.6831129
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.982959]
 cdf(quantile)= 0.950000
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.333333]
@@ -20,8 +20,8 @@ skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.92418]
 kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[1.90909]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.126984]
 margin= Dirichlet(theta = [0.25,0.5])
-margin PDF= 0.453539668897
-margin CDF= 0.683112899326
+margin PDF= 0.45353967
+margin CDF= 0.6831129
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.982959]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.599821]
 Distribution  class=Dirichlet name=Dirichlet dimension=2 theta=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.5,0.75]
@@ -33,9 +33,9 @@ oneSample first= class=NumericalPoint name=Unnamed dimension=2 values=[0.292528,
 mean= class=NumericalPoint name=Unnamed dimension=2 values=[0.170947,0.331568]
 covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0563206,-0.021986,-0.021986,0.0872829]
 Point=  class=NumericalPoint name=Unnamed dimension=2 values=[0.25,0.25]
-log pdf= -0.278295910149
-pdf     = 0.757072762851
-cdf= 0.330650199961
+log pdf= -0.27829591
+pdf     = 0.75707276
+cdf= 0.3581437
 quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.832082,0.950625]
 cdf(quantile)= 0.950000
 mean= class=NumericalPoint name=Unnamed dimension=2 values=[0.166667,0.333333]
@@ -44,19 +44,19 @@ skewness= class=NumericalPoint name=Unnamed dimension=2 values=[2.89123,0.903508
 kurtosis= class=NumericalPoint name=Unnamed dimension=2 values=[4.71429,2.14286]
 covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0555556,-0.0222222,-0.0222222,0.0888889]
 margin= Dirichlet(theta = [0.25,1.25])
-margin PDF= 0.381379881751
-margin CDF= 0.881379881751
+margin PDF= 0.38137988
+margin CDF= 0.88137988
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.720621]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.851019]
 margin= Dirichlet(theta = [0.5,1])
-margin PDF= 0.707106781187
-margin CDF= 0.707106781187
+margin PDF= 0.70710678
+margin CDF= 0.70710678
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.9025]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.0930522]
 indices= [1,0]
 margins= Dirichlet(theta = [0.5,0.25,0.75])
 margins PDF= 0.0
-margins CDF= 0.588486652349
+margins CDF= 0.90692118
 margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.950625,0.832082]
 margins CDF(quantile)= 0.950000
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.0707049,0.897863]
@@ -69,9 +69,9 @@ oneSample first= class=NumericalPoint name=Unnamed dimension=3 values=[0.0285362
 mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.0968437,0.205063,0.294564]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0247073,-0.00578577,-0.00794426,-0.00578577,0.0471793,-0.0175051,-0.00794426,-0.0175051,0.059301]
 Point=  class=NumericalPoint name=Unnamed dimension=3 values=[0.166667,0.166667,0.166667]
-log pdf= 0.908653655261
-pdf     = 2.4809800294
-cdf= 0.122517532316
+log pdf= 0.90865366
+pdf     = 2.48098
+cdf= 0.12251753
 quantile= class=NumericalPoint name=Unnamed dimension=3 values=[0.651104,0.796829,0.880682]
 cdf(quantile)= 0.950000
 mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.1,0.2,0.3]
@@ -80,24 +80,24 @@ skewness= class=NumericalPoint name=Unnamed dimension=3 values=[2.95637,1.24722,
 kurtosis= class=NumericalPoint name=Unnamed dimension=3 values=[7.94276,3.81818,2.55556]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0257143,-0.00571429,-0.00857143,-0.00571429,0.0457143,-0.0171429,-0.00857143,-0.0171429,0.06]
 margin= Dirichlet(theta = [0.25,2.25])
-margin PDF= 0.228827929051
-margin CDF= 0.957655858101
+margin PDF= 0.22882793
+margin CDF= 0.95765586
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.468592]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.0158074]
 margin= Dirichlet(theta = [0.5,2])
-margin PDF= 0.53033008589
-margin CDF= 0.883883476483
+margin PDF= 0.53033009
+margin CDF= 0.88388348
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.658372]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.00763488]
 margin= Dirichlet(theta = [0.75,1.75])
-margin PDF= 0.834626841674
-margin CDF= 0.778208947225
+margin PDF= 0.83462684
+margin CDF= 0.77820895
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.778833]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.316754]
 indices= [1,0]
 margins= Dirichlet(theta = [0.5,0.25,1.75])
 margins PDF= 0.0
-margins CDF= 0.841539334586
+margins CDF= 0.37334225
 margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.753358,0.59068]
 margins CDF(quantile)= 0.950000
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.0578935,0.000937788]
@@ -110,9 +110,9 @@ oneSample first= class=NumericalPoint name=Unnamed dimension=4 values=[0.0120753
 mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.0662312,0.135656,0.1979,0.266541]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0126469,-0.00190744,-0.0025535,-0.00384354,-0.00190744,0.0244634,-0.00523525,-0.00763073,-0.0025535,-0.00523525,0.0330349,-0.0110958,-0.00384354,-0.00763073,-0.0110958,0.0414837]
 Point=  class=NumericalPoint name=Unnamed dimension=4 values=[0.125,0.125,0.125,0.125]
-log pdf= 2.46729451334
-pdf     = 11.7905046086
-cdf= 0.0346916555406
+log pdf= 2.4672945
+pdf     = 11.790505
+cdf= 0.03315661
 quantile= class=NumericalPoint name=Unnamed dimension=4 values=[0.510254,0.642669,0.730266,0.79678]
 cdf(quantile)= 0.950000
 mean= class=NumericalPoint name=Unnamed dimension=4 values=[0.0666667,0.133333,0.2,0.266667]
@@ -121,29 +121,29 @@ skewness= class=NumericalPoint name=Unnamed dimension=4 values=[2.81569,1.28289,
 kurtosis= class=NumericalPoint name=Unnamed dimension=4 values=[10.9752,5.52843,3.76329,2.92885]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.0130994,-0.00187135,-0.00280702,-0.00374269,-0.00187135,0.0243275,-0.00561404,-0.00748538,-0.00280702,-0.00561404,0.0336842,-0.0112281,-0.00374269,-0.00748538,-0.0112281,0.0411696]
 margin= Dirichlet(theta = [0.25,3.5])
-margin PDF= 0.109132982828
-margin CDF= 0.986417552901
+margin PDF= 0.10913298
+margin CDF= 0.98641755
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.319051]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.00108245]
 margin= Dirichlet(theta = [0.5,3.25])
-margin PDF= 0.291021287542
-margin CDF= 0.959401631612
+margin PDF= 0.29102129
+margin CDF= 0.95940163
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.470236]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.219237]
 margin= Dirichlet(theta = [0.75,3])
-margin PDF= 0.536536803839
-margin CDF= 0.915132037717
+margin PDF= 0.5365368
+margin CDF= 0.91513204
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.577527]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.185033]
 margin= Dirichlet(theta = [1,2.75])
-margin PDF= 0.817579891564
-margin CDF= 0.851349110625
+margin PDF= 0.81757989
+margin CDF= 0.85134911
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.663567]
 margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.24119]
 indices= [1,0]
 margins= Dirichlet(theta = [0.5,0.25,3])
 margins PDF= 0.0
-margins CDF= 0.945819184512
-margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.563868,0.41973]
-margins CDF(quantile)= 0.950000
+margins CDF= 0.1818883
+margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.571607,0.428393]
+margins CDF(quantile)= 0.953047
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.537964,0.00939934]
