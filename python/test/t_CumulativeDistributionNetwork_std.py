@@ -46,7 +46,7 @@ try:
     print("survival=%.4e" % Survival)
     quantile = distribution.computeQuantile( 0.95 )
     print("quantile=", quantile)
-    print("cdf(quantile)=", distribution.computeCDF(quantile))
+    print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
     mean = distribution.getMean()
     print("mean=", mean)
     standardDeviation = distribution.getStandardDeviation()
