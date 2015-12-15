@@ -53,6 +53,13 @@ Building distributions from samples
     LogisticFactory
     LogNormalFactory
     LogUniformFactory
+
+    :template: class.rst_t
+
+    MaximumLikelihoodFactory
+
+    :template: DistributionFactory.rst_t
+
     MeixnerDistributionFactory
     MultinomialFactory
     NegativeBinomialFactory

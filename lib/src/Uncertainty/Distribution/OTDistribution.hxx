@@ -104,6 +104,7 @@
 #include "MaximumDistribution.hxx"
 #include "MaximumEntropyOrderStatisticsDistribution.hxx"
 #include "MaximumEntropyOrderStatisticsCopula.hxx"
+#include "MaximumLikelihoodFactory.hxx"
 #include "MeixnerDistribution.hxx"
 #include "MeixnerDistributionFactory.hxx"
 #include "MinCopula.hxx"

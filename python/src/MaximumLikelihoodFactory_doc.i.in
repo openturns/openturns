@@ -1,0 +1,57 @@
+%feature("docstring") OT::MaximumLikelihoodFactory
+"Maximum likelihood factory.
+
+Implements generic maximum likelihood estimation.
+
+Available constructor:
+    MaximumLikelihoodFactory(*factory*)
+
+Parameters
+----------
+factory : :class:`~openturns.DistributionFactory`
+    The factory used to build the distribution according to the
+    current value of the optimization process.
+
+See also
+--------
+DistributionFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationSolver
+"Accessor to the solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationSolver`
+    The solver used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationSolver
+"Accessor to the solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationSolver`
+    The solver used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationProblem
+"Accessor to the problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    The problem used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationProblem
+"Accessor to the problem.
+
+Returns
+-------
+problem : :class:`~openturns.OptimizationProblem`
+    The problem used for numerical optimization of the likelihood."
