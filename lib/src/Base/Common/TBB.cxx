@@ -64,9 +64,10 @@ TBB_init::TBB_init()
 
 TBB_init::~TBB_init()
 {
+  if (TBB_P_instance_)
+    pthread_mutex_destroy(&TBB_InstanceMutex_);
   delete TBB_P_instance_;
   TBB_P_instance_ = 0;
-  pthread_mutex_destroy( &TBB_InstanceMutex_);
 #ifdef OPENTURNS_HAVE_TBB
   delete TBB_P_scheduler_;
   TBB_P_scheduler_ = 0;

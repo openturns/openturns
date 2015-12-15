@@ -15,7 +15,7 @@ Vcs-Git: git://anonscm.debian.org/debian-science/packages/openturns.git
 X-Python-Version: current
 X-Python3-Version: current
 
-Package: libopenturns0.7
+Package: libopenturns0.8
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -50,7 +50,7 @@ Description: dynamic libraries for OpenTURNS
 Package: libopenturns-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libopenturns0.7 (= ${binary:Version}),
+Depends: ${misc:Depends}, libopenturns0.8 (= ${binary:Version}),
   libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev, libnlopt-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
@@ -70,10 +70,10 @@ Description: headers and development libraries for OpenTURNS
  This package provides the OpenTURNS headers should be used if one
  wants to link its application against the library.
 
-Package: libopenturns0.7-dbg
+Package: libopenturns0.8-dbg
 Section: debug
 Architecture: any
-Depends: libopenturns0.7 (= ${binary:Version}), ${misc:Depends}
+Depends: libopenturns0.8 (= ${binary:Version}), ${misc:Depends}
 Description: debug symbols for OpenTURNS
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
@@ -93,7 +93,7 @@ Description: debug symbols for OpenTURNS
 Package: python-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.7 (= ${binary:Version}), ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.8 (= ${binary:Version}), ${python:Depends}
 Provides: ${python:Provides}
 Suggests: python-matplotlib, python-scipy
 Description: Python front-end of OpenTURNS (aka TUI)
@@ -115,7 +115,7 @@ Description: Python front-end of OpenTURNS (aka TUI)
 Package: python3-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.7 (= ${binary:Version}), ${python3:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.8 (= ${binary:Version}), ${python3:Depends}
 Provides: ${python3:Provides}
 Suggests: python3-matplotlib, python3-scipy
 Description: Python3 front-end of OpenTURNS (aka TUI)

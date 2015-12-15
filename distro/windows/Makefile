@@ -83,6 +83,7 @@ ot-config: ot-check-compiler
 	-mkdir -p $(OT_BUILD)
 	cp $(MINGW_PREFIX)/share/mingw/toolchain-$(TARGET).cmake $(OT_BUILD)
 	echo "set(CMAKE_FIND_ROOT_PATH $(MINGW_PREFIX)/$(TARGET))" >> $(OT_BUILD)/toolchain-$(TARGET).cmake
+	cp $(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).dll $(OT_BUILD)
 	cd $(OT_BUILD) && rm -f CMakeCache.txt && $(CMAKE) \
 	  -DCMAKE_TOOLCHAIN_FILE=toolchain-$(TARGET).cmake \
 	  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -140,6 +141,7 @@ ot-test: ot-install
 ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
+	cp $(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).dll $(OT_BUILD)/python/test
 	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --timeout 1500
 	touch ot-test
 endif
@@ -186,7 +188,6 @@ ot-vc:
 	-mkdir -p $(OT_BUILD_VC)
 	cd $(OT_BUILD_VC) && rm -f CMakeCache.txt && $(VCBOTTLE)/vc-cmake \
 	  -DBUILD_PYTHON=OFF \
-	  -DUSE_LAPACKE=OFF \
 	  -DUSE_DOXYGEN=OFF \
 	  -DUSE_BISON=OFF \
 	  -DUSE_FLEX=OFF \

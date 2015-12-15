@@ -101,8 +101,6 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
 
   const OrthogonalUniVariatePolynomial pN(recurrenceCoefficients_);
   const NumericalScalar a0Prev(recurrenceCoefficients_[n - 1][0]);
-  const NumericalScalar a1Prev(recurrenceCoefficients_[n - 1][1]);
-  const NumericalScalar a2Prev(recurrenceCoefficients_[n - 1][2]);
   const NumericalScalar betaN(1.0 / (a0Prev * a0Prev));
   NumericalScalar error(0.0);
   GaussKronrod algo;

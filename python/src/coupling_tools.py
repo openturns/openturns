@@ -35,8 +35,6 @@ import os
 import shlex
 import subprocess
 import sys
-import locale
-import warnings
 
 debug = False
 default_encoding = sys.getdefaultencoding()
@@ -124,7 +122,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         formats = ['{0}'] * len(values)
 
     inplace = False
-    if outfile == None or infile == outfile:
+    if (outfile is None) or (infile == outfile):
         inplace = True
         outfile = infile + ".temporary_outfile"
 
@@ -142,7 +140,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         i = 0
         for regex_token in regex_tokens:
             found = regex_token.search(line)
-            while found != None:
+            while found is not None:
                 found_tokens[i] = True
                 line = line.replace(
                     found.group(0), formats[i].format(values[i]))
@@ -155,7 +153,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
     outfile_handle.close()
 
     for token, found_token in zip(tokens, found_tokens):
-        if found_token == False:
+        if not found_token:
             EOFError("Error: token '" + token + "' not found!")
 
     if inplace:
@@ -307,7 +305,7 @@ def get_regex(filename, patterns, encoding=default_encoding):
     file_handle.close()
 
     for result, pattern in zip(results, patterns):
-        if result == None:
+        if result is None:
             raise EOFError('error: no pattern (' + pattern + ') found!')
 
     return results
@@ -328,7 +326,7 @@ def get_real_from_line(line):
 
     # \S*: spaces are allowed at the beginning of the real
     real_regex = '\s*[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
-    #real_regex = '[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
+    # real_regex = '[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
     re_real = re.compile(real_regex)
 
     # get the value
@@ -336,7 +334,7 @@ def get_real_from_line(line):
     if match:
         result = float(line[match.start():match.end()])
 
-    if result == None:
+    if result is None:
         raise EOFError('error: real not found at the beginning of this line: '
                        '(' + line + ')!')
 
@@ -566,7 +564,7 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
 
     # check parameters
     check_param(filename, str)
-    if token != None:
+    if token is not None:
         check_param(token, str)
     elif skip_token != 0:
         raise AssertionError("error: skip_token parameter needs token "
@@ -612,7 +610,7 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
                     token_pos_cache.append([line_pos + token_match.start(),
                                             line_pos + token_match.end()])
 
-            if skip_token >= 0 and token_pos != None:
+            if skip_token >= 0 and token_pos is not None:
                 # token found
                 break
 
@@ -623,7 +621,7 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
         if skip_token < 0 and len(token_pos_cache) >= -skip_token:
             token_pos = token_pos_cache[skip_token]
 
-        if token_pos == None:
+        if token_pos is None:
             handle.close()
             raise EOFError('error: no token (' + token + ') was found!')
 
@@ -706,39 +704,39 @@ def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None
     """
     # test parameters and determine the number of value to return
     nb_values = None
-    if tokens != None:
+    if tokens is not None:
         nb_values = len(tokens)
 
     err_msg = "error: skip_tokens parameter needs tokens parameter to be set!"
-    if skip_tokens != None:
-        if nb_values == None:
+    if skip_tokens is not None:
+        if nb_values is None:
             raise AssertionError(err_msg)
         elif nb_values != len(skip_tokens):
             raise AssertionError(err_msg)
 
-    if skip_lines != None:
-        if nb_values == None:
+    if skip_lines is not None:
+        if nb_values is None:
             nb_values = len(skip_lines)
         elif nb_values != len(skip_lines):
             raise AssertionError(err_msg)
 
-    if skip_cols != None:
-        if nb_values == None:
+    if skip_cols is not None:
+        if nb_values is None:
             nb_values = len(skip_cols)
         elif nb_values != len(skip_cols):
             raise AssertionError(err_msg)
 
-    if nb_values == None:
+    if nb_values is None:
         raise AssertionError("error: no parameters have been set!")
 
     # init properly every list
-    if tokens == None:
+    if tokens is None:
         tokens = [None] * nb_values
-    if skip_tokens == None:
+    if skip_tokens is None:
         skip_tokens = [0] * nb_values
-    if skip_lines == None:
+    if skip_lines is None:
         skip_lines = [0] * nb_values
-    if skip_cols == None:
+    if skip_cols is None:
         skip_cols = [0] * nb_values
 
     results = [None] * nb_values

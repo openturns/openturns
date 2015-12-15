@@ -25,7 +25,7 @@ mySegmentNumber = 10
 myOverlapSize = 0.3
 
 # Build a spectral model factory
-myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber , myOverlapSize)
+myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber, myOverlapSize)
 
 # Estimation on a TimeSeries or on a ProcessSample
 #myEstimatedModel_TS = myFactory.build(myTimeSeries)
@@ -46,10 +46,10 @@ plotSample = ot.NumericalSample(frequencyGrid.getN(), 3)
 
 # Loop of comparison ==> data are saved in plotSample
 for k in range(frequencyGrid.getN()):
-  freq = frequencyGrid.getStart() + k * frequencyGrid.getStep()
-  plotSample[k,0] = freq
-  plotSample[k,1] = abs(myEstimatedModel_PS(freq)[0, 0])
-  plotSample[k,2] = abs(model.computeSpectralDensity(freq)[0, 0])
+    freq = frequencyGrid.getStart() + k * frequencyGrid.getStep()
+    plotSample[k, 0] = freq
+    plotSample[k, 1] = abs(myEstimatedModel_PS(freq)[0, 0])
+    plotSample[k, 2] = abs(model.computeSpectralDensity(freq)[0, 0])
 
 
 # Graph section
@@ -59,7 +59,8 @@ ind = ot.Indices(2)
 ind.fill()
 
 # Some cosmetics : labels, legend position, ...
-graph = ot.Graph("Estimated spectral function - Validation", "Frequency", "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
+graph = ot.Graph("Estimated spectral function - Validation", "Frequency",
+                 "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
 
 # The first curve is the estimate density as function of frequency
 curve1 = ot.Curve(plotSample.getMarginal(ind))

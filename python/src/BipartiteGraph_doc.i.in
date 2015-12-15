@@ -1,4 +1,4 @@
-%feature("docstring") OT::Indices
+%feature("docstring") OT::BipartiteGraph
 "Bipartite red/black graph.
 
 Available constructors:
@@ -10,7 +10,7 @@ Parameters
 ----------
 size : int, :math:`size \geq 0`
     Size of the collection.
-sequence : sequence of `~openturns.Indices`
+sequence : sequence of :class:`~openturns.Indices`
     Cliques of the red nodes.
 
 Notes
@@ -30,7 +30,7 @@ Use the second constructor:
 
 >>> graph = ot.BipartiteGraph([[1, 3], [2, 0], [5, 4]])
 >>> graph
-[100,30,70]
+[[1,3],[2,0],[5,4]]
 
 Use some functionalities:
 
