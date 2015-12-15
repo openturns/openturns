@@ -1,5 +1,7 @@
 // SWIG file QuadraticNumericalMathEvaluationImplementation.i
 
+OTAutodoc(QuadraticNumericalMathEvaluationImplementation)
+
 %{
 #include "QuadraticNumericalMathEvaluationImplementation.hxx"
 %}

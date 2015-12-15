@@ -1,5 +1,7 @@
 // SWIG file ParametricEvaluationImplementation.i
 
+OTAutodoc(ParametricEvaluationImplementation)
+
 %{
 #include "ParametricEvaluationImplementation.hxx"
 %}

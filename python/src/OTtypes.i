@@ -42,3 +42,7 @@
 %ignore *::save(StorageManager & mgr, const String & label) const;
 %ignore *::save(StorageManager & mgr, bool fromStudy) const;
 %ignore *::save(StorageManager & mgr) const;
+
+%define OTAutodoc(PythonClass)
+%feature("autodoc", "Proxy of C++ OT::" #PythonClass) OT::PythonClass;
+%enddef

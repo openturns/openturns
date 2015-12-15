@@ -1,5 +1,7 @@
 // SWIG file NatafEllipticalCopulaGradient.i
 
+OTAutodoc(NatafEllipticalCopulaGradient)
+
 %{
 #include "NatafEllipticalCopulaGradient.hxx"
 %}

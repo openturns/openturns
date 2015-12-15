@@ -1,5 +1,7 @@
 // SWIG file InverseRosenblattEvaluation.i
 
+OTAutodoc(InverseRosenblattEvaluation)
+
 %{
 #include "InverseRosenblattEvaluation.hxx"
 %}

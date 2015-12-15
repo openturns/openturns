@@ -1,5 +1,7 @@
 // SWIG file NatafIndependentCopulaEvaluation.i
 
+OTAutodoc(NatafIndependentCopulaEvaluation)
+
 %{
 #include "NatafIndependentCopulaEvaluation.hxx"
 %}

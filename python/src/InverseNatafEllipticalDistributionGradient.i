@@ -1,5 +1,7 @@
 // SWIG file InverseNatafEllipticalDistributionGradient.i
 
+OTAutodoc(InverseNatafEllipticalDistributionGradient)
+
 %{
 #include "InverseNatafEllipticalDistributionGradient.hxx"
 %}

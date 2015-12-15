@@ -1,5 +1,7 @@
 // SWIG file ProductNumericalMathFunction.i
 
+OTAutodoc(ProductNumericalMathFunction)
+
 %{
 #include "ProductNumericalMathFunction.hxx"
 %}

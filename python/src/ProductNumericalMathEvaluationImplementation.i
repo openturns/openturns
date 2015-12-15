@@ -1,5 +1,7 @@
 // SWIG file ProductNumericalMathEvaluationImplementation.i
 
+OTAutodoc(ProductNumericalMathEvaluationImplementation)
+
 %{
 #include "ProductNumericalMathEvaluationImplementation.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file NatafEllipticalDistributionGradient.i
 
+OTAutodoc(NatafEllipticalDistributionGradient)
+
 %{
 #include "NatafEllipticalDistributionGradient.hxx"
 %}

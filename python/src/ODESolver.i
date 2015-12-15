@@ -1,5 +1,7 @@
 // SWIG file ODESolver.i
 
+OTAutodoc(ODESolver)
+
 %{
 #include "ODESolver.hxx"
 %}

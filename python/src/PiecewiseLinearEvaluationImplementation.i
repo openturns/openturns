@@ -1,5 +1,7 @@
 // SWIG file PiecewiseLinearEvaluationImplementation.i
 
+OTAutodoc(PiecewiseLinearEvaluationImplementation)
+
 %{
 #include "PiecewiseLinearEvaluationImplementation.hxx"
 %}

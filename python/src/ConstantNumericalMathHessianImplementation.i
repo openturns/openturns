@@ -1,5 +1,7 @@
 // SWIG file ConstantNumericalMathHessianImplementation.i
 
+OTAutodoc(ConstantNumericalMathHessianImplementation)
+
 %{
 #include "ConstantNumericalMathHessianImplementation.hxx"
 %}

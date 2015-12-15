@@ -1,5 +1,7 @@
 // SWIG file TrendEvaluationImplementation.i
 
+OTAutodoc(TrendEvaluationImplementation)
+
 %{
 #include "TrendEvaluationImplementation.hxx"
 %}

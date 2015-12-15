@@ -1,5 +1,7 @@
 // SWIG file ParametricHessianImplementation.i
 
+OTAutodoc(ParametricHessianImplementation)
+
 %{
 #include "ParametricHessianImplementation.hxx"
 %}

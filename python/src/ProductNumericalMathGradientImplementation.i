@@ -1,5 +1,7 @@
 // SWIG file ProductNumericalMathGradientImplementation.i
 
+OTAutodoc(ProductNumericalMathGradientImplementation)
+
 %{
 #include "ProductNumericalMathGradientImplementation.hxx"
 %}

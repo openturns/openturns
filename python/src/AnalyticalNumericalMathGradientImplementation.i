@@ -1,5 +1,7 @@
 // SWIG file AnalyticalNumericalMathGradientImplementation.i
 
+OTAutodoc(AnalyticalNumericalMathGradientImplementation)
+
 %{
 #include "AnalyticalNumericalMathGradientImplementation.hxx"
 %}

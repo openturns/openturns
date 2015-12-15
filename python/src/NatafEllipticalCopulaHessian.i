@@ -1,5 +1,7 @@
 // SWIG file NatafEllipticalCopulaHessian.i
 
+OTAutodoc(NatafEllipticalCopulaHessian)
+
 %{
 #include "NatafEllipticalCopulaHessian.hxx"
 %}

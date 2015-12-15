@@ -1,5 +1,7 @@
 // SWIG file InverseTrendEvaluationImplementation.i
 
+OTAutodoc(InverseTrendEvaluationImplementation)
+
 %{
 #include "InverseTrendEvaluationImplementation.hxx"
 %}

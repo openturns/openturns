@@ -1,5 +1,7 @@
 // SWIG file IndicatorNumericalMathEvaluationImplementation.i
 
+OTAutodoc(IndicatorNumericalMathEvaluationImplementation)
+
 %{
 #include "IndicatorNumericalMathEvaluationImplementation.hxx"
 %}

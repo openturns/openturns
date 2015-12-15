@@ -1,5 +1,7 @@
 // SWIG file ComposedNumericalMathEvaluationImplementation.i
 
+OTAutodoc(ComposedNumericalMathEvaluationImplementation)
+
 %{
 #include "ComposedNumericalMathEvaluationImplementation.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file InverseNatafEllipticalDistributionHessian.i
 
+OTAutodoc(InverseNatafEllipticalDistributionHessian)
+
 %{
 #include "InverseNatafEllipticalDistributionHessian.hxx"
 %}

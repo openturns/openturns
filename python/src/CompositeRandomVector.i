@@ -1,5 +1,7 @@
 // SWIG file CompositeRandomVector.i
 
+OTAutodoc(CompositeRandomVector)
+
 %{
 #include "CompositeRandomVector.hxx"
 %}

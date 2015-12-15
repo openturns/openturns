@@ -1,5 +1,7 @@
 // SWIG file LinearNumericalMathEvaluationImplementation.i
 
+OTAutodoc(LinearNumericalMathEvaluationImplementation)
+
 %{
 #include "LinearNumericalMathEvaluationImplementation.hxx"
 %}

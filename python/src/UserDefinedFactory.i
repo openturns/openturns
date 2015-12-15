@@ -1,5 +1,7 @@
 // SWIG file UserDefinedFactory.i
 
+OTAutodoc(UserDefinedFactory)
+
 %{
 #include "UserDefinedFactory.hxx"
 %}
