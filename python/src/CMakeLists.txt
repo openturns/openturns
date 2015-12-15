@@ -113,7 +113,6 @@ ot_add_python_module(common common_module.i
                    )
 
 ot_add_python_module(typ typ_module.i
-                      BipartiteGraph.i BipartiteGraph_doc.i.in
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
@@ -214,6 +213,7 @@ ot_add_python_module(statistics statistics_module.i
 
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in
+                      BipartiteGraph.i BipartiteGraph_doc.i.in
                       Mesh.i Mesh_doc.i.in
                       RegularGrid.i RegularGrid_doc.i.in
                       MeshFactoryImplementation.i MeshFactoryImplementation_doc.i.in

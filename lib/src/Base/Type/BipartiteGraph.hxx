@@ -25,8 +25,6 @@
 #include "OTprivate.hxx"
 #include "Graph.hxx"
 #include "Indices.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
