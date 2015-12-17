@@ -28,8 +28,8 @@ Examples
 
 Compute the CDF:
 
->>> distribution.computeCDF([1.0, 2.0, -0.5])
-0.0643539541103"
+>>> print('%.6f' % distribution.computeCDF([1.0, 2.0, -0.5]))
+0.064354"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CumulativeDistributionNetwork::getDistributionCollection
