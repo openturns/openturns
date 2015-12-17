@@ -11,11 +11,11 @@ Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.NumericalSample`
     The input and output samples of a model evaluated apart.
-metaModel: :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.NumericalMathFunction`
     The surrogate model built thanks to :class:`~openturns.GeneralizedLinearModelAlgorithm`.
-residuals: :class:`~openturns.NumericalPoint`
+residuals : :class:`~openturns.NumericalPoint`
     The residual errors.
-relativeErrors: :class:`~openturns.NumericalPoint`
+relativeErrors : :class:`~openturns.NumericalPoint`
     The relative errors.
 basis : collection of :class:`~openturns.Basis`
     Its size should be equal to the output dimension or zero if no trend is estimated.

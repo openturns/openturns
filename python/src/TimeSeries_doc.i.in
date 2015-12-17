@@ -15,7 +15,7 @@ Parameters
 nSteps : int
     Enables to create a regular time grid on :math:`[0, nSteps]` which time step is equal to 1.
 
-timeGrid: :class:`~openturns.RegularGrid`
+timeGrid : :class:`~openturns.RegularGrid`
     Regular time grid of the time series.
 
 dim : int
