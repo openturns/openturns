@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HMatrixParameters);
 
-static Factory<HMatrixParameters> RegisteredFactory("HMatrixParameters");
+static const Factory<HMatrixParameters> RegisteredFactory;
 
 
 HMatrixParameters::HMatrixParameters()

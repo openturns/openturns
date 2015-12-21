@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GeneralizedLinearModelAlgorithm);
 
-static Factory<GeneralizedLinearModelAlgorithm> RegisteredFactory("GeneralizedLinearModelAlgorithm");
+static const Factory<GeneralizedLinearModelAlgorithm> RegisteredFactory;
 
 /** Default constructor */
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm ()

@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TensorizedCovarianceModel);
 
-static Factory<TensorizedCovarianceModel> RegisteredFactory("TensorizedCovarianceModel");
+static const Factory<TensorizedCovarianceModel> RegisteredFactory;
 
 
 /* Default constructor */
