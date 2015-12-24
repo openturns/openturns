@@ -35,7 +35,11 @@ class OT_API MaximumLikelihoodFactory
 {
   CLASSNAME;
 public:
+  /** Default constructor */
   MaximumLikelihoodFactory();
+
+  /** Parameters constructor */
+  MaximumLikelihoodFactory(const Distribution & distribution);
 
   MaximumLikelihoodFactory(const DistributionFactory & factory);
 
@@ -65,10 +69,14 @@ public:
 
   void setParallel(const Bool parallel);
 protected:
-  DistributionFactory factory_;
+  /* The underlying distribution */
+  Distribution distribution_;
+
+  /* Solver & optimization problem for log-likelihood maximization */
   OptimizationSolver solver_;
   OptimizationProblem problem_;
 
+  /* Flag to tell if the log-likelihood can be computed in parallel */
   Bool isParallel_;
 }; /* class MaximumLikelihoodFactory */
 

@@ -23,14 +23,10 @@
 #include <fstream>
 #include "MaximumLikelihoodFactory.hxx"
 #include "Description.hxx"
-#include "Path.hxx"
 #include "Exception.hxx"
 #include "OTconfig.hxx"
 #include "Log.hxx"
 #include "Os.hxx"
-#include "BootstrapExperiment.hxx"
-#include "NormalFactory.hxx"
-#include "KernelSmoothing.hxx"
 #include "SpecFunc.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "CenteredFiniteDifferenceGradient.hxx"
@@ -46,14 +42,28 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory()
   : DistributionFactoryImplementation()
   , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
-
+  // Nothing to do
 }
 
+/* Parameters constructor */
+MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribution)
+  : DistributionFactoryImplementation()
+  , distribution_(distribution)
+  , solver_(new TNC())
+  , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
+{
+  // Initialize optimization solver parameter using the ResourceMap 
+  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
+}
 
-/* Default constructor */
+/* Parameters constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory(const DistributionFactory & factory)
   : DistributionFactoryImplementation()
-  , factory_(factory)
+  , distribution_(factory.build())
   , solver_(new TNC())
   , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
@@ -76,7 +86,7 @@ String MaximumLikelihoodFactory::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << this->getClassName()
-      << " factory=" << factory_
+      << " distribution=" << distribution_
       << " solver=" << solver_;
   return oss;
 }
@@ -94,12 +104,12 @@ String MaximumLikelihoodFactory::__str__(const String & offset) const
 struct MaximumLikelihoodFactoryLogLikelihood
 {
   MaximumLikelihoodFactoryLogLikelihood(const NumericalSample & sample,
-                                        const DistributionFactory & factory,
+                                        const Distribution & distribution,
                                         const NumericalPoint & knownParameterValues,
                                         const Indices & knownParameterIndices,
                                         const Bool & isParallel)
   : sample_(sample)
-  , factory_(factory)
+  , distribution_(distribution)
   , knownParameterValues_(knownParameterValues)
   , knownParameterIndices_(knownParameterIndices)
   , isParallel_(isParallel)
@@ -117,7 +127,8 @@ struct MaximumLikelihoodFactoryLogLikelihood
       {
         effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
       }
-      const Distribution distribution(factory_.build(effectiveParameter));
+      Distribution distribution(distribution_);
+      distribution.setParameter(effectiveParameter);
 
       if (isParallel_)
       {
@@ -150,7 +161,7 @@ struct MaximumLikelihoodFactoryLogLikelihood
   }
 
   const NumericalSample & sample_;
-  const DistributionFactory factory_;
+  const Distribution distribution_;
   const NumericalPoint knownParameterValues_;
   const Indices knownParameterIndices_;
   const Bool isParallel_;
@@ -162,20 +173,21 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  UnsignedInteger parameterDimension = factory_.build().getParameterDimension();
-  MaximumLikelihoodFactoryLogLikelihood logLikelihoodWrapper(sample, factory_, knownParameterValues_, knownParameterIndices_, isParallel_);
+  UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  MaximumLikelihoodFactoryLogLikelihood logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_, isParallel_);
 
   NumericalMathFunction logLikelihood(bindMethod<MaximumLikelihoodFactoryLogLikelihood, NumericalScalar, NumericalPoint>(logLikelihoodWrapper, &MaximumLikelihoodFactoryLogLikelihood::computeLogLikelihood, parameterDimension, 1));
-  CenteredFiniteDifferenceGradient gradient(1.0e-5, logLikelihood.getEvaluation());
+  CenteredFiniteDifferenceGradient gradient(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-GradientStep"), logLikelihood.getEvaluation());
   logLikelihood.setGradient(gradient);
   OptimizationProblem problem(problem_);
   problem.setMinimization(false);
   problem.setObjective(logLikelihood);
   OptimizationSolver solver(solver_);
   if (solver.getStartingPoint().getDimension() != parameterDimension)
-  {
-    solver.setStartingPoint(factory_.build(sample).getParameter());
-  }
+    {
+      LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << parameterDimension << ". Switching to the default parameter value=" << distribution_.getParameter());
+      solver.setStartingPoint(distribution_.getParameter());
+    }
   solver.setProblem(problem);
   solver.run();
   NumericalPoint parameter(solver.getResult().getOptimalPoint());
@@ -190,7 +202,8 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 
 DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const NumericalSample & sample) const
 {
-  Distribution result(factory_.build(buildParameter(sample)));
+  Distribution result(distribution_);
+  result.setParameter(buildParameter(sample));
   result.setDescription(sample.getDescription());
   return result.getImplementation();
 }

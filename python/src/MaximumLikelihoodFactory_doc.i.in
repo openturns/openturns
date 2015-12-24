@@ -4,13 +4,16 @@
 Implements generic maximum likelihood estimation.
 
 Available constructor:
+    MaximumLikelihoodFactory(*distribution*)
+
     MaximumLikelihoodFactory(*factory*)
 
 Parameters
 ----------
+distribution : :class:`~openturns.Distribution`
+    The distribution defining the parametric model to be adjusted to data.
 factory : :class:`~openturns.DistributionFactory`
-    The factory used to build the distribution according to the
-    current value of the optimization process.
+    The factory defining the parametric model to be adjusted to data.
 
 See also
 --------
