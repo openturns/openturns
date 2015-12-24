@@ -54,8 +54,8 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
   , mesh_(mesh)
   , threshold_(threshold)
 {
-  // Compute the stiffness of the mesh
-  stiffness_ = mesh.computeP1Stiffness();
+  // Compute the gram of the mesh
+  gram_ = mesh.computeP1Gram();
 }
 
 /* Virtual constructor */
@@ -84,7 +84,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
 {
   const UnsignedInteger numVertices(mesh_.getVerticesNumber());
   CovarianceMatrix C(covarianceModel.discretize(mesh_));
-  SquareMatrix M((C * stiffness_).getImplementation());
+  SquareMatrix M((C * gram_).getImplementation());
   LOGINFO(OSS() << "M=\n" << M.__str__());
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
@@ -111,7 +111,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
       selectedEV.add(eigenValues[j]);
       NumericalSample values(numVertices, 1);
       const Matrix a(eigenVectors.getColumn(j));
-      const NumericalScalar norm(std::sqrt((a.transpose() * (stiffness_ * a))(0, 0)));
+      const NumericalScalar norm(std::sqrt((a.transpose() * (gram_ * a))(0, 0)));
       const NumericalScalar factor(eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm);
       for (UnsignedInteger i = 0; i < numVertices; ++i)
         values[i][0] = eigenVectors(i, j) * factor;

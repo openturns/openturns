@@ -31,7 +31,7 @@ point = [1.8]
 print("Nearest index(", point, ")=", mesh1D.getNearestVertexIndex(point))
 points = [[-0.25], [2.25]]
 print("Nearest index(", points, ")=", mesh1D.getNearestVertexIndex(points))
-print("P1 stiffness=\n", mesh1D.computeP1Stiffness())
+print("P1 gram=\n", mesh1D.computeP1Gram())
 # 2D case
 vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
             [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
@@ -43,7 +43,7 @@ point = [1.8] * 2
 print("Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point))
 points = [[-0.25] * 2, [2.25] * 2]
 print("Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points))
-print("P1 stiffness=\n", mesh2D.computeP1Stiffness())
+print("P1 gram=\n", mesh2D.computeP1Gram())
 # 3D case
 
 vertices = ot.NumericalSample(0, 3)
@@ -71,7 +71,7 @@ point = [1.8] * 3
 print("Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point))
 points = [[-0.25] * 3, [2.25] * 3]
 print("Nearest index(", points, ")=", mesh3D.getNearestVertexIndex(points))
-print("P3 stiffness=\n", mesh3D.computeP1Stiffness())
+print("P3 gram=\n", mesh3D.computeP1Gram())
 rotation = ot.SquareMatrix(3)
 rotation[0, 0] = m.cos(m.pi / 3.0)
 rotation[0, 1] = m.sin(m.pi / 3.0)

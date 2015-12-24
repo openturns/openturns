@@ -82,8 +82,8 @@ class OT_API KarhunenLoeveP1Factory
   /** Underlying mesh */
   Mesh mesh_;
 
-  /** Stiffness matrix of the mesh */
-  CovarianceMatrix stiffness_;
+  /** Gram matrix of the mesh */
+  CovarianceMatrix gram_;
 
   /** Threshold for eigenvalues selection */
   NumericalScalar threshold_;
