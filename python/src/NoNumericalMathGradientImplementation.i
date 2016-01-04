@@ -1,5 +1,7 @@
 // SWIG file NoNumericalMathGradientImplementation.i
 
+OTAutodoc(NoNumericalMathGradientImplementation)
+
 %{
 #include "NoNumericalMathGradientImplementation.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file NoNumericalMathEvaluationImplementation.i
 
+OTAutodoc(NoNumericalMathEvaluationImplementation)
+
 %{
 #include "NoNumericalMathEvaluationImplementation.hxx"
 %}

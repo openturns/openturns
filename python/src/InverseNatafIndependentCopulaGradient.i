@@ -1,5 +1,7 @@
 // SWIG file InverseNatafIndependentCopulaGradient.i
 
+OTAutodoc(InverseNatafIndependentCopulaGradient)
+
 %{
 #include "InverseNatafIndependentCopulaGradient.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file ConstantRandomVector.i
 
+OTAutodoc(ConstantRandomVector)
+
 %{
 #include "ConstantRandomVector.hxx"
 %}

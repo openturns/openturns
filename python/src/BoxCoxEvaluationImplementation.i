@@ -1,5 +1,7 @@
 // SWIG file BoxCoxEvaluationImplementation.i
 
+OTAutodoc(BoxCoxEvaluationImplementation)
+
 %{
 #include "BoxCoxEvaluationImplementation.hxx"
 %}

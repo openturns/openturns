@@ -1,5 +1,7 @@
 // SWIG file RosenblattEvaluation.i
 
+OTAutodoc(RosenblattEvaluation)
+
 %{
 #include "RosenblattEvaluation.hxx"
 %}

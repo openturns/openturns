@@ -1,5 +1,7 @@
 // SWIG file AnalyticalNumericalMathEvaluationImplementation.i
 
+OTAutodoc(AnalyticalNumericalMathEvaluationImplementation)
+
 %{
 #include "AnalyticalNumericalMathEvaluationImplementation.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file InverseNatafEllipticalDistributionEvaluation.i
 
+OTAutodoc(InverseNatafEllipticalDistributionEvaluation)
+
 %{
 #include "InverseNatafEllipticalDistributionEvaluation.hxx"
 %}

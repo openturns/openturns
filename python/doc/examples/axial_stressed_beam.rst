@@ -87,7 +87,7 @@ The numerical application gives:
 
 
 
-.. image:: axial_stressed_beam_files/axial_stressed_beam_3_0.svg
+.. image:: axial_stressed_beam_files/axial_stressed_beam_3_0.*
 
 
 
@@ -103,7 +103,7 @@ The numerical application gives:
 
 
 
-.. image:: axial_stressed_beam_files/axial_stressed_beam_4_0.svg
+.. image:: axial_stressed_beam_files/axial_stressed_beam_4_0.*
 
 
 
@@ -165,7 +165,7 @@ The numerical application gives:
 
 
 
-.. image:: axial_stressed_beam_files/axial_stressed_beam_6_1.svg
+.. image:: axial_stressed_beam_files/axial_stressed_beam_6_1.*
 
 
 
@@ -213,7 +213,7 @@ The numerical application gives:
 
 
 
-.. image:: axial_stressed_beam_files/axial_stressed_beam_7_1.svg
+.. image:: axial_stressed_beam_files/axial_stressed_beam_7_1.*
 
 
 
@@ -257,7 +257,7 @@ The numerical application gives:
 
 
 
-.. image:: axial_stressed_beam_files/axial_stressed_beam_8_1.svg
+.. image:: axial_stressed_beam_files/axial_stressed_beam_8_1.*
 
 
 

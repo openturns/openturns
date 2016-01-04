@@ -1,5 +1,7 @@
 // SWIG file InverseNatafEllipticalCopulaEvaluation.i
 
+OTAutodoc(InverseNatafEllipticalCopulaEvaluation)
+
 %{
 #include "InverseNatafEllipticalCopulaEvaluation.hxx"
 %}

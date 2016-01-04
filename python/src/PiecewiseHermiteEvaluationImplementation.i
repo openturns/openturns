@@ -1,5 +1,7 @@
 // SWIG file PiecewiseHermiteEvaluationImplementation.i
 
+OTAutodoc(PiecewiseHermiteEvaluationImplementation)
+
 %{
 #include "PiecewiseHermiteEvaluationImplementation.hxx"
 %}

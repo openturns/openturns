@@ -1,5 +1,7 @@
 // SWIG file LinearCombinationHessianImplementation.i
 
+OTAutodoc(LinearCombinationHessianImplementation)
+
 %{
 #include "LinearCombinationHessianImplementation.hxx"
 %}

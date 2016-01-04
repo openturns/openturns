@@ -1,5 +1,7 @@
 // SWIG file IdentityMatrix.i
 
+OTAutodoc(IdentityMatrix)
+
 %{
 #include "IdentityMatrix.hxx"
 %}

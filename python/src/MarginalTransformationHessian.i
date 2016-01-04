@@ -1,5 +1,7 @@
 // SWIG file MarginalTransformationHessian.i
 
+OTAutodoc(MarginalTransformationHessian)
+
 %{
 #include "MarginalTransformationHessian.hxx"
 %}

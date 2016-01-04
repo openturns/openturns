@@ -1,5 +1,7 @@
 // SWIG file FunctionalBasis.i
 
+OTAutodoc(FunctionalBasis)
+
 %{
 #include "FunctionalBasis.hxx"
 %}

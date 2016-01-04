@@ -1,5 +1,7 @@
 // SWIG file ParametricGradientImplementation.i
 
+OTAutodoc(ParametricGradientImplementation)
+
 %{
 #include "ParametricGradientImplementation.hxx"
 %}

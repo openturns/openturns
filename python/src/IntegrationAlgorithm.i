@@ -1,5 +1,7 @@
 // SWIG file IntegrationAlgorithm.i
 
+OTAutodoc(IntegrationAlgorithm)
+
 %{
 #include "IntegrationAlgorithm.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file MarginalTransformationGradient.i
 
+OTAutodoc(MarginalTransformationGradient)
+
 %{
 #include "MarginalTransformationGradient.hxx"
 %}

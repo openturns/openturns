@@ -1,5 +1,7 @@
 // SWIG file RungeKutta.i
 
+OTAutodoc(RungeKutta)
+
 %{
 #include "RungeKutta.hxx"
 %}

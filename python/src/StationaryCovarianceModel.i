@@ -1,5 +1,7 @@
 // SWIG file StationaryCovarianceModel.i
 
+OTAutodoc(StationaryCovarianceModel)
+
 %{
 #include "StationaryCovarianceModel.hxx"
 %}

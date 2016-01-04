@@ -1,5 +1,7 @@
 // SWIG file LinearCombinationGradientImplementation.i
 
+OTAutodoc(LinearCombinationGradientImplementation)
+
 %{
 #include "LinearCombinationGradientImplementation.hxx"
 %}

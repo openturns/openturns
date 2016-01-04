@@ -1,5 +1,7 @@
 // SWIG file AnalyticalNumericalMathHessianImplementation.i
 
+OTAutodoc(AnalyticalNumericalMathHessianImplementation)
+
 %{
 #include "AnalyticalNumericalMathHessianImplementation.hxx"
 %}

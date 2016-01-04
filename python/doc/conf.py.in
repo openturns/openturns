@@ -227,7 +227,7 @@ latex_additional_files = ['math_notations.sty']
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('contents', 'OpenTURNS.tex', u'OpenTURNS Documentation',
-   u'Airbus Group - EDF - Phimeca Engineering', 'manual'),
+   u'Airbus Group - EDF - IMACS - Phimeca Engineering', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -257,7 +257,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'openturns', u'OpenTURNS Documentation',
-     [u'Airbus Group - EDF - Phimeca Engineering'], 1)
+     [u'Airbus Group - EDF - IMACS - Phimeca Engineering'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -271,7 +271,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'OpenTURNS', u'OpenTURNS Documentation',
-   u'Airbus Group - EDF - Phimeca Engineering', 'OpenTURNS', 'One line description of project.',
+   u'Airbus Group - EDF - IMACS - Phimeca Engineering', 'OpenTURNS', 'One line description of project.',
    'Miscellaneous'),
 ]
 

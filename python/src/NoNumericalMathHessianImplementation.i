@@ -1,5 +1,7 @@
 // SWIG file NoNumericalMathHessianImplementation.i
 
+OTAutodoc(NoNumericalMathHessianImplementation)
+
 %{
 #include "NoNumericalMathHessianImplementation.hxx"
 %}

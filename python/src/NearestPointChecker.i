@@ -1,5 +1,7 @@
 // SWIG file NearestPointChecker.i
 
+OTAutodoc(NearestPointChecker)
+
 %{
 #include "NearestPointChecker.hxx"
 %}

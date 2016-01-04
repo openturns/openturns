@@ -1,5 +1,7 @@
 // SWIG file InverseBoxCoxEvaluationImplementation.i
 
+OTAutodoc(InverseBoxCoxEvaluationImplementation)
+
 %{
 #include "InverseBoxCoxEvaluationImplementation.hxx"
 %}

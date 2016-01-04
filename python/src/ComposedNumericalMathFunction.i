@@ -1,5 +1,7 @@
 // SWIG file ComposedNumericalMathFunction.i
 
+OTAutodoc(ComposedNumericalMathFunction)
+
 %{
 #include "ComposedNumericalMathFunction.hxx"
 %}

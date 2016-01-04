@@ -14,15 +14,15 @@ flags : int
     Log flags to enable.
 
     Available values to be ORed:
-      - DBG
-      - INFO
-      - USER
-      - WARN
-      - ERROR
-      - TRACE
-      - DEFAULT
-      - NONE
-      - ALL
+    - DBG
+    - INFO
+    - USER
+    - WARN
+    - ERROR
+    - TRACE
+    - DEFAULT
+    - NONE
+    - ALL
 
 Examples
 --------

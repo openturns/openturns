@@ -1,5 +1,7 @@
 // SWIG file ComposedNumericalMathGradientImplementation.i
 
+OTAutodoc(ComposedNumericalMathGradientImplementation)
+
 %{
 #include "ComposedNumericalMathGradientImplementation.hxx"
 %}

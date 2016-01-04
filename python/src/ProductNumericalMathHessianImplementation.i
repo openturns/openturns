@@ -1,5 +1,7 @@
 // SWIG file ProductNumericalMathHessianImplementation.i
 
+OTAutodoc(ProductNumericalMathHessianImplementation)
+
 %{
 #include "ProductNumericalMathHessianImplementation.hxx"
 %}

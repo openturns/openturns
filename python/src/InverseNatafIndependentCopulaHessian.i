@@ -1,5 +1,7 @@
 // SWIG file InverseNatafIndependentCopulaHessian.i
 
+OTAutodoc(InverseNatafIndependentCopulaHessian)
+
 %{
 #include "InverseNatafIndependentCopulaHessian.hxx"
 %}

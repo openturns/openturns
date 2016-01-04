@@ -1,5 +1,7 @@
 // SWIG file LinearCombinationEvaluationImplementation.i
 
+OTAutodoc(LinearCombinationEvaluationImplementation)
+
 %{
 #include "LinearCombinationEvaluationImplementation.hxx"
 %}

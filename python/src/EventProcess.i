@@ -1,5 +1,7 @@
 // SWIG file EventProcess.i
 
+OTAutodoc(EventProcess)
+
 %{
 #include "EventProcess.hxx"
 %}

@@ -1,5 +1,7 @@
 // SWIG file ComposedNumericalMathHessianImplementation.i
 
+OTAutodoc(ComposedNumericalMathHessianImplementation)
+
 %{
 #include "ComposedNumericalMathHessianImplementation.hxx"
 %}
