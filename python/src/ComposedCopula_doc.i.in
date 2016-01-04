@@ -1,30 +1,23 @@
 %feature("docstring") OT::ComposedCopula
-"Composed copula.
-
-Available constructor:
-    ComposedCopula(*copulas*)
+"Merge of a collection of independent copulas.
 
 Parameters
 ----------
-copulas : list of copulas
-    The collection of copulas from which the ComposedCopula is built.
+copulas : list of copulas.
+    The collection of  copulas to be merged.
 
 Notes
 -----
-A ComposedCopula is defined as the product of other copulas. For example, if
-:math:`C_1` and :math:`C_2` are two copulas respectively of :math:`\Rset^{n_1}`
-and :math:`\Rset^{n_2}`, we can create the copula of a random vector of
-:math:`\Rset^{n_1 + n_2}`, noted :math:`C` as follows :
+Let's :math:`(C_1\, \dots, C_K)` a collection of :math:`K` copulas respectively defined on :math:`[0,1]^{n_i}` whith :math:`n_1 + \dots + n_K = d`.
+
+The  merged copula :math:`C` is defined on :math:`[0,1]^d` by:
 
 .. math::
 
-    C(u_1, \cdots, u_n) = C_1 (u_1, \cdots, u_{n_1})
-                          C_2 (u_{n_1 + 1}, \cdots, u_{n_1 + n_2})
+    C(u_1, \dots, u_d) = C_1(u_1, \dots, u_{n_1}) C_2(u_{n_1+1}, \dots, u_{n_2}) \dots C_K(u_{n_1+\dots + n_{K-1}+1}, \dots, u_d) 
 
-for :math:`u_i \in [0, 1]`.
-It means that both subvectors :math:`(u_1, \cdots, u_{n_1})` and
-:math:`(u_{n_1 + 1}, \cdots, u_{n_1 + n_2})` of :math:`\Rset^{n_1}` and
-:math:`\Rset^{n_2}` are independent.
+
+It means that the  subvectors :math:`(u_{n_{i-1}+1}, \dots, u_{n_i})_i` are independent.
 
 Examples
 --------
@@ -44,21 +37,21 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ComposedCopula::getCopulaCollection
-"Get the list of the copulas.
+"Accessor to the list of the copulas.
 
 Returns
 -------
 copulas : list of copulas
-    The collection of copulas from which the ComposedCopula is built."
+    The collection of the copulas to be merged."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ComposedCopula::setCopulaCollection
-"Set the list of the copulas.
+"Accessor to the list of the copulas.
 
 Parameters
 ----------
 copulas : list of copulas
-    The collection of copulas from which the ComposedCopula is built."
+    The collection of copulas to be merged."
 
 

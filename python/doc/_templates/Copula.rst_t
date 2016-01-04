@@ -14,7 +14,7 @@
       copula = ot.{{ objname }}()
     if copula.getDimension() == 1:
         copula = ot.{{ objname }}(2)
-    copula.setDescription(['$y_1$', '$y_2$'])
+    copula.setDescription(['$u_1$', '$u_2$'])
     pdf_graph = copula.drawPDF()
     cdf_graph = copula.drawCDF()
     fig = plt.figure(figsize=(10, 4))
