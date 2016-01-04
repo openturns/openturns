@@ -50,13 +50,20 @@ todo_include_todos = True
 
 extensions.append('sphinx.ext.coverage')
 
-extensions.append('sphinx.ext.pngmath')
-pngmath_latex_preamble = "\usepackage{%smath_notations}" % (
-    os.path.dirname(__file__) + os.sep)
-# The next option is used for smart-alignment of math images on the text.
-# It only works when the preview-latex package is installed.
-# See http://sphinx-doc.org/latest/ext/math.html#confval-pngmath_use_preview
-pngmath_use_preview = True
+try:
+    import sphinx.ext.imgmath
+    extensions.append('sphinx.ext.imgmath')
+    imgmath_latex_preamble = "\usepackage{%smath_notations}" % (
+        os.path.dirname(__file__) + os.sep)
+    imgmath_use_preview = True
+except ImportError:
+    extensions.append('sphinx.ext.pngmath')
+    pngmath_latex_preamble = "\usepackage{%smath_notations}" % (
+        os.path.dirname(__file__) + os.sep)
+    # The next option is used for smart-alignment of math images on the text.
+    # It only works when the preview-latex package is installed.
+    # See http://sphinx-doc.org/latest/ext/math.html#confval-pngmath_use_preview
+    pngmath_use_preview = True
 
 extensions.append('matplotlib.sphinxext.plot_directive')
 
