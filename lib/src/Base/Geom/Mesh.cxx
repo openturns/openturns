@@ -343,17 +343,17 @@ NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
 
-/* Compute P1 stiffness matrix */
-CovarianceMatrix Mesh::computeP1Stiffness() const
+/* Compute P1 gram matrix */
+CovarianceMatrix Mesh::computeP1Gram() const
 {
-  // If no simplex, the P1 stiffness matrix is null
+  // If no simplex, the P1 gram matrix is null
   if (simplices_.getSize() == 0) return CovarianceMatrix(0);
   const UnsignedInteger simplexSize(getVertices().getDimension() + 1);
-  SquareMatrix elementaryStiffness(simplexSize, NumericalPoint(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
-  for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryStiffness(i, i) *= 2.0;
+  SquareMatrix elementaryGram(simplexSize, NumericalPoint(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
+  for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const UnsignedInteger verticesSize(vertices_.getSize());
   const UnsignedInteger simplicesSize(simplices_.getSize());
-  SquareMatrix stiffness(verticesSize);
+  SquareMatrix gram(verticesSize);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
     {
       const Indices simplex(getSimplex(i));
@@ -364,11 +364,11 @@ CovarianceMatrix Mesh::computeP1Stiffness() const
 	  for (UnsignedInteger k = 0; k < simplexSize; ++k)
 	    {
 	      const UnsignedInteger newK(simplex[k]);
-	      stiffness(newJ, newK) += delta * elementaryStiffness(j, k);
+	      gram(newJ, newK) += delta * elementaryGram(j, k);
 	    } // Loop over second vertex
 	} // Loop over first vertex
     } // Loop over simplices
-  return CovarianceMatrix(stiffness.getImplementation());
+  return CovarianceMatrix(gram.getImplementation());
 }
 
 /* TBB functor to speed-up volume computation */
