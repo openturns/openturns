@@ -156,7 +156,7 @@ with the Fisher statistics:
 
 where :math:`S_{1,0}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+y_{i-1})\right)^2` is the sum of the square errors of the model 1 :eq:`Model1` assuming :math:`\cH_0` from :eq:`TestSousModele1_2` and :math:`S_{1,b}=\sum_{i=2}^n\left(y_i-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2` is the same sum when we make no assumption on :math:`\rho` and :math:`b`.
 
-The statistics :math:`\hat{F}_1` converges in distribution to the Fisher-Snedecor distribution :class:'~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-3`. The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when :math:`\hat{F}_1 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
+The statistics :math:`\hat{F}_1` converges in distribution to the Fisher-Snedecor distribution :class:`~openturns.FisherSnedecor` with :math:`d_1=2, d_2=n-3`. The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when :math:`\hat{F}_1 < \Phi_{\alpha}` where :math:`\Phi_{\alpha}` is the test threshold of level :math:`\alpha`.
 
 The decision to be taken is:
     - If :math:`\cH_0` from :eq:`TestSousModele1_2` is rejected, then the model 1 :eq:`Model1` is confirmed since the presence of linear trend is confirmed. And the test :eq:`TestModel1` proved that the unit root is accepted: :math:`\rho = 1`. We then conclude that the model is: :math:`\boldsymbol{X_t = a + bt + X_{t-1} + \varepsilon_{t}}` which is a **non stationary model**.
