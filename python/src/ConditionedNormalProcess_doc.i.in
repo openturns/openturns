@@ -36,6 +36,7 @@ It follows that the random realizations are obtained as following : :math:`reali
 Examples
 --------
 >>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
 >>> # Kriging use case
 >>> # Learning data
 >>> levels = [8., 5.]
