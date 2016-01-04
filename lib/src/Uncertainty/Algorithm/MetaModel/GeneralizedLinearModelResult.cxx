@@ -30,7 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GeneralizedLinearModelResult);
-static Factory<GeneralizedLinearModelResult> RegisteredFactory("GeneralizedLinearModelResult");
+static const Factory<GeneralizedLinearModelResult> RegisteredFactory;
 
 /* Default constructor */
 GeneralizedLinearModelResult::GeneralizedLinearModelResult()
