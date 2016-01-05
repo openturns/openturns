@@ -2,3 +2,4 @@ Remove deprecated AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
 Remove deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
 Remove deprecated OptimizationSolverImplementation::[sg]etMaximumIterationsNumber methods
 Remove deprecated Distribution::setParametersCollection(NP) method
+test
