@@ -60,21 +60,6 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
   solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
 }
 
-/* Parameters constructor */
-MaximumLikelihoodFactory::MaximumLikelihoodFactory(const DistributionFactory & factory)
-  : DistributionFactoryImplementation()
-  , distribution_(factory.build())
-  , solver_(new TNC())
-  , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
-{
-  // Initialize optimization solver parameter using the ResourceMap 
-  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
-}
-
 /* Virtual constructor */
 MaximumLikelihoodFactory * MaximumLikelihoodFactory::clone() const
 {
@@ -114,6 +99,7 @@ struct MaximumLikelihoodFactoryLogLikelihood
   , knownParameterIndices_(knownParameterIndices)
   , isParallel_(isParallel)
   {
+    // Nothing to do
   }
 
   NumericalScalar computeLogLikelihood(const NumericalPoint & parameter) const
@@ -134,7 +120,7 @@ struct MaximumLikelihoodFactoryLogLikelihood
       {
         const NumericalScalar logLikelihood = distribution.computeLogPDF(sample_).computeMean()[0];
         result = SpecFunc::IsNormal(logLikelihood) ? logLikelihood : -SpecFunc::MaxNumericalScalar;
-      }
+      } // Parallel computeLogPDF
       else
       {
         const UnsignedInteger size = sample_.getSize();
@@ -150,9 +136,9 @@ struct MaximumLikelihoodFactoryLogLikelihood
           {
             result += logPdf;
           }
-        }
-      }
-    }
+	} // Loop over the realizations
+      } // Sequential computeLogPDF
+    } // try
     catch (...)
     {
       result = -SpecFunc::MaxNumericalScalar;

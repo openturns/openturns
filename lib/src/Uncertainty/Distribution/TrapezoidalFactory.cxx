@@ -117,7 +117,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
   startingPoint[3] = max + std::abs(max) / (2.0 + size);// d
 
-  MaximumLikelihoodFactory factory(*this);
+  MaximumLikelihoodFactory factory(buildAsTrapezoidal());
 
   // override starting point
   Cobyla solver;

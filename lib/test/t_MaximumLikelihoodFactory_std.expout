@@ -1,0 +1,10 @@
+Distribution          =class=Uniform name=Uniform dimension=1 a=1 b=2.5
+Estimated distribution=class=Uniform name=Uniform dimension=1 a=1.00014 b=2.50009
+Default distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1
+Distribution from parameters=class=Uniform name=Uniform dimension=1 a=1 b=2.5
+Uniform          =class=Uniform name=Uniform dimension=1 a=1 b=2.5
+Estimated uniform=class=Uniform name=Uniform dimension=1 a=1.00014 b=2.50009
+Default uniform=class=Uniform name=Uniform dimension=1 a=-1 b=1
+Uniform from parameters=class=Uniform name=Uniform dimension=1 a=1 b=2.5
+Estimated distribution=class=Uniform name=Uniform dimension=1 a=-2.22045e-15 b=2.22045e-15
+Estimated distribution=class=Uniform name=Uniform dimension=1 a=1 b=1

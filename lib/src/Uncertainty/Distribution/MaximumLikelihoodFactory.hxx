@@ -41,8 +41,6 @@ public:
   /** Parameters constructor */
   MaximumLikelihoodFactory(const Distribution & distribution);
 
-  MaximumLikelihoodFactory(const DistributionFactory & factory);
-
   /** Virtual constructor */
   virtual MaximumLikelihoodFactory * clone() const;
 
