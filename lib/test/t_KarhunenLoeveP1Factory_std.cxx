@@ -39,7 +39,18 @@ int main(int argc, char *argv[])
     ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(1, 1.0), lambda));
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
-    Basis KLFunctions(factory.build(AbsoluteExponential(1, 1.0), lambda));
+    AbsoluteExponential cov1D(1, 1.0);
+    Basis KLFunctions(factory.build(cov1D, lambda));
+    fullprint << "KL functions=" << KLFunctions << std::endl;
+    fullprint << "KL eigenvalues=" << lambda << std::endl;
+    CorrelationMatrix R(2);
+    R(0, 1) = 0.5;
+    NumericalPoint scale(1, 1.0);
+    NumericalPoint amplitude(2);
+    amplitude[0] = 1.0;
+    amplitude[1] = 2.0;
+    ExponentialModel cov2D(1, amplitude, scale, R);
+    KLFunctions = factory.build(cov2D, lambda);
     fullprint << "KL functions=" << KLFunctions << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
   }

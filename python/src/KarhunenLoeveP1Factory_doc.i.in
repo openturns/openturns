@@ -14,17 +14,17 @@ The Karhunen-Loeve decomposition using P1 approximation allows to approximate th
 
 .. math::
 
-    \int_{\cD} C(\vect{s},\vect{t})\phi_n(\vect{s})\, d\vect{s}=\lambda_n\phi_n(\vect{t})
+    \int_{\cD} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\, d\vect{s}=\lambda_n\vect{\phi}_n(\vect{t})
 
 
-with :math:`C: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\phi_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\phi_n(\vect{s})\|^2\,d\vect{s}=1`.
+with :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\vect{\phi}_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\vect{\phi}_n(\vect{s})\|^2\,d\vect{s}=1`.
 
-The Karhunen-Loeve P1 approximation consists in replacing the covariance model :math:`C` by its P1 approximation :math:`\hat{C}` on a mesh :math:`\cD_N` which approximates the domain :math:`\cD`:
+The Karhunen-Loeve P1 approximation consists in replacing the covariance model :math:`\mat{C}` by its P1 approximation :math:`\hat{\mat{C}}` on a mesh :math:`\cD_N` which approximates the domain :math:`\cD`:
 
 .. math::
-    \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{C}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}C(\vect{\xi}_i,\vect{\xi}_j)\vect{\theta}_i(\vect{s})\Tr{\vect{\theta}}_j(\vect{t})
+    \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{\mat{C}}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}\mat{C}(\vect{\xi}_i,\vect{\xi}_j)\theta_i(\vect{s})\theta_j(\vect{t})
 
-Where :math:`\theta_n: \cD_N \mapsto \Rset^d` are the basis functions of the P1 finite element space associated to :math:`\cD_N`, see :class:`~openturns.P1LagrangeEvaluationImplementation`.
+Where :math:`\theta_n: \cD_N \mapsto \Rset` are the basis functions of the P1 finite element space associated to :math:`\cD_N`, see :class:`~openturns.P1LagrangeEvaluationImplementation`.
 
 Examples
 --------
@@ -41,10 +41,10 @@ Create a Karhunen-Loeve P1 factory:
 
 Parameters
 ----------
-C : :class:`~openturns.CovarianceModel`, :math:`C: \cD\times\cD \mapsto \cS^+_d(\Rset)`
+C : :class:`~openturns.CovarianceModel`, :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)`
     The covariance model.
 ev : :class:`~openturns.NumericalPoint`
-    The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n\geq\mathrm{threshold}\,\lambda_0`
+    The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n/\lambda_0\geq\mathrm{threshold}`
 
 Returns
 -------
@@ -67,7 +67,7 @@ Examples
 
 Parameters
 ----------
-C : :class:`~openturns.CovarianceModel`, :math:`C: \cD\times\cD \mapsto \cS^+_d(\Rset)`
+C : :class:`~openturns.CovarianceModel`, :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)`
     The covariance model.
 ev : :class:`~openturns.NumericalPoint`
     The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n\geq\mathrm{threshold}\,\lambda_0`
