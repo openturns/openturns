@@ -72,6 +72,7 @@ realization : :class:`~openturns.Field`
 Examples
 --------
 >>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
 >>> # Kriging use case
 >>> # Learning data
 >>> levels = [8., 5.]
