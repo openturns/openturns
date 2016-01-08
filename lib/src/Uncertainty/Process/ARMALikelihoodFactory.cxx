@@ -416,7 +416,8 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
 {
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla == NULL) throw InternalException(HERE);
-  cobyla->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg")));
+
+  cobyla->setRhoBeg(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun"));

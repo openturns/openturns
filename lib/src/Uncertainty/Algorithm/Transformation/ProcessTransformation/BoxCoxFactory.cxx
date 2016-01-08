@@ -215,8 +215,8 @@ BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
   , solver_(new Cobyla())
 {
-  CobylaSpecificParameters parameters(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoBeg"));
-  static_cast<Cobyla*>(solver_.getImplementation().get())->setSpecificParameters(parameters);
+  const NumericalScalar rhoBeg = ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoBeg");
+  dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
 }
