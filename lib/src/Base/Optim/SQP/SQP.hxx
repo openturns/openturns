@@ -23,7 +23,6 @@
 #define OPENTURNS_SQP_HXX
 
 #include "OTprivate.hxx"
-#include "SQPSpecificParameters.hxx"
 #include "OptimizationSolverImplementation.hxx"
 #include "NumericalPoint.hxx"
 
@@ -57,9 +56,6 @@ public:
       const NumericalScalar omega,
       const NumericalScalar smooth);
 
-  SQP(const SQPSpecificParameters & specificParameters,
-      const OptimizationProblem & problem);
-
   /** Virtual constructor */
   virtual SQP * clone() const;
 
@@ -77,12 +73,6 @@ public:
   /** Smooth accessor */
   NumericalScalar getSmooth() const;
   void setSmooth(const NumericalScalar tau);
-
-  /** Specific parameters accessor */
-  SQPSpecificParameters getSpecificParameters() const;
-
-  /** Specific parameters accessor */
-  void setSpecificParameters(const SQPSpecificParameters & specificParameters);
 
   /** Level function accessor */
   NumericalMathFunction getLevelFunction() const;

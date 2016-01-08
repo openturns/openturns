@@ -52,20 +52,6 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
   initialize();
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fonction)
- *         and a level value
- */
-AbdoRackwitz::AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-                           const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
-  , currentPoint_(getStartingPoint().getDimension())
-  , currentDirection_(getStartingPoint().getDimension())
-  , currentGradient_(getStartingPoint().getDimension())
-{
-  initialize();
-  setSpecificParameters(specificParameters);
-}
 
 AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
@@ -248,22 +234,6 @@ NumericalScalar AbdoRackwitz::getSmooth() const
 void AbdoRackwitz::setSmooth(const NumericalScalar smooth)
 {
   smooth_ = smooth;
-}
-
-/* Specific parameters accessor */
-AbdoRackwitzSpecificParameters AbdoRackwitz::getSpecificParameters() const
-{
-  Log::Info(OSS() << "AbdoRackwitz::getSpecificParameters is deprecated.");
-  return AbdoRackwitzSpecificParameters(tau_, omega_, smooth_);
-}
-
-/* Specific parameters accessor */
-void AbdoRackwitz::setSpecificParameters(const AbdoRackwitzSpecificParameters & specificParameters)
-{
-  Log::Info(OSS() << "AbdoRackwitz::setSpecificParameters is deprecated.");
-  tau_ = specificParameters.getTau();
-  omega_ = specificParameters.getOmega();
-  smooth_ = specificParameters.getSmooth();
 }
 
 /* Level function accessor */

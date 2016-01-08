@@ -67,18 +67,6 @@ SQP::SQP (const OptimizationProblem & problem,
   initialize();
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fonction)
- *         and a level value
- */
-SQP::SQP(const SQPSpecificParameters & specificParameters,
-         const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
-{
-  initialize();
-  setSpecificParameters(specificParameters);
-}
-
 /* Virtual constructor */
 SQP * SQP::clone() const
 {
@@ -298,22 +286,6 @@ NumericalScalar SQP::getSmooth() const
 void SQP::setSmooth(const NumericalScalar smooth)
 {
   smooth_ = smooth;
-}
-
-/* Specific parameters accessor */
-SQPSpecificParameters SQP::getSpecificParameters() const
-{
-  Log::Info(OSS() << "SQP::getSpecificParameters is deprecated.");
-  return SQPSpecificParameters(tau_, omega_, smooth_);
-}
-
-/* Specific parameters accessor */
-void SQP::setSpecificParameters(const SQPSpecificParameters & specificParameters)
-{
-  Log::Info(OSS() << "SQP::setSpecificParameters is deprecated.");
-  tau_ = specificParameters.getTau();
-  omega_ = specificParameters.getOmega();
-  smooth_ = specificParameters.getSmooth();
 }
 
 /* Level function accessor */

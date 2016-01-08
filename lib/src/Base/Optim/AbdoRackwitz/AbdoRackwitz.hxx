@@ -27,7 +27,6 @@
 #include "OptimizationProblem.hxx"
 #include "NumericalPoint.hxx"
 #include "NumericalMathFunction.hxx"
-#include "AbdoRackwitzSpecificParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -55,9 +54,6 @@ public:
                const NumericalScalar omega,
                const NumericalScalar smooth);
 
-  AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-               const OptimizationProblem & problem);
-
   /** Virtual constructor */
   virtual AbdoRackwitz * clone() const;
 
@@ -75,12 +71,6 @@ public:
   /** Smooth accessor */
   NumericalScalar getSmooth() const;
   void setSmooth(const NumericalScalar tau);
-
-  /** Specific parameters accessor */
-  AbdoRackwitzSpecificParameters getSpecificParameters() const;
-
-  /** Specific parameters accessor */
-  void setSpecificParameters(const AbdoRackwitzSpecificParameters & specificParameters);
 
   /** Level function accessor */
   NumericalMathFunction getLevelFunction() const;

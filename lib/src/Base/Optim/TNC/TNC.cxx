@@ -86,14 +86,6 @@ TNC::TNC (const OptimizationProblem & problem,
   // Nothing to do
 }
 
-/* Constructor with parameters */
-TNC::TNC(const TNCSpecificParameters & parameters,
-         const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
-{
-  setSpecificParameters(parameters);
-}
-
 /* Virtual constructor */
 TNC * TNC::clone() const
 {
@@ -339,27 +331,6 @@ NumericalScalar TNC::getRescale() const
 void TNC::setRescale(const NumericalScalar rescale)
 {
   rescale_ = rescale;
-}
-
-/* Specific parameters accessor */
-TNCSpecificParameters TNC::getSpecificParameters() const
-{
-  Log::Info(OSS() << "TNC::getSpecificParameters is deprecated.");
-  return TNCSpecificParameters(scale_, offset_, maxCGit_, eta_, stepmx_, accuracy_, fmin_, rescale_);
-}
-
-/* Specific parameters accessor */
-void TNC::setSpecificParameters(const TNCSpecificParameters & specificParameters)
-{
-  Log::Info(OSS() << "TNC::setSpecificParameters is deprecated.");
-  scale_ = specificParameters.getScale();
-  offset_ = specificParameters.getOffset();
-  maxCGit_ = specificParameters.getMaxCGit();
-  eta_ = specificParameters.getEta();
-  stepmx_ = specificParameters.getStepmx();
-  accuracy_ = specificParameters.getAccuracy();
-  fmin_ = specificParameters.getFmin();
-  rescale_ = specificParameters.getRescale();
 }
 
 /* String converter */

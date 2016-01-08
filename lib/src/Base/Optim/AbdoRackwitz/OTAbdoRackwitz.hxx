@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_OTABDORACKWITZ_HXX
 #define OPENTURNS_OTABDORACKWITZ_HXX
 
-#include "AbdoRackwitzSpecificParameters.hxx"
 #include "AbdoRackwitz.hxx"
 
 #endif /* OPENTURNS_OTABDORACKWITZ_HXX */
