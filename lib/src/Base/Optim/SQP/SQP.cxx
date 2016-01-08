@@ -95,8 +95,8 @@ void SQP::initialize()
 NumericalScalar SQP::computeLineSearch()
 {
   /* Local copy of the level function and the level value */
-  const NumericalMathFunction levelFunction(getLevelFunction());
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
@@ -148,9 +148,9 @@ void SQP::run()
 
 
   /* Get a local copy of the level function */
-  const NumericalMathFunction levelFunction(getLevelFunction());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
 
   //Initialize the hessian
   currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);

@@ -90,8 +90,8 @@ void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 NumericalScalar AbdoRackwitz::computeLineSearch()
 {
   /* Logal copy of the level function and the level value */
-  const NumericalMathFunction levelFunction(getLevelFunction());
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
@@ -131,9 +131,9 @@ void AbdoRackwitz::run()
 
 
   /* Get a local copy of the level function */
-  const NumericalMathFunction levelFunction(getLevelFunction());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
   Bool convergence(false);
