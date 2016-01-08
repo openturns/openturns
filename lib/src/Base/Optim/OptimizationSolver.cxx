@@ -105,19 +105,6 @@ void OptimizationSolver::setMaximumIterationNumber(const UnsignedInteger maximum
   getImplementation()->setMaximumIterationNumber(maximumIterationNumber);
 }
 
-/* Maximum iterations number accessor */
-UnsignedInteger OptimizationSolver::getMaximumIterationsNumber() const
-{
-  return getImplementation()->getMaximumIterationsNumber();
-}
-
-/* Maximum iterations number accessor */
-void OptimizationSolver::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
-{
-  copyOnWrite();
-  getImplementation()->setMaximumIterationsNumber(maximumIterationsNumber);
-}
-
 /* Maximum absolute error accessor */
 NumericalScalar OptimizationSolver::getMaximumAbsoluteError() const
 {

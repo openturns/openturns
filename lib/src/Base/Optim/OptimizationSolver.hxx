@@ -74,12 +74,6 @@ public:
   UnsignedInteger getMaximumIterationNumber() const;
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
 
-  /** Maximum iterations number accessor
-   * @deprecated
-   */
-  UnsignedInteger getMaximumIterationsNumber() const;
-  void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
-
   /** Maximum absolute error accessor */
   NumericalScalar getMaximumAbsoluteError() const;
   void setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError);

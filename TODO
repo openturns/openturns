@@ -1,2 +1,1 @@
-Remove deprecated OptimizationSolverImplementation::[sg]etMaximumIterationsNumber methods
 Remove deprecated Distribution::setParametersCollection(NP) method
