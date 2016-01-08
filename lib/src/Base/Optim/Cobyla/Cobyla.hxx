@@ -59,18 +59,6 @@ public:
   NumericalScalar getRhoBeg() const;
   void setRhoBeg(const NumericalScalar rhoBeg);
 
-  /** Level function accessor */
-  NumericalMathFunction getLevelFunction() const;
-
-  /** Level function accessor */
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
-
-  /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-
-  /** Level value accessor */
-  void setLevelValue(const NumericalScalar levelValue);
-
   /** String converter */
   String __repr__() const;
 

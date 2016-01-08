@@ -236,34 +236,6 @@ void AbdoRackwitz::setSmooth(const NumericalScalar smooth)
   smooth_ = smooth;
 }
 
-/* Level function accessor */
-NumericalMathFunction AbdoRackwitz::getLevelFunction() const
-{
-  Log::Info(OSS() << "AbdoRackwitz::getLevelFunction is deprecated.");
-  return getProblem().getLevelFunction();
-}
-
-/* Level function accessor */
-void AbdoRackwitz::setLevelFunction(const NumericalMathFunction & levelFunction)
-{
-  Log::Info(OSS() << "AbdoRackwitz::setLevelFunction is deprecated.");
-  getProblem().setLevelFunction(levelFunction);
-}
-
-/* Level value accessor */
-NumericalScalar AbdoRackwitz::getLevelValue() const
-{
-  Log::Info(OSS() << "AbdoRackwitz::getLevelValue is deprecated.");
-  return getProblem().getLevelValue();
-}
-
-/* Level value accessor */
-void AbdoRackwitz::setLevelValue(const NumericalScalar levelValue)
-{
-  Log::Info(OSS() << "AbdoRackwitz::setLevelValue is deprecated.");
-  getProblem().setLevelValue(levelValue);
-}
-
 /* String converter */
 String AbdoRackwitz::__repr__() const
 {

@@ -355,7 +355,6 @@ int main(int argc, char *argv[])
 
     // Create a SQP algorithm
     SQP sqp;
-    sqp.setLevelValue(3.0);
     sqp.setMaximumIterationNumber(100);
     sqp.setMaximumAbsoluteError(1.0e-10);
     sqp.setMaximumRelativeError(1.0e-10);
