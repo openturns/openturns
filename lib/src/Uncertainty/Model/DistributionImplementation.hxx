@@ -534,8 +534,6 @@ public:
   virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
   virtual void setParametersCollection(const NumericalPointWithDescriptionCollection & parametersCollection);
   virtual void setParametersCollection(const NumericalPointCollection & parametersCollection);
-  /** @deprecated */
-  void setParametersCollection(const NumericalPoint & parameter);
 
   /** Parameters value accessor */
   virtual NumericalPoint getParameter() const;
