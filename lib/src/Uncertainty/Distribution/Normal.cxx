@@ -35,6 +35,7 @@
 #include "NormalCopula.hxx"
 #include "ResourceMap.hxx"
 #include "RandomGenerator.hxx"
+#include "GaussKronrodRule.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -214,20 +215,93 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     for (UnsignedInteger i = 1; i < dimension; ++i) value *= DistFunc::pNormal(u[i]);
     return value;
   }
+  // General multivariate case
+  const NumericalPoint lowerBounds(getRange().getLowerBound());
+  const NumericalPoint upperBounds(getRange().getUpperBound());
+  // Indices of the components to take into account in the computation
+  Indices toKeep(0);
+  NumericalPoint reducedPoint(0);
+  for (UnsignedInteger k = 0; k < dimension; ++ k)
+  {
+    const NumericalScalar xK(point[k]);
+    // Early exit if one component is less than its corresponding range lower bound
+    if (xK <= lowerBounds[k]) return 0.0;
+    // Keep only the indices for which xK is less than its corresponding range upper bound
+    // Marginalize the others
+    if (xK < upperBounds[k])
+    {
+      toKeep.add(k);
+      reducedPoint.add(xK);
+    }
+  } // k
+  // The point has all its components greater than the corresponding range upper bound
+  LOGINFO(OSS() << "In Normal::computeCDF, point=" << point << ", toKeep=" << toKeep << ", dimension=" << dimension << ", reducedPoint=" << reducedPoint);
+  if (toKeep.getSize() == 0) return 1.0;
+  // The point has some components greater than the corresponding range upper bound
+  if (toKeep.getSize() != dimension) return getMarginal(toKeep)->computeCDF(reducedPoint);
   /* General case */
   // For the bidimensional case, use specialized high precision routine
   if (dimension == 2) return DistFunc::pNormal2D(u[0], u[1], R_(0, 1));
   // For the tridimensional case, use specialized high precision routine
   if (dimension == 3) return DistFunc::pNormal3D(u[0], u[1], u[2], R_(0, 1), R_(0, 2), R_(1, 2));
-  // For moderate dimension, use a Gauss-Legendre integration
+  // For moderate dimension, use a Gauss-Kronrod integration. We use a non-adaptive
+  // integration based on Kronrod's nodes only.
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
   {
-    // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
-    const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" ));
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
-    setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return ContinuousDistribution::computeCDF(point);
+    GaussKronrodRule rule;
+    switch (dimension)
+      {
+      case 4:
+	rule = GaussKronrodRule::G15K31;
+	break;
+      case 5:
+	rule = GaussKronrodRule::G11K23;
+	break;
+      case 6:
+	rule = GaussKronrodRule::G7K15;
+	break;
+      default:
+	LOGWARN(OSS() << "The dimension=" << dimension << " of the Normal distribution is large for Gauss quadrature! Expect a high computational cost and a reduced accuracy for CDF evaluation.");
+	rule = GaussKronrodRule::G7K15;
+	break;
+      }
+    NumericalPoint kronrodWeights(1, rule.getZeroKronrodWeight());
+    kronrodWeights.add(rule.getOtherKronrodWeights());
+    kronrodWeights.add(rule.getOtherKronrodWeights());
+    NumericalPoint kronrodNodes(1, 0.0);
+    kronrodNodes.add(rule.getOtherKronrodNodes());
+    kronrodNodes.add(rule.getOtherKronrodNodes() * (-1.0));
+    // Perform the integration
+    const UnsignedInteger marginalNodesNumber(kronrodNodes.getDimension());
+    const UnsignedInteger size(static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, static_cast<int>(dimension)))));
+    Indices indices(dimension, 0);
+    NumericalSample allNodes(size, dimension);
+    NumericalPoint allWeights(size);
+    for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
+      {
+	NumericalPoint node(dimension);
+	NumericalScalar weight(1.0);
+	for (UnsignedInteger j = 0; j < dimension; ++j)
+	  {
+	    const UnsignedInteger indiceJ(indices[j]);
+	    const NumericalScalar delta(0.5 * (reducedPoint[j] - lowerBounds[j]));
+	    node[j] = lowerBounds[j] + delta * (1.0 + kronrodNodes[indiceJ]);
+	    weight *= delta * kronrodWeights[indiceJ];
+	  }
+	allNodes[linearIndex] = node;
+	allWeights[linearIndex] = weight;
+	/* Update the indices */
+	++indices[0];
+	/* Propagate the remainders */
+	for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
+	/* Correction of the indices. The last index cannot overflow. */
+	for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
+      } // Loop over the n-D nodes
+    // Parallel evalusation of the PDF
+    const NumericalSample allPDF(computePDF(allNodes));
+    // Some black magic to use BLAS on the internal representation of samples
+    const NumericalScalar probability(dot(allWeights, allPDF.getImplementation()->getData()));
+    return probability;
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
