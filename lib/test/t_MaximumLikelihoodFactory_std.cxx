@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class UniformFactory for standard methods
+ *  @brief The test file of class MaximumLikelihoodFactory for standard methods
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    Uniform distribution(1., 2.5);
+    Uniform distribution(1.0, 2.5);
     UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     UniformFactory factory;

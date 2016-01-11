@@ -66,7 +66,7 @@ DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const NumericalS
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSample & sample) const
 {
   const UnsignedInteger dimension = build()->getParameterDimension();
-  MaximumLikelihoodFactory factory(*this);
+  MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
   // override starting point
   OptimizationSolver solver(factory.getOptimizationSolver());

@@ -526,6 +526,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "LogNormalFactory-ResidualPrecision", 1.0e-12 );
   setAsUnsignedInteger( "LogNormalFactory-MaximumIteration", 50 );
 
+  // MaximumLikelihoodFactory parameters //
+  setAsNumericalScalar( "MaximumLikelihoodFactory-GradientStep", 1.0e-5 );
+
   // Meixner parameters //
   setAsUnsignedInteger( "MeixnerDistribution-CDFIntegrationNodesNumber", 32 );
   setAsUnsignedInteger( "MeixnerDistribution-CDFDiscretization", 10000 );

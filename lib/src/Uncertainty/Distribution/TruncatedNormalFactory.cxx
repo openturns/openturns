@@ -92,7 +92,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
 
   const NumericalScalar oneEps = 1.0 + 1.0 / size;
 
-  MaximumLikelihoodFactory factory(*this);
+  MaximumLikelihoodFactory factory(buildAsTruncatedNormal());
 
   // bounds are fixed
   NumericalPoint knownParameterValues(2, oneEps);
