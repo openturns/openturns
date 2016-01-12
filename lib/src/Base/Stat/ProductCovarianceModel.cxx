@@ -193,14 +193,12 @@ NumericalPoint ProductCovarianceModel::getParameter() const
 
 Description ProductCovarianceModel::getParameterDescription() const
 {
-  Description description(0);
-  const UnsignedInteger size(collection_.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Description atomDescription(collection_[i].getParameterDescription());
-    for (UnsignedInteger j = 0; j < atomDescription.getSize(); ++j)
-      description.add(OSS() << "model_" << i << "_" << atomDescription[j]);
-  }
+  const UnsignedInteger size(spatialDimension_ + 1);
+  Description description(size);
+  for (UnsignedInteger i = 0; i < size - 1; ++i)
+      description[i] = OSS() << "scale_" << i;
+  // Last element is amplitude
+  description[size-1] = "amplitude";
   return description;
 }
 
