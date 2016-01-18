@@ -245,6 +245,7 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
   const UnsignedInteger size(data_.getSize());
   levels_ = NumericalPoint(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedInteger>(size * (i + 0.5) / number)][0];
+  levels_.erase(std::unique(levels_.begin(), levels_.end()), levels_.end());
 }
 
 /* Build default labels by taking the level values */
