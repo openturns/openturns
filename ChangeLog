@@ -65,6 +65,7 @@
  * #804 (no IntervalMesher documentation content)
  * #805 (Python segfault in computeSilvermanBandwidth)
  * #808 (Index check of SymmetricTensor fails when embedded within a PythonFunction)
+ * #812 (Sphinx documentation build error)
 
 == 1.6 release (2015-08-14) == #release-1.6
 
