@@ -1,3 +1,10 @@
+openturns (1.7-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream release.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 27 Jan 2016 10:14:47 +0100
+
 openturns (1.7~rc1-1) experimental; urgency=low
 
   [ Julien Schueller ]
