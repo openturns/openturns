@@ -105,22 +105,16 @@ Install the package::
 
 Conda
 -----
-Install Anaconda cloud support if needed::
-
-    conda install anaconda-client
-
-Configure openturns Anaconda cloud repository::
-
-    conda config --add channels https://conda.anaconda.org/openturns
+This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
 
 Install the package::
 
-    conda install openturns
+    conda install -c https://conda.anaconda.org/openturns openturns
 
 
 Archlinux/Parabola
 ------------------
-Install from `AUR <https://aur.archlinux.org/packages/>`_ repository::
+Install from `AUR <https://aur.archlinux.org/packages/openturns/>`_ repository::
 
     yaourt -S openturns
 
