@@ -25,6 +25,13 @@ log characteristic function=(-2.36595,1.5)
 quantile=class=NumericalPoint name=Unnamed dimension=3 values=[6.05991,7.07458,4.66827]
 quantile (ref)=class=NumericalPoint name=Unnamed dimension=3 values=[6.05991,7.07458,4.66827]
 cdf(quantile)=0.95
+cond. cdf=0.615836
+cond. cdf (vect)=class=NumericalPoint name=Unnamed dimension=3 values=[0.615836,0.657634,0.707868]
+cond. pdf=0.123311
+cond. pdf (vect)=class=NumericalPoint name=Unnamed dimension=3 values=[0.123311,0.118288,0.110573]
+cond. quantile=-3.77006
+cond. quantile (vect)=class=NumericalPoint name=Unnamed dimension=3 values=[-3.77006,-1.28752,2.12927]
+cond. cdf(cond. quantile)=class=NumericalPoint name=Unnamed dimension=3 values=[0.1,0.3,0.7]
 mean=class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2]
 mean (ref)=class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,0.666667,0.666667,0.666667,9.66667,0.666667,0.666667,0.666667,1.66667]
