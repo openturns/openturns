@@ -126,15 +126,15 @@ OT_Distribution_computeComplementaryCDF_doc
 
 Parameters
 ----------
-Xn : float
+Xn : float, sequence of float
     Conditional CDF input (last component).
-Xcond : sequence of float with dimension :math:`n-1`
+Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
     Conditionning values for the other components.
 
 Returns
 -------
-F : float
-    Conditional CDF value at input `Xn`, `Xcond`.
+F : float, sequence of float
+    Conditional CDF value(s) at input `Xn`, `Xcond`.
 
 Notes
 -----
@@ -185,15 +185,15 @@ Conditional PDF of the last component with respect to the other fixed components
 
 Parameters
 ----------
-Xn : float
+Xn : float, sequence of float
     Conditional PDF input (last component).
-Xcond : sequence of float with dimension :math:`n-1`
+Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
     Conditionning values for the other components.
 
 Returns
 -------
-f : float
-    Conditional PDF value at input `Xn`, `Xcond`.
+F : float, sequence of float
+    Conditional PDF value(s) at input `Xn`, `Xcond`.
 
 See Also
 --------
@@ -211,9 +211,9 @@ Conditional quantile with respect to the other fixed components.
 
 Parameters
 ----------
-p : float, :math:`0 < p < 1`
+p : float, sequence of float, :math:`0 < p < 1`
     Conditional quantile function input.
-Xcond : sequence of float with dimension :math:`n-1`
+Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
     Conditionning values for the other components.
 
 Returns

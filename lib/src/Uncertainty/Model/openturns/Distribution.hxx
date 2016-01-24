@@ -326,14 +326,20 @@ public:
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
       const NumericalPoint & y) const;
+  virtual NumericalPoint computeConditionalPDF(const NumericalPoint & x,
+      const NumericalSample & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
       const NumericalPoint & y) const;
+  virtual NumericalPoint computeConditionalCDF(const NumericalPoint & x,
+      const NumericalSample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
       const NumericalPoint & y) const;
+  virtual NumericalPoint computeConditionalQuantile(const NumericalPoint & q,
+      const NumericalSample & y) const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;

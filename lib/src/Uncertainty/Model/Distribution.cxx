@@ -711,14 +711,29 @@ NumericalScalar Distribution::computeConditionalPDF(const NumericalScalar x, con
   return getImplementation()->computeConditionalPDF(x, y);
 }
 
+NumericalPoint Distribution::computeConditionalPDF(const NumericalPoint & x, const NumericalSample & y) const
+{
+  return getImplementation()->computeConditionalPDF(x, y);
+}
+
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar Distribution::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
   return getImplementation()->computeConditionalCDF(x, y);
 }
 
+NumericalPoint Distribution::computeConditionalCDF(const NumericalPoint & x, const NumericalSample & y) const
+{
+  return getImplementation()->computeConditionalCDF(x, y);
+}
+
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar Distribution::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+{
+  return getImplementation()->computeConditionalQuantile(q, y);
+}
+
+NumericalPoint Distribution::computeConditionalQuantile(const NumericalPoint & q, const NumericalSample & y) const
 {
   return getImplementation()->computeConditionalQuantile(q, y);
 }

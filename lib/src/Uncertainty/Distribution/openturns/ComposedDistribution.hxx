@@ -118,9 +118,11 @@ public:
                                  const Bool tail = false) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalPDF;
   NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalCDF;
   NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
 
   /** Get the standard deviation of the distribution */
