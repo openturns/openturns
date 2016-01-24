@@ -32,7 +32,7 @@ class PythonDistribution(object):
         return self.__dim
 
     def computeCDF(self, X):
-        raise RuntimeError('You must define a method computePDF(x) -> cdf, where cdf is a float')
+        raise RuntimeError('You must define a method computeCDF(x) -> cdf, where cdf is a float')
 
 
 class SciPyDistribution(PythonDistribution):
