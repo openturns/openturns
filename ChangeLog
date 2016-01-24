@@ -35,9 +35,10 @@
 === Python module ===
 
 === Miscellaneous ===
- * Improved the computeCDF() method of Normal 
- * Add HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals 
+ * Improved the computeCDF() method of Normal
+ * Add HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals
  * Add two samples Kolmogorov test
+ * Improved the speed of many algorithms based on method binding
 
 === Bug fixes ===
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)

@@ -55,7 +55,6 @@
 #include "openturns/SklarCopula.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PlatformInfo.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Staircase.hxx"
@@ -69,6 +68,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/TriangularMatrix.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -1602,10 +1602,10 @@ NumericalScalar DistributionImplementation::computeConditionalCDF(const Numerica
   const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
   if (x >= xMax) return 1.0;
   // Numerical integration with respect to x
-  const ConditionalPDFWrapper wrapper(y, conditionedDistribution);
-  const NumericalMathFunction f(bindMethod<ConditionalPDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &ConditionalPDFWrapper::computeConditionalPDF, 1, 1));
+  if (p_conditionalPDFWrapper_.isNull()) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
+  p_conditionalPDFWrapper_->setParameter(y);
   GaussKronrod algo;
-  const NumericalPoint value(algo.integrate(f, Interval(xMin, x)));
+  const NumericalPoint value(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, x)));
   return std::min(1.0, std::max(0.0, value[0] / pdfConditioning));
 }
 
@@ -1635,6 +1635,8 @@ NumericalPoint DistributionImplementation::computeConditionalCDF(const Numerical
   const NumericalScalar xMin(conditionedDistribution->getRange().getLowerBound()[conditioningDimension]);
   const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
   NumericalPoint result(size);
+  if (p_conditionalPDFWrapper_.isNull()) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
+  GaussKronrod algo;
   for (UnsignedInteger i = 0; i < size; ++i)
     if (pdfConditioning[i][0] > 0.0)
     {
@@ -1642,10 +1644,8 @@ NumericalPoint DistributionImplementation::computeConditionalCDF(const Numerical
       else if (x[i] > xMin)
       {
         // Numerical integration with respect to x
-        const ConditionalPDFWrapper wrapper(y[i], conditionedDistribution);
-        const NumericalMathFunction f(bindMethod<ConditionalPDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &ConditionalPDFWrapper::computeConditionalPDF, 1, 1));
-        GaussKronrod algo;
-        const NumericalPoint value(algo.integrate(f, Interval(xMin, x[i])));
+	p_conditionalPDFWrapper_->setParameter(y[i]);
+	const NumericalPoint value(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, x[i])));
         result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning[i][0]));
       } // xMin < x < xMax
     } // pdfConditioning[i][0] > 0
@@ -1677,12 +1677,12 @@ NumericalPoint DistributionImplementation::computeConditionalQuantile(const Nume
   const NumericalScalar xMin(range_.getLowerBound()[conditioningDimension]);
   const NumericalScalar xMax(range_.getUpperBound()[conditioningDimension]);
   NumericalPoint result(size);
+  if (p_conditionalCDFWrapper_.isNull()) p_conditionalCDFWrapper_ = new ConditionalCDFWrapper(this);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const ConditionalCDFWrapper wrapper(y[i], this);
-    const NumericalMathFunction f(bindMethod<ConditionalCDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &ConditionalCDFWrapper::computeConditionalCDF, 1, 1));
+    p_conditionalCDFWrapper_->setParameter(y[i]);
     Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-    result[i] = solver.solve(f, q[i], xMin, xMax, 0.0, 1.0);
+    result[i] = solver.solve(p_conditionalCDFWrapper_, q[i], xMin, xMax, 0.0, 1.0);
   }
   return result;
 }
@@ -1903,7 +1903,7 @@ NumericalPoint DistributionImplementation::computeUpperBound() const
 /* Compute the mean of the distribution */
 void DistributionImplementation::computeMean() const
 {
-  mean_ = computeShiftedMoment(1, NumericalPoint(getDimension(), 0.0));
+  mean_ = getShiftedMoment(1, NumericalPoint(getDimension(), 0.0));
   isAlreadyComputedMean_ = true;
 }
 
@@ -1947,7 +1947,7 @@ NumericalPoint DistributionImplementation::getKurtosis() const
 NumericalPoint DistributionImplementation::getMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(dimension_, 1.0);
-  return computeShiftedMoment(n, NumericalPoint(dimension_, 0.0));
+  return getShiftedMoment(n, NumericalPoint(dimension_, 0.0));
 }
 
 /* Get the centered moments of the distribution */
@@ -1955,7 +1955,7 @@ NumericalPoint DistributionImplementation::getCenteredMoment(const UnsignedInteg
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: the centered moments of order 0 are undefined.";
   if (n == 1) return NumericalPoint(dimension_, 0.0);
-  return computeShiftedMoment(n, getMean());
+  return getShiftedMoment(n, getMean());
 }
 
 /* Compute the covariance of the distribution */
@@ -1965,28 +1965,6 @@ void DistributionImplementation::computeCovariance() const
   else if (isDiscrete()) computeCovarianceDiscrete();
   else computeCovarianceGeneral();
 }
-
-struct DistributionImplementationCovarianceWrapper
-{
-  DistributionImplementationCovarianceWrapper(const DistributionImplementation::Implementation & distribution,
-      const NumericalScalar muI,
-      const NumericalScalar muJ)
-    : p_distribution_(distribution)
-    , muI_(muI)
-    , muJ_(muJ)
-  {
-    // Nothing to do
-  }
-
-  NumericalPoint kernel(const NumericalPoint & point) const
-  {
-    return NumericalPoint(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
-  }
-
-  const DistributionImplementation::Implementation & p_distribution_;
-  const NumericalScalar muI_;
-  const NumericalScalar muJ_;
-};
 
 void DistributionImplementation::computeCovarianceContinuous() const
 {
@@ -2017,13 +1995,13 @@ void DistributionImplementation::computeCovarianceContinuous() const
         const NumericalScalar muJ(mean_[columnIndex]);
         const Implementation marginalDistribution(getMarginal(indices));
         if (!marginalDistribution->hasIndependentCopula())
-        {
-          // Build the integrand
-          const DistributionImplementationCovarianceWrapper functionWrapper(marginalDistribution, muI, muJ);
-          const NumericalMathFunction function(bindMethod<DistributionImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &DistributionImplementationCovarianceWrapper::kernel, 2, 1));
-          // Compute the covariance element
-          covariance_(rowIndex, columnIndex) = integrator.integrate(function, marginalDistribution->getRange())[0];
-        }
+	  {
+	    // Compute the covariance element
+	    const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
+	    const Interval interval(marginalDistribution->getRange());
+	    const NumericalPoint value(integrator.integrate(kernel, interval));
+	    covariance_(rowIndex, columnIndex) = integrator.integrate(kernel.clone(), interval)[0];
+	  }
       } // loop over column indices
     } // loop over row indices
   } // if !hasIndependentCopula
@@ -2297,8 +2275,8 @@ NumericalPoint DistributionImplementation::getStandardMoment(const UnsignedInteg
 }
 
 
-/* Compute the shifted moments of the distribution */
-NumericalPoint DistributionImplementation::computeShiftedMoment(const UnsignedInteger n,
+/* Get the shifted moments of the distribution */
+NumericalPoint DistributionImplementation::getShiftedMoment(const UnsignedInteger n,
     const NumericalPoint & shift) const
 {
   if (isContinuous()) return computeShiftedMomentContinuous(n, shift);
@@ -2317,8 +2295,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentContinuous(const 
   for(UnsignedInteger component = 0; component < dimension_; ++component)
   {
     const Implementation marginalDistribution(getMarginal(component));
-    const ShiftedMomentWrapper kernel(n, shift[component], marginalDistribution);
-    const NumericalMathFunction integrand(bindMethod<ShiftedMomentWrapper, NumericalPoint, NumericalPoint>(kernel, &ShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
+    const ShiftedMomentWrapper integrand(n, shift[component], marginalDistribution);
     const NumericalScalar a(marginalDistribution->getRange().getLowerBound()[0]);
     const NumericalScalar b(marginalDistribution->getRange().getUpperBound()[0]);
     moment[component] = algo.integrate(integrand, Interval(a, b))[0];
