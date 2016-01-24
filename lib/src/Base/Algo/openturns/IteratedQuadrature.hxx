@@ -24,6 +24,7 @@
 
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -71,6 +72,108 @@ public:
   virtual String __str__(const String & offset = "") const;
 
 private:
+
+  // Class to compute in a recursive way a multidimensional integral
+  class PartialFunctionWrapper: public NumericalMathFunctionImplementation
+  {
+  public:
+    /* Default constructor */
+    PartialFunctionWrapper(const IteratedQuadrature & quadrature,
+			   const NumericalMathFunction & function,
+			   const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds,
+			   const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds)
+      : NumericalMathFunctionImplementation()
+      , quadrature_(quadrature)
+      , function_(function)
+      , lowerBounds_(lowerBounds)
+      , upperBounds_(upperBounds)
+    {
+      // Nothing to do
+    }
+    
+    NumericalPoint operator()(const NumericalPoint & point) const
+    {
+      // Create the arguments of the local integration problem
+      const Indices index(1, 0);
+      const NumericalMathFunction function(function_, index, point);
+      const UnsignedInteger size(lowerBounds_.getSize() - 1);
+      const NumericalScalar a(lowerBounds_[0](point)[0]);
+      const NumericalScalar b(upperBounds_[0](point)[0]);
+      IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
+      IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, point);
+	  upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, point);
+	}
+      const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
+      for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
+	if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
+      return value;
+    }
+
+    NumericalSample operator()(const NumericalSample & sample) const
+    {
+      const UnsignedInteger sampleSize(sample.getSize());
+      const UnsignedInteger inputDimension(function_.getInputDimension());
+      const UnsignedInteger outputDimension(function_.getOutputDimension());
+      const UnsignedInteger size(lowerBounds_.getSize() - 1);
+      IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
+      IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
+      NumericalSample result(sampleSize, outputDimension);
+      const Indices index(1, 0);
+      const NumericalSample sampleA(lowerBounds_[0](sample));
+      const NumericalSample sampleB(upperBounds_[0](sample));
+      for (UnsignedInteger k = 0; k < sampleSize; ++k)
+	{
+	  const NumericalPoint x(sample[k]);
+	  // Create the arguments of the local integration problem
+	  const NumericalMathFunction function(function_, index, x);
+	  const NumericalScalar a(sampleA[k][0]);
+	  const NumericalScalar b(sampleB[k][0]);
+	  for (UnsignedInteger i = 0; i < size; ++i)
+	    {
+	      lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, x);
+	      upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, x);
+	    } // Loop over bound functions
+	  result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
+	  for (UnsignedInteger i = 0; i < outputDimension; ++i)
+	    if (!SpecFunc::IsNormal(result[k][i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+	} // Loop over sample points
+      return result;
+    }
+
+    PartialFunctionWrapper * clone() const
+    {
+      return new PartialFunctionWrapper(*this);
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return function_.getOutputDimension();
+    }
+
+    Description getInputDescription() const
+    {
+      return Description(1, "t");
+    }
+
+    Description getOutputDescription() const
+    {
+      return function_.getOutputDescription();
+    }
+
+  private:
+    const IteratedQuadrature & quadrature_;
+    const NumericalMathFunction & function_;
+    const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds_;
+    const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds_;
+  }; // class PartialFunctionWrapper
 
   /* Underlying integration algorithm */
   IntegrationAlgorithm algorithm_;

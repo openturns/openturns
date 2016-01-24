@@ -26,9 +26,9 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OrderStatisticsMarginalChecker.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

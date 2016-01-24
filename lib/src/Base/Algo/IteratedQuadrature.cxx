@@ -21,9 +21,7 @@
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,49 +55,6 @@ IteratedQuadrature * IteratedQuadrature::clone() const
   return new IteratedQuadrature(*this);
 }
 
-struct IteratedQuadraturePartialFunctionWrapper
-{
-  /* Default constructor */
-  IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
-      const NumericalMathFunction & function,
-      const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds,
-      const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds)
-    : quadrature_(quadrature)
-    , function_(function)
-    , lowerBounds_(lowerBounds)
-    , upperBounds_(upperBounds)
-  {
-    // Nothing to do
-  }
-
-  NumericalPoint evaluate(const NumericalPoint & point) const
-  {
-    const NumericalScalar x(point[0]);
-    // Create the arguments of the local integration problem
-    const Indices index(1, 0);
-    const NumericalMathFunction function(function_, index, NumericalPoint(1, x));
-    const UnsignedInteger size(lowerBounds_.getSize() - 1);
-    const NumericalScalar a(lowerBounds_[0](point)[0]);
-    const NumericalScalar b(upperBounds_[0](point)[0]);
-    IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
-    IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
-    for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, NumericalPoint(1, x));
-      upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, NumericalPoint(1, x));
-    }
-    const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
-    for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
-      if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
-    return value;
-  }
-
-  const IteratedQuadrature & quadrature_;
-  const NumericalMathFunction & function_;
-  const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds_;
-  const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds_;
-};
-
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
  */
 NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & function,
@@ -128,9 +83,8 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
     } // bounds dimensions
   } // check
   if (inputDimension == 1) return algorithm_.integrate(function, Interval(a, b));
-  // Prepare the integrand using a binding of IteratedQuadraturePartialFunctionWrapper::evaluate
-  IteratedQuadraturePartialFunctionWrapper partialFunctionWrapper(*this, function, lowerBounds, upperBounds);
-  NumericalMathFunction partialFunction(bindMethod<IteratedQuadraturePartialFunctionWrapper, NumericalPoint, NumericalPoint>(partialFunctionWrapper, &IteratedQuadraturePartialFunctionWrapper::evaluate, 1, function.getOutputDimension()));
+  // Prepare the integrand using a PartialFunctionWrapper::evaluate
+  const NumericalMathFunction partialFunction(PartialFunctionWrapper(*this, function, lowerBounds, upperBounds).clone());
   return algorithm_.integrate(partialFunction, Interval(a, b));
 }
 

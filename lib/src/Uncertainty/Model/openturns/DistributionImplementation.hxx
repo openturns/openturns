@@ -31,7 +31,7 @@
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
@@ -324,6 +324,10 @@ public:
   /** Get the centered moments of the distribution */
   virtual NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
+  /** Get the shifted moments of the distribution */
+  virtual NumericalPoint getShiftedMoment(const UnsignedInteger n,
+      const NumericalPoint & shift) const;
+
   /** Get the covariance of the distribution */
   virtual CovarianceMatrix getCovariance() const;
 
@@ -606,8 +610,6 @@ protected:
   virtual void computeCovarianceGeneral() const;
 
   /** Compute the shifted moments of the distribution */
-  virtual NumericalPoint computeShiftedMoment(const UnsignedInteger n,
-      const NumericalPoint & shift) const;
   virtual NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
       const NumericalPoint & shift) const;
   virtual NumericalPoint computeShiftedMomentDiscrete(const UnsignedInteger n,
@@ -726,66 +728,206 @@ protected:
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
 
-  // Structure used to compute shifted moments
-  struct ShiftedMomentWrapper
+  class CovarianceWrapper: public NumericalMathFunctionImplementation
   {
-    ShiftedMomentWrapper(const UnsignedInteger n,
-			  const NumericalScalar shift,
-			  const Implementation p_distribution):
-      n_(n),
-      shift_(shift),
-      p_distribution_(p_distribution) {};
-
-    NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
+  public:
+    CovarianceWrapper(const DistributionImplementation::Implementation & p_distribution,
+		      const NumericalScalar muI,
+		      const NumericalScalar muJ)
+      : NumericalMathFunctionImplementation()
+      , p_distribution_(p_distribution)
+      , muI_(muI)
+      , muJ_(muJ)
     {
-      const NumericalScalar power(std::pow(point[0] - shift_, static_cast<NumericalScalar>(n_)));
-      const NumericalScalar pdf(p_distribution_->computePDF(point));
-      LOGINFO(OSS() << "computeShiftedMomentKernel, n=" << n_ << ", shift=" << shift_ << ", point=" << point[0] << ", power=" << power << ", pdf=" << pdf << ", power*pdf=" << power*pdf);
-      return NumericalPoint(1, power * pdf);
-    };
+      // Nothing to do
+    }
     
-    const UnsignedInteger n_;
-    const NumericalScalar shift_;
-    const Implementation p_distribution_;
-  }; // struct ShiftedMomentWrapper
+    CovarianceWrapper * clone() const
+    {
+      return new CovarianceWrapper(*this);
+    }
 
-  // Structure used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
-  struct ConditionalPDFWrapper
+    NumericalPoint operator() (const NumericalPoint & point) const
+    {
+      return NumericalPoint(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
+    }
+    
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      const UnsignedInteger size(sample.getSize());
+      NumericalSample result(size, 1);
+      const NumericalSample pdf(p_distribution_->computePDF(sample));
+      for (UnsignedInteger i = 0; i < size; ++i)
+	result[i][0] = (sample[i][0] - muI_) * (sample[i][1] - muJ_) * pdf[i][0];
+      return result;
+    };
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 2;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return Description::BuildDefault(2, "x");
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "c");
+    }
+
+  private:
+    const DistributionImplementation::Implementation p_distribution_;
+    const NumericalScalar muI_;
+    const NumericalScalar muJ_;
+  };  // class CovarianceWrapper
+  
+  // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
+  class ShiftedMomentWrapper: public NumericalMathFunctionImplementation
   {
-    ConditionalPDFWrapper(const NumericalPoint & y,
-                          const Implementation p_distribution)
-      : y_(y)
+  public:
+    ShiftedMomentWrapper(const UnsignedInteger n,
+			 const NumericalScalar shift,
+			 const DistributionImplementation::Implementation & p_distribution)
+      : NumericalMathFunctionImplementation()
+      , n_(1.0 * n)
+      , shift_(shift)
       , p_distribution_(p_distribution)
     {};
 
-    NumericalPoint computeConditionalPDF(const NumericalPoint & point) const
+    ShiftedMomentWrapper * clone() const
+    {
+      return new ShiftedMomentWrapper(*this);
+    }
+
+    NumericalPoint operator() (const NumericalPoint & point) const
+    {
+      const NumericalScalar power(std::pow(point[0] - shift_, n_));
+      const NumericalScalar pdf(p_distribution_->computePDF(point));
+      return NumericalPoint(1, power * pdf);
+    };
+
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      const UnsignedInteger size(sample.getSize());
+      NumericalSample result(size, 1);
+      const NumericalSample pdf(p_distribution_->computePDF(sample));
+      for (UnsignedInteger i = 0; i < size; ++i)
+	result[i][0] = std::pow(sample[i][0] - shift_, n_) * pdf[i][0];
+      return result;
+    };
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+  private:
+    const NumericalScalar n_;
+    const NumericalScalar shift_;
+    const DistributionImplementation::Implementation & p_distribution_;
+  }; // struct DistributionImplementationCovarianceWrapper
+
+  // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
+  class ConditionalPDFWrapper: public NumericalMathFunctionImplementation
+  {
+  public:
+    ConditionalPDFWrapper(const DistributionImplementation::Implementation p_distribution)
+      : NumericalMathFunctionImplementation()
+      , y_(0.0)
+      , p_distribution_(p_distribution)
+    {};
+
+    ConditionalPDFWrapper * clone() const
+    {
+      return new ConditionalPDFWrapper(*this);
+    }
+
+    NumericalPoint operator() (const NumericalPoint & point) const
     {
       NumericalPoint z(y_);
       z.add(point[0]);
       return NumericalPoint(1, p_distribution_->computePDF(z));
     };
 
-    const NumericalPoint y_;
-    const Implementation p_distribution_;
-  }; // struct ConditionalPDFWrapper
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      const UnsignedInteger size(sample.getSize());
+      NumericalSample z(size, y_);
+      z.stack(sample);
+      return p_distribution_->computePDF(z);
+    };
 
-  // Structure used to wrap the computeConditionalPDF() method for the computation of the conditional quantile
-  struct ConditionalCDFWrapper
+    void setParameter(const NumericalPoint & parameters)
+    {
+      y_ = parameters;
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+  private:
+    NumericalPoint y_;
+    const DistributionImplementation::Implementation p_distribution_;
+  }; // class ConditionalPDFWrapper
+
+  // Class used to wrap the computeConditionalCDF() method for the computation of the conditional quantile
+  class ConditionalCDFWrapper: public NumericalMathFunctionImplementation
   {
-    ConditionalCDFWrapper(const NumericalPoint & y,
-                          const DistributionImplementation * p_distribution)
-      : y_(y)
+  public:
+    ConditionalCDFWrapper(const DistributionImplementation * p_distribution)
+      : NumericalMathFunctionImplementation()
+      , y_(0.0)
       , p_distribution_(p_distribution)
     {};
 
-    NumericalPoint computeConditionalCDF(const NumericalPoint & point) const
+    ConditionalCDFWrapper * clone() const
+    {
+      return new ConditionalCDFWrapper(*this);
+    }
+
+    NumericalPoint operator() (const NumericalPoint & point) const
     {
       return NumericalPoint(1, p_distribution_->computeConditionalCDF(point[0], y_));
     };
 
-    const NumericalPoint y_;
+    void setParameter(const NumericalPoint & parameters)
+    {
+      y_ = parameters;
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+  private:
+    NumericalPoint y_;
     const DistributionImplementation * p_distribution_;
-  }; // struct ConditionalCDFWrapper
+  }; // class ConditionalCDFWrapper
 
 #endif
 
@@ -808,6 +950,12 @@ protected:
   mutable Bool isInitializedCF_;
 
   mutable NumericalPoint pdfGrid_;
+
+  /** Wrapper to compute conditional CDF */
+  mutable Pointer<NumericalMathFunctionImplementation> p_conditionalPDFWrapper_;
+
+  /** Wrapper to compute conditional quantile */
+  mutable Pointer<NumericalMathFunctionImplementation> p_conditionalCDFWrapper_;
 
 }; /* class DistributionImplementation */
 
