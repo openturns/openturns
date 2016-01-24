@@ -212,24 +212,24 @@ public:
   void setUseDefaultHessianImplementation(const Bool hessianFlag);
 
   /** Operator () */
-  NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
 
-  NumericalPoint operator() (const NumericalPoint & inP,
+  virtual NumericalPoint operator() (const NumericalPoint & inP,
                              const NumericalPoint & parameters);
 
-  NumericalSample operator() (const NumericalSample & inS) const;
+  virtual NumericalSample operator() (const NumericalSample & inS) const;
 
-  Field operator() (const Field & inField) const;
+  virtual Field operator() (const Field & inField) const;
 
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
-  Matrix gradient(const NumericalPoint & inP) const;
-  Matrix gradient(const NumericalPoint & inP,
+  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const NumericalPoint & inP,
                   const NumericalPoint & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
-  SymmetricTensor hessian(const NumericalPoint & inP,
+  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const NumericalPoint & inP,
                           const NumericalPoint & parameters);
 
   /** Gradient according to the marginal parameters */
@@ -243,23 +243,23 @@ public:
   virtual void setParameter(const NumericalPoint & parameters);
 
   /** Accessor for parameter dimension */
-  UnsignedInteger getParameterDimension() const;
+  virtual UnsignedInteger getParameterDimension() const;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Description Accessor, i.e. the names of the input and output parameters */
-  void setDescription(const Description & description);
-  Description getDescription() const;
+  virtual void setDescription(const Description & description);
+  virtual Description getDescription() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
-  Description getInputDescription() const;
+  virtual Description getInputDescription() const;
 
   /** Output description Accessor, i.e. the names of the Output parameters */
-  Description getOutputDescription() const;
+  virtual Description getOutputDescription() const;
 
   /** Get the i-th marginal function */
   virtual Implementation getMarginal(const UnsignedInteger i) const;
@@ -268,13 +268,13 @@ public:
   virtual Implementation getMarginal(const Indices & indices) const;
 
   /** Number of calls to the evaluation */
-  UnsignedInteger getEvaluationCallsNumber() const;
+  virtual UnsignedInteger getEvaluationCallsNumber() const;
 
   /** Number of calls to the gradient */
-  UnsignedInteger getGradientCallsNumber() const;
+  virtual UnsignedInteger getGradientCallsNumber() const;
 
   /** Number of calls to the hessian */
-  UnsignedInteger getHessianCallsNumber() const;
+  virtual UnsignedInteger getHessianCallsNumber() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
