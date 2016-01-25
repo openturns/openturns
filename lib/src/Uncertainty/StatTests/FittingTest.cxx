@@ -278,7 +278,7 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar cdfValue(cdfValues[i][0]);
-    value = std::max(value, std::max(fabs(NumericalScalar(i) / size - cdfValue), fabs(cdfValue - NumericalScalar(i + 1) / size)));
+    value = std::max(value, std::max(std::abs(NumericalScalar(i) / size - cdfValue), std::abs(cdfValue - NumericalScalar(i + 1) / size)));
   }
   const NumericalScalar pValue(DistFunc::pKolmogorov(size, value, true));
   TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > 1.0 - level), pValue, 1.0 - level);

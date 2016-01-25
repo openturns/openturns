@@ -81,10 +81,10 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
   const UnsignedInteger maximumFunctionEvaluation(getMaximumFunctionEvaluation());
   NumericalScalar a(infPoint);
   NumericalScalar fA(infValue - value);
-  if (fabs(fA) <= getResidualError()) return a;
+  if (std::abs(fA) <= getResidualError()) return a;
   NumericalScalar b(supPoint);
   NumericalScalar fB(supValue - value);
-  if (fabs(fB) <= getResidualError()) return b;
+  if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Secant method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   // p will store the previous approximation
   NumericalScalar c(a);
@@ -97,8 +97,8 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
   for (;;)
   {
     const NumericalScalar h(0.5 * (b + c));
-    const NumericalScalar error(0.5 * getRelativeError() * fabs(c) + 0.5 * getAbsoluteError());
-    const NumericalScalar delta(fabs(h - b));
+    const NumericalScalar error(0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError());
+    const NumericalScalar delta(std::abs(h - b));
     if (delta < error)
     {
       b = h;
@@ -109,7 +109,7 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
     NumericalScalar fY;
     NumericalScalar g;
     NumericalScalar fG;
-    if (fabs(fB) < fabs(fC))
+    if (std::abs(fB) < std::abs(fC))
     {
       y = s;
       fY = fS;
@@ -128,11 +128,11 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
       fS = fC;
     }
     // If we can do a linear interpolation (secant step)
-    if (fabs(fY - fS) > getResidualError())
+    if (std::abs(fY - fS) > getResidualError())
     {
       NumericalScalar e((s * fY - y * fS) / (fY - fS));
       // Step adjustment to avoid spurious fixed point
-      if (fabs(e - s) < error) e = s + ((g - s) > 0.0 ? (error) : (-error));
+      if (std::abs(e - s) < error) e = s + ((g - s) > 0.0 ? (error) : (-error));
       // If the secant step is not within the current bracketing interval
       if ((e - h) * (s - e) < 0.0) b = h;
       else b = e;

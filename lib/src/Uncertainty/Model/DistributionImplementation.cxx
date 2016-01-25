@@ -2408,7 +2408,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentGeneral(const Uns
         NumericalScalar wj((expHj + iexpHj) * iTwoCoshSinhHj * iTwoCoshSinhHj);
         delta += h * wj * (std::pow(marginalDistribution->computeQuantile(xjm)[0] - shiftComponent, static_cast<int>(n)) + std::pow(marginalDistribution->computeQuantile(xjp)[0] - shiftComponent, static_cast<int>(n)));
       }
-      error = fabs((delta - moment[component]) / (1.0 + fabs(delta)));
+      error = std::abs((delta - moment[component]) / (1.0 + std::abs(delta)));
       moment[component] += delta;
       N *= 2;
     } // End of half-block

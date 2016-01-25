@@ -37,7 +37,7 @@ public:
   inline NumericalScalar operator() (NumericalPoint pt1, NumericalPoint pt2) const
   {
     NumericalPoint difference(pt1 - pt2);
-    return exp(-fabs(difference.norm()) / scaling_);
+    return exp(-std::abs(difference.norm()) / scaling_);
   }
   NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const
   {

@@ -111,7 +111,7 @@ NumericalScalar SpecFunc::SmallCaseBesselI0(const NumericalScalar x)
   NumericalScalar value(1.0);
   NumericalScalar r(1.0);
   UnsignedInteger k(1);
-  while ((fabs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
+  while ((std::abs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
   {
     r *= 0.25 * x2 / (k * k);
     value += r;
@@ -129,7 +129,7 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI0(const NumericalScalar x)
                                   2.4380529699556e+01, 1.1001714026925e+02,
                                   5.5133589612202e+02, 3.0380905109224e+03
                                  };
-  const NumericalScalar ax(fabs(x));
+  const NumericalScalar ax(std::abs(x));
   UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
@@ -149,7 +149,7 @@ NumericalScalar SpecFunc::BesselI0(const NumericalScalar x)
 {
   if (x == 0.0) return 1.0;
   // Small argument
-  if (fabs(x) <= 23.5) return SmallCaseBesselI0(x);
+  if (std::abs(x) <= 23.5) return SmallCaseBesselI0(x);
   // Large argument
   else return exp(LargeCaseLogBesselI0(x));
 }
@@ -158,7 +158,7 @@ NumericalScalar SpecFunc::LogBesselI0(const NumericalScalar x)
 {
   if (x == 0.0) return 0.0;
   // Small argument
-  if (fabs(x) <= 23.5) return log(SmallCaseBesselI0(x));
+  if (std::abs(x) <= 23.5) return log(SmallCaseBesselI0(x));
   // Large argument
   else return LargeCaseLogBesselI0(x);
 }
@@ -170,7 +170,7 @@ NumericalScalar SpecFunc::SmallCaseBesselI1(const NumericalScalar x)
   NumericalScalar value(1.0);
   NumericalScalar r(1.0);
   UnsignedInteger k(1);
-  while ((fabs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
+  while ((std::abs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
   {
     r *= 0.25 * x2 / (k * (k + 1));
     value += r;
@@ -189,7 +189,7 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI1(const NumericalScalar x)
                                    -2.7248827311269e+01, -1.2159789187654e+02,
                                    -6.0384407670507e+02, -3.3022722944809e+03
                                  };
-  const NumericalScalar ax(fabs(x));
+  const NumericalScalar ax(std::abs(x));
   UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
@@ -209,7 +209,7 @@ NumericalScalar SpecFunc::BesselI1(const NumericalScalar x)
 {
   if (x == 0.0) return 0.0;
   // Small argument
-  if (fabs(x) <= 22.0) return SmallCaseBesselI1(x);
+  if (std::abs(x) <= 22.0) return SmallCaseBesselI1(x);
   else
   {
     const NumericalScalar signX(x <= 0.0 ? -1.0 : 1.0);
@@ -222,7 +222,7 @@ NumericalScalar SpecFunc::LogBesselI1(const NumericalScalar x)
 {
   if (x <= 0.0) return -MaxNumericalScalar;
   // Small argument
-  if (fabs(x) <= 22.0) return log(SmallCaseBesselI1(x));
+  if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x));
   else return LargeCaseLogBesselI1(x);
 }
 
@@ -244,7 +244,7 @@ NumericalScalar SpecFunc::LargeCaseDeltaLogBesselI10(const NumericalScalar x)
                                    -2.7248827311269e+01, -1.2159789187654e+02,
                                    -6.0384407670507e+02, -3.3022722944809e+03
                                  };
-  const NumericalScalar ax(fabs(x));
+  const NumericalScalar ax(std::abs(x));
   UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
@@ -265,7 +265,7 @@ NumericalScalar SpecFunc::DeltaLogBesselI10(const NumericalScalar x)
 {
   if (x <= 0.0) return -MaxNumericalScalar;
   // Small argument
-  if (fabs(x) <= 22.0) return log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));
+  if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));
   else return LargeCaseDeltaLogBesselI10(x);
 }
 
@@ -605,7 +605,7 @@ NumericalScalar SpecFunc::LogGamma(const NumericalScalar a)
 
 NumericalScalar SpecFunc::LogGamma1p(const NumericalScalar a)
 {
-  return (fabs(a) < 0.5 ? -a * (0.34229051727072805652 +
+  return (std::abs(a) < 0.5 ? -a * (0.34229051727072805652 +
                                 (0.75305954018877769214 +
                                  (0.25594427350421023219 +
                                   (-0.54867134418632830931 +
@@ -663,7 +663,7 @@ NumericalScalar SpecFunc::DiGamma(const NumericalScalar x)
   if ((x <= 0.0) && (x == round(x))) throw InvalidArgumentException(HERE) << "Error: the argument of the DiGamma function cannot be a non positive integer.";
   // Approximation for small arguments
   // Here, 0.025 is a bound that insure NumericalScalar precision approximation
-  if ( fabs(x) <= 0.025 ) return -1.0 / x - 0.57721566490153286 + (1.6449340668482264 + (-1.2020569031595943 + (1.0823232337111381 + (-1.0369277551433699 + (1.0173430619844491 + (-1.0083492773819228 + (1.0040773561979442 + (-1.0020083928260822 + 1.0009945751278180 * x) * x) * x) * x) * x) * x) * x) * x) * x;
+  if ( std::abs(x) <= 0.025 ) return -1.0 / x - 0.57721566490153286 + (1.6449340668482264 + (-1.2020569031595943 + (1.0823232337111381 + (-1.0369277551433699 + (1.0173430619844491 + (-1.0083492773819228 + (1.0040773561979442 + (-1.0020083928260822 + 1.0009945751278180 * x) * x) * x) * x) * x) * x) * x) * x) * x;
   // If the argument is negative, use the reflexion formula
   if (x < 0.0) return -M_PI / tan(M_PI * x) + DiGamma(1.0 - x);
   // Shift the argument until it reaches the asymptotic expansion region
@@ -708,7 +708,7 @@ NumericalScalar SpecFunc::TriGamma(const NumericalScalar x)
   if ((x <= 0.0) && (x == round(x))) throw InvalidArgumentException(HERE) << "Error: the argument of the TriGamma function cannot be a non positive integer.";
   // Approximation for small arguments
   // Here, 0.02 is a bound that insure NumericalScalar precision approximation
-  if ( fabs(x) <= 0.02 ) return 1.0 / (x * x) + 1.6449340668482264 + (-2.4041138063191886 + (3.2469697011334144 + (-4.1477110205734796 + (5.0867153099222453 + (-6.0500956642915368 + (7.0285414933856097 + (-8.0160671426086576 + (9.0089511761503616 - 10.004941886041195 * x) * x) * x) * x) * x) * x) * x) * x) * x;
+  if ( std::abs(x) <= 0.02 ) return 1.0 / (x * x) + 1.6449340668482264 + (-2.4041138063191886 + (3.2469697011334144 + (-4.1477110205734796 + (5.0867153099222453 + (-6.0500956642915368 + (7.0285414933856097 + (-8.0160671426086576 + (9.0089511761503616 - 10.004941886041195 * x) * x) * x) * x) * x) * x) * x) * x) * x;
   // If the argument is negative, use the reflexion formula
   if (x < 0.0) return pow(M_PI / sin(M_PI * x), 2.0) - TriGamma(1.0 - x);
   // Shift the argument until it reaches the asymptotic expansion region
@@ -753,7 +753,7 @@ NumericalScalar SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
     ++pochhammerQ1;
     ++factorial;
     sum += term;
-    eps = fabs(term / sum);
+    eps = std::abs(term / sum);
     ++k;
   }
   while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
@@ -810,7 +810,7 @@ NumericalScalar SpecFunc::HyperGeom_2_1(const NumericalScalar p1,
     ++pochhammerQ1;
     ++factorial;
     sum += term;
-    eps = fabs(term / sum);
+    eps = std::abs(term / sum);
     ++k;
   }
   while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
@@ -833,7 +833,7 @@ NumericalScalar SpecFunc::HyperGeom_2_2(const NumericalScalar p1,
   NumericalScalar term(0.0);
   NumericalScalar sum(term);
   NumericalScalar eps(0.0);
-  const NumericalScalar logX(log(fabs(x)));
+  const NumericalScalar logX(log(std::abs(x)));
   NumericalScalar signX(x > 0.0 ? 1.0 : -1.0);
   NumericalScalar signTerm(1.0);
   UnsignedInteger k(0);
@@ -847,7 +847,7 @@ NumericalScalar SpecFunc::HyperGeom_2_2(const NumericalScalar p1,
     ++factorial;
     sum += signTerm * exp(term);
     signTerm *= signX;
-    eps = fabs(term / sum);
+    eps = std::abs(term / sum);
     ++k;
   }
   while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));

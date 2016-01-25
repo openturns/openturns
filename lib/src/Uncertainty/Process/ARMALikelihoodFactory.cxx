@@ -439,10 +439,10 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
                                   NumericalScalar epsilon)
 {
   const UnsignedInteger n(matrix.getDimension());
-  NumericalScalar maxSqrtDiag(std::sqrt(fabs(matrix(0, 0))));
+  NumericalScalar maxSqrtDiag(std::sqrt(std::abs(matrix(0, 0))));
   for (UnsignedInteger j = 1; j < n; ++j)
   {
-    maxSqrtDiag = std::max(maxSqrtDiag, std::sqrt(fabs(matrix(j, j))));
+    maxSqrtDiag = std::max(maxSqrtDiag, std::sqrt(std::abs(matrix(j, j))));
   }
 
   // The diagonal elements are too small
@@ -472,7 +472,7 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
         value -= matrix(i, k) * matrix(j, k);
       }
       matrix(i, j) = value;
-      if (fabs(matrix(i, j)) > minJ) minJ = fabs(matrix(i, j));
+      if (std::abs(matrix(i, j)) > minJ) minJ = std::abs(matrix(i, j));
     }
     if (minJ / maxSqrtDiag > 0.0)
     {

@@ -74,10 +74,10 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
   const UnsignedInteger maximumFunctionEvaluation(getMaximumFunctionEvaluation());
   NumericalScalar a(infPoint);
   NumericalScalar fA(infValue - value);
-  if (fabs(fA) <= getResidualError()) return a;
+  if (std::abs(fA) <= getResidualError()) return a;
   NumericalScalar b(supPoint);
   NumericalScalar fB(supValue - value);
-  if (fabs(fB) <= getResidualError()) return b;
+  if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   NumericalScalar c(a);
   NumericalScalar fC(fA);
@@ -88,7 +88,7 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
     const NumericalScalar oldDelta(b - a);
 
     // B will be the best approximation
-    if (fabs(fC) < fabs(fB))
+    if (std::abs(fC) < std::abs(fB))
     {
       a = b;
       b = c;
@@ -98,16 +98,16 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
       fC = fA;
     }
     // Current error on the root
-    const NumericalScalar error(2.0 * getRelativeError() * fabs(b) + 0.5 * getAbsoluteError());
+    const NumericalScalar error(2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError());
 
     // Bisection step
     NumericalScalar newDelta(0.5 * (c - b));
 
     // If the current approximation of the root is good enough, return it
-    if ((fabs(newDelta) <= error) || (fabs(fB) <= getResidualError())) break;
+    if ((std::abs(newDelta) <= error) || (std::abs(fB) <= getResidualError())) break;
 
     // Try an interpolation if the last improvement was large enough
-    if ((fabs(oldDelta) >= error)  && (fabs(fA) > fabs(fB)))
+    if ((std::abs(oldDelta) >= error)  && (std::abs(fA) > std::abs(fB)))
     {
       // The new increment for the root will be p / q with p > 0
       NumericalScalar p;
@@ -135,11 +135,11 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
       else p = -p;
 
       // Check that the increment obtained from the interpolation is not too large and will lead to an approximation well within [b, c]
-      if ((p < (0.75 * cb * q - 0.5 * fabs(error * q))) && (p < 0.5 * fabs(oldDelta * q))) newDelta = p / q;
+      if ((p < (0.75 * cb * q - 0.5 * std::abs(error * q))) && (p < 0.5 * std::abs(oldDelta * q))) newDelta = p / q;
     } // end interpolation
 
     // The increment must be at least with a magnitude equals to error
-    if (fabs(newDelta) < error)
+    if (std::abs(newDelta) < error)
     {
       if (newDelta > 0) newDelta = error;
       else newDelta = -error;

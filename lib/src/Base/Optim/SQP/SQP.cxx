@@ -100,7 +100,7 @@ NumericalScalar SQP::computeLineSearch()
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
-  NumericalScalar currentTheta(0.5 * currentPoint_.normSquare() + currentSigma_ * fabs(currentLevelValue_ - levelValue));
+  NumericalScalar currentTheta(0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue));
   /* Min bound for step */
   const NumericalScalar minStep(getMaximumAbsoluteError() / currentDirection_.norm());
   /* Minimum decrease for the penalized objective function */
@@ -117,7 +117,7 @@ NumericalScalar SQP::computeLineSearch()
     currentStepPoint = currentPoint_ + step * currentDirection_;
     currentStepLevelValue = levelFunction(currentStepPoint)[0];
 
-    currentStepTheta = 0.5 * currentStepPoint.normSquare() + currentSigma_ * fabs(currentStepLevelValue - levelValue);
+    currentStepTheta = 0.5 * currentStepPoint.normSquare() + currentSigma_ * std::abs(currentStepLevelValue - levelValue);
     if (getVerbose()) LOGINFO(OSS() << "line search step=" << step << " currentStepPoint=" << currentStepPoint << " currentStepLevelValue=" << currentStepLevelValue << " currentStepTheta=" << currentStepTheta);
     step *= tau_;
   }
@@ -223,8 +223,8 @@ void SQP::run()
     const NumericalScalar alpha(computeLineSearch());
 
     /* Check if convergence has been achieved */
-    absoluteError = fabs(alpha) * currentDirection_.norm();
-    constraintError = fabs(currentLevelValue_ - levelValue);
+    absoluteError = std::abs(alpha) * currentDirection_.norm();
+    constraintError = std::abs(currentLevelValue_ - levelValue);
     const NumericalScalar pointNorm(currentPoint_.norm());
 
     if (pointNorm > 0.0)

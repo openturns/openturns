@@ -493,7 +493,7 @@ Bool MatrixImplementation::isTriangular(Bool lower) const
   {
     for ( UnsignedInteger j = 1; j < nbColumns_; ++ j )
       for ( UnsignedInteger i = 0; i < j; ++ i )
-        if ( fabs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0. )
+        if ( std::abs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0. )
           return false;
     return true;
   }
@@ -569,7 +569,7 @@ Bool MatrixImplementation::hasUnitRange() const
   for (UnsignedInteger i = 0; i < nbRows_; ++i)
     for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     {
-      if (fabs(this->operator[](convertPosition(i, j))) > 1.0)
+      if (std::abs(this->operator[](convertPosition(i, j))) > 1.0)
       {
         unitRange = false;
         break;
@@ -852,7 +852,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
     else
     {
       sign = (value > 0.0 ? 1.0 : -1.0);
-      logAbsoluteDeterminant = log(fabs(value));
+      logAbsoluteDeterminant = log(std::abs(value));
     }
   } // n <= 2
   else
@@ -871,12 +871,12 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
     for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
     {
       const NumericalScalar pivot(A[i * (ipiv.size() + 1)]);
-      if (fabs(pivot) == 0.0)
+      if (std::abs(pivot) == 0.0)
       {
         logAbsoluteDeterminant = -SpecFunc::MaxNumericalScalar;
         sign = 0.0;
       }
-      if (logAbsoluteDeterminant > -SpecFunc::MaxNumericalScalar) logAbsoluteDeterminant += log(fabs(pivot));
+      if (logAbsoluteDeterminant > -SpecFunc::MaxNumericalScalar) logAbsoluteDeterminant += log(std::abs(pivot));
       if (pivot < 0.0) sign = -sign;
       if (ipiv[i] != int(i + 1)) sign = -sign;
     }

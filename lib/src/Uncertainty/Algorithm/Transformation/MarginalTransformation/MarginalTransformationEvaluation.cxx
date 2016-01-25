@@ -129,7 +129,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
               oss << "(" << xName;
               if (c > 0.0) oss << "+";
               if (c < 0.0) oss << "-";
-              oss << fabs(c) << ")";
+              oss << std::abs(c) << ")";
             } // |c| != 0
             else oss << xName;
           } // b != 1

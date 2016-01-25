@@ -144,15 +144,15 @@ int main(int argc, char *argv[])
         // Post-process the results
         FunctionalChaosRandomVector vector(result);
         NumericalScalar mean(vector.getMean()[0]);
-        fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << fabs(mean - meanTh) << std::endl;
+        fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
         NumericalScalar variance(vector.getCovariance()(0, 0));
-        fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << fabs(variance - covTh) << std::endl;
+        fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
         Indices indices(1);
         for(UnsignedInteger i = 0; i < dimension; ++i)
         {
           indices[0] = i;
           NumericalScalar value(vector.getSobolIndex(i));
-          fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sobol(indices, a) / covTh) << std::endl;
+          fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
         }
         indices = Indices(2);
         UnsignedInteger k(0);
@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
           {
             indices[1] = j;
             NumericalScalar value(vector.getSobolIndex(indices));
-            fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sobol(indices, a) / covTh) << std::endl;
+            fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
             k = k + 1;
           }
         }
@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
         indices[1] = 1;
         indices[2] = 2;
         NumericalScalar value(vector.getSobolIndex(indices));
-        fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sobol(indices, a) / covTh) << std::endl;
+        fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
       }
     }
   }

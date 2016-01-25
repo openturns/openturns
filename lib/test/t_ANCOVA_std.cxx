@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
     for(UnsignedInteger i = 0; i < dimension; ++i)
     {
       NumericalScalar value = indices[i];
-      fullprint << "ANCOVA index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - Si[i][0]) << std::endl;
+      fullprint << "ANCOVA index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Si[i][0]) << std::endl;
       value = uncorrelatedIndices[i];
-      fullprint << "ANCOVA uncorrelated index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - Si[i][1]) << std::endl;
+      fullprint << "ANCOVA uncorrelated index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Si[i][1]) << std::endl;
     }
   }
   catch (TestFailed & ex)

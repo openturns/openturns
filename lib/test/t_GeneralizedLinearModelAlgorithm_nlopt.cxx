@@ -31,7 +31,7 @@ static String printNumericalPoint(const NumericalPoint & point, const UnsignedIn
   NumericalScalar eps(pow(0.1, 1.0 * digits));
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
-    oss << std::scientific << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((fabs(point[i]) < eps) ? fabs(point[i]) : point[i]);
+    oss << std::scientific << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
   }
   oss << "]";
   return oss;

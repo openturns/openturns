@@ -850,7 +850,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQua
     }
     const NumericalScalar delta(fX * (cdfKX - cdfKm1X) / pdfKX);
     x += delta;
-    convergence = std::fabs(delta) < quantileEpsilon_;
+    convergence = std::abs(delta) < quantileEpsilon_;
   }
   while (!convergence && (iteration < maximumIteration) && (a <= x) && (x <= b));
   if (convergence) return x;

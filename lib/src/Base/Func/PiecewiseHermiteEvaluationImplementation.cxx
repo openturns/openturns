@@ -191,9 +191,9 @@ void PiecewiseHermiteEvaluationImplementation::setLocations(const NumericalPoint
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
   const NumericalScalar step(locations_[0] - locations_[0]);
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * fabs(step));
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * std::abs(step));
   isRegular_ = true;
-  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (fabs(locations[i] - locations[0] - i * step) < epsilon);
+  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations[i] - locations[0] - i * step) < epsilon);
   locations_ = locations;
   std::stable_sort(locations_.begin(), locations_.end());
 }
@@ -252,12 +252,12 @@ void PiecewiseHermiteEvaluationImplementation::setLocationsValuesAndDerivatives(
   values_ = NumericalSample(size, outputDimension);
   derivatives_ = NumericalSample(size, outputDimension);
   const NumericalScalar step(data[1][0] - data[0][0]);
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * fabs(step));
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * std::abs(step));
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     locations_[i] = data[i][0];
-    isRegular_ = isRegular_ && (fabs(locations_[i] - locations_[0] - i * step) < epsilon);
+    isRegular_ = isRegular_ && (std::abs(locations_[i] - locations_[0] - i * step) < epsilon);
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
       values_[i][j] = data[i][1 + j];
     for (UnsignedInteger j = 0; j < outputDimension; ++j)

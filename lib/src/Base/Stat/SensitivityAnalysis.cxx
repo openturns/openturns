@@ -215,7 +215,7 @@ Graph SensitivityAnalysis::DrawImportanceFactors(const NumericalPoint & values,
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on empty data.";
   if ((names.getSize() != 0) && (names.getSize() != dimension)) throw InvalidArgumentException(HERE) << "Error: the names size must match the value dimension.";
   NumericalScalar l1Norm(0.0);
-  for (UnsignedInteger i = 0; i < dimension; ++i) l1Norm += fabs(values[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) l1Norm += std::abs(values[i]);
   if (l1Norm == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on null data.";
   NumericalPoint data(dimension);
   /* Normalization */

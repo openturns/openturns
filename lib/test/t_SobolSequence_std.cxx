@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     }
     NumericalScalar probabilityEstimate(1.0 * pointInsideCircle / sampleSize);
     NumericalScalar probability(M_PI / 4.0);
-    NumericalScalar relativeError(fabs(probability - probabilityEstimate) / probability);
+    NumericalScalar relativeError(std::abs(probability - probabilityEstimate) / probability);
     fullprint << "sample size=" << sampleSize << std::endl;
     fullprint << "relative error to Pi=" << relativeError << std::endl;
 

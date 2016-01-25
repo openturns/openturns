@@ -77,7 +77,7 @@ NumericalComplex CauchyModel::computeStandardRepresentative(const NumericalScala
   NumericalComplex value = 1.0;
   for (UnsignedInteger k = 0; k < spatialDimension_; ++k)
   {
-    const NumericalScalar scaledFrequency = 2.0 * M_PI * scale_[k] * fabs(frequency);
+    const NumericalScalar scaledFrequency = 2.0 * M_PI * scale_[k] * std::abs(frequency);
     const NumericalScalar scaledFrequencySquared = scaledFrequency * scaledFrequency;
     value *= (2.0 * scale_[k]) / (1.0 + scaledFrequencySquared);
   }

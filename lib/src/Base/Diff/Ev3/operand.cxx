@@ -338,14 +338,14 @@ void Operand::ConsolidateValue()
 // is operand a zero constant?
 bool Operand::IsZero() const
 {
-  if (GetOpType() == CONST) return (fabs(GetValue()) < Ev3NearZero());
+  if (GetOpType() == CONST) return (std::abs(GetValue()) < Ev3NearZero());
   return false;
 }
 
 // is operand a constant having value v?
 bool Operand::HasValue(const double v) const
 {
-  if (GetOpType() == CONST) return (fabs(v - GetValue()) < Ev3NearZero());
+  if (GetOpType() == CONST) return (std::abs(v - GetValue()) < Ev3NearZero());
   return false;
 }
 

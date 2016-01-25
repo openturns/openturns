@@ -81,7 +81,7 @@ HermitianMatrix UserDefinedSpectralModel::operator() (const NumericalScalar freq
   if (getFrequencyGrid().getN() == 1) return DSPCollection_[0];
   const NumericalScalar frequencyStep(getFrequencyGrid().getStep());
   const UnsignedInteger nFrequency(getFrequencyGrid().getN());
-  const UnsignedInteger index(std::min<UnsignedInteger>( nFrequency - 1, static_cast<UnsignedInteger>( std::max<NumericalScalar>( 0.0, nearbyint( ( fabs(frequency) - frequencyGrid_.getStart() ) / frequencyStep) ) ) ));
+  const UnsignedInteger index(std::min<UnsignedInteger>( nFrequency - 1, static_cast<UnsignedInteger>( std::max<NumericalScalar>( 0.0, nearbyint( ( std::abs(frequency) - frequencyGrid_.getStart() ) / frequencyStep) ) ) ));
   // Use the relation S(-f) = conjugate(S(f))
   return (nonNegative ? DSPCollection_[index] : DSPCollection_[index].conjugate());
 }

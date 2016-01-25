@@ -143,7 +143,7 @@ void Cobyla::run()
     NumericalPoint outPM( evaluationOutputHistory_[i - 1] );
     absoluteError = (inP - inPM).norm();
     relativeError = absoluteError / inP.norm();
-    residualError = fabs(outP[0] - outPM[0]);
+    residualError = std::abs(outP[0] - outPM[0]);
     constraintError =  outP[1];
     result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError );
   }
@@ -218,7 +218,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
   NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
   // cobyla freezes when dealing with MaxNumericalScalar
-  if (fabs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
+  if (std::abs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
   outPoint[0] = result;
 
   UnsignedInteger temp=0;

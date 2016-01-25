@@ -166,8 +166,8 @@ void invincgam(const NumericalScalar a,
     } // (a > 0.12) || (x > 5.0)
     else x += -L + b * r * (L - 1.0);
   }
-  else if (fabs(porq - 0.5) < 1.0e-5) x = a - 1.0 / 3.0 + (8.0 / 405.0 + 184.0 / 25515.0 / a) / a;
-  else if (fabs(a - 1.0) < 1.0e-4) x = (pcase ? -log1p(-p) : -log(q));
+  else if (std::abs(porq - 0.5) < 1.0e-5) x = a - 1.0 / 3.0 + (8.0 / 405.0 + 184.0 / 25515.0 / a) / a;
+  else if (std::abs(a - 1.0) < 1.0e-4) x = (pcase ? -log1p(-p) : -log(q));
   else if (a < 1.0) x = (pcase ? exp((1.0 / a) * (log(porq) + SpecFunc::LogGamma(a + 1.0))) : exp((1.0 / a) * (log1p(-porq) + SpecFunc::LogGamma(a + 1.0))));
   else
   {
@@ -216,7 +216,7 @@ void invincgam(const NumericalScalar a,
       } // a > 0.1
     } // a > 0.05
     x += dx;
-    t = fabs(dx / x);
+    t = std::abs(dx / x);
     ++n;
   } // (t > 1.0e-15) && (n <  15)
   if (n == 15) ierr = -2;
@@ -226,14 +226,14 @@ void invincgam(const NumericalScalar a,
 NumericalScalar exmin1(const NumericalScalar x)
 {
   // computes (exp(x)-1)/x;
-  if (fabs(x) < 3.65e-8) return 1.0 + 0.5 * x;
+  if (std::abs(x) < 3.65e-8) return 1.0 + 0.5 * x;
   return expm1(x) / x;
 } // exmin1
 
 NumericalScalar lnec(const NumericalScalar x)
 {
   // x > -1; lnec: = ln1: = ln(1+x)-x
-  if (fabs(x) < 1.3e-5) return x * x * (-0.5 + x * (1.0 / 3.0 - 0.25 * x));;
+  if (std::abs(x) < 1.3e-5) return x * x * (-0.5 + x * (1.0 / 3.0 - 0.25 * x));;
   return log1p(x) - x;
 } // lnec
 
@@ -351,7 +351,7 @@ NumericalScalar pqasymp(const NumericalScalar a,
   NumericalScalar y(-lnec(mu));
   NumericalScalar eta(y < 0.0 ? 0.0 : sqrt(2.0 * y));
   y *= a;
-  NumericalScalar v(sqrt(fabs(y)));
+  NumericalScalar v(sqrt(std::abs(y)));
   if (mu < 0.0)
   {
     eta = -eta;
@@ -402,7 +402,7 @@ NumericalScalar saeta(const NumericalScalar a,
   NumericalScalar y(eta);
   for (UnsignedInteger m = 1; m < 25; ++m)
   {
-    if (fabs(t / s) <= SpecFunc::NumericalScalarEpsilon) break;
+    if (std::abs(t / s) <= SpecFunc::NumericalScalarEpsilon) break;
     t = bm[m] * y;
     s += t;
     y *= eta;
@@ -422,7 +422,7 @@ NumericalScalar qfraction(const NumericalScalar a,
   NumericalScalar ro(0.0);
   NumericalScalar t(1.0);
   NumericalScalar g(1.0);
-  while (fabs(t / g) >= SpecFunc::NumericalScalarEpsilon)
+  while (std::abs(t / g) >= SpecFunc::NumericalScalarEpsilon)
   {
     p += s;
     q += r;
@@ -452,7 +452,7 @@ NumericalScalar qtaylor(const NumericalScalar a,
   NumericalScalar v(1.0);
   q = a + 1.0;
   r = a + 3.0;
-  while (fabs(t / v) > SpecFunc::NumericalScalarEpsilon)
+  while (std::abs(t / v) > SpecFunc::NumericalScalarEpsilon)
   {
     p += x;
     q += r;
@@ -483,7 +483,7 @@ NumericalScalar ptaylor(const NumericalScalar a,
 
 NumericalScalar eps1(const NumericalScalar eta)
 {
-  if (fabs(eta) < 1.0)
+  if (std::abs(eta) < 1.0)
   {
     NumericalPoint ak(5);
     ak[0] = -3.333333333438e-1;

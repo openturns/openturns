@@ -124,13 +124,13 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
   {
     // We keep at most maximumSize_ elements, the ones that have the largest magnitude and have a magnitude larger or equal to maximumMagnitude * significanceFactor
     // First, find the extrem magnitudes.
-    NumericalScalar largest(fabs(coefficients[1]));
+    NumericalScalar largest(std::abs(coefficients[1]));
     NumericalScalar smallest(largest);
     NumericalScalar secondSmallest(smallest);
     UnsignedInteger rankSmallest(1);
     for (UnsignedInteger i = 2; i < dimension; ++i)
     {
-      const NumericalScalar tmp(fabs(coefficients[i]));
+      const NumericalScalar tmp(std::abs(coefficients[i]));
       if (tmp > largest) largest = tmp;
       if (tmp < smallest)
       {
@@ -173,7 +173,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
       UnsignedInteger currentIndex(0);
       for (UnsignedInteger i = 0; i < dimension; ++i)
       {
-        if (fabs(coefficients[i]) >= largest * significanceFactor_)
+        if (std::abs(coefficients[i]) >= largest * significanceFactor_)
         {
           Psi_k_p_[currentIndex] = Psi_k_p_[i];
           I_p_[currentIndex] = I_p_[i];

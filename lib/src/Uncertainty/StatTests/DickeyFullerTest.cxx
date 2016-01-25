@@ -543,7 +543,7 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoLinearTrendInDriftAndLinearTrend
   // Care: check that the variance is the non biased estimator
   // Student quantile ==> T(n - p - 1) with n: size of sample and p: number of variables
   // p here is 3 (rho, drift and trend)
-  const NumericalScalar studentStatisticNullTrend(fabs(trend_) / sigmaTrend_);
+  const NumericalScalar studentStatisticNullTrend(std::abs(trend_) / sigmaTrend_);
   // Here, T_ = n - 1
   const NumericalScalar complementaryCDFNullTrend(DistFunc::pStudent(T_ - 3, studentStatisticNullTrend, true));
   // True pValue = 1 - F(s) with s the student statistic and F the Student cumulative function
@@ -618,7 +618,7 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoDriftInDriftModel(const Numerica
   }
 
   // Perform the statistical test
-  const NumericalScalar studentStatisticNullDrift = fabs(drift_) / sigmaDrift_;
+  const NumericalScalar studentStatisticNullDrift = std::abs(drift_) / sigmaDrift_;
   // Student quantile ==> T(n - p - 1) with n: size of sample and p: number of variables
   const NumericalScalar complementaryCDFNullDrift = DistFunc::pStudent(T_ - 2, studentStatisticNullDrift);
 
