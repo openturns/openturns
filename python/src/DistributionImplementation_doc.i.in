@@ -781,7 +781,7 @@ n_points : int
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    A graphical representation of the requested margin's CDF.
+    A graphical representation of the CDF of the requested margin.
 
 See Also
 --------
@@ -825,7 +825,7 @@ n_points : int
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    A graphical representation of the requested margin's PDF.
+    A graphical representation of the PDF of the requested margin.
 
 See Also
 --------
@@ -1074,7 +1074,7 @@ OT_Distribution_getCDFEpsilon_doc
 Parameters
 ----------
 k : int
-    The centered moment's order.
+    The order of the centered moment.
 
 Returns
 -------
@@ -1099,6 +1099,39 @@ OT_Distribution_getCenteredMoment_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_getShiftedMoment_doc
+"Accessor to the componentwise shifted moments.
+
+Parameters
+----------
+k : int
+    The order of the shifted moment.
+shift : sequence of float
+    The shift of the moment.
+
+Returns
+-------
+m : :class:`~openturns.NumericalPoint`
+    Componentwise centered moment of order :math:`k`.
+
+Notes
+-----
+The moments are centered with respect to the given shift :\math:`\vect{s}`:
+
+.. math::
+
+    \vect{m}^{(k)}_0 = \Tr{\left(\Expect{\left(X_i - s_i\right)^k},
+                                 \quad i = 1, \ldots, n\right)}
+
+See Also
+--------
+getMoment, getCenteredMoment"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getShiftedMoment
+OT_Distribution_getShiftedMoment_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_getCholesky_doc
 "Accessor to the Cholesky factor of the covariance matrix.
 
@@ -1117,12 +1150,12 @@ OT_Distribution_getCholesky_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getCopula_doc
-"Accessor to the distribution's copula.
+"Accessor to the copula of the distribution.
 
 Returns
 -------
 C : :class:`~openturns.Distribution`
-    Distribution's copula.
+    Copula of the distribution.
 
 See Also
 --------
@@ -1151,7 +1184,7 @@ Sigma : :class:`~openturns.CovarianceMatrix`
 
 Notes
 -----
-The covariance is the second-order standard moment. It is defined as:
+The covariance is the second-order centered moment. It is defined as:
 
 .. math::
 
@@ -1170,7 +1203,7 @@ OT_Distribution_getCovariance_doc
 Returns
 -------
 description : :class:`~openturns.Description`
-    Description of the distribution's components.
+    Description of the components of the distribution.
 
 See Also
 --------
@@ -1182,7 +1215,7 @@ OT_Distribution_getDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getDimension_doc
-"Accessor to the distribution's dimension.
+"Accessor to the dimension of the distribution.
 
 Returns
 -------
@@ -1361,7 +1394,7 @@ k : :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-The kurtosis is the fourth-order standard moment:
+The kurtosis is the fourth-order centered moment standardized by the standard deviation:
 
 .. math::
 
@@ -1427,7 +1460,7 @@ OT_Distribution_getMean_doc
 Parameters
 ----------
 k : int
-    The moment's order.
+    The order of the moment.
 
 Returns
 -------
@@ -1461,7 +1494,7 @@ OT_Distribution_getPDFEpsilon_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getParametersCollection_doc
-"Accessor to the distribution's parameters.
+"Accessor to the parameter of the distribution.
 
 Returns
 -------
@@ -1474,7 +1507,7 @@ OT_Distribution_getParametersCollection_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_setParameter_doc
-"Accessor to the distribution's parameter.
+"Accessor to the parameter of the distribution.
 
 Parameters
 ----------
@@ -1487,7 +1520,7 @@ OT_Distribution_setParameter_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getParameter_doc
-"Accessor to the distribution's parameter.
+"Accessor to the parameter of the distribution.
 
 Returns
 -------
@@ -1500,7 +1533,7 @@ OT_Distribution_getParameter_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getParameterDescription_doc
-"Accessor to the distribution's parameter description.
+"Accessor to the parameter description of the distribution.
 
 Returns
 -------
@@ -1571,7 +1604,7 @@ OT_Distribution_getPositionIndicator_doc
 Returns
 -------
 range : :class:`~openturns.Interval`
-    Distribution's range.
+    Range of the distribution.
 
 Notes
 -----
@@ -1611,7 +1644,7 @@ OT_Distribution_getRealization_doc
 Returns
 -------
 r : float
-    Distribution's roughness.
+    Roughness of the distribution.
 
 Notes
 -----
@@ -1659,7 +1692,7 @@ OT_Distribution_getSample_doc
 Returns
 -------
 shape : :class:`~openturns.CorrelationMatrix`
-    Shape matrix of the distribution's elliptical copula.
+    Shape matrix of the elliptical copula of a distribution.
 
 Notes
 -----
@@ -1684,7 +1717,7 @@ d : :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-The skewness is the third-order standard moment:
+The skewness is the third-order centered moment standardized by the standard deviation:
 
 .. math::
 
@@ -1773,7 +1806,7 @@ OT_Distribution_getStandardDistribution_doc
 Parameters
 ----------
 k : int
-    The standard moment's order.
+    The order of the standard moment.
 
 Returns
 -------
@@ -1782,19 +1815,11 @@ m : :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-Standard moments are centered with respect to the first-order moment and
-normalized with respect to the standard deviation:
-
-.. math::
-
-    \overline{\vect{m}}^{(k)}_0 =
-        \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
-                                     {\sigma_i}\right)^k},
-        \quad i = 1, \ldots, n\right)}
+Standard moments are the raw moments of the standard representative of the parametric family of distributions.
 
 See Also
 --------
-getMean, getStandardDeviation"
+getStandardRepresentative"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getStandardMoment
 OT_Distribution_getStandardMoment_doc
@@ -1811,8 +1836,7 @@ std_repr_dist : :class:`~openturns.Distribution`
 
 Notes
 -----
-The standard representative distribution is the one associated with the
-standard moments."
+The standard representative distribution is defined on a distribution by distribution basis, most of the time by scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (ie zero mean, unit variance) the distributions with unbounded support. It is the member of the family for which orthonormal polynomials will be built using generic algorithms of orthonormalization."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc
@@ -1820,22 +1844,21 @@ OT_Distribution_getStandardRepresentative_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getSupport_doc
-"Accessor to the distribution's support.
+"Accessor to the support of the distribution.
 
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
-    An interval to intersect with the distribution's support.
+    An interval to intersect with the support of the discrete part of the distribution.
 
 Returns
 -------
 support : :class:`~openturns.Interval`
-    The intersection of the distribution's support with the given `interval`.
+    The intersection of the support of the discrete part of the distribution with the given `interval`.
 
 Notes
 -----
-The mathematical support :math:`\supp{\vect{X}}` of the distribution is
-the interval (or collection of intervals) where the PDF is non-zero.
+The mathematical support :math:`\supp{\vect{X}}` of the discrete part of a distribution is the collection of points with nonzero probability.
 
 This is yet implemented for discrete distributions only.
 
@@ -1862,7 +1885,7 @@ OT_Distribution_getProbabilities_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_hasEllipticalCopula_doc
-"Test whether the distribution's copula is elliptical or not.
+"Test whether the copula of the distribution is elliptical or not.
 
 Returns
 -------
@@ -1879,7 +1902,7 @@ OT_Distribution_hasEllipticalCopula_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_hasIndependentCopula_doc
-"Test whether the distribution's copula is independent.
+"Test whether the copula of the distribution is the independent one.
 
 Returns
 -------
@@ -1981,7 +2004,7 @@ OT_Distribution_isIntegral_doc
 Parameters
 ----------
 description : sequence of str
-    Description of the distribution's components."
+    Description of the components of the distribution."
 %enddef
 %feature("docstring") OT::DistributionImplementation::setDescription
 OT_Distribution_setDescription_doc
@@ -1989,7 +2012,7 @@ OT_Distribution_setDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_setParametersCollection_doc
-"Accessor to the distribution's parameters.
+"Accessor to the parameter of the distribution.
 
 Parameters
 ----------
