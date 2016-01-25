@@ -57,8 +57,8 @@ public:
 #endif
 
   /** Parameter constructor */
-  TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
-                   const UnsignedInteger meshDimension = 1);
+  explicit TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
+                            const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual TemporalFunction * clone() const;

@@ -41,11 +41,11 @@ public:
   MarginalDistribution();
 
   /** Default constructor, independent copula is supposed */
-  explicit MarginalDistribution(const Distribution & distribution,
-                                const UnsignedInteger & index);
+  MarginalDistribution(const Distribution & distribution,
+                       const UnsignedInteger & index);
 
-  explicit MarginalDistribution(const Distribution & distribution,
-                                const Indices & indices);
+  MarginalDistribution(const Distribution & distribution,
+                       const Indices & indices);
 
   /** Comparison operator */
   Bool operator ==(const MarginalDistribution & other) const;

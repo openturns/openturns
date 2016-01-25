@@ -47,10 +47,10 @@ public:
 
 
   /** Constructor with parameters */
-  explicit NearestPointChecker(const NumericalMathFunction & levelFunction,
-                               const ComparisonOperator & comparisonOperator,
-                               const NumericalScalar threshold,
-                               const NumericalSample & sample);
+  NearestPointChecker(const NumericalMathFunction & levelFunction,
+                      const ComparisonOperator & comparisonOperator,
+                      const NumericalScalar threshold,
+                      const NumericalSample & sample);
 
 
   /** Virtual constructor */
