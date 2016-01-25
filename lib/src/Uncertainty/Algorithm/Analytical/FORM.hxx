@@ -46,9 +46,9 @@ public:
   FORM();
 
   /** Constructor with parameters */
-  explicit FORM(const OptimizationSolver & nearestPointAlgorithm,
-                const Event & event,
-                const NumericalPoint & physicalStartingPoint);
+  FORM(const OptimizationSolver & nearestPointAlgorithm,
+       const Event & event,
+       const NumericalPoint & physicalStartingPoint);
 
 
   /** Virtual constructor */

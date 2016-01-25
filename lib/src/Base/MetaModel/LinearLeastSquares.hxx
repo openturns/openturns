@@ -44,12 +44,12 @@ public:
 
 
   /** Constructor with parameters */
-  explicit LinearLeastSquares(const NumericalSample & dataIn,
-                              const NumericalMathFunction & inputFunction);
+  LinearLeastSquares(const NumericalSample & dataIn,
+                     const NumericalMathFunction & inputFunction);
 
   /** Constructor with parameters */
-  explicit LinearLeastSquares(const NumericalSample & dataIn,
-                              const NumericalSample & dataOut);
+  LinearLeastSquares(const NumericalSample & dataIn,
+                     const NumericalSample & dataOut);
 
 
   /** Virtual constructor */
