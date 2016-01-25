@@ -1,5 +1,27 @@
 = New Features =
 
+== 1.8 release (in-progress) == #release-1.8
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
+ * Removed AbdoRackwitz|Cobyla|SQP::[gs]etLevelFunction|[gs]etLevelValue
+ * Removed deprecated OptimizationSolver::setMaximumIterationsNumber
+ * Removed deprecated method Distribution::setParametersCollection(NP)
+ * Removed deprecated PersistentFactory string constructor
+
+=== Python module ===
+
+=== Miscellaneous ===
+ * Improved the computeCDF() method of Normal 
+
+=== Bug fixes ===
+
 == 1.7rc1 release (2015-12-14) == #release-1.7rc1
 
 === Library ===
