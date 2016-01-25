@@ -3,7 +3,7 @@
  *  @brief Implement the modified Chebychev algorithm to compute the coefficients of
  *         the 3 terms recurrence relation of an orthonormal polynomial family
  *
- *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
