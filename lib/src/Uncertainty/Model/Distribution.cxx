@@ -308,6 +308,13 @@ NumericalPoint Distribution::getCenteredMoment(const UnsignedInteger n) const
   return getImplementation()->getCenteredMoment(n);
 }
 
+/* Get the shifted moments of the distribution */
+NumericalPoint Distribution::getShiftedMoment(const UnsignedInteger n,
+					      const NumericalPoint & shift) const
+{
+  return getImplementation()->getShiftedMoment(n, shift);
+}
+
 /* Get the covariance of the distribution */
 CovarianceMatrix Distribution::getCovariance() const
 {

@@ -66,6 +66,8 @@ OT_Distribution_drawQuantile_doc
 OT_Distribution_getCDFEpsilon_doc
 %feature("docstring") OT::Distribution::getCenteredMoment
 OT_Distribution_getCenteredMoment_doc
+%feature("docstring") OT::Distribution::getShiftedMoment
+OT_Distribution_getShiftedMoment_doc
 %feature("docstring") OT::Distribution::getCholesky
 OT_Distribution_getCholesky_doc
 %feature("docstring") OT::Distribution::getCopula

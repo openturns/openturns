@@ -236,6 +236,10 @@ public:
   /** Get the centered moments about the mean of the distribution */
   NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
+  /** Get the shifted moments of the distribution */
+  NumericalPoint getShiftedMoment(const UnsignedInteger n,
+				  const NumericalPoint & shift) const;
+
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
   TriangularMatrix getInverseCholesky() const;
 
