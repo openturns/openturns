@@ -70,7 +70,7 @@ KarhunenLoeveP1Factory * KarhunenLoeveP1Factory::clone() const
  * where C is a given covariance model, using P1 approximation
  */
 Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
-				    NumericalPoint & selectedEV) const
+                                    NumericalPoint & selectedEV) const
 {
   const ProcessSample resultAsProcessSample(buildAsProcessSample(covarianceModel, selectedEV));
   Basis result(0);
@@ -79,42 +79,76 @@ Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
   return result;
 }
 
+/* Here we discretize the following Fredholm problem:
+   \int_{\Omega}C(s,t)\phi_n(s)ds=\lambda_n\phi_n(t)
+   using a P1 approximation of C and \phi_n:
+   C(s,t)=\sum_{i,j}C(s_i,s_j)\theta_i(s)\theta_j(t)
+   \phi_n(t)=\sum_k\alpha_k^n\theta_k(t)
+   where s_i,s_j are vertices of the mesh, C(s_i,s_j)\in\cS^+_d(\R), \alpha_k^n\in\R^d
+   leading to:
+   \forall t\in\Omega, \sum_{i,j}C(s_i,s_j)\theta_j(t)\int_{\Omega}\theta_i(s)\sum_k\alpha_k^n\theta_k(s)=\lambda_n\sum_l\alpha_k^l\theta_l(t)
+   For each value of n we get d equations in \alpha^n. We write these equations for t=s_1,...,s_N the N vertices of the mesh:
+   \sum_{i,j}C(s_i,s_j)\theta_j(s_m)\int_{\Omega}\theta_i(s)\sum_k\alpha_k^n\theta_k(s)=\lambda_n\sum_l\alpha_l^n\theta_l(s_m)
+   ie:
+   \sum_i C(s_i,s_m)\int_{\Omega}\theta_i(s)\sum_k\alpha_k^n\theta_k(s)=\lambda_n\alpha_m^n\theta_m(s_m)
+   In a block-matrix form we get:
+   [C(s_1,s_1) ... C(s_1,s_N)][K_11 ... K_1N][\alpha_1]             [\alpha_1]
+   [    ...            ...   ][ ...      ...][   ...  ] = \lambda_n [   ...  ]
+   [C(s_N,s_1) ... C(s_N,s_N)][K_N1 ... K_NN][\alpha_N]             [\alpha_N]
+   Where:
+   K_ij = \int_{\Omega}\theta_i(s)\theta_j(s)ds I
+   with I the dxd identity matrix
+*/
 ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel & covarianceModel,
-                                                   NumericalPoint & selectedEV) const
+                                                           NumericalPoint & selectedEV) const
 {
   const UnsignedInteger numVertices(mesh_.getVerticesNumber());
+  // Extend the Gram matrix of the mesh
+  const UnsignedInteger dimension(covarianceModel.getDimension());
+  const UnsignedInteger augmentedDimension(dimension * numVertices);
+  CovarianceMatrix G(augmentedDimension);
+  for (UnsignedInteger i = 0; i < numVertices; ++i)
+    {
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        {
+          const NumericalScalar gij(gram_(i, j));
+          for (UnsignedInteger k = 0; k < dimension; ++k)
+              G(i * dimension + k, j * dimension + k) = gij;
+        } // Loop over j
+    } // Loop over i
+  // Discretize the covariance model
   CovarianceMatrix C(covarianceModel.discretize(mesh_));
-  SquareMatrix M((C * gram_).getImplementation());
-  LOGINFO(OSS() << "M=\n" << M.__str__());
+  SquareMatrix M((C * G).getImplementation());
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
-  const UnsignedInteger nbColumns(eigenValuesComplex.getSize());
-  NumericalSample eigenPairs(nbColumns, nbColumns + 1);
-  for (UnsignedInteger i = 0; i < nbColumns; ++i)
+  NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
     {
-      for (UnsignedInteger j = 0; j < nbColumns; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
-      eigenPairs[i][nbColumns] = -eigenValuesComplex[i].real();
+      for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
+      eigenPairs[i][augmentedDimension] = -eigenValuesComplex[i].real();
     }
-  eigenPairs = eigenPairs.sortAccordingToAComponent(nbColumns);
-  SquareMatrix eigenVectors(nbColumns);
-  NumericalPoint eigenValues(nbColumns);
-  for (UnsignedInteger i = 0; i < nbColumns; ++i)
+  eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
+  SquareMatrix eigenVectors(augmentedDimension);
+  NumericalPoint eigenValues(augmentedDimension);
+  for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
     {
-      for (UnsignedInteger j = 0; j < nbColumns; ++j) eigenVectors(i, j) = eigenPairs[j][i];
-      eigenValues[i] = -eigenPairs[i][nbColumns];
+      for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
+      eigenValues[i] = -eigenPairs[i][augmentedDimension];
     }
+  LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
   selectedEV = NumericalPoint(0);
-  ProcessSample result(mesh_, 0, covarianceModel.getDimension());
+  ProcessSample result(mesh_, 0, dimension);
   UnsignedInteger j(0);
-  while ((j < eigenValues.getSize()) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
+  while ((j < augmentedDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
     {
       selectedEV.add(eigenValues[j]);
-      NumericalSample values(numVertices, 1);
+      NumericalSample values(numVertices, dimension);
       const Matrix a(eigenVectors.getColumn(j));
-      const NumericalScalar norm(std::sqrt((a.transpose() * (gram_ * a))(0, 0)));
+      const NumericalScalar norm(std::sqrt((a.transpose() * (G * a))(0, 0)));
       const NumericalScalar factor(eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm);
       for (UnsignedInteger i = 0; i < numVertices; ++i)
-        values[i][0] = eigenVectors(i, j) * factor;
+	for (UnsignedInteger k = 0; k < dimension; ++k)
+	  values[i][k] = eigenVectors(i * dimension + k, j) * factor;
       result.add(values);
       ++j;
     }

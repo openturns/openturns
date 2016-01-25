@@ -88,9 +88,9 @@ OT_CovarianceModel_computeAsScalar_doc
 "Compute the standard representative function of the covariance model.
 
 Available usages:
-    computeStandrdRepresentative(s, t)
+    computeStandardRepresentative(s, t)
 
-    computeStandrdRepresentative(tau)
+    computeStandardRepresentative(tau)
 
 Parameters
 ----------
@@ -106,10 +106,10 @@ rho : float
 
 Notes
 -----
-*computeStandrdRepresentative* evaluates the correlation function on two spatial points:
+*computeStandardRepresentative* evaluates the correlation function on two spatial points:
 :math:`\rho : \cD \times \cD \mapsto \Rset`.
 
-A covariance function express at :math:`(s,t)\in \Rset^n` as fllows :
+A covariance function express at :math:`(s,t)\in \Rset^n` as follows :
 
 
 .. math::

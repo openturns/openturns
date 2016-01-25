@@ -10,7 +10,15 @@ try:
     KLModes = factory.buildAsProcessSample(ot.AbsoluteExponential(1, 1.0), eigenValues)
     print("KL modes=", KLModes)
     print("KL eigenvalues=", eigenValues)
-    KLFunctions = factory.build(ot.AbsoluteExponential(1, 1.0), eigenValues)
+    cov1D = ot.AbsoluteExponential(1, 1.0)
+    KLFunctions = factory.build(cov1D, eigenValues)
+    print("KL functions=", KLFunctions)
+    print("KL eigenvalues=", eigenValues)
+    R = ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0])
+    scale = [1.0]
+    amplitude = [1.0, 2.0]
+    cov2D = ot.ExponentialModel(1, amplitude, scale, R)
+    KLFunctions = factory.build(cov2D, eigenValues)
     print("KL functions=", KLFunctions)
     print("KL eigenvalues=", eigenValues)
 
