@@ -67,18 +67,6 @@ SQP::SQP (const OptimizationProblem & problem,
   initialize();
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fonction)
- *         and a level value
- */
-SQP::SQP(const SQPSpecificParameters & specificParameters,
-         const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
-{
-  initialize();
-  setSpecificParameters(specificParameters);
-}
-
 /* Virtual constructor */
 SQP * SQP::clone() const
 {
@@ -107,8 +95,8 @@ void SQP::initialize()
 NumericalScalar SQP::computeLineSearch()
 {
   /* Local copy of the level function and the level value */
-  const NumericalMathFunction levelFunction(getLevelFunction());
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
@@ -160,9 +148,9 @@ void SQP::run()
 
 
   /* Get a local copy of the level function */
-  const NumericalMathFunction levelFunction(getLevelFunction());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
 
   //Initialize the hessian
   currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);
@@ -298,50 +286,6 @@ NumericalScalar SQP::getSmooth() const
 void SQP::setSmooth(const NumericalScalar smooth)
 {
   smooth_ = smooth;
-}
-
-/* Specific parameters accessor */
-SQPSpecificParameters SQP::getSpecificParameters() const
-{
-  Log::Info(OSS() << "SQP::getSpecificParameters is deprecated.");
-  return SQPSpecificParameters(tau_, omega_, smooth_);
-}
-
-/* Specific parameters accessor */
-void SQP::setSpecificParameters(const SQPSpecificParameters & specificParameters)
-{
-  Log::Info(OSS() << "SQP::setSpecificParameters is deprecated.");
-  tau_ = specificParameters.getTau();
-  omega_ = specificParameters.getOmega();
-  smooth_ = specificParameters.getSmooth();
-}
-
-/* Level function accessor */
-NumericalMathFunction SQP::getLevelFunction() const
-{
-  Log::Info(OSS() << "SQP::getLevelFunction is deprecated.");
-  return getProblem().getLevelFunction();
-}
-
-/* Level function accessor */
-void SQP::setLevelFunction(const NumericalMathFunction & levelFunction)
-{
-  Log::Info(OSS() << "SQP::setLevelFunction is deprecated.");
-  getProblem().setLevelFunction(levelFunction);
-}
-
-/* Level value accessor */
-NumericalScalar SQP::getLevelValue() const
-{
-  Log::Info(OSS() << "SQP::getLevelValue is deprecated.");
-  return getProblem().getLevelValue();
-}
-
-/* Level value accessor */
-void SQP::setLevelValue(const NumericalScalar levelValue)
-{
-  Log::Info(OSS() << "SQP::setLevelValue is deprecated.");
-  getProblem().setLevelValue(levelValue);
 }
 
 /* String converter */

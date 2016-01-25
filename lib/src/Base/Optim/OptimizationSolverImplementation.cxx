@@ -93,18 +93,6 @@ void OptimizationSolverImplementation::setMaximumIterationNumber(const UnsignedI
   maximumIterationNumber_ = maximumIterationNumber;
 }
 
-/* Maximum iterations number accessor */
-UnsignedInteger OptimizationSolverImplementation::getMaximumIterationsNumber() const
-{
-  return maximumIterationNumber_;
-}
-
-/* Maximum iterations number accessor */
-void OptimizationSolverImplementation::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
-{
-  maximumIterationNumber_ = maximumIterationsNumber;
-}
-
 void OptimizationSolverImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
 {
   maximumEvaluationNumber_ = maximumEvaluationNumber;

@@ -111,17 +111,6 @@ public:
     registerMe(PERSISTENT::GetClassName());
   }
 
-  /** Constructor
-   *
-   * @param className unused
-   * @internal See the CLASSNAME_INIT macro.
-   * @deprecated
-   */
-  Factory(const String & /* className */)
-  {
-    registerMe(PERSISTENT::GetClassName());
-  }
-
   /** Virtual constructor */
   virtual Factory * clone() const
   {

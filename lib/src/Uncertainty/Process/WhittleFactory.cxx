@@ -257,7 +257,7 @@ void WhittleFactory::initializeCobylaSolverParameter()
 {
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla == NULL) throw InternalException(HERE);
-  cobyla->setSpecificParameters(CobylaSpecificParameters(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg")));
+  cobyla->setRhoBeg(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg"));
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));

@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_COBYLA_HXX
 #define OPENTURNS_COBYLA_HXX
 
-#include "CobylaSpecificParameters.hxx"
 #include "OTprivate.hxx"
 #include "OptimizationSolverImplementation.hxx"
 
@@ -47,10 +46,6 @@ public:
   explicit Cobyla(const OptimizationProblem & problem);
 
   /** Constructor with parameters */
-  Cobyla(const CobylaSpecificParameters & specificParameters,
-         const OptimizationProblem & problem);
-
-  /** Constructor with parameters */
   Cobyla(const OptimizationProblem & problem,
          const NumericalScalar rhoBeg);
 
@@ -63,24 +58,6 @@ public:
   /** RhoBeg accessor */
   NumericalScalar getRhoBeg() const;
   void setRhoBeg(const NumericalScalar rhoBeg);
-
-  /** Specific parameters accessor */
-  CobylaSpecificParameters getSpecificParameters() const;
-
-  /** Specific parameters accessor */
-  void setSpecificParameters(const CobylaSpecificParameters & specificParameters);
-
-  /** Level function accessor */
-  NumericalMathFunction getLevelFunction() const;
-
-  /** Level function accessor */
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
-
-  /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-
-  /** Level value accessor */
-  void setLevelValue(const NumericalScalar levelValue);
 
   /** String converter */
   String __repr__() const;

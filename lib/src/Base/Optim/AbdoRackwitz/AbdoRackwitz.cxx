@@ -52,20 +52,6 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
   initialize();
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fonction)
- *         and a level value
- */
-AbdoRackwitz::AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-                           const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
-  , currentPoint_(getStartingPoint().getDimension())
-  , currentDirection_(getStartingPoint().getDimension())
-  , currentGradient_(getStartingPoint().getDimension())
-{
-  initialize();
-  setSpecificParameters(specificParameters);
-}
 
 AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
@@ -104,8 +90,8 @@ void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 NumericalScalar AbdoRackwitz::computeLineSearch()
 {
   /* Logal copy of the level function and the level value */
-  const NumericalMathFunction levelFunction(getLevelFunction());
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
@@ -145,9 +131,9 @@ void AbdoRackwitz::run()
 
 
   /* Get a local copy of the level function */
-  const NumericalMathFunction levelFunction(getLevelFunction());
+  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue(getLevelValue());
+  const NumericalScalar levelValue(getProblem().getLevelValue());
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
   Bool convergence(false);
@@ -248,50 +234,6 @@ NumericalScalar AbdoRackwitz::getSmooth() const
 void AbdoRackwitz::setSmooth(const NumericalScalar smooth)
 {
   smooth_ = smooth;
-}
-
-/* Specific parameters accessor */
-AbdoRackwitzSpecificParameters AbdoRackwitz::getSpecificParameters() const
-{
-  Log::Info(OSS() << "AbdoRackwitz::getSpecificParameters is deprecated.");
-  return AbdoRackwitzSpecificParameters(tau_, omega_, smooth_);
-}
-
-/* Specific parameters accessor */
-void AbdoRackwitz::setSpecificParameters(const AbdoRackwitzSpecificParameters & specificParameters)
-{
-  Log::Info(OSS() << "AbdoRackwitz::setSpecificParameters is deprecated.");
-  tau_ = specificParameters.getTau();
-  omega_ = specificParameters.getOmega();
-  smooth_ = specificParameters.getSmooth();
-}
-
-/* Level function accessor */
-NumericalMathFunction AbdoRackwitz::getLevelFunction() const
-{
-  Log::Info(OSS() << "AbdoRackwitz::getLevelFunction is deprecated.");
-  return getProblem().getLevelFunction();
-}
-
-/* Level function accessor */
-void AbdoRackwitz::setLevelFunction(const NumericalMathFunction & levelFunction)
-{
-  Log::Info(OSS() << "AbdoRackwitz::setLevelFunction is deprecated.");
-  getProblem().setLevelFunction(levelFunction);
-}
-
-/* Level value accessor */
-NumericalScalar AbdoRackwitz::getLevelValue() const
-{
-  Log::Info(OSS() << "AbdoRackwitz::getLevelValue is deprecated.");
-  return getProblem().getLevelValue();
-}
-
-/* Level value accessor */
-void AbdoRackwitz::setLevelValue(const NumericalScalar levelValue)
-{
-  Log::Info(OSS() << "AbdoRackwitz::setLevelValue is deprecated.");
-  getProblem().setLevelValue(levelValue);
 }
 
 /* String converter */

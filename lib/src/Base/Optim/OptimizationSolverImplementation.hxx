@@ -72,12 +72,6 @@ public:
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
   UnsignedInteger getMaximumIterationNumber() const;
 
-  /** Maximum iterations number accessor
-   * @deprecated
-   */
-  void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
-  UnsignedInteger getMaximumIterationsNumber() const;
-
   /** Maximum evaluations number accessor */
   void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
   UnsignedInteger getMaximumEvaluationNumber() const;

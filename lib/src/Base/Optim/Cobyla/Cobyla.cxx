@@ -56,16 +56,6 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
   // Nothing to do
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
- *         and a level value
- */
-Cobyla::Cobyla(const CobylaSpecificParameters & specificParameters,
-               const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
-{
-  setSpecificParameters(specificParameters);
-}
 
 /* Virtual constructor */
 Cobyla * Cobyla::clone() const
@@ -180,48 +170,6 @@ NumericalScalar Cobyla::getRhoBeg() const
 void Cobyla::setRhoBeg(const NumericalScalar rhoBeg)
 {
   rhoBeg_ = rhoBeg;
-}
-
-/* Specific parameters accessor */
-CobylaSpecificParameters Cobyla::getSpecificParameters() const
-{
-  Log::Info(OSS() << "Cobyla::getSpecificParameters is deprecated.");
-  return CobylaSpecificParameters(rhoBeg_);
-}
-
-/* Specific parameters accessor */
-void Cobyla::setSpecificParameters(const CobylaSpecificParameters & specificParameters)
-{
-  Log::Info(OSS() << "Cobyla::setSpecificParameters is deprecated.");
-  rhoBeg_ = specificParameters.getRhoBeg();
-}
-
-/* Level function accessor */
-NumericalMathFunction Cobyla::getLevelFunction() const
-{
-  Log::Info(OSS() << "Cobyla::getLevelFunction is deprecated.");
-  return getProblem().getLevelFunction();
-}
-
-/* Level function accessor */
-void Cobyla::setLevelFunction(const NumericalMathFunction & levelFunction)
-{
-  Log::Info(OSS() << "Cobyla::setLevelFunction is deprecated.");
-  getProblem().setLevelFunction(levelFunction);
-}
-
-/* Level value accessor */
-NumericalScalar Cobyla::getLevelValue() const
-{
-  Log::Info(OSS() << "Cobyla::getLevelValue is deprecated.");
-  return getProblem().getLevelValue();
-}
-
-/* Level value accessor */
-void Cobyla::setLevelValue(const NumericalScalar levelValue)
-{
-  Log::Info(OSS() << "Cobyla::setLevelValue is deprecated.");
-  getProblem().setLevelValue(levelValue);
 }
 
 /* String converter */

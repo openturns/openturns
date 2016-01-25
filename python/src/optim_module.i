@@ -46,13 +46,9 @@
 %include OptimizationSolver.i
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
-%include AbdoRackwitzSpecificParameters.i
 %include AbdoRackwitz.i
-%include CobylaSpecificParameters.i
 %include Cobyla.i
-%include TNCSpecificParameters.i
 %include TNC.i
-%include SQPSpecificParameters.i
 %include SQP.i
 %include NLopt.i
 

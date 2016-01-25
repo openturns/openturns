@@ -22,7 +22,6 @@
 #define OPENTURNS_TNC_HXX
 
 #include "OTprivate.hxx"
-#include "TNCSpecificParameters.hxx"
 #include "OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -57,10 +56,6 @@ public:
       const NumericalScalar accuracy,
       const NumericalScalar fmin,
       const NumericalScalar rescale);
-
-  /** Constructor with parameters */
-  TNC(const TNCSpecificParameters & parameters,
-      const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual TNC * clone() const;
@@ -99,12 +94,6 @@ public:
   /** Rescale accessor */
   NumericalScalar getRescale() const;
   void setRescale(const NumericalScalar rescale);
-
-  /** Specific parameters accessor */
-  TNCSpecificParameters getSpecificParameters() const;
-
-  /** Specific parameters accessor */
-  void setSpecificParameters(const TNCSpecificParameters & specificParameters);
 
   /** String converter */
   String __repr__() const;
