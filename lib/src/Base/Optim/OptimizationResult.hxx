@@ -48,7 +48,7 @@ public:
   /** Standard constructor */
   OptimizationResult(const NumericalPoint & optimalPoint,
       const NumericalPoint & optimalValue,
-      const UnsignedInteger iterationsNumber,
+      const UnsignedInteger iterationNumber,
       const NumericalScalar absoluteError,
       const NumericalScalar relativeError,
       const NumericalScalar residualError,
@@ -63,8 +63,8 @@ public:
   /** Optimal value accessor */
   NumericalPoint getOptimalValue() const;
 
-  /** Iterations number accessor */
-  UnsignedInteger getIterationsNumber() const;
+  /** Iteration number accessor */
+  UnsignedInteger getIterationNumber() const;
 
   /** Absolute error accessor */
   NumericalScalar getAbsoluteError() const;
@@ -114,8 +114,8 @@ protected:
   /** OptimalPoint accessors */
   void setOptimalPoint(const NumericalPoint & optimalPoint);
 
-  /** Iterations number accessor */
-  void setIterationsNumber(const UnsignedInteger iterationsNumber);
+  /** Iteration number accessor */
+  void setIterationNumber(const UnsignedInteger iterationNumber);
 
   /** Optimal value accessor */
   void setOptimalValue(const NumericalPoint & optimalValue);
@@ -141,7 +141,7 @@ private:
 
   NumericalPoint  optimalPoint_;
   NumericalPoint  optimalValue_;
-  UnsignedInteger    iterationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
+  UnsignedInteger    iterationNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */

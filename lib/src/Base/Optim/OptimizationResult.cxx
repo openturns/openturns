@@ -36,7 +36,7 @@ OptimizationResult::OptimizationResult()
   : PersistentObject()
   , optimalPoint_(NumericalPoint(0))
   , optimalValue_(NumericalPoint(0))
-  , iterationsNumber_(0)
+  , iterationNumber_(0)
   , absoluteError_(-1.0)
   , relativeError_(-1.0)
   , residualError_(-1.0)
@@ -54,7 +54,7 @@ OptimizationResult::OptimizationResult()
 /* Standard constructor */
 OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
     const NumericalPoint &  optimalValue,
-    const UnsignedInteger iterationsNumber,
+    const UnsignedInteger iterationNumber,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
     const NumericalScalar residualError,
@@ -62,7 +62,7 @@ OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
   : PersistentObject()
   , optimalPoint_(optimalPoint)
   , optimalValue_(optimalValue)
-  , iterationsNumber_(iterationsNumber)
+  , iterationNumber_(iterationNumber)
   , absoluteError_(absoluteError)
   , relativeError_(relativeError)
   , residualError_(residualError)
@@ -105,15 +105,15 @@ void OptimizationResult::setOptimalValue(const NumericalPoint &  optimalValue)
   optimalValue_ = optimalValue;
 }
 
-/* Iterations number accessor */
-UnsignedInteger OptimizationResult::getIterationsNumber() const
+/* Iteration number accessor */
+UnsignedInteger OptimizationResult::getIterationNumber() const
 {
-  return iterationsNumber_;
+  return iterationNumber_;
 }
 
-void OptimizationResult::setIterationsNumber(const UnsignedInteger iterationsNumber)
+void OptimizationResult::setIterationNumber(const UnsignedInteger iterationNumber)
 {
-  iterationsNumber_ = iterationsNumber;
+  iterationNumber_ = iterationNumber;
 }
 
 /* Absolute error accessor */
@@ -201,7 +201,7 @@ String OptimizationResult::__repr__() const
   oss << "class=" << OptimizationResult::GetClassName()
       << " optimal point=" << optimalPoint_
       << " optimal value="        << optimalValue_
-      << " iterationsNumber=" << iterationsNumber_
+      << " iterationNumber=" << iterationNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
       << " residualError=" << getResidualError()
@@ -215,7 +215,7 @@ void OptimizationResult::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "optimalPoint_", optimalPoint_ );
   adv.saveAttribute( "optimalValue_", optimalValue_ );
-  adv.saveAttribute( "iterationsNumber_", iterationsNumber_ );
+  adv.saveAttribute( "iterationNumber_", iterationNumber_ );
   adv.saveAttribute( "absoluteError_", absoluteError_ );
   adv.saveAttribute( "relativeError_", relativeError_ );
   adv.saveAttribute( "residualError_", residualError_ );
@@ -236,7 +236,7 @@ void OptimizationResult::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "optimalPoint_", optimalPoint_ );
   adv.loadAttribute( "optimalValue_", optimalValue_ );
-  adv.loadAttribute( "iterationsNumber_", iterationsNumber_ );
+  adv.loadAttribute( "iterationNumber_", iterationNumber_ );
   adv.loadAttribute( "absoluteError_", absoluteError_ );
   adv.loadAttribute( "relativeError_", relativeError_ );
   adv.loadAttribute( "residualError_", residualError_ );
@@ -254,8 +254,8 @@ void OptimizationResult::load(Advocate & adv)
 /* Update current state */
 void OptimizationResult::update(const NumericalPoint & OptimalPoint, UnsignedInteger iterationNumber)
 {
-  setOptimalPoint( OptimalPoint );
-  setIterationsNumber( iterationNumber );
+  setOptimalPoint(OptimalPoint);
+  setIterationNumber(iterationNumber);
 }
 
 /* Incremental history storage */
@@ -291,7 +291,7 @@ Graph OptimizationResult::drawErrorHistory() const
   Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
-  // create a sample with the iterations number to be plotted as x data
+  // create a sample with the iteration number to be plotted as x data
   const UnsignedInteger size(getAbsoluteErrorHistory().getSize());
   {
     NumericalSample data(getAbsoluteErrorHistory());
