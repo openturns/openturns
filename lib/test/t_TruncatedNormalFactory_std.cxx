@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
     b[2] = 2.0;
     a[3] = 3.0;
     b[3] = 6.0;
-    PlatformInfo::SetNumericalPrecision(2);
     for (UnsignedInteger i = 0; i < 4; i++)
     {
+      PlatformInfo::SetNumericalPrecision(i == 2 ? 1 : 2);
       TruncatedNormal distribution(mu[i], sigma[i], a[i], b[i]);
       UnsignedInteger size(10000);
       NumericalSample sample(distribution.getSample(size));

@@ -12,8 +12,8 @@ sigma = [1.0] * 4
 a = [-4., -1., 1., 3.]
 b = [4., 4., 2., 6.]
 
-ot.PlatformInfo.SetNumericalPrecision(2)
 for i in range(4):
+    ot.PlatformInfo.SetNumericalPrecision(1 if i==2 else 2)
     distribution = ot.TruncatedNormal(mu[i], sigma[i], a[i], b[i])
     size = 10000
     sample = distribution.getSample(size)
