@@ -345,12 +345,16 @@ NumericalScalar Mixture::computeProbability(const Interval & interval) const
   const UnsignedInteger dimension(getDimension());
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
+  const Interval reducedInterval(interval.intersect(getRange()));
   // If the interval is empty
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+
+  // If the interval is the range
+  if (reducedInterval == getRange()) return 1.0;
 
   NumericalScalar probability(0.0);
   const UnsignedInteger size(distributionCollection_.getSize());
-  for(UnsignedInteger i = 0; i < size; ++i) probability += distributionCollection_[i].getWeight() * distributionCollection_[i].computeProbability(interval);
+  for(UnsignedInteger i = 0; i < size; ++i) probability += distributionCollection_[i].getWeight() * distributionCollection_[i].computeProbability(reducedInterval);
   return probability;
 }
 
