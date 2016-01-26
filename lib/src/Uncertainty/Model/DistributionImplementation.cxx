@@ -516,7 +516,8 @@ NumericalScalar DistributionImplementation::computeCDF(const NumericalPoint & po
 
 NumericalScalar DistributionImplementation::computeComplementaryCDF(const NumericalPoint & point) const
 {
-  return 0.5 + (0.5 - computeCDF(point));
+  const NumericalScalar cdf(computeCDF(point));
+  return 0.5 + (0.5 - cdf);
 }
 
 /* Computation of the survival function:
@@ -724,8 +725,14 @@ NumericalScalar DistributionImplementation::computeProbability(const Interval & 
       {
         // [a, b]
         const NumericalScalar b(interval.getUpperBound()[0]);
-        if (ccdfA <= 0.5) return ccdfA - computeComplementaryCDF(b);
-        return computeCDF(b) - computeCDF(a);
+        if (ccdfA <= 0.5)
+        {
+          const NumericalScalar ccdfB(computeComplementaryCDF(b));
+          return ccdfA - ccdfB;
+        }
+        const NumericalScalar cdfA(computeCDF(a));
+        const NumericalScalar cdfB(computeCDF(b));
+        return cdfB - cdfA;
       }
       // [a,+inf)
       return ccdfA;
@@ -749,36 +756,17 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   const Interval reducedInterval(interval.intersect(getRange()));
   if (reducedInterval.isNumericallyEmpty()) return 0.0;
   if (reducedInterval == getRange()) return 1.0;
-  const UnsignedInteger dimension(getDimension());
-  const NumericalPoint lowerBounds(reducedInterval.getLowerBound());
-  const NumericalPoint upperBounds(reducedInterval.getUpperBound());
-  NumericalPoint gaussWeights;
-  NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
-  // Perform the integration
-  const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
-  const UnsignedInteger size(static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, static_cast<int>(dimension)))));
-  NumericalScalar probability(0.0);
-  Indices indices(dimension, 0);
-  for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
-  {
-    NumericalPoint node(dimension);
-    NumericalScalar weight(1.0);
-    for (UnsignedInteger j = 0; j < dimension; ++j)
+  // Use adaptive multidimensional integration of the PDF on the reduced interval
+  const PDFWrapper pdfWrapper(this);
+  const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, dimension_, 1));
+  NumericalScalar probability;
+  if (dimension_ == 1)
     {
-      const UnsignedInteger indiceJ(indices[j]);
-      const NumericalScalar delta(0.5 * (upperBounds[j] - lowerBounds[j]));
-      node[j] = lowerBounds[j] + delta * (1.0 + gaussNodes[indiceJ]);
-      weight *= delta * gaussWeights[indiceJ];
+      NumericalScalar error;
+      probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
     }
-    probability += weight * computePDF(node);
-    /* Update the indices */
-    ++indices[0];
-    /* Propagate the remainders */
-    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
-    /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
-  } // Loop over the n-D nodes
-  return probability;
+  else probability = IteratedQuadrature().integrate(fPDF, reducedInterval)[0];
+  return std::min(1.0, std::max(0.0, probability));
 }
 
 /* Get the probability content of an interval, discrete case */
