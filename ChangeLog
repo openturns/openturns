@@ -81,11 +81,13 @@
  * #784 (Troubles with UserDefinedFactory/UserDefined)
  * #790 (AbdoRackwitz parameters)
  * #796 (Beta distribution: if sample contains Inf, freeze on getSample)
+ * #797 (computeProbability might be wrong when distribution arithmetic is done)
  * #798 (Error message misstyping (Gamma distribution))
  * #799 (Error message misstyping (Gumbel distribution factory))
  * #800 (Exponential distribution built on constant sample)
  * #804 (no IntervalMesher documentation content)
  * #805 (Python segfault in computeSilvermanBandwidth)
+ * #806 (DistributionImplementation::computeCDFParallel crash)
  * #808 (Index check of SymmetricTensor fails when embedded within a PythonFunction)
  * #812 (Sphinx documentation build error)
 
