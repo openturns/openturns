@@ -1,7 +1,7 @@
 Copula  class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2.5
 Copula  ClaytonCopula(theta = 2.5)
 Mean  class=NumericalPoint name=Unnamed dimension=2 values=[0.5,0.5]
-Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0618378,0.0618378,0.0833333]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0618369,0.0618369,0.0833333]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False

@@ -59,7 +59,7 @@ Evaluate the integral with the default GaussKronrod algorithm:
 2116
 >>> err = abs(100.0*(1.0-I1[0]/Iref[0]))
 >>> print(err)
-2.22...e-14
+2.2...e-14
 >>> cloud = ot.Cloud(sample1)
 >>> cloud.setPointStyle('fcircle')
 >>> cloud.setColor('green')
@@ -74,10 +74,10 @@ Evaluate the integral with the default IteratedQuadrature algorithm:
 [-25.132...]
 >>> n_evals = sample2.getSize()
 >>> print(n_evals)
-196
+5236
 >>> err = abs(100.0*(1.0-I2[0]/Iref[0]))
 >>> print(err)
-1.99...e-13
+4.6...e-10
 >>> cloud = ot.Cloud(sample2)
 >>> cloud.setPointStyle('fcircle')
 >>> cloud.setColor('gold')
