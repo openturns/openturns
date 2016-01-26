@@ -99,7 +99,7 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
     const NumericalScalar xK(point[k]);
-    // Early exit if one component is nonpositive
+    // Early exit if one component is less than its corresponding range lower bound
     if (xK <= lowerBounds[k]) return 0.0;
     // Keep only the indices for which xK is less than its corresponding range upper bound
     // Marginalize the others
@@ -110,7 +110,10 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
     }
   } // k
   // The point has all its components greater than the corresponding range upper bound
-  if (toKeep.getSize() == 0) return 1.0;
+  if (toKeep.getSize() == 0)
+    {
+      return 1.0;
+    }
   // The point has some components greater than the corresponding range upper bound
   if (toKeep.getSize() != dimension)
   {
@@ -124,7 +127,9 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
       // Fallback on the default algorithm if the getMarginal() method is not implemented
     }
   }
-  return computeProbabilityContinuous(Interval(getRange().getLowerBound(), point));
+  const Interval interval(getRange().getLowerBound(), point);
+  LOGINFO(OSS() << "In ContinuousDistribution::computeCDF, using computeProbabilityContinuous(), interval=" << interval.__str__());
+  return computeProbabilityContinuous(interval);
 }
 
 /* Get the survival function of the distribution */
