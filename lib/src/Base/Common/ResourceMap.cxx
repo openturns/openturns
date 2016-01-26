@@ -396,7 +396,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // IteratedQuadrature parameters //
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
-  setAsNumericalScalar( "IteratedQuadrature-MaximumError",  1.0e-7 );
+  setAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
 
   // LinearModelFactory parameters //
   setAsNumericalScalar( "LinearModelFactory-DefaultLevelValue", 0.95 );

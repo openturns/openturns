@@ -12,8 +12,8 @@ point= class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-8.01
 Quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.618165,0.618165]
 CDF(quantile)=0.5
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.08333,0.06184,0.06184,0.08333]
-correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.7421,0.7421,1]
-spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.7421,0.7421,1]
+correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.742,0.742,1]
+spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.742,0.742,1]
 kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5556,0.5556,1]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
