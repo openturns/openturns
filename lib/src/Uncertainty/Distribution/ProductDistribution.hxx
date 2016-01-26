@@ -85,6 +85,35 @@ private:
                                const NumericalScalar c,
                                const NumericalScalar d) const;
 public:
+  /** Get the CDF of the distribution */
+  using ContinuousDistribution::computeCDF;
+  NumericalScalar computeCDF(const NumericalPoint & point) const;
+private:
+  NumericalScalar computeCDFQ1(const NumericalScalar x,
+                               const NumericalScalar a,
+                               const NumericalScalar b,
+                               const NumericalScalar c,
+                               const NumericalScalar d) const;
+  NumericalScalar computeCDFQ2(const NumericalScalar x,
+                               const NumericalScalar a,
+                               const NumericalScalar b,
+                               const NumericalScalar c,
+                               const NumericalScalar d) const;
+  NumericalScalar computeCDFQ3(const NumericalScalar x,
+                               const NumericalScalar a,
+                               const NumericalScalar b,
+                               const NumericalScalar c,
+                               const NumericalScalar d) const;
+  NumericalScalar computeCDFQ4(const NumericalScalar x,
+                               const NumericalScalar a,
+                               const NumericalScalar b,
+                               const NumericalScalar c,
+                               const NumericalScalar d) const;
+public:
+
+  /** Get the probability content of an interval */
+  NumericalScalar computeProbability(const Interval & interval) const;
+
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
@@ -125,13 +154,19 @@ protected:
 
 private:
 
-  // Structure used to wrap the kernel of the integral defining the product
+  // Structure used to wrap the kernel of the integral defining the PDF of the product
   struct PDFKernelWrapper
   {
+    const Distribution left_;
+    const Distribution right_;
+    const NumericalScalar x_;
+    const Bool isZero_;
+    const NumericalScalar pdf0_;
+
     PDFKernelWrapper(const Distribution & left,
                      const Distribution & right,
                      const NumericalScalar x):
-      left_(left), right_(right), x_(x), isZero_(std::abs(x) == 0.0), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
+      left_(left), right_(right), x_(x), isZero_(std::abs(x) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
 
     NumericalPoint eval(const NumericalPoint & point) const
     {
@@ -154,17 +189,54 @@ private:
       }
       return NumericalPoint(1, value * right_.computePDF(x_ / u) / absU);
     };
+  }; // struct PDFKernelWrapper
 
+  // Structure used to wrap the kernel of the integral defining the CDF of the product
+  struct CDFKernelWrapper
+  {
     const Distribution left_;
     const Distribution right_;
     const NumericalScalar x_;
     const Bool isZero_;
-    const NumericalScalar pdf0_;
-  }; // struct PDFKernelWrapper
+    const NumericalScalar cdf0_;
+    const NumericalScalar ccdf0_;
+
+    CDFKernelWrapper(const Distribution & left,
+                     const Distribution & right,
+                     const NumericalScalar x):
+      left_(left), right_(right), x_(x), isZero_(std::abs(x) == 0.0), cdf0_(isZero_ ? right.computeCDF(0.0) : 0.0), ccdf0_(isZero_ ? right.computeComplementaryCDF(0.0) : 0.0) {};
+
+    NumericalPoint eval(const NumericalPoint & point) const
+    {
+      const NumericalScalar value(left_.computePDF(point));
+      if (value == 0.0) return NumericalPoint(1, 0.0);
+      // x_ == 0
+      if (isZero_) return NumericalPoint(1, value * cdf0_);
+      const NumericalScalar u(point[0]);
+      if (u == 0.0) return NumericalPoint(1, x_ < 0.0 ? 0.0 : value);
+      return NumericalPoint(1, value * right_.computeCDF(x_ / u));
+    };
+
+    NumericalPoint evalComplementary(const NumericalPoint & point) const
+    {
+      const NumericalScalar value(left_.computePDF(point));
+      if (value == 0.0) return NumericalPoint(1, 0.0);
+      // x_ == 0
+      if (isZero_) return NumericalPoint(1, value * ccdf0_);
+      const NumericalScalar u(point[0]);
+      if (u == 0.0) return NumericalPoint(1, x_ < 0.0 ? 0.0 : value);
+      return NumericalPoint(1, value * right_.computeComplementaryCDF(x_ / u));
+    };
+
+  }; // struct CDFKernelWrapper
 
   // Structure used to wrap the kernel of the integral defining the product
   struct CFKernelWrapper
   {
+    const Distribution left_;
+    const Distribution right_;
+    const NumericalScalar x_;
+
     CFKernelWrapper(const Distribution & left,
                     const Distribution & right,
                     const NumericalScalar x):
@@ -180,10 +252,6 @@ private:
       value[1] = pdf * phi.imag();
       return value;
     };
-
-    const Distribution left_;
-    const Distribution right_;
-    const NumericalScalar x_;
   }; // struct CFKernelWrapper
 
   /** Compute the mean of the distribution */
