@@ -15,11 +15,11 @@ Estimated TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1
 Default TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
 TruncatedNormal from parameters=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=4
 Distribution          =class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=1 b=2
-Estimated distribution=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=-0.088 sigma=1 a=1 b=2
+Estimated distribution=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=-0.09 sigma=1 a=1 b=2
 Default distribution=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
 Distribution from parameters=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=1 b=2
 TruncatedNormal          =class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=1 b=2
-Estimated TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=-0.088 sigma=1 a=1 b=2
+Estimated TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=-0.09 sigma=1 a=1 b=2
 Default TruncatedNormal=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-1 b=1
 TruncatedNormal from parameters=class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=1 b=2
 Distribution          =class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=3 b=6

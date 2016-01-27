@@ -9,7 +9,7 @@ optimalPoint : sequence of float
     Optimal point.
 optimalValue : sequence of float
     Value at optimal point.
-iterationsNumber : int
+iterationNumber : int
     Number of iterations.
 absoluteError : float
     Parameters for this solver.
@@ -42,12 +42,12 @@ constraintError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::OptimizationResult::getIterationsNumber
-"Accessor to the number of evaluations.
+%feature("docstring") OT::OptimizationResult::getIterationNumber
+"Accessor to the number of iterations.
 
 Returns
 -------
-iterationsNumber : int
+iterationNumber : int
      Number of evaluations."
 
 // ---------------------------------------------------------------------
