@@ -80,13 +80,13 @@ int main(int argc, char *argv[])
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       NumericalScalar value(firstOrderFastIndices[i]);
-      fullprint << "Ishigami first order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_1[i]) << std::endl;
+      fullprint << "Ishigami first order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i]) << std::endl;
     }
     fullprint << std::endl;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       NumericalScalar value(totalOrderFastIndices[i]);
-      fullprint << "Ishigami total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_T1[i]) << std::endl;
+      fullprint << "Ishigami total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
     }
     fullprint << std::endl;
     // // Test with G-Sobol function
@@ -131,13 +131,13 @@ int main(int argc, char *argv[])
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       NumericalScalar value(firstOrderFastIndices[i]);
-      fullprint << "G-Sobol first order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - V_i[i]) << std::endl;
+      fullprint << "G-Sobol first order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - V_i[i]) << std::endl;
     }
     fullprint << std::endl;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       NumericalScalar value(totalOrderFastIndices[i]);
-      fullprint << "G-Sobol total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - Vtot_i[i]) << std::endl;
+      fullprint << "G-Sobol total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Vtot_i[i]) << std::endl;
     }
   }
   catch (TestFailed & ex)

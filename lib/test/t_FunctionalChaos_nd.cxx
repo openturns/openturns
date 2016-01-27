@@ -212,15 +212,15 @@ int main(int argc, char *argv[])
         {
           fullprint << "output=" << outputIndex << std::endl;
           NumericalScalar mean(vector.getMean()[outputIndex]);
-          fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << fabs(mean - meanTh[outputIndex]) << std::endl;
+          fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh[outputIndex]) << std::endl;
           NumericalScalar variance(vector.getCovariance()(outputIndex, outputIndex));
-          fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << fabs(variance - covTh(outputIndex, outputIndex)) << std::endl;
+          fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh(outputIndex, outputIndex)) << std::endl;
           Indices indices(1);
           for(UnsignedInteger i = 0; i < inputDimension; ++i)
           {
             indices[0] = i;
             NumericalScalar value(vector.getSobolIndex(i, outputIndex));
-            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_1[i + inputDimension * outputIndex]) << std::endl;
+            fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i + inputDimension * outputIndex]) << std::endl;
           }
           indices = Indices(2);
           UnsignedInteger k(0);
@@ -231,7 +231,7 @@ int main(int argc, char *argv[])
             {
               indices[1] = j;
               NumericalScalar value(vector.getSobolIndex(indices, outputIndex));
-              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_2[k + inputDimension * outputIndex]) << std::endl;
+              fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k + inputDimension * outputIndex]) << std::endl;
               k = k + 1;
             } // j
           } // i
@@ -240,11 +240,11 @@ int main(int argc, char *argv[])
           indices[1] = 1;
           indices[2] = 2;
           NumericalScalar value(vector.getSobolIndex(indices, outputIndex));
-          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_3[outputIndex]) << std::endl;
+          fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[outputIndex]) << std::endl;
           for (UnsignedInteger i = 0; i < inputDimension; ++i)
           {
             NumericalScalar value(vector.getSobolTotalIndex(i, outputIndex));
-            fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_T1[i + inputDimension * outputIndex]) << std::endl;
+            fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i + inputDimension * outputIndex]) << std::endl;
           }
           indices = Indices(2);
           k = 0;
@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
             {
               indices[1] = j;
               NumericalScalar value(vector.getSobolTotalIndex(indices, outputIndex));
-              fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_T2[k + inputDimension * outputIndex]) << std::endl;
+              fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k + inputDimension * outputIndex]) << std::endl;
               k = k + 1;
             }
           }
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
           indices[1] = 1;
           indices[2] = 2;
           value = vector.getSobolTotalIndex(indices, outputIndex);
-          fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sob_T3[1]) << std::endl;
+          fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T3[1]) << std::endl;
 
         } // outputIndex
       } // ProjectionStrategy

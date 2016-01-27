@@ -74,7 +74,7 @@ NumericalPoint BlendedStep::operator()(const NumericalPoint & inP) const
   NumericalPoint result( epsilon_ );
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    result[i] *= ( fabs( inP[i] ) + eta_[i] );
+    result[i] *= ( std::abs( inP[i] ) + eta_[i] );
     if (result[i] < SpecFunc::MinNumericalScalar ) throw InvalidArgumentException(HERE) << "Nul step for component " << i << ": eps=" << epsilon_[i] << " x=" << inP[i];
   }
   return result;

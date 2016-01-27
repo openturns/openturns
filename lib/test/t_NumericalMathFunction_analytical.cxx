@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         grad_f = f.gradient(x)(0, 0);
       }
       fullprint << "df(" << x[0] << ")=" << std::scientific << std::setprecision(4) << grad_f << std::endl;
-      NumericalScalar error(fabs(grad_f) > 1.0e-5 ? fabs(df / grad_f - 1.0) : fabs(df - grad_f));
+      NumericalScalar error(std::abs(grad_f) > 1.0e-5 ? std::abs(df / grad_f - 1.0) : std::abs(df - grad_f));
       if (error > 1e-5) std::cout << "GRADIENT ERROR! error=" << error << ", check " + elementaryFunctions[i] << std::endl;
       NumericalScalar d2f(CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()).hessian(x)(0, 0, 0));
       NumericalScalar hess_f(0.0);
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
         hess_f = f.hessian(x)(0, 0, 0);
       }
       std::cout << "d2f(" << x[0] << ")=" << std::scientific << std::setprecision(4) << hess_f << std::endl;
-      error = (fabs(hess_f) > 1.0e-5 ? fabs(d2f / hess_f - 1.0) : fabs(d2f - hess_f));
+      error = (std::abs(hess_f) > 1.0e-5 ? std::abs(d2f / hess_f - 1.0) : std::abs(d2f - hess_f));
       if (error > 1e-4) std::cout << "HESSIAN ERROR! error=" << error << ", check " + elementaryFunctions[i] << std::endl;
     }
     Description inp(2);

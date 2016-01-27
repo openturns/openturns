@@ -325,7 +325,7 @@ NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   {
     const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
     const NumericalScalar x1(vertices_[simplices_[index][1]][0]);
-    return fabs(x1 - x0);
+    return std::abs(x1 - x0);
   }
   // Second special case: 2D simplex
   if (getDimension() == 2)
@@ -336,7 +336,7 @@ NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
     const NumericalScalar y1(vertices_[simplices_[index][1]][1]);
     const NumericalScalar x2(vertices_[simplices_[index][2]][0]);
     const NumericalScalar y2(vertices_[simplices_[index][2]][1]);
-    return 0.5 * fabs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
+    return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
   SquareMatrix matrix(buildSimplexMatrix(index));
   NumericalScalar sign(0.0);
@@ -416,7 +416,7 @@ Bool Mesh::isRegular() const
   const NumericalScalar step(vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0]);
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    regular = regular && (fabs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
+    regular = regular && (std::abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
     if (!regular) break;
   }
   return regular;
@@ -668,10 +668,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
       N[0] = ab[1] * ac[2] - ab[2] * ac[1];
       N[1] = ab[2] * ac[0] - ab[0] * ac[2];
       N[2] = ab[0] * ac[1] - ab[1] * ac[0];
-      const NumericalScalar cosTheta(fabs(N[2]) / N.norm());
+      const NumericalScalar cosTheta(std::abs(N[2]) / N.norm());
       NumericalPoint R(N * (2.0 * cosTheta));
       R[2] -= 1.0;
-      const NumericalScalar cosPhi(fabs(R[2] / R.norm()));
+      const NumericalScalar cosPhi(std::abs(R[2] / R.norm()));
       redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
       greenFace   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
       blueFace    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;

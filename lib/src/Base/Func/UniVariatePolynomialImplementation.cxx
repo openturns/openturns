@@ -86,7 +86,7 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
   {
     const NumericalScalar aI(coefficients_[i]);
     // Only deal with non-zero coefficients
-    if (String(OSS(false) << fabs(aI)) != "0")
+    if (String(OSS(false) << std::abs(aI)) != "0")
     {
       // Special case for the first term: no + sign, no leading blank and no trailing blank for the - sign
       if (firstTerm)
@@ -95,11 +95,11 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
         // Sign
         if (aI < 0) oss << "-";
         // If the leading term is a constant, print it even if its absolute value is 1
-        if (i == 0) oss  << fabs(aI);
+        if (i == 0) oss  << std::abs(aI);
         else
         {
           // Print the coefficient only if its absolute value is not 1
-          if (String(OSS(false) << fabs(aI)) != "1") oss << fabs(aI) << " * ";
+          if (String(OSS(false) << std::abs(aI)) != "1") oss << std::abs(aI) << " * ";
           oss << variableName;
           // Print the exponent only if it is > 1
           if (i > 1) oss << "^" << i;
@@ -112,7 +112,7 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
         // Here, i > 0
         if (aI > 0.0) oss << " + ";
         else oss << " - ";
-        if (String(OSS(false) << fabs(aI)) != "1") oss << fabs(aI) << " * ";
+        if (String(OSS(false) << std::abs(aI)) != "1") oss << std::abs(aI) << " * ";
         oss << variableName;
         // Print the exponent only if it is > 1
         if (i > 1) oss << "^" << i;

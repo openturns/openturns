@@ -161,7 +161,7 @@ NumericalScalar SklarCopula::computePDF(const NumericalPoint & point) const
     const NumericalPoint xi(marginalCollection_[i].computeQuantile(point[i]));
     x[i] = xi[0];
     factor *= marginalCollection_[i].computePDF(xi);
-    if (fabs(factor) < pdfEpsilon_) return 0.0;
+    if (std::abs(factor) < pdfEpsilon_) return 0.0;
   }
   return distribution_.computePDF(x) / factor;
 }

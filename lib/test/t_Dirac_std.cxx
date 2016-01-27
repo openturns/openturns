@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
       NumericalScalar sampleCovariance = oneSample.computeCovariance()(0, 0);
-      fullprint << "covariance=" << (fabs(sampleCovariance) < 1.0e-16 ? 0.0 : sampleCovariance) << std::endl;
+      fullprint << "covariance=" << (std::abs(sampleCovariance) < 1.0e-16 ? 0.0 : sampleCovariance) << std::endl;
 
       {
         // Define a point
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
       CovarianceMatrix sampleCovariance(oneSample.computeCovariance());
       for (UnsignedInteger i = 0; i < dim; ++i)
         for (UnsignedInteger j = 0; j <= i; ++j)
-          if (fabs(sampleCovariance(i, j)) < 1.0e-16) sampleCovariance(i, j) = 0.0;
+          if (std::abs(sampleCovariance(i, j)) < 1.0e-16) sampleCovariance(i, j) = 0.0;
       fullprint << "covariance=" << sampleCovariance << std::endl;
 
       {

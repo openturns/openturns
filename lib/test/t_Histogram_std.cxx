@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < testSize; i++)
     {
       NumericalScalar q(RandomGenerator::Generate());
-      if (fabs(q - distribution.computeCDF(distribution.computeQuantile(q))) > eps)
+      if (std::abs(q - distribution.computeCDF(distribution.computeQuantile(q))) > eps)
       {
         fullprint << "q=" << q << " quantile=" << distribution.computeQuantile(q)[0] << " CDF(quantile)=" << distribution.computeCDF(distribution.computeQuantile(q)) << std::endl;
       }

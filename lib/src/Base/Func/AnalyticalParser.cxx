@@ -218,7 +218,7 @@ value_type MuParser::Erfc(value_type v)
 
 value_type MuParser::Abs(value_type v)
 {
-  return fabs(v);
+  return std::abs(v);
 }
 
 value_type MuParser::Cbrt(value_type v)

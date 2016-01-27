@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         NumericalScalar error(-1.0);
         NumericalScalar value(algo.integrate(f, Interval(a, b), error)[0]);
         NumericalScalar ref(cos(a) - cos(b));
-        fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (fabs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
+        fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
         // Low-level interface
 //         NumericalPoint ai;
 //         NumericalPoint bi;
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         NumericalScalar error(-1.0);
         NumericalScalar value(algo.integrate(f, Interval(a, b), error)[0]);
         NumericalScalar ref(4.0 + cos(b) - cos(a));
-        fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (fabs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
+        fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
 
         // Low-level interface
 //         NumericalPoint ai;

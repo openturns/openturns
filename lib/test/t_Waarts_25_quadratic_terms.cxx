@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 NumericalScalar clean(NumericalScalar in)
 {
-  if (fabs(in) < 1.e-10) in = 0.0;
+  if (std::abs(in) < 1.e-10) in = 0.0;
   return in;
 }
 

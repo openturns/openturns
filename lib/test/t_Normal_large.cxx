@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < dim; j++)
       {
-        errorCovariance += fabs(covariance(i, j) - sigma[i] * sigma[j] * R(i, j));
+        errorCovariance += std::abs(covariance(i, j) - sigma[i] * sigma[j] * R(i, j));
       }
     }
     fullprint << "covariance error (absolute, normalized)=" << errorCovariance / (dim * dim) << std::endl;
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < dim; j++)
       {
-        errorCovariance += fabs(covariance(i, j) - (i == j ? sigma[i] * sigma[j] : 0));
+        errorCovariance += std::abs(covariance(i, j) - (i == j ? sigma[i] * sigma[j] : 0));
       }
     }
     fullprint << "covariance error (absolute, normalized)=" << errorCovariance / (dim * dim) << std::endl;

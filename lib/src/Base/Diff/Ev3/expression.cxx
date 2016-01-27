@@ -45,9 +45,9 @@ namespace Ev3
 
 static bool is_integer(double a)
 {
-  double b = fabs(a);
+  double b = std::abs(a);
   int bi = (int) round(b);
-  return (fabs(b - bi) < ISINTTOLERANCE);
+  return (std::abs(b - bi) < ISINTTOLERANCE);
 }
 
 static bool is_even(double a)
@@ -714,7 +714,7 @@ void BasicExpression::ConsolidateProductCoeffs()
       tc *= GetNode(i)->GetCoeff();
       GetNode(i)->SetCoeff(1.0);
     }
-    if (fabs(tc) < Ev3NearZero())
+    if (std::abs(tc) < Ev3NearZero())
     {
       Zero();
     }
@@ -1605,7 +1605,7 @@ Expression operator + (Expression a,
   if (!(a->IsConstant() && b->IsConstant()) && a->IsEqualToNoCoeff(b))
   {
     a->SetCoeff(a->GetCoeff() + b->GetCoeff());
-    if (fabs(a->GetCoeff()) < Ev3NearZero())
+    if (std::abs(a->GetCoeff()) < Ev3NearZero())
     {
       // simplify to zero - for differences
       Expression zero(0.0);
@@ -1953,7 +1953,7 @@ Expression operator / (Expression a,
     ret.SetToCopyOf(a);
     double te = a->GetExponent() - t->GetExponent();
     double tc = a->GetCoeff() / t->GetCoeff();
-    if (fabs(te) < Ev3NearZero())
+    if (std::abs(te) < Ev3NearZero())
     {
       Expression c(tc);
       return c;
@@ -1972,7 +1972,7 @@ Expression operator / (Expression a,
     ret.SetToCopyOf(t);
     ret->ConsolidateProductCoeffs();
     // denominator
-    if (fabs(ret->GetCoeff()) < Ev3NearZero())
+    if (std::abs(ret->GetCoeff()) < Ev3NearZero())
     {
       // divide by zero
       unsigned long mycode(22);
@@ -1984,7 +1984,7 @@ Expression operator / (Expression a,
       std::string mydiv(NONE);
       throw ErrDivideByZero(mycode, myif, myscope, myop, mydesc, myinfo, mydiv);
     }
-    if (fabs(at->GetCoeff()) < Ev3NearZero())
+    if (std::abs(at->GetCoeff()) < Ev3NearZero())
     {
       Expression zero(0.0);
       return zero;
@@ -2000,7 +2000,7 @@ Expression operator / (Expression a,
           at->GetVarIndex() == ret->GetNode(i)->GetVarIndex())
       {
         double te = at->GetExponent() - ret->GetNode(i)->GetExponent();
-        if (fabs(te) < Ev3NearZero())
+        if (std::abs(te) < Ev3NearZero())
         {
           // exponents are the same, just cancel
           at->One();
@@ -2047,7 +2047,7 @@ Expression operator / (Expression a,
     ret.SetToCopyOf(a);
     ret->ConsolidateProductCoeffs();
     // denominator - already checked
-    if (fabs(ret->GetCoeff()) < Ev3NearZero())
+    if (std::abs(ret->GetCoeff()) < Ev3NearZero())
     {
       Expression zero(0.0);
       return zero;
@@ -2063,7 +2063,7 @@ Expression operator / (Expression a,
           bt->GetVarIndex() == ret->GetNode(i)->GetVarIndex())
       {
         double te = ret->GetNode(i)->GetExponent() - bt->GetExponent();
-        if (fabs(te) < Ev3NearZero())
+        if (std::abs(te) < Ev3NearZero())
         {
           // exponents are the same, just cancel
           bt->One();
@@ -2113,7 +2113,7 @@ Expression operator / (Expression a,
     at->ConsolidateProductCoeffs();
     bt->ConsolidateProductCoeffs();
     // denominator
-    if (fabs(bt->GetCoeff()) < Ev3NearZero())
+    if (std::abs(bt->GetCoeff()) < Ev3NearZero())
     {
       // divide by zero
       unsigned long mycode(21);
@@ -2125,7 +2125,7 @@ Expression operator / (Expression a,
       std::string mydiv(NONE);
       throw ErrDivideByZero(mycode, myif, myscope, myop, mydesc, myinfo, mydiv);
     }
-    if (fabs(at->GetCoeff()) < Ev3NearZero())
+    if (std::abs(at->GetCoeff()) < Ev3NearZero())
     {
       Expression zero(0.0);
       return zero;
@@ -3133,7 +3133,7 @@ Expression Abs(Expression a)
     Expression ret;
     ret.SetToCopyOf(a);
     ret->SetCoeff(1.0);
-    ret->SetValue(fabs(a->GetValue()));
+    ret->SetValue(std::abs(a->GetValue()));
     ret->SetExponent(1.0);
     ret->SetOpType(CONST);
     return ret;
@@ -3239,7 +3239,7 @@ Expression SumLink(Expression a,
   if (!(a->IsConstant() && b->IsConstant()) && a->IsEqualToNoCoeff(b))
   {
     a->SetCoeff(a->GetCoeff() + b->GetCoeff());
-    if (fabs(a->GetCoeff()) < Ev3NearZero())
+    if (std::abs(a->GetCoeff()) < Ev3NearZero())
     {
       // simplify to zero - for differences
       Expression zero(0.0);
@@ -3563,7 +3563,7 @@ Expression FractionLink(Expression a,
     // cx^e / dx^f = (c/d)x^(e-f)
     double te = a->GetExponent() - t->GetExponent();
     double tc = a->GetCoeff() / t->GetCoeff();
-    if (fabs(te) < Ev3NearZero())
+    if (std::abs(te) < Ev3NearZero())
     {
       Expression c(tc);
       return c;
@@ -3579,7 +3579,7 @@ Expression FractionLink(Expression a,
     // first simplify coeffs of divisor
     t->ConsolidateProductCoeffs();
     // denominator
-    if (fabs(t->GetCoeff()) < Ev3NearZero())
+    if (std::abs(t->GetCoeff()) < Ev3NearZero())
     {
       // divide by zero
       unsigned long mycode(22);
@@ -3591,7 +3591,7 @@ Expression FractionLink(Expression a,
       std::string mydiv(NONE);
       throw ErrDivideByZero(mycode, myif, myscope, myop, mydesc, myinfo, mydiv);
     }
-    if (fabs(a->GetCoeff()) < Ev3NearZero())
+    if (std::abs(a->GetCoeff()) < Ev3NearZero())
     {
       Expression zero(0.0);
       return zero;
@@ -3607,7 +3607,7 @@ Expression FractionLink(Expression a,
           a->GetVarIndex() == t->GetNode(i)->GetVarIndex())
       {
         double te = a->GetExponent() - t->GetNode(i)->GetExponent();
-        if (fabs(te) < Ev3NearZero())
+        if (std::abs(te) < Ev3NearZero())
         {
           // exponents are the same, just cancel
           a->One();
@@ -3651,7 +3651,7 @@ Expression FractionLink(Expression a,
     // first simplify coeffs of divisor
     a->ConsolidateProductCoeffs();
     // denominator - already checked
-    if (fabs(a->GetCoeff()) < Ev3NearZero())
+    if (std::abs(a->GetCoeff()) < Ev3NearZero())
     {
       Expression zero(0.0);
       return zero;
@@ -3667,7 +3667,7 @@ Expression FractionLink(Expression a,
           t->GetVarIndex() == a->GetNode(i)->GetVarIndex())
       {
         double te = a->GetNode(i)->GetExponent() - t->GetExponent();
-        if (fabs(te) < Ev3NearZero())
+        if (std::abs(te) < Ev3NearZero())
         {
           // exponents are the same, just cancel
           t->One();
@@ -3713,10 +3713,10 @@ Expression FractionLink(Expression a,
     a->ConsolidateProductCoeffs();
     t->ConsolidateProductCoeffs();
     // denominator
-    if (fabs(t->GetCoeff()) < Ev3NearZero())
+    if (std::abs(t->GetCoeff()) < Ev3NearZero())
       throw ErrDivideByZero(21, "Expression Building", "FractionLink", "t->GetCoeff()", "Divisor cannot be zero", HELPURL, NONE);
 
-    if (fabs(a->GetCoeff()) < Ev3NearZero())
+    if (std::abs(a->GetCoeff()) < Ev3NearZero())
     {
       Expression zero(0.0);
       return zero;
@@ -3873,7 +3873,7 @@ Expression PowerLink(Expression a,
     a->SetExponent(1.0);
     return a;
   }
-  else if ((fabs(a->GetCoeff()) == 1.0) && a->IsLeaf() && (a->GetOpType() == VAR) &&
+  else if ((std::abs(a->GetCoeff()) == 1.0) && a->IsLeaf() && (a->GetOpType() == VAR) &&
            t->IsLeaf() && (t->GetOpType() == CONST))
   {
     // variable to constant
@@ -4590,7 +4590,7 @@ Expression AbsLink(Expression a)
   // go for it
   if (a->IsLeaf() && a->GetOpType() == CONST)
   {
-    a->SetValue(fabs(a->GetValue()));
+    a->SetValue(std::abs(a->GetValue()));
     a->SetCoeff(1.0);
     a->SetExponent(1.0);
     a->SetOpType(CONST);

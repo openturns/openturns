@@ -74,10 +74,10 @@ NumericalScalar Bisection::solve(const NumericalMathFunction & function,
   /* We transform function(x) = value into function(x) - value = 0 */
   NumericalScalar a(infPoint);
   NumericalScalar fA(infValue - value);
-  if (fabs(fA) <= getResidualError()) return a;
+  if (std::abs(fA) <= getResidualError()) return a;
   NumericalScalar b(supPoint);
   NumericalScalar fB(supValue - value);
-  if (fabs(fB) <= getResidualError()) return b;
+  if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: bisection method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << ", f(supPoint) - value=" << fB;
   NumericalScalar c(a);
   NumericalScalar fC(fA);
@@ -85,11 +85,11 @@ NumericalScalar Bisection::solve(const NumericalMathFunction & function,
   for (;;)
   {
     // Current error on the root
-    const NumericalScalar error(2.0 * getRelativeError() * fabs(c) + 0.5 * getAbsoluteError());
+    const NumericalScalar error(2.0 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError());
     // Mid-point step
     const NumericalScalar delta(0.5 * (b - a));
     // If the current approximation of the root is good enough, return it
-    if ((fabs(delta) <= error) || (fabs(fC) <= getResidualError())) break;
+    if ((std::abs(delta) <= error) || (std::abs(fC) <= getResidualError())) break;
     // c is now the mid-point
     c = a + delta;
     // If all the evaluation budget has been spent, return the approximation

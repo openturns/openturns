@@ -137,7 +137,7 @@ NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(co
     if (interval.numericallyContains(sample[j])) ++inPoints;
   // The local discrepancy is the absolute difference between the fraction of points
   // that fall into the given interval and its volume
-  return fabs(static_cast<NumericalScalar>(inPoints) / size - interval.getNumericalVolume());
+  return std::abs(static_cast<NumericalScalar>(inPoints) / size - interval.getNumericalVolume());
 }
 
 /* Get the needed prime numbers */

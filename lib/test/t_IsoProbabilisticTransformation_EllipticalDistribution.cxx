@@ -31,7 +31,7 @@ NumericalPoint clean(NumericalPoint in)
 {
   UnsignedInteger dim(in.getDimension());
   for(UnsignedInteger i = 0; i < dim; i++)
-    if (fabs(in[i]) < 1.e-10) in[i] = 0.0;
+    if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
 }
 
@@ -43,7 +43,7 @@ SymmetricTensor clean(SymmetricTensor in)
   for(UnsignedInteger i = 0; i < rowDim; i++)
     for(UnsignedInteger j = 0; j < colDim; j++)
       for (UnsignedInteger k = 0; k < sheetDim; k++)
-        if (fabs(in(i, j, k)) < 1.e-6) in(i, j, k) = 0.0;
+        if (std::abs(in(i, j, k)) < 1.e-6) in(i, j, k) = 0.0;
   return in;
 }
 

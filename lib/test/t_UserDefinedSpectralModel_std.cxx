@@ -27,7 +27,7 @@ using namespace OT::Test;
 NumericalScalar clean(NumericalScalar in)
 {
   // For -0.0 trouble
-  if (fabs(in) < 1.e-6) return 0.0;
+  if (std::abs(in) < 1.e-6) return 0.0;
   return in;
   //return 1.e-6*round(1.e6*in);
 }

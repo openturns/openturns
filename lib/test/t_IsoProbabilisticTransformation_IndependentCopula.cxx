@@ -37,7 +37,7 @@ SymmetricTensor clean(SymmetricTensor in)
       for (UnsignedInteger k = 0; k < sheetDim; k++)
       {
         in(i, j, k) = 1.e-4 * round(1.e4 * in(i, j, k));
-        if (fabs(in(i, j, k)) < 1.e-4) in(i, j, k) = 0.0;
+        if (std::abs(in(i, j, k)) < 1.e-4) in(i, j, k) = 0.0;
       }
   return in;
 }

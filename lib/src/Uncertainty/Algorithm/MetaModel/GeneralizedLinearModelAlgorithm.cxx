@@ -104,7 +104,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
-      if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
+      if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
     setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
@@ -165,7 +165,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
-      if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
+      if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
     setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
@@ -267,7 +267,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
-      if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
+      if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
     setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));

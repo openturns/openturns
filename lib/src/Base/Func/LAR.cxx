@@ -114,7 +114,7 @@ void LAR::updateBasis(LeastSquaresMethod & method)
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
       if (!inPredictors_[j])
       {
-        const NumericalScalar cAbs = fabs(cC[j]);
+        const NumericalScalar cAbs = std::abs(cC[j]);
         if (cAbs > cMax)
         {
           cMax = cAbs;
@@ -183,10 +183,10 @@ void LAR::updateBasis(LeastSquaresMethod & method)
     for (UnsignedInteger j = 0; j < predictorsSize; ++ j)
     {
       coefficients_[predictors_[j]] += step * descentDirectionAk[j];
-      coefficientsL1Norm_ += fabs(coefficients_[predictors_[j]]);
+      coefficientsL1Norm_ += std::abs(coefficients_[predictors_[j]]);
     }
 
-    if (coefficientsL1Norm_ > 0.0) relativeConvergence_ = fabs(1.0 - oldCoefficientsL1Norm_ / coefficientsL1Norm_);
+    if (coefficientsL1Norm_ > 0.0) relativeConvergence_ = std::abs(1.0 - oldCoefficientsL1Norm_ / coefficientsL1Norm_);
     else relativeConvergence_ = -1.0;
 
     if (getVerbose()) LOGINFO( OSS() << "End of iteration " << iterations << " over " << maximumNumberOfIterations - 1 << " iteration(s)" << ", relative convergence=" << relativeConvergence_ << " for a target=" << maximumRelativeConvergence_);

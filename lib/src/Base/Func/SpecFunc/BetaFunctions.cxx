@@ -147,7 +147,7 @@ NumericalScalar RegularizedIncompleteBetaInverse(const NumericalScalar a,
   const Bool lowerLessThanX(betaLower < x);
   for (UnsignedInteger k = 0; k < SpecFunc::MaximumIteration; ++k)
   {
-    if (fabs(upper - lower) <= SpecFunc::Precision) break;
+    if (std::abs(upper - lower) <= SpecFunc::Precision) break;
     const NumericalScalar middle(0.5 * (lower + upper));
     const NumericalScalar betaMiddle(RegularizedIncompleteBeta(a, b, middle, tail));
     const Bool middleLessThanX(betaMiddle < x);
@@ -344,7 +344,7 @@ NumericalScalar BPSER(const NumericalScalar a,
   {
     term *= x * (0.5 + (0.5 - b / j));
     sum += term / (a + j);
-    if (fabs(term) < epsilon) break;
+    if (std::abs(term) < epsilon) break;
   }
   return value * (1.0 + a * sum);
 }
@@ -395,7 +395,7 @@ NumericalScalar BUP(const NumericalScalar a,
   for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
   {
     value += term;
-    if (fabs(term) <= value * SpecFunc::Precision) break;
+    if (std::abs(term) <= value * SpecFunc::Precision) break;
     term *= x * (k - b) / (k * (k + a));
   }
   return exp(a * log(x) - log(a) - SpecFunc::LogBeta(a, b)) * value;
@@ -425,27 +425,27 @@ NumericalScalar RegularizedIncompleteBetaContinuedFraction(const NumericalScalar
   const NumericalScalar aM1(a - 1.0);
   NumericalScalar c(1.0);
   NumericalScalar d(1.0 - aPb * x / aP1);
-  if (fabs(d) < epsilon) d = epsilon;
+  if (std::abs(d) < epsilon) d = epsilon;
   NumericalScalar value(c / d);
   for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
   {
     const UnsignedInteger k2(2 * k);
     NumericalScalar aK(k * (k - b) * x / ((aM1 + k2) * (a + k2)));
     d = 1.0 - aK / d;
-    if (fabs(d) < epsilon) d = epsilon;
+    if (std::abs(d) < epsilon) d = epsilon;
     c = 1.0 - aK / c;
-    if (fabs(c) < epsilon) c = epsilon;
+    if (std::abs(c) < epsilon) c = epsilon;
     NumericalScalar delta(c / d);
     value *= delta;
-    if (fabs(delta - 1) <= epsilon) break;
+    if (std::abs(delta - 1) <= epsilon) break;
     aK = (a + k) * (aPb + k) * x / ((a + k2) * (aP1 + k2));
     d = 1.0 - aK / d;
-    if (fabs(d) < epsilon) d = epsilon;
+    if (std::abs(d) < epsilon) d = epsilon;
     c = 1.0 - aK / c;
-    if (fabs(c) < epsilon) c = epsilon;
+    if (std::abs(c) < epsilon) c = epsilon;
     delta = c / d;
     value *= delta;
-    if (fabs(delta - 1) <= epsilon) break;
+    if (std::abs(delta - 1) <= epsilon) break;
   }
   return value;
 }

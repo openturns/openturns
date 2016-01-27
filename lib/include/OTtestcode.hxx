@@ -298,7 +298,7 @@ void checkClassWithClassName()
 
 inline void assert_almost_equal(NumericalScalar a, NumericalScalar b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
 {
-  if (fabs(a - b) > atol + rtol * fabs(b) )
+  if (std::abs(a - b) > atol + rtol * std::abs(b) )
   {
     throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b);
   }
