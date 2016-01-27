@@ -17,7 +17,7 @@ cdf=0.058797
 quantile= class=NumericalPoint name=Unnamed dimension=7 values=[0.992521,0.992521,0.992521,0.992521,0.992521,0.992521,0.992521]
 cdf(quantile)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
-covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0833333,0.0373929,0,0,0,0,0,0.0373929,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0402153,0.0199465,0,0,0,0,0.0402153,0.0833333,0,0,0,0,0,0.0199465,0,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0568532,0,0,0,0,0,0.0568532,0.0833333]
+covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0833333,0.0373929,0,0,0,0,0,0.0373929,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0402153,0.0199465,0,0,0,0,0.0402153,0.0833333,0,0,0,0,0,0.0199465,0,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0568528,0,0,0,0,0,0.0568528,0.0833333]
 parameters= [class=NumericalPointWithDescription name=ComposedCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]
 indices= [1,2,3,5,6]
 margins= class=ComposedCopula name=ComposedCopula dimension=5 copula[0]=class=IndependentCopula name=IndependentCopula dimension=1 copula[1]=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2

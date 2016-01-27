@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     NumericalPoint CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient      =" << clean(CDFgr) << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
-    fullprint << "quantile      =" << quantile << std::endl;
+    fullprint << "quantile     =" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean      =" << mean << std::endl;

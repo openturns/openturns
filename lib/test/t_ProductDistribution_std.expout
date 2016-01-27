@@ -9,10 +9,10 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Point= class=NumericalPoint name=Unnamed dimension=1 values=[2.5]
 ddf      =class=NumericalPoint name=Unnamed dimension=1 values=[-0.032141]
 pdf      =0.0680485
-cdf      =0.896315
+cdf      =0.856594
 pdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[0.00830329,0.0103036,0.0171714,-0.00243373]
-cdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[-0.0212084,21.8982,-3.16162,23.4921]
-quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[4.5313]
+cdf gradient      =class=NumericalPoint name=Unnamed dimension=4 values=[-0.034449,-0.102285,-0.0746378,-0.0477418]
+quantile     =class=NumericalPoint name=Unnamed dimension=1 values=[4.65046]
 cdf(quantile)=0.95
 mean      =class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
 standard deviation      =class=NumericalPoint name=Unnamed dimension=1 values=[2.17945]
