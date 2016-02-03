@@ -28,6 +28,7 @@ namespace OT {
   OTMatrixAccessors()
 
   SymmetricMatrix __rmul__(NumericalScalar s) { return s * (*self); }
+  Matrix __rmul__(const Matrix & m) { return m * (*self); }
 
   SymmetricMatrix __truediv__(NumericalScalar s) { return (*self) / s; }
 

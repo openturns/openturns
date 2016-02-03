@@ -21,6 +21,7 @@ namespace OT {
   OTComplexMatrixGetAccessors()
 
   HermitianMatrix __rmul__(NumericalComplex s) { return s * (*self); }
+  ComplexMatrix __rmul__(const ComplexMatrix & m) { return m * (*self); }
 
   HermitianMatrix __truediv__(NumericalComplex s) { return (*self) / s; }
 

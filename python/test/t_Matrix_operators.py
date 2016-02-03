@@ -3,16 +3,25 @@
 from __future__ import print_function
 import openturns as ot
 
-t_names = ['Matrix', 'SquareMatrix', 'TriangularMatrix',
-           'SymmetricMatrix', 'CovarianceMatrix', 'CorrelationMatrix']
-t_names.extend(
-    ['ComplexMatrix', 'HermitianMatrix', 'TriangularComplexMatrix', 'SquareComplexMatrix'])
+ref_values = [[1.0, 0.0], [0.0, 0.5]]
 
-for i, iname in enumerate(t_names):
+mats = [ot.Matrix(ref_values),
+        ot.SquareMatrix(ref_values),
+        ot.TriangularMatrix(ref_values),
+        ot.SymmetricMatrix(ref_values),
+        ot.CovarianceMatrix(ref_values),
+        ot.CorrelationMatrix(ref_values)]
+mats.extend([
+        ot.ComplexMatrix(ref_values),
+        ot.HermitianMatrix(ref_values),
+        ot.TriangularComplexMatrix(ref_values),
+        ot.SquareComplexMatrix(ref_values)])
+
+for a in mats:
 
     # try conversion
     ref = ot.Matrix([[1.0, 0.0], [0.0, 0.5]])
-    a = getattr(ot, iname)(ref)
+    iname = a.__class__.__name__
     print('a=', a)
 
     # try scalar mul
@@ -35,7 +44,7 @@ for i, iname in enumerate(t_names):
 
     # try vec mul
     try:
-        x = ot.NumericalPoint([6, 7])
+        x = ot.NumericalPoint(range(6, 6 + a.getNbColumns()))
         ax = a * x
         print('a*x=', ax)
     except:
@@ -47,8 +56,8 @@ for i, iname in enumerate(t_names):
     except:
         print('no pow for', iname)
 
-    for j, jname in enumerate(t_names):
-        b = getattr(ot, iname)(ref)
+    for b in mats:
+        jname = b.__class__.__name__
         try:
             ab = a * b
             print('a*b=', ab)

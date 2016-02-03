@@ -21,6 +21,7 @@
  * Improved the computeCDF() method of Normal 
 
 === Bug fixes ===
+ * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
 
 == 1.7 release (2016-01-27) == #release-1.7
 
