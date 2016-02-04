@@ -32,6 +32,104 @@ CLASSNAMEINIT(NLopt);
 
 static const Factory<NLopt> RegisteredFactory;
 
+/* Map to associate algorithm names and codes */
+std::map<String, UnsignedInteger> NLopt::AlgorithmNames_;
+
+/* Flag to tell if the algorithm names map has to be initialized */
+Bool NLopt::MustInitialize_ = true;
+
+/* Static method to initialize the algorithm names/codes pairing in nlopt */
+void NLopt::InitializeAlgorithmNames()
+{
+  if (!MustInitialize_) return;
+  AlgorithmNames_.erase(AlgorithmNames_.begin(), AlgorithmNames_.end());
+#ifdef OPENTURNS_HAVE_NLOPT
+  AlgorithmNames_["GN_DIRECT"] = nlopt::GN_DIRECT;
+  AlgorithmNames_["GN_DIRECT_L"] = nlopt::GN_DIRECT_L;
+  AlgorithmNames_["GN_DIRECT_L_RAND"] = nlopt::GN_DIRECT_L_RAND;
+  AlgorithmNames_["GN_DIRECT_NOSCAL"] = nlopt::GN_DIRECT_NOSCAL;
+  AlgorithmNames_["GN_DIRECT_L_NOSCAL"] = nlopt::GN_DIRECT_L_NOSCAL;
+  AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
+  AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
+  AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
+  AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
+  AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
+  AlgorithmNames_["LD_LBFGS_NOCEDAL"] = nlopt::LD_LBFGS_NOCEDAL;
+  AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
+  AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
+  AlgorithmNames_["LD_VAR1"] = nlopt::LD_VAR1;
+  AlgorithmNames_["LD_VAR2"] = nlopt::LD_VAR2;
+  AlgorithmNames_["LD_TNEWTON"] = nlopt::LD_TNEWTON;
+  AlgorithmNames_["LD_TNEWTON_RESTART"] = nlopt::LD_TNEWTON_RESTART;
+  AlgorithmNames_["LD_TNEWTON_PRECOND"] = nlopt::LD_TNEWTON_PRECOND;
+  AlgorithmNames_["LD_TNEWTON_PRECOND_RESTART"] = nlopt::LD_TNEWTON_PRECOND_RESTART;
+  AlgorithmNames_["GN_CRS2_LM"] = nlopt::GN_CRS2_LM;
+  AlgorithmNames_["GN_MLSL"] = nlopt::GN_MLSL;
+  AlgorithmNames_["GD_MLSL"] = nlopt::GD_MLSL;
+  AlgorithmNames_["GN_MLSL_LDS"] = nlopt::GN_MLSL_LDS;
+  AlgorithmNames_["GD_MLSL_LDS"] = nlopt::GD_MLSL_LDS;
+  AlgorithmNames_["LD_MMA"] = nlopt::LD_MMA;
+  AlgorithmNames_["LN_COBYLA"] = nlopt::LN_COBYLA;
+  AlgorithmNames_["LN_NEWUOA"] = nlopt::LN_NEWUOA;
+  AlgorithmNames_["LN_NEWUOA_BOUND"] = nlopt::LN_NEWUOA_BOUND;
+  AlgorithmNames_["LN_NELDERMEAD"] = nlopt::LN_NELDERMEAD;
+  AlgorithmNames_["LN_SBPLX"] = nlopt::LN_SBPLX;
+  AlgorithmNames_["LN_AUGLAG"] = nlopt::LN_AUGLAG;
+  AlgorithmNames_["LD_AUGLAG"] = nlopt::LD_AUGLAG;
+  AlgorithmNames_["LN_AUGLAG_EQ"] = nlopt::LN_AUGLAG_EQ;
+  AlgorithmNames_["LD_AUGLAG_EQ"] = nlopt::LD_AUGLAG_EQ;
+  AlgorithmNames_["LN_BOBYQA"] = nlopt::LN_BOBYQA;
+  AlgorithmNames_["GN_ISRES"] = nlopt::GN_ISRES;
+  AlgorithmNames_["AUGLAG"] = nlopt::AUGLAG;
+  AlgorithmNames_["AUGLAG_EQ"] = nlopt::AUGLAG_EQ;
+  AlgorithmNames_["G_MLSL"] = nlopt::G_MLSL;
+  AlgorithmNames_["G_MLSL_LDS"] = nlopt::G_MLSL_LDS;
+  AlgorithmNames_["LD_SLSQP"] = nlopt::LD_SLSQP;
+  AlgorithmNames_["LD_CCSAQ"] = nlopt::LD_CCSAQ;
+  AlgorithmNames_["GN_ESCH"] = nlopt::GN_ESCH;
+#else
+  throw NotYetImplementedException(HERE) << "No NLopt support";
+#endif    
+  MustInitialize_ = false;
+}
+
+/* Static methods to access algorithm names and codes */
+Description NLopt::GetAlgorithmNames()
+{
+  InitializeAlgorithmNames();
+  Description names;
+  std::map<String, UnsignedInteger>::const_iterator it;
+  for (it = AlgorithmNames_.begin(); it != AlgorithmNames_.end(); ++it) names.add(it->first);
+  return names;
+}
+
+String NLopt::GetAlgorithmName(const UnsignedInteger code)
+{
+  InitializeAlgorithmNames();
+  std::map<String, UnsignedInteger>::const_iterator it;
+  for (it = AlgorithmNames_.begin(); it != AlgorithmNames_.end(); ++it) if (it->second == code) return it->first;
+  throw InvalidArgumentException(HERE) << "Error: the given NLopt algorithm code=" << code << " is unknown.";
+}
+
+/* Static methods to access algorithm names and codes */
+Indices NLopt::GetAlgorithmCodes()
+{
+  InitializeAlgorithmNames();
+  Indices codes;
+  std::map<String, UnsignedInteger>::const_iterator it;
+  for (it = AlgorithmNames_.begin(); it != AlgorithmNames_.end(); ++it) codes.add(it->second);
+  return codes;
+}
+
+/* Static methods to access algorithm names and codes */
+UnsignedInteger NLopt::GetAlgorithmCode(const String & name)
+{
+  InitializeAlgorithmNames();
+  const std::map<String, UnsignedInteger>::const_iterator it(AlgorithmNames_.find(name));
+  if (it == AlgorithmNames_.end()) throw InvalidArgumentException(HERE) << "Error: the given NLopt algorithm name=" << name << " is unknown.";
+  return it->second;
+}
+
 /* Default constructor */
 NLopt::NLopt(const UnsignedInteger algoType)
   : OptimizationSolverImplementation()
@@ -172,7 +270,7 @@ void NLopt::run()
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0., 0., 0., 0.));
+  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0));
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
@@ -183,7 +281,17 @@ String NLopt::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " " << OptimizationSolverImplementation::__repr__();
+      << " " << OptimizationSolverImplementation::__repr__()
+      << " algorithm=" << GetAlgorithmName(algoType_);
+  return oss;
+}
+
+/* String converter */
+String NLopt::__str__() const
+{
+  OSS oss(false);
+  oss << "class=" << getClassName()
+      << " algorithm=" << GetAlgorithmName(algoType_);
   return oss;
 }
 
@@ -305,8 +413,67 @@ LBFGS::LBFGS(const OptimizationProblem & problem) : NLopt(problem
 LBFGS * LBFGS::clone() const { return new LBFGS(*this); }
 
 
+CLASSNAMEINIT(MMA);
+static const Factory<MMA> RegisteredFactory4;
+MMA::MMA() : NLopt(
+#ifdef OPENTURNS_HAVE_NLOPT
+nlopt::LD_MMA
+#endif
+) {}
+MMA::MMA(const OptimizationProblem & problem) : NLopt(problem
+#ifdef OPENTURNS_HAVE_NLOPT
+, nlopt::LD_MMA
+#endif
+) {}
+MMA * MMA::clone() const { return new MMA(*this); }
+
+
+CLASSNAMEINIT(CCSAQ);
+static const Factory<CCSAQ> RegisteredFactory5;
+CCSAQ::CCSAQ() : NLopt(
+#ifdef OPENTURNS_HAVE_NLOPT
+nlopt::LD_CCSAQ
+#endif
+) {}
+CCSAQ::CCSAQ(const OptimizationProblem & problem) : NLopt(problem
+#ifdef OPENTURNS_HAVE_NLOPT
+, nlopt::LD_CCSAQ
+#endif
+) {}
+CCSAQ * CCSAQ::clone() const { return new CCSAQ(*this); }
+
+
+CLASSNAMEINIT(COBYLANLOPT);
+static const Factory<COBYLANLOPT> RegisteredFactory6;
+COBYLANLOPT::COBYLANLOPT() : NLopt(
+#ifdef OPENTURNS_HAVE_NLOPT
+nlopt::LN_COBYLA
+#endif
+) {}
+COBYLANLOPT::COBYLANLOPT(const OptimizationProblem & problem) : NLopt(problem
+#ifdef OPENTURNS_HAVE_NLOPT
+, nlopt::LN_COBYLA
+#endif
+) {}
+COBYLANLOPT * COBYLANLOPT::clone() const { return new COBYLANLOPT(*this); }
+
+
+CLASSNAMEINIT(BOBYQA);
+static const Factory<BOBYQA> RegisteredFactory7;
+BOBYQA::BOBYQA() : NLopt(
+#ifdef OPENTURNS_HAVE_NLOPT
+nlopt::LN_BOBYQA
+#endif
+) {}
+BOBYQA::BOBYQA(const OptimizationProblem & problem) : NLopt(problem
+#ifdef OPENTURNS_HAVE_NLOPT
+, nlopt::LN_BOBYQA
+#endif
+) {}
+BOBYQA * BOBYQA::clone() const { return new BOBYQA(*this); }
+
 CLASSNAMEINIT(NelderMead);
-static const Factory<NelderMead> RegisteredFactory4;
+static const Factory<NelderMead> RegisteredFactory8;
 NelderMead::NelderMead() : NLopt(
 #ifdef OPENTURNS_HAVE_NLOPT
 nlopt::LN_NELDERMEAD
@@ -318,6 +485,5 @@ NelderMead::NelderMead(const OptimizationProblem & problem) : NLopt(problem
 #endif
 ) {}
 NelderMead * NelderMead::clone() const { return new NelderMead(*this); }
-
 
 END_NAMESPACE_OPENTURNS

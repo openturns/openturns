@@ -21,12 +21,11 @@
 #ifndef OPENTURNS_NLOPT_HXX
 #define OPENTURNS_NLOPT_HXX
 
+#include <map>
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
 
 /**
  * @class NLopt
@@ -51,8 +50,19 @@ public:
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
 
+  /** NLopt algorithm names accessor */
+  static Description GetAlgorithmNames();
+  static String GetAlgorithmName(const UnsignedInteger code);
+
+  /** NLopt algorithm codes */
+  static Indices GetAlgorithmCodes();
+  static UnsignedInteger GetAlgorithmCode(const String & name);
+  
   /** String converter */
   String __repr__() const;
+
+  /** String converter */
+  String __str__() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -65,6 +75,14 @@ protected:
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
   UnsignedInteger algoType_;
+
+  /** Map of NLopt algorithms names */
+  static std::map<String, UnsignedInteger> AlgorithmNames_;
+  static Bool MustInitialize_;
+
+  /** Method to initialize alrogithm names map */
+  static void InitializeAlgorithmNames();
+
 private:
 
   /** Compute the objective function of the optimization problem */
@@ -83,13 +101,31 @@ private:
 };
 
 
-class OT_API SLSQP : public NLopt
+class OT_API BOBYQA : public NLopt
 {
   CLASSNAME;
 public:
-  SLSQP();
-  virtual SLSQP * clone() const;
-  explicit SLSQP(const OptimizationProblem & problem);
+  BOBYQA();
+  virtual BOBYQA * clone() const;
+  explicit BOBYQA(const OptimizationProblem & problem);
+};
+
+class OT_API CCSAQ : public NLopt
+{
+  CLASSNAME;
+public:
+  CCSAQ();
+  virtual CCSAQ * clone() const;
+  explicit CCSAQ(const OptimizationProblem & problem);
+};
+
+class OT_API COBYLANLOPT : public NLopt
+{
+  CLASSNAME;
+public:
+  COBYLANLOPT();
+  virtual COBYLANLOPT * clone() const;
+  explicit COBYLANLOPT(const OptimizationProblem & problem);
 };
 
 class OT_API LBFGS : public NLopt
@@ -101,6 +137,15 @@ public:
   explicit LBFGS(const OptimizationProblem & problem);
 };
 
+class OT_API MMA : public NLopt
+{
+  CLASSNAME;
+public:
+  MMA();
+  virtual MMA * clone() const;
+  explicit MMA(const OptimizationProblem & problem);
+};
+
 class OT_API NelderMead : public NLopt
 {
   CLASSNAME;
@@ -108,6 +153,15 @@ public:
   NelderMead();
   virtual NelderMead * clone() const;
   explicit NelderMead(const OptimizationProblem & problem);
+};
+
+class OT_API SLSQP : public NLopt
+{
+  CLASSNAME;
+public:
+  SLSQP();
+  virtual SLSQP * clone() const;
+  explicit SLSQP(const OptimizationProblem & problem);
 };
 
 END_NAMESPACE_OPENTURNS

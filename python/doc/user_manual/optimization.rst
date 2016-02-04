@@ -26,9 +26,14 @@ Optimization solvers
     Cobyla
     SQP
     TNC
-    SLSQP
+    NLopt
+    BOBYQA
+    CCSAQ
+    COBYLANLOPT
     LBFGS
+    MMA
     NelderMead
+    SLSQP
 
 Nearest point assessment
 ========================
