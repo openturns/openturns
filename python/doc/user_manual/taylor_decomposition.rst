@@ -11,4 +11,4 @@ Quadratic cumul algorithm
     :toctree: _generated/
     :template: class.rst_t
 
-    QuadraticCumul
+    TaylorExpansionsMoments

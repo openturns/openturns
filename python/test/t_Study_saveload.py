@@ -96,19 +96,19 @@ analytical = ot.NumericalMathFunction(input, output, formulas)
 analytical.setName("analytical")
 myStudy.add("analytical", analytical)
 
-# Create a QuadraticCumul algorithm
+# Create a TaylorExpansionsMoments algorithm
 antecedent = ot.RandomVector(
     ot.IndependentCopula(analytical.getInputDimension()))
 antecedent.setName("antecedent")
 composite = ot.RandomVector(analytical, antecedent)
 composite.setName("composite")
-quadraticCumul = ot.QuadraticCumul(composite)
-quadraticCumul.setName("quadraticCumul")
-quadraticCumul.getMeanFirstOrder()
-quadraticCumul.getMeanSecondOrder()
-quadraticCumul.getCovariance()
+taylorExpansionsMoments = ot.TaylorExpansionsMoments(composite)
+taylorExpansionsMoments.setName("taylorExpansionsMoments")
+taylorExpansionsMoments.getMeanFirstOrder()
+taylorExpansionsMoments.getMeanSecondOrder()
+taylorExpansionsMoments.getCovariance()
 
-myStudy.add("quadraticCumul", quadraticCumul)
+myStudy.add("taylorExpansionsMoments", taylorExpansionsMoments)
 
 # Create a FORMResult
 input2 = ot.Description(2)

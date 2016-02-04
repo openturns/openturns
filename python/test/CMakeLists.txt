@@ -549,8 +549,8 @@ ot_pyinstallcheck_test (GramSchmidtAlgorithm_std)
 ot_pyinstallcheck_test (StandardDistributionPolynomialFactory_std)
 ot_pyinstallcheck_test (OrthogonalBasis_std)
 
-## QuadraticCumul
-ot_pyinstallcheck_test (QuadraticCumul_std)
+## TaylorExpansionsMoments
+ot_pyinstallcheck_test (TaylorExpansionsMoments_std)
 
 ## Analytical
 ot_pyinstallcheck_test (Analytical_std)

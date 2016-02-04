@@ -328,21 +328,21 @@ int main(int argc, char *argv[])
     StandardEvent standardEvent(event);
     study.add("standardEvent", standardEvent);
 
-    // Create a QuadraticCumul algorithm
-    QuadraticCumul quadraticCumul;
+    // Create a TaylorExpansionsMoments algorithm
+    TaylorExpansionsMoments taylorExpansionsMoments;
     {
       RandomVector antecedent(IndependentCopula(analytical.getInputDimension()));
       antecedent.setName("antecedent");
       RandomVector composite(analytical, antecedent);
       composite.setName("composite");
-      quadraticCumul = QuadraticCumul(composite);
-      quadraticCumul.setName("quadraticCumul");
-      quadraticCumul.getMeanFirstOrder();
-      quadraticCumul.getMeanSecondOrder();
-      quadraticCumul.getCovariance();
+      taylorExpansionsMoments = TaylorExpansionsMoments(composite);
+      taylorExpansionsMoments.setName("taylorExpansionsMoments");
+      taylorExpansionsMoments.getMeanFirstOrder();
+      taylorExpansionsMoments.getMeanSecondOrder();
+      taylorExpansionsMoments.getCovariance();
     }
 
-    study.add("quadraticCumul", quadraticCumul);
+    study.add("taylorExpansionsMoments", taylorExpansionsMoments);
 
     // Create an AbdoRackwitz algorithm
     AbdoRackwitz abdoRackwitz;
@@ -1054,7 +1054,7 @@ int main(int argc, char *argv[])
     compare<FORMResult >( formResult, study2 , "formResult");
     compare<SORMResult >( sormResult, study2,  "sormResult");
 
-    compare<QuadraticCumul >( quadraticCumul, study2 );
+    compare<TaylorExpansionsMoments >( taylorExpansionsMoments, study2 );
 
     // Process
     compare<ARMACoefficients >( armaCoefficients, study2 , "armaCoefficients");

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_QUADRATICCUMUL_HXX
-#define OPENTURNS_QUADRATICCUMUL_HXX
+#ifndef OPENTURNS_TAYLOREXPANSIONMOMENTS_HXX
+#define OPENTURNS_TAYLOREXPANSIONMOMENTS_HXX
 
 #include "PersistentObject.hxx"
 #include "NumericalPoint.hxx"
@@ -36,12 +36,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class QuadraticCumul
- * QuadraticCumul implements the mean and covariance of a random vector
+ * @class TaylorExpansionsMoments
+ * TaylorExpansionsMoments implements the mean and covariance of a random vector
  Y=G(X) by implementing the Taylor approximation of G
 */
 
-class OT_API QuadraticCumul
+class OT_API TaylorExpansionsMoments
   : public PersistentObject
 {
 
@@ -50,14 +50,14 @@ public:
 
 
   /** Default constructor */
-  QuadraticCumul() {};
+  TaylorExpansionsMoments() {};
 
   /** Constructor with parameters */
-  explicit QuadraticCumul(const RandomVector & limitStateVariable);
+  explicit TaylorExpansionsMoments(const RandomVector & limitStateVariable);
 
 
   /** Virtual constructor */
-  virtual QuadraticCumul * clone() const;
+  virtual TaylorExpansionsMoments * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -97,7 +97,7 @@ public:
 
 protected:
 
-  friend class Factory<QuadraticCumul>;
+  friend class Factory<TaylorExpansionsMoments>;
 
 private:
 
@@ -131,8 +131,8 @@ private:
   mutable CovarianceMatrix covariance_;
   mutable NumericalPointWithDescription importanceFactors_;
 
-} ; /* class QuadraticCumul */
+} ; /* class TaylorExpansionsMoments */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_QUADRATICCUMUL_HXX */
+#endif /* OPENTURNS_TAYLOREXPANSIONMOMENTS_HXX */
