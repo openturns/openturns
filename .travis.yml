@@ -67,7 +67,7 @@ script:
   - make install -j2 && make tests -j2 && ctest -j2 --output-on-failure --timeout 100
 
 after_success:
-  - test "$TRAVIS_PULL_REQUEST" != "true" || exit 0
+  - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" || exit 0
   - git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
   - cp -r ~/.local/share/openturns/doc/html/* openturns.github.io
   - cd openturns.github.io
