@@ -112,40 +112,40 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   // Jacobi factory
   if (measureType == "Beta")
   {
-    const NumericalPoint parameters(measure_.getParametersCollection()[0]);
-    specificFamily_ = JacobiFactory(parameters[1] - parameters[0] - 1.0, parameters[0] - 1.0);
+    const NumericalPoint parameter(measure_.getParameter());
+    specificFamily_ = JacobiFactory(parameter[1] - parameter[0] - 1.0, parameter[0] - 1.0);
     hasSpecificFamily_ = true;
     return;
   }
   // Laguerre factory
   if (measureType == "Gamma")
   {
-    const NumericalPoint parameters(measure_.getParametersCollection()[0]);
-    specificFamily_ = LaguerreFactory(parameters[0] - 1.0);
+    const NumericalPoint parameter(measure_.getParameter());
+    specificFamily_ = LaguerreFactory(parameter[0] - 1.0);
     hasSpecificFamily_ = true;
     return;
   }
   // Charlier factory
   if (measureType == "Poisson")
   {
-    const NumericalPoint parameters(measure_.getParametersCollection()[0]);
-    specificFamily_ = CharlierFactory(parameters[0]);
+    const NumericalPoint parameter(measure_.getParameter());
+    specificFamily_ = CharlierFactory(parameter[0]);
     hasSpecificFamily_ = true;
     return;
   }
   // Krawtchouk factory
   if (measureType == "Binomial")
   {
-    const NumericalPoint parameters(measure_.getParametersCollection()[0]);
-    specificFamily_ = KrawtchoukFactory(static_cast<UnsignedInteger>(parameters[0]), parameters[1]);
+    const NumericalPoint parameter(measure_.getParameter());
+    specificFamily_ = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
     hasSpecificFamily_ = true;
     return;
   }
   // Meixner factory
   if (measureType == "NegativeBinomial")
   {
-    const NumericalPoint parameters(measure_.getParametersCollection()[0]);
-    specificFamily_ = MeixnerFactory(parameters[0], parameters[1]);
+    const NumericalPoint parameter(measure_.getParameter());
+    specificFamily_ = MeixnerFactory(parameter[0], parameter[1]);
     hasSpecificFamily_ = true;
     return;
   }
