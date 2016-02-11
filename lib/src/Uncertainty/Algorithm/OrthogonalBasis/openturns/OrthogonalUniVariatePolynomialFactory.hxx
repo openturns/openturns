@@ -52,7 +52,7 @@ public:
   enum ParameterSet { ANALYSIS, PROBABILITY };
 
   /** Constructor */
-  OrthogonalUniVariatePolynomialFactory(const Distribution & measure);
+  explicit OrthogonalUniVariatePolynomialFactory(const Distribution & measure);
 
   /** Virtual constructor */
   virtual OrthogonalUniVariatePolynomialFactory * clone() const;
