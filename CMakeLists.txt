@@ -51,7 +51,7 @@ set (OPENTURNS_LIBRARY_PATH
       CACHE PATH "The directory where the library is installed"
    )
 set (OPENTURNS_INCLUDE_PATH
-      include/openturns
+      include
       CACHE PATH "The directory where the header files are installed"
    )
 set (OPENTURNS_CONFIG_CMAKE_PATH
@@ -287,7 +287,7 @@ endmacro (ot_add_built_source_file)
 
 set (HEADERFILES "" CACHE INTERNAL "List of header files to install")
 macro (ot_install_header_file FILENAME)
-  set (hf ${HEADERFILES} ${CMAKE_CURRENT_SOURCE_DIR}/${FILENAME})
+  set (hf ${HEADERFILES} ${CMAKE_CURRENT_SOURCE_DIR}/openturns/${FILENAME})
   set (HEADERFILES ${hf} CACHE INTERNAL "List of header files to install")
 endmacro (ot_install_header_file)
 
@@ -370,7 +370,7 @@ if(POLICY CMP0042)
   cmake_policy(SET CMP0042 NEW)
 endif()
 
-set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/swig)
+set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
 set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns)
 
 # necessary to link against Py_InitModule64
