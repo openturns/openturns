@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "NormalFactory.hxx"
+#include "openturns/NormalFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

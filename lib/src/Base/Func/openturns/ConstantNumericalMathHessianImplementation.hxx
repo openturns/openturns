@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CONSTANTNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_CONSTANTNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "SymmetricTensor.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,19 +22,19 @@
 #ifndef OPENTURNS_OTGRAPH_HXX
 #define OPENTURNS_OTGRAPH_HXX
 
-#include "BarPlot.hxx"
-#include "Cloud.hxx"
-#include "Contour.hxx"
-#include "Curve.hxx"
-#include "Drawable.hxx"
-#include "DrawableImplementation.hxx"
-#include "Graph.hxx"
-#include "GraphImplementation.hxx"
-#include "Pairs.hxx"
-#include "Pie.hxx"
-#include "Polygon.hxx"
-#include "PolygonArray.hxx"
-#include "Rfunctions.hxx"
-#include "Staircase.hxx"
+#include "openturns/BarPlot.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/Contour.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Drawable.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/GraphImplementation.hxx"
+#include "openturns/Pairs.hxx"
+#include "openturns/Pie.hxx"
+#include "openturns/Polygon.hxx"
+#include "openturns/PolygonArray.hxx"
+#include "openturns/Rfunctions.hxx"
+#include "openturns/Staircase.hxx"
 
 #endif /* OPENTURNS_OTGRAPH_HXX */

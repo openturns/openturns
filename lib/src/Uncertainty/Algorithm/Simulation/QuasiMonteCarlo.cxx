@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "QuasiMonteCarlo.hxx"
-#include "QuasiMonteCarloResult.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/QuasiMonteCarlo.hxx"
+#include "openturns/QuasiMonteCarloResult.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_FISHERSNEDECORFACTORY_HXX
 #define OPENTURNS_FISHERSNEDECORFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "FisherSnedecor.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/FisherSnedecor.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

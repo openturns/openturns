@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ORTHOGONALDIRECTION_HXX
 #define OPENTURNS_ORTHOGONALDIRECTION_HXX
 
-#include "SamplingStrategyImplementation.hxx"
-#include "Indices.hxx"
-#include "Matrix.hxx"
+#include "openturns/SamplingStrategyImplementation.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

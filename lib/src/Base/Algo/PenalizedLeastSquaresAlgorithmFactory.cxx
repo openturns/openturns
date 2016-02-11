@@ -19,8 +19,8 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "PenalizedLeastSquaresAlgorithmFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithmFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

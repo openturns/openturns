@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MONTECARLOEXPERIMENT_HXX
 #define OPENTURNS_MONTECARLOEXPERIMENT_HXX
 
-#include "WeightedExperiment.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

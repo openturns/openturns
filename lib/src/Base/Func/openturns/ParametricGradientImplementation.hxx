@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_PARAMETRICGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_PARAMETRICGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "StorageManager.hxx"
-#include "ParametricEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/ParametricEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

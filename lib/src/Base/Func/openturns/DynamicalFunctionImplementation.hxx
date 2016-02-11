@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_DYNAMICALFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_DYNAMICALFUNCTIONIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Description.hxx"
-#include "Field.hxx"
-#include "ProcessSample.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/ProcessSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

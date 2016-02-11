@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_OTTESTCODE_HXX
 #define OPENTURNS_OTTESTCODE_HXX
 
-#include "OTconfig.hxx"
+#include "openturns/OTconfig.hxx"
 
 #include <exception>
 #include <string>         // for std::string
@@ -33,9 +33,9 @@
 # include <cstdio>         // for _set_output_format
 #endif
 
-#include "RandomGenerator.hxx"
-#include "OStream.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/OStream.hxx"
+#include "openturns/NumericalSample.hxx"
 
 #define TESTPREAMBLE { OT::Test::parseOptions(argc, argv); }
 

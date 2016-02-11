@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_MATERNMODEL_HXX
 #define OPENTURNS_MATERNMODEL_HXX
 
-#include "StationaryCovarianceModel.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

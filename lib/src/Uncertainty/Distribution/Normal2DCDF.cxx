@@ -21,9 +21,9 @@
  */
 #include <cmath>
 
-#include "Normal2DCDF.hxx"
-#include "DistFunc.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/Normal2DCDF.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

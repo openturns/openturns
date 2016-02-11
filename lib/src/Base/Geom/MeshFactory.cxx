@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "MeshFactory.hxx"
+#include "openturns/MeshFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

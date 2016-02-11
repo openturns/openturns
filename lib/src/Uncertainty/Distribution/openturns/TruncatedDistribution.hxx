@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_TRUNCATEDDISTRIBUTION_HXX
 #define OPENTURNS_TRUNCATEDDISTRIBUTION_HXX
 
-#include "DistributionImplementation.hxx"
-#include "Distribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

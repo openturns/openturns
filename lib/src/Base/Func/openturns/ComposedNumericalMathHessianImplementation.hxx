@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_COMPOSEDNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_COMPOSEDNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "NumericalMathGradientImplementation.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

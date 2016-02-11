@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_SKELLAMFACTORY_HXX
 #define OPENTURNS_SKELLAMFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Skellam.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Skellam.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

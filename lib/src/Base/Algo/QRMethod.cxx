@@ -19,11 +19,11 @@
  *
  */
 
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "QRMethod.hxx"
-#include "TriangularMatrix.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/QRMethod.hxx"
+#include "openturns/TriangularMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

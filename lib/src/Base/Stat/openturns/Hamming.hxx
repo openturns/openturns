@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_HAMMINGFILTER_HXX
 #define OPENTURNS_HAMMINGFILTER_HXX
 
-#include "PersistentObject.hxx"
-#include "FilteringWindowsImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/FilteringWindowsImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

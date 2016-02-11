@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_POLYGONARRAY_HXX
 #define OPENTURNS_POLYGONARRAY_HXX
 
-#include "DrawableImplementation.hxx"
-#include "NumericalSample.hxx"
-#include "Polygon.hxx"
-#include "Collection.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Polygon.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

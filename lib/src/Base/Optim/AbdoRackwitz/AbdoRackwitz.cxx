@@ -20,9 +20,9 @@
  *
  */
 #include <cmath>
-#include "AbdoRackwitz.hxx"
-#include "Log.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/AbdoRackwitz.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

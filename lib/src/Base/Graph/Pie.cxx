@@ -20,11 +20,11 @@
  */
 #include <cstdlib>
 
-#include "Pie.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/Pie.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

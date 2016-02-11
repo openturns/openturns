@@ -1,14 +1,14 @@
 // SWIG file SymmetricTensor.i
 
 %{
-#include "SymmetricTensor.hxx"
+#include "openturns/SymmetricTensor.hxx"
 %}
 
 %include SymmetricTensor_doc.i
 
 %apply const NumericalScalarCollection & { const OT::SymmetricTensor::NumericalScalarCollection & };
 
-%include SymmetricTensor.hxx
+%include openturns/SymmetricTensor.hxx
 
 namespace OT {  
 

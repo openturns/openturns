@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "HistogramFactory.hxx"
-#include "HistogramPair.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
-#include "Exception.hxx"
+#include "openturns/HistogramFactory.hxx"
+#include "openturns/HistogramPair.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

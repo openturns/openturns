@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_USERDEFINED_HXX
 #define OPENTURNS_USERDEFINED_HXX
 
-#include "OTprivate.hxx"
-#include "DiscreteDistribution.hxx"
-#include "PersistentCollection.hxx"
-#include "PersistentObject.hxx"
-#include "UserDefinedPair.hxx"
-#include "Indices.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/UserDefinedPair.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

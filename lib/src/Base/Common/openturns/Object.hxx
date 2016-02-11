@@ -23,7 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include <sstream>               // for std::ostringstream
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 
 

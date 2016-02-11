@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_STRONGMAXTEST_HXX
 #define OPENTURNS_STRONGMAXTEST_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "StandardEvent.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

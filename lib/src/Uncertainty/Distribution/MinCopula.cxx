@@ -19,12 +19,12 @@
  *
  */
 #include <cmath>
-#include "MinCopula.hxx"
-#include "Indices.hxx"
-#include "RandomGenerator.hxx"
-#include "Exception.hxx"
-#include "Description.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/MinCopula.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

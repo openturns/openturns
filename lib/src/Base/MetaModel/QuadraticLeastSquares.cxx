@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "QuadraticLeastSquares.hxx"
-#include "QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticLeastSquares.hxx"
+#include "openturns/QuadraticNumericalMathFunction.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

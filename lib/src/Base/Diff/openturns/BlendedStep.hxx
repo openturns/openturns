@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_BLENDEDSTEP_HXX
 #define OPENTURNS_BLENDEDSTEP_HXX
 
-#include "FiniteDifferenceStepImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/FiniteDifferenceStepImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

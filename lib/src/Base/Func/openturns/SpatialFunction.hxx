@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SPATIALFUNCTION_HXX
 #define OPENTURNS_SPATIALFUNCTION_HXX
 
-#include "PersistentObject.hxx"
-#include "DynamicalFunctionImplementation.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/DynamicalFunctionImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

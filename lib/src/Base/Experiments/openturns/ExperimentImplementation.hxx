@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_EXPERIMENTIMPLEMENTATION_HXX
 #define OPENTURNS_EXPERIMENTIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Pointer.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

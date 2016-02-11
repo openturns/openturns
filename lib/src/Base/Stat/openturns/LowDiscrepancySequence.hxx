@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LOWDISCREPANCYSEQUENCE_HXX
 #define OPENTURNS_LOWDISCREPANCYSEQUENCE_HXX
 
-#include "LowDiscrepancySequenceImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/LowDiscrepancySequenceImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 /**

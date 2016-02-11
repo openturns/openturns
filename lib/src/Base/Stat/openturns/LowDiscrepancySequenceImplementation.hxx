@@ -23,12 +23,12 @@
 #ifndef OPENTURNS_LOWDISCREPANCYSEQUENCEIMPLEMENTATION_HXX
 #define OPENTURNS_LOWDISCREPANCYSEQUENCEIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Interval.hxx"
-#include "Indices.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "Collection.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 /**

@@ -3,10 +3,10 @@
 OTAutodoc(IntegrationAlgorithm)
 
 %{
-#include "IntegrationAlgorithm.hxx"
+#include "openturns/IntegrationAlgorithm.hxx"
 %}
 
 OTTypedInterfaceObjectHelper(IntegrationAlgorithm)
 
-%include IntegrationAlgorithm.hxx
+%include openturns/IntegrationAlgorithm.hxx
 namespace OT{ %extend IntegrationAlgorithm { IntegrationAlgorithm(const IntegrationAlgorithm & other) { return new OT::IntegrationAlgorithm(other); } } }

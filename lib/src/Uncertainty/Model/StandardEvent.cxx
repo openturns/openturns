@@ -18,15 +18,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "StandardEvent.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Distribution.hxx"
-#include "CompositeRandomVector.hxx"
-#include "UsualRandomVector.hxx"
-#include "RandomVectorImplementation.hxx"
-#include "Pointer.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "CovarianceMatrix.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/UsualRandomVector.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

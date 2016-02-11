@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_MAXIMUMENTROPYORDERSTATISTICSDISTRIBUTION_HXX
 #define OPENTURNS_MAXIMUMENTROPYORDERSTATISTICSDISTRIBUTION_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "PiecewiseHermiteEvaluationImplementation.hxx"
-#include "Distribution.hxx"
-#include "GaussKronrod.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

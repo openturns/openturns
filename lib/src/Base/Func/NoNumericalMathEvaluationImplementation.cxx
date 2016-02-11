@@ -19,8 +19,8 @@
  *
  */
 
-#include "NoNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

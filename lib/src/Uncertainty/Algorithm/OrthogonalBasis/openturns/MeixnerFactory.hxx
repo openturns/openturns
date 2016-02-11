@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MEIXNERFACTORY_HXX
 #define OPENTURNS_MEIXNERFACTORY_HXX
 
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

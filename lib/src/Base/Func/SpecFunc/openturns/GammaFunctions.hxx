@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_GAMMAFUNCTIONS_HXX
 #define OPENTURNS_GAMMAFUNCTIONS_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_FRANKCOPULAFACTORY_HXX
 #define OPENTURNS_FRANKCOPULAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "FrankCopula.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/FrankCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

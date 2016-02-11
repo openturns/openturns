@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_COMPOSITE_HXX
 #define OPENTURNS_COMPOSITE_HXX
 
-#include "StratifiedExperiment.hxx"
+#include "openturns/StratifiedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

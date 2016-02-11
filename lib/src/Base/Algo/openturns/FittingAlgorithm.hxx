@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FITTINGALGORITHM_HXX
 #define OPENTURNS_FITTINGALGORITHM_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "FittingAlgorithmImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/FittingAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

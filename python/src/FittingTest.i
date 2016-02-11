@@ -18,10 +18,10 @@ OT::Distribution OT::FittingTest::BestModelChiSquared(const OT::NumericalSample 
                                                       OT::TestResult & bestResult);
 
 %{
-#include "FittingTest.hxx"
+#include "openturns/FittingTest.hxx"
 %}
 
 %include FittingTest_doc.i
 
-%include FittingTest.hxx
+%include openturns/FittingTest.hxx
 

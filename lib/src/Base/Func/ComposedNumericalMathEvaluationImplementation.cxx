@@ -13,8 +13,8 @@
  *
  */
 
-#include "ComposedNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

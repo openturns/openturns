@@ -23,10 +23,10 @@
 #include <cassert>
 #include <errno.h>
 
-#include "OTthread.hxx"
-#include "Log.hxx"
-#include "OTconfig.hxx"
-#include "MutexLock.hxx"
+#include "openturns/OTthread.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/MutexLock.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

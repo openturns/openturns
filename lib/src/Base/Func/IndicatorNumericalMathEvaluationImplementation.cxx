@@ -13,9 +13,9 @@
  *
  */
 
-#include "IndicatorNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Less.hxx"
+#include "openturns/IndicatorNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Less.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

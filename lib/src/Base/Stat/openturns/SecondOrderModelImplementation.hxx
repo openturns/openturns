@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_SECONDORDERMODELIMPLEMENTATION_HXX
 #define OPENTURNS_SECONDORDERMODELIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "CovarianceMatrix.hxx"
-#include "Pointer.hxx"
-#include "HermitianMatrix.hxx"
-#include "CovarianceModelImplementation.hxx"
-#include "StationaryCovarianceModel.hxx"
-#include "SpectralModel.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/HermitianMatrix.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/SpectralModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

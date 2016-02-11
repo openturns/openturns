@@ -19,9 +19,9 @@
  *
  */
 #include <cmath>
-#include "NatafIndependentCopulaHessian.hxx"
-#include "DistFunc.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/NatafIndependentCopulaHessian.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

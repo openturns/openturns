@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_EXPONENTIALFACTORY_HXX
 #define OPENTURNS_EXPONENTIALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Exponential.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Exponential.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,14 +21,14 @@
 #ifndef OPENTURNS_LINEARMODEL_HXX
 #define OPENTURNS_LINEARMODEL_HXX
 
-#include "PersistentObject.hxx"
-#include "Description.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "Interval.hxx"
-#include "PersistentCollection.hxx"
-#include "Collection.hxx"
-#include "TestResult.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/TestResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

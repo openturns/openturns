@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_CLOUD_HXX
 #define OPENTURNS_CLOUD_HXX
 
-#include "OTprivate.hxx"
-#include "DrawableImplementation.hxx"
-#include "NumericalSample.hxx"
-#include "Collection.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

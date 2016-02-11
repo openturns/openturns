@@ -23,16 +23,16 @@
 
 #include <stdint.h> // for uint64_t
 
-#include "NumericalPoint.hxx"
-#include "Description.hxx"
-#include "Indices.hxx"
-#include "PersistentCollection.hxx"
-#include "SquareMatrix.hxx"
-#include "CovarianceMatrix.hxx"
-#include "CorrelationMatrix.hxx"
-#include "SquareMatrix.hxx"
-#include "Collection.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/CorrelationMatrix.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/ResourceMap.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

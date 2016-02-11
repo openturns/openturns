@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SPHEREUNIFORMNORM_HXX
 #define OPENTURNS_SPHEREUNIFORMNORM_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "SphereUniformNormImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/SphereUniformNormImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

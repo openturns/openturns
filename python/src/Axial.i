@@ -1,10 +1,10 @@
 // SWIG file Axial.i
 
 %{
-#include "Axial.hxx"
+#include "openturns/Axial.hxx"
 %}
 
 %include Axial_doc.i
 
-%include Axial.hxx
+%include openturns/Axial.hxx
 namespace OT { %extend Axial { Axial(const Axial & other) { return new OT::Axial(other); } } }

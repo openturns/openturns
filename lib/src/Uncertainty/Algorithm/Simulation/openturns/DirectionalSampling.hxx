@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_DIRECTIONALSAMPLING_HXX
 #define OPENTURNS_DIRECTIONALSAMPLING_HXX
 
-#include "Simulation.hxx"
-#include "NumericalPoint.hxx"
-#include "Distribution.hxx"
-#include "StandardEvent.hxx"
-#include "RootStrategy.hxx"
-#include "SamplingStrategy.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/RootStrategy.hxx"
+#include "openturns/SamplingStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

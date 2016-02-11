@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MULTINOMIALFACTORY_HXX
 #define OPENTURNS_MULTINOMIALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Multinomial.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Multinomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

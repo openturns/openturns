@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_TNCSPECIFICPARAMETERS_HXX
 #define OPENTURNS_TNCSPECIFICPARAMETERS_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

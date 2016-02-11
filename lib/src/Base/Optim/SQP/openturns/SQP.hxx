@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_SQP_HXX
 #define OPENTURNS_SQP_HXX
 
-#include "OTprivate.hxx"
-#include "OptimizationSolverImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

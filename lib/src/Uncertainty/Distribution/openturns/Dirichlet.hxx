@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DIRICHLET_HXX
 #define OPENTURNS_DIRICHLET_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_POINTER_HXX
 #define OPENTURNS_POINTER_HXX
 
-#include "OTprivate.hxx"
-#include "SharedPointer.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SharedPointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

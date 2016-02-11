@@ -20,9 +20,9 @@
  */
 #include <cstdlib>
 
-#include "HaltonSequence.hxx"
-#include "ResourceMap.hxx"
-#include "Exception.hxx"
+#include "openturns/HaltonSequence.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

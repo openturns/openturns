@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FILTERINGWINDOWSIMPLEMENTATION_HXX
 #define OPENTURNS_FILTERINGWINDOWSIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Pointer.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EQUAL_HXX
 #define OPENTURNS_EQUAL_HXX
 
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

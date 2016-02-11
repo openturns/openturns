@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FIELD_HXX
 #define OPENTURNS_FIELD_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "FieldImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/FieldImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

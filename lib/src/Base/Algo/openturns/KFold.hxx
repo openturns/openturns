@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_KFOLD_HXX
 #define OPENTURNS_KFOLD_HXX
 
-#include "ResourceMap.hxx"
-#include "FittingAlgorithmImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/FittingAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

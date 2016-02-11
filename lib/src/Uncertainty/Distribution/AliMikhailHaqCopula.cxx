@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "AliMikhailHaqCopula.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/AliMikhailHaqCopula.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

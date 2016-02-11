@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
 #include <Python.h>
-#include "NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

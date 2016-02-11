@@ -22,20 +22,20 @@
 
 #include <algorithm>
 #include <string>
-#include "OTconfig.hxx"
-#include "FieldImplementation.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
-#include "Path.hxx"
-#include "Cloud.hxx"
-#include "Curve.hxx"
-#include "PolygonArray.hxx"
-#include "Os.hxx"
-#include "PlatformInfo.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/FieldImplementation.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/PolygonArray.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/PlatformInfo.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

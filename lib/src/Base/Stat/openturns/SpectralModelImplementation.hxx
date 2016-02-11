@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_SPECTRALMODELIMPLEMENTATION_HXX
 #define OPENTURNS_SPECTRALMODELIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "HermitianMatrix.hxx"
-#include "RegularGrid.hxx"
-#include "Graph.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/HermitianMatrix.hxx"
+#include "openturns/RegularGrid.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

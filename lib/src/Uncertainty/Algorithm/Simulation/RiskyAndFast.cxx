@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "RiskyAndFast.hxx"
-#include "NumericalPoint.hxx"
-#include "Log.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/RiskyAndFast.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ORTHONORMALIZATIONALGORITHMIMPLEMENTATION_HXX
 #define OPENTURNS_ORTHONORMALIZATIONALGORITHMIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Distribution.hxx"
-#include "OrthogonalUniVariatePolynomial.hxx" // for the definition of Coefficients
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/OrthogonalUniVariatePolynomial.hxx" // for the definition of Coefficients
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_DOMAIN_HXX
 #define OPENTURNS_DOMAIN_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "DomainImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/DomainImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

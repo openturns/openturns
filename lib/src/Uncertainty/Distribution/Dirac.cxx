@@ -19,10 +19,10 @@
  *
  */
 #include <cmath>
-#include "Dirac.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/Dirac.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

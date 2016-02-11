@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_NATAFINDEPENDENTCOPULAHESSIAN_HXX
 #define OPENTURNS_NATAFINDEPENDENTCOPULAHESSIAN_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "SymmetricTensor.hxx"
-#include "NumericalPoint.hxx"
-#include "StorageManager.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

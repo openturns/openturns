@@ -22,6 +22,6 @@
 #ifndef OPENTURNS_OTCLASSIFICATION_HXX
 #define OPENTURNS_OTCLASSIFICATION_HXX
 
-#include "MixtureClassifier.hxx"
+#include "openturns/MixtureClassifier.hxx"
 
 #endif /* OPENTURNS_OTCLASSIFICATION_HXX */

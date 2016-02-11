@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_SENSITIVITYANALYSIS_HXX
 #define OPENTURNS_SENSITIVITYANALYSIS_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathFunction.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "Graph.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

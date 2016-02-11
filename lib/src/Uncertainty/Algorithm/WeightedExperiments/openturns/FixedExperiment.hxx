@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FIXEDEXPERIMENT_HXX
 #define OPENTURNS_FIXEDEXPERIMENT_HXX
 
-#include "WeightedExperiment.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

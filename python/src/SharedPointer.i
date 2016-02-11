@@ -1,8 +1,8 @@
 // SWIG file SharedPointer.i
 
 %{
-#include "SharedPointer.hxx"
+#include "openturns/SharedPointer.hxx"
 %}
 
-%include SharedPointer.hxx
+%include openturns/SharedPointer.hxx
 namespace OT{ %extend SharedPointer { SharedPointer(const SharedPointer & other) { return new OT::SharedPointer(other); } } }

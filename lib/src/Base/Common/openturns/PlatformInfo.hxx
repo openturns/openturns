@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PLATFORMINFO_HXX
 #define OPENTURNS_PLATFORMINFO_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

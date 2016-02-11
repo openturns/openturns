@@ -24,8 +24,8 @@
 #include <iostream>              // for std::ostream
 #include <stdio.h>               // for std::ostream
 #include <map>                   // for std::map
-#include "OTprivate.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/StorageManager.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

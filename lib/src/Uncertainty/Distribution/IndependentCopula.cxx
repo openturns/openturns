@@ -19,17 +19,17 @@
  *
  */
 #include <cmath>
-#include "IndependentCopula.hxx"
-#include "Normal.hxx"
-#include "IdentityMatrix.hxx"
-#include "NatafIndependentCopulaEvaluation.hxx"
-#include "NatafIndependentCopulaGradient.hxx"
-#include "NatafIndependentCopulaHessian.hxx"
-#include "InverseNatafIndependentCopulaEvaluation.hxx"
-#include "InverseNatafIndependentCopulaGradient.hxx"
-#include "InverseNatafIndependentCopulaHessian.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "RandomGenerator.hxx"
+#include "openturns/IndependentCopula.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/NatafIndependentCopulaEvaluation.hxx"
+#include "openturns/NatafIndependentCopulaGradient.hxx"
+#include "openturns/NatafIndependentCopulaHessian.hxx"
+#include "openturns/InverseNatafIndependentCopulaEvaluation.hxx"
+#include "openturns/InverseNatafIndependentCopulaGradient.hxx"
+#include "openturns/InverseNatafIndependentCopulaHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/RandomGenerator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

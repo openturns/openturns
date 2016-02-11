@@ -22,6 +22,6 @@
 #ifndef OPENTURNS_OTSQP_HXX
 #define OPENTURNS_OTSQP_HXX
 
-#include "SQP.hxx"
+#include "openturns/SQP.hxx"
 
 #endif /* OPENTURNS_OTSQP_HXX */

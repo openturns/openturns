@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Graph.hxx"
-#include "Log.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Graph);

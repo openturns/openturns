@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CLEANINGSTRATEGY_HXX
 #define OPENTURNS_CLEANINGSTRATEGY_HXX
 
-#include "AdaptiveStrategyImplementation.hxx"
+#include "openturns/AdaptiveStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,9 +1,9 @@
 // SWIG file BaseFuncCollection.i
 
 %{
-#include "PythonNumericalMathEvaluationImplementation.hxx"
-#include "PythonNumericalMathGradientImplementation.hxx"
-#include "PythonNumericalMathHessianImplementation.hxx"
+#include "openturns/PythonNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PythonNumericalMathGradientImplementation.hxx"
+#include "openturns/PythonNumericalMathHessianImplementation.hxx"
 
 
 namespace OT {

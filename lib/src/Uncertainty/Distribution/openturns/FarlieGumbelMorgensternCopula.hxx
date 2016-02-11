@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FARLIEGUMBELMORGENSTERNCOPULA_HXX
 #define OPENTURNS_FARLIEGUMBELMORGENSTERNCOPULA_HXX
 
-#include "CopulaImplementation.hxx"
-#include "Exception.hxx"
+#include "openturns/CopulaImplementation.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,10 +1,10 @@
 // SWIG file Normal.i
 
 %{
-#include "Normal.hxx"
+#include "openturns/Normal.hxx"
 %}
 
 %include Normal_doc.i
 
-%include Normal.hxx
+%include openturns/Normal.hxx
 namespace OT { %extend Normal { Normal(const Normal & other) { return new OT::Normal(other); } } }

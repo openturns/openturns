@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_GEOMETRICFACTORY_HXX
 #define OPENTURNS_GEOMETRICFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Geometric.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Geometric.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

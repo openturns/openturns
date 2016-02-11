@@ -21,15 +21,15 @@
 #ifndef OPENTURNS_FUNCTIONALCHAOSALGORITHM_HXX
 #define OPENTURNS_FUNCTIONALCHAOSALGORITHM_HXX
 
-#include "MetaModelResult.hxx"
-#include "MetaModelAlgorithm.hxx"
-#include "Indices.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Distribution.hxx"
-#include "AdaptiveStrategy.hxx"
-#include "ProjectionStrategy.hxx"
-#include "FunctionalChaosResult.hxx"
+#include "openturns/MetaModelResult.hxx"
+#include "openturns/MetaModelAlgorithm.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/AdaptiveStrategy.hxx"
+#include "openturns/ProjectionStrategy.hxx"
+#include "openturns/FunctionalChaosResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_QUADRATICNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_QUADRATICNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
-#include "SymmetricTensor.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

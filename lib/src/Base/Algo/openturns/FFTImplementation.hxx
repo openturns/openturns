@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_FFTIMPLEMENTATION_HXX
 #define OPENTURNS_FFTIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Collection.hxx"
-#include "ComplexMatrix.hxx"
-#include "Matrix.hxx"
-#include "NumericalSample.hxx"
-#include "ComplexTensor.hxx"
-#include "Tensor.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/ComplexMatrix.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/ComplexTensor.hxx"
+#include "openturns/Tensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

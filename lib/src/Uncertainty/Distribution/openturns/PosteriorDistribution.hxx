@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_POSTERIORDISTRIBUTION_HXX
 #define OPENTURNS_POSTERIORDISTRIBUTION_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "ConditionalDistribution.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

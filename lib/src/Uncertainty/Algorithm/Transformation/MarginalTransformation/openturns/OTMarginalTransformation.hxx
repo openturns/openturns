@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_OTMARGINALTRANSFORMATION_HXX
 #define OPENTURNS_OTMARGINALTRANSFORMATION_HXX
 
-#include "MarginalTransformationEvaluation.hxx"
-#include "MarginalTransformationGradient.hxx"
-#include "MarginalTransformationHessian.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
+#include "openturns/MarginalTransformationGradient.hxx"
+#include "openturns/MarginalTransformationHessian.hxx"
 
 #endif /* OPENTURNS_OTMARGINALTRANSFORMATION_HXX */

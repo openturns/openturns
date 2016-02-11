@@ -22,13 +22,13 @@
 #ifndef OPENTURNS_OTSOLVER_HXX
 #define OPENTURNS_OTSOLVER_HXX
 
-#include "Bisection.hxx"
-#include "Brent.hxx"
-#include "Secant.hxx"
-#include "Solver.hxx"
-#include "SolverImplementation.hxx"
-#include "ODESolver.hxx"
-#include "ODESolverImplementation.hxx"
-#include "RungeKutta.hxx"
+#include "openturns/Bisection.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/Secant.hxx"
+#include "openturns/Solver.hxx"
+#include "openturns/SolverImplementation.hxx"
+#include "openturns/ODESolver.hxx"
+#include "openturns/ODESolverImplementation.hxx"
+#include "openturns/RungeKutta.hxx"
 
 #endif /* OPENTURNS_OTSOLVER_HXX */

@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONDISTRIBUTIONIMPLEMENTATION_HXX
 
 #include <Python.h>
-#include "DistributionImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_EXPONENTIALCAUCHYMODEL_HXX
 #define OPENTURNS_EXPONENTIALCAUCHYMODEL_HXX
 
-#include "PersistentObject.hxx"
-#include "SecondOrderModelImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/SecondOrderModelImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

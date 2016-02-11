@@ -21,14 +21,14 @@
 #ifndef OPENTURNS_ORTHOGONALPRODUCTPOLYNOMIALFACTORY_HXX
 #define OPENTURNS_ORTHOGONALPRODUCTPOLYNOMIALFACTORY_HXX
 
-#include "OrthogonalFunctionFactory.hxx"
-#include "Distribution.hxx"
-#include "Indices.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalMathFunction.hxx"
-#include "PersistentCollection.hxx"
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/OrthogonalFunctionFactory.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ProductNumericalMathFunction.hxx"
-#include "NoNumericalMathGradientImplementation.hxx"
-#include "NoNumericalMathHessianImplementation.hxx"
-#include "ProductNumericalMathEvaluationImplementation.hxx"
-#include "ProductNumericalMathGradientImplementation.hxx"
-#include "ProductNumericalMathHessianImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/NoNumericalMathGradientImplementation.hxx"
+#include "openturns/NoNumericalMathHessianImplementation.hxx"
+#include "openturns/ProductNumericalMathEvaluationImplementation.hxx"
+#include "openturns/ProductNumericalMathGradientImplementation.hxx"
+#include "openturns/ProductNumericalMathHessianImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_POSTERIORRANDOMVECTOR_HXX
 #define OPENTURNS_POSTERIORRANDOMVECTOR_HXX
 
-#include "RandomVectorImplementation.hxx"
-#include "Sampler.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/Sampler.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

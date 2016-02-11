@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KRAWTCHOUKFACTORY_HXX
 #define OPENTURNS_KRAWTCHOUKFACTORY_HXX
 
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

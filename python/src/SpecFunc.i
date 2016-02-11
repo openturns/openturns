@@ -1,7 +1,7 @@
 // SWIG file SpecFunc.i
 
 %{
-#include "SpecFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 %}
 
 %include SpecFunc_doc.i
@@ -17,4 +17,4 @@
 %ignore OT::SpecFunc::Asinh;
 %ignore OT::SpecFunc::Atanh;
 
-%include SpecFunc.hxx
+%include openturns/SpecFunc.hxx

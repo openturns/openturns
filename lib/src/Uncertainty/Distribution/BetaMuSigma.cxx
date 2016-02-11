@@ -20,9 +20,9 @@
  */
 
 #include <cmath>
-#include "BetaFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "BetaMuSigma.hxx"
+#include "openturns/BetaFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/BetaMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "ConstantRandomVector.hxx"
-#include "UserDefined.hxx"
-#include "UserDefinedPair.hxx"
-#include "SquareMatrix.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ConstantRandomVector.hxx"
+#include "openturns/UserDefined.hxx"
+#include "openturns/UserDefinedPair.hxx"
+#include "openturns/SquareMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

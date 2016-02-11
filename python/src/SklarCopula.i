@@ -1,7 +1,7 @@
 // SWIG file SklarCopula.i
 
 %{
-#include "SklarCopula.hxx"
+#include "openturns/SklarCopula.hxx"
 %}
 
 %include SklarCopula_doc.i
@@ -29,5 +29,5 @@
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DistributionImplementation, 0));
 }
 
-%include SklarCopula.hxx
+%include openturns/SklarCopula.hxx
 namespace OT { %extend SklarCopula { SklarCopula(const SklarCopula & other) { return new OT::SklarCopula(other); } } }

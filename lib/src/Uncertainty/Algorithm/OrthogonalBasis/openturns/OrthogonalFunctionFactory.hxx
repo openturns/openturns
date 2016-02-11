@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_ORTHOGONALFUNCTIONFACTORY_HXX
 #define OPENTURNS_ORTHOGONALFUNCTIONFACTORY_HXX
 
-#include "FunctionalBasisImplementation.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Distribution.hxx"
-#include "EnumerateFunction.hxx"
+#include "openturns/FunctionalBasisImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/EnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

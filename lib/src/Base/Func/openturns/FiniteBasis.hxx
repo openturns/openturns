@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FINITEBASIS_HXX
 #define OPENTURNS_FINITEBASIS_HXX
 
-#include "BasisImplementation.hxx"
+#include "openturns/BasisImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

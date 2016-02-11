@@ -18,14 +18,14 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "GeneralizedLinearModelResult.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Mesh.hxx"
-#include "TemporalNormalProcess.hxx"
-#include "WhiteNoise.hxx"
-#include "Normal.hxx"
+#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/TemporalNormalProcess.hxx"
+#include "openturns/WhiteNoise.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

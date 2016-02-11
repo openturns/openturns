@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_OTNATAFELLIPTICALCOPULA_HXX
 #define OPENTURNS_OTNATAFELLIPTICALCOPULA_HXX
 
-#include "InverseNatafEllipticalCopulaEvaluation.hxx"
-#include "InverseNatafEllipticalCopulaGradient.hxx"
-#include "InverseNatafEllipticalCopulaHessian.hxx"
-#include "NatafEllipticalCopulaEvaluation.hxx"
-#include "NatafEllipticalCopulaGradient.hxx"
-#include "NatafEllipticalCopulaHessian.hxx"
+#include "openturns/InverseNatafEllipticalCopulaEvaluation.hxx"
+#include "openturns/InverseNatafEllipticalCopulaGradient.hxx"
+#include "openturns/InverseNatafEllipticalCopulaHessian.hxx"
+#include "openturns/NatafEllipticalCopulaEvaluation.hxx"
+#include "openturns/NatafEllipticalCopulaGradient.hxx"
+#include "openturns/NatafEllipticalCopulaHessian.hxx"
 
 #endif /* OPENTURNS_OTNATAFELLIPTICALCOPULA_HXX */

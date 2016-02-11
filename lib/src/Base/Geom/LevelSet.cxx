@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LevelSet.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
-#include "Exception.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
+#include "openturns/LevelSet.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

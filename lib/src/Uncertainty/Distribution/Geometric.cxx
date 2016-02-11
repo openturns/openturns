@@ -19,10 +19,10 @@
  *
  */
 #include <cmath>
-#include "Geometric.hxx"
-#include "SpecFunc.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Geometric.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

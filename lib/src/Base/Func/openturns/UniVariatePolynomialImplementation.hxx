@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_UNIVARIATEPOLYNOMIALIMPLEMENTATION_HXX
 #define OPENTURNS_UNIVARIATEPOLYNOMIALIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalPoint.hxx"
-#include "Graph.hxx"
-#include "Matrix.hxx"
-#include "Pointer.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

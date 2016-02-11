@@ -20,13 +20,13 @@
  */
 #include <cmath> // For HUGE_VAL
 
-#include "TNC.hxx"
+#include "openturns/TNC.hxx"
 #include "algotnc.h"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
-#include "Log.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

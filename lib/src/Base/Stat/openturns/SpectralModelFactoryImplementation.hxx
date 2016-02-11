@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_SPECTRALMODELFACTORYIMPLEMENTATION_HXX
 #define OPENTURNS_SPECTRALMODELFACTORYIMPLEMENTATION_HXX
 
-#include "SpectralModel.hxx"
-#include "ProcessSample.hxx"
-#include "Field.hxx"
-#include "NumericalPoint.hxx"
-#include "PersistentObject.hxx"
-#include "FFT.hxx"
+#include "openturns/SpectralModel.hxx"
+#include "openturns/ProcessSample.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/FFT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_RICEFACTORY_HXX
 #define OPENTURNS_RICEFACTORY_HXX
 
-#include "Rice.hxx"
-#include "DistributionFactoryImplementation.hxx"
+#include "openturns/Rice.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

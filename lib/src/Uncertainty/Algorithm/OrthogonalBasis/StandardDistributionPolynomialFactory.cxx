@@ -19,17 +19,17 @@
  *
  */
 
-#include "StandardDistributionPolynomialFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Uniform.hxx"
-#include "GramSchmidtAlgorithm.hxx"
-#include "CharlierFactory.hxx"
-#include "HermiteFactory.hxx"
-#include "JacobiFactory.hxx"
-#include "KrawtchoukFactory.hxx"
-#include "LaguerreFactory.hxx"
-#include "LegendreFactory.hxx"
-#include "MeixnerFactory.hxx"
+#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/GramSchmidtAlgorithm.hxx"
+#include "openturns/CharlierFactory.hxx"
+#include "openturns/HermiteFactory.hxx"
+#include "openturns/JacobiFactory.hxx"
+#include "openturns/KrawtchoukFactory.hxx"
+#include "openturns/LaguerreFactory.hxx"
+#include "openturns/LegendreFactory.hxx"
+#include "openturns/MeixnerFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

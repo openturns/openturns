@@ -19,9 +19,9 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "Basis.hxx"
-#include "FiniteBasis.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/FiniteBasis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

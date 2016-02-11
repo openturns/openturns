@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "CombinatorialGenerator.hxx"
-#include "Tuples.hxx"
+#include "openturns/CombinatorialGenerator.hxx"
+#include "openturns/Tuples.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

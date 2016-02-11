@@ -19,11 +19,11 @@
  *
  */
 
-#include "OTwindows.h" // For CreateProcess
-#include "Os.hxx"
-#include "Log.hxx"
-#include "OSS.hxx"
-#include "ResourceMap.hxx" // For ResourceMap
+#include "openturns/OTwindows.h" // For CreateProcess
+#include "openturns/Os.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/ResourceMap.hxx" // For ResourceMap
 
 #ifdef OPENTURNS_HAVE_UNISTD_H
 # include <unistd.h>  // for rmdir, unlink

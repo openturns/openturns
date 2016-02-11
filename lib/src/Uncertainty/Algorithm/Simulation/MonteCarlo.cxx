@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "MonteCarlo.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/MonteCarlo.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

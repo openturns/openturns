@@ -20,16 +20,16 @@
  */
 
 #include <cmath>
-#include "CopulaImplementation.hxx"
-#include "IndependentCopula.hxx"
-#include "Distribution.hxx"
-#include "Brent.hxx"
-#include "Curve.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Combinations.hxx"
-#include "ComposedDistribution.hxx"
-#include "GaussKronrod.hxx"
-#include "IteratedQuadrature.hxx"
+#include "openturns/CopulaImplementation.hxx"
+#include "openturns/IndependentCopula.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Combinations.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/IteratedQuadrature.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

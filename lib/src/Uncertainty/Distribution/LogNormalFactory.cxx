@@ -19,12 +19,12 @@
  *
  */
 #include <cmath>
-#include "LogNormalFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Brent.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/LogNormalFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

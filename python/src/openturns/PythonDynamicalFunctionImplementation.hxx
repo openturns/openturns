@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONDYNAMICALFUNCTIONIMPLEMENTATION_HXX
 
 #include <Python.h>
-#include "DynamicalFunctionImplementation.hxx"
+#include "openturns/DynamicalFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

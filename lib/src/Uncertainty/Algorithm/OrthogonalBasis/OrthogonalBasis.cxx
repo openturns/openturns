@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrthogonalBasis.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/OrthogonalBasis.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

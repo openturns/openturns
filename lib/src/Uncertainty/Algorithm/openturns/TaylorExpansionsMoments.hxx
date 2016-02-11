@@ -21,14 +21,14 @@
 #ifndef OPENTURNS_TAYLOREXPANSIONMOMENTS_HXX
 #define OPENTURNS_TAYLOREXPANSIONMOMENTS_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "RandomVector.hxx"
-#include "SymmetricTensor.hxx"
-#include "CovarianceMatrix.hxx"
-#include "Matrix.hxx"
-#include "Graph.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

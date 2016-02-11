@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_FARLIEGUMBELMORGENSTERNCOPULAFACTORY_HXX
 #define OPENTURNS_FARLIEGUMBELMORGENSTERNCOPULAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "FarlieGumbelMorgensternCopula.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/FarlieGumbelMorgensternCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

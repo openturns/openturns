@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_IMPORTANCESAMPLING_HXX
 #define OPENTURNS_IMPORTANCESAMPLING_HXX
 
-#include "Simulation.hxx"
-#include "Distribution.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ORTHONORMALIZATIONALGORITHM_HXX
 #define OPENTURNS_ORTHONORMALIZATIONALGORITHM_HXX
 
-#include "OrthonormalizationAlgorithmImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

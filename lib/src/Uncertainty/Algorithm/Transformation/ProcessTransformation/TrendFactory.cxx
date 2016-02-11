@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "TrendFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "LeastSquaresMetaModelSelection.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/TrendFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LeastSquaresMetaModelSelection.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_USUALRANDOMVECTOR_HXX
 #define OPENTURNS_USUALRANDOMVECTOR_HXX
 
-#include "OTprivate.hxx"
-#include "RandomVectorImplementation.hxx"
-#include "Distribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,20 +18,20 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "WhittleFactory.hxx"
-#include "Exception.hxx"
-#include "WelchFactory.hxx"
-#include "ARMACoefficients.hxx"
-#include "UserDefinedSpectralModel.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/WhittleFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/WelchFactory.hxx"
+#include "openturns/ARMACoefficients.hxx"
+#include "openturns/UserDefinedSpectralModel.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "algocobyla.h"
-#include "Log.hxx"
-#include "Normal.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "OptimizationSolver.hxx"
-#include "Cobyla.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/Cobyla.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

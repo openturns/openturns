@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CURVE_HXX
 #define OPENTURNS_CURVE_HXX
 
-#include "DrawableImplementation.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

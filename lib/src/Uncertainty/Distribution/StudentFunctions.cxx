@@ -21,13 +21,13 @@
  */
 #include <cmath>
 
-#include "StudentFunctions.hxx"
-#include "Exception.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "GaussKronrodRule.hxx"
-#include "Log.hxx"
-#include "OTconfig.hxx"
+#include "openturns/StudentFunctions.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/GaussKronrodRule.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #include <boost/math/distributions/students_t.hpp>
 #include <boost/math/distributions/non_central_t.hpp>

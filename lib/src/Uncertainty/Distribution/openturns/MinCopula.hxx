@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_MINCOPULA_HXX
 #define OPENTURNS_MINCOPULA_HXX
 
-#include "OTprivate.hxx"
-#include "CopulaImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/CopulaImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

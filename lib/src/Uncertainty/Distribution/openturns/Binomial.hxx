@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_BINOMIAL_HXX
 #define OPENTURNS_BINOMIAL_HXX
 
-#include "OTprivate.hxx"
-#include "DiscreteDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

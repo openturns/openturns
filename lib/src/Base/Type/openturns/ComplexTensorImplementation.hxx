@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_COMPLEXTENSORIMPLEMENTATION_HXX
 #define OPENTURNS_COMPLEXTENSORIMPLEMENTATION_HXX
 
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
-#include "ComplexMatrix.hxx"
-#include "HermitianMatrix.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ComplexMatrix.hxx"
+#include "openturns/HermitianMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

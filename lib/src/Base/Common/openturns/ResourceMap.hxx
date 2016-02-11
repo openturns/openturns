@@ -24,11 +24,11 @@
 
 #include <map>
 
-#include "Log.hxx" // ensures correct static initialization order
-#include "OStream.hxx"
-#include "Pointer.hxx"
-#include "Path.hxx"
-#include "MutexLock.hxx"
+#include "openturns/Log.hxx" // ensures correct static initialization order
+#include "openturns/OStream.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/MutexLock.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

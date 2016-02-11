@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_OTSENSITIVITY_HXX
 #define OPENTURNS_OTSENSITIVITY_HXX
 
-#include "ANCOVA.hxx"
-#include "FAST.hxx"
+#include "openturns/ANCOVA.hxx"
+#include "openturns/FAST.hxx"
 
 #endif /* OPENTURNS_OTSENSITIVITY_HXX */

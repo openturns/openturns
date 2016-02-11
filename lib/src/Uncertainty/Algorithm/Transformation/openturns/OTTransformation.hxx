@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_OTTRANSFORMATION_HXX
 #define OPENTURNS_OTTRANSFORMATION_HXX
 
-#include "OTMarginalTransformation.hxx"
-#include "OTNatafEllipticalCopula.hxx"
-#include "OTNatafEllipticalDistribution.hxx"
-#include "OTNatafIndependentCopula.hxx"
-#include "OTRosenblatt.hxx"
-#include "OTProcessTransformation.hxx"
+#include "openturns/OTMarginalTransformation.hxx"
+#include "openturns/OTNatafEllipticalCopula.hxx"
+#include "openturns/OTNatafEllipticalDistribution.hxx"
+#include "openturns/OTNatafIndependentCopula.hxx"
+#include "openturns/OTRosenblatt.hxx"
+#include "openturns/OTProcessTransformation.hxx"
 
 #endif /* OPENTURNS_OTTRANSFORMATION_HXX */

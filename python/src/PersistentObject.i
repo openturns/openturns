@@ -1,7 +1,7 @@
 // SWIG file PersistentObject.i
 
 %{
-#include "PersistentObject.hxx"
+#include "openturns/PersistentObject.hxx"
 %}
 
 %ignore OT::PersistentObject::operator=(const PersistentObject &);
@@ -9,4 +9,4 @@
 
 %include PersistentObject_doc.i
 
-%include PersistentObject.hxx
+%include openturns/PersistentObject.hxx

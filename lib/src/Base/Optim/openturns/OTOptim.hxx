@@ -22,18 +22,18 @@
 #ifndef OPENTURNS_OTOPTIM_HXX
 #define OPENTURNS_OTOPTIM_HXX
 
-#include "PenalizedLeastSquaresAlgorithm.hxx"
-#include "NearestPointCheckerResult.hxx"
-#include "NearestPointChecker.hxx"
-#include "OptimizationProblem.hxx"
-#include "OptimizationProblemImplementation.hxx"
-#include "OptimizationSolver.hxx"
-#include "OptimizationSolverImplementation.hxx"
-#include "OptimizationResult.hxx"
-#include "OTAbdoRackwitz.hxx"
-#include "OTCobyla.hxx"
-#include "OTSQP.hxx"
-#include "OTTNC.hxx"
-#include "NLopt.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/NearestPointCheckerResult.hxx"
+#include "openturns/NearestPointChecker.hxx"
+#include "openturns/OptimizationProblem.hxx"
+#include "openturns/OptimizationProblemImplementation.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationResult.hxx"
+#include "openturns/OTAbdoRackwitz.hxx"
+#include "openturns/OTCobyla.hxx"
+#include "openturns/OTSQP.hxx"
+#include "openturns/OTTNC.hxx"
+#include "openturns/NLopt.hxx"
 
 #endif /* OPENTURNS_OTOPTIM_HXX */

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BARPLOT_HXX
 #define OPENTURNS_BARPLOT_HXX
 
-#include "OTprivate.hxx"
-#include "DrawableImplementation.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

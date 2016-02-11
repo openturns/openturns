@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RISKYANDFAST_HXX
 #define OPENTURNS_RISKYANDFAST_HXX
 
-#include "RootStrategyImplementation.hxx"
+#include "openturns/RootStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

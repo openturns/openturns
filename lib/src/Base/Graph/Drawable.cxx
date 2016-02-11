@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Drawable.hxx"
-#include "Curve.hxx"
+#include "openturns/Drawable.hxx"
+#include "openturns/Curve.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

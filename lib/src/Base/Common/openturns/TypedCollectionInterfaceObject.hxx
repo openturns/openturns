@@ -22,8 +22,8 @@
 #define OPENTURNS_TYPEDCOLLECTIONINTERFACEOBJECT_HXX
 
 #include <stdexcept>
-#include "TypedInterfaceObject.hxx"
-#include "Exception.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

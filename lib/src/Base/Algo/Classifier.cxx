@@ -19,8 +19,8 @@
  *
  */
 
-#include "Classifier.hxx"
-#include "ClassifierImplementation.hxx"
+#include "openturns/Classifier.hxx"
+#include "openturns/ClassifierImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

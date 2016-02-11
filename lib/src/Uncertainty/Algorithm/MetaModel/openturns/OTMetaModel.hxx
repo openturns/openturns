@@ -22,13 +22,13 @@
 #ifndef OPENTURNS_OTMETAMODEL_HXX
 #define OPENTURNS_OTMETAMODEL_HXX
 
-#include "OTFunctionalChaos.hxx"
-#include "MetaModelAlgorithm.hxx"
-#include "MetaModelResult.hxx"
-#include "KrigingAlgorithm.hxx"
-#include "KrigingResult.hxx"
-#include "MetaModelValidation.hxx"
-#include "GeneralizedLinearModelResult.hxx"
-#include "GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/OTFunctionalChaos.hxx"
+#include "openturns/MetaModelAlgorithm.hxx"
+#include "openturns/MetaModelResult.hxx"
+#include "openturns/KrigingAlgorithm.hxx"
+#include "openturns/KrigingResult.hxx"
+#include "openturns/MetaModelValidation.hxx"
+#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTMETAMODEL_HXX */

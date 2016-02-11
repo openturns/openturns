@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_COVARIANCEMATRIX_HXX
 #define OPENTURNS_COVARIANCEMATRIX_HXX
 
-#include "OTprivate.hxx"
-#include "SymmetricMatrix.hxx"
-#include "TriangularMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+#include "openturns/TriangularMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

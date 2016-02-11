@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_PRODUCTPOLYNOMIALEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_PRODUCTPOLYNOMIALEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 
 

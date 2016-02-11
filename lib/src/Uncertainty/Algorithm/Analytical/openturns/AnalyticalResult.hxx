@@ -21,15 +21,15 @@
 #ifndef OPENTURNS_ANALYTICALRESULT_HXX
 #define OPENTURNS_ANALYTICALRESULT_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "Collection.hxx"
-#include "Event.hxx"
-#include "Graph.hxx"
-#include "Description.hxx"
-#include "ResourceMap.hxx"
-#include "OptimizationResult.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/OptimizationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

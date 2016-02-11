@@ -62,18 +62,18 @@
 /*
  * This include defines the debug level in all source code.
  */
-#include "OTdebug.h"
+#include "openturns/OTdebug.h"
 
 /*
  * The OTtypes.hxx header file contains all type declarations used by
  * the OpenTURNS platform.
  */
-#include "OTtypes.hxx"
+#include "openturns/OTtypes.hxx"
 
 /*
  * The OTmemory.hxx header file declares some debugging memory functions
  */
-#include "OTmemory.hxx"
+#include "openturns/OTmemory.hxx"
 
 /*
  * Assertions are needed to ensure invariant respect
@@ -83,7 +83,7 @@
 /*
  * Some templates to ease C memory allocation
  */
-#include "OTconfig.hxx"
+#include "openturns/OTconfig.hxx"
 
 #ifdef OPENTURNS_HAVE_STDLIB_H
 #include <stdlib.h>

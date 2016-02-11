@@ -1,12 +1,12 @@
 // SWIG file HMatrix.i
 
 %{
-#include "HMatrix.hxx"
+#include "openturns/HMatrix.hxx"
 %}
 
 %template(HMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::HMatrixImplementation>;
 
-%include HMatrix.hxx
+%include openturns/HMatrix.hxx
 
 namespace OT {
 

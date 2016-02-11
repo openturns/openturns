@@ -21,16 +21,16 @@
 #ifndef OPENTURNS_TRENDFACTORY_HXX
 #define OPENTURNS_TRENDFACTORY_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
-#include "Field.hxx"
-#include "TrendTransform.hxx"
-#include "FittingAlgorithm.hxx"
-#include "BasisSequenceFactory.hxx"
-#include "CorrectedLeaveOneOut.hxx"
-#include "LAR.hxx"
-#include "Collection.hxx"
-#include "Basis.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/TrendTransform.hxx"
+#include "openturns/FittingAlgorithm.hxx"
+#include "openturns/BasisSequenceFactory.hxx"
+#include "openturns/CorrectedLeaveOneOut.hxx"
+#include "openturns/LAR.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

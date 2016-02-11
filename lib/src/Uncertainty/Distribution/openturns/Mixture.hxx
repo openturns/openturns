@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_MIXTURE_HXX
 #define OPENTURNS_MIXTURE_HXX
 
-#include "Distribution.hxx"
-#include "DistributionImplementation.hxx"
-#include "Collection.hxx"
-#include "UserDefined.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/UserDefined.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

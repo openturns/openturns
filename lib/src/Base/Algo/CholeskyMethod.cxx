@@ -19,13 +19,13 @@
  *
  */
 
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "CholeskyMethod.hxx"
-#include "TriangularMatrix.hxx"
-#include "BasisSequenceFactoryImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/CholeskyMethod.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/BasisSequenceFactoryImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

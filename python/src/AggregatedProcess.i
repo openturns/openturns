@@ -1,15 +1,15 @@
 // SWIG file AggregatedProcess.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "AggregatedProcess.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/AggregatedProcess.hxx"
 %}
 
 %include AggregatedProcess_doc.i
 
 %template(ProcessCollection) OT::Collection<OT::Process>;
 
-%include AggregatedProcess.hxx
+%include openturns/AggregatedProcess.hxx
 
 %extend OT::Collection<OT::Process>
 {

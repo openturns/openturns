@@ -21,15 +21,15 @@
 #ifndef OPENTURNS_NUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_NUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "Description.hxx"
-#include "Indices.hxx"
-#include "Matrix.hxx"
-#include "Tensor.hxx"
-#include "Pointer.hxx"
-#include "StorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Tensor.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

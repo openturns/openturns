@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "KrawtchoukFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Binomial.hxx"
-#include "Exception.hxx"
+#include "openturns/KrawtchoukFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Binomial.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

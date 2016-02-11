@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FACTORIAL_HXX
 #define OPENTURNS_FACTORIAL_HXX
 
-#include "OTprivate.hxx"
-#include "StratifiedExperiment.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/StratifiedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_PROJECTIONSTRATEGY_HXX
 #define OPENTURNS_PROJECTIONSTRATEGY_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "ProjectionStrategyImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ProjectionStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

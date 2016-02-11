@@ -20,15 +20,15 @@
  */
 #include <cmath>
 
-#include "ComposedCopula.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "IndependentCopula.hxx"
-#include "Exception.hxx"
-#include "RosenblattEvaluation.hxx"
-#include "InverseRosenblattEvaluation.hxx"
-#include "Log.hxx"
-#include "Normal.hxx"
-#include "NormalCopula.hxx"
+#include "openturns/ComposedCopula.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/IndependentCopula.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/RosenblattEvaluation.hxx"
+#include "openturns/InverseRosenblattEvaluation.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/NormalCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

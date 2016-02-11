@@ -22,8 +22,8 @@
 #define OPENTURNS_LAR_HXX
 
 #include <limits>
-#include "Matrix.hxx"
-#include "BasisSequenceFactoryImplementation.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/BasisSequenceFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

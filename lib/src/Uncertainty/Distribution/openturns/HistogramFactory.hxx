@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_HISTOGRAMFACTORY_HXX
 #define OPENTURNS_HISTOGRAMFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Histogram.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Histogram.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

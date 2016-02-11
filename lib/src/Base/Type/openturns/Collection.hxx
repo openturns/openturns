@@ -23,12 +23,12 @@
 
 #include <vector>
 #include <algorithm>         // for std::copy
-#include "OTprivate.hxx"
-#include "ResourceMap.hxx"
-#include "OSS.hxx"
-#include "OStream.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/OStream.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

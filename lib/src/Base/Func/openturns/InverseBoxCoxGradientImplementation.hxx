@@ -15,8 +15,8 @@
 #ifndef OPENTURNS_INVERSEBOXCOXGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_INVERSEBOXCOXGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "InverseBoxCoxEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/InverseBoxCoxEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

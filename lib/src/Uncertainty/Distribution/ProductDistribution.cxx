@@ -21,11 +21,11 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "ProductDistribution.hxx"
-#include "GaussKronrod.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Uniform.hxx"
+#include "openturns/ProductDistribution.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

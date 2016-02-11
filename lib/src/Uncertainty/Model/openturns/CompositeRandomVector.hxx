@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_COMPOSITERANDOMVECTOR_HXX
 #define OPENTURNS_COMPOSITERANDOMVECTOR_HXX
 
-#include "RandomVectorImplementation.hxx"
-#include "RandomVector.hxx"
-#include "Pointer.hxx"
-#include "NumericalMathFunction.hxx"
-#include "CovarianceMatrix.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

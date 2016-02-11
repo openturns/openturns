@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_FAST_HXX
 #define OPENTURNS_FAST_HXX
 
-#include "OTprivate.hxx"
-#include "Distribution.hxx"
-#include "ResourceMap.hxx"
-#include "FFT.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/FFT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

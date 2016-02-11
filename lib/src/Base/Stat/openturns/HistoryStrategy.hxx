@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_HISTORYSTRATEGY_HXX
 #define OPENTURNS_HISTORYSTRATEGY_HXX
 
-#include "HistoryStrategyImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/HistoryStrategyImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

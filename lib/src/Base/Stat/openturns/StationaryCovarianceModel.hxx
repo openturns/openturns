@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_STATIONARYCOVARIANCEMODEL_HXX
 #define OPENTURNS_STATIONARYCOVARIANCEMODEL_HXX
 
-#include "CovarianceModel.hxx"
-#include "Pointer.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

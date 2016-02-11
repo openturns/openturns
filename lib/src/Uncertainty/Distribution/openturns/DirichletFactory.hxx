@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DIRICHLETFACTORY_HXX
 #define OPENTURNS_DIRICHLETFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Dirichlet.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Dirichlet.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

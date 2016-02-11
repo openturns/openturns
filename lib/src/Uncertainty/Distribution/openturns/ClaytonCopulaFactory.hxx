@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_CLAYTONCOPULAFACTORY_HXX
 #define OPENTURNS_CLAYTONCOPULAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "ClaytonCopula.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/ClaytonCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

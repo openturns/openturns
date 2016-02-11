@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_STATIONARYCOVARIANCEMODELFACTORY_HXX
 #define OPENTURNS_STATIONARYCOVARIANCEMODELFACTORY_HXX
 
-#include "CovarianceModelFactoryImplementation.hxx"
-#include "UserDefinedStationaryCovarianceModel.hxx"
-#include "SpectralModelFactory.hxx"
-#include "WelchFactory.hxx"
+#include "openturns/CovarianceModelFactoryImplementation.hxx"
+#include "openturns/UserDefinedStationaryCovarianceModel.hxx"
+#include "openturns/SpectralModelFactory.hxx"
+#include "openturns/WelchFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

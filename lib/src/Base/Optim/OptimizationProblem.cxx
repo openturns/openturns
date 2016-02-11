@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OptimizationProblem.hxx"
+#include "openturns/OptimizationProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

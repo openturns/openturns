@@ -15,9 +15,9 @@
 #ifndef OPENTURNS_ANALYTICALNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_ANALYTICALNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "AnalyticalParser.hxx"
-#include "Pointer.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/AnalyticalParser.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

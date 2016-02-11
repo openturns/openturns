@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_LEASTSQUARESMETAMODELSELECTIONFACTORY_HXX
 #define OPENTURNS_LEASTSQUARESMETAMODELSELECTIONFACTORY_HXX
 
-#include "NumericalSample.hxx"
-#include "ApproximationAlgorithmImplementationFactory.hxx"
-#include "LeastSquaresMetaModelSelection.hxx"
-#include "BasisSequenceFactory.hxx"
-#include "CorrectedLeaveOneOut.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
+#include "openturns/LeastSquaresMetaModelSelection.hxx"
+#include "openturns/BasisSequenceFactory.hxx"
+#include "openturns/CorrectedLeaveOneOut.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

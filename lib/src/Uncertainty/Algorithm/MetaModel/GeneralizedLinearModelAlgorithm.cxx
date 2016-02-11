@@ -19,19 +19,19 @@
  *
  */
 
-#include "GeneralizedLinearModelAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "HMatrixFactory.hxx"
-#include "ProductCovarianceModel.hxx"
-#include "TensorizedCovarianceModel.hxx"
-#include "Log.hxx"
-#include "SpecFunc.hxx"
-#include "LinearNumericalMathFunction.hxx"
-#include "CenteredFiniteDifferenceHessian.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "NonCenteredFiniteDifferenceGradient.hxx"
-#include "TNC.hxx"
-#include "NLopt.hxx"
+#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/HMatrixFactory.hxx"
+#include "openturns/ProductCovarianceModel.hxx"
+#include "openturns/TensorizedCovarianceModel.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
+#include "openturns/TNC.hxx"
+#include "openturns/NLopt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

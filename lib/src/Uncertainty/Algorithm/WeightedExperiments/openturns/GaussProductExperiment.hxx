@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_GAUSSPRODUCTEXPERIMENT_HXX
 #define OPENTURNS_GAUSSPRODUCTEXPERIMENT_HXX
 
-#include "WeightedExperiment.hxx"
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
-#include "Collection.hxx"
-#include "Indices.hxx"
+#include "openturns/WeightedExperiment.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

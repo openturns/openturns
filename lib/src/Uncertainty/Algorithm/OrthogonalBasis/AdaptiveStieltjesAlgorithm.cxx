@@ -21,15 +21,15 @@
  *
  */
 
-#include "AdaptiveStieltjesAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "Exception.hxx"
-#include "Uniform.hxx"
-#include "GaussKronrod.hxx"
-#include "OrthogonalUniVariatePolynomial.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Log.hxx"
+#include "openturns/AdaptiveStieltjesAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/OrthogonalUniVariatePolynomial.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

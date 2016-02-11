@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_NONSTATIONARYCOVARIANCEMODELFACTORY_HXX
 #define OPENTURNS_NONSTATIONARYCOVARIANCEMODELFACTORY_HXX
 
-#include "CovarianceModelFactoryImplementation.hxx"
-#include "UserDefinedCovarianceModel.hxx"
+#include "openturns/CovarianceModelFactoryImplementation.hxx"
+#include "openturns/UserDefinedCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_BETA_HXX
 #define OPENTURNS_BETA_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

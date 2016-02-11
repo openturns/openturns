@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_JACOBIFACTORY_HXX
 #define OPENTURNS_JACOBIFACTORY_HXX
 
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

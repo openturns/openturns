@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_DIRACCOVARIANCEMODEL_HXX
 #define OPENTURNS_DIRACCOVARIANCEMODEL_HXX
 
-#include "StationaryCovarianceModel.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

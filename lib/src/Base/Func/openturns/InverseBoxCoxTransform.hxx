@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 #define OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 
-#include "NumericalMathFunction.hxx"
-#include "NumericalPoint.hxx"
-#include "Collection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

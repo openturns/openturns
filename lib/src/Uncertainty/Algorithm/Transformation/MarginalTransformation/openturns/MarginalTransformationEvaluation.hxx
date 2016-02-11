@@ -21,16 +21,16 @@
 #ifndef OPENTURNS_MARGINALTRANSFORMATIONEVALUATION_HXX
 #define OPENTURNS_MARGINALTRANSFORMATIONEVALUATION_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Matrix.hxx"
-#include "NumericalPoint.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "Distribution.hxx"
-#include "StorageManager.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

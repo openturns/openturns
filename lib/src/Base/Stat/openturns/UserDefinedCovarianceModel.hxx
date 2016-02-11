@@ -23,11 +23,11 @@
 #ifndef OPENTURNS_USERDEFINEDCOVARIANCEMODEL_HXX
 #define OPENTURNS_USERDEFINEDCOVARIANCEMODEL_HXX
 
-#include "CovarianceModel.hxx"
-#include "PersistentCollection.hxx"
-#include "Collection.hxx"
-#include "RegularGrid.hxx"
-#include "Mesh.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/RegularGrid.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

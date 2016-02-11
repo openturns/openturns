@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_KRIGINGALGORITHM_HXX
 #define OPENTURNS_KRIGINGALGORITHM_HXX
 
-#include "MetaModelAlgorithm.hxx"
-#include "Basis.hxx"
-#include "CovarianceModel.hxx"
-#include "KrigingResult.hxx"
-#include "HMatrix.hxx"
-#include "GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/MetaModelAlgorithm.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/KrigingResult.hxx"
+#include "openturns/HMatrix.hxx"
+#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

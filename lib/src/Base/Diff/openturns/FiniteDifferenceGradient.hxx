@@ -23,10 +23,10 @@
 #ifndef OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 #define OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Pointer.hxx"
-#include "FiniteDifferenceStep.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

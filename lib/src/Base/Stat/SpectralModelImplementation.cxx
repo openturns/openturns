@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SpectralModelImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "Curve.hxx"
+#include "openturns/SpectralModelImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Curve.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

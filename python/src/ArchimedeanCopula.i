@@ -1,10 +1,10 @@
 // SWIG file ArchimedeanCopula.i
 
 %{
-#include "ArchimedeanCopula.hxx"
+#include "openturns/ArchimedeanCopula.hxx"
 %}
 
 %include ArchimedeanCopula_doc.i
 
-%include ArchimedeanCopula.hxx
+%include openturns/ArchimedeanCopula.hxx
 namespace OT { %extend ArchimedeanCopula { ArchimedeanCopula(const ArchimedeanCopula & other) { return new OT::ArchimedeanCopula(other); } } }

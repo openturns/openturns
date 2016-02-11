@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_GENERALIZEDPARETOFACTORY_HXX
 #define OPENTURNS_GENERALIZEDPARETOFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "GeneralizedPareto.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/GeneralizedPareto.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

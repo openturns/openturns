@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LAPACK_HXX
 #define OPENTURNS_LAPACK_HXX
 
-#include "OTconfig.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_C_DECLS
 

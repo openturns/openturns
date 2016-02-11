@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "NormalCopulaFactory.hxx"
+#include "openturns/NormalCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

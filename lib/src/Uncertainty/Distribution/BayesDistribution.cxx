@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "BayesDistribution.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Uniform.hxx"
-#include "ConditionalDistribution.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/BayesDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

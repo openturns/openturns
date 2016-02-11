@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_COMPLEXMATRIX_HXX
 #define OPENTURNS_COMPLEXMATRIX_HXX
 
-#include "ComplexMatrixImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
-#include "Matrix.hxx"
-#include "SymmetricMatrix.hxx"
-#include "IdentityMatrix.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/ComplexMatrixImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

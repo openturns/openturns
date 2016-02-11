@@ -23,22 +23,22 @@
 #include <iomanip>
 #include <algorithm>
 
-#include "RandomMixture.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Interval.hxx"
-#include "Tuples.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Log.hxx"
-#include "Triangular.hxx"
-#include "Trapezoidal.hxx"
-#include "Uniform.hxx"
-#include "ComplexTensor.hxx"
-#include "FFT.hxx"
-#include "GaussKronrod.hxx"
-#include "TBB.hxx"
-#include "OSS.hxx"
+#include "openturns/RandomMixture.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/Tuples.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Triangular.hxx"
+#include "openturns/Trapezoidal.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/ComplexTensor.hxx"
+#include "openturns/FFT.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/TBB.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

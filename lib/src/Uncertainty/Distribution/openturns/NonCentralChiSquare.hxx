@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NONCENTRALCHISQUARE_HXX
 #define OPENTURNS_NONCENTRALCHISQUARE_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -5,13 +5,13 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OTBase.hxx"
-#include "OTModel.hxx"
-#include "OTDistribution.hxx"
-#include "OTWeightedExperiments.hxx"
-#include "OTOrthogonalBasis.hxx"
-#include "OTMetaModel.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTBase.hxx"
+#include "openturns/OTModel.hxx"
+#include "openturns/OTDistribution.hxx"
+#include "openturns/OTWeightedExperiments.hxx"
+#include "openturns/OTOrthogonalBasis.hxx"
+#include "openturns/OTMetaModel.hxx"
 %}
 
 %include typemaps.i

@@ -5,11 +5,11 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OTBase.hxx"
-#include "OTModel.hxx"
-#include "OTDistribution.hxx"
-#include "OTStatTests.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTBase.hxx"
+#include "openturns/OTModel.hxx"
+#include "openturns/OTDistribution.hxx"
+#include "openturns/OTStatTests.hxx"
 %}
 
 %include typemaps.i

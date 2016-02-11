@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_LEASTSQUARESMETHOD_HXX
 #define OPENTURNS_LEASTSQUARESMETHOD_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "NumericalSample.hxx"
-#include "Basis.hxx"
-#include "LeastSquaresMethodImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTconfig.hxx"
-#include "OTconfigureArgs.hxx"
-#include "OSS.hxx"
-#include "Log.hxx"
-#include "PlatformInfo.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTconfigureArgs.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,11 +19,11 @@
  *
  */
 #include <algorithm>
-#include "HyperbolicAnisotropicEnumerateFunction.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
-#include "Exception.hxx"
+#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

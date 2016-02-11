@@ -19,7 +19,7 @@
  *
  */
 
-#include "OT.hxx"
+#include "openturns/OT.hxx"
 extern "C" int openturns_library_ok();
 
 /*

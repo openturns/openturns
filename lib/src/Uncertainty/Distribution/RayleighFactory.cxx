@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "RayleighFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/RayleighFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,8 +19,8 @@
  *
  */
 #include <algorithm>
-#include "Indices.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

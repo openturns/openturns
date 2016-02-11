@@ -17,10 +17,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ProductCovarianceModel.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "AbsoluteExponential.hxx"
+#include "openturns/ProductCovarianceModel.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/AbsoluteExponential.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

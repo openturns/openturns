@@ -19,11 +19,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "BernsteinCopulaFactory.hxx"
-#include "Beta.hxx"
-#include "ComposedDistribution.hxx"
-#include "Mixture.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/BernsteinCopulaFactory.hxx"
+#include "openturns/Beta.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/Mixture.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

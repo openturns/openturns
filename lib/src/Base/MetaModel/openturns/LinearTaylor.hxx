@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_LINEARTAYLOR_HXX
 #define OPENTURNS_LINEARTAYLOR_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

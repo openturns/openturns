@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_QRMETHOD_HXX
 #define OPENTURNS_QRMETHOD_HXX
 
-#include "LeastSquaresMethodImplementation.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

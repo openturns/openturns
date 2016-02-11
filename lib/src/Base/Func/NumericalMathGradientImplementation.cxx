@@ -18,16 +18,16 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NumericalMathGradientImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "OTconfig.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 #else
-#include "LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 #endif
-#include "ConstantNumericalMathGradientImplementation.hxx"
-#include "ComposedNumericalMathGradientImplementation.hxx"
+#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
+#include "openturns/ComposedNumericalMathGradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

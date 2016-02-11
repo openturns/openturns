@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ODESOLVERIMPLEMENTATION_HXX
 #define OPENTURNS_ODESOLVERIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "DynamicalFunction.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/DynamicalFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

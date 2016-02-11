@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATIONFACTORY_HXX
 
-#include "DistributionFactoryResult.hxx"
-#include "ResourceMap.hxx"
-#include "DistributionParameters.hxx"
+#include "openturns/DistributionFactoryResult.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/DistributionParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,18 +21,18 @@
 #ifndef OPENTURNS_NUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_NUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "NumericalSample.hxx"
-#include "Field.hxx"
-#include "Indices.hxx"
-#include "Pointer.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathGradientImplementation.hxx"
-#include "NumericalMathHessianImplementation.hxx"
-#include "Description.hxx"
-#include "Graph.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

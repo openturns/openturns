@@ -1,7 +1,7 @@
 // SWIG file HistogramPair.i
 
 %{
-#include "HistogramPair.hxx"
+#include "openturns/HistogramPair.hxx"
 
   namespace OT {
 
@@ -65,6 +65,6 @@
 
 %include HistogramPair_doc.i
 
-%include HistogramPair.hxx
+%include openturns/HistogramPair.hxx
 
 namespace OT { %extend HistogramPair { HistogramPair(const HistogramPair & other) { return new OT::HistogramPair(other); } } }

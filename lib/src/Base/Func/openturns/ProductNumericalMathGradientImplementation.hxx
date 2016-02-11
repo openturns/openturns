@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_PRODUCTNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_PRODUCTNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

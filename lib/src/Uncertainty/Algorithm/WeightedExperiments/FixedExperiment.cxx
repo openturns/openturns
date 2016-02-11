@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "FixedExperiment.hxx"
-#include "UserDefined.hxx"
+#include "openturns/FixedExperiment.hxx"
+#include "openturns/UserDefined.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

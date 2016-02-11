@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_BRENT_HXX
 #define OPENTURNS_BRENT_HXX
 
-#include "OTprivate.hxx"
-#include "SolverImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

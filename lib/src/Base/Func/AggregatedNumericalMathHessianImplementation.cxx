@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "AggregatedNumericalMathHessianImplementation.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SymmetricMatrix.hxx"
+#include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

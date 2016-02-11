@@ -22,14 +22,14 @@
 #ifndef OPENTURNS_OTDIFF_HXX
 #define OPENTURNS_OTDIFF_HXX
 
-#include "FiniteDifferenceStepImplementation.hxx"
-#include "FiniteDifferenceStep.hxx"
-#include "ConstantStep.hxx"
-#include "BlendedStep.hxx"
-#include "FiniteDifferenceGradient.hxx"
-#include "FiniteDifferenceHessian.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "CenteredFiniteDifferenceHessian.hxx"
-#include "NonCenteredFiniteDifferenceGradient.hxx"
+#include "openturns/FiniteDifferenceStepImplementation.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
+#include "openturns/ConstantStep.hxx"
+#include "openturns/BlendedStep.hxx"
+#include "openturns/FiniteDifferenceGradient.hxx"
+#include "openturns/FiniteDifferenceHessian.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
+#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 
 #endif /* OPENTURNS_OTDIFF_HXX */

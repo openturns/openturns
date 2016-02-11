@@ -20,10 +20,10 @@
  *
  *  Id      QuadraticBasisFactory.cxx 2392 2012-02-17 18:35:43Z schueller
  */
-#include "QuadraticBasisFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "LinearNumericalMathFunction.hxx"
-#include "QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticBasisFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/QuadraticNumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

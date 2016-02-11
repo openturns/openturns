@@ -19,8 +19,8 @@
  *
  */
 
-#include "KrigingEvaluation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/KrigingEvaluation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

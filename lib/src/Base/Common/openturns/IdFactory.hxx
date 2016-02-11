@@ -22,9 +22,9 @@
 #define OPENTURNS_IDFACTORY_HXX
 
 #include <iostream>              // for std::ostream
-#include "OTprivate.hxx"
-#include "AtomicFunctions.hxx"
-#include "OStream.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/AtomicFunctions.hxx"
+#include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

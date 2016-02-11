@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_AGGREGATEDNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_AGGREGATEDNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

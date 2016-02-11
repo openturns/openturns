@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_ANALYTICALPARSER_HXX
 #define OPENTURNS_ANALYTICALPARSER_HXX
 
-#include "NumericalSample.hxx"
+#include "openturns/NumericalSample.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

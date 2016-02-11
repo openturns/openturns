@@ -19,9 +19,9 @@
  *
  */
 #include <cmath>
-#include "Triangular.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Triangular.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

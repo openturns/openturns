@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_STAIRCASE_HXX
 #define OPENTURNS_STAIRCASE_HXX
 
-#include "DrawableImplementation.hxx"
+#include "openturns/DrawableImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

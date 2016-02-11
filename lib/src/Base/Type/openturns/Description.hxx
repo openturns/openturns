@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DESCRIPTION_HXX
 #define OPENTURNS_DESCRIPTION_HXX
 
-#include "PersistentCollection.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,10 +19,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Secant.hxx"
-#include "Log.hxx"
+#include "openturns/Secant.hxx"
+#include "openturns/Log.hxx"
 #include <cmath>
-#include "PersistentObjectFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

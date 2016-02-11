@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_OTTHREAD_HXX
 #define OPENTURNS_OTTHREAD_HXX
 
-#include "OTconfig.hxx"
+#include "openturns/OTconfig.hxx"
 
 #ifdef OPENTURNS_HAVE_PTHREAD_H
 
 #include <pthread.h>
-#include "OTwindows.h"
+#include "openturns/OTwindows.h"
 
 #endif /* OPENTURNS_HAVE_PTHREAD_H */
 

@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "TruncatedNormal.hxx"
-#include "RandomGenerator.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/TruncatedNormal.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

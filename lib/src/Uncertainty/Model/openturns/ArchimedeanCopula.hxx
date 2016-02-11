@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ARCHIMEDEANCOPULA_HXX
 #define OPENTURNS_ARCHIMEDEANCOPULA_HXX
 
-#include "OTprivate.hxx"
-#include "CopulaImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/CopulaImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

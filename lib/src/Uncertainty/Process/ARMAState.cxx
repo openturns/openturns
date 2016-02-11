@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "ARMAState.hxx"
-#include "Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ARMAState.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

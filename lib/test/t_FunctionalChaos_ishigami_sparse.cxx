@@ -19,8 +19,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OT.hxx"
-#include "OTtestcode.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
 
 using namespace OT;
 using namespace OT::Test;

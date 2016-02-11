@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_QUASIMONTECARLORESULT_HXX
 #define OPENTURNS_QUASIMONTECARLORESULT_HXX
 
-#include "SimulationResultImplementation.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

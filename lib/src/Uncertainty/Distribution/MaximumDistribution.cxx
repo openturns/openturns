@@ -21,9 +21,9 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "MaximumDistribution.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ComposedDistribution.hxx"
+#include "openturns/MaximumDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

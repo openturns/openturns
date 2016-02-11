@@ -27,15 +27,15 @@
 #include <unistd.h>    // for lseek64(3)
 #include <errno.h>     // for errno(3)
 #include <string.h>    // for strerror(3)
-#include "BinaryStorageManager.hxx"
-#include "PersistentObject.hxx"
-#include "InterfaceObject.hxx"
-#include "Exception.hxx"
-#include "Catalog.hxx"
-#include "Study.hxx"
-#include "OSS.hxx"
-#include "Log.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/BinaryStorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/InterfaceObject.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Catalog.hxx"
+#include "openturns/Study.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

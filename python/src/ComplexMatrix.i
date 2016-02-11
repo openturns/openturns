@@ -1,7 +1,7 @@
 // SWIG file ComplexMatrix.i
 
 %{
-#include "ComplexMatrix.hxx"
+#include "openturns/ComplexMatrix.hxx"
 %}
 
 %include ComplexMatrix_doc.i
@@ -11,7 +11,7 @@
 %apply const NumericalScalarCollection & { const OT::ComplexMatrix::NumericalScalarCollection & };
 %apply const NumericalComplexCollection & { const OT::ComplexMatrix::NumericalComplexCollection & };
 
-%include ComplexMatrix.hxx
+%include openturns/ComplexMatrix.hxx
 
 %pythoncode %{
 # This code has been added to conform to Numpy ndarray interface

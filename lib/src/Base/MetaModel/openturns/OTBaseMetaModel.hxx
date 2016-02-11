@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_OTBASEMETAMODEL_HXX
 #define OPENTURNS_OTBASEMETAMODEL_HXX
 
-#include "LinearLeastSquares.hxx"
-#include "QuadraticLeastSquares.hxx"
-#include "LinearTaylor.hxx"
-#include "QuadraticTaylor.hxx"
+#include "openturns/LinearLeastSquares.hxx"
+#include "openturns/QuadraticLeastSquares.hxx"
+#include "openturns/LinearTaylor.hxx"
+#include "openturns/QuadraticTaylor.hxx"
 
 #endif /* OPENTURNS_OTBASEMETAMODEL_HXX */

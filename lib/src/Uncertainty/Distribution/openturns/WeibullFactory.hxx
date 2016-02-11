@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_WEIBULLFACTORY_HXX
 #define OPENTURNS_WEIBULLFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Weibull.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Weibull.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

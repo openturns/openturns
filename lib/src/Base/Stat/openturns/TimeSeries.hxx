@@ -24,16 +24,16 @@
 #include <stdint.h> // for uint64_t
 #include <cmath>    // for nearbyint
 
-#include "NumericalPoint.hxx"
-#include "Description.hxx"
-#include "Indices.hxx"
-#include "PersistentCollection.hxx"
-#include "Collection.hxx"
-#include "NumericalSample.hxx"
-#include "Graph.hxx"
-#include "RegularGrid.hxx"
-#include "FieldImplementation.hxx"
-#include "Field.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/RegularGrid.hxx"
+#include "openturns/FieldImplementation.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

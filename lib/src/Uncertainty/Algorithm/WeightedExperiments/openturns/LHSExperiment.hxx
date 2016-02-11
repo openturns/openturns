@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_LHSEXPERIMENT_HXX
 #define OPENTURNS_LHSEXPERIMENT_HXX
 
-#include "WeightedExperiment.hxx"
-#include "Matrix.hxx"
+#include "openturns/WeightedExperiment.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

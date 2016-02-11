@@ -1,8 +1,8 @@
 // SWIG file BipartiteGraph.i
 
 %{
-#include "BipartiteGraph.hxx"
-#include "PythonWrappingFunctions.hxx"
+#include "openturns/BipartiteGraph.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
 
 namespace OT {
   template <>
@@ -44,5 +44,5 @@ namespace OT {
 
 %include BipartiteGraph_doc.i
 
-%include BipartiteGraph.hxx
+%include openturns/BipartiteGraph.hxx
 namespace OT { %extend BipartiteGraph { BipartiteGraph(const BipartiteGraph & other) { return new OT::BipartiteGraph(other); } } }

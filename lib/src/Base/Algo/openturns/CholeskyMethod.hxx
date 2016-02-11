@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CHOLESKYMETHOD_HXX
 #define OPENTURNS_CHOLESKYMETHOD_HXX
 
-#include "LeastSquaresMethodImplementation.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

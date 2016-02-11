@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_KISSFFT_HXX
 #define OPENTURNS_KISSFFT_HXX
 
-#include "PersistentObject.hxx"
-#include "FFTImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/FFTImplementation.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

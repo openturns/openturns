@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SAFEANDSLOW_HXX
 #define OPENTURNS_SAFEANDSLOW_HXX
 
-#include "RootStrategyImplementation.hxx"
+#include "openturns/RootStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

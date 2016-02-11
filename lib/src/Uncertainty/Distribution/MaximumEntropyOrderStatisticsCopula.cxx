@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "MaximumEntropyOrderStatisticsCopula.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/MaximumEntropyOrderStatisticsCopula.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

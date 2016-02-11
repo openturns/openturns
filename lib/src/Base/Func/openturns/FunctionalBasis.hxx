@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FUNCTIONALBASIS_HXX
 #define OPENTURNS_FUNCTIONALBASIS_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "FunctionalBasisImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/FunctionalBasisImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

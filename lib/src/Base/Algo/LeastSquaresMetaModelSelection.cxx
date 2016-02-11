@@ -20,15 +20,15 @@
  */
 
 #include <limits>
-#include "Log.hxx"
-#include "Indices.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "PenalizedLeastSquaresAlgorithm.hxx"
-#include "LeastSquaresMetaModelSelection.hxx"
-#include "SVDMethod.hxx"
-#include "CholeskyMethod.hxx"
-#include "QRMethod.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/LeastSquaresMetaModelSelection.hxx"
+#include "openturns/SVDMethod.hxx"
+#include "openturns/CholeskyMethod.hxx"
+#include "openturns/QRMethod.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

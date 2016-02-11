@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_CALIBRATIONSTRATEGYIMPLEMENTATION_HXX
 #define OPENTURNS_CALIBRATIONSTRATEGYIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "Interval.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

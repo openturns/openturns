@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_OTNATAFINDEPENDENTCOPULA_HXX
 #define OPENTURNS_OTNATAFINDEPENDENTCOPULA_HXX
 
-#include "InverseNatafIndependentCopulaEvaluation.hxx"
-#include "InverseNatafIndependentCopulaGradient.hxx"
-#include "InverseNatafIndependentCopulaHessian.hxx"
-#include "NatafIndependentCopulaEvaluation.hxx"
-#include "NatafIndependentCopulaGradient.hxx"
-#include "NatafIndependentCopulaHessian.hxx"
+#include "openturns/InverseNatafIndependentCopulaEvaluation.hxx"
+#include "openturns/InverseNatafIndependentCopulaGradient.hxx"
+#include "openturns/InverseNatafIndependentCopulaHessian.hxx"
+#include "openturns/NatafIndependentCopulaEvaluation.hxx"
+#include "openturns/NatafIndependentCopulaGradient.hxx"
+#include "openturns/NatafIndependentCopulaHessian.hxx"
 
 #endif /* OPENTURNS_OTNATAFINDEPENDENTCOPULA_HXX */

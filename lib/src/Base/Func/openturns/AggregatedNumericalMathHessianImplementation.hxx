@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_AGGREGATEDNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_AGGREGATEDNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "AggregatedNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

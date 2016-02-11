@@ -25,30 +25,30 @@
 /*
  * This include defines the configuration flags.
  */
-#include "OTconfig.hxx"
+#include "openturns/OTconfig.hxx"
 
 
 /*
  * This include defines the debug level in all source code.
  */
-#include "OTdebug.h"
+#include "openturns/OTdebug.h"
 
 /*
  * The OTtypes.hxx header file contains all type declarations used by
  * the OpenTURNS platform.
  */
-#include "OTtypes.hxx"
+#include "openturns/OTtypes.hxx"
 
 /*
  * The OTmemory.hxx header file declares some debugging memory functions
  */
-#include "OTmemory.hxx"
+#include "openturns/OTmemory.hxx"
 
 /**
  * Here is the list of all classes belonging to the external API of OpenTURNS
  * @todo List the classes belonging to the external API of OpenTURNS
  */
-#include "OTBase.hxx"
-#include "OTUncertainty.hxx"
+#include "openturns/OTBase.hxx"
+#include "openturns/OTUncertainty.hxx"
 
 #endif /* OPENTURNS_OT_HXX */

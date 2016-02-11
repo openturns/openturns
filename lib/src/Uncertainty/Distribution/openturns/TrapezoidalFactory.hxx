@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_TRAPEZOIDALFACTORY_HXX
 #define OPENTURNS_TRAPEZOIDALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Trapezoidal.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Trapezoidal.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

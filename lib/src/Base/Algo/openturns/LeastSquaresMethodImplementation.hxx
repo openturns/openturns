@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX
 #define OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
-#include "FunctionalBasis.hxx"
-#include "DesignProxy.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/FunctionalBasis.hxx"
+#include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_PERSISTENTOBJECTFACTORY_HXX
 #define OPENTURNS_PERSISTENTOBJECTFACTORY_HXX
 
-#include "PersistentObject.hxx"
-#include "StorageManager.hxx"
-#include "Exception.hxx"
-#include "Catalog.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Catalog.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

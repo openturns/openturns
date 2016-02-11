@@ -23,10 +23,10 @@
 #ifndef OPENTURNS_FINITEDIFFERENCE_HXX
 #define OPENTURNS_FINITEDIFFERENCE_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Pointer.hxx"
-#include "FiniteDifferenceStep.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

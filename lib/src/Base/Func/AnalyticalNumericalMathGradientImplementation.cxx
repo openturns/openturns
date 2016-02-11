@@ -12,12 +12,12 @@
  *
  */
 
-#include "AnalyticalNumericalMathGradientImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 #include "Ev3/expression.h"
 #include "Ev3/parser.h"
-#include "Log.hxx"
-#include "Os.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

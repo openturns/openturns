@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_MATRIXIMPLEMENTATION_HXX
 #define OPENTURNS_MATRIXIMPLEMENTATION_HXX
 
-#include "PersistentCollection.hxx"
-#include "Description.hxx"
-#include "NumericalPoint.hxx"
-#include "Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

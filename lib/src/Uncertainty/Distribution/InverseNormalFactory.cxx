@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "InverseNormalFactory.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/InverseNormalFactory.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

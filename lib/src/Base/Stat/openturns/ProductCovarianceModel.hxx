@@ -20,9 +20,9 @@
 #ifndef OPENTURNS_PRODUCTCOVARIANCEMODEL_HXX
 #define OPENTURNS_PRODUCTCOVARIANCEMODEL_HXX
 
-#include "StationaryCovarianceModel.hxx"
-#include "PersistentCollection.hxx"
-#include "Collection.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

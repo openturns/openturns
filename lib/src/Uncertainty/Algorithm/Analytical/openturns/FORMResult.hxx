@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FORMRESULT_HXX
 #define OPENTURNS_FORMRESULT_HXX
 
-#include "AnalyticalResult.hxx"
+#include "openturns/AnalyticalResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

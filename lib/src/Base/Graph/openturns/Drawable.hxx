@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_DRAWABLE_HXX
 #define OPENTURNS_DRAWABLE_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "DrawableImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/DrawableImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 /**

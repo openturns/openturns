@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_TENSOR_HXX
 #define OPENTURNS_TENSOR_HXX
 
-#include "TensorImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/TensorImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

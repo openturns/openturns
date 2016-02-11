@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_NONUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_NONUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

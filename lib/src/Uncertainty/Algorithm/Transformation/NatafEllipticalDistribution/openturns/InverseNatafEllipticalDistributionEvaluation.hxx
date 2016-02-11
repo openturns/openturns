@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_INVERSENATAFELLIPTICALDISTRIBUTIONEVALUATION_HXX
 #define OPENTURNS_INVERSENATAFELLIPTICALDISTRIBUTIONEVALUATION_HXX
 
-#include "OTprivate.hxx"
-#include "LinearNumericalMathEvaluationImplementation.hxx"
-#include "TriangularMatrix.hxx"
-#include "NumericalPoint.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

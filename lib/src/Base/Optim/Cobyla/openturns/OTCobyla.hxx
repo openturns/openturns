@@ -22,6 +22,6 @@
 #ifndef OPENTURNS_OTCOBYLA_HXX
 #define OPENTURNS_OTCOBYLA_HXX
 
-#include "Cobyla.hxx"
+#include "openturns/Cobyla.hxx"
 
 #endif /* OPENTURNS_OTCOBYLA_HXX */

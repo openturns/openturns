@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TRACYWIDOMGOE_HXX
 #define OPENTURNS_TRACYWIDOMGOE_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

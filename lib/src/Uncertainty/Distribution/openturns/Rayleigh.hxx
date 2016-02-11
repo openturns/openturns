@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RAYLEIGH_HXX
 #define OPENTURNS_RAYLEIGH_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

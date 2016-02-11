@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATION_HXX
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "DesignProxy.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

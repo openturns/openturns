@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_UNIFORM_HXX
 #define OPENTURNS_UNIFORM_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

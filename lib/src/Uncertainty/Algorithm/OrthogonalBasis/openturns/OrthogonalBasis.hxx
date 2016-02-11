@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ORTHOGONALBASIS_HXX
 #define OPENTURNS_ORTHOGONALBASIS_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "OrthogonalFunctionFactory.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/OrthogonalFunctionFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

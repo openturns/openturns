@@ -20,16 +20,16 @@
  */
 #include <cmath>
 #include <fstream>
-#include "FittingTest.hxx"
-#include "NumericalPoint.hxx"
-#include "Description.hxx"
-#include "Path.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "OTconfig.hxx"
+#include "openturns/FittingTest.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

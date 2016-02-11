@@ -22,10 +22,10 @@
 #include <sstream>
 #include <cmath>
 
-#include "SQP.hxx"
-#include "Log.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "OptimizationProblem.hxx"
+#include "openturns/SQP.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/OptimizationProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

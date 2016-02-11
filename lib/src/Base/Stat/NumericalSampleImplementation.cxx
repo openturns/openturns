@@ -30,19 +30,19 @@
 #include <cstdio>        // std::fopen, std::errno
 #include <cstring>       // std::strerror
 
-#include "OTconfig.hxx"
-#include "NumericalSampleImplementation.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Exception.hxx"
-#include "Path.hxx"
-#include "TBB.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/NumericalSampleImplementation.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/TBB.hxx"
 #include "kendall.h"
-#include "IdentityMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
 
 #if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
-#include "csv_parser_state.hxx"
+#include "openturns/csv_parser_state.hxx"
 #include "csv_parser.hh"
 #include "csv_lexer.h"
 

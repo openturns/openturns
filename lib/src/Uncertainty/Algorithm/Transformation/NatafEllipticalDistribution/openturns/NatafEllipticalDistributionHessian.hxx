@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NATAFELLIPTICALDISTRIBUTIONHESSIAN_HXX
 #define OPENTURNS_NATAFELLIPTICALDISTRIBUTIONHESSIAN_HXX
 
-#include "OTprivate.hxx"
-#include "ConstantNumericalMathHessianImplementation.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

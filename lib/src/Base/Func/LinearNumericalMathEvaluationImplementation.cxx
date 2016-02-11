@@ -22,8 +22,8 @@
  *
  */
 
-#include "LinearNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

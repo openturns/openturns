@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_HERMITIANMATRIX_HXX
 #define OPENTURNS_HERMITIANMATRIX_HXX
 
-#include "SquareComplexMatrix.hxx"
-#include "Collection.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
+#include "openturns/Collection.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_RANDOMVECTOR_HXX
 #define OPENTURNS_RANDOMVECTOR_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "Pointer.hxx"
-#include "RandomVectorImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

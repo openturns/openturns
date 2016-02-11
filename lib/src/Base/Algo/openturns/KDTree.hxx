@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_KDTREE_HXX
 #define OPENTURNS_KDTREE_HXX
 
-#include "Object.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/Object.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,7 +19,7 @@
  *
  */
 
-#include "LowDiscrepancySequence.hxx"
+#include "openturns/LowDiscrepancySequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

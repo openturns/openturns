@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_ARMASTATE_HXX
 #define OPENTURNS_ARMASTATE_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalPoint.hxx"
-#include "Field.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

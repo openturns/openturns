@@ -19,10 +19,10 @@
  *
  */
 #include <cmath>
-#include "Trapezoidal.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/Trapezoidal.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

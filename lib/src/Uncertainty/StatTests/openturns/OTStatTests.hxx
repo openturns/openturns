@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_OTSTATTESTS_HXX
 #define OPENTURNS_OTSTATTESTS_HXX
 
-#include "FittingTest.hxx"
-#include "HypothesisTest.hxx"
-#include "LinearModelTest.hxx"
-#include "NormalityTest.hxx"
-#include "VisualTest.hxx"
-#include "DickeyFullerTest.hxx"
+#include "openturns/FittingTest.hxx"
+#include "openturns/HypothesisTest.hxx"
+#include "openturns/LinearModelTest.hxx"
+#include "openturns/NormalityTest.hxx"
+#include "openturns/VisualTest.hxx"
+#include "openturns/DickeyFullerTest.hxx"
 
 #endif /* OPENTURNS_OTSTATTESTS_HXX */

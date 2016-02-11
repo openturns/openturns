@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "SimulationResult.hxx"
-#include "DistFunc.hxx"
+#include "openturns/SimulationResult.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

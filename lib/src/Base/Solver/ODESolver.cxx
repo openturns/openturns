@@ -19,9 +19,9 @@
  *
  */
 
-#include "ODESolver.hxx"
-#include "ODESolverImplementation.hxx"
-#include "RungeKutta.hxx"
+#include "openturns/ODESolver.hxx"
+#include "openturns/ODESolverImplementation.hxx"
+#include "openturns/RungeKutta.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

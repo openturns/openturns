@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMBINATORIALGENERATOR_HXX
 #define OPENTURNS_COMBINATORIALGENERATOR_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "CombinatorialGeneratorImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/CombinatorialGeneratorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,7 +19,7 @@
  *
  */
 
-#include "OTtypes.hxx"
+#include "openturns/OTtypes.hxx"
 
 /** The command line arguments of the configure script */
 BEGIN_NAMESPACE_OPENTURNS

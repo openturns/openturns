@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ALIMIKHAILHAQCOPULAFACTORY_HXX
 #define OPENTURNS_ALIMIKHAILHAQCOPULAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "AliMikhailHaqCopula.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/AliMikhailHaqCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

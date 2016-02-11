@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_PARAMETRIZEDDISTRIBUTION_HXX
 #define OPENTURNS_PARAMETRIZEDDISTRIBUTION_HXX
 
-#include "DistributionImplementation.hxx"
-#include "DistributionParameters.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/DistributionParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_NATAFELLIPTICALDISTRIBUTIONGRADIENT_HXX
 #define OPENTURNS_NATAFELLIPTICALDISTRIBUTIONGRADIENT_HXX
 
-#include "OTprivate.hxx"
-#include "ConstantNumericalMathGradientImplementation.hxx"
-#include "TriangularMatrix.hxx"
-#include "SymmetricTensor.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

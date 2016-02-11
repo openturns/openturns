@@ -18,17 +18,17 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrthogonalProductPolynomialFactory.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Indices.hxx"
-#include "ComposedDistribution.hxx"
-#include "NumericalMathFunctionImplementation.hxx"
-#include "ProductPolynomialEvaluationImplementation.hxx"
-#include "ProductPolynomialGradientImplementation.hxx"
-#include "ProductPolynomialHessianImplementation.hxx"
-#include "Collection.hxx"
+#include "openturns/OrthogonalProductPolynomialFactory.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/ProductPolynomialEvaluationImplementation.hxx"
+#include "openturns/ProductPolynomialGradientImplementation.hxx"
+#include "openturns/ProductPolynomialHessianImplementation.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "GumbelCopula.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/GumbelCopula.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

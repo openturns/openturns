@@ -18,18 +18,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SklarCopula.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "MarginalTransformationEvaluation.hxx"
-#include "MarginalTransformationGradient.hxx"
-#include "MarginalTransformationHessian.hxx"
-#include "RosenblattEvaluation.hxx"
-#include "InverseRosenblattEvaluation.hxx"
-#include "NumericalMathFunctionImplementation.hxx"
-#include "RandomGenerator.hxx"
-#include "Uniform.hxx"
-#include "IndependentCopula.hxx"
+#include "openturns/SklarCopula.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
+#include "openturns/MarginalTransformationGradient.hxx"
+#include "openturns/MarginalTransformationHessian.hxx"
+#include "openturns/RosenblattEvaluation.hxx"
+#include "openturns/InverseRosenblattEvaluation.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/IndependentCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

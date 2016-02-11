@@ -21,9 +21,9 @@
  *
  */
 
-#include "FiniteDifferenceGradient.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/FiniteDifferenceGradient.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

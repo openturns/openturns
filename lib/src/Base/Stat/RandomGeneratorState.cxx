@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "RandomGeneratorState.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Indices.hxx"
-#include "OSS.hxx"
+#include "openturns/RandomGeneratorState.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

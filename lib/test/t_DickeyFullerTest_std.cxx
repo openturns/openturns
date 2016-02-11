@@ -19,8 +19,8 @@
  *
  *  Id:      $Id: t_DickeyFullerTest_std.cxx 2392 2012-02-17 18:35:43Z schueller $
  */
-#include "OT.hxx"
-#include "OTtestcode.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
 
 using namespace OT;
 using namespace OT::Test;

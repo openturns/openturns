@@ -3,8 +3,8 @@
 OTAutodoc(LinearCombinationGradientImplementation)
 
 %{
-#include "LinearCombinationGradientImplementation.hxx"
+#include "openturns/LinearCombinationGradientImplementation.hxx"
 %}
 
-%include LinearCombinationGradientImplementation.hxx
+%include openturns/LinearCombinationGradientImplementation.hxx
 namespace OT { %extend LinearCombinationGradientImplementation { LinearCombinationGradientImplementation(const LinearCombinationGradientImplementation & other) { return new OT::LinearCombinationGradientImplementation(other); } } }

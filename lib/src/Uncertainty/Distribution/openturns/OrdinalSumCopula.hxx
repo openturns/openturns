@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_ORDINALSUMCOPULA_HXX
 #define OPENTURNS_ORDINALSUMCOPULA_HXX
 
-#include "CopulaImplementation.hxx"
-#include "PersistentCollection.hxx"
-#include "Copula.hxx"
-#include "UserDefined.hxx"
+#include "openturns/CopulaImplementation.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Copula.hxx"
+#include "openturns/UserDefined.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

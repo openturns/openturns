@@ -26,10 +26,10 @@
 #include <set>                   // for std::set
 #include <map>                   // for std::map
 #include <cstddef>               // for ptrdiff_t
-#include "Object.hxx"
-#include "Pointer.hxx"
-#include "Exception.hxx"
-#include "OTconfig.hxx"
+#include "openturns/Object.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "DiracFactory.hxx"
-#include "DiscreteDistribution.hxx"
+#include "openturns/DiracFactory.hxx"
+#include "openturns/DiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

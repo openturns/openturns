@@ -21,9 +21,9 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "FarlieGumbelMorgensternCopulaFactory.hxx"
-#include "SpecFunc.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/FarlieGumbelMorgensternCopulaFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

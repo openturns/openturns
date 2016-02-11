@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_LEVELSET_HXX
 #define OPENTURNS_LEVELSET_HXX
 
-#include "PersistentObject.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
-#include "DomainImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/DomainImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

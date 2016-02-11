@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_INTERFACEOBJECT_HXX
 #define OPENTURNS_INTERFACEOBJECT_HXX
 
-#include "OTprivate.hxx"
-#include "Pointer.hxx"
-#include "Object.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/Object.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

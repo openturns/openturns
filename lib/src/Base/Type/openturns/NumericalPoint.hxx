@@ -22,9 +22,9 @@
 #define OPENTURNS_NUMERICALPOINT_HXX
 
 #include <vector>
-#include "PersistentCollection.hxx"
-#include "Description.hxx"
-#include "Indices.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

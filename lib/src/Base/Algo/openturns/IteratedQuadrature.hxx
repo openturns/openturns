@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_ITERATEDQUADRATURE_HXX
 #define OPENTURNS_ITERATEDQUADRATURE_HXX
 
-#include "IntegrationAlgorithmImplementation.hxx"
-#include "IntegrationAlgorithm.hxx"
+#include "openturns/IntegrationAlgorithmImplementation.hxx"
+#include "openturns/IntegrationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

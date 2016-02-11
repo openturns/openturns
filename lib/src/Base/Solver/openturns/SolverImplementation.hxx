@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_SOLVERIMPLEMENTATION_HXX
 #define OPENTURNS_SOLVERIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathFunction.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

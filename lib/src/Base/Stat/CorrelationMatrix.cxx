@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "CorrelationMatrix.hxx"
+#include "openturns/CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

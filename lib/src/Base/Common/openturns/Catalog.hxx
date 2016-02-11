@@ -23,8 +23,8 @@
 
 #include <map>         // for std::map
 #include <vector>
-#include "OTprivate.hxx"
-#include "MutexLock.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/MutexLock.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

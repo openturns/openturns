@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PERSISTENTCOLLECTION_HXX
 #define OPENTURNS_PERSISTENTCOLLECTION_HXX
 
-#include "PersistentObject.hxx"
-#include "StorageManager.hxx"
-#include "Collection.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Collection.hxx"
 
 #define TEMPLATE_CLASSNAMEINIT(T) template<> OT::String PersistentCollectionGetClassName<T>() { return OT::String(#T); }
 

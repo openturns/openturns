@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_SHAREDPOINTER_HXX
 #define OPENTURNS_SHAREDPOINTER_HXX
 
-#include "OTconfig.hxx"
+#include "openturns/OTconfig.hxx"
 #include <algorithm>        // for std::swap
 #include <iostream>
-#include "AtomicFunctions.hxx"
-#include "OTprivate.hxx"
+#include "openturns/AtomicFunctions.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

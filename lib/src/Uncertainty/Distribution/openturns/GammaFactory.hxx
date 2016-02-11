@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_GAMMAFACTORY_HXX
 #define OPENTURNS_GAMMAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Gamma.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Gamma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

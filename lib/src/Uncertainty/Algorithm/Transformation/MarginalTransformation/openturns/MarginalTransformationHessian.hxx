@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_MARGINALTRANSFORMATIONHESSIAN_HXX
 #define OPENTURNS_MARGINALTRANSFORMATIONHESSIAN_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "MarginalTransformationEvaluation.hxx"
-#include "NumericalPoint.hxx"
-#include "SymmetricTensor.hxx"
-#include "Collection.hxx"
-#include "Distribution.hxx"
-#include "StorageManager.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

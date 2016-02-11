@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SUBSQUARECOPULA_HXX
 #define OPENTURNS_SUBSQUARECOPULA_HXX
 
-#include "CopulaImplementation.hxx"
+#include "openturns/CopulaImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

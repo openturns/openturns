@@ -21,7 +21,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <cassert>
-#include "Memory.hxx"
+#include "openturns/Memory.hxx"
 
 #ifdef DEBUG_MEMORY
 

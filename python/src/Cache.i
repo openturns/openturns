@@ -1,7 +1,7 @@
 // SWIG file Cache.i
 
 %{
-#include "Cache.hxx"
+#include "openturns/Cache.hxx"
 %}
 
-%include Cache.hxx
+%include openturns/Cache.hxx

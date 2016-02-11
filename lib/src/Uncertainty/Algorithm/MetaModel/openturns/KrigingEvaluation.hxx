@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_KRIGINGEVALUATION_HXX
 #define OPENTURNS_KRIGINGEVALUATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "CovarianceModel.hxx"
-#include "TBB.hxx"
-#include "Collection.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/TBB.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

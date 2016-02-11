@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KPERMUTATIONS_HXX
 #define OPENTURNS_KPERMUTATIONS_HXX
 
-#include "CombinatorialGeneratorImplementation.hxx"
+#include "openturns/CombinatorialGeneratorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

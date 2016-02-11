@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX
 #define OPENTURNS_MAXIMUMLIKELIHOODFACTORY_HXX
 
-#include "DistributionFactoryImplementation.hxx"
-#include "DistributionFactory.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/DistributionFactory.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

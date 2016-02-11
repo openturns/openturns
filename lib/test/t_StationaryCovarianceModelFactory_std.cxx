@@ -20,9 +20,9 @@
  *  Id:      $Id: t_StationaryCovarianceModelFactory_std.cxx 2209 2011-11-22 11:09:10Z haddad $
  */
 #include <iostream>
-#include "OT.hxx"
-#include "OTtestcode.hxx"
-#include "CovarianceModel.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
+#include "openturns/CovarianceModel.hxx"
 
 using namespace OT;
 using namespace OT::Test;

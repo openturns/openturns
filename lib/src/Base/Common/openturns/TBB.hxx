@@ -22,8 +22,8 @@
 #define OPENTURNS_TBB_HXX
 
 #include <algorithm>
-#include "OTprivate.hxx"
-#include "OTconfig.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTconfig.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
 #ifdef OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
@@ -35,9 +35,9 @@
 # endif
 #endif
 #include <tbb/tbb.h>
-#include "OTwindows.h"
+#include "openturns/OTwindows.h"
 #else /* OPENTURNS_HAVE_TBB */
-#include "Exception.hxx"
+#include "openturns/Exception.hxx"
 // We redefine some TBB elements to simulate TBB availability through the code
 // Those redefinitions are single threaded
 namespace tbb

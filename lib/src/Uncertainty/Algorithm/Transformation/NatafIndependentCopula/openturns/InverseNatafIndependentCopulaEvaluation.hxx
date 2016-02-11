@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_INVERSENATAFINDEPENDENTCOPULAEVALUATION_HXX
 #define OPENTURNS_INVERSENATAFINDEPENDENTCOPULAEVALUATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

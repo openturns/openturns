@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_SQUARECOMPLEXMATRIX_HXX
 #define OPENTURNS_SQUARECOMPLEXMATRIX_HXX
 
-#include "OTprivate.hxx"
-#include "ComplexMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ComplexMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

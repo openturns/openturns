@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_DICKEYFULLERTEST_HXX
 #define OPENTURNS_DICKEYFULLERTEST_HXX
 
-#include "PersistentObject.hxx"
-#include "TestResult.hxx"
-#include "Indices.hxx"
-#include "TimeSeries.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/TestResult.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/TimeSeries.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

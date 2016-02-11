@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_SPECTRALMODELFACTORY_HXX
 #define OPENTURNS_SPECTRALMODELFACTORY_HXX
 
-#include "SpectralModelFactoryImplementation.hxx"
-#include "PersistentObject.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/SpectralModelFactoryImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

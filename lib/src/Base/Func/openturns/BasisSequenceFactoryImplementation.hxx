@@ -22,11 +22,11 @@
 #define OPENTURNS_BASISSEQUENCEFACTORYIMPLEMENTATION_HXX
 
 #include <iostream>
-#include "PersistentObject.hxx"
-#include "BasisSequence.hxx"
-#include "NumericalSample.hxx"
-#include "DesignProxy.hxx"
-#include "LeastSquaresMethod.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/BasisSequence.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/DesignProxy.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

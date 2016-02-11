@@ -19,8 +19,8 @@
  *
  */
 
-#include "OTprivate.hxx"
-#include "OStream.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

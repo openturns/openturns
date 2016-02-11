@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "StationaryCovarianceModel.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

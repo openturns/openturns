@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_BERNSTEINCOPULAFACTORY_HXX
 #define OPENTURNS_BERNSTEINCOPULAFACTORY_HXX
 
-#include "DistributionFactoryImplementation.hxx"
-#include "Distribution.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

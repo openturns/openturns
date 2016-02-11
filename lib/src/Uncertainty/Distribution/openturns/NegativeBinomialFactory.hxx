@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NEGATIVEBINOMIALFACTORY_HXX
 #define OPENTURNS_NEGATIVEBINOMIALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "NegativeBinomial.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/NegativeBinomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

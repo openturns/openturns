@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_SAMPLER_HXX
 #define OPENTURNS_SAMPLER_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "SamplerImplementation.hxx"
-#include "Distribution.hxx"
-#include "CalibrationStrategy.hxx"
-#include "ConditionalDistribution.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/SamplerImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/CalibrationStrategy.hxx"
+#include "openturns/ConditionalDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

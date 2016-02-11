@@ -1,10 +1,10 @@
 // SWIG file LinearBasisFactory.i
 
 %{
-#include "LinearBasisFactory.hxx"
+#include "openturns/LinearBasisFactory.hxx"
 %}
 
 %include LinearBasisFactory_doc.i
 
-%include LinearBasisFactory.hxx
+%include openturns/LinearBasisFactory.hxx
 namespace OT { %extend LinearBasisFactory { LinearBasisFactory(const LinearBasisFactory & other) { return new OT::LinearBasisFactory(other); } } }

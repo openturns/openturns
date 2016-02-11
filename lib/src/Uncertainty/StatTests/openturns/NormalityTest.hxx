@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NORMALITYTEST_HXX
 #define OPENTURNS_NORMALITYTEST_HXX
 
-#include "OTprivate.hxx"
-#include "TestResult.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/TestResult.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

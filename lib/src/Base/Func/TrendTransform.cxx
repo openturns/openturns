@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "TrendTransform.hxx"
-#include "InverseTrendTransform.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalSample.hxx"
-#include "Exception.hxx"
+#include "openturns/TrendTransform.hxx"
+#include "openturns/InverseTrendTransform.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

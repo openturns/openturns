@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_GENERALIZEDLINEARMODELALGORITHM_HXX
 #define OPENTURNS_GENERALIZEDLINEARMODELALGORITHM_HXX
 
-#include "MetaModelAlgorithm.hxx"
-#include "Basis.hxx"
-#include "CovarianceModel.hxx"
-#include "KrigingResult.hxx"
-#include "HMatrix.hxx"
-#include "OptimizationSolver.hxx"
-#include "GeneralizedLinearModelResult.hxx"
+#include "openturns/MetaModelAlgorithm.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/KrigingResult.hxx"
+#include "openturns/HMatrix.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/GeneralizedLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

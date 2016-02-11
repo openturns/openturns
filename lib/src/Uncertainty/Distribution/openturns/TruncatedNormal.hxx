@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_TRUNCATEDNORMAL_HXX
 #define OPENTURNS_TRUNCATEDNORMAL_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

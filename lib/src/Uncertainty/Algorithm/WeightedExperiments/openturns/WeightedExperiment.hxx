@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_WEIGHTEDEXPERIMENT_HXX
 #define OPENTURNS_WEIGHTEDEXPERIMENT_HXX
 
-#include "ExperimentImplementation.hxx"
-#include "Distribution.hxx"
-#include "NumericalPoint.hxx"
-#include "Indices.hxx"
+#include "openturns/ExperimentImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Indices.hxx"
 //#include "OrthogonalBasis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

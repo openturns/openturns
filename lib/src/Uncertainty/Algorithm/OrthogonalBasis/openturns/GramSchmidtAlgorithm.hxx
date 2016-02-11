@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_GRAMSCHMIDTALGORITHM_HXX
 #define OPENTURNS_GRAMSCHMIDTALGORITHM_HXX
 
-#include "OrthonormalizationAlgorithmImplementation.hxx"
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "Collection.hxx"
+#include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

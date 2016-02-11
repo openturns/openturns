@@ -3,8 +3,8 @@
 OTAutodoc(NearestPointChecker)
 
 %{
-#include "NearestPointChecker.hxx"
+#include "openturns/NearestPointChecker.hxx"
 %}
 
-%include NearestPointChecker.hxx
+%include openturns/NearestPointChecker.hxx
 namespace OT{ %extend NearestPointChecker { NearestPointChecker(const NearestPointChecker & other) { return new OT::NearestPointChecker(other); } } }

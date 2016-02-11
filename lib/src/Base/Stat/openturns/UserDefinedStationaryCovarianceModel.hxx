@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_USERDEFINEDSTATIONARYCOVARIANCEMODEL_HXX
 #define OPENTURNS_USERDEFINEDSTATIONARYCOVARIANCEMODEL_HXX
 
-#include "StationaryCovarianceModel.hxx"
-#include "PersistentCollection.hxx"
-#include "Collection.hxx"
-#include "RegularGrid.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/RegularGrid.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

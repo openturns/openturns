@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_P1LAGRANGEEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_P1LAGRANGEEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "PersistentCollection.hxx"
-#include "Field.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

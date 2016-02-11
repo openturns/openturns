@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_ROSENBLATTEVALUATION_HXX
 #define OPENTURNS_ROSENBLATTEVALUATION_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Matrix.hxx"
-#include "NumericalPoint.hxx"
-#include "Distribution.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

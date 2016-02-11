@@ -23,7 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include <vector>                // for std::vector
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

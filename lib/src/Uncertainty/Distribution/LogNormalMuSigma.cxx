@@ -19,9 +19,9 @@
  *
  */
 
-#include "LogNormalFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "LogNormalMuSigma.hxx"
+#include "openturns/LogNormalFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/LogNormalMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

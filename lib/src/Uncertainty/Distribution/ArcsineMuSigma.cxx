@@ -20,9 +20,9 @@
  */
 
 #include <cmath>
-#include "ArcsineFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "ArcsineMuSigma.hxx"
+#include "openturns/ArcsineFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/ArcsineMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

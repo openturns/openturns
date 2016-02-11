@@ -3,8 +3,8 @@
 OTAutodoc(NatafEllipticalCopulaHessian)
 
 %{
-#include "NatafEllipticalCopulaHessian.hxx"
+#include "openturns/NatafEllipticalCopulaHessian.hxx"
 %}
 
-%include NatafEllipticalCopulaHessian.hxx
+%include openturns/NatafEllipticalCopulaHessian.hxx
 namespace OT { %extend NatafEllipticalCopulaHessian { NatafEllipticalCopulaHessian(const NatafEllipticalCopulaHessian & other) { return new OT::NatafEllipticalCopulaHessian(other); } } }

@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_CORRELATIONANALYSIS_HXX
 #define OPENTURNS_CORRELATIONANALYSIS_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalMathFunction.hxx"
-#include "SymmetricTensor.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

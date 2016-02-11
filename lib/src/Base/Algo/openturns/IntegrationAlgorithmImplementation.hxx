@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_INTEGRATIONALGORITHMIMPLEMENTATION_HXX
 #define OPENTURNS_INTEGRATIONALGORITHMIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Interval.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

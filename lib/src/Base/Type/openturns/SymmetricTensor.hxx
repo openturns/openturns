@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_SYMMETRICTENSOR_HXX
 #define OPENTURNS_SYMMETRICTENSOR_HXX
 
-#include "Tensor.hxx"
-#include "SymmetricMatrix.hxx"
+#include "openturns/Tensor.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

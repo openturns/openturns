@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ARCSINEFACTORY_HXX
 #define OPENTURNS_ARCSINEFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Arcsine.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Arcsine.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

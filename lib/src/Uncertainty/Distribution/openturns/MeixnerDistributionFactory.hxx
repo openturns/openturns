@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MEIXNERDISTRIBUTIONFACTORY_HXX
 #define OPENTURNS_MEIXNERDISTRIBUTIONFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "MeixnerDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/MeixnerDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

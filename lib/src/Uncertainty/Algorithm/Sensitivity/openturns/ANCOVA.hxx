@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_ANCOVA_HXX
 #define OPENTURNS_ANCOVA_HXX
 
-#include "OTprivate.hxx"
-#include "FunctionalChaosResult.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/FunctionalChaosResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

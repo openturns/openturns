@@ -21,13 +21,13 @@
 #include <fstream>
 #include <cstdlib>
 
-#include "LinearModelFactory.hxx"
-#include "LinearModel.hxx"
-#include "Path.hxx"
-#include "Exception.hxx"
-#include "OTconfig.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
+#include "openturns/LinearModelFactory.hxx"
+#include "openturns/LinearModel.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

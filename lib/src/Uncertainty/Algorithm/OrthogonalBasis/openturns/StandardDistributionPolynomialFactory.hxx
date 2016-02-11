@@ -23,10 +23,10 @@
 
 #include <map>
 
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
-#include "OrthonormalizationAlgorithm.hxx"
-#include "Collection.hxx"
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/OrthonormalizationAlgorithm.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

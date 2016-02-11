@@ -19,8 +19,8 @@
  *
  */
 #include <iostream>
-#include "OT.hxx"
-#include "OTtestcode.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
 
 using namespace OT;
 using namespace OT::Test;

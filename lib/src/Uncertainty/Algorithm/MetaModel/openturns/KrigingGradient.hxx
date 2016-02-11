@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_KRIGINGGRADIENT_HXX
 #define OPENTURNS_KRIGINGGRADIENT_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "CovarianceModel.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/CovarianceModel.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

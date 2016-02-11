@@ -20,10 +20,10 @@
  */
 #include <cmath>
 
-#include "CauchyModel.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Field.hxx"
+#include "openturns/CauchyModel.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

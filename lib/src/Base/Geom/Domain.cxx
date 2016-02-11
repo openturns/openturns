@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Domain.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Interval.hxx"
+#include "openturns/Domain.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

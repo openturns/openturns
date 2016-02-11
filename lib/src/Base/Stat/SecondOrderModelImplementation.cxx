@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SecondOrderModelImplementation.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Field.hxx"
+#include "openturns/SecondOrderModelImplementation.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

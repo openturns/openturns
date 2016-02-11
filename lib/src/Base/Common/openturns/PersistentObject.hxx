@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_PERSISTENTOBJECT_HXX
 #define OPENTURNS_PERSISTENTOBJECT_HXX
 
-#include "OSS.hxx"
-#include "Object.hxx"
-#include "StorageManager.hxx"
-#include "IdFactory.hxx"
-#include "Pointer.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Object.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/IdFactory.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

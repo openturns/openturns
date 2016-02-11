@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_INTERVALMESHER_HXX
 #define OPENTURNS_INTERVALMESHER_HXX
 
-#include "Interval.hxx"
-#include "Mesh.hxx"
-#include "MeshFactoryImplementation.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/MeshFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

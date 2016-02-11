@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_MCMC_HXX
 #define OPENTURNS_MCMC_HXX
 
-#include "OTprivate.hxx"
-#include "SamplerImplementation.hxx"
-#include "ResourceMap.hxx"
-#include "Distribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SamplerImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

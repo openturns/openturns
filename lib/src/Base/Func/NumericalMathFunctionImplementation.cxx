@@ -18,25 +18,25 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NumericalMathFunction.hxx"
-#include "NumericalMathFunctionImplementation.hxx"
-#include "NoNumericalMathEvaluationImplementation.hxx"
-#include "NoNumericalMathGradientImplementation.hxx"
-#include "NoNumericalMathHessianImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoNumericalMathGradientImplementation.hxx"
+#include "openturns/NoNumericalMathHessianImplementation.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
-#include "AnalyticalNumericalMathGradientImplementation.hxx"
-#include "AnalyticalNumericalMathHessianImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathHessianImplementation.hxx"
 #endif
-#include "DatabaseNumericalMathEvaluationImplementation.hxx"
-#include "ProductNumericalMathFunction.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "CenteredFiniteDifferenceHessian.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "OSS.hxx"
-#include "Os.hxx"
+#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Os.hxx"
 
 #undef GetClassName
 

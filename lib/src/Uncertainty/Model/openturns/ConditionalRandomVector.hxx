@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_CONDITIONALRANDOMVECTOR_HXX
 #define OPENTURNS_CONDITIONALRANDOMVECTOR_HXX
 
-#include "OTprivate.hxx"
-#include "RandomVectorImplementation.hxx"
-#include "RandomVector.hxx"
-#include "Distribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

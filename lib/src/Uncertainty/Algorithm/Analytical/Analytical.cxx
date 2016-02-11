@@ -20,10 +20,10 @@
  */
 #include <cmath>
 
-#include "Analytical.hxx"
-#include "Distribution.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Analytical.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

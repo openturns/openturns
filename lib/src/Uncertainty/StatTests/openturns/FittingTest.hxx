@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_FITTINGTEST_HXX
 #define OPENTURNS_FITTINGTEST_HXX
 
-#include "OTprivate.hxx"
-#include "TestResult.hxx"
-#include "Collection.hxx"
-#include "NumericalSample.hxx"
-#include "Distribution.hxx"
-#include "DistributionFactory.hxx"
-#include "Pointer.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/TestResult.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionFactory.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_NEARESTPOINTCHECKER_HXX
 #define OPENTURNS_NEARESTPOINTCHECKER_HXX
 
-#include "OTprivate.hxx"
-#include "Pointer.hxx"
-#include "NumericalMathFunction.hxx"
-#include "NumericalSample.hxx"
-#include "ComparisonOperator.hxx"
-#include "PersistentObject.hxx"
-#include "NearestPointCheckerResult.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/ComparisonOperator.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NearestPointCheckerResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

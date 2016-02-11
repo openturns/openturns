@@ -1,14 +1,14 @@
 // SWIG file Sampler.i
 
 %{
-#include "Sampler.hxx"
+#include "openturns/Sampler.hxx"
 %}
 
 %include Sampler_doc.i
 
 OTTypedInterfaceObjectHelper(Sampler)
 
-%include Sampler.hxx
+%include openturns/Sampler.hxx
 namespace OT {  
 %extend Sampler {
   const String __str__() const { return self->__repr__(); }

@@ -22,15 +22,15 @@
 #define OPENTURNS_SIMULATIONSENSITIVITYANALYSIS_HXX
 
 #include <cmath>
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "ComparisonOperator.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Graph.hxx"
-#include "Event.hxx"
-#include "SpecFunc.hxx"
-#include "SimulationResult.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/ComparisonOperator.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/SimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

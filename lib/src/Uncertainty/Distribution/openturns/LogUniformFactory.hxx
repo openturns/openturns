@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LOGUNIFORMFACTORY_HXX
 #define OPENTURNS_LOGUNIFORMFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "LogUniform.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/LogUniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

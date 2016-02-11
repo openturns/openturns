@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_RANDOMIZEDQUASIMONTECARLO_HXX
 #define OPENTURNS_RANDOMIZEDQUASIMONTECARLO_HXX
 
-#include "Simulation.hxx"
-#include "LowDiscrepancySequence.hxx"
-#include "SobolSequence.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/LowDiscrepancySequence.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

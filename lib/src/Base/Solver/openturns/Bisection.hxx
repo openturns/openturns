@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_BISECTION_HXX
 #define OPENTURNS_BISECTION_HXX
 
-#include "OTprivate.hxx"
-#include "SolverImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,7 +19,7 @@
  *
  */
 
-#include "TTY.hxx"
+#include "openturns/TTY.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

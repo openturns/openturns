@@ -21,14 +21,14 @@
 #ifndef OPENTURNS_NUMERICALMATHHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_NUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "Description.hxx"
-#include "Indices.hxx"
-#include "SymmetricTensor.hxx"
-#include "Pointer.hxx"
-#include "StorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

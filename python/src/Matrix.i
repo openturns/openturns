@@ -9,7 +9,7 @@ OT::Matrix OT::Matrix::computeSVD(OT::Matrix & u, OT::Matrix & vT, const Bool fu
 
 
 %{
-#include "Matrix.hxx"
+#include "openturns/Matrix.hxx"
 %}
 
 %include Matrix_doc.i
@@ -300,7 +300,7 @@ fail:
   OTMatrixSetAccessor(Matrix, NumericalScalar, _PyFloat_)
 %enddef
 
-%include Matrix.hxx
+%include openturns/Matrix.hxx
 
 %pythoncode %{
 # This code has been added to conform to Numpy ndarray interface

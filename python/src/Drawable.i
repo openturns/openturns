@@ -1,7 +1,7 @@
 // SWIG file Drawable.i
 
 %{
-#include "Drawable.hxx"
+#include "openturns/Drawable.hxx"
 %}
 
 %include Drawable_doc.i
@@ -11,7 +11,7 @@ OTDefaultCollectionConvertFunctions(Drawable)
 OTTypedInterfaceObjectHelper(Drawable)
 OTTypedCollectionInterfaceObjectHelper(Drawable)
 
-%include Drawable.hxx
+%include openturns/Drawable.hxx
 
 %pythoncode %{
 def Drawable__repr_svg_(self):

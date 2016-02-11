@@ -21,17 +21,17 @@
 #ifndef OPENTURNS_RANDOMVECTORIMPLEMENTATION_HXX
 #define OPENTURNS_RANDOMVECTORIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "Indices.hxx"
-#include "NumericalMathFunction.hxx"
-#include "CovarianceMatrix.hxx"
-#include "Distribution.hxx"
-#include "ComparisonOperator.hxx"
-#include "FunctionalChaosResult.hxx"
-#include "Domain.hxx"
-#include "Process.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ComparisonOperator.hxx"
+#include "openturns/FunctionalChaosResult.hxx"
+#include "openturns/Domain.hxx"
+#include "openturns/Process.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SPECFUNC_HXX
 #define OPENTURNS_SPECFUNC_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 /* Many mathematical functions lack on Windows when using
    Microsoft or Intel compilers.  We use Boost to define

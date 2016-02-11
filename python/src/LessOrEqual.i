@@ -1,12 +1,12 @@
 // SWIG file LessOrEqual.i
 
 %{
-#include "LessOrEqual.hxx"
+#include "openturns/LessOrEqual.hxx"
 %}
 
 %include LessOrEqual_doc.i
 
-%include LessOrEqual.hxx
+%include openturns/LessOrEqual.hxx
 namespace OT {  
 %extend LessOrEqual {
   const String __str__() const { return self->__repr__(); }

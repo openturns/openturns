@@ -3,15 +3,15 @@
 
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "UserDefined.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/UserDefined.hxx"
 %}
 
 %include UserDefined_doc.i
 
 %template(UserDefinedPairCollection) OT::Collection<OT::UserDefinedPair>;
 
-%include UserDefined.hxx
+%include openturns/UserDefined.hxx
 
 %extend OT::Collection<OT::UserDefinedPair>
 {

@@ -22,12 +22,12 @@
 #ifndef OPENTURNS_OTANALYTICAL_HXX
 #define OPENTURNS_OTANALYTICAL_HXX
 
-#include "Analytical.hxx"
-#include "AnalyticalResult.hxx"
-#include "StrongMaximumTest.hxx"
-#include "FORM.hxx"
-#include "FORMResult.hxx"
-#include "SORM.hxx"
-#include "SORMResult.hxx"
+#include "openturns/Analytical.hxx"
+#include "openturns/AnalyticalResult.hxx"
+#include "openturns/StrongMaximumTest.hxx"
+#include "openturns/FORM.hxx"
+#include "openturns/FORMResult.hxx"
+#include "openturns/SORM.hxx"
+#include "openturns/SORMResult.hxx"
 
 #endif /* OPENTURNS_OTANALYTICAL_HXX */

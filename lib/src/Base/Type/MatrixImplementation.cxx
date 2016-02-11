@@ -22,14 +22,14 @@
 #include <cstdlib>
 #include <functional>
 
-#include "MatrixImplementation.hxx"
-#include "ComplexMatrixImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Lapack.hxx"
-#include "ResourceMap.hxx"
-#include "SpecFunc.hxx"
-#include "Os.hxx"
-#include "Exception.hxx"
+#include "openturns/MatrixImplementation.hxx"
+#include "openturns/ComplexMatrixImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Lapack.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

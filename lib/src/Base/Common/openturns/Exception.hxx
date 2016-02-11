@@ -22,8 +22,8 @@
 #define OPENTURNS_EXCEPTION_HXX
 
 #include <exception>
-#include "OTprivate.hxx"
-#include "OSS.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LOGNORMALFACTORY_HXX
 #define OPENTURNS_LOGNORMALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "LogNormal.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/LogNormal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

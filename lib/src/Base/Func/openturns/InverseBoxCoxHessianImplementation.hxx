@@ -15,8 +15,8 @@
 #ifndef OPENTURNS_INVERSEBOXCOXHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_INVERSEBOXCOXHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "InverseBoxCoxEvaluationImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/InverseBoxCoxEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

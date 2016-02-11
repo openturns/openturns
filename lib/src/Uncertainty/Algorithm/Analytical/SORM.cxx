@@ -19,8 +19,8 @@
  *
  */
 
-#include "SORM.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/SORM.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

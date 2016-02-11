@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_TRIANGULARMATRIX_HXX
 #define OPENTURNS_TRIANGULARMATRIX_HXX
 
-#include "SquareMatrix.hxx"
-#include "Collection.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

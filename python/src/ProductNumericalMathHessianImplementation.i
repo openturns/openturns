@@ -3,8 +3,8 @@
 OTAutodoc(ProductNumericalMathHessianImplementation)
 
 %{
-#include "ProductNumericalMathHessianImplementation.hxx"
+#include "openturns/ProductNumericalMathHessianImplementation.hxx"
 %}
 
-%include ProductNumericalMathHessianImplementation.hxx
+%include openturns/ProductNumericalMathHessianImplementation.hxx
 namespace OT { %extend ProductNumericalMathHessianImplementation { ProductNumericalMathHessianImplementation(const ProductNumericalMathHessianImplementation & other) { return new OT::ProductNumericalMathHessianImplementation(other); } } }

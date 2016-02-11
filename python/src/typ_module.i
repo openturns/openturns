@@ -36,11 +36,11 @@ def getCorrelationMatrixFromMap(Vars, Map):
 %}
 
 %{
-#include "OTconfig.hxx"
-#include "OTCommon.hxx"
-#include "OTType.hxx"
-#include "OTGeom.hxx"
-#include "OTStat.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTCommon.hxx"
+#include "openturns/OTType.hxx"
+#include "openturns/OTGeom.hxx"
+#include "openturns/OTStat.hxx"
 %}
 
 %include typemaps.i

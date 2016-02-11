@@ -19,9 +19,9 @@
  *
  */
 #include <cmath>
-#include "OrthogonalDirection.hxx"
-#include "Log.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/OrthogonalDirection.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

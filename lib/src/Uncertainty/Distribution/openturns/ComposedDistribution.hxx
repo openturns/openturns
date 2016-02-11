@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_COMPOSEDDISTRIBUTION_HXX
 #define OPENTURNS_COMPOSEDDISTRIBUTION_HXX
 
-#include "Distribution.hxx"
-#include "DistributionImplementation.hxx"
-#include "PersistentCollection.hxx"
-#include "Copula.hxx"
-#include "TBB.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Copula.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

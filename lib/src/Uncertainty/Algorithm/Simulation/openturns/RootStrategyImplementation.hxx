@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_ROOTSTRATEGYIMPLEMENTATION_HXX
 #define OPENTURNS_ROOTSTRATEGYIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Solver.hxx"
-#include "Collection.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Solver.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

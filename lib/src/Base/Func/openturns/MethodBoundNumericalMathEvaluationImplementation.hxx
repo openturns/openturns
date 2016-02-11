@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_METHODBOUNDNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_METHODBOUNDNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathFunctionImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

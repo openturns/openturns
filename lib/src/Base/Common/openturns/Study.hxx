@@ -23,9 +23,9 @@
 
 #include <iostream>              // for std::ostream
 #include <map>                   // for std::map
-#include "Object.hxx"
-#include "Pointer.hxx"
-#include "StorageManager.hxx"
+#include "openturns/Object.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

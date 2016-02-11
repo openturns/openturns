@@ -1,8 +1,8 @@
 // SWIG file NumericalMathFunction.i
 
 %{
-#include "NumericalMathFunction.hxx"
-#include "PythonNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/PythonNumericalMathEvaluationImplementation.hxx"
 %}
 
 %include BaseFuncCollection.i
@@ -48,7 +48,7 @@ OTTypedInterfaceObjectHelper(NumericalMathFunction)
 %ignore OT::NumericalMathFunction::getUseDefaultHessianImplementation;
 %ignore OT::NumericalMathFunction::setUseDefaultHessianImplementation;
 
-%include NumericalMathFunction.hxx
+%include openturns/NumericalMathFunction.hxx
 
 namespace OT {  
 

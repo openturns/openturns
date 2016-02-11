@@ -1,8 +1,8 @@
 // SWIG file Copula.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "Copula.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/Copula.hxx"
 
 namespace OT { 
 
@@ -96,5 +96,5 @@ namespace OT {
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DistributionImplementation, 0));
 }
 
-%include Copula.hxx
+%include openturns/Copula.hxx
 namespace OT { %extend Copula { Copula(const Copula & other) { return new OT::Copula(other); } } }

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LINEARMODELFACTORY_HXX
 #define OPENTURNS_LINEARMODELFACTORY_HXX
 
-#include "LinearModel.hxx"
-#include "NumericalSample.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/LinearModel.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

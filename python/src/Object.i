@@ -3,12 +3,12 @@
 %ignore OT::Object::GetClassName;
 
 %{
-#include "Object.hxx"
+#include "openturns/Object.hxx"
 %}
 
 %include Object_doc.i
 
-%include Object.hxx
+%include openturns/Object.hxx
 namespace OT{ %extend Object { Object(const Object & other) { return new OT::Object(other); } } }
 
 %pythoncode %{

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_DISTRIBUTIONPARAMETERS_HXX
 #define OPENTURNS_DISTRIBUTIONPARAMETERS_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

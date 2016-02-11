@@ -22,6 +22,6 @@
 #ifndef OPENTURNS_OTABDORACKWITZ_HXX
 #define OPENTURNS_OTABDORACKWITZ_HXX
 
-#include "AbdoRackwitz.hxx"
+#include "openturns/AbdoRackwitz.hxx"
 
 #endif /* OPENTURNS_OTABDORACKWITZ_HXX */

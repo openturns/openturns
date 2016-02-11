@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_VISUALTEST_HXX
 #define OPENTURNS_VISUALTEST_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalSample.hxx"
-#include "LinearModel.hxx"
-#include "Distribution.hxx"
-#include "Graph.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/LinearModel.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

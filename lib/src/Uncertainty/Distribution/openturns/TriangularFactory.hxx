@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_TRIANGULARFACTORY_HXX
 #define OPENTURNS_TRIANGULARFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Triangular.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Triangular.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_HASELGROVESEQUENCE_HXX
 #define OPENTURNS_HASELGROVESEQUENCE_HXX
 
-#include "LowDiscrepancySequenceImplementation.hxx"
+#include "openturns/LowDiscrepancySequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 /**

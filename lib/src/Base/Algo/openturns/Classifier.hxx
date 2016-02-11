@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_CLASSIFIER_HXX
 #define OPENTURNS_CLASSIFIER_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "NumericalSample.hxx"
-#include "ClassifierImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/ClassifierImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

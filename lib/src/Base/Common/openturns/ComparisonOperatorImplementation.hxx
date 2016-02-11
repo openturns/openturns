@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMPARISONOPERATORIMPLEMENTATION_HXX
 #define OPENTURNS_COMPARISONOPERATORIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

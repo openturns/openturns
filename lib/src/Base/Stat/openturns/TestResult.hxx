@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_TESTRESULT_HXX
 #define OPENTURNS_TESTRESULT_HXX
 
-#include "PersistentObject.hxx"
-#include "StorageManager.hxx"
-#include "Description.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

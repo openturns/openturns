@@ -21,18 +21,18 @@
 #ifndef OPENTURNS_ANALYTICAL_HXX
 #define OPENTURNS_ANALYTICAL_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "OptimizationSolver.hxx"
-#include "Collection.hxx"
-#include "Event.hxx"
-#include "StandardEvent.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Graph.hxx"
-#include "Description.hxx"
-#include "AnalyticalResult.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/AnalyticalResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

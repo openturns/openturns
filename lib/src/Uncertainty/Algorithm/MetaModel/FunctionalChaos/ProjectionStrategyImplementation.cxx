@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ProjectionStrategyImplementation.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "MonteCarloExperiment.hxx"
-#include "FixedExperiment.hxx"
-#include "UserDefined.hxx"
-#include "Exception.hxx"
+#include "openturns/ProjectionStrategyImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/FixedExperiment.hxx"
+#include "openturns/UserDefined.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_BIPARTITEGRAPH_HXX
 #define OPENTURNS_BIPARTITEGRAPH_HXX
 
-#include "OTprivate.hxx"
-#include "Graph.hxx"
-#include "Indices.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
 #include <Python.h>
-#include "NumericalMathHessianImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

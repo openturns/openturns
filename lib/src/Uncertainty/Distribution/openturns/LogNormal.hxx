@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LOGNORMAL_HXX
 #define OPENTURNS_LOGNORMAL_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "PersistentCollection.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

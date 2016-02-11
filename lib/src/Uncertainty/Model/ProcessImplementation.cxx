@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "ProcessImplementation.hxx"
-#include "Exception.hxx"
-#include "NumericalMathFunction.hxx"
-#include "PiecewiseLinearEvaluationImplementation.hxx"
-#include "P1LagrangeEvaluationImplementation.hxx"
-#include "RegularGrid.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
+#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/RegularGrid.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

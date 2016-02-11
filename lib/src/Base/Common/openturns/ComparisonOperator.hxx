@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMPARISONOPERATOR_HXX
 #define OPENTURNS_COMPARISONOPERATOR_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_WHITENOISE_HXX
 #define OPENTURNS_WHITENOISE_HXX
 
-#include "ProcessImplementation.hxx"
-#include "Distribution.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

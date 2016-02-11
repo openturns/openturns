@@ -19,14 +19,14 @@
  *
  */
 #include <cmath>
-#include "ConditionalDistribution.hxx"
-#include "ComposedDistribution.hxx"
-#include "Dirac.hxx"
-#include "Uniform.hxx"
-#include "Box.hxx"
-#include "GaussProductExperiment.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/Dirac.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/Box.hxx"
+#include "openturns/GaussProductExperiment.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_WEIBULL_HXX
 #define OPENTURNS_WEIBULL_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,7 +1,7 @@
 // SWIG file CalibrationStrategy.i
 
 %{
-#include "CalibrationStrategy.hxx"
+#include "openturns/CalibrationStrategy.hxx"
 %}
 
 %include CalibrationStrategy_doc.i
@@ -11,7 +11,7 @@ OTDefaultCollectionConvertFunctions(CalibrationStrategy)
 OTTypedInterfaceObjectHelper(CalibrationStrategy)
 OTTypedCollectionInterfaceObjectHelper(CalibrationStrategy)
 
-%include CalibrationStrategy.hxx
+%include openturns/CalibrationStrategy.hxx
 
 namespace OT {  
 %extend CalibrationStrategy {

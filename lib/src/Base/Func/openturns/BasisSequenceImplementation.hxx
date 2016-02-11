@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BASISSEQUENCEIMPLEMENTATION_HXX
 #define OPENTURNS_BASISSEQUENCEIMPLEMENTATION_HXX
 
-#include "PersistentCollection.hxx"
-#include "Indices.hxx"
-#include "Basis.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

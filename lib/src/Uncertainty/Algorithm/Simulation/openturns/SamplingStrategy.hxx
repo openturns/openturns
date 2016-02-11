@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_SAMPLINGSTRATEGY_HXX
 #define OPENTURNS_SAMPLINGSTRATEGY_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "SamplingStrategyImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/SamplingStrategyImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

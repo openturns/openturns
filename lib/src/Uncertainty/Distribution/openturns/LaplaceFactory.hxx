@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LAPLACEFACTORY_HXX
 #define OPENTURNS_LAPLACEFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Laplace.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Laplace.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

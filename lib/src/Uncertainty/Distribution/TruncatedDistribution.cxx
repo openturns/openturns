@@ -21,12 +21,12 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "TruncatedDistribution.hxx"
-#include "SpecFunc.hxx"
-#include "RandomGenerator.hxx"
-#include "Uniform.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/TruncatedDistribution.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

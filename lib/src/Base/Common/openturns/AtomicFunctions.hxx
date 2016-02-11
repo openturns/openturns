@@ -22,12 +22,12 @@
 #define OPENTURNS_ATOMICFUNCTIONS_HXX
 
 #include <cassert>
-#include "OTconfig.hxx"
-#include "MutexLock.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/MutexLock.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
 #include <tbb/tbb.h>
-#include "OTwindows.h"
+#include "openturns/OTwindows.h"
 #endif
 
 

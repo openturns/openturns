@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PRODUCTDISTRIBUTION_HXX
 #define OPENTURNS_PRODUCTDISTRIBUTION_HXX
 
-#include "ContinuousDistribution.hxx"
-#include "Distribution.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

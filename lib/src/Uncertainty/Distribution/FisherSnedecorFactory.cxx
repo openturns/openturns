@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "FisherSnedecorFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "SpecFunc.hxx"
-#include "TNC.hxx"
-#include "MaximumLikelihoodFactory.hxx"
+#include "openturns/FisherSnedecorFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/TNC.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

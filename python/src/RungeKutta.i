@@ -3,8 +3,8 @@
 OTAutodoc(RungeKutta)
 
 %{
-#include "RungeKutta.hxx"
+#include "openturns/RungeKutta.hxx"
 %}
 
-%include RungeKutta.hxx
+%include openturns/RungeKutta.hxx
 namespace OT { %extend RungeKutta { RungeKutta(const RungeKutta & other) { return new OT::RungeKutta(other); } } }

@@ -15,8 +15,8 @@
 #ifndef OPENTURNS_ANALYTICALNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_ANALYTICALNUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

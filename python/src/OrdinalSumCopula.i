@@ -1,15 +1,15 @@
 // SWIG file OrdinalSumCopula.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "OrdinalSumCopula.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/OrdinalSumCopula.hxx"
 %}
 
 
 %include OrdinalSumCopula_doc.i
 
 
-%include OrdinalSumCopula.hxx
+%include openturns/OrdinalSumCopula.hxx
 
 namespace OT {
 

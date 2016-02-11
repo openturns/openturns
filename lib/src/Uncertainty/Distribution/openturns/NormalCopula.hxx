@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_NORMALCOPULA_HXX
 #define OPENTURNS_NORMALCOPULA_HXX
 
-#include "CopulaImplementation.hxx"
-#include "CorrelationMatrix.hxx"
-#include "Normal.hxx"
-#include "DistFunc.hxx"
-#include "TBB.hxx"
+#include "openturns/CopulaImplementation.hxx"
+#include "openturns/CorrelationMatrix.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

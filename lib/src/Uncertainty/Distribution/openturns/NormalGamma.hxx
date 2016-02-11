@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_NORMALGAMMA_HXX
 #define OPENTURNS_NORMALGAMMA_HXX
 
-#include "OTprivate.hxx"
-#include "BayesDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/BayesDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CORRELATIONMATRIX_HXX
 #define OPENTURNS_CORRELATIONMATRIX_HXX
 
-#include "OTprivate.hxx"
-#include "CovarianceMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

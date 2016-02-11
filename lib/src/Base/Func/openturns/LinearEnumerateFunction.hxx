@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LINEARENUMERATEFUNCTION_HXX
 #define OPENTURNS_LINEARENUMERATEFUNCTION_HXX
 
-#include "EnumerateFunctionImplementation.hxx"
+#include "openturns/EnumerateFunctionImplementation.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -1,12 +1,12 @@
 // SWIG file StationaryCovarianceModelFactory.i
 
 %{
-#include "StationaryCovarianceModelFactory.hxx"
+#include "openturns/StationaryCovarianceModelFactory.hxx"
 %}
 
 %include StationaryCovarianceModelFactory_doc.i
 
-%include StationaryCovarianceModelFactory.hxx
+%include openturns/StationaryCovarianceModelFactory.hxx
 namespace OT { 
 
   %extend StationaryCovarianceModelFactory {

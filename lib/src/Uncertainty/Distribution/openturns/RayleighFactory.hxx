@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_RAYLEIGHFACTORY_HXX
 #define OPENTURNS_RAYLEIGHFACTORY_HXX
 
-#include "DistributionFactoryImplementation.hxx"
-#include "Rayleigh.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Rayleigh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

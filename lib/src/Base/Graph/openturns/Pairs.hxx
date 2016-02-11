@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_PAIRS_HXX
 #define OPENTURNS_PAIRS_HXX
 
-#include "OTprivate.hxx"
-#include "Drawable.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Drawable.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

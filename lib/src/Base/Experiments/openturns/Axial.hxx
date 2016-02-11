@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_AXIAL_HXX
 #define OPENTURNS_AXIAL_HXX
 
-#include "StratifiedExperiment.hxx"
+#include "openturns/StratifiedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

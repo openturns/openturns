@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ODESOLVER_HXX
 #define OPENTURNS_ODESOLVER_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "ODESolverImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ODESolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

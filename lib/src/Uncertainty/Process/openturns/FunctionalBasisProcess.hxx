@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_FUNCTIONALBASISPROCESS_HXX
 #define OPENTURNS_FUNCTIONALBASISPROCESS_HXX
 
-#include "ProcessImplementation.hxx"
-#include "Basis.hxx"
-#include "Distribution.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DIRACFACTORY_HXX
 #define OPENTURNS_DIRACFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Dirac.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

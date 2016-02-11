@@ -22,13 +22,13 @@
 #ifndef OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX
 #define OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX
 
-#include "BootstrapExperiment.hxx"
-#include "FixedExperiment.hxx"
-#include "GaussProductExperiment.hxx"
-#include "ImportanceSamplingExperiment.hxx"
-#include "LHSExperiment.hxx"
-#include "LowDiscrepancyExperiment.hxx"
-#include "MonteCarloExperiment.hxx"
-#include "WeightedExperiment.hxx"
+#include "openturns/BootstrapExperiment.hxx"
+#include "openturns/FixedExperiment.hxx"
+#include "openturns/GaussProductExperiment.hxx"
+#include "openturns/ImportanceSamplingExperiment.hxx"
+#include "openturns/LHSExperiment.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */

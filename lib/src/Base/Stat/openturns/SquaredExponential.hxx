@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_SQUAREDEXPONENTIAL_HXX
 #define OPENTURNS_SQUAREDEXPONENTIAL_HXX
 
-#include "StationaryCovarianceModel.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

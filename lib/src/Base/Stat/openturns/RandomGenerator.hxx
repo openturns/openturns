@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_RANDOMGENERATOR_HXX
 #define OPENTURNS_RANDOMGENERATOR_HXX
 
-#include "OTprivate.hxx"
-#include "Collection.hxx"
-#include "NumericalPoint.hxx"
-#include "RandomGeneratorState.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/RandomGeneratorState.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

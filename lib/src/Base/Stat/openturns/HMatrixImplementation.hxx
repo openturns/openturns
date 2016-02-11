@@ -22,12 +22,12 @@
 #ifndef OPENTURNS_HMATRIXIMPLEMENTATION_HXX
 #define OPENTURNS_HMATRIXIMPLEMENTATION_HXX
 
-#include "OTconfig.hxx"
-#include "OTprivate.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "CovarianceMatrix.hxx"
-#include "CovarianceModel.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/CovarianceModel.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
 # include <hmat/hmat.h>

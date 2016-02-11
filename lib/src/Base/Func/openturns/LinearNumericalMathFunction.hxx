@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LINEARNUMERICALMATHFUNCTION_HXX
 #define OPENTURNS_LINEARNUMERICALMATHFUNCTION_HXX
 
-#include "NumericalMathFunction.hxx"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

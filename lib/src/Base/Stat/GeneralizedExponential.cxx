@@ -17,10 +17,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "GeneralizedExponential.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/GeneralizedExponential.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

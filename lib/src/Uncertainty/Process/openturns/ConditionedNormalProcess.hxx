@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CONDITIONEDNORMALPROCESS_HXX
 #define OPENTURNS_CONDITIONEDNORMALPROCESS_HXX
 
-#include "TemporalNormalProcess.hxx"
-#include "KrigingResult.hxx"
+#include "openturns/TemporalNormalProcess.hxx"
+#include "openturns/KrigingResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

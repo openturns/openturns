@@ -21,17 +21,17 @@
 #ifndef OPENTURNS_MESH_HXX
 #define OPENTURNS_MESH_HXX
 
-#include "PersistentObject.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
-#include "Indices.hxx"
-#include "SquareMatrix.hxx"
-#include "IdentityMatrix.hxx"
-#include "DomainImplementation.hxx"
-#include "Graph.hxx"
-#include "TBB.hxx"
-#include "KDTree.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/DomainImplementation.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/TBB.hxx"
+#include "openturns/KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

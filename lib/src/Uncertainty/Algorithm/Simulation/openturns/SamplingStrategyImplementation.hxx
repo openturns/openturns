@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SAMPLINGSTRATEGYIMPLEMENTATION_HXX
 #define OPENTURNS_SAMPLINGSTRATEGYIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

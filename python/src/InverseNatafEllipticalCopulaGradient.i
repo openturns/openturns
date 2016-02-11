@@ -3,8 +3,8 @@
 OTAutodoc(InverseNatafEllipticalCopulaGradient)
 
 %{
-#include "InverseNatafEllipticalCopulaGradient.hxx"
+#include "openturns/InverseNatafEllipticalCopulaGradient.hxx"
 %}
 
-%include InverseNatafEllipticalCopulaGradient.hxx
+%include openturns/InverseNatafEllipticalCopulaGradient.hxx
 namespace OT { %extend InverseNatafEllipticalCopulaGradient { InverseNatafEllipticalCopulaGradient(const InverseNatafEllipticalCopulaGradient & other) { return new OT::InverseNatafEllipticalCopulaGradient(other); } } }

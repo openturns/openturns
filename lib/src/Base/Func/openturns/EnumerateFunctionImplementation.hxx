@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ENUMERATEFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_ENUMERATEFUNCTIONIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Indices.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

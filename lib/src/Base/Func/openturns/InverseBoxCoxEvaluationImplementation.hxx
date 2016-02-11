@@ -15,9 +15,9 @@
 #ifndef OPENTURNS_INVERSEBOXCOXEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_INVERSEBOXCOXEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,12 +19,12 @@
  *
  */
 #include <cmath>
-#include "FisherSnedecor.hxx"
-#include "RandomGenerator.hxx"
-#include "IdentityMatrix.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/FisherSnedecor.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

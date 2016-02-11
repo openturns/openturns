@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_RANDOMIZEDLHS_HXX
 #define OPENTURNS_RANDOMIZEDLHS_HXX
 
-#include "Simulation.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "Distribution.hxx"
-#include "Matrix.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

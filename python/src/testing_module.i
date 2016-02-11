@@ -2,8 +2,8 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OT.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OT.hxx"
 %}
 
 %include typemaps.i
@@ -21,7 +21,7 @@
 
 
 %{
-#include "OTtestcode.hxx"
+#include "openturns/OTtestcode.hxx"
 %}
 
-%include OTtestcode.hxx
+%include openturns/OTtestcode.hxx

@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_BAYESDISTRIBUTION_HXX
 #define OPENTURNS_BAYESDISTRIBUTION_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "Distribution.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

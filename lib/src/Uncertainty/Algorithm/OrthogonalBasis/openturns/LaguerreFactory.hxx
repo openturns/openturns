@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LAGUERREFACTORY_HXX
 #define OPENTURNS_LAGUERREFACTORY_HXX
 
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

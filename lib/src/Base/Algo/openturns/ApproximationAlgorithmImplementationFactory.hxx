@@ -22,10 +22,10 @@
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATIONFACTORY_HXX
 
 #include <iostream>
-#include "ApproximationAlgorithmImplementation.hxx"
-#include "NumericalSample.hxx"
-#include "Basis.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/ApproximationAlgorithmImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

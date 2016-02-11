@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_POSTANALYTICALSIMULATION_HXX
 #define OPENTURNS_POSTANALYTICALSIMULATION_HXX
 
-#include "Simulation.hxx"
-#include "AnalyticalResult.hxx"
-#include "StandardEvent.hxx"
-#include "Distribution.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/AnalyticalResult.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

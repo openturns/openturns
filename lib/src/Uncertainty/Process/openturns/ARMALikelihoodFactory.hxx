@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ARMALIKELIHOODFACTORY_HXX
 #define OPENTURNS_ARMALIKELIHOODFACTORY_HXX
 
-#include "ARMAFactoryImplementation.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/ARMAFactoryImplementation.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

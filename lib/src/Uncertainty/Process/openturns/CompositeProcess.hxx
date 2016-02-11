@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_COMPOSITEPROCESS_HXX
 #define OPENTURNS_COMPOSITEPROCESS_HXX
 
-#include "ProcessImplementation.hxx"
-#include "Process.hxx"
-#include "DynamicalFunction.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Process.hxx"
+#include "openturns/DynamicalFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

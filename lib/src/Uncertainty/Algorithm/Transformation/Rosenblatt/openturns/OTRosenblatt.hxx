@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_OTROSENBLATT_HXX
 #define OPENTURNS_OTROSENBLATT_HXX
 
-#include "InverseRosenblattEvaluation.hxx"
-#include "RosenblattEvaluation.hxx"
+#include "openturns/InverseRosenblattEvaluation.hxx"
+#include "openturns/RosenblattEvaluation.hxx"
 
 #endif /* OPENTURNS_OTROSENBLATT_HXX */

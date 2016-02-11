@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FRANKCOPULA_HXX
 #define OPENTURNS_FRANKCOPULA_HXX
 
-#include "ArchimedeanCopula.hxx"
+#include "openturns/ArchimedeanCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

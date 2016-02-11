@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DYNAMICALFUNCTION_HXX
 #define OPENTURNS_DYNAMICALFUNCTION_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "DynamicalFunctionImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/DynamicalFunctionImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

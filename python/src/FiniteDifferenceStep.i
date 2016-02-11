@@ -1,12 +1,12 @@
 // SWIG file FiniteDifferenceStep.i
 
 %{
-#include "FiniteDifferenceStep.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
 %}
 
 %include FiniteDifferenceStep_doc.i
 
 OTTypedInterfaceObjectHelper(FiniteDifferenceStep)
 
-%include FiniteDifferenceStep.hxx
+%include openturns/FiniteDifferenceStep.hxx
 namespace OT { %extend FiniteDifferenceStep { FiniteDifferenceStep(const FiniteDifferenceStep & other) { return new OT::FiniteDifferenceStep(other); } } }

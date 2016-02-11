@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LowDiscrepancyExperiment.hxx"
-#include "SobolSequence.hxx"
-#include "Exception.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

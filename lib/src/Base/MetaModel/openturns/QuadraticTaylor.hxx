@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_QUADRATICTAYLOR_HXX
 #define OPENTURNS_QUADRATICTAYLOR_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
-#include "SymmetricTensor.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

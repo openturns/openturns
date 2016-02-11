@@ -6,12 +6,12 @@
 OT::NumericalSample OT::OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees, OT::NumericalPoint & weights) const;
 
 %{
-#include "OrthogonalProductPolynomialFactory.hxx"
+#include "openturns/OrthogonalProductPolynomialFactory.hxx"
 %}
 
 %include OrthogonalProductPolynomialFactory_doc.i
 
-%include OrthogonalProductPolynomialFactory.hxx
+%include openturns/OrthogonalProductPolynomialFactory.hxx
 namespace OT{ %extend OrthogonalProductPolynomialFactory { OrthogonalProductPolynomialFactory(const OrthogonalProductPolynomialFactory & other) { return new OT::OrthogonalProductPolynomialFactory(other); } } }
 
 %clear OT::NumericalPoint & weights;

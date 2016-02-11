@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_BETAMUSIGMA_HXX
 #define OPENTURNS_BETAMUSIGMA_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

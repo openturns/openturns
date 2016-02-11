@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_ORDERSTATISTICSMARGINALCHECKER_HXX
 #define OPENTURNS_ORDERSTATISTICSMARGINALCHECKER_HXX
 
-#include "OTprivate.hxx"
-#include "Indices.hxx"
-#include "Distribution.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

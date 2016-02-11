@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_GENERALIZEDPARETO_HXX
 #define OPENTURNS_GENERALIZEDPARETO_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

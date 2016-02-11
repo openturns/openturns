@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MESHFACTORY_HXX
 #define OPENTURNS_MESHFACTORY_HXX
 
-#include "MeshFactoryImplementation.hxx"
-#include "PersistentObject.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/MeshFactoryImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

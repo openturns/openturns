@@ -3,8 +3,8 @@
 OTAutodoc(NatafIndependentCopulaEvaluation)
 
 %{
-#include "NatafIndependentCopulaEvaluation.hxx"
+#include "openturns/NatafIndependentCopulaEvaluation.hxx"
 %}
 
-%include NatafIndependentCopulaEvaluation.hxx
+%include openturns/NatafIndependentCopulaEvaluation.hxx
 namespace OT { %extend NatafIndependentCopulaEvaluation { NatafIndependentCopulaEvaluation(const NatafIndependentCopulaEvaluation & other) { return new OT::NatafIndependentCopulaEvaluation(other); } } }

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_DATABASENUMERICALMATHFUNCTIONEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_DATABASENUMERICALMATHFUNCTIONEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "KDTree.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

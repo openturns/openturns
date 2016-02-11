@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_HYPOTHESISTEST_HXX
 #define OPENTURNS_HYPOTHESISTEST_HXX
 
-#include "OTprivate.hxx"
-#include "TestResult.hxx"
-#include "Indices.hxx"
-#include "NumericalSample.hxx"
-#include "LinearModel.hxx"
-#include "Distribution.hxx"
-#include "DistributionFactoryImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/TestResult.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/LinearModel.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

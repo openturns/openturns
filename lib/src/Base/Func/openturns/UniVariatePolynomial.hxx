@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_UNIVARIATEPOLYNOMIAL_HXX
 #define OPENTURNS_UNIVARIATEPOLYNOMIAL_HXX
 
-#include "OTprivate.hxx"
-#include "UniVariatePolynomialImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/UniVariatePolynomialImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

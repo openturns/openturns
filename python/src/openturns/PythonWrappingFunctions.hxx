@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONWRAPPINGFUNCTIONS_HXX
 
 #include <Python.h>
-#include "OT.hxx"
+#include "openturns/OT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

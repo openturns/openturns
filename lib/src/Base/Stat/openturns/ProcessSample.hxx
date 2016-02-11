@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_PROCESSSAMPLE_HXX
 #define OPENTURNS_PROCESSSAMPLE_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
 //#include "TimeGrid.hxx"
-#include "Field.hxx"
-#include "NumericalSample.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,7 +23,7 @@
 
 #include <cstddef>
 
-#include "OTdebug.h"
+#include "openturns/OTdebug.h"
 
 #ifdef DEBUG_MEMORY
 
@@ -31,8 +31,8 @@
 #include <map>
 #include <cstdlib>
 
-#include "OTthread.hxx"
-#include "OTmemory.hxx"
+#include "openturns/OTthread.hxx"
+#include "openturns/OTmemory.hxx"
 
 #ifndef SWIG
 

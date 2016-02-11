@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_XMLCHAR_TRAITS_HXX
 #define OPENTURNS_XMLCHAR_TRAITS_HXX
 
-#include "OTprivate.hxx"
-#include "OTconfig.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTconfig.hxx"
 #include <string>
 
 #if defined OPENTURNS_HAVE_LIBXML2

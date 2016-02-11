@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_RANDOMGENERATORSTATE_HXX
 #define OPENTURNS_RANDOMGENERATORSTATE_HXX
 
-#include "PersistentObject.hxx"
-#include "Indices.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Indices.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

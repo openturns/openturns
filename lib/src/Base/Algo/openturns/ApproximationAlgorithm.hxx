@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_APPROXIMATIONALGORITHM_HXX
 #define OPENTURNS_APPROXIMATIONALGORITHM_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "ApproximationAlgorithmImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ApproximationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

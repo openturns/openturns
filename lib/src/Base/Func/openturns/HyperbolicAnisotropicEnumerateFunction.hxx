@@ -23,9 +23,9 @@
 
 #include <list>
 
-#include "EnumerateFunctionImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/EnumerateFunctionImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

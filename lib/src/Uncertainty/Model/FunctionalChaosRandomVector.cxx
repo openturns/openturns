@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "FunctionalChaosRandomVector.hxx"
-#include "UsualRandomVector.hxx"
-#include "EnumerateFunction.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/FunctionalChaosRandomVector.hxx"
+#include "openturns/UsualRandomVector.hxx"
+#include "openturns/EnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BINOMIALFACTORY_HXX
 #define OPENTURNS_BINOMIALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Binomial.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Binomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

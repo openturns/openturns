@@ -19,16 +19,16 @@
  *
  */
 
-#include "TemporalNormalProcess.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "CovarianceMatrix.hxx"
-#include "DistFunc.hxx"
-#include "TriangularMatrix.hxx"
-#include "KPermutationsDistribution.hxx"
-#include "RandomGenerator.hxx"
-#include "HMatrixFactory.hxx"
+#include "openturns/TemporalNormalProcess.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/KPermutationsDistribution.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/HMatrixFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

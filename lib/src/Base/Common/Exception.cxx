@@ -21,9 +21,9 @@
 #include <cstdlib>
 #include <assert.h>
 //#include <typeinfo>
-#include "OSS.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

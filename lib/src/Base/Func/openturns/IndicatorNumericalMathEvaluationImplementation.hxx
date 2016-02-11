@@ -16,8 +16,8 @@
 #ifndef OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "ComparisonOperator.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/ComparisonOperator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

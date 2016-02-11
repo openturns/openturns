@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_KRIGINGRANDOMVECTOR_HXX
 #define OPENTURNS_KRIGINGRANDOMVECTOR_HXX
 
-#include "UsualRandomVector.hxx"
-#include "KrigingResult.hxx"
+#include "openturns/UsualRandomVector.hxx"
+#include "openturns/KrigingResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

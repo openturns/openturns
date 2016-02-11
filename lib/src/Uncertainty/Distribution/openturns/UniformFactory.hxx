@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_UNIFORMFACTORY_HXX
 #define OPENTURNS_UNIFORMFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Uniform.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

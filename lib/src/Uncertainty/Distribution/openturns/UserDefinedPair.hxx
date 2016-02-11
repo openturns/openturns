@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_USERDEFINEDPAIR_HXX
 #define OPENTURNS_USERDEFINEDPAIR_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalPoint.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

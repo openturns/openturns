@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MONTECARLO_HXX
 #define OPENTURNS_MONTECARLO_HXX
 
-#include "Simulation.hxx"
+#include "openturns/Simulation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

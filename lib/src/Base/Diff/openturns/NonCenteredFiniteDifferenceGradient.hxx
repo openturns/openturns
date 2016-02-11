@@ -23,9 +23,9 @@
 #ifndef OPENTURNS_NONCENTEREDFINITEDIFFERENCEGRADIENT_HXX
 #define OPENTURNS_NONCENTEREDFINITEDIFFERENCEGRADIENT_HXX
 
-#include "FiniteDifferenceGradient.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Pointer.hxx"
+#include "openturns/FiniteDifferenceGradient.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

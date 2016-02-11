@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_GRAPHIMPLEMENTATION_HXX
 #define OPENTURNS_GRAPHIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "PersistentCollection.hxx"
-#include "Drawable.hxx"
-#include "Interval.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Drawable.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

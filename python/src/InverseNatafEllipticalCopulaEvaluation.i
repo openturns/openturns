@@ -3,8 +3,8 @@
 OTAutodoc(InverseNatafEllipticalCopulaEvaluation)
 
 %{
-#include "InverseNatafEllipticalCopulaEvaluation.hxx"
+#include "openturns/InverseNatafEllipticalCopulaEvaluation.hxx"
 %}
 
-%include InverseNatafEllipticalCopulaEvaluation.hxx
+%include openturns/InverseNatafEllipticalCopulaEvaluation.hxx
 namespace OT { %extend InverseNatafEllipticalCopulaEvaluation { InverseNatafEllipticalCopulaEvaluation(const InverseNatafEllipticalCopulaEvaluation & other) { return new OT::InverseNatafEllipticalCopulaEvaluation(other); } } }

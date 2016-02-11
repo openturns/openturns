@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_COVARIANCEMODELFACTORYIMPLEMENTATION_HXX
 #define OPENTURNS_COVARIANCEMODELFACTORYIMPLEMENTATION_HXX
 
-#include "CovarianceModel.hxx"
-#include "ProcessSample.hxx"
-#include "Field.hxx"
-#include "NumericalPoint.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/ProcessSample.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

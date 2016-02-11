@@ -19,10 +19,10 @@
  *
  *  Id:      $Id$
  */
-#include "PersistentObjectFactory.hxx"
-#include "IntervalMesher.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/IntervalMesher.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_STUDENT_HXX
 #define OPENTURNS_STUDENT_HXX
 
-#include "OTprivate.hxx"
-#include "EllipticalDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/EllipticalDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

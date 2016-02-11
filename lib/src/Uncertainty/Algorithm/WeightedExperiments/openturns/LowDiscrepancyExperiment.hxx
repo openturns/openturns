@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LOWDISCREPANCYEXPERIMENT_HXX
 #define OPENTURNS_LOWDISCREPANCYEXPERIMENT_HXX
 
-#include "WeightedExperiment.hxx"
-#include "LowDiscrepancySequence.hxx"
-#include "Collection.hxx"
+#include "openturns/WeightedExperiment.hxx"
+#include "openturns/LowDiscrepancySequence.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

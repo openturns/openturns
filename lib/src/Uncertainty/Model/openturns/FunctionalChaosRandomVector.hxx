@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FUNCTIONALCHAOSRANDOMVECTOR_HXX
 #define OPENTURNS_FUNCTIONALCHAOSRANDOMVECTOR_HXX
 
-#include "CompositeRandomVector.hxx"
-#include "FunctionalChaosResult.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/FunctionalChaosResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

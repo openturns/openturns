@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_FITTINGALGORITHMIMPLEMENTATION_HXX
 #define OPENTURNS_FITTINGALGORITHMIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
-#include "Basis.hxx"
-#include "BasisSequenceFactory.hxx"
-#include "DesignProxy.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/BasisSequenceFactory.hxx"
+#include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_WHITTLEFACTORYSTATE_HXX
 #define OPENTURNS_WHITTLEFACTORYSTATE_HXX
 
-#include "PersistentObject.hxx"
-#include "ARMA.hxx"
-#include "ARMACoefficients.hxx"
-#include "NumericalPoint.hxx"
-#include "WhiteNoise.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/ARMA.hxx"
+#include "openturns/ARMACoefficients.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/WhiteNoise.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

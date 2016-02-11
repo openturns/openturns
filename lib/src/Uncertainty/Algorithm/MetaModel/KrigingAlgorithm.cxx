@@ -19,18 +19,18 @@
  *
  */
 
-#include "KrigingAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "LinearNumericalMathFunction.hxx"
-#include "SpecFunc.hxx"
-#include "ProductCovarianceModel.hxx"
-#include "KrigingEvaluation.hxx"
-#include "KrigingGradient.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "CenteredFiniteDifferenceHessian.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "NonCenteredFiniteDifferenceGradient.hxx"
-#include "GeneralizedLinearModelResult.hxx"
+#include "openturns/KrigingAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ProductCovarianceModel.hxx"
+#include "openturns/KrigingEvaluation.hxx"
+#include "openturns/KrigingGradient.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
+#include "openturns/GeneralizedLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

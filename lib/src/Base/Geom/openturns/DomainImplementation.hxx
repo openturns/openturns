@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_DOMAINIMPLEMENTATION_HXX
 #define OPENTURNS_DOMAINIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

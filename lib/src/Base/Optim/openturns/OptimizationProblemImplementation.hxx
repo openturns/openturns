@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_OPTIMIZATIONPROBLEMIMPLEMENTATION_HXX
 #define OPENTURNS_OPTIMIZATIONPROBLEMIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Interval.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

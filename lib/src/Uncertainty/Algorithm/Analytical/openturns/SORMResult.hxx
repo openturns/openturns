@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SORMResult_HXX
 #define OPENTURNS_SORMResult_HXX
 
-#include "AnalyticalResult.hxx"
-#include "Event.hxx"
-#include "SquareMatrix.hxx"
-#include "Distribution.hxx"
+#include "openturns/AnalyticalResult.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

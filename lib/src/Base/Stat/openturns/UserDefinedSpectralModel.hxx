@@ -23,10 +23,10 @@
 #ifndef OPENTURNS_USERDEFINEDSPECTRALMODEL_HXX
 #define OPENTURNS_USERDEFINEDSPECTRALMODEL_HXX
 
-#include "SpectralModel.hxx"
-#include "PersistentCollection.hxx"
-#include "Collection.hxx"
-#include "RegularGrid.hxx"
+#include "openturns/SpectralModel.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/RegularGrid.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

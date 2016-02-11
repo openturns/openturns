@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LOCKABLE_HXX
 #define OPENTURNS_LOCKABLE_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

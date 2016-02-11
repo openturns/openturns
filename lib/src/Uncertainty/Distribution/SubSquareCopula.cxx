@@ -19,9 +19,9 @@
  *
  */
 #include <cmath>
-#include "SubSquareCopula.hxx"
-#include "GaussKronrod.hxx"
-#include "Interval.hxx"
+#include "openturns/SubSquareCopula.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

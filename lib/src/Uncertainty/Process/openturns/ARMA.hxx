@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_ARMA_HXX
 #define OPENTURNS_ARMA_HXX
 
-#include "ProcessImplementation.hxx"
-#include "Process.hxx"
-#include "Pointer.hxx"
-#include "Distribution.hxx"
-#include "ARMACoefficients.hxx"
-#include "ARMAState.hxx"
-#include "WhiteNoise.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Process.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ARMACoefficients.hxx"
+#include "openturns/ARMAState.hxx"
+#include "openturns/WhiteNoise.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX
 #define OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "OptimizationProblem.hxx"
-#include "OptimizationResult.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/OptimizationProblem.hxx"
+#include "openturns/OptimizationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

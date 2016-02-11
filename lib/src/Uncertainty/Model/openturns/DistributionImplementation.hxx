@@ -21,21 +21,21 @@
 #ifndef OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "NumericalSample.hxx"
-#include "Indices.hxx"
-#include "Interval.hxx"
-#include "CorrelationMatrix.hxx"
-#include "SquareMatrix.hxx"
-#include "Graph.hxx"
-#include "Description.hxx"
-#include "NumericalMathFunction.hxx"
-#include "PersistentCollection.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "PiecewiseHermiteEvaluationImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/CorrelationMatrix.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,16 +21,16 @@
 #ifndef OPENTURNS_BOXCOXFACTORY_HXX
 #define OPENTURNS_BOXCOXFACTORY_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "Field.hxx"
-#include "BoxCoxTransform.hxx"
-#include "Graph.hxx"
-#include "OptimizationSolver.hxx"
-#include "CovarianceModel.hxx"
-#include "Basis.hxx"
-#include "GeneralizedLinearModelResult.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/BoxCoxTransform.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/GeneralizedLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

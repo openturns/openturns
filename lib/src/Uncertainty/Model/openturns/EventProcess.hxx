@@ -23,10 +23,10 @@
 #ifndef OPENTURNS_EVENTPROCESS_HXX
 #define OPENTURNS_EVENTPROCESS_HXX
 
-#include "RandomVectorImplementation.hxx"
-#include "Domain.hxx"
-#include "Process.hxx"
-#include "Field.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/Domain.hxx"
+#include "openturns/Process.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

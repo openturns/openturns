@@ -19,8 +19,8 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "ClassifierImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ClassifierImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

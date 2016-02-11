@@ -19,10 +19,10 @@
  *
  *  Id:      $Id$
  */
-#include "PersistentObjectFactory.hxx"
-#include "CovarianceModelFactoryImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/CovarianceModelFactoryImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

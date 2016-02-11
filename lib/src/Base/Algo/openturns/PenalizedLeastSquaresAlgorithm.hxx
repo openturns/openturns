@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PENALIZEDLEASTSQUARESALGORITHM_HXX
 #define OPENTURNS_PENALIZEDLEASTSQUARESALGORITHM_HXX
 
-#include "ApproximationAlgorithmImplementation.hxx"
-#include "NumericalSample.hxx"
-#include "CovarianceMatrix.hxx"
+#include "openturns/ApproximationAlgorithmImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_EVENT_HXX
 #define OPENTURNS_EVENT_HXX
 
-#include "RandomVector.hxx"
-#include "Pointer.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

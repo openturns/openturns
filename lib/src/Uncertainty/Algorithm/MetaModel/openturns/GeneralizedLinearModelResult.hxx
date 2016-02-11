@@ -21,14 +21,14 @@
 #ifndef OPENTURNS_GENERALIZEDLINEARMODELRESULT_HXX
 #define OPENTURNS_GENERALIZEDLINEARMODELRESULT_HXX
 
-#include "MetaModelResult.hxx"
-#include "CovarianceModel.hxx"
-#include "NumericalSample.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Process.hxx"
-#include "HMatrix.hxx"
+#include "openturns/MetaModelResult.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Process.hxx"
+#include "openturns/HMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

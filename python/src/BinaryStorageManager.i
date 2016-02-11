@@ -1,7 +1,7 @@
 // SWIG file BinaryStorageManager.i
 
 %{
-#include "BinaryStorageManager.hxx"
+#include "openturns/BinaryStorageManager.hxx"
 %}
 
-%include BinaryStorageManager.hxx
+%include openturns/BinaryStorageManager.hxx

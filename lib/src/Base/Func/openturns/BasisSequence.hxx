@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_BASISSEQUENCE_HXX
 #define OPENTURNS_BASISSEQUENCE_HXX
 
-#include "TypedCollectionInterfaceObject.hxx"
-#include "BasisSequenceImplementation.hxx"
+#include "openturns/TypedCollectionInterfaceObject.hxx"
+#include "openturns/BasisSequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

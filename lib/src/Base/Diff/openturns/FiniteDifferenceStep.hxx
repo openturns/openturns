@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_FINITEDIFFERENCESTEP_HXX
 #define OPENTURNS_FINITEDIFFERENCESTEP_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "FiniteDifferenceStepImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/FiniteDifferenceStepImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

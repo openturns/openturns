@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_NLOPT_HXX
 #define OPENTURNS_NLOPT_HXX
 
-#include "OTprivate.hxx"
-#include "OptimizationSolverImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

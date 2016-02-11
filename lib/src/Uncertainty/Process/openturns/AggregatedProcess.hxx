@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_AGGREGATEDPROCESS_HXX
 #define OPENTURNS_AGGREGATEDPROCESS_HXX
 
-#include "ProcessImplementation.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "Process.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Process.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

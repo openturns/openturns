@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_IMPORTANCESAMPLINGEXPERIMENT_HXX
 #define OPENTURNS_IMPORTANCESAMPLINGEXPERIMENT_HXX
 
-#include "WeightedExperiment.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

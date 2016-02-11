@@ -21,15 +21,15 @@
 #ifndef OPENTURNS_FUNCTIONALCHAOSRESULT_HXX
 #define OPENTURNS_FUNCTIONALCHAOSRESULT_HXX
 
-#include "MetaModelResult.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "Indices.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Distribution.hxx"
-#include "OrthogonalBasis.hxx"
+#include "openturns/MetaModelResult.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/OrthogonalBasis.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_MARGINALDISTRIBUTION_HXX
 #define OPENTURNS_MARGINALDISTRIBUTION_HXX
 
-#include "Distribution.hxx"
-#include "DistributionImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

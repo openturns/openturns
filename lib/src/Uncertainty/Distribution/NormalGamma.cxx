@@ -19,10 +19,10 @@
  *
  */
 #include <cmath>
-#include "NormalGamma.hxx"
-#include "Gamma.hxx"
-#include "Normal.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/NormalGamma.hxx"
+#include "openturns/Gamma.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

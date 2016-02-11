@@ -19,13 +19,13 @@
  *
  */
 
-#include "FunctionalBasisProcess.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Normal.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalPoint.hxx"
-#include "Collection.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/FunctionalBasisProcess.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

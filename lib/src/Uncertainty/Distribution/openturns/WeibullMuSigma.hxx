@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_WEIBULLMUSIGMA_HXX
 #define OPENTURNS_WEIBULLMUSIGMA_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

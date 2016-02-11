@@ -22,12 +22,12 @@
 #define OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX
 
 #include <cmath>
-#include "PersistentObject.hxx"
-#include "Event.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "Graph.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_INVERSENATAFELLIPTICALDISTRIBUTIONGRADIENT_HXX
 #define OPENTURNS_INVERSENATAFELLIPTICALDISTRIBUTIONGRADIENT_HXX
 
-#include "OTprivate.hxx"
-#include "ConstantNumericalMathGradientImplementation.hxx"
-#include "SquareMatrix.hxx"
-#include "SymmetricTensor.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "AdaptiveStrategy.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "FixedStrategy.hxx"
+#include "openturns/AdaptiveStrategy.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/FixedStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

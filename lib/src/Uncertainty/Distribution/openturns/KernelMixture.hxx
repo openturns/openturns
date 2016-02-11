@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_KERNELMIXTURE_HXX
 #define OPENTURNS_KERNELMIXTURE_HXX
 
-#include "Distribution.hxx"
-#include "ContinuousDistribution.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

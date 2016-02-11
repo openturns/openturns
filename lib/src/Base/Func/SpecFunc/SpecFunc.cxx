@@ -23,17 +23,17 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "SpecFunc.hxx"
-#include "BetaFunctions.hxx"
-#include "ExponentialIntegralFunctions.hxx"
-#include "Debye.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/BetaFunctions.hxx"
+#include "openturns/ExponentialIntegralFunctions.hxx"
+#include "openturns/Debye.hxx"
 #include "Faddeeva.hh"
-#include "GammaFunctions.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalMathFunction.hxx"
-#include "GaussKronrod.hxx"
-#include "PlatformInfo.hxx"
+#include "openturns/GammaFunctions.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/PlatformInfo.hxx"
 
 #ifdef OPENTURNS_HAVE_BOOST
 
@@ -48,9 +48,9 @@
 
 #else
 
-#include "GaussKronrod.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Interval.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Interval.hxx"
 
 #endif
 

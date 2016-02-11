@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CLASSIFIERIMPLEMENTATION_HXX
 #define OPENTURNS_CLASSIFIERIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

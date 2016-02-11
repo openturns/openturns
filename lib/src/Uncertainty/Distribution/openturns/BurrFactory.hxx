@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BURRFACTORY_HXX
 #define OPENTURNS_BURRFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Burr.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Burr.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

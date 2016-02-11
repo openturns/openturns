@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COBYLA_HXX
 #define OPENTURNS_COBYLA_HXX
 
-#include "OTprivate.hxx"
-#include "OptimizationSolverImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

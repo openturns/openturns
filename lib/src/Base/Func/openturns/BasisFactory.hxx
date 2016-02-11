@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_BASISFACTORY_HXX
 #define OPENTURNS_BASISFACTORY_HXX
 
-#include "Basis.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

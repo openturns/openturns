@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_SKLARCOPULA_HXX
 #define OPENTURNS_SKLARCOPULA_HXX
 
-#include "CopulaImplementation.hxx"
-#include "Distribution.hxx"
-#include "PersistentCollection.hxx"
+#include "openturns/CopulaImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

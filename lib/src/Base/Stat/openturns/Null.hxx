@@ -23,8 +23,8 @@
 #ifndef OPENTURNS_NULL_HXX
 #define OPENTURNS_NULL_HXX
 
-#include "HistoryStrategyImplementation.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/HistoryStrategyImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

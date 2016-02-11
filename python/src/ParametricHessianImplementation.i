@@ -3,8 +3,8 @@
 OTAutodoc(ParametricHessianImplementation)
 
 %{
-#include "ParametricHessianImplementation.hxx"
+#include "openturns/ParametricHessianImplementation.hxx"
 %}
 
-%include ParametricHessianImplementation.hxx
+%include openturns/ParametricHessianImplementation.hxx
 namespace OT { %extend ParametricHessianImplementation { ParametricHessianImplementation(const ParametricHessianImplementation & other) { return new OT::ParametricHessianImplementation(other); } } }

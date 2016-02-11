@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_MARGINALTRANSFORMATIONGRADIENT_HXX
 #define OPENTURNS_MARGINALTRANSFORMATIONGRADIENT_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathGradientImplementation.hxx"
-#include "MarginalTransformationEvaluation.hxx"
-#include "Matrix.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

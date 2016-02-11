@@ -1,7 +1,7 @@
 // SWIG file CovarianceMatrix.i
 
 %{
-#include "CovarianceMatrix.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 namespace OT { 
 
@@ -48,7 +48,7 @@ namespace OT {
        OT::isAPythonSequenceOf<OT::_PySequence_>( $input );
 }
 
-%include CovarianceMatrix.hxx
+%include openturns/CovarianceMatrix.hxx
 
 namespace OT {  
 

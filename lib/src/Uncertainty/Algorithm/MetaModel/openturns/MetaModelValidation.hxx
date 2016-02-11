@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_METAMODELVALIDATION_HXX
 #define OPENTURNS_METAMODELVALIDATION_HXX
 
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Distribution.hxx"
-#include "Graph.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

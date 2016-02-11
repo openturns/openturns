@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_OPTIMIZATIONPROBLEM_HXX
 #define OPENTURNS_OPTIMIZATIONPROBLEM_HXX
 
-#include "OTprivate.hxx"
-#include "TypedInterfaceObject.hxx"
-#include "NumericalMathFunction.hxx"
-#include "OptimizationProblemImplementation.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/OptimizationProblemImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

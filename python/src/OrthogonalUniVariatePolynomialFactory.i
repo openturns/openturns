@@ -6,12 +6,12 @@
 OT::NumericalPoint OT::OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const OT::UnsignedInteger n, OT::NumericalPoint & weights) const;
 
 %{
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 %}
 
 %include OrthogonalUniVariatePolynomialFactory_doc.i
 
-%include OrthogonalUniVariatePolynomialFactory.hxx
+%include openturns/OrthogonalUniVariatePolynomialFactory.hxx
 namespace OT{ %extend OrthogonalUniVariatePolynomialFactory { OrthogonalUniVariatePolynomialFactory(const OrthogonalUniVariatePolynomialFactory & other) { return new OT::OrthogonalUniVariatePolynomialFactory(other); } } }
 
 %clear OT::NumericalPoint & weights;

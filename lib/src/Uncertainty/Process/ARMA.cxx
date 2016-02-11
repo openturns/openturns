@@ -20,12 +20,12 @@
  */
 
 #include <limits>
-#include "ARMA.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Normal.hxx"
-#include "SpecFunc.hxx"
-#include "Collection.hxx"
+#include "openturns/ARMA.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

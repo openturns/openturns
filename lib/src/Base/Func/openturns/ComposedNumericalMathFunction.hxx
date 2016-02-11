@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMPOSEDNUMERICALMATHFUNCTION_HXX
 #define OPENTURNS_COMPOSEDNUMERICALMATHFUNCTION_HXX
 
-#include "NumericalMathFunctionImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -4,8 +4,8 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OTCommon.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTCommon.hxx"
 %}
 
 %include typemaps.i

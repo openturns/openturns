@@ -19,12 +19,12 @@
  *
  */
 
-#include "GramSchmidtAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "SquareMatrix.hxx"
-#include "Log.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/GramSchmidtAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

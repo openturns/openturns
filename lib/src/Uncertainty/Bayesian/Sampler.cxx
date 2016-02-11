@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Sampler.hxx"
-#include "RandomWalkMetropolisHastings.hxx"
+#include "openturns/Sampler.hxx"
+#include "openturns/RandomWalkMetropolisHastings.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

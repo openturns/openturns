@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EPANECHNIKOV_HXX
 #define OPENTURNS_EPANECHNIKOV_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

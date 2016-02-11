@@ -17,7 +17,7 @@ OT::NumericalSample OT::DistributionImplementation::computePDF(const OT::Numeric
 OT::NumericalPoint OT::DistributionImplementation::getGaussNodesAndWeights(OT::NumericalPoint & weights) const;
 
 %{
-#include "DistributionImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 %}
 
 %include DistributionImplementation_doc.i
@@ -28,7 +28,7 @@ OT::NumericalPoint OT::DistributionImplementation::getGaussNodesAndWeights(OT::N
 %ignore OT::DistributionImplementation::setParallel;
 %ignore OT::DistributionImplementation::isParallel;
 
-%include DistributionImplementation.hxx
+%include openturns/DistributionImplementation.hxx
 
 namespace OT {
 

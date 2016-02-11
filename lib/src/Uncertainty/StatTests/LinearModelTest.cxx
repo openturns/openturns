@@ -20,13 +20,13 @@
  */
 #include <cmath>
 #include <fstream>
-#include "LinearModelTest.hxx"
-#include "LinearModelFactory.hxx"
-#include "Path.hxx"
-#include "ResourceMap.hxx"
-#include "OTconfig.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
+#include "openturns/LinearModelTest.hxx"
+#include "openturns/LinearModelFactory.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

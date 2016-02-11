@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NORMALCOPULAFACTORY_HXX
 #define OPENTURNS_NORMALCOPULAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "NormalCopula.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/NormalCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RANDOMDIRECTION_HXX
 #define OPENTURNS_RANDOMDIRECTION_HXX
 
-#include "SamplingStrategyImplementation.hxx"
+#include "openturns/SamplingStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

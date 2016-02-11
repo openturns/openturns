@@ -23,9 +23,9 @@
 
 #include <iostream>              // for std::ostream
 #include <stack>                 // for std::stack
-#include "OTprivate.hxx"
-#include "OTconfig.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/StorageManager.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

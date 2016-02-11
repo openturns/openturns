@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
 #include <Python.h>
-#include "NumericalMathGradientImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

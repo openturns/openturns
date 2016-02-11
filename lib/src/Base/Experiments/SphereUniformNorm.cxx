@@ -19,8 +19,8 @@
  *
  */
 
-#include "SphereUniformNorm.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/SphereUniformNorm.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

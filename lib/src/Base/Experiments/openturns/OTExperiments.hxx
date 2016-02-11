@@ -22,19 +22,19 @@
 #ifndef OPENTURNS_OTEXPERIMENTS_HXX
 #define OPENTURNS_OTEXPERIMENTS_HXX
 
-#include "Axial.hxx"
-#include "Box.hxx"
-#include "Composite.hxx"
-#include "Combinations.hxx"
-#include "CombinatorialGenerator.hxx"
-#include "CombinatorialGeneratorImplementation.hxx"
-#include "Experiment.hxx"
-#include "ExperimentImplementation.hxx"
-#include "Factorial.hxx"
-#include "KPermutations.hxx"
-#include "SphereUniformNorm.hxx"
-#include "SphereUniformNormImplementation.hxx"
-#include "StratifiedExperiment.hxx"
-#include "Tuples.hxx"
+#include "openturns/Axial.hxx"
+#include "openturns/Box.hxx"
+#include "openturns/Composite.hxx"
+#include "openturns/Combinations.hxx"
+#include "openturns/CombinatorialGenerator.hxx"
+#include "openturns/CombinatorialGeneratorImplementation.hxx"
+#include "openturns/Experiment.hxx"
+#include "openturns/ExperimentImplementation.hxx"
+#include "openturns/Factorial.hxx"
+#include "openturns/KPermutations.hxx"
+#include "openturns/SphereUniformNorm.hxx"
+#include "openturns/SphereUniformNormImplementation.hxx"
+#include "openturns/StratifiedExperiment.hxx"
+#include "openturns/Tuples.hxx"
 
 #endif /* OPENTURNS_OTEXPERIMENTS_HXX */

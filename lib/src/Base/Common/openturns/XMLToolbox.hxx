@@ -23,9 +23,9 @@
 #define OPENTURNS_XMLTOOLBOX_HXX
 
 #include <cstdarg>
-#include "OTprivate.hxx"
-#include "OTconfig.hxx"
-#include "XMLchar_traits.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/XMLchar_traits.hxx"
 
 #if defined OPENTURNS_HAVE_LIBXML2
 #include <libxml/parser.h>

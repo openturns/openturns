@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LEASTSQUARESSTRATEGY_HXX
 #define OPENTURNS_LEASTSQUARESSTRATEGY_HXX
 
-#include "ProjectionStrategyImplementation.hxx"
-#include "PenalizedLeastSquaresAlgorithmFactory.hxx"
-#include "ApproximationAlgorithmImplementationFactory.hxx"
+#include "openturns/ProjectionStrategyImplementation.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithmFactory.hxx"
+#include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

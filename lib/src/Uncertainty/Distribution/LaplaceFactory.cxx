@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LaplaceFactory.hxx"
+#include "openturns/LaplaceFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

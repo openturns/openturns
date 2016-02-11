@@ -18,14 +18,14 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "CovarianceModelImplementation.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "MatrixImplementation.hxx"
-#include "HMatrix.hxx"
-#include "HMatrixFactory.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MatrixImplementation.hxx"
+#include "openturns/HMatrix.hxx"
+#include "openturns/HMatrixFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

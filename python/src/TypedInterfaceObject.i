@@ -1,7 +1,7 @@
 // SWIG file TypedInterfaceObject.i
 
 %{
-#include "TypedInterfaceObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 %}
 
 %ignore OT::TypedInterfaceObject::swap;
@@ -39,4 +39,4 @@
 OTTypedInterfaceObjectImplementationHelper(Interface,Interface ## Implementation)
 %enddef
 
-%include TypedInterfaceObject.hxx
+%include openturns/TypedInterfaceObject.hxx

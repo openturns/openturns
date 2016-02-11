@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_INDICES_HXX
 #define OPENTURNS_INDICES_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentCollection.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

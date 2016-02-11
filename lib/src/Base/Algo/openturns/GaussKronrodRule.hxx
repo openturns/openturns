@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_GAUSSKRONRODRULE_HXX
 #define OPENTURNS_GAUSSKRONRODRULE_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

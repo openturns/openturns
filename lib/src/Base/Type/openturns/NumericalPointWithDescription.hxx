@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NUMERICALPOINTWITHDESCRIPTION_HXX
 #define OPENTURNS_NUMERICALPOINTWITHDESCRIPTION_HXX
 
-#include "NumericalPoint.hxx"
-#include "Description.hxx"
-#include "Pointer.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

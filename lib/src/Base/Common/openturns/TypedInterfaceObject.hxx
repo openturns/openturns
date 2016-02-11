@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TYPEDINTERFACEOBJECT_HXX
 #define OPENTURNS_TYPEDINTERFACEOBJECT_HXX
 
-#include "InterfaceObject.hxx"
+#include "openturns/InterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

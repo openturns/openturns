@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SPHEREUNIFORMNORMIMPLEMENTATION_HXX
 #define OPENTURNS_SPHEREUNIFORMNORMIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "SphereUniformNormImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/SphereUniformNormImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

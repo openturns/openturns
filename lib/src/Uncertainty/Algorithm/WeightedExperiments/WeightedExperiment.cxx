@@ -20,10 +20,10 @@
  */
 #include <cstdlib>
 
-#include "OTprivate.hxx"
-#include "WeightedExperiment.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/WeightedExperiment.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

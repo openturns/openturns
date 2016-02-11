@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_PARAMETRICHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_PARAMETRICHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "StorageManager.hxx"
-#include "ParametricEvaluationImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/ParametricEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

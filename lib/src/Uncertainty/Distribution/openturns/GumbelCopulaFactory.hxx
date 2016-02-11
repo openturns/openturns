@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_GUMBELCOPULAFACTORY_HXX
 #define OPENTURNS_GUMBELCOPULAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "GumbelCopula.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/GumbelCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

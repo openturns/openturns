@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_GAUSSKRONROD_HXX
 #define OPENTURNS_GAUSSKRONROD_HXX
 
-#include "IntegrationAlgorithmImplementation.hxx"
-#include "GaussKronrodRule.hxx"
+#include "openturns/IntegrationAlgorithmImplementation.hxx"
+#include "openturns/GaussKronrodRule.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

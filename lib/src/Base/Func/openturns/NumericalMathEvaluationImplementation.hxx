@@ -22,20 +22,20 @@
 #ifndef OPENTURNS_NUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_NUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "NumericalSample.hxx"
-#include "Field.hxx"
-#include "HistoryStrategy.hxx"
-#include "Description.hxx"
-#include "Indices.hxx"
-#include "Matrix.hxx"
-#include "Collection.hxx"
-#include "Pointer.hxx"
-#include "StorageManager.hxx"
-#include "Cache.hxx"
-#include "Graph.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/HistoryStrategy.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Cache.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

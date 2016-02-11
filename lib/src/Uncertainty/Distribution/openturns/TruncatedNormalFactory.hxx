@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_TRUNCATEDNORMALFACTORY_HXX
 #define OPENTURNS_TRUNCATEDNORMALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "TruncatedNormal.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/TruncatedNormal.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

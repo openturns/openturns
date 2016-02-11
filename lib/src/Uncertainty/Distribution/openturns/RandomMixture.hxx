@@ -21,17 +21,17 @@
 #ifndef OPENTURNS_RANDOMMIXTURE_HXX
 #define OPENTURNS_RANDOMMIXTURE_HXX
 
-#include "Distribution.hxx"
-#include "DistributionFactory.hxx"
-#include "DistributionImplementation.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
-#include "SpecFunc.hxx"
-#include "Normal.hxx"
-#include "ResourceMap.hxx"
-#include "SphereUniformNorm.hxx"
-#include "Indices.hxx"
-#include "FFT.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionFactory.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SphereUniformNorm.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/FFT.hxx"
 #include <limits>       // std::numeric_limits
 
 BEGIN_NAMESPACE_OPENTURNS

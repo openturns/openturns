@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_LINEARMODELTEST_HXX
 #define OPENTURNS_LINEARMODELTEST_HXX
 
-#include "OTprivate.hxx"
-#include "TestResult.hxx"
-#include "NumericalSample.hxx"
-#include "LinearModel.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/TestResult.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/LinearModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,8 +22,8 @@
 #define OPENTURNS_CSV_PARSER_STATE_HXX
 
 #include <string>
-#include "NumericalPoint.hxx"
-#include "Description.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

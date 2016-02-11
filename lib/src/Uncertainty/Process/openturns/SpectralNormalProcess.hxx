@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_SPECTRALNORMALPROCESS_HXX
 #define OPENTURNS_SPECTRALNORMALPROCESS_HXX
 
-#include "ProcessImplementation.hxx"
-#include "SpectralModel.hxx"
-#include "SecondOrderModel.hxx"
-#include "TriangularComplexMatrix.hxx"
-#include "PersistentCollection.hxx"
-#include "FFT.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/SpectralModel.hxx"
+#include "openturns/SecondOrderModel.hxx"
+#include "openturns/TriangularComplexMatrix.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/FFT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

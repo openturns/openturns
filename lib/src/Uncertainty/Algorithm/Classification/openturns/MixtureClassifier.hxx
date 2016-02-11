@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_MIXTURECLASSIFIER_HXX
 #define OPENTURNS_MIXTURECLASSIFIER_HXX
 
-#include "Mixture.hxx"
-#include "ClassifierImplementation.hxx"
+#include "openturns/Mixture.hxx"
+#include "openturns/ClassifierImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SEQUENTIALSTRATEGY_HXX
 #define OPENTURNS_SEQUENTIALSTRATEGY_HXX
 
-#include "AdaptiveStrategyImplementation.hxx"
+#include "openturns/AdaptiveStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

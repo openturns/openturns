@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMPLEXTENSOR_HXX
 #define OPENTURNS_COMPLEXTENSOR_HXX
 
-#include "ComplexTensorImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/ComplexTensorImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

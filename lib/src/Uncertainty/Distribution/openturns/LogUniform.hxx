@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LOGUNIFORM_HXX
 #define OPENTURNS_LOGUNIFORM_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

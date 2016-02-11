@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FISHERSNEDECOR_HXX
 #define OPENTURNS_FISHERSNEDECOR_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

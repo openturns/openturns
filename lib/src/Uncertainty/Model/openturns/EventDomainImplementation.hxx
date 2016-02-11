@@ -25,8 +25,8 @@
 #ifndef OPENTURNS_EVENTDOMAINIMPLEMENTATION_HXX
 #define OPENTURNS_EVENTDOMAINIMPLEMENTATION_HXX
 
-#include "CompositeRandomVector.hxx"
-#include "Domain.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/Domain.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -26,7 +26,7 @@
 #ifndef OPENTURNS_EVENTRANDOMVECTORIMPLEMENTATION_HXX
 #define OPENTURNS_EVENTRANDOMVECTORIMPLEMENTATION_HXX
 
-#include "CompositeRandomVector.hxx"
+#include "openturns/CompositeRandomVector.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

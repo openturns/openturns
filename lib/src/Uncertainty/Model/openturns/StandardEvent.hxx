@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_STANDARDEVENT_HXX
 #define OPENTURNS_STANDARDEVENT_HXX
 
-#include "OTprivate.hxx"
-#include "RandomVector.hxx"
-#include "Event.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/Event.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

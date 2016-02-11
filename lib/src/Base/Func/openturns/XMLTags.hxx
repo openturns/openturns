@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_XMLTAGS_HXX
 #define OPENTURNS_XMLTAGS_HXX
 
-#include "OTtypes.hxx"
+#include "openturns/OTtypes.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_GUMBELCOPULA_HXX
 #define OPENTURNS_GUMBELCOPULA_HXX
 
-#include "ArchimedeanCopula.hxx"
+#include "openturns/ArchimedeanCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

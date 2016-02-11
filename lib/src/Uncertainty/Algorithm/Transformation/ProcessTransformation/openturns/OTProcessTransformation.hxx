@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_OTPROCESSTRANSFORMATION_HXX
 #define OPENTURNS_OTPROCESSTRANSFORMATION_HXX
 
-#include "BoxCoxFactory.hxx"
-#include "TrendFactory.hxx"
+#include "openturns/BoxCoxFactory.hxx"
+#include "openturns/TrendFactory.hxx"
 
 #endif /* OPENTURNS_OTPROCESSTRANSFORMATION_HXX  */

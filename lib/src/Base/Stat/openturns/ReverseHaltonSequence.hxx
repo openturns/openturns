@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_REVERSEHALTONSEQUENCE_HXX
 #define OPENTURNS_REVERSEHALTONSEQUENCE_HXX
 
-#include "LowDiscrepancySequenceImplementation.hxx"
+#include "openturns/LowDiscrepancySequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 /**

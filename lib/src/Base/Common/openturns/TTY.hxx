@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_TTY_HXX
 #define OPENTURNS_TTY_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

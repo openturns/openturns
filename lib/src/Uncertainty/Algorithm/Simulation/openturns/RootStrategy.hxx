@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ROOTSTRATEGY_HXX
 #define OPENTURNS_ROOTSTRATEGY_HXX
 
-#include "RootStrategyImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/RootStrategyImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

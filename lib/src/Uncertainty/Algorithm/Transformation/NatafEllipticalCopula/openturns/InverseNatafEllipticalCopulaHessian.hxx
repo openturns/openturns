@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_INVERSENATAFELLIPTICALCOPULAHESSIAN_HXX
 #define OPENTURNS_INVERSENATAFELLIPTICALCOPULAHESSIAN_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathHessianImplementation.hxx"
-#include "SquareMatrix.hxx"
-#include "NumericalPoint.hxx"
-#include "Distribution.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

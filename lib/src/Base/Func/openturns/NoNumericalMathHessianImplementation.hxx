@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NONUMERICALMATHHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_NONUMERICALMATHHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

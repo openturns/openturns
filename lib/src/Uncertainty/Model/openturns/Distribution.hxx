@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DISTRIBUTION_HXX
 #define OPENTURNS_DISTRIBUTION_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "DistributionImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

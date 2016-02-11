@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DISTRIBUTIONFACTORYRESULT_HXX
 #define OPENTURNS_DISTRIBUTIONFACTORYRESULT_HXX
 
-#include "Distribution.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_CONSTANTSTEP_HXX
 #define OPENTURNS_CONSTANTSTEP_HXX
 
-#include "FiniteDifferenceStepImplementation.hxx"
+#include "openturns/FiniteDifferenceStepImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

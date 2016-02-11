@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_MULTINOMIAL_HXX
 #define OPENTURNS_MULTINOMIAL_HXX
 
-#include "OTprivate.hxx"
-#include "DiscreteDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

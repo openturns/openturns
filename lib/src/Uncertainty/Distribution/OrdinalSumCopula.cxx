@@ -20,11 +20,11 @@
  */
 #include <cmath>
 
-#include "OrdinalSumCopula.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "IndependentCopula.hxx"
-#include "Exception.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/OrdinalSumCopula.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/IndependentCopula.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

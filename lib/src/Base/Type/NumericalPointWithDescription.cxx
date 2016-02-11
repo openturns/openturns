@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NumericalPointWithDescription.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "HMatrix.hxx"
-#include "HMatrixImplementation.hxx"
+#include "openturns/HMatrix.hxx"
+#include "openturns/HMatrixImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_TENSORIMPLEMENTATION_HXX
 #define OPENTURNS_TENSORIMPLEMENTATION_HXX
 
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
-#include "SymmetricMatrix.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

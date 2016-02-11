@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_GUMBELMUSIGMA_HXX
 #define OPENTURNS_GUMBELMUSIGMA_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

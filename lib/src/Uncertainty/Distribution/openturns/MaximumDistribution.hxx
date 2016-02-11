@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MAXIMUMDISTRIBUTION_HXX
 #define OPENTURNS_MAXIMUMDISTRIBUTION_HXX
 
-#include "DistributionImplementation.hxx"
-#include "Distribution.hxx"
-#include "Collection.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Collection.hxx"
 
 /*
 The maximum distribution of F is the distribution of X = max(X_1, ... , X_n)

@@ -22,12 +22,12 @@
 #define OPENTURNS_NUMERICALSAMPLE_HXX
 
 #include <iostream>              // for std::ostream
-#include "TypedInterfaceObject.hxx"
-#include "NumericalPoint.hxx"
-#include "Description.hxx"
-#include "Pointer.hxx"
-#include "NumericalSampleImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalSampleImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

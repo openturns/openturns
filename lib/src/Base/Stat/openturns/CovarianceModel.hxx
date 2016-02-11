@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COVARIANCEMODEL_HXX
 #define OPENTURNS_COVARIANCEMODEL_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "CovarianceModelImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,20 +21,20 @@
 #include <algorithm>
 #include <iterator>
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "ComposedNumericalMathEvaluationImplementation.hxx"
-#include "OTconfig.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
+#include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 #endif
-#include "LinearNumericalMathEvaluationImplementation.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Full.hxx"
-#include "Contour.hxx"
-#include "Curve.hxx"
-#include "Indices.hxx"
-#include "Box.hxx"
+#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Full.hxx"
+#include "openturns/Contour.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Box.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

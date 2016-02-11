@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_WISHART_HXX
 #define OPENTURNS_WISHART_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "CovarianceMatrix.hxx"
-#include "TriangularMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/TriangularMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

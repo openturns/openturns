@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LOGISTICFACTORY_HXX
 #define OPENTURNS_LOGISTICFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Logistic.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Logistic.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

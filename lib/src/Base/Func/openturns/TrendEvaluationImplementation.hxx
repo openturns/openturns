@@ -15,9 +15,9 @@
 #ifndef OPENTURNS_TRENDEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_TRENDEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathFunction.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

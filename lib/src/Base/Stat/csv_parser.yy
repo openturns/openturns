@@ -60,13 +60,13 @@
 
 %code requires {
 #include <string>
-#include "csv_parser_state.hxx"
-#include "NumericalSampleImplementation.hxx"
+#include "openturns/csv_parser_state.hxx"
+#include "openturns/NumericalSampleImplementation.hxx"
 typedef void*                 yyscan_t;
 }
 
 %code {
-#include "Log.hxx"
+#include "openturns/Log.hxx"
 
 int yylex                     (YYSTYPE *lvalp, yyscan_t yyscanner, FILE * theFile, const char * theSeparator);
 int yyerror                   (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::NumericalSampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * theSeparator, const char *s);

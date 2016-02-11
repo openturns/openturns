@@ -22,17 +22,17 @@
 #ifndef OPENTURNS_OTBASE_HXX
 #define OPENTURNS_OTBASE_HXX
 
-#include "OTCommon.hxx"
-#include "OTBaseMetaModel.hxx"
-#include "OTDiff.hxx"
-#include "OTExperiments.hxx"
-#include "OTFunc.hxx"
-#include "OTGraph.hxx"
-#include "OTGeom.hxx"
-#include "OTOptim.hxx"
-#include "OTSolver.hxx"
-#include "OTStat.hxx"
-#include "OTType.hxx"
-#include "OTAlgo.hxx"
+#include "openturns/OTCommon.hxx"
+#include "openturns/OTBaseMetaModel.hxx"
+#include "openturns/OTDiff.hxx"
+#include "openturns/OTExperiments.hxx"
+#include "openturns/OTFunc.hxx"
+#include "openturns/OTGraph.hxx"
+#include "openturns/OTGeom.hxx"
+#include "openturns/OTOptim.hxx"
+#include "openturns/OTSolver.hxx"
+#include "openturns/OTStat.hxx"
+#include "openturns/OTType.hxx"
+#include "openturns/OTAlgo.hxx"
 
 #endif /* OPENTURNS_OTBASE_HXX */

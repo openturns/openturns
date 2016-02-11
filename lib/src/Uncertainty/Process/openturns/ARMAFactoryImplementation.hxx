@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_ARMAFACTORYIMPLEMENTATION_HXX
 #define OPENTURNS_ARMAFACTORYIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "ARMA.hxx"
-#include "TimeSeries.hxx"
-#include "ProcessSample.hxx"
-#include "Pointer.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/ARMA.hxx"
+#include "openturns/TimeSeries.hxx"
+#include "openturns/ProcessSample.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

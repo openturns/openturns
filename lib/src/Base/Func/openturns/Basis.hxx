@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BASIS_HXX
 #define OPENTURNS_BASIS_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "BasisImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/BasisImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

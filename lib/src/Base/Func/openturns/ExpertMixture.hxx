@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_EXPERTMIXTURE_HXX
 #define OPENTURNS_EXPERTMIXTURE_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "Indices.hxx"
-#include "NumericalPoint.hxx"
-#include "Classifier.hxx"
-#include "Basis.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Classifier.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

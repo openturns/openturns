@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_WELCHFACTORY_HXX
 #define OPENTURNS_WELCHFACTORY_HXX
 
-#include "SpectralModelFactoryImplementation.hxx"
-#include "UserDefinedSpectralModel.hxx"
-#include "FilteringWindows.hxx"
+#include "openturns/SpectralModelFactoryImplementation.hxx"
+#include "openturns/UserDefinedSpectralModel.hxx"
+#include "openturns/FilteringWindows.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,8 +19,8 @@
  *
  *  Id:      $Id: t_NumericalMathFunction_product.cxx 434 2007-05-10 14:43:31Z dutka $
  */
-#include "OT.hxx"
-#include "OTtestcode.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
 
 using namespace OT;
 using namespace OT::Test;

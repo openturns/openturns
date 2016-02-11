@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NegativeBinomialFactory.hxx"
-#include "SpecFunc.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Brent.hxx"
-#include "DiscreteDistribution.hxx"
+#include "openturns/NegativeBinomialFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/DiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_EXPONENTIALMODEL_HXX
 #define OPENTURNS_EXPONENTIALMODEL_HXX
 
-#include "PersistentObject.hxx"
-#include "StationaryCovarianceModel.hxx"
-#include "NumericalPoint.hxx"
-#include "CorrelationMatrix.hxx"
-#include "Mesh.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/CorrelationMatrix.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

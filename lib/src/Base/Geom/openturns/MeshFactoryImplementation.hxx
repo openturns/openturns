@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MESHFACTORYIMPLEMENTATION_HXX
 #define OPENTURNS_MESHFACTORYIMPLEMENTATION_HXX
 
-#include "Domain.hxx"
-#include "Mesh.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/Domain.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

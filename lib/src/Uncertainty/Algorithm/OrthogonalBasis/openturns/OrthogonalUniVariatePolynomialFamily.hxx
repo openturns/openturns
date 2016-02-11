@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIALFAMILY_HXX
 #define OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIALFAMILY_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

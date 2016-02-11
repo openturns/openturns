@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DISTRIBUTIONPARAMETERSIMPLEMENTATION_HXX
 #define OPENTURNS_DISTRIBUTIONPARAMETERSIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "Distribution.hxx"
-#include "Matrix.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Matrix.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

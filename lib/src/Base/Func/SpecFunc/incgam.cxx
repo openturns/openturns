@@ -1,5 +1,5 @@
-#include "SpecFunc.hxx"
-#include "incgam.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/incgam.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

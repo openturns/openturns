@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TUPLES_HXX
 #define OPENTURNS_TUPLES_HXX
 
-#include "CombinatorialGeneratorImplementation.hxx"
+#include "openturns/CombinatorialGeneratorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

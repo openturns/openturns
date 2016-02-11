@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_CUMULATIVEDISTRIBUTIONNETWORK_HXX
 #define OPENTURNS_CUMULATIVEDISTRIBUTIONNETWORK_HXX
 
-#include "Distribution.hxx"
-#include "DistributionImplementation.hxx"
-#include "Collection.hxx"
-#include "BipartiteGraph.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/BipartiteGraph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

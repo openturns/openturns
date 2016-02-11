@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_COPULA_HXX
 #define OPENTURNS_COPULA_HXX
 
-#include "Distribution.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

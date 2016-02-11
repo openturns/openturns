@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_PRODUCTPOLYNOMIALHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_PRODUCTPOLYNOMIALHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 
 

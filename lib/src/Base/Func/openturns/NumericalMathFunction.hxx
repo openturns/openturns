@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_NUMERICALMATHFUNCTION_HXX
 #define OPENTURNS_NUMERICALMATHFUNCTION_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "NumericalMathFunctionImplementation.hxx"
-#include "ProductNumericalMathFunction.hxx"
-#include "ComparisonOperator.hxx"
-#include "Collection.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/ComparisonOperator.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_OTSPECFUNC_HXX
 #define OPENTURNS_OTSPECFUNC_HXX
 
-#include "BetaFunctions.hxx"
-#include "GammaFunctions.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/BetaFunctions.hxx"
+#include "openturns/GammaFunctions.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #endif /* OPENTURNS_OTSPECFUNC_HXX */

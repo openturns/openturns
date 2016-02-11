@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_FIELDIMPLEMENTATION_HXX
 #define OPENTURNS_FIELDIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
-#include "Mesh.hxx"
-#include "RegularGrid.hxx"
-#include "TBB.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/RegularGrid.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

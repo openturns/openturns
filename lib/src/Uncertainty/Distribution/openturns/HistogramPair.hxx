@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_HISTOGRAMPAIR_HXX
 #define OPENTURNS_HISTOGRAMPAIR_HXX
 
-#include "OTprivate.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

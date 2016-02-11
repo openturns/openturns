@@ -24,11 +24,11 @@
 #ifndef OPENTURNS_CENTEREDFINITEDIFFERENCEHESSIAN_HXX
 #define OPENTURNS_CENTEREDFINITEDIFFERENCEHESSIAN_HXX
 
-#include "FiniteDifferenceHessian.hxx"
-#include "NumericalMathHessianImplementation.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "SymmetricTensor.hxx"
+#include "openturns/FiniteDifferenceHessian.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

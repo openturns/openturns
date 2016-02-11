@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PENALIZEDLEASTSQUARESALGORITHMFACTORY_HXX
 #define OPENTURNS_PENALIZEDLEASTSQUARESALGORITHMFACTORY_HXX
 
-#include "NumericalPoint.hxx"
-#include "PenalizedLeastSquaresAlgorithm.hxx"
-#include "ApproximationAlgorithmImplementationFactory.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

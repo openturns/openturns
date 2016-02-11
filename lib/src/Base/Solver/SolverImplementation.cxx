@@ -20,11 +20,11 @@
  */
 #include <cstdlib>
 
-#include "SolverImplementation.hxx"
-#include "Exception.hxx"
-#include "NumericalPoint.hxx"
-#include "ResourceMap.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/SolverImplementation.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

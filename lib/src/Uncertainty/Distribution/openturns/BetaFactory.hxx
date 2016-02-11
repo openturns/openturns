@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BETAFACTORY_HXX
 #define OPENTURNS_BETAFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Beta.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Beta.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

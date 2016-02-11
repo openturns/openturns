@@ -23,8 +23,8 @@
 #ifndef OPENTURNS_HMATRIXPARAMETERS_HXX
 #define OPENTURNS_HMATRIXPARAMETERS_HXX
 
-#include "PersistentObject.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_HMATRIXFACTORY_HXX
 #define OPENTURNS_HMATRIXFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

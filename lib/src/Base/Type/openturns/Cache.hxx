@@ -23,13 +23,13 @@
 
 #include <map>
 #include <sstream>
-#include "PersistentObject.hxx"
-#include "StorageManager.hxx"
-#include "Collection.hxx"
-#include "NumericalPoint.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "OStream.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

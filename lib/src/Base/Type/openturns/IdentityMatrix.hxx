@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_IDENTITYMATRIX_HXX
 #define OPENTURNS_IDENTITYMATRIX_HXX
 
-#include "OTprivate.hxx"
-#include "CorrelationMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_REGULARGRID_HXX
 #define OPENTURNS_REGULARGRID_HXX
 
-#include "Mesh.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,10 +23,10 @@
 
 #include <fstream>
 #include <map>
-#include "OTprivate.hxx"
-#include "AtomicFunctions.hxx"
-#include "TTY.hxx"
-#include "MutexLock.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/AtomicFunctions.hxx"
+#include "openturns/TTY.hxx"
+#include "openturns/MutexLock.hxx"
 
 
 #define LOGDEBUG(st)   do { if (OT::Log::HasDebug()  ) OT::Log::Debug(st);   } while(0)

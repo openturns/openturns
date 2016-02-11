@@ -3,10 +3,10 @@
 OTAutodoc(IdentityMatrix)
 
 %{
-#include "IdentityMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
 %}
 
-%include IdentityMatrix.hxx
+%include openturns/IdentityMatrix.hxx
 
 namespace OT {  
 

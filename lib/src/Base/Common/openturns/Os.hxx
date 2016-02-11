@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_OS_HXX
 #define OPENTURNS_OS_HXX
 
-#include "OTtypes.hxx"
-#include "OTdebug.h"
+#include "openturns/OTtypes.hxx"
+#include "openturns/OTdebug.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 

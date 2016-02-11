@@ -3,8 +3,8 @@
 OTAutodoc(InverseNatafIndependentCopulaHessian)
 
 %{
-#include "InverseNatafIndependentCopulaHessian.hxx"
+#include "openturns/InverseNatafIndependentCopulaHessian.hxx"
 %}
 
-%include InverseNatafIndependentCopulaHessian.hxx
+%include openturns/InverseNatafIndependentCopulaHessian.hxx
 namespace OT { %extend InverseNatafIndependentCopulaHessian { InverseNatafIndependentCopulaHessian(const InverseNatafIndependentCopulaHessian & other) { return new OT::InverseNatafIndependentCopulaHessian(other); } } }

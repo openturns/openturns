@@ -19,8 +19,8 @@
  *
  */
 
-#include "FiniteDifferenceStep.hxx"
-#include "ConstantStep.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
+#include "openturns/ConstantStep.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

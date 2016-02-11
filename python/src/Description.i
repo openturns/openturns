@@ -1,7 +1,7 @@
 // SWIG file Description.i
 
 %{
-#include "Description.hxx"
+#include "openturns/Description.hxx"
 %}
 
 %include Description_doc.i
@@ -25,7 +25,7 @@
        OT::isAPythonSequenceOf<OT::_PyString_>( $input );
 }
 
-%include Description.hxx
+%include openturns/Description.hxx
 
 namespace OT {  
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_PRODUCTPOLYNOMIALGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_PRODUCTPOLYNOMIALGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "PersistentCollection.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

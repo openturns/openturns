@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX
 #define OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX
 
-#include "ContinuousDistribution.hxx"
-#include "CorrelationMatrix.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

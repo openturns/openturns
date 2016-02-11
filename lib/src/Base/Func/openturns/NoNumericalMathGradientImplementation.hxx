@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NONUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_NONUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_POISSONFACTORY_HXX
 #define OPENTURNS_POISSONFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Poisson.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Poisson.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

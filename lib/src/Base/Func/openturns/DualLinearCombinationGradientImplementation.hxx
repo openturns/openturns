@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_DUALLINEARCOMBINATIONGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_DUALLINEARCOMBINATIONGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "DualLinearCombinationEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/DualLinearCombinationEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

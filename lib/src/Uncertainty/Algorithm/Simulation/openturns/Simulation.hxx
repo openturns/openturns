@@ -22,13 +22,13 @@
 #ifndef OPENTURNS_SIMULATION_HXX
 #define OPENTURNS_SIMULATION_HXX
 
-#include "PersistentObject.hxx"
-#include "HistoryStrategy.hxx"
-#include "Compact.hxx"
-#include "Last.hxx"
-#include "Graph.hxx"
-#include "SimulationResult.hxx"
-#include "Event.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/HistoryStrategy.hxx"
+#include "openturns/Compact.hxx"
+#include "openturns/Last.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/SimulationResult.hxx"
+#include "openturns/Event.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

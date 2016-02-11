@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_METAMODELRESULT_HXX
 #define OPENTURNS_METAMODELRESULT_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalMathFunction.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -20,11 +20,11 @@
 #ifndef OPENTURNS_ARMACOEFFICIENTS_HXX
 #define OPENTURNS_ARMACOEFFICIENTS_HXX
 
-#include "PersistentCollection.hxx"
-#include "SquareMatrix.hxx"
-#include "NumericalPoint.hxx"
-#include "Collection.hxx"
-#include "UniVariatePolynomial.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

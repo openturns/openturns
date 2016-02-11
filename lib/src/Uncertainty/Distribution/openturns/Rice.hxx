@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RICE_HXX
 #define OPENTURNS_RICE_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

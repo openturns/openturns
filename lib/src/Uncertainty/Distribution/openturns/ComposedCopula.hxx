@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_COMPOSEDCOPULA_HXX
 #define OPENTURNS_COMPOSEDCOPULA_HXX
 
-#include "CopulaImplementation.hxx"
-#include "PersistentCollection.hxx"
-#include "Copula.hxx"
+#include "openturns/CopulaImplementation.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Copula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

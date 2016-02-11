@@ -23,13 +23,13 @@
 #ifndef OPENTURNS_KARHUNENLOEVEP1FACTORY_HXX
 #define OPENTURNS_KARHUNENLOEVEP1FACTORY_HXX
 
-#include "Mesh.hxx"
-#include "CovarianceMatrix.hxx"
-#include "CovarianceModel.hxx"
-#include "Basis.hxx"
-#include "NumericalPoint.hxx"
-#include "ProcessSample.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ProcessSample.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

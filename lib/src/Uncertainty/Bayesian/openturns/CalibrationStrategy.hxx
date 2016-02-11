@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CALIBRATIONSTRATEGY_HXX
 #define OPENTURNS_CALIBRATIONSTRATEGY_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "CalibrationStrategyImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/CalibrationStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

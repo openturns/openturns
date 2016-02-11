@@ -20,9 +20,9 @@
  *
  *  Id      ConstantBasisFactory.cxx 2392 2012-02-17 18:35:43Z schueller
  */
-#include "ConstantBasisFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "LinearNumericalMathFunction.hxx"
+#include "openturns/ConstantBasisFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

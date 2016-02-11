@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CONTINUOUSDISTRIBUTION_HXX
 #define OPENTURNS_CONTINUOUSDISTRIBUTION_HXX
 
-#include "DistributionImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

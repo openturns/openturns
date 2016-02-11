@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SAMPLERIMPLEMENTATION_HXX
 #define OPENTURNS_SAMPLERIMPLEMENTATION_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

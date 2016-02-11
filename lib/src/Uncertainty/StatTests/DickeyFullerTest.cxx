@@ -19,15 +19,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "DickeyFullerTest.hxx"
-#include "Exception.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalPoint.hxx"
-#include "DistFunc.hxx"
-#include "IdentityMatrix.hxx"
-#include "FisherSnedecor.hxx"
-#include "Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DickeyFullerTest.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/FisherSnedecor.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

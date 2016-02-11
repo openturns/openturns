@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_SQPSPECIFICPARAMETERS_HXX
 #define OPENTURNS_SQPSPECIFICPARAMETERS_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

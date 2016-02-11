@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_DISTRIBUTIONFACTORY_HXX
 #define OPENTURNS_DISTRIBUTIONFACTORY_HXX
 
-#include "DistributionFactoryImplementation.hxx"
-#include "DistributionFactoryResult.hxx"
-#include "TypedInterfaceObject.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/DistributionFactoryResult.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

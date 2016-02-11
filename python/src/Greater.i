@@ -1,12 +1,12 @@
 // SWIG file Greater.i
 
 %{
-#include "Greater.hxx"
+#include "openturns/Greater.hxx"
 %}
 
 %include Greater_doc.i
 
-%include Greater.hxx
+%include openturns/Greater.hxx
 namespace OT {  
 %extend Greater {
   const String __str__() const { return self->__repr__(); }

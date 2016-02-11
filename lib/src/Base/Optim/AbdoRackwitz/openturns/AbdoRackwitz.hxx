@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_ABDORACKWITZ_HXX
 #define OPENTURNS_ABDORACKWITZ_HXX
 
-#include "OTprivate.hxx"
-#include "OptimizationSolverImplementation.hxx"
-#include "OptimizationProblem.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationProblem.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

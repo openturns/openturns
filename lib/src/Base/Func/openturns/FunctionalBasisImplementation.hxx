@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_FUNCTIONALBASISIMPLEMENTATION_HXX
 #define OPENTURNS_FUNCTIONALBASISIMPLEMENTATION_HXX
 
-#include "BasisImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/BasisImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

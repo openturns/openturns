@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_MAXIMUMENTROPYORDERSTATISTICSCOPULA_HXX
 #define OPENTURNS_MAXIMUMENTROPYORDERSTATISTICSCOPULA_HXX
 
-#include "OTprivate.hxx"
-#include "SklarCopula.hxx"
-#include "MaximumEntropyOrderStatisticsDistribution.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SklarCopula.hxx"
+#include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

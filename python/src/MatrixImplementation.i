@@ -13,10 +13,10 @@ OT::NumericalScalar OT::MatrixImplementation::computeLogAbsoluteDeterminant(OT::
 OT::NumericalScalar OT::MatrixImplementation::computeLogAbsoluteDeterminantSym(OT::NumericalScalar & sign, const OT::Bool keepIntact = true);
 
 %{
-#include "MatrixImplementation.hxx"
+#include "openturns/MatrixImplementation.hxx"
 %}
 
 %rename(MatrixImplementation_operator___eq__) OT::operator ==(const MatrixImplementation & lhs, const MatrixImplementation & rhs);
 
-%include MatrixImplementation.hxx
+%include openturns/MatrixImplementation.hxx
 namespace OT{ %extend MatrixImplementation { MatrixImplementation(const MatrixImplementation & other) { return new OT::MatrixImplementation(other); } } }

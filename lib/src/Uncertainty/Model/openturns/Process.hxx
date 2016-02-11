@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PROCESS_HXX
 #define OPENTURNS_PROCESS_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "Pointer.hxx"
-#include "ProcessImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/ProcessImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

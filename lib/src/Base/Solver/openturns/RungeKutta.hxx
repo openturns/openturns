@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RUNGEKUTTA_HXX
 #define OPENTURNS_RUNGEKUTTA_HXX
 
-#include "ODESolverImplementation.hxx"
+#include "openturns/ODESolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

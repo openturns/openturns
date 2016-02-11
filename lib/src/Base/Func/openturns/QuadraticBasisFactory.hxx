@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_QUADRATICBASISFACTORY_HXX
 #define OPENTURNS_QUADRATICBASISFACTORY_HXX
 
-#include "BasisFactory.hxx"
+#include "openturns/BasisFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

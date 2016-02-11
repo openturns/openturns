@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_ARCSINEMUSIGMA_HXX
 #define OPENTURNS_ARCSINEMUSIGMA_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_GRAPH_HXX
 #define OPENTURNS_GRAPH_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "GraphImplementation.hxx"
-#include "DrawableImplementation.hxx"
-#include "Collection.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/GraphImplementation.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

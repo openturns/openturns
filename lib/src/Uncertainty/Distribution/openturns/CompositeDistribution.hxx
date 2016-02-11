@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_COMPOSITEDISTRIBUTION_HXX
 #define OPENTURNS_COMPOSITEDISTRIBUTION_HXX
 
-#include "DistributionImplementation.hxx"
-#include "Distribution.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Solver.hxx"
-#include "GaussKronrod.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Solver.hxx"
+#include "openturns/GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

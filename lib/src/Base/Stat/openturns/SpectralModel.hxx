@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_SPECTRALMODEL_HXX
 #define OPENTURNS_SPECTRALMODEL_HXX
 
-#include "SpectralModelImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/SpectralModelImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_WILKS_HXX
 #define OPENTURNS_WILKS_HXX
 
-#include "NumericalPoint.hxx"
-#include "RandomVector.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

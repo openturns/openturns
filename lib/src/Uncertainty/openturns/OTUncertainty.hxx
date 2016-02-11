@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_OTUNCERTAINTY_HXX
 #define OPENTURNS_OTUNCERTAINTY_HXX
 
-#include "OTAlgorithm.hxx"
-#include "OTBayesian.hxx"
-#include "OTDistribution.hxx"
-#include "OTModel.hxx"
-#include "OTStatTests.hxx"
-#include "OTProcess.hxx"
+#include "openturns/OTAlgorithm.hxx"
+#include "openturns/OTBayesian.hxx"
+#include "openturns/OTDistribution.hxx"
+#include "openturns/OTModel.hxx"
+#include "openturns/OTStatTests.hxx"
+#include "openturns/OTProcess.hxx"
 
 #endif /* OPENTURNS_OTUNCERTAINTY_HXX */

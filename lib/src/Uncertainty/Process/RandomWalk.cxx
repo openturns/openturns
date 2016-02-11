@@ -19,11 +19,11 @@
  *
  */
 
-#include "RandomWalk.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Normal.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/RandomWalk.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

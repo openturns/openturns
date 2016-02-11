@@ -21,17 +21,17 @@
 #ifndef OPENTURNS_PROJECTIONSTRATEGYIMPLEMENTATION_HXX
 #define OPENTURNS_PROJECTIONSTRATEGYIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "Distribution.hxx"
-#include "Collection.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Indices.hxx"
-#include "WeightedExperiment.hxx"
-#include "Pointer.hxx"
-#include "NumericalSample.hxx"
-#include "Basis.hxx"
-#include "DesignProxy.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/WeightedExperiment.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

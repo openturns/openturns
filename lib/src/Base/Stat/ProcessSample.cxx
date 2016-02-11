@@ -19,13 +19,13 @@
  *
  */
 
-#include "ProcessSample.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
-#include "Drawable.hxx"
-#include "Description.hxx"
-#include "Log.hxx"
+#include "openturns/ProcessSample.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Drawable.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

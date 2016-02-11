@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_TEMPORALNORMALPROCESS_HXX
 #define OPENTURNS_TEMPORALNORMALPROCESS_HXX
 
-#include "ProcessImplementation.hxx"
-#include "SquareMatrix.hxx"
-#include "SecondOrderModel.hxx"
-#include "CovarianceModel.hxx"
-#include "TrendTransform.hxx"
-#include "HMatrix.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/SecondOrderModel.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/TrendTransform.hxx"
+#include "openturns/HMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

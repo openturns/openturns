@@ -45,7 +45,7 @@
 #ifndef _TNC_
 #define _TNC_
 
-#include "OTdebug.h"
+#include "openturns/OTdebug.h"
 #define TNC_VERSION "1.3"
 
 BEGIN_C_DECLS

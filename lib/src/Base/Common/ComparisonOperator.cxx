@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ComparisonOperator.hxx"
-#include "Less.hxx"
+#include "openturns/ComparisonOperator.hxx"
+#include "openturns/Less.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

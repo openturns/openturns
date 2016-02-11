@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "HermiteFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Normal.hxx"
-#include "Exception.hxx"
+#include "openturns/HermiteFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

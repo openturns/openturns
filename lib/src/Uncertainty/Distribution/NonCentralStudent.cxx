@@ -19,13 +19,13 @@
  *
  */
 #include <cmath>
-#include "NonCentralStudent.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Brent.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NonCentralStudent.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

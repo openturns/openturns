@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_DISTFUNC_HXX
 #define OPENTURNS_DISTFUNC_HXX
 
-#include "OTprivate.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalPoint.hxx"
-#include "Indices.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_COVARIANCEMODELIMPLEMENTATION_HXX
 #define OPENTURNS_COVARIANCEMODELIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "CovarianceMatrix.hxx"
-#include "Pointer.hxx"
-#include "RegularGrid.hxx"
-#include "Mesh.hxx"
-#include "Basis.hxx"
-#include "HMatrixParameters.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/RegularGrid.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/HMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,8 +19,8 @@
  *
  */
 
-#include "MetaModelAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/MetaModelAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

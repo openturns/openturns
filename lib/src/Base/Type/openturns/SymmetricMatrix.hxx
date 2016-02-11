@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_SYMMETRICMATRIX_HXX
 #define OPENTURNS_SYMMETRICMATRIX_HXX
 
-#include "OTprivate.hxx"
-#include "SquareMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SquareMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

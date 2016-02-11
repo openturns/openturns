@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_CONSTANTRANDOMVECTOR_HXX
 #define OPENTURNS_CONSTANTRANDOMVECTOR_HXX
 
-#include "OTprivate.hxx"
-#include "RandomVectorImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

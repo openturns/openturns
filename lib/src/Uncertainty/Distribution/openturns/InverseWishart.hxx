@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_INVERSEWISHART_HXX
 #define OPENTURNS_INVERSEWISHART_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "CovarianceMatrix.hxx"
-#include "TriangularMatrix.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/TriangularMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

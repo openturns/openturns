@@ -24,9 +24,9 @@
 
 #include <map>
 
-#include "OrthonormalizationAlgorithmImplementation.hxx"
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
-#include "Collection.hxx"
+#include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

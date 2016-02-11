@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LOGNORMALMUSIGMAOVERMU_HXX
 #define OPENTURNS_LOGNORMALMUSIGMAOVERMU_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

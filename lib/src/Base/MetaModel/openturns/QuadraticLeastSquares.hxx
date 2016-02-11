@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_QUADRATICLEASTSQUARES_HXX
 #define OPENTURNS_QUADRATICLEASTSQUARES_HXX
 
-#include "OTprivate.hxx"
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_USERDEFINEDFACTORY_HXX
 #define OPENTURNS_USERDEFINEDFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "UserDefined.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/UserDefined.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

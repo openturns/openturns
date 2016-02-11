@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ComposedNumericalMathFunction.hxx"
-#include "NoNumericalMathGradientImplementation.hxx"
-#include "NoNumericalMathHessianImplementation.hxx"
-#include "ComposedNumericalMathEvaluationImplementation.hxx"
-#include "ComposedNumericalMathGradientImplementation.hxx"
-#include "ComposedNumericalMathHessianImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/ComposedNumericalMathFunction.hxx"
+#include "openturns/NoNumericalMathGradientImplementation.hxx"
+#include "openturns/NoNumericalMathHessianImplementation.hxx"
+#include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
+#include "openturns/ComposedNumericalMathGradientImplementation.hxx"
+#include "openturns/ComposedNumericalMathHessianImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

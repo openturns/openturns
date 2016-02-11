@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MEDIUMSAFE_HXX
 #define OPENTURNS_MEDIUMSAFE_HXX
 
-#include "RootStrategyImplementation.hxx"
+#include "openturns/RootStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

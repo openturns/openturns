@@ -19,21 +19,21 @@
  *
  */
 #include <cmath>
-#include "NormalCopula.hxx"
-#include "Uniform.hxx"
-#include "IdentityMatrix.hxx"
-#include "NatafEllipticalCopulaEvaluation.hxx"
-#include "NatafEllipticalCopulaGradient.hxx"
-#include "NatafEllipticalCopulaHessian.hxx"
-#include "InverseNatafEllipticalCopulaEvaluation.hxx"
-#include "InverseNatafEllipticalCopulaGradient.hxx"
-#include "InverseNatafEllipticalCopulaHessian.hxx"
-#include "Indices.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "TBB.hxx"
+#include "openturns/NormalCopula.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/NatafEllipticalCopulaEvaluation.hxx"
+#include "openturns/NatafEllipticalCopulaGradient.hxx"
+#include "openturns/NatafEllipticalCopulaHessian.hxx"
+#include "openturns/InverseNatafEllipticalCopulaEvaluation.hxx"
+#include "openturns/InverseNatafEllipticalCopulaGradient.hxx"
+#include "openturns/InverseNatafEllipticalCopulaHessian.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

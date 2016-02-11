@@ -21,17 +21,17 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "Student.hxx"
-#include "Distribution.hxx"
-#include "IdentityMatrix.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "Log.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "NumericalPoint.hxx"
-#include "Exception.hxx"
+#include "openturns/Student.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

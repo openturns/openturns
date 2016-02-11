@@ -1,12 +1,12 @@
 // SWIG file Histogram.i
 
 %{
-#include "Histogram.hxx"
+#include "openturns/Histogram.hxx"
 %}
 
 %include Histogram_doc.i
 
-%include Histogram.hxx
+%include openturns/Histogram.hxx
 
 %template(HistogramPairCollection) OT::Collection<OT::HistogramPair>;
 

@@ -1,7 +1,7 @@
 // SWIG file CorrelationMatrix.i
 
 %{
-#include "CorrelationMatrix.hxx"
+#include "openturns/CorrelationMatrix.hxx"
 %}
 
 %include CorrelationMatrix_doc.i
@@ -24,7 +24,7 @@
        OT::isAPythonSequenceOf<OT::_PySequence_>($input);
 }
 
-%include CorrelationMatrix.hxx
+%include openturns/CorrelationMatrix.hxx
 
 namespace OT {
 

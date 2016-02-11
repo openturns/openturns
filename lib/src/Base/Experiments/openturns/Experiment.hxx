@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_EXPERIMENT_HXX
 #define OPENTURNS_EXPERIMENT_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "ExperimentImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ExperimentImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

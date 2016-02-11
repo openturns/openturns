@@ -1,10 +1,10 @@
 // SWIG file CovarianceModelFactoryImplementation.i
 
 %{
-#include "CovarianceModelFactoryImplementation.hxx"
+#include "openturns/CovarianceModelFactoryImplementation.hxx"
 %}
 
 %include CovarianceModelFactoryImplementation_doc.i
 
-%include CovarianceModelFactoryImplementation.hxx
+%include openturns/CovarianceModelFactoryImplementation.hxx
 namespace OT {%extend CovarianceModelFactoryImplementation {CovarianceModelFactoryImplementation(const CovarianceModelFactoryImplementation & other){return new OT::CovarianceModelFactoryImplementation(other);}}}

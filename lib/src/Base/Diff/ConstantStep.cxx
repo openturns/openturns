@@ -19,8 +19,8 @@
  *
  */
 
-#include "ConstantStep.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/ConstantStep.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

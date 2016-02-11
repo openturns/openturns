@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CORRECTEDLEAVEONEOUT_HXX
 #define OPENTURNS_CORRECTEDLEAVEONEOUT_HXX
 
-#include "FittingAlgorithmImplementation.hxx"
+#include "openturns/FittingAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

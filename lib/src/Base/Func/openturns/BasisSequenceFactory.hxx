@@ -22,10 +22,10 @@
 #define OPENTURNS_BASISSEQUENCEFACTORY_HXX
 
 #include <iostream>
-#include "TypedInterfaceObject.hxx"
-#include "BasisSequence.hxx"
-#include "BasisSequenceFactoryImplementation.hxx"
-#include "LeastSquaresMethod.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/BasisSequence.hxx"
+#include "openturns/BasisSequenceFactoryImplementation.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

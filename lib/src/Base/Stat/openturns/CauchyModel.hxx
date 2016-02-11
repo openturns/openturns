@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_CAUCHYMODEL_HXX
 #define OPENTURNS_CAUCHYMODEL_HXX
 
-#include "PersistentObject.hxx"
-#include "SpectralModel.hxx"
-#include "NumericalPoint.hxx"
-#include "CorrelationMatrix.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/SpectralModel.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

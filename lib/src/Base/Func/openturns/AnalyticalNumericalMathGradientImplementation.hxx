@@ -15,8 +15,8 @@
 #ifndef OPENTURNS_ANALYTICALNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_ANALYTICALNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

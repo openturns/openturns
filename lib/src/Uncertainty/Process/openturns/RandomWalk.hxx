@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_RANDOMWALK_HXX
 #define OPENTURNS_RANDOMWALK_HXX
 
-#include "ProcessImplementation.hxx"
-#include "Process.hxx"
-#include "Pointer.hxx"
-#include "Distribution.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/ProcessImplementation.hxx"
+#include "openturns/Process.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

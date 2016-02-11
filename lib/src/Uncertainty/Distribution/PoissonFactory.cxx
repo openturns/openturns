@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "PoissonFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/PoissonFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LAPLACE_HXX
 #define OPENTURNS_LAPLACE_HXX
 
-#include "ContinuousDistribution.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_NORMALCDF2D_HXX
 #define OPENTURNS_NORMALCDF2D_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

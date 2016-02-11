@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_GUMBELAB_HXX
 #define OPENTURNS_GUMBELAB_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,12 +19,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "Simulation.hxx"
-#include "Log.hxx"
-#include "Curve.hxx"
-#include "NumericalPoint.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

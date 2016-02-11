@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_LINEARCOMBINATIONHESSIANIMPLEMENTATION_HXX
 #define OPENTURNS_LINEARCOMBINATIONHESSIANIMPLEMENTATION_HXX
 
-#include "NumericalMathHessianImplementation.hxx"
-#include "LinearCombinationEvaluationImplementation.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/LinearCombinationEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

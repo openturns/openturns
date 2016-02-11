@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_BERNOULLIFACTORY_HXX
 #define OPENTURNS_BERNOULLIFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Bernoulli.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Bernoulli.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

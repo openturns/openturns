@@ -1,8 +1,8 @@
 // SWIG file Basis.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "Basis.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/Basis.hxx"
 %}
 
 %include BaseFuncCollection.i
@@ -36,7 +36,7 @@
 OTTypedInterfaceObjectHelper(Basis)
 %ignore OT::Basis::operator[];
 
-%include Basis.hxx
+%include openturns/Basis.hxx
 
 %extend OT::Collection<OT::NumericalMathFunction>
 {

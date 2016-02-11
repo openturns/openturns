@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_COVARIANCEMODELFACTORY_HXX
 #define OPENTURNS_COVARIANCEMODELFACTORY_HXX
 
-#include "CovarianceModelFactoryImplementation.hxx"
-#include "PersistentObject.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/CovarianceModelFactoryImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_NATAFELLIPTICALCOPULAHESSIAN_HXX
 #define OPENTURNS_NATAFELLIPTICALCOPULAHESSIAN_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalMathHessianImplementation.hxx"
-#include "Matrix.hxx"
-#include "SymmetricTensor.hxx"
-#include "NumericalPoint.hxx"
-#include "Distribution.hxx"
-#include "StorageManager.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

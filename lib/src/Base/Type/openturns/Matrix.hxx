@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_MATRIX_HXX
 #define OPENTURNS_MATRIX_HXX
 
-#include "MatrixImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/MatrixImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

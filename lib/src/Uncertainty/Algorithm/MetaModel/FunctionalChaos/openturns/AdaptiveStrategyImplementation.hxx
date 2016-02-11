@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_ADAPTIVESTRATEGYIMPLEMENTATION_HXX
 #define OPENTURNS_ADAPTIVESTRATEGYIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "OrthogonalBasis.hxx"
-#include "NumericalPoint.hxx"
-#include "Indices.hxx"
-#include "Collection.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/OrthogonalBasis.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

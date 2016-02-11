@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CLAYTONCOPULA_HXX
 #define OPENTURNS_CLAYTONCOPULA_HXX
 
-#include "ArchimedeanCopula.hxx"
+#include "openturns/ArchimedeanCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

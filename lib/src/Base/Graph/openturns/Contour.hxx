@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CONTOUR_HXX
 #define OPENTURNS_CONTOUR_HXX
 
-#include "DrawableImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

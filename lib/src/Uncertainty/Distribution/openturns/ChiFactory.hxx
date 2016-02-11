@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CHIFACTORY_HXX
 #define OPENTURNS_CHIFACTORY_HXX
 
-#include "Chi.hxx"
-#include "DistributionFactoryImplementation.hxx"
+#include "openturns/Chi.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

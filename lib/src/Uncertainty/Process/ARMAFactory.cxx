@@ -19,9 +19,9 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "ARMAFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ARMAFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

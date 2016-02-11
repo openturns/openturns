@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIAL_HXX
 #define OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIAL_HXX
 
-#include "UniVariatePolynomialImplementation.hxx"
-#include "Collection.hxx"
-#include "PersistentCollection.hxx"
+#include "openturns/UniVariatePolynomialImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

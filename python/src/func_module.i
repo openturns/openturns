@@ -5,14 +5,14 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OTCommon.hxx"
-#include "OTType.hxx"
-#include "OTStat.hxx"
-#include "OTGraph.hxx"
-#include "OTFunc.hxx"
-#include "OTGeom.hxx"
-#include "OTAlgo.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTCommon.hxx"
+#include "openturns/OTType.hxx"
+#include "openturns/OTStat.hxx"
+#include "openturns/OTGraph.hxx"
+#include "openturns/OTFunc.hxx"
+#include "openturns/OTGeom.hxx"
+#include "openturns/OTAlgo.hxx"
 %}
 
 %include typemaps.i

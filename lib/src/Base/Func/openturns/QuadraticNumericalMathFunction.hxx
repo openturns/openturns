@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
 #define OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
 
-#include "NumericalMathFunction.hxx"
-#include "NumericalPoint.hxx"
-#include "Matrix.hxx"
-#include "SymmetricTensor.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

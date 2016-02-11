@@ -19,18 +19,18 @@
  *
  */
 #include <iomanip>
-#include "XMLStorageManager.hxx"
-#include "PersistentObject.hxx"
-#include "InterfaceObject.hxx"
-#include "Exception.hxx"
-#include "Catalog.hxx"
-#include "Study.hxx"
-#include "OSS.hxx"
-#include "PlatformInfo.hxx"
-#include "Log.hxx"
-#include "XMLToolbox.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "OTconfig.hxx"
+#include "openturns/XMLStorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/InterfaceObject.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Catalog.hxx"
+#include "openturns/Study.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PlatformInfo.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/XMLToolbox.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/OTconfig.hxx"
 
 #ifndef WIN32
 #ifndef SWIG

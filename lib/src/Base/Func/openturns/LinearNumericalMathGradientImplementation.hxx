@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_LINEARNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_LINEARNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "Matrix.hxx"
-#include "SymmetricTensor.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

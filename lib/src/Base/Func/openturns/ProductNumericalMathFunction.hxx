@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTNUMERICALMATHFUNCTION_HXX
 #define OPENTURNS_PRODUCTNUMERICALMATHFUNCTION_HXX
 
-#include "NumericalMathFunctionImplementation.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

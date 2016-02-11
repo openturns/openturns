@@ -1,7 +1,7 @@
 // SWIG file Pointer.i
 
 %{
-#include "Pointer.hxx"
+#include "openturns/Pointer.hxx"
 %}
 
-%include Pointer.hxx
+%include openturns/Pointer.hxx

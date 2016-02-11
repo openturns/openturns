@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_STUDENTFACTORY_HXX
 #define OPENTURNS_STUDENTFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "Student.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Student.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

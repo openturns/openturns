@@ -19,8 +19,8 @@
  *
  */
 
-#include "BasisSequenceFactory.hxx"
-#include "LAR.hxx"
+#include "openturns/BasisSequenceFactory.hxx"
+#include "openturns/LAR.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_CONSTANTNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_CONSTANTNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "Matrix.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

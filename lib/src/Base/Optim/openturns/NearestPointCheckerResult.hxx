@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NEARESTPOINTCHECKERRESULT_HXX
 #define OPENTURNS_NEARESTPOINTCHECKERRESULT_HXX
 
-#include "OTprivate.hxx"
-#include "NumericalSample.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -15,10 +15,10 @@
 #ifndef OPENTURNS_BOXCOXEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_BOXCOXEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

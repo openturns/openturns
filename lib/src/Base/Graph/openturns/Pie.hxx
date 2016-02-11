@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PIE_HXX
 #define OPENTURNS_PIE_HXX
 
-#include "DrawableImplementation.hxx"
+#include "openturns/DrawableImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

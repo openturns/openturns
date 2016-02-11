@@ -22,12 +22,12 @@
 #include <cstdlib>
 #include <assert.h>
 #include <errno.h>
-#include "OSS.hxx"
-#include "Catalog.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "MutexLock.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Catalog.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/MutexLock.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

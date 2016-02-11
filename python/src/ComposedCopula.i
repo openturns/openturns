@@ -1,15 +1,15 @@
 // SWIG file ComposedCopula.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "ComposedCopula.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/ComposedCopula.hxx"
 %}
 
 %include ComposedCopula_doc.i
 
 %template(CopulaCollection) OT::Collection<OT::Copula>;
 
-%include ComposedCopula.hxx
+%include openturns/ComposedCopula.hxx
 
 %extend OT::Collection<OT::Copula>
 {

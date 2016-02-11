@@ -22,10 +22,10 @@
 #define OPENTURNS_DRAWABLEIMPLEMENTATION_HXX
 
 #include <map>
-#include "Description.hxx"
-#include "Collection.hxx"
-#include "PersistentObject.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

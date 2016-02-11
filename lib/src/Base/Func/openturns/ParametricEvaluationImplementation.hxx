@@ -22,10 +22,10 @@
 #ifndef OPENTURNS_PARAMETRICEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_PARAMETRICEVALUATIONIMPLEMENTATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "StorageManager.hxx"
-#include "Indices.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

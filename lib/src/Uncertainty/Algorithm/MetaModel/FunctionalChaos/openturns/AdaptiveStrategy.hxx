@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_ADAPTIVESTRATEGY_HXX
 #define OPENTURNS_ADAPTIVESTRATEGY_HXX
 
-#include "TypedInterfaceObject.hxx"
-#include "AdaptiveStrategyImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/AdaptiveStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

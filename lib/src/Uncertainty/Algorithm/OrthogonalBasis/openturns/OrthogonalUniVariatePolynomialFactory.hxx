@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIALFACTORY_HXX
 #define OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIALFACTORY_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "PersistentCollection.hxx"
-#include "OrthogonalUniVariatePolynomial.hxx"
-#include "Distribution.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/OrthogonalUniVariatePolynomial.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

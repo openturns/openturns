@@ -26,8 +26,8 @@
 #include <stdio.h>  // for perror(3)
 #include <stdlib.h> // for exit(3)
 #include <string.h> // for strerror(3)
-#include "OTprivate.hxx"
-#include "OTthread.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTthread.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

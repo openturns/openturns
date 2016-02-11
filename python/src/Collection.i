@@ -1,12 +1,12 @@
 // SWIG file Collection.i
 
 %{
-#include "Collection.hxx"
+#include "openturns/Collection.hxx"
 %}
 
 %include Collection_doc.i
 
-%include Collection.hxx
+%include openturns/Collection.hxx
 %copyctor Collection;
 
 namespace OT {  

@@ -20,9 +20,9 @@
  */
 #include <cmath>
 
-#include "MarginalDistribution.hxx"
-#include "Uniform.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/MarginalDistribution.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

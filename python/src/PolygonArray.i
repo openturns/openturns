@@ -1,7 +1,7 @@
 // SWIG file PolygonArray.i
 
 %{
-#include "PolygonArray.hxx"
+#include "openturns/PolygonArray.hxx"
 
 namespace OT {
   template <>
@@ -64,5 +64,5 @@ namespace OT {
 
 %include PolygonArray_doc.i
 
-%include PolygonArray.hxx
+%include openturns/PolygonArray.hxx
 namespace OT { %extend PolygonArray { PolygonArray(const PolygonArray & other) { return new OT::PolygonArray(other); } } }

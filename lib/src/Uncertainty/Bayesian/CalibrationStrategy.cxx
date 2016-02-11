@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "CalibrationStrategy.hxx"
+#include "openturns/CalibrationStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

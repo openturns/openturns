@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_INVERSENORMALFACTORY_HXX
 #define OPENTURNS_INVERSENORMALFACTORY_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionFactoryImplementation.hxx"
-#include "InverseNormal.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/InverseNormal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

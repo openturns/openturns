@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OptimizationSolver.hxx"
-#include "Cobyla.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/Cobyla.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

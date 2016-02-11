@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_RFUNCTIONS_HXX
 #define OPENTURNS_RFUNCTIONS_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

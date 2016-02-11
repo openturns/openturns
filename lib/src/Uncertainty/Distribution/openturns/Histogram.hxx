@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_HISTOGRAM_HXX
 #define OPENTURNS_HISTOGRAM_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "Collection.hxx"
-#include "HistogramPair.hxx"
-#include "PersistentCollection.hxx"
-#include "PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/HistogramPair.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

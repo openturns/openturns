@@ -21,14 +21,14 @@
 
 #ifndef OPENTURNS_OTGEOM_HXX
 #define OPENTURNS_OTGEOM_HXX
-#include "DomainImplementation.hxx"
-#include "Domain.hxx"
-#include "Interval.hxx"
-#include "IntervalMesher.hxx"
-#include "LevelSet.hxx"
-#include "Mesh.hxx"
-#include "MeshFactory.hxx"
-#include "MeshFactoryImplementation.hxx"
-#include "RegularGrid.hxx"
+#include "openturns/DomainImplementation.hxx"
+#include "openturns/Domain.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/IntervalMesher.hxx"
+#include "openturns/LevelSet.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/MeshFactory.hxx"
+#include "openturns/MeshFactoryImplementation.hxx"
+#include "openturns/RegularGrid.hxx"
 
 #endif /* OPENTURNS_OTGEOM_HXX */

@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_SIMULATIONRESULT_HXX
 #define OPENTURNS_SIMULATIONRESULT_HXX
 
-#include "SimulationResultImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
-#include "NumericalPointWithDescription.hxx"
-#include "Graph.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

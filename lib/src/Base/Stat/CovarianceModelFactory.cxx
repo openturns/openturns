@@ -20,7 +20,7 @@
  *  Id:      $Id$
  */
 
-#include "CovarianceModelFactory.hxx"
+#include "openturns/CovarianceModelFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

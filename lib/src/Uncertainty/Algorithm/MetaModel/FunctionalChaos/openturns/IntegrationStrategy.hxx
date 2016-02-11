@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_INTEGRATIONSTRATEGY_HXX
 #define OPENTURNS_INTEGRATIONSTRATEGY_HXX
 
-#include "ProjectionStrategyImplementation.hxx"
+#include "openturns/ProjectionStrategyImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

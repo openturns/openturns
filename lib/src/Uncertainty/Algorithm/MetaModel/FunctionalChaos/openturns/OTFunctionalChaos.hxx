@@ -22,16 +22,16 @@
 #ifndef OPENTURNS_OTFUNCTIONALCHAOS_HXX
 #define OPENTURNS_OTFUNCTIONALCHAOS_HXX
 
-#include "AdaptiveStrategy.hxx"
-#include "AdaptiveStrategyImplementation.hxx"
-#include "CleaningStrategy.hxx"
-#include "FixedStrategy.hxx"
-#include "FunctionalChaosAlgorithm.hxx"
-#include "FunctionalChaosResult.hxx"
-#include "LeastSquaresStrategy.hxx"
-#include "IntegrationStrategy.hxx"
-#include "ProjectionStrategy.hxx"
-#include "ProjectionStrategyImplementation.hxx"
-#include "SequentialStrategy.hxx"
+#include "openturns/AdaptiveStrategy.hxx"
+#include "openturns/AdaptiveStrategyImplementation.hxx"
+#include "openturns/CleaningStrategy.hxx"
+#include "openturns/FixedStrategy.hxx"
+#include "openturns/FunctionalChaosAlgorithm.hxx"
+#include "openturns/FunctionalChaosResult.hxx"
+#include "openturns/LeastSquaresStrategy.hxx"
+#include "openturns/IntegrationStrategy.hxx"
+#include "openturns/ProjectionStrategy.hxx"
+#include "openturns/ProjectionStrategyImplementation.hxx"
+#include "openturns/SequentialStrategy.hxx"
 
 #endif /* OPENTURNS_OTFUNCTIONALCHAOS_HXX */

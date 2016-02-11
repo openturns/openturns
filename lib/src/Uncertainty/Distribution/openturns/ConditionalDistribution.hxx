@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_CONDITIONALDISTRIBUTION_HXX
 #define OPENTURNS_CONDITIONALDISTRIBUTION_HXX
 
-#include "OTprivate.hxx"
-#include "Mixture.hxx"
-#include "ResourceMap.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Mixture.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -12,8 +12,8 @@
  *
  */
 
-#include "InverseBoxCoxEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/InverseBoxCoxEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

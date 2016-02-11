@@ -21,12 +21,12 @@
 #include <cmath>
 #include <cstdlib>
 
-#include "ContinuousDistribution.hxx"
-#include "Collection.hxx"
-#include "Distribution.hxx"
-#include "ResourceMap.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "GaussKronrod.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

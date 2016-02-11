@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_TRENDTRANSOFORM_HXX
 #define OPENTURNS_TRENDTRANSOFORM_HXX
 
-#include "TemporalFunction.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/TemporalFunction.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

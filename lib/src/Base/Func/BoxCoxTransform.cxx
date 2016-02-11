@@ -17,11 +17,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "BoxCoxTransform.hxx"
-#include "BoxCoxEvaluationImplementation.hxx"
-#include "BoxCoxGradientImplementation.hxx"
-#include "BoxCoxHessianImplementation.hxx"
-#include "InverseBoxCoxTransform.hxx"
+#include "openturns/BoxCoxTransform.hxx"
+#include "openturns/BoxCoxEvaluationImplementation.hxx"
+#include "openturns/BoxCoxGradientImplementation.hxx"
+#include "openturns/BoxCoxHessianImplementation.hxx"
+#include "openturns/InverseBoxCoxTransform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

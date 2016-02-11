@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_SVDMETHOD_HXX
 #define OPENTURNS_SVDMETHOD_HXX
 
-#include "Matrix.hxx"
-#include "LeastSquaresMethodImplementation.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

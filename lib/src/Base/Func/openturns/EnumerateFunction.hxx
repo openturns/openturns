@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_ENUMERATEFUNCTION_HXX
 #define OPENTURNS_ENUMERATEFUNCTION_HXX
 
-#include "EnumerateFunctionImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/EnumerateFunctionImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

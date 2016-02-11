@@ -25,7 +25,7 @@
 #include <iterator>
 #include <functional>
 #include <utility>        // for std::pair
-#include "OStream.hxx"
+#include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

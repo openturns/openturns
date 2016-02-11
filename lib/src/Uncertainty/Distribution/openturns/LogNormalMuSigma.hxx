@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LOGNORMALMUSIGMA_HXX
 #define OPENTURNS_LOGNORMALMUSIGMA_HXX
 
-#include "DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -29,17 +29,17 @@
 #include <cstdio>        // std::fopen, std::errno
 #include <cstring>       // std::strerror
 
-#include "OTconfig.hxx"
-#include "TimeSeries.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
-#include "Path.hxx"
-#include "Curve.hxx"
-#include "Os.hxx"
-#include "TBB.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/TimeSeries.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTprivate.hxx"
-#include "OSS.hxx"
-#include "Log.hxx"
-#include "Exception.hxx"
-#include "XMLToolbox.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/XMLToolbox.hxx"
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>

@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_SOLVER_HXX
 #define OPENTURNS_SOLVER_HXX
 
-#include "OTprivate.hxx"
-#include "SolverImplementation.hxx"
-#include "Pointer.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/SolverImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

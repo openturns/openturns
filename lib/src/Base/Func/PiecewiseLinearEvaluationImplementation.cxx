@@ -19,12 +19,12 @@
  *
  */
 #include <algorithm>
-#include "PiecewiseLinearEvaluationImplementation.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Description.hxx"
-#include "Exception.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

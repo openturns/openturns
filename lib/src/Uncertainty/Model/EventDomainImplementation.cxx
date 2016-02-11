@@ -22,9 +22,9 @@
  *
  */
 
-#include "EventDomainImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "OSS.hxx"
+#include "openturns/EventDomainImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

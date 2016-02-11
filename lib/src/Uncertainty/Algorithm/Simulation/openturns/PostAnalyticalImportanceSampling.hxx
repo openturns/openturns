@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_POSTANALYTICALIMPORTANCESAMPLING_HXX
 #define OPENTURNS_POSTANALYTICALIMPORTANCESAMPLING_HXX
 
-#include "PostAnalyticalSimulation.hxx"
+#include "openturns/PostAnalyticalSimulation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

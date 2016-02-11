@@ -21,11 +21,11 @@
 #ifndef OPENTURNS_RANDOMWALKMETROPOLISHASTINGS_HXX
 #define OPENTURNS_RANDOMWALKMETROPOLISHASTINGS_HXX
 
-#include "OTprivate.hxx"
-#include "MCMC.hxx"
-#include "CalibrationStrategy.hxx"
-#include "Interval.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/MCMC.hxx"
+#include "openturns/CalibrationStrategy.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

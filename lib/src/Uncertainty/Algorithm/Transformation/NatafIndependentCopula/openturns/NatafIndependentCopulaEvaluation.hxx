@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_NATAFINDEPENDENTCOPULAEVALUATION_HXX
 #define OPENTURNS_NATAFINDEPENDENTCOPULAEVALUATION_HXX
 
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NumericalPoint.hxx"
-#include "StorageManager.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

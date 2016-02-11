@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrthonormalizationAlgorithmImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Uniform.hxx"
-#include "Exception.hxx"
+#include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

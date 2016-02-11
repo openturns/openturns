@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_DISCRETEDISTRIBUTION_HXX
 #define OPENTURNS_DISCRETEDISTRIBUTION_HXX
 
-#include "OTprivate.hxx"
-#include "DistributionImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

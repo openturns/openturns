@@ -21,15 +21,15 @@
 #ifndef OPENTURNS_PROCESSIMPLEMENTATION_HXX
 #define OPENTURNS_PROCESSIMPLEMENTATION_HXX
 
-#include "PersistentObject.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Indices.hxx"
-#include "Field.hxx"
-#include "TimeSeries.hxx"
-#include "ProcessSample.hxx"
-#include "Pointer.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/TimeSeries.hxx"
+#include "openturns/ProcessSample.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

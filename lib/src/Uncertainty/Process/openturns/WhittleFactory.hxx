@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_WHITTLEFACTORY_HXX
 #define OPENTURNS_WHITTLEFACTORY_HXX
 
-#include "ARMAFactoryImplementation.hxx"
-#include "SpectralModelFactory.hxx"
-#include "WhittleFactoryState.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/ARMAFactoryImplementation.hxx"
+#include "openturns/SpectralModelFactory.hxx"
+#include "openturns/WhittleFactoryState.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

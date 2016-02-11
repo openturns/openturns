@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_FFT_HXX
 #define OPENTURNS_FFT_HXX
 
-#include "PersistentObject.hxx"
-#include "FFTImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/FFTImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

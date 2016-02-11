@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_DESIGNPROXY_HXX
 #define OPENTURNS_DESIGNPROXY_HXX
 
-#include "NumericalSample.hxx"
-#include "Basis.hxx"
-#include "PersistentObject.hxx"
-#include "Basis.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Basis.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

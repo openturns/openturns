@@ -22,11 +22,11 @@
 #ifndef OPENTURNS_SECONDORDERMODEL_HXX
 #define OPENTURNS_SECONDORDERMODEL_HXX
 
-#include "PersistentObject.hxx"
-#include "SecondOrderModelImplementation.hxx"
-#include "TypedInterfaceObject.hxx"
-#include "StationaryCovarianceModel.hxx"
-#include "SpectralModelImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/SecondOrderModelImplementation.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/SpectralModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

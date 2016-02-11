@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_STRATIFIEDEXPERIMENT_HXX
 #define OPENTURNS_STRATIFIEDEXPERIMENT_HXX
 
-#include "ExperimentImplementation.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/ExperimentImplementation.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

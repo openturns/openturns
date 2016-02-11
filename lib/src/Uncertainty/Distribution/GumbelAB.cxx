@@ -19,9 +19,9 @@
  *
  */
 
-#include "GumbelFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "GumbelAB.hxx"
+#include "openturns/GumbelFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/GumbelAB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

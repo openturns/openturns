@@ -15,8 +15,8 @@
 #ifndef OPENTURNS_BOXCOXGRADIENTIMPLEMENTATION_HXX
 #define OPENTURNS_BOXCOXGRADIENTIMPLEMENTATION_HXX
 
-#include "NumericalMathGradientImplementation.hxx"
-#include "BoxCoxEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/BoxCoxEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

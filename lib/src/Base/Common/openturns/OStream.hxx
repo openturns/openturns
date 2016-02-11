@@ -23,7 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include <iomanip>               // for manipulators like setw, setprecision, etc.
-#include "Object.hxx"
+#include "openturns/Object.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

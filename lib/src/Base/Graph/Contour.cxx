@@ -21,10 +21,10 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "Contour.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
+#include "openturns/Contour.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

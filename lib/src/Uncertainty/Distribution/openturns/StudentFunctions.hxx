@@ -22,8 +22,8 @@
 #ifndef OPENTURNS_STUDENTFUNCTIONS_HXX
 #define OPENTURNS_STUDENTFUNCTIONS_HXX
 
-#include "OTprivate.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

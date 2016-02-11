@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_MEIXNERDISTRIBUTION_HXX
 #define OPENTURNS_MEIXNERDISTRIBUTION_HXX
 
-#include "OTprivate.hxx"
-#include "ContinuousDistribution.hxx"
-#include "PiecewiseHermiteEvaluationImplementation.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

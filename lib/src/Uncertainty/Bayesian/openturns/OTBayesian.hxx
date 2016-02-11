@@ -22,12 +22,12 @@
 #ifndef OPENTURNS_OTBAYESIAN_HXX
 #define OPENTURNS_OTBAYESIAN_HXX
 
-#include "CalibrationStrategy.hxx"
-#include "CalibrationStrategyImplementation.hxx"
-#include "Sampler.hxx"
-#include "SamplerImplementation.hxx"
-#include "MCMC.hxx"
-#include "RandomWalkMetropolisHastings.hxx"
-#include "PosteriorRandomVector.hxx"
+#include "openturns/CalibrationStrategy.hxx"
+#include "openturns/CalibrationStrategyImplementation.hxx"
+#include "openturns/Sampler.hxx"
+#include "openturns/SamplerImplementation.hxx"
+#include "openturns/MCMC.hxx"
+#include "openturns/RandomWalkMetropolisHastings.hxx"
+#include "openturns/PosteriorRandomVector.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */

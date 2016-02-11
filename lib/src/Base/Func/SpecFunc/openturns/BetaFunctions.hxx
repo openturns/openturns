@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_BETAFUNCTIONS_HXX
 #define OPENTURNS_BETAFUNCTIONS_HXX
 
-#include "OTprivate.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
