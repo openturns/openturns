@@ -20,7 +20,6 @@
  */
 #include "OT.hxx"
 #include "OTtestcode.hxx"
-#include "../src/Base/Func/NumericalMathFunction.hxx"
 
 using namespace OT;
 using namespace OT::Test;
