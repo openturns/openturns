@@ -45,8 +45,8 @@
 %import metamodel_module.i
 %import UncertaintyMetaModelTemplateDefs.i
 
-/* Uncertainty/Algorithm/QuadraticCumul */
-%include QuadraticCumul.i
+/* Uncertainty/Algorithm/TaylorExpansionsMoments */
+%include TaylorExpansionsMoments.i
 
 /* Uncertainty/Algorithm/Sensitivity */
 %include ANCOVA.i

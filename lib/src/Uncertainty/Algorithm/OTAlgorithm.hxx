@@ -22,12 +22,13 @@
 #ifndef OPENTURNS_OTALGORITHM_HXX
 #define OPENTURNS_OTALGORITHM_HXX
 
+#include "TaylorExpansionsMoments.hxx"
+
 #include "OTAnalytical.hxx"
 #include "OTClassification.hxx"
 #include "OTWeightedExperiments.hxx"
 #include "OTMetaModel.hxx"
 #include "OTOrthogonalBasis.hxx"
-#include "OTQuadraticCumul.hxx"
 #include "OTSensitivity.hxx"
 #include "OTSimulation.hxx"
 #include "OTTransformation.hxx"

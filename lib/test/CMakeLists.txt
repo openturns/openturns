@@ -653,7 +653,7 @@ ot_check_test (LinearModelTest_std)
 ot_check_test (NormalityTest_std)
 endif ()
 ot_check_test (DickeyFullerTest_std)
-ot_check_test (QuadraticCumul_std)
+ot_check_test (TaylorExpansionsMoments_std)
 
 ## Post-installation tests
 

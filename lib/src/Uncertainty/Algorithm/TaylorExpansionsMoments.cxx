@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief QuadraticCumul implements the first and second order quadratic cumul formulas
+ *  @brief TaylorExpansionsMoments implements the first and second order quadratic cumul formulas
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <iomanip>
-#include "QuadraticCumul.hxx"
+#include "TaylorExpansionsMoments.hxx"
 #include "CompositeRandomVector.hxx"
 #include "NumericalMathFunction.hxx"
 #include "Pointer.hxx"
@@ -32,18 +32,18 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Pointer<RandomVectorImplementation> Implementation;
 
-CLASSNAMEINIT(QuadraticCumul);
+CLASSNAMEINIT(TaylorExpansionsMoments);
 
-static const Factory<QuadraticCumul> RegisteredFactory;
+static const Factory<TaylorExpansionsMoments> RegisteredFactory;
 
 /*
- * @class QuadraticCumul
- * QuadraticCumul implements the mean and covariance of a random vector
+ * @class TaylorExpansionsMoments
+ * TaylorExpansionsMoments implements the mean and covariance of a random vector
  Y=G(X) by implementing the Taylor approximation of G
 */
 
 /* Constructor with parameters */
-QuadraticCumul::QuadraticCumul(const RandomVector & limitStateVariable)
+TaylorExpansionsMoments::TaylorExpansionsMoments(const RandomVector & limitStateVariable)
   : PersistentObject(),
     limitStateVariable_(limitStateVariable),
     meanInputVector_(0),
@@ -72,13 +72,13 @@ QuadraticCumul::QuadraticCumul(const RandomVector & limitStateVariable)
 }
 
 /* Virtual constructor */
-QuadraticCumul * QuadraticCumul::clone() const
+TaylorExpansionsMoments * TaylorExpansionsMoments::clone() const
 {
-  return new QuadraticCumul(*this);
+  return new TaylorExpansionsMoments(*this);
 }
 
 /* String converter */
-String QuadraticCumul::__repr__() const
+String TaylorExpansionsMoments::__repr__() const
 {
   return OSS() << "limitStateVariable=" << limitStateVariable_
          << " meanInputVector=" << meanInputVector_
@@ -93,13 +93,13 @@ String QuadraticCumul::__repr__() const
 }
 
 /* limitStateVariable accessor */
-RandomVector QuadraticCumul::getLimitStateVariable() const
+RandomVector TaylorExpansionsMoments::getLimitStateVariable() const
 {
   return limitStateVariable_;
 }
 
 /* meanFirstOrder accessor */
-NumericalPoint QuadraticCumul::getMeanFirstOrder() const
+NumericalPoint TaylorExpansionsMoments::getMeanFirstOrder() const
 {
   if(!isAlreadyComputedMeanFirstOrder_) computeMeanFirstOrder();
   return meanFirstOrder_;
@@ -107,46 +107,46 @@ NumericalPoint QuadraticCumul::getMeanFirstOrder() const
 
 
 /* meanSecondOrder accessor */
-NumericalPoint QuadraticCumul::getMeanSecondOrder() const
+NumericalPoint TaylorExpansionsMoments::getMeanSecondOrder() const
 {
   if(!isAlreadyComputedMeanSecondOrder_) computeMeanSecondOrder();
   return meanSecondOrder_;
 }
 
 /* covariance accessor */
-CovarianceMatrix QuadraticCumul::getCovariance() const
+CovarianceMatrix TaylorExpansionsMoments::getCovariance() const
 {
   if(!isAlreadyComputedCovariance_) computeCovariance();
   return covariance_;
 }
 
 /* importance factors accessor */
-NumericalPointWithDescription QuadraticCumul::getImportanceFactors() const
+NumericalPointWithDescription TaylorExpansionsMoments::getImportanceFactors() const
 {
   if(!isAlreadyComputedImportanceFactors_) computeImportanceFactors();
   return importanceFactors_;
 }
 
 /* Value at mean accessor */
-NumericalPoint QuadraticCumul::getValueAtMean() const
+NumericalPoint TaylorExpansionsMoments::getValueAtMean() const
 {
   return valueAtMean_;
 }
 
 /* Gradient at mean accessor */
-Matrix QuadraticCumul::getGradientAtMean() const
+Matrix TaylorExpansionsMoments::getGradientAtMean() const
 {
   return gradientAtMean_;
 }
 
 /* Hessian at mean accessor */
-SymmetricTensor QuadraticCumul::getHessianAtMean() const
+SymmetricTensor TaylorExpansionsMoments::getHessianAtMean() const
 {
   return hessianAtMean_;
 }
 
 /* ImportanceFactors graph */
-Graph QuadraticCumul::drawImportanceFactors() const
+Graph TaylorExpansionsMoments::drawImportanceFactors() const
 {
   // To ensure that the importance factors are up to date
   getImportanceFactors();
@@ -156,7 +156,7 @@ Graph QuadraticCumul::drawImportanceFactors() const
 }
 
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */
-void QuadraticCumul::computeMeanFirstOrder() const
+void TaylorExpansionsMoments::computeMeanFirstOrder() const
 {
   if (!isAlreadyComputedValue_)
   {
@@ -167,11 +167,11 @@ void QuadraticCumul::computeMeanFirstOrder() const
   /* we compute here the meanFirstOrder_ */
   meanFirstOrder_ = valueAtMean_;
   isAlreadyComputedMeanFirstOrder_ = true;
-} // QuadraticCumul::computeMeanFirstOrder()
+} // TaylorExpansionsMoments::computeMeanFirstOrder()
 
 
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */
-void QuadraticCumul::computeCovariance() const
+void TaylorExpansionsMoments::computeCovariance() const
 {
   inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent()->getCovariance();
   if (!isAlreadyComputedGradient_)
@@ -206,10 +206,10 @@ void QuadraticCumul::computeCovariance() const
   /* We check that outputCovariance is really symmetric positive definite */
   if (!covariance_.isPositiveDefinite()) LOGWARN(OSS() << "Warning! The covariance matrix computed by quadratic cumul is not positive definite outputCovariance=" << covariance_);
   isAlreadyComputedCovariance_ = true;
-} // QuadraticCumul::computeCovariance()
+} // TaylorExpansionsMoments::computeCovariance()
 
 /* the function that computes the importance factors only in the scalar case */
-void QuadraticCumul::computeImportanceFactors() const
+void TaylorExpansionsMoments::computeImportanceFactors() const
 {
   /* importance factors are evaluated only if the outputRandomVector is scalar */
   /* this case is tested with the  dimension of limitStateVariable_ : it must be equal to 1 in the right case */
@@ -230,10 +230,10 @@ void QuadraticCumul::computeImportanceFactors() const
   }
   importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
   isAlreadyComputedImportanceFactors_ = true;
-} // QuadraticCumul::computeImportanceFactors()
+} // TaylorExpansionsMoments::computeImportanceFactors()
 
 /* the function that computes the second order evaluation of the mean vector */
-void QuadraticCumul::computeMeanSecondOrder() const
+void TaylorExpansionsMoments::computeMeanSecondOrder() const
 {
   inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent()->getCovariance();
   if (!isAlreadyComputedValue_)
@@ -271,10 +271,10 @@ void QuadraticCumul::computeMeanSecondOrder() const
     meanSecondOrder_[k] += kSecondOrderContribution;
   } /* end loop on k */
   isAlreadyComputedMeanSecondOrder_ = true;
-} // QuadraticCumul::computeMeanSecondOrder()
+} // TaylorExpansionsMoments::computeMeanSecondOrder()
 
 /* Method save() stores the object through the StorageManager */
-void QuadraticCumul::save(Advocate & adv) const
+void TaylorExpansionsMoments::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "limitStateVariable_", limitStateVariable_ );
@@ -297,7 +297,7 @@ void QuadraticCumul::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void QuadraticCumul::load(Advocate & adv)
+void TaylorExpansionsMoments::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "limitStateVariable_", limitStateVariable_ );

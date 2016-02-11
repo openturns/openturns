@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class QuadraticCumul for the standard methods
+ *  @brief The test file of class TaylorExpansionsMoments for the standard methods
  *
  *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
  *
@@ -69,18 +69,18 @@ int main(int argc, char *argv[])
     RandomVector Y(myFunc, X);
 
     // We create a quadraticCumul algorithm
-    QuadraticCumul myQuadraticCumul(Y);
+    TaylorExpansionsMoments myTaylorExpansionsMoments(Y);
 
     // We compute the several elements provided by the quadratic cumul algorithm
-    fullprint << "First order mean=" << myQuadraticCumul.getMeanFirstOrder() << std::endl;
-    fullprint << "Second order mean=" << myQuadraticCumul.getMeanSecondOrder() << std::endl;
-    fullprint << "Covariance=" << myQuadraticCumul.getCovariance() << std::endl;
-    fullprint << "Value at mean=" << myQuadraticCumul.getValueAtMean() << std::endl;
-    fullprint << "Gradient at mean=" << myQuadraticCumul.getGradientAtMean() << std::endl;
-    fullprint << "Hessian at mean=" << myQuadraticCumul.getHessianAtMean() << std::endl;
+    fullprint << "First order mean=" << myTaylorExpansionsMoments.getMeanFirstOrder() << std::endl;
+    fullprint << "Second order mean=" << myTaylorExpansionsMoments.getMeanSecondOrder() << std::endl;
+    fullprint << "Covariance=" << myTaylorExpansionsMoments.getCovariance() << std::endl;
+    fullprint << "Value at mean=" << myTaylorExpansionsMoments.getValueAtMean() << std::endl;
+    fullprint << "Gradient at mean=" << myTaylorExpansionsMoments.getGradientAtMean() << std::endl;
+    fullprint << "Hessian at mean=" << myTaylorExpansionsMoments.getHessianAtMean() << std::endl;
 
-    QuadraticCumul myQuadraticCumul_1(Y.getMarginal(0));
-    fullprint << "Importance factors=" << myQuadraticCumul_1.getImportanceFactors() << std::endl;
+    TaylorExpansionsMoments myTaylorExpansionsMoments_1(Y.getMarginal(0));
+    fullprint << "Importance factors=" << myTaylorExpansionsMoments_1.getImportanceFactors() << std::endl;
   }
 
   catch (OT::NotSymmetricDefinitePositiveException & ex)
