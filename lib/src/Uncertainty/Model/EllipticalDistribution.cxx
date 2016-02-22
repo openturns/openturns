@@ -68,7 +68,7 @@ EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
   if ( !R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
-    if (sigma[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma;
+    if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
   // Then we set the dimension of the Elliptical distribution
   setDimension(dimension);
   // We initialize the description
@@ -418,7 +418,7 @@ void EllipticalDistribution::setSigma(const NumericalPoint & sigma)
 
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < sigma.getDimension(); ++i)
-    if (sigma[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma;
+    if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
   sigma_ = sigma;
   update();
   computeRange();
@@ -611,7 +611,7 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
   {
     mean_[0] = parametersCollection[0][0];
     sigma_[0] = parametersCollection[0][1];
-    if (sigma_[0] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
+    if (!(sigma_[0] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_[0];
   }
   else
   {
@@ -619,7 +619,7 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
     {
       mean_[i] = parametersCollection[i][0];
       sigma_[i] = parametersCollection[i][1];
-      if (sigma_[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
+      if (!(sigma_[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_[i];
     }
     UnsignedInteger parameterIndex(0);
     for (UnsignedInteger i = 0; i < dimension; ++i)
