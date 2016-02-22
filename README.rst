@@ -35,7 +35,7 @@ incompatibility in the NEWS file.
 Installation
 ============
 Please see the http://trac.openturns.org/wiki/HowToInstall
-for instructions on installing OpenTURNS on various plaforms from binaries or sources.
+for instructions on installing OpenTURNS on various platforms from binaries or sources.
 
 Documentation
 =============
