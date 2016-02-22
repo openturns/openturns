@@ -32,6 +32,10 @@ elementaryFunctions.append('besselY1')
 elementaryFunctions.append('sign')
 elementaryFunctions.append('rint')
 elementaryFunctions.append('abs')
+elementaryFunctions.append('min')
+elementaryFunctions.append('max')
+elementaryFunctions.append('sum')
+elementaryFunctions.append('avg')
 elementaryFunctions.append('floor')
 elementaryFunctions.append('ceil')
 elementaryFunctions.append('trunc')
@@ -100,3 +104,6 @@ refResultValues = [m.sin(inSample[i][0])+7.0*(m.sin(inSample[i][1]))**2 + 0.1 * 
 
 print('First reference value : %.4e' % refResultValues[0])
 print('First result calculated : %.4e' % resultSample[0][0])
+
+model = ot.NumericalMathFunction(['x'], ['y1', 'y2'], ['_pi', '_e'])
+print('Constants:', model([0]))
