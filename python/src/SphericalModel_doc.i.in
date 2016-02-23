@@ -1,46 +1,80 @@
 %feature("docstring") OT::SphericalModel
-"Spherical covariance model.
+"Spherical covariance function.
 
 Available constructors:
-    SphericalModel(*dim=1*)
-    SphericalModel(*dim=1, amplitude, scale, a*)
+    SphericalModel(*spatialDim=1*)
+
+    SphericalModel(*spatialDim, sigma, theta*)
+
+    SphericalModel(*spatialDim, sigma, theta, a*)
 
 Parameters
 ----------
-dim : int, :math:`dim \geq 0`
-    Input dimension (spatial dimension).
-amplitude : sequence of float
-    Vector :math:`\vect{a}` of dimension :math:`d`.
-    Amplitude of the covariance model
-scale : sequence of float
-    Vector :math:`\vect{\lambda}` of dimension :math:`spatialDim`.
-    Scale parameter
-a : float
-    Positive. Ray of the sphere on which the covariance model is not zero
-    Default is 1.
+spatialDim : int
+    Spatial dimension :math:`n`.
+
+    By default, equal to 1.
+sigma : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
+
+    Must be of size equal to 1.
+
+    By default, equal to :math:`[1]`.
+theta : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+
+    The size of :math:`\vect{\theta}` is the spatial dimension.
+a : float, :math:`a > 0`
+    Ray of the sphere on which the covariance model is not zero.
+
+    By default, equal to 1.
+
 
 Notes
 -----
-The covariance function of input dimension *dim* is defined on a sphere of ray :math:`a` (for :math:`||\frac{s-t}{\theta}|| \leq a`) as follows:
+The *spherical* function is a stationary covariance function whith dimension :math:`d=1`.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *spherical*  function is defined on the sphere which ray is :math:`a`:
 
 .. math::
 
-   C(s, t) = \sigma^2 * (1 - \frac{1}{2a} ||\frac{s-t}{\theta}|| ) * (3 - ||\frac{s-t}{\theta}||^2)
+    C(\vect{s}, \vect{t}) = \sigma^2  \left[1 - \frac{1}{2a} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2  \left(3 -  \frac{1}{a^2}\left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2^2\right) \right], \quad \forall (\vect{s}, \vect{t}), \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2 \leq a
 
-where the division is vectorial, :math:`\theta` is the scale parameter, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional. and equals 0 outside the sphere.
+The function is equal to zero outside the sphere.
+
+The correlation function :math:`\rho` writes:
+
+.. math::
+
+    \rho(\vect{s}, \vect{t}) =1 - \frac{1}{2a} \left\|\vect{s}- \vect{t}\right\|_2  \left(3 -  \frac{1}{a^2}\left\| \vect{s}- \vect{t} \right\|_2^2\right), \quad \forall (\vect{s}, \vect{t}), \left\|  \vect{s}- \vect{t} \right\|_2 \leq a
+
+and is equal to zero outside the sphere.
+
 
 See Also
 --------
-CovarianceModel, SquaredExponential, GeneralizedExponential, MaternModel
+CovarianceModel
 
 Examples
 --------
+Create a standard spherical covariance function:
+
 >>> import openturns as ot
->>> covarianceModel = ot.SphericalModel(2, [1.0], [0.2, 0.3])
+>>> covModel = ot.SphericalModel(2)
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
->>> print(covarianceModel(s, t))
-[[ 0.0393519 ]]
+>>> print(covModel(s, t))
+[[ 0.789282 ]]
 >>> tau = [0.1, 0.3]
->>> print(covarianceModel(tau))
-[[ 0 ]]"
+>>> print(covModel(tau))
+[[ 0.54147 ]]
+
+Create a  spherical covariance function specifying the scale vector:
+
+>>> covarianceModel = ot.SphericalModel(2, [2.5], [0.2, 0.3])
+
+Create a  squared exponential covariance function specifying the scale vector, the amplitude and a:
+
+>>> covModel3 = ot.SphericalModel(2, [2.5], [0.2, 0.3], 2.3)"

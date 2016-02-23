@@ -20,24 +20,76 @@ If the process is a second order process, we note:
 
 - :math:`m : \cD \mapsto  \Rset^d` its *mean function*, defined by
   :math:`m(\vect{t})=\Expect{X_{\vect{t}}}`,
-- :math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` its
+- :math:`C : \cD \times \cD \mapsto  \cS_d^+(\Rset)` its
   *covariance function*, defined by
   :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}`,
-- :math:`R : \cD \times \cD \mapsto  \mathcal{M}_{d \times d}(\Rset)` its
+- :math:`R : \cD \times \cD \mapsto  \cS_d^+(\Rset)` its
   *correlation function*, defined for all :math:`(\vect{s}, \vect{t})`,
   by :math:`R(\vect{s}, \vect{t})` such that for all :math:`(i,j)`,
   :math:`R_{ij}(\vect{s}, \vect{t})=C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
 
-A CovarianceModel object can be created only through its derived classes:
-:class:`~openturns.StationaryCovarianceModel`,
-:class:`~openturns.UserDefinedCovarianceModel`,
-:class:`~openturns.GeneralizedExponential`,
-:class:`~openturns.AbsoluteExponential`,
-:class:`~openturns.SquaredExponential`,
-:class:`~openturns.ExponentialModel`,
-:class:`~openturns.MaternModel`,
-:class:`~openturns.SphericalModel`,
-:class:`~openturns.ExponentiallyDampedCosineModel`."
+
+In a general way, the covariance models write:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \mat{L}_{\rho}\left(\dfrac{\vect{s}}{\theta}, 
+                            \dfrac{\vect{t}}{\theta}\right)\, 
+                            \mbox{Diag}(\vect{\sigma}) \, \mat{R} \, 
+                            \mbox{Diag}(\vect{\sigma}) \, 
+                            \Tr{\mat{L}}_{\rho}\left(\dfrac{\vect{s}}{\theta}, 
+                            \dfrac{\vect{t}}{\theta}\right), \quad 
+                            \forall (\vect{s}, \vect{t}) \in \cD
+
+where:
+
+- :math:`\vect{\theta} \in \Rset^n` is the *scale* parameter
+- :math:`\vect{\sigma} \in \Rset^d` id the *amplitude* parameter
+- :math:`\mat{L}_{\rho}(\vect{s}, \vect{t})` is the Cholesky factor of 
+  :math:`\mat{\rho}(\vect{s}, \vect{t})`: 
+
+.. math::
+
+    \mat{L}_{\rho}(\vect{s}, \vect{t})\,\Tr{\mat{L}_{\rho}(\vect{s}, \vect{t})}
+    = \mat{\rho}(\vect{s}, \vect{t})
+
+The covariance function may depend on additional specific parameters.
+
+The global correlation is given by two separate correlations: 
+
+    - the spatial correlation between the components of :math:`X_{\vect{t}}`
+      which is given by the correlation matrix
+      :math:`\mat{R} \in \cS_d^+(\Rset)` and the vector of marginal variances
+      :math:`\vect{\sigma} \in \Rset^d`.
+      The spatial correlation does not depend on :math:`\vect{t} \in \cD`.
+      For each  :math:`\vect{t}`, it links together the components of
+      :math:`X_{\vect{t}}`.
+    - the correlation between :math:`X_{\vect{s}}` and  :math:`X_{\vect{t}}`
+      which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})`. 
+
+        - In the general case, the correlation links each component
+          :math:`X^i_{\vect{t}}` to all the components of :math:`X_{\vect{s}}`
+          and :math:`\mat{\rho}(\vect{s}, \vect{t}) \in \cS_d^+(\Rset)`;
+
+        - In some particular cases, the correlation is such that
+          :math:`X^i_{\vect{t}}` depends only on the component
+          :math:`X^i_{\vect{s}}` and that link does not depend on the component
+          :math:`i`. In that case, :math:`\mat{\rho}(\vect{s}, \vect{t})` can be
+          defined from the scalar function :math:`\rho(\vect{s}, \vect{t})` by
+          :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_d`.
+          Then, the covariance model writes:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, 
+                                      \dfrac{\vect{t}}{\theta}\right)\,
+                            \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
+                            \mbox{Diag}(\vect{\sigma}), \quad
+                            \forall (\vect{s}, \vect{t}) \in \cD
+
+
+Note that the correlation function :math:`\mat{\rho}` may depend on additional
+specific parameters."
 
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation
@@ -46,7 +98,7 @@ OT_CovarianceModel_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_computeAsScalar_doc
-"Compute the covariance function for 1-d model.
+"Compute the covariance function for scalar model.
 
 Available usages:
     computeAsScalar(s, t)
@@ -55,10 +107,10 @@ Available usages:
 
 Parameters
 ----------
-s, t : sequences of float
-    Inputs.
-tau : sequence of float
-    Input.
+s, t : floats or sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+tau : floats orsequence of float
+    Multivariate index :math:`\vect{\tau} \in \cD`.
 
 Returns
 -------
@@ -67,13 +119,8 @@ covariance : float
 
 Notes
 -----
-*computeAsScalar* evaluates the covariance model
-:math:`C : \cD \times \cD \mapsto  \cM_{d \times d}(\Rset)` at
-:math:`(s,t)\in \Rset^n`:
-
-.. math::
-
-    C(\vect{s}, \vect{t})=\Expect{\Tr{(X_{\vect{s}}-m(\vect{s}))(X_{\vect{t}}-m(\vect{t}))}}
+The method makes sense only if the  dimension of the process is :math:`d=1`. It
+ evaluates :math:`C(\vect{s}, \vect{t})`.
 
 In the second usage, the covariance model must be stationary. Then we note
 :math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})` as
@@ -95,31 +142,21 @@ Available usages:
 Parameters
 ----------
 s, t : floats or sequences of float
-    Inputs.
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
 tau : floats orsequence of float
-    Input.
+    Multivariate index :math:`\vect{\tau} \in \cD`.
 
 Returns
 -------
 rho : float
-    Scaling covariance.
+    Correlation model :math:`\rho`
+
 
 Notes
 -----
-*computeStandardRepresentative* evaluates the correlation function on two spatial points:
-:math:`\rho : \cD \times \cD \mapsto \Rset`.
-
-A covariance function express at :math:`(s,t)\in \Rset^n` as follows :
-
-
-.. math::
-
-    C(\vect{s}, \vect{t}) = \mat{\Sigma} \rho\left(\frac{\vect{s}}{\vect{\theta}}, \frac{\vect{t}}{\vect{\theta}}\right)
-
-where :math:`\frac{\vect{s}}{\vect{\theta}} = (\frac{\vect{s}_1}{\vect{\theta}_1},\cdots,\frac{\vect{s}_n}{\vect{\theta}_n})` is the scaled point and
-:math:`\mat{\Sigma}` is a covariance matrix that explains the covariance structure.
-
-In the second usage, the covariance model must be stationary."
+It evaluates the scalar function 
+:math:`\rho(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta})` or 
+:math:`\rho(\dfrac{\vect{\tau}}{\theta})` if the model is stationary."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::computeStandardRepresentative
 OT_CovarianceModel_computeStandardRepresentative_doc
@@ -127,7 +164,7 @@ OT_CovarianceModel_computeStandardRepresentative_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_discretize_doc
-"Discretize the covariance function on a given RegularGrid/Mesh.
+"Discretize the covariance function on a given mesh.
 
 Parameters
 ----------
@@ -137,7 +174,7 @@ meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
 Returns
 -------
 covarianceMatrix : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    Covariance matrix :math:`\in \cS_{nd}^+(\Rset)` (if the process is of
     dimension :math:`d`).
 
 Notes
@@ -150,8 +187,10 @@ covariance matrix:
 
     \mat{C}_{1,\dots,k} = \left(
         \begin{array}{cccc}
-        C(\vect{t}_1, \vect{t}_1) &C(\vect{t}_1, \vect{t}_2) & \dots & C(\vect{t}_1, \vect{t}_{k}) \\
-        \dots & C(\vect{t}_2, \vect{t}_2)  & \dots & C(\vect{t}_2, \vect{t}_{k}) \\
+        C(\vect{t}_1, \vect{t}_1) &C(\vect{t}_1, \vect{t}_2) & \dots & 
+        C(\vect{t}_1, \vect{t}_{k}) \\
+        \dots & C(\vect{t}_2, \vect{t}_2)  & \dots & 
+        C(\vect{t}_2, \vect{t}_{k}) \\
         \dots & \dots & \dots & \dots \\
         \dots & \dots & \dots & C(\vect{t}_{k}, \vect{t}_{k})
         \end{array} \right)"
@@ -162,7 +201,7 @@ OT_CovarianceModel_discretize_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_discretizeAndFactorize_doc
-"Discretize and factorize the covariance function on a given RegularGrid/Mesh.
+"Discretize and factorize the covariance function on a given mesh.
 
 Parameters
 ----------
@@ -172,14 +211,14 @@ meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
 Returns
 -------
 CholeskyMatrix : :class:`~openturns.TriangularMatrix`
-    Cholesky factor of the covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
-    dimension :math:`d`).
+    Cholesky factor of the covariance matrix :math:`\in \cM_{nd\times nd}(\Rset)`
+    (if the process is of dimension :math:`d`).
 
 Notes
 -----
 This method makes a discretization of the model on *meshOrGrid* composed of
-the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` thanks to the `discretize`
-method and returns its Cholesky factor."
+the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` thanks to the
+`discretize` method and returns its Cholesky factor."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorize
 OT_CovarianceModel_discretizeAndFactorize_doc
@@ -187,7 +226,7 @@ OT_CovarianceModel_discretizeAndFactorize_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_discretizeHMatrix_doc
-"Discretize the covariance function on a given RegularGrid/Mesh using HMatrix result.
+"Discretize the covariance function on a given mesh using HMatrix result.
 
 Parameters
 ----------
@@ -197,13 +236,15 @@ meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
 Returns
 -------
 HMatrix : :class:`~openturns.HMatrix`
-    Covariance matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    Covariance matrix :math:`\in\cS_{nd}^+(\Rset)` (if the process is of
     dimension :math:`d`), stored in hierarchical format (H-Matrix)
 
 Notes
 -----
-This method si similar to the *discretize* method. This method requires that OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, NumericalSample) as its compress data.
+This method si similar to the *discretize* method. This method requires that 
+OpenTURNS has been compiled with the hmat library.
+The method is helpfull for very large parameters (Mesh, grid, NumericalSample) 
+as its compress data.
 "
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeHMatrix
@@ -212,7 +253,8 @@ OT_CovarianceModel_discretizeHMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
-"Discretize and factorize the covariance function on a given RegularGrid/Mesh using HMatrix result.
+"Discretize and factorize the covariance function on a given mesh using HMatrix 
+result.
 
 Parameters
 ----------
@@ -222,13 +264,15 @@ meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
 Returns
 -------
 HMatrix : :class:`~openturns.HMatrix`
-    Cholesk matrix :math:`\in\cM_{nd\times nd}(\Rset)` (if the process is of
+    Cholesk matrix :math:`\in \cS_{nd}^+(\Rset)` (if the process is of
     dimension :math:`d`), stored in hierarchical format (H-Matrix)
 
 Notes
 -----
-This method si similar to the *discretizeAndFactorize* method. This method requires that OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, NumericalSample) as its compress data.
+This method si similar to the *discretizeAndFactorize* method. This method 
+requires that OpenTURNS has been compiled with the hmat library.
+The method is helpfull for very large parameters (Mesh, grid, NumericalSample) 
+as its compress data.
 "
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorizeHMatrix
@@ -246,12 +290,13 @@ OT_CovarianceModel_discretizeRow_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getAmplitude_doc
-"Get the amplitude parameter of the covariance function.
+"Get the amplitude parameter :math:`\vect{\sigma}` of the covariance function.
 
 Returns
 -------
 amplitude : :class:`~openturns.NumericalPoint`
-    The amplitude parameter used in the covariance function."
+    The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance 
+    function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getAmplitude
 OT_CovarianceModel_getAmplitude_doc
@@ -259,12 +304,13 @@ OT_CovarianceModel_getAmplitude_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getDimension_doc
-"Get the dimension of the *CovarianceModel*.
+"Get the dimension :math:`d` of the covariance function.
 
 Returns
 -------
-dimension : int
-    Dimension of the *CovarianceModel*."
+d : int
+    Dimension :math:`d` such that :math:`C : \cD \times \cD \mapsto \cS_d^+(\Rset).`
+    This is the dimension of the process :math:`X`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getDimension
 OT_CovarianceModel_getDimension_doc
@@ -295,7 +341,8 @@ problem.
 Returns
 -------
 nuggetFactor : float
-    nugget factor used for the regularization of the discretized covariance matrix."
+    Nugget factor used for the regularization of the discretized covariance
+    matrix."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getNuggetFactor
 OT_CovarianceModel_get_nugget_factor_doc
@@ -308,9 +355,11 @@ OT_CovarianceModel_get_nugget_factor_doc
 Returns
 -------
 parameters : :class:`~openturns.NumericalPoint`
-    Sequence containing the parameters of the covariance function.
-    Usually the parameters is of size (spatialDim + dim) : the spatialDim first elements correpond
-    to the scale, the dim following to the amplitude."
+    List of the scale parameter :math:`\vect{\theta} \in \Rset^n` and the
+    amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance
+    function.
+
+   The other specific parameters are not included."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getParameter
 OT_CovarianceModel_getParameter_doc
@@ -323,20 +372,21 @@ OT_CovarianceModel_getParameter_doc
 Returns
 -------
 descriptionParam : :class:`~openturns.Description`
-    Sequence containing the description for each component of the parameters."
+    Description of the components of the parameters obtained with the
+    *getParameter* method.."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getParameterDescription
 OT_CovarianceModel_getParameterDescription_doc
 
 // ---------------------------------------------------------------------
-
 %define OT_CovarianceModel_getScale_doc
-"Get the scale parameter of the covariance function.
+"Get the scale parameter :math:`\vect{\theta}` of the covariance function.
 
 Returns
 -------
 scale : :class:`~openturns.NumericalPoint`
-    The scale parameter used in the covariance function."
+    The scale parameter :math:`\vect{\theta} \in \Rset^n` used in the 
+    covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getScale
 OT_CovarianceModel_getScale_doc
@@ -344,12 +394,12 @@ OT_CovarianceModel_getScale_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getSpatialCorrelation_doc
-"Get the spatial correlation matrix of the covariance function.
+"Get the spatial correlation matrix :math:`\mat{R}` of the covariance function.
 
 Returns
 -------
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}(\Rset)`."
+    Correlation matrix :math:`\mat{R} \in \cS_d^+(\Rset)`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getSpatialCorrelation
 OT_CovarianceModel_getSpatialCorrelation_doc
@@ -357,12 +407,12 @@ OT_CovarianceModel_getSpatialCorrelation_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getSpatialDimension_doc
-"Get the spatial dimension of the covariance function.
+"Get the spatial dimension :math:`n` of the covariance function.
 
 Returns
 -------
 spatialDimension : int
-    SpatialDimension of the *CovarianceModel*."
+    Spatial dimension :math:`n` of the covariance function."
 
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getSpatialDimension
@@ -380,6 +430,7 @@ isDiagonal : bool
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::isDiagonal
 OT_CovarianceModel_isDiagonal_doc
+
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_isStationary_doc
@@ -397,10 +448,11 @@ translation:
 
 .. math::
 
-    \forall(\vect{s},\vect{t},\vect{h}) \in \cD, & \, \quad
+    \forall(\vect{s},\vect{t},\vect{h}) \in \cD \times \cD, & \, \quad
     C(\vect{s}, \vect{s}+\vect{h}) = C(\vect{t}, \vect{t}+\vect{h})
 
-We note :math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})`."
+We note :math:`C^{stat}(\vect{\tau})` for 
+        :math:`C(\vect{s}, \vect{s}+\vect{\tau})`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::isStationary
 OT_CovarianceModel_isStationary_doc
@@ -412,8 +464,8 @@ OT_CovarianceModel_isStationary_doc
 
 Parameters
 ----------
-s, t : sequence of float
-    Inputs.
+s, t : floats or sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
 
 Returns
 -------
@@ -426,12 +478,14 @@ OT_CovarianceModel_partialGradient_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_setAmplitude_doc
-"Set the amplitude parameter of the covariance function.
+"Set the amplitude parameter :math:`\vect{\sigma}` of the covariance function.
 
 Parameters
 ----------
 amplitude : :class:`~openturns.NumericalPoint`
-    The amplitude parameter to be used in the covariance function."
+    The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` to be used in the
+    covariance function. 
+    Its size must be equal to the dimension of the covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setAmplitude
 OT_CovarianceModel_setAmplitude_doc
@@ -439,13 +493,14 @@ OT_CovarianceModel_setAmplitude_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_setScale_doc
-"Set the scale parameter of the covariance function.
+"Set the scale parameter :math:`\vect{\theta}` of the covariance function.
 
 Parameters
 ----------
 scale : :class:`~openturns.NumericalPoint`
-    The scale parameter to be used in the covariance function.
-    It should be of size dimension."
+    The scale parameter :math:`\vect{\theta} \in \Rset^n` to be used in the
+    covariance function.
+    Its size must be equal to the spatial dimension of the covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setScale
 OT_CovarianceModel_setScale_doc
@@ -460,7 +515,8 @@ Acts on the discretized covariance matrix.
 Parameters
 ----------
 nuggetFactor : float
-    nugget factor to be used for the regularization of the discretized covariance matrix."
+    nugget factor to be used for the regularization of the discretized
+    covariance matrix."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setNuggetFactor
 OT_CovarianceModel_set_nugget_factor_doc
@@ -473,10 +529,11 @@ OT_CovarianceModel_set_nugget_factor_doc
 Returns
 -------
 parameters : :class:`~openturns.NumericalPointWithDescription`
-    Sequence containing the parameters of the covariance function with a
-    description for each component.
-    The parameters should be of size (spatialDim + dim) : it sets the spatialDim first elements to scale
-    and the dim following to amplitude."
+    List of the scale parameter :math:`\vect{\theta} \in \Rset^n` and the
+    amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance
+    function.
+
+    Must be of dimension :math:`n+d`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setParameter
 OT_CovarianceModel_setParameter_doc
@@ -484,12 +541,12 @@ OT_CovarianceModel_setParameter_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_setSpatialCorrelation_doc
-"Set the spatial correlation matrix of the covariance function.
+"Set the spatial correlation matrix :math:`\mat{R}` of the covariance function.
 
 Parameters
 ----------
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}(\Rset)`."
+    Correlation matrix :math:`\mat{R} \in \cS_d^+([-1,1])`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setSpatialCorrelation
 OT_CovarianceModel_setSpatialCorrelation_doc
@@ -506,17 +563,15 @@ Available usages:
 
 Parameters
 ----------
-s, t : sequences of float
-    Inputs.
-tau : sequence of float
-    Input.
+s, t : floats or sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+tau : floats orsequence of float
+    Multivariate index :math:`\vect{\tau} \in \cD`.
 
 Returns
 -------
 covariance : CovarianceMatrix
-    The evaluation of the covariance function.
-
-"
+    The evaluation of the covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::operator()
 OT_CovarianceModel_operator_doc
