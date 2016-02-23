@@ -120,7 +120,7 @@ Bool TimeSeries::operator ==(const TimeSeries & other) const
 /* Method __contains__() is for Python */
 Bool TimeSeries::contains(const NumericalPoint & val) const
 {
-  for (UnsignedInteger i = 0; i < n_; ++i) if ( getValueAtIndex(i) == val ) return true;
+  for (UnsignedInteger i = 0; i < n_; ++ i) if (getValueAtIndex(i) == val) return true;
   return false;
 }
 

@@ -123,11 +123,11 @@ public:
   const NumericalScalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
 
-  /* Method __contains__() is for Python */
-  Bool __contains__(const NumericalPoint & val) const;
+  /** Whether the list contains the value val */
+  Bool contains(const NumericalPoint & val) const;
 
   void erase(const UnsignedInteger first,
-             const  UnsignedInteger last);
+             const UnsignedInteger last);
   void erase(const UnsignedInteger index);
 
   /** erase the whole sample */

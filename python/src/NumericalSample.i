@@ -31,6 +31,8 @@
 
 %apply const NumericalSample & { const OT::NumericalSample & };
 
+%rename(__contains__) OT::NumericalSample::contains;
+
 %include openturns/NumericalSampleImplementation.hxx
 %include openturns/NumericalSample.hxx
 
