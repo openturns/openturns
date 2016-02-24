@@ -644,6 +644,8 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalFunctionFactory.i OrthogonalFunctionFactory_doc.i.in
                       OrthogonalProductPolynomialFactory.i OrthogonalProductPolynomialFactory_doc.i.in
                       OrthogonalBasis.i OrthogonalBasis_doc.i.in
+                      UniVariateFunctionImplementation.i UniVariateFunctionImplementation_doc.i.in
+                      UniVariateFunction.i UniVariateFunction_doc.i.in
                       UncertaintyOrthogonalBasisTemplateDefs.i
                    )
 

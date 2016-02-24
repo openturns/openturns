@@ -253,3 +253,12 @@ External code coupling
     coupling_tools.get_value
     coupling_tools.get_line_col
     coupling_tools.get_regex
+
+1-D functions
+=============
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    UniVariateFunction
