@@ -84,7 +84,7 @@ OrthogonalProductPolynomialFactory * OrthogonalProductPolynomialFactory::clone()
 }
 
 
-/* Return the enumerate function that translate unidimensional indices nto multidimensional indices */
+/* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction OrthogonalProductPolynomialFactory::getEnumerateFunction() const
 {
   return phi_;

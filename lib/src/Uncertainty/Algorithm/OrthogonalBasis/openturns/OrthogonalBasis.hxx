@@ -53,7 +53,7 @@ public:
   /** Return the measure upon which the basis is orthogonal */
   Distribution getMeasure() const;
 
-  /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
+  /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
 
   /** String converter */

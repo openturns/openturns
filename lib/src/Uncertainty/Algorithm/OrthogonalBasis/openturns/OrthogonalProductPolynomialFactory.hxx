@@ -64,7 +64,7 @@ public:
   /** Build the NumericalMathFunction of the given index */
   NumericalMathFunction build(const UnsignedInteger index) const;
 
-  /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
+  /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
 
   /** Return the collection of univariate orthogonal polynomial families */

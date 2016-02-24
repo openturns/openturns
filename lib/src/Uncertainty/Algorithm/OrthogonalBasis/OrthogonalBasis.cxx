@@ -57,7 +57,7 @@ Distribution OrthogonalBasis::getMeasure() const
   return getImplementation()->getMeasure();
 }
 
-/* Return the enumerate function that translate unidimensional indices nto multidimensional indices */
+/* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction OrthogonalBasis::getEnumerateFunction() const
 {
   return getImplementation()->getEnumerateFunction();
