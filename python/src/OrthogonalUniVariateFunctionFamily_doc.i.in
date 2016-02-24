@@ -1,0 +1,8 @@
+// OrthogonalUniVariateFunctionFamily docstrings are defined in OrthogonalUniVariatePolynomialFactory_doc.i.in
+
+%feature("docstring") OT::OrthogonalUniVariateFunctionFamily
+OT_OrthogonalUniVariatePolynomialFactory_doc
+%feature("docstring") OT::OrthogonalUniVariateFunctionFamily::build
+OT_OrthogonalUniVariatePolynomialFactory_build_doc
+%feature("docstring") OT::OrthogonalUniVariateFunctionFamily::getMeasure
+OT_OrthogonalUniVariatePolynomialFactory_getMeasure_doc

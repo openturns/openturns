@@ -1,0 +1,51 @@
+%define OT_OrthogonalUniVariateFunctionFactory_doc
+"Base class for orthogonal univariate function factories."
+%enddef
+%feature("docstring") OT::OrthogonalUniVariateFunctionFactory
+OT_OrthogonalUniVariateFunctionFactory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariateFunctionFactory_build_doc
+"Build the :math:`k`-th order orthogonal univariate function.
+
+Parameters
+----------
+k : int, :math:`0 \leq k`
+    Function order.
+
+Returns
+-------
+function : :class:`~openturns.UniVariateFunction`
+    Requested orthogonal univariate function."
+%enddef
+%feature("docstring") OT::OrthogonalUniVariateFunctionFactory::build
+OT_OrthogonalUniVariateFunctionFactory_build_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariateFunctionFactory_getMeasure_doc
+"Accessor to the associated probability measure.
+
+Returns
+-------
+measure : :class:`~openturns.Distribution`
+    The associated probability measure (according to which the functions are
+    orthogonal).
+
+Notes
+-----
+Two functions P and Q are orthogonal with respect to the **probability
+measure** :math:`w(x) \di{x}` if and only if their scalar product:
+
+.. math::
+
+    \langle P, Q \rangle = \int_{\alpha}^{\beta} P(x) Q(x) w(x) \di{x}
+                         = 0
+
+where :math:`\alpha \in \Rset \cup \{-\infty\}` and
+:math:`\beta \in \Rset \cup \{+\infty\}`."
+%enddef
+%feature("docstring") OT::OrthogonalUniVariateFunctionFactory::getMeasure
+OT_OrthogonalUniVariateFunctionFactory_getMeasure_doc
