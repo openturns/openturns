@@ -650,6 +650,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalUniVariateFunctionFamily.i OrthogonalUniVariateFunctionFamily_doc.i.in
                       OrthogonalUniVariatePolynomialFunctionFactory.i OrthogonalUniVariatePolynomialFunctionFactory_doc.i.in
                       FourierSeriesFactory.i FourierSeriesFactory_doc.i.in
+                      HaarWaveletFactory.i HaarWaveletFactory_doc.i.in
                       UncertaintyOrthogonalBasisTemplateDefs.i
                    )
 
