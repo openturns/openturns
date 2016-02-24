@@ -1,0 +1,11 @@
+class=FourierSeriesFactory measure=class=Uniform name=Uniform dimension=1 a=-3.14159 b=3.14159
+order= 0 f:X -> cos(0 * X) X= [0.4] f(X)= [1] df(X)= [-0] d2f(X)= [-0]
+order= 1 f:X -> 1/sqrt(2) * sin(1 * X) X= [0.4] f(X)= [0.27536] df(X)= [0.651288] d2f(X)= [-0.27536]
+order= 2 f:X -> 1/sqrt(2) * cos(1 * X) X= [0.4] f(X)= [0.651288] df(X)= [-0.27536] d2f(X)= [-0.651288]
+order= 3 f:X -> 1/sqrt(2) * sin(2 * X) X= [0.4] f(X)= [0.507247] df(X)= [0.985292] d2f(X)= [-2.02899]
+order= 4 f:X -> 1/sqrt(2) * cos(2 * X) X= [0.4] f(X)= [0.492646] df(X)= [-1.01449] d2f(X)= [-1.97058]
+order= 5 f:X -> 1/sqrt(2) * sin(3 * X) X= [0.4] f(X)= [0.659051] df(X)= [0.768677] d2f(X)= [-5.93146]
+order= 6 f:X -> 1/sqrt(2) * cos(3 * X) X= [0.4] f(X)= [0.256226] df(X)= [-1.97715] d2f(X)= [-2.30603]
+order= 7 f:X -> 1/sqrt(2) * sin(4 * X) X= [0.4] f(X)= [0.706805] df(X)= [-0.0825887] d2f(X)= [-11.3089]
+order= 8 f:X -> 1/sqrt(2) * cos(4 * X) X= [0.4] f(X)= [-0.0206472] df(X)= [-2.82722] d2f(X)= [0.330355]
+order= 9 f:X -> 1/sqrt(2) * sin(5 * X) X= [0.4] f(X)= [0.64297] df(X)= [-1.4713] d2f(X)= [-16.0743]

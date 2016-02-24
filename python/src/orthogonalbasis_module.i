@@ -49,6 +49,7 @@
 %include OrthogonalUniVariateFunctionFactory.i
 %include OrthogonalUniVariateFunctionFamily.i 
 %include OrthogonalUniVariatePolynomialFunctionFactory.i
+%include FourierSeriesFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyOrthogonalBasisTemplateDefs.i
