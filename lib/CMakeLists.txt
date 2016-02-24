@@ -96,6 +96,6 @@ if (DOXYGEN_FOUND)
 endif (DOXYGEN_FOUND)
 
 install (FILES ${HEADERFILES}
-          DESTINATION ${INCLUDE_PATH}
+          DESTINATION ${INCLUDE_PATH}/openturns
        )
 
