@@ -91,6 +91,7 @@
 #include "openturns/UniVariateFunction.hxx"
 #include "openturns/UniVariateFunctionImplementation.hxx"
 #include "openturns/FourierSeries.hxx"
+#include "openturns/HaarWavelet.hxx"
 #include "openturns/OTSpecFunc.hxx"
 #include "openturns/BoxCoxEvaluationImplementation.hxx"
 #include "openturns/BoxCoxGradientImplementation.hxx"
