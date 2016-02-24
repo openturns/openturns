@@ -44,5 +44,6 @@
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/OrthogonalUniVariateFunctionFactory.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFunctionFactory.hxx"
+#include "openturns/FourierSeriesFactory.hxx"
 
 #endif /* OPENTURNS_OTORTHOGONALBASIS_HXX */
