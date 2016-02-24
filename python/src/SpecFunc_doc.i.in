@@ -971,7 +971,36 @@ n : positive int
 
 Returns
 -------
-result : positive int"
+result : positive int
+
+Examples
+--------
+>>> import openturns as ot
+>>> int(ot.SpecFunc.NextPowerOfTwo(42))
+64"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Log2
+"Integer base 2 logarithm of :math:`n`.
+
+.. math::
+
+    Log2(n) = \log_2(n)
+
+Parameters
+----------
+n : positive int
+
+Returns
+-------
+result : positive int
+
+Examples
+--------
+>>> import openturns as ot
+>>> int(ot.SpecFunc.Log2(42))
+5"
 
 // ---------------------------------------------------------------------
 
@@ -989,7 +1018,8 @@ result : positive int
 Examples
 --------
 >>> import openturns as ot
->>> n_bits = ot.SpecFunc.BitCount(4398046511103)"
+>>> int(ot.SpecFunc.BitCount(42))
+3"
 
 // ---------------------------------------------------------------------
 

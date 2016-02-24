@@ -265,6 +265,9 @@ public:
   // Next power of two
   static UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
 
+  // Integer log2
+  static UnsignedInteger Log2(const Unsigned64BitsInteger n);
+
   // Compute the number of bits sets to 1 in n
   // Best known algorithm for 64 bits n and fast multiply
   static UnsignedInteger BitCount(const Unsigned64BitsInteger n);
