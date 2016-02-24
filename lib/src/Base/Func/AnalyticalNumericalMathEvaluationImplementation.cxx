@@ -13,10 +13,10 @@
  */
 #include <iomanip>
 
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Os.hxx"
-#include "OTconfig.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

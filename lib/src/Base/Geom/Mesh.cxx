@@ -20,17 +20,17 @@
  */
 #include <fstream>
 
-#include "Mesh.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
-#include "Exception.hxx"
-#include "Graph.hxx"
-#include "Cloud.hxx"
-#include "Curve.hxx"
-#include "Polygon.hxx"
-#include "SpecFunc.hxx"
-#include "PlatformInfo.hxx"
+#include "openturns/Mesh.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Polygon.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "RootStrategy.hxx"
-#include "SafeAndSlow.hxx"
+#include "openturns/RootStrategy.hxx"
+#include "openturns/SafeAndSlow.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

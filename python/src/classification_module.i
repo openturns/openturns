@@ -5,10 +5,10 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OTBase.hxx"
-#include "OTModel.hxx"
-#include "OTClassification.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTBase.hxx"
+#include "openturns/OTModel.hxx"
+#include "openturns/OTClassification.hxx"
 %}
 
 %include typemaps.i

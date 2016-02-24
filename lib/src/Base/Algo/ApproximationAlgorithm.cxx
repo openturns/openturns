@@ -19,7 +19,7 @@
  *
  */
 
-#include "ApproximationAlgorithm.hxx"
+#include "openturns/ApproximationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

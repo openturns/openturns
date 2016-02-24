@@ -18,14 +18,14 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrderStatisticsMarginalChecker.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "FiniteDifferenceStep.hxx"
-#include "BlendedStep.hxx"
-#include "SpecFunc.hxx"
-#include "TNC.hxx"
-#include "OptimizationSolver.hxx"
+#include "openturns/OrderStatisticsMarginalChecker.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/FiniteDifferenceStep.hxx"
+#include "openturns/BlendedStep.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/TNC.hxx"
+#include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

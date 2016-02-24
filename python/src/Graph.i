@@ -1,7 +1,7 @@
 // SWIG file Graph.i
 
 %{
-#include "Graph.hxx"
+#include "openturns/Graph.hxx"
 
 namespace OT { 
 
@@ -64,7 +64,7 @@ OTTypedInterfaceObjectHelper(Graph)
 
 %template(GraphCollection) OT::Collection<OT::Graph>;
 
-%include Graph.hxx
+%include openturns/Graph.hxx
 
 %pythoncode %{
 def Graph__repr_svg_(self):

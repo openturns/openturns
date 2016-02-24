@@ -19,10 +19,10 @@
  *
  */
 
-#include "CompositeProcess.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "WhiteNoise.hxx"
+#include "openturns/CompositeProcess.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/WhiteNoise.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

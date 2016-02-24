@@ -19,10 +19,10 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "BasisSequenceFactoryImplementation.hxx"
-#include "LAR.hxx"
-#include "PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/BasisSequenceFactoryImplementation.hxx"
+#include "openturns/LAR.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

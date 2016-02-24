@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SimulationSensitivityAnalysis.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "SensitivityAnalysis.hxx"
-#include "Curve.hxx"
-#include "Collection.hxx"
-#include "Exception.hxx"
+#include "openturns/SimulationSensitivityAnalysis.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SensitivityAnalysis.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

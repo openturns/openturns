@@ -1,8 +1,8 @@
 // SWIG file DynamicalFunction.i
 
 %{
-#include "DynamicalFunction.hxx"
-#include "PythonDynamicalFunctionImplementation.hxx"
+#include "openturns/DynamicalFunction.hxx"
+#include "openturns/PythonDynamicalFunctionImplementation.hxx"
 
 namespace OT {
 
@@ -62,7 +62,7 @@ namespace OT {
 
 OTTypedInterfaceObjectHelper(DynamicalFunction)
 
-%include DynamicalFunction.hxx
+%include openturns/DynamicalFunction.hxx
 
 namespace OT { 
 %extend DynamicalFunction {

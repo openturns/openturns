@@ -1,7 +1,7 @@
 // SWIG file Memory.i
 
 %{
-#include "Memory.hxx"
+#include "openturns/Memory.hxx"
 %}
 
-%include Memory.hxx
+%include openturns/Memory.hxx

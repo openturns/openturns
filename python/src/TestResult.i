@@ -1,7 +1,7 @@
 // SWIG file TestResult.i
 
 %{
-#include "TestResult.hxx"
+#include "openturns/TestResult.hxx"
 
 namespace OT { 
 
@@ -42,7 +42,7 @@ namespace OT {
 
 %include TestResult_doc.i
 
-%include TestResult.hxx
+%include openturns/TestResult.hxx
 namespace OT{  
 
 %extend TestResult {

@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrthogonalUniVariatePolynomial.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "Exception.hxx"
-#include "Lapack.hxx"
+#include "openturns/OrthogonalUniVariatePolynomial.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObject.hxx"
-#include "OTprivate.hxx"
-#include "OTconfig.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

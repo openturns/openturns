@@ -19,13 +19,13 @@
  *
  */
 #include <iomanip>
-#include "TaylorExpansionsMoments.hxx"
-#include "CompositeRandomVector.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Pointer.hxx"
-#include "NumericalSample.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SensitivityAnalysis.hxx"
+#include "openturns/TaylorExpansionsMoments.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SensitivityAnalysis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

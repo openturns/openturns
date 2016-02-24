@@ -3,8 +3,8 @@
 OTAutodoc(ComposedNumericalMathFunction)
 
 %{
-#include "ComposedNumericalMathFunction.hxx"
+#include "openturns/ComposedNumericalMathFunction.hxx"
 %}
 
-%include ComposedNumericalMathFunction.hxx
+%include openturns/ComposedNumericalMathFunction.hxx
 namespace OT { %extend ComposedNumericalMathFunction { ComposedNumericalMathFunction(const ComposedNumericalMathFunction & other) { return new OT::ComposedNumericalMathFunction(other); } } }

@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTdebug.h"
+#include "openturns/OTdebug.h"
 
 /*
  * @fn     int openturns_library_ok()

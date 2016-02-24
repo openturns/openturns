@@ -18,19 +18,19 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "RandomVector.hxx"
-#include "ConstantRandomVector.hxx"
-#include "UsualRandomVector.hxx"
-#include "CompositeRandomVector.hxx"
-#include "EventRandomVectorImplementation.hxx"
-#include "EventDomainImplementation.hxx"
-#include "EventProcess.hxx"
-#include "FunctionalChaosRandomVector.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "Domain.hxx"
-#include "ConditionalRandomVector.hxx"
-#include "Less.hxx"
-#include "Greater.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/ConstantRandomVector.hxx"
+#include "openturns/UsualRandomVector.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/EventRandomVectorImplementation.hxx"
+#include "openturns/EventDomainImplementation.hxx"
+#include "openturns/EventProcess.hxx"
+#include "openturns/FunctionalChaosRandomVector.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/Domain.hxx"
+#include "openturns/ConditionalRandomVector.hxx"
+#include "openturns/Less.hxx"
+#include "openturns/Greater.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

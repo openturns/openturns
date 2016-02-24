@@ -21,21 +21,21 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
-#include "DistributionFactoryImplementation.hxx"
-#include "Description.hxx"
-#include "Path.hxx"
-#include "Exception.hxx"
-#include "OTconfig.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
-#include "BootstrapExperiment.hxx"
-#include "NormalFactory.hxx"
-#include "KernelSmoothing.hxx"
-#include "SpecFunc.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "Normal.hxx"
-#include "ParametrizedDistribution.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/BootstrapExperiment.hxx"
+#include "openturns/NormalFactory.hxx"
+#include "openturns/KernelSmoothing.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/ParametrizedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

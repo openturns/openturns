@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "HistoryStrategy.hxx"
-#include "Null.hxx"
+#include "openturns/HistoryStrategy.hxx"
+#include "openturns/Null.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

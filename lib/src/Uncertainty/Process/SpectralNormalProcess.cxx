@@ -19,12 +19,12 @@
  *
  */
 
-#include "SpectralNormalProcess.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/SpectralNormalProcess.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

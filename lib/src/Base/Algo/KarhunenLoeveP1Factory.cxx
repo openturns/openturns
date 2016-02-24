@@ -20,13 +20,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "KarhunenLoeveP1Factory.hxx"
-#include "Exception.hxx"
-#include "SquareMatrix.hxx"
-#include "SquareComplexMatrix.hxx"
-#include "NumericalSample.hxx"
-#include "P1LagrangeEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/KarhunenLoeveP1Factory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

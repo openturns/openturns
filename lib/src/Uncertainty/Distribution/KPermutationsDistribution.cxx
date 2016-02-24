@@ -19,17 +19,17 @@
  *
  */
 #include <cmath>
-#include "Collection.hxx"
-#include "KPermutationsDistribution.hxx"
-#include "KPermutations.hxx"
-#include "Binomial.hxx"
-#include "Poisson.hxx"
-#include "TruncatedDistribution.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/KPermutationsDistribution.hxx"
+#include "openturns/KPermutations.hxx"
+#include "openturns/Binomial.hxx"
+#include "openturns/Poisson.hxx"
+#include "openturns/TruncatedDistribution.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

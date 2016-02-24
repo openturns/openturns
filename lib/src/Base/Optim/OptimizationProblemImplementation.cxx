@@ -20,13 +20,13 @@
  */
 #include <cstdlib>
 
-#include "OptimizationProblemImplementation.hxx"
-#include "ResourceMap.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SymmetricTensor.hxx"
-#include "IdentityMatrix.hxx"
-#include "QuadraticNumericalMathFunction.hxx"
-#include "LinearNumericalMathFunction.hxx"
+#include "openturns/OptimizationProblemImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

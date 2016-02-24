@@ -19,7 +19,7 @@
  *
  */
 
-#include "OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,14 +1,14 @@
 // SWIG file CovarianceModelFactory.i
 
 %{
-#include "MeshFactory.hxx"
+#include "openturns/MeshFactory.hxx"
 %}
 
 OTTypedInterfaceObjectHelper(MeshFactory)
 
 %include MeshFactory_doc.i
 
-%include MeshFactory.hxx
+%include openturns/MeshFactory.hxx
 
 namespace OT { 
 

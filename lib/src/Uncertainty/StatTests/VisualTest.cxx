@@ -19,20 +19,20 @@
  *
  */
 #include <cmath>
-#include "VisualTest.hxx"
-#include "Curve.hxx"
-#include "Cloud.hxx"
-#include "BarPlot.hxx"
-#include "Staircase.hxx"
-#include "NumericalPoint.hxx"
-#include "Interval.hxx"
-#include "Indices.hxx"
-#include "Description.hxx"
-#include "ResourceMap.hxx"
-#include "UserDefined.hxx"
-#include "SpecFunc.hxx"
-#include "Normal.hxx"
-#include "NormalFactory.hxx"
+#include "openturns/VisualTest.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/BarPlot.hxx"
+#include "openturns/Staircase.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/UserDefined.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/NormalFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

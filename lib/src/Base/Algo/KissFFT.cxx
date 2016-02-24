@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "KissFFT.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/KissFFT.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 #include "kissfft.hh"
-#include "TBB.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

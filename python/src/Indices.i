@@ -1,7 +1,7 @@
 // SWIG file Indices.i
 
 %{
-#include "Indices.hxx"
+#include "openturns/Indices.hxx"
 %}
 
 %include Indices_doc.i
@@ -24,7 +24,7 @@
 
 %apply const Indices & { const OT::Indices & };
 
-%include Indices.hxx
+%include openturns/Indices.hxx
 namespace OT {  
 
 %extend Indices {

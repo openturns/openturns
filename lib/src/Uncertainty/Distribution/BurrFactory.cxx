@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "BurrFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "SpecFunc.hxx"
-#include "Brent.hxx"
-#include "NumericalPoint.hxx"
+#include "openturns/BurrFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

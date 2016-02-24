@@ -19,12 +19,12 @@
  *
  */
 #include <algorithm>
-#include "InterfaceObject.hxx"
-#include "Study.hxx"
-#include "StorageManager.hxx"
-#include "Exception.hxx"
-#include "Catalog.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/InterfaceObject.hxx"
+#include "openturns/Study.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Catalog.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

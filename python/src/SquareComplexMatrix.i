@@ -1,14 +1,14 @@
 // SWIG file SquareComplexMatrix.i
 
 %{
-#include "SquareComplexMatrix.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
 %}
 
 %include SquareComplexMatrix_doc.i
 
 %rename(__pow__) OT::SquareComplexMatrix::power(const UnsignedInteger n) const;
 
-%include SquareComplexMatrix.hxx
+%include openturns/SquareComplexMatrix.hxx
 
 namespace OT {
 

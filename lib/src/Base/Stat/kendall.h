@@ -37,7 +37,7 @@
 #ifndef _KENDALL_
 #define _KENDALL_
 
-#include "OTdebug.h"
+#include "openturns/OTdebug.h"
 
 BEGIN_C_DECLS
 

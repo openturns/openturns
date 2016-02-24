@@ -20,8 +20,8 @@
  */
 #include <cstdlib>
 
-#include "DiscreteDistribution.hxx"
-#include "Exception.hxx"
+#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

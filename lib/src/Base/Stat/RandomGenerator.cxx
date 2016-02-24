@@ -20,9 +20,9 @@
  */
 #include <cstdlib>
 #include "dsfmt.h"
-#include "RandomGenerator.hxx"
-#include "RandomGeneratorState.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/RandomGeneratorState.hxx"
+#include "openturns/ResourceMap.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

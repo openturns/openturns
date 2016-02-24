@@ -20,10 +20,10 @@
  */
 #include <cmath>
 #include <fstream>
-#include "NormalityTest.hxx"
-#include "Exception.hxx"
-#include "Path.hxx"
-#include "DistFunc.hxx"
+#include "openturns/NormalityTest.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

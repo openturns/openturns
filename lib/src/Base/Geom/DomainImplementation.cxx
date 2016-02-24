@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "DomainImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Os.hxx"
-#include "Exception.hxx"
+#include "openturns/DomainImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

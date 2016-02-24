@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTprivate.hxx"
-#include "InverseNatafEllipticalDistributionHessian.hxx"
-#include "SymmetricTensor.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/InverseNatafEllipticalDistributionHessian.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

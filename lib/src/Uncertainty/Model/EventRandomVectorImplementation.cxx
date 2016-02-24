@@ -23,9 +23,9 @@
  *
  */
 
-#include "EventRandomVectorImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/EventRandomVectorImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

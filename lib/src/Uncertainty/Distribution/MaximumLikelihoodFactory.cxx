@@ -21,17 +21,17 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
-#include "MaximumLikelihoodFactory.hxx"
-#include "Description.hxx"
-#include "Exception.hxx"
-#include "OTconfig.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
-#include "SpecFunc.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "CenteredFiniteDifferenceGradient.hxx"
-#include "Normal.hxx"
-#include "TNC.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,14 +1,14 @@
 // SWIG file CovarianceModelFactory.i
 
 %{
-#include "CovarianceModelFactory.hxx"
+#include "openturns/CovarianceModelFactory.hxx"
 %}
 
 %include CovarianceModelFactory_doc.i
 
 OTTypedInterfaceObjectHelper(CovarianceModelFactory)
 
-%include CovarianceModelFactory.hxx
+%include openturns/CovarianceModelFactory.hxx
 
 namespace OT { 
 

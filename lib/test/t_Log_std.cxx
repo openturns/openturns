@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTtestcode.hxx"
-#include "OStream.hxx"
+#include "openturns/OTtestcode.hxx"
+#include "openturns/OStream.hxx"
 
-#include "Log.hxx"
+#include "openturns/Log.hxx"
 
 using namespace OT;
 using namespace OT::Test;

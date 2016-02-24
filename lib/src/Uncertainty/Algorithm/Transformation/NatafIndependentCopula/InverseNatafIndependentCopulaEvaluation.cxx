@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "InverseNatafIndependentCopulaEvaluation.hxx"
-#include "DistFunc.hxx"
+#include "openturns/InverseNatafIndependentCopulaEvaluation.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

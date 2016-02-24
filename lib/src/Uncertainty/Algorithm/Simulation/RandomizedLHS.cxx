@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "RandomizedLHS.hxx"
-#include "NumericalPoint.hxx"
-#include "RandomVector.hxx"
-#include "RandomGenerator.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "LHSExperiment.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/RandomizedLHS.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/LHSExperiment.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 /*

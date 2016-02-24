@@ -18,18 +18,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NumericalMathHessianImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Matrix.hxx"
-#include "OTconfig.hxx"
+#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 #else
-#include "LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 #endif
-#include "ConstantNumericalMathGradientImplementation.hxx"
-#include "ConstantNumericalMathHessianImplementation.hxx"
-#include "ComposedNumericalMathHessianImplementation.hxx"
+#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
+#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/ComposedNumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

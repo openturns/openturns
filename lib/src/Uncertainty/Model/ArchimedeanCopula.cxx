@@ -19,8 +19,8 @@
  *
  */
 
-#include "ArchimedeanCopula.hxx"
-#include "Exception.hxx"
+#include "openturns/ArchimedeanCopula.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

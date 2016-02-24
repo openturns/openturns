@@ -19,9 +19,9 @@
  *
  */
 
-#include "ApproximationAlgorithmImplementationFactory.hxx"
-#include "Exception.hxx"
-#include "PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

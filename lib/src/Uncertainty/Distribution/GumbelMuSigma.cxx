@@ -19,10 +19,10 @@
  *
  */
 
-#include "GumbelFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "SpecFunc.hxx"
-#include "GumbelMuSigma.hxx"
+#include "openturns/GumbelFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/GumbelMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

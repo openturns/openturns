@@ -1,12 +1,12 @@
 // SWIG file DistributionFactoryImplementation.i
 
 %{
-#include "DistributionFactoryImplementation.hxx"
+#include "openturns/DistributionFactoryImplementation.hxx"
 %}
 
 %include DistributionFactoryImplementation_doc.i
 
-%include DistributionFactoryImplementation.hxx
+%include openturns/DistributionFactoryImplementation.hxx
 namespace OT {  
 
 %extend DistributionFactoryImplementation {

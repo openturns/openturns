@@ -12,9 +12,9 @@
  *
  */
 
-#include "InverseBoxCoxGradientImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "TBB.hxx"
+#include "openturns/InverseBoxCoxGradientImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

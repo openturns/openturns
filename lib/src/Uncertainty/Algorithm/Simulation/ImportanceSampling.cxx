@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "ImportanceSampling.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ImportanceSampling.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "GaussProductExperiment.hxx"
-#include "StandardDistributionPolynomialFactory.hxx"
-#include "Exception.hxx"
-#include "Collection.hxx"
-#include "NumericalPoint.hxx"
-#include "Indices.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/GaussProductExperiment.hxx"
+#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

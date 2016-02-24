@@ -25,7 +25,7 @@
 
 #ifdef WIN32
 #include <fstream>                // for ofstream
-#include "OTwindows.h"            // for GetTempFileName, GetModuleFileName
+#include "openturns/OTwindows.h"            // for GetTempFileName, GetModuleFileName
 #ifdef _MSC_VER
 # include <direct.h>
 #define mkdir(p)  _mkdir(p)
@@ -36,14 +36,14 @@
 #include <sys/types.h>            // for stat
 #include <sys/stat.h>             // for stat
 #include <unistd.h>               // for stat
-#include "OTconfig.hxx"
-#include "OTthread.hxx"
-#include "OSS.hxx"
-#include "Path.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
-#include "Os.hxx"
-#include "Log.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTthread.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/Log.hxx"
 
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."

@@ -3,8 +3,8 @@
 OTAutodoc(IndicatorNumericalMathEvaluationImplementation)
 
 %{
-#include "IndicatorNumericalMathEvaluationImplementation.hxx"
+#include "openturns/IndicatorNumericalMathEvaluationImplementation.hxx"
 %}
 
-%include IndicatorNumericalMathEvaluationImplementation.hxx
+%include openturns/IndicatorNumericalMathEvaluationImplementation.hxx
 namespace OT { %extend IndicatorNumericalMathEvaluationImplementation { IndicatorNumericalMathEvaluationImplementation(const IndicatorNumericalMathEvaluationImplementation & other) { return new OT::IndicatorNumericalMathEvaluationImplementation(other); } } }

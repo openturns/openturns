@@ -19,9 +19,9 @@
  *
  */
 #include <cmath>
-#include "OTprivate.hxx"
-#include "Combinations.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Combinations.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

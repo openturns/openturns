@@ -19,9 +19,9 @@
  *
  */
 
-#include "LeastSquaresMethod.hxx"
-#include "LeastSquaresMethodImplementation.hxx"
-#include "SVDMethod.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/SVDMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

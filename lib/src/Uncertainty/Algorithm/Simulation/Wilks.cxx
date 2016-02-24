@@ -20,11 +20,11 @@
  *
  */
 #include <cmath>
-#include "Wilks.hxx"
-#include "Exception.hxx"
-#include "NumericalSample.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/Wilks.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "QuadraticNumericalMathFunction.hxx"
-#include "QuadraticNumericalMathEvaluationImplementation.hxx"
-#include "LinearNumericalMathGradientImplementation.hxx"
-#include "ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearNumericalMathGradientImplementation.hxx"
+#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

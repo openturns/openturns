@@ -20,12 +20,12 @@
  */
 #include <cstdlib>
 
-#include "SimulationResultImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "DistFunc.hxx"
-#include "SimulationSensitivityAnalysis.hxx"
-#include "Log.hxx"
-#include "Exception.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SimulationSensitivityAnalysis.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -20,11 +20,11 @@
  *
  */
 #include <algorithm>
-#include "BipartiteGraph.hxx"
-#include "Cloud.hxx"
-#include "Curve.hxx"
-#include "NumericalSample.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/BipartiteGraph.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

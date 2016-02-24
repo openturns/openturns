@@ -19,12 +19,12 @@
  *
  */
 #include <cmath>
-#include "Rice.hxx"
-#include "SpecFunc.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/Rice.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

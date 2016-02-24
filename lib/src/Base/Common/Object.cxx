@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Object.hxx"
-#include "OSS.hxx"
+#include "openturns/Object.hxx"
+#include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

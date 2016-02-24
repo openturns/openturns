@@ -19,12 +19,12 @@
  *
  */
 #include <fstream>
-#include "LinearModel.hxx"
-#include "Path.hxx"
-#include "ResourceMap.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Matrix.hxx"
+#include "openturns/LinearModel.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

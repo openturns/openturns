@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Cobyla.hxx"
+#include "openturns/Cobyla.hxx"
 #include "algocobyla.h"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

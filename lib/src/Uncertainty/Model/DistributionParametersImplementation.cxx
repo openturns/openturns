@@ -19,10 +19,10 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "DistributionParametersImplementation.hxx"
-#include "DistributionParameters.hxx"
-#include "Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistributionParametersImplementation.hxx"
+#include "openturns/DistributionParameters.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

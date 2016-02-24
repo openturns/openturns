@@ -25,11 +25,11 @@
  *
  */
 #include <cmath>
-#include "KernelMixture.hxx"
-#include "RandomGenerator.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Brent.hxx"
+#include "openturns/KernelMixture.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Brent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,9 +21,9 @@
  */
 #include <cstdlib>
 
-#include "SQPSpecificParameters.hxx"
-#include "ResourceMap.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/SQPSpecificParameters.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

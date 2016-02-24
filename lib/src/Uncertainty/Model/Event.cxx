@@ -19,9 +19,9 @@
  *
  */
 
-#include "Event.hxx"
-#include "CompositeRandomVector.hxx"
-#include "Less.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/Less.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

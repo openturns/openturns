@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "FFT.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "KissFFT.hxx"
+#include "openturns/FFT.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/KissFFT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

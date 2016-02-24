@@ -20,13 +20,13 @@
  */
 #include <unistd.h>                 // for sysconf
 #include <string.h>                 // for strdup
-#include "OTthread.hxx"
-#include "OTconfig.hxx"
-#include "OSS.hxx"
-#include "ResourceMap.hxx"
-#include "Exception.hxx"
-#include "Path.hxx"
-#include "XMLToolbox.hxx"
+#include "openturns/OTthread.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/XMLToolbox.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

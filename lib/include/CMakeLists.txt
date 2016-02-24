@@ -14,12 +14,12 @@ ot_add_current_dir_to_include_dirs ()
 ot_add_build_dir_to_include_dirs (${CMAKE_CURRENT_BINARY_DIR})
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/OTconfig.h.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/OTconfig.h
+                 ${CMAKE_CURRENT_BINARY_DIR}/openturns/OTconfig.h
                 @ONLY
               )
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/installed-OTconfig.h.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/installed-OTconfig.h
+                 ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
                 @ONLY
               )
 
@@ -50,22 +50,13 @@ set (prefix ${CMAKE_INSTALL_PREFIX})
 set (PACKAGE openturns)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/OTconfigure_args.hxx.in
-                ${CMAKE_CURRENT_BINARY_DIR}/OTconfigureArgs.hxx
+                ${CMAKE_CURRENT_BINARY_DIR}/openturns/OTconfigureArgs.hxx
                 @ONLY
              )
 
-install (FILES OTconfig.hxx
-                OTdebug.h
-                OTmemory.hxx
-                OTprivate.hxx
-                OTtestcode.hxx
-                OTthread.hxx
-                OTtypes.hxx
-                OTwindows.h
-          DESTINATION ${OPENTURNS_INCLUDE_PATH}
-       )
-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/installed-OTconfig.h
-          DESTINATION ${OPENTURNS_INCLUDE_PATH}
+install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
+install (FILES ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
+          DESTINATION ${OPENTURNS_INCLUDE_PATH}/openturns
           RENAME OTconfig.h
        )
 

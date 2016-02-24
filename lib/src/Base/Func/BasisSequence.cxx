@@ -19,7 +19,7 @@
  *
  */
 
-#include "BasisSequence.hxx"
+#include "openturns/BasisSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

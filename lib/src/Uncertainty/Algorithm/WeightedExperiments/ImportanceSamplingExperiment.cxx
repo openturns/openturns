@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ImportanceSamplingExperiment.hxx"
-#include "Exception.hxx"
+#include "openturns/ImportanceSamplingExperiment.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

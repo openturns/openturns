@@ -1,7 +1,7 @@
 // SWIG file ComplexMatrixImplementation.i
 
 %{
-#include "ComplexMatrixImplementation.hxx"
+#include "openturns/ComplexMatrixImplementation.hxx"
 %}
 
 %include ComplexMatrixImplementation_doc.i
@@ -27,5 +27,5 @@
        OT::isAPythonSequenceOf<OT::_PyComplex_>( $input );
 }
 
-%include ComplexMatrixImplementation.hxx
+%include openturns/ComplexMatrixImplementation.hxx
 namespace OT{ %extend ComplexMatrixImplementation { ComplexMatrixImplementation(const ComplexMatrixImplementation & other) { return new OT::ComplexMatrixImplementation(other); } } }

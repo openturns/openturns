@@ -19,9 +19,9 @@
  *
  */
 
-#include "MixtureClassifier.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/MixtureClassifier.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

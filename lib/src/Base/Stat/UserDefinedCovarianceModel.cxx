@@ -19,9 +19,9 @@
  *
  *  Id:      $Id$
  */
-#include "UserDefinedCovarianceModel.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/UserDefinedCovarianceModel.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

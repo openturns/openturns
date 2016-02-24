@@ -18,15 +18,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "WelchFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "NumericalSample.hxx"
-#include "Collection.hxx"
-#include "HermitianMatrix.hxx"
-#include "NumericalPoint.hxx"
-#include "Hamming.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/WelchFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/HermitianMatrix.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Hamming.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

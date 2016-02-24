@@ -19,8 +19,8 @@
  *
  */
 
-#include "FittingAlgorithm.hxx"
-#include "FittingAlgorithmImplementation.hxx"
+#include "openturns/FittingAlgorithm.hxx"
+#include "openturns/FittingAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

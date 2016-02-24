@@ -5,9 +5,9 @@
 //%feature("autodoc","1");
 
 %{
-#include "OTconfig.hxx"
-#include "OTBase.hxx"
-#include "OTUncertainty.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTBase.hxx"
+#include "openturns/OTUncertainty.hxx"
 %}
 
 %include typemaps.i

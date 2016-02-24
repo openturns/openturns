@@ -21,21 +21,21 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "Normal.hxx"
-#include "Distribution.hxx"
-#include "ChiSquare.hxx"
-#include "SpecFunc.hxx"
-#include "Log.hxx"
-#include "OSS.hxx"
-#include "DistFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Matrix.hxx"
-#include "MatrixImplementation.hxx"
-#include "IdentityMatrix.hxx"
-#include "NormalCopula.hxx"
-#include "ResourceMap.hxx"
-#include "RandomGenerator.hxx"
-#include "GaussKronrodRule.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/ChiSquare.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/MatrixImplementation.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/NormalCopula.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/GaussKronrodRule.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

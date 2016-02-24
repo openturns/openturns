@@ -1,11 +1,11 @@
 // SWIG file WhiteNoise.i
 
 %{
-#include "WhiteNoise.hxx"
+#include "openturns/WhiteNoise.hxx"
 %}
 
 %include WhiteNoise_doc.i
 
 
-%include WhiteNoise.hxx
+%include openturns/WhiteNoise.hxx
 namespace OT { %extend WhiteNoise { WhiteNoise(const WhiteNoise & other) { return new OT::WhiteNoise(other); } } }

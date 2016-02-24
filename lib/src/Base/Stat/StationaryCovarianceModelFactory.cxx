@@ -19,12 +19,12 @@
  *
  *  Id:      $Id$
  */
-#include "StationaryCovarianceModelFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Collection.hxx"
-#include "NumericalPoint.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/StationaryCovarianceModelFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

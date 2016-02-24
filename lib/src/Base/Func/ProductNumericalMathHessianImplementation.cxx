@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ProductNumericalMathHessianImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/ProductNumericalMathHessianImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

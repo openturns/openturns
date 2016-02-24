@@ -1,5 +1,5 @@
 #include <cmath>
-#include "Debye.hxx"
+#include "openturns/Debye.hxx"
 
 /** 1/(2pi) */
 #define M_1_2PI .159154943091895335768883763373

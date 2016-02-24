@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "OTprivate.hxx"
-#include "Tuples.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Tuples.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

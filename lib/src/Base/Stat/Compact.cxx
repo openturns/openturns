@@ -21,9 +21,9 @@
  */
 #include <cstdlib>
 
-#include "Compact.hxx"
-#include "ResourceMap.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Compact.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

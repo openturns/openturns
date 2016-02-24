@@ -1,7 +1,7 @@
 // SWIG file TypedCollectionInterfaceObject.i
 
 %{
-#include "TypedCollectionInterfaceObject.hxx"
+#include "openturns/TypedCollectionInterfaceObject.hxx"
 %}
 
 %ignore OT::TypedCollectionInterfaceObject::swap;
@@ -95,7 +95,7 @@ OTDefaultCollectionConvertFunctionsMisnamed(Interface,Interface ## Implementatio
 %enddef
 
 
-%include TypedCollectionInterfaceObject.hxx
+%include openturns/TypedCollectionInterfaceObject.hxx
 
 namespace OT {  
 %extend TypedCollectionInterfaceObject {

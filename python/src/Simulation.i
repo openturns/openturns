@@ -1,8 +1,8 @@
 // SWIG file Simulation.i
 
 %{
-#include "Simulation.hxx"
-#include "PythonWrappingFunctions.hxx"
+#include "openturns/Simulation.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
 
 static void PythonProgressCallback(OT::NumericalScalar percent, void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
@@ -23,7 +23,7 @@ static OT::Bool PythonStopCallback(void * data) {
 %ignore OT::Simulation::setProgressCallback(ProgressCallback callBack, void * data);
 %ignore OT::Simulation::setStopCallback(StopCallback callBack, void * data);
 
-%include Simulation.hxx
+%include openturns/Simulation.hxx
 
 namespace OT {
 

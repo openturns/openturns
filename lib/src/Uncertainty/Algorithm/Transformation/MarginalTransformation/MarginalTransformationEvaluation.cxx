@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "MarginalTransformationEvaluation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Uniform.hxx"
-#include "Log.hxx"
-#include "ResourceMap.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

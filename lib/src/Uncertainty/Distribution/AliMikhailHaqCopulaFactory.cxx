@@ -21,9 +21,9 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "AliMikhailHaqCopulaFactory.hxx"
-#include "SpecFunc.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/AliMikhailHaqCopulaFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

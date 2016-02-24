@@ -1,7 +1,7 @@
 // SWIG file ResourceMap.i
 
 %{
-#include "ResourceMap.hxx"
+#include "openturns/ResourceMap.hxx"
 %}
 
 %include ResourceMap_doc.i
@@ -10,7 +10,7 @@
 
 %nodefaultctor ResourceMap;
 
-%include ResourceMap.hxx
+%include openturns/ResourceMap.hxx
 
 namespace OT {
 

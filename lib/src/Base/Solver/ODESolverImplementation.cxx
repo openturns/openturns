@@ -19,8 +19,8 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "ODESolverImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ODESolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,13 +19,13 @@
  *
  */
 #include <cmath>
-#include "LogNormal.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Normal.hxx"
-#include "HermiteFactory.hxx"
+#include "openturns/LogNormal.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/HermiteFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

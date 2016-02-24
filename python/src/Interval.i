@@ -1,8 +1,8 @@
 // SWIG file Interval.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "Interval.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/Interval.hxx"
 %}
 
 %include Interval_doc.i
@@ -27,6 +27,6 @@
 
 %rename(__eq__) OT::Interval::operator==(const Interval & rhs) const;
 
-%include Interval.hxx
+%include openturns/Interval.hxx
 
 namespace OT { %extend Interval { Interval(const Interval & other) { return new OT::Interval(other); } } }

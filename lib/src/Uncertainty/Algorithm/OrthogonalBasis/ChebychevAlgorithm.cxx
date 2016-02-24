@@ -19,15 +19,15 @@
  *
  */
 
-#include "ChebychevAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Uniform.hxx"
-#include "Exception.hxx"
-#include "SquareMatrix.hxx"
-#include "LegendreFactory.hxx"
-#include "LaguerreFactory.hxx"
-#include "HermiteFactory.hxx"
-#include "Log.hxx"
+#include "openturns/ChebychevAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/LegendreFactory.hxx"
+#include "openturns/LaguerreFactory.hxx"
+#include "openturns/HermiteFactory.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

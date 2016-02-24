@@ -6,12 +6,12 @@
 OT::NumericalPoint OT::WeightedExperiment::generateWithWeights(OT::NumericalPoint & weights) const;
 
 %{
-#include "WeightedExperiment.hxx"
+#include "openturns/WeightedExperiment.hxx"
 %}
 
 %include WeightedExperiment_doc.i
 
-%include WeightedExperiment.hxx
+%include openturns/WeightedExperiment.hxx
 namespace OT { %extend WeightedExperiment { WeightedExperiment(const WeightedExperiment & other) { return new OT::WeightedExperiment(other); } } }
 
 %clear OT::NumericalSample & weights;

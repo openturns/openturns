@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "SpecFunc.hxx"
-#include "LogUniform.hxx"
-#include "RandomGenerator.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/LogUniform.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

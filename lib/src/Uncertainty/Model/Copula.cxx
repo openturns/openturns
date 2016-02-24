@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Copula.hxx"
-#include "IndependentCopula.hxx"
+#include "openturns/Copula.hxx"
+#include "openturns/IndependentCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

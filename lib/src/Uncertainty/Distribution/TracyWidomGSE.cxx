@@ -19,10 +19,10 @@
  *
  */
 #include <cmath>
-#include "TracyWidomGSE.hxx"
-#include "RandomGenerator.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/TracyWidomGSE.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

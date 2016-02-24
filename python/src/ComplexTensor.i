@@ -1,7 +1,7 @@
 // SWIG file ComplexTensor.i
 
 %{
-#include "ComplexTensor.hxx"
+#include "openturns/ComplexTensor.hxx"
 %}
 
 %include ComplexTensor_doc.i
@@ -9,7 +9,7 @@
 %template(ComplexTensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexTensorImplementation>;
 %apply const NumericalComplexCollection & { const OT::ComplexTensor::NumericalComplexCollection & };
 
-%include ComplexTensor.hxx
+%include openturns/ComplexTensor.hxx
 
 %pythoncode %{
 # This code has been added to conform to Numpy ndarray interface

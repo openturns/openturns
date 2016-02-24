@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SensitivityAnalysis.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "Pie.hxx"
+#include "openturns/SensitivityAnalysis.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Pie.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SpectralModel.hxx"
-#include "CauchyModel.hxx"
+#include "openturns/SpectralModel.hxx"
+#include "openturns/CauchyModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

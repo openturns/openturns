@@ -1,9 +1,9 @@
 // SWIG file ARMACoefficients.i
 
 %{
-#include "PythonWrappingFunctions.hxx"
-#include "ARMACoefficients.hxx"
-#include "SquareMatrix.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/ARMACoefficients.hxx"
+#include "openturns/SquareMatrix.hxx"
 
 
 namespace OT { 
@@ -33,7 +33,7 @@ namespace OT {
 %template(SquareMatrixCollection) OT::Collection<OT::SquareMatrix>;
 %template(SquareMatrixPersistentCollection) OT::PersistentCollection<OT::SquareMatrix>;
 
-%include ARMACoefficients.hxx
+%include openturns/ARMACoefficients.hxx
 
 
 %extend OT::Collection<OT::SquareMatrix>

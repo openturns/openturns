@@ -1,7 +1,7 @@
 // SWIG file DistFunc.i
 
 %{
-#include "DistFunc.hxx"
+#include "openturns/DistFunc.hxx"
 %}
 
-%include DistFunc.hxx
+%include openturns/DistFunc.hxx

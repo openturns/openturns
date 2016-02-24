@@ -19,8 +19,8 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "FittingAlgorithmImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/FittingAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

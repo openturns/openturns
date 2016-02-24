@@ -12,9 +12,9 @@
  *
  */
 
-#include "InverseBoxCoxHessianImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "TBB.hxx"
+#include "openturns/InverseBoxCoxHessianImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

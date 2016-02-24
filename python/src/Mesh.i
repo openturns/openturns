@@ -8,11 +8,11 @@ OT::Bool OT::Mesh::checkPointInSimplexWithCoordinates(const OT::NumericalPoint &
 						      OT::NumericalPoint & coordinates) const;
 
 %{
-#include "Mesh.hxx"
+#include "openturns/Mesh.hxx"
 %}
 
 %include Mesh_doc.i
 
-%include Mesh.hxx
+%include openturns/Mesh.hxx
 
 namespace OT { %extend Mesh { Mesh(const Mesh & other) { return new OT::Mesh(other); } } }

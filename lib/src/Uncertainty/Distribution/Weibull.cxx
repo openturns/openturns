@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "Weibull.hxx"
-#include "SpecFunc.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Weibull.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

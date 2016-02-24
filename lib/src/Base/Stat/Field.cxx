@@ -19,7 +19,7 @@
  *
  */
 #include <fstream>
-#include "Field.hxx"
+#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

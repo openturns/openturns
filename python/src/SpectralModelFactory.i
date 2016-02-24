@@ -1,14 +1,14 @@
 // SWIG file SpectralModelFactory.i
 
 %{
-#include "SpectralModelFactory.hxx"
+#include "openturns/SpectralModelFactory.hxx"
 %}
 
 %include SpectralModelFactory_doc.i
 
 OTTypedInterfaceObjectHelper(SpectralModelFactory)
 
-%include SpectralModelFactory.hxx
+%include openturns/SpectralModelFactory.hxx
 
 namespace OT { 
 

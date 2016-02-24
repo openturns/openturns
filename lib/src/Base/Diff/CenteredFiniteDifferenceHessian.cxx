@@ -22,8 +22,8 @@
  */
 #include <cstdlib>
 
-#include "CenteredFiniteDifferenceHessian.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

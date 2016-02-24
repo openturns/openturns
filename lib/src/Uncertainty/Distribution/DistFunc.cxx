@@ -24,20 +24,20 @@
 #include <cmath>
 #include <iomanip>
 
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
-#include "RandomGenerator.hxx"
-#include "Log.hxx"
-#include "Normal2DCDF.hxx"
-#include "Normal3DCDF.hxx"
-#include "Exception.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Normal2DCDF.hxx"
+#include "openturns/Normal3DCDF.hxx"
+#include "openturns/Exception.hxx"
 
 // The following implementation of the Kolmogorov CDF and tail CDF is used in a LGPL context with written permission of the author.
 #include "KolmogorovSmirnovDist.h"
 // The following implementation of the Poisson quantile is used in a LGPL context with written permission of the author.
 #include "poissinv_cpu.h"
-#include "StudentFunctions.hxx"
-#include "OTconfig.hxx"
+#include "openturns/StudentFunctions.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

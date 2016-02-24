@@ -4,8 +4,8 @@
 %ignore OT::NumericalSample::streamToRFormat;
 
 %{
-#include "NumericalSampleImplementation.hxx"
-#include "NumericalSample.hxx"
+#include "openturns/NumericalSampleImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
 %}
 
 %include NumericalSample_doc.i
@@ -31,8 +31,8 @@
 
 %apply const NumericalSample & { const OT::NumericalSample & };
 
-%include NumericalSampleImplementation.hxx
-%include NumericalSample.hxx
+%include openturns/NumericalSampleImplementation.hxx
+%include openturns/NumericalSample.hxx
 
 %pythoncode %{
 # This code has been added to conform to Numpy ndarray interface

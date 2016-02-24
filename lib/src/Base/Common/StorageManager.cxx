@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "StorageManager.hxx"
-#include "PersistentObject.hxx"
-#include "InterfaceObject.hxx"
-#include "Study.hxx"
-#include "OSS.hxx"
-#include "Log.hxx"
-#include "OTconfig.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/InterfaceObject.hxx"
+#include "openturns/Study.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

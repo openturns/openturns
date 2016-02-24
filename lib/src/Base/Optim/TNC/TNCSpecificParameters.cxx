@@ -21,9 +21,9 @@
  */
 #include <cstdlib>
 
-#include "TNCSpecificParameters.hxx"
-#include "ResourceMap.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/TNCSpecificParameters.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrthonormalizationAlgorithm.hxx"
-#include "GramSchmidtAlgorithm.hxx"
+#include "openturns/OrthonormalizationAlgorithm.hxx"
+#include "openturns/GramSchmidtAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

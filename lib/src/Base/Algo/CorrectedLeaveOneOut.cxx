@@ -19,10 +19,10 @@
  *
  */
 
-#include "NumericalMathFunction.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "CorrectedLeaveOneOut.hxx"
-#include "SVDMethod.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/CorrectedLeaveOneOut.hxx"
+#include "openturns/SVDMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

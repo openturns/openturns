@@ -19,9 +19,9 @@
  *
  */
 
-#include "FiniteDifferenceStepImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/FiniteDifferenceStepImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

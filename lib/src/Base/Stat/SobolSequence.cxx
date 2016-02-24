@@ -20,10 +20,10 @@
  */
 #include <cstdlib>
 
-#include "SobolSequence.hxx"
-#include "ResourceMap.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

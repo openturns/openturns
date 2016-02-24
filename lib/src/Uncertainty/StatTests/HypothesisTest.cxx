@@ -20,16 +20,16 @@
  */
 #include <cmath>
 #include <fstream>
-#include "HypothesisTest.hxx"
-#include "HypothesisTest.hxx"
-#include "NumericalPoint.hxx"
-#include "Path.hxx"
-#include "Log.hxx"
-#include "ResourceMap.hxx"
-#include "LinearModelFactory.hxx"
-#include "Exception.hxx"
-#include "Os.hxx"
-#include "OTconfig.hxx"
+#include "openturns/HypothesisTest.hxx"
+#include "openturns/HypothesisTest.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/LinearModelFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

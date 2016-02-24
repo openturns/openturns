@@ -1,7 +1,7 @@
 // SWIG file Path.i
 
 %{
-#include "Path.hxx"
+#include "openturns/Path.hxx"
 %}
 
 %include Path_doc.i
@@ -10,4 +10,4 @@
 
 %nodefaultctor Path;
 
-%include Path.hxx
+%include openturns/Path.hxx

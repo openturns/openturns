@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "HermiteFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/HermiteFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

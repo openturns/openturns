@@ -20,13 +20,13 @@
  */
 #include <cstdlib>
 
-#include "CleaningStrategy.hxx"
-#include "Log.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "NumericalSample.hxx"
-#include "Collection.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/CleaningStrategy.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

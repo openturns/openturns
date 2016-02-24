@@ -1,10 +1,10 @@
 // SWIG file BasisSequenceFactoryImplementation.i
 
 %{
-#include "BasisSequenceFactoryImplementation.hxx"
+#include "openturns/BasisSequenceFactoryImplementation.hxx"
 %}
 
 %include BasisSequenceFactoryImplementation_doc.i
 
-%include BasisSequenceFactoryImplementation.hxx
+%include openturns/BasisSequenceFactoryImplementation.hxx
 namespace OT { %extend BasisSequenceFactoryImplementation { BasisSequenceFactoryImplementation(const BasisSequenceFactoryImplementation & other) { return new OT::BasisSequenceFactoryImplementation(other); } } }

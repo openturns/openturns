@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LeastSquaresStrategy.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "ApproximationAlgorithm.hxx"
+#include "openturns/LeastSquaresStrategy.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ApproximationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

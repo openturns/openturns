@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "KrigingResult.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
+#include "openturns/KrigingResult.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

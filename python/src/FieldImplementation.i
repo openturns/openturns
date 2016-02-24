@@ -1,7 +1,7 @@
 // SWIG file FieldImplementation.i
 
 %{
-#include "FieldImplementation.hxx"
+#include "openturns/FieldImplementation.hxx"
 %}
 
 %include FieldImplementation_doc.i
@@ -15,7 +15,7 @@
 
 %apply const FieldImplementation & { const OT::FieldImplementation & };
 
-%include FieldImplementation.hxx
+%include openturns/FieldImplementation.hxx
 
 
 namespace OT{
@@ -109,6 +109,6 @@ FieldImplementation(const FieldImplementation & other)
 } // %extend
 }
 
-%include FieldImplementation.hxx
+%include openturns/FieldImplementation.hxx
 namespace OT { %extend FieldImplementation { FieldImplementation(const FieldImplementation & other) { return new OT::FieldImplementation(other); } } }
 

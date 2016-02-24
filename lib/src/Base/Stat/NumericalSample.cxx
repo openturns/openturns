@@ -20,8 +20,8 @@
  */
 #include <iomanip>
 #include <fstream>
-#include "NumericalSample.hxx"
-#include "Log.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

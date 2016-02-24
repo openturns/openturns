@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "AggregatedNumericalMathEvaluationImplementation.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Description.hxx"
-#include "Exception.hxx"
+#include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

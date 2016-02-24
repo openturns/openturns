@@ -6,13 +6,13 @@
 %include std_map.i
 %include std_complex.i
 
-%include OT.hxx
-%include OTtypes.hxx
-%include OTdebug.h
+%include openturns/OT.hxx
+%include openturns/OTtypes.hxx
+%include openturns/OTdebug.h
 
 %{
-#include "OT.hxx"
-#include "PythonWrappingFunctions.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
 %}
 
 %typemap(in) UnsignedInteger {

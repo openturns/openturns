@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "InverseNatafIndependentCopulaGradient.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/InverseNatafIndependentCopulaGradient.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,12 +23,12 @@
 #include <cstdlib>
 #include <sstream>
 
-#include "DrawableImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Log.hxx"
-#include "Os.hxx"
-#include "ResourceMap.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/DrawableImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

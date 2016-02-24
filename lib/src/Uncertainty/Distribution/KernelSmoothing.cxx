@@ -18,21 +18,21 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "KernelSmoothing.hxx"
-#include "Normal.hxx"
-#include "Dirac.hxx"
-#include "KernelMixture.hxx"
-#include "Mixture.hxx"
-#include "TruncatedDistribution.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Brent.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathFunction.hxx"
-#include "HermiteFactory.hxx"
-#include "UniVariatePolynomial.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/KernelSmoothing.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/Dirac.hxx"
+#include "openturns/KernelMixture.hxx"
+#include "openturns/Mixture.hxx"
+#include "openturns/TruncatedDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/HermiteFactory.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

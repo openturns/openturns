@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "CovarianceModel.hxx"
-#include "ExponentialModel.hxx"
-#include "HMatrix.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/ExponentialModel.hxx"
+#include "openturns/HMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

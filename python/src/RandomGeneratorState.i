@@ -1,10 +1,10 @@
 // SWIG file RandomGeneratorState.i
 
 %{
-#include "RandomGeneratorState.hxx"
+#include "openturns/RandomGeneratorState.hxx"
 %}
 
-%include RandomGeneratorState.hxx
+%include openturns/RandomGeneratorState.hxx
 
 
 namespace OT {

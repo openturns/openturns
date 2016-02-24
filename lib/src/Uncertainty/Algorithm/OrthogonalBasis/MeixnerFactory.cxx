@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "MeixnerFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "NegativeBinomial.hxx"
-#include "Exception.hxx"
+#include "openturns/MeixnerFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NegativeBinomial.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

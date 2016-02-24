@@ -21,10 +21,10 @@
  */
 #include <cmath>
 
-#include "ExponentialIntegralFunctions.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/ExponentialIntegralFunctions.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,16 +18,16 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "UniVariatePolynomialImplementation.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Graph.hxx"
-#include "Curve.hxx"
-#include "NumericalSample.hxx"
-#include "SquareMatrix.hxx"
-#include "Exception.hxx"
-#include "FFT.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/UniVariatePolynomialImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/FFT.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

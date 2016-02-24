@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "WhittleFactoryState.hxx"
-#include "Normal.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/WhittleFactoryState.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

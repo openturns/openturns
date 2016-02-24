@@ -3,8 +3,8 @@
 OTAutodoc(ComposedNumericalMathGradientImplementation)
 
 %{
-#include "ComposedNumericalMathGradientImplementation.hxx"
+#include "openturns/ComposedNumericalMathGradientImplementation.hxx"
 %}
 
-%include ComposedNumericalMathGradientImplementation.hxx
+%include openturns/ComposedNumericalMathGradientImplementation.hxx
 namespace OT { %extend ComposedNumericalMathGradientImplementation { ComposedNumericalMathGradientImplementation(const ComposedNumericalMathGradientImplementation & other) { return new OT::ComposedNumericalMathGradientImplementation(other); } } }

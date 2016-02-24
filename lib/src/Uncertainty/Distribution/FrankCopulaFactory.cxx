@@ -21,11 +21,11 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "FrankCopulaFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "SpecFunc.hxx"
-#include "Brent.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/FrankCopulaFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

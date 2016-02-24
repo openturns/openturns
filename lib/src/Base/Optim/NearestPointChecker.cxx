@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "NearestPointChecker.hxx"
-#include "NumericalPoint.hxx"
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/NearestPointChecker.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

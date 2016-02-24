@@ -19,19 +19,19 @@
  *
  */
 #include <cmath>
-#include "EllipticalDistribution.hxx"
-#include "NatafEllipticalDistributionEvaluation.hxx"
-#include "NatafEllipticalDistributionGradient.hxx"
-#include "NatafEllipticalDistributionHessian.hxx"
-#include "InverseNatafEllipticalDistributionEvaluation.hxx"
-#include "InverseNatafEllipticalDistributionGradient.hxx"
-#include "InverseNatafEllipticalDistributionHessian.hxx"
-#include "Description.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "TriangularMatrix.hxx"
-#include "IdentityMatrix.hxx"
-#include "ResourceMap.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/EllipticalDistribution.hxx"
+#include "openturns/NatafEllipticalDistributionEvaluation.hxx"
+#include "openturns/NatafEllipticalDistributionGradient.hxx"
+#include "openturns/NatafEllipticalDistributionHessian.hxx"
+#include "openturns/InverseNatafEllipticalDistributionEvaluation.hxx"
+#include "openturns/InverseNatafEllipticalDistributionGradient.hxx"
+#include "openturns/InverseNatafEllipticalDistributionHessian.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

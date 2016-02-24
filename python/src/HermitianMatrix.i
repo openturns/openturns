@@ -1,14 +1,14 @@
 // SWIG file HermitianMatrix.i
 
 %{
-#include "HermitianMatrix.hxx"
+#include "openturns/HermitianMatrix.hxx"
 %}
 
 %include HermitianMatrix_doc.i
 
 %ignore OT::HermitianMatrix::checkHermitian;
 
-%include HermitianMatrix.hxx
+%include openturns/HermitianMatrix.hxx
 
 namespace OT {
 

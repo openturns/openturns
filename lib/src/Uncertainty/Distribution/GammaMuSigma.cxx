@@ -19,10 +19,10 @@
  *
  */
 
-#include "GammaFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "GammaMuSigma.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/GammaFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/GammaMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

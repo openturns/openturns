@@ -21,13 +21,13 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "CompositeDistribution.hxx"
-#include "SpecFunc.hxx"
-#include "Uniform.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "Brent.hxx"
+#include "openturns/CompositeDistribution.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Brent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

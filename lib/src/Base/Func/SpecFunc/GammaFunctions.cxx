@@ -21,11 +21,11 @@
  */
 #include <cmath>
 
-#include "GammaFunctions.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "SpecFunc.hxx"
-#include "incgam.hxx"
+#include "openturns/GammaFunctions.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/incgam.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #include <boost/math/special_functions/gamma.hpp>
 #endif

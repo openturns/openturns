@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "BernoulliFactory.hxx"
-#include "DiscreteDistribution.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/BernoulliFactory.hxx"
+#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

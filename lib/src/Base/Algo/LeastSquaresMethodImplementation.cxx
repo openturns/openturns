@@ -19,8 +19,8 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "LeastSquaresMethodImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

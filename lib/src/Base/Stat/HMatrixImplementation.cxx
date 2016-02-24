@@ -22,8 +22,8 @@
 #include <cstdlib>
 #include <errno.h>
 
-#include "HMatrixImplementation.hxx"
-#include "Log.hxx"
+#include "openturns/HMatrixImplementation.hxx"
+#include "openturns/Log.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
 # include <hmat/hmat.h>

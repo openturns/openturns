@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "DualLinearCombinationEvaluationImplementation.hxx"
-#include "LinearCombinationEvaluationImplementation.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Description.hxx"
+#include "openturns/DualLinearCombinationEvaluationImplementation.hxx"
+#include "openturns/LinearCombinationEvaluationImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

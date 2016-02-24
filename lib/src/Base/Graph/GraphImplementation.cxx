@@ -21,15 +21,15 @@
 #include <cstdlib>
 #include <fstream>
 
-#include "GraphImplementation.hxx"
-#include "Rfunctions.hxx"
-#include "Path.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "OTconfig.hxx"
-#include "Os.hxx"
-#include "Pie.hxx"
+#include "openturns/GraphImplementation.hxx"
+#include "openturns/Rfunctions.hxx"
+#include "openturns/Path.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/Os.hxx"
+#include "openturns/Pie.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

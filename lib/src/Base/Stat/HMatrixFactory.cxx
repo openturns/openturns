@@ -18,11 +18,11 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "HMatrixFactory.hxx"
-#include "HMatrix.hxx"
-#include "HMatrixImplementation.hxx"
-#include "NumericalSample.hxx"
-#include "Log.hxx"
+#include "openturns/HMatrixFactory.hxx"
+#include "openturns/HMatrix.hxx"
+#include "openturns/HMatrixImplementation.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Log.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
 #include <hmat/config.h>

@@ -3,8 +3,8 @@
 OTAutodoc(MarginalTransformationGradient)
 
 %{
-#include "MarginalTransformationGradient.hxx"
+#include "openturns/MarginalTransformationGradient.hxx"
 %}
 
-%include MarginalTransformationGradient.hxx
+%include openturns/MarginalTransformationGradient.hxx
 namespace OT { %extend MarginalTransformationGradient { MarginalTransformationGradient(const MarginalTransformationGradient & other) { return new OT::MarginalTransformationGradient(other); } } }

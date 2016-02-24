@@ -19,9 +19,9 @@
  *
  */
 #include <cmath>
-#include "NatafIndependentCopulaGradient.hxx"
-#include "DistFunc.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/NatafIndependentCopulaGradient.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

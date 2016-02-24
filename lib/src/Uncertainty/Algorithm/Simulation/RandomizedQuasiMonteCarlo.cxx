@@ -20,10 +20,10 @@
  */
 #include <cmath>
 
-#include "RandomizedQuasiMonteCarlo.hxx"
-#include "ComparisonOperatorImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "RandomGenerator.hxx"
+#include "openturns/RandomizedQuasiMonteCarlo.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/RandomGenerator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LHSExperiment.hxx"
-#include "RandomGenerator.hxx"
-#include "Collection.hxx"
-#include "NumericalPoint.hxx"
-#include "Exception.hxx"
+#include "openturns/LHSExperiment.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

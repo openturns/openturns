@@ -19,14 +19,14 @@
  *
  */
 #include <Python.h>
-#include "swig_runtime.hxx"
+#include "openturns/swig_runtime.hxx"
 
-#include "PythonDistributionImplementation.hxx"
-#include "OSS.hxx"
-#include "Description.hxx"
-#include "PythonWrappingFunctions.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/PythonDistributionImplementation.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

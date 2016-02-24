@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "TemporalFunction.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "NumericalMathEvaluationImplementation.hxx"
-#include "NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/TemporalFunction.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,13 +19,13 @@
  *
  */
 
-#include "ConditionedNormalProcess.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "Log.hxx"
-#include "CovarianceMatrix.hxx"
-#include "TriangularMatrix.hxx"
-#include "DistFunc.hxx"
+#include "openturns/ConditionedNormalProcess.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

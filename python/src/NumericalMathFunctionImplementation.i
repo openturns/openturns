@@ -1,7 +1,7 @@
 // SWIG file NumericalMathFunctionImplementation.i
 
 %{
-#include "NumericalMathFunctionImplementation.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
 %}
 
 %include NumericalMathFunctionImplementation_doc.i
@@ -15,5 +15,5 @@
 %ignore OT::NumericalMathFunctionImplementation::getUseDefaultHessianImplementation;
 %ignore OT::NumericalMathFunctionImplementation::setUseDefaultHessianImplementation;
 
-%include NumericalMathFunctionImplementation.hxx
+%include openturns/NumericalMathFunctionImplementation.hxx
 namespace OT { %extend NumericalMathFunctionImplementation { NumericalMathFunctionImplementation(const NumericalMathFunctionImplementation & other) { return new OT::NumericalMathFunctionImplementation(other); } } }

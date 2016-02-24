@@ -1,12 +1,12 @@
 // SWIG file TaylorExpansionsMoments.i
 
 %{
-#include "TaylorExpansionsMoments.hxx"
+#include "openturns/TaylorExpansionsMoments.hxx"
 %}
 
 %include TaylorExpansionsMoments_doc.i
 
-%include TaylorExpansionsMoments.hxx
+%include openturns/TaylorExpansionsMoments.hxx
 namespace OT{ %extend TaylorExpansionsMoments { TaylorExpansionsMoments(const TaylorExpansionsMoments & other) { return new OT::TaylorExpansionsMoments(other); } } }
 
 %pythoncode %{

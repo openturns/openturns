@@ -18,8 +18,8 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "PersistentObjectFactory.hxx"
-#include "HMatrixParameters.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/HMatrixParameters.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

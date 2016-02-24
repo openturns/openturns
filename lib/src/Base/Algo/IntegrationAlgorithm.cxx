@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "IntegrationAlgorithm.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "GaussKronrod.hxx"
+#include "openturns/IntegrationAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

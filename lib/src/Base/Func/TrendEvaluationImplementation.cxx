@@ -12,8 +12,8 @@
  *
  */
 
-#include "TrendEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/TrendEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,12 +19,12 @@
  *
  */
 #include <algorithm>
-#include "PenalizedLeastSquaresAlgorithm.hxx"
-#include "OSS.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Matrix.hxx"
-#include "IdentityMatrix.hxx"
-#include "Exception.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,7 +1,7 @@
 // SWIG file NumericalPointWithDescription.i
 
 %{
-#include "NumericalPointWithDescription.hxx"
+#include "openturns/NumericalPointWithDescription.hxx"
 
 namespace OT { 
 
@@ -51,7 +51,7 @@ namespace OT {
 
 %rename(NumericalPointWithDescription_operator___eq__) OT::operator ==(const NumericalPointWithDescription & lhs, const NumericalPointWithDescription & rhs);
 
-%include NumericalPointWithDescription.hxx
+%include openturns/NumericalPointWithDescription.hxx
 namespace OT{  
 
 %extend NumericalPointWithDescription {

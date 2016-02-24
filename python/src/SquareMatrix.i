@@ -6,14 +6,14 @@
 OT::SquareMatrix OT::SquareMatrix::computeEV(OT::SquareComplexMatrix & v, const Bool keepIntact = true);
 
 %{
-#include "SquareMatrix.hxx"
+#include "openturns/SquareMatrix.hxx"
 %}
 
 %include SquareMatrix_doc.i
 
 %rename(__pow__) OT::SquareMatrix::power(const UnsignedInteger n) const;
 
-%include SquareMatrix.hxx
+%include openturns/SquareMatrix.hxx
 
 namespace OT {  
 

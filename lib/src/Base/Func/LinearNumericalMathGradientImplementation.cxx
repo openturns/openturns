@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LinearNumericalMathGradientImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Os.hxx"
+#include "openturns/LinearNumericalMathGradientImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

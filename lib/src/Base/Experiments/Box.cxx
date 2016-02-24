@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "OTprivate.hxx"
-#include "Box.hxx"
-#include "Indices.hxx"
-#include "Tuples.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Box.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Tuples.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

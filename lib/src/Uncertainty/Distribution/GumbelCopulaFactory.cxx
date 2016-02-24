@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "GumbelCopulaFactory.hxx"
+#include "openturns/GumbelCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

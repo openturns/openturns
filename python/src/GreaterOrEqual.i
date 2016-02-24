@@ -1,12 +1,12 @@
 // SWIG file GreaterOrEqual.i
 
 %{
-#include "GreaterOrEqual.hxx"
+#include "openturns/GreaterOrEqual.hxx"
 %}
 
 %include GreaterOrEqual_doc.i
 
-%include GreaterOrEqual.hxx
+%include openturns/GreaterOrEqual.hxx
 namespace OT {  
 %extend GreaterOrEqual {
   const String __str__() const { return self->__repr__(); }

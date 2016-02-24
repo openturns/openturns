@@ -1,10 +1,10 @@
 // SWIG file FiniteBasis.i
 
 %{
-#include "FiniteBasis.hxx"
+#include "openturns/FiniteBasis.hxx"
 %}
 
 %ignore OT::FiniteBasis::operator[];
 
-%include FiniteBasis.hxx
+%include openturns/FiniteBasis.hxx
 namespace OT { %extend FiniteBasis { FiniteBasis(const FiniteBasis & other) { return new OT::FiniteBasis(other); } } }

@@ -6,9 +6,9 @@
 OT::DistributionCollection OT::RandomMixture::project(const DistributionFactoryCollection & factoryCollection, OT::NumericalPoint & kolmogorovNorm, const OT::UnsignedInteger size) const;
 
 %{
-#include "RandomMixture.hxx"
+#include "openturns/RandomMixture.hxx"
 %}
 %include RandomMixture_doc.i
 
-%include RandomMixture.hxx
+%include openturns/RandomMixture.hxx
 namespace OT { %extend RandomMixture { RandomMixture(const RandomMixture & other) { return new OT::RandomMixture(other); } } }

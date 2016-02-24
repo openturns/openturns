@@ -19,8 +19,8 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "RungeKutta.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/RungeKutta.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

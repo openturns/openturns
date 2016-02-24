@@ -17,11 +17,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "TensorizedCovarianceModel.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
-#include "AbsoluteExponential.hxx"
-#include "ExponentialModel.hxx"
+#include "openturns/TensorizedCovarianceModel.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/AbsoluteExponential.hxx"
+#include "openturns/ExponentialModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

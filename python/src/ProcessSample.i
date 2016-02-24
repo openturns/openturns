@@ -1,12 +1,12 @@
 // SWIG file ProcessSamples.i
 
 %{
-#include "ProcessSample.hxx"
+#include "openturns/ProcessSample.hxx"
 %}
 
 %include ProcessSample_doc.i
 
-%include ProcessSample.hxx
+%include openturns/ProcessSample.hxx
 
 
 namespace OT {

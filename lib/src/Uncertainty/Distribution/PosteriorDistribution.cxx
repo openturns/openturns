@@ -19,12 +19,12 @@
  *
  */
 #include <cmath>
-#include "PosteriorDistribution.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "NumericalMathFunction.hxx"
+#include "openturns/PosteriorDistribution.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,7 +1,7 @@
 // SWIG file UserDefinedPair.i
 
 %{
-#include "UserDefinedPair.hxx"
+#include "openturns/UserDefinedPair.hxx"
 
   namespace OT {
 
@@ -65,6 +65,6 @@
 
 %include UserDefinedPair_doc.i
 
-%include UserDefinedPair.hxx
+%include openturns/UserDefinedPair.hxx
 
 namespace OT { %extend UserDefinedPair { UserDefinedPair(const UserDefinedPair & other) { return new OT::UserDefinedPair(other); } } }

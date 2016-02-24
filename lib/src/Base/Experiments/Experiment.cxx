@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Experiment.hxx"
-#include "Axial.hxx"
+#include "openturns/Experiment.hxx"
+#include "openturns/Axial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

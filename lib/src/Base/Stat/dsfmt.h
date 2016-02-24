@@ -27,8 +27,8 @@
 #include <cstring>
 #include <stdint.h>
 #include "simd.h"
-#include "OTprivate.hxx"
-#include "OTconfig.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/OTconfig.hxx"
 
 namespace tutils
 {

@@ -19,8 +19,8 @@
  *
  */
 
-#include "AnalyticalParser.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/AnalyticalParser.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #include "muParser.h"
 

@@ -19,12 +19,12 @@
  *
  */
 #include <cmath>
-#include "NumericalPoint.hxx"
-#include "Exception.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
-#include "Lapack.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

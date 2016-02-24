@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "LaguerreFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Gamma.hxx"
-#include "Exception.hxx"
+#include "openturns/LaguerreFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Gamma.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

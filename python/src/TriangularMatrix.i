@@ -1,12 +1,12 @@
 // SWIG file TriangularMatrix.i
 
 %{
-#include "TriangularMatrix.hxx"
+#include "openturns/TriangularMatrix.hxx"
 %}
 
 %include TriangularMatrix_doc.i
 
-%include TriangularMatrix.hxx
+%include openturns/TriangularMatrix.hxx
 
 namespace OT {
 

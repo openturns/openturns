@@ -19,7 +19,7 @@
  *
  */
 
-#include "AtomicFunctions.hxx"
+#include "openturns/AtomicFunctions.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,7 +1,7 @@
 // SWIG file DistributionFactory.i
 
 %{
-#include "DistributionFactory.hxx"
+#include "openturns/DistributionFactory.hxx"
 %}
 
 %include DistributionFactory_doc.i
@@ -11,7 +11,7 @@
 OTTypedInterfaceObjectHelper(DistributionFactory)
 OTTypedCollectionInterfaceObjectHelper(DistributionFactory)
 
-%include DistributionFactory.hxx
+%include openturns/DistributionFactory.hxx
 
 namespace OT {
 

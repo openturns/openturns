@@ -3,8 +3,8 @@
 OTAutodoc(AnalyticalNumericalMathHessianImplementation)
 
 %{
-#include "AnalyticalNumericalMathHessianImplementation.hxx"
+#include "openturns/AnalyticalNumericalMathHessianImplementation.hxx"
 %}
 
-%include AnalyticalNumericalMathHessianImplementation.hxx
+%include openturns/AnalyticalNumericalMathHessianImplementation.hxx
 namespace OT { %extend AnalyticalNumericalMathHessianImplementation { AnalyticalNumericalMathHessianImplementation(const AnalyticalNumericalMathHessianImplementation & other) { return new OT::AnalyticalNumericalMathHessianImplementation(other); } } }

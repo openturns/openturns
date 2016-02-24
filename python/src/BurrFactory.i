@@ -1,10 +1,10 @@
 // SWIG file BurrFactory.i
 
 %{
-#include "BurrFactory.hxx"
+#include "openturns/BurrFactory.hxx"
 %}
 
 %include BurrFactory_doc.i
 
-%include BurrFactory.hxx
+%include openturns/BurrFactory.hxx
 namespace OT { %extend BurrFactory { BurrFactory(const BurrFactory & other) { return new OT::BurrFactory(other); } } }

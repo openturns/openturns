@@ -1,8 +1,8 @@
 // SWIG file Distribution.i
 
 %{
-#include "Distribution.hxx"
-#include "PythonDistributionImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/PythonDistributionImplementation.hxx"
 %}
 
 %include Distribution_doc.i
@@ -109,7 +109,7 @@ OTTypedCollectionInterfaceObjectHelper(Distribution)
 %ignore OT::Distribution::setWeight;
 %ignore OT::Distribution::getWeight;
 
-%include Distribution.hxx
+%include openturns/Distribution.hxx
 
 namespace OT {  
 

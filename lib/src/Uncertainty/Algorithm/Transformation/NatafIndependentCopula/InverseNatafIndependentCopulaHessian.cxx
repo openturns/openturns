@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "InverseNatafIndependentCopulaHessian.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/InverseNatafIndependentCopulaHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

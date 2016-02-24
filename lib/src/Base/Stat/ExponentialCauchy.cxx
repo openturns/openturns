@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "ExponentialCauchy.hxx"
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "AbsoluteExponential.hxx"
-#include "CauchyModel.hxx"
+#include "openturns/ExponentialCauchy.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/AbsoluteExponential.hxx"
+#include "openturns/CauchyModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

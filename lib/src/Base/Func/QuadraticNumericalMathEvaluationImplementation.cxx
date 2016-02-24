@@ -18,9 +18,9 @@
  *
  */
 
-#include "QuadraticNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Os.hxx"
+#include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

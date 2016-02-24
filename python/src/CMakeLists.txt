@@ -4,11 +4,12 @@ add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
 
 # generate SWIG runtime header
 set (SWIG_PYTHON_OPTIONS "-python")
-add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.hxx
+execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
+add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx
                      COMMAND ${SWIG_EXECUTABLE}
-                     ARGS ${SWIG_PYTHON_OPTIONS} ${CMAKE_SWIG_FLAGS} ${OPENTURNS_SWIG_DEFINITIONS} -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.hxx
+                     ARGS ${SWIG_PYTHON_OPTIONS} ${CMAKE_SWIG_FLAGS} ${OPENTURNS_SWIG_DEFINITIONS} -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx
                      COMMENT "Swig header")
-add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.hxx)
+add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx)
 add_custom_target (generate_docstrings)
 
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
@@ -23,7 +24,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   ot_install_swig_file (${SOURCEFILE})
   if (${ARGC} GREATER 2)
     set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
-    list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS PythonWrappingFunctions.hxx)
+    list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS openturns/PythonWrappingFunctions.hxx)
   endif ()
 
   set (swig_other_sources)
@@ -64,15 +65,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
 endmacro (ot_add_python_module)
 
-install (FILES PythonNumericalMathEvaluationImplementation.hxx
-                PythonNumericalMathGradientImplementation.hxx
-                PythonNumericalMathHessianImplementation.hxx
-                PythonDynamicalFunctionImplementation.hxx
-                PythonRandomVectorImplementation.hxx
-                PythonDistributionImplementation.hxx
-                PythonWrappingFunctions.hxx
-          DESTINATION ${OPENTURNS_INCLUDE_PATH}
-       )
+install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
 if (LIBXML2_FOUND)
   list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_LIBXML2=1)

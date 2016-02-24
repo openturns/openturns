@@ -19,11 +19,11 @@
  *
  */
 
-#include "ComplexMatrix.hxx"
-#include "ComplexMatrixImplementation.hxx"
-#include "PersistentObject.hxx"
-#include "HermitianMatrix.hxx"
-#include "TriangularComplexMatrix.hxx"
+#include "openturns/ComplexMatrix.hxx"
+#include "openturns/ComplexMatrixImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/HermitianMatrix.hxx"
+#include "openturns/TriangularComplexMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

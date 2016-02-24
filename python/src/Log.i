@@ -1,7 +1,7 @@
 // SWIG file Log.i
 
 %{
-#include "Log.hxx"
+#include "openturns/Log.hxx"
 %}
 
 %include Log_doc.i
@@ -10,4 +10,4 @@
 
 %nodefaultctor Log;
 
-%include Log.hxx
+%include openturns/Log.hxx

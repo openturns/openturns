@@ -19,12 +19,12 @@
  *
  */
 
-#include "MetaModelValidation.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "KernelSmoothing.hxx"
-#include "HistogramFactory.hxx"
-#include "Curve.hxx"
-#include "Cloud.hxx"
+#include "openturns/MetaModelValidation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/KernelSmoothing.hxx"
+#include "openturns/HistogramFactory.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Cloud.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

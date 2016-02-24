@@ -20,10 +20,10 @@
  */
 #include <cstdlib>
 
-#include "Last.hxx"
-#include "NumericalSampleImplementation.hxx"
-#include "ResourceMap.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Last.hxx"
+#include "openturns/NumericalSampleImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

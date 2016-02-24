@@ -1,8 +1,8 @@
 // SWIG file ComparisonOperatorImplementation.i
 
 %{
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 %}
 
-%include ComparisonOperatorImplementation.hxx
+%include openturns/ComparisonOperatorImplementation.hxx
 namespace OT { %extend ComparisonOperatorImplementation { ComparisonOperatorImplementation(const ComparisonOperatorImplementation & other) { return new OT::ComparisonOperatorImplementation(other); } } }

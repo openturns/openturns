@@ -1,9 +1,9 @@
 // SWIG file PersistentCollection.i
 
 %{
-#include "PersistentCollection.hxx"
+#include "openturns/PersistentCollection.hxx"
 %}
 
-%include PersistentCollection.hxx
+%include openturns/PersistentCollection.hxx
 
 %template(UnsignedIntegerPersistentCollection) OT::PersistentCollection<OT::UnsignedInteger>;

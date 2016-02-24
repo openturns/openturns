@@ -3,8 +3,8 @@
 OTAutodoc(NatafIndependentCopulaGradient)
 
 %{
-#include "NatafIndependentCopulaGradient.hxx"
+#include "openturns/NatafIndependentCopulaGradient.hxx"
 %}
 
-%include NatafIndependentCopulaGradient.hxx
+%include openturns/NatafIndependentCopulaGradient.hxx
 namespace OT { %extend NatafIndependentCopulaGradient { NatafIndependentCopulaGradient(const NatafIndependentCopulaGradient & other) { return new OT::NatafIndependentCopulaGradient(other); } } }

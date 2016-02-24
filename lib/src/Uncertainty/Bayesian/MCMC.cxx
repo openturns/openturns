@@ -19,13 +19,13 @@
  *
  */
 
-#include "MCMC.hxx"
-#include "ConditionalDistribution.hxx"
-#include "Normal.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "IdentityMatrix.hxx"
-#include "Full.hxx"
+#include "openturns/MCMC.hxx"
+#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/Full.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

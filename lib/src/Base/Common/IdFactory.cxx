@@ -19,10 +19,10 @@
  *
  */
 #include <cstdlib>
-#include "IdFactory.hxx"
-#include "OSS.hxx"
-#include "OTthread.hxx"
-#include "MutexLock.hxx"
+#include "openturns/IdFactory.hxx"
+#include "openturns/OSS.hxx"
+#include "openturns/OTthread.hxx"
+#include "openturns/MutexLock.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

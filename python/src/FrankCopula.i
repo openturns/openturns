@@ -1,10 +1,10 @@
 // SWIG file FrankCopula.i
 
 %{
-#include "FrankCopula.hxx"
+#include "openturns/FrankCopula.hxx"
 %}
 
 %include FrankCopula_doc.i
 
-%include FrankCopula.hxx
+%include openturns/FrankCopula.hxx
 namespace OT { %extend FrankCopula { FrankCopula(const FrankCopula & other) { return new OT::FrankCopula(other); } } }

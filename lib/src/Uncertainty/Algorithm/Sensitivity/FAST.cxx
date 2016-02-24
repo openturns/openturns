@@ -21,9 +21,9 @@
 
 #include <cmath>
 
-#include "FAST.hxx"
-#include "RandomGenerator.hxx"
-#include "FFT.hxx"
+#include "openturns/FAST.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/FFT.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

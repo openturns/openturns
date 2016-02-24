@@ -19,10 +19,10 @@
  *
  */
 
-#include "LinearLeastSquares.hxx"
-#include "LinearNumericalMathEvaluationImplementation.hxx"
-#include "ConstantNumericalMathGradientImplementation.hxx"
-#include "ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/LinearLeastSquares.hxx"
+#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
+#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

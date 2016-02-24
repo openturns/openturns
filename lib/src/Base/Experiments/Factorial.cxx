@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTprivate.hxx"
-#include "Factorial.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/Factorial.hxx"
+#include "openturns/SpecFunc.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS

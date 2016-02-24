@@ -3,8 +3,8 @@
 OTAutodoc(ConstantRandomVector)
 
 %{
-#include "ConstantRandomVector.hxx"
+#include "openturns/ConstantRandomVector.hxx"
 %}
 
-%include ConstantRandomVector.hxx
+%include openturns/ConstantRandomVector.hxx
 namespace OT { %extend ConstantRandomVector { ConstantRandomVector(const ConstantRandomVector & other) { return new OT::ConstantRandomVector(other); } } }

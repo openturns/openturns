@@ -1,12 +1,12 @@
 // SWIG file WelchFactory.i
 
 %{
-#include "WelchFactory.hxx"
+#include "openturns/WelchFactory.hxx"
 %}
 
 %include  WelchFactory_doc.i
 
-%include WelchFactory.hxx
+%include openturns/WelchFactory.hxx
 namespace OT { 
 
   %extend WelchFactory {

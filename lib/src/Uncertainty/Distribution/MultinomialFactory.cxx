@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "MultinomialFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/MultinomialFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

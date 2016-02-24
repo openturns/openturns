@@ -1,10 +1,10 @@
 // SWIG file CopulaImplementation.i
 
 %{
-#include "CopulaImplementation.hxx"
+#include "openturns/CopulaImplementation.hxx"
 %}
 
 %include CopulaImplementation_doc.i
 
-%include CopulaImplementation.hxx
+%include openturns/CopulaImplementation.hxx
 namespace OT { %extend CopulaImplementation { CopulaImplementation(const CopulaImplementation & other) { return new OT::CopulaImplementation(other); } } }

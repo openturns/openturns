@@ -27,7 +27,7 @@ extern "C" {
 
 /* Replace the initial implementation of erfinv by some OpenTURNS equivalent */
 // #include <erfinv.h>
-#include "DistFunc.hxx"
+#include "openturns/DistFunc.hxx"
 
 
 //

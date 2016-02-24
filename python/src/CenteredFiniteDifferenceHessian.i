@@ -1,12 +1,12 @@
 // SWIG file CenteredFiniteDifferenceHessian.i
 
 %{
-#include "CenteredFiniteDifferenceHessian.hxx"
+#include "openturns/CenteredFiniteDifferenceHessian.hxx"
 %}
 
 %include CenteredFiniteDifferenceHessian_doc.i
 
-%include CenteredFiniteDifferenceHessian.hxx
+%include openturns/CenteredFiniteDifferenceHessian.hxx
 namespace OT {  
 %extend CenteredFiniteDifferenceHessian {
 

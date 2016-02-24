@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SymmetricMatrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

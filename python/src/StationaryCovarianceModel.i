@@ -3,9 +3,9 @@
 OTAutodoc(StationaryCovarianceModel)
 
 %{
-#include "StationaryCovarianceModel.hxx"
+#include "openturns/StationaryCovarianceModel.hxx"
 %}
 
 
-%include StationaryCovarianceModel.hxx
+%include openturns/StationaryCovarianceModel.hxx
 namespace OT{ %extend StationaryCovarianceModel { StationaryCovarianceModel(const StationaryCovarianceModel & other) { return new OT::StationaryCovarianceModel(other); } } }

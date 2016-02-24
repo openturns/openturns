@@ -18,15 +18,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "TrapezoidalFactory.hxx"
+#include "openturns/TrapezoidalFactory.hxx"
 #include <limits>
-#include "Distribution.hxx"
-#include "SpecFunc.hxx"
-#include "ResourceMap.hxx"
-#include "Log.hxx"
-#include "MaximumLikelihoodFactory.hxx"
-#include "Cobyla.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
+#include "openturns/Cobyla.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

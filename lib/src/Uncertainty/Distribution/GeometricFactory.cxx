@@ -19,8 +19,8 @@
  *
  */
 #include <cmath>
-#include "GeometricFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/GeometricFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

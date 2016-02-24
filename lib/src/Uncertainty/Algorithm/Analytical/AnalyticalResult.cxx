@@ -21,19 +21,19 @@
 #include <iomanip>
 #include <cstdlib>
 
-#include "Analytical.hxx"
-#include "Distribution.hxx"
-#include "NumericalSample.hxx"
-#include "SensitivityAnalysis.hxx"
-#include "NumericalMathFunction.hxx"
-#include "BarPlot.hxx"
-#include "Description.hxx"
-#include "CompositeRandomVector.hxx"
-#include "ConstantRandomVector.hxx"
-#include "RandomVector.hxx"
-#include "Less.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/Analytical.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/SensitivityAnalysis.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/BarPlot.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/ConstantRandomVector.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/Less.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

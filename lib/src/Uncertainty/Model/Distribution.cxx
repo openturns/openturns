@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "Distribution.hxx"
-#include "Uniform.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

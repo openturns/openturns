@@ -3,8 +3,8 @@
 OTAutodoc(NatafEllipticalCopulaEvaluation)
 
 %{
-#include "NatafEllipticalCopulaEvaluation.hxx"
+#include "openturns/NatafEllipticalCopulaEvaluation.hxx"
 %}
 
-%include NatafEllipticalCopulaEvaluation.hxx
+%include openturns/NatafEllipticalCopulaEvaluation.hxx
 namespace OT { %extend NatafEllipticalCopulaEvaluation { NatafEllipticalCopulaEvaluation(const NatafEllipticalCopulaEvaluation & other) { return new OT::NatafEllipticalCopulaEvaluation(other); } } }

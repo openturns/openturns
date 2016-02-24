@@ -6,7 +6,7 @@
 OT::NumericalPoint OT::OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(OT::NumericalPoint & weights) const;
 
 %{
-#include "OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 %}
 
 %include OrthogonalUniVariatePolynomialFamily_doc.i
@@ -16,7 +16,7 @@ OTDefaultCollectionConvertFunctionsMisnamed(OrthogonalUniVariatePolynomialFamily
 OTTypedInterfaceObjectImplementationHelper(OrthogonalUniVariatePolynomialFamily, OrthogonalUniVariatePolynomialFactory)
 OTTypedCollectionInterfaceObjectMisnamedHelper(OrthogonalUniVariatePolynomialFamily, PolynomialFamilyCollection)
 
-%include OrthogonalUniVariatePolynomialFamily.hxx
+%include openturns/OrthogonalUniVariatePolynomialFamily.hxx
 
 namespace OT{  
 

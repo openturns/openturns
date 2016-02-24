@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OptimizationResult.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Curve.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/OptimizationResult.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

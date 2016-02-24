@@ -19,11 +19,11 @@
  *
  */
 
-#include "Exception.hxx"
-#include "KDTree.hxx"
-#include "SpecFunc.hxx"
-#include "Indices.hxx"
-#include "SobolSequence.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/KDTree.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

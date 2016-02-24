@@ -3,9 +3,9 @@
 OTAutodoc(PiecewiseHermiteEvaluationImplementation)
 
 %{
-#include "PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
 %}
 
-%include PiecewiseHermiteEvaluationImplementation.hxx
+%include openturns/PiecewiseHermiteEvaluationImplementation.hxx
 
 namespace OT { %extend PiecewiseHermiteEvaluationImplementation { PiecewiseHermiteEvaluationImplementation(const PiecewiseHermiteEvaluationImplementation & other) { return new OT::PiecewiseHermiteEvaluationImplementation(other); } } }

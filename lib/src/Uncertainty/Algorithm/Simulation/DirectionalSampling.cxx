@@ -18,13 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "PersistentObjectFactory.hxx"
-#include "DirectionalSampling.hxx"
-#include "CorrelationMatrix.hxx"
-#include "LinearNumericalMathFunction.hxx"
-#include "NumericalMathFunction.hxx"
-#include "Matrix.hxx"
-#include "ComparisonOperatorImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DirectionalSampling.hxx"
+#include "openturns/CorrelationMatrix.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

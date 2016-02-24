@@ -18,10 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "JacobiFactory.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Beta.hxx"
-#include "Exception.hxx"
+#include "openturns/JacobiFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Beta.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

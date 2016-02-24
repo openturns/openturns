@@ -21,7 +21,7 @@
 
 #include <cmath>
 
-#include "ANCOVA.hxx"
+#include "openturns/ANCOVA.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

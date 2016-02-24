@@ -20,9 +20,9 @@
  *  Id:      $Id: t_ARMALikelihoodFactory_std.cxx 2302 2012-01-04 11:26:21Z schueller $
  */
 #include <iostream>
-#include "OT.hxx"
-#include "OTtestcode.hxx"
-#include "DistFunc.hxx"
+#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
+#include "openturns/DistFunc.hxx"
 
 using namespace OT;
 using namespace OT::Test;

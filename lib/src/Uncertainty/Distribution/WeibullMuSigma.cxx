@@ -20,10 +20,10 @@
  */
 
 #include <cmath>
-#include "WeibullFactory.hxx"
-#include "SquareMatrix.hxx"
-#include "SpecFunc.hxx"
-#include "WeibullMuSigma.hxx"
+#include "openturns/WeibullFactory.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/WeibullMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

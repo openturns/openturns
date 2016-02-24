@@ -19,12 +19,12 @@
  *
  */
 
-#include "SphereUniformNormImplementation.hxx"
-#include "StorageManager.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "NumericalPoint.hxx"
-#include "NumericalSample.hxx"
-#include "Exception.hxx"
+#include "openturns/SphereUniformNormImplementation.hxx"
+#include "openturns/StorageManager.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/NumericalSample.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

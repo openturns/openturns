@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "DirichletFactory.hxx"
-#include "ResourceMap.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/DirichletFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

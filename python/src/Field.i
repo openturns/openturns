@@ -1,14 +1,14 @@
 // SWIG file Field.i
 
 %{
-#include "Field.hxx"
+#include "openturns/Field.hxx"
 %}
 
 %include Field_doc.i
 
 OTTypedInterfaceObjectHelper(Field)
 
-%include Field.hxx
+%include openturns/Field.hxx
 
 namespace OT {
 %extend Field {

@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "InverseWishart.hxx"
-#include "DistFunc.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ChiSquare.hxx"
+#include "openturns/InverseWishart.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ChiSquare.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

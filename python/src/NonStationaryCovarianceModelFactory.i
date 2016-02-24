@@ -1,12 +1,12 @@
 // SWIG file NonStationaryCovarianceModelFactory.i
 
 %{
-#include "NonStationaryCovarianceModelFactory.hxx"
+#include "openturns/NonStationaryCovarianceModelFactory.hxx"
 %}
 
 %include NonStationaryCovarianceModelFactory_doc.i
 
-%include NonStationaryCovarianceModelFactory.hxx
+%include openturns/NonStationaryCovarianceModelFactory.hxx
 namespace OT { 
 
   %extend NonStationaryCovarianceModelFactory {

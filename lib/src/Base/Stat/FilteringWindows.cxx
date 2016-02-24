@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "FilteringWindows.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Hamming.hxx"
+#include "openturns/FilteringWindows.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Hamming.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

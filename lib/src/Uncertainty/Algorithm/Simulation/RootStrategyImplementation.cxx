@@ -19,11 +19,11 @@
  *
  */
 #include <cstdlib>
-#include "PersistentObjectFactory.hxx"
-#include "RootStrategyImplementation.hxx"
-#include "Brent.hxx"
-#include "Exception.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/RootStrategyImplementation.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

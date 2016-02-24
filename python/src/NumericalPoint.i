@@ -4,7 +4,7 @@
 %ignore OT::NumericalPoint::getCollection;
 
 %{
-#include "NumericalPoint.hxx"
+#include "openturns/NumericalPoint.hxx"
 %}
 
 %include NumericalPoint_doc.i
@@ -56,7 +56,7 @@
 
 %apply const NumericalPoint & { const OT::NumericalPoint & };
 
-%include NumericalPoint.hxx
+%include openturns/NumericalPoint.hxx
 %copyctor NumericalPoint;
 
 namespace OT {

@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "SquareComplexMatrix.hxx"
-#include "HermitianMatrix.hxx"
-#include "IdentityMatrix.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
+#include "openturns/HermitianMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

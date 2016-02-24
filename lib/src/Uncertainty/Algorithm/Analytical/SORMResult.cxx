@@ -20,17 +20,17 @@
  */
 #include <cmath>
 
-#include "SORM.hxx"
-#include "StandardEvent.hxx"
-#include "NumericalMathFunction.hxx"
-#include "SymmetricTensor.hxx"
-#include "IdentityMatrix.hxx"
-#include "Matrix.hxx"
-#include "Log.hxx"
-#include "Normal.hxx"
-#include "StandardEvent.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
+#include "openturns/SORM.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/StandardEvent.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

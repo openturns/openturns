@@ -1,7 +1,7 @@
 // SWIG file OTexceptions.i
 
 %{
-#include "Exception.hxx"
+#include "openturns/Exception.hxx"
 %}
 
 namespace std {

@@ -1,10 +1,10 @@
 // SWIG file LaguerreFactory.i
 
 %{
-#include "LaguerreFactory.hxx"
+#include "openturns/LaguerreFactory.hxx"
 %}
 
 %include LaguerreFactory_doc.i
 
-%include LaguerreFactory.hxx
+%include openturns/LaguerreFactory.hxx
 namespace OT { %extend LaguerreFactory { LaguerreFactory(const LaguerreFactory & other) { return new OT::LaguerreFactory(other); } } }

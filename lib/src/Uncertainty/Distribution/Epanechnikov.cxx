@@ -19,11 +19,11 @@
  *
  */
 #include <cmath>
-#include "Epanechnikov.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "DistFunc.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/Epanechnikov.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

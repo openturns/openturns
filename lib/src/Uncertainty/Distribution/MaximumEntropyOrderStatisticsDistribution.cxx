@@ -19,16 +19,16 @@
  *
  */
 #include <cmath>
-#include "MaximumEntropyOrderStatisticsDistribution.hxx"
-#include "MaximumEntropyOrderStatisticsCopula.hxx"
-#include "RandomGenerator.hxx"
-#include "SpecFunc.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "OrderStatisticsMarginalChecker.hxx"
-#include "Uniform.hxx"
-#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "GaussKronrod.hxx"
-#include "Brent.hxx"
+#include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
+#include "openturns/MaximumEntropyOrderStatisticsCopula.hxx"
+#include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/OrderStatisticsMarginalChecker.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/Brent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

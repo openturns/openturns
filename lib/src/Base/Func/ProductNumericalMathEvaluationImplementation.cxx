@@ -15,8 +15,8 @@
  * \date   $LastChangedDate: 2008-07-03 08:31:34 +0200 (jeu, 03 jui 2008) $
  */
 
-#include "ProductNumericalMathEvaluationImplementation.hxx"
-#include "PersistentObjectFactory.hxx"
+#include "openturns/ProductNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

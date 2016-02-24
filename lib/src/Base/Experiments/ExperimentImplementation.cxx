@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "OTprivate.hxx"
-#include "ExperimentImplementation.hxx"
-#include "Exception.hxx"
+#include "openturns/OTprivate.hxx"
+#include "openturns/ExperimentImplementation.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

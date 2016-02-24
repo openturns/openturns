@@ -21,9 +21,9 @@
  *
  */
 
-#include "FiniteDifferenceHessian.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "Exception.hxx"
+#include "openturns/FiniteDifferenceHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "ClaytonCopulaFactory.hxx"
+#include "openturns/ClaytonCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1,7 +1,7 @@
 // SWIG file UniVariatePolynomial.i
 
 %{
-#include "UniVariatePolynomial.hxx"
+#include "openturns/UniVariatePolynomial.hxx"
 
 namespace OT { 
 
@@ -28,7 +28,7 @@ namespace OT {
 
 OTTypedInterfaceObjectHelper(UniVariatePolynomial)
 
-%include UniVariatePolynomial.hxx
+%include openturns/UniVariatePolynomial.hxx
 namespace OT {  
 
 %extend UniVariatePolynomial {

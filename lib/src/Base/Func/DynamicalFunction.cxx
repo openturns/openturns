@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "DynamicalFunction.hxx"
-#include "SpatialFunction.hxx"
+#include "openturns/DynamicalFunction.hxx"
+#include "openturns/SpatialFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

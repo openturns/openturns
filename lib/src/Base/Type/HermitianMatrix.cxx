@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "HermitianMatrix.hxx"
-#include "TriangularComplexMatrix.hxx"
-#include "SymmetricMatrix.hxx"
-#include "IdentityMatrix.hxx"
-#include "SquareMatrix.hxx"
-#include "Matrix.hxx"
+#include "openturns/HermitianMatrix.hxx"
+#include "openturns/TriangularComplexMatrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+#include "openturns/IdentityMatrix.hxx"
+#include "openturns/SquareMatrix.hxx"
+#include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

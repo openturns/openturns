@@ -1,14 +1,14 @@
 // SWIG file ComparisonOperator.i
 
 %{
-#include "ComparisonOperator.hxx"
+#include "openturns/ComparisonOperator.hxx"
 %}
 
 %include ComparisonOperator_doc.i
 
 OTTypedInterfaceObjectHelper(ComparisonOperator)
 
-%include ComparisonOperator.hxx
+%include openturns/ComparisonOperator.hxx
 namespace OT {  
 %extend ComparisonOperator {
   const String __str__() const { return self->__repr__(); }

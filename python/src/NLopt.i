@@ -1,12 +1,12 @@
 // SWIG file NLopt.i
 
 %{
-#include "NLopt.hxx"
+#include "openturns/NLopt.hxx"
 %}
 
 %include NLopt_doc.i
 
-%include NLopt.hxx
+%include openturns/NLopt.hxx
 
 namespace OT { %extend NLopt { NLopt(const NLopt & other) { return new OT::NLopt(other); } } }
 

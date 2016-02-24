@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "BinomialFactory.hxx"
-#include "SpecFunc.hxx"
-#include "DiscreteDistribution.hxx"
+#include "openturns/BinomialFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/DiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

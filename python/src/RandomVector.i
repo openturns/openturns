@@ -1,8 +1,8 @@
 // SWIG file RandomVector.i
 
 %{
-#include "RandomVector.hxx"
-#include "PythonRandomVectorImplementation.hxx"
+#include "openturns/RandomVector.hxx"
+#include "openturns/PythonRandomVectorImplementation.hxx"
 %}
 
 %include RandomVector_doc.i
@@ -189,7 +189,7 @@ class SciPyRandomVector(PythonRandomVector):
 
 OTTypedInterfaceObjectHelper(RandomVector)
 
-%include RandomVector.hxx
+%include openturns/RandomVector.hxx
 namespace OT { %extend RandomVector { 
 
 RandomVector(const RandomVector & other)

@@ -1,7 +1,7 @@
 // SWIG file Tensor.i
 
 %{
-#include "Tensor.hxx"
+#include "openturns/Tensor.hxx"
 %}
 
 %include Tensor_doc.i
@@ -98,7 +98,7 @@ fail:
 %enddef
 
 
-%include Tensor.hxx
+%include openturns/Tensor.hxx
 
 %pythoncode %{
 # This code has been added to conform to Numpy ndarray interface

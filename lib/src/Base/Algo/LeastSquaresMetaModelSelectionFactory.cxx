@@ -19,10 +19,10 @@
  *
  */
 
-#include "PersistentObjectFactory.hxx"
-#include "LeastSquaresMetaModelSelectionFactory.hxx"
-#include "BasisSequenceFactoryImplementation.hxx"
-#include "BasisSequenceFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
+#include "openturns/BasisSequenceFactoryImplementation.hxx"
+#include "openturns/BasisSequenceFactory.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "TruncatedNormalFactory.hxx"
-#include "SpecFunc.hxx"
-#include "MaximumLikelihoodFactory.hxx"
+#include "openturns/TruncatedNormalFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

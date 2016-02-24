@@ -6,7 +6,7 @@
 OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const Bool keepIntact = true);
 
 %{
-#include "SymmetricMatrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 %}
 
 %include SymmetricMatrix_doc.i
@@ -15,7 +15,7 @@ OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const B
 
 %apply const NumericalScalarCollection & { const OT::SymmetricMatrix::NumericalScalarCollection & };
 
-%include SymmetricMatrix.hxx
+%include openturns/SymmetricMatrix.hxx
 
 namespace OT {
 

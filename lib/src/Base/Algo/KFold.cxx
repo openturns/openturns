@@ -19,10 +19,10 @@
  *
  */
 
-#include "Exception.hxx"
-#include "PersistentObjectFactory.hxx"
-#include "ResourceMap.hxx"
-#include "KFold.hxx"
+#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/KFold.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

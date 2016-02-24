@@ -18,9 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "EnumerateFunction.hxx"
-#include "LinearEnumerateFunction.hxx"
-#include "HyperbolicAnisotropicEnumerateFunction.hxx"
+#include "openturns/EnumerateFunction.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
+#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

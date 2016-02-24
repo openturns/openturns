@@ -24,11 +24,11 @@
 #include <cstdlib>
 #include <errno.h>
 
-#include "OTconfig.hxx"
-#include "OTthread.hxx"
+#include "openturns/OTconfig.hxx"
+#include "openturns/OTthread.hxx"
 
-#include "TBB.hxx"
-#include "ResourceMap.hxx"
+#include "openturns/TBB.hxx"
+#include "openturns/ResourceMap.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

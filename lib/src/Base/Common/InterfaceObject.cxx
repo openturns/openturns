@@ -19,7 +19,7 @@
  *
  */
 #include <iostream>              // for std::ostream
-#include "InterfaceObject.hxx"
+#include "openturns/InterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

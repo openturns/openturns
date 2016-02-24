@@ -1,12 +1,12 @@
 // SWIG file CenteredFiniteDifferenceGradient.i
 
 %{
-#include "CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
 %}
 
 %include CenteredFiniteDifferenceGradient_doc.i
 
-%include CenteredFiniteDifferenceGradient.hxx
+%include openturns/CenteredFiniteDifferenceGradient.hxx
 namespace OT {  
 %extend CenteredFiniteDifferenceGradient {
 
