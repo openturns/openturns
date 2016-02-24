@@ -3,7 +3,7 @@
  *  @brief StatTest implements statistical tests
  *  This statistical test enables user to check if a time series is stationary
  *
- *  Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

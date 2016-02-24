@@ -2,7 +2,7 @@
 /**
  * @brief The class that implements the Hessian of analytical functions
  *
- * Copyright 2005-2015 Airbus-EDF-IMACS-Phimeca
+ * Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.
