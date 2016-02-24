@@ -181,6 +181,7 @@ if (NUMPY_FOUND)
 endif ()
 
 # Func
+ot_pyinstallcheck_test (SpecFunc_std)
 ot_pyinstallcheck_test (NumericalMathFunction_std)
 ot_pyinstallcheck_test (NumericalMathFunction_composition)
 ot_pyinstallcheck_test (NumericalMathFunction_python)

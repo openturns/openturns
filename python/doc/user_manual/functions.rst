@@ -227,6 +227,7 @@ as Python functions.
     SpecFunc_LnGamma
     SpecFunc_Log1MExp
     SpecFunc_Log1p
+    SpecFunc_Log2
     SpecFunc_LogBesselI0
     SpecFunc_LogBesselI1
     SpecFunc_LogBesselK
