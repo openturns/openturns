@@ -70,3 +70,13 @@ Truncation schemes
     EnumerateFunction
     LinearEnumerateFunction
     HyperbolicAnisotropicEnumerateFunction
+
+Orthogonal univariate function families
+---------------------------------------
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    OrthogonalUniVariateFunctionFamily
+    OrthogonalUniVariateFunctionFactory
