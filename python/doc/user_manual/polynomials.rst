@@ -80,3 +80,4 @@ Orthogonal univariate function families
 
     OrthogonalUniVariateFunctionFamily
     OrthogonalUniVariateFunctionFactory
+    OrthogonalUniVariatePolynomialFunctionFactory
