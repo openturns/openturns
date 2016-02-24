@@ -77,6 +77,8 @@
 %include QuadraticNumericalMathFunction.i
 %include UniVariatePolynomialImplementation.i
 %include UniVariatePolynomial.i
+%include UniVariateFunctionImplementation.i
+%include UniVariateFunction.i
 %include AggregatedNumericalMathEvaluationImplementation.i
 %include PiecewiseLinearEvaluationImplementation.i
 %include PiecewiseHermiteEvaluationImplementation.i
