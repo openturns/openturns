@@ -50,6 +50,7 @@
 %include OrthogonalUniVariateFunctionFamily.i 
 %include OrthogonalUniVariatePolynomialFunctionFactory.i
 %include FourierSeriesFactory.i
+%include HaarWaveletFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyOrthogonalBasisTemplateDefs.i

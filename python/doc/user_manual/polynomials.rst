@@ -82,3 +82,5 @@ Orthogonal univariate function families
     OrthogonalUniVariateFunctionFactory
     OrthogonalUniVariatePolynomialFunctionFactory
     FourierSeriesFunctionFactory
+    HaarWaveletFunctionFactory
+
