@@ -27,6 +27,7 @@ ot_add_source_file (OrthogonalUniVariateFunctionFactory.cxx)
 ot_add_source_file (OrthogonalUniVariatePolynomialFunctionFactory.cxx)
 ot_add_source_file (FourierSeriesFactory.cxx)
 ot_add_source_file (HaarWaveletFactory.cxx)
+ot_add_source_file (OrthogonalProductFunctionFactory.cxx)
 
 ot_install_header_file (OTOrthogonalBasis.hxx)
 ot_install_header_file (OrthogonalFunctionFactory.hxx)
@@ -53,4 +54,5 @@ ot_install_header_file (OrthogonalUniVariateFunctionFactory.hxx)
 ot_install_header_file (OrthogonalUniVariatePolynomialFunctionFactory.hxx)
 ot_install_header_file (FourierSeriesFactory.hxx)
 ot_install_header_file (HaarWaveletFactory.hxx)
+ot_install_header_file (OrthogonalProductFunctionFactory.hxx)
 

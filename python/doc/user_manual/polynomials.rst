@@ -59,6 +59,7 @@ Making orthogonal multivariate polynomials from orthogonal univariate polynomial
     :template: class.rst_t
 
     OrthogonalProductPolynomialFactory
+    OrthogonalProductFunctionFactory
 
 Truncation schemes
 ------------------
@@ -81,6 +82,6 @@ Orthogonal univariate function families
     OrthogonalUniVariateFunctionFamily
     OrthogonalUniVariateFunctionFactory
     OrthogonalUniVariatePolynomialFunctionFactory
-    FourierSeriesFunctionFactory
-    HaarWaveletFunctionFactory
+    FourierSeriesFactory
+    HaarWaveletFactory
 
