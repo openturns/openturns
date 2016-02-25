@@ -118,9 +118,6 @@ public:
                              const UnsignedInteger j) const;
 #endif
 
-  /** Whether the list contains the value val */
-  Bool contains(const NumericalPoint & val) const;
-
   /** Return the field as a sample, ie its values and positions */
   NumericalSample asSample() const;
 

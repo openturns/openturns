@@ -229,13 +229,6 @@ void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp,
   setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
 }
 
-/* Whether the list contains the value val */
-Bool FieldImplementation::contains(const NumericalPoint & val) const
-{
-  for (UnsignedInteger i = 0; i < getSize(); ++ i) if (getValueAtIndex(i) == val) return true;
-  return false;
-}
-
 /* Description Accessor */
 void FieldImplementation::setDescription(const Description & description)
 {

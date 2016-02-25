@@ -15,8 +15,6 @@
 
 %apply const FieldImplementation & { const OT::FieldImplementation & };
 
-%rename(__contains__) OT::FieldImplementation::contains;
-
 %include openturns/FieldImplementation.hxx
 
 
