@@ -34,7 +34,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include <OTwindows.h>
+#include <openturns/OTwindows.h>
 #include <sys/types.h>
 #undef interface
 #include <stdio.h>
