@@ -380,7 +380,7 @@ void MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactors()
   const NumericalScalar shift(ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift"));
   for(UnsignedInteger k = 1; k < dimension; ++k)
   {
-    if (!partition_.__contains__(k - 1))
+    if (!partition_.contains(k - 1))
       exponentialFactorApproximation_[k - 1] = interpolateExponentialFactor(k - 1, k, maximumSubdivision, shift);
   } // k
   // Force parallelism here
@@ -419,7 +419,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computePDF(const Nume
   NumericalScalar productPDF(distributionCollection_[0].computePDF(point[0]));
   for (UnsignedInteger k = 1; k < dimension; ++k)
   {
-    if (!partition_.__contains__(k - 1))
+    if (!partition_.contains(k - 1))
     {
       // Compute the lower bound of the integral. The integrand is zero outside of the range of the kth distribution
       const NumericalScalar xMin(std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]));
@@ -472,7 +472,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const N
   NumericalScalar sumLogPDF(distributionCollection_[0].computeLogPDF(point[0]));
   for (UnsignedInteger k = 1; k < dimension; ++k)
   {
-    if (!partition_.__contains__(k - 1))
+    if (!partition_.contains(k - 1))
     {
       // Compute the lower bound of the integral. The integrand is zero outside of the range of the kth distribution
       const NumericalScalar xMin(std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]));
@@ -737,7 +737,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalPDF
   if ((xKm1 <= aKm1) || (xKm1 > bKm1)) return 0.0;
   // Here we have something to do
   // If x is independent of the previous components
-  if (partition_.__contains__(k - 1)) return distributionCollection_[k].computePDF(x);
+  if (partition_.contains(k - 1)) return distributionCollection_[k].computePDF(x);
   // Else the difficult case
   // PDF(x|xKm1) = d(1-exp(-\int_{xKm1}^x\phi(s)ds)) / dx
   //             = -d(-\int_{xKm1}^x\phi(s)ds)/dx * exp(-\int_{xKm1}^x\phi(s)ds)
@@ -787,7 +787,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF
   }
   // Here we have something to do
   // If x is independent of the previous components
-  if (partition_.__contains__(k - 1))
+  if (partition_.contains(k - 1))
   {
     const NumericalScalar value(distributionCollection_[k].computeCDF(x));
     return value;
@@ -810,7 +810,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQua
 
   if (conditioningDimension == 0) return distributionCollection_[0].computeQuantile(q)[0];
   const UnsignedInteger k(conditioningDimension);
-  if (partition_.__contains__(k - 1))
+  if (partition_.contains(k - 1))
   {
     return distributionCollection_[k].computeQuantile(q)[0];
   }

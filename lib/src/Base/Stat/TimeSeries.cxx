@@ -117,13 +117,6 @@ Bool TimeSeries::operator ==(const TimeSeries & other) const
   return (mesh_ == other.mesh_) && (values_ == other.values_);
 }
 
-/* Method __contains__() is for Python */
-Bool TimeSeries::contains(const NumericalPoint & val) const
-{
-  for (UnsignedInteger i = 0; i < n_; ++i) if ( getValueAtIndex(i) == val ) return true;
-  return false;
-}
-
 /* String converter */
 String TimeSeries::__repr__() const
 {

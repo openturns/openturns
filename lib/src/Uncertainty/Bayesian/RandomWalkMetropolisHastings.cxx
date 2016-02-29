@@ -137,7 +137,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
       // new candidate for the j-th component
       NumericalPoint nextState(newState);
 
-      Bool nonRejectedComponent = nonRejectedComponents_.__contains__(j);
+      Bool nonRejectedComponent = nonRejectedComponents_.contains(j);
       if (!nonRejectedComponent)
       {
         // regular MCMC

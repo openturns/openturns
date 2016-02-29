@@ -211,8 +211,8 @@ UnsignedInteger NumericalSample::__elementsize__ () const
   return getImplementation()->__elementsize__();
 }
 
-/* Method __contains__() is for Python */
-Bool NumericalSample::__contains__(const NumericalPoint & val) const
+/* Whether the list contains the value val */
+Bool NumericalSample::contains(const NumericalPoint & val) const
 {
   return getImplementation()->contains(val);
 }

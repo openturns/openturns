@@ -218,9 +218,9 @@ public:
     return (*this == rhs);
   }
 
-  /* Method __contains__() is for Python */
+  /* Whether the list contains the value val */
   inline
-  Bool __contains__(T val) const
+  Bool contains(T val) const
   {
     for (UnsignedInteger i = 0; i < coll__.size(); ++i) if ( coll__[i] == val ) return true;
     return false;

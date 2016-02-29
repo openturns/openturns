@@ -118,9 +118,6 @@ public:
                              const UnsignedInteger j) const;
 #endif
 
-  /* Method __contains__() is for Python */
-  Bool __contains__(const NumericalPoint & val) const;
-
   /** Return the field as a sample, ie its values and positions */
   NumericalSample asSample() const;
 

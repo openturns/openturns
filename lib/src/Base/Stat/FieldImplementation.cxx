@@ -229,13 +229,6 @@ void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp,
   setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
 }
 
-/* Method __contains__() is for Python */
-Bool FieldImplementation::__contains__(const NumericalPoint & val) const
-{
-  for (UnsignedInteger i = 0; i < getSize(); ++i) if ( getValueAtIndex(i) == val ) return true;
-  return false;
-}
-
 /* Description Accessor */
 void FieldImplementation::setDescription(const Description & description)
 {

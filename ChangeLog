@@ -15,6 +15,7 @@
  * Removed deprecated method Distribution::setParametersCollection(NP)
  * Removed deprecated PersistentFactory string constructor
  * Deprecated QuadraticCumul class in favor of TaylorExpansionsMoments
+ * Renamed __contains__ to contains
 
 === Python module ===
 

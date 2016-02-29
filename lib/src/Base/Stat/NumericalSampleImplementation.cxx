@@ -646,7 +646,7 @@ void NumericalSampleImplementation::setData(const Collection<NumericalScalar> & 
   data_ = data;
 }
 
-/* Method __contains__() is for Python */
+/* Whether the list contains the value val */
 Bool NumericalSampleImplementation::contains(const NumericalPoint & val) const
 {
   for (UnsignedInteger i = 0; i < size_; ++i) if ( (*this)[i] == val ) return true;

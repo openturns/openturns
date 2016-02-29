@@ -87,9 +87,6 @@ public:
 
   Bool operator ==(const TimeSeries & other) const;
 
-  /* Method contains() is for Python */
-  Bool contains(const NumericalPoint & val) const;
-
   /** Append an element to the collection */
   TimeSeries & add(const NumericalPoint & point);
 
