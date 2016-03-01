@@ -150,6 +150,8 @@ try:
     print("PDF (ref)=%.6f" % distributionRef.computePDF(point))
     print("CDF      =%.6f" % distribution.computeCDF(point))
     print("CDF (ref)=%.6f" % distributionRef.computeCDF(point))
+    print("Survival      =%.6f" % distribution.computeSurvivalFunction(point))
+    print("Survival (ref)=%.6f" % distributionRef.computeSurvivalFunction(point))
     # 95% quantile
     quantile = distribution.computeQuantile(0.95)
     print("Quantile      =", repr(quantile))
