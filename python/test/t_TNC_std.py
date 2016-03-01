@@ -2,6 +2,24 @@
 
 from __future__ import print_function
 import openturns as ot
+import math as m
+
+def printNumericalPoint(point, digits):
+    oss = "["
+    eps = pow(0.1, digits)
+    format = "%." + str(digits) + "f"
+    for i in range(point.getDimension()):
+        if i == 0:
+            sep = ""
+        else:
+            sep = ","
+        if m.fabs(point[i]) < eps:
+            oss += sep + format % m.fabs(point[i])
+        else:
+            oss += sep + format % point[i]
+        sep = ","
+    oss += "]"
+    return oss
 
 # linear
 levelFunction = ot.NumericalMathFunction(
@@ -20,20 +38,16 @@ algo.setProblem(problem)
 print('algo=', algo)
 algo.run()
 result = algo.getResult()
-print('result=', result)
+print('result=', printNumericalPoint(result.getOptimalPoint(), 4))
+print('multipliers=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 problem.setMinimization(False)
 algo.setProblem(problem)
 print('algo=', algo)
 algo.run()
 result = algo.getResult()
-print('result=', result)
-
-
-
-
-
-
+print('result=', printNumericalPoint(result.getOptimalPoint(), 4))
+print('multipliers=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.NumericalMathFunction(
@@ -64,7 +78,8 @@ algo.setStartingPoint(startingPointNearMinimizationCorner)
 print('algo=', algo)
 algo.run()
 result = algo.getResult()
-print('result=', result)
+print('result=', printNumericalPoint(result.getOptimalPoint(), 4))
+print('multipliers=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 problem.setMinimization(False)
 algo.setProblem(problem)
@@ -72,4 +87,5 @@ print('algo=', algo)
 algo.setStartingPoint(startingPointNearMaximizationCorner)
 algo.run()
 result = algo.getResult()
-print('result=', result)
+print('result=', printNumericalPoint(result.getOptimalPoint(), 4))
+print('multipliers=', printNumericalPoint(result.getLagrangeMultipliers(), 4))

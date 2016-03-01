@@ -39,6 +39,9 @@ class OT_API OptimizationResult
 {
   CLASSNAME;
 
+  // Make the OptimizationSolverImplementation class friend in order to allow them to use protected methods
+  friend class OptimizationSolverImplementation;
+
 public:
 
 
@@ -53,7 +56,19 @@ public:
                      const NumericalScalar absoluteError,
                      const NumericalScalar relativeError,
                      const NumericalScalar residualError,
-                     const NumericalScalar constraintError, const OptimizationProblem & problem);
+                     const NumericalScalar constraintError,
+                     const OptimizationProblem & problem);
+
+  OptimizationResult(const NumericalPoint & optimalPoint,
+                     const NumericalPoint & optimalValue,
+                     const UnsignedInteger iterationNumber,
+                     const NumericalScalar absoluteError,
+                     const NumericalScalar relativeError,
+                     const NumericalScalar residualError,
+                     const NumericalScalar constraintError,
+                     const OptimizationProblem & problem,
+                     const NumericalPoint & lagrangeMultipliers);
+
 
   /** Virtual constructor */
   virtual OptimizationResult * clone() const;
@@ -90,6 +105,9 @@ public:
   /** Problem accessor */
   OptimizationProblem getProblem() const;
 
+  /** Lagrange multipliers accessor */
+  NumericalPoint getLagrangeMultipliers() const;
+
   /** String converter */
   virtual String __repr__() const;
 
@@ -103,6 +121,14 @@ public:
   void update(const NumericalPoint & optimalPoint, UnsignedInteger iterationNumber);
 
   /** Incremental history storage */
+  void store(const NumericalPoint & inP,
+             const NumericalPoint & outP,
+             const NumericalScalar absoluteError,
+             const NumericalScalar relativeError,
+             const NumericalScalar residualError,
+             const NumericalScalar constraintError,
+             const NumericalPoint & lagrangeMultipliers);
+
   void store(const NumericalPoint & inP,
              const NumericalPoint & outP,
              const NumericalScalar absoluteError,
@@ -140,6 +166,8 @@ protected:
   void setConstraintError(const NumericalScalar constraintError);
   void setConstraintErrorHistory(const NumericalSample & constraintError);
 
+  /** Lagrange multipliers accessor */
+  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
 
 private:
 
@@ -150,6 +178,7 @@ private:
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   NumericalScalar constraintError_; /**< Value of ||constraints(x_n)|| for the active constraints */
+  NumericalPoint lagrangeMultipliers_;
   Compact absoluteErrorHistory_;
   Compact relativeErrorHistory_;
   Compact residualErrorHistory_;

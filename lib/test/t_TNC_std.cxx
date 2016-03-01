@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
       solver.run();     
 
       fullprint << "minimizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+      fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
 
       // Define Optimization Problem : maximization
       problem.setMinimization(false);
@@ -74,6 +75,7 @@ int main(int argc, char *argv[])
       solver.run();     
 
       fullprint << "maximizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+      fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
 
   }
   catch (TestFailed & ex)
@@ -118,6 +120,7 @@ int main(int argc, char *argv[])
         solver.setStartingPoint(startingPointNearMinimizationCorner);   
         solver.run();   
         fullprint << "minimizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+	fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
       }
       {
         // Define Optimization Problem : maximization   
@@ -126,6 +129,7 @@ int main(int argc, char *argv[])
         solver.setStartingPoint(startingPointNearMaximizationCorner);   
         solver.run();   
         fullprint << "maximizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+	fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
       }
   }
   catch (TestFailed & ex)

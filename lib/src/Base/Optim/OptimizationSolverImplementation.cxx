@@ -186,10 +186,84 @@ void OptimizationSolverImplementation::checkProblem(const OptimizationProblem & 
   throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::checkProblem()";
 }
 
+/* Accessor to protected methods of OptimizationResult for children */
+void OptimizationSolverImplementation::setLagrangeMultipliers(const NumericalPoint & multipliers)
+{
+  result_.setLagrangeMultipliers(multipliers);
+}
+
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
 void OptimizationSolverImplementation::run()
 {
   throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::run()";
+}
+
+/* Computes the Lagrange multipliers associated with the constraints as a post-processing of the optimal point. Actual algorithms should overload this method. */
+/* L(x, l_eq, l_lower_bound, l_upper_bound, l_ineq) = J(x) + l_eq * C_eq(x) + l_lower_bound * (x-lb)^+ + l_upper_bound * (ub-x)^+ + l_ineq * C_ineq^+(x)
+   d/dx(L = d/dx(J) + l_eq * d/dx(C_eq) + l_lower_bound * d/dx(x-lb)^+ + l_upper_bound * d/dx(ub - x)^+ + l_ineq * d/dx(C_ineq^+)
+
+   The Lagrange multipliers are stored as [l_eq, l_lower_bounds, l_upper_bounds, l_ineq], where:
+   * l_eq is of dimension 0 if no equality constraint, else of dimension the number of scalar equality constraints
+   * l_lower_bounds and l_upper_bounds are of dimension 0 if no bound constraint, else of dimension dim(x) for both of them
+   * l_ineq is of dimension 0 if no inequality constraint, else of dimension the number of scalar inequality constraints
+
+   so if there is no constraint of any kind, the Lagrange multipliers are of dimension 0.
+ */
+NumericalPoint OptimizationSolverImplementation::computeLagrangeMultipliers(const NumericalPoint & x) const
+{
+  const UnsignedInteger equalityDimension(problem_.getEqualityConstraint().getOutputDimension());
+  const UnsignedInteger inequalityDimension(problem_.getInequalityConstraint().getOutputDimension());
+  const UnsignedInteger boundDimension(problem_.getBounds().getDimension());
+  // If no constraint
+  if (equalityDimension + inequalityDimension + boundDimension == 0) return NumericalPoint(0);
+  // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
+  const UnsignedInteger inputDimension(x.getDimension());
+  // Get the lhs as a NumericalPoint
+  const NumericalPoint lhs(NumericalPoint(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
+  // In order to ease the construction of the rhs matrix, we use its internal storage representation as a NumericalPoint in column-major storage.
+  NumericalPoint rhs(0);
+  // First, the equality constraints. Each scalar equality constraint gives a column in the rhs
+  if (equalityDimension > 0)
+    rhs.add(*problem_.getEqualityConstraint().gradient(x).getImplementation());
+  // Second, the bounds
+  if (boundDimension > 0)
+    {
+      // First the lower bounds
+      const NumericalPoint lowerBounds(problem_.getBounds().getLowerBound());
+      for (UnsignedInteger i = 0; i < boundDimension; ++i)
+	{
+	  NumericalPoint boundGradient(inputDimension);
+	  // Check if the current lower bound is active up to the tolerance
+	  if (std::abs(x[i] - lowerBounds[i]) <= getMaximumConstraintError())
+	    boundGradient[i] = 1.0;
+	  rhs.add(boundGradient);
+	} // Lower bounds
+      // Second the upper bounds
+      const NumericalPoint upperBounds(problem_.getBounds().getUpperBound());
+      for (UnsignedInteger i = 0; i < boundDimension; ++i)
+	{
+	  NumericalPoint boundGradient(inputDimension);
+	  // Check if the current lower bound is active up to the tolerance
+	  if (std::abs(upperBounds[i] - x[i]) <= getMaximumConstraintError())
+	    boundGradient[i] = -1.0;
+	  rhs.add(boundGradient);
+	} // Upper bounds
+    } // boundDimension > 0
+  // Third, the inequality constraints
+  if (inequalityDimension > 0)
+    {
+      NumericalPoint inequality(problem_.getInequalityConstraint()(x));
+      Matrix gradientInequality(problem_.getInequalityConstraint().gradient(x));
+      for (UnsignedInteger i = 0; i < inequalityDimension; ++i)
+	{
+	  // Check if the current inequality constraint is active up to the tolerance
+	  if (std::abs(inequality[i]) <= getMaximumConstraintError())
+	    rhs.add(*gradientInequality.getColumn(i).getImplementation());
+	  else
+	    rhs.add(NumericalPoint(inputDimension));
+	}      
+    } // Inequality constraints
+  return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);
 }
 
 /* Virtual constructor */

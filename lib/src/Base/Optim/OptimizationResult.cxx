@@ -25,8 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(OptimizationResult);
 
 static const Factory<OptimizationResult> Factory_OptimizationResult;
@@ -41,6 +39,7 @@ OptimizationResult::OptimizationResult()
   , relativeError_(-1.0)
   , residualError_(-1.0)
   , constraintError_(-1.0)
+  , lagrangeMultipliers_(0)
   , absoluteErrorHistory_()
   , relativeErrorHistory_()
   , residualErrorHistory_()
@@ -69,6 +68,36 @@ OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
   , relativeError_(relativeError)
   , residualError_(residualError)
   , constraintError_(constraintError)
+  , lagrangeMultipliers_(0)
+  , absoluteErrorHistory_()
+  , relativeErrorHistory_()
+  , residualErrorHistory_()
+  , constraintErrorHistory_()
+  , inputHistory_()
+  , outputHistory_()
+  , problem_(problem)
+{
+  // Nothing to do
+}
+
+OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
+                                       const NumericalPoint &  optimalValue,
+                                       const UnsignedInteger iterationNumber,
+                                       const NumericalScalar absoluteError,
+                                       const NumericalScalar relativeError,
+                                       const NumericalScalar residualError,
+                                       const NumericalScalar constraintError,
+                                       const OptimizationProblem & problem,
+                                       const NumericalPoint & lagrangeMultipliers)
+  : PersistentObject()
+  , optimalPoint_(optimalPoint)
+  , optimalValue_(optimalValue)
+  , iterationNumber_(iterationNumber)
+  , absoluteError_(absoluteError)
+  , relativeError_(relativeError)
+  , residualError_(residualError)
+  , constraintError_(constraintError)
+  , lagrangeMultipliers_(lagrangeMultipliers)
   , absoluteErrorHistory_()
   , relativeErrorHistory_()
   , residualErrorHistory_()
@@ -202,6 +231,17 @@ OptimizationProblem OptimizationResult::getProblem() const
   return problem_;
 }
 
+/* Lagrange multipliers accessor */
+void OptimizationResult::setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers)
+{
+  lagrangeMultipliers_ = lagrangeMultipliers;
+}
+
+NumericalPoint OptimizationResult::getLagrangeMultipliers() const
+{
+  return lagrangeMultipliers_;
+}
+
 /* String converter */
 String OptimizationResult::__repr__() const
 {
@@ -214,6 +254,7 @@ String OptimizationResult::__repr__() const
       << " relativeError=" << getRelativeError()
       << " residualError=" << getResidualError()
       << " constraintError=" << getConstraintError()
+      << " lagrangeMultipliers=" << lagrangeMultipliers_
       << " problem=" << problem_;
   return oss;
 }
@@ -229,6 +270,7 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "relativeError_", relativeError_ );
   adv.saveAttribute( "residualError_", residualError_ );
   adv.saveAttribute( "constraintError_", constraintError_ );
+  adv.saveAttribute( "lagrangeMultipliers_", lagrangeMultipliers_ );
 
   adv.saveAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
   adv.saveAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
@@ -252,6 +294,7 @@ void OptimizationResult::load(Advocate & adv)
   adv.loadAttribute( "relativeError_", relativeError_ );
   adv.loadAttribute( "residualError_", residualError_ );
   adv.loadAttribute( "constraintError_", constraintError_ );
+  adv.loadAttribute( "lagrangeMultipliers_", lagrangeMultipliers_ );
 
   adv.loadAttribute( "absoluteErrorHistory_", absoluteErrorHistory_ );
   adv.loadAttribute( "relativeErrorHistory_", relativeErrorHistory_ );
@@ -279,10 +322,21 @@ void OptimizationResult::store(const NumericalPoint & x,
                                const NumericalScalar residualError,
                                const NumericalScalar constraintError)
 {
+  store(x, y, absoluteError, relativeError, residualError, constraintError, NumericalPoint(0));
+}
+
+void OptimizationResult::store(const NumericalPoint & x,
+                               const NumericalPoint & y,
+                               const NumericalScalar absoluteError,
+                               const NumericalScalar relativeError,
+                               const NumericalScalar residualError,
+                               const NumericalScalar constraintError,
+                               const NumericalPoint & lagrangeMultipliers)
+{
   // assume the last point stored is the optimum
   optimalPoint_ = x;
   optimalValue_ = y;
-
+  lagrangeMultipliers_ = lagrangeMultipliers;
   // update values
   absoluteError_ = absoluteError;
   relativeError_ = relativeError;
@@ -304,7 +358,7 @@ Graph OptimizationResult::drawErrorHistory() const
   Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
-  // create a sample with the iteration number to be plotted as x data
+// create a sample with the iteration number to be plotted as x data
   const UnsignedInteger size(getAbsoluteErrorHistory().getSize());
   {
     NumericalSample data(getAbsoluteErrorHistory());
@@ -314,7 +368,7 @@ Graph OptimizationResult::drawErrorHistory() const
     absoluteErrorCurve.setColor("red");
     result.add( absoluteErrorCurve );
   }
-  // Relative error
+// Relative error
   {
     NumericalSample data(getRelativeErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
@@ -323,7 +377,7 @@ Graph OptimizationResult::drawErrorHistory() const
     relativeErrorCurve.setColor("blue");
     result.add( relativeErrorCurve );
   }
-  // Residual error
+// Residual error
   {
     NumericalSample data(getResidualErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
@@ -332,7 +386,7 @@ Graph OptimizationResult::drawErrorHistory() const
     residualErrorCurve.setColor("green");
     result.add( residualErrorCurve );
   }
-  // Constraint error
+// Constraint error
   {
     NumericalSample data(getConstraintErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;

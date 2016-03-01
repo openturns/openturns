@@ -52,8 +52,7 @@ ConditionedNormalProcess::ConditionedNormalProcess(const KrigingResult & result,
   // Set the mesh & dimension
   setDimension(covarianceModel_.getDimension());
   if (covarianceModel_.getSpatialDimension() != mesh.getDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedNormalProcess::ConditionedNormalProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getDimension()
-                                         << ", mesh dimension=" << mesh.getDimension() << ")";
+    throw InvalidArgumentException(HERE) << "In ConditionedNormalProcess::ConditionedNormalProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
   setMesh(mesh);
   // Initialize
   initialize();
