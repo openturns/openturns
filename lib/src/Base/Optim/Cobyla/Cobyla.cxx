@@ -26,9 +26,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(Cobyla);
 
 static const Factory<Cobyla> Factory_Cobyla;
@@ -74,17 +71,17 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
  */
 void Cobyla::run()
 {
-  UnsignedInteger dimension = getStartingPoint().getDimension();
-  int n = dimension;
-  int m = getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension();
+  const UnsignedInteger dimension(getStartingPoint().getDimension());
+  int n(dimension);
+  int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
 
   if (getProblem().hasBounds())
   {
     Interval bounds(getProblem().getBounds());
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      if (bounds.getFiniteLowerBound()[i]) ++ m;
-      if (bounds.getFiniteUpperBound()[i]) ++ m;
+      if (bounds.getFiniteLowerBound()[i]) ++m;
+      if (bounds.getFiniteUpperBound()[i]) ++m;
     }
   }
 
@@ -92,16 +89,16 @@ void Cobyla::run()
 
   /* Compute the objective function at StartingPoint */
   const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
-  NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
+  NumericalScalar f(sign * getProblem().getObjective().operator()(x)[0]);
 
   NumericalScalar rhoEnd(getMaximumAbsoluteError());
-  int maxFun = getMaximumIterationNumber();
+  int maxFun(getMaximumIterationNumber());
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
-  NumericalScalar constraintError = -1.0;
+  NumericalScalar absoluteError(-1.0);
+  NumericalScalar relativeError(-1.0);
+  NumericalScalar residualError(-1.0);
+  NumericalScalar constraintError(-1.0);
 
   // clear result
   setResult(OptimizationResult(x, NumericalPoint(1,f), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
@@ -129,27 +126,31 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  int returnCode(cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this));
 
   // Update the result
   result_.update(x, maxFun);
-  UnsignedInteger size = evaluationInputHistory_.getSize();
+  UnsignedInteger size(evaluationInputHistory_.getSize());
 
   for ( UnsignedInteger i = 1; i < size; ++ i )
   {
-    NumericalPoint inPM( evaluationInputHistory_[i - 1] );
-    NumericalPoint inP( evaluationInputHistory_[i] );
-    NumericalPoint outP( evaluationOutputHistory_[i] );
-    NumericalPoint outPM( evaluationOutputHistory_[i - 1] );
+    const NumericalPoint inPM( evaluationInputHistory_[i - 1] );
+    const NumericalPoint inP( evaluationInputHistory_[i] );
+    const NumericalPoint outP( evaluationOutputHistory_[i] );
+    const NumericalPoint outPM( evaluationOutputHistory_[i - 1] );
     absoluteError = (inP - inPM).norm();
     relativeError = absoluteError / inP.norm();
     residualError = std::abs(outP[0] - outPM[0]);
     constraintError =  outP[1];
-    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    // Compute the Lagrange multipliers only at the last step
+    if (i < size - 1)
+      result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError );
+    else
+      result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError, computeLagrangeMultipliers(inP) );
   }
 
   // check the convergence criteria
-  Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+  const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));
 
   if (returnCode != 0)
   {

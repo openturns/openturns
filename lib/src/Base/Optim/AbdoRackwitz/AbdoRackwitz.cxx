@@ -103,7 +103,7 @@ NumericalScalar AbdoRackwitz::computeLineSearch()
   /* Initialization of the line search */
   /* We start with step=1 */
   NumericalScalar step(1.0);
-  NumericalPoint currentStepPoint(NumericalPoint(currentPoint_.getDimension()));
+  NumericalPoint currentStepPoint;
   NumericalScalar currentStepLevelValue;
   NumericalScalar currentStepTheta;
   do
@@ -129,7 +129,6 @@ void AbdoRackwitz::run()
 {
   initialize();
 
-
   /* Get a local copy of the level function */
   const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
@@ -137,7 +136,7 @@ void AbdoRackwitz::run()
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
   Bool convergence(false);
-  UnsignedInteger iterationNumber = 0;
+  UnsignedInteger iterationNumber(0);
   NumericalScalar absoluteError(-1.0);
   NumericalScalar constraintError(-1.0);
   NumericalScalar relativeError(-1.0);
@@ -152,7 +151,7 @@ void AbdoRackwitz::run()
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
     /* Go to next iteration */
-    ++ iterationNumber;
+    ++iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * NumericalPoint(1, 1.0);
@@ -191,7 +190,7 @@ void AbdoRackwitz::run()
 
     // update result
     result_.update(currentPoint_, iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError, NumericalPoint(1, currentLambda_));
     LOGINFO( getResult().__repr__() );
   }
 

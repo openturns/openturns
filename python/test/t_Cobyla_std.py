@@ -32,8 +32,7 @@ algo.run()
 result = algo.getResult()
 print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
 print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
-
-
+print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.NumericalMathFunction(
@@ -51,9 +50,8 @@ print('algo=', algo)
 algo.run()
 result = algo.getResult()
 print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-
-
-
+print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
+print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 # bounds
 linear = ot.NumericalMathFunction(
@@ -75,5 +73,7 @@ for minimization in [True, False]:
     algo.run()
     result = algo.getResult()
     print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
+    print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
+    print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 

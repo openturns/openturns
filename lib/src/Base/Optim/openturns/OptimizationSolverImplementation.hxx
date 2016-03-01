@@ -52,6 +52,9 @@ public:
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
 
+  /** Computes the Lagrange multipliers associated with the constraints as a post-processing of the result. Actual algorithms should overload this method. */
+  NumericalPoint computeLagrangeMultipliers(const NumericalPoint & x) const;
+
   /** Starting point accessor */
   NumericalPoint getStartingPoint() const;
 
@@ -117,6 +120,10 @@ protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
+  /** Accessor to protected methods of OptimizationResult for children */
+  void setLagrangeMultipliers(const NumericalPoint & multipliers);
+
+  /** The result of the algorithm */
   OptimizationResult result_;
 
 private:

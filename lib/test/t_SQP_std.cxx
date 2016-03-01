@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
       fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
       mySQPAlgorithm.run();
       fullprint << "result=" << printNumericalPoint(mySQPAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
+      fullprint << "multipliers=" << printNumericalPoint(mySQPAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
     mySQPAlgorithm.run();
     OptimizationResult result(mySQPAlgorithm.getResult());
     fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers = " << printNumericalPoint(result.getLagrangeMultipliers(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;
