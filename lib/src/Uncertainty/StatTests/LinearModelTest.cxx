@@ -22,6 +22,8 @@
 #include <fstream>
 #include "openturns/LinearModelTest.hxx"
 #include "openturns/LinearModelFactory.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/ChiSquare.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/OTconfig.hxx"
@@ -159,5 +161,68 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const NumericalSample
   return TestResult(testType, testResult, pValue, pThreshold);
 }
 
+/*  */
+TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & firstSample,
+  const NumericalSample & secondSample,
+  const LinearModel & linearModel,
+  const NumericalScalar level,
+  const NumericalScalar breakPoint,
+  const NumericalScalar simulationSize)
+{
+  const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
+  const UnsignedInteger residualSize(firstSample.getSize());
+
+  /* Split the sample using the breakPoint*/ 
+  const UnsignedInteger breakIndex(std::floor(residualSize * breakPoint));
+
+  NumericalScalar sumSelectResiduals(0);
+  for(UnsignedInteger i = 0; i < breakIndex; ++i)
+  { 
+    const NumericalPoint residual(residuals[i]);
+    sumSelectResiduals += residual.normSquare();
+  }
+
+  const NumericalScalar sumSquaredResiduals(residuals.computeVariance()[0] * (residualSize - 1));
+
+  /* compute Harrison McCabe statistic */
+  const NumericalScalar hmc = sumSelectResiduals / sumSquaredResiduals;
+  
+  /* p-value computed by simultation */
+  NumericalScalar pValue(0);
+  for(UnsignedInteger i = 0; i < simulationSize; ++i)
+  {
+    const NumericalSample sample(Normal().getSample(residualSize));
+    const NumericalSample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
+    NumericalScalar sumSelectResidualsSimulation(0);
+    for(UnsignedInteger i = 0; i < breakIndex; ++i)
+    { 
+      const NumericalPoint stantardSamplePoint(stantardSample[i]);
+      sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
+    }
+    const NumericalScalar sumSquaredResidualsSimulation(stantardSample.computeVariance()[0] * (residualSize - 1));
+    const NumericalScalar statistic(sumSelectResidualsSimulation / sumSquaredResidualsSimulation);
+    if(statistic < hmc)
+    {
+      pValue += 1.0;
+    }
+  }
+  pValue = pValue / simulationSize;
+
+  return TestResult(String("HarrisonMcCabe"), Bool(pValue > 1.0 - level), pValue, NumericalScalar(level));
+}
+
+/*  */
+TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & firstSample,
+  const NumericalSample & secondSample,
+  const NumericalScalar level,
+  const NumericalScalar breakPoint,
+  const NumericalScalar simulationSize)
+{   
+  return LinearModelHarrisonMcCabe(firstSample, secondSample,
+                                   LinearModelFactory().build(firstSample, secondSample, level),
+                                   level,
+                                   breakPoint,
+                                   simulationSize);
+}
 
 END_NAMESPACE_OPENTURNS
