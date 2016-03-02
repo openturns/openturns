@@ -199,6 +199,7 @@ Linear model tests
     LinearModelTest_LinearModelFisher
     LinearModelTest_LinearModelRSquared
     LinearModelTest_LinearModelResidualMean
+    LinearModelTest_LinearModelHarrisonMcCabe
 
 Model selection
 ---------------
