@@ -308,7 +308,7 @@ NumericalScalar NormalCopula::computeProbability(const Interval & interval) cons
     if (lowerBoundIntersect[i] == 0.0)
     {
       finiteLowerBound[i] = false;
-      lowerBound[i] = -1.0;
+      lowerBound[i] = normal_.getRange().getLowerBound()[i];
     }
     else
     {
@@ -318,7 +318,7 @@ NumericalScalar NormalCopula::computeProbability(const Interval & interval) cons
     if (upperBoundIntersect[i] == 1.0)
     {
       finiteUpperBound[i] = false;
-      upperBound[i] = 1.0;
+      upperBound[i] = normal_.getRange().getUpperBound()[i];
     }
     else
     {

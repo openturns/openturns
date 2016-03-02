@@ -37,3 +37,4 @@ margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.97395,
 margins CDF(qantile)=0.950000
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.265472,0.397787]
 Normal copula correlation= class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.261052,0,0.261052,1,0.261052,0,0.261052,1]  from the Spearman correlation= class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]
+prob=0.027802
