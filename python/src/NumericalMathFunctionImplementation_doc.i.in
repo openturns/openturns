@@ -80,10 +80,37 @@ formulaString : str
     - sign
     - rint
     - abs
+    - min
+    - max
+    - sum
+    - avg
     - floor
     - ceil
     - trunc
     - round
+
+    Available operators:
+
+    - = (assignment)
+    - && (logical and)
+    - || (logical or)
+    - <= (less or equal)
+    - >= (greater or equal)
+    - != (not equal)
+    - == (equal)
+    - > (greater than)
+    - < (less than)
+    - \+ (addition)
+    - \- (subtraction)
+    - \* (multiplication)
+    - / (division)
+    - ^ (raise x to the power of y)
+
+    Available constants:
+
+    - _e (Euler's constant)
+    - _pi (Pi)
+
 f,g : two :class:`~openturns.NumericalMathFunction`
     The *NumericalMathFunction* is the composition function :math:`f\circ g`.
 functionCollection : list of :class:`~openturns.NumericalMathFunction`
