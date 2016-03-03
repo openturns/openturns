@@ -22,9 +22,7 @@
 #define OPENTURNS_PRODUCTPOLYNOMIALGRADIENTIMPLEMENTATION_HXX
 
 #include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/UniVariateFunction.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/ProductUniVariateFunctionEvaluationImplementation.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,11 +41,8 @@ class OT_API ProductUniVariateFunctionGradientImplementation
   CLASSNAME;
 public:
 
-  typedef Collection<UniVariateFunction>           UniVariateFunctionCollection;
-  typedef PersistentCollection<UniVariateFunction> UniVariateFunctionPersistentCollection;
-
   /** Constructor */
-  ProductUniVariateFunctionGradientImplementation(const UniVariateFunctionCollection & coll);
+  ProductUniVariateFunctionGradientImplementation(const Pointer<ProductUniVariateFunctionEvaluationImplementation> & p_evaluation);
 
   /** Virtual constructor */
   virtual ProductUniVariateFunctionGradientImplementation * clone() const;
@@ -81,8 +76,7 @@ protected:
 
 private:
 
-  /** The set of 1d functions to build the nD function */
-  UniVariateFunctionPersistentCollection functions_;
+  Pointer<ProductUniVariateFunctionEvaluationImplementation> p_evaluation_;
 
 } ; /* class ProductUniVariateFunctionGradientImplementation */
 

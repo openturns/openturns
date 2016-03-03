@@ -32,16 +32,15 @@ static const Factory<ProductUniVariateFunctionHessianImplementation> RegisteredF
 /* Default constructor */
 ProductUniVariateFunctionHessianImplementation::ProductUniVariateFunctionHessianImplementation()
   : NumericalMathHessianImplementation()
-  , functions_()
 {
   // Nothing to do
 }
 
 
 /* Constructor */
-ProductUniVariateFunctionHessianImplementation::ProductUniVariateFunctionHessianImplementation(const UniVariateFunctionCollection & coll)
+ProductUniVariateFunctionHessianImplementation::ProductUniVariateFunctionHessianImplementation(const Pointer<ProductUniVariateFunctionEvaluationImplementation> & p_evaluation)
   : NumericalMathHessianImplementation()
-  , functions_(coll)
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -73,9 +72,9 @@ SymmetricTensor ProductUniVariateFunctionHessianImplementation::hessian (const N
   for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
     const NumericalScalar x(inP[i]);
-    const NumericalScalar y(functions_[i](x));
-    const NumericalScalar dy(functions_[i].gradient(x));
-    const NumericalScalar d2y(functions_[i].hessian(x));
+    const NumericalScalar y(p_evaluation_->functions_[i](x));
+    const NumericalScalar dy(p_evaluation_->functions_[i].gradient(x));
+    const NumericalScalar d2y(p_evaluation_->functions_[i].hessian(x));
     evaluations[i] = y;
     derivatives[i] = dy;
     secondDerivatives[i] = d2y;
@@ -118,7 +117,7 @@ SymmetricTensor ProductUniVariateFunctionHessianImplementation::hessian (const N
 /* Accessor for input point dimension */
 UnsignedInteger ProductUniVariateFunctionHessianImplementation::getInputDimension() const
 {
-  return functions_.getSize();
+  return p_evaluation_->functions_.getSize();
 }
 
 /* Accessor for output point dimension */
@@ -132,14 +131,16 @@ UnsignedInteger ProductUniVariateFunctionHessianImplementation::getOutputDimensi
 void ProductUniVariateFunctionHessianImplementation::save(Advocate & adv) const
 {
   NumericalMathHessianImplementation::save(adv);
-  adv.saveAttribute("functions_", functions_);
+  adv.saveAttribute("evaluation_", *p_evaluation_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductUniVariateFunctionHessianImplementation::load(Advocate & adv)
 {
   NumericalMathHessianImplementation::load(adv);
-  adv.loadAttribute("functions_", functions_);
+  TypedInterfaceObject<ProductUniVariateFunctionEvaluationImplementation> evaluation;
+  adv.loadAttribute("evaluation_", evaluation);
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 
