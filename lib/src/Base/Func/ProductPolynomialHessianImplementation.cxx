@@ -74,8 +74,8 @@ SymmetricTensor ProductPolynomialHessianImplementation::hessian (const Numerical
   {
     const NumericalScalar x(inP[i]);
     const NumericalScalar y(polynomials_[i](x));
-    const NumericalScalar dy(polynomials_[i].derivative(x));
-    const NumericalScalar d2y(polynomials_[i].derivate().derivative(x));
+    const NumericalScalar dy(polynomials_[i].gradient(x));
+    const NumericalScalar d2y(polynomials_[i].hessian(x));
     evaluations[i] = y;
     derivatives[i] = dy;
     secondDerivatives[i] = d2y;

@@ -22,6 +22,8 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Curve.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,6 +77,26 @@ NumericalScalar UniVariateFunctionImplementation::hessian(const NumericalScalar 
 {
   throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::hessian(const NumericalScalar x)";
 }
+
+
+/* Method to draw the graph of the function between given bounds */
+Graph UniVariateFunctionImplementation::draw(const NumericalScalar xMin,
+                                             const NumericalScalar xMax,
+                                             const UnsignedInteger pointNumber) const
+{
+  NumericalSample data(pointNumber, 2);
+  for (UnsignedInteger i = 0; i < pointNumber; ++ i)
+  {
+    const NumericalScalar x = xMin + (xMax - xMin) * i / (1.0 * pointNumber);
+    data[i][0] = x;
+    data[i][1] = operator()(x);
+  }
+  Curve curve(data, "red", "solid", 2, getName());
+  Graph graph(getName(), "x", "y", true, "topright");
+  graph.add(curve);
+  return graph;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void UniVariateFunctionImplementation::save(Advocate & adv) const

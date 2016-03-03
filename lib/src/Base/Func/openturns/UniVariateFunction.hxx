@@ -68,6 +68,10 @@ public:
   /** UniVariateFunctionImplementation hessian */
   NumericalScalar hessian(const NumericalScalar x) const;
 
+  /** Method to draw the graph of the polynomial between given bounds */
+  Graph draw(const NumericalScalar xMin,
+             const NumericalScalar xMax,
+             const UnsignedInteger pointNumber) const;
 } ; /* class UniVariateFunction */
 
 

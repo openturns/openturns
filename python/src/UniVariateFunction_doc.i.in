@@ -6,3 +6,5 @@ OT_UniVariateFunction_doc
 OT_UniVariateFunction_gradient_doc
 %feature("docstring") OT::UniVariateFunction::hessian
 OT_UniVariateFunction_hessian_doc
+%feature("docstring") OT::UniVariateFunction::draw
+OT_UniVariateFunction_draw_doc
