@@ -225,4 +225,50 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
                                    simulationSize);
 }
 
+/*  */
+TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firstSample,
+  const NumericalSample & secondSample,
+  const LinearModel & linearModel,
+  const NumericalScalar level)
+{
+  const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
+  const UnsignedInteger residualSize(firstSample.getSize());
+
+  /* compute variance of the residuals*/
+  const NumericalScalar residualsVariance(residuals.computeVariance()[0]);
+
+  NumericalSample w(residualSize, 1);
+  for(UnsignedInteger i = 0; i < residualSize; ++i)
+  {
+    const NumericalPoint residual(residuals[i]);
+    w[i][0] = (residual.normSquare() - residualsVariance);
+  }
+
+  /* Build a linear model on the squared residuals */
+  const LinearModel linearModelResiduals(LinearModelFactory().build(firstSample, w));
+  /* Predicted values of the squared residuals*/
+  const NumericalSample wPredicted(linearModelResiduals.getPredicted(firstSample));
+  /* Compute variances */
+  const NumericalScalar wPredictedVar(wPredicted.computeVariance()[0]);
+  const NumericalScalar wVariance(w.computeVariance()[0]);
+  /* Compute the Breusch Pagan statistic */
+  const NumericalScalar bp(residualSize * wPredictedVar / wVariance);
+  /* Get the degree of freedom */
+  const UnsignedInteger dof(firstSample.getDimension());
+  /* Compute the p-value */
+  const NumericalScalar pValue(ChiSquare(dof).computeComplementaryCDF(bp));
+
+  return TestResult(String("BreuschPagan"), Bool(pValue > 1.0 - level), pValue, level);
+}
+
+/*  */
+TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firstSample,
+  const NumericalSample & secondSample,
+  const NumericalScalar level)
+{   
+  return LinearModelBreuschPagan(firstSample, secondSample,
+                                 LinearModelFactory().build(firstSample, secondSample, level),
+                                 level);
+}
+
 END_NAMESPACE_OPENTURNS
