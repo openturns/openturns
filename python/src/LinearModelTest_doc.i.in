@@ -282,7 +282,7 @@ class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-valu
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelTest::LinearModelHarrisonMcCabe
-"Test the heteroskedasticity of the linear regression model residuals.
+"Test the homoskedasticity of the linear regression model residuals.
 
 **Available usages**:
 
@@ -318,7 +318,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelResidualMean
+LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelResidualMean
 
 Notes
 -----
@@ -351,4 +351,74 @@ Examples
 >>> test_result = ot.LinearModelTest.LinearModelHarrisonMcCabe(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.95 p-value=0.142 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::LinearModelBreuschPagan
+"Test the homoskedasticity of the linear regression model residuals.
+
+**Available usages**:
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample*)
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, level, breakPoint, simulationSize*)
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel, level, breakPoint, simulationSize*)
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean
+
+Notes
+-----
+The LinearModelTest class is used through its static methods in order to evaluate
+the quality of the linear regression model between two samples
+(see :class:`~openturns.LinearModel`). The linear regression model between the
+scalar variable :math:`Y` and the :math:`n`-dimensional one
+:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual.
+
+The Breusch-Pagan test checks the heteroskedasticity of the residuals. A linear
+regression model is fitted on the squared residuals. The statistic is computed
+using the Studendized version with the chi-squared distribution. If the binary
+quality measure is false, then the homoskedasticity hypothesis can be rejected
+with respect to the given level.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> firstSample = sample
+>>> secondSample = func(sample) + ot.Normal().getSample(30)
+>>> test_result = ot.LinearModelTest.LinearModelBreuschPagan(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.95 p-value=0.700772 description=[]
 "

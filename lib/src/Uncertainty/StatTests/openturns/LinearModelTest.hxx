@@ -96,6 +96,17 @@ public:
                                               const NumericalScalar breakPoint = 0.5,
                                               const NumericalScalar simulationSize = 1000);
 
+    /**  */
+  static TestResult LinearModelBreuschPagan(const NumericalSample & firstSample,
+                                              const NumericalSample & secondSample,
+                                              const LinearModel & linearModel,
+                                              const NumericalScalar level = 0.95);
+
+  /**  */
+  static TestResult LinearModelBreuschPagan(const NumericalSample & firstSample,
+                                              const NumericalSample & secondSample,
+                                              const NumericalScalar level = 0.95);
+
 protected:
   /** Generic invocation of a R script for testing a distribution against a sample */
   static TestResult RunTwoSamplesALinearModelRTest(const NumericalSample & firstSample,
