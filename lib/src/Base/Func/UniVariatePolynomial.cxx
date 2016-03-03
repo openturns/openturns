@@ -97,9 +97,15 @@ NumericalComplex UniVariatePolynomial::operator() (const NumericalComplex z) con
 
 
 /* UniVariatePolynomialImplementation derivative */
-NumericalScalar UniVariatePolynomial::derivative(const NumericalScalar x) const
+NumericalScalar UniVariatePolynomial::gradient(const NumericalScalar x) const
 {
-  return getImplementation()->derivative(x);
+  return getImplementation()->gradient(x);
+}
+
+
+NumericalScalar UniVariatePolynomial::hessian(const NumericalScalar x) const
+{
+  return getImplementation()->hessian(x);
 }
 
 

@@ -21,8 +21,7 @@
 #ifndef OPENTURNS_UNIVARIATEFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_UNIVARIATEFUNCTIONIMPLEMENTATION_HXX
 
-#include "openturns/OTprivate.hxx"
-#include "openturns/PersistentObject.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,6 +59,11 @@ public:
 
   /** UniVariateFunctionImplementation hessian */
   virtual NumericalScalar hessian(const NumericalScalar x) const;
+
+  /** Method to draw the graph of the function between given bounds */
+  virtual Graph draw (const NumericalScalar xMin,
+                      const NumericalScalar xMax,
+                      const UnsignedInteger pointNumber) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

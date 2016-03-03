@@ -12,7 +12,14 @@ OT_UniVariateFunction_doc
 Returns
 -------
 gradient : float
-    The value of the function's first-order derivative at point :math:`x`."
+    The value of the function's first-order derivative at point :math:`x`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.gradient(1.))
+8.0"
 %enddef
 %feature("docstring") OT::UniVariateFunctionImplementation::gradient
 OT_UniVariateFunction_gradient_doc
@@ -35,3 +42,26 @@ hessian : float
 %feature("docstring") OT::UniVariateFunctionImplementation::hessian
 OT_UniVariateFunction_hessian_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_UniVariateFunction_draw_doc
+"Draw the function.
+
+Parameters
+----------
+x_min : float, optional
+    The starting value that is used for meshing the x-axis.
+x_max : float, optional, :math:`x_{\max} > x_{\min}`
+    The ending value that is used for meshing the x-axis.
+n_points : int, optional
+    The number of points that is used for meshing the x-axis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> f = ot.UniVariatePolynomial([1., 2., -3., 5.])
+>>> View(f.draw(-10., 10., 100)).show()"
+%enddef
+%feature("docstring") OT::UniVariateFunctionImplementation::draw
+OT_UniVariateFunction_draw_doc

@@ -85,4 +85,12 @@ NumericalScalar UniVariateFunction::hessian(const NumericalScalar x) const
   return getImplementation()->hessian(x);
 }
 
+/* Method to draw the graph of the polynomial between given bounds */
+Graph UniVariateFunction::draw(const NumericalScalar xMin,
+                               const NumericalScalar xMax,
+                               const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->draw(xMin, xMax, pointNumber);
+}
+
 END_NAMESPACE_OPENTURNS
