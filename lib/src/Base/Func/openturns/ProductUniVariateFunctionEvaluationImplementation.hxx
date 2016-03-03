@@ -78,6 +78,8 @@ public:
 protected:
 
   friend class Factory<ProductUniVariateFunctionEvaluationImplementation>;
+  friend class ProductUniVariateFunctionGradientImplementation;
+  friend class ProductUniVariateFunctionHessianImplementation;
 
   /* Default constructor */
   ProductUniVariateFunctionEvaluationImplementation();

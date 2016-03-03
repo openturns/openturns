@@ -108,9 +108,10 @@ NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInte
   {
     functions[i] = coll_[i].build(indices[i]);
   }
-  return NumericalMathFunctionImplementation(ProductUniVariateFunctionEvaluationImplementation(functions).clone(),
-                                             ProductUniVariateFunctionGradientImplementation(functions).clone(),
-                                             ProductUniVariateFunctionHessianImplementation(functions).clone());
+  const Pointer<ProductUniVariateFunctionEvaluationImplementation> p_evaluation(ProductUniVariateFunctionEvaluationImplementation(functions).clone());
+  return NumericalMathFunctionImplementation(p_evaluation,
+                                             ProductUniVariateFunctionGradientImplementation(p_evaluation).clone(),
+                                             ProductUniVariateFunctionHessianImplementation(p_evaluation).clone());
 }
 
 
