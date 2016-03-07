@@ -318,7 +318,8 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelResidualMean
+LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelResidualMean,
+LinearModelTest_LinearModelDurbinWatson
 
 Notes
 -----
@@ -364,9 +365,9 @@ class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-va
 
     LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel*)
 
-    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, level, breakPoint, simulationSize*)
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel, level, breakPoint, simulationSize*)
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel, level*)
 
 Parameters
 ----------
@@ -387,7 +388,8 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean
+LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean,
+LinearModelTest_LinearModelDurbinWatson
 
 Notes
 -----
@@ -421,4 +423,78 @@ Examples
 >>> test_result = ot.LinearModelTest.LinearModelBreuschPagan(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.95 p-value=0.700772 description=[]
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::LinearModelDurbinWatson
+"Test the autocorrelation of the linear regression model residuals.
+
+**Available usages**:
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample*)
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, hypothesis, level*)
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel, hypothesis, level*)
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
+hypothesis : string
+    Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
+    'Greater' than 0. Default is set to 'Equal' to 0.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean
+
+Notes
+-----
+The LinearModelTest class is used through its static methods in order to evaluate
+the quality of the linear regression model between two samples
+(see :class:`~openturns.LinearModel`). The linear regression model between the
+scalar variable :math:`Y` and the :math:`n`-dimensional one
+:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual.
+
+The Durbin-Watson test checks the autocorrelation of the residuals. It is possible
+to test is the autocorrelation is equal to 0, and less or greater than 0. The
+p-value is computed using a normal approximation with mean and variance of the
+Durbin-Watson test statistic. If the binary quality measure is false, then the
+given autocorrelation hypothesis can be rejected with respect to the given level.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> firstSample = sample
+>>> secondSample = func(sample) + ot.Normal().getSample(30)
+>>> test_result = ot.LinearModelTest.LinearModelDurbinWatson(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.95 p-value=0.653603 description=[Hypothesis test: autocorrelation equals 0.]
 "

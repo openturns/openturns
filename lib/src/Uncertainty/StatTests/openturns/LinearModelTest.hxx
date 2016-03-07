@@ -106,6 +106,19 @@ public:
   static TestResult LinearModelBreuschPagan(const NumericalSample & firstSample,
                                               const NumericalSample & secondSample,
                                               const NumericalScalar level = 0.95);
+  
+      /**  */
+  static TestResult LinearModelDurbinWatson(const NumericalSample & firstSample,
+                                            const NumericalSample & secondSample,
+                                            const LinearModel & linearModel,
+                                            const String hypothesis = "Equal",
+                                            const NumericalScalar level = 0.95);
+
+  /**  */
+  static TestResult LinearModelDurbinWatson(const NumericalSample & firstSample,
+                                            const NumericalSample & secondSample,
+                                            const String hypothesis = "Equal",
+                                            const NumericalScalar level = 0.95);
 
 protected:
   /** Generic invocation of a R script for testing a distribution against a sample */
