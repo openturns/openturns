@@ -201,6 +201,7 @@ Linear model tests
     LinearModelTest_LinearModelResidualMean
     LinearModelTest_LinearModelHarrisonMcCabe
     LinearModelTest_LinearModelBreuschPagan
+    LinearModelTest_LinearModelDurbinWatson
 
 Model selection
 ---------------

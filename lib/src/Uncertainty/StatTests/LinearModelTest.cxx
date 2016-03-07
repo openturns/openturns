@@ -22,6 +22,9 @@
 #include <fstream>
 #include "openturns/LinearModelTest.hxx"
 #include "openturns/LinearModelFactory.hxx"
+#include "openturns/TestResult.hxx"
+#include "openturns/Description.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ChiSquare.hxx"
 #include "openturns/Path.hxx"
@@ -268,6 +271,88 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firs
 {   
   return LinearModelBreuschPagan(firstSample, secondSample,
                                  LinearModelFactory().build(firstSample, secondSample, level),
+                                 level);
+}
+
+
+/*  */
+TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firstSample,
+  const NumericalSample & secondSample,
+  const LinearModel & linearModel,
+  const String hypothesis,
+  const NumericalScalar level)
+{
+  const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
+  const UnsignedInteger residualSize(firstSample.getSize());
+  const UnsignedInteger dimension(firstSample.getDimension());
+
+  const NumericalScalar sumSquaredResiduals(residuals.computeVariance()[0] * (residualSize - 1));
+
+  NumericalScalar sumSquaredDifference(0);
+  for(UnsignedInteger i = 1; i < residualSize; ++i)
+  {
+    const NumericalPoint residualDifference(residuals[i] - residuals[i - 1]);
+    sumSquaredDifference += residualDifference.normSquare(); 
+  }
+
+  /* Compute the Durbin Watson statistic */
+  const NumericalScalar dw(sumSquaredDifference / sumSquaredResiduals);
+
+  /* Normal approximation of dw to compute the p-value*/
+  /* Create the matrix [1 x]*/
+  Matrix X(residualSize, dimension + 1);
+  for(UnsignedInteger i = 0; i < residualSize; ++i)
+  {
+    X(i, 0) = 1;
+    X(i, 1) = firstSample[i][0];
+  }
+
+  Matrix AX(residualSize, dimension + 1);
+  AX(0, 1) = firstSample[0][0] - firstSample[1][0];
+  AX(residualSize - 1, 1) = firstSample[residualSize-1][0] - firstSample[residualSize-2][0];
+  for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
+  {
+    AX(i + 1, 1) = -firstSample[i][0] + 2 * firstSample[i + 1][0] - firstSample[i + 2][0];
+  }
+
+  CovarianceMatrix XtX(X.computeGram());
+  const SquareMatrix XAXQt(XtX.solveLinearSystem(AX.transpose() * X).getImplementation());
+  const NumericalScalar P(2 * (residualSize - 1) - XAXQt.computeTrace());
+  const NumericalScalar XAXTrace(XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace());
+  const NumericalScalar Q(2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace());
+  const NumericalScalar dmean(P / (residualSize - (dimension + 1)));
+  const NumericalScalar dvar(2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean));
+
+  /* Compute the p-value with respect to the hypothesis */
+  // Initial values defined for hypothesis = "Equal"
+  NumericalScalar pValue(2 * DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true));
+  Description description(1, "Hypothesis test: autocorrelation equals 0.");
+  if(hypothesis == "Less")
+  { 
+    pValue = 1 - pValue / 2;
+    description[0] = "Hypothesis test: autocorrelation is less than 0";
+  }
+  else if(hypothesis == "Greater")
+  {
+    pValue = pValue / 2;
+    description[0] = "Hypothesis test: autocorrelation is greater than 0";
+  }
+
+  /* Set test result */
+  TestResult result(String("DurbinWatson"), Bool(pValue > 1 - level), pValue, level);
+  result.setDescription(description);
+  return result;
+}
+
+/*  */
+TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firstSample,
+  const NumericalSample & secondSample,
+  const String hypothesis,
+  const NumericalScalar level)
+{   
+  return LinearModelDurbinWatson(firstSample, secondSample,
+                                 LinearModelFactory().build(firstSample, secondSample, level),
+                                 hypothesis,
                                  level);
 }
 
