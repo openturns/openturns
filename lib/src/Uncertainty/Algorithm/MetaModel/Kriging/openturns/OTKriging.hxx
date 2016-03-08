@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir MetaModel
+ *  @brief The external header file of OpenTURNS for subdir Kriging
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,14 +19,14 @@
  *
  */
 
-#ifndef OPENTURNS_OTMETAMODEL_HXX
-#define OPENTURNS_OTMETAMODEL_HXX
+#ifndef OPENTURNS_OTKRIGING_HXX
+#define OPENTURNS_OTKRIGING_HXX
 
-#include "openturns/OTFunctionalChaos.hxx"
-#include "openturns/OTKriging.hxx"
+#include "openturns/KrigingEvaluation.hxx"
+#include "openturns/KrigingGradient.hxx"
+#include "openturns/KrigingAlgorithm.hxx"
+#include "openturns/KrigingResult.hxx"
+#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
 
-#include "openturns/MetaModelAlgorithm.hxx"
-#include "openturns/MetaModelResult.hxx"
-#include "openturns/MetaModelValidation.hxx"
-
-#endif /* OPENTURNS_OTMETAMODEL_HXX */
+#endif /* OPENTURNS_OTKRIGING_HXX */
