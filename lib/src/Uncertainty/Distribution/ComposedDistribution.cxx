@@ -376,7 +376,13 @@ NumericalScalar ComposedDistribution::computeCDF(const NumericalPoint & point) c
 
 NumericalScalar ComposedDistribution::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  /* Survival = copula_survival(dist1_survival(p1), ..., distn_survival(pn)) */
+  /* Survival = \hat{F}(x_1, \dots, x_d)
+   *          = \hat{C}(\hat{F}_1(x_1), \dots, \hat{F}_d(x_d))
+   *          = \bar{C}(1-\hat{F}_1(x_1), \dots, 1-\hat{F}_d(x_d))
+   *          = \bar{C}(F_1(x_1), \dots, F_d(x_d))
+   *
+   * With \bar{C} the survival function of the copula, not to be mistaken with the survival copula \hat{C}
+   */
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -390,7 +396,7 @@ NumericalScalar ComposedDistribution::computeSurvivalFunction(const NumericalPoi
   }
   // General case
   NumericalPoint uPoint(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) uPoint[i] = distributionCollection_[i].computeSurvivalFunction(point[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) uPoint[i] = distributionCollection_[i].computeCDF(point[i]);
   return copula_.computeSurvivalFunction(uPoint);
 }
 

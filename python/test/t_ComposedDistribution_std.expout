@@ -45,6 +45,8 @@ PDF      =0.001754
 PDF (ref)=0.001754
 CDF      =0.033495
 CDF (ref)=0.033495
+Survival      =0.439015
+Survival (ref)=0.439015
 Quantile      = class=NumericalPoint name=Unnamed dimension=3 values=[5.2177,8.3266,11.435]
 Quantile (ref)= class=NumericalPoint name=Unnamed dimension=3 values=[5.2177,8.3266,11.435]
 CDF(quantile)=0.950000
