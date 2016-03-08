@@ -206,8 +206,6 @@ Section Uninstall
 
   RMDir /r "$INSTDIR\include"
 
-  RMDir /r "$INSTDIR\examples\WrapperTemplates\mingw_wrapper_calling_shell_command"
-  RMDir /r "$INSTDIR\examples\simple_cxx_example"
   Delete "$INSTDIR\examples\*.exe"
   Delete "$INSTDIR\examples\start_all_check_test.sh"
   Delete "$INSTDIR\UserInstallDev"

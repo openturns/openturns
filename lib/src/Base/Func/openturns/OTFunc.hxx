@@ -88,7 +88,6 @@
 #include "openturns/TemporalFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/UniVariatePolynomialImplementation.hxx"
-#include "openturns/XMLTags.hxx"
 #include "openturns/OTSpecFunc.hxx"
 #include "openturns/BoxCoxEvaluationImplementation.hxx"
 #include "openturns/BoxCoxGradientImplementation.hxx"
