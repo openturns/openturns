@@ -2,8 +2,6 @@
 "Function.
 
 Available constructors:
-    NumericalMathFunction(*filename*)
-
     NumericalMathFunction(*inputs, outputs, formulas*)
 
     NumericalMathFunction(*inputs, formulas*)
@@ -28,9 +26,6 @@ Available constructors:
 
 Parameters
 ----------
-fileName : str or :class:`~openturns.WrapperFile`
-    A string to name the XML file (without the extension '.xml') which contains
-    the implementation of the considered function.
 inputs : sequence of str
     Ordered list of input variables names of the *NumericalMathFunction*.
 outputs : sequence of str

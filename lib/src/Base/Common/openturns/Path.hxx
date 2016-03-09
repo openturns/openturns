@@ -124,13 +124,6 @@ protected:
   static const char * HomeConfigSubdirectory_;
 
   /**
-   * @var static const char * Path::PrefixWrapperSubdirectory_
-   *
-   * The 'prefix' subdirectory path
-   */
-  static const char * PrefixWrapperSubdirectory_;
-
-  /**
    * @var static const char * Path::PrefixConfigSubdirectory_
    *
    * The 'prefix' subdirectory path

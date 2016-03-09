@@ -189,7 +189,7 @@ Section "!OpenTURNS" SEC01
   !insertmacro PRINT "Install OT to $OT_INSTALL_PATH."
   SetOutPath "$OT_INSTALL_PATH"
   File "COPYING.txt"
-  File /oname=README.txt "README-module.txt"
+  File "README.txt"
   File openturns.ico
   File "OpenTURNSDoc.url"
 
