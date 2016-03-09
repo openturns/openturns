@@ -150,6 +150,11 @@ ot.RandomGenerator.SetSeed(0)
 randomGeneratorState = ot.RandomGeneratorState(ot.RandomGenerator.GetState())
 myStudy.add("randomGeneratorState", randomGeneratorState)
 
+# Create a GeneralizedLinearModelResult
+generalizedLinearModelResult = ot.GeneralizedLinearModelResult()
+generalizedLinearModelResult.setName("generalizedLinearModelResult")
+myStudy.add("generalizedLinearModelResult", generalizedLinearModelResult)
+
 # print "Study = " , myStudy
 myStudy.save()
 
@@ -212,6 +217,12 @@ analytical = ot.NumericalMathFunction()
 myStudy.fillObject("analytical", analytical)
 
 print("analytical = ", analytical)
+
+# Create a GeneralizedLinearModelResult from the one stored in the Study
+generalizedLinearModelResult = ot.GeneralizedLinearModelResult()
+myStudy.fillObject("generalizedLinearModelResult", generalizedLinearModelResult)
+
+print("generalizedLinearModelResult = ", generalizedLinearModelResult)
 
 # cleanup
 os.remove(fileName)
