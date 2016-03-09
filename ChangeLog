@@ -16,11 +16,13 @@
  * Removed deprecated PersistentFactory string constructor
  * Deprecated QuadraticCumul class in favor of TaylorExpansionsMoments
  * Renamed __contains__ to contains
+ * Added the keys "LinearModelTest-DefaultLevel", "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" and "LinearModelTest-DefaultDurbinWatsonHypothesis" to the ResourceMap class.
 
 === Python module ===
 
 === Miscellaneous ===
  * Improved the computeCDF() method of Normal 
+ * Add HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals 
 
 === Bug fixes ===
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
