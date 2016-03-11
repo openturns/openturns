@@ -899,7 +899,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SparseMethod parameters //
   setAsNumericalScalar("SparseMethod-MaximumErrorFactor", 2.0);
-  setAsNumericalScalar("SparseMethod-ErrorThreshold", 0.0);
+  setAsNumericalScalar("SparseMethod-ErrorThreshold", 1.0e-3);
 
   // CholeskyMethod parameters //
   setAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
@@ -907,6 +907,12 @@ void ResourceMap::loadDefaultConfiguration()
   // Classifier parameters //
   setAsBool( "Classifier-Parallel", true);
 
+  // TensorApproximationAlgorithm parameters //
+  set("TensorApproximationAlgorithm-Method", "GreedyRankOne");
+  set("TensorApproximationAlgorithm-DecompositionMethod", "SVD");
+  setAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration", 100);
+  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
+  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
 }
 
 /* String converter */

@@ -587,6 +587,7 @@ ot_check_test (KrigingAlgorithm_std)
 ot_check_test (KrigingRandomVector_std)
 ot_check_test (MetaModelValidation_std)
 ot_check_test (GeneralLinearModelAlgorithm_std)
+ot_check_test (TensorApproximationAlgorithm_std)
 
 if (HMAT_FOUND)
 ot_check_test (KrigingAlgorithm_std_hmat)

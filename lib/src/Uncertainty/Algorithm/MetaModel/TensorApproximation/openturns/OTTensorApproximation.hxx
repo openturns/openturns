@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir MetaModel
+ *  @brief The external header file of OpenTURNS for subdir TensorApproximation 
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,15 +19,12 @@
  *
  */
 
-#ifndef OPENTURNS_OTMETAMODEL_HXX
-#define OPENTURNS_OTMETAMODEL_HXX
+#ifndef OPENTURNS_OTTENSORAPPROXIMATION_HXX
+#define OPENTURNS_OTTENSORAPPROXIMATION_HXX
 
-#include "openturns/OTFunctionalChaos.hxx"
-#include "openturns/OTKriging.hxx"
-#include "openturns/OTTensorApproximation.hxx"
+#include "openturns/CanonicalTensorEvaluation.hxx"
+#include "openturns/CanonicalTensorGradient.hxx"
+#include "openturns/TensorApproximationResult.hxx"
+#include "openturns/TensorApproximationAlgorithm.hxx"
 
-#include "openturns/MetaModelAlgorithm.hxx"
-#include "openturns/MetaModelResult.hxx"
-#include "openturns/MetaModelValidation.hxx"
-
-#endif /* OPENTURNS_OTMETAMODEL_HXX */
+#endif /* OPENTURNS_OTTENSORAPPROXIMATION_HXX */

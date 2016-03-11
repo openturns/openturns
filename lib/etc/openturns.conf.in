@@ -634,13 +634,20 @@
 
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-MaximumErrorFactor  value="2.0"/>
-  <SparseMethod-ErrorThreshold      value="0.0"/>
+  <SparseMethod-ErrorThreshold      value="1.0e-3"/>
 
   <!-- OT::CholeskyMethod parameters -->
   <CholeskyMethod-LargeCase value="128"/>
 
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value="true" />
+
+  <!-- OT::TensorApproximationAlgorithm parameters -->
+  <TensorApproximationAlgorithm-Method value="GreedyRankOne"/>
+  <TensorApproximationAlgorithm-DecompositionMethod value="SVD"/>
+  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value="100"/>
+  <TensorApproximationAlgorithm-DefaultMaximumRadiusError value="1.0e-5"/>
+  <TensorApproximationAlgorithm-DefaultMaximumResidualError value="1.0e-5"/>
 
   <!-- <-your-variable value="its value" /> -->
 </openturns-configuration>

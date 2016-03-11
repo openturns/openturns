@@ -7,6 +7,7 @@
 ==== Major changes ====
  * Integrate otlhs module
  * New function API
+ * Canonical format low-rank tensor approximation
 
 ==== New classes ====
  * SpaceFillingPhiP, SpaceFillingMinDist, SpaceFillingC2
@@ -23,6 +24,7 @@
  * KarhunenLoeveSVDAlgorithm
  * RankMCovarianceModel
  * SparseMethod
+ * CanonicalTensorEvaluation|Gradient, TensorApproximationAlgorithm|Result
 
 ==== API changes ====
  * Removed deprecated SLSQP, LBFGS and NelderMead classes
@@ -95,6 +97,8 @@
  * LevelSetMesher
  * HistogramPolynomialFactory
  * ChebychevFactory
+ * FourierSeriesFactory, HaarWaveletFactory
+ * OrthogonalProductFunctionFactory
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes

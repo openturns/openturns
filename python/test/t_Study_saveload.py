@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing
 import os
 
 ot.TESTPREAMBLE()
@@ -162,6 +163,24 @@ try:
     kDTree = ot.KDTree(sample)
     myStudy.add('kDTree', kDTree)
 
+    # TensorApproximationAlgorithm/Result
+    dim = 1
+    model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+    distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
+    factoryCollection = [ot.FourierSeriesFactory()] * dim
+    functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
+    size = 10
+    X = distribution.getSample(size)
+    Y = model(X)
+    nk = [5] * dim
+    rank = 1
+    algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk, rank)
+    algo.run()
+    tensorResult = algo.getResult()
+    myStudy.add('tensorResult', tensorResult)
+    tensorIn = [0.4]
+    tensorRef = tensorResult.getMetaModel()(tensorIn)
+
     # print 'Study = ' , myStudy
     myStudy.save()
 
@@ -236,6 +255,11 @@ try:
     kDTree = ot.KDTree()
     myStudy.fillObject('kDTree', kDTree)
     print('kDTree = ', kDTree)
+
+    # Tensor
+    tensorResult = ot.MetaModelResult()
+    myStudy.fillObject('tensorResult', tensorResult)
+    ot.testing.assert_almost_equal(tensorResult.getMetaModel()(tensorIn), tensorRef)
 
     # cleanup
     os.remove(fileName)
