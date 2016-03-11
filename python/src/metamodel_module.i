@@ -76,6 +76,7 @@
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i
 %include KrigingRandomVector.i
+%include TensorApproximationAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintyMetaModelTemplateDefs.i

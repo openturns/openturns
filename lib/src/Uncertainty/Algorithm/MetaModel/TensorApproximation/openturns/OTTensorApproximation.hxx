@@ -23,5 +23,6 @@
 #define OPENTURNS_OTTENSORAPPROXIMATION_HXX
 
 #include "openturns/CanonicalTensor.hxx"
+#include "openturns/TensorApproximationAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTTENSORAPPROXIMATION_HXX */

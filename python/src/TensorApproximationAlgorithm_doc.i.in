@@ -1,0 +1,62 @@
+%feature("docstring") OT::TensorApproximationAlgorithm
+"Tensor approximation algorithm.
+
+Available constructors:
+    TensorApproximationAlgorithm(*inputSample, outputSample, distribution, functionFactory, nk*)
+
+Parameters
+----------
+inputSample, outputSample : 2-d sequence of float
+    The input random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`
+    and the output samples :math:`\vect{Y}` of a model evaluated apart.
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function :math:`f_{\vect{X}}(\vect{x})`
+    of the physical input vector :math:`\vect{X}`.
+functionFactory : :class:`~openturns.OrthogonalProductFunctionFactory`
+    The basis factory.
+nk : sequence of int
+    The size of the basis along each component
+
+Notes
+-----
+Consider a physical model :math:`g` depending
+on a set random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`.
+We call functional chaos expansion the class of spectral methods which gathers
+all types of response surface that can be seen as a projection of the physical
+model in an orthonormal basis. This class of methods uses the Hilbertian space
+(square-integrable space: :math:`L^2`) to construct the response surface.
+
+See also
+--------
+FunctionalChaosAlgorithm, KrigingAlgorithm
+
+Notes
+-----
+
+The approximation of order :math:`r` reads:
+
+.. math::
+
+    f(X_1, \dots, X_d) = \sum_{k=1}^r \alpha_k \prod_{i=1}^d v_i^{(k)} (x_i)
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define the model
+>>> inputDim = 1
+>>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> # Create the input distribution
+>>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> factoryCollection = [ot.FourierSeriesFactory()] * dim
+>>> functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
+>>> X = distribution.getSample(size)
+>>> Y = model(X)
+>>> nk = [10] * inputDim
+>>> algo = TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::run
+"Compute the response surface."
+
