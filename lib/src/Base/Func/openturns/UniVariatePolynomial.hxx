@@ -72,7 +72,8 @@ public:
   NumericalComplex operator() (const NumericalComplex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
-  NumericalScalar derivative(const NumericalScalar x) const;
+  NumericalScalar gradient(const NumericalScalar x) const;
+  NumericalScalar hessian(const NumericalScalar x) const;
 
   /** Compute the derivative of the polynomial */
   UniVariatePolynomial derivate() const;

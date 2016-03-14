@@ -23,10 +23,9 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/Graph.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/PersistentObject.hxx"
+#include "openturns/UniVariateFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API UniVariatePolynomialImplementation
-  : public PersistentObject
+  : public UniVariateFunctionImplementation
 {
   CLASSNAME;
 public:
@@ -64,11 +63,13 @@ public:
                          const String & offset) const;
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  virtual NumericalScalar operator() (const NumericalScalar x) const;
   NumericalComplex operator() (const NumericalComplex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
-  NumericalScalar derivative(const NumericalScalar x) const;
+  virtual NumericalScalar gradient(const NumericalScalar x) const;
+
+  virtual NumericalScalar hessian(const NumericalScalar x) const;
 
   /** Compute the derivative of the polynomial */
   UniVariatePolynomialImplementation derivate() const;
@@ -98,16 +99,11 @@ public:
   /** Root of the polynomial of degree n as the eigenvalues of the associated matrix */
   NumericalComplexCollection getRoots() const;
 
-  /** Method to draw the graph of the polynomial between given bounds */
-  Graph draw(const NumericalScalar xMin,
-             const NumericalScalar xMax,
-             const UnsignedInteger pointNumber) const;
-
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  virtual void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  virtual void load(Advocate & adv);
 
 protected:
 

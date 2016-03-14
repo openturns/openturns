@@ -1,0 +1,67 @@
+%define OT_UniVariateFunction_doc
+"Base class for univariate functions."
+%enddef
+%feature("docstring") OT::UniVariateFunctionImplementation
+OT_UniVariateFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariateFunction_gradient_doc
+"Compute the gradient at point :math:`x`.
+
+Returns
+-------
+gradient : float
+    The value of the function's first-order derivative at point :math:`x`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> print(P.gradient(1.))
+8.0"
+%enddef
+%feature("docstring") OT::UniVariateFunctionImplementation::gradient
+OT_UniVariateFunction_gradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariateFunction_hessian_doc
+"Compute the hessian at point :math:`x`.
+
+Parameters
+----------
+x : float
+    Input value.
+
+Returns
+-------
+hessian : float
+    The value of the function's second-order derivative at point :math:`x`."
+%enddef
+%feature("docstring") OT::UniVariateFunctionImplementation::hessian
+OT_UniVariateFunction_hessian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UniVariateFunction_draw_doc
+"Draw the function.
+
+Parameters
+----------
+x_min : float, optional
+    The starting value that is used for meshing the x-axis.
+x_max : float, optional, :math:`x_{\max} > x_{\min}`
+    The ending value that is used for meshing the x-axis.
+n_points : int, optional
+    The number of points that is used for meshing the x-axis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> f = ot.UniVariatePolynomial([1., 2., -3., 5.])
+>>> View(f.draw(-10., 10., 100)).show()"
+%enddef
+%feature("docstring") OT::UniVariateFunctionImplementation::draw
+OT_UniVariateFunction_draw_doc

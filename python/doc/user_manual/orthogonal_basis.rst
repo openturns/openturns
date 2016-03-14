@@ -1,6 +1,6 @@
-===========
-Polynomials
-===========
+================
+Orthogonal basis
+================
 
 .. currentmodule:: openturns
 
@@ -48,17 +48,31 @@ Orthogonal univariate polynomial families
     KrawtchoukFactory
     MeixnerFactory
 
-Orthogonal multivariate polynomials
-===================================
+Orthogonal univariate function families
+---------------------------------------
 
-Making orthogonal multivariate polynomials from orthogonal univariate polynomials
----------------------------------------------------------------------------------
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    OrthogonalUniVariateFunctionFamily
+    OrthogonalUniVariateFunctionFactory
+    OrthogonalUniVariatePolynomialFunctionFactory
+    FourierSeriesFactory
+    HaarWaveletFactory
+
+Orthogonal multivariate functions
+=================================
+
+Making orthogonal multivariate functions from orthogonal univariate functions
+-----------------------------------------------------------------------------
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
     OrthogonalProductPolynomialFactory
+    OrthogonalProductFunctionFactory
 
 Truncation schemes
 ------------------
@@ -70,3 +84,17 @@ Truncation schemes
     EnumerateFunction
     LinearEnumerateFunction
     HyperbolicAnisotropicEnumerateFunction
+
+Orthogonal univariate function families
+---------------------------------------
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    OrthogonalUniVariateFunctionFamily
+    OrthogonalUniVariateFunctionFactory
+    OrthogonalUniVariatePolynomialFunctionFactory
+    FourierSeriesFactory
+    HaarWaveletFactory
+

@@ -227,6 +227,7 @@ as Python functions.
     SpecFunc_LnGamma
     SpecFunc_Log1MExp
     SpecFunc_Log1p
+    SpecFunc_Log2
     SpecFunc_LogBesselI0
     SpecFunc_LogBesselI1
     SpecFunc_LogBesselK
@@ -253,3 +254,12 @@ External code coupling
     coupling_tools.get_value
     coupling_tools.get_line_col
     coupling_tools.get_regex
+
+1-D functions
+=============
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    UniVariateFunction

@@ -1021,6 +1021,34 @@ NumericalComplex SpecFunc::Log1MExp(const NumericalScalar x)
   return log1p(-exp(-x));
 }
 
+// Integer log2
+UnsignedInteger SpecFunc::Log2(const Unsigned64BitsInteger n)
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be positive";
+
+  // De Bruijn sequence
+  const UnsignedInteger tab64[64] = {
+    63,  0, 58,  1, 59, 47, 53,  2,
+    60, 39, 48, 27, 54, 33, 42,  3,
+    61, 51, 37, 40, 49, 18, 28, 20,
+    55, 30, 34, 11, 43, 14, 22,  4,
+    62, 57, 46, 52, 38, 26, 32, 41,
+    50, 36, 17, 19, 29, 10, 13, 21,
+    56, 45, 25, 31, 35, 16,  9, 12,
+    44, 24, 15,  8, 23,  7,  6,  5};
+
+  // http://www.pearsonhighered.com/samplechapter/0201914654.pdf
+  Unsigned64BitsInteger value(n);
+  value |= value >> 1;
+  value |= value >> 2;
+  value |= value >> 4;
+  value |= value >> 8;
+  value |= value >> 16;
+  value |= value >> 32;
+
+  return tab64[((Unsigned64BitsInteger)((value - (value >> 1))*0x07EDD5E59A4E28C2)) >> 58];
+}
+
 // Compute the smallest power of two greater or equal to the given n
 UnsignedInteger SpecFunc::NextPowerOfTwo(const UnsignedInteger n)
 {

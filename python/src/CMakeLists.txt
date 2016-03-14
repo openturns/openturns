@@ -644,6 +644,14 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalFunctionFactory.i OrthogonalFunctionFactory_doc.i.in
                       OrthogonalProductPolynomialFactory.i OrthogonalProductPolynomialFactory_doc.i.in
                       OrthogonalBasis.i OrthogonalBasis_doc.i.in
+                      UniVariateFunctionImplementation.i UniVariateFunctionImplementation_doc.i.in
+                      UniVariateFunction.i UniVariateFunction_doc.i.in
+                      OrthogonalUniVariateFunctionFactory.i OrthogonalUniVariateFunctionFactory_doc.i.in
+                      OrthogonalUniVariateFunctionFamily.i OrthogonalUniVariateFunctionFamily_doc.i.in
+                      OrthogonalUniVariatePolynomialFunctionFactory.i OrthogonalUniVariatePolynomialFunctionFactory_doc.i.in
+                      FourierSeriesFactory.i FourierSeriesFactory_doc.i.in
+                      HaarWaveletFactory.i HaarWaveletFactory_doc.i.in
+                      OrthogonalProductFunctionFactory.i OrthogonalProductFunctionFactory_doc.i.in
                       UncertaintyOrthogonalBasisTemplateDefs.i
                    )
 

@@ -1,0 +1,10 @@
+// UniVariateFunction docstrings are defined in UniVariateFunctionImplementation_doc.i.in
+
+%feature("docstring") OT::UniVariateFunction
+OT_UniVariateFunction_doc
+%feature("docstring") OT::UniVariateFunction::gradient
+OT_UniVariateFunction_gradient_doc
+%feature("docstring") OT::UniVariateFunction::hessian
+OT_UniVariateFunction_hessian_doc
+%feature("docstring") OT::UniVariateFunction::draw
+OT_UniVariateFunction_draw_doc

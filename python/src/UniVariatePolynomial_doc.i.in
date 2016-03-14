@@ -2,12 +2,14 @@
 
 %feature("docstring") OT::UniVariatePolynomial
 OT_UniVariatePolynomial_doc
+%feature("docstring") OT::UniVariatePolynomial::gradient
+OT_UniVariateFunction_gradient_doc
+%feature("docstring") OT::UniVariatePolynomial::hessian
+OT_UniVariateFunction_hessian_doc
 %feature("docstring") OT::UniVariatePolynomial::derivate
 OT_UniVariatePolynomial_derivate_doc
-%feature("docstring") OT::UniVariatePolynomial::derivative
-OT_UniVariatePolynomial_derivative_doc
 %feature("docstring") OT::UniVariatePolynomial::draw
-OT_UniVariatePolynomial_draw_doc
+OT_UniVariateFunction_draw_doc
 %feature("docstring") OT::UniVariatePolynomial::getCoefficients
 OT_UniVariatePolynomial_getCoefficients_doc
 %feature("docstring") OT::UniVariatePolynomial::getDegree

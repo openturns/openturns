@@ -41,5 +41,11 @@
 #include "openturns/OrthonormalizationAlgorithm.hxx"
 #include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
+#include "openturns/OrthogonalUniVariateFunctionFactory.hxx"
+#include "openturns/OrthogonalUniVariatePolynomialFunctionFactory.hxx"
+#include "openturns/FourierSeriesFactory.hxx"
+#include "openturns/HaarWaveletFactory.hxx"
+#include "openturns/OrthogonalProductFunctionFactory.hxx"
 
 #endif /* OPENTURNS_OTORTHOGONALBASIS_HXX */

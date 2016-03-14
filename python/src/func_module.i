@@ -75,6 +75,8 @@
 %include LinearCombinationHessianImplementation.i
 %include LinearNumericalMathFunction.i
 %include QuadraticNumericalMathFunction.i
+%include UniVariateFunctionImplementation.i
+%include UniVariateFunction.i
 %include UniVariatePolynomialImplementation.i
 %include UniVariatePolynomial.i
 %include AggregatedNumericalMathEvaluationImplementation.i

@@ -22,7 +22,7 @@ This is the user manual for the Python bindings to the OpenTURNS library.
     integration
     isoprobabilistic_transformation
     optimization
-    polynomials
+    orthogonal_basis 
     probabilistic_modelling
     response_surface/response_surface
     statistics_on_sample

@@ -75,7 +75,7 @@ Matrix ProductPolynomialGradientImplementation::gradient (const NumericalPoint &
   {
     const NumericalScalar x(inP[i]);
     const NumericalScalar y(polynomials_[i](x));
-    const NumericalScalar dy(polynomials_[i].derivative(x));
+    const NumericalScalar dy(polynomials_[i].gradient(x));
     evaluations[i] = y;
     derivatives[i] = dy;
     productEvaluation *= y;

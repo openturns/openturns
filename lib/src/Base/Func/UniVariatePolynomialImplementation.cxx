@@ -21,8 +21,6 @@
 #include "openturns/UniVariatePolynomialImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/Curve.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Exception.hxx"
@@ -38,7 +36,7 @@ static const Factory<UniVariatePolynomialImplementation> RegisteredFactory;
 
 /* Default constructor */
 UniVariatePolynomialImplementation::UniVariatePolynomialImplementation()
-  : PersistentObject()
+  : UniVariateFunctionImplementation()
   , coefficients_(1, 0.0)
 {
   // Nothing to do
@@ -47,7 +45,7 @@ UniVariatePolynomialImplementation::UniVariatePolynomialImplementation()
 
 /* Constructor from coefficients */
 UniVariatePolynomialImplementation::UniVariatePolynomialImplementation(const Coefficients & coefficients)
-  : PersistentObject()
+  : UniVariateFunctionImplementation()
   , coefficients_(coefficients)
 {
   compactCoefficients();
@@ -146,8 +144,9 @@ NumericalComplex UniVariatePolynomialImplementation::operator() (const Numerical
   return y;
 }
 
+
 /* UniVariatePolynomialImplementation derivative */
-NumericalScalar UniVariatePolynomialImplementation::derivative(const NumericalScalar x) const
+NumericalScalar UniVariatePolynomialImplementation::gradient(const NumericalScalar x) const
 {
   const UnsignedInteger size(coefficients_.getSize());
   if (size == 1) return 0.0;
@@ -158,6 +157,11 @@ NumericalScalar UniVariatePolynomialImplementation::derivative(const NumericalSc
   return y;
 }
 
+
+NumericalScalar UniVariatePolynomialImplementation::hessian(const NumericalScalar x) const
+{
+  return derivate().gradient(x);
+}
 
 /* Compute the derivative of the polynomial */
 UniVariatePolynomialImplementation UniVariatePolynomialImplementation::derivate() const
@@ -272,23 +276,6 @@ UniVariatePolynomialImplementation::Coefficients UniVariatePolynomialImplementat
 }
 
 
-/* Method to draw the graph of the polynomial between given bounds */
-Graph UniVariatePolynomialImplementation::draw(const NumericalScalar xMin, const NumericalScalar xMax, const UnsignedInteger pointNumber) const
-{
-  NumericalSample data(pointNumber, 2);
-  for (UnsignedInteger i = 0; i < pointNumber; ++i)
-  {
-    const NumericalScalar x(xMin + (xMax - xMin) * static_cast<NumericalScalar>(i) / static_cast<NumericalScalar>(pointNumber - 1.0));
-    data[i][0] = x;
-    data[i][1] = operator()(x);
-  }
-  Curve curve(data, "red", "solid", 2, getName());
-  Graph graph(getName(), "x", "y", true, "topright");
-  graph.add(curve);
-  return graph;
-}
-
-
 /* Get the degree of the polynomial */
 UnsignedInteger UniVariatePolynomialImplementation::getDegree() const
 {
@@ -326,14 +313,14 @@ void UniVariatePolynomialImplementation::compactCoefficients()
 /* Method save() stores the object through the StorageManager */
 void UniVariatePolynomialImplementation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  UniVariateFunctionImplementation::save(adv);
   adv.saveAttribute( "coefficients_", coefficients_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void UniVariatePolynomialImplementation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  UniVariateFunctionImplementation::load(adv);
   adv.loadAttribute( "coefficients_", coefficients_ );
 }
 

@@ -1,0 +1,52 @@
+%feature("docstring") OT::OrthogonalProductFunctionFactory
+"Base class for orthogonal multivariate functions.
+
+Available constructors:
+        OrthogonalProductFunctionFactory(*functions*)
+
+        OrthogonalProductFunctionFactory(*functions, enumerateFunction*)
+
+Parameters
+----------
+functions : list of :class:`~openturns.OrthogonalUniVariateFunctionFamily`
+    List of orthogonal univariate function factories with the same
+    dimension as the orthogonal basis.
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    Associates to an integer its multi-index image in the :math:`\Nset^d`
+    dimension, which is the dimension of the basis. This multi-index represents
+    the collection of degrees of the univariate polynomials.
+
+Notes
+-----
+OrthogonalProductFunctionFactory is a particular case of implementation of
+the :class:`~openturns.OrthogonalBasis` in the case of polynomial chaos
+expansion. It provides to the OrthogonalBasis the persistent types of the
+univariate orthogonal polynomials (e.g. Hermite, Legendre, Laguerre and Jacobi)
+needed to determine the distribution measure of projection of the input
+variable. Let's note that the exact hessian and gradient have been implemented
+for the product of polynomials.
+To facilitate the construction of the basis it is recommanded to use the class
+:class:`~openturns.StandardDistributionPolynomialFactory`.
+
+See also
+--------
+OrthogonalProductPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> from math import pi
+>>> funcColl = [ot.HaarWaveletFactory(), ot.FourierSeriesFactory()]
+>>> dim = len(funcColl)
+>>> enumerateFunction = ot.LinearEnumerateFunction(dim)
+>>> productBasis = ot.OrthogonalProductFunctionFactory(funcColl, enumerateFunction)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalProductFunctionFactory::getFunctionFamilyCollection
+"Get the collection of univariate orthogonal function families.
+
+Returns
+-------
+polynomialFamily : list of :class:`~openturns.OrthogonalUniVariateFunctionFamily`
+    List of orthogonal univariate function families."

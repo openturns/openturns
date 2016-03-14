@@ -1,0 +1,21 @@
+%define OT_HaarWaveletFactory_doc
+"Haar wavelet function factory.
+
+Generates the Haar basis defined as follows:
+
+.. math::
+
+    \begin{array}{l}
+      \psi(x) = 1, -\frac{1}{2} \leq x \le 0 \\
+      \psi(x) = -1, 0 \le x \leq \frac{1}{2} \\
+      \psi(x) = 0, \text{otherwise} \\
+      \psi_{j,k}(x) = \psi(2^j-k), \text{with} 0 \leq k \leq 2^j-1
+    \end{array}
+
+See also
+--------
+OrthogonalUniVariatePolynomialFunctionFactory"
+%enddef
+%feature("docstring") OT::HaarWaveletFactory
+OT_HaarWaveletFactory_doc
+

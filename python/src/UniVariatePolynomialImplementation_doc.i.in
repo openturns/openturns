@@ -57,55 +57,6 @@ OT_UniVariatePolynomial_derivate_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_UniVariatePolynomial_derivative_doc
-"Compute the first-order derivative polynomial at point :math:`x`.
-
-Parameters
-----------
-x : float
-    Polynomial input.
-
-Returns
--------
-derivative_value : float
-    The value of the polynomial's first-order derivative at point :math:`x`.
-
-Examples
---------
->>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
->>> print(P.derivative(1.))
-8.0"
-%enddef
-%feature("docstring") OT::UniVariatePolynomialImplementation::derivative
-OT_UniVariatePolynomial_derivative_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_UniVariatePolynomial_draw_doc
-"Draw the polynomial.
-
-Parameters
-----------
-x_min : float, optional
-    The starting value that is used for meshing the x-axis.
-x_max : float, optional, :math:`x_{\max} > x_{\min}`
-    The ending value that is used for meshing the x-axis.
-n_points : int, optional
-    The number of points that is used for meshing the x-axis.
-
-Examples
---------
->>> import openturns as ot
->>> from openturns.viewer import View
->>> P = ot.UniVariatePolynomial([1., 2., -3., 5.])
->>> View(P.draw(-10., 10., 100)).show()"
-%enddef
-%feature("docstring") OT::UniVariatePolynomialImplementation::draw
-OT_UniVariatePolynomial_draw_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_UniVariatePolynomial_getCoefficients_doc
 "Accessor to the polynomials's coefficients.
 

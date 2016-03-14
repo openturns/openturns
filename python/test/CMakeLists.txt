@@ -181,6 +181,7 @@ if (NUMPY_FOUND)
 endif ()
 
 # Func
+ot_pyinstallcheck_test (SpecFunc_std)
 ot_pyinstallcheck_test (NumericalMathFunction_std)
 ot_pyinstallcheck_test (NumericalMathFunction_composition)
 ot_pyinstallcheck_test (NumericalMathFunction_python)
@@ -548,6 +549,9 @@ ot_pyinstallcheck_test (ChebychevAlgorithm_std)
 ot_pyinstallcheck_test (GramSchmidtAlgorithm_std)
 ot_pyinstallcheck_test (StandardDistributionPolynomialFactory_std)
 ot_pyinstallcheck_test (OrthogonalBasis_std)
+ot_pyinstallcheck_test (OrthogonalUniVariatePolynomialFunctionFactory_std)
+ot_pyinstallcheck_test (FourierSeriesFactory_std)
+ot_pyinstallcheck_test (HaarWaveletFactory_std)
 
 ## TaylorExpansionsMoments
 ot_pyinstallcheck_test (TaylorExpansionsMoments_std)
