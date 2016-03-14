@@ -1,5 +1,5 @@
 %feature("docstring") OT::LinearModelTest::LinearModelAdjustedRSquared
-"Test the quality of the linear regression model.
+"Test the quality of the linear regression model Test.
 
 Based on the adjusted :math:`R^2` indicator.
 
@@ -9,6 +9,10 @@ Based on the adjusted :math:`R^2` indicator.
 
     LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample, level*)
 
+    LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample, linearModel, level*)
+
 
 Parameters
 ----------
@@ -16,6 +20,8 @@ fisrtSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= 1 - first type risk), it must be
     :math:`< 1`, equal to 0.95 by default.
@@ -74,6 +80,10 @@ class=TestResult name=Unnamed type=AdjustedRSquared binaryQualityMeasure=false p
 
     LinearModelTest.LinearModelFisher(*firstSample, secondSample, level*)
 
+    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModel, level*)
+
 
 Parameters
 ----------
@@ -81,6 +91,8 @@ fisrtSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= 1 - first type risk), it must be
     :math:`< 1`, equal to 0.95 by default.
@@ -138,6 +150,10 @@ class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value thr
 
     LinearModelTest.LinearModelRSquared(*firstSample, secondSample, level*)
 
+    LinearModelTest.LinearModelRSquared(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelRSquared(*firstSample, secondSample, linearModel, level*)
+
 
 Parameters
 ----------
@@ -145,6 +161,8 @@ fisrtSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= 1 - first type risk), it must be
     :math:`< 1`, equal to 0.95 by default.
@@ -202,6 +220,10 @@ class=TestResult name=Unnamed type=RSquared binaryQualityMeasure=false p-value t
 
     LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, level*)
 
+    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModel, level*)
+
 
 Parameters
 ----------
@@ -209,6 +231,8 @@ fisrtSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= 1 - first type risk), it must be
     :math:`< 1`, equal to 0.95 by default.
@@ -220,7 +244,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelAdjustedRSquared,  LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelRSquared
+LinearModelTest_LinearModelAdjustedRSquared,  LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelRSquared, LinearModelTest_LinearModelHarrisonMcCabe
 
 Notes
 -----
@@ -253,4 +277,224 @@ Examples
 >>> test_result = ot.LinearModelTest.LinearModelResidualMean(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-value threshold=0.05 p-value=1 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::LinearModelHarrisonMcCabe
+"Test the homoskedasticity of the linear regression model residuals.
+
+**Available usages**:
+
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample*)
+
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, level, breakPoint, simulationSize*)
+
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModel, level, breakPoint, simulationSize*)
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+breakPoint : positive float :math:`< 1`
+    Percentage of data to be taken as breakPoint in the variances. It must be
+    :math:`< 1`, equal to 0.5 by default.
+simulationSize : positive int
+    Size of the sample used to compute the p-value. Default is 1000.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelResidualMean,
+LinearModelTest_LinearModelDurbinWatson
+
+Notes
+-----
+The LinearModelTest class is used through its static methods in order to evaluate
+the quality of the linear regression model between two samples
+(see :class:`~openturns.LinearModel`). The linear regression model between the
+scalar variable :math:`Y` and the :math:`n`-dimensional one
+:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual.
+
+The Harrison-McCabe test checks the heteroskedasticity of the residuals. The
+breakpoint in the variances is set by default to the half of the sample. The
+p-value is estimed using simulation. If the binary quality measure is false, then
+the homoskedasticity hypothesis can be rejected with respect to the given level.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> firstSample = sample
+>>> secondSample = func(sample) + ot.Normal().getSample(30)
+>>> test_result = ot.LinearModelTest.LinearModelHarrisonMcCabe(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.95 p-value=0.142 description=[]
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::LinearModelBreuschPagan
+"Test the homoskedasticity of the linear regression model residuals.
+
+**Available usages**:
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample*)
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, level*)
+
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel, level*)
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean,
+LinearModelTest_LinearModelDurbinWatson
+
+Notes
+-----
+The LinearModelTest class is used through its static methods in order to evaluate
+the quality of the linear regression model between two samples
+(see :class:`~openturns.LinearModel`). The linear regression model between the
+scalar variable :math:`Y` and the :math:`n`-dimensional one
+:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual.
+
+The Breusch-Pagan test checks the heteroskedasticity of the residuals. A linear
+regression model is fitted on the squared residuals. The statistic is computed
+using the Studendized version with the chi-squared distribution. If the binary
+quality measure is false, then the homoskedasticity hypothesis can be rejected
+with respect to the given level.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> firstSample = sample
+>>> secondSample = func(sample) + ot.Normal().getSample(30)
+>>> test_result = ot.LinearModelTest.LinearModelBreuschPagan(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.95 p-value=0.700772 description=[]
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::LinearModelDurbinWatson
+"Test the autocorrelation of the linear regression model residuals.
+
+**Available usages**:
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample*)
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, hypothesis, level*)
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel*)
+
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel, hypothesis, level*)
+
+Parameters
+----------
+fisrtSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+linearModel : :class:`~openturns.LinearModel`
+    A linear model. If not provided, it is built using the given samples.
+hypothesis : string
+    Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
+    'Greater' than 0. Default is set to 'Equal' to 0.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= 1 - first type risk), it must be
+    :math:`< 1`, equal to 0.95 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelHarrisonMcCabe, LinearModelTest_LinearModelResidualMean
+
+Notes
+-----
+The LinearModelTest class is used through its static methods in order to evaluate
+the quality of the linear regression model between two samples
+(see :class:`~openturns.LinearModel`). The linear regression model between the
+scalar variable :math:`Y` and the :math:`n`-dimensional one
+:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual.
+
+The Durbin-Watson test checks the autocorrelation of the residuals. It is possible
+to test is the autocorrelation is equal to 0, and less or greater than 0. The
+p-value is computed using a normal approximation with mean and variance of the
+Durbin-Watson test statistic. If the binary quality measure is false, then the
+given autocorrelation hypothesis can be rejected with respect to the given level.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> firstSample = sample
+>>> secondSample = func(sample) + ot.Normal().getSample(30)
+>>> test_result = ot.LinearModelTest.LinearModelDurbinWatson(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.95 p-value=0.653603 description=[Hypothesis test: autocorrelation equals 0.]
 "

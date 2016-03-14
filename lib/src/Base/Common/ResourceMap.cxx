@@ -401,6 +401,12 @@ void ResourceMap::loadDefaultConfiguration()
   // LinearModelFactory parameters //
   setAsNumericalScalar( "LinearModelFactory-DefaultLevelValue", 0.95 );
 
+  // LinearModelTest parameters //
+  setAsNumericalScalar( "LinearModelTest-DefaultLevel", 0.95 );
+  setAsNumericalScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5 );
+  setAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize", 1000 );
+  set( "LinearModelTest-DefaultDurbinWatsonHypothesis", "Equal" );
+
   // Last parameters //
   setAsUnsignedInteger( "Last-DefaultMaximumSize", 65536 );
 
