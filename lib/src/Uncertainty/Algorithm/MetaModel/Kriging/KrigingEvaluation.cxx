@@ -28,6 +28,7 @@ CLASSNAMEINIT(KrigingEvaluation);
 
 
 static const Factory<KrigingEvaluation> RegisteredFactory;
+static const Factory<PersistentCollection<Basis> > RegisteredFactory_PC_Basis;
 
 
 /* Constructor with parameters */
