@@ -197,9 +197,9 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
     const NumericalSample sample(Normal().getSample(residualSize));
     const NumericalSample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
     NumericalScalar sumSelectResidualsSimulation(0);
-    for(UnsignedInteger i = 0; i < breakIndex; ++i)
+    for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     { 
-      const NumericalPoint stantardSamplePoint(stantardSample[i]);
+      const NumericalPoint stantardSamplePoint(stantardSample[j]);
       sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
     }
     const NumericalScalar sumSquaredResidualsSimulation(stantardSample.computeVariance()[0] * (residualSize - 1));
