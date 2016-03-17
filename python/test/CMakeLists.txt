@@ -614,6 +614,8 @@ ot_pyinstallcheck_test (RandomizedLHS_std)
 ot_pyinstallcheck_test (ImportanceSampling_std)
 ot_pyinstallcheck_test (DirectionalSampling_std)
 ot_pyinstallcheck_test (PostAnalyticalControlledImportanceSampling_std)
+ot_pyinstallcheck_test (SubsetSampling_R-S)
+ot_pyinstallcheck_test (SubsetSampling_Waarts_system_series)
 
 ## StatTests
 if (R_rot_FOUND)
