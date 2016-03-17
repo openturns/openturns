@@ -400,6 +400,11 @@
   <SubsetSampling-DefaultProposalRange value="2.0"          />
   <SubsetSampling-DefaultBetaMin value="2.0"                />
 
+  <!-- OT::AdaptiveDirectionalSampling parameters -->
+  <AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension value="3"   />
+  <AdaptiveDirectionalSampling-DefaultGamma                          value="0.5" />
+  <AdaptiveDirectionalSampling-DefaultNumberOfSteps                  value="2"   />
+
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth value="1.0" />
 

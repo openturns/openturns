@@ -23,6 +23,7 @@ Simulations methods
     RandomizedLHS
     RandomizedQuasiMonteCarlo
     SubsetSampling
+    AdaptiveDirectionalSampling
 
 Wilks' method
 =============

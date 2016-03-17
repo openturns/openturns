@@ -642,6 +642,8 @@ ot_check_test (RandomizedLHS_std)
 ot_check_test (RandomizedQuasiMonteCarlo_std)
 ot_check_test (Wilks_std)
 ot_check_test (SimulationSensitivityAnalysis_std)
+ot_check_test (QuadrantSampling_std)
+ot_check_test (AdaptiveDirectionalSampling_std)
 
 # StatTests
 if (R_rot_FOUND)

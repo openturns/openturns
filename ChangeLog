@@ -9,6 +9,7 @@
 
 ==== New classes ====
  * SubsetSampling
+ * AdaptiveDirectionalSampling
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
