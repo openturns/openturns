@@ -662,6 +662,11 @@ void ResourceMap::loadDefaultConfiguration()
   // SimulationSensitivityAnalysis parameters //
   setAsUnsignedInteger( "SimulationSensitivityAnalysis-DefaultSampleMargin", 400 );
 
+  setAsUnsignedInteger( "SubsetSampling-DefaultMaximumOuterSampling", 10000 );
+  setAsNumericalScalar( "SubsetSampling-DefaultTargetProbability", 0.1 );
+  setAsNumericalScalar( "SubsetSampling-DefaultProposalRange", 2.0 );
+  setAsNumericalScalar( "SubsetSampling-DefaultBetaMin", 2.0 );
+
   // AnalyticalResult parameters //
   setAsNumericalScalar( "AnalyticalResult-DefaultWidth", 1.0 );
 

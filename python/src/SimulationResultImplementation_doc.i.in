@@ -53,6 +53,19 @@ OT_SimulationResult_setBlockSize_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_SimulationResult_setEvent_doc
+"Accessor to the event.
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event we want to evaluate the probability."
+%enddef
+%feature("docstring") OT::SimulationResultImplementation::setEvent
+OT_SimulationResult_setEvent_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_SimulationResult_getEvent_doc
 "Accessor to the event.
 

@@ -22,6 +22,7 @@ Simulations methods
     QuasiMonteCarlo
     RandomizedLHS
     RandomizedQuasiMonteCarlo
+    SubsetSampling
 
 Wilks' method
 =============
@@ -85,3 +86,4 @@ Simulation result
 
     SimulationResult
     QuasiMonteCarloResult
+    SubsetSamplingResult
