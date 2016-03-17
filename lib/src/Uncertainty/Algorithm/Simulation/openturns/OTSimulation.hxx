@@ -49,5 +49,7 @@
 #include "openturns/Wilks.hxx"
 #include "openturns/SubsetSamplingResult.hxx"
 #include "openturns/SubsetSampling.hxx"
+#include "openturns/QuadrantSampling.hxx"
+#include "openturns/AdaptiveDirectionalSampling.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

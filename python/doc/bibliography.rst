@@ -27,6 +27,11 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <http://doc.openturns.org/papers/lebrun2009c.pdf>`__
+.. [Munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
+    *Adaptative Directional Stratification for controlled estimation of the
+    probability of a rare event*, Reliability Engineering and System Safety,
+    2011.
+    `pdf <http://doc.openturns.org/papers/munoz2011.pdf>`__
 .. [Nataf1962] Nataf, A. *Determination des distributions dont les marges sont
     donnees.* C. R. Acad. Sci. Paris, 1962, 225, 42-43.
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__

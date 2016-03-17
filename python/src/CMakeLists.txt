@@ -762,6 +762,7 @@ ot_add_python_module(simulation simulation_module.i
                       QuasiMonteCarloResult.i QuasiMonteCarloResult_doc.i.in
                       SubsetSamplingResult.i SubsetSamplingResult_doc.i.in
                       SubsetSampling.i SubsetSampling_doc.i.in
+                      AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 
