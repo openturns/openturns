@@ -87,6 +87,7 @@ try:
         print("standard moment n=", i, " value=",
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
+    print("probabilities=", distribution.getProbabilities())
 
 except:
     import sys
