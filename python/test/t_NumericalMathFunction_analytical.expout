@@ -117,42 +117,42 @@ d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*min(x)]
 f( 0.4 )=8.0000e-01
 df( 0.4 )=1.0000e+00 df (FD)=2.0000e+00
-GRADIENT ERROR! check min gradient, err= 1.0
+GRADIENT ERROR! check min gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*max(x)]
 f( 0.4 )=8.0000e-01
 df( 0.4 )=1.0000e+00 df (FD)=2.0000e+00
-GRADIENT ERROR! check max gradient, err= 1.0
+GRADIENT ERROR! check max gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*sum(x)]
 f( 0.4 )=8.0000e-01
 df( 0.4 )=1.0000e+00 df (FD)=2.0000e+00
-GRADIENT ERROR! check sum gradient, err= 1.0
+GRADIENT ERROR! check sum gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*avg(x)]
 f( 0.4 )=8.0000e-01
 df( 0.4 )=1.0000e+00 df (FD)=2.0000e+00
-GRADIENT ERROR! check avg gradient, err= 1.0
+GRADIENT ERROR! check avg gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*floor(x)]
 f( 0.4 )=0.0000e+00
 df( 0.4 )=1.0000e+00 df (FD)=0.0000e+00
-GRADIENT ERROR! check floor gradient, err= 1.0
+GRADIENT ERROR! check floor gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*ceil(x)]
 f( 0.4 )=2.0000e+00
 df( 0.4 )=1.0000e+00 df (FD)=0.0000e+00
-GRADIENT ERROR! check ceil gradient, err= 1.0
+GRADIENT ERROR! check ceil gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*trunc(x)]
 f( 0.4 )=0.0000e+00
 df( 0.4 )=1.0000e+00 df (FD)=0.0000e+00
-GRADIENT ERROR! check trunc gradient, err= 1.0
+GRADIENT ERROR! check trunc gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 f= [x]->[2.0*round(x)]
 f( 0.4 )=0.0000e+00
 df( 0.4 )=1.0000e+00 df (FD)=0.0000e+00
-GRADIENT ERROR! check round gradient, err= 1.0
+GRADIENT ERROR! check round gradient, err=1
 d2f( 0.4 )=0.0000e+00 d2f (FD)=0.0000e+00
 marginal 0= [x0,x1]->[x0+x1]
 marginal 1= [x0,x1]->[x0-x1]
