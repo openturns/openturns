@@ -377,6 +377,9 @@ public:
   /** Get the support on the whole range */
   virtual NumericalSample getSupport() const;
 
+  /** Get the discrete probability levels */
+  virtual NumericalPoint getProbabilities() const;
+
   /** Compute the density generator of the elliptical generator, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */

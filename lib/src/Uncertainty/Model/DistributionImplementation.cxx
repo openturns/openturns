@@ -2458,6 +2458,15 @@ NumericalSample DistributionImplementation::getSupport() const
   return getSupport(getRange());
 }
 
+/* Get the discrete probability levels */
+NumericalPoint DistributionImplementation::getProbabilities() const
+{
+  if (!isDiscrete())
+    throw InternalException(HERE) << "Error: cannot return probability levels of a non discrete distribution.";
+
+  return computePDF(getSupport()).getImplementation()->getData();
+}
+
 /* Compute the density generator of the elliptical generator, i.e.
  *  the function phi such that the density of the distribution can
  *  be written as p(x) = phi(t(x-mu)R(x-mu))
