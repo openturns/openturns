@@ -151,7 +151,6 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/UniformFactory.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/UserDefinedPair.hxx"
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/VonMises.hxx"
 #include "openturns/Weibull.hxx"

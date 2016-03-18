@@ -96,24 +96,28 @@ int main(int argc, char *argv[])
     fullprint << "Failure probability (Event)=" << myEvent.getSample(size).computeMean() << std::endl;
     fullprint << "Failure probability (StandardEvent)=" << stdEvent.getSample(size).computeMean() << std::endl;
 
-    Collection<UserDefinedPair> collection(3, UserDefinedPair(NumericalPoint(dim), 0.0));
+    NumericalSample x(3, dim);
     NumericalPoint point(dim);
     point[0] = 1.0;
     point[1] = 0.5;
     point[2] = 1.0;
     point[3] = 0.5;
-    collection[0] = UserDefinedPair(point, 0.3);
+    x[0] = point;
     point[0] = 2.0;
     point[1] = 1.0;
     point[2] = 2.0;
     point[3] = 1.0;
-    collection[1] = UserDefinedPair(point, 0.325);
+    x[1] = point;
     point[0] = 3.0;
     point[1] = 1.5;
     point[2] = 3.0;
     point[3] = 1.5;
-    collection[2] = UserDefinedPair(point, 0.375);
-    UserDefined myDistribution3(collection);
+    x[2] = point;
+    NumericalPoint p(3);
+    p[0] = 0.0;
+    p[1] = 0.3;
+    p[2] = 0.325;
+    UserDefined myDistribution3(x, p);
     /* We create a 'usual' RandomVector from the Distribution */
     RandomVector vect3(myDistribution3);
 

@@ -22,8 +22,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<UserDefinedPair> UserDefinedPairCollection;
-
 CLASSNAMEINIT(UserDefinedFactory);
 
 /* Default constructor */
@@ -64,13 +62,7 @@ UserDefined UserDefinedFactory::buildAsUserDefined(const NumericalSample & sampl
   const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
   const NumericalScalar p(1.0 / NumericalScalar(size));
-  UserDefinedPairCollection support(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    support[i].setX(sample[i]);
-    support[i].setP(p);
-  }
-  UserDefined result(support);
+  UserDefined result(sample, NumericalPoint(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());
   return result;

@@ -71,25 +71,9 @@ try:
     print("Failure probability (StandardEvent)=%.6f" %
           stdEvent.getSample(size).computeMean()[0])
 
-    collection = UserDefinedPairCollection(
-        3, UserDefinedPair(NumericalPoint(dim), 0.0))
-    point = NumericalPoint(dim)
-    point[0] = 1.0
-    point[1] = 0.5
-    point[2] = 1.0
-    point[3] = 0.5
-    collection[0] = UserDefinedPair(point, 0.3)
-    point[0] = 2.0
-    point[1] = 1.0
-    point[2] = 2.0
-    point[3] = 1.0
-    collection[1] = UserDefinedPair(point, 0.325)
-    point[0] = 3.0
-    point[1] = 1.5
-    point[2] = 3.0
-    point[3] = 1.5
-    collection[2] = UserDefinedPair(point, 0.375)
-    myDistribution3 = UserDefined(collection)
+    x = [[1.0,0.5, 1.0, 0.5], [2.0, 1.0, 2.0, 1.0], [3.0, 1.5, 3.0, 1.5]]
+    p = [0.3, 0.325, 0.375]
+    myDistribution3 = UserDefined(x, p)
 
     # We create a 'usual' RandomVector from the Distribution */
     vect3 = RandomVector(myDistribution3)
