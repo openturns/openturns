@@ -53,12 +53,11 @@ for func in elementaryFunctions:
         'x', '2.0*' + func + '(x)', 'y')
     print('f=', f)
     print('f(', x[0], ')=%.4e' % f(x)[0])
-    analytical_grad = True
     try:
         df = f.gradient(x)[0, 0]
     except:
-        analytical_grad = False
-    if analytical_grad:
+        pass
+    else:
         f.setGradient(ot.CenteredFiniteDifferenceGradient(ot.ResourceMap.GetAsNumericalScalar(
             'CenteredFiniteDifferenceGradient-DefaultEpsilon'), f.getEvaluation()))
         df2 = f.gradient(x)[0, 0]
@@ -68,13 +67,12 @@ for func in elementaryFunctions:
         else:
             err_g = abs(df - df2)
         if err_g > 1e-5:
-            print('GRADIENT ERROR! check ' + func + ' gradient, err=', err_g)
-    analytical_hess = True
+            print('GRADIENT ERROR! check ' + func + ' gradient, err=%.12g' % err_g)
     try:
         d2f = f.hessian(x)[0, 0, 0]
     except:
-        analytical_hess = False
-    if analytical_hess:
+        pass
+    else:
         f.setHessian(ot.CenteredFiniteDifferenceHessian(ot.ResourceMap.GetAsNumericalScalar(
             'CenteredFiniteDifferenceHessian-DefaultEpsilon'), f.getEvaluation()))
         d2f2 = f.hessian(x)[0, 0, 0]
@@ -84,7 +82,7 @@ for func in elementaryFunctions:
         else:
             err_h = abs(d2f - d2f2)
         if err_h > 1e-4:
-            print('HESSIAN ERROR! check ' + func + ' hessian, err=', err_h)
+            print('HESSIAN ERROR! check ' + func + ' hessian, err=%.12g' % err_h)
 
 nmf = ot.NumericalMathFunction(['x0', 'x1'], ['y0', 'y1'], ['x0+x1', 'x0-x1'])
 marginal0 = nmf.getMarginal(0)
