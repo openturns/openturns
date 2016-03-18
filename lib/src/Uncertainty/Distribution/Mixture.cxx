@@ -239,17 +239,19 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   size = distributionCollection_.getSize();
 
   // We set the member with the collection passed as argument and we renormalize it in place
-  UserDefined::UserDefinedPairCollection pairCollection(size, UserDefinedPair(NumericalPoint(1, 0.0), 0.0));
+  NumericalSample x(size, 1);
+  NumericalPoint p(size);
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar normalizedWeight(distributionCollection_[i].getWeight() / weightSum);
     distributionCollection_[i].setWeight(normalizedWeight);
-    pairCollection[i] = UserDefinedPair(NumericalPoint(1, NumericalScalar(i)), normalizedWeight);
+    x[i][0] = i;
+    p[i] = normalizedWeight;
     parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
   } /* end for */
   setParallel(parallel);
-  setWeightsDistribution(UserDefined(pairCollection));
+  setWeightsDistribution(UserDefined(x, p));
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

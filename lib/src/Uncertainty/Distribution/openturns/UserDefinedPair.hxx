@@ -30,6 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
+ * @deprecated
  * @class UserDefinedPair
  *
  * The UserDefinedPair class.

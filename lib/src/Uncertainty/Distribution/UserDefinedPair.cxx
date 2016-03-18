@@ -35,7 +35,7 @@ UserDefinedPair::UserDefinedPair()
   : x_(1, 0.0)
   , p_(1.0)
 {
-  // Nothing to do
+  Log::Warn(OSS() << "UserDefinedPair class is deprecated.");
 }
 
 /* Parameters constructor */
@@ -44,6 +44,7 @@ UserDefinedPair::UserDefinedPair(const NumericalPoint & x,
   : x_(x)
   , p_(0.0)
 {
+  Log::Warn(OSS() << "UserDefinedPair class is deprecated.");
   setP(p);
 }
 

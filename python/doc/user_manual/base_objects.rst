@@ -77,8 +77,6 @@ Vectors
     NumericalPointWithDescription
     NumericalComplexCollection
     NumericalScalarCollection
-    UserDefinedPair
-    UserDefinedPairCollection
 
 Comparison operators
 ====================

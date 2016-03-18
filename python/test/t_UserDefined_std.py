@@ -9,20 +9,9 @@ RandomGenerator.SetSeed(0)
 try:
 
     # Instanciate one distribution object
-    collection = UserDefinedPairCollection(
-        4, UserDefinedPair(NumericalPoint(1), 0.0))
-    point = NumericalPoint(1)
-
-    point[0] = 1.0
-    collection[0] = UserDefinedPair(point, 0.30)
-
-    point[0] = 2.0
-    collection[1] = UserDefinedPair(point, 0.10)
-
-    point[0] = 3.0
-    collection[2] = UserDefinedPair(point, 0.60)
-    collection[3] = UserDefinedPair(point, 0.60)
-    distribution = UserDefined(collection)
+    x = [[1.0], [2.0], [3.0], [3.0]]
+    p = [0.3, 0.1, 0.6, 0.6]
+    distribution = UserDefined(x, p)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 

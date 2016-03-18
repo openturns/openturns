@@ -33,17 +33,17 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    typedef UserDefined::UserDefinedPairCollection PairCollection;
-    PairCollection collection(4);
-    NumericalPoint point(1);
-    point[0] = 1.0;
-    collection[0] = UserDefinedPair(point, 0.3);
-    point[0] = 2.0;
-    collection[1] = UserDefinedPair(point, 0.1);
-    point[0] = 3.0;
-    collection[2] = UserDefinedPair(point, 0.6);
-    collection[3] = UserDefinedPair(point, 0.6);
-    UserDefined distribution(collection);
+    NumericalSample x(4, 1);
+    x[0][0] = 1.0;
+    x[1][0] = 2.0;
+    x[2][0] = 3.0;
+    x[3][0] = 3.0;
+    NumericalPoint p(4);
+    p[0] = 0.3;
+    p[1] = 0.1;
+    p[2] = 0.6;
+    p[3] = 0.6;
+    UserDefined distribution(x, p);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     // Is this distribution elliptical ?
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     fullprint << "oneSample=" << oneSample << std::endl;
 
     // Define a point
-    point = NumericalPoint( distribution.getDimension(), 2.0 );
+    NumericalPoint point(distribution.getDimension(), 2.0);
 
     // Show PDF and CDF of a point
     NumericalScalar pointPDF = distribution.computePDF( point );
@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
       }
     }
     UserDefined multivariateUserDefined(sample);
+    multivariateUserDefined.setName("Unnamed");
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
     multivariateUserDefined.compactSupport();
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;

@@ -65,17 +65,9 @@ try:
     distributionCollection.add(poisson)
     discreteDistributionCollection.add(poisson)
 
-    collection = UserDefinedPairCollection(
-        3, UserDefinedPair(NumericalPoint(1), 0.0))
-
-    point = NumericalPoint(1)
-    point[0] = 1.0
-    collection[0] = UserDefinedPair(point, 0.3)
-    point[0] = 2.0
-    collection[1] = UserDefinedPair(point, 0.2)
-    point[0] = 3.0
-    collection[2] = UserDefinedPair(point, 0.5)
-    userdefined = UserDefined(collection)
+    x = [[1.0], [2.0], [3.0]]
+    p = [0.3, 0.2, 0.5]
+    userdefined = UserDefined(x, p)
     distributionCollection.add(userdefined)
     discreteDistributionCollection.add(userdefined)
 
