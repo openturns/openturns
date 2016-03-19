@@ -26,21 +26,6 @@ Construction of the regression basis
     LinearBasisFactory
     QuadraticBasisFactory
 
-Construction of the covariance function
-=======================================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: CovarianceModel.rst_t
-
-    SquaredExponential
-    AbsoluteExponential
-    GeneralizedExponential
-    MaternModel
-    DiracCovarianceModel
-    ProductCovarianceModel
-    TensorizedCovarianceModel
-
 Kriging random vector
 =====================
 
