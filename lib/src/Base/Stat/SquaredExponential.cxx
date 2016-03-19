@@ -66,7 +66,7 @@ SquaredExponential * SquaredExponential::clone() const
   return new SquaredExponential(*this);
 }
 
-/* Computation of the covariance density function */
+/* Computation of the covariance  function */
 NumericalScalar SquaredExponential::computeStandardRepresentative(const NumericalPoint & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();

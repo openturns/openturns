@@ -2,55 +2,86 @@
 "Dirac covariance function.
 
 Available constructors:
-    DiracCovarianceModel(*spatialDim, amplitude*)
+    DiracCovarianceModel(*spatialDim=1*)
 
-    DiracCovarianceModel(*spatialDim, amplitude, spatialCorrelation*)
+    DiracCovarianceModel(*spatialDim, sigma*)
+
+    DiracCovarianceModel(*spatialDim, sigma, spatialCorrelation*)
 
     DiracCovarianceModel(*spatialDim, spatialCovariance*)
 
 Parameters
 ----------
+
 spatialDim : int
-    Dimension of the domain :math:`\cD`.
-amplitude : sequence of float
-    Vector :math:`\vect{\sigma}` of dimension :math:`d`.
+    Spatial dimension :math:`n`.
+
+    By default, equal to 1.
+sigma : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
+
+    Its size is the dimension :math:`d` of the process.
+
+    By default, equal to :math:`[1]`.
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])`.
+    Correlation matrix :math:`\mat{R} \in \cS^+_d([-1, 1])`.
+
+    By default, Identity matrix.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`C^{stat} \in \mathcal{M}^{+}_{d \times d}(\Rset)`.
+    Covariance matrix :math:`\mat{C}^{stat} \in \cS_d^+(\Rset)`.
+
+    By default, Identity matrix.
 
 Notes
 -----
-The Dirac model defines a stationary covariance function
-:math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau}) \forall (\vect{s},\vect{\tau}) \in \cD`
-such that :
+The *Dirac* covariance function is a stationary covariance function whith dimension :math:`d \geq 1`.
+
+We consider the stochastic process :math:`X: \Omega \times\cD \mapsto \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *Dirac* covariance function is defined by:
+
+.. math::
+    
+    C(\vect{s}, \vect{t}) =  1_{\{\vect{s}=\vect{t}\}} \, \mbox{Diag}(\vect{\sigma}) \, \mat{R}\,  \mbox{Diag}(\vect{\sigma}), \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+where :math:`\mat{R} \in \cS_d^+([-1,1])` is the spatial correlation matrix. We can define the spatial covariance matrix :math:`\mat{C}^{stat}` as:
+
+.. math::
+    
+    \mat{C}^{stat} = \mbox{Diag}(\vect{\sigma}) \, mat{R}\,  \mbox{Diag}(\vect{\sigma})
+
+The correlation function :math:`\rho` writes:
 
 .. math::
 
-    \forall \vect{\tau} \in \cD,\quad
-    C^{stat}( \vect{\tau} )= 1_{\tau=0} \times \left[\vect{\Sigma}\right] \,\mat{R}\, \left[ \mat{\Sigma}\right]
+    \rho(\vect{s}, \vect{t}) = 1_{\{\vect{s}=\vect{t}\}}
 
-where :math:`\mat{R} \in  \mathcal{M}_{d \times d}([-1, 1])` is a correlation
-matrix, :math:`\mat{\Sigma} \in \mathcal{M}_{d \times d}(\Rset)` is defined by:
 
-.. math::
-
- \mat{\Sigma}= \mbox{Diag}(\sigma_1, \dots, \sigma_d)
-
-with :math:`\sigma_i>0` for any :math:`i`. :math:`\vect{\sigma}` is the amplitude vector.
-
-The model is used for example in linear regression. Indeed, in that context, error is considered to be gaussian with `homoscedasticitc` variance
-(same variance distribution, independent spatial correlation)
+See Also
+--------
+CovarianceModel
 
 Examples
 --------
-Create two *DiracCovarianceModel* of dimension 2:
+Create a standard Dirac covariance function:
+
 
 >>> import openturns as ot
->>> spatialDimension = 3
->>> amplitude = [1., 2.]
->>> correlation = ot.CorrelationMatrix(2)
->>> correlation[1,0] = 0.1
->>> covarianceModel = ot.DiracCovarianceModel(spatialDimension, amplitude)
->>> covarianceModelCorr = ot.DiracCovarianceModel(spatialDimension, amplitude, correlation)
-"
+>>> covModel = ot.DiracCovarianceModel(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.1, 0.3]
+>>> print(covModel(s, t))
+[[ 1 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covModel(tau))
+[[ 0 ]]
+
+Create a  Dirac covariance function specifying the amplitude vector:
+
+>>> covModel2 = ot.DiracCovarianceModel(2, [1.5, 2.5])
+
+Create a  Dirac covariance function specifying the amplitude vector and the correlation matrix:
+
+>>> corrMat = ot.CorrelationMatrix(2)
+>>> corrMat[1,0] = 0.1
+>>> covModel3 =  ot.DiracCovarianceModel(2, [1.5, 2.5],corrMat)"

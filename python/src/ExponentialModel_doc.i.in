@@ -2,84 +2,59 @@
 "Multivariate stationary exponential covariance function.
 
 Available constructors:
-    ExponentialModel(*spatialDim, amplitude, scale*)
+    ExponentialModel(*spatialDim, sigma, theta*)
 
-    ExponentialModel(*spatialDim, amplitude, scale, spatialCorrelation*)
+    ExponentialModel(*spatialDim, sigma, theta, spatialCorrelation*)
 
-    ExponentialModel(*spatialDim, scale, spatialCovariance*)
+    ExponentialModel(*spatialDim, theta, spatialCovariance*)
 
-    ExponentialModel(*scale, amplitude*)
+    ExponentialModel(*theta, sigma, spatialCorrelation*)
 
-    ExponentialModel(*scale, amplitude, spatialCorrelation*)
-
-    ExponentialModel(*scale, amplitude, spatialCovariance*)
+    ExponentialModel(*theta, sigma, spatialCovariance*)
 
 Parameters
 ----------
 spatialDim : int
-    Dimension of the domain :math:`\cD`.
-amplitude : sequence of float
-    Vector :math:`\vect{a}` of dimension :math:`d`.
-scale : sequence of float
-    Vector :math:`\vect{\lambda}` of dimension :math:`spatialDim`.
+    Spatial dimension :math:`n`.
+
+    By default, the spatial dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
+sigma : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
+theta : sequence of floats
+     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \mathcal{S}^{+}_{d}(\Rset)`, with values in [-1,1]
+    Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
+
+    By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`C^{stat} \in \mathcal{M}_{+}^{*}(\Rset^d)`.
+    Covariance matrix :math:`C^{stat} \in \cS_d^+(\Rset)`.
 
 Notes
 -----
-The Exponential model defines the stationary covariance function
-:math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau}) \forall (\vect{s},\vect{\tau}) \in \cD`
-such that :
+The *exponential* function is a stationary covariance function whith dimension :math:`d\geq1`.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *exponential* function is defined by:
 
 .. math::
 
-    \forall \vect{\tau} \in \cD,\quad
-    C^{stat}( \vect{\tau} )=\left[\mat{A}\mat{\Delta}( \vect{\tau} ) \right] \,\mat{R}\, \left[ \mat{\Delta}( \vect{\tau} )\mat{A}\right]
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)\, \mbox{Diag}(\vect{\sigma}) \, \mat{R} \, \mbox{Diag}(\vect{\sigma}), \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-where :math:`\mat{R} \in  \mathcal{M}_{d \times d}([-1, 1])` is a correlation
-matrix, :math:`\mat{\Delta}( \vect{\tau} ) \in \mathcal{M}_{d \times d}(\Rset)`
-is defined by:
+where the spatial covariance function :math:`\rho` writes:
 
 .. math::
+    \rho(\vect{s}, \vect{t} ) = e^{-\left\| \vect{s}- \vect{t} \right\|_2} \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-    \mat{\Delta}( \vect{\tau} )= \mbox{Diag}(e^{-\lambda_1|\tau|/2}, \dots, e^{-\lambda_d|\tau|/2})
-
-and :math:`\mat{A}\in \mathcal{M}_{d \times d}(\Rset)` is defined by:
-
-.. math::
-
-    \mat{A}= \mbox{Diag}(a_1, \dots, a_d)
-
-with :math:`\lambda_i>0` and :math:`a_i>0` for any :math:`i`.
-
-We call :math:`\vect{a}` the amplitude vector and :math:`\vect{\lambda}` the
-scale vector.
-
-We define the spatial covariance matrix :math:`\mat{C}^{spat}` by:
+The spatial covariance matrix  writes:
 
 .. math::
+    C^{stat}(\vect{s}, \vect{t})= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}) 
 
-    \forall \vect{t} \in \cD,\quad
-    \mat{C}^{spat} = \Expect{X_{\vect{t}}\Tr{X}_{\vect{t}}}
-                   = \mat{A}\,\mat{R}\, \mat{A}
-
-- In the first usage, we fix the dimension spatial dimension :math:`n`, the
-  scale :math:`\vect{a}` and the amplitude  :math:`\vect{\lambda}`. By default,
-  :math:`\mat{R}=\mat{Id}(d)`. The dimension :math:`d` is deduced.
-
-- In the second usage, we fix the dimension spatial dimension :math:`n`, the
-  scale  :math:`\vect{a}`, the amplitude :math:`\vect{\lambda}` and the spatial
-  correlation matrix  :math:`\mat{R}`. The dimension :math:`d` is deduced.
-
-- In the third usage, the dimension spatial dimension :math:`n`, the scale
-  :math:`\vect{a}`, the amplitude :math:`\vect{\lambda}` and the spatial
-  covariance matrix :math:`C^{stat}`. The dimension :math:`d` is deduced.
 
 Examples
 --------
-Create an *ExponentialModel* from the amplitude and scale:
+Create an exponential model from the amplitude :math:`\vect{\sigma}` and the scale :math:`\vect{\theta}`:
 
 >>> import openturns as ot
 >>> amplitude = [1., 2.]
@@ -87,7 +62,7 @@ Create an *ExponentialModel* from the amplitude and scale:
 >>> spatialDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
 
-Create an *ExponentialModel* from the amplitude, scale and correlation matrix:
+Create an exponential model from the amplitude, scale and the correlation matrix:
 
 >>> amplitude = [1., 2.]
 >>> scale = [4., 5.]
@@ -96,7 +71,7 @@ Create an *ExponentialModel* from the amplitude, scale and correlation matrix:
 >>> spatialDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
 
-Create an *ExponentialModel* from the amplitude, scale and covariance matrix:
+Create an exponential model from the amplitude, scale and covariance matrix:
 
 >>> amplitude = [1., 2.]
 >>> scale = [4., 5.]
