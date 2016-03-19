@@ -7,13 +7,9 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    collectionSize = 4
-    collection = HistogramPairCollection(collectionSize)
-    collection[0] = HistogramPair(1.0, 0.5)
-    collection[1] = HistogramPair(0.7, 1.5)
-    collection[2] = HistogramPair(1.2, 3.5)
-    collection[3] = HistogramPair(0.9, 2.5)
-    distribution = Histogram(-1.5, collection)
+    l = [1.0, 0.7, 1.2, 0.9]
+    h = [0.5, 1.5, 3.5, 2.5]
+    distribution = Histogram(-1.5, l, h)
     size = 10000
     sample = distribution.getSample(size)
     factory = HistogramFactory()

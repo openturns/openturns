@@ -9,15 +9,9 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     print("begin histo comp test")
-    collection = HistogramPairCollection(4)
-    collection[0] = HistogramPair(1.0, 0.5)
-    collection[1] = HistogramPair(0.7, 1.5)
-    collection[2] = HistogramPair(1.2, 3.5)
-    collection[3] = HistogramPair(0.9, 2.5)
-    print("collection=", collection)
-    collectionSize = len(collection)
-    print("collection = ", repr(collection))
-    distribution = Histogram(-1.5, collection)
+    l = [1.0, 0.7, 1.2, 0.9]
+    h = [0.5, 1.5, 3.5, 2.5]
+    distribution = Histogram(-1.5, l, h)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
