@@ -925,7 +925,8 @@ struct ReductionFunctor
 
   void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) op_.inplace_op( accumulator_, nsi_[i] );
+    NSI_const_iterator it = nsi_.begin() + r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++it) op_.inplace_op( accumulator_, *it );
   }
 
   void join(const ReductionFunctor & other)
