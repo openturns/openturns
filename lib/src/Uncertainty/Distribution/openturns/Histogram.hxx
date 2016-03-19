@@ -48,7 +48,7 @@ public:
   /** Default constructor */
   Histogram();
 
-  /** Parameters constructor */
+  /** @deprecated Parameters constructor */
   Histogram(const NumericalScalar first,
             const HistogramPairCollection & collection);
 
@@ -111,6 +111,12 @@ public:
   void setFirst(const NumericalScalar first);
   NumericalScalar getFirst() const;
 
+  /** Data accessor */
+  void setData(const NumericalPoint & width,
+               const NumericalPoint & weight);
+  NumericalPoint getWidth() const;
+  NumericalPoint getHeight() const;
+
   /** Collection accessor */
   void setPairCollection(const HistogramPairCollection & collection);
   HistogramPairCollection getPairCollection() const;
@@ -152,8 +158,9 @@ private:
   /** The first point of the collection */
   NumericalScalar first_;
 
-  /** The collection of pair describing the distribution */
-  HistogramPairPersistentCollection collection_;
+  /** The collection of widths/heights */
+  NumericalPoint width_;
+  NumericalPoint height_;
 
   /** The cumulated bin widths */
   NumericalPoint cumulatedWidth_;

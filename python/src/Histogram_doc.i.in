@@ -2,15 +2,16 @@
 "Histogram distribution.
 
 Available constructors:
-    Histogram(*first=0., coll=ot.HistogramPairCollection(1)*)
+    Histogram(*first, l, h*)
 
 Parameters
 ----------
 first : float
     Lower bound.
-coll : :class:`~openturns.HistogramPairCollection`
-    Collection of :math:`(l_i, h_i)` where :math:`h_i` is the frequency of the
-    class :math:`i` and :math:`l_i` its width.
+width : positive sequence of float
+    :math:`l_i` is the width of the class :math:`i`.
+height : positive sequence of float
+    :math:`h_i` is the frequency of the class :math:`i`.
 
 Notes
 -----
@@ -23,7 +24,7 @@ Its probability density function is defined as:
 where :math:`H_i=h_i/S` is the relative frequency,
 with :math:`S=\sum_{i=1}^n h_i\,l_i` the total frequency of data.
 :math:`l_i = x_{i+1} - x_i , 1\leq i \leq n` and :math:`n` is the size of the
-`ot.HistogramPairCollection`.
+width collection :math:`l`.
 
 Its first moments are:
 
@@ -42,16 +43,9 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> collection = HistogramPairCollection(4)
->>> collection[0] = HistogramPair(1.0, 0.5)
->>> collection[1] = HistogramPair(0.7, 1.5)
->>> collection[2] = HistogramPair(1.2, 3.5)
->>> collection[3] = HistogramPair(0.9, 2.5)
->>> distribution = Histogram(-1.5, collection)
-
-Draw a sample:
-
->>> sample = distribution.getSample(10)"
+>>> l = [1.0, 0.7, 1.2, 0.9]
+>>> h = [0.5, 1.5, 3.5, 2.5]
+>>> distribution = Histogram(-1.5, l, h)"
 
 // ---------------------------------------------------------------------
 
@@ -65,19 +59,27 @@ first : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Histogram::getPairCollection
-"Accessor to the distribution's collection.
+%feature("docstring") OT::Histogram::getWidth
+"Accessor to the width.
 
 Returns
 -------
-coll : :class:`~openturns.HistogramPairCollection`
-    The collection of :math:`(l_i, h_i)` where :math:`h_i` is the frequency of
-    the class `i` and :math:`l_i` its width."
+width : :class:`~openturns.NumericalPoint`
+    The collection of :math:`l_i`, the width of class `i`."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Histogram::getHeight
+"Accessor to the height.
+
+Returns
+-------
+height : :class:`~openturns.NumericalPoint`
+    The collection of :math:`l_i`, the height of class `i`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Histogram::setFirst
-"Accessor to the distribution's lower bound.
+"Accessor to the lower bound.
 
 Parameters
 ----------
@@ -86,11 +88,12 @@ first : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Histogram::setPairCollection
-"Accessor to the distribution's collection.
+%feature("docstring") OT::Histogram::setData
+"Accessor to the widths and heights.
 
 Parameters
 ----------
-coll : :class:`~openturns.HistogramPairCollection`
-    The collection of :math:`(l_i, h_i)` where :math:`h_i` is the frequency of
-    the class `i` and :math:`l_i` its width."
+width : :class:`~openturns.NumericalPoint`
+    The collection of :math:`l_i`, the width of class `i`.
+height : :class:`~openturns.NumericalPoint`
+    The collection of :math:`l_i`, the height of class `i`."

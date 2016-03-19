@@ -33,14 +33,20 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedInteger collectionSize(4);
-    Histogram::HistogramPairCollection collection(collectionSize);
-    collection[0] = HistogramPair(1.0, 0.5);
-    collection[1] = HistogramPair(0.7, 1.5);
-    collection[2] = HistogramPair(1.2, 3.5);
-    collection[3] = HistogramPair(0.9, 2.5);
-    fullprint << "collection=" << collection << std::endl;
-    Histogram distribution(-1.5, collection);
+    UnsignedInteger collectionSize = 4;
+    NumericalPoint l(collectionSize);
+    l[0] = 1.0;
+    l[1] = 0.7;
+    l[2] = 1.2;
+    l[3] = 0.9;
+    NumericalPoint h(collectionSize);
+    h[0] = 0.5;
+    h[1] = 1.5;
+    h[2] = 3.5;
+    h[3] = 2.5;
+    Histogram distribution(-1.5, l, h);
+    fullprint << "l=" << l << " h=" << h << std::endl;
+
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -159,11 +165,13 @@ int main(int argc, char *argv[])
 
     // non-regression for #599
     {
-      UnsignedInteger collectionSize(2);
-      Histogram::HistogramPairCollection collection(collectionSize);
-      collection[0] = HistogramPair(1.0, 0.6);
-      collection[1] = HistogramPair(2.0, 0.3);
-      Histogram distribution(2.0, collection);
+      NumericalPoint l(2);
+      l[0] = 1.0;
+      l[1] = 2.0;
+      NumericalPoint h(2);
+      h[0] = 0.6;
+      h[1] = 0.3;
+      Histogram distribution(2.0, l, h);
       for ( UnsignedInteger i = 0; i < 10; ++ i )
       {
         const NumericalScalar p = 1.0 * i / 10.0;

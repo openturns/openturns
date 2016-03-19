@@ -51,10 +51,10 @@ public:
   explicit UserDefined(const UserDefinedPairCollection & collection);
 
   /** Constructor from a sample */
-  explicit UserDefined(const NumericalSample & sample);
+  explicit UserDefined(const NumericalSample & points);
 
   /** Constructor from a sample and associated weights */
-  UserDefined(const NumericalSample & sample,
+  UserDefined(const NumericalSample & points,
               const NumericalPoint & weights);
 
 
@@ -113,7 +113,7 @@ public:
   /* Interface specific to UserDefined */
 
   /** Data accessors */
-  void setData(const NumericalSample & sample,
+  void setData(const NumericalSample & points,
                const NumericalPoint & weights);
   NumericalSample getX() const;
   NumericalPoint getP() const;

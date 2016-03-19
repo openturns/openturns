@@ -2,15 +2,15 @@
 "UserDefined distribution.
 
 Available constructors:
-    UserDefined(*sample*)
+    UserDefined(*points*)
 
-    UserDefined(*sample, weights*)
+    UserDefined(*points, weights*)
 
 Parameters
 ----------
-sample : 2-d sequence of float
+points : 2-d sequence of float
     `n` lists of `d` points :math:`x_{ij}, i = 1, \ldots, n, j = 1, \ldots, d`.
-weights : :class:`~openturns.NumericalPoint`
+weights : sequence of float
     List of `n` weights :math:`p_i, i = 1, \ldots, n`.
     If not :math:`\sum_1^n  p_i = 1.0`, the weights are normalized.
 
@@ -42,16 +42,12 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> sample = ot.NumericalSample(4, 3)
+>>> points = ot.NumericalSample(4, 3)
 >>> for i in range(4):
 ...     for j in range(3):
-...         sample[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
+...         points[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
 
->>> distribution = ot.UserDefined(sample, [0.3,0.2,0.25,0.25])
-
-Draw a sample:
-
->>> sample = distribution.getSample(10)"
+>>> distribution = ot.UserDefined(points, [0.3,0.2,0.25,0.25])"
 
 // ---------------------------------------------------------------------
 
@@ -80,9 +76,9 @@ coll : :class:`~openturns.NumericalPoint`
 
 Parameters
 ----------
-x : :class:`~openturns.NumericalSample`
+points : :class:`~openturns.NumericalSample`
     Collection of points
-p : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.NumericalPoint`
     Associated weights"
 
 // ---------------------------------------------------------------------
