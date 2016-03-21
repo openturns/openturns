@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     x[0] = 1.0;
     x[1] = 2.0;
     fullprint << "g(x)=" << g(x) << std::endl;
-    NumericalPoint referencePoint(4, 0.85);
+    NumericalPoint referencePoint(2, 0.85);
     // with reference point
     NumericalMathFunction g2(f, set, referencePoint, parametersSet);
     fullprint << "g2=" << g2 << std::endl;
