@@ -190,7 +190,8 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
     const Bool parametersSet)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
-  const Pointer<ParametricEvaluationImplementation> p_evaluation = new ParametricEvaluationImplementation(function, set, NumericalPoint(function.getInputDimension()), parametersSet);
+  const UnsignedInteger parametersSize = parametersSet ? set.getSize() : function.getInputDimension() - set.getSize();
+  const Pointer<ParametricEvaluationImplementation> p_evaluation = new ParametricEvaluationImplementation(function, set, NumericalPoint(parametersSize), parametersSet);
   setEvaluation(p_evaluation);
   setGradient(new ParametricGradientImplementation(p_evaluation));
   setHessian(new ParametricHessianImplementation(p_evaluation));
