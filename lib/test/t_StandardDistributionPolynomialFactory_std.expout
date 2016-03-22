@@ -1,12 +1,12 @@
-polynomialFactory(Laplace=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Laplace name=Laplace dimension=1 lambda=1 mu=0
+polynomialFactory(Laplace=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Laplace name=Laplace dimension=1 lambda=1 mu=0
 Laplace polynomial(0)=1
 Laplace polynomial(1)=0.707107 * X
 Laplace polynomial(2)=-0.447214 + 0.223607 * X^2
 Laplace polynomial(3)=-0.57735 * X + 0.0481125 * X^3
-Laplace polynomial(4)=0.329734 - 0.25646 * X^2 + 0.00763274 * X^4
+Laplace polynomial(4)=0.329735 - 0.25646 * X^2 + 0.00763275 * X^4
 Laplace polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-5.67987,-1.15719,1.15719,5.67987]
 Laplace polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-5.67987,-1.15719,1.15719,5.67987] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.0106869,0.489313,0.489313,0.0106869]
-polynomialFactory(Logistic=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Logistic name=Logistic dimension=1 alpha=0 beta=1
+polynomialFactory(Logistic=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 alpha=0 beta=1
 Logistic polynomial(0)=1
 Logistic polynomial(1)=0.551329 * X
 Logistic polynomial(2)=-0.559017 + 0.169921 * X^2
@@ -14,15 +14,15 @@ Logistic polynomial(3)=-0.491265 * X + 0.035554 * X^3
 Logistic polynomial(4)=0.421875 - 0.205809 * X^2 + 0.00561421 * X^4
 Logistic polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-5.87189,-1.47628,1.47628,5.87189]
 Logistic polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-5.87189,-1.47628,1.47628,5.87189] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.0171899,0.48281,0.48281,0.0171899]
-polynomialFactory(LogNormal=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
+polynomialFactory(LogNormal=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=LogNormal name=LogNormal dimension=1 muLog=0 sigmaLog=1 gamma=0
 LogNormal polynomial(0)=1
 LogNormal polynomial(1)=-0.762874 + 0.462706 * X
-LogNormal polynomial(2)=0.497602 - 0.41284 * X + 0.0247741 * X^2
-LogNormal polynomial(3)=-0.309616 + 0.282291 * X - 0.0231719 * X^2 + 0.000171244 * X^3
-LogNormal polynomial(4)=0.189536 - 0.178532 * X + 0.0161047 * X^2 - 0.0001628 * X^3 + 1.57604e-07 * X^4
-LogNormal polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[1.18727,11.3306,96.7854,923.663]
-LogNormal polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[1.18727,11.3306,96.7854,923.663] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.954716,0.0452595,2.48459e-05,7.26933e-11]
-polynomialFactory(Normal=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+LogNormal polynomial(2)=0.497659 - 0.412888 * X + 0.024777 * X^2
+LogNormal polynomial(3)=-0.321775 + 0.293555 * X - 0.0241366 * X^2 + 0.000179202 * X^3
+LogNormal polynomial(4)=0.287725 - 0.274798 * X + 0.0257388 * X^2 - 0.000288172 * X^3 + 3.67068e-07 * X^4
+LogNormal polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[1.17457,10.9938,88.7234,684.173]
+LogNormal polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[1.17457,10.9938,88.7234,684.173] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.951991,0.0479741,3.52044e-05,4.403e-10]
+polynomialFactory(Normal=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Normal polynomial(0)=1
 Normal polynomial(1)=X
 Normal polynomial(2)=-0.707107 + 0.707107 * X^2
@@ -30,7 +30,7 @@ Normal polynomial(3)=-1.22474 * X + 0.408248 * X^3
 Normal polynomial(4)=0.612372 - 1.22474 * X^2 + 0.204124 * X^4
 Normal polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-2.33441,-0.741964,0.741964,2.33441]
 Normal polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-2.33441,-0.741964,0.741964,2.33441] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.0458759,0.454124,0.454124,0.0458759]
-polynomialFactory(Rayleigh=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 sigma=1 gamma=0
+polynomialFactory(Rayleigh=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 sigma=1 gamma=0
 Rayleigh polynomial(0)=1
 Rayleigh polynomial(1)=-1.91306 + 1.5264 * X
 Rayleigh polynomial(2)=2.84565 - 5.00639 * X + 1.71446 * X^2
@@ -38,15 +38,15 @@ Rayleigh polynomial(3)=-3.78384 + 10.859 * X - 7.93394 * X^2 + 1.60694 * X^3
 Rayleigh polynomial(4)=4.72402 - 19.4426 * X + 22.5685 * X^2 - 9.59251 * X^3 + 1.32173 * X^4
 Rayleigh polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[0.396121,1.17673,2.20107,3.48361]
 Rayleigh polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[0.396121,1.17673,2.20107,3.48361] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.227998,0.538465,0.221578,0.0119592]
-polynomialFactory(Student=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Student name=Student dimension=1 nu=22 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+polynomialFactory(Student=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Student name=Student dimension=1 nu=22 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Student polynomial(0)=1
 Student polynomial(1)=0.953463 * X
 Student polynomial(2)=-0.654654 + 0.59514 * X^2
 Student polynomial(3)=-1.01929 * X + 0.277989 * X^3
-Student polynomial(4)=0.512989 - 0.839437 * X^2 + 0.10175 * X^4
+Student polynomial(4)=0.51299 - 0.839438 * X^2 + 0.10175 * X^4
 Student polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-2.75415,-0.815266,0.815266,2.75415]
 Student polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-2.75415,-0.815266,0.815266,2.75415] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.0314522,0.468548,0.468548,0.0314522]
-polynomialFactory(Triangular=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Triangular name=Triangular dimension=1 a=-1 m=0.3 b=1
+polynomialFactory(Triangular=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Triangular name=Triangular dimension=1 a=-1 m=0.3 b=1
 Triangular polynomial(0)=1
 Triangular polynomial(1)=-0.241355 + 2.41355 * X
 Triangular polynomial(2)=-0.877334 - 0.428839 * X + 5.06542 * X^2
@@ -54,7 +54,7 @@ Triangular polynomial(3)=0.259575 - 4.13679 * X - 1.01753 * X^2 + 10.3656 * X^3
 Triangular polynomial(4)=0.878133 + 0.925615 * X - 13.5192 * X^2 - 1.99648 * X^3 + 21.1809 * X^4
 Triangular polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-0.742936,-0.235772,0.310364,0.762603]
 Triangular polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-0.742936,-0.235772,0.310364,0.762603] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.0810886,0.334646,0.456437,0.127828]
-polynomialFactory(Uniform=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=1
+polynomialFactory(Uniform=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=1
 Uniform polynomial(0)=1
 Uniform polynomial(1)=1.73205 * X
 Uniform polynomial(2)=-1.11803 + 3.3541 * X^2
@@ -62,7 +62,7 @@ Uniform polynomial(3)=-3.96863 * X + 6.61438 * X^3
 Uniform polynomial(4)=1.125 - 11.25 * X^2 + 13.125 * X^4
 Uniform polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-0.861136,-0.339981,0.339981,0.861136]
 Uniform polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-0.861136,-0.339981,0.339981,0.861136] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.173927,0.326073,0.326073,0.173927]
-polynomialFactory(Weibull=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=GramSchmidtAlgorithm measure=class=Weibull name=Weibull dimension=1 alpha=1 beta=3 gamma=0
+polynomialFactory(Weibull=class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Weibull name=Weibull dimension=1 alpha=1 beta=3 gamma=0
 Weibull polynomial(0)=1
 Weibull polynomial(1)=-2.75144 + 3.08119 * X
 Weibull polynomial(2)=5.3921 - 13.3967 * X + 7.27876 * X^2

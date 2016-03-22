@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * Changed Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
 
 ==== New classes ====
 
