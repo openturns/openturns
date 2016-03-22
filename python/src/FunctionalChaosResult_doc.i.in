@@ -15,9 +15,7 @@ getResult()."
 Returns
 -------
 coefficients : 2-d sequence of float
-    Collection of coefficients of the functional chaos
-    :math:`(\vect{a}_k)_{k \in K}` with :math:`K` is a finite subset of
-    :math:`\Nset`."
+    Coefficients :math:`(\vect{\alpha_k})_{k \in K}`."
 
 // ---------------------------------------------------------------------
 
@@ -27,8 +25,7 @@ coefficients : 2-d sequence of float
 Returns
 -------
 composedMetamodel : :class:`~openturns.NumericalMathFunction`
-    :math:`\hat{h}=\sum_{k\in K} \vect{a}_k \Psi_k` with :math:`K` is a
-    finite subset of :math:`\Nset`."
+    :math:`\tilde{f} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k`"
 
 // ---------------------------------------------------------------------
 
@@ -38,7 +35,7 @@ composedMetamodel : :class:`~openturns.NumericalMathFunction`
 Returns
 -------
 metamodel : :class:`~openturns.NumericalMathFunction`
-    :math:`\hat{g}=\hat{h}\circ T`."
+    :math:`\tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k \circ T`."
 
 // ---------------------------------------------------------------------
 
@@ -48,21 +45,17 @@ metamodel : :class:`~openturns.NumericalMathFunction`
 Returns
 -------
 composedModel : :class:`~openturns.NumericalMathFunction`
-    :math:`h` which is the composition of the physical model :math:`g` and the
-    inverse isoprobabilistic transformation such as:
-    :math:`h : \vect{U} \longrightarrow \vect{Y}=g \circ T^{-1}(\vect{U})`.
-    We have :math:`h=\sum_{k\in \Nset} \vect{a}_k \Psi_k`."
+    :math:`f = g\circ T^{-1}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosResult::getDistribution
-"Get the joint distribution of the physical input vector.
+"Get the input distribution.
 
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Joint distribution of the physical input vector
-    :math:`f_{\vect{X}}(\vect{x})`."
+    Distribution of the  input random vector :math:`\vect{X}`."
 
 // ---------------------------------------------------------------------
 
@@ -72,7 +65,7 @@ distribution : :class:`~openturns.Distribution`
 Returns
 -------
 indices : :class:`~openturns.Indices`
-    Collection of integers that represent the indices of the final basis."
+    Indices of the elements of the multivariate basis used in the decomposition."
 
 // ---------------------------------------------------------------------
 
@@ -81,11 +74,8 @@ indices : :class:`~openturns.Indices`
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
-    The inverse isoprobabilistic transformation :math:`T^{-1}` that transforms
-    the data distributed according to the measure imposed by the selected
-    orthonormal basis into the input data:
-    :math:`T^{-1}: \Rset^{n_X}\longrightarrow \Rset^{n_X}, T^{-1}(\vect{U})=\vect{X}`"
+invTransf : :class:`~openturns.NumericalMathFunction`
+     :math:`T^{-1}` such that :math:`T(\vect{X}) = \vect{Z}`."
 
 // ---------------------------------------------------------------------
 
@@ -95,7 +85,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 Returns
 -------
 basis : :class:`~openturns.OrthogonalBasis`
-    Orthogonal basis."
+    Factory of the orthogonal basis."
 
 // ---------------------------------------------------------------------
 
@@ -105,9 +95,8 @@ basis : :class:`~openturns.OrthogonalBasis`
 Returns
 -------
 basis : list of :class:`~openturns.NumericalMathFunction`
-    List of functions that correspond to the basis of the functional chaos
-    :math:`(\Psi_k)_{k\in K}` with :math:`K` is a finite subset of
-    :math:`\Nset`."
+    Collection of the *K* functions  :math:`(\Psi_k)_{k\in K}`  used in the 
+    decomposition."
 
 // ---------------------------------------------------------------------
 
@@ -117,7 +106,4 @@ basis : list of :class:`~openturns.NumericalMathFunction`
 Returns
 -------
 transformation : :class:`~openturns.NumericalMathFunction`
-    The isoprobabilistic transformation :math:`T` that transforms
-    the input data into a data following the measure imposed by the selected
-    orthonormal basis:
-    :math:`T : \Rset^{n_X}\longrightarrow \Rset^{n_X}, T(\vect{X})=\vect{U}`."
+    Transformation :math:`T` such that :math:`T(\vect{X}) = \vect{Z}`."
