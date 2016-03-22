@@ -42,17 +42,16 @@ int main(int argc, char *argv[])
     set[0] = 3;
     set[1] = 1;
     Bool parametersSet(true);
-    NumericalMathFunction g(f, set, parametersSet);
-    fullprint << "g=" << g << std::endl;
     NumericalPoint x(set.getSize());
     x[0] = 1.0;
     x[1] = 2.0;
-    fullprint << "g(x)=" << g(x) << std::endl;
     NumericalPoint referencePoint(2, 0.85);
     // with reference point
     NumericalMathFunction g2(f, set, referencePoint, parametersSet);
     fullprint << "g2=" << g2 << std::endl;
     fullprint << "g2(x)=" << g2(x) << std::endl;
+
+
   }
   catch (TestFailed & ex)
   {

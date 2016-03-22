@@ -79,7 +79,8 @@ int main(int argc, char *argv[])
     NumericalMathFunction fullModel(fullVariables, formulas);
     Indices parametersPosition(chainDim);
     parametersPosition.fill();
-    NumericalMathFunction model(fullModel, parametersPosition);
+    NumericalPoint parametersValue(parametersPosition.getSize(), 0.0);
+    NumericalMathFunction model(fullModel, parametersPosition, parametersValue);
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(chainDim);

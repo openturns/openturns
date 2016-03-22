@@ -187,19 +187,6 @@ NumericalMathFunction::NumericalMathFunction(const Field & field)
 /* Constructor by splitting the input of a function between variables and parameters */
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
     const Indices & set,
-    const Bool parametersSet)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
-{
-  const UnsignedInteger parametersSize = parametersSet ? set.getSize() : function.getInputDimension() - set.getSize();
-  const Pointer<ParametricEvaluationImplementation> p_evaluation = new ParametricEvaluationImplementation(function, set, NumericalPoint(parametersSize), parametersSet);
-  setEvaluation(p_evaluation);
-  setGradient(new ParametricGradientImplementation(p_evaluation));
-  setHessian(new ParametricHessianImplementation(p_evaluation));
-}
-
-
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
-    const Indices & set,
     const NumericalPoint & referencePoint,
     const Bool parametersSet)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
