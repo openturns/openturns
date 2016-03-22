@@ -2,11 +2,11 @@
 "Base class for the evaluation strategies of the approximation coefficients.
 
 Available constructors:
-    ProjectionStrategy(*projectionStrategyImplementation*)
+    ProjectionStrategy(*projectionStrategy*)
 
 Parameters
 ----------
-projectionStrategyImplementation : :class:`~openturns.ProjectionStrategy`
+projectionStrategy : :class:`~openturns.ProjectionStrategy`
     A projection strategy which is a :class:`~openturns.LeastSquaresStrategy` or
     an :class:`~openturns.IntegrationStrategy`.
 
@@ -16,68 +16,67 @@ FunctionalChaosAlgorithm, LeastSquaresStrategy, IntegrationStrategy
 
 Notes
 -----
-The polynomial chaos (PC) expansion allows one to obtain an explicit
-representation of the random response :math:`\vect{Y} = g(\vect{X})` of the
-model under consideration. More precisely, the response *Y* is cast as a
-converging series featuring orthonormal polynomials. For computational purpose,
-it is necessary though to retain a finite number of terms by truncating the
-expansion using an :class:`~openturns.AdaptiveStrategy`. Then it is necessary to
-estimate the PC coefficients in order to characterize *Y* . This may be achieved
-using a projection strategy.
+Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`,
+:math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance:
+:math:`g\in \mathcal{L}_{ \mathcal{L}_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
 
-The model response is assumed to be scalar for the sake of simplicity, i.e.
-:math:`\vect{Y} = Y`. However the following derivations hold componentwise in
-case of a vector-valued random response. Let us consider the following truncated
-PC representation of the model response:
+The functional chaos  expansion approximates :math:`\vect{Y}` using an isoprobabilistic 
+transformation *T* and an orthonormal multivariate basis :math:`(\Psi_k)_{k \in \Nset}` 
+of :math:`\cL^2_{\mu}(\Rset^d,\Rset)`. See :class:`~openturns.FunctionalChaosAlgorithm` 
+to get more details. 
+
+The meta model of :math:`g`, based on the functional chaos decomposition of 
+:math:`f = g \circ T^{-1}` writes:
 
 .. math::
-    
-    Y \equiv g(\vect{X}) \approx \sum_{k \in K} a_k \Psi_k \circ T(\vect{X})
 
-where *K* is a non empty finite set of indices, whose cardinality is denoted
-by *P* and where :math:`\vect{U} = T(\vect{X})`. Using the matrix notation 
-:math:`\vect{a} = \{a_0, \ldots, a_{P-1} \}` and
-:math:`\vect{\Psi}(\vect{U}) = \{\Psi_0 (\vect{U}), \ldots, \Psi_{P-1}(\vect{U})\}^{\intercal}`,
-the PC representation rewrites:
+    \tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k  \circ T
 
-.. math::
-    
-    Y \equiv g \circ T^{-1}(\vect{U}) \approx \vect{a}^{\intercal} \vect{\Psi}(\vect{U})
+where *K* is a non empty finite set of indices, whose cardinality is denoted by *P*.
 
-The coefficients may be computed by a :math:`L^2`-projection onto the PC basis
-as follows:
+We detail the case where :math:`p=1`.
+
+The vector  :math:`\vect{\alpha} = (\alpha_k)_{k \in K}`  is  equivalently defined by:
 
 .. math::
-    
-    \vect{a} = \argmin_{\vect{b} \in \Rset^P} E_{\mu} \left[ \left( g \circ T^{-1}
-            (\vect{U}) - \vect{b}^{\intercal} \vect{\Psi}(\vect{U}) \right)^2 \right]
+    :label: defArgMin
 
-This relation means that the coefficients :math:`(a_k)_{k \in K}` minimize the
-quadratic error between the model and the polynomial approximation. OpenTURNS
-implements it through the :class:`~openturns.LeastSquaresStrategy`.
+    \vect{\alpha} = \argmin_{\vect{\alpha} \in \Rset^K} \Expect{ \left( g \circ T^{-1}(\vect{Z}) -  \sum_{k \in K} \alpha_k \Psi_k (\vect{Z})\right)^2 }
 
-Due to the orthonormality of the PC basis, it may be shown that the previous
-equation rewrites:
+and:
 
 .. math::
-    
-    \vect{a} = E_{\mu} \left[ g \circ T^{-1} (\vect{U}) \vect{\Psi}(\vect{U}) \right]
+    :label: defEsp
 
-This relation means that :math:`a_k` is the scalar product of the model with the
-:math:`k^{th}` element of the orthonormal basis :math:`(\Psi_k)_{k \in K}`.
-OpenTURNS implements it through the :class:`~openturns.IntegrationStrategy`.
+    \alpha_k =  <g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z})>_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
 
-In both cases, the mean expectation :math:`E_{\mu}` is approximated by a linear
-quadrature formula:
+where :math:`\vect{Z} = T(\vect{X})` and the mean :math:`\Expect{.}` is evaluated with respect to the measure :math:`\mu`.
+
+It corresponds to two points of view: 
+   
+    - relation :eq:`defArgMin`  means that the coefficients 
+      :math:`(\alpha_k)_{k \in K}` minimize the quadratic error between  the model and 
+      the polynomial approximation. Use :class:`~openturns.LeastSquaresStrategy`.
+
+    - relation :eq:`defEsp` means that :math:`\alpha_k` is the scalar product of the 
+      model with the *k-th* element of the orthonormal basis :math:`(\Psi_k)_{k \in \Nset}`.
+      Use :class:`~openturns.IntegrationStrategy`.
+
+In both cases, the mean :math:`\Expect{.}` is approximated by a linear quadrature formula:
 
 .. math::
-    
-    E_{\mu} \left[ f(\vect{U}) \right] \approx \sum_{i \in I} \omega_i f(\Xi_i)
+    :label: approxEsp
 
-where is a function :math:`L_1(\mu)`. In the approximation of the mean expectation, the
-set *I*, the points :math:`(\Xi_i)_{i \in I}` and the weights 
-:math:`(\omega_i)_{i \in I}` are evaluated from different methods defined in
-:class:`~openturns.WeightedExperiment`."
+    \Expect{ f(\vect{Z})} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
+
+where *f* is a function :math:`\cL_1(\mu)`. 
+
+In the approximation :eq:`approxEsp`, the set *I*, the points :math:`(\Xi_i)_{i \in I}` 
+and the weights :math:`(\omega_i)_{i \in I}` are evaluated from different methods 
+implemented in OpenTURNS in the :class:`~openturns.WeightedExperiment`.
+
+The convergence criterion used to evaluate the coefficients is based on the residual value 
+defined in the :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation
 OT_ProjectionStrategy_doc
@@ -90,7 +89,7 @@ OT_ProjectionStrategy_doc
 Returns
 -------
 coef : :class:`~openturns.NumericalPoint`
-    Coefficients of the basis."
+    Coefficients :math:`(\alpha_k)_{k \in K}`."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getCoefficients
 OT_ProjectionStrategy_getCoefficients_doc
@@ -103,7 +102,7 @@ OT_ProjectionStrategy_getCoefficients_doc
 Returns
 -------
 exp : :class:`~openturns.WeightedExperiment`
-    Weighted experiment."
+    Weighted experiment used to evaluate the coefficients."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getExperiment
 OT_ProjectionStrategy_getExperiment_doc
@@ -128,8 +127,8 @@ OT_ProjectionStrategy_getInputSample_doc
 
 Returns
 -------
-m : Distribution
-    Measure."
+mu : Distribution
+    Measure :math:`\mu` defining the scalar product."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getMeasure
 OT_ProjectionStrategy_getMeasure_doc
@@ -168,7 +167,7 @@ OT_ProjectionStrategy_getRelativeError_doc
 Returns
 -------
 er : float
-    Residual."
+    Residual error."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getResidual
 OT_ProjectionStrategy_getResidual_doc
@@ -181,7 +180,7 @@ OT_ProjectionStrategy_getResidual_doc
 Returns
 -------
 w : :class:`~openturns.NumericalPoint`
-    Weights."
+    Weights of the design of experiments."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getWeights
 OT_ProjectionStrategy_getWeights_doc
@@ -189,12 +188,12 @@ OT_ProjectionStrategy_getWeights_doc
 // ---------------------------------------------------------------------
 
 %define OT_ProjectionStrategy_setExperiment_doc
-"Accessor to the experiments.
+"Accessor to the design of experiment.
 
 Parameters
 ----------
 exp : :class:`~openturns.WeightedExperiment`
-    Weighted experiment."
+    Weighted design of experiment."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::setExperiment
 OT_ProjectionStrategy_setExperiment_doc
@@ -207,7 +206,7 @@ OT_ProjectionStrategy_setExperiment_doc
 Parameters
 ----------
 m : Distribution
-    Measure."
+    Measure :math:`\mu` defining the scalar product."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::setMeasure
 OT_ProjectionStrategy_setMeasure_doc
