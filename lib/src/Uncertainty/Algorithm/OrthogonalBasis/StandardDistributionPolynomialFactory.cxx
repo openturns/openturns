@@ -22,7 +22,7 @@
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/GramSchmidtAlgorithm.hxx"
+#include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 #include "openturns/CharlierFactory.hxx"
 #include "openturns/HermiteFactory.hxx"
 #include "openturns/JacobiFactory.hxx"
@@ -41,7 +41,7 @@ static const Factory<StandardDistributionPolynomialFactory> RegisteredFactory;
 /* Default constructor */
 StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory()
   : OrthogonalUniVariatePolynomialFactory(Uniform())
-  , orthonormalizationAlgorithm_(GramSchmidtAlgorithm(Uniform()))
+  , orthonormalizationAlgorithm_(AdaptiveStieltjesAlgorithm(Uniform()))
   , specificFamily_()
   , hasSpecificFamily_(false)
 {
@@ -53,7 +53,7 @@ StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory()
 /* Parameter constructor */
 StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory(const Distribution & measure)
   : OrthogonalUniVariatePolynomialFactory(measure.getStandardRepresentative())
-  , orthonormalizationAlgorithm_(GramSchmidtAlgorithm(measure.getStandardRepresentative()))
+  , orthonormalizationAlgorithm_(AdaptiveStieltjesAlgorithm(measure.getStandardRepresentative()))
   , specificFamily_()
   , hasSpecificFamily_(false)
 {
@@ -64,7 +64,7 @@ StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory(con
 
 /* Parameter constructor */
 StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory(const OrthonormalizationAlgorithm & orthonormalizationAlgorithm)
-  : OrthogonalUniVariatePolynomialFactory(orthonormalizationAlgorithm.getMeasure().getStandardRepresentative())
+  : OrthogonalUniVariatePolynomialFactory(orthonormalizationAlgorithm.getMeasure())
   , orthonormalizationAlgorithm_(orthonormalizationAlgorithm)
   , specificFamily_()
   , hasSpecificFamily_(false)
@@ -86,7 +86,7 @@ StandardDistributionPolynomialFactory * StandardDistributionPolynomialFactory::c
 StandardDistributionPolynomialFactory::Coefficients StandardDistributionPolynomialFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   if (hasSpecificFamily_) return specificFamily_.getRecurrenceCoefficients(n);
-  return orthonormalizationAlgorithm_.getRecurrenceCoefficients(n);
+  else return orthonormalizationAlgorithm_.getRecurrenceCoefficients(n);
 }
 
 /* Check the existence of a specific family more efficient for the given measure */
