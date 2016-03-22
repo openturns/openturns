@@ -9,12 +9,9 @@ f = ot.NumericalMathFunction(ot.Description.BuildDefault(5, 'x'),
                              ['sin(x0) + x1 * cos(x2) / exp(x3)',
                              '-2.0 * x0 + x1 * x2^2 + cos(x3)',
                              'x0 / (abs(x1) * x2^2 + x3 + 1.0)'])
-pset = [3, 1]
+pset = [3, 1] # x3, x1
 parametersSet = True
-g = ot.NumericalMathFunction(f, pset, parametersSet)
-print('g=', g)
 x = [1.0, 2.0, 0.0] # x0, x2, x4
-print('g(x)=', g(x))
 
 # with reference point
 referencePoint = [0.85] * 2 # x3, x1

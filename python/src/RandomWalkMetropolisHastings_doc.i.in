@@ -77,7 +77,9 @@ Examples
 >>> fullModel = ot.NumericalMathFunction(
 ...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'],
 ...          ['p1*x1+p2*x2+p3*x3', '1.0'])
->>> model = ot.NumericalMathFunction(fullModel, range(chainDim))
+>>> parametersSet = range(chainDim)
+>>> parametersValue = [0.0] * len(parametersSet)
+>>> model = ot.NumericalMathFunction(fullModel, parametersSet, parametersValue)
 >>> # Calibration parameters
 >>> calibrationColl = [ot.CalibrationStrategy()]*chainDim
 >>> # Proposal distribution

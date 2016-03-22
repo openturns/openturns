@@ -18,8 +18,6 @@ Available constructors:
 
     NumericalMathFunction(*function, comparisonOperator, threshold*)
 
-    NumericalMathFunction(*function, indices, parametersSet=True*)
-
     NumericalMathFunction(*function, indices, referencePoint, parametersSet=True*)
 
     NumericalMathFunction(*inputSample, outputSample*)
@@ -122,10 +120,8 @@ comparisonOperator : :class:`~openturns.ComparisonOperator`
     Comparison operator.
 threshold : float
     Threshold from which values are compared.
-indices : list of ints
-    Indices of the set variables.
-    If *referencePoint* is not mentioned, the variables are set to a null
-    value. Otherwise, the variables are set to the *referencePoint*'s values.
+indices : sequence of int
+    Indices of the set variables which are set to *referencePoint*'s values.
 parametersSet : bool
     If *True* (default), the set variables are the ones referenced
     in *indices*.
@@ -133,7 +129,6 @@ parametersSet : bool
     vector of *indices*.
 referencePoint : sequence of float
     Values of the set variables.
-    If not provided, set variables take null values.
     Must be of size of *indices* if *parametersSet* is *True* (default),
     else its size should be the complementary size of *indices*.
 inputSample : 2-d sequence of float
@@ -181,17 +176,7 @@ Create a *NumericalMathFunction* from another *NumericalMathFunction*:
 >>> f = ot.NumericalMathFunction(ot.Description.BuildDefault(4, 'x'),
 ...                              ['x0', 'x0 + x1', 'x0 + x2 + x3'])
 
-Then create another function by setting x1=0 and x3=0:
-
->>> g = ot.NumericalMathFunction(f, [3, 1], True)
->>> print(g.getInputDescription())
-[x0,x2]
->>> print(g.getOutputDescription())
-[y0,y1,y2]
->>> print(g((1, 2)))
-[1,1,3]
-
-Or by setting x1=4 and x3=10:
+Then create another function by setting x1=4 and x3=10:
 
 >>> g = ot.NumericalMathFunction(f, [3, 1], [10, 4], True)
 >>> print(g.getInputDescription())

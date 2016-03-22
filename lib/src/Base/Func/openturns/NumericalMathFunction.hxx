@@ -145,10 +145,6 @@ public:
   /** Constructor by splitting the input of a function between variables and parameters */
   NumericalMathFunction(const NumericalMathFunction & function,
                         const Indices & set,
-                        const Bool parametersSet = true);
-
-  NumericalMathFunction(const NumericalMathFunction & function,
-                        const Indices & set,
                         const NumericalPoint & referencePoint,
                         const Bool parametersSet = true);
 

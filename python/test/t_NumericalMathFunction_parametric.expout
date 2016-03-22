@@ -1,5 +1,3 @@
-g= ParametricEvaluationImplementation
-g(x)= [0.841471,-1,1]
 g2= ParametricEvaluationImplementation
 g2(x)= [0.690284,2.05998,0.190476]
 g3= ParametricEvaluationImplementation
