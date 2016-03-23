@@ -2587,13 +2587,8 @@ Bool RandomMixture::isElliptical() const
   const UnsignedInteger size(distributionCollection_.getSize());
   // Case of a Dirac distribution
   if (size == 0) return true;
-  if (!distributionCollection_[0].isElliptical()) return false;
-  Distribution standardDistribution(distributionCollection_[0].getStandardDistribution());
-  for (UnsignedInteger i = 1; i < size; ++i)
-  {
+  for (UnsignedInteger i = 0; i < size; ++i)
     if (!distributionCollection_[i].isElliptical()) return false;
-    if (distributionCollection_[i].getStandardDistribution() != standardDistribution) return false;
-  }
   return true;
 }
 

@@ -2,7 +2,7 @@ testCases= [[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=
 references= [Triangular(a = -2, m = 2, b = 6),Normal(mu = -1, sigma = 3),Gamma(k = 3, lambda = 1, gamma = 0)]
 Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
 Distribution  RandomMixture(Triangular(a = -2, m = 2, b = 6))
-Elliptical =  False
+Elliptical =  True
 Continuous =  True
 oneRealization= [2.5585]
 oneSample first= [4.06345]  last= [1.68661]
