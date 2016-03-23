@@ -1,5 +1,5 @@
 Distribution  Dirac(point = [0.7])
-Elliptical =  False
+Elliptical =  True
 Continuous =  False
 oneRealization= [0.7]
 oneSample first= [0.7]  last= [0.7]
@@ -31,7 +31,7 @@ standard moment n= 4  value= [0.2401]
 standard moment n= 5  value= [0.16807]
 Standard representative= Dirac(point = [0.7])
 Distribution  Dirac(point = [2.3,2.3,2.3,2.3])
-Elliptical =  False
+Elliptical =  True
 Continuous =  False
 oneRealization= [2.3,2.3,2.3,2.3]
 oneSample first= [2.3,2.3,2.3,2.3]  last= [2.3,2.3,2.3,2.3]

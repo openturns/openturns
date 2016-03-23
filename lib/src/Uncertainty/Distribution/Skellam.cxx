@@ -236,6 +236,12 @@ Description Skellam::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool Skellam::isElliptical() const
+{
+  return lambda1_ == lambda2_;
+}
+
 /* Lambda1/Lambda2 accessor */
 void Skellam::setLambda1Lambda2(const NumericalScalar lambda1,
                                 const NumericalScalar lambda2)

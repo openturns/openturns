@@ -321,6 +321,12 @@ Description Logistic::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool Logistic::isElliptical() const
+{
+  return true;
+}
+
 /* Alpha accessor */
 void Logistic::setAlpha(const NumericalScalar alpha)
 {
