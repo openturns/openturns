@@ -51,8 +51,10 @@ Laplace::Laplace(const NumericalScalar lambda,
   setName( "Laplace" );
   // We set the dimension of the Laplace distribution
   setDimension( 1 );
-  // This call set also the range.
+  // To check that lambda > 0
   setLambda(lambda);
+  // This call is needed as lambda_ == lambda and setLambda will not compute the range
+  computeRange();
 }
 
 /* Comparison operator */
