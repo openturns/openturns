@@ -151,7 +151,11 @@ NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
     sumX += k;
   }
   if (sumX > n_ + supportEpsilon_) return 0.0;
-  NumericalScalar logPDF(lgamma(n_ + 1.0) - lgamma(n_ - sumX + 1.0) + (n_ - sumX) * log1p(-sumP_));
+  if ((sumP_ >= 1.0) && (sumX < n_ - supportEpsilon_)) return 0.0;
+  NumericalScalar logPDF;
+  if (sumP_ < 1.0) logPDF = lgamma(n_ + 1.0) - lgamma(n_ - sumX + 1.0) + (n_ - sumX) * log1p(-sumP_);
+  // In the case sumP_ >= 1.0, the PDF is positive only if sumX == n_
+  else logPDF = lgamma(n_ + 1.0);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar k(point[i]);
@@ -537,6 +541,12 @@ Multinomial::NumericalPointWithDescriptionCollection Multinomial::getParametersC
     parameters[dimension] = point;
   }
   return parameters;
+}
+
+/* Check if the distribution is elliptical */
+Bool Multinomial::isElliptical() const
+{
+  return (getDimension() > 1) && (p_[0] == 0.5);
 }
 
 /* P accessor */

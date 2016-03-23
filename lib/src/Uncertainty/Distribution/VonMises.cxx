@@ -247,6 +247,12 @@ void VonMises::save(Advocate & adv) const
   adv.saveAttribute( "kappa_", kappa_ );
 }
 
+/* Check if the distribution is elliptical */
+Bool VonMises::isElliptical() const
+{
+  return mu_ == 0.0;
+}
+
 /* Method load() reloads the object from the StorageManager */
 void VonMises::load(Advocate & adv)
 {

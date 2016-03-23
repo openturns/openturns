@@ -234,6 +234,12 @@ Description Bernoulli::getParameterDescription() const
   return Description(1, "p");
 }
 
+/* Check if the distribution is elliptical */
+Bool Bernoulli::isElliptical() const
+{
+  return p_ == 0.5;
+}
+
 /* P accessor */
 void Bernoulli::setP(const NumericalScalar p)
 {

@@ -340,6 +340,12 @@ Description Triangular::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool Triangular::isElliptical() const
+{
+  return std::abs(m_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon");
+}
+
 /* Interface specific to Triangular */
 
 /* A accessor */

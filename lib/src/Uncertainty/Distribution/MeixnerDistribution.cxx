@@ -460,6 +460,12 @@ Description MeixnerDistribution::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool MeixnerDistribution::isElliptical() const
+{
+  return beta_ == 0.0;
+}
+
 /* Method save() stores the object through the StorageManager */
 void MeixnerDistribution::save(Advocate & adv) const
 {

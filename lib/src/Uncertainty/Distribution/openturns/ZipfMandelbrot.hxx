@@ -81,6 +81,9 @@ public:
   /** Get the kurtosis of the distribution */
   NumericalPoint getKurtosis() const;
 
+  /** Check if the distribution is elliptical */
+  Bool isElliptical() const;
+
   /* Interface specific to ZipfMandelbrot */
 
   /** Q accessor */

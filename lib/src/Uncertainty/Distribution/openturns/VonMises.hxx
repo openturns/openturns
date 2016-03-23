@@ -77,6 +77,9 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
+  /** Check if the distribution is elliptical */
+  Bool isElliptical() const;
+
   /* Interface specific to VonMises */
 
   /** Mu accessor */

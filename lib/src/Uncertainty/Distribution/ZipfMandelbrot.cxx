@@ -191,6 +191,12 @@ NumericalScalar ZipfMandelbrot::computeScalarQuantile(const NumericalScalar prob
   return round(DiscreteDistribution::computeScalarQuantile(prob, tail));
 }
 
+/* Check if the distribution is elliptical */
+Bool ZipfMandelbrot::isElliptical() const
+{
+  return n_ == 1;
+}
+
 /* Q accessor */
 NumericalScalar ZipfMandelbrot::getQ() const
 {

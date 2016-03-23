@@ -303,6 +303,12 @@ Description Arcsine::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool Arcsine::isElliptical() const
+{
+  return true;
+}
+
 /* A accessor */
 void Arcsine::setA(const NumericalScalar a)
 {

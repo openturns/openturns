@@ -9,7 +9,7 @@ areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
 Distribution class=Arcsine name=Arcsine dimension=1 a=5.2 b=11.6
 Distribution Arcsine(a = 5.2, b = 11.6)
-Elliptical = false
+Elliptical = true
 Continuous = true
 oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[9.66973]
 oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[11.3856] last=class=NumericalPoint name=Unnamed dimension=1 values=[7.65026]

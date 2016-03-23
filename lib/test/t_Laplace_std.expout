@@ -9,7 +9,7 @@ areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
 Distribution class=Laplace name=Laplace dimension=1 lambda=0.666667 mu=0.5
 Distribution Laplace(lambda = 0.666667, mu = 0.5)
-Elliptical = false
+Elliptical = true
 Continuous = true
 oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.951157]
 oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[2.67616] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.255241]

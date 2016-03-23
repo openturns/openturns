@@ -9,7 +9,7 @@ areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
 Distribution class=Epanechnikov name=Epanechnikov dimension=1
 Distribution Epanechnikov()
-Elliptical = false
+Elliptical = true
 Continuous = true
 oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.174954]
 oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.573175] last=class=NumericalPoint name=Unnamed dimension=1 values=[-0.100711]

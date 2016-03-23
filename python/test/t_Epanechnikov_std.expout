@@ -1,6 +1,6 @@
 Distribution  class=Epanechnikov name=Epanechnikov dimension=1
 Distribution  Epanechnikov()
-Elliptical =  False
+Elliptical =  True
 Continuous =  True
 oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.174954]
 oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[0.573175]  last= class=NumericalPoint name=Unnamed dimension=1 values=[-0.100711]

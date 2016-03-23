@@ -1,6 +1,6 @@
 Distribution  class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
 Distribution  Logistic(alpha = -0.5, beta = 1.5)
-Elliptical =  False
+Elliptical =  True
 Continuous =  True
 oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.297531]
 oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[2.5289]  last= class=NumericalPoint name=Unnamed dimension=1 values=[-0.955127]
