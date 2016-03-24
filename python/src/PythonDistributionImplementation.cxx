@@ -51,6 +51,9 @@ PythonDistributionImplementation::PythonDistributionImplementation(PyObject * py
   : DistributionImplementation(),
     pyObj_(pyObject)
 {
+  // Python memory management is not thread-safe
+  setParallel(false);
+  
   Py_XINCREF( pyObj_ );
 
   if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
