@@ -746,7 +746,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "DistributionImplementation-DefaultIntegrationNodesNumber", 255 );
   setAsUnsignedInteger( "DistributionImplementation-DefaultLevelNumber", 10 );
   setAsUnsignedInteger( "DistributionImplementation-DefaultQuantileCacheSize", 128 );
-  setAsBool("DistributionImplementation-Parallel", false);
+  setAsBool("DistributionImplementation-Parallel", true);
   setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionBlockMax", 20 );
   setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionNMax", 1000000 );
 
