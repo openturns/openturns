@@ -32,7 +32,7 @@ static const Factory<FourierSeries> RegisteredFactory;
 
 /* Parameter constructor */
 FourierSeries::FourierSeries(const Bool isCosine,
-                                             const UnsignedInteger k)
+                             const UnsignedInteger k)
   : UniVariateFunctionImplementation()
   , isCosine_(isCosine)
   , k_(k)
@@ -60,7 +60,13 @@ String FourierSeries::__repr__() const
 String FourierSeries::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << "f:X -> " << (k_ > 0 ? "1/sqrt(2) * ": "") << (isCosine_ ? "cos(" : "sin(") << k_ << " * X)";
+  if (k_ == 0)
+    oss << offset << "f:X -> 1";
+  else
+    if (k_ == 1)
+      oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(X)" : "sin(X)");
+    else
+      oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(" : "sin(") << k_ << " * X)";
   return oss;
 }
 
@@ -68,22 +74,22 @@ String FourierSeries::__str__(const String & offset) const
 /* FourierSeries are evaluated as functors */
 NumericalScalar FourierSeries::operator() (const NumericalScalar x) const
 {
-  const NumericalScalar coef = k_ > 0 ? 1.0 / sqrt(2.0) : 1.0;
+  const NumericalScalar coef(k_ == 0 ? 1.0 : M_SQRT2);
   return coef * (isCosine_ ? cos(k_ * x) : sin(k_ * x));
 }
 
 /* FourierSeries gradient */
 NumericalScalar FourierSeries::gradient(const NumericalScalar x) const
 {
-  const NumericalScalar coef = k_ > 0 ? 1.0 / sqrt(2.0) : 1.0;
-  return coef * k_ * (isCosine_ ? -sin(k_ * x) : cos(k_ * x));
+  if (k_ == 0) return 0.0;
+  return M_SQRT2 * k_ * (isCosine_ ? -sin(k_ * x) : cos(k_ * x));
 }
 
 /* FourierSeries hessian */
 NumericalScalar FourierSeries::hessian(const NumericalScalar x) const
 {
-  const NumericalScalar coef = k_ > 0 ? 1.0 / sqrt(2.0) : 1.0;
-  return coef * k_ * k_ * (isCosine_ ? -cos(k_ * x) : -sin(k_ * x));
+  if (k_ == 0) return 0.0;
+  return M_SQRT2 * k_ * k_ * (isCosine_ ? -cos(k_ * x) : -sin(k_ * x));
 }
 
 /* Method save() stores the object through the StorageManager */

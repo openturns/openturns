@@ -7,12 +7,12 @@
     import openturns as ot
     import numpy as np
     from matplotlib import pyplot as plt
-    n_polynomials = 8
-    polynomial_factory = ot.{{ objname }}()
-    if polynomial_factory.getClassName() == 'KrawtchoukFactory':
-        polynomial_factory = ot.{{ objname }}(n_polynomials, .5)
-    polynomials = [polynomial_factory.build(i) for i in range(n_polynomials)]
-    measure = polynomial_factory.getMeasure()
+    n_functions = 8
+    function_factory = ot.{{ objname }}()
+    if function_factory.getClassName() == 'KrawtchoukFactory':
+        function_factory = ot.{{ objname }}(n_functions, .5)
+    functions = [function_factory.build(i) for i in range(n_functions)]
+    measure = function_factory.getMeasure()
     if hasattr(measure, 'getA') and hasattr(measure, 'getB'):
         x_min = measure.getA()
         x_max = measure.getB()
@@ -23,12 +23,12 @@
     meshed_support = np.linspace(x_min, x_max, n_points)
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    for i in range(n_polynomials):
+    for i in range(n_functions):
         plt.plot(meshed_support,
-                 [polynomials[i](x) for x in meshed_support], lw=1.5,
-                 label='$P_{' + str(i) + '}(x)$')
+                 [functions[i](x) for x in meshed_support], lw=1.5,
+                 label='$\phi_{' + str(i) + '}(x)$')
     plt.xlabel('$x$')
-    plt.ylabel('$P_i(x)$')
+    plt.ylabel('$\phi_i(x)$')
     plt.xlim(x_min, x_max)
     plt.grid()
     box = ax.get_position()

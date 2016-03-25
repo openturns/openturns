@@ -5,10 +5,10 @@ Generates the Fourier basis defined as follows:
 
 .. math::
 
-    \begin{array}{ll}
-      k = 0 & f(x) = \frac{1}{\sqrt{2}} \\
-      k = 2n+1 & f(x) = sin(k*x) \\
-      k = 2n & f(x) = cos(k*x) \\
+    \begin{array}{lcl}
+      \psi_0(x)      & = & 1 \\
+      \psi_{2k+1}(x) & = & \sqrt{2}\sin(kx) \\
+      \psi_{2k+2}(x) & = & \sqrt{2}\cos(kx)
     \end{array}
 
 See also
