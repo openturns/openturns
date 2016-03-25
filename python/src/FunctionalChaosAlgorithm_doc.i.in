@@ -42,7 +42,7 @@ Notes
 -----
 Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`, 
 :math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance: 
-:math:`g\in \mathcal{L}_{ \mathcal{L}_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
+:math:`g\in L_{\cL_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
 
 When  :math:`p>1`, the functional chaos algorithm is used on each marginal 
 of :math:`\vect{Y}`, using the same multivariate orthonormal basis for all the marginals. 
@@ -50,14 +50,14 @@ Thus, the algorithm is detailed here for a scalar output :math:`Y` and
 :math:`g: \Rset^d \rightarrow \Rset`.
 
 Let :math:`T: \Rset^d \rightarrow \Rset^d` be an isoprobabilistic transformation
-such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`. We note :math:`f = g \circ T^{-1}`, then :math:`f \in \mathcal{L}_{\mu}^2(\Rset^d, \Rset)`.
+such that :math:`\vect{Z} = T(\vect{X}) \sim \mu`. We note :math:`f = g \circ T^{-1}`, then :math:`f \in L_{\mu}^2(\Rset^d, \Rset)`.
 
 Let :math:`(\Psi_k)_{k \in \Nset}` be an orthonormal multivariate basis of 
-:math:`\cL^2_{\mu}(\Rset^d,\Rset)`.
+:math:`L^2_{\mu}(\Rset^d,\Rset)`.
 
 Then the functional chaos decomposition of *f* writes:
 
-where :math:`\vect{\alpha}_k \in \Rset^p`, *T* is an isoprobabilistic transformation which maps the multivariate distribution of :math:`\vect{X}` into the multivariate distribution :math:`\mu = \prod_{i=1}^n \mu_i`, and :math:`(\Psi_k)_{k \in \Nset}` a multivariate polynomial basis of :math:`\cL^2_{\mu}(\Rset^n,\Rset)` which is orthonornal according to the distribution :math:`\mu`. *K* is a finite subset of :math:`\Nset`. 
+.. math::
 
     f = g\circ T^{-1} = \sum_{k=0}^{\infty} \vect{\alpha}_k \Psi_k 
 
@@ -82,7 +82,7 @@ For more details, see :class:`~openturns.FunctionalChaosRandomVector`.
 The functional chaos decomposition can be used to build a meta model of *g*, 
 which writes:
 
-We detail here all the steps required in order to create a polynomial chaos algorithm  when the output random variable *Y* is scalar.
+.. math::
 
     \tilde{g} = \tilde{f} \circ T
 
