@@ -35,7 +35,7 @@ static const Factory<HaarWaveletFactory> RegisteredFactory;
 
 /* Default constructor */
 HaarWaveletFactory::HaarWaveletFactory()
-  : OrthogonalUniVariateFunctionFactory(Uniform(-0.5, 0.5))
+  : OrthogonalUniVariateFunctionFactory(Uniform(0.0, 1.0))
 {
   initializeCache();
 }
@@ -58,8 +58,8 @@ String HaarWaveletFactory::__repr__() const
 UniVariateFunction HaarWaveletFactory::build(const UnsignedInteger order) const
 {
   if (order == 0) return HaarWavelet(0, 0, true);
-  const UnsignedInteger j = SpecFunc::Log2(order);
-  const UnsignedInteger k = order - (1 << j);
+  const UnsignedInteger j(SpecFunc::Log2(order));
+  const UnsignedInteger k(order - (1 << j));
   return HaarWavelet(j, k, false);
 }
 

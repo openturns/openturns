@@ -67,9 +67,26 @@ public:
   void load(Advocate & adv);
 
 protected:
+  /* Wavelet order */
   UnsignedInteger j_;
+
+  /* Wavelet shift */
   UnsignedInteger k_;
+
+  /* Scaling flag */
   Bool isScaling_;
+
+  /* Left bound */
+  NumericalScalar a_;
+
+  /* Middle bound */
+  NumericalScalar m_;
+
+  /* Right bound */
+  NumericalScalar b_;
+
+  /* Value */
+  NumericalScalar value_;
 
 } ; /* Class HaarWavelet */
 
