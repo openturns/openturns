@@ -18,11 +18,11 @@ Notes
 -----
 Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`,
 :math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance:
-:math:`g\in \mathcal{L}_{ \mathcal{L}_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
+:math:`g\in L_{\cL_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
 
 The functional chaos  expansion approximates :math:`\vect{Y}` using an isoprobabilistic 
 transformation *T* and an orthonormal multivariate basis :math:`(\Psi_k)_{k \in \Nset}` 
-of :math:`\cL^2_{\mu}(\Rset^d,\Rset)`. See :class:`~openturns.FunctionalChaosAlgorithm` 
+of :math:`L^2_{\mu}(\Rset^d,\Rset)`. See :class:`~openturns.FunctionalChaosAlgorithm` 
 to get more details. 
 
 The meta model of :math:`g`, based on the functional chaos decomposition of 
@@ -69,7 +69,7 @@ In both cases, the mean :math:`\Expect{.}` is approximated by a linear quadratur
 
     \Expect{ f(\vect{Z})} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
 
-where *f* is a function :math:`\cL_1(\mu)`. 
+where *f* is a function in :math:`L^1(\mu)`. 
 
 In the approximation :eq:`approxEsp`, the set *I*, the points :math:`(\Xi_i)_{i \in I}` 
 and the weights :math:`(\omega_i)_{i \in I}` are evaluated from different methods 
