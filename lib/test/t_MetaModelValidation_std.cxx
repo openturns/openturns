@@ -127,6 +127,7 @@ int main(int argc, char *argv[])
 
     fullprint << "Kriging scoring" << std::endl;
     fullprint << "Q2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationKG.computePredictivityFactor() << std::endl;
+    PlatformInfo::SetNumericalPrecision(2);
     fullprint << "Residual sample = " << metaModelValidationKG.getResidualSample() << std::endl;
 
   }

@@ -3,4 +3,4 @@ Q2 = 1.000
 Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.00904],[-0.0143],[0.00548],[-0.00292],[0.000916],[-0.00101],[-0.00267],[0.00385],[0.00874],[-0.0164]]
 Kriging scoring
 Q2 = 0.956
-Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.822],[-0.0652],[-2.12],[0.314],[-0.0656],[0.293],[0.637],[-1.01],[0.356],[0.308]]
+Residual sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=10 dimension=1 description=[y] data=[[0.82],[-0.065],[-2.1],[0.31],[-0.066],[0.29],[0.64],[-1],[0.36],[0.31]]

@@ -56,7 +56,7 @@ public:
                     const Basis & basis,
                     const CovarianceModel & covarianceModel,
                     const Bool normalize = true,
-                    const Bool keepCovariance = true);
+                    const Bool keepCholeskyFactor = true);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
@@ -64,7 +64,7 @@ public:
                     const NumericalSample & outputSample,
                     const Basis & basis,
                     const CovarianceModel & covarianceModel,
-                    const Bool keepCovariance = true);
+                    const Bool keepCholeskyFactor = true);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
@@ -72,7 +72,7 @@ public:
                     const BasisCollection & multivariateBasis,
                     const CovarianceModel & covarianceModel,
                     const Bool normalize = true,
-                    const Bool keepCovariance = true);
+                    const Bool keepCholeskyFactor = true);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
@@ -80,7 +80,7 @@ public:
                     const NumericalSample & outputSample,
                     const BasisCollection & multivariateBasis,
                     const CovarianceModel & covarianceModel,
-                    const Bool keepCovariance = true);
+                    const Bool keepCholeskyFactor = true);
 
   /** Virtual constructor */
   KrigingAlgorithm * clone() const;
@@ -139,13 +139,13 @@ private:
   KrigingResult result_;
 
   /** Bool for keeping or not covariance factor */
-  Bool keepCovariance_;
+  Bool keepCholeskyFactor_;
 
   /** Cholesky factor ==>  TriangularMatrix */
   mutable TriangularMatrix covarianceCholeskyFactor_;
 
   /** Cholesky factor when using hmat-oss */
-  mutable HMatrix covarianceHMatrix_;
+  mutable HMatrix covarianceCholeskyFactorHMatrix_;
 
 }; // class KrigingAlgorithm
 
