@@ -55,14 +55,14 @@ public:
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
@@ -70,7 +70,7 @@ public:
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
-                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
@@ -78,7 +78,7 @@ public:
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & multivariateBasis,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
@@ -86,7 +86,7 @@ public:
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & multivariateBasis,
-                                   const Bool keepCovariance = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
   GeneralizedLinearModelAlgorithm * clone() const;
@@ -125,12 +125,15 @@ public:
 protected:
   // Optimize the log-likelihood
   NumericalPoint optimizeLogLikelihood();
+
   // Compute the output log-likelihood function
   NumericalScalar computeLogLikelihood(const NumericalPoint & theta) const;
-  NumericalScalar computeLapackLogLikelihood(const NumericalPoint & theta) const;
-  NumericalScalar computeHMatLogLikelihood(const NumericalPoint & theta) const;
+  NumericalScalar computeLapackLogDeterminantCholesky(const NumericalPoint & theta) const;
+  NumericalScalar computeHMatLogDeterminantCholesky(const NumericalPoint & theta) const;
+
   // Compute the design matrix on the normalized input sample
   void computeF();
+
   // Normalize the input sample
   void normalizeInputSample();
 
@@ -163,15 +166,20 @@ private:
 
   // The input data
   NumericalSample inputSample_;
+
   // Standardized version of the input data
   NumericalSample normalizedInputSample_;
-  // Standardization funtion
+
+  // Standardization function
   NumericalMathFunction inputTransformation_;
   mutable Bool normalize_;
+
   // The associated output data
   NumericalSample outputSample_;
+
   // The covariance model parametric familly
   CovarianceModel covarianceModel_;
+
   // The member of the covariance model fitted to the data
   CovarianceModel conditionalCovarianceModel_;
 
@@ -195,10 +203,10 @@ private:
   mutable TriangularMatrix covarianceCholeskyFactor_;
 
   /** Cholesky factor when using hmat-oss */
-  mutable HMatrix covarianceHMatrix_;
+  mutable HMatrix covarianceCholeskyFactorHMatrix_;
 
   /** Boolean argument for keep covariance */
-  mutable Bool keepCovariance_;
+  mutable Bool keepCholeskyFactor_;
 
   /** Method : 0 (lapack), 1 (hmat) */
   UnsignedInteger method_;
