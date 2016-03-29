@@ -25,8 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(OrthogonalFunctionFactory);
 
 static const Factory<OrthogonalFunctionFactory> RegisteredFactory;
@@ -34,8 +32,17 @@ static const Factory<OrthogonalFunctionFactory> RegisteredFactory;
 
 /* Default constructor */
 OrthogonalFunctionFactory::OrthogonalFunctionFactory()
-  : FunctionalBasisImplementation(),
-    measure_()
+  : FunctionalBasisImplementation()
+  , measure_()
+{
+  // Nothing to do
+}
+
+
+/* Parameter constructor */
+OrthogonalFunctionFactory::OrthogonalFunctionFactory(const Distribution & measure)
+  : FunctionalBasisImplementation()
+  , measure_(measure)
 {
   // Nothing to do
 }

@@ -52,6 +52,7 @@
 %include FourierSeriesFactory.i
 %include HaarWaveletFactory.i
 %include OrthogonalProductFunctionFactory.i
+%include SoizeGhanemFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyOrthogonalBasisTemplateDefs.i
