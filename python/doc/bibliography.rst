@@ -61,3 +61,8 @@ Bibliography
     Mauntz, W.  *Estimating the approximation errors when fixing unessential
     factors in global sensitivity analysis*, Reliability Engineering and System
     Safety, 2007, 92, 957-960.
+.. [SoizeGhanem2004] Soize, C., Ghanem, R. *Physical systems with random
+    uncertainties: Chaos representations with arbitrary probability measure*,
+    SIAM Journal on Scientific Computing, Society for Industrial and Applied
+    Mathematics, 2004, 26 (2), 395-410.
+    `pdf <https://hal.archives-ouvertes.fr/hal-00686211/document>`__

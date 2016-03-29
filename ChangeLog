@@ -17,6 +17,7 @@
  * MartinezSensitivityAlgorithm
  * JansenSensitivityAlgorithm
  * MauntzKucherenkoSensitivityAlgorithm
+ * SoizeGhanemFactory
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
