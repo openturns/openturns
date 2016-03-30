@@ -65,6 +65,7 @@
 %include SimulationSensitivityAnalysis.i
 %include SubsetSamplingResult.i
 %include SubsetSampling.i
+%include AdaptiveDirectionalSampling.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i
