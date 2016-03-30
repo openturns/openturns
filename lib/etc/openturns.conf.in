@@ -394,6 +394,12 @@
   <!-- OT::SimulationSensitivityAnalysis parameters -->
   <SimulationSensitivityAnalysis-DefaultSampleMargin value="400" />
 
+  <!-- OT::SubsetSampling parameters -->
+  <SubsetSampling-DefaultMaximumOuterSampling value="10000" />
+  <SubsetSampling-DefaultTargetProbability value="0.1"      />
+  <SubsetSampling-DefaultProposalRange value="2.0"          />
+  <SubsetSampling-DefaultBetaMin value="2.0"                />
+
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth value="1.0" />
 

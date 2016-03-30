@@ -47,5 +47,7 @@
 #include "openturns/SimulationResultImplementation.hxx"
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/Wilks.hxx"
+#include "openturns/SubsetSamplingResult.hxx"
+#include "openturns/SubsetSampling.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

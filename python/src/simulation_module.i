@@ -63,6 +63,8 @@
 %include RandomizedQuasiMonteCarlo.i
 %include QuasiMonteCarloResult.i
 %include SimulationSensitivityAnalysis.i
+%include SubsetSamplingResult.i
+%include SubsetSampling.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i
