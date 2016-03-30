@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -36,12 +36,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class TaylorExpansionsMoments
- * TaylorExpansionsMoments implements the mean and covariance of a random vector
- Y=G(X) by implementing the Taylor approximation of G
+ * @class TaylorExpansionMoments
+ * TaylorExpansionMoments estimates the mean and covariance of a random vector
+ Y=G(X) by computing the Taylor approximation of G
 */
 
-class OT_API TaylorExpansionsMoments
+class OT_API TaylorExpansionMoments
   : public PersistentObject
 {
 
@@ -50,14 +50,14 @@ public:
 
 
   /** Default constructor */
-  TaylorExpansionsMoments() {};
+  TaylorExpansionMoments() {};
 
   /** Constructor with parameters */
-  explicit TaylorExpansionsMoments(const RandomVector & limitStateVariable);
+  explicit TaylorExpansionMoments(const RandomVector & limitStateVariable);
 
 
   /** Virtual constructor */
-  virtual TaylorExpansionsMoments * clone() const;
+  virtual TaylorExpansionMoments * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -97,7 +97,7 @@ public:
 
 protected:
 
-  friend class Factory<TaylorExpansionsMoments>;
+  friend class Factory<TaylorExpansionMoments>;
 
 private:
 
@@ -131,7 +131,7 @@ private:
   mutable CovarianceMatrix covariance_;
   mutable NumericalPointWithDescription importanceFactors_;
 
-} ; /* class TaylorExpansionsMoments */
+} ; /* class TaylorExpansionMoments */
 
 END_NAMESPACE_OPENTURNS
 

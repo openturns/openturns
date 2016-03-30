@@ -96,13 +96,13 @@ analytical = ot.NumericalMathFunction(input, output, formulas)
 analytical.setName("analytical")
 myStudy.add("analytical", analytical)
 
-# Create a TaylorExpansionsMoments algorithm
+# Create a TaylorExpansionMoments algorithm
 antecedent = ot.RandomVector(
     ot.IndependentCopula(analytical.getInputDimension()))
 antecedent.setName("antecedent")
 composite = ot.RandomVector(analytical, antecedent)
 composite.setName("composite")
-taylorExpansionsMoments = ot.TaylorExpansionsMoments(composite)
+taylorExpansionsMoments = ot.TaylorExpansionMoments(composite)
 taylorExpansionsMoments.setName("taylorExpansionsMoments")
 taylorExpansionsMoments.getMeanFirstOrder()
 taylorExpansionsMoments.getMeanSecondOrder()

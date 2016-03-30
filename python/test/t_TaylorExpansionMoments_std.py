@@ -27,7 +27,7 @@ X = ot.RandomVector(distribution)
 Y = ot.RandomVector(myFunc, X)
 
 # We create a quadraticCumul algorithm
-algo = ot.TaylorExpansionsMoments(Y)
+algo = ot.TaylorExpansionMoments(Y)
 
 # We test the attributes here
 print('algo=', algo)
@@ -40,6 +40,6 @@ print('Value at mean=', repr(algo.getValueAtMean()))
 print('Gradient at mean=', repr(algo.getGradientAtMean()))
 print('Hessian at mean=', repr(algo.getHessianAtMean()))
 
-algo_1 = ot.TaylorExpansionsMoments(Y.getMarginal(0))
+algo_1 = ot.TaylorExpansionMoments(Y.getMarginal(0))
 print('Importance factors=', repr(
     algo_1.getImportanceFactors()))
