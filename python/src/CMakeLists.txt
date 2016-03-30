@@ -779,7 +779,7 @@ ot_add_python_module(stattests stattests_module.i
 ot_add_python_module(uncertainty uncertainty_module.i
                       ANCOVA.i ANCOVA_doc.i.in
                       FAST.i FAST_doc.i.in
-                      TaylorExpansionsMoments.i TaylorExpansionsMoments_doc.i.in
+                      TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
                       UncertaintyTemplateDefs.i
                     )
 

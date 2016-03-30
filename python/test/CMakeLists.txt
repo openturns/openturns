@@ -553,8 +553,8 @@ ot_pyinstallcheck_test (OrthogonalUniVariatePolynomialFunctionFactory_std)
 ot_pyinstallcheck_test (FourierSeriesFactory_std)
 ot_pyinstallcheck_test (HaarWaveletFactory_std)
 
-## TaylorExpansionsMoments
-ot_pyinstallcheck_test (TaylorExpansionsMoments_std)
+## TaylorExpansionMoments
+ot_pyinstallcheck_test (TaylorExpansionMoments_std)
 
 ## Analytical
 ot_pyinstallcheck_test (Analytical_std)
