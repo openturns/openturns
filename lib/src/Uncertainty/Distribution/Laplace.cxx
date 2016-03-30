@@ -263,6 +263,12 @@ Description Laplace::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool Laplace::isElliptical() const
+{
+  return true;
+}
+
 /* Mu accessor */
 void Laplace::setMu(const NumericalScalar mu)
 {

@@ -98,6 +98,9 @@ public:
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
 
+  /** Check if the distribution is elliptical */
+  Bool isElliptical() const;
+
   /* Interface specific to Multinomial */
 
   /** P vector accessor */

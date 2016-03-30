@@ -608,8 +608,12 @@ KernelMixture::NumericalPointWithDescriptionCollection KernelMixture::getParamet
 /* Check if the distribution is elliptical */
 Bool KernelMixture::isElliptical() const
 {
-  if ((sample_.getSize() == 1) && (getDimension() == 1)) return kernel_.getImplementation()->isElliptical();
-  return false;
+  // No chance to have something symmetrical if sample size > 2
+  if (sample_.getSize() > 2) return false;
+  // In dimension 1, elliptical == symmetric
+  if (getDimension() == 1) return kernel_.isElliptical();
+  // In dimension > 1, only samples with 1 point and Normal kernels lead to an elliptical distribution
+  return (sample_.getSize() == 1) && (kernel_.getClassName() == "Normal");
 }
 
 /* Check if the distribution is continuos */

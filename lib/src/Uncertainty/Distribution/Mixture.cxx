@@ -534,7 +534,7 @@ Bool Mixture::isCopula() const
 Bool Mixture::isElliptical() const
 {
   // If there is only one atom
-  if (distributionCollection_.getSize() == 1) return distributionCollection_[0].getImplementation()->isElliptical();
+  if (distributionCollection_.getSize() == 1) return distributionCollection_[0].isElliptical();
   return false;
 }
 

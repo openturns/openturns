@@ -1,6 +1,6 @@
 Distribution  class=Laplace name=Laplace dimension=1 lambda=1.5 mu=0.5
 Distribution  Laplace(lambda = 1.5, mu = 0.5)
-Elliptical =  False
+Elliptical =  True
 Continuous =  True
 oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.700514]
 oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1.46718]  last= class=NumericalPoint name=Unnamed dimension=1 values=[0.391218]

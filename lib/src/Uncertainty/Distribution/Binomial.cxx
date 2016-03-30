@@ -226,6 +226,12 @@ Description Binomial::getParameterDescription() const
   return description;
 }
 
+/* Check if the distribution is elliptical */
+Bool Binomial::isElliptical() const
+{
+  return p_ == 0.5;
+}
+
 /* P accessor */
 void Binomial::setP(const NumericalScalar p)
 {

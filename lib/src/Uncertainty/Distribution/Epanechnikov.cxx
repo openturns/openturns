@@ -186,6 +186,12 @@ void Epanechnikov::computeCovariance() const
   isAlreadyComputedCovariance_ = 0;
 }
 
+/* Check if the distribution is elliptical */
+Bool Epanechnikov::isElliptical() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Epanechnikov::save(Advocate & adv) const
 {

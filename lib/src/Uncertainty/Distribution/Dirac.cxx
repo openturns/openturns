@@ -332,6 +332,12 @@ Dirac::Implementation Dirac::getMarginal(const Indices & indices) const
   return new Dirac(pointMarginal);
 } // getMarginal(Indices)
 
+/* Check if the distribution is elliptical */
+Bool Dirac::isElliptical() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Dirac::save(Advocate & adv) const
 {
