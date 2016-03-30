@@ -56,9 +56,9 @@ String FourierSeriesFactory::__repr__() const
 /* The method to get the function of any order */
 UniVariateFunction FourierSeriesFactory::build(const UnsignedInteger order) const
 {
-  const Bool cosine = (order % 2) == 0;
-  const UnsignedInteger k = (order + 1) / 2;
-  return new FourierSeries(cosine, k);
+  const Bool isCosine((order % 2) == 0);
+  const UnsignedInteger k((order + 1) / 2);
+  return new FourierSeries(isCosine, k);
 }
 
 

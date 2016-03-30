@@ -5,12 +5,12 @@ Generates the Haar basis defined as follows:
 
 .. math::
 
-    \begin{array}{l}
-      \psi(x) = 1, -\frac{1}{2} \leq x \le 0 \\
-      \psi(x) = -1, 0 \le x \leq \frac{1}{2} \\
-      \psi(x) = 0, \text{otherwise} \\
-      \psi_{j,k}(x) = \psi(2^j-k), \text{with} 0 \leq k \leq 2^j-1
+    \begin{array}{lcl}
+      \psi_0(x) & = & \fcar{[0, 1]}{x} \\
+      \psi_n(x) & = & \frac{1}{2^{j/2}}\left[\fcar{[\frac{k}{2^j},\frac{k+1/2}{2^j}]}{x}-\fcar{[\frac{k+1/2}{2^j},\frac{k+1}{2^j}]}{x}\right]
     \end{array}
+
+where :math:`n = 2^j + k`, :math:`0 \leq k < 2^j`, :math:`0 \leq j`.
 
 See also
 --------

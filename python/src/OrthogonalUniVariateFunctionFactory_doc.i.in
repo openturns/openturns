@@ -7,11 +7,11 @@ OT_OrthogonalUniVariateFunctionFactory_doc
 // ---------------------------------------------------------------------
 
 %define OT_OrthogonalUniVariateFunctionFactory_build_doc
-"Build the :math:`k`-th order orthogonal univariate function.
+"Build the :math:`n`-th order orthogonal univariate function.
 
 Parameters
 ----------
-k : int, :math:`0 \leq k`
+n : int, :math:`0 \leq n`
     Function order.
 
 Returns

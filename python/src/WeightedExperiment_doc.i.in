@@ -18,7 +18,7 @@ mean :math:`E_{\mu}` is approximated as follows:
 
 .. math::
 
-    E_{\mu} \left[ f(\vect{Z}) \right] \simeq \sum_{i \in I} \omega_i f(\Xi_i)
+    \Expect{ f(\vect{Z})}_{\mu} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
 
 where :math:`\mu` is a distribution, :math:`f` is a function :math:`L_1(\mu)`
 and :math:`\omega_i` are the weights associated with the points. By default,

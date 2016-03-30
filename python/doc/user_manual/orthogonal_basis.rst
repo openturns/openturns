@@ -38,7 +38,7 @@ Orthogonal univariate polynomial families
 
 .. autosummary::
     :toctree: _generated/
-    :template: OrthogonalUniVariatePolynomialFamily.rst_t
+    :template: OrthogonalUniVariateFunctionFamily.rst_t
 
     HermiteFactory
     JacobiFactory
@@ -58,6 +58,9 @@ Orthogonal univariate function families
     OrthogonalUniVariateFunctionFamily
     OrthogonalUniVariateFunctionFactory
     OrthogonalUniVariatePolynomialFunctionFactory
+
+    :template: OrthogonalUniVariateFunctionFamily.rst_t
+
     FourierSeriesFactory
     HaarWaveletFactory
 
@@ -84,17 +87,4 @@ Truncation schemes
     EnumerateFunction
     LinearEnumerateFunction
     HyperbolicAnisotropicEnumerateFunction
-
-Orthogonal univariate function families
----------------------------------------
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    OrthogonalUniVariateFunctionFamily
-    OrthogonalUniVariateFunctionFactory
-    OrthogonalUniVariatePolynomialFunctionFactory
-    FourierSeriesFactory
-    HaarWaveletFactory
 

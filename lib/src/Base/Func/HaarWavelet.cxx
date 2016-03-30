@@ -32,14 +32,26 @@ static const Factory<HaarWavelet> RegisteredFactory;
 
 /* Parameter constructor */
 HaarWavelet::HaarWavelet(const UnsignedInteger j,
-                                         const UnsignedInteger k,
-					 const Bool isScaling)
+			 const UnsignedInteger k,
+			 const Bool isScaling)
   : UniVariateFunctionImplementation()
   , j_(j)
   , k_(k)
   , isScaling_(isScaling)
+  , a_(0.0)
+  , m_(0.5)
+  , b_(1.0)
+  , value_(1.0)
 {
   // Nothing to do
+  if (!isScaling)
+    {
+      const NumericalScalar denominator(1 << j);
+      value_ = std::sqrt(denominator);
+      a_ = k / denominator;
+      m_ = (k + 0.5) / denominator;
+      b_ = (k + 1.0) / denominator;
+    }
 }
 
 
@@ -56,7 +68,10 @@ String HaarWavelet::__repr__() const
   return OSS(true) << "class=" << GetClassName()
                    << " j=" << j_
                    << " k=" << k_
-                   << " isScaling=" << isScaling_;
+                   << " isScaling=" << isScaling_
+                   << " a=" << a_
+                   << " m=" << m_
+                   << " b=" << b_;
 }
 
 
@@ -64,15 +79,9 @@ String HaarWavelet::__str__(const String & offset) const
 {
   OSS oss(false);
   if (isScaling_)
-    oss << offset << "f:X -> {1.0 for -0.5<=X<=0.5, 0.0 elsewhere}";
+    oss << offset << "f:X -> {1.0 for 0.0<=X<1.0, 0.0 elsewhere}";
   else
-    {
-      const NumericalScalar a1 = 1.0 * k_ / (1 << j_) - 0.5;
-      const NumericalScalar b1 = a1 + 1.0 / (1 << (j_ + 1));
-      const NumericalScalar am1 = b1;
-      const NumericalScalar bm1 = 1.0 * (k_ + 1) / (1 << j_) - 0.5;
-      oss << offset << "f:X -> {1.0 for " << a1 << "<=X<" << b1 << ", -1.0 for " << am1 << "<X<=" << bm1 << ", 0.0 elsewhere}";
-    }
+    oss << offset << "f:X -> {" << value_ << " for " << a_ << "<=X<" << m_ << ", " << -value_ << " for " << m_ << "<=X<" << b_ << ", 0.0 elsewhere}";
   return oss;
 }
 
@@ -80,15 +89,11 @@ String HaarWavelet::__str__(const String & offset) const
 /* HaarWavelet are evaluated as functors */
 NumericalScalar HaarWavelet::operator() (const NumericalScalar x) const
 {
-  if (isScaling_) return (std::abs(x) > 0.5 ? 0.0 : 1.0);
-  const NumericalScalar a1 = 1.0 * k_ / (1 << j_) - 0.5;
-  const NumericalScalar b1 = a1 + 1.0 / (1 << (j_ + 1));
-  const NumericalScalar am1 = b1;
-  const NumericalScalar bm1 = 1.0 * (k_ + 1) / (1 << j_) - 0.5;
-  NumericalScalar value = 0.;
-  if ((a1 <= x) && (x < b1)) value = 1.0;
-  else if ((am1 < x) && (x <= bm1)) value = -1.0;
-  return value;
+  if (isScaling_) return ((x < 0.0 || x > 1.0) ? 0.0 : 1.0);
+  if (x < a_) return 0.0;
+  if (x < m_) return value_;
+  if (x < b_) return -value_;
+  return 0.0;
 }
 
 /* HaarWavelet gradient */
@@ -119,6 +124,7 @@ void HaarWavelet::load(Advocate & adv)
   adv.loadAttribute("j_", j_);
   adv.loadAttribute("k_", k_);
   adv.loadAttribute("isScaling_", isScaling_);
+  *this = HaarWavelet(j_, k_, isScaling_);
 }
 
 
