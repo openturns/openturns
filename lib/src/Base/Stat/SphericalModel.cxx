@@ -72,7 +72,7 @@ NumericalScalar SphericalModel::computeAsScalar(const NumericalPoint & tau) cons
 }
 
 /* Computation of the representative function:
- * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| / a) (3 - (|tau/a| / a)^2)) for 0<=|tau/scale|<=a, 0 otherwise
+ * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| (3 - (|tau/scale| / a)^2)) for 0<=|tau/scale|<=a, 0 otherwise
  */
 NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoint & tau) const
 {
@@ -80,10 +80,10 @@ NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoi
     throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar absTau(tauOverTheta.norm1());
-  if (absTau == 0.0) return 1.0 + nuggetFactor_;
-  if (absTau >= 1.0) return 0.0;
-  return 1.0 - 0.5 * absTau * (3.0 - absTau * absTau);
+  const NumericalScalar normTauOverScaleA(tauOverTheta.norm()/a_);
+  if (normTauOverScaleA == 0.0) return 1.0 + nuggetFactor_;
+  if (normTauOverScaleA >= 1.0) return 0.0;
+  return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
 }
 
 /* Discretize the covariance function on a given TimeGrid */

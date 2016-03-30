@@ -1,52 +1,85 @@
 %feature("docstring") OT::MaternModel
-"Matern covariance model.
+"Matern covariance function.
 
 Available constructors:
-    MaternModel(*dim=1*)
+    MaternModel(*spatialDim=1*)
 
-    MaternModel(*dim, theta, nu*)
+    MaternModel(*spatialDim, thetaScalar, nu*)
 
-    MaternModel(*scale, nu*)
+    MaternModel(*theta, nu*)
 
-    MaternModel(*scale, sigma, nu*)
+    MaternModel(*theta, sigma, nu*)
 
 Parameters
 ----------
-dim : int, :math:`dim \geq 0`
-    Input dimension.
-theta : float
-    Scale coefficient :math:`\theta` of the covariance function.
-nu : float
-    Coefficient :math:`\nu` of the covariance function.
-scale : sequence of floats
-    Scale coefficients :math:`\theta`.
-    The spatial dimension is the size of vector.
-sigma : sequence of floats
-    Amplitude coefficients :math:`\sigma`.
-    Should be of size 1
+spatialDim : int
+    Spatial dimension :math:`n`.
+
+    When not fulfilled, the spatial dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
+
+    By default, equal to 1.
+thetaScalar : float
+    Used to specify the scale coefficient :math:`\vect{\theta}=[thetaScalar]*spatialDim`.
+
+    By default, equal to 10.
+theta : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+
+    The size of :math:`\vect{\theta}` is the spatial dimension.
+nu : float, :math:`\nu \geq 0`
+    Coefficient :math:`\nu`.
+sigma : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
+
+    Must be of size equal to 1.
+
+    By default, equal to :math:`[1]`.
+
 
 Notes
 -----
-The covariance function of input dimension *dim* is:
+The *Matern* function is a stationary covariance function whith dimension :math:`d=1`.
+
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *Matern* function is defined by:
 
 .. math::
 
-    C(s, t) = \sigma^2 \frac{1}{\Gamma(\nu) 2^{\nu-1}} \left(\sqrt{2 \nu} ||\frac{s-t}{\theta}||\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} ||\frac{s-t}{\theta}||\right)
+    C(\vect{s}, \vect{t}) = \sigma^2 \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
-where the division is vectorial, :math:`\sigma` is the amplitude (default value is 1.0). Note that the model is unidimensional.
+The correlation function :math:`\rho` writes:
+
+.. math::
+
+    \rho(\vect{s}, \vect{t}) = \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
+
+
 
 See Also
 --------
-CovarianceModel, SquaredExponential, AbsoluteExponential, GeneralizedExponential
+CovarianceModel
 
 Examples
 --------
+Create a standard Matern covariance function:
+
 >>> import openturns as ot
->>> covarianceModel = ot.MaternModel(2)
+>>> covModel = ot.MaternModel(2)
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
->>> print(covarianceModel(s, t))
+>>> print(covModel(s, t))
 [[ 0.999705 ]]
 >>> tau = [0.1, 0.3]
->>> print(covarianceModel(tau))
-[[ 0.998554 ]]"
+>>> print(covModel(tau))
+[[ 0.998554 ]]
+
+Create a  Matern covariance function specifying the scale vector and :math:`\nu`:
+
+>>> covModel2 = ot.MaternModel([1.5, 2.5], 2.3)
+>>> covModel2bis = ot.MaternModel(3, 1.5, 2.3)
+
+Create a  Matern covariance function specifying the scale vector, the amplitude and :math:`\nu`:
+
+>>> covModel3 = ot.MaternModel([1.5, 2.5], [3.5], 4.5)"

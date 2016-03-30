@@ -66,7 +66,7 @@ AbsoluteExponential * AbsoluteExponential::clone() const
   return new AbsoluteExponential(*this);
 }
 
-/* Computation of the covariance density function */
+/* Computation of the covariance function */
 NumericalScalar AbsoluteExponential::computeStandardRepresentative(const NumericalPoint & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();

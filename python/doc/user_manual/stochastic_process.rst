@@ -29,16 +29,22 @@ Temporal information
     CovarianceModelFactory
 
     :template: CovarianceModel.rst_t
+    AbsoluteExponential
+    DiracCovarianceModel
     ExponentialModel
     ExponentiallyDampedCosineModel
+    GeneralizedExponential
+    MaternModel
+    ProductCovarianceModel
     SphericalModel
+    SquaredExponential
+    TensorizedCovarianceModel
 
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel
 
     :template: class.rst_t
     StationaryCovarianceModel
-    UserDefinedCovarianceModel
 
     :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel
