@@ -1,8 +1,8 @@
-%feature("docstring") OT::TaylorExpansionsMoments
-"First and second order Taylor expansions formulas.
+%feature("docstring") OT::TaylorExpansionMoments
+"First and second order Taylor expansion formulas.
 
 Available constructors:
-    TaylorExpansionsMoments(*limitStateVariable*)
+    TaylorExpansionMoments(*limitStateVariable*)
 
 Parameters
 ----------
@@ -14,7 +14,7 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Notes
 -----
-In a probabilistic approach the Taylor expansions can be used
+In a probabilistic approach the Taylor expansion can be used
 propagate the uncertainties of the input variables :math:`\uX` through the
 model :math:`h` towards the output variables :math:`\uY`. It enables to access
 the central dispersion (Expectation, Variance) of the output variables.
@@ -111,14 +111,14 @@ Examples
 >>> X = ot.RandomVector(distribution)
 >>> # We create a composite RandomVector Y from X and myFunc
 >>> Y = ot.RandomVector(myFunc, X)
->>> # We create a Taylor expansions method to approximate moments
->>> myTaylorExpansionsMoments = ot.TaylorExpansionsMoments(Y)
->>> print(myTaylorExpansionsMoments.getMeanFirstOrder())
+>>> # We create a Taylor expansion method to approximate moments
+>>> myTaylorExpansionMoments = ot.TaylorExpansionMoments(Y)
+>>> print(myTaylorExpansionMoments.getMeanFirstOrder())
 [0.0384615,0.932544]"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getCovariance
+%feature("docstring") OT::TaylorExpansionMoments::getCovariance
 "Get the approximation at the first order of the covariance matrix.
 
 Returns
@@ -129,7 +129,7 @@ covariance : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getGradientAtMean
+%feature("docstring") OT::TaylorExpansionMoments::getGradientAtMean
 "Get the gradient of the function.
 
 Returns
@@ -140,7 +140,7 @@ gradient : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getHessianAtMean
+%feature("docstring") OT::TaylorExpansionMoments::getHessianAtMean
 "Get the hessian of the function.
 
 Returns
@@ -151,7 +151,7 @@ hessian : :class:`~openturns.SymmetricTensor`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getImportanceFactors
+%feature("docstring") OT::TaylorExpansionMoments::getImportanceFactors
 "Get the importance factors.
 
 Returns
@@ -161,7 +161,7 @@ factors : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getLimitStateVariable
+%feature("docstring") OT::TaylorExpansionMoments::getLimitStateVariable
 "Get the limit state variable.
 
 Returns
@@ -171,7 +171,7 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getMeanFirstOrder
+%feature("docstring") OT::TaylorExpansionMoments::getMeanFirstOrder
 "Get the approximation at the first order of the mean.
 
 Returns
@@ -181,7 +181,7 @@ mean : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getMeanSecondOrder
+%feature("docstring") OT::TaylorExpansionMoments::getMeanSecondOrder
 "Get the approximation at the second order of the mean.
 
 Returns
@@ -192,7 +192,7 @@ mean : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::getValueAtMean
+%feature("docstring") OT::TaylorExpansionMoments::getValueAtMean
 "Get the value of the function.
 
 Returns
@@ -203,7 +203,7 @@ value : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TaylorExpansionsMoments::drawImportanceFactors
+%feature("docstring") OT::TaylorExpansionMoments::drawImportanceFactors
 "Draw the importance factors.
 
 Returns

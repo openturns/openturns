@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TaylorExpansionsMoments implements the first and second order quadratic cumul formulas
+ *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation 
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <iomanip>
-#include "openturns/TaylorExpansionsMoments.hxx"
+#include "openturns/TaylorExpansionMoments.hxx"
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/Pointer.hxx"
@@ -32,18 +32,18 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Pointer<RandomVectorImplementation> Implementation;
 
-CLASSNAMEINIT(TaylorExpansionsMoments);
+CLASSNAMEINIT(TaylorExpansionMoments);
 
-static const Factory<TaylorExpansionsMoments> RegisteredFactory;
+static const Factory<TaylorExpansionMoments> RegisteredFactory;
 
 /*
- * @class TaylorExpansionsMoments
- * TaylorExpansionsMoments implements the mean and covariance of a random vector
- Y=G(X) by implementing the Taylor approximation of G
+ * @class TaylorExpansionMoments
+ * TaylorExpansionMoments estimates the mean and covariance of a random vector
+ Y=G(X) by computing the Taylor approximation of G
 */
 
 /* Constructor with parameters */
-TaylorExpansionsMoments::TaylorExpansionsMoments(const RandomVector & limitStateVariable)
+TaylorExpansionMoments::TaylorExpansionMoments(const RandomVector & limitStateVariable)
   : PersistentObject(),
     limitStateVariable_(limitStateVariable),
     meanInputVector_(0),
@@ -72,13 +72,13 @@ TaylorExpansionsMoments::TaylorExpansionsMoments(const RandomVector & limitState
 }
 
 /* Virtual constructor */
-TaylorExpansionsMoments * TaylorExpansionsMoments::clone() const
+TaylorExpansionMoments * TaylorExpansionMoments::clone() const
 {
-  return new TaylorExpansionsMoments(*this);
+  return new TaylorExpansionMoments(*this);
 }
 
 /* String converter */
-String TaylorExpansionsMoments::__repr__() const
+String TaylorExpansionMoments::__repr__() const
 {
   return OSS() << "limitStateVariable=" << limitStateVariable_
          << " meanInputVector=" << meanInputVector_
@@ -93,13 +93,13 @@ String TaylorExpansionsMoments::__repr__() const
 }
 
 /* limitStateVariable accessor */
-RandomVector TaylorExpansionsMoments::getLimitStateVariable() const
+RandomVector TaylorExpansionMoments::getLimitStateVariable() const
 {
   return limitStateVariable_;
 }
 
 /* meanFirstOrder accessor */
-NumericalPoint TaylorExpansionsMoments::getMeanFirstOrder() const
+NumericalPoint TaylorExpansionMoments::getMeanFirstOrder() const
 {
   if(!isAlreadyComputedMeanFirstOrder_) computeMeanFirstOrder();
   return meanFirstOrder_;
@@ -107,46 +107,46 @@ NumericalPoint TaylorExpansionsMoments::getMeanFirstOrder() const
 
 
 /* meanSecondOrder accessor */
-NumericalPoint TaylorExpansionsMoments::getMeanSecondOrder() const
+NumericalPoint TaylorExpansionMoments::getMeanSecondOrder() const
 {
   if(!isAlreadyComputedMeanSecondOrder_) computeMeanSecondOrder();
   return meanSecondOrder_;
 }
 
 /* covariance accessor */
-CovarianceMatrix TaylorExpansionsMoments::getCovariance() const
+CovarianceMatrix TaylorExpansionMoments::getCovariance() const
 {
   if(!isAlreadyComputedCovariance_) computeCovariance();
   return covariance_;
 }
 
 /* importance factors accessor */
-NumericalPointWithDescription TaylorExpansionsMoments::getImportanceFactors() const
+NumericalPointWithDescription TaylorExpansionMoments::getImportanceFactors() const
 {
   if(!isAlreadyComputedImportanceFactors_) computeImportanceFactors();
   return importanceFactors_;
 }
 
 /* Value at mean accessor */
-NumericalPoint TaylorExpansionsMoments::getValueAtMean() const
+NumericalPoint TaylorExpansionMoments::getValueAtMean() const
 {
   return valueAtMean_;
 }
 
 /* Gradient at mean accessor */
-Matrix TaylorExpansionsMoments::getGradientAtMean() const
+Matrix TaylorExpansionMoments::getGradientAtMean() const
 {
   return gradientAtMean_;
 }
 
 /* Hessian at mean accessor */
-SymmetricTensor TaylorExpansionsMoments::getHessianAtMean() const
+SymmetricTensor TaylorExpansionMoments::getHessianAtMean() const
 {
   return hessianAtMean_;
 }
 
 /* ImportanceFactors graph */
-Graph TaylorExpansionsMoments::drawImportanceFactors() const
+Graph TaylorExpansionMoments::drawImportanceFactors() const
 {
   // To ensure that the importance factors are up to date
   getImportanceFactors();
@@ -156,7 +156,7 @@ Graph TaylorExpansionsMoments::drawImportanceFactors() const
 }
 
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */
-void TaylorExpansionsMoments::computeMeanFirstOrder() const
+void TaylorExpansionMoments::computeMeanFirstOrder() const
 {
   if (!isAlreadyComputedValue_)
   {
@@ -167,11 +167,11 @@ void TaylorExpansionsMoments::computeMeanFirstOrder() const
   /* we compute here the meanFirstOrder_ */
   meanFirstOrder_ = valueAtMean_;
   isAlreadyComputedMeanFirstOrder_ = true;
-} // TaylorExpansionsMoments::computeMeanFirstOrder()
+} // TaylorExpansionMoments::computeMeanFirstOrder()
 
 
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */
-void TaylorExpansionsMoments::computeCovariance() const
+void TaylorExpansionMoments::computeCovariance() const
 {
   inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent()->getCovariance();
   if (!isAlreadyComputedGradient_)
@@ -206,10 +206,10 @@ void TaylorExpansionsMoments::computeCovariance() const
   /* We check that outputCovariance is really symmetric positive definite */
   if (!covariance_.isPositiveDefinite()) LOGWARN(OSS() << "Warning! The covariance matrix computed by quadratic cumul is not positive definite outputCovariance=" << covariance_);
   isAlreadyComputedCovariance_ = true;
-} // TaylorExpansionsMoments::computeCovariance()
+} // TaylorExpansionMoments::computeCovariance()
 
 /* the function that computes the importance factors only in the scalar case */
-void TaylorExpansionsMoments::computeImportanceFactors() const
+void TaylorExpansionMoments::computeImportanceFactors() const
 {
   /* importance factors are evaluated only if the outputRandomVector is scalar */
   /* this case is tested with the  dimension of limitStateVariable_ : it must be equal to 1 in the right case */
@@ -230,10 +230,10 @@ void TaylorExpansionsMoments::computeImportanceFactors() const
   }
   importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
   isAlreadyComputedImportanceFactors_ = true;
-} // TaylorExpansionsMoments::computeImportanceFactors()
+} // TaylorExpansionMoments::computeImportanceFactors()
 
 /* the function that computes the second order evaluation of the mean vector */
-void TaylorExpansionsMoments::computeMeanSecondOrder() const
+void TaylorExpansionMoments::computeMeanSecondOrder() const
 {
   inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent()->getCovariance();
   if (!isAlreadyComputedValue_)
@@ -271,10 +271,10 @@ void TaylorExpansionsMoments::computeMeanSecondOrder() const
     meanSecondOrder_[k] += kSecondOrderContribution;
   } /* end loop on k */
   isAlreadyComputedMeanSecondOrder_ = true;
-} // TaylorExpansionsMoments::computeMeanSecondOrder()
+} // TaylorExpansionMoments::computeMeanSecondOrder()
 
 /* Method save() stores the object through the StorageManager */
-void TaylorExpansionsMoments::save(Advocate & adv) const
+void TaylorExpansionMoments::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "limitStateVariable_", limitStateVariable_ );
@@ -297,7 +297,7 @@ void TaylorExpansionsMoments::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void TaylorExpansionsMoments::load(Advocate & adv)
+void TaylorExpansionMoments::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "limitStateVariable_", limitStateVariable_ );

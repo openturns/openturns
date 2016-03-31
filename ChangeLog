@@ -17,7 +17,7 @@
  * Removed deprecated OptimizationSolver::setMaximumIterationsNumber
  * Removed deprecated method Distribution::setParametersCollection(NP)
  * Removed deprecated PersistentFactory string constructor
- * Deprecated QuadraticCumul class in favor of TaylorExpansionsMoments
+ * Deprecated QuadraticCumul class in favor of TaylorExpansionMoments
  * Renamed __contains__ to contains
  * Added the keys "LinearModelTest-DefaultLevel", "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" and "LinearModelTest-DefaultDurbinWatsonHypothesis" to the ResourceMap class.
 

@@ -328,21 +328,21 @@ int main(int argc, char *argv[])
     StandardEvent standardEvent(event);
     study.add("standardEvent", standardEvent);
 
-    // Create a TaylorExpansionsMoments algorithm
-    TaylorExpansionsMoments taylorExpansionsMoments;
+    // Create a TaylorExpansionMoments algorithm
+    TaylorExpansionMoments taylorExpansionMoments;
     {
       RandomVector antecedent(IndependentCopula(analytical.getInputDimension()));
       antecedent.setName("antecedent");
       RandomVector composite(analytical, antecedent);
       composite.setName("composite");
-      taylorExpansionsMoments = TaylorExpansionsMoments(composite);
-      taylorExpansionsMoments.setName("taylorExpansionsMoments");
-      taylorExpansionsMoments.getMeanFirstOrder();
-      taylorExpansionsMoments.getMeanSecondOrder();
-      taylorExpansionsMoments.getCovariance();
+      taylorExpansionMoments = TaylorExpansionMoments(composite);
+      taylorExpansionMoments.setName("taylorExpansionMoments");
+      taylorExpansionMoments.getMeanFirstOrder();
+      taylorExpansionMoments.getMeanSecondOrder();
+      taylorExpansionMoments.getCovariance();
     }
 
-    study.add("taylorExpansionsMoments", taylorExpansionsMoments);
+    study.add("taylorExpansionMoments", taylorExpansionMoments);
 
     // Create an AbdoRackwitz algorithm
     AbdoRackwitz abdoRackwitz;
@@ -1054,7 +1054,7 @@ int main(int argc, char *argv[])
     compare<FORMResult >( formResult, study2 , "formResult");
     compare<SORMResult >( sormResult, study2,  "sormResult");
 
-    compare<TaylorExpansionsMoments >( taylorExpansionsMoments, study2 );
+    compare<TaylorExpansionMoments >( taylorExpansionMoments, study2 );
 
     // Process
     compare<ARMACoefficients >( armaCoefficients, study2 , "armaCoefficients");
