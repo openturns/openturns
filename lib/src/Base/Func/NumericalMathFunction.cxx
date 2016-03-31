@@ -454,6 +454,12 @@ void NumericalMathFunction::setParameter(const NumericalPointWithDescription & p
   getImplementation()->setParameter(parameters);
 }
 
+void NumericalMathFunction::setParameter(const NumericalPoint & parameter)
+{
+  copyOnWrite();
+  getImplementation()->setParameter(parameter);
+}
+
 
 /* Operator () */
 NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) const
