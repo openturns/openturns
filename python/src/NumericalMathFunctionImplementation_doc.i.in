@@ -1019,11 +1019,11 @@ OT_NumericalMathFunction_getParameter_doc
 // ---------------------------------------------------------------------
 
 %define OT_NumericalMathFunction_setParameter_doc
-"Accessor to the parameter.
+"Accessor to the parameter values.
 
 Parameters
 ----------
-parameter : :class:`~openturns.NumericalPointWithDescription`
+parameter : sequence of float
     The parameter values."
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::setParameter

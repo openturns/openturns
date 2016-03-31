@@ -300,6 +300,7 @@ public:
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameter() const;
   virtual void setParameter(const NumericalPointWithDescription & parameters);
+  virtual void setParameter(const NumericalPoint & parameter);
 
   /** Accessor for parameter dimension */
   UnsignedInteger getParameterDimension() const;
