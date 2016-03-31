@@ -19,7 +19,7 @@
     user_manual/user_manual
     examples/examples
     theory
-    contribute
+    developer_guide/developer_guide
     bibliography
 
 .. raw:: html

@@ -122,19 +122,7 @@ Install from `AUR <https://aur.archlinux.org/packages/openturns/>`_ repository::
 From sources
 ============
 
-Checkout the following dependencies:
-
-- `CMake <http://www.cmake.org/>`_
-- `LAPACK <http://www.netlib.org/lapack/>`_
-- `LibXml2 <http://xmlsoft.org/>`_ (optional, for serialization)
-- `muParser <http://muparser.beltoforion.de/>`_ (optional, for analytical parser)
-- `SWIG <http://www.swig.org/>`_ (optional, for python bindings)
-- `NLopt <http://ab-initio.mit.edu/nlopt>`_ (optional, for additional optimization algorithms)
-- `Boost <http://www.boost.org/>`_ (optional, for efficient numerical functions)
-- `TBB <http://www.threadingbuildingblocks.org/>`_ (optional, for multithreading)
-- `Python <http://www.python.org/>`_ (optional, for python bindings)
-- `Matplotlib <http://matplotlib.org/>`_ (optional, for viewer module)
-- `Sphinx <http://sphinx-doc.org/>`_ (optional, for documentation)
+Checkout the required :ref:`dependencies`.
 
 You can checkout the development trunk::
 
