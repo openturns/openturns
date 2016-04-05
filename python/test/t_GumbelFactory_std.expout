@@ -8,5 +8,5 @@ Typed estimated distribution      = Gumbel(alpha = 1.98682, beta = 2.50626)
 Default typed distribution        = Gumbel(alpha = 1, beta = 0)
 Typed distribution from parameters= Gumbel(alpha = 2, beta = 2.5)
 Estimated distribution (AB)       = class=ParametrizedDistribution parameters=class=GumbelAB name=Unnamed a=2.50626 b=0.503317 distribution=class=Gumbel name=Gumbel dimension=1 alpha=0.399001 beta=1.98682
-Parameter distribution (AB)       = Normal(mu = [2.50626,0.503317], sigma = [0.00554983,0.0763013], R = [[ 1 0 ]
- [ 0 1 ]])
+Parameter distribution (AB)       = Normal(mu = [2.50626,0.503317], sigma = [0.00554983,0.0763013], R = [[ 1        0.234284 ]
+ [ 0.234284 1        ]])

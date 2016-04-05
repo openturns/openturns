@@ -94,6 +94,8 @@ public:
                 const UnsignedInteger colDim,
                 const NumericalScalarCollection & elementsValues);
 
+  /** Constructor from hermitian matrix */
+  ComplexMatrix(const HermitianMatrix & hermitian);
 
   /** Set small elements to zero */
   virtual ComplexMatrix clean(const NumericalScalar threshold) const;

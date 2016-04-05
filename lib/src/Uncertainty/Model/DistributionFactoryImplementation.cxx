@@ -134,7 +134,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
   if (nativeParameterDistribution.getImplementation()->getClassName() == "Normal")
   {
     Matrix delta(parameters2.gradient());
-    Matrix sigma(nativeParameterDistribution.getCovariance());
+    CovarianceMatrix sigma(nativeParameterDistribution.getCovariance());
     parameterDistribution = Normal(newParameter, CovarianceMatrix((delta * sigma * delta.transpose()).getImplementation()));
   }
   else

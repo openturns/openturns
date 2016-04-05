@@ -61,6 +61,14 @@ SquareComplexMatrix::SquareComplexMatrix(const Implementation & i)
 }
 
 
+/* Constructor from hermitian matrix */
+SquareComplexMatrix::SquareComplexMatrix(const HermitianMatrix & hermitian)
+  : ComplexMatrix(hermitian)
+{
+  // Nothing to do
+}
+
+
 /* String converter */
 String SquareComplexMatrix::__repr__() const
 {

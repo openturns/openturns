@@ -72,6 +72,13 @@ SquareMatrix::SquareMatrix(const UnsignedInteger dim,
 }
 
 
+SquareMatrix::SquareMatrix(const SymmetricMatrix & symmetric)
+  : Matrix(symmetric)
+{
+  // Nothing to do
+}
+
+
 /* String converter */
 String SquareMatrix::__repr__() const
 {
