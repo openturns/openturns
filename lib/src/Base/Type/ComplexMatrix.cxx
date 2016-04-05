@@ -84,6 +84,14 @@ ComplexMatrix::ComplexMatrix(const ComplexMatrixImplementation & i)
   // Nothing to do
 }
 
+/* Constructor from hermitian matrix */
+ComplexMatrix::ComplexMatrix(const HermitianMatrix & hermitian)
+  : TypedInterfaceObject<ComplexMatrixImplementation>(hermitian.getImplementation())
+{
+  getImplementation()->hermitianize();
+}
+
+
 /* Resolution of a linear system */
 ComplexMatrix::NumericalComplexCollection ComplexMatrix::solveLinearSystem(const NumericalComplexCollection & b,
     const Bool keepIntact)

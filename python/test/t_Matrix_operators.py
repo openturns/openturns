@@ -75,3 +75,22 @@ for a in mats:
             print('a-b=', amb)
         except:
             print('no sub for', jname)
+
+sm = ot.SymmetricMatrix(2)
+sm[0,0] = 2.0
+sm[1,1] = 3.0
+sm[0,1] = 0.3
+w = ot.NumericalPoint([1.0, 2.0])
+sq = ot.SquareMatrix(sm)
+print('sm * w=', sm * w)
+print('sq * w=', sq * w)
+
+sm = ot.HermitianMatrix(2)
+sm[0,0] = 2.0
+sm[1,1] = 3.0
+sm[1,0] = 0.3j
+w = ot.NumericalPoint([1.0, 2.0])
+sq = ot.SquareComplexMatrix(sm)
+print('sm * w=', sm * w)
+print('sq * w=', sq * w)
+

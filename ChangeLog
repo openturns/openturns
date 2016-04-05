@@ -29,7 +29,8 @@
 
 === Bug fixes ===
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
-
+ * #822 (Incorect Matrix / point operations with cast)
+  
 == 1.7 release (2016-01-27) == #release-1.7
 
 === Library ===
