@@ -143,7 +143,7 @@ The Euclidean (:math:`L^2`) norm of a vector is defined as:
 
 Returns
 -------
-norm : int
+norm : float
     The vector's Euclidean norm.
 
 Examples
@@ -166,7 +166,7 @@ The :math:`L^1` norm of a vector is defined as:
 
 Returns
 -------
-norm : int
+norm : float
     The vector's :math:`L^1` norm.
 
 Examples
@@ -178,12 +178,35 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NumericalPoint::normInf
+"Compute the :math:`L^{\inf}` norm.
+
+The :math:`L^{\inf}` norm of a vector is defined as:
+
+.. math::
+
+    \norm{\vect{x}}_{\inf} = \max_{i=1}^n |x_i|
+
+Returns
+-------
+norm : float
+    The vector's :math:`L^{\inf}` norm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.NumericalPoint([1.0, 2.0, 3.0])
+>>> x.normInf()
+3.0"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NumericalPoint::normSquare
 "Compute the squared Euclidean norm.
 
 Returns
 -------
-norm : int
+norm : float
     The vector's squared Euclidean norm.
 
 See Also
@@ -204,7 +227,7 @@ Examples
 
 Returns
 -------
-normalized_vector : int
+normalized_vector : :class:`~openturns.NumericalPoint`
     The normalized vector with respect to its Euclidean norm.
 
 See Also
@@ -229,7 +252,7 @@ Examples
 
 Returns
 -------
-normalized_vector : int
+normalized_vector : normalized_vector : :class:`~openturns.NumericalPoint`
     The normalized vector with respect to its squared Euclidean norm.
 
 See Also
