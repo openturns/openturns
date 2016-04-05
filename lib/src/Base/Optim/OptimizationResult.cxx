@@ -32,8 +32,8 @@ static const Factory<OptimizationResult> Factory_OptimizationResult;
 /* Default constructor */
 OptimizationResult::OptimizationResult()
   : PersistentObject()
-  , optimalPoint_(NumericalPoint(0))
-  , optimalValue_(NumericalPoint(0))
+  , optimalPoint_(0)
+  , optimalValue_(0)
   , iterationNumber_(0)
   , absoluteError_(-1.0)
   , relativeError_(-1.0)

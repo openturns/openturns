@@ -29,8 +29,6 @@
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/OptimizationSolver.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/Cloud.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -241,7 +239,7 @@ struct MeixnerBounds
 
   NumericalPoint computeObjectiveB(const NumericalPoint & point) const
   {
-    return NumericalPoint(1, std::sqrt(distribution_.computePDF(point)));
+    return NumericalPoint(1, distribution_.computePDF(point));
   }
 
   NumericalPoint computeObjectiveCD(const NumericalPoint & point) const
@@ -271,7 +269,6 @@ void MeixnerDistribution::update()
 
   // define objectives functions 
   NumericalMathFunction fB(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveB, 1, 1));
-  Graph gB(fB.draw(-5.0, 5.0));
   const NumericalPoint epsilon(1.0e-5 * getStandardDeviation());
   const CenteredFiniteDifferenceGradient gradientB(epsilon, fB.getEvaluation());
   fB.setGradient(gradientB.clone());
@@ -279,7 +276,6 @@ void MeixnerDistribution::update()
   NumericalMathFunction fCD(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveCD, 1, 1));
   const CenteredFiniteDifferenceGradient gradientCD(epsilon, fCD.getEvaluation());
   fCD.setGradient(gradientCD.clone());
-  Graph gCD(fCD.draw(-5.0, 5.0));
 
   // Initilalyse Optimization problems 
   OptimizationProblem problem;
@@ -291,33 +287,20 @@ void MeixnerDistribution::update()
   problem.setObjective(fB);
   solver_.setProblem(problem);
   solver_.run();
-  b_ = solver_.getResult().getOptimalValue()[0];
-  NumericalPoint maxB(2);
-  maxB[0] = solver_.getResult().getOptimalPoint()[0];
-  maxB[1] = solver_.getResult().getOptimalValue()[0];
-  gB.add(Cloud(NumericalSample(1, maxB)));
-  gB.draw(OSS() << "Meixner_fB_" << alpha_ << "_" << beta_ << "_" << maxB << ".png");
+  b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);
+
   // Define Optimization problem2 : minimization fCD
   problem.setMinimization(true);
   problem.setObjective(fCD);	
   solver_.setProblem(problem);
   solver_.run();
   c_ = solver_.getResult().getOptimalValue()[0];
-  NumericalPoint minCD(2);
-  minCD[0] = solver_.getResult().getOptimalPoint()[0];
-  minCD[1] = solver_.getResult().getOptimalValue()[0];
-  gCD.add(Cloud(NumericalSample(1, minCD)));
 
-  // Define Optimization problem3 : maximization fCD
+// Define Optimization problem3 : maximization fCD
   problem.setMinimization(false);	
   solver_.setProblem(problem);
   solver_.run();
   dc_ = solver_.getResult().getOptimalValue()[0] - c_;
-  NumericalPoint maxCD(2);
-  maxCD[0] = solver_.getResult().getOptimalPoint()[0];
-  maxCD[1] = solver_.getResult().getOptimalValue()[0];
-  gCD.add(Cloud(NumericalSample(1, maxCD)));
-  gCD.draw(OSS() << "Meixner_fCD_" << alpha_ << "_" << beta_ << "_" << minCD << "_" << maxCD << ".png");
 
 }
 
