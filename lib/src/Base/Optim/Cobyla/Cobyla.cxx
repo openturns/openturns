@@ -88,7 +88,7 @@ void Cobyla::run()
   NumericalPoint x(getStartingPoint());
 
   /* Compute the objective function at StartingPoint */
-  const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
+  const NumericalScalar sign(getProblem().isMinimization() ? 1.0 : -1.0);
   NumericalScalar f(sign * getProblem().getObjective().operator()(x)[0]);
 
   NumericalScalar rhoEnd(getMaximumAbsoluteError());
@@ -101,7 +101,7 @@ void Cobyla::run()
   NumericalScalar constraintError(-1.0);
 
   // clear result
-  setResult(OptimizationResult(x, NumericalPoint(1,f), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
+  setResult(OptimizationResult(x, NumericalPoint(1, f), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
 
   // initialize history
   evaluationInputHistory_ = NumericalSample(0, dimension);
@@ -129,25 +129,26 @@ void Cobyla::run()
   int returnCode(cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this));
 
   // Update the result
-  result_.update(x, maxFun);
   UnsignedInteger size(evaluationInputHistory_.getSize());
 
-  for ( UnsignedInteger i = 1; i < size; ++ i )
+  for ( UnsignedInteger i = 1; i < size; ++i )
   {
     const NumericalPoint inPM( evaluationInputHistory_[i - 1] );
     const NumericalPoint inP( evaluationInputHistory_[i] );
     const NumericalPoint outP( evaluationOutputHistory_[i] );
     const NumericalPoint outPM( evaluationOutputHistory_[i - 1] );
-    absoluteError = (inP - inPM).norm();
-    relativeError = absoluteError / inP.norm();
+    absoluteError = (inP - inPM).normInf();
+    relativeError = absoluteError / inP.normInf();
     residualError = std::abs(outP[0] - outPM[0]);
-    constraintError =  outP[1];
-    // Compute the Lagrange multipliers only at the last step
-    if (i < size - 1)
-      result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError );
-    else
-      result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError, computeLagrangeMultipliers(inP) );
+    constraintError = outP[1];
+    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
+
+  // Set the optimal point and the number of function calls
+  result_.update(x, maxFun);
+
+  // Compute the Lagrange multipliers at the optimal point
+  setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
   const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));
@@ -212,62 +213,58 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
   /* Convert the input vector in OpenTURNS format */
   NumericalPoint inPoint(n);
-  for(int index = 0; index < n; ++index) inPoint[index] = x[index];
+  memcpy(&inPoint[0], &x[0], n * sizeof(NumericalScalar));
 
   const OptimizationProblem problem(algorithm->getProblem());
   NumericalPoint outPoint(2);
 
-  NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
+  NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
   // cobyla freezes when dealing with MaxNumericalScalar
   if (std::abs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
   outPoint[0] = result;
 
-  UnsignedInteger temp=0;
-  UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
-  UnsignedInteger nbEqConst   = problem.getEqualityConstraint().getOutputDimension();
-  NumericalPoint constraintValue(nbIneqConst+2*nbEqConst,0.0);
-
-  const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
+  const NumericalScalar sign(problem.isMinimization() ? 1.0 : -1.0);
   *f = sign * result;
 
-    /* Compute the inequality constraints at inPoint */
+  UnsignedInteger shift(0);
+  UnsignedInteger nbIneqConst(problem.getInequalityConstraint().getOutputDimension());
+  UnsignedInteger nbEqConst(problem.getEqualityConstraint().getOutputDimension());
+  NumericalPoint constraintValue(nbIneqConst + 2 * nbEqConst);
+
+  /* Compute the inequality constraints at inPoint */
   if (problem.hasInequalityConstraint())
   {
-    NumericalPoint constraintInequalityValue = problem.getInequalityConstraint().operator()(inPoint);
-    for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index+temp] = constraintInequalityValue[index];
-    temp += nbIneqConst;
+    const NumericalPoint constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
+    for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
+    shift += nbIneqConst;
   }
   /* Compute the equality constraints at inPoint */
   if (problem.hasEqualityConstraint())
   {
-    NumericalPoint constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
-    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
-    temp += nbEqConst;
-    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
+    const NumericalPoint constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
+    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
+    shift += nbEqConst;
+    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
   }
 
   /* Compute the bound constraints at inPoint */
   if (problem.hasBounds())
   {
-    Interval bounds(algorithm->getProblem().getBounds());
-    for (UnsignedInteger index = 0; index < bounds.getDimension(); ++ index)
+    const Interval bounds(algorithm->getProblem().getBounds());
+    for (UnsignedInteger index = 0; index < bounds.getDimension(); ++index)
     {
       if (bounds.getFiniteLowerBound()[index])
-      {
         constraintValue.add(inPoint[index] - bounds.getLowerBound()[index]);
-      }
       if (bounds.getFiniteUpperBound()[index])
-      {
         constraintValue.add(bounds.getUpperBound()[index] - inPoint[index]);
-      }
     }
   }
 
   /* Convert the constraint vector in double format */
-  for (UnsignedInteger index = 0; index < constraintValue.getDimension(); ++ index) con[index] = constraintValue[index];
+  memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(NumericalScalar));
 
   /* Compute constraints norm */
-  outPoint[1]= constraintValue.norm();
+  outPoint[1]= constraintValue.normInf();
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);

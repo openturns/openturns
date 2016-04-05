@@ -12,7 +12,8 @@ try:
     ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7 )
     ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumResidualError", 1.0e-7 )
     ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7 )
-    ot.PlatformInfo.SetNumericalPrecision(4)
+    ot.PlatformInfo.SetNumericalPrecision(3)
+
     # The 1D mesher
     mesher1D =  ot.LevelSetMesher([7])
     print("mesher1D=", mesher1D)
