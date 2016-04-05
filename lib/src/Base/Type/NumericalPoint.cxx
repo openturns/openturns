@@ -305,17 +305,27 @@ Bool operator <(const NumericalPoint & lhs,
 /*  Norm */
 NumericalScalar NumericalPoint::norm() const
 {
-  int n = getDimension();
-  int one = 1;
+  int n(getDimension());
+  int one(1);
   return dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
 }
 
 /* l1-norm */
 NumericalScalar NumericalPoint::norm1() const
 {
-  int n = getDimension();
-  int one = 1;
+  int n(getDimension());
+  int one(1);
   return dasum_(&n, const_cast<double*>(&(*this)[0]), &one);
+}
+
+/* linf-norm */
+NumericalScalar NumericalPoint::normInf() const
+{
+  const UnsignedInteger dimension(getDimension());
+  if (dimension == 0) return 0.0;
+  const NumericalScalar minValue(*std::min_element(begin(), end()));
+  const NumericalScalar maxValue(*std::max_element(begin(), end()));
+  return std::max(maxValue, -minValue);
 }
 
 /*  Norm^2 */

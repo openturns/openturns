@@ -114,6 +114,9 @@ public:
   /** l1-norm */
   NumericalScalar norm1() const;
 
+  /** linf-norm */
+  NumericalScalar normInf() const;
+
   /**  Norm^2 */
   NumericalScalar normSquare() const;
 
