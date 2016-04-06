@@ -110,6 +110,12 @@ public:
   /** Get the inverse isoprobabilistic transformation */
   InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
+  /** Tell if the distribution has elliptical copula */
+  Bool hasEllipticalCopula() const;
+
+  /** Tell if the distribution has independent copula */
+  Bool hasIndependentCopula() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

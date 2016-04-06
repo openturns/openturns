@@ -2437,13 +2437,13 @@ Bool DistributionImplementation::isIntegral() const
 /* Tell if the distribution has elliptical copula */
 Bool DistributionImplementation::hasEllipticalCopula() const
 {
-  return true;
+  return dimension_ == 1;
 }
 
 /* Tell if the distribution has independent copula */
 Bool DistributionImplementation::hasIndependentCopula() const
 {
-  return true;
+  return dimension_ == 1;
 }
 
 /* Get the support of a distribution that intersect a given interval */

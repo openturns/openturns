@@ -338,6 +338,18 @@ Bool Dirac::isElliptical() const
   return true;
 }
 
+/* Tell if the distribution has an elliptical copula */
+Bool Dirac::hasEllipticalCopula() const
+{
+  return true;
+}
+
+/* Tell if the distribution has independent copula */
+Bool Dirac::hasIndependentCopula() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Dirac::save(Advocate & adv) const
 {
