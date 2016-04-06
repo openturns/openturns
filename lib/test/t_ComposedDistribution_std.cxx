@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     IndependentCopula aCopula(aCollection.getSize());
     aCopula.setName("Independent copula");
     // Instanciate one distribution object
-    ComposedDistribution distribution(aCollection, Copula(aCopula));
+    ComposedDistribution distribution(aCollection, aCopula);
     distribution.setName("myDist");
     UnsignedInteger dim(distribution.getDimension());
     fullprint << "Distribution " << distribution << std::endl;
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     }
     NormalCopula anotherCopula(correlation);
     anotherCopula.setName("Normal copula");
-    distribution = ComposedDistribution(aCollection, Copula(anotherCopula));
+    distribution = ComposedDistribution(aCollection, anotherCopula);
     distribution.setName("myDist");
     Normal distributionRef(mean, sigma, correlation);
     fullprint << "Distribution " << distribution << std::endl;

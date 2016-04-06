@@ -264,6 +264,18 @@ IndependentCopula::InverseIsoProbabilisticTransformation IndependentCopula::getI
   return transformation;
 }
 
+/* Tell if the distribution has elliptical copula */
+Bool IndependentCopula::hasEllipticalCopula() const
+{
+  return true;
+}
+
+/* Tell if the distribution has independent copula */
+Bool IndependentCopula::hasIndependentCopula() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void IndependentCopula::save(Advocate & adv) const
 {
