@@ -20,13 +20,10 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ConstantRandomVector.hxx"
-#include "openturns/UserDefined.hxx"
-#include "openturns/UserDefinedPair.hxx"
+#include "openturns/Dirac.hxx"
 #include "openturns/SquareMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-typedef Collection<UserDefinedPair>              UserDefinedPairCollection;
 
 CLASSNAMEINIT(ConstantRandomVector);
 
@@ -127,10 +124,7 @@ ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Ind
 /* Distribution accessor */
 Distribution ConstantRandomVector::getDistribution() const
 {
-  UserDefinedPairCollection collection(1);
-  collection[0].setX( point_ );
-  collection[0].setP( 1.0 );
-  return UserDefined(collection);
+  return Dirac(point_);
 }
 
 /* Method save() stores the object through the StorageManager */
