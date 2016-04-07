@@ -6,16 +6,16 @@
 
 %ignore OT::TypedCollectionInterfaceObject::swap;
 
-%define OTTypedCollectionInterfaceObjectMisnamedHelper(Interface,CollectionType)
+%define TypedCollectionInterfaceObjectMisnamedHelper(Namespace, Interface, CollectionType)
 
-%template(CollectionType)           OT::Collection<OT::Interface>;
+%template(CollectionType) OT::Collection<Namespace::Interface>;
 
 %typemap(in) const CollectionType & {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Interface >( $input );
+      $1 = OT::buildCollectionFromPySequence< Namespace::Interface >($input);
     } catch (OT::InvalidArgumentException & ex) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of " # Interface);
     }
@@ -24,15 +24,19 @@
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const CollectionType & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Interface >( $input );
+    || OT::canConvertCollectionObjectFromPySequence< Namespace::Interface >($input);
 }
 
-%apply const CollectionType & { const OT::Collection<OT::Interface> & };
+%apply const CollectionType & { const OT::Collection<Namespace::Interface> & };
 
 %enddef
 
+%define OTTypedCollectionInterfaceObjectMisnamedHelper(Interface,CollectionType)
+TypedCollectionInterfaceObjectMisnamedHelper(OT, Interface, CollectionType)
+%enddef
+
 %define OTTypedCollectionInterfaceObjectHelper(Interface)
-OTTypedCollectionInterfaceObjectMisnamedHelper(Interface,Interface ## Collection)
+OTTypedCollectionInterfaceObjectMisnamedHelper(Interface, Interface ## Collection)
 %enddef
 
 
