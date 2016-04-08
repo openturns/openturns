@@ -79,18 +79,18 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Num
   }
   // Set the relevant part of the reference point in the parameters
   const UnsignedInteger parametersSize(parametersPositions_.getSize());
+  const Description functionInputDescription(function.getInputDescription());
   NumericalPointWithDescription parameters(parametersSize);
   Description description(parametersSize);
   for (UnsignedInteger i = 0; i < parametersSize; ++i)
   {
     parameters[i] = referencePoint[parametersPositions_[i]];
-    description[i] = function.getInputDescription()[i];
+    description[i] = functionInputDescription[parametersPositions_[i]];
   }
   parameters.setDescription(description);
   // Here we cannot use the accessor as the dimension of the parameters is set at the first allocation
   parameters_ = parameters;
   // And finally the input/output descriptions
-  const Description functionInputDescription(function.getInputDescription());
   Description inputDescription(0);
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
   setInputDescription(inputDescription);
