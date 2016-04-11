@@ -91,6 +91,11 @@ public:
                                const DistributionFactory & factory,
                                const NumericalScalar level = 0.95);
 
+  /** Two-sample Kolmogorov–Smirnov test */
+  static TestResult TwoSamplesKolmogorov (const NumericalSample & sample1,
+                                          const NumericalSample & sample2,
+                                          const NumericalScalar level = 0.95);
+
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const NumericalSample & sample,
                                const Distribution & distribution,

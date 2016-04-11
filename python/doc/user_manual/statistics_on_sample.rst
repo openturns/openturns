@@ -150,6 +150,7 @@ Goodness-of-fit metrics & tests
     FittingTest_BIC
     FittingTest_ChiSquared
     FittingTest_Kolmogorov
+    FittingTest_TwoSamplesKolmogorov
     NormalityTest_AndersonDarlingNormal
     NormalityTest_CramerVonMisesNormal
 
