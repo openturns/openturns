@@ -75,6 +75,8 @@ public:
   SquareMatrix(const UnsignedInteger dim,
                const NumericalScalarCollection & elementsValues);
 
+  /** Constructor from symmetric matrix */
+  SquareMatrix(const SymmetricMatrix & symmetric);
 
   /** String converter */
   String __repr__() const;

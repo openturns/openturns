@@ -67,6 +67,9 @@ public:
   /** Constructor with implementation */
   SquareComplexMatrix(const Implementation & i);
 
+  /** Constructor from hermitian matrix */
+  SquareComplexMatrix(const HermitianMatrix & hermitian);
+
   /** String converter */
   String __repr__() const;
 

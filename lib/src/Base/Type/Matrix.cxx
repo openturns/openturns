@@ -73,6 +73,11 @@ Matrix::Matrix(const MatrixImplementation & i)
   // Nothing to do
 }
 
+Matrix::Matrix(const SymmetricMatrix & symmetric)
+  : TypedInterfaceObject<MatrixImplementation>(symmetric.getImplementation())
+{
+  getImplementation()->symmetrize();
+}
 
 /* String converter */
 String Matrix::__repr__() const

@@ -83,6 +83,9 @@ public:
          const UnsignedInteger colDim,
          const NumericalScalarCollection & elementsValues);
 
+  /** Constructor from symmetric matrix */
+  Matrix(const SymmetricMatrix & symmetric);
+
   /** Set small elements to zero */
   virtual Matrix clean(const NumericalScalar threshold) const;
 
