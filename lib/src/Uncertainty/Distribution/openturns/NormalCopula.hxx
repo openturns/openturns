@@ -118,6 +118,9 @@ public:
   /** Get the inverse isoprobabilist transformation */
   InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
+  /** Tell if the distribution has elliptical copula */
+  Bool hasEllipticalCopula() const;
+
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 

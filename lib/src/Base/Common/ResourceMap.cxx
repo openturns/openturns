@@ -482,7 +482,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // CompositeDistribution parameters //
   setAsUnsignedInteger( "CompositeDistribution-StepNumber", 256 );
-  setAsNumericalScalar( "CompositeDistribution-SolverEpsilon", 1e-10 );
+  setAsNumericalScalar( "CompositeDistribution-SolverEpsilon", 1.0e-10 );
 
   // DirichletFactory parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
@@ -699,7 +699,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-StartingScaling", 1.0e-13 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1e-5 );
+  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 20 );
   set("GeneralizedLinearModelAlgorithm-DefaultOptimiationSolver", "TNC");
 
@@ -733,7 +733,7 @@ void ResourceMap::loadDefaultConfiguration()
   // MarginalTransformationEvaluation parameters //
   setAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold", 0.99 );
   setAsUnsignedInteger( "MarginalTransformationEvaluation-Simplify", 1 );
-  setAsNumericalScalar( "MarginalTransformationEvaluation-ParametersEpsilon", 1e-14 );
+  setAsNumericalScalar( "MarginalTransformationEvaluation-ParametersEpsilon", 1.0e-14 );
 
   // DistributionImplementation parameters //
   setAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber", 129 );
@@ -767,8 +767,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsBool( "MaximumEntropyOrderStatisticsDistribution-UseApproximation", true );
   setAsBool( "MaximumEntropyOrderStatisticsDistribution-CheckMarginals", true );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization", 100 );
-  setAsNumericalScalar( "MaximumEntropyOrderStatisticsDistribution-SupportShift", 1.0e-15 );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision", 2 );
+  setAsNumericalScalar( "MaximumEntropyOrderStatisticsDistribution-SupportShift", 1.0e-15 );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration", 10);
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber", 16);
 

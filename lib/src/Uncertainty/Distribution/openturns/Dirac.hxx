@@ -121,6 +121,12 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
+  /** Tell if the distribution has elliptical copula */
+  Bool hasEllipticalCopula() const;
+
+  /** Tell if the distribution has independent copula */
+  Bool hasIndependentCopula() const;
+
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
 

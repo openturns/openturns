@@ -125,6 +125,12 @@ public:
   /** Merge the identical points of the support */
   void compactSupport(const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
 
+  /** Tell if the distribution has elliptical copula */
+  Bool hasEllipticalCopula() const;
+
+  /** Tell if the distribution has independent copula */
+  Bool hasIndependentCopula() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

@@ -469,6 +469,12 @@ NormalCopula::InverseIsoProbabilisticTransformation NormalCopula::getInverseIsoP
   return transformation;
 }
 
+/* Tell if the distribution has an elliptical copula */
+Bool NormalCopula::hasEllipticalCopula() const
+{
+  return true;
+}
+
 /* Tell if the distribution has independent copula */
 Bool NormalCopula::hasIndependentCopula() const
 {

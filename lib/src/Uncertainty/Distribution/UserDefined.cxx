@@ -678,6 +678,20 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
   setPairCollection(compactCollection);
 }
 
+/* Tell if the distribution has an elliptical copula */
+Bool UserDefined::hasEllipticalCopula() const
+{
+  return collection_.getSize() == 1;
+}
+
+
+/* Tell if the distribution has independent copula */
+Bool UserDefined::hasIndependentCopula() const
+{
+  return collection_.getSize() == 1;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void UserDefined::save(Advocate & adv) const
 {

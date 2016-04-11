@@ -221,7 +221,7 @@
   <Dirichlet-DefaultIntegrationSize  value="50" />
 
   <!-- OT::DirichletFactory parameters -->
-  <DirichletFactory-ParametersEpsilon value="1e-12" />
+  <DirichletFactory-ParametersEpsilon value="1.0e-12" />
   <DirichletFactory-MaximumIteration  value="10"    />
 
   <!-- OT::FisherSnedecorFactory parameters -->
@@ -260,6 +260,7 @@
   <!-- OT::LogNormalFactory parameters -->
   <LogNormalFactory-EstimationMethod  value="0"     />
   <LogNormalFactory-AbsolutePrecision value="1e-12" />
+  <LogNormalFactory-RelativePrecision value="1e-12" />
   <LogNormalFactory-ResidualPrecision value="1e-12" />
   <LogNormalFactory-MaximumIteration  value="50"    />
 
@@ -342,12 +343,12 @@
   <UserDefined-SmallSize value="10000" />
   
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
-  <AliMikhailHaqCopulaFactory-ThetaEpsilon value="1e-14" />
+  <AliMikhailHaqCopulaFactory-ThetaEpsilon value="1.0e-14" />
 
   <!-- OT::FrankCopulaFactory parameters -->
-  <FrankCopulaFactory-AbsolutePrecision value="1e-14" />
-  <FrankCopulaFactory-RelativePrecision value="1e-14" />
-  <FrankCopulaFactory-ResidualPrecision value="1e-14" />
+  <FrankCopulaFactory-AbsolutePrecision value="1.0e-14" />
+  <FrankCopulaFactory-RelativePrecision value="1.0e-14" />
+  <FrankCopulaFactory-ResidualPrecision value="1.0e-14" />
   <FrankCopulaFactory-MaximumIteration value="100" />
 
   <!-- OT::RandomMixture parameters -->
@@ -431,7 +432,7 @@
   <GeneralizedLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
   <GeneralizedLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
   <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1e-5" />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-5" />
   <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound  value="20"  />
   <GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver      value="TNC"  />
 
@@ -465,7 +466,7 @@
   <!-- OT::MarginalTransformationEvaluation parameters -->
   <MarginalTransformationEvaluation-DefaultTailThreshold value="0.99"  />
   <MarginalTransformationEvaluation-Simplify             value="1"     />
-  <MarginalTransformationEvaluation-ParametersEpsilon    value="1e-14" />
+  <MarginalTransformationEvaluation-ParametersEpsilon    value="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
   <DistributionImplementation-DefaultPointNumber             value="129"     />
@@ -473,8 +474,8 @@
   <DistributionImplementation-DefaultPDFEpsilon              value="1.0e-14" />
   <DistributionImplementation-DefaultCDFEpsilon              value="1.0e-14" />
   <DistributionImplementation-DefaultQuantileIteration       value="100"     />
-  <DistributionImplementation-QMin                           value="1.5e-1"  />
-  <DistributionImplementation-QMax                           value="8.5e-1"  />
+  <DistributionImplementation-QMin                           value="0.15"  />
+  <DistributionImplementation-QMax                           value="0.85"  />
   <DistributionImplementation-DefaultIntegrationNodesNumber  value="255"     />
   <DistributionImplementation-DefaultLevelNumber             value="10"      />
   <DistributionImplementation-DefaultQuantileCacheSize       value="128"     />
