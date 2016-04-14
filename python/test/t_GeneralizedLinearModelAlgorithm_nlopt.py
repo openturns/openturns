@@ -35,7 +35,7 @@ try:
     conditionalCovariance = result.getCovarianceModel()
     residual = metaModel(X) - Y
     assert_almost_equal(residual.computeCenteredMoment(2), [1.06e-05], 1e-5, 1e-5)
-    assert_almost_equal(conditionalCovariance.getParameter(), [0.702138,0.00137], 2e-3, 1e-3)
+    assert_almost_equal(conditionalCovariance.getParameter(), [0.702138,0.00137], 5e-3, 1e-3)
     print("Test Ok")
 
 except:

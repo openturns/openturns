@@ -1,4 +1,3 @@
-
 //                                               -*- C++ -*-
 /**
  *  @brief MatrixImplementation implements the classical mathematical MatrixImplementation

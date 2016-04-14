@@ -537,6 +537,7 @@ ot_check_test (WhiteNoise_std)
 ot_check_test (WhittleFactory_std)
 ot_check_test (ConditionedNormalProcess_std)
 ot_check_test (ARMALikelihoodFactory_std)
+ot_check_test (KarhunenLoeveQuadratureFactory_std)
 
 # Transformation
 ot_check_test (MarginalTransformationEvaluation_std)

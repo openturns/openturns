@@ -353,6 +353,7 @@ ot_pyinstallcheck_test (ARMALikelihoodFactory_std)
 ot_pyinstallcheck_test (FunctionalBasisProcess_std)
 ot_pyinstallcheck_test (WhittleFactory_std)
 ot_pyinstallcheck_test (ConditionedNormalProcess_std)
+ot_pyinstallcheck_test (KarhunenLoeveQuadratureFactory_std)
 
 ## Transformation
 ot_pyinstallcheck_test (MarginalTransformationEvaluation_std)
