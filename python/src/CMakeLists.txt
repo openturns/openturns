@@ -468,7 +468,8 @@ ot_add_python_module(model_process model_process_module.i
                       WhittleFactoryState.i WhittleFactoryState_doc.i.in
                       ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in  
                       ARMAFactory.i ARMAFactory_doc.i.in
-		      ConditionedNormalProcess.i ConditionedNormalProcess_doc.i.in 
+		      ConditionedNormalProcess.i ConditionedNormalProcess_doc.i.in
+		      KarhunenLoeveQuadratureFactory.i KarhunenLoeveQuadratureFactory_doc.i.in
                       UncertaintyProcessTemplateDefs.i
                    )
 

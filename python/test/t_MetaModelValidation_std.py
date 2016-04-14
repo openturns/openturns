@@ -93,6 +93,7 @@ try:
     print("")
     print("Kriging scoring")
     print("Q2 = ", round(metaModelValidationKG.computePredictivityFactor(), 3))
+    ot.PlatformInfo.SetNumericalPrecision(2)
     print("Residual sample = ", repr(
         metaModelValidationKG.getResidualSample()))
 
