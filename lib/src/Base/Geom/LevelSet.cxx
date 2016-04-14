@@ -23,7 +23,10 @@
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/Cobyla.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -123,6 +126,50 @@ NumericalScalar LevelSet::getLevel() const
 void LevelSet::setLevel(const NumericalScalar level)
 {
   level_ = level;
+}
+
+/* Lower bound of the bounding box */
+NumericalPoint LevelSet::getLowerBound() const
+{
+  const UnsignedInteger dimension(getDimension());
+  NumericalPoint lowerBound(dimension);
+  LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  NumericalMathFunction equality(translate, function_);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      Matrix m(1, dimension);
+      m(0, i) = 1.0;
+      LinearNumericalMathFunction coordinate(NumericalPoint(dimension), NumericalPoint(1), m);
+      OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+      problem.setMinimization(true);
+      Cobyla solver(problem);
+      solver.setStartingPoint(NumericalPoint(dimension));
+      solver.run();
+      lowerBound[i] = solver.getResult().getOptimalPoint()[i];
+    }
+  return lowerBound;
+}
+
+/* Upper bound of the bounding box */
+NumericalPoint LevelSet::getUpperBound() const
+{
+  const UnsignedInteger dimension(getDimension());
+  NumericalPoint upperBound(dimension);
+  LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  NumericalMathFunction equality(translate, function_);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      Matrix m(1, dimension);
+      m(0, i) = 1.0;
+      LinearNumericalMathFunction coordinate(NumericalPoint(dimension), NumericalPoint(1), m);
+      OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+      problem.setMinimization(false);
+      Cobyla solver(problem);
+      solver.setStartingPoint(NumericalPoint(dimension));
+      solver.run();
+      upperBound[i] = solver.getResult().getOptimalPoint()[i];
+    }
+  return upperBound;
 }
 
 /* String converter */

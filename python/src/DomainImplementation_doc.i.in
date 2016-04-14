@@ -72,6 +72,19 @@ OT_Domain_getDimension_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Domain_getLowerBound_doc
+"Get the lower bound of the domain.
+
+Returns
+-------
+lower : :class:`~openturns.NumericalPoint`
+    The lower bound of an axes-aligned bounding box of the domain."
+%enddef
+%feature("docstring") OT::DomainImplementation::getLowerBound
+OT_Domain_getLowerBound_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Domain_getNumericalVolume_doc
 "Get the volume of the domain.
 
@@ -83,6 +96,19 @@ volume : float
 %enddef
 %feature("docstring") OT::DomainImplementation::getNumericalVolume
 OT_Domain_getNumericalVolume_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Domain_getUpperBound_doc
+"Get the upper bound of the domain.
+
+Returns
+-------
+upper : :class:`~openturns.NumericalPoint`
+    The upper bound of an axes-aligned bounding box of the domain."
+%enddef
+%feature("docstring") OT::DomainImplementation::getUpperBound
+OT_Domain_getUpperBound_doc
 
 // ---------------------------------------------------------------------
 
