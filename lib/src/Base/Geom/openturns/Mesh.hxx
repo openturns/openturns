@@ -133,6 +133,12 @@ public:
   /** Tells if the mesh is regular */
   Bool isRegular() const;
 
+  /** Lower bound of the bounding box */
+  NumericalPoint getLowerBound() const;
+
+  /** Upper bound of the bounding box */
+  NumericalPoint getUpperBound() const;
+
   /** Drawing method */
   Graph draw() const;
   Graph draw1D() const;

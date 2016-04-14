@@ -103,6 +103,18 @@ void DomainImplementation::computeVolume() const
   throw NotYetImplementedException(HERE);
 }
 
+/* Lower bound of the bounding box */
+NumericalPoint DomainImplementation::getLowerBound() const
+{
+  throw NotYetImplementedException(HERE) << "In DomainImplementation::getLowerBound()";
+}
+
+/* Upper bound of the bounding box */
+NumericalPoint DomainImplementation::getUpperBound() const
+{
+  throw NotYetImplementedException(HERE) << "In DomainImplementation::getUpperBound()";
+}
+
 /* Get the dimension of the domain*/
 UnsignedInteger DomainImplementation::getDimension() const
 {

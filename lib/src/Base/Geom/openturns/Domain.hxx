@@ -23,6 +23,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/DomainImplementation.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -68,6 +69,12 @@ public:
 
   /** Dimension accessors */
   virtual UnsignedInteger getDimension() const;
+
+  /** Lower bound of the bounding box */
+  NumericalPoint getLowerBound() const;
+
+  /** Upper bound of the bounding box */
+  NumericalPoint getUpperBound() const;
 
 }; /* class Domain */
 

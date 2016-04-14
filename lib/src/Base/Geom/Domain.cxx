@@ -89,4 +89,16 @@ NumericalScalar Domain::getNumericalVolume() const
   return getImplementation()->getNumericalVolume();
 }
 
+/* Lower bound of the bounding box */
+NumericalPoint Domain::getLowerBound() const
+{
+  return getImplementation()->getLowerBound();
+}
+
+/* Upper bound of the bounding box */
+NumericalPoint Domain::getUpperBound() const
+{
+  return getImplementation()->getUpperBound();
+}
+
 END_NAMESPACE_OPENTURNS
