@@ -72,12 +72,12 @@ int main(int argc, char *argv[])
     fullprint << "Rank=" << sample.rank() << std::endl;
     fullprint << "Sort=" << sample.sort() << std::endl;
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
-    NumericalScalar prob(0.25);
+    NumericalScalar prob = 0.25;
     fullprint << "Quantile per component(" << prob << ")=" << sample.computeQuantilePerComponent(prob) << std::endl;
     //    fullprint << "Quantile(" << prob << ")=" << sample.computeQuantile(prob) << std::endl;
     NumericalPoint pointCDF(sample.getDimension(), 0.25);
     fullprint << "Empirical CDF(" << pointCDF << "=" << sample.computeEmpiricalCDF(pointCDF) << std::endl;
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
     CorrelationMatrix R(dim);
     for (UnsignedInteger i = 1; i < dim; i++)
     {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalPoint p1(dim, 0.0);
     NumericalPoint p2(dim, 1.0);
     Normal normal(Normal(p1, p2, R));

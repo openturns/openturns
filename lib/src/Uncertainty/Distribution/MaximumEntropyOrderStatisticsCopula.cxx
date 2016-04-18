@@ -100,9 +100,9 @@ PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsCopula::ge
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 MaximumEntropyOrderStatisticsCopula::Implementation MaximumEntropyOrderStatisticsCopula::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "indices is empty";
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   if (dimension == 1) return clone();
   if (size == 1)
@@ -116,7 +116,7 @@ MaximumEntropyOrderStatisticsCopula::Implementation MaximumEntropyOrderStatistic
   MaximumEntropyOrderStatisticsCopula marginal(distribution_.getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger j(indices[i]);
+    const UnsignedInteger j = indices[i];
     marginalDescription.add(description[j]);
   }
   marginal.setDescription(marginalDescription);
@@ -134,7 +134,7 @@ void MaximumEntropyOrderStatisticsCopula::setDistributionCollection(const Distri
 /* Parameters value and description accessor */
 MaximumEntropyOrderStatisticsCopula::NumericalPointWithDescriptionCollection MaximumEntropyOrderStatisticsCopula::getParametersCollection() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPointWithDescriptionCollection parameters(dimension);
   const Description description(getDescription());
   // First put the marginal parameters

@@ -65,7 +65,7 @@ Bool Description::isBlank() const
 {
   for (UnsignedInteger i = 0; i < getSize(); ++i)
   {
-    const UnsignedInteger length((*this)[i].size());
+    const UnsignedInteger length = (*this)[i].size();
     for (UnsignedInteger j = 0; j < length; ++j)
     {
       const char c = (*this)[i][j];

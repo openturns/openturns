@@ -86,7 +86,7 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
                                        NumericalPoint & ei) const
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
-  const UnsignedInteger outputDimension(function.getOutputDimension());
+  const UnsignedInteger outputDimension = function.getOutputDimension();
   if (outputDimension == 0) throw InvalidArgumentException(HERE) << "Error: can integrate only non-zero output dimension function";
   NumericalPoint result(outputDimension);
   ai = NumericalPoint(maximumSubIntervals_);
@@ -95,8 +95,8 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
   bi[0] = b;
   fi = NumericalSample(maximumSubIntervals_, outputDimension);
   ei = NumericalPoint(maximumSubIntervals_);
-  UnsignedInteger ip(0);
-  UnsignedInteger im(0);
+  UnsignedInteger ip = 0;
+  UnsignedInteger im = 0;
   error = maximumError_;
   while ((error > 0.25 * maximumError_) && (im < maximumSubIntervals_ - 1))
   {
@@ -106,13 +106,13 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
     bi[ip] = ai[im];
     fi[ip] = computeRule(function, ai[ip], bi[ip], ei[ip]);
     fi[im] = computeRule(function, ai[im], bi[im], ei[im]);
-    UnsignedInteger iErrorMax(0);
-    NumericalScalar errorMax(0.0);
+    UnsignedInteger iErrorMax = 0;
+    NumericalScalar errorMax = 0.0;
     error = 0.0;
     result = NumericalPoint(outputDimension);
     for (UnsignedInteger i = 0; i <= im; ++i)
     {
-      const NumericalScalar localError(ei[i]);
+      const NumericalScalar localError = ei[i];
       for (UnsignedInteger j = 0; j < outputDimension; ++j) result[j] += fi[i][j];
       error += localError * localError;
       // Add a test on the integration interval length to avoid too short intervals
@@ -153,14 +153,14 @@ NumericalPoint GaussKronrod::computeRule(const NumericalMathFunction & function,
     const NumericalScalar b,
     NumericalScalar & localError) const
 {
-  const NumericalScalar width(0.5 * (b - a));
-  const NumericalScalar center(0.5 * (a + b));
+  const NumericalScalar width = 0.5 * (b - a);
+  const NumericalScalar center = 0.5 * (a + b);
   // Generate the set of points
   NumericalSample x(2 * rule_.order_ + 1, 1);
   x[0][0] = center;
   for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
-    const NumericalScalar t(width * rule_.otherKronrodNodes_[i]);
+    const NumericalScalar t = width * rule_.otherKronrodNodes_[i];
     x[2 * i + 1][0] = center - t;
     x[2 * i + 2][0] = center + t;
   }

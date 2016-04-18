@@ -77,12 +77,12 @@ String LinearCombinationEvaluationImplementation::__str__(const String & offset)
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   if (size > 1) oss << "(";
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Bool isNegative(coefficients_[i] < 0.0);
-    const NumericalScalar absCoefficient(std::abs(coefficients_[i]));
+    const Bool isNegative = coefficients_[i] < 0.0;
+    const NumericalScalar absCoefficient = std::abs(coefficients_[i]);
     if (i > 0) oss << (isNegative ? " - " : " + ");
     else if (isNegative) oss << "-";
     if (absCoefficient != 1.0) oss << absCoefficient << " * ";
@@ -129,10 +129,10 @@ struct LinearCombinationEvaluationPointFunctor
 /* Evaluation operator */
 NumericalPoint LinearCombinationEvaluationImplementation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   if (isZero_) return NumericalPoint(getOutputDimension());
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   LinearCombinationEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, size, functor );
   const NumericalPoint result(functor.accumulator_);
@@ -147,16 +147,16 @@ NumericalPoint LinearCombinationEvaluationImplementation::operator () (const Num
 
 NumericalSample LinearCombinationEvaluationImplementation::operator () (const NumericalSample & inS) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  const UnsignedInteger sampleSize(inS.getSize());
+  const UnsignedInteger sampleSize = inS.getSize();
   NumericalSample result(sampleSize, getOutputDimension());
   result.setDescription(getOutputDescription());
   if (sampleSize == 0) return result;
 
   if (!isZero_)
   {
-    const UnsignedInteger size(functionsCollection_.getSize());
+    const UnsignedInteger size = functionsCollection_.getSize();
     for (UnsignedInteger i = 0; i < size; ++i)
       // Exploit possible parallelism in the basis functions
       result += functionsCollection_[i](inS) * coefficients_[i];
@@ -185,14 +185,14 @@ LinearCombinationEvaluationImplementation::NumericalMathFunctionCollection Linea
 void LinearCombinationEvaluationImplementation::setFunctionsCollectionAndCoefficients(const NumericalMathFunctionCollection & functionsCollection,
     const NumericalPoint & coefficients)
 {
-  const UnsignedInteger size(functionsCollection.getSize());
+  const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
   // Check for incompatible number of functions and coefficients
   if (size != coefficients.getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination with a different number of functions and coefficients.";
   // Check for coherent input and output dimensions of the functions
-  UnsignedInteger inputDimension(functionsCollection[0].getInputDimension());
-  UnsignedInteger outputDimension(functionsCollection[0].getOutputDimension());
+  UnsignedInteger inputDimension = functionsCollection[0].getInputDimension();
+  UnsignedInteger outputDimension = functionsCollection[0].getOutputDimension();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given functions have incompatible input dimension.";
@@ -202,7 +202,7 @@ void LinearCombinationEvaluationImplementation::setFunctionsCollectionAndCoeffic
   isZero_ = false;
   coefficients_ = NumericalPoint(0);
   functionsCollection_ = NumericalMathFunctionCollection(0);
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("LinearCombinationEvaluationImplementation-SmallCoefficient"));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("LinearCombinationEvaluationImplementation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
     if (std::abs(coefficients[i]) > epsilon)
     {
@@ -239,17 +239,17 @@ UnsignedInteger LinearCombinationEvaluationImplementation::getOutputDimension() 
 Matrix LinearCombinationEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   // Get the parameters gradients for each atom and stack them into the result
-  UnsignedInteger rowIndex(0);
+  UnsignedInteger rowIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Extract the atom gradient
     const Matrix atomParametersGradient(functionsCollection_[i].parameterGradient(inP));
-    const UnsignedInteger rowDimension(atomParametersGradient.getNbRows());
-    const UnsignedInteger columnDimension(atomParametersGradient.getNbColumns());
+    const UnsignedInteger rowDimension = atomParametersGradient.getNbRows();
+    const UnsignedInteger columnDimension = atomParametersGradient.getNbColumns();
     // Scale the atom gradient and copy it into the result
-    const NumericalScalar coefficient(coefficients_[i]);
+    const NumericalScalar coefficient = coefficients_[i];
     for (UnsignedInteger j = 0; j < rowDimension; ++j)
     {
       for (UnsignedInteger k = 0; k < columnDimension; ++k)
@@ -267,13 +267,13 @@ NumericalPointWithDescription LinearCombinationEvaluationImplementation::getPara
 {
   NumericalPointWithDescription parameters(0);
   Description description(0);
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Extract the parameters of the current atom
     NumericalPointWithDescription atomParameters(functionsCollection_[i].getParameter());
     Description atomDescription(atomParameters.getDescription());
-    const UnsignedInteger atomSize(atomParameters.getDimension());
+    const UnsignedInteger atomSize = atomParameters.getDimension();
     // Copy the parameters value and description
     for (UnsignedInteger j = 0; j < atomSize; ++j)
     {
@@ -289,7 +289,7 @@ NumericalPointWithDescription LinearCombinationEvaluationImplementation::getPara
 LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   NumericalMathFunctionCollection marginalFunctions(size);
   for (UnsignedInteger j = 0; j < size; ++j) marginalFunctions[j] = functionsCollection_[j].getMarginal(i);
   return new LinearCombinationEvaluationImplementation(marginalFunctions, coefficients_);
@@ -299,7 +299,7 @@ LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvalu
 LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvaluationImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and  must be different";
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   NumericalMathFunctionCollection marginalFunctions(size);
   for (UnsignedInteger i = 0; i < size; ++i) marginalFunctions[i] = functionsCollection_[i].getMarginal(indices);
   return new LinearCombinationEvaluationImplementation(marginalFunctions, coefficients_);

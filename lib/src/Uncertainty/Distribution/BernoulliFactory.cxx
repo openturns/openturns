@@ -61,14 +61,14 @@ BernoulliFactory::Implementation BernoulliFactory::build() const
 
 Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalSample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar sum(0.0);
-  const NumericalScalar supportEpsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
+  NumericalScalar sum = 0.0;
+  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x(sample[i][0]);
+    const NumericalScalar x = sample[i][0];
     const int iX(static_cast<int>(round(x)));
     if ((std::abs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1))) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample made of 0 and 1.";
     sum += x;

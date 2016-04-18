@@ -65,7 +65,7 @@ NumericalScalar Hanning::operator()(const NumericalScalar t) const
 {
   if ((t <= 0.0) || (t >= 1.0))
     return 0.0;
-  const NumericalScalar sinTheta(sin(M_PI * t));
+  const NumericalScalar sinTheta = sin(M_PI * t);
   // 1.632993161855452065464856 = sqrt(8/3)
   return 1.632993161855452065464856 * sinTheta * sinTheta;
 }

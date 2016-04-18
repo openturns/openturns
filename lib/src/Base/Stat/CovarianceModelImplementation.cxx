@@ -295,7 +295,7 @@ Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
   covarianceSTImplementation.symmetrize();
   const NumericalPoint centralValue(covarianceSTImplementation);
-  const NumericalScalar epsilon(std::sqrt(SpecFunc::NumericalScalarEpsilon));
+  const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
   // Loop over the shifted points
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
@@ -337,10 +337,10 @@ struct CovarianceModelDiscretizePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const UnsignedInteger jLocal(static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5));
-      const UnsignedInteger jBase(jLocal * dimension_);
-      const UnsignedInteger iLocal(i - (jLocal * (jLocal + 1)) / 2);
-      const UnsignedInteger iBase(iLocal * dimension_);
+      const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
+      const UnsignedInteger jBase = jLocal * dimension_;
+      const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
+      const UnsignedInteger iBase = iLocal * dimension_;
       const CovarianceMatrix localCovariance(model_(input_[iLocal], input_[jLocal]));
       for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
@@ -354,8 +354,8 @@ struct CovarianceModelDiscretizePolicy
 CovarianceMatrix CovarianceModelImplementation::discretize(const NumericalSample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
-  const UnsignedInteger size(vertices.getSize());
-  const UnsignedInteger fullSize(size * dimension_);
+  const UnsignedInteger size = vertices.getSize();
+  const UnsignedInteger fullSize = size * dimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
   const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
   // The loop is over the lower block-triangular part
@@ -438,7 +438,7 @@ struct CovarianceModelDiscretizeRowPolicy
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       const MatrixImplementation localCovariance(*(model_(p_, input_[i]).getImplementation()));
-      const UnsignedInteger base(i * dimension_);
+      const UnsignedInteger base = i * dimension_;
       for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
           output_[base + ii][jj] = localCovariance(ii, jj);
@@ -451,7 +451,7 @@ NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSamp
     const UnsignedInteger p) const
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
-  const UnsignedInteger size(vertices.getSize());
+  const UnsignedInteger size = vertices.getSize();
   NumericalSample result(size * dimension_, dimension_);
   if (dimension_ == 1)
   {

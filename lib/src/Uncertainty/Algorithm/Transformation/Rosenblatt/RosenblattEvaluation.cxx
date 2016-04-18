@@ -44,7 +44,7 @@ RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution):
   distribution_(distribution)
 {
   Description description(distribution.getDescription());
-  const UnsignedInteger size(description.getSize());
+  const UnsignedInteger size = description.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     OSS oss;
@@ -63,13 +63,13 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 /* Evaluation */
 NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply Phi^{-1} o conditional CDF over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar conditionalCDF(distribution_.computeConditionalCDF(inP[i], y));
+    const NumericalScalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
     result[i] = DistFunc::qNormal(conditionalCDF);
     y.add(inP[i]);
   }

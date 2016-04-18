@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 
     RandomGenerator::SetSeed(0);
 
-    UnsignedInteger inputDimension(3);
-    UnsignedInteger outputDimension(1);
+    UnsignedInteger inputDimension = 3;
+    UnsignedInteger outputDimension = 1;
 
     Description inputName(inputDimension);
     inputName[0] = "X1";
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     ComposedDistribution maDistribution(ComposedDistribution(marginals, IndependentCopula(inputDimension)));
 
 
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample1(maDistribution.getSample(size));
     NumericalSample sample2(maDistribution.getSample(size));
 

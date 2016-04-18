@@ -88,7 +88,7 @@ String InverseNatafEllipticalCopulaHessian::__repr__() const
  */
 SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
 {
-  UnsignedInteger dimension(getInputDimension());
+  UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
   NumericalPoint point(cholesky_ * inP);
   SymmetricTensor result(dimension, dimension);
@@ -96,10 +96,10 @@ SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const NumericalPoin
   // Then, apply standard marginal transformation
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    NumericalScalar ddf(standardMarginal.computeDDF(NumericalPoint(1, point[k]))[0]);
+    NumericalScalar ddf = standardMarginal.computeDDF(NumericalPoint(1, point[k]))[0];
     for (UnsignedInteger i = 0; i <= k; ++i)
     {
-      NumericalScalar factor(ddf * cholesky_(k, i));
+      NumericalScalar factor = ddf * cholesky_(k, i);
       for (UnsignedInteger j = 0; j <= k; ++j)
       {
         result(i, j, k) = cholesky_(k, j) * factor;

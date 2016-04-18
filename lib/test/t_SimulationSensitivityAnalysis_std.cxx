@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     /* Must activate the history mechanism if one want to perform sensitivity analysis */
     f.enableHistory();
     /* Sampling */
-    UnsignedInteger size(100);
+    UnsignedInteger size = 100;
     NumericalSample inputSample(distribution.getSample(size));
     NumericalSample outputSample(f(inputSample));
     Collection<ComparisonOperator> comparisonOperators(4);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     comparisonOperators[2] = Greater();
     comparisonOperators[3] = GreaterOrEqual();
     ResourceMap::SetAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin", 10);
-    NumericalScalar threshold(3.0);
+    NumericalScalar threshold = 3.0;
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
       {

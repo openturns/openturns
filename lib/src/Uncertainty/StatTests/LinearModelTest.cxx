@@ -173,37 +173,37 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
   const NumericalScalar simulationSize)
 {
   const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
-  const UnsignedInteger residualSize(firstSample.getSize());
+  const UnsignedInteger residualSize = firstSample.getSize();
 
   /* Split the sample using the breakPoint*/ 
-  const UnsignedInteger breakIndex(std::floor(residualSize * breakPoint));
+  const UnsignedInteger breakIndex = std::floor(residualSize * breakPoint);
 
-  NumericalScalar sumSelectResiduals(0);
+  NumericalScalar sumSelectResiduals = 0;
   for(UnsignedInteger i = 0; i < breakIndex; ++i)
   { 
     const NumericalPoint residual(residuals[i]);
     sumSelectResiduals += residual.normSquare();
   }
 
-  const NumericalScalar sumSquaredResiduals(residuals.computeVariance()[0] * (residualSize - 1));
+  const NumericalScalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
   /* compute Harrison McCabe statistic */
   const NumericalScalar hmc = sumSelectResiduals / sumSquaredResiduals;
   
   /* p-value computed by simultation */
-  NumericalScalar pValue(0);
+  NumericalScalar pValue = 0;
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
     const NumericalSample sample(Normal().getSample(residualSize));
     const NumericalSample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
-    NumericalScalar sumSelectResidualsSimulation(0);
+    NumericalScalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     { 
       const NumericalPoint stantardSamplePoint(stantardSample[j]);
       sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
     }
-    const NumericalScalar sumSquaredResidualsSimulation(stantardSample.computeVariance()[0] * (residualSize - 1));
-    const NumericalScalar statistic(sumSelectResidualsSimulation / sumSquaredResidualsSimulation);
+    const NumericalScalar sumSquaredResidualsSimulation = stantardSample.computeVariance()[0] * (residualSize - 1);
+    const NumericalScalar statistic = sumSelectResidualsSimulation / sumSquaredResidualsSimulation;
     if(statistic < hmc)
     {
       pValue += 1.0;
@@ -235,10 +235,10 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firs
   const NumericalScalar level)
 {
   const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
-  const UnsignedInteger residualSize(firstSample.getSize());
+  const UnsignedInteger residualSize = firstSample.getSize();
 
   /* compute variance of the residuals*/
-  const NumericalScalar residualsVariance(residuals.computeVariance()[0]);
+  const NumericalScalar residualsVariance = residuals.computeVariance()[0];
 
   NumericalSample w(residualSize, 1);
   for(UnsignedInteger i = 0; i < residualSize; ++i)
@@ -252,14 +252,14 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firs
   /* Predicted values of the squared residuals*/
   const NumericalSample wPredicted(linearModelResiduals.getPredicted(firstSample));
   /* Compute variances */
-  const NumericalScalar wPredictedVar(wPredicted.computeVariance()[0]);
-  const NumericalScalar wVariance(w.computeVariance()[0]);
+  const NumericalScalar wPredictedVar = wPredicted.computeVariance()[0];
+  const NumericalScalar wVariance = w.computeVariance()[0];
   /* Compute the Breusch Pagan statistic */
-  const NumericalScalar bp(residualSize * wPredictedVar / wVariance);
+  const NumericalScalar bp = residualSize * wPredictedVar / wVariance;
   /* Get the degree of freedom */
-  const UnsignedInteger dof(firstSample.getDimension());
+  const UnsignedInteger dof = firstSample.getDimension();
   /* Compute the p-value */
-  const NumericalScalar pValue(ChiSquare(dof).computeComplementaryCDF(bp));
+  const NumericalScalar pValue = ChiSquare(dof).computeComplementaryCDF(bp);
 
   return TestResult(String("BreuschPagan"), Bool(pValue > 1.0 - level), pValue, level);
 }
@@ -283,12 +283,12 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
   const NumericalScalar level)
 {
   const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
-  const UnsignedInteger residualSize(firstSample.getSize());
-  const UnsignedInteger dimension(firstSample.getDimension());
+  const UnsignedInteger residualSize = firstSample.getSize();
+  const UnsignedInteger dimension = firstSample.getDimension();
 
-  const NumericalScalar sumSquaredResiduals(residuals.computeVariance()[0] * (residualSize - 1));
+  const NumericalScalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
-  NumericalScalar sumSquaredDifference(0);
+  NumericalScalar sumSquaredDifference = 0;
   for(UnsignedInteger i = 1; i < residualSize; ++i)
   {
     const NumericalPoint residualDifference(residuals[i] - residuals[i - 1]);
@@ -296,7 +296,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
   }
 
   /* Compute the Durbin Watson statistic */
-  const NumericalScalar dw(sumSquaredDifference / sumSquaredResiduals);
+  const NumericalScalar dw = sumSquaredDifference / sumSquaredResiduals;
 
   /* Normal approximation of dw to compute the p-value*/
   /* Create the matrix [1 x]*/
@@ -317,15 +317,15 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
 
   CovarianceMatrix XtX(X.computeGram());
   const SquareMatrix XAXQt(XtX.solveLinearSystem(AX.transpose() * X).getImplementation());
-  const NumericalScalar P(2 * (residualSize - 1) - XAXQt.computeTrace());
-  const NumericalScalar XAXTrace(XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace());
-  const NumericalScalar Q(2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace());
-  const NumericalScalar dmean(P / (residualSize - (dimension + 1)));
-  const NumericalScalar dvar(2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean));
+  const NumericalScalar P = 2 * (residualSize - 1) - XAXQt.computeTrace();
+  const NumericalScalar XAXTrace = XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace();
+  const NumericalScalar Q = 2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace();
+  const NumericalScalar dmean = P / (residualSize - (dimension + 1));
+  const NumericalScalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
 
   /* Compute the p-value with respect to the hypothesis */
   // Initial values defined for hypothesis = "Equal"
-  NumericalScalar pValue(2 * DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true));
+  NumericalScalar pValue = 2 * DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
   Description description(1, "Hypothesis test: autocorrelation equals 0.");
   if(hypothesis == "Less")
   { 

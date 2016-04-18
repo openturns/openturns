@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     GumbelCopula copula(2.5);
     copula.setName("a gumbel copula");
     fullprint << "Copula " << copula << std::endl;
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
     // Covariance and correlation
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(4);
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;

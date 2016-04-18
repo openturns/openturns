@@ -36,14 +36,14 @@ int main(int argc, char *argv[])
     coll.add(ClaytonCopula(3.0));
     coll.add(FrankCopula(3.0));
     NumericalPoint point(2);
-    UnsignedInteger size(1000);
+    UnsignedInteger size = 1000;
     for (UnsignedInteger i = 0; i < coll.getSize(); ++i)
       {
 	Copula ref_copula(coll[i]);
 	fullprint << "Reference copula" << ref_copula << std::endl;
 	NumericalSample sample(ref_copula.getSample(size));
 	Distribution est_copula(BernsteinCopulaFactory().build(sample));
-	NumericalScalar max_error(0.0);
+	NumericalScalar max_error = 0.0;
 	for (UnsignedInteger m = 0; m < 11; ++m)
 	  {
 	    point[0] = 0.1 * m;

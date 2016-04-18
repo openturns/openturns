@@ -115,7 +115,7 @@ NumericalSample GaussProductExperiment::generate()
 /** Marginal degrees accessor */
 void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
 {
-  const UnsignedInteger dimension(distribution_.getDimension());
+  const UnsignedInteger dimension = distribution_.getDimension();
   if (marginalDegrees.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal degrees number must match the distribution dimension. Here, the degrees are " << marginalDegrees << " and the dimension is " << dimension;
   if (marginalDegrees != marginalDegrees_)
   {
@@ -132,7 +132,7 @@ Indices GaussProductExperiment::getMarginalDegrees() const
 /* Compute the tensor product nodes and weights */
 void GaussProductExperiment::computeNodesAndWeights()
 {
-  const UnsignedInteger dimension(distribution_.getDimension());
+  const UnsignedInteger dimension = distribution_.getDimension();
   // Build the integration nodes and weights
   // First, get the marginal nodes and weights
   NumericalPointCollection marginalNodes(dimension);
@@ -140,7 +140,7 @@ void GaussProductExperiment::computeNodesAndWeights()
   size_ = 1;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const UnsignedInteger dI(marginalDegrees_[i]);
+    const UnsignedInteger dI = marginalDegrees_[i];
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
     size_ *= dI;
   }
@@ -153,7 +153,7 @@ void GaussProductExperiment::computeNodesAndWeights()
   {
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const UnsignedInteger indiceJ(indices[j]);
+      const UnsignedInteger indiceJ = indices[j];
       nodes_[linearIndex][j] = marginalNodes[j][indiceJ];
       weights_[linearIndex] *= marginalWeights[j][indiceJ];
     }

@@ -124,7 +124,7 @@ NumericalScalar Uniform::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
   return 1.0 / (b_ - a_);
 }
@@ -135,7 +135,7 @@ NumericalScalar Uniform::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_)  return 1.0;
   return (x - a_) / (b_ - a_);
@@ -145,7 +145,7 @@ NumericalScalar Uniform::computeComplementaryCDF(const NumericalPoint & point) c
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
   return (b_ - x) / (b_ - a_);
@@ -155,12 +155,12 @@ NumericalScalar Uniform::computeComplementaryCDF(const NumericalPoint & point) c
 NumericalComplex Uniform::computeCharacteristicFunction(const NumericalScalar x) const
 {
   NumericalComplex result;
-  const NumericalScalar ax(a_ * x);
-  const NumericalScalar bx(b_ * x);
+  const NumericalScalar ax = a_ * x;
+  const NumericalScalar bx = b_ * x;
   if (std::abs(ax) + std::abs(bx) <= 1.0e-5) result = NumericalComplex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
   else
   {
-    const NumericalScalar idenom(1.0 / (bx - ax));
+    const NumericalScalar idenom = 1.0 / (bx - ax);
     result = NumericalComplex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
@@ -171,11 +171,11 @@ NumericalPoint Uniform::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   NumericalPoint pdfGradient(2, 0.0);
   if ((x < a_) || (x > b_)) return pdfGradient;
-  const NumericalScalar iAB(1.0 / (b_ - a_));
-  const NumericalScalar iAB2(iAB * iAB);
+  const NumericalScalar iAB = 1.0 / (b_ - a_);
+  const NumericalScalar iAB2 = iAB * iAB;
   pdfGradient[0] = iAB2;
   pdfGradient[1] = -iAB2;
   return pdfGradient;
@@ -186,11 +186,11 @@ NumericalPoint Uniform::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   NumericalPoint cdfGradient(2, 0.0);
   if ((x < a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar iAB(1.0 / (b_ - a_));
-  const NumericalScalar iAB2(iAB * iAB);
+  const NumericalScalar iAB = 1.0 / (b_ - a_);
+  const NumericalScalar iAB2 = iAB * iAB;
   cdfGradient[0] = (x - b_) * iAB2;
   cdfGradient[1] = (a_ - x) * iAB2;
   return cdfGradient;
@@ -240,7 +240,7 @@ NumericalPoint Uniform::getKurtosis() const
 void Uniform::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar eta(b_ - a_);
+  const NumericalScalar eta = b_ - a_;
   covariance_(0, 0) = eta * eta / 12.0;
   isAlreadyComputedCovariance_ = true;
 }

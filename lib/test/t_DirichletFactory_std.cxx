@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     theta.add(0.4);
     theta.add(0.5);
     Dirichlet distribution(theta);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     DirichletFactory factory;
     CovarianceMatrix covariance;

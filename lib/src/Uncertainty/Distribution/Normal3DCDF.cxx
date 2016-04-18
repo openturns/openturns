@@ -118,7 +118,7 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
   if (std::abs(rho12) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
   if (std::abs(rho13) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho12=" << rho13;
   if (std::abs(rho23) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho23 must be in [-1, 1], here rho23=" << rho23;
-  const NumericalScalar delta(rho12 * rho12 + rho13 * rho13 + rho23 * rho23 - 2.0 * rho12 * rho13 * rho23);
+  const NumericalScalar delta = rho12 * rho12 + rho13 * rho13 + rho23 * rho23 - 2.0 * rho12 * rho13 * rho23;
   if (delta > 1.0) throw InvalidArgumentException(HERE) << "Error: delta=rho12^2+rho13^2+rho23^2-2*rho12*rho13*rho23 must be in less or equal to 1, here delta=" << delta;
   if (tail) return Normal3DCDF(-x1, -x2, -x3, rho12, rho13, rho23, false);
   if ((x1 <= NORMAL3DCDF_MINUS_INF) || (x2 <= NORMAL3DCDF_MINUS_INF) || (x3 <= NORMAL3DCDF_MINUS_INF)) return 0.0;
@@ -144,12 +144,12 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
   // Here, we have to do some work!
   // Probability of the negative orthant
   if (std::abs(x1) + std::abs(x2) + std::abs(x3) < NORMAL3DCDF_EPS) return std::max(0.0, std::min(1.0, 0.125 * (1.0 + 2.0 * (std::asin(rho12) + std::asin(rho13) + std::asin(rho23)) / M_PI)));
-  NumericalScalar h1(x1);
-  NumericalScalar h2(x2);
-  NumericalScalar h3(x3);
-  NumericalScalar r12(rho12);
-  NumericalScalar r13(rho13);
-  NumericalScalar r23(rho23);
+  NumericalScalar h1 = x1;
+  NumericalScalar h2 = x2;
+  NumericalScalar h3 = x3;
+  NumericalScalar r12 = rho12;
+  NumericalScalar r13 = rho13;
+  NumericalScalar r23 = rho23;
   // Sort R's and check for special correlation structure
   if (std::abs(r12) > std::abs(r13))
   {
@@ -171,8 +171,8 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
   if (1.0 - r23 < NORMAL3DCDF_EPS) return DistFunc::pNormal2D(h1, std::min(h2, h3), r12);
   if ((r23 + 1.0 < NORMAL3DCDF_EPS) &&  (h2 > -h3)) return std::max(0.0, std::min(1.0, DistFunc::pNormal2D(h1, h2, r12) - DistFunc::pNormal2D(h1, -h3, r12)));
   // At last, the general case
-  const NumericalScalar a12(std::asin(r12));
-  const NumericalScalar a13(std::asin(r13));
+  const NumericalScalar a12 = std::asin(r12);
+  const NumericalScalar a13 = std::asin(r13);
   return std::max(0.0, std::min(1.0, adonet(h1, h2, h3, r23, a12, a13) / (2.0 * M_PI) + DistFunc::pNormal(h1) * DistFunc::pNormal2D(h2, h3, r23)));
 }
 
@@ -187,7 +187,7 @@ NumericalScalar tvnf(const NumericalScalar x,
                      const NumericalScalar a12,
                      const NumericalScalar a13)
 {
-  NumericalScalar result(0.0);
+  NumericalScalar result = 0.0;
   NumericalScalar r12;
   NumericalScalar rr2;
   sincs(a12 * x, r12, rr2);
@@ -206,8 +206,8 @@ void sincs(const NumericalScalar x,
            NumericalScalar & sx,
            NumericalScalar & cs)
 {
-  const NumericalScalar e(0.5 * M_PI - std::abs(x));
-  const NumericalScalar ee(e * e);
+  const NumericalScalar e = 0.5 * M_PI - std::abs(x);
+  const NumericalScalar ee = e * e;
   if (ee < 5.0e-5)
   {
     cs = ee * (1.0 - ee * (1.0 - 2.0 * ee / 15.0) / 3.0);
@@ -230,13 +230,13 @@ NumericalScalar pntgnd(const NumericalScalar ba,
                        const NumericalScalar r,
                        const NumericalScalar rr)
 {
-  NumericalScalar result(0.0);
-  const NumericalScalar dt(rr * (rr - (ra - rb) * (ra - rb) - 2.0 * ra * rb * (1.0 - r)));
+  NumericalScalar result = 0.0;
+  const NumericalScalar dt = rr * (rr - (ra - rb) * (ra - rb) - 2.0 * ra * rb * (1.0 - r));
   if (dt > 0.0)
   {
-    const NumericalScalar bt((bc * rr + ba * (r * rb - ra) + bb * (r * ra - rb)) / std::sqrt(dt));
-    const NumericalScalar delta(ba - r * bb);
-    const NumericalScalar ft(delta * delta / rr + bb * bb);
+    const NumericalScalar bt = (bc * rr + ba * (r * rb - ra) + bb * (r * ra - rb)) / std::sqrt(dt);
+    const NumericalScalar delta = ba - r * bb;
+    const NumericalScalar ft = delta * delta / rr + bb * bb;
     if ((ft < -2.0 * NORMAL3DCDF_MIN_LOG) && (bt > NORMAL3DCDF_MINUS_INF))
     {
       result = std::exp(-0.5 * ft);
@@ -256,16 +256,16 @@ NumericalScalar adonet(const NumericalScalar h1,
                        const NumericalScalar a12,
                        const NumericalScalar a13)
 {
-  NumericalScalar result(0.0);
+  NumericalScalar result = 0.0;
   NumericalScalar ai[NORMAL3DCDF_MAXINT];
   ai[0] = 0.0;
   NumericalScalar bi[NORMAL3DCDF_MAXINT];
   bi[0] = 1.0;
   NumericalScalar fi[NORMAL3DCDF_MAXINT];
   NumericalScalar ei[NORMAL3DCDF_MAXINT];
-  UnsignedInteger ip(0);
-  UnsignedInteger im(0);
-  NumericalScalar err(1.0);
+  UnsignedInteger ip = 0;
+  UnsignedInteger im = 0;
+  NumericalScalar err = 1.0;
   while ((err > 0.25 * NORMAL3DCDF_EPS) && (im < NORMAL3DCDF_MAXINT - 1))
   {
     ++im;
@@ -274,13 +274,13 @@ NumericalScalar adonet(const NumericalScalar h1,
     bi[ip] = ai[im];
     krnrdt(ai[ip], bi[ip], h1, h2, h3, r23, a12, a13, fi[ip], ei[ip]);
     krnrdt(ai[im], bi[im], h1, h2, h3, r23, a12, a13, fi[im], ei[im]);
-    UnsignedInteger iErrMax(0);
-    NumericalScalar errMax(0.0);
+    UnsignedInteger iErrMax = 0;
+    NumericalScalar errMax = 0.0;
     err = 0.0;
     result = 0.0;
     for (UnsignedInteger i = 0; i <= im; ++i)
     {
-      const NumericalScalar localError(ei[i]);
+      const NumericalScalar localError = ei[i];
       result += fi[i];
       err += localError * localError;
       if (localError > errMax)
@@ -314,12 +314,12 @@ void krnrdt(const NumericalScalar a,
   static NumericalScalar xgk[11] = {0.9963696138895427, 0.9782286581460570, 0.9416771085780681, 0.8870625997680953, 0.8160574566562211, 0.7301520055740492, 0.6305995201619651, 0.5190961292068118, 0.3979441409523776, 0.2695431559523450, 0.1361130007993617};
   static NumericalScalar wgk0(0.1365777947111183);
   static NumericalScalar wgk[11] = {0.00976544104596129, 0.02715655468210443, 0.04582937856442671, 0.06309742475037484, 0.07866457193222764, 0.09295309859690074, 0.1058720744813894, 0.1167395024610472, 0.1251587991003195, 0.1312806842298057, 0.1351935727998845};
-  const NumericalScalar wid(0.5 * (b - a));
-  const NumericalScalar cen(0.5 * (a + b));
-  NumericalScalar fc(tvnf(cen, h1, h2, h3, r23, a12, a13));
-  NumericalScalar resg(fc * wg0);
+  const NumericalScalar wid = 0.5 * (b - a);
+  const NumericalScalar cen = 0.5 * (a + b);
+  NumericalScalar fc = tvnf(cen, h1, h2, h3, r23, a12, a13);
+  NumericalScalar resg = fc * wg0;
   resk = fc * wgk0;
-  NumericalScalar t(0.0);
+  NumericalScalar t = 0.0;
   for (UnsignedInteger j = 0; j < 5; ++j)
   {
     t = wid * xgk[2 * j];

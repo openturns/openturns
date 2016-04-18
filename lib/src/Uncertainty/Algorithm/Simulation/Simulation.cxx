@@ -184,12 +184,12 @@ void Simulation::run()
    */
   // First, reset the convergence history
   convergenceStrategy_.clear();
-  UnsignedInteger outerSampling(0);
-  NumericalScalar coefficientOfVariation(-1.0);
-  NumericalScalar standardDeviation(-1.0);
-  NumericalScalar probabilityEstimate(0.0);
-  NumericalScalar varianceEstimate(0.0);
-  const UnsignedInteger blockSize(getBlockSize());
+  UnsignedInteger outerSampling = 0;
+  NumericalScalar coefficientOfVariation = -1.0;
+  NumericalScalar standardDeviation = -1.0;
+  NumericalScalar probabilityEstimate = 0.0;
+  NumericalScalar varianceEstimate = 0.0;
+  const UnsignedInteger blockSize = getBlockSize();
   // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
@@ -209,8 +209,8 @@ void Simulation::run()
     LOGDEBUG(OSS() << "Simulation::run: blockSample=\n" << blockSample);
     ++outerSampling;
     // Then, actualize the estimates
-    const NumericalScalar meanBlock(blockSample.computeMean()[0]);
-    const NumericalScalar varianceBlock(blockSample.computeCovariance()(0, 0));
+    const NumericalScalar meanBlock = blockSample.computeMean()[0];
+    const NumericalScalar varianceBlock = blockSample.computeCovariance()(0, 0);
     // Let Skp be the empirical variance of a sample of size k*p
     // Let Mkp be the empirical mean of a sample of size k*p
     // Let Sp be the empirical variance of a sample of size p
@@ -220,10 +220,10 @@ void Simulation::run()
     // and the empirical mean of the concatenated sample of size (k+1)*p is
     // M(k+1)p = (Mp + k * Mkp) / (k + 1)
     // To avoid integer overflow and double loss of precision, the formulas have to be written the way they are
-    const NumericalScalar size(outerSampling);
+    const NumericalScalar size = outerSampling;
     varianceEstimate = (varianceBlock + (size - 1.0) * varianceEstimate) / size + (1.0 - 1.0 / size) * (probabilityEstimate - meanBlock) * (probabilityEstimate - meanBlock) / size;
     probabilityEstimate = (meanBlock + (size - 1.0) * probabilityEstimate) / size;
-    const NumericalScalar reducedVarianceEstimate(varianceEstimate / (size * blockSize));
+    const NumericalScalar reducedVarianceEstimate = varianceEstimate / (size * blockSize);
     // Update result
     result_.setProbabilityEstimate(probabilityEstimate);
     result_.setVarianceEstimate(reducedVarianceEstimate);
@@ -281,20 +281,20 @@ HistoryStrategy Simulation::getConvergenceStrategy() const
 Graph Simulation::drawProbabilityConvergence(const NumericalScalar level) const
 {
   const NumericalSample convergenceSample(convergenceStrategy_.getSample());
-  const UnsignedInteger size(convergenceSample.getSize());
+  const UnsignedInteger size = convergenceSample.getSize();
   NumericalSample dataEstimate(size, 2);
   NumericalSample dataLowerBound(0, 2);
   NumericalSample dataUpperBound(0, 2);
   for (UnsignedInteger i = 0; i < size; i++)
   {
-    const NumericalScalar probabilityEstimate(convergenceSample[i][0]);
-    const NumericalScalar varianceEstimate(convergenceSample[i][1]);
+    const NumericalScalar probabilityEstimate = convergenceSample[i][0];
+    const NumericalScalar varianceEstimate = convergenceSample[i][1];
     dataEstimate[i][0] = i + 1;
     dataEstimate[i][1] = probabilityEstimate;
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
     {
-      const NumericalScalar confidenceLength(SimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level));
+      const NumericalScalar confidenceLength = SimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
       NumericalPoint pt(2);
       pt[0] = i + 1;
       pt[1] = probabilityEstimate - 0.5 * confidenceLength;

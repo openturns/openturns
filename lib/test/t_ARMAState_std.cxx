@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
 
     RandomGenerator::SetSeed(0);
     /* Constructor with size */
-    const UnsignedInteger dim(1);
-    const UnsignedInteger p(6);
-    const UnsignedInteger q(4);
+    const UnsignedInteger dim = 1;
+    const UnsignedInteger p = 6;
+    const UnsignedInteger q = 4;
 
     NumericalSample valuesX(p, dim);
     NumericalSample valuesEpsilon(q, dim);

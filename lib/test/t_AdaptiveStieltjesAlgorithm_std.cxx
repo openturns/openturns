@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     {
       if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
   try
     {
-      const UnsignedInteger iMax(5);
+      const UnsignedInteger iMax = 5;
       {
         Uniform distribution;
         LegendreFactory algo0;

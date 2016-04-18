@@ -107,10 +107,10 @@ Bool SpecFunc::IsNormal(const NumericalScalar value)
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 NumericalScalar SpecFunc::SmallCaseBesselI0(const NumericalScalar x)
 {
-  const NumericalScalar x2(x * x);
-  NumericalScalar value(1.0);
-  NumericalScalar r(1.0);
-  UnsignedInteger k(1);
+  const NumericalScalar x2 = x * x;
+  NumericalScalar value = 1.0;
+  NumericalScalar r = 1.0;
+  UnsignedInteger k = 1;
   while ((std::abs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
   {
     r *= 0.25 * x2 / (k * k);
@@ -129,13 +129,13 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI0(const NumericalScalar x)
                                   2.4380529699556e+01, 1.1001714026925e+02,
                                   5.5133589612202e+02, 3.0380905109224e+03
                                  };
-  const NumericalScalar ax(std::abs(x));
-  UnsignedInteger k0(12);
+  const NumericalScalar ax = std::abs(x);
+  UnsignedInteger k0 = 12;
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
-  NumericalScalar value(1.0);
-  const NumericalScalar xR(1.0 / ax);
-  NumericalScalar xRPow(xR);
+  NumericalScalar value = 1.0;
+  const NumericalScalar xR = 1.0 / ax;
+  NumericalScalar xRPow = xR;
   for (UnsignedInteger k = 0; k < k0; ++k)
   {
     value += A[k] * xRPow;
@@ -166,10 +166,10 @@ NumericalScalar SpecFunc::LogBesselI0(const NumericalScalar x)
 // Modified first kind Bessel function of order 1: BesselI1(x) = \sum_{m=0}\infty\frac{1}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
 NumericalScalar SpecFunc::SmallCaseBesselI1(const NumericalScalar x)
 {
-  const NumericalScalar x2(x * x);
-  NumericalScalar value(1.0);
-  NumericalScalar r(1.0);
-  UnsignedInteger k(1);
+  const NumericalScalar x2 = x * x;
+  NumericalScalar value = 1.0;
+  NumericalScalar r = 1.0;
+  UnsignedInteger k = 1;
   while ((std::abs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
   {
     r *= 0.25 * x2 / (k * (k + 1));
@@ -189,13 +189,13 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI1(const NumericalScalar x)
                                    -2.7248827311269e+01, -1.2159789187654e+02,
                                    -6.0384407670507e+02, -3.3022722944809e+03
                                  };
-  const NumericalScalar ax(std::abs(x));
-  UnsignedInteger k0(12);
+  const NumericalScalar ax = std::abs(x);
+  UnsignedInteger k0 = 12;
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
-  NumericalScalar value(1.0);
-  const NumericalScalar xR(1.0 / ax);
-  NumericalScalar xRPow(xR);
+  NumericalScalar value = 1.0;
+  const NumericalScalar xR = 1.0 / ax;
+  NumericalScalar xRPow = xR;
   for (UnsignedInteger k = 0; k < k0; ++k)
   {
     value += B[k] * xRPow;
@@ -212,8 +212,8 @@ NumericalScalar SpecFunc::BesselI1(const NumericalScalar x)
   if (std::abs(x) <= 22.0) return SmallCaseBesselI1(x);
   else
   {
-    const NumericalScalar signX(x <= 0.0 ? -1.0 : 1.0);
-    const NumericalScalar value(signX * exp(LargeCaseLogBesselI1(x)));
+    const NumericalScalar signX = x <= 0.0 ? -1.0 : 1.0;
+    const NumericalScalar value = signX * exp(LargeCaseLogBesselI1(x));
     return value;
   }
 }
@@ -244,14 +244,14 @@ NumericalScalar SpecFunc::LargeCaseDeltaLogBesselI10(const NumericalScalar x)
                                    -2.7248827311269e+01, -1.2159789187654e+02,
                                    -6.0384407670507e+02, -3.3022722944809e+03
                                  };
-  const NumericalScalar ax(std::abs(x));
-  UnsignedInteger k0(12);
+  const NumericalScalar ax = std::abs(x);
+  UnsignedInteger k0 = 12;
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
-  NumericalScalar valueI0(1.0);
-  NumericalScalar valueI1(1.0);
-  const NumericalScalar xR(1.0 / ax);
-  NumericalScalar xRPow(xR);
+  NumericalScalar valueI0 = 1.0;
+  NumericalScalar valueI1 = 1.0;
+  const NumericalScalar xR = 1.0 / ax;
+  NumericalScalar xRPow = xR;
   for (UnsignedInteger k = 0; k < k0; ++k)
   {
     valueI0 += A[k] * xRPow;
@@ -281,7 +281,7 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
   if (nu < 0.0) return LogBesselK(-nu, x);
   NumericalScalar logFactor;
   NumericalMathFunction integrand;
-  UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+  UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
   NumericalScalar upper;
   if (nu == 0.0)
@@ -297,7 +297,7 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
     upper = std::log(NumericalScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(NumericalScalarEpsilon) / nu) / nu, false);
   }
   NumericalScalar epsilon;
-  const NumericalScalar integral(GaussKronrod().integrate(integrand, Interval(NumericalScalarEpsilon, upper), epsilon)[0]);
+  const NumericalScalar integral = GaussKronrod().integrate(integrand, Interval(NumericalScalarEpsilon, upper), epsilon)[0];
   PlatformInfo::SetNumericalPrecision(precision);
   if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxNumericalScalar;
   return logFactor + std::log(integral);
@@ -317,13 +317,13 @@ NumericalScalar SpecFunc::BesselK(const NumericalScalar nu,
   // First the limit cases
   if ((std::abs(x) < 0.0056) && (nu == 0.0))
   {
-    const NumericalScalar logX(log(x));
-    const NumericalScalar x2(0.25 * x * x);
+    const NumericalScalar logX = log(x);
+    const NumericalScalar x2 = 0.25 * x * x;
     return M_LN2 - logX - EulerConstant + x2 * (M_LN2 - logX + 1.0 - EulerConstant + 0.25 * x2 * (M_LN2 - logX + 1.5 - EulerConstant));
   }
   if (std::abs(x) < 1e-8) return 0.5 * exp(LogGamma(nu) - nu * std::log(0.5 * x));
   if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * exp(-x);
-  const NumericalScalar logK(LogBesselK(nu, x));
+  const NumericalScalar logK = LogBesselK(nu, x);
   if (logK <= -LogMaxNumericalScalar) return 0.0;
   if (logK >= LogMaxNumericalScalar) return MaxNumericalScalar;
   return std::exp(logK);
@@ -346,14 +346,14 @@ NumericalScalar SpecFunc::BesselKDerivative(const NumericalScalar nu,
 NumericalScalar SpecFunc::LnBeta(const NumericalScalar a,
                                  const NumericalScalar b)
 {
-  const NumericalScalar first(std::min(a, b));
+  const NumericalScalar first = std::min(a, b);
   if (first <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute the LogBeta function when a or b is nonpositive, a=" << a << ", b=" << b;
-  const NumericalScalar second(std::max(a, b));
-  const NumericalScalar sum(a + b);
+  const NumericalScalar second = std::max(a, b);
+  const NumericalScalar sum = a + b;
   // Common case: a and b small
   if (second < 7.75) return lgamma(first) - lgamma(sum) + lgamma(second);
-  const NumericalScalar correctionSecond(GammaCorrection(second));
-  const NumericalScalar correctionSum(GammaCorrection(sum));
+  const NumericalScalar correctionSecond = GammaCorrection(second);
+  const NumericalScalar correctionSum = GammaCorrection(sum);
   // Case a and b large
   if (first >= 7.75)
   {
@@ -361,15 +361,15 @@ NumericalScalar SpecFunc::LnBeta(const NumericalScalar a,
     if (second < 103.25 * first) return correctionSecond - correctionSum + GammaCorrection(first) - 0.5 * log(second) + second * log(second / first) + (sum - 0.5) * log1p(-second / sum) + LOGSQRT2PI;
     else
     {
-      const NumericalScalar epsilon(1.0 / second);
-      NumericalScalar value(log(epsilon));
+      const NumericalScalar epsilon = 1.0 / second;
+      NumericalScalar value = log(epsilon);
       // Here we use an expansion of (log(Gamma(b)) - log(Gamma(a+b))) / a - log(b) pour a << b
       // The expansion is in double Padé form wrt a and b
-      const NumericalScalar c1(-1.0 + first);
-      const NumericalScalar c2(c1 * (2 * first - 1));
-      const NumericalScalar c3(c1 * c1);
-      const NumericalScalar c4(-6.0 + 3.0 * first);
-      const NumericalScalar c5(first * first);
+      const NumericalScalar c1 = -1.0 + first;
+      const NumericalScalar c2 = c1 * (2 * first - 1);
+      const NumericalScalar c3 = c1 * c1;
+      const NumericalScalar c4 = -6.0 + 3.0 * first;
+      const NumericalScalar c5 = first * first;
       value += epsilon * (-0.5 * c1 + epsilon * (c2 / 12.0 + epsilon * (-(c3 * first) / 12.0 + epsilon * (((-1.0 + 3.0 * first * c1) * c2) / 120.0 + epsilon * (-(c3 * (-1.0 + 2.0 * first * c1) * first) / 60.0 + epsilon * (((1.0 + first * (3.0 + c5 * c4)) * c2) / 252.0 + epsilon * (-(c3 * (2.0 + first * (4.0 + first * (-1.0 + first * c4))) * first) / 168.0 + ((-3.0 + (-9.0 + (-1.0 + (15.0 + (5.0 + (-15.0 + 5.0 * first) * first) * first) * first) * first) * first) * epsilon * c2) / 720.0)))))));
       value *= first;
       value += LogGamma(first);
@@ -472,9 +472,9 @@ NumericalScalar SpecFunc::DiLog(const NumericalScalar x)
   // DiLog(x)=\sum_{k=1}^{\infty} x^k/k^2
   // for (0, 1/2)
   // This upper bound is an easy-to compute tight upper bound of the number of iterations
-  const UnsignedInteger nMax(static_cast<UnsignedInteger>(round(8 + 68 * x)));
-  NumericalScalar value(0.0);
-  NumericalScalar powerX(1.0);
+  const UnsignedInteger nMax = static_cast<UnsignedInteger>(round(8 + 68 * x));
+  NumericalScalar value = 0.0;
+  NumericalScalar powerX = 1.0;
   for (UnsignedInteger n = 1; n <= nMax; ++n)
   {
     powerX *= x;
@@ -534,7 +534,7 @@ NumericalScalar SpecFunc::GammaCorrection(const NumericalScalar a)
   // Use an asymptotic series for large argument
   if (a > 7.7490453948312251620)
   {
-    const NumericalScalar ia2(1.0 / (a * a));
+    const NumericalScalar ia2 = 1.0 / (a * a);
     return (0.83333333333333333333e-1 + (-0.27777777777777777778e-2 +
                                          (0.79365079365079365079e-3 + (-0.59523809523809523810e-3 +
                                              (0.84175084175084175084e-3 + (-0.19175269175269175269e-2 +
@@ -557,15 +557,15 @@ NumericalComplex SpecFunc::Gamma(const NumericalComplex & a)
 NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
 {
   if (a.imag() == 0.0) return LogGamma(a.real());
-  const NumericalScalar sqrt2Pi(sqrt(2.0 * M_PI));
+  const NumericalScalar sqrt2Pi = sqrt(2.0 * M_PI);
   NumericalComplex z(a);
-  Bool flip(false);
+  Bool flip = false;
   if (z.real() < 0.0)
   {
     z = -z;
     flip = true;
   }
-  const UnsignedInteger coefficientsSize(11);
+  const UnsignedInteger coefficientsSize = 11;
   static const NumericalScalar coefficients[coefficientsSize] =
   {
     1.000000000000000174663,      5716.400188274341379136,
@@ -575,7 +575,7 @@ NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
     -0.7423452510201416151527e-2, 0.5384136432509564062961e-7,
     -0.4023533141268236372067e-8
   };
-  const NumericalScalar g(coefficientsSize - 2.0);
+  const NumericalScalar g = coefficientsSize - 2.0;
   NumericalComplex t(z + g);
   NumericalComplex s(0.0);
   NumericalComplex ss(t - 0.5);
@@ -668,15 +668,15 @@ NumericalScalar SpecFunc::DiGamma(const NumericalScalar x)
   if (x < 0.0) return -M_PI / tan(M_PI * x) + DiGamma(1.0 - x);
   // Shift the argument until it reaches the asymptotic expansion region
   // Here, 7.69 is a bound that insure NumericalScalar precision of the approximation
-  NumericalScalar z(x);
-  NumericalScalar value(0.0);
+  NumericalScalar z = x;
+  NumericalScalar value = 0.0;
   while ( z < 7.33 )
   {
     value -= 1.0 / z;
     z += 1.0;
   }
   // Use the asymptotic expansion in Horner form
-  const NumericalScalar y(1.0 / (z * z));
+  const NumericalScalar y = 1.0 / (z * z);
   return value + log(z) - 0.5 / z + (-0.83333333333333333e-1 + (0.83333333333333333e-2 + (-0.39682539682539683e-2 + (0.41666666666666667e-2 + (-0.75757575757575758e-2 + (0.21092796092796093e-1 + (-0.83333333333333333e-1 + (.44325980392156863 - 3.0539543302701197 * y) * y) * y) * y) * y) * y) * y) * y) * y;
 }
 
@@ -689,9 +689,9 @@ NumericalScalar SpecFunc::Psi(const NumericalScalar x)
 NumericalScalar SpecFunc::DiGammaInv(const NumericalScalar a)
 {
   // Initialization using an asymptotic approximation of the DiGamma function
-  NumericalScalar x( a < -2.22 ? -1.0 / (a - EulerConstant) : exp(a) + 0.5);
+  NumericalScalar x = a < -2.22 ? -1.0 / (a - EulerConstant) : exp(a) + 0.5;
   // Use a Newton scheme
-  NumericalScalar d(0.0);
+  NumericalScalar d = 0.0;
   for (UnsignedInteger k = 0; k < 6; ++k)
   {
     d = (DiGamma(x) - a) / TriGamma(x);
@@ -713,15 +713,15 @@ NumericalScalar SpecFunc::TriGamma(const NumericalScalar x)
   if (x < 0.0) return pow(M_PI / sin(M_PI * x), 2.0) - TriGamma(1.0 - x);
   // Shift the argument until it reaches the asymptotic expansion region
   // Here, 7.69 is a bound that insure NumericalScalar precision of the approximation
-  NumericalScalar z(x);
-  NumericalScalar value(0.0);
+  NumericalScalar z = x;
+  NumericalScalar value = 0.0;
   while ( z < 7.69 )
   {
     value += 1.0 / (z * z);
     z += 1.0;
   }
   // Use the asymptotic expansion in Horner form
-  const NumericalScalar y(1.0 / (z * z));
+  const NumericalScalar y = 1.0 / (z * z);
   return value + 0.5 * y + (1. + (.16666666666666667 + (-0.33333333333333333e-1 + (0.23809523809523810e-1 + (-0.33333333333333333e-1 + (0.75757575757575758e-1 + (-.25311355311355311 + (1.1666666666666667 + (-7.0921568627450980 + 54.971177944862155 * y) * y) * y) * y) * y) * y) * y) * y) * y) / z;
 }
 
@@ -732,20 +732,20 @@ NumericalScalar SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
 {
   if (q1 == p1) return exp(x);
   if (x == 0) return 1.0;
-  NumericalScalar term(1.0);
-  NumericalScalar t(x);
-  NumericalScalar pochhammerP1(p1);
+  NumericalScalar term = 1.0;
+  NumericalScalar t = x;
+  NumericalScalar pochhammerP1 = p1;
   if (x < 0)
   {
     pochhammerP1 = q1 - p1;
     t = -x;
     term = exp(x);
   }
-  NumericalScalar pochhammerQ1(q1);
-  NumericalScalar factorial(1.0);
-  NumericalScalar sum(term);
+  NumericalScalar pochhammerQ1 = q1;
+  NumericalScalar factorial = 1.0;
+  NumericalScalar sum = term;
   NumericalScalar eps;
-  UnsignedInteger k(0);
+  UnsignedInteger k = 0;
   do
   {
     term *= pochhammerP1 * t / (pochhammerQ1 * factorial);
@@ -767,11 +767,11 @@ NumericalComplex SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
 {
   NumericalComplex pochhammerP1(p1);
   NumericalComplex pochhammerQ1(q1);
-  NumericalScalar factorial(1.0);
+  NumericalScalar factorial = 1.0;
   NumericalComplex term(1.0);
   NumericalComplex sum(term);
   NumericalComplex eps(0.0);
-  UnsignedInteger k(0);
+  UnsignedInteger k = 0;
   do
   {
     term *= pochhammerP1 * x / (pochhammerQ1 * factorial);
@@ -794,14 +794,14 @@ NumericalScalar SpecFunc::HyperGeom_2_1(const NumericalScalar p1,
                                         const NumericalScalar q1,
                                         const NumericalScalar x)
 {
-  NumericalScalar pochhammerP1(p1);
-  NumericalScalar pochhammerP2(p2);
-  NumericalScalar pochhammerQ1(q1);
-  NumericalScalar factorial(1.0);
-  NumericalScalar term(1.0);
-  NumericalScalar sum(term);
-  NumericalScalar eps(0.0);
-  UnsignedInteger k(0);
+  NumericalScalar pochhammerP1 = p1;
+  NumericalScalar pochhammerP2 = p2;
+  NumericalScalar pochhammerQ1 = q1;
+  NumericalScalar factorial = 1.0;
+  NumericalScalar term = 1.0;
+  NumericalScalar sum = term;
+  NumericalScalar eps = 0.0;
+  UnsignedInteger k = 0;
   do
   {
     term *= pochhammerP1 * pochhammerP2 * x / (pochhammerQ1 * factorial);
@@ -825,18 +825,18 @@ NumericalScalar SpecFunc::HyperGeom_2_2(const NumericalScalar p1,
                                         const NumericalScalar x)
 {
   if (x == 0.0) return 1.0;
-  NumericalScalar pochhammerP1(p1);
-  NumericalScalar pochhammerP2(p2);
-  NumericalScalar pochhammerQ1(q1);
-  NumericalScalar pochhammerQ2(q2);
-  NumericalScalar factorial(1.0);
-  NumericalScalar term(0.0);
-  NumericalScalar sum(term);
-  NumericalScalar eps(0.0);
-  const NumericalScalar logX(log(std::abs(x)));
-  NumericalScalar signX(x > 0.0 ? 1.0 : -1.0);
-  NumericalScalar signTerm(1.0);
-  UnsignedInteger k(0);
+  NumericalScalar pochhammerP1 = p1;
+  NumericalScalar pochhammerP2 = p2;
+  NumericalScalar pochhammerQ1 = q1;
+  NumericalScalar pochhammerQ2 = q2;
+  NumericalScalar factorial = 1.0;
+  NumericalScalar term = 0.0;
+  NumericalScalar sum = term;
+  NumericalScalar eps = 0.0;
+  const NumericalScalar logX = log(std::abs(x));
+  NumericalScalar signX = x > 0.0 ? 1.0 : -1.0;
+  NumericalScalar signTerm = 1.0;
+  UnsignedInteger k = 0;
   do
   {
     term += log(pochhammerP1) + log(pochhammerP2) + logX - log(pochhammerQ1) - log(pochhammerQ2) - log(factorial);
@@ -902,7 +902,7 @@ NumericalComplex SpecFunc::ErfCX(const NumericalComplex & z)
 // We use a rational approximation followed by one Halley's iteration (higher order Newton iteration)
 NumericalScalar SpecFunc::ErfInverse(const NumericalScalar x)
 {
-  NumericalScalar p(0.5 * (x + 1.0));
+  NumericalScalar p = 0.5 * (x + 1.0);
   static const NumericalScalar a[6] =
   {
     -3.969683028665376e+01,  2.209460984245205e+02,
@@ -962,7 +962,7 @@ NumericalScalar SpecFunc::ErfInverse(const NumericalScalar x)
 NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
                                    const Bool principal)
 {
-  NumericalScalar w(-1.0);
+  NumericalScalar w = -1.0;
   // -0.36787944117144232159552377016146086 = -1 / exp(1)
   if (x <= -0.3678794411714423215955238) return w;
   // Principal branch, defined over [-1/e,+inf], LambertW >= -1
@@ -973,7 +973,7 @@ NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
     // Large argument, use asymptotic expansion, formula 4.18
     else
     {
-      const NumericalScalar t1(log(x));
+      const NumericalScalar t1 = log(x);
       w = t1 - log(t1);
     }
   }
@@ -984,16 +984,16 @@ NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
     if (x < -0.1) w = -2.0;
     else
     {
-      const NumericalScalar t1(log(-x));
+      const NumericalScalar t1 = log(-x);
       w = t1 - log(-t1);
     }
   }
   // Halley's iteration
   for (UnsignedInteger i = 0; i < 3; ++i)
   {
-    const NumericalScalar expW(exp(w));
-    const NumericalScalar numerator(w * expW - x);
-    const NumericalScalar dw(numerator / (expW * (w + 1.0) - 0.5 * (w + 2.0) * numerator / (w + 1.0)));
+    const NumericalScalar expW = exp(w);
+    const NumericalScalar numerator = w * expW - x;
+    const NumericalScalar dw = numerator / (expW * (w + 1.0) - 0.5 * (w + 2.0) * numerator / (w + 1.0));
     w -= dw;
   }
   return w;
@@ -1038,7 +1038,7 @@ UnsignedInteger SpecFunc::Log2(const Unsigned64BitsInteger n)
     44, 24, 15,  8, 23,  7,  6,  5};
 
   // http://www.pearsonhighered.com/samplechapter/0201914654.pdf
-  Unsigned64BitsInteger value(n);
+  Unsigned64BitsInteger value = n;
   value |= value >> 1;
   value |= value >> 2;
   value |= value >> 4;
@@ -1071,7 +1071,7 @@ UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)
   // This uses fewer arithmetic operations than any other known
   // implementation on machines with fast multiplication.
   // It uses 12 arithmetic operations, one of which is a multiply.
-  Unsigned64BitsInteger x(n);
+  Unsigned64BitsInteger x = n;
   x -= (x >> 1) & m1;             // put count of each 2 bits into those 2 bits
   x = (x & m2) + ((x >> 2) & m2); // put count of each 4 bits into those 4 bits
   x = (x + (x >> 4)) & m4;        // put count of each 8 bits into those 8 bits

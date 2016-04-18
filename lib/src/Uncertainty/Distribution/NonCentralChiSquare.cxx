@@ -106,7 +106,7 @@ NumericalPoint NonCentralChiSquare::computePDFGradient(const NumericalPoint & po
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalScalar eps(std::pow(pdfEpsilon_, 1.0 / 3.0));
+  NumericalScalar eps = std::pow(pdfEpsilon_, 1.0 / 3.0);
   NumericalPoint pdfGradient(2);
   pdfGradient[0] = (DistFunc::dNonCentralChiSquare(nu_ + eps, lambda_, point[0], pdfEpsilon_, maximumIteration_) - DistFunc::dNonCentralChiSquare(nu_ - eps, lambda_, point[0], pdfEpsilon_, maximumIteration_)) / (2.0 * eps);
   pdfGradient[1] = (DistFunc::dNonCentralChiSquare(nu_, lambda_ + eps, point[0], pdfEpsilon_, maximumIteration_) - DistFunc::dNonCentralChiSquare(nu_, lambda_ - eps, point[0], pdfEpsilon_, maximumIteration_)) / (2.0 * eps);
@@ -118,7 +118,7 @@ NumericalPoint NonCentralChiSquare::computeCDFGradient(const NumericalPoint & po
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   NumericalPoint cdfGradient(2);
   cdfGradient[0] = (DistFunc::pNonCentralChiSquare(nu_ + eps, lambda_, point[0], false, cdfEpsilon_, maximumIteration_) - DistFunc::pNonCentralChiSquare(nu_ - eps, lambda_, point[0], false, cdfEpsilon_, maximumIteration_)) / (2.0 * eps);
   cdfGradient[1] = (DistFunc::pNonCentralChiSquare(nu_, lambda_ + eps, point[0], false, cdfEpsilon_, maximumIteration_) - DistFunc::pNonCentralChiSquare(nu_, lambda_ - eps, point[0], false, cdfEpsilon_, maximumIteration_)) / (2.0 * eps);

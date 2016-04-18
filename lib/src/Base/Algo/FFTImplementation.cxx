@@ -48,7 +48,7 @@ FFTImplementation * FFTImplementation::clone() const
 /* FFT transformation on real */
 FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const NumericalScalarCollection & collection) const
 {
-  const UnsignedInteger size(collection.getSize());
+  const UnsignedInteger size = collection.getSize();
   NumericalComplexCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[i];
   return transform(coll);

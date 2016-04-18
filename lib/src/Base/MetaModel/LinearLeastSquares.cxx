@@ -87,10 +87,10 @@ void LinearLeastSquares::run()
     /* Compute the given function over the given sample */
     dataOut_ = inputFunction_(dataIn_);
   }
-  const UnsignedInteger inputDimension(dataIn_.getDimension());
-  const UnsignedInteger outputDimension(dataOut_.getDimension());
-  const UnsignedInteger dataInSize(dataIn_.getSize());
-  const UnsignedInteger coefficientsDimension(1 + inputDimension);
+  const UnsignedInteger inputDimension = dataIn_.getDimension();
+  const UnsignedInteger outputDimension = dataOut_.getDimension();
+  const UnsignedInteger dataInSize = dataIn_.getSize();
+  const UnsignedInteger coefficientsDimension = 1 + inputDimension;
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -101,7 +101,7 @@ void LinearLeastSquares::run()
     /* build the componentMatrix */
     /* get the current sample x */
     const NumericalPoint currentSample(dataIn_[sampleIndex]);
-    UnsignedInteger rowIndex(0);
+    UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
     ++rowIndex;
@@ -123,7 +123,7 @@ void LinearLeastSquares::run()
   for(UnsignedInteger outputComponent = 0; outputComponent < outputDimension; ++outputComponent)
   {
     /* First, the constant term */
-    UnsignedInteger coefficientsIndex(0);
+    UnsignedInteger coefficientsIndex = 0;
     constant_[outputComponent] = coefficients(coefficientsIndex, outputComponent);
     ++coefficientsIndex;
     /* Second, the linear term */

@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     HMatrixFactory hmatrixFactory;
     if (!hmatrixFactory.IsAvailable()) throw NotYetImplementedException(HERE);
 
-    const UnsignedInteger n(20);
+    const UnsignedInteger n = 20;
 
     Indices indices(0);
     indices.add(n);
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
       }
     }
     NumericalScalar diffNorm = rhsCopy.norm();
-    NumericalScalar threshold(1.e-4);
+    NumericalScalar threshold = 1.e-4;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

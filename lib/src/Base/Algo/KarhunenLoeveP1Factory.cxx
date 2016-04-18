@@ -102,16 +102,16 @@ Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
 ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel & covarianceModel,
                                                            NumericalPoint & selectedEV) const
 {
-  const UnsignedInteger numVertices(mesh_.getVerticesNumber());
+  const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   // Extend the Gram matrix of the mesh
-  const UnsignedInteger dimension(covarianceModel.getDimension());
-  const UnsignedInteger augmentedDimension(dimension * numVertices);
+  const UnsignedInteger dimension = covarianceModel.getDimension();
+  const UnsignedInteger augmentedDimension = dimension * numVertices;
   CovarianceMatrix G(augmentedDimension);
   for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
       for (UnsignedInteger j = 0; j <= i; ++j)
         {
-          const NumericalScalar gij(gram_(i, j));
+          const NumericalScalar gij = gram_(i, j);
           for (UnsignedInteger k = 0; k < dimension; ++k)
               G(i * dimension + k, j * dimension + k) = gij;
         } // Loop over j
@@ -138,14 +138,14 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
   selectedEV = NumericalPoint(0);
   ProcessSample result(mesh_, 0, dimension);
-  UnsignedInteger j(0);
+  UnsignedInteger j = 0;
   while ((j < augmentedDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
     {
       selectedEV.add(eigenValues[j]);
       NumericalSample values(numVertices, dimension);
       const Matrix a(eigenVectors.getColumn(j));
-      const NumericalScalar norm(std::sqrt((a.transpose() * (G * a))(0, 0)));
-      const NumericalScalar factor(eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm);
+      const NumericalScalar norm = std::sqrt((a.transpose() * (G * a))(0, 0));
+      const NumericalScalar factor = eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm;
       for (UnsignedInteger i = 0; i < numVertices; ++i)
 	for (UnsignedInteger k = 0; k < dimension; ++k)
 	  values[i][k] = eigenVectors(i * dimension + k, j) * factor;

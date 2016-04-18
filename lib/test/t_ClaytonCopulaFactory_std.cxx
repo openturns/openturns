@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     ClaytonCopula distribution(1.5);
-    UnsignedInteger size(1000);
+    UnsignedInteger size = 1000;
     NumericalSample sample(distribution.getSample(size));
     ClaytonCopulaFactory factory;
     CovarianceMatrix covariance;

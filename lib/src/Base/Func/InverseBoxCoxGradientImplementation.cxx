@@ -79,7 +79,7 @@ InverseBoxCoxEvaluationImplementation InverseBoxCoxGradientImplementation::getEv
 /* Gradient evaluation method */
 Matrix InverseBoxCoxGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getInputDimension());
+  const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
   Matrix result(1, dimension);
 
@@ -87,12 +87,12 @@ Matrix InverseBoxCoxGradientImplementation::gradient(const NumericalPoint & inP)
   // This last one must be done by user or, as the gradient is used in a stochastic context, in the InverseBoxCoxTransform class
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
-    const NumericalScalar x(inP[index] + getShift()[index]);
+    const NumericalScalar x = inP[index] + getShift()[index];
     if (x <= 0.0)
       throw InvalidArgumentException(HERE) << "Can not apply the Box Cox gradient function to a negative shifted value x=" << x;
 
     // Applying the Box-Cox function
-    const NumericalScalar lambda_i(getLambda()[index]);
+    const NumericalScalar lambda_i = getLambda()[index];
     if (std::abs(lambda_i * x * x) < 1e-8) result(0, index) = exp(x) * (1.0 - lambda_i * x * (1.0 + 0.5 * x));
     else result(0, index) = pow(x, 1.0 / lambda_i - 1.0);
   }

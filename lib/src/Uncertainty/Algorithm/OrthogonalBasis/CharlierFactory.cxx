@@ -65,13 +65,13 @@ CharlierFactory::Coefficients CharlierFactory::getRecurrenceCoefficients(const U
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor(sqrt(lambda_));
+    const NumericalScalar factor = sqrt(lambda_);
     recurrenceCoefficients[0] = -1.0 / factor;
     recurrenceCoefficients[1] = factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar factor(1.0 / sqrt((n + 1.0) * lambda_));
+  const NumericalScalar factor = 1.0 / sqrt((n + 1.0) * lambda_);
   recurrenceCoefficients[0] = -factor;
   recurrenceCoefficients[1] = (n + lambda_) * factor;
   recurrenceCoefficients[2] = -sqrt(1.0 - 1.0 / (n + 1.0));

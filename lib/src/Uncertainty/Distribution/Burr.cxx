@@ -110,9 +110,9 @@ NumericalPoint Burr::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar xC(std::pow(x, c_));
+  const NumericalScalar xC = std::pow(x, c_);
   return NumericalPoint(1, -(xC * (c_ * k_ + 1.0) + 1.0 - c_) * computePDF(x) / (x * (1.0 + xC)));
 }
 
@@ -122,7 +122,7 @@ NumericalScalar Burr::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -131,9 +131,9 @@ NumericalScalar Burr::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  const NumericalScalar logX(std::log(x));
+  const NumericalScalar logX = std::log(x);
   return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
 }
 
@@ -142,7 +142,7 @@ NumericalScalar Burr::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
   return -expm1(-k_ * log1p(std::exp(c_ * std::log(x))));
 }
@@ -152,11 +152,11 @@ NumericalPoint Burr::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   NumericalPoint pdfGradient(2, 0.0);
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf(computePDF(point));
-  const NumericalScalar logX(std::log(x));
+  const NumericalScalar pdf = computePDF(point);
+  const NumericalScalar logX = std::log(x);
   pdfGradient[0] = ((1.0 - (1.0 + k_) / (1.0 + std::exp(-c_ * logX))) * logX + 1.0 / c_) * pdf;
   pdfGradient[1] = (1.0 / k_ - log1p(std::pow(x, c_))) * pdf;
   return pdfGradient;
@@ -167,11 +167,11 @@ NumericalPoint Burr::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   NumericalPoint cdfGradient(2, 0.0);
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar cdfC(computeComplementaryCDF(point));
-  const NumericalScalar xC(std::pow(x, c_));
+  const NumericalScalar cdfC = computeComplementaryCDF(point);
+  const NumericalScalar xC = std::pow(x, c_);
   cdfGradient[0] = k_ * xC * std::log(x) * cdfC / (1.0 + xC);
   cdfGradient[1] = log1p(xC) * cdfC;
   return cdfGradient;
@@ -201,16 +201,16 @@ NumericalPoint Burr::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint Burr::getSkewness() const
 {
-  const NumericalScalar mu(getMean()[0]);
-  const NumericalScalar sigma(getStandardDeviation()[0]);
+  const NumericalScalar mu = getMean()[0];
+  const NumericalScalar sigma = getStandardDeviation()[0];
   return NumericalPoint(1, (getStandardMoment(3)[0] - 3.0 * mu * sigma * sigma - mu * mu * mu) / (sigma * sigma * sigma));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint Burr::getKurtosis() const
 {
-  const NumericalScalar mu(getMean()[0]);
-  const NumericalScalar sigma(getStandardDeviation()[0]);
+  const NumericalScalar mu = getMean()[0];
+  const NumericalScalar sigma = getStandardDeviation()[0];
   return NumericalPoint(1, (getStandardMoment(4)[0] - 4.0 * mu * getStandardMoment(3)[0] + 6.0 * sigma * sigma * mu * mu + 3.0 * mu * mu * mu * mu) / (sigma * sigma * sigma * sigma));
 }
 

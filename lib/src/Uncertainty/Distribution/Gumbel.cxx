@@ -117,7 +117,7 @@ NumericalPoint Gumbel::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar expX(std::exp(-alpha_ * (point[0] - beta_)));
+  const NumericalScalar expX = std::exp(-alpha_ * (point[0] - beta_));
   return NumericalPoint(1, alpha_ * alpha_ * (expX - 1.0) * expX * std::exp(-expX));
 }
 
@@ -127,7 +127,7 @@ NumericalScalar Gumbel::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar expX(std::exp(-alpha_ * (point[0] - beta_)));
+  const NumericalScalar expX = std::exp(-alpha_ * (point[0] - beta_));
   return alpha_ * expX * std::exp(-expX);
 }
 
@@ -135,7 +135,7 @@ NumericalScalar Gumbel::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar X(-alpha_ * (point[0] - beta_));
+  const NumericalScalar X = -alpha_ * (point[0] - beta_);
   return std::log(alpha_) + X - std::exp(X);
 }
 
@@ -145,8 +145,8 @@ NumericalScalar Gumbel::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(-alpha_ * (point[0] - beta_));
-  const NumericalScalar expX(std::exp(x));
+  const NumericalScalar x = -alpha_ * (point[0] - beta_);
+  const NumericalScalar expX = std::exp(x);
   return std::exp(-expX);
 }
 
@@ -154,13 +154,13 @@ NumericalScalar Gumbel::computeComplementaryCDF(const NumericalPoint & point) co
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(-alpha_ * (point[0] - beta_));
-  const NumericalScalar expX(std::exp(x));
+  const NumericalScalar x = -alpha_ * (point[0] - beta_);
+  const NumericalScalar expX = std::exp(x);
   // -2.419227917539996841 = numerical bound for which the approximation has a relative error less than 1e-16
   if (x < -2.419227917539996841)
   {
-    NumericalScalar value(expX);
-    NumericalScalar coeff(expX);
+    NumericalScalar value = expX;
+    NumericalScalar coeff = expX;
     for (UnsignedInteger i = 2; i < 10; ++i)
     {
       coeff *= -expX / static_cast<NumericalScalar>(i);
@@ -187,9 +187,9 @@ NumericalPoint Gumbel::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - beta_);
-  const NumericalScalar expX(std::exp(-alpha_ * x));
-  const NumericalScalar pdf(alpha_ * expX * std::exp(-expX));
+  const NumericalScalar x = point[0] - beta_;
+  const NumericalScalar expX = std::exp(-alpha_ * x);
+  const NumericalScalar pdf = alpha_ * expX * std::exp(-expX);
   NumericalPoint pdfGradient(2);
   pdfGradient[0] = (1.0 / alpha_ - x * (1.0 - expX)) * pdf;
   pdfGradient[1] = alpha_ * (1.0 - expX) * pdf;
@@ -201,9 +201,9 @@ NumericalPoint Gumbel::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - beta_);
-  const NumericalScalar expX(std::exp(-alpha_ * x));
-  const NumericalScalar cdf(std::exp(-expX));
+  const NumericalScalar x = point[0] - beta_;
+  const NumericalScalar expX = std::exp(-alpha_ * x);
+  const NumericalScalar cdf = std::exp(-expX);
   NumericalPoint cdfGradient(2);
   cdfGradient[0] = x * expX * cdf;
   cdfGradient[1] = -alpha_ * expX * cdf;

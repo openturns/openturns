@@ -29,7 +29,7 @@ typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilis
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
@@ -37,9 +37,9 @@ NumericalPoint clean(NumericalPoint in)
 
 SymmetricTensor clean(SymmetricTensor in)
 {
-  UnsignedInteger rowDim(in.getNbRows());
-  UnsignedInteger colDim(in.getNbColumns());
-  UnsignedInteger sheetDim(in.getNbSheets());
+  UnsignedInteger rowDim = in.getNbRows();
+  UnsignedInteger colDim = in.getNbColumns();
+  UnsignedInteger sheetDim = in.getNbSheets();
   for(UnsignedInteger i = 0; i < rowDim; i++)
     for(UnsignedInteger j = 0; j < colDim; j++)
       for (UnsignedInteger k = 0; k < sheetDim; k++)
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;

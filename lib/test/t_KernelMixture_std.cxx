@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedInteger dimension(3);
+    UnsignedInteger dimension = 3;
     NumericalPoint meanPoint(dimension, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (ref)=" << distributionRef.computeDDF( point ) << std::endl;

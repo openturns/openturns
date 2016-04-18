@@ -116,16 +116,16 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   }
   // First, copy the coefficients that are common with the previous partial basis
   NumericalPoint alpha(0);
-  const UnsignedInteger conservedSize(conservedRanks.getSize());
+  const UnsignedInteger conservedSize = conservedRanks.getSize();
   for (UnsignedInteger i = 0; i < conservedSize; ++i)
     alpha.add(alpha_k_p_[conservedRanks[i]]);
   // We have to compute the coefficients associated to the added indices
-  const UnsignedInteger addedSize(addedRanks.getSize());
-  const UnsignedInteger sampleSize(inputSample_.getSize());
+  const UnsignedInteger addedSize = addedRanks.getSize();
+  const UnsignedInteger sampleSize = inputSample_.getSize();
   for (UnsignedInteger i = 0; i < addedSize; ++i)
   {
-    const UnsignedInteger indexAdded(addedRanks[i]);
-    NumericalScalar value(0.0);
+    const UnsignedInteger indexAdded = addedRanks[i];
+    NumericalScalar value = 0.0;
     // The integral is approximated by a weighted sum of f * Phi
     for (UnsignedInteger j = 0; j < sampleSize; ++j) value += weights_[j] * outputSample_[j][marginalIndex] * basis[indices[indexAdded]](inputSample_[j])[0];
     alpha.add(value);
@@ -133,10 +133,10 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model
   residual_p_ = 0.0;
-  const UnsignedInteger basisDimension(indices.getSize());
+  const UnsignedInteger basisDimension = indices.getSize();
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    NumericalScalar value(0.0);
+    NumericalScalar value = 0.0;
     // Evaluate the meta model on the current integration point
     for (UnsignedInteger j = 0; j < basisDimension; ++j) value += alpha_k_p_[j] * basis[indices[j]](inputSample_[i])[0];
     // Accumulate the squared residual

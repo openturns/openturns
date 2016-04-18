@@ -112,7 +112,7 @@ NumericalPoint LogUniform::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x < a_) || (x > b_)) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, -1.0 / (x * x * (bLog_ - aLog_)));
 }
@@ -123,7 +123,7 @@ NumericalScalar LogUniform::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
   return 1.0 / (x * (bLog_ - aLog_));
 }
@@ -134,7 +134,7 @@ NumericalScalar LogUniform::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_)  return 1.0;
   return (std::log(x) - aLog_) / (bLog_ - aLog_);
@@ -144,7 +144,7 @@ NumericalScalar LogUniform::computeComplementaryCDF(const NumericalPoint & point
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
   return (bLog_ - std::log(x)) / (bLog_ - aLog_);
@@ -168,9 +168,9 @@ NumericalPoint LogUniform::computePDFGradient(const NumericalPoint & point) cons
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(2, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return pdfGradient;
-  const NumericalScalar value(computePDF(point) / (bLog_ - aLog_));
+  const NumericalScalar value = computePDF(point) / (bLog_ - aLog_);
   pdfGradient[0] = value;
   pdfGradient[1] = -value;
   return pdfGradient;
@@ -182,10 +182,10 @@ NumericalPoint LogUniform::computeCDFGradient(const NumericalPoint & point) cons
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar denominator(std::pow(bLog_ - aLog_, 2));
-  const NumericalScalar logX(std::log(x));
+  const NumericalScalar denominator = std::pow(bLog_ - aLog_, 2);
+  const NumericalScalar logX = std::log(x);
   cdfGradient[0] = (logX - bLog_) / denominator;
   cdfGradient[1] = (aLog_ - logX) / denominator;
   return cdfGradient;
@@ -255,7 +255,7 @@ NumericalPoint LogUniform::getKurtosis() const
 void LogUniform::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar aLogbLog(bLog_ - aLog_);
+  const NumericalScalar aLogbLog = bLog_ - aLog_;
   covariance_(0, 0) = 0.5 * (b_ - a_) * (b_ * (aLogbLog - 2.0) + a_ * (aLogbLog + 2.0)) / std::pow(aLogbLog, 2);
   isAlreadyComputedCovariance_ = true;
 }

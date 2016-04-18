@@ -97,16 +97,16 @@ NumericalScalar ArchimedeanCopula::computeProbability(const Interval & interval)
   if (intersect.isNumericallyEmpty()) return 0.0;
   NumericalPoint lowerBound(intersect.getLowerBound());
   NumericalPoint upperBound(intersect.getUpperBound());
-  NumericalScalar uuCDF(computeCDF(upperBound));
-  NumericalScalar llCDF(computeCDF(lowerBound));
+  NumericalScalar uuCDF = computeCDF(upperBound);
+  NumericalScalar llCDF = computeCDF(lowerBound);
   NumericalPoint ul(2);
   ul[0] = upperBound[0];
   ul[1] = lowerBound[1];
-  NumericalScalar ulCDF(computeCDF(ul));
+  NumericalScalar ulCDF = computeCDF(ul);
   NumericalPoint lu(2);
   lu[0] = lowerBound[0];
   lu[1] = upperBound[1];
-  NumericalScalar luCDF(computeCDF(lu));
+  NumericalScalar luCDF = computeCDF(lu);
   return uuCDF - ulCDF - luCDF + llCDF;
 }
 
@@ -114,13 +114,13 @@ NumericalScalar ArchimedeanCopula::computeProbability(const Interval & interval)
 NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // If x is outside of the range of the marginal distribution
   if ((x <= 0.0) || (x >= 1.0)) return 0.0;
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return 1.0;
-  const NumericalScalar z(y[0]);
+  const NumericalScalar z = y[0];
   // If the conditioning variable is outside of the range of the marginal distribution
   if ((z <= 0.0) || (z >= 1.0)) return 0.0;
   NumericalPoint point(2);
@@ -174,7 +174,7 @@ ArchimedeanCopula::Implementation ArchimedeanCopula::getMarginal(const Indices &
 {
   if (!indices.check(1)) throw InvalidArgumentException(HERE) << "The indices of an archimedean copula  must be in the range [0, 1] and  must be different";
   // General case
-  const UnsignedInteger outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension = indices.getSize();
   // Only one indice is needed, call the specialized method
   if (outputDimension == 1) return getMarginal(indices[0]);
   // The indices correspond to all the components, with a possible transposition of the two components.

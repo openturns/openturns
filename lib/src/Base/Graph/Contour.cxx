@@ -198,7 +198,7 @@ String Contour::draw() const
   }
   oss << "dataOT <- matrix(dataOT, length(x), length(y))\n"
       << "levels=c(";
-  const UnsignedInteger length(levels_.getSize() - 1);
+  const UnsignedInteger length = levels_.getSize() - 1;
   for(UnsignedInteger i = 0; i < length; ++i)
   {
     oss << levels_[i] << ",";
@@ -242,7 +242,7 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
 {
   // Use the empirical quantiles
   const NumericalSample sortedData(data_.sort());
-  const UnsignedInteger size(data_.getSize());
+  const UnsignedInteger size = data_.getSize();
   levels_ = NumericalPoint(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedInteger>(size * (i + 0.5) / number)][0];
   levels_.erase(std::unique(levels_.begin(), levels_.end()), levels_.end());
@@ -251,7 +251,7 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
 /* Build default labels by taking the level values */
 void Contour::buildDefaultLabels()
 {
-  const UnsignedInteger number(levels_.getDimension());
+  const UnsignedInteger number = levels_.getDimension();
   labels_ = Description(number);
   for (UnsignedInteger i = 0; i < number; ++i) labels_[i] = OSS() << levels_[i];
 }

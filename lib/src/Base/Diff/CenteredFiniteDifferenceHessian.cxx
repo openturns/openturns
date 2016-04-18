@@ -96,12 +96,12 @@ String CenteredFiniteDifferenceHessian::__str__(const String & offset) const
 /* Hessian () */
 SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(inP.getDimension());
+  const UnsignedInteger inputDimension = inP.getDimension();
   NumericalPoint step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim^2+1 points. */
   NumericalSample gridPoints(2 * inputDimension * inputDimension + 1, inP);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for(UnsignedInteger i = 1; i < inputDimension; ++i)
     for(UnsignedInteger j = 0; j < i; ++j)
     {
@@ -132,11 +132,11 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & 
   /* Get the center value */
   NumericalPoint center(gridValues[gridValues.getSize() - 1]);
   /* Compute the hessian */
-  UnsignedInteger outputDimension(p_evaluation_->getOutputDimension());
+  UnsignedInteger outputDimension = p_evaluation_->getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
-  UnsignedInteger diagonalOffset(2 * inputDimension * (inputDimension - 1));
+  UnsignedInteger diagonalOffset = 2 * inputDimension * (inputDimension - 1);
   NumericalScalar scale;
-  UnsignedInteger offDiagonalOffset(0);
+  UnsignedInteger offDiagonalOffset = 0;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     // Diagonal term

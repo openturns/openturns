@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   LinearModelFactory lmfact;
 
   /* lm build */
-  UnsignedInteger size(20);
+  UnsignedInteger size = 20;
   NumericalSample oneSample(size, 1);
   NumericalSample twoSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)

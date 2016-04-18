@@ -74,17 +74,17 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor(0.5 * sqrt((alpha_ + beta_ + 3.0) / ((alpha_ + 1.0) * (beta_ + 1.0))));
+    const NumericalScalar factor = 0.5 * sqrt((alpha_ + beta_ + 3.0) / ((alpha_ + 1.0) * (beta_ + 1.0)));
     recurrenceCoefficients[0] = (alpha_ + beta_ + 2.0) * factor;
     recurrenceCoefficients[1] = -(alpha_ - beta_) * factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar nAlphaP1(n + alpha_ + 1);
-  const NumericalScalar nBetaP1(n + beta_ + 1);
-  const NumericalScalar twoNAlphaBetaP2(nAlphaP1 + nBetaP1);
-  const NumericalScalar factor1((twoNAlphaBetaP2 + 1) / ((n + 1) * nAlphaP1 * nBetaP1 * (nAlphaP1 + beta_)));
-  const NumericalScalar factor2(0.5 * sqrt((twoNAlphaBetaP2 - 1) * factor1));
+  const NumericalScalar nAlphaP1 = n + alpha_ + 1;
+  const NumericalScalar nBetaP1 = n + beta_ + 1;
+  const NumericalScalar twoNAlphaBetaP2 = nAlphaP1 + nBetaP1;
+  const NumericalScalar factor1 = (twoNAlphaBetaP2 + 1) / ((n + 1) * nAlphaP1 * nBetaP1 * (nAlphaP1 + beta_));
+  const NumericalScalar factor2 = 0.5 * sqrt((twoNAlphaBetaP2 - 1) * factor1);
   recurrenceCoefficients[0] = factor2 * twoNAlphaBetaP2;
   recurrenceCoefficients[1] = -factor2 * (alpha_ - beta_) * (alpha_ + beta_) / (twoNAlphaBetaP2 - 2);
   recurrenceCoefficients[2] = -twoNAlphaBetaP2 / (twoNAlphaBetaP2 - 2) * sqrt((nAlphaP1 - 1) * (nBetaP1 - 1) * (nAlphaP1 + beta_ - 1) * n * factor1 / (twoNAlphaBetaP2 - 3));

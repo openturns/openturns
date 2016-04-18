@@ -45,7 +45,7 @@ Curve::Curve(const NumericalSample & data,
   // If data is unidimensional, assume that it means Y values with indices as X values
   if (data.getDimension() == 1)
   {
-    const UnsignedInteger size(data.getSize());
+    const UnsignedInteger size = data.getSize();
     dataFull = NumericalSample(size, 2);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
@@ -65,7 +65,7 @@ Curve::Curve(const NumericalSample & dataX,
              const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
-  const UnsignedInteger size(dataX.getSize());
+  const UnsignedInteger size = dataX.getSize();
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical samples with different size.";
   if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical samples of dimension greater than 1.";
   NumericalSample dataFull(size, 2);
@@ -85,7 +85,7 @@ Curve::Curve(const NumericalPoint & dataX,
              const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
-  const UnsignedInteger size(dataX.getDimension());
+  const UnsignedInteger size = dataX.getDimension();
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical points with different dimension.";
   NumericalSample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -110,7 +110,7 @@ Curve::Curve(const NumericalSample & data,
   // If data is unidimensional, assume that it means Y values with indices as X values
   if (data.getDimension() == 1)
   {
-    const UnsignedInteger size(data.getSize());
+    const UnsignedInteger size = data.getSize();
     dataFull = NumericalSample(size, 2);
     for (UnsignedInteger i = 0; i < size; ++i)
     {

@@ -84,14 +84,14 @@ NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedInt
 NumericalScalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const NumericalSample & sample)
 {
   // computationnaly heavy function : O(N²), let N the size of the sample
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
 
   // discrepancy is the maximum of the local discrepancy
   const NumericalPoint lowerPoint(sample.getDimension());
-  NumericalScalar discrepancy(0.0);
+  NumericalScalar discrepancy = 0.0;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar local(ComputeLocalDiscrepancy(sample, Interval(lowerPoint, sample[i])));
+    const NumericalScalar local = ComputeLocalDiscrepancy(sample, Interval(lowerPoint, sample[i]));
     if(local > discrepancy)
       discrepancy = local;
   }
@@ -131,8 +131,8 @@ NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(co
 {
   if (sample.getDimension() != interval.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample must have the same dimension as the given interval.";
   // calculate number of inner points
-  const UnsignedInteger size(sample.getSize());
-  UnsignedInteger inPoints(0);
+  const UnsignedInteger size = sample.getSize();
+  UnsignedInteger inPoints = 0;
   for(UnsignedInteger j = 0; j < size; ++j)
     if (interval.numericallyContains(sample[j])) ++inPoints;
   // The local discrepancy is the absolute difference between the fraction of points
@@ -307,11 +307,11 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
     13313, 13327, 13331, 13337, 13339, 13367, 13381, 13397, 13399, 13411,
     13417, 13421, 13441, 13451, 13457, 13463, 13469, 13477, 13487, 13499
   };
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   Unsigned64BitsIntegerCollection result(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger index(indices[i]);
+    const UnsignedInteger index = indices[i];
     if (index > MaxPrime) throw InvalidArgumentException(HERE) << "Error: cannot ask for a prime number greater than the " << MaxPrime << "th prime number.";
     result[i] = Table[index];
   }
@@ -329,7 +329,7 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
 /* Compute the least prime number greater or equal to n */
 Unsigned64BitsInteger LowDiscrepancySequenceImplementation::ComputeNextPrimeNumber(const UnsignedInteger n)
 {
-  UnsignedInteger i(0);
+  UnsignedInteger i = 0;
   Unsigned64BitsIntegerCollection primes(GetPrimeNumbers(Indices(1, i)));
   while (primes[0] < n)
   {

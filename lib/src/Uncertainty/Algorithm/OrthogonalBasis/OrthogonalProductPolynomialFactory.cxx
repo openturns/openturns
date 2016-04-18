@@ -102,7 +102,7 @@ NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedIn
 {
   // Compute the multi-indices using the EnumerateFunction
   Indices indices(phi_(index));
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   // Then build the collection of polynomials using the collection of factories
   PolynomialCollection polynomials(size);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -142,7 +142,7 @@ void OrthogonalProductPolynomialFactory::load(Advocate & adv)
 /* Build the measure based on the one found in the family collection */
 void OrthogonalProductPolynomialFactory::buildMeasure()
 {
-  const UnsignedInteger size(coll_.getSize());
+  const UnsignedInteger size = coll_.getSize();
   Collection<Distribution> distributions(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -155,18 +155,18 @@ void OrthogonalProductPolynomialFactory::buildMeasure()
 NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees,
     NumericalPoint & weights) const
 {
-  const UnsignedInteger degreesSize(degrees.getSize());
+  const UnsignedInteger degreesSize = degrees.getSize();
   if (degreesSize != coll_.getSize()) throw InvalidArgumentException(HERE) << "Error: the degrees size must match the size of the orthogonal univariate polynomials factories size.";
-  Bool isConstant(true);
+  Bool isConstant = true;
   for (UnsignedInteger i = 0; i < degreesSize; ++i) isConstant = isConstant && (degrees[i] == 0);
   if (isConstant) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
   // First, get the nodes and weights of the marginal factories
   NumericalPointCollection marginalNodes;
   NumericalPointCollection marginalWeights;
-  UnsignedInteger totalSize(1);
+  UnsignedInteger totalSize = 1;
   for (UnsignedInteger i = 0; i < degreesSize; ++i)
   {
-    const UnsignedInteger d(degrees[i]);
+    const UnsignedInteger d = degrees[i];
     totalSize *= d;
     NumericalPoint w;
     marginalNodes.add(coll_[i].getNodesAndWeights(d, w));

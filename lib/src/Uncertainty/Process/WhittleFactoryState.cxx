@@ -124,7 +124,7 @@ ARMACoefficients WhittleFactoryState::getARCoefficients() const
 /* MA coefficients accessor */
 ARMACoefficients WhittleFactoryState::getMACoefficients() const
 {
-  const UnsignedInteger q(getQ());
+  const UnsignedInteger q = getQ();
   NumericalPoint maCoefficients(q);
   for (UnsignedInteger k = 0; k < q; ++k) maCoefficients[k] = theta_[k + p_];
   return ARMACoefficients(maCoefficients);

@@ -32,11 +32,11 @@ int main(int argc, char *argv[])
   //   Log::Show( Log::Flags() | Log::INFO );
 
   // Problem parameters
-  UnsignedInteger dimension(3);
-  NumericalScalar a(7.0);
-  NumericalScalar b(0.1);
+  UnsignedInteger dimension = 3;
+  NumericalScalar a = 7.0;
+  NumericalScalar b = 0.1;
   // Reference analytical values
-  NumericalScalar covTh((pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0);
+  NumericalScalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
   NumericalPoint sob_1(3);
   sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
   sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
@@ -84,11 +84,11 @@ int main(int argc, char *argv[])
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
   // design experiment
-  UnsignedInteger samplingSize( 75 );
+  UnsignedInteger samplingSize = 75;
 
   // build basis
-  UnsignedInteger degree( 10 );
-  UnsignedInteger basisSize( enumerateFunction.getStrataCumulatedCardinal( degree ) );
+  UnsignedInteger degree = 10;
+  UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal( degree );
 
 
   Collection<FittingAlgorithm> listFittingAlgorithm;

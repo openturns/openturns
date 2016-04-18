@@ -162,10 +162,10 @@ Bool NumericalMathEvaluationImplementation::isActualImplementation() const
 /* Operator () */
 NumericalSample NumericalMathEvaluationImplementation::operator() (const NumericalSample & inSample) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
 
-  const UnsignedInteger size(inSample.getSize());
+  const UnsignedInteger size = inSample.getSize();
   NumericalSample outSample(size, getOutputDimension());
   // Simple loop over the evaluation operator based on point
   // The calls number is updated by these calls
@@ -178,7 +178,7 @@ NumericalSample NumericalMathEvaluationImplementation::operator() (const Numeric
 /* Operator () */
 Field NumericalMathEvaluationImplementation::operator() (const Field & inField) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inField.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given time series has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inField.getDimension();
   return Field(inField.getMesh(), operator()(inField.getValues()));
 }
@@ -347,8 +347,8 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
   // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
   // with formula Yk = Xindices[k] for k=1,...,p
   // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid muParser identifiers
-  const UnsignedInteger inputDimension(getOutputDimension());
-  const UnsignedInteger outputDimension(indices.getSize());
+  const UnsignedInteger inputDimension = getOutputDimension();
+  const UnsignedInteger outputDimension = indices.getSize();
 #ifdef OPENTURNS_HAVE_MUPARSER
   Description input(inputDimension);
   for (UnsignedInteger index = 0; index < inputDimension; ++index)
@@ -403,15 +403,15 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger inputMar
   NumericalSample inputData(pointNumber, centralPoint);
   if (scale == GraphImplementation::NONE)
   {
-    const NumericalScalar dx((xMax - xMin) / (pointNumber - 1.0));
+    const NumericalScalar dx = (xMax - xMin) / (pointNumber - 1.0);
     for (UnsignedInteger i = 0; i < pointNumber; ++i)
       inputData[i][inputMarginal] = xMin + i * dx;
   }
   else
   {
-    const NumericalScalar a(std::log(xMin));
-    const NumericalScalar b(std::log(xMax));
-    const NumericalScalar dLogX((b - a) / (pointNumber - 1.0));
+    const NumericalScalar a = std::log(xMin);
+    const NumericalScalar b = std::log(xMax);
+    const NumericalScalar dLogX = (b - a) / (pointNumber - 1.0);
     for (UnsignedInteger i = 0; i < pointNumber; ++i)
       inputData[i][inputMarginal] = std::exp(a + i * dLogX);
   }
@@ -427,7 +427,7 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger inputMar
   graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
   // Add a slight vertical margin
   GraphImplementation::BoundingBox bb(graph.getBoundingBox());
-  const NumericalScalar height(bb[3] - bb[2]);
+  const NumericalScalar height = bb[3] - bb[2];
   bb[2] -= 0.05 * height;
   bb[3] += 0.05 * height;
   graph.setBoundingBox(bb);
@@ -453,13 +453,13 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
   NumericalPoint origin(2);
-  const NumericalScalar nX(pointNumber[0] - 2);
+  const NumericalScalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
   NumericalSample x(Box(NumericalPoint(1, nX)).generate());
   {
-    NumericalScalar a(xMin[0]);
-    NumericalScalar b(xMax[0]);
+    NumericalScalar a = xMin[0];
+    NumericalScalar b = xMax[0];
     if ((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY))
     {
       a = std::log(a);
@@ -473,13 +473,13 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   // Recover the original scale if the discretization has been done in the logarithmic scale
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     for (UnsignedInteger i = 0; i < x.getDimension(); ++i) x[i][0] = std::exp(x[i][0]);
-  const NumericalScalar nY(pointNumber[1] - 2);
+  const NumericalScalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
   NumericalSample y(Box(NumericalPoint(1, nY)).generate());
   {
-    NumericalScalar a(xMin[1]);
-    NumericalScalar b(xMax[1]);
+    NumericalScalar a = xMin[1];
+    NumericalScalar b = xMax[1];
     if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     {
       a = std::log(a);
@@ -496,13 +496,13 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   // Discretization of the XY plane
   NumericalSample inputSample((nX + 2) * (nY + 2), centralPoint);
   // Prepare the input sample
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < nY + 2; ++j)
   {
-    const NumericalScalar yJ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? exp(y[j][0]) : y[j][0]);
+    const NumericalScalar yJ = (scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? exp(y[j][0]) : y[j][0];
     for (UnsignedInteger i = 0; i < nX + 2; ++i)
     {
-      const NumericalScalar xI((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? exp(x[i][0]) : x[i][0]);
+      const NumericalScalar xI = (scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? exp(x[i][0]) : x[i][0];
       inputSample[index][firstInputMarginal]  = xI;
       inputSample[index][secondInputMarginal]  = yJ;
       ++index;

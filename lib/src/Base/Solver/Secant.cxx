@@ -77,28 +77,28 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the secant method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedInteger usedFunctionEvaluation(0);
-  const UnsignedInteger maximumFunctionEvaluation(getMaximumFunctionEvaluation());
-  NumericalScalar a(infPoint);
-  NumericalScalar fA(infValue - value);
+  UnsignedInteger usedFunctionEvaluation = 0;
+  const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
+  NumericalScalar a = infPoint;
+  NumericalScalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  NumericalScalar b(supPoint);
-  NumericalScalar fB(supValue - value);
+  NumericalScalar b = supPoint;
+  NumericalScalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Secant method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   // p will store the previous approximation
-  NumericalScalar c(a);
-  NumericalScalar fC(fA);
+  NumericalScalar c = a;
+  NumericalScalar fC = fA;
   // c will store the current approximation
-  NumericalScalar s(b);
-  NumericalScalar fS(fB);
+  NumericalScalar s = b;
+  NumericalScalar fS = fB;
 
   // Main loop
   for (;;)
   {
-    const NumericalScalar h(0.5 * (b + c));
-    const NumericalScalar error(0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError());
-    const NumericalScalar delta(std::abs(h - b));
+    const NumericalScalar h = 0.5 * (b + c);
+    const NumericalScalar error = 0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
+    const NumericalScalar delta = std::abs(h - b);
     if (delta < error)
     {
       b = h;
@@ -130,7 +130,7 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
     // If we can do a linear interpolation (secant step)
     if (std::abs(fY - fS) > getResidualError())
     {
-      NumericalScalar e((s * fY - y * fS) / (fY - fS));
+      NumericalScalar e = (s * fY - y * fS) / (fY - fS);
       // Step adjustment to avoid spurious fixed point
       if (std::abs(e - s) < error) e = s + ((g - s) > 0.0 ? (error) : (-error));
       // If the secant step is not within the current bracketing interval

@@ -36,18 +36,18 @@ int main(int argc, char *argv[])
   try
   {
     // ARMA(p, q)
-    const UnsignedInteger p(2);
-    const UnsignedInteger q(1);
-    const UnsignedInteger dimension(2);
+    const UnsignedInteger p = 2;
+    const UnsignedInteger q = 1;
+    const UnsignedInteger dimension = 2;
 
     // Make a realization of an ARMA model
     // Tmin , Tmax and N points for TimeGrid
-    const NumericalScalar dt(1.0);
-    const UnsignedInteger size(400);
+    const NumericalScalar dt = 1.0;
+    const UnsignedInteger size = 400;
     RegularGrid timeGrid(0.0, dt, size);
 
     // Fixing the distributions for the WhiteNoise
-    const NumericalScalar sigma(0.1);
+    const NumericalScalar sigma = 0.1;
     CovarianceMatrix cov(dimension);
     cov(0, 0) = sigma;
     cov(1, 1) = 2.0 * sigma;

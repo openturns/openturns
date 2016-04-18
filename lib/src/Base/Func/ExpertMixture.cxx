@@ -108,23 +108,23 @@ Classifier ExpertMixture::getClassifier() const
 /* Operator () */
 NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(experts_[0].getInputDimension());
+  const UnsignedInteger inputDimension = experts_[0].getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a point of dimension=" << inP.getDimension();
-  const UnsignedInteger outputDimension(experts_[0].getOutputDimension());
-  const UnsignedInteger size(experts_.getSize());
-  UnsignedInteger bestClass(0);
+  const UnsignedInteger outputDimension = experts_[0].getOutputDimension();
+  const UnsignedInteger size = experts_.getSize();
+  UnsignedInteger bestClass = 0;
   // Build the point (x, f(x)) for the first class and grade it according to the classifier
   NumericalPoint mixedPoint(inP);
   NumericalPoint bestValue(experts_[0](inP));
   mixedPoint.add(bestValue);
-  NumericalScalar bestGrade(classifier_.grade(mixedPoint, bestClass));
+  NumericalScalar bestGrade = classifier_.grade(mixedPoint, bestClass);
   LOGDEBUG(OSS() << "Class index=" << 0 << ", grade=" << bestGrade << ", value=" << bestValue);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
     const NumericalPoint localValue(experts_[classIndex](inP));
     for (UnsignedInteger i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
-    const NumericalScalar grade(classifier_.grade(mixedPoint, classIndex));
+    const NumericalScalar grade = classifier_.grade(mixedPoint, classIndex);
     LOGDEBUG(OSS() << "Class index=" << classIndex << ", grade=" << grade << ", value=" << localValue);
     // The best class will give the output value
     if (grade > bestGrade)

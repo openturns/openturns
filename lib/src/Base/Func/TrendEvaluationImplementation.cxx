@@ -36,7 +36,7 @@ TrendEvaluationImplementation::TrendEvaluationImplementation(const NumericalMath
 {
   Description inputDescription(function.getInputDescription());
   const Description outputDescription(function.getOutputDescription());
-  const UnsignedInteger outputDimension(outputDescription.getSize());
+  const UnsignedInteger outputDimension = outputDescription.getSize();
   const Description otherInputDescription(Description::BuildDefault(outputDimension, "x"));
   for (UnsignedInteger i = 0; i < outputDimension; ++i) inputDescription.add(otherInputDescription[i]);
   setInputDescription(inputDescription);
@@ -83,11 +83,11 @@ NumericalMathFunction TrendEvaluationImplementation::getFunction() const
 /* Operator () */
 NumericalPoint TrendEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  UnsignedInteger outputDimension(getOutputDimension());
+  UnsignedInteger outputDimension = getOutputDimension();
   NumericalPoint result(outputDimension);
-  const UnsignedInteger reducedInputDimension(function_.getInputDimension());
+  const UnsignedInteger reducedInputDimension = function_.getInputDimension();
   NumericalPoint t(reducedInputDimension);
   for (UnsignedInteger i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
   const NumericalPoint z(function_(t));

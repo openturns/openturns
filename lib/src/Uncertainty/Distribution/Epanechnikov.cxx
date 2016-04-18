@@ -75,7 +75,7 @@ NumericalPoint Epanechnikov::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= -1.0) || (x > 1.0)) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, -1.5 * x);
 }
@@ -86,7 +86,7 @@ NumericalScalar Epanechnikov::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= -1.0) || (x > 1.0)) return 0.0;
   return 0.75 * (1.0 + x) * (1.0 - x);
 }
@@ -97,7 +97,7 @@ NumericalScalar Epanechnikov::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= -1.0) return 0.0;
   if (x >= 1.0) return 1.0;
   return 0.5 + x * (0.75 - 0.25 * x * x);
@@ -107,7 +107,7 @@ NumericalScalar Epanechnikov::computeComplementaryCDF(const NumericalPoint & poi
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= -1.0) return 1.0;
   if (x > 1.0) return 0.0;
   return 0.5 - x * (0.75 - 0.25 * x * x);

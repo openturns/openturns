@@ -137,7 +137,7 @@ NumericalPoint Chi::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, (( nu_ - 1.0) / x - x) * computePDF(point));
 }
@@ -148,7 +148,7 @@ NumericalScalar Chi::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -157,7 +157,7 @@ NumericalScalar Chi::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
   return normalizationFactor_ + (nu_ - 1) * std::log(x) - 0.5 * x * x;
 }
@@ -168,7 +168,7 @@ NumericalScalar Chi::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all nu_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x * x);
@@ -178,7 +178,7 @@ NumericalScalar Chi::computeComplementaryCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all nu_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x * x, true);
@@ -189,9 +189,9 @@ NumericalScalar Chi::computeComplementaryCDF(const NumericalPoint & point) const
    M(a, b, c) is the hypergeometric function given by M(p1, q1, x)= sum_{n = 0}^{\infty} [prod_{k = 0} ^ {n - 1} (p1 + k) / (q1 + k)] * x^n / n! */
 NumericalComplex Chi::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar t(-0.5 * x * x);
-  const NumericalScalar real(SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t ));
-  const NumericalScalar imag(M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t));
+  const NumericalScalar t = -0.5 * x * x;
+  const NumericalScalar real = SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t );
+  const NumericalScalar imag = M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
   const NumericalComplex result(real, imag);
   return result;
 }
@@ -202,9 +202,9 @@ NumericalPoint Chi::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(1, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  NumericalScalar pdf(computePDF(point));
+  NumericalScalar pdf = computePDF(point);
   /*        pdfGradient[0] = 0.5 * (2. * std::log(x / sqrt(2)) - SpecFunc::Psi(0.5 * nu_)) * pdf;*/
   pdfGradient[0] = 0.5 * (2. * std::log(x / M_SQRT2) - SpecFunc::Psi(0.5 * nu_)) * pdf;
   return pdfGradient;
@@ -216,9 +216,9 @@ NumericalPoint Chi::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(1, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + eps), 0.5 * x * x) - DistFunc::pGamma(0.5 * (nu_ - eps), 0.5 * x * x)) / (2.0 * eps);
   return cdfGradient;
 }
@@ -253,17 +253,17 @@ NumericalPoint Chi::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint Chi::getSkewness() const
 {
-  const NumericalScalar mu(getMean()[0]);
-  const NumericalScalar sigma(getStandardDeviation()[0]);
+  const NumericalScalar mu = getMean()[0];
+  const NumericalScalar sigma = getStandardDeviation()[0];
   return NumericalPoint(1, mu * (1 - 2.0 * sigma * sigma) / std::pow(sigma, 3.0));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint Chi::getKurtosis() const
 {
-  const NumericalScalar mu(getMean()[0]);
-  const NumericalScalar sigma(getStandardDeviation()[0]);
-  const NumericalScalar gamma1(getSkewness()[0]);
+  const NumericalScalar mu = getMean()[0];
+  const NumericalScalar sigma = getStandardDeviation()[0];
+  const NumericalScalar gamma1 = getSkewness()[0];
   return NumericalPoint(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / std::pow(sigma, 2.0));
 }
 

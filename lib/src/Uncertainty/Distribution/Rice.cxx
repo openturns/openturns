@@ -107,8 +107,8 @@ void Rice::computeRange()
 /* Get one realization of the distribution */
 NumericalPoint Rice::getRealization() const
 {
-  const NumericalScalar x(sigma_ * DistFunc::rNormal() + nu_);
-  const NumericalScalar y(sigma_ * DistFunc::rNormal());
+  const NumericalScalar x = sigma_ * DistFunc::rNormal() + nu_;
+  const NumericalScalar y = sigma_ * DistFunc::rNormal();
   return NumericalPoint(1.0, std::sqrt(x * x + y * y));
 }
 
@@ -118,10 +118,10 @@ NumericalScalar Rice::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
-  const NumericalScalar xScaled(x / sigma_);
-  const NumericalScalar nuScaled(nu_ / sigma_);
+  const NumericalScalar xScaled = x / sigma_;
+  const NumericalScalar nuScaled = nu_ / sigma_;
   return xScaled / sigma_ * std::exp(-0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled));
 }
 
@@ -131,10 +131,10 @@ NumericalScalar Rice::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  const NumericalScalar xScaled(x / sigma_);
-  const NumericalScalar nuScaled(nu_ / sigma_);
+  const NumericalScalar xScaled = x / sigma_;
+  const NumericalScalar nuScaled = nu_ / sigma_;
   return std::log(xScaled / sigma_) - 0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled);
 }
 
@@ -145,8 +145,8 @@ NumericalScalar Rice::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   if (point[0] <= 0.0) return 0.0;
-  const NumericalScalar lambda(std::pow(nu_ / sigma_, 2));
-  const NumericalScalar y(std::pow(point[0] / sigma_, 2));
+  const NumericalScalar lambda = std::pow(nu_ / sigma_, 2);
+  const NumericalScalar y = std::pow(point[0] / sigma_, 2);
   return DistFunc::pNonCentralChiSquare(2, lambda , y, false, pdfEpsilon_, maximumIteration_);
 }
 
@@ -155,8 +155,8 @@ NumericalScalar Rice::computeComplementaryCDF(const NumericalPoint & point) cons
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   if (point[0] <= 0.0) return 1.0;
-  const NumericalScalar lambda(std::pow(nu_ / sigma_, 2));
-  const NumericalScalar y(std::pow(point[0] / sigma_, 2));
+  const NumericalScalar lambda = std::pow(nu_ / sigma_, 2);
+  const NumericalScalar y = std::pow(point[0] / sigma_, 2);
   return DistFunc::pNonCentralChiSquare(2, lambda , y, true, pdfEpsilon_, maximumIteration_);
 }
 
@@ -164,7 +164,7 @@ NumericalScalar Rice::computeComplementaryCDF(const NumericalPoint & point) cons
 void Rice::computeMean() const
 {
   //1.253314137315500251207882 = sqrt(pi/2)
-  const NumericalScalar x(-0.5 * std::pow(nu_ / sigma_, 2) );
+  const NumericalScalar x = -0.5 * std::pow(nu_ / sigma_, 2);
   mean_ = NumericalPoint(1, sigma_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
 }
 
@@ -179,7 +179,7 @@ NumericalPoint Rice::getStandardDeviation() const
 NumericalPoint Rice::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
-  const NumericalScalar sigma2(sigma_ * sigma_);
+  const NumericalScalar sigma2 = sigma_ * sigma_;
   return NumericalPoint(1, std::pow(2.0 * sigma2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / sigma2));
 }
 
@@ -194,8 +194,8 @@ Rice::Implementation Rice::getStandardRepresentative() const
 void Rice::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  NumericalScalar covariance(0.0);
-  const NumericalScalar mu(getMean()[0]);
+  NumericalScalar covariance = 0.0;
+  const NumericalScalar mu = getMean()[0];
   covariance = 2.0 * sigma_ * sigma_ + (nu_ - mu) * (nu_ + mu);
   covariance_(0, 0) = covariance;
   isAlreadyComputedCovariance_ = true;

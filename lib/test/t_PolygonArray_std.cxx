@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     // Generate the data for the polygonArrays to be drawn
     Normal generator(2);
-    UnsignedInteger size(50);
+    UnsignedInteger size = 50;
     Collection<OT::Polygon > array(size);
     Description palette(Drawable::BuildDefaultPalette(size));
     for (UnsignedInteger i = 0; i < size; ++i)

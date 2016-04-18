@@ -162,7 +162,7 @@ Bool Mesh::isValid() const
 /* Check if the given point is in the mesh */
 Bool Mesh::contains(const NumericalPoint & point) const
 {
-  const UnsignedInteger simplicesSize(getSimplicesNumber());
+  const UnsignedInteger simplicesSize = getSimplicesNumber();
   for (UnsignedInteger i = 0; i < simplicesSize; ++i) if (checkPointInSimplex(point, i)) return true;
   return false;
 }
@@ -234,7 +234,7 @@ struct NearestFunctor
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const NumericalScalar d((point_ - mesh_.getVertices()[i]).normSquare());
+      const NumericalScalar d = (point_ - mesh_.getVertices()[i]).normSquare();
       if (d < minDistance_)
       {
         minDistance_ = d;
@@ -296,7 +296,7 @@ struct MeshNearestPolicy
 Indices Mesh::getNearestVertexIndex(const NumericalSample & points) const
 {
   if (points.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected points of dimension " << getDimension() << ", got points of dimension " << points.getDimension();
-  const UnsignedInteger size(points.getSize());
+  const UnsignedInteger size = points.getSize();
   Indices indices(size);
   if (size == 0) return indices;
   const MeshNearestPolicy policy( points, indices, *this );
@@ -308,7 +308,7 @@ Indices Mesh::getNearestVertexIndex(const NumericalSample & points) const
 NumericalSample Mesh::getNearestVertex(const NumericalSample & points) const
 {
   const Indices indices(getNearestVertexIndex(points));
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   NumericalSample neighbours(size, getDimension());
   for (UnsignedInteger i = 0; i < size; ++i)
     neighbours[i] = vertices_[indices[i]];
@@ -323,23 +323,23 @@ NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   // First special case: 1D simplex
   if (getDimension() == 1)
   {
-    const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
-    const NumericalScalar x1(vertices_[simplices_[index][1]][0]);
+    const NumericalScalar x0 = vertices_[simplices_[index][0]][0];
+    const NumericalScalar x1 = vertices_[simplices_[index][1]][0];
     return std::abs(x1 - x0);
   }
   // Second special case: 2D simplex
   if (getDimension() == 2)
   {
-    const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
-    const NumericalScalar y0(vertices_[simplices_[index][0]][1]);
-    const NumericalScalar x1(vertices_[simplices_[index][1]][0]);
-    const NumericalScalar y1(vertices_[simplices_[index][1]][1]);
-    const NumericalScalar x2(vertices_[simplices_[index][2]][0]);
-    const NumericalScalar y2(vertices_[simplices_[index][2]][1]);
+    const NumericalScalar x0 = vertices_[simplices_[index][0]][0];
+    const NumericalScalar y0 = vertices_[simplices_[index][0]][1];
+    const NumericalScalar x1 = vertices_[simplices_[index][1]][0];
+    const NumericalScalar y1 = vertices_[simplices_[index][1]][1];
+    const NumericalScalar x2 = vertices_[simplices_[index][2]][0];
+    const NumericalScalar y2 = vertices_[simplices_[index][2]][1];
     return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
   SquareMatrix matrix(buildSimplexMatrix(index));
-  NumericalScalar sign(0.0);
+  NumericalScalar sign = 0.0;
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
 
@@ -348,22 +348,22 @@ CovarianceMatrix Mesh::computeP1Gram() const
 {
   // If no simplex, the P1 gram matrix is null
   if (simplices_.getSize() == 0) return CovarianceMatrix(0);
-  const UnsignedInteger simplexSize(getVertices().getDimension() + 1);
+  const UnsignedInteger simplexSize = getVertices().getDimension() + 1;
   SquareMatrix elementaryGram(simplexSize, NumericalPoint(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
-  const UnsignedInteger verticesSize(vertices_.getSize());
-  const UnsignedInteger simplicesSize(simplices_.getSize());
+  const UnsignedInteger verticesSize = vertices_.getSize();
+  const UnsignedInteger simplicesSize = simplices_.getSize();
   SquareMatrix gram(verticesSize);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
     {
       const Indices simplex(getSimplex(i));
-      const NumericalScalar delta(computeSimplexVolume(i));
+      const NumericalScalar delta = computeSimplexVolume(i);
       for (UnsignedInteger j = 0; j < simplexSize; ++j)
 	{
-	  const UnsignedInteger newJ(simplex[j]);
+	  const UnsignedInteger newJ = simplex[j];
 	  for (UnsignedInteger k = 0; k < simplexSize; ++k)
 	    {
-	      const UnsignedInteger newK(simplex[k]);
+	      const UnsignedInteger newK = simplex[k];
 	      gram(newJ, newK) += delta * elementaryGram(j, k);
 	    } // Loop over second vertex
 	} // Loop over first vertex
@@ -409,11 +409,11 @@ Bool Mesh::isRegular() const
 {
   // For now, only 1D regular meshes are considered
   if (getDimension() != 1) return false;
-  const UnsignedInteger size(getSimplicesNumber());
+  const UnsignedInteger size = getSimplicesNumber();
   if (size <= 1) return true;
-  Bool regular(true);
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Mesh-VertexEpsilon"));
-  const NumericalScalar step(vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0]);
+  Bool regular = true;
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Mesh-VertexEpsilon");
+  const NumericalScalar step = vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0];
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     regular = regular && (std::abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
@@ -425,15 +425,15 @@ Bool Mesh::isRegular() const
 /* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
 Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
 {
-  const UnsignedInteger numSimplices(getSimplicesNumber());
-  const UnsignedInteger numVertices(getVerticesNumber());
+  const UnsignedInteger numSimplices = getSimplicesNumber();
+  const UnsignedInteger numVertices = getVerticesNumber();
   IndicesCollection verticesToSimplices(numVertices, Indices(0));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
     {
       const Indices simplex(simplices_[i]);
       for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
         {
-          const UnsignedInteger index(simplex[j]);
+          const UnsignedInteger index = simplex[j];
           verticesToSimplices[index].add(i);
         }
     } // Loop over simplices
@@ -476,8 +476,8 @@ Graph Mesh::draw1D() const
 {
   checkValidity();
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh of dimension different from 1 with the draw1D() method.";
-  const UnsignedInteger verticesSize(getVerticesNumber());
-  const UnsignedInteger simplicesSize(getSimplicesNumber());
+  const UnsignedInteger verticesSize = getVerticesNumber();
+  const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   // The vertices
@@ -502,8 +502,8 @@ Graph Mesh::draw1D() const
 Graph Mesh::draw2D() const
 {
   checkValidity();
-  const UnsignedInteger verticesSize(getVerticesNumber());
-  const UnsignedInteger simplicesSize(getSimplicesNumber());
+  const UnsignedInteger verticesSize = getVerticesNumber();
+  const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   // The vertices
@@ -536,12 +536,12 @@ Graph Mesh::draw3D(const Bool drawEdge,
                    const NumericalScalar rho) const
 {
   SquareMatrix R(3);
-  const NumericalScalar sinThetaX(sin(thetaX));
-  const NumericalScalar cosThetaX(cos(thetaX));
-  const NumericalScalar sinThetaY(sin(thetaY));
-  const NumericalScalar cosThetaY(cos(thetaY));
-  const NumericalScalar sinThetaZ(sin(thetaZ));
-  const NumericalScalar cosThetaZ(cos(thetaZ));
+  const NumericalScalar sinThetaX = sin(thetaX);
+  const NumericalScalar cosThetaX = cos(thetaX);
+  const NumericalScalar sinThetaY = sin(thetaY);
+  const NumericalScalar cosThetaY = cos(thetaY);
+  const NumericalScalar sinThetaZ = sin(thetaZ);
+  const NumericalScalar cosThetaZ = cos(thetaZ);
   R(0, 0) =  cosThetaY * cosThetaZ;
   R(1, 0) = -cosThetaY * sinThetaZ;
   R(2, 0) =  sinThetaY;
@@ -563,8 +563,8 @@ Graph Mesh::draw3D(const Bool drawEdge,
   // First, check if the matrix is a rotation matrix of R^3
   if (rotation.getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: the matrix is not a 3d square matrix.";
   if (NumericalPoint((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() > 1e-5) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
-  const UnsignedInteger verticesSize(getVerticesNumber());
-  const UnsignedInteger simplicesSize(getSimplicesNumber());
+  const UnsignedInteger verticesSize = getVerticesNumber();
+  const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
@@ -575,10 +575,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
   NumericalPoint triWithDepth(4);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
-    const UnsignedInteger i0(simplices_[i][0]);
-    const UnsignedInteger i1(simplices_[i][1]);
-    const UnsignedInteger i2(simplices_[i][2]);
-    const UnsignedInteger i3(simplices_[i][3]);
+    const UnsignedInteger i0 = simplices_[i][0];
+    const UnsignedInteger i1 = simplices_[i][1];
+    const UnsignedInteger i2 = simplices_[i][2];
+    const UnsignedInteger i3 = simplices_[i][3];
     // First face: AB=p0p1, AC=p0p2.
     triWithDepth[0] = i0;
     triWithDepth[1] = i1;
@@ -610,13 +610,13 @@ Graph Mesh::draw3D(const Bool drawEdge,
   // Fourth, draw the triangles in decreasing depth
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   trianglesAndDepth = trianglesAndDepth.sortAccordingToAComponent(3);
-  NumericalScalar clippedRho(std::min(1.0, std::max(0.0, rho)));
+  NumericalScalar clippedRho = std::min(1.0, std::max(0.0, rho));
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
   {
-    const UnsignedInteger i0(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]));
-    const UnsignedInteger i1(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]));
-    const UnsignedInteger i2(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]));
+    const UnsignedInteger i0 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]);
+    const UnsignedInteger i1 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]);
+    const UnsignedInteger i2 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]);
     NumericalSample data(3, 2);
     if (clippedRho < 1.0)
     {
@@ -648,17 +648,17 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
     Polygon triangle(data);
 
-    NumericalScalar redFace(0.0);
-    NumericalScalar greenFace(0.0);
-    NumericalScalar blueFace(1.0);
+    NumericalScalar redFace = 0.0;
+    NumericalScalar greenFace = 0.0;
+    NumericalScalar blueFace = 1.0;
 
-    NumericalScalar redEdge(1.0);
-    NumericalScalar greenEdge(0.0);
-    NumericalScalar blueEdge(0.0);
+    NumericalScalar redEdge = 1.0;
+    NumericalScalar greenEdge = 0.0;
+    NumericalScalar blueEdge = 0.0;
 
-    NumericalScalar redLight(1.0);
-    NumericalScalar greenLight(1.0);
-    NumericalScalar blueLight(1.0);
+    NumericalScalar redLight = 1.0;
+    NumericalScalar greenLight = 1.0;
+    NumericalScalar blueLight = 1.0;
 
     if (shading)
     {
@@ -668,10 +668,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
       N[0] = ab[1] * ac[2] - ab[2] * ac[1];
       N[1] = ab[2] * ac[0] - ab[0] * ac[2];
       N[2] = ab[0] * ac[1] - ab[1] * ac[0];
-      const NumericalScalar cosTheta(std::abs(N[2]) / N.norm());
+      const NumericalScalar cosTheta = std::abs(N[2]) / N.norm();
       NumericalPoint R(N * (2.0 * cosTheta));
       R[2] -= 1.0;
-      const NumericalScalar cosPhi(std::abs(R[2] / R.norm()));
+      const NumericalScalar cosPhi = std::abs(R[2] / R.norm());
       redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
       greenFace   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
       blueFace    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
@@ -699,9 +699,9 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
     return Mesh();
   }
   // First, the header: it is made of 3 integers, the number of vertices, the number of simplices and the number of elements on the boundary, currently not used by OT
-  UnsignedInteger verticesNumber(0);
-  UnsignedInteger simplicesNumber(0);
-  UnsignedInteger scratch(0);
+  UnsignedInteger verticesNumber = 0;
+  UnsignedInteger simplicesNumber = 0;
+  UnsignedInteger scratch = 0;
   file >> verticesNumber;
   file >> simplicesNumber;
   file >> scratch;
@@ -736,7 +736,7 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
 String Mesh::streamToVTKFormat() const
 {
   if (dimension_ > 3) throw InvalidDimensionException(HERE) << "Error: cannot export a mesh of dimension=" << dimension_ << " into the VTK format. Maximum dimension is 3.";
-  const UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+  const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
   OSS oss;
   // First, the file version and identifier
@@ -750,7 +750,7 @@ String Mesh::streamToVTKFormat() const
   oss << "DATASET UNSTRUCTURED_GRID\n";
   // Fifth, the geometrical and topological data
   // The vertices
-  const UnsignedInteger numVertices(getVerticesNumber());
+  const UnsignedInteger numVertices = getVerticesNumber();
   oss << "POINTS " << numVertices << " float\n";
   for (UnsignedInteger i = 0; i < numVertices; ++i)
   {
@@ -763,7 +763,7 @@ String Mesh::streamToVTKFormat() const
   }
   // The simplices
   oss << "\n";
-  const UnsignedInteger numSimplices(getSimplicesNumber());
+  const UnsignedInteger numSimplices = getSimplicesNumber();
   // If no simplex, assume that it is a cloud of points
   if (numSimplices == 0)
   {
@@ -777,8 +777,8 @@ String Mesh::streamToVTKFormat() const
   }
   // There is at least on simplex. Assume homogeneous simplices,
   // ie all the simplices are of the same kind as the first one
-  UnsignedInteger verticesPerSimplex(1);
-  UnsignedInteger lastIndex(simplices_[0][0]);
+  UnsignedInteger verticesPerSimplex = 1;
+  UnsignedInteger lastIndex = simplices_[0][0];
   while ((verticesPerSimplex <= dimension_) && (simplices_[0][verticesPerSimplex] != lastIndex))
   {
     lastIndex = simplices_[0][verticesPerSimplex];

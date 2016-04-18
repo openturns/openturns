@@ -68,10 +68,10 @@ UnsignedInteger LinearEnumerateFunction::findBinomialCoefficient(const UnsignedI
     const UnsignedInteger dimension,
     UnsignedInteger & binomialCoefficient) const
 {
-  UnsignedInteger n(0);
+  UnsignedInteger n = 0;
   binomialCoefficient = 1;
   // Use floating point arithmetic to avoid overflow
-  NumericalScalar newBinomialCoefficient(1.0);
+  NumericalScalar newBinomialCoefficient = 1.0;
   // Special treatment to avoid roundoff error during conversion
   while(static_cast<UnsignedInteger>(round(newBinomialCoefficient)) <= index)
   {
@@ -95,13 +95,13 @@ UnsignedInteger LinearEnumerateFunction::findBinomialCoefficient(const UnsignedI
 */
 Indices LinearEnumerateFunction::operator() (const UnsignedInteger index) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   Indices result(dimension, 0);
   if (index == 0) return result;
-  UnsignedInteger binomialCoefficient(0);
-  UnsignedInteger degree(findBinomialCoefficient(index, dimension, binomialCoefficient));
+  UnsignedInteger binomialCoefficient = 0;
+  UnsignedInteger degree = findBinomialCoefficient(index, dimension, binomialCoefficient);
   // Loop over the dimension of the remaining polynomial
-  UnsignedInteger currentIndex(index);
+  UnsignedInteger currentIndex = index;
   for (UnsignedInteger i = 0; i < dimension - 1; ++i)
   {
     // Early exit if the remaining polynomial is constant
@@ -111,7 +111,7 @@ Indices LinearEnumerateFunction::operator() (const UnsignedInteger index) const
       return result;
     }
     currentIndex -= binomialCoefficient;
-    const UnsignedInteger remainingDegree(findBinomialCoefficient(currentIndex, dimension - i - 1, binomialCoefficient));
+    const UnsignedInteger remainingDegree = findBinomialCoefficient(currentIndex, dimension - i - 1, binomialCoefficient);
     result[i] = degree - remainingDegree;
     degree = remainingDegree;
   }
@@ -122,14 +122,14 @@ Indices LinearEnumerateFunction::operator() (const UnsignedInteger index) const
 /* The inverse of the association */
 UnsignedInteger LinearEnumerateFunction::inverse(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = indices.getSize();
   if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension.";
   // Quick return for dimension == 1 case
   if (size == 1) return indices[0];
-  UnsignedInteger totalDegree(0);
+  UnsignedInteger totalDegree = 0;
   for (UnsignedInteger i = 0; i < size; ++i) totalDegree += indices[i];
-  UnsignedInteger result(0);
+  UnsignedInteger result = 0;
   // Loop over the marginal degrees
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -148,7 +148,7 @@ UnsignedInteger LinearEnumerateFunction::inverse(const Indices & indices) const
  */
 UnsignedInteger LinearEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   return static_cast<UnsignedInteger>(round(exp(SpecFunc::LnGamma(dimension + strataIndex) - SpecFunc::LnGamma(dimension) - SpecFunc::LnGamma(strataIndex + 1))));
 }
 
@@ -158,7 +158,7 @@ UnsignedInteger LinearEnumerateFunction::getStrataCardinal(const UnsignedInteger
  */
 UnsignedInteger LinearEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   return static_cast<UnsignedInteger>(round(exp(SpecFunc::LnGamma(dimension + strataIndex + 1) - SpecFunc::LnGamma(dimension + 1) - SpecFunc::LnGamma(strataIndex + 1))));
 }
 

@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
       fullprint << "transformation(" << pointLow << ")=" << transformation(pointLow) << std::endl;
       fullprint << "transformation(" << pointHigh << ")=" << transformation(pointHigh) << std::endl;
       // Validation using finite difference
-      NumericalScalar eps(1e-5);
-      NumericalScalar factor(1.0 / (2.0 * eps));
+      NumericalScalar eps = 1e-5;
+      NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradientLow(5, 2);
       Matrix gradientHigh(5, 2);
       NumericalPoint dTdp;
@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
       fullprint << "transformation(" << uLow << ")=" << transformation(uLow) << std::endl;
       fullprint << "transformation(" << uHigh << ")=" << transformation(uHigh) << std::endl;
       // Validation using finite difference
-      NumericalScalar eps(1e-5);
-      NumericalScalar factor(1.0 / (2.0 * eps));
+      NumericalScalar eps = 1e-5;
+      NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradientLow(5, 2);
       Matrix gradientHigh(5, 2);
       NumericalPoint dTdp;

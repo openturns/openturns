@@ -33,9 +33,9 @@ int main(int argc, char *argv[])
   try
   {
 
-    const NumericalScalar Tmin(0.0);
-    const NumericalScalar deltaT(0.1);
-    const UnsignedInteger N(11);
+    const NumericalScalar Tmin = 0.0;
+    const NumericalScalar deltaT = 0.1;
+    const UnsignedInteger N = 11;
 
     /* Initialization of the RegularGrid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, N);

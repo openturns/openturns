@@ -87,13 +87,13 @@ MediumSafe::NumericalScalarCollection MediumSafe::solve(const NumericalMathFunct
     LOGDEBUG(OSS() << "MediumSafe::solve: roots=" << result);
     return result;
   }
-  const NumericalScalar maximumDistance(getMaximumDistance());
-  NumericalScalar stepSize(getStepSize());
+  const NumericalScalar maximumDistance = getMaximumDistance();
+  NumericalScalar stepSize = getStepSize();
   Solver solver(getSolver());
   while(infPoint < maximumDistance)
   {
-    const NumericalScalar supPoint(std::min(infPoint + stepSize, maximumDistance));
-    const NumericalScalar supValue(function(NumericalPoint(1, supPoint))[0]);
+    const NumericalScalar supPoint = std::min(infPoint + stepSize, maximumDistance);
+    const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
     // With this strategy, we stop after the first zero found
     if ((infValue - value) * (supValue - value) < 0.0)
     {

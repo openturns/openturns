@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     Indices set(2);
     set[0] = 3;
     set[1] = 1;
-    Bool parametersSet(true);
+    Bool parametersSet = true;
     NumericalMathFunction g(f, set, parametersSet);
     fullprint << "g=" << g << std::endl;
     NumericalPoint x(set.getSize());

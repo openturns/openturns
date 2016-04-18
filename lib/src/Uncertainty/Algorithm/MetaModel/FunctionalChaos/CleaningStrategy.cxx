@@ -85,7 +85,7 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 void CleaningStrategy::computeInitialBasis()
 {
   // Start with the first set of vectors
-  const UnsignedInteger size(std::min(maximumSize_, maximumDimension_));
+  const UnsignedInteger size = std::min(maximumSize_, maximumDimension_);
   Psi_k_p_ = NumericalMathFunctionCollection(size);
   I_p_ = Indices(size);
   I_p_.fill();
@@ -103,7 +103,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
                                    const NumericalScalar relativeError)
 {
   // The dimension will be adapted, so it is not const
-  UnsignedInteger dimension(alpha_k.getSize());
+  UnsignedInteger dimension = alpha_k.getSize();
   NumericalScalarCollection coefficients(alpha_k.getCollection());
   if (verbose_)
   {
@@ -124,13 +124,13 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
   {
     // We keep at most maximumSize_ elements, the ones that have the largest magnitude and have a magnitude larger or equal to maximumMagnitude * significanceFactor
     // First, find the extrem magnitudes.
-    NumericalScalar largest(std::abs(coefficients[1]));
-    NumericalScalar smallest(largest);
-    NumericalScalar secondSmallest(smallest);
-    UnsignedInteger rankSmallest(1);
+    NumericalScalar largest = std::abs(coefficients[1]);
+    NumericalScalar smallest = largest;
+    NumericalScalar secondSmallest = smallest;
+    UnsignedInteger rankSmallest = 1;
     for (UnsignedInteger i = 2; i < dimension; ++i)
     {
-      const NumericalScalar tmp(std::abs(coefficients[i]));
+      const NumericalScalar tmp = std::abs(coefficients[i]);
       if (tmp > largest) largest = tmp;
       if (tmp < smallest)
       {
@@ -140,7 +140,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
       }
     } // Search for the extrems
     // Second, if the coefficient list is too large (it can be by only one term), remove the smallest term to free a place for the next vector.
-    UnsignedInteger shift(0);
+    UnsignedInteger shift = 0;
     if ((dimension > maximumSize_) && (currentVectorIndex_ < maximumDimension_))
     {
       // Add the smallest element to the removed list
@@ -170,7 +170,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
     // Quick rejection test: nothing to do if smallest >= largest * significanceFactor_
     if (smallest < largest * significanceFactor_)
     {
-      UnsignedInteger currentIndex(0);
+      UnsignedInteger currentIndex = 0;
       for (UnsignedInteger i = 0; i < dimension; ++i)
       {
         if (std::abs(coefficients[i]) >= largest * significanceFactor_)

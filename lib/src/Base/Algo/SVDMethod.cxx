@@ -151,11 +151,11 @@ NumericalPoint SVDMethod::solveNormal(const NumericalPoint & rhs)
 CovarianceMatrix SVDMethod::getGramInverse() const
 {
   // G^{-1}=V\Sigma^{-2}V^T
-  const UnsignedInteger m(vT_.getNbRows());
-  const UnsignedInteger n(vT_.getNbColumns());
+  const UnsignedInteger m = vT_.getNbRows();
+  const UnsignedInteger n = vT_.getNbColumns();
   const MatrixImplementation & vTimpl(*vT_.getImplementation());
   MatrixImplementation sigmaInvVt(m, n);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < n; ++j)
     for (UnsignedInteger i = 0; i < m; ++i)
     {

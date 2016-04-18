@@ -88,7 +88,7 @@ Indices IntervalMesher::getDiscretization() const
 Mesh IntervalMesher::build(const Interval & interval,
                            const Bool diamond) const
 {
-  const UnsignedInteger dimension(interval.getDimension());
+  const UnsignedInteger dimension = interval.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (dimension > 3) throw NotYetImplementedException(HERE) << "In IntervalMesher::build(const Interval & interval, const Bool diamond) const";
 
@@ -97,11 +97,11 @@ Mesh IntervalMesher::build(const Interval & interval,
   if (dimension == 1)
   {
     // We must insure that the interval bounds will be within the vertices
-    const UnsignedInteger n(discretization_[0]);
+    const UnsignedInteger n = discretization_[0];
     NumericalSample vertices(n + 1, 1);
     // First the vertices
-    const NumericalScalar a(interval.getLowerBound()[0]);
-    const NumericalScalar b(interval.getUpperBound()[0]);
+    const NumericalScalar a = interval.getLowerBound()[0];
+    const NumericalScalar b = interval.getUpperBound()[0];
     vertices[0][0] = a;
     vertices[n][0] = b;
     for (UnsignedInteger i = 1; i < n; ++i) vertices[i][0] = (i * b + (n - i) * a) / n;
@@ -118,8 +118,8 @@ Mesh IntervalMesher::build(const Interval & interval,
   } // dimension == 1
   if (dimension == 2)
   {
-    const UnsignedInteger m(discretization_[0]);
-    const UnsignedInteger n(discretization_[1]);
+    const UnsignedInteger m = discretization_[0];
+    const UnsignedInteger n = discretization_[1];
     // First the vertices
     NumericalSample vertices(0, 2);
     NumericalPoint point(2);
@@ -134,7 +134,7 @@ Mesh IntervalMesher::build(const Interval & interval,
     } // j
     // Second the simplices
     Mesh::IndicesCollection simplices(0, Indices(3));
-    UnsignedInteger vertexIndex(0);
+    UnsignedInteger vertexIndex = 0;
     Indices index(3);
     for (UnsignedInteger j = 0; j < n; ++j)
     {
@@ -154,9 +154,9 @@ Mesh IntervalMesher::build(const Interval & interval,
   } // dimension == 2
   if (dimension == 3)
   {
-    const UnsignedInteger m(discretization_[0]);
-    const UnsignedInteger n(discretization_[1]);
-    const UnsignedInteger p(discretization_[2]);
+    const UnsignedInteger m = discretization_[0];
+    const UnsignedInteger n = discretization_[1];
+    const UnsignedInteger p = discretization_[2];
     // First the vertices
     NumericalSample vertices(0, 3);
     NumericalPoint point(3);
@@ -175,10 +175,10 @@ Mesh IntervalMesher::build(const Interval & interval,
     } // k
     // Second the simplices
     Mesh::IndicesCollection simplices(0, Indices(4));
-    UnsignedInteger vertexIndex(0);
-    const UnsignedInteger mp1(m + 1);
-    const UnsignedInteger np1(n + 1);
-    const UnsignedInteger mp1np1(mp1 * np1);
+    UnsignedInteger vertexIndex = 0;
+    const UnsignedInteger mp1 = m + 1;
+    const UnsignedInteger np1 = n + 1;
+    const UnsignedInteger mp1np1 = mp1 * np1;
     Indices index(4);
     for (UnsignedInteger k = 0; k < p; ++k)
     {

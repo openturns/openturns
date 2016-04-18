@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
     CovarianceMatrix kendall = distribution.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
     ChiSquare::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
-    UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(5);
     fullprint << "parameters=" << parameters << std::endl;
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
     // Specific to this distribution
-    NumericalScalar nu(distribution.getNu());
+    NumericalScalar nu = distribution.getNu();
     fullprint << "nu=" << nu << std::endl;
     NumericalPoint standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;

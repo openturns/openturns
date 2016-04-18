@@ -69,25 +69,25 @@ NumericalScalar Bisection::solve(const NumericalMathFunction & function,
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the bisection method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedInteger usedFunctionEvaluation(0);
-  const UnsignedInteger maximumFunctionEvaluation(getMaximumFunctionEvaluation());
+  UnsignedInteger usedFunctionEvaluation = 0;
+  const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
   /* We transform function(x) = value into function(x) - value = 0 */
-  NumericalScalar a(infPoint);
-  NumericalScalar fA(infValue - value);
+  NumericalScalar a = infPoint;
+  NumericalScalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  NumericalScalar b(supPoint);
-  NumericalScalar fB(supValue - value);
+  NumericalScalar b = supPoint;
+  NumericalScalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: bisection method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << ", f(supPoint) - value=" << fB;
-  NumericalScalar c(a);
-  NumericalScalar fC(fA);
+  NumericalScalar c = a;
+  NumericalScalar fC = fA;
   // Main loop
   for (;;)
   {
     // Current error on the root
-    const NumericalScalar error(2.0 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError());
+    const NumericalScalar error = 2.0 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
     // Mid-point step
-    const NumericalScalar delta(0.5 * (b - a));
+    const NumericalScalar delta = 0.5 * (b - a);
     // If the current approximation of the root is good enough, return it
     if ((std::abs(delta) <= error) || (std::abs(fC) <= getResidualError())) break;
     // c is now the mid-point

@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(4);
 
     /* ARMA(p, q) */
-    const UnsignedInteger p(1);
-    const UnsignedInteger q(2);
+    const UnsignedInteger p = 1;
+    const UnsignedInteger q = 2;
 
     /* ARMACoefficients intializing */
     NumericalPoint arCoefficients(p, 0.80);

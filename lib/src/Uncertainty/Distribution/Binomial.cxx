@@ -102,7 +102,7 @@ NumericalScalar Binomial::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
   return std::exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + (n_ - k) * log1p(-p_));
 }
@@ -113,7 +113,7 @@ NumericalScalar Binomial::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
   if (k > n_ - supportEpsilon_) return 1.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
@@ -124,7 +124,7 @@ NumericalScalar Binomial::computeComplementaryCDF(const NumericalPoint & point) 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
   if (k > n_ + supportEpsilon_) return 0.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
@@ -137,7 +137,7 @@ NumericalPoint Binomial::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   NumericalPoint pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE) << "In Binomial::computePDFGradient(const NumericalPoint & point) const";
@@ -149,7 +149,7 @@ NumericalPoint Binomial::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
   throw NotYetImplementedException(HERE) << "In Binomial::computeCDFGradient(const NumericalPoint & point) const";
 }
@@ -193,8 +193,8 @@ void Binomial::computeCovariance() const
 NumericalSample Binomial::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedInteger kMax(static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_))));
+  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
+  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_)));
   NumericalSample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
@@ -287,17 +287,17 @@ NumericalScalar Binomial::computeScalarQuantile(const NumericalScalar prob,
   if (prob <= 0.0) return (tail ? n_ : 0.0);
   if (prob >= 1.0) return (tail ? 0.0 : n_);
   // Initialization by the Cornish-Fisher expansion
-  NumericalScalar qNorm(DistFunc::qNormal(prob, tail));
-  NumericalScalar gamma1(getSkewness()[0]);
-  NumericalScalar gamma2(getKurtosis()[0] - 3.0);
-  NumericalScalar quantile(round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0)));
+  NumericalScalar qNorm = DistFunc::qNormal(prob, tail);
+  NumericalScalar gamma1 = getSkewness()[0];
+  NumericalScalar gamma2 = getKurtosis()[0] - 3.0;
+  NumericalScalar quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
   if (quantile < 0.0) quantile = 0.0;
   if (quantile > n_) quantile = n_;
   // CDF of the guess
-  NumericalScalar cdf(tail ? computeComplementaryCDF(quantile) : computeCDF(quantile));
+  NumericalScalar cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, Cornish-Fisher estimate=" << quantile << ", cdf=" << cdf);
-  NumericalScalar oldCDF(cdf);
-  const NumericalScalar step(tail ? -1.0 : 1.0);
+  NumericalScalar oldCDF = cdf;
+  const NumericalScalar step = tail ? -1.0 : 1.0;
   // Do we have to
   while (cdf >= prob)
   {

@@ -68,7 +68,7 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
-  const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
+  const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
@@ -409,7 +409,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   int m(nbRows_);
   int n(matrix.nbColumns_);
 
-  NumericalScalar alpha(1.0);
+  NumericalScalar alpha = 1.0;
 
   // Lapack routine
   dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
@@ -419,14 +419,14 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
 /* Integer power, general matrix */
 MatrixImplementation MatrixImplementation::genPower(const UnsignedInteger n) const
 {
-  Bool first(true);
-  UnsignedInteger exponent(n);
+  Bool first = true;
+  UnsignedInteger exponent = n;
   MatrixImplementation y;
   MatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedInteger t(exponent % 2);
+    const UnsignedInteger t = exponent % 2;
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -451,14 +451,14 @@ MatrixImplementation MatrixImplementation::genPower(const UnsignedInteger n) con
 /* Integer power, symmetric matrix */
 MatrixImplementation MatrixImplementation::symPower(const UnsignedInteger n) const
 {
-  Bool first(true);
-  UnsignedInteger exponent(n);
+  Bool first = true;
+  UnsignedInteger exponent = n;
   MatrixImplementation y;
   MatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedInteger t(exponent % 2);
+    const UnsignedInteger t = exponent % 2;
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -505,7 +505,7 @@ Bool MatrixImplementation::isTriangular(Bool lower) const
 Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
 {
   const MatrixImplementation &lhs(*this);
-  Bool equality(true);
+  Bool equality = true;
 
   if (&lhs != &rhs)   // Not the same object
   {
@@ -520,7 +520,7 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
 
 Bool MatrixImplementation::isSymmetric() const
 {
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("MatrixImplementation-SymmetryThreshold"));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("MatrixImplementation-SymmetryThreshold");
   if ( nbRows_ == nbColumns_ )
   {
     for ( UnsignedInteger i = 1; i < nbRows_; ++ i )
@@ -587,7 +587,7 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
-      const NumericalScalar value((*this)(i, j));
+      const NumericalScalar value = (*this)(i, j);
       // Things are done this way to prevent spurious -0.0
       if (std::abs(value) < 0.5 * threshold) result(i, j) = 0.0;
       else result(i, j) = threshold * round(value / threshold);
@@ -649,7 +649,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
 NumericalPoint MatrixImplementation::solveLinearSystemRect (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedInteger m(b.getDimension());
+  const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
@@ -742,7 +742,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const Matrix
 NumericalPoint MatrixImplementation::solveLinearSystemSquare (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedInteger m(b.getDimension());
+  const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
@@ -784,7 +784,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
 NumericalPoint MatrixImplementation::solveLinearSystemSym (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedInteger dimension(b.getDimension());
+  const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   MatrixImplementation B(dimension, 1, b);
@@ -823,7 +823,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImp
 NumericalPoint MatrixImplementation::solveLinearSystemCov (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedInteger dimension(b.getDimension());
+  const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   MatrixImplementation B(dimension, 1, b);
@@ -837,11 +837,11 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
-  NumericalScalar logAbsoluteDeterminant(0.0);
+  NumericalScalar logAbsoluteDeterminant = 0.0;
   sign = 1.0;
   if (n <= 2)
   {
-    NumericalScalar value(0.0);
+    NumericalScalar value = 0.0;
     if (n == 1) value = (*this)(0, 0);
     else value = (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
     if (value == 0.0)
@@ -870,7 +870,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
     // Determinant computation
     for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
     {
-      const NumericalScalar pivot(A[i * (ipiv.size() + 1)]);
+      const NumericalScalar pivot = A[i * (ipiv.size() + 1)];
       if (std::abs(pivot) == 0.0)
       {
         logAbsoluteDeterminant = -SpecFunc::MaxNumericalScalar;
@@ -889,8 +889,8 @@ NumericalScalar MatrixImplementation::computeDeterminant (const Bool keepIntact)
 {
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
-  NumericalScalar sign(0.0);
-  const NumericalScalar logAbsoluteDeterminant(computeLogAbsoluteDeterminant(sign, keepIntact));
+  NumericalScalar sign = 0.0;
+  const NumericalScalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
   if (logAbsoluteDeterminant == -SpecFunc::MaxNumericalScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
@@ -907,7 +907,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      std::vector<int> ipiv (n);
      char uplo('L');
      int info;
-     NumericalScalar determinant(1.0);
+     NumericalScalar determinant = 1.0;
      int lwork(-1);
      double lwork_d;
      int luplo(1);
@@ -949,8 +949,8 @@ NumericalScalar MatrixImplementation::computeDeterminantSym (const Bool keepInta
 {
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(1, 0);
-  NumericalScalar sign(0.0);
-  const NumericalScalar logAbsoluteDeterminant(computeLogAbsoluteDeterminant(sign, keepIntact));
+  NumericalScalar sign = 0.0;
+  const NumericalScalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
   if (logAbsoluteDeterminant == -SpecFunc::MaxNumericalScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
@@ -958,7 +958,7 @@ NumericalScalar MatrixImplementation::computeDeterminantSym (const Bool keepInta
 /* Compute trace */
 NumericalScalar MatrixImplementation::computeTrace() const
 {
-  NumericalScalar trace(0.0);
+  NumericalScalar trace = 0.0;
   for (UnsignedInteger i = 0; i < nbRows_; ++i) trace += (*this)(i, i);
   return trace;
 }
@@ -1034,7 +1034,7 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEV
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   // Cast the eigenvectors into OpenTURNS data structures
   v = ComplexMatrixImplementation(n, n);
-  UnsignedInteger j(0);
+  UnsignedInteger j = 0;
   while (j < static_cast<UnsignedInteger>(n))
   {
     // Real eigenvalue
@@ -1303,7 +1303,7 @@ void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
   // Working copy of vector
   NumericalPoint work(cholesky.solveLinearSystemTri(vector));
   // Parameters of the Givens rotation
-  NumericalScalar qs(sqrt(1.0 - work.normSquare()));
+  NumericalScalar qs = sqrt(1.0 - work.normSquare());
   NumericalPoint cosI(dimension);
   NumericalPoint sinI(dimension);
   for (SignedInteger i = dimension - 1; i >= 0; --i)
@@ -1321,7 +1321,7 @@ void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
   work = NumericalPoint(dimension, 0.0);
   int size(0);
   int one(1);
-  UnsignedInteger shift((dimension - 1) * (dimension + 1));
+  UnsignedInteger shift = (dimension - 1) * (dimension + 1);
   for (SignedInteger i = dimension - 1; i >= 0; --i)
   {
     ++size;

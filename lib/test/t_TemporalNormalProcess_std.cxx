@@ -34,10 +34,10 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger defaultDimension(1);
+    const UnsignedInteger defaultDimension = 1;
 
     /* Spatial dimension of the model */
-    const UnsignedInteger spatialDimension(1);
+    const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
     SecondOrderModel mySecondOrderModel(myModel);
     fullprint << "mySecondOrderModel=" << mySecondOrderModel << std::endl;
 
-    const NumericalScalar tmin(0.0);
-    const NumericalScalar step(0.1);
-    const UnsignedInteger n(11);
+    const NumericalScalar tmin = 0.0;
+    const NumericalScalar step = 0.1;
+    const UnsignedInteger n = 11;
 
     RegularGrid myTimeGrid(tmin, step, n);
-    const UnsignedInteger size(100);
+    const UnsignedInteger size = 100;
 
     TemporalNormalProcess myProcess(myModel, myTimeGrid);
     fullprint << "myProcess=" << myProcess << std::endl;

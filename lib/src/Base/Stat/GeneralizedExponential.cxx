@@ -80,7 +80,7 @@ NumericalScalar GeneralizedExponential::computeStandardRepresentative(const Nume
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar tauOverThetaNorm(tauOverTheta.norm());
+  const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
   return tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
 }
 
@@ -93,7 +93,7 @@ Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
   const NumericalPoint tau(s - t);
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar norm2(tauOverTheta.normSquare());
+  const NumericalScalar norm2 = tauOverTheta.normSquare();
   // For zero norm
   if (norm2 == 0.0)
   {
@@ -110,8 +110,8 @@ Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
     return Matrix(spatialDimension_, 1);
   }
   // General case
-  const NumericalScalar exponent(-std::pow(sqrt(norm2), p_));
-  const NumericalScalar value(p_ * exponent * std::exp(exponent) / norm2);
+  const NumericalScalar exponent = -std::pow(sqrt(norm2), p_);
+  const NumericalScalar value = p_ * exponent * std::exp(exponent) / norm2;
   // Needs tau/theta ==> reuse same NP
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] /= scale_[i];
   return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0];

@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(3);
     // Default spatial dimension parameter to evaluate the model
     const UnsignedInteger dimension = 2;

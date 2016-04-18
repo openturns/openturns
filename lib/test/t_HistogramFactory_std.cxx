@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger collectionSize(4);
+    UnsignedInteger collectionSize = 4;
     Histogram::HistogramPairCollection collection(collectionSize);
     collection[0] = HistogramPair(1.0, 0.5);
     collection[1] = HistogramPair(0.7, 1.5);
     collection[2] = HistogramPair(1.2, 3.5);
     collection[3] = HistogramPair(0.9, 2.5);
     Histogram distribution(-1.5, collection);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     HistogramFactory factory;
     Distribution estimatedDistribution(factory.build(sample));

@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
     RandomGeneratorState initialState(RandomGenerator::GetState());
     fullprint << "state index=" << initialState.getIndex() << " state array=" << initialState.getBuffer() << std::endl;
     // Test the generation of one realization
-    NumericalScalar realization(RandomGenerator::Generate());
+    NumericalScalar realization = RandomGenerator::Generate();
     fullprint << "one realization=" << realization << std::endl;
     RandomGeneratorState state(RandomGenerator::GetState());
     fullprint << "new state index=" << state.getIndex() << std::endl;
     // Test the generation of several realizations
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalPoint several(RandomGenerator::Generate(size));
     fullprint << size << " realizations, first=" << several[0] << ", last=" << several[size  - 1] << std::endl;
     // Test the state accessor for writing
@@ -51,9 +51,9 @@ int main(int argc, char *argv[])
     // Test the uniformity of the random generator
     size = 100000;
     NumericalPoint manyPoints(RandomGenerator::Generate(size));
-    UnsignedInteger slice(10);
+    UnsignedInteger slice = 10;
     NumericalPoint frequencies(slice, 0.0);
-    NumericalScalar mean(0.0);
+    NumericalScalar mean = 0.0;
     for (UnsignedInteger i = 0; i < size; i++)
     {
       frequencies[(UnsignedInteger)(slice * manyPoints[i])]++;

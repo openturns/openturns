@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
       // Define a point
       NumericalPoint point( distribution.getDimension(), 1.0 );
       fullprint << "Point= " << point << std::endl;
-      UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+      UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
       PlatformInfo::SetNumericalPrecision(5);
       // Show PDF and CDF of point
       NumericalScalar LPDF = distribution.computeLogPDF( point );

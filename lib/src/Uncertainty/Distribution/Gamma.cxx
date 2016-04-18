@@ -157,7 +157,7 @@ void Gamma::setMuSigma(const NumericalScalar mu,
                        const NumericalScalar sigma)
 {
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
-  const NumericalScalar eta((mu - gamma_) / sigma);
+  const NumericalScalar eta = (mu - gamma_) / sigma;
   setKLambda(eta * eta, eta / sigma);
 }
 
@@ -214,8 +214,8 @@ void Gamma::update()
   if (k_ >= 6.9707081224932495879)
   {
     static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
-    const NumericalScalar ik(1.0 / k_);
-    const NumericalScalar ik2(ik * ik);
+    const NumericalScalar ik = 1.0 / k_;
+    const NumericalScalar ik2 = ik * ik;
     normalizationFactor_ = std::log(lambda_) + k_ - 0.5 * std::log(k_) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
   // For small k, the normalization factor is:
@@ -238,7 +238,7 @@ NumericalPoint Gamma::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, ((k_ - 1.0) / x - lambda_) * computePDF(point));
 }
@@ -249,7 +249,7 @@ NumericalScalar Gamma::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -259,7 +259,7 @@ NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   // From textbook, we have log(PDF(x)) =  - lambda * (x - gamma) + (k - 1) * log(x - gamma) + k * log(lambda) - log(Gamma(k))
-  const NumericalScalar u(lambda_ * (point[0] - gamma_));
+  const NumericalScalar u = lambda_ * (point[0] - gamma_);
   if (u <= 0.0) return -SpecFunc::MaxNumericalScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - lambda * (x - gamma) + (k - 1) * log(lambda * (x - gamma) / k)
@@ -272,7 +272,7 @@ NumericalScalar Gamma::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(k_, lambda_ * x);
@@ -282,7 +282,7 @@ NumericalScalar Gamma::computeComplementaryCDF(const NumericalPoint & point) con
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(k_, lambda_ * x, true);
@@ -305,9 +305,9 @@ NumericalPoint Gamma::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(3, 0.0);
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf(computePDF(point));
+  const NumericalScalar pdf = computePDF(point);
   pdfGradient[0] = (std::log(x) + std::log(lambda_) - SpecFunc::Psi(k_)) * pdf;
   pdfGradient[1] = (k_ / lambda_ - x) * pdf;
   pdfGradient[2] = ((1.0 - k_) / x + lambda_) * pdf;
@@ -320,11 +320,11 @@ NumericalPoint Gamma::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(3, 0.0);
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar lambdaX(lambda_ * x);
-  const NumericalScalar factor(std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX));
-  const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar lambdaX = lambda_ * x;
+  const NumericalScalar factor = std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX);
+  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambda_ * x) - DistFunc::pGamma(k_ - eps, lambda_ * x)) / (2.0 * eps);
   cdfGradient[1] = factor / lambda_;
   cdfGradient[2] = -factor / x;

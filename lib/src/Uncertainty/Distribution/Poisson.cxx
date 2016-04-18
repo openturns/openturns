@@ -97,7 +97,7 @@ NumericalScalar Poisson::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return std::exp(k * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0));
 }
@@ -108,7 +108,7 @@ NumericalScalar Poisson::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_, true);
 }
@@ -117,7 +117,7 @@ NumericalScalar Poisson::computeComplementaryCDF(const NumericalPoint & point) c
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_);
 }
@@ -127,7 +127,7 @@ NumericalPoint Poisson::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   NumericalPoint pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   return NumericalPoint(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
@@ -139,7 +139,7 @@ NumericalPoint Poisson::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
 }
@@ -210,8 +210,8 @@ void Poisson::computeCovariance() const
 NumericalSample Poisson::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedInteger kMax(static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0])));
+  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
+  const UnsignedInteger kMax = static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0]));
   NumericalSample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k)
     result.add(NumericalPoint(1, k));

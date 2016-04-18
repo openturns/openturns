@@ -74,7 +74,7 @@ String IndicatorNumericalMathEvaluationImplementation::__repr__() const
 /* Operator () */
 NumericalPoint IndicatorNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const NumericalPoint result(1, (comparisonOperator_.compare(p_evaluation_->operator()(inP)[0], threshold_) ? 1.0 : 0.0));
   ++callsNumber_;

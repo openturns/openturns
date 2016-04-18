@@ -44,13 +44,13 @@ int main(int argc, char *argv[])
 
     /* Evaluation of values between t=0 and t=1 using a step = 0.01 */
     const UnsignedInteger    steps(100);
-    const NumericalScalar tMin(0.0);
-    const NumericalScalar tMax(1.0);
-    const NumericalScalar tStep((tMax - tMin) / steps);
+    const NumericalScalar tMin = 0.0;
+    const NumericalScalar tMax = 1.0;
+    const NumericalScalar tStep = (tMax - tMin) / steps;
 
     for (UnsignedInteger i = 0; i < steps + 1; ++i )
     {
-      const NumericalScalar t(tMin + i * tStep);
+      const NumericalScalar t = tMin + i * tStep;
       fullprint << "t = " << t
                 << " Hanning = " << myHanningFilter(t)
                 << " Hamming = " << myHammingFilter(t) << std::endl;

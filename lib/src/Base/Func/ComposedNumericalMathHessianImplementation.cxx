@@ -80,7 +80,7 @@ String ComposedNumericalMathHessianImplementation::__repr__() const
 /* Method hessian() returns the symmetric tensor of the second gradient of the function at point */
 SymmetricTensor ComposedNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   // Hessian of the composed function fog, g:R^n->R^p, f:R^p->R^q so fog:R^n->R^q
@@ -90,8 +90,8 @@ SymmetricTensor ComposedNumericalMathHessianImplementation::hessian(const Numeri
   const Matrix p_leftGradientIn(p_leftGradient_->gradient(p_rightIn));
   const SymmetricTensor p_leftHessianIn(p_leftHessian_->hessian(p_rightIn));
   // Get the several dimensions
-  const UnsignedInteger outputDimension(getOutputDimension());
-  const UnsignedInteger innerDimension(p_rightIn.getDimension());
+  const UnsignedInteger outputDimension = getOutputDimension();
+  const UnsignedInteger innerDimension = p_rightIn.getDimension();
   SymmetricTensor result(inputDimension, outputDimension);
   /* We unroll the formula:
    *  D2(h)(x) = D2(f)(g(x))D(g)(x)D(g)(x)+D(f)(g(x))D2(g)(x)

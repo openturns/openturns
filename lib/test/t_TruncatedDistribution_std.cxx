@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 static NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
@@ -116,9 +116,9 @@ int main(int argc, char *argv[])
       fullprint << "Standard representative=" << distribution[testCase].getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution
-      NumericalScalar lowerBound(distribution[testCase].getLowerBound());
+      NumericalScalar lowerBound = distribution[testCase].getLowerBound();
       fullprint << "lowerBound=" << lowerBound << std::endl;
-      NumericalScalar upperBound(distribution[testCase].getUpperBound());
+      NumericalScalar upperBound = distribution[testCase].getUpperBound();
       fullprint << "upperBound=" << upperBound << std::endl;
 
     }

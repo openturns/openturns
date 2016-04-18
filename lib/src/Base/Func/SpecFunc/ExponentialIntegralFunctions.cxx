@@ -47,7 +47,7 @@ namespace ExponentialIntegralFunctions
 
   NumericalComplex Ei(const NumericalComplex & z)
   {
-    const NumericalScalar absZ(std::abs(z));
+    const NumericalScalar absZ = std::abs(z);
     if (absZ >= SpecFunc::LogMaxNumericalScalar) return std::exp(z) / z + NumericalComplex(0.0, sign(std::imag(z)) * M_PI);
     if (absZ > 2.0 - 1.035 * std::log(SpecFunc::Precision)) return EiAsymptoticSeries(z);
     if ((absZ > 1.0) && ((std::real(z) < 0.0) || (std::abs(std::imag(z)) > 1.0))) return EiContinuedFractionForward(z);
@@ -127,8 +127,8 @@ namespace ExponentialIntegralFunctions
       }
     for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
       {
-        const NumericalScalar l(2 * k + 1);
-        const NumericalScalar k2(k * k);
+        const NumericalScalar l = 2 * k + 1;
+        const NumericalScalar k2 = k * k;
         c = 1.0 / (l - z - k2 * c);
         d = 1.0 / (l - z - k2 * d);
         const NumericalComplex old(ei);

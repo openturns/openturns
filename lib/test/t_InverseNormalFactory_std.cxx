@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     InverseNormal distribution(2.5, 1.5);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     InverseNormalFactory factory;
     CovarianceMatrix covariance;

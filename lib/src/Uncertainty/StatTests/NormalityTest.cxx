@@ -39,15 +39,15 @@ TestResult NormalityTest::AndersonDarlingNormal(const NumericalSample & sample,
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform an Anderson Darling normality test with sample of dimension > 1.";
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform an Anderson Darling normality test with sample of size < 8.";
   NumericalSample sortedSample(sample.sort());
-  NumericalScalar mean(sortedSample.computeMean()[0]);
-  NumericalScalar sd(sortedSample.computeStandardDeviationPerComponent()[0]);
-  const UnsignedInteger size(sample.getSize());
-  NumericalScalar testStatistic(0.0);
-  UnsignedInteger effectiveIndex(0);
+  NumericalScalar mean = sortedSample.computeMean()[0];
+  NumericalScalar sd = sortedSample.computeStandardDeviationPerComponent()[0];
+  const UnsignedInteger size = sample.getSize();
+  NumericalScalar testStatistic = 0.0;
+  UnsignedInteger effectiveIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar yi(DistFunc::pNormal((sortedSample[i][0] - mean) / sd));
-    NumericalScalar yni(1.0 - DistFunc::pNormal((sortedSample[size - i - 1][0] - mean) / sd));
+    NumericalScalar yi = DistFunc::pNormal((sortedSample[i][0] - mean) / sd);
+    NumericalScalar yni = 1.0 - DistFunc::pNormal((sortedSample[size - i - 1][0] - mean) / sd);
     if ((yi > 0.0) && (yni > 0.0))
     {
       testStatistic += (2.0 * effectiveIndex + 1) * (log(yi) + log(yni));
@@ -57,9 +57,9 @@ TestResult NormalityTest::AndersonDarlingNormal(const NumericalSample & sample,
   testStatistic /= effectiveIndex;
   testStatistic = (-NumericalScalar(effectiveIndex) - testStatistic);
   // Corrective factor for small sample size
-  NumericalScalar adjustedStatistic(testStatistic * (1.0 + 0.75 / effectiveIndex + 2.25 / (effectiveIndex * effectiveIndex)));
+  NumericalScalar adjustedStatistic = testStatistic * (1.0 + 0.75 / effectiveIndex + 2.25 / (effectiveIndex * effectiveIndex));
   // Compute approximate p-value
-  NumericalScalar pValue(1.0);
+  NumericalScalar pValue = 1.0;
   if (adjustedStatistic >= -1.38)
   {
     pValue = 1 - exp(-13.436 + 101.14 * adjustedStatistic - 223.73 * adjustedStatistic * adjustedStatistic);
@@ -90,20 +90,20 @@ TestResult NormalityTest::CramerVonMisesNormal(const NumericalSample & sample,
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform a Cramer Von-Mises normality test with sample of dimension > 1.";
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform a Cramer Von-Mises normality test with sample of size < 8.";
   NumericalSample sortedSample(sample.sort());
-  NumericalScalar mean(sortedSample.computeMean()[0]);
-  NumericalScalar sd(sortedSample.computeStandardDeviationPerComponent()[0]);
-  const UnsignedInteger size(sample.getSize());
-  NumericalScalar testStatistic(1.0 / (12.0 * size));
+  NumericalScalar mean = sortedSample.computeMean()[0];
+  NumericalScalar sd = sortedSample.computeStandardDeviationPerComponent()[0];
+  const UnsignedInteger size = sample.getSize();
+  NumericalScalar testStatistic = 1.0 / (12.0 * size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar yi(DistFunc::pNormal((sortedSample[i][0] - mean) / sd));
-    NumericalScalar delta(yi - (2.0 * i + 1.0) / (2.0 * size));
+    NumericalScalar yi = DistFunc::pNormal((sortedSample[i][0] - mean) / sd);
+    NumericalScalar delta = yi - (2.0 * i + 1.0) / (2.0 * size);
     testStatistic += delta * delta;
   }
   // Corrective factor for small sample size
-  NumericalScalar adjustedStatistic(testStatistic * (1.0 + 0.5 / size));
+  NumericalScalar adjustedStatistic = testStatistic * (1.0 + 0.5 / size);
   // Compute approximate p-value
-  NumericalScalar pValue(1.0);
+  NumericalScalar pValue = 1.0;
   if (adjustedStatistic >= -0.2)
   {
     pValue = 1 - exp(-13.953 + 775.5 * adjustedStatistic - 12542.61 * adjustedStatistic * adjustedStatistic);

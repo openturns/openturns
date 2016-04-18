@@ -153,7 +153,7 @@ Bool Interval::isEmpty() const
 /* Check if the given point is inside of the closed interval */
 Bool Interval::contains(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -168,7 +168,7 @@ Bool Interval::contains(const NumericalPoint & point) const
 /* Compute the numerical volume of the interval */
 void Interval::computeVolume() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 0)
   {
     volume_ = 0.0;
@@ -189,7 +189,7 @@ void Interval::computeVolume() const
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
 Bool Interval::numericallyContains(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] < lowerBound_[i]) || (point[i] > upperBound_[i])) return false;

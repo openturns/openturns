@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << NumericalPoint(1, (distribution.computePDF( point + NumericalPoint(1, eps) ) - distribution.computePDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps)) << std::endl;
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
     // Specific to this distribution
-    NumericalScalar nu(distribution.getNu());
+    NumericalScalar nu = distribution.getNu();
     fullprint << "nu=" << nu << std::endl;
     NumericalPoint standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;
