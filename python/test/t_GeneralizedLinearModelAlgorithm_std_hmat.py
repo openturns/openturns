@@ -28,8 +28,8 @@ try:
     X = ot.NumericalSample(sampleSize, spatialDimension)
     X2 = ot.NumericalSample(sampleSize, spatialDimension)
     for i in range(sampleSize):
-      X[i,0] = 3.0 + i
-      X2[i,0] = 2.5 + i
+        X[i,0] = 3.0 + i
+        X2[i,0] = 2.5 + i
     X[0,0] = 1.0
     X[1,0] = 3.0
     X2[0,0] = 2.0

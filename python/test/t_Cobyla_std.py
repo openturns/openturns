@@ -76,5 +76,3 @@ for minimization in [True, False]:
     algo.run()
     result = algo.getResult()
     print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-
-

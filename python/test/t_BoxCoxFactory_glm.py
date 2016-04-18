@@ -44,4 +44,3 @@ myBoxCox = factory.build(inputSample, outputSample, covarianceModel, basis, shif
 
 print("myBoxCox (GLM) =", myBoxCox)
 print("GLM result     =", result)
-

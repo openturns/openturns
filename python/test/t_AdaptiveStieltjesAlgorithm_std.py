@@ -25,7 +25,7 @@ try:
     for i in range(iMax):
         print(distribution.getClassName() + " Reference(", i, ")=", clean(algo0.getRecurrenceCoefficients(i)))
         print(distribution.getClassName() + " AdaStielj(", i, ")=", clean(algo1.getRecurrenceCoefficients(i)))
-    
+
     # Second test
     distribution = Beta(0.5, 3.0, -1.0, 1.0)
     algo0 = JacobiFactory(-0.5, 1.5)

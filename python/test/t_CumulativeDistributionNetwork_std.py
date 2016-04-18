@@ -11,17 +11,17 @@ try:
     distribution = ot.CumulativeDistributionNetwork([ot.Normal(2)]*2, graph)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
-    
+
     # Is this distribution elliptical ?
     print("Elliptical = ", distribution.isElliptical())
-    
+
     # Is this distribution continuous ?
     print("Continuous = ", distribution.isContinuous())
-    
+
     # Test for realization of distribution
     oneRealization = distribution.getRealization()
     print("oneRealization=", oneRealization)
-    
+
     # Test for sampling
     size = 10000
     oneSample = distribution.getSample( size )
@@ -32,7 +32,7 @@ try:
     # Define a point
     point = [1.0]*distribution.getDimension()
     print("Point= ", point)
-    
+
     # Show PDF and CDF of point
     LPDF = distribution.computeLogPDF( point )
     print("log pdf =%.4e" % LPDF)

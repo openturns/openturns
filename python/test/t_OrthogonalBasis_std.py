@@ -25,6 +25,3 @@ x = [0.5] * dim
 for i in range(10):
     f = basis.build(i)
     print('i=', i, 'f(X)=', f(x))
-
-
-

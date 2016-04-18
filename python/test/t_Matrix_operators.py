@@ -93,4 +93,3 @@ w = ot.NumericalPoint([1.0, 2.0])
 sq = ot.SquareComplexMatrix(sm)
 print('sm * w=', sm * w)
 print('sq * w=', sq * w)
-

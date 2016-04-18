@@ -111,4 +111,3 @@ for testCase in range(len(distribution)):
               referenceDistribution[testCase].getStandardMoment(i))
     print('Standard representative=', referenceDistribution[
           testCase].getStandardRepresentative())
-
