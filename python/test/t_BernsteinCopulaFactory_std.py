@@ -18,8 +18,8 @@ try:
         for m in range(11):
             for n in range(11):
                 point = [0.1 * m, 0.1 * n]
-                max_error = max(
-                    max_error, abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)))
+                max_error = max(max_error,
+                                abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)))
         print("Max. error=%.5f" % max_error)
 
 except:
