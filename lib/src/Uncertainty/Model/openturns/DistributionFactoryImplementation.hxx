@@ -71,7 +71,7 @@ public:
 
   /** Build the distribution and the parameter distribution in a new parametrization */
   virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample,
-                                                   const DistributionParameters & parameters) const;
+      const DistributionParameters & parameters) const;
 
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;

@@ -267,7 +267,7 @@ void MeixnerDistribution::update()
   // Update the bounds for the ratio of uniform sampling algorithm
   const MeixnerBounds boundsFunctions(*this);
 
-  // define objectives functions 
+  // define objectives functions
   NumericalMathFunction fB(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveB, 1, 1));
   const NumericalPoint epsilon(1.0e-5 * getStandardDeviation());
   const CenteredFiniteDifferenceGradient gradientB(epsilon, fB.getEvaluation());
@@ -277,13 +277,13 @@ void MeixnerDistribution::update()
   const CenteredFiniteDifferenceGradient gradientCD(epsilon, fCD.getEvaluation());
   fCD.setGradient(gradientCD.clone());
 
-  // Initilalyse Optimization problems 
+  // Initilalyse Optimization problems
   OptimizationProblem problem;
   problem.setBounds(getRange());
   solver_.setStartingPoint(getMean());
 
   // Define Optimization problem1 : maximization fB
-  problem.setMinimization(false);	
+  problem.setMinimization(false);
   problem.setObjective(fB);
   solver_.setProblem(problem);
   solver_.run();
@@ -291,13 +291,13 @@ void MeixnerDistribution::update()
 
   // Define Optimization problem2 : minimization fCD
   problem.setMinimization(true);
-  problem.setObjective(fCD);	
+  problem.setObjective(fCD);
   solver_.setProblem(problem);
   solver_.run();
   c_ = solver_.getResult().getOptimalValue()[0];
 
 // Define Optimization problem3 : maximization fCD
-  problem.setMinimization(false);	
+  problem.setMinimization(false);
   solver_.setProblem(problem);
   solver_.run();
   dc_ = solver_.getResult().getOptimalValue()[0] - c_;
@@ -443,7 +443,7 @@ NumericalPoint MeixnerDistribution::getParameter() const
 
 void MeixnerDistribution::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = MeixnerDistribution(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);

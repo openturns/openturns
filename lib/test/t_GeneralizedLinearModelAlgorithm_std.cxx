@@ -68,19 +68,19 @@ int main(int argc, char *argv[])
     NumericalSample X(sampleSize, spatialDimension);
     NumericalSample X2(sampleSize, spatialDimension);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
-      {
-        X[i][0] = 3.0 + i;
-        X2[i][0] = 2.5 + i;
-      }
+    {
+      X[i][0] = 3.0 + i;
+      X2[i][0] = 2.5 + i;
+    }
     X[0][0] = 1.0;
     X[1][0] = 3.0;
     X2[0][0] = 2.0;
     X2[1][0] = 4.0;
     NumericalSample Y = model(X);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
-      {
-        Y[i][0] += 0.01 * DistFunc::rNormal();
-      }
+    {
+      Y[i][0] += 0.01 * DistFunc::rNormal();
+    }
     // Add a small noise to data
     NumericalSample Y2 = model(X2);
 

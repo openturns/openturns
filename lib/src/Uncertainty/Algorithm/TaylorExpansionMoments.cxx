@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation 
+ *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *

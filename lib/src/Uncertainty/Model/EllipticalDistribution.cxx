@@ -640,11 +640,11 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
 NumericalPoint EllipticalDistribution::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint point(2 * dimension + (dimension > 1 ? ((dimension-1)*dimension)/2 : 0));
+  NumericalPoint point(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    point[2*i] = mean_[i];
-    point[2*i+1] = sigma_[i];
+    point[2 * i] = mean_[i];
+    point[2 * i + 1] = sigma_[i];
   }
   UnsignedInteger index = 2 * dimension;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -670,10 +670,11 @@ void EllipticalDistribution::setParameter(const NumericalPoint & parameters)
   R_ = CorrelationMatrix(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    mean_[i] = parameters[2*i];
-    sigma_[i] = parameters[2*i+1];
+    mean_[i] = parameters[2 * i];
+    sigma_[i] = parameters[2 * i + 1];
   }
-  if (dimension > 1) {
+  if (dimension > 1)
+  {
     UnsignedInteger index = 2 * dimension;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
@@ -693,11 +694,11 @@ void EllipticalDistribution::setParameter(const NumericalPoint & parameters)
 Description EllipticalDistribution::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
-  Description description(2 * dimension + (dimension > 1 ? ((dimension-1)*dimension)/2 : 0));
+  Description description(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    description[2*i] = OSS() << "mean_" << i;
-    description[2*i+1] = OSS() << "standard_deviation_" << i;
+    description[2 * i] = OSS() << "mean_" << i;
+    description[2 * i + 1] = OSS() << "standard_deviation_" << i;
   }
   UnsignedInteger index = 2 * dimension;
   for (UnsignedInteger i = 0; i < dimension; ++ i)

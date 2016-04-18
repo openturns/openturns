@@ -176,19 +176,19 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   NumericalMathFunction f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
   f.setGradient(gradient);
-  
-  // Define Optimization problem 
+
+  // Define Optimization problem
   OptimizationProblem problem;
   problem.setObjective(f);
-  
+
   const UnsignedInteger dimension = problem.getObjective().getInputDimension();
   NumericalPoint parametersLowerBound(dimension, -1.0);
   NumericalPoint parametersUpperBound(dimension,  1.0);
-  problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0))); 
+  problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0)));
 
   solver_.setProblem(problem);
   solver_.setStartingPoint(NumericalPoint(dimension, 0.0));
-  
+
   // run Optimization problem
   solver_.run();
 

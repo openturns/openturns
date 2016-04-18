@@ -39,7 +39,7 @@ class OT_API CumulativeDistributionNetwork
   : public DistributionImplementation
 {
   CLASSNAME;
- public:
+public:
 
   /** A type for distribution collection */
   typedef Collection<Distribution>           DistributionCollection;
@@ -111,10 +111,10 @@ class OT_API CumulativeDistributionNetwork
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
- protected:
+protected:
 
 
- private:
+private:
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

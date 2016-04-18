@@ -53,12 +53,12 @@ OptimizationResult::OptimizationResult()
 
 /* Standard constructor */
 OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
-    const NumericalPoint &  optimalValue,
-    const UnsignedInteger iterationNumber,
-    const NumericalScalar absoluteError,
-    const NumericalScalar relativeError,
-    const NumericalScalar residualError,
-    const NumericalScalar constraintError)
+                                       const NumericalPoint &  optimalValue,
+                                       const UnsignedInteger iterationNumber,
+                                       const NumericalScalar absoluteError,
+                                       const NumericalScalar relativeError,
+                                       const NumericalScalar residualError,
+                                       const NumericalScalar constraintError)
   : PersistentObject()
   , optimalPoint_(optimalPoint)
   , optimalValue_(optimalValue)
@@ -260,11 +260,11 @@ void OptimizationResult::update(const NumericalPoint & OptimalPoint, UnsignedInt
 
 /* Incremental history storage */
 void OptimizationResult::store(const NumericalPoint & x,
-    const NumericalPoint & y,
-    const NumericalScalar absoluteError,
-    const NumericalScalar relativeError,
-    const NumericalScalar residualError,
-    const NumericalScalar constraintError)
+                               const NumericalPoint & y,
+                               const NumericalScalar absoluteError,
+                               const NumericalScalar relativeError,
+                               const NumericalScalar residualError,
+                               const NumericalScalar constraintError)
 {
   // assume the last point stored is the optimum
   optimalPoint_ = x;

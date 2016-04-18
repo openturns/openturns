@@ -38,84 +38,84 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
   try
-    {
-      // Test basic functionnalities
-      checkClassWithClassName<TestObject>();
+  {
+    // Test basic functionnalities
+    checkClassWithClassName<TestObject>();
 
-      // Instanciate one distribution object
-      BipartiteGraph graph(0);
-      Indices first(0);
-      first.add(0);
-      first.add(1);
-      graph.add(first);
-      Indices second(0);
-      second.add(0);
-      second.add(1);
-      graph.add(second);
-      CumulativeDistributionNetwork distribution(CumulativeDistributionNetwork::DistributionCollection(2, Normal(2)), graph);
-      fullprint << "Distribution " << distribution << std::endl;
-      std::cout << "Distribution " << distribution << std::endl;
+    // Instanciate one distribution object
+    BipartiteGraph graph(0);
+    Indices first(0);
+    first.add(0);
+    first.add(1);
+    graph.add(first);
+    Indices second(0);
+    second.add(0);
+    second.add(1);
+    graph.add(second);
+    CumulativeDistributionNetwork distribution(CumulativeDistributionNetwork::DistributionCollection(2, Normal(2)), graph);
+    fullprint << "Distribution " << distribution << std::endl;
+    std::cout << "Distribution " << distribution << std::endl;
 
-      // Is this distribution elliptical ?
-      fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
+    // Is this distribution elliptical ?
+    fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
 
-      // Is this distribution continuous ?
-      fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
+    // Is this distribution continuous ?
+    fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
-      // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
-      fullprint << "oneRealization=" << oneRealization << std::endl;
+    // Test for realization of distribution
+    NumericalPoint oneRealization = distribution.getRealization();
+    fullprint << "oneRealization=" << oneRealization << std::endl;
 
-      // Test for sampling
-      UnsignedInteger size = 10000;
-      NumericalSample oneSample = distribution.getSample( size );
-      fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
-      fullprint << "mean=" << oneSample.computeMean() << std::endl;
-      fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
+    // Test for sampling
+    UnsignedInteger size = 10000;
+    NumericalSample oneSample = distribution.getSample( size );
+    fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
+    fullprint << "mean=" << oneSample.computeMean() << std::endl;
+    fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
 
-      // Define a point
-      NumericalPoint point( distribution.getDimension(), 1.0 );
-      fullprint << "Point= " << point << std::endl;
-      UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
-      PlatformInfo::SetNumericalPrecision(5);
-      // Show PDF and CDF of point
-      NumericalScalar LPDF = distribution.computeLogPDF( point );
-      fullprint << std::setprecision(5) << "log pdf=" << LPDF << std::endl;
-      NumericalScalar PDF = distribution.computePDF( point );
-      fullprint << std::setprecision(5) << "pdf     =" << PDF << std::endl;
-      fullprint << std::setprecision(5) << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point) << std::endl;
-      NumericalScalar CDF = distribution.computeCDF( point );
-      fullprint << std::setprecision(5) << "cdf=" << CDF << std::endl;
-      NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
-      fullprint << std::setprecision(5) << "ccdf=" << CCDF << std::endl;
-      NumericalScalar Survival = distribution.computeSurvivalFunction( point );
-      fullprint << std::setprecision(5) << "survival=" << Survival << std::endl;
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
-      fullprint << "quantile=" << quantile << std::endl;
-      fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-      NumericalPoint mean = distribution.getMean();
-      fullprint << "mean=" << mean << std::endl;
-      NumericalPoint standardDeviation = distribution.getStandardDeviation();
-      fullprint << "standard deviation=" << standardDeviation << std::endl;
-      NumericalPoint skewness = distribution.getSkewness();
-      fullprint << "skewness=" << skewness << std::endl;
-      NumericalPoint kurtosis = distribution.getKurtosis();
-      fullprint << "kurtosis=" << kurtosis << std::endl;
-      CovarianceMatrix covariance = distribution.getCovariance();
-      fullprint << "covariance=" << covariance << std::endl;
-      CovarianceMatrix correlation = distribution.getCorrelation();
-      fullprint << "correlation=" << correlation << std::endl;
-      CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
-      fullprint << "spearman=" << spearman << std::endl;
-      CovarianceMatrix kendall = distribution.getKendallTau();
-      fullprint << "kendall=" << kendall << std::endl;
-      PlatformInfo::SetNumericalPrecision(oldPrecision);
-    }
+    // Define a point
+    NumericalPoint point( distribution.getDimension(), 1.0 );
+    fullprint << "Point= " << point << std::endl;
+    UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+    PlatformInfo::SetNumericalPrecision(5);
+    // Show PDF and CDF of point
+    NumericalScalar LPDF = distribution.computeLogPDF( point );
+    fullprint << std::setprecision(5) << "log pdf=" << LPDF << std::endl;
+    NumericalScalar PDF = distribution.computePDF( point );
+    fullprint << std::setprecision(5) << "pdf     =" << PDF << std::endl;
+    fullprint << std::setprecision(5) << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point) << std::endl;
+    NumericalScalar CDF = distribution.computeCDF( point );
+    fullprint << std::setprecision(5) << "cdf=" << CDF << std::endl;
+    NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+    fullprint << std::setprecision(5) << "ccdf=" << CCDF << std::endl;
+    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    fullprint << std::setprecision(5) << "survival=" << Survival << std::endl;
+    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    fullprint << "quantile=" << quantile << std::endl;
+    fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    NumericalPoint mean = distribution.getMean();
+    fullprint << "mean=" << mean << std::endl;
+    NumericalPoint standardDeviation = distribution.getStandardDeviation();
+    fullprint << "standard deviation=" << standardDeviation << std::endl;
+    NumericalPoint skewness = distribution.getSkewness();
+    fullprint << "skewness=" << skewness << std::endl;
+    NumericalPoint kurtosis = distribution.getKurtosis();
+    fullprint << "kurtosis=" << kurtosis << std::endl;
+    CovarianceMatrix covariance = distribution.getCovariance();
+    fullprint << "covariance=" << covariance << std::endl;
+    CovarianceMatrix correlation = distribution.getCorrelation();
+    fullprint << "correlation=" << correlation << std::endl;
+    CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
+    fullprint << "spearman=" << spearman << std::endl;
+    CovarianceMatrix kendall = distribution.getKendallTau();
+    fullprint << "kendall=" << kendall << std::endl;
+    PlatformInfo::SetNumericalPrecision(oldPrecision);
+  }
   catch (TestFailed & ex)
-    {
-      std::cerr << ex << std::endl;
-      return ExitCode::Error;
-    }
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
 
   return ExitCode::Success;

@@ -106,12 +106,12 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
   //  if (max <= min - std::sqrt(SpecFunc::NumericalScalarEpsilon))
   if (min == max)
-    {
-      const NumericalScalar delta(std::max(std::abs(min), 10.0) * SpecFunc::NumericalScalarEpsilon);
-      Trapezoidal result(min - delta, min, max, max + delta);
-      result.setDescription(sample.getDescription());
-      return result;
-    }
+  {
+    const NumericalScalar delta(std::max(std::abs(min), 10.0) * SpecFunc::NumericalScalarEpsilon);
+    Trapezoidal result(min - delta, min, max, max + delta);
+    result.setDescription(sample.getDescription());
+    return result;
+  }
   startingPoint[0] = min - std::abs(min) / (2.0 + size);// a
   startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
   startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c

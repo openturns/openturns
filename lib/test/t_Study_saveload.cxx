@@ -395,7 +395,7 @@ int main(int argc, char *argv[])
       tnc.setStartingPoint(NumericalPoint(3, 1.0));
     }
     study.add("tnc", tnc);
- 
+
     // Create a SORM algorithm
     SORM sorm(abdoRackwitz, event, NumericalPoint(3, 4.));
     study.add("sorm", sorm);

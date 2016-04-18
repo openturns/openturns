@@ -47,12 +47,12 @@ public:
 
   /** Standard constructor */
   OptimizationResult(const NumericalPoint & optimalPoint,
-      const NumericalPoint & optimalValue,
-      const UnsignedInteger iterationNumber,
-      const NumericalScalar absoluteError,
-      const NumericalScalar relativeError,
-      const NumericalScalar residualError,
-      const NumericalScalar constraintError);
+                     const NumericalPoint & optimalValue,
+                     const UnsignedInteger iterationNumber,
+                     const NumericalScalar absoluteError,
+                     const NumericalScalar relativeError,
+                     const NumericalScalar residualError,
+                     const NumericalScalar constraintError);
 
   /** Virtual constructor */
   virtual OptimizationResult * clone() const;

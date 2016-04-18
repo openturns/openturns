@@ -215,7 +215,7 @@ public:
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
 
   virtual NumericalPoint operator() (const NumericalPoint & inP,
-                             const NumericalPoint & parameters);
+                                     const NumericalPoint & parameters);
 
   virtual NumericalSample operator() (const NumericalSample & inS) const;
 
@@ -225,17 +225,17 @@ public:
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   virtual Matrix gradient(const NumericalPoint & inP) const;
   virtual Matrix gradient(const NumericalPoint & inP,
-                  const NumericalPoint & parameters);
+                          const NumericalPoint & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
   virtual SymmetricTensor hessian(const NumericalPoint & inP,
-                          const NumericalPoint & parameters);
+                                  const NumericalPoint & parameters);
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const NumericalPoint & inP) const;
   virtual Matrix parameterGradient(const NumericalPoint & inP,
-                                    const NumericalPoint & parameters);
+                                   const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameter() const;

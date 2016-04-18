@@ -104,7 +104,7 @@ template<> inline String PersistentCollectionGetClassName<Signed64BitsInteger>()
 template <class T>
 class PersistentCollection
   : public PersistentObject,
-  public Collection<T>
+    public Collection<T>
 {
 public:
   /** Class name accessor */

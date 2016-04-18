@@ -137,16 +137,16 @@ public:
 
   /** Get one realization of the distributionImplementation */
   virtual NumericalPoint getRealization() const;
- protected:
+protected:
   virtual NumericalPoint getRealizationByInversion() const;
 
- public:
+public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual NumericalSample getSample(const UnsignedInteger size) const;
- protected:
+protected:
   virtual NumericalSample getSampleByInversion(const UnsignedInteger size) const;
 
- public:
+public:
   /** Get the DDF of the distributionImplementation */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
   virtual NumericalPoint  computeDDF(const NumericalPoint & point) const;
@@ -730,8 +730,8 @@ protected:
   struct ShiftedMomentWrapper
   {
     ShiftedMomentWrapper(const UnsignedInteger n,
-			  const NumericalScalar shift,
-			  const Implementation p_distribution):
+                         const NumericalScalar shift,
+                         const Implementation p_distribution):
       n_(n),
       shift_(shift),
       p_distribution_(p_distribution) {};
@@ -740,10 +740,10 @@ protected:
     {
       const NumericalScalar power(std::pow(point[0] - shift_, static_cast<NumericalScalar>(n_)));
       const NumericalScalar pdf(p_distribution_->computePDF(point));
-      LOGINFO(OSS() << "computeShiftedMomentKernel, n=" << n_ << ", shift=" << shift_ << ", point=" << point[0] << ", power=" << power << ", pdf=" << pdf << ", power*pdf=" << power*pdf);
+      LOGINFO(OSS() << "computeShiftedMomentKernel, n=" << n_ << ", shift=" << shift_ << ", point=" << point[0] << ", power=" << power << ", pdf=" << pdf << ", power*pdf=" << power * pdf);
       return NumericalPoint(1, power * pdf);
     };
-    
+
     const UnsignedInteger n_;
     const NumericalScalar shift_;
     const Implementation p_distribution_;

@@ -96,10 +96,10 @@ public:
 
   // compute standard representative computes the term \rho(s, t)
   virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
-                                                        const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
-                                                        const NumericalScalar & t) const;
+      const NumericalScalar & t) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
 
@@ -107,10 +107,10 @@ public:
 
   // Special case for 1D model
   virtual NumericalScalar computeAsScalar (const NumericalScalar s,
-                                           const NumericalScalar t) const;
+      const NumericalScalar t) const;
 
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-                                           const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
@@ -149,14 +149,14 @@ public:
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-                                                const NumericalScalar nuggetFactor,
-                                                const HMatrixParameters & parameters) const;
+      const NumericalScalar nuggetFactor,
+      const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Mesh & mesh,
-                                                const NumericalScalar nuggetFactor,
-                                                const HMatrixParameters & parameters) const;
+      const NumericalScalar nuggetFactor,
+      const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
-                                                const NumericalScalar nuggetFactor,
-                                                const HMatrixParameters & parameters) const;
+      const NumericalScalar nuggetFactor,
+      const HMatrixParameters & parameters) const;
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;

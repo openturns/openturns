@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     // 2) Definition of exponential model
     NumericalPoint scale(2);
     scale[0] = 1.98824;
-    scale[1] =0.924731;
+    scale[1] = 0.924731;
     NumericalPoint amplitude(1, 3.15352);
     SquaredExponential covarianceModel(scale, amplitude);
 

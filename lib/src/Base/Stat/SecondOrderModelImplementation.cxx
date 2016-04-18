@@ -43,7 +43,7 @@ SecondOrderModelImplementation::SecondOrderModelImplementation()
 }
 
 SecondOrderModelImplementation::SecondOrderModelImplementation(const CovarianceModel & covarianceModel,
-                                                               const SpectralModel & spectralModel)
+    const SpectralModel & spectralModel)
   : PersistentObject(),
     covarianceModel_(),
     spectralModel_()
@@ -70,14 +70,14 @@ UnsignedInteger SecondOrderModelImplementation::getDimension() const
 
 /* Computation of the covariance function */
 CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalScalar s,
-                                                                   const NumericalScalar t) const
+    const NumericalScalar t) const
 {
   return covarianceModel_(s, t);
 }
 
 /* Computation of the covariance function */
 CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalPoint & s,
-                                                                   const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return covarianceModel_(s, t);
 }
@@ -126,7 +126,7 @@ CovarianceModel SecondOrderModelImplementation::getCovarianceModel() const
 }
 
 void SecondOrderModelImplementation::setModels(const CovarianceModel & covarianceModel,
-                                               const SpectralModel & spectralModel)
+    const SpectralModel & spectralModel)
 {
   if (!covarianceModel.isStationary()) throw InvalidArgumentException(HERE) << "Error: the covariance model is not stationary.";
   if (covarianceModel.getDimension() != spectralModel.getDimension())

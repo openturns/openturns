@@ -67,12 +67,12 @@ Uniform UniformFactory::buildAsUniform(const NumericalSample & sample) const
   const NumericalScalar b(xMax + std::abs(xMax) / (2.0 + size));
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
-    {
-      const NumericalScalar delta(std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon);
-      Uniform result(xMin - delta, xMax + delta);
-      result.setDescription(sample.getDescription());
-      return result;
-    }
+  {
+    const NumericalScalar delta(std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon);
+    Uniform result(xMin - delta, xMax + delta);
+    result.setDescription(sample.getDescription());
+    return result;
+  }
   Uniform result(a, b);
   result.setDescription(sample.getDescription());
   return result;

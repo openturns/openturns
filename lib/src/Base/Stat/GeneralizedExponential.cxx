@@ -39,8 +39,8 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
 
 /* Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension,
-                                               const NumericalScalar theta,
-                                               const NumericalScalar p)
+    const NumericalScalar theta,
+    const NumericalScalar p)
   : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, theta))
   , p_(p)
 {
@@ -49,7 +49,7 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
 
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
-                                               const NumericalScalar p)
+    const NumericalScalar p)
   : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
   , p_(p)
 {
@@ -58,14 +58,14 @@ GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
 
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
-                                               const NumericalPoint & sigma,
-                                               const NumericalScalar p)
+    const NumericalPoint & sigma,
+    const NumericalScalar p)
   : StationaryCovarianceModel(sigma, theta)
   , p_(p)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() <<")";
+                                         << " Here, (got dimension=" << getDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -86,7 +86,7 @@ NumericalScalar GeneralizedExponential::computeStandardRepresentative(const Nume
 
 /* Gradient wrt s */
 Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
-                                               const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -103,7 +103,7 @@ Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
     if (p_ == 1.0)
     {
       Matrix gradient(spatialDimension_, 1);
-      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i,0) = - amplitude_[0] / scale_[i];
+      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = - amplitude_[0] / scale_[i];
       return gradient;
     }
     // Zero gradient for p > 1

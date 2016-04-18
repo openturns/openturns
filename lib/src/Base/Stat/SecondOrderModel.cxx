@@ -91,14 +91,14 @@ UnsignedInteger SecondOrderModel::getDimension() const
 
 /* Computation of the covariance matrix */
 CovarianceMatrix SecondOrderModel::computeCovariance(const NumericalScalar s,
-                                                     const NumericalScalar t) const
+    const NumericalScalar t) const
 {
   return getImplementation()->computeCovariance(s, t);
 }
 
 /* Computation of the covariance matrix */
 CovarianceMatrix SecondOrderModel::computeCovariance(const NumericalPoint & s,
-                                                     const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return getImplementation()->computeCovariance(s, t);
 }

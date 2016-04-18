@@ -74,7 +74,7 @@ private:
   struct DotProductWrapper
   {
     DotProductWrapper(const OrthogonalUniVariatePolynomial & pN,
-		      const Distribution & weight):
+                      const Distribution & weight):
       pN_(pN), weight_(weight) {};
 
     NumericalPoint kernelSym(const NumericalPoint & point) const

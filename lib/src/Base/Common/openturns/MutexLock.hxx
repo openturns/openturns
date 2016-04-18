@@ -87,11 +87,20 @@ private:
 
 public:
   /** @copydoc Object::__repr__() const */
-  String __repr__() const { return singleton_.__repr__(); }
+  String __repr__() const
+  {
+    return singleton_.__repr__();
+  }
 
 #ifndef SWIG
-  T & lock() throw() { return singleton_; }
-  const T & lock() const throw() { return singleton_; }
+  T & lock() throw()
+  {
+    return singleton_;
+  }
+  const T & lock() const throw()
+  {
+    return singleton_;
+  }
 #endif
 
 }; /* class MutexLockSingleton */
