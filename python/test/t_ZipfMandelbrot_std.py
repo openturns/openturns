@@ -32,15 +32,15 @@ try:
     print("mean=", repr(oneSample.computeMean()))
     print("covariance=", repr(oneSample.computeCovariance()))
 
-    ## size = 100;
+    # size = 100;
     # for i in range(2):
-    ##     msg = ''
+    # msg = ''
     # if FittingTest::ChiSquared(distribution.getSample(size), distribution).getBinaryQualityMeasure():
-    ##         msg = "accepted"
+    # msg = "accepted"
     # else:
-    ##         msg = "rejected"
+    # msg = "rejected"
     # print "ChiSquare test for the generator, sample size=", size, " is", msg
-    ##     size *= 10;
+    # size *= 10;
 
     # Define a point
     point = NumericalPoint(distribution.getDimension(), 5.0)

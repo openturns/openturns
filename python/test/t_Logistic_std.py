@@ -113,11 +113,11 @@ try:
     print("Standard representative=", distribution.getStandardRepresentative())
 
     # Specific to this distribution
-    ## mu = distribution.getMu()
+    # mu = distribution.getMu()
     # print "mu=%.6f" % mu
-    ## sigma = distribution.getSigma()
+    # sigma = distribution.getSigma()
     # print "sigma=%.6f" % sigma
-    ## newDistribution = Logistic(distribution)
+    # newDistribution = Logistic(distribution)
     # distribution.setMu(mu)
     # distribution.setSigma(sigma)
     # print "alpha from (mu, sigma)=%.6f" % newDistribution.getAlpha()

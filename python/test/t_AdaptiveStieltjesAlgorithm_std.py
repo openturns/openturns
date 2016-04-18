@@ -13,7 +13,7 @@ try:
             if abs(inPoint[i]) < 1.e-10:
                 inPoint[i] = 0.0
             else:
-                inPoint[i] = 1e-4*int(1e4*inPoint[i])
+                inPoint[i] = 1e-4 * int(1e4 * inPoint[i])
         return inPoint
 
     iMax = 5
@@ -23,8 +23,10 @@ try:
     algo1 = AdaptiveStieltjesAlgorithm(distribution)
     print(algo1)
     for i in range(iMax):
-        print(distribution.getClassName() + " Reference(", i, ")=", clean(algo0.getRecurrenceCoefficients(i)))
-        print(distribution.getClassName() + " AdaStielj(", i, ")=", clean(algo1.getRecurrenceCoefficients(i)))
+        print(distribution.getClassName() + " Reference(", i, ")=",
+              clean(algo0.getRecurrenceCoefficients(i)))
+        print(distribution.getClassName() + " AdaStielj(", i, ")=",
+              clean(algo1.getRecurrenceCoefficients(i)))
 
     # Second test
     distribution = Beta(0.5, 3.0, -1.0, 1.0)
@@ -32,8 +34,10 @@ try:
     algo1 = AdaptiveStieltjesAlgorithm(distribution)
     print(algo1)
     for i in range(iMax):
-        print(distribution.getClassName() + " Reference(", i, ")=", clean(algo0.getRecurrenceCoefficients(i)))
-        print(distribution.getClassName() + " AdaStielj(", i, ")=", clean(algo1.getRecurrenceCoefficients(i)))
+        print(distribution.getClassName() + " Reference(", i, ")=",
+              clean(algo0.getRecurrenceCoefficients(i)))
+        print(distribution.getClassName() + " AdaStielj(", i, ")=",
+              clean(algo1.getRecurrenceCoefficients(i)))
 
 except:
     import sys

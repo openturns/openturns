@@ -4,7 +4,8 @@ from __future__ import print_function
 import openturns as ot
 
 # Polynomial factories
-factoryCollection = [ot.LaguerreFactory(2.5), ot.LegendreFactory(), ot.HermiteFactory()]
+factoryCollection = [
+    ot.LaguerreFactory(2.5), ot.LegendreFactory(), ot.HermiteFactory()]
 dim = len(factoryCollection)
 basisFactory = ot.OrthogonalProductPolynomialFactory(factoryCollection)
 basis = ot.OrthogonalBasis(basisFactory)
@@ -15,8 +16,9 @@ for i in range(10):
     print('i=', i, 'f(X)=', f(x))
 
 # Other factories
-factoryCollection = [ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.LaguerreFactory(2.5)),
-                     ot.HaarWaveletFactory(), ot.FourierSeriesFactory()]
+factoryCollection = [ot.OrthogonalUniVariatePolynomialFunctionFactory(
+    ot.LaguerreFactory(2.5)),
+    ot.HaarWaveletFactory(), ot.FourierSeriesFactory()]
 dim = len(factoryCollection)
 basisFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
 basis = ot.OrthogonalBasis(basisFactory)

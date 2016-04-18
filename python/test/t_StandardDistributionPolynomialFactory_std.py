@@ -6,6 +6,7 @@ from openturns import *
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
+
 def clean(polynomial):
     coefficients = polynomial.getCoefficients()
     for i in range(coefficients.getDimension()):
@@ -31,7 +32,8 @@ try:
         polynomialFactory = StandardDistributionPolynomialFactory(distribution)
         print("polynomialFactory(", name, "=", polynomialFactory, ")")
         for i in range(iMax):
-            print(name, " polynomial(", i, ")=", clean(polynomialFactory.build(i)))
+            print(name, " polynomial(", i, ")=",
+                  clean(polynomialFactory.build(i)))
         roots = polynomialFactory.getRoots(iMax - 1)
         print(name, " polynomial(", iMax - 1, ") roots=", roots)
         nodes, weights = polynomialFactory.getNodesAndWeights(iMax - 1)

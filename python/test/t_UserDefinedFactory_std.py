@@ -23,7 +23,7 @@ try:
     print("Estimated UserDefined=", estimatedUserDefined)
     estimatedUserDefined = factory.buildAsUserDefined()
     print("Default UserDefined=", estimatedUserDefined)
-    estimatedDistribution = factory.build([[10]]*2000)
+    estimatedDistribution = factory.build([[10]] * 2000)
     print("Estimated distribution=", repr(estimatedDistribution))
 
 except:

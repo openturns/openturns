@@ -7,7 +7,7 @@ from math import *
 TESTPREAMBLE()
 
 try:
-    #Log.Show( Log.Flags() | Log.INFO )
+    # Log.Show( Log.Flags() | Log.INFO )
 
       # Problem parameters
     dimension = 8

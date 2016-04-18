@@ -31,7 +31,7 @@ print('One realization= ')
 print(myCompositeProcess.getRealization())
 
 
-##########################################
+#
 # Create a spatial  dynamical function
 # Create the function g : R^2 --> R^2
 #               (x1,x2) --> (x1^2, x1+x2)
@@ -46,7 +46,7 @@ myDynFunc = ot.SpatialFunction(g, nSpat)
 # Then g acts on processes X: Omega * R^nSpat --> R^2
 
 
-##########################################
+#
 # Create a trend function fTrend: R^n --> R^q
 # for example for  myXtProcess of dimension 2
 # defined on a bidimensional mesh
@@ -55,7 +55,7 @@ myDynFunc = ot.SpatialFunction(g, nSpat)
 fTrend = ot.NumericalMathFunction(['t1', 't2'], ['1+2*t1', '1+3*t2'])
 
 
-##########################################
+#
 # Create a normal process of dimension 2
 # which mesh is of box of dimension 2
 

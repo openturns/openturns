@@ -9,7 +9,7 @@ def C(s, t):
 
 N = 64
 a = 4.0
-#myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
+# myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
 myMesh = ot.RegularGrid(-a, 2 * a / N, N + 1)
 
 myCovarianceCollection = ot.CovarianceMatrixCollection()

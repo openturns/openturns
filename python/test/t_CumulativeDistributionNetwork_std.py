@@ -8,7 +8,7 @@ ot.RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     graph = ot.BipartiteGraph([[0, 1], [0, 1]])
-    distribution = ot.CumulativeDistributionNetwork([ot.Normal(2)]*2, graph)
+    distribution = ot.CumulativeDistributionNetwork([ot.Normal(2)] * 2, graph)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -24,27 +24,27 @@ try:
 
     # Test for sampling
     size = 10000
-    oneSample = distribution.getSample( size )
+    oneSample = distribution.getSample(size)
     print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
     print("mean=", oneSample.computeMean())
     print("covariance=", oneSample.computeCovariance())
 
     # Define a point
-    point = [1.0]*distribution.getDimension()
+    point = [1.0] * distribution.getDimension()
     print("Point= ", point)
 
     # Show PDF and CDF of point
-    LPDF = distribution.computeLogPDF( point )
+    LPDF = distribution.computeLogPDF(point)
     print("log pdf =%.4e" % LPDF)
-    PDF = distribution.computePDF( point )
+    PDF = distribution.computePDF(point)
     print("pdf     =%.4e" % PDF)
-    CDF = distribution.computeCDF( point )
+    CDF = distribution.computeCDF(point)
     print("cdf     =%.4e" % CDF)
-    CCDF = distribution.computeComplementaryCDF( point )
+    CCDF = distribution.computeComplementaryCDF(point)
     print("ccdf    =%.4e" % CCDF)
-    Survival = distribution.computeSurvivalFunction( point )
+    Survival = distribution.computeSurvivalFunction(point)
     print("survival=%.4e" % Survival)
-    quantile = distribution.computeQuantile( 0.95 )
+    quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
     mean = distribution.getMean()
@@ -66,4 +66,5 @@ try:
 
 except:
     import sys
-    print("t_CumulativeDistributionNetwork_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_CumulativeDistributionNetwork_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

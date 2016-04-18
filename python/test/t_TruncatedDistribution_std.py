@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 def cleanNumericalPoint(inNumericalPoint):
     dim = inNumericalPoint.getDimension()
     for i in range(dim):
@@ -18,8 +19,10 @@ referenceDistribution = [ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0),
                          ot.TruncatedNormal(2.0, 1.5, -200.0, 4.0),
                          ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0)]
 distribution = [ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
-                ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, ot.TruncatedDistribution.LOWER),
-                ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 4.0, ot.TruncatedDistribution.UPPER),
+                ot.TruncatedDistribution(
+                    ot.Normal(2.0, 1.5), 1.0, ot.TruncatedDistribution.LOWER),
+                ot.TruncatedDistribution(
+                    ot.Normal(2.0, 1.5), 4.0, ot.TruncatedDistribution.UPPER),
                 ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval([1.0], [4.0], [True], [True]))]
 
 for testCase in range(len(distribution)):

@@ -25,6 +25,7 @@ import sys
 
 
 class View(object):
+
     """
     Create the figure.
 

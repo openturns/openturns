@@ -26,7 +26,8 @@ def unparse(ast, single_line_functions=False):
     UnparseCompilerAst(ast, s, single_line_functions)
     return s.getvalue().lstrip()
 
-op_precedence = {'compiler.ast.Power': 3, 'compiler.ast.Mul': 2, 'compiler.ast.Div': 2,
+op_precedence = {
+    'compiler.ast.Power': 3, 'compiler.ast.Mul': 2, 'compiler.ast.Div': 2,
                  'compiler.ast.Add': 1, 'compiler.ast.Sub': 1}
 
 
@@ -37,9 +38,9 @@ class UnparseCompilerAst:
         is disregarged.
     """
 
-    #########################################################################
+    #
     # object interface.
-    #########################################################################
+    #
 
     def __init__(self, tree, file=sys.stdout, single_line_functions=False):
         """ Unparser(tree, file=sys.stdout) -> None.
@@ -54,11 +55,11 @@ class UnparseCompilerAst:
         self._write("\n")
         self.f.flush()
 
-    #########################################################################
+    #
     # Unparser private interface.
-    #########################################################################
+    #
 
-    ### format, output, and dispatch methods ################################
+    # format, output, and dispatch methods ################################
 
     def _fill(self, text=""):
         "Indent a piece of text, according to the current indentation level"
@@ -91,12 +92,12 @@ class UnparseCompilerAst:
             return
         meth(tree)
 
-    #########################################################################
+    #
     # compiler.ast unparsing methods.
     #
     # There should be one method per concrete grammar type. They are
     # organized in alphabetical order.
-    #########################################################################
+    #
 
     def _Add(self, t):
         self.__binary_op(t, '+')
@@ -553,12 +554,12 @@ class UnparseCompilerAst:
     def _tuple(self, t):
         self._write(str(t))
 
-    #########################################################################
+    #
     # These are the methods from the _ast modules unparse.
     #
     # As our needs to handle more advanced code increase, we may want to
     # modify some of the methods below so that they work for compiler.ast.
-    #########################################################################
+    #
 
 # stmt
 #    def _Expr(self, tree):
@@ -578,17 +579,17 @@ class UnparseCompilerAst:
 #                self._write(" as "+a.asname)
 #
 # def _ImportFrom(self, t):
-##        self._fill("from ")
+# self._fill("from ")
 # self._write(t.module)
-##        self._write(" import ")
+# self._write(" import ")
 # for i, a in enumerate(t.names):
 # if i == 0:
-##                self._write(", ")
+# self._write(", ")
 # self._write(a.name)
 # if a.asname:
-##                self._write(" as "+a.asname)
+# self._write(" as "+a.asname)
 # XXX(jpe) what is level for?
-##
+#
 #
 #    def _Break(self, t):
 #        self._fill("break")
@@ -733,7 +734,7 @@ class UnparseCompilerAst:
 # expr
 #    def _Str(self, tree):
 #        self._write(repr(tree.s))
-##
+#
 #    def _Repr(self, t):
 #        self._write("`")
 #        self._dispatch(t.value)
@@ -807,22 +808,22 @@ class UnparseCompilerAst:
 # def _Call(self, t):
 # self._dispatch(t.func)
 # self._write("(")
-##        comma = False
+# comma = False
 # for e in t.args:
-##            if comma: self._write(", ")
+# if comma: self._write(", ")
 # else: comma = True
 # self._dispatch(e)
 # for e in t.keywords:
-##            if comma: self._write(", ")
+# if comma: self._write(", ")
 # else: comma = True
 # self._dispatch(e)
 # if t.starargs:
-##            if comma: self._write(", ")
+# if comma: self._write(", ")
 # else: comma = True
 # self._write("*")
 # self._dispatch(t.starargs)
 # if t.kwargs:
-##            if comma: self._write(", ")
+# if comma: self._write(", ")
 # else: comma = True
 # self._write("**")
 # self._dispatch(t.kwargs)

@@ -32,7 +32,7 @@ graph = result.drawPDF()
 
 result = dist1.tan()
 print('tan(dist1):', result)
-#graph = result.drawPDF()
+# graph = result.drawPDF()
 
 
 dist0 = ot.Uniform(-0.999, 0.999)

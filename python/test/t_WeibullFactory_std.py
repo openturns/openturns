@@ -26,10 +26,10 @@ try:
     estimatedWeibull = factory.buildAsWeibull(
         distribution.getParameter())
     print("Weibull from parameters=", estimatedWeibull)
-    sample = [[0.0]]*size
+    sample = [[0.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]]*size
+    sample = [[1.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
 

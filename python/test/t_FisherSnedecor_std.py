@@ -73,20 +73,20 @@ try:
     print("ccdf=%.6f" % CCDF)
     CF = distribution.computeCharacteristicFunction(point[0])
     print("characteristic function=(%.6f+%.6fj)" % (CF.real, CF.imag))
-    ## PDFgr = distribution.computePDFGradient( point )
+    # PDFgr = distribution.computePDFGradient( point )
     # print "pdf gradient     =" , repr(PDFgr)
     # by the finite difference technique
-    ## PDFgrFD = NumericalPoint(2)
-    ## PDFgrFD[0] = (FisherSnedecor(distribution.getLambda() + eps, distribution.getGamma()).computePDF(point) - FisherSnedecor(distribution.getLambda() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-    ## PDFgrFD[1] = (FisherSnedecor(distribution.getLambda(), distribution.getGamma() + eps).computePDF(point) - FisherSnedecor(distribution.getLambda(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
+    # PDFgrFD = NumericalPoint(2)
+    # PDFgrFD[0] = (FisherSnedecor(distribution.getLambda() + eps, distribution.getGamma()).computePDF(point) - FisherSnedecor(distribution.getLambda() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+    # PDFgrFD[1] = (FisherSnedecor(distribution.getLambda(), distribution.getGamma() + eps).computePDF(point) - FisherSnedecor(distribution.getLambda(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
     # print "pdf gradient (FD)=" , repr(PDFgrFD)
 
     # derivative of the PDF with regards the parameters of the distribution
-    ## CDFgr = distribution.computeCDFGradient( point )
+    # CDFgr = distribution.computeCDFGradient( point )
     # print "cdf gradient     =" , repr(CDFgr)
-    ## CDFgrFD = NumericalPoint(2)
-    ## CDFgrFD[0] = (FisherSnedecor(distribution.getLambda() + eps, distribution.getGamma()).computeCDF(point) - FisherSnedecor(distribution.getLambda() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-    ## CDFgrFD[1] = (FisherSnedecor(distribution.getLambda(), distribution.getGamma() + eps).computeCDF(point) - FisherSnedecor(distribution.getLambda(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
+    # CDFgrFD = NumericalPoint(2)
+    # CDFgrFD[0] = (FisherSnedecor(distribution.getLambda() + eps, distribution.getGamma()).computeCDF(point) - FisherSnedecor(distribution.getLambda() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+    # CDFgrFD[1] = (FisherSnedecor(distribution.getLambda(), distribution.getGamma() + eps).computeCDF(point) - FisherSnedecor(distribution.getLambda(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
     # print "cdf gradient (FD)=",  repr(CDFgrFD)
 
     # quantile

@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
-#from math import *
+# from math import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)

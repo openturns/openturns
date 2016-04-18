@@ -30,7 +30,7 @@ outputSample = boxCoxFunction(outputSample)
 
 # Add small noise
 epsilon = ot.Normal(0, 1.0e-2).getSample(size)
-outputSample +=  epsilon
+outputSample += epsilon
 
 # Now we build the factory
 factory = ot.BoxCoxFactory()
@@ -40,7 +40,8 @@ result = ot.GeneralizedLinearModelResult()
 basis = ot.LinearBasisFactory(1).build()
 covarianceModel = ot.DiracCovarianceModel()
 shift = [1.0e-1]
-myBoxCox = factory.build(inputSample, outputSample, covarianceModel, basis, shift, result)
+myBoxCox = factory.build(
+    inputSample, outputSample, covarianceModel, basis, shift, result)
 
 print("myBoxCox (GLM) =", myBoxCox)
 print("GLM result     =", result)

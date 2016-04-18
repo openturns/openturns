@@ -68,19 +68,22 @@ outputSample = model(inputSample)
 
 # Validation
 sampleSize = 10
-inputValidSample = ComposedDistribution(2 * [Uniform(0, 10.0)]).getSample(sampleSize)
+inputValidSample = ComposedDistribution(
+    2 * [Uniform(0, 10.0)]).getSample(sampleSize)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
-covarianceModel = SquaredExponential([1.98824,0.924731], [3.15352])
+covarianceModel = SquaredExponential([1.98824, 0.924731], [3.15352])
 
 # 3) Basis definition
-basisCollection = BasisCollection(1, ConstantBasisFactory(spatialDimension).build())
+basisCollection = BasisCollection(
+    1, ConstantBasisFactory(spatialDimension).build())
 
 # Kriring algorithm
-algo = KrigingAlgorithm(inputSample, outputSample, basisCollection, covarianceModel)
+algo = KrigingAlgorithm(
+    inputSample, outputSample, basisCollection, covarianceModel)
 algo.run()
 result = algo.getResult()
 # Get meta model
@@ -103,4 +106,5 @@ theoricalVariance = NumericalPoint(covariancePoint.getSize(), 0.0)
 assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 
 # Estimation
-assert_almost_equal(outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1)
+assert_almost_equal(outputValidSample,
+                    metaModel(inputValidSample), 1.e-1, 1e-1)

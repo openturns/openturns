@@ -19,7 +19,8 @@ graph.setYTitle('pdf')
 
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle("Conditional Random Vector: Exp($\gamma$, $\lambda$), $\gamma \sim \mathcal{U}(1,2)$, $\lambda \sim \mathcal{U}(0,1)$")
+plt.suptitle(
+    "Conditional Random Vector: Exp($\gamma$, $\lambda$), $\gamma \sim \mathcal{U}(1,2)$, $\lambda \sim \mathcal{U}(0,1)$")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 

@@ -104,7 +104,7 @@ try:
     covariance = distribution.getCovariance()
     print("covariance=", repr(covariance))
     print("covariance (ref)=", repr(distributionRef.getCovariance()))
-    #parameters = distribution.getParametersCollection()
+    # parameters = distribution.getParametersCollection()
     # print "parameters=" , parameters
 
 except:

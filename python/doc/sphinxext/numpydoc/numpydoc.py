@@ -47,7 +47,8 @@ def mangle_docstrings(app, what, name, obj, options, lines,
 
     if what == 'module':
         # Strip top title
-        title_re = re.compile(sixu('^\\s*[#*=]{4,}\\n[a-z0-9 -]+\\n[#*=]{4,}\\s*'),
+        title_re = re.compile(
+            sixu('^\\s*[#*=]{4,}\\n[a-z0-9 -]+\\n[#*=]{4,}\\s*'),
                               re.I | re.S)
         lines[:] = title_re.sub(
             sixu(''), sixu("\n").join(lines)).split(sixu("\n"))

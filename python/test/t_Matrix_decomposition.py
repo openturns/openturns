@@ -64,7 +64,7 @@ try:
 
     result1, u, v = matrix1.computeSVD(True)
     print("svd (svd + U, V full)= ", repr(result1))
-    #result1, u, v = matrix1.computeSVD(False)
+    # result1, u, v = matrix1.computeSVD(False)
     # print "svd (svd + U, V small)= ", repr(result1), ", U=", repr(u), ",
     # v=", repr(v)
 
