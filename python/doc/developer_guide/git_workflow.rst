@@ -1,3 +1,6 @@
+Git workflow
+============
+
 Proposing a pull request
 ------------------------
 
