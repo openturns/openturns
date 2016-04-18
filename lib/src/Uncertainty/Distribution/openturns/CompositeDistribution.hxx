@@ -136,10 +136,10 @@ class OT_API CompositeDistribution
     
     NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
     {
-      const NumericalScalar y(p_distribution_->function_(point)[0]);
-      const NumericalScalar power(std::pow(y - shift_, static_cast<NumericalScalar>(n_)));
-      const NumericalScalar pdf(p_distribution_->antecedent_.computePDF(point));
-      const NumericalScalar value(power * pdf);
+      const NumericalScalar y = p_distribution_->function_(point)[0];
+      const NumericalScalar power = std::pow(y - shift_, static_cast<NumericalScalar>(n_));
+      const NumericalScalar pdf = p_distribution_->antecedent_.computePDF(point);
+      const NumericalScalar value = power * pdf;
       return NumericalPoint(1, value);
     };
     

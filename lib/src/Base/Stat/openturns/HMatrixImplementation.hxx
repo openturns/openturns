@@ -212,9 +212,11 @@ public:
 
   NumericalScalar operator()(UnsignedInteger i, UnsignedInteger j) const
   {
-    const UnsignedInteger rowIndex(i / covarianceDimension_), columnIndex(j / covarianceDimension_);
+    const UnsignedInteger rowIndex = i / covarianceDimension_;
+    const UnsignedInteger columnIndex = j / covarianceDimension_;
     const CovarianceMatrix localCovarianceMatrix(covarianceModel_( vertices_[rowIndex],  vertices_[columnIndex] ));
-    const UnsignedInteger rowIndexLocal(i % covarianceDimension_), columnIndexLocal(j % covarianceDimension_);
+    const UnsignedInteger rowIndexLocal = i % covarianceDimension_;
+    const UnsignedInteger columnIndexLocal = j % covarianceDimension_;
     return localCovarianceMatrix(rowIndexLocal, columnIndexLocal) + (i != j ? 0.0 : epsilon_);
   }
 };

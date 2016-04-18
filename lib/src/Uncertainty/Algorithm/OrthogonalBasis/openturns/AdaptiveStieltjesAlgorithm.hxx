@@ -79,10 +79,10 @@ private:
 
     NumericalPoint kernelSym(const NumericalPoint & point) const
     {
-      const NumericalScalar pdf(weight_.computePDF(point));
-      const NumericalScalar x(point[0]);
-      const NumericalScalar pNX(pN_(x));
-      const NumericalScalar xPNX(x * pNX);
+      const NumericalScalar pdf = weight_.computePDF(point);
+      const NumericalScalar x = point[0];
+      const NumericalScalar pNX = pN_(x);
+      const NumericalScalar xPNX = x * pNX;
       NumericalPoint result(1);
       result[0] = xPNX * xPNX * pdf;
       return result;
@@ -90,10 +90,10 @@ private:
 
     NumericalPoint kernelGen(const NumericalPoint & point) const
     {
-      const NumericalScalar pdf(weight_.computePDF(point));
-      const NumericalScalar x(point[0]);
-      const NumericalScalar pNX(pN_(x));
-      const NumericalScalar xPNX(x * pNX);
+      const NumericalScalar pdf = weight_.computePDF(point);
+      const NumericalScalar x = point[0];
+      const NumericalScalar pNX = pN_(x);
+      const NumericalScalar xPNX = x * pNX;
       NumericalPoint result(2);
       result[0] = xPNX * xPNX * pdf;
       result[1] = xPNX * pNX * pdf;

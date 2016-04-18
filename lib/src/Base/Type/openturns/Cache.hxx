@@ -301,7 +301,7 @@ public:
   inline
   void save(Advocate & adv) const
   {
-    const UnsignedInteger size(this->points_.size());
+    const UnsignedInteger size = this->points_.size();
     PersistentCollection< KeyType >      keyColl(size);
     PersistentCollection< KeyType >      valueColl(size);
     PersistentCollection< UnsignedInteger > ageColl(size);
