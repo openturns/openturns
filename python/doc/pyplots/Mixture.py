@@ -6,10 +6,10 @@ from openturns.viewer import View
 mu = [2.0, 2.0]
 sigma = [1.0, 1.0]
 R = ot.CorrelationMatrix(2)
-R[0,1] = 0.8
+R[0, 1] = 0.8
 myNormal1 = ot.Normal(mu, sigma, R)
 R2 = ot.CorrelationMatrix(2)
-R2[0,1] = -0.8
+R2[0, 1] = -0.8
 mu2 = [3.0, 3.0]
 myNormal2 = ot.Normal(mu2, sigma, R2)
 
@@ -22,7 +22,6 @@ graphPDF.setYTitle('$x_1$')
 graphCDF = myMixture.drawCDF()
 graphCDF.setXTitle('$x_1$')
 graphCDF.setYTitle('$x_2$')
-
 
 
 fig = plt.figure(figsize=(8, 4))

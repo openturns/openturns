@@ -668,16 +668,21 @@ String NumericalSampleImplementation::__repr__() const
 
   const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
 
-  if (printDescription) {
+  if (printDescription)
+  {
     const char * sep = "";
 
     oss << " description=[";
-    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep = ",") {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep = ",")
+    {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -689,12 +694,16 @@ String NumericalSampleImplementation::__repr__() const
   oss << " data=[";
   const char * sep = "";
 
-  for (UnsignedInteger i = 0; i < size_; ++ i, sep = ",") {
-    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
-      if (i == printEllipsisSize) {
+  for (UnsignedInteger i = 0; i < size_; ++ i, sep = ",")
+  {
+    if (ellipsis && (size_ > 2 * printEllipsisSize))
+    {
+      if (i == printEllipsisSize)
+      {
         oss << sep << "...";
       }
-      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
+      {
         continue;
       }
     }
@@ -702,11 +711,14 @@ String NumericalSampleImplementation::__repr__() const
     const char * sep2 = "";
     for (UnsignedInteger j = 0; j < dimension_; ++ j, sep2 = ",")
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep2 << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -738,8 +750,10 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   {
     for( UnsignedInteger j = 0; j < dimension_; ++j )
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -749,15 +763,19 @@ String NumericalSampleImplementation::__str__(const String & offset) const
 
   for( UnsignedInteger i = 0; i < size_; ++i )
   {
-    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
-      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+    if (ellipsis && (size_ > 2 * printEllipsisSize))
+    {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
+      {
         continue;
       }
     }
     for (UnsignedInteger j = 0; j < dimension_; ++ j)
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -787,11 +805,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -803,11 +824,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   const char * newline = "";
   for( UnsignedInteger i = 0; i < size_; ++i, newline = "\n" )
   {
-    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
-      if (i == printEllipsisSize) {
+    if (ellipsis && (size_ > 2 * printEllipsisSize))
+    {
+      if (i == printEllipsisSize)
+      {
         oss << "\n...";
       }
-      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
+      {
         continue;
       }
     }
@@ -816,11 +840,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -881,7 +908,8 @@ NumericalSampleImplementation & NumericalSampleImplementation::stack(const Numer
     for (UnsignedInteger j = 0; j < otherDimension; ++j) result[i][dimension_ + j] = sample[i][j];
   }
   // Second, the description
-  if (!p_description_.isNull() || !sample.p_description_.isNull()) {
+  if (!p_description_.isNull() || !sample.p_description_.isNull())
+  {
     Description description(getDescription());
     const Description otherDescription(sample.getDescription());
     for (UnsignedInteger i = 0; i < otherDimension; ++i) description.add(otherDescription[i]);

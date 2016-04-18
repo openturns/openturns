@@ -26,17 +26,17 @@ try:
         print("value=%.6f" % value, ", ref=%.6f" % ref, ", true error below bound? ", abs(ref - value)
               < algo.getMaximumError(), ", estimated error below bound? ", error[0] < algo.getMaximumError())
         # Low-level interface
-        #ai = NumericalPoint()
-        #bi = NumericalPoint()
-        #fi = NumericalSample()
-        #ei = NumericalPoint()
-        #value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
+        # ai = NumericalPoint()
+        # bi = NumericalPoint()
+        # fi = NumericalSample()
+        # ei = NumericalPoint()
+        # value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
         # ai.add(b)
-        #g = f.draw(a, b, 512)
-        #lower = Cloud(ai, NumericalPoint(ai.getDimension()))
+        # g = f.draw(a, b, 512)
+        # lower = Cloud(ai, NumericalPoint(ai.getDimension()))
         # lower.setColor("magenta")
         # g.add(lower)
-        #g.draw("Smooth_function_adaptation_" + str(i))
+        # g.draw("Smooth_function_adaptation_" + str(i))
 
     # Second, a piecewise smooth function
     f = NumericalMathFunction("x", "abs(sin(x))")
@@ -54,21 +54,21 @@ try:
         print("value=%.6f" % value, ", ref=%.6f" % ref, ", true error below bound? ", abs(ref - value)
               < algo.getMaximumError(), ", estimated error below bound? ", error[0] < algo.getMaximumError())
         # Low-level interface
-        ## ai = NumericalPoint()
-        ## bi = NumericalPoint()
-        ## fi = NumericalSample()
-        ## ei = NumericalPoint()
-        ## value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
+        # ai = NumericalPoint()
+        # bi = NumericalPoint()
+        # fi = NumericalSample()
+        # ei = NumericalPoint()
+        # value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
         # print "ai=", ai
         # print "bi=", bi
         # print "fi=", fi
         # print "ei=", ei
         # ai.add(b)
-        ## g = f.draw(a, b, 512)
-        ## lower = Cloud(ai, NumericalPoint(ai.getDimension()))
+        # g = f.draw(a, b, 512)
+        # lower = Cloud(ai, NumericalPoint(ai.getDimension()))
         # lower.setColor("magenta")
         # g.add(lower)
-        ## g.draw("Nonsmooth_function_adaptation_" + str(i))
+        # g.draw("Nonsmooth_function_adaptation_" + str(i))
 except:
     import sys
     print("t_GaussKronrod_std.py", sys.exc_info()[0], sys.exc_info()[1])

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     values.add(NumericalPoint(1, 0.5));
     values.add(NumericalPoint(1, 1.5));
     values.add(NumericalPoint(1, 1.0));
-    values.add(NumericalPoint(1,-0.5));
+    values.add(NumericalPoint(1, -0.5));
     P1LagrangeEvaluationImplementation evaluation(Field(mesh, values));
     fullprint << "Evaluation=" << evaluation << std::endl;
     NumericalPoint inPoint(1, 2.3);

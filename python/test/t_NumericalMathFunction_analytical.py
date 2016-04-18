@@ -67,7 +67,8 @@ for func in elementaryFunctions:
         else:
             err_g = abs(df - df2)
         if err_g > 1e-5:
-            print('GRADIENT ERROR! check ' + func + ' gradient, err=%.12g' % err_g)
+            print('GRADIENT ERROR! check ' +
+                  func + ' gradient, err=%.12g' % err_g)
     try:
         d2f = f.hessian(x)[0, 0, 0]
     except:
@@ -82,7 +83,8 @@ for func in elementaryFunctions:
         else:
             err_h = abs(d2f - d2f2)
         if err_h > 1e-4:
-            print('HESSIAN ERROR! check ' + func + ' hessian, err=%.12g' % err_h)
+            print('HESSIAN ERROR! check ' +
+                  func + ' hessian, err=%.12g' % err_h)
 
 nmf = ot.NumericalMathFunction(['x0', 'x1'], ['y0', 'y1'], ['x0+x1', 'x0-x1'])
 marginal0 = nmf.getMarginal(0)
@@ -98,7 +100,8 @@ model = ot.NumericalMathFunction(['xi1', 'xi2', 'xi3'], ['y'], formula)
 distribution = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3)
 inSample = distribution.getSample(100)
 resultSample = model(inSample)
-refResultValues = [m.sin(inSample[i][0])+7.0*(m.sin(inSample[i][1]))**2 + 0.1 * (inSample[i][2])**4 * m.sin(inSample[i][0]) for i in range(100)]
+refResultValues = [m.sin(inSample[i][0]) + 7.0 * (m.sin(inSample[i][1]))**2 + 0.1 * (inSample[i][2])**4 * m.sin(inSample[i][0])
+                   for i in range(100)]
 
 print('First reference value : %.4e' % refResultValues[0])
 print('First result calculated : %.4e' % resultSample[0][0])

@@ -45,7 +45,7 @@ SpectralModelImplementation::SpectralModelImplementation()
 }
 
 SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & amplitude,
-                                                         const NumericalPoint & scale)
+    const NumericalPoint & scale)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
   , amplitude_(0)
@@ -62,8 +62,8 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
 }
 
 SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & amplitude,
-                                                         const NumericalPoint & scale,
-                                                         const CorrelationMatrix & spatialCorrelation)
+    const NumericalPoint & scale,
+    const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
   , amplitude_(0)
@@ -83,7 +83,7 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
 }
 
 SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
-                                                         const CovarianceMatrix & spatialCovariance)
+    const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , dimension_(spatialCovariance.getDimension())
   , amplitude_(0)

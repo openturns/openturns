@@ -68,7 +68,8 @@ myStudy.add("point", point)
 simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
 myStudy.add("simulationResult", simulationResult)
 
-cNameList = ['MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
+cNameList = [
+    'MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
              'DirectionalSampling', 'RandomizedLHS', 'SimulationSensitivityAnalysis']
 for cName in cNameList:
     otClass = getattr(ot, cName)
@@ -220,7 +221,8 @@ print("analytical = ", analytical)
 
 # Create a GeneralizedLinearModelResult from the one stored in the Study
 generalizedLinearModelResult = ot.GeneralizedLinearModelResult()
-myStudy.fillObject("generalizedLinearModelResult", generalizedLinearModelResult)
+myStudy.fillObject(
+    "generalizedLinearModelResult", generalizedLinearModelResult)
 
 print("generalizedLinearModelResult = ", generalizedLinearModelResult)
 

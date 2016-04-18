@@ -425,7 +425,7 @@ Bool CompositeDistribution::isDiscrete() const
 
 /* Compute the shifted moments of the distribution */
 NumericalPoint CompositeDistribution::computeShiftedMomentContinuous(const UnsignedInteger n,
-								     const NumericalPoint & shift) const
+    const NumericalPoint & shift) const
 {
   if (shift.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
   if (n == 0) return NumericalPoint(1, 1.0);

@@ -65,24 +65,24 @@ static void test_model(const CovarianceModel & myModel)
   }
   else
   {
-     Matrix gradfd(spatialDimension, dimension * dimension);
-     CovarianceMatrix covarianceX1X2 = myModel(x1, x2);
-     // Convert result into MatrixImplementation to symmetrize & get the collection
-     MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
-     covarianceX1X2Implementation.symmetrize();
-     const NumericalPoint centralValue(covarianceX1X2Implementation);
-     // Loop over the shifted points
-     for (UnsignedInteger i = 0; i < spatialDimension; ++i)
-     {
-       NumericalPoint currentPoint(x1);
-       currentPoint[i] += eps;
-       CovarianceMatrix localCovariance = myModel(currentPoint, x2);
-       MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
-       localCovarianceImplementation.symmetrize();
-       const NumericalPoint currentValue(localCovarianceImplementation);
-       for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
-         gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
-     }
+    Matrix gradfd(spatialDimension, dimension * dimension);
+    CovarianceMatrix covarianceX1X2 = myModel(x1, x2);
+    // Convert result into MatrixImplementation to symmetrize & get the collection
+    MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
+    covarianceX1X2Implementation.symmetrize();
+    const NumericalPoint centralValue(covarianceX1X2Implementation);
+    // Loop over the shifted points
+    for (UnsignedInteger i = 0; i < spatialDimension; ++i)
+    {
+      NumericalPoint currentPoint(x1);
+      currentPoint[i] += eps;
+      CovarianceMatrix localCovariance = myModel(currentPoint, x2);
+      MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
+      localCovarianceImplementation.symmetrize();
+      const NumericalPoint currentValue(localCovarianceImplementation);
+      for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
+        gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
+    }
     fullprint << "dCov (FD)=" << gradfd << std::endl;
   }
 }
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
       NumericalPoint scale(2, 1.0);
       // Define a spatial correlation
       CorrelationMatrix spatialCorrelation(spatialDimension);
-      spatialCorrelation(1,0) = 0.3;
+      spatialCorrelation(1, 0) = 0.3;
       ExponentialModel myExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation);
       collection.add(myExponentialModel);
       // Build TensorizedCovarianceModel with scale = [1,..,1]

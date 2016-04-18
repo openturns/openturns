@@ -18,7 +18,7 @@ model = ot.ExponentialCauchy(amplitude, scale)
 myNormalProcess = ot.SpectralNormalProcess(model, myTimeGrid)
 
 # Get a time series or a sample of time series
-#myTimeSeries = myNormalProcess.getRealization()
+# myTimeSeries = myNormalProcess.getRealization()
 mySample = myNormalProcess.getSample(1000)
 
 mySegmentNumber = 10
@@ -28,7 +28,7 @@ myOverlapSize = 0.3
 myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber, myOverlapSize)
 
 # Estimation on a TimeSeries or on a ProcessSample
-#myEstimatedModel_TS = myFactory.build(myTimeSeries)
+# myEstimatedModel_TS = myFactory.build(myTimeSeries)
 myEstimatedModel_PS = myFactory.build(mySample)
 
 # Change the filtering window

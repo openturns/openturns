@@ -69,18 +69,24 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 
   if (problem.hasInequalityConstraint())
   {
-    try {
+    try
+    {
       opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, 0);
-    } catch (std::invalid_argument) {
+    }
+    catch (std::invalid_argument)
+    {
       throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support inequality constraints";
     }
   }
 
   if (problem.hasEqualityConstraint())
   {
-    try {
+    try
+    {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
-    } catch (std::invalid_argument) {
+    }
+    catch (std::invalid_argument)
+    {
       throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support equality constraints";
     }
   }
@@ -90,9 +96,10 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 }
 
 // Struct to store class ptr and marginal index as well
-struct MarginalData {
+struct MarginalData
+{
   MarginalData(NLopt * p_algo, const UnsignedInteger marginalIndex)
-  : p_algo_(p_algo), marginalIndex_(marginalIndex) {}
+    : p_algo_(p_algo), marginalIndex_(marginalIndex) {}
   NLopt * p_algo_;
   int marginalIndex_;
 };
@@ -107,10 +114,12 @@ void NLopt::run()
 
   nlopt::opt opt(algo, dimension);
 
-  if (getProblem().isMinimization()) {
+  if (getProblem().isMinimization())
+  {
     opt.set_min_objective(NLopt::ComputeObjective, this);
   }
-  else {
+  else
+  {
     opt.set_max_objective(NLopt::ComputeObjective, this);
   }
 
@@ -279,45 +288,54 @@ CLASSNAMEINIT(SLSQP);
 static const Factory<SLSQP> RegisteredFactory2;
 SLSQP::SLSQP() : NLopt(
 #ifdef OPENTURNS_HAVE_NLOPT
-nlopt::LD_SLSQP
+    nlopt::LD_SLSQP
 #endif
-) {}
+  ) {}
 SLSQP::SLSQP(const OptimizationProblem & problem) : NLopt(problem
 #ifdef OPENTURNS_HAVE_NLOPT
-, nlopt::LD_SLSQP
+      , nlopt::LD_SLSQP
 #endif
-) {}
-SLSQP * SLSQP::clone() const { return new SLSQP(*this); }
+                                                           ) {}
+SLSQP * SLSQP::clone() const
+{
+  return new SLSQP(*this);
+}
 
 
 CLASSNAMEINIT(LBFGS);
 static const Factory<LBFGS> RegisteredFactory3;
 LBFGS::LBFGS() : NLopt(
 #ifdef OPENTURNS_HAVE_NLOPT
-nlopt::LD_LBFGS
+    nlopt::LD_LBFGS
 #endif
-) {}
+  ) {}
 LBFGS::LBFGS(const OptimizationProblem & problem) : NLopt(problem
 #ifdef OPENTURNS_HAVE_NLOPT
-, nlopt::LD_LBFGS
+      , nlopt::LD_LBFGS
 #endif
-) {}
-LBFGS * LBFGS::clone() const { return new LBFGS(*this); }
+                                                           ) {}
+LBFGS * LBFGS::clone() const
+{
+  return new LBFGS(*this);
+}
 
 
 CLASSNAMEINIT(NelderMead);
 static const Factory<NelderMead> RegisteredFactory4;
 NelderMead::NelderMead() : NLopt(
 #ifdef OPENTURNS_HAVE_NLOPT
-nlopt::LN_NELDERMEAD
+    nlopt::LN_NELDERMEAD
 #endif
-) {}
+  ) {}
 NelderMead::NelderMead(const OptimizationProblem & problem) : NLopt(problem
 #ifdef OPENTURNS_HAVE_NLOPT
-, nlopt::LN_NELDERMEAD
+      , nlopt::LN_NELDERMEAD
 #endif
-) {}
-NelderMead * NelderMead::clone() const { return new NelderMead(*this); }
+                                                                     ) {}
+NelderMead * NelderMead::clone() const
+{
+  return new NelderMead(*this);
+}
 
 
 END_NAMESPACE_OPENTURNS

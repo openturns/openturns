@@ -37,7 +37,7 @@ point = ot.NumericalPoint([0.0, 3.2, 4.2, 5.0])
 print("Point= ", point)
 
 # Show PDF and CDF of point
-#eps = 1e-5
+# eps = 1e-5
 # derivative of PDF with regards its arguments
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
@@ -56,7 +56,7 @@ CCDF = distribution.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
 condCDF = distribution.computeConditionalCDF(4.0, [0.0, 2.0])
 print("condCDF     =%.6f" % condCDF)
-#PDFgr = distribution.computePDFGradient(point)
+# PDFgr = distribution.computePDFGradient(point)
 # print "pdf gradient     =", repr(PDFgr)
 # quantile
 quantile = distribution.computeQuantile(0.95)
@@ -72,16 +72,16 @@ skewness = distribution.getSkewness()
 print("skewness=", repr(skewness))
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
-ot.ResourceMap.SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 )
-ot.ResourceMap.SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 )
+ot.ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 20)
+ot.ResourceMap.SetAsNumericalScalar("GaussKronrod-MaximumError",  1.0e-4)
 covariance = distribution.getCovariance()
 print("covariance=", repr(covariance))
 correlation = distribution.getCorrelation()
 print("correlation=", repr(correlation))
 spearman = distribution.getSpearmanCorrelation()
 print("spearman=", repr(spearman))
-ot.ResourceMap.SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 )
-ot.ResourceMap.SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 )
+ot.ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 100)
+ot.ResourceMap.SetAsNumericalScalar("GaussKronrod-MaximumError",  1.0e-12)
 parameters = distribution.getParametersCollection()
 print("parameters=", repr(parameters))
 

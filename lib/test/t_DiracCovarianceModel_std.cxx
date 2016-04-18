@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     fullprint << "myModel2 = " << myModel2 << std::endl;
     fullprint << "Pretty print of myModel2 = " << myModel2.__str__() << std::endl;
 
-     // Evaluation on some points
+    // Evaluation on some points
     Indices levels(spatialDimension, 1);
     Box box(levels);
     const NumericalSample vertices = box.generate();

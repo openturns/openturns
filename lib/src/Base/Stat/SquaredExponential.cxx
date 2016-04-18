@@ -57,7 +57,7 @@ SquaredExponential::SquaredExponential(const NumericalPoint & theta,
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() <<")";
+                                         << " Here, (got dimension=" << getDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -78,7 +78,7 @@ NumericalScalar SquaredExponential::computeStandardRepresentative(const Numerica
 
 /* Gradient */
 Matrix SquaredExponential::partialGradient(const NumericalPoint & s,
-                                           const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;

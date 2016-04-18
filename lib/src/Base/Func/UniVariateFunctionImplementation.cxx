@@ -81,8 +81,8 @@ NumericalScalar UniVariateFunctionImplementation::hessian(const NumericalScalar 
 
 /* Method to draw the graph of the function between given bounds */
 Graph UniVariateFunctionImplementation::draw(const NumericalScalar xMin,
-                                             const NumericalScalar xMax,
-                                             const UnsignedInteger pointNumber) const
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber) const
 {
   NumericalSample data(pointNumber, 2);
   for (UnsignedInteger i = 0; i < pointNumber; ++ i)

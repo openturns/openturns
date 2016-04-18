@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 def printNumericalPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -33,9 +34,6 @@ result = algo.getResult()
 print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
 
 
-
-
-
 # non-linear
 levelFunction = ot.NumericalMathFunction(
     ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
@@ -54,8 +52,6 @@ result = algo.getResult()
 print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
 
 
-
-
 # bounds
 linear = ot.NumericalMathFunction(
     ['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
@@ -63,11 +59,12 @@ linear = ot.NumericalMathFunction(
 dim = 4
 startingPoint = [0.] * dim
 
-bounds = ot.Interval([-3.]*dim,[5.]*dim)
+bounds = ot.Interval([-3.] * dim, [5.] * dim)
 
 for minimization in [True, False]:
 
-    problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+    problem = ot.OptimizationProblem(
+        linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
     problem.setMinimization(minimization)
     algo = ot.Cobyla(problem)
     algo.setMaximumIterationNumber(150)
@@ -76,5 +73,3 @@ for minimization in [True, False]:
     algo.run()
     result = algo.getResult()
     print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-
-

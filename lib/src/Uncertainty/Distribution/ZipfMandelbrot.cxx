@@ -286,7 +286,7 @@ NumericalPoint ZipfMandelbrot::getParameter() const
 
 void ZipfMandelbrot::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parameter[0])), parameter[1], parameter[2]);
   setWeight(w);

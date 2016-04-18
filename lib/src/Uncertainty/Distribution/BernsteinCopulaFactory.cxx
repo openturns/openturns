@@ -62,8 +62,8 @@ struct BernsteinCopulaFactoryPolicy
   UnsignedInteger dimension_;
 
   BernsteinCopulaFactoryPolicy(const NumericalSample & input,
-			       const UnsignedInteger binNumber,
-			       Mixture::DistributionCollection & output)
+                               const UnsignedInteger binNumber,
+                               Mixture::DistributionCollection & output)
     : input_(input)
     , output_(output)
     , binNumber_(binNumber)
@@ -73,13 +73,13 @@ struct BernsteinCopulaFactoryPolicy
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      {
-	const NumericalPoint nu(input_[i] * binNumber_);
-	Mixture::DistributionCollection atomsKernel(dimension_);
-	for (UnsignedInteger j = 0; j < dimension_; ++j)
-	  atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber_ + 1.0, 0.0, 1.0);
-	output_[i] = ComposedDistribution(atomsKernel);
-      }
+    {
+      const NumericalPoint nu(input_[i] * binNumber_);
+      Mixture::DistributionCollection atomsKernel(dimension_);
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber_ + 1.0, 0.0, 1.0);
+      output_[i] = ComposedDistribution(atomsKernel);
+    }
   }
 
 }; /* end struct BernsteinCopulaFactoryPolicy */
@@ -92,7 +92,7 @@ Distribution BernsteinCopulaFactory::build(const NumericalSample & sample)
 
 /* Build a Bernstein copula based on the given sample */
 Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
-					   const UnsignedInteger binNumber)
+    const UnsignedInteger binNumber)
 {
   if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";
   const UnsignedInteger size(sample.getSize());

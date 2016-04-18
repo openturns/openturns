@@ -230,7 +230,7 @@ NumericalPoint MinCopula::getParameter() const
 
 void MinCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize(); 
+  if (parameters.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: expected 0 parameters, got " << parameters.getSize();
 }
 
 /* Parameters description accessor */

@@ -106,7 +106,7 @@ public:
   void load(Advocate & adv);
 
 
- protected:
+protected:
 
   // KrigingAlgorithm::run could ask for the Cholesky factor
   friend class KrigingAlgorithm;
@@ -119,7 +119,7 @@ public:
   // Return input sample transformed
   NumericalSample getInputTransformedSample() const;
 
- private:
+private:
 
   /** inputData should be keeped*/
   NumericalSample inputData_;

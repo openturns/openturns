@@ -99,7 +99,7 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
 
 /* Computation of the covariance density function */
 NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const NumericalPoint & s,
-                                                                      const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -122,7 +122,7 @@ NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const Nume
 
 /* Gradient */
 Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
-                                               const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -166,7 +166,7 @@ void ProductCovarianceModel::setParameter(const NumericalPoint & parameter)
 {
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension)
-      throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameter.getDimension() << ")";
+    throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameter.getDimension() << ")";
   // Convention is the following :
   // Scale parameters than amplitude parameter
   // As it is a 1 d model, scale size = parameterDimension - 1
@@ -196,9 +196,9 @@ Description ProductCovarianceModel::getParameterDescription() const
   const UnsignedInteger size(spatialDimension_ + 1);
   Description description(size);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
-      description[i] = OSS() << "scale_" << i;
+    description[i] = OSS() << "scale_" << i;
   // Last element is amplitude
-  description[size-1] = "amplitude";
+  description[size - 1] = "amplitude";
   return description;
 }
 

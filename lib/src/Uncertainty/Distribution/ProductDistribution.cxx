@@ -520,16 +520,16 @@ NumericalScalar ProductDistribution::computeCDF(const NumericalPoint & point) co
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
   if (aLeft < 0)
   {
-      const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
-      value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)), cdfEpsilon_)[0];
+    const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
+    value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)), cdfEpsilon_)[0];
   }
   if (bLeft >= 0)
   {
-      const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-      value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft), cdfEpsilon_)[0];
+    const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+    value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft), cdfEpsilon_)[0];
   }
-    return value;
-  }
+  return value;
+}
 
 /* Get the CDF of the distribution: CDF(x) = \int_Q1 PDF_left(u) * CDF_right(x / u) * du when left >= 0, right >= 0 */
 NumericalScalar ProductDistribution::computeCDFQ1(const NumericalScalar x,

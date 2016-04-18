@@ -761,10 +761,10 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, dimension_, 1));
   NumericalScalar probability;
   if (dimension_ == 1)
-    {
-      NumericalScalar error;
-      probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
-    }
+  {
+    NumericalScalar error;
+    probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
+  }
   else probability = IteratedQuadrature().integrate(fPDF, reducedInterval)[0];
   return std::min(1.0, std::max(0.0, probability));
 }
@@ -2198,14 +2198,14 @@ CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
 CorrelationMatrix DistributionImplementation::getKendallTau() const
 {
   if (isElliptical())
-    {
-      const CorrelationMatrix shape(getCorrelation());
-      CorrelationMatrix tau(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	for(UnsignedInteger j = 0; j < i; ++j)
-	  tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
-      return tau;
-    }
+  {
+    const CorrelationMatrix shape(getCorrelation());
+    CorrelationMatrix tau(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for(UnsignedInteger j = 0; j < i; ++j)
+        tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
+    return tau;
+  }
   return getCopula()->getKendallTau();
 }
 

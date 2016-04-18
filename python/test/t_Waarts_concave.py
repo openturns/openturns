@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
-#from math import *
+# from math import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
@@ -78,7 +78,7 @@ try:
     # myAlgoAR2.run()
 
     resultAR = FORMResult(myAlgoAR.getResult())
-    #resultAR2 = SORMResult(myAlgoAR2.getResult())
+    # resultAR2 = SORMResult(myAlgoAR2.getResult())
 
     #
     # Monte Carlo

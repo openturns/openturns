@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 template <class T>
 #else
 template < class T,
-         template <class> class IMPL = SharedPointer >
+           template <class> class IMPL = SharedPointer >
 #endif
 
 class Pointer

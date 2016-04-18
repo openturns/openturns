@@ -10,7 +10,7 @@ semi_parsed = '# ooo\nE=2\nE1=2\nFE1=@F#oo\nZ=@Z@Z\n# ooo\n'
 parsed = '# ooo\nE=1.6\nE1=1.6\nFE1=5#oo\nZ=66\n# ooo\n'
 
 # how many Mo for perf file
-#howbig = 3024
+# howbig = 3024
 howbig = 256
 max_time = howbig // 5
 # enable it manually, see #600
@@ -237,7 +237,7 @@ def check_get_line_col():
         raise Exception("! got " + str(result) + ' instead of ' +
                         str(value))
 
-    #coupling_tools.debug = True
+    # coupling_tools.debug = True
     value = 21
     just_before_line_ret = 80
     sys.stderr.write('char at pos ' + str(just_before_line_ret) + ':->' +

@@ -323,7 +323,7 @@ NumericalPoint Triangular::getParameter() const
 
 void Triangular::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Triangular(parameter[0], parameter[1], parameter[2]);
   setWeight(w);

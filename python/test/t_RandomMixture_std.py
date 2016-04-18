@@ -142,7 +142,7 @@ try:
     result, norms = distribution.project(collFactories)
     print("projections=", result)
     print("norms=", norms)
-    #------------------------------ Multivariate tests ------------------------------#
+    # ------------------------------ Multivariate tests ------------------------------#
     # 2D RandomMixture
     collection = DistributionCollection(0)
     collection.add(Normal(0.0, 1.0))

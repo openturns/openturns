@@ -154,7 +154,7 @@ NumericalPoint Frechet::getParameter() const
 
 void Frechet::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Frechet(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
@@ -253,7 +253,7 @@ NumericalPoint Frechet::getKurtosis() const
   const NumericalScalar gamma3InvAlpha(SpecFunc::Gamma(1.0 - 3.0 / alpha_));
   const NumericalScalar gamma4InvAlpha(SpecFunc::Gamma(1.0 - 4.0 / alpha_));
   const NumericalScalar gammaInvAlpha2(gammaInvAlpha * gammaInvAlpha);
-  const NumericalScalar kurtosis((gamma4InvAlpha + gammaInvAlpha * (-4.0 * gamma3InvAlpha + 3.0 * gammaInvAlpha * (2.0 * gamma2InvAlpha - gammaInvAlpha2))) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 2.0)); 
+  const NumericalScalar kurtosis((gamma4InvAlpha + gammaInvAlpha * (-4.0 * gamma3InvAlpha + 3.0 * gammaInvAlpha * (2.0 * gamma2InvAlpha - gammaInvAlpha2))) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 2.0));
   return NumericalPoint(1, kurtosis);
 }
 

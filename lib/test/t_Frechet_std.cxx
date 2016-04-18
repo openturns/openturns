@@ -95,26 +95,26 @@ int main(int argc, char *argv[])
     fullprint << "characteristic function=" << CF << std::endl;
     NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
     fullprint << "log characteristic function=" << LCF << std::endl;
-      NumericalPoint PDFgr = distribution.computePDFGradient( point );
-      fullprint << "pdf gradient     =" << PDFgr << std::endl;
-      NumericalPoint PDFgrFD(3);
-      PDFgrFD[0] = (Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
-                    Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps);
-      PDFgrFD[1] = (Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
-                    Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
-      PDFgrFD[2] = (Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
-                    Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
-      fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-      NumericalPoint CDFgr = distribution.computeCDFGradient( point );
-      fullprint << "cdf gradient     =" << CDFgr << std::endl;
-      NumericalPoint CDFgrFD(3);
-      CDFgrFD[0] = (Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
-                    Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
-      CDFgrFD[1] = (Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
-                    Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
-      CDFgrFD[2] = (Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
-                    Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
-      fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
+    NumericalPoint PDFgr = distribution.computePDFGradient( point );
+    fullprint << "pdf gradient     =" << PDFgr << std::endl;
+    NumericalPoint PDFgrFD(3);
+    PDFgrFD[0] = (Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
+                  Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                  Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[2] = (Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                  Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
+    fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
+    NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+    fullprint << "cdf gradient     =" << CDFgr << std::endl;
+    NumericalPoint CDFgrFD(3);
+    CDFgrFD[0] = (Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
+                  Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                  Frechet(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[2] = (Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                  Frechet(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
+    fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;

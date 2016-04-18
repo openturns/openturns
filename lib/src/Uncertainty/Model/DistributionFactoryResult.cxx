@@ -37,14 +37,14 @@ DistributionFactoryResult::DistributionFactoryResult()
 
 /* Parameters constructor */
 DistributionFactoryResult::DistributionFactoryResult(const Distribution & distribution,
-                                                     const Distribution & parameterDistribution)
+    const Distribution & parameterDistribution)
   : PersistentObject()
   , distribution_(distribution)
   , parameterDistribution_(parameterDistribution)
 {
   if (distribution_.getParameterDimension() != parameterDistribution.getDimension())
     throw InvalidDimensionException(HERE) << "The dimension of the parameter of the distribution (" << distribution_.getParameterDimension()
-    << ") does not match the dimension of the distribution of the parameter (" << parameterDistribution.getDimension();
+                                          << ") does not match the dimension of the distribution of the parameter (" << parameterDistribution.getDimension();
 }
 
 /* Virtual constructor */

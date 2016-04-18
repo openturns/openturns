@@ -82,9 +82,9 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   // Get the coefficients from the cache if possible
   if (n < recurrenceCoefficients_.getSize()) return recurrenceCoefficients_[n];
   while (n > recurrenceCoefficients_.getSize())
-    {
-      NumericalPoint coeffs(getRecurrenceCoefficients(n - 1));
-    }
+  {
+    NumericalPoint coeffs(getRecurrenceCoefficients(n - 1));
+  }
   Coefficients currentCoefficients(3, 0.0);
   if (n == 0)
   {
@@ -106,23 +106,23 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   GaussKronrod algo;
   const DotProductWrapper dotProductWrapper(pN, measure_);
   if (isElliptical_)
-    {
-      const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
-      const NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange(), error));
-      const NumericalScalar betaNP1(dotProduct[0] - betaN);
-      currentCoefficients[0] = 1.0 / std::sqrt(betaNP1);
-      currentCoefficients[2] = -currentCoefficients[0] / a0Prev;
-    }
+  {
+    const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
+    const NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange(), error));
+    const NumericalScalar betaNP1(dotProduct[0] - betaN);
+    currentCoefficients[0] = 1.0 / std::sqrt(betaNP1);
+    currentCoefficients[2] = -currentCoefficients[0] / a0Prev;
+  }
   else
-    {
-      const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
-      const NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange(), error));
-      const NumericalScalar alphaN(dotProduct[1]);
-      const NumericalScalar betaNP1(dotProduct[0] - alphaN * alphaN - betaN);
-      currentCoefficients[0] = 1.0 / std::sqrt(betaNP1);
-      currentCoefficients[1] = -alphaN * currentCoefficients[0];
-      currentCoefficients[2] = -currentCoefficients[0] / a0Prev;
-    }
+  {
+    const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
+    const NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange(), error));
+    const NumericalScalar alphaN(dotProduct[1]);
+    const NumericalScalar betaNP1(dotProduct[0] - alphaN * alphaN - betaN);
+    currentCoefficients[0] = 1.0 / std::sqrt(betaNP1);
+    currentCoefficients[1] = -alphaN * currentCoefficients[0];
+    currentCoefficients[2] = -currentCoefficients[0] / a0Prev;
+  }
   recurrenceCoefficients_.add(currentCoefficients);
   return currentCoefficients;
 }

@@ -36,7 +36,7 @@ def test_model(myModel):
         print("dCov =", repr(grad))
 
         gradfd = ot.Matrix(spatialDimension, dimension * dimension)
-        covarianceX1X2 = myModel(x1, x2);
+        covarianceX1X2 = myModel(x1, x2)
         # Symmetrize matrix
         covarianceX1X2.getImplementation().symmetrize()
         centralValue = ot.NumericalPoint(covarianceX1X2.getImplementation())
@@ -44,11 +44,12 @@ def test_model(myModel):
         for i in range(spatialDimension):
             currentPoint = ot.NumericalPoint(x1)
             currentPoint[i] += eps
-            localCovariance = myModel(currentPoint, x2);
+            localCovariance = myModel(currentPoint, x2)
             localCovariance.getImplementation().symmetrize()
-            currentValue = ot.NumericalPoint(localCovariance.getImplementation())
+            currentValue = ot.NumericalPoint(
+                localCovariance.getImplementation())
             for j in range(currentValue.getSize()):
-                gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps;
+                gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps
         print("dCov (FD)=", repr(gradfd))
 
 spatialDimension = 2
@@ -105,8 +106,9 @@ amplitude = [4.0, 2.0]
 scale = [1.0] * spatialDimension
 # Define a spatial correlation
 spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
-spatialCorrelation[1,0] = 0.3
-myExponentialModel = ot.ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation)
+spatialCorrelation[1, 0] = 0.3
+myExponentialModel = ot.ExponentialModel(
+    spatialDimension, amplitude, scale, spatialCorrelation)
 collection.add(myExponentialModel)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
 myModel = ot.TensorizedCovarianceModel(collection)

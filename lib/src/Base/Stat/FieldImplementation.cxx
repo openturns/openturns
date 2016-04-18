@@ -367,13 +367,13 @@ Graph FieldImplementation::draw() const
 {
   // Specific drawing method for bidimensional fields indexed by a scalar
   if ((getSpatialDimension() == 1) && (getDimension() == 2))
-    {
-      const String title(OSS() << getName());
-      Graph graph(title, description_[0], description_[1], true, "");
-      const Curve curveSerie(getValues());
-      graph.add(curveSerie);
-      return graph;
-    }
+  {
+    const String title(OSS() << getName());
+    Graph graph(title, description_[0], description_[1], true, "");
+    const Curve curveSerie(getValues());
+    graph.add(curveSerie);
+    return graph;
+  }
   return drawMarginal(0, false);
 }
 

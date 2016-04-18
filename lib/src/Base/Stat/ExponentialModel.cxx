@@ -116,7 +116,7 @@ NumericalScalar ExponentialModel::computeStandardRepresentative(const NumericalP
 
 /** Gradient */
 Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
-                                         const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   /* Computation of the gradient
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau

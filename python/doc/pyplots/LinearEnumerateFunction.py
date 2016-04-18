@@ -12,8 +12,9 @@ ax.plot([0, 0, 1, 0, 1, 2, 3, 2, 1, 0], [
 ax.annotate("",
             xy=(0.97, 0), xycoords='data',
             xytext=(0, 0), textcoords='data',
-            arrowprops=dict(arrowstyle="-|>", linestyle="dashed", mutation_scale=15,
-                            connectionstyle="arc3", color='black'),
+            arrowprops=dict(arrowstyle="-|>", linestyle="dashed",
+                            mutation_scale=15, connectionstyle="arc3",
+                            color='black'),
             )
 
 ax.arrow(1, 0, -0.97, 0.97, head_width=0.08, head_length=0.08, fc='k',

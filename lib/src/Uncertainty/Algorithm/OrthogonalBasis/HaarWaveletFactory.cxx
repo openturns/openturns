@@ -51,7 +51,7 @@ HaarWaveletFactory * HaarWaveletFactory::clone() const
 String HaarWaveletFactory::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << " measure=" << measure_;
+         << " measure=" << measure_;
 }
 
 /* The method to get the function of any order */

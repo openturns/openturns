@@ -108,7 +108,8 @@ void TNC::run()
 {
   const UnsignedInteger dimension = getStartingPoint().getDimension();
   Interval boundConstraints(getProblem().getBounds());
-  if (!getProblem().hasBounds()) {
+  if (!getProblem().hasBounds())
+  {
     boundConstraints = Interval(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 1.0), Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false));
   }
 
@@ -142,7 +143,7 @@ void TNC::run()
   NumericalScalar constraintError = -1.0;
 
   // clear result
-  setResult(OptimizationResult(x, NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(x, NumericalPoint(1, f), nfeval, absoluteError, relativeError, residualError, constraintError));
 
   // clear history
   evaluationInputHistory_ = NumericalSample(0.0, dimension);
@@ -214,7 +215,7 @@ void TNC::run()
     NumericalPoint y_m(evaluationOutputHistory_[i - 1]);
     absoluteError = (xi - x_m).norm();
     relativeError = absoluteError / xi.norm();
-    residualError = NumericalPoint(1,y[0] - y_m[0]).norm();
+    residualError = NumericalPoint(1, y[0] - y_m[0]).norm();
     constraintError = 0.0;
     for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {
@@ -230,7 +231,7 @@ void TNC::run()
   }
 
   /* Store the result */
-  setResult(OptimizationResult(x, sign*NumericalPoint(1,f), nfeval, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(x, sign * NumericalPoint(1, f), nfeval, absoluteError, relativeError, residualError, constraintError));
 
   // check the convergence criteria
   Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
@@ -396,7 +397,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
   /* Compute the objective function at inPoint */
   const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
-  outPoint[0]= result;
+  outPoint[0] = result;
 
   const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
   *f = sign * result;
@@ -410,14 +411,14 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   {
     return 1;
   }
-  
+
   for ( UnsignedInteger i = 0; i < dimension; ++ i ) g[i] = sign * objectiveGradient(i, 0);
 
   /* Compute gradient norm */
   NumericalPoint gradient(dimension);
   for ( UnsignedInteger i = 0; i < dimension; ++ i ) gradient[i] = objectiveGradient(i, 0);
-  outPoint[1]= gradient.norm();
-  
+  outPoint[1] = gradient.norm();
+
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);
   algorithm->evaluationOutputHistory_.add(outPoint);

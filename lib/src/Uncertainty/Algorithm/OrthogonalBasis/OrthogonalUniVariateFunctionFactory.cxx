@@ -63,7 +63,7 @@ OrthogonalUniVariateFunctionFactory * OrthogonalUniVariateFunctionFactory::clone
 String OrthogonalUniVariateFunctionFactory::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << " measure=" << measure_;
+         << " measure=" << measure_;
 }
 
 

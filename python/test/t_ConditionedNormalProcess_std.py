@@ -27,7 +27,7 @@ try:
     outputSample = model(inputSample)
 
     # 2) Definition of exponential model
-    covarianceModel = ot.SquaredExponential([1.98824,0.924731], [3.15352])
+    covarianceModel = ot.SquaredExponential([1.98824, 0.924731], [3.15352])
 
     # 3) Basis definition
     basisCollection = ot.BasisCollection(

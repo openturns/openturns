@@ -104,7 +104,7 @@ void Cobyla::run()
   NumericalScalar constraintError = -1.0;
 
   // clear result
-  setResult(OptimizationResult(x, NumericalPoint(1,f), 0, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(x, NumericalPoint(1, f), 0, absoluteError, relativeError, residualError, constraintError));
 
   // initialize history
   evaluationInputHistory_ = NumericalSample(0, dimension);
@@ -221,28 +221,28 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   if (std::abs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
   outPoint[0] = result;
 
-  UnsignedInteger temp=0;
+  UnsignedInteger temp = 0;
   UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   UnsignedInteger nbEqConst   = problem.getEqualityConstraint().getOutputDimension();
-  NumericalPoint constraintValue(nbIneqConst+2*nbEqConst,0.0);
+  NumericalPoint constraintValue(nbIneqConst + 2 * nbEqConst, 0.0);
 
   const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
   *f = sign * result;
 
-    /* Compute the inequality constraints at inPoint */
+  /* Compute the inequality constraints at inPoint */
   if (problem.hasInequalityConstraint())
   {
     NumericalPoint constraintInequalityValue = problem.getInequalityConstraint().operator()(inPoint);
-    for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index+temp] = constraintInequalityValue[index];
+    for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + temp] = constraintInequalityValue[index];
     temp += nbIneqConst;
   }
   /* Compute the equality constraints at inPoint */
   if (problem.hasEqualityConstraint())
   {
     NumericalPoint constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
-    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
+    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + temp] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     temp += nbEqConst;
-    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index+temp] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
+    for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + temp] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
   }
 
   /* Compute the bound constraints at inPoint */
@@ -266,7 +266,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   for (UnsignedInteger index = 0; index < constraintValue.getDimension(); ++ index) con[index] = constraintValue[index];
 
   /* Compute constraints norm */
-  outPoint[1]= constraintValue.norm();
+  outPoint[1] = constraintValue.norm();
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);

@@ -47,7 +47,7 @@ try:
 
     # Show PDF and CDF of point
     eps = 1e-5
-    #DDF = distribution.computeDDF( point )
+    # DDF = distribution.computeDDF( point )
     # print "ddf     =", repr(DDF)
     print("ddf (FD)=", repr(NumericalPoint(1, (distribution.computePDF(
         point + NumericalPoint(1, eps)) - distribution.computePDF(point + NumericalPoint(1, -eps))) / (2.0 * eps))))
@@ -57,7 +57,7 @@ try:
                                distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps), ))
     CDF = distribution.computeCDF(point)
     print("cdf= %.12g" % CDF)
-    #CF = distribution.computeCharacteristicFunction( point[0] )
+    # CF = distribution.computeCharacteristicFunction( point[0] )
     # print "characteristic function=", CF
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))

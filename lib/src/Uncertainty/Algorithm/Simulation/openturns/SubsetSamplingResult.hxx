@@ -26,7 +26,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSamplingResult
-: public SimulationResultImplementation
+  : public SimulationResultImplementation
 {
   CLASSNAME;
 public:

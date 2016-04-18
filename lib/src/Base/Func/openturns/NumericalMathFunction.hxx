@@ -295,7 +295,7 @@ public:
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const NumericalPoint & inP) const;
   virtual Matrix parameterGradient(const NumericalPoint & inP,
-                                    const NumericalPoint & parameters);
+                                   const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameter() const;
