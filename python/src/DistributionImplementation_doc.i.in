@@ -1848,6 +1848,19 @@ OT_Distribution_getSupport_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_getProbabilities_doc
+"Accessor to the discrete probability levels.
+
+Returns
+-------
+probabilities : :class:`~openturns.NumericalPoint`
+    The probability levels of a discrete distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getProbabilities
+OT_Distribution_getProbabilities_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_hasEllipticalCopula_doc
 "Test whether the distribution's copula is elliptical or not.
 

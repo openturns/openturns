@@ -138,6 +138,8 @@ OT_Distribution_getStandardMoment_doc
 OT_Distribution_getStandardRepresentative_doc
 %feature("docstring") OT::Distribution::getSupport
 OT_Distribution_getSupport_doc
+%feature("docstring") OT::Distribution::getProbabilities
+OT_Distribution_getProbabilities_doc
 %feature("docstring") OT::Distribution::hasEllipticalCopula
 OT_Distribution_hasEllipticalCopula_doc
 %feature("docstring") OT::Distribution::hasIndependentCopula

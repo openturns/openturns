@@ -648,6 +648,12 @@ NumericalSample Distribution::getSupport() const
   return getImplementation()->getSupport();
 }
 
+/* Get the discrete probability levels */
+NumericalPoint Distribution::getProbabilities() const
+{
+  return getImplementation()->getProbabilities();
+}
+
 /* Compute the density generator of the elliptical generator, i.e.
   *  the function phi such that the density of the distribution can
   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
