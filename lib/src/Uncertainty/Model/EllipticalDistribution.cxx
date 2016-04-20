@@ -499,7 +499,7 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
   const UnsignedInteger dimension(getDimension());
-  NumericalPointWithDescription parameters(2 * dimension);
+  NumericalPoint parameters(2 * dimension);
   Description description(parameters.getDimension());
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -511,8 +511,8 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
     description[i] = OSS() << marginalName << "_" << parametersDescription[0];
     description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
   }
-  parameters.setDescription(description);
   transform.setParameter(parameters);
+  transform.setParameterDescription(description);
   return transform;
 }
 
@@ -529,7 +529,7 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
   const UnsignedInteger dimension(getDimension());
-  NumericalPointWithDescription parameters(2 * dimension);
+  NumericalPoint parameters(2 * dimension);
   Description description(parameters.getDimension());
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -541,8 +541,8 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
     description[i] = OSS() << marginalName << "_" << parametersDescription[0];
     description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
   }
-  parameters.setDescription(description);
   inverseTransform.setParameter(parameters);
+  inverseTransform.setParameterDescription(description);
   return inverseTransform;
 }
 

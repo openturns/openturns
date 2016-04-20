@@ -112,14 +112,14 @@ UnsignedInteger NumericalMathHessianImplementation::getCallsNumber() const
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathHessianImplementation::getParameter() const
+NumericalPoint NumericalMathHessianImplementation::getParameter() const
 {
-  return parameters_;
+  return parameter_;
 }
 
-void NumericalMathHessianImplementation::setParameter(const NumericalPointWithDescription & parameters)
+void NumericalMathHessianImplementation::setParameter(const NumericalPoint & parameter)
 {
-  parameters_ = parameters;
+  parameter_ = parameter;
 }
 
 

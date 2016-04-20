@@ -689,7 +689,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
   // First, compute the dimension of the marginal parameters space
   const UnsignedInteger size(parametersCollection.getSize());
-  NumericalPointWithDescription parameters(0);
+  NumericalPoint parameters(0);
   Description description(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -703,7 +703,6 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
       description.add(OSS() << marginalName << "_" << marginalDescription[j]);
     }
   }
-  parameters.setDescription(description);
   // Special case for the independent copula case: marginal transformations only to go to the spherical distribution
   if (hasIndependentCopula())
   {
@@ -713,6 +712,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     evaluation.setDirection(MarginalTransformationEvaluation::FROM);
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameter(parameters);
+    marginalTransformation.setParameterDescription(description);
     return marginalTransformation;
   }
   // Special case for the elliptical distribution case: linear transformation
@@ -725,6 +725,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky));
     transform.setHessian(new NatafEllipticalDistributionHessian(dimension));
     transform.setParameter(parameters);
+    transform.setParameterDescription(description);
     return transform;
   }
   // Special case for the elliptical copula case: generalized Nataf transformation (marginal transformations plus linear transformation)
@@ -739,6 +740,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     evaluation.setDirection(MarginalTransformationEvaluation::FROM);
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), MarginalTransformationGradient(evaluation).clone(), MarginalTransformationHessian(evaluation).clone());
     marginalTransformation.setParameter(parameters);
+    marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
     const TriangularMatrix inverseCholesky(copula_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
     LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), inverseCholesky);
@@ -751,6 +753,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
   const MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM);
   IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
+  marginalTransformation.setParameterDescription(description);
   return IsoProbabilisticTransformation(copulaIsoprobabilisticTransformation, marginalTransformation);
 }
 
@@ -762,7 +765,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
   // First, compute the dimension of the marginal parameters space
   const UnsignedInteger size(parametersCollection.getSize());
-  NumericalPointWithDescription parameters(0);
+  NumericalPoint parameters(0);
   Description description(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -776,7 +779,6 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
       description.add(OSS() << marginalName << "_" << marginalDescription[j]);
     }
   }
-  parameters.setDescription(description);
   // Special case for the independent copula case: marginal transformations only to go back from the spherical distribution
   if (hasIndependentCopula())
   {
@@ -786,6 +788,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     evaluation.setDirection(MarginalTransformationEvaluation::TO);
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameter(parameters);
+    marginalTransformation.setParameterDescription(description);
     return marginalTransformation;
   }
   // Special case for the elliptical distribution case: linear transformation
@@ -798,6 +801,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky));
     inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(dimension));
     inverseTransform.setParameter(parameters);
+    inverseTransform.setParameterDescription(description);
     return inverseTransform;
   }
   // Special case for the elliptical copula case: generalized Nataf transformation (marginal transformations plus linear transformation)
@@ -812,6 +816,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     evaluation.setDirection(MarginalTransformationEvaluation::TO);
     InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameter(parameters);
+    marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
     const TriangularMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
     // const SquareMatrix cholesky(ComposedDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
@@ -825,6 +830,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
   const MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO);
   InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
+  marginalTransformation.setParameterDescription(description);
   return InverseIsoProbabilisticTransformation(marginalTransformation, copulaInverseIsoprobabilisticTransformation);
 }
 

@@ -262,28 +262,50 @@ Matrix LinearCombinationEvaluationImplementation::parameterGradient(const Numeri
   return result;
 }
 
-/* Parameters value and description accessor */
-NumericalPointWithDescription LinearCombinationEvaluationImplementation::getParameter() const
+
+/* Parameters value accessor */
+NumericalPoint LinearCombinationEvaluationImplementation::getParameter() const
 {
-  NumericalPointWithDescription parameters(0);
-  Description description(0);
-  const UnsignedInteger size(functionsCollection_.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
+  NumericalPoint parameter(0);
+  const UnsignedInteger size = functionsCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    // Extract the parameters of the current atom
-    NumericalPointWithDescription atomParameters(functionsCollection_[i].getParameter());
-    Description atomDescription(atomParameters.getDescription());
-    const UnsignedInteger atomSize(atomParameters.getDimension());
-    // Copy the parameters value and description
-    for (UnsignedInteger j = 0; j < atomSize; ++j)
-    {
-      parameters.add(atomParameters[i]);
-      description.add(atomDescription[i]);
-    }
+    parameter.add(functionsCollection_[i].getParameter());
   }
-  parameters.setDescription(description);
-  return parameters;
+  return parameter;
 }
+
+
+void LinearCombinationEvaluationImplementation::setParameter(const NumericalPoint & parameter)
+{
+  const UnsignedInteger size = functionsCollection_.getSize();
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    NumericalPoint marginalParameter(functionsCollection_[i].getParameter());
+    const UnsignedInteger marginalDimension = marginalParameter.getDimension();
+    for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
+    {
+      marginalParameter[j] = parameter[index];
+      ++ index;
+    }
+    functionsCollection_[i].setParameter(marginalParameter);
+  }
+}
+
+
+/* Parameters description accessor */
+Description LinearCombinationEvaluationImplementation::getParameterDescription() const
+{
+  Description description;
+  const UnsignedInteger size = functionsCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    description.add(functionsCollection_[i].getParameterDescription());
+  }
+  return description;
+}
+
 
 /* Get the i-th marginal function */
 LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvaluationImplementation::getMarginal(const UnsignedInteger i) const

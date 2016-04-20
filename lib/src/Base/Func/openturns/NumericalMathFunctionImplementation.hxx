@@ -214,8 +214,8 @@ public:
   /** Operator () */
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
 
-  virtual NumericalPoint operator() (const NumericalPoint & inP,
-                             const NumericalPoint & parameters);
+  virtual NumericalPoint operator()(const NumericalPoint & inP,
+                                    const NumericalPoint & parameter);
 
   virtual NumericalSample operator() (const NumericalSample & inS) const;
 
@@ -225,22 +225,25 @@ public:
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   virtual Matrix gradient(const NumericalPoint & inP) const;
   virtual Matrix gradient(const NumericalPoint & inP,
-                  const NumericalPoint & parameters);
+                          const NumericalPoint & parameter);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
   virtual SymmetricTensor hessian(const NumericalPoint & inP,
-                          const NumericalPoint & parameters);
+                                  const NumericalPoint & parameter);
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const NumericalPoint & inP) const;
   virtual Matrix parameterGradient(const NumericalPoint & inP,
-                                    const NumericalPoint & parameters);
+                                   const NumericalPoint & parameter);
 
-  /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameter() const;
-  virtual void setParameter(const NumericalPointWithDescription & parameters);
-  virtual void setParameter(const NumericalPoint & parameters);
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameter() const;
+  virtual void setParameter(const NumericalPoint & parameter);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
+  virtual void setParameterDescription(const Description & description);
 
   /** Accessor for parameter dimension */
   virtual UnsignedInteger getParameterDimension() const;

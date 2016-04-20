@@ -239,25 +239,45 @@ Matrix AggregatedNumericalMathEvaluationImplementation::parameterGradient(const 
   return result;
 }
 
-/* Parameters value and description accessor */
-NumericalPointWithDescription AggregatedNumericalMathEvaluationImplementation::getParameter() const
+/* Parameters value accessor */
+NumericalPoint AggregatedNumericalMathEvaluationImplementation::getParameter() const
 {
-  NumericalPointWithDescription parametersValues(0);
-  Description parametersDescription(0);
-  const UnsignedInteger size(functionsCollection_.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
+  NumericalPoint parameter;
+  const UnsignedInteger size = functionsCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPointWithDescription currentParameters(functionsCollection_[i].getParameter());
-    const Description currentDescription(currentParameters.getDescription());
-    const UnsignedInteger dimension(currentParameters.getDimension());
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      parametersValues.add(currentParameters[j]);
-      parametersDescription.add(currentDescription[j]);
-    }
+    parameter.add(functionsCollection_[i].getParameter());
   }
-  parametersValues.setDescription(parametersDescription);
-  return parametersValues;
+  return parameter;
+}
+
+void AggregatedNumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
+{
+  const UnsignedInteger size = functionsCollection_.getSize();
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    NumericalPoint marginalParameter(functionsCollection_[i].getParameter());
+    const UnsignedInteger marginalDimension = marginalParameter.getDimension();
+    for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
+    {
+      marginalParameter[j] = parameter[index];
+      ++ index;
+    }
+    functionsCollection_[i].setParameter(marginalParameter);
+  }
+}
+
+/* Parameters description accessor */
+Description AggregatedNumericalMathEvaluationImplementation::getParameterDescription() const
+{
+  Description description;
+  const UnsignedInteger size = functionsCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    description.add(functionsCollection_[i].getParameterDescription());
+  }
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

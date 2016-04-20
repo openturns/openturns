@@ -170,10 +170,13 @@ public:
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const NumericalPoint & inP) const;
 
-  /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameter() const;
-  virtual void setParameter(const NumericalPointWithDescription & parameters);
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameter() const;
   virtual void setParameter(const NumericalPoint & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
+  virtual void setParameterDescription(const Description & description);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
@@ -232,8 +235,11 @@ protected:
   /** Flag to activate or deactivate the history mechanism */
   mutable Bool isHistoryEnabled_;
 
-  /** The value and description of all the parameters */
-  NumericalPointWithDescription parameters_;
+  /** The value of the parameters */
+  NumericalPoint parameter_;
+
+  /** The description of the parameters */
+  Description parameterDescription_;
 
 private:
 
