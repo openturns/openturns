@@ -60,8 +60,7 @@ MCMC::MCMC( const Distribution & prior,
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   const NumericalMathFunction fullFunction(Description::BuildDefault(initialState.getDimension(), "x"), Description::BuildDefault(initialState.getDimension(), "x"));
-  const Indices indices(0);
-  model_ = NumericalMathFunction(fullFunction, indices);
+  model_ = NumericalMathFunction(fullFunction, Indices(0), NumericalPoint(0));
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
   setParameters(NumericalSample(observations.getSize(), 0));

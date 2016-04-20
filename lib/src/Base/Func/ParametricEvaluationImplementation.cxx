@@ -50,10 +50,8 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Num
   , inputPositions_(0)
 {
   const UnsignedInteger inputDimension(function.getInputDimension());
-  // Check if the given reference point has a dimension compatible with the function
-  if (referencePoint.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given reference point dimension=" << referencePoint.getDimension() << " does not match the function input dimension=" << inputDimension;
-  // Check if the given parameters positions are compatible with the input dimension of the function
   const UnsignedInteger setDimension(set.getSize());
+  // Check if the given parameters positions are compatible with the input dimension of the function
   if (inputDimension < setDimension) throw InvalidArgumentException(HERE) << "Error: the size of the " << (parametersSet ? "parameters" : "input") << " positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
   // Check if the given indices are valid
   if (!set.check(inputDimension)) throw InvalidArgumentException(HERE) << "Error: the given set of positions contain either duplicate positions or positions greater than the input dimension of the function.";
@@ -77,20 +75,22 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Num
     parametersPositions_ = otherSet;
     inputPositions_ = set;
   }
+  const UnsignedInteger parametersSize = parametersPositions_.getSize();
+  // Check if the given reference point has a dimension compatible with the function
+  if (referencePoint.getDimension() != parametersSize) throw InvalidArgumentException(HERE) << "Error: the given reference point dimension=" << referencePoint.getDimension() << " does not match the parameters size=" << parametersSize;
   // Set the relevant part of the reference point in the parameters
-  const UnsignedInteger parametersSize(parametersPositions_.getSize());
+  const Description functionInputDescription(function.getInputDescription());
   NumericalPointWithDescription parameters(parametersSize);
   Description description(parametersSize);
   for (UnsignedInteger i = 0; i < parametersSize; ++i)
   {
-    parameters[i] = referencePoint[parametersPositions_[i]];
-    description[i] = function.getInputDescription()[i];
+    parameters[i] = referencePoint[i];
+    description[i] = functionInputDescription[parametersPositions_[i]];
   }
   parameters.setDescription(description);
   // Here we cannot use the accessor as the dimension of the parameters is set at the first allocation
   parameters_ = parameters;
   // And finally the input/output descriptions
-  const Description functionInputDescription(function.getInputDescription());
   Description inputDescription(0);
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
   setInputDescription(inputDescription);
@@ -128,7 +128,7 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Par
     // And flag it to be removed from the input indices
     antecedentInputPosition[index] = inputDimension;
     // Add the parameter value to the parameters
-    parameters_.add(referencePoint[index]);
+    parameters_.add(referencePoint[i]);
     // Add the description to the parameters description
     parametersDescription.add(inputDescription[antecedentInputPosition[index]]);
   }
