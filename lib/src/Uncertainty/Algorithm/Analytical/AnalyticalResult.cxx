@@ -322,11 +322,13 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   const NumericalPointWithDescriptionCollection set1(physicalDistribution.getParametersCollection());
   /* get Set2 : parameters of the physical model */
   const NumericalMathFunction physicalModel(limitStateVariable_.getImplementation()->getFunction());
-  const NumericalPointWithDescription set2(physicalModel.getParameter());
+  NumericalPointWithDescription set2(physicalModel.getParameter());
+  set2.setDescription(physicalModel.getParameterDescription());
   const Bool isSet2Empty(set2.getDimension() == 0);
   /* get SetIso : parameters included in the isoprobabilistic transformation which is a subset of Set1 */
   const InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(physicalDistribution.getInverseIsoProbabilisticTransformation());
-  const NumericalPointWithDescription setIso(inverseIsoProbabilisticTransformation.getParameter());
+  NumericalPointWithDescription setIso(inverseIsoProbabilisticTransformation.getParameter());
+  setIso.setDescription(inverseIsoProbabilisticTransformation.getParameterDescription());
   /* scaling factor between sensitivity and gradients (ref doc : factor = -lambda/beta) */
   /* gradient of the standard limite state function */
   const Matrix physicalGradientMatrix(physicalModel.gradient(physicalSpaceDesignPoint_));

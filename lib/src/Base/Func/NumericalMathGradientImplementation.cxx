@@ -39,7 +39,7 @@ static const Factory<NumericalMathGradientImplementation> RegisteredFactory;
 NumericalMathGradientImplementation::NumericalMathGradientImplementation()
   : PersistentObject()
   , callsNumber_(0)
-  , parameters_(0)
+  , parameter_(0)
 {
   // Nothing to do
 }
@@ -87,10 +87,10 @@ Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP)
 }
 
 /* Gradient method */
-Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+Matrix NumericalMathGradientImplementation::gradient (const NumericalPoint & inP,
+                                                      const NumericalPoint & parameter)
 {
-  setParameter(parameters);
+  setParameter(parameter);
   return gradient(inP);
 }
 
@@ -113,14 +113,14 @@ UnsignedInteger NumericalMathGradientImplementation::getCallsNumber() const
 }
 
 /* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathGradientImplementation::getParameter() const
+NumericalPoint NumericalMathGradientImplementation::getParameter() const
 {
-  return parameters_;
+  return parameter_;
 }
 
-void NumericalMathGradientImplementation::setParameter(const NumericalPointWithDescription & parameters)
+void NumericalMathGradientImplementation::setParameter(const NumericalPoint & parameter)
 {
-  parameters_ = parameters;
+  parameter_ = parameter;
 }
 
 /* Get the i-th marginal function */

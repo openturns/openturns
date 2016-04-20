@@ -430,16 +430,10 @@ Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
   return getImplementation()->parameterGradient(inP, parameters);
 }
 
-/* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathFunction::getParameter() const
+/* Parameters value accessor */
+NumericalPoint NumericalMathFunction::getParameter() const
 {
   return getImplementation()->getParameter();
-}
-
-void NumericalMathFunction::setParameter(const NumericalPointWithDescription & parameters)
-{
-  copyOnWrite();
-  getImplementation()->setParameter(parameters);
 }
 
 void NumericalMathFunction::setParameter(const NumericalPoint & parameter)
@@ -448,6 +442,17 @@ void NumericalMathFunction::setParameter(const NumericalPoint & parameter)
   getImplementation()->setParameter(parameter);
 }
 
+/* Parameters description accessor */
+Description NumericalMathFunction::getParameterDescription() const
+{
+  return getImplementation()->getParameterDescription();
+}
+
+void NumericalMathFunction::setParameterDescription(const Description & description)
+{
+  copyOnWrite();
+  getImplementation()->setParameterDescription(description);
+}
 
 /* Operator () */
 NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) const

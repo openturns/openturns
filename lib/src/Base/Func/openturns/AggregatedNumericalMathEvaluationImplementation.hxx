@@ -81,8 +81,12 @@ public:
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const NumericalPoint & inP) const;
 
-  /** Parameters value and description accessor */
-  NumericalPointWithDescription getParameter() const;
+  /** Parameters value accessor */
+  void setParameter(const NumericalPoint & parameter);
+  NumericalPoint getParameter() const;
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

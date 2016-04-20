@@ -293,10 +293,13 @@ public:
   virtual Matrix parameterGradient(const NumericalPoint & inP,
                                     const NumericalPoint & parameters);
 
-  /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameter() const;
-  virtual void setParameter(const NumericalPointWithDescription & parameters);
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameter() const;
   virtual void setParameter(const NumericalPoint & parameter);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
+  virtual void setParameterDescription(const Description & description);
 
   /** Accessor for parameter dimension */
   UnsignedInteger getParameterDimension() const;

@@ -80,16 +80,13 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Num
   if (referencePoint.getDimension() != parametersSize) throw InvalidArgumentException(HERE) << "Error: the given reference point dimension=" << referencePoint.getDimension() << " does not match the parameters size=" << parametersSize;
   // Set the relevant part of the reference point in the parameters
   const Description functionInputDescription(function.getInputDescription());
-  NumericalPointWithDescription parameters(parametersSize);
-  Description description(parametersSize);
-  for (UnsignedInteger i = 0; i < parametersSize; ++i)
+  Description parameterDescription(parametersSize);
+  for (UnsignedInteger i = 0; i < parametersSize; ++ i)
   {
-    parameters[i] = referencePoint[i];
-    description[i] = functionInputDescription[parametersPositions_[i]];
+    parameterDescription[i] = functionInputDescription[parametersPositions_[i]];
   }
-  parameters.setDescription(description);
-  // Here we cannot use the accessor as the dimension of the parameters is set at the first allocation
-  parameters_ = parameters;
+  parameter_ = referencePoint;
+  parameterDescription_ = parameterDescription;
   // And finally the input/output descriptions
   Description inputDescription(0);
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
@@ -112,9 +109,9 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Par
   // The parameters position will be enlarged
   parametersPositions_ = evaluation.parametersPositions_;
   // The parameters values too
-  parameters_ = evaluation.getParameter();
+  parameter_ = evaluation.getParameter();
   // And their description
-  Description parametersDescription(parameters_.getDescription());
+  Description parametersDescription(parameter_.getDescription());
   const Description inputDescription(evaluation.getInputDescription());
   // The input positions will be reduced
   Indices antecedentInputPosition(evaluation.inputPositions_);
@@ -128,11 +125,11 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Par
     // And flag it to be removed from the input indices
     antecedentInputPosition[index] = inputDimension;
     // Add the parameter value to the parameters
-    parameters_.add(referencePoint[i]);
+    parameter_.add(referencePoint[i]);
     // Add the description to the parameters description
     parametersDescription.add(inputDescription[antecedentInputPosition[index]]);
   }
-  parameters_.setDescription(parametersDescription);
+  parameter_.setDescription(parametersDescription);
   // And finally the input/output descriptions
   Description newInputDescription(0);
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) newInputDescription.add(inputDescription[inputPositions_[i]]);
@@ -154,7 +151,7 @@ NumericalPoint ParametricEvaluationImplementation::operator() (const NumericalPo
   const UnsignedInteger parametersDimension(getParameterDimension());
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
   NumericalPoint x(inputDimension);
-  for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameters_[i];
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = point[i];
   const NumericalPoint value(function_(x));
   if (isHistoryEnabled_)
@@ -177,7 +174,7 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalS
   NumericalSample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameters_[j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameter_[j];
     for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
   }
   const NumericalSample output(function_(input));
@@ -195,7 +192,7 @@ void ParametricEvaluationImplementation::setParameter(const NumericalPointWithDe
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
   if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;
-  parameters_ = parameters;
+  parameter_ = parameters;
 }
 
 /* Parameters accessor */
@@ -203,7 +200,7 @@ void ParametricEvaluationImplementation::setParameter(const NumericalPoint & par
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
   if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;
-  for (UnsignedInteger i = 0; i < parametersDimension; ++i) parameters_[i] = parameters[i];
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i) parameter_[i] = parameters[i];
 }
 
 /* Parameters positions accessor */
@@ -243,11 +240,14 @@ UnsignedInteger ParametricEvaluationImplementation::getOutputDimension() const
 /* String converter */
 String ParametricEvaluationImplementation::__repr__() const
 {
+  NumericalPointWithDescription parameters(parameter_);
+  parameters.setDescription(parameterDescription_);
+
   OSS oss;
   oss << "class=" << ParametricEvaluationImplementation::GetClassName()
       << " function=" << function_
       << " parameters positions=" << parametersPositions_
-      << " parameters=" << parameters_
+      << " parameters=" << parameters
       << " input positions=" << inputPositions_;
   return oss;
 }

@@ -352,32 +352,35 @@ Matrix NumericalMathFunctionImplementation::parameterGradient(const NumericalPoi
 
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathFunctionImplementation::parameterGradient(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+                                                              const NumericalPoint & parameter)
 {
-  setParameter(parameters);
+  setParameter(parameter);
   return p_evaluationImplementation_->parameterGradient(inP);
 }
 
-/* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathFunctionImplementation::getParameter() const
+/* Parameters value accessor */
+NumericalPoint NumericalMathFunctionImplementation::getParameter() const
 {
   return p_evaluationImplementation_->getParameter();
 }
 
-void NumericalMathFunctionImplementation::setParameter(const NumericalPointWithDescription & parameters)
+void NumericalMathFunctionImplementation::setParameter(const NumericalPoint & parameter)
 {
-  p_evaluationImplementation_->setParameter(parameters);
-  p_gradientImplementation_->setParameter(parameters);
-  p_hessianImplementation_->setParameter(parameters);
+  p_evaluationImplementation_->setParameter(parameter);
+  p_gradientImplementation_->setParameter(parameter);
+  p_hessianImplementation_->setParameter(parameter);
 }
 
-void NumericalMathFunctionImplementation::setParameter(const NumericalPoint & parameters)
+/* Parameters description accessor */
+Description NumericalMathFunctionImplementation::getParameterDescription() const
 {
-  p_evaluationImplementation_->setParameter(parameters);
-  p_gradientImplementation_->setParameter(parameters);
-  p_hessianImplementation_->setParameter(parameters);
+  return p_evaluationImplementation_->getParameterDescription();
 }
 
+void NumericalMathFunctionImplementation::setParameterDescription(const Description & description)
+{
+  p_evaluationImplementation_->setParameterDescription(description);
+}
 
 /* Operator () */
 NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP) const
