@@ -136,8 +136,8 @@ private:
     // Compute |u|p_left(u)p_right(ux) where x is the argument of the pdf of left*right
     NumericalPoint eval(const NumericalPoint & point) const
     {
-      const NumericalScalar u(point[0]);
-      const NumericalScalar absU(std::abs(u));
+      const NumericalScalar u = point[0];
+      const NumericalScalar absU = std::abs(u);
       // First special case: |u|==0
       if (absU == 0.0) return NumericalPoint(1, 0.0);
       // Secon special case: x==0
@@ -146,7 +146,7 @@ private:
         if (pdf0_ == 0.0) return NumericalPoint(1, 0.0);
         return NumericalPoint(1, absU * pdf0_ * left_.computePDF(point));
       }
-      const NumericalScalar value(left_.computePDF(point));
+      const NumericalScalar value = left_.computePDF(point);
       // If the given point is outside of the support of left
       if (value == 0.0) return NumericalPoint(1, 0.0);
       return NumericalPoint(1, absU * right_.computePDF(u * x_) * value);
@@ -170,9 +170,9 @@ private:
     NumericalPoint eval(const NumericalPoint & point) const
     {
       NumericalPoint value(2);
-      const NumericalScalar u(point[0]);
+      const NumericalScalar u = point[0];
       const NumericalComplex phi(right_.computeCharacteristicFunction(u * x_));
-      const NumericalScalar pdf(left_.computePDF(point));
+      const NumericalScalar pdf = left_.computePDF(point);
       value[0] = pdf * phi.real();
       value[1] = pdf * phi.imag();
       return value;

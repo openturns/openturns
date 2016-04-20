@@ -145,7 +145,7 @@ String ARMA::__str__(const String & offset) const
     {
       for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
       {
-        const NumericalScalar ai(ARCoefficients_[i](d, dimensionComponent));
+        const NumericalScalar ai = ARCoefficients_[i](d, dimensionComponent);
         if (ai > 0) oss << " + " <<  ai << " X_{" << dimensionComponent << ",t-" << i + 1 << "}";
         if (ai < 0) oss << " - " << -ai << " X_{" << dimensionComponent << ",t-" << i + 1 << "}";
       }
@@ -158,7 +158,7 @@ String ARMA::__str__(const String & offset) const
     {
       for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
       {
-        const NumericalScalar ai(MACoefficients_[i](d, dimensionComponent));
+        const NumericalScalar ai = MACoefficients_[i](d, dimensionComponent);
         if (ai > 0) oss << " + " <<  ai << " E_{" << dimensionComponent << ",t-" << i + 1 << "}";
         if (ai < 0) oss << " - " << -ai << " E_{" << dimensionComponent << ",t-" << i + 1 << "}";
       }
@@ -212,7 +212,7 @@ UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) cons
   const NumericalComplexCollection eigenValues(matrix.computeEigenValues(false));
 
   // Find the largest eigenvalue module
-  NumericalScalar s(std::abs(eigenValues[0]));
+  NumericalScalar s = std::abs(eigenValues[0]);
   for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::abs(eigenValues[i]));
   // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
   if (s >= 1.0) throw InvalidArgumentException(HERE) << "Error: the ARMA process is not stationary with the given coefficients. Here, AR coefficients=" << ARCoefficients_ << " and MA coefficients=" << MACoefficients_ << " with largest eigenvalue s=" << s;
@@ -271,7 +271,7 @@ ARMAState ARMA::computeReccurence(const UnsignedInteger stepNumber) const
 void ARMA::thermalize() const
 {
   // Check if the number of iterations nThermalize is known or compute it
-  const UnsignedInteger stepNumber(getNThermalization());
+  const UnsignedInteger stepNumber = getNThermalization();
   // Go stepNumber steps further and use the result to update the current state
   setState(computeReccurence(stepNumber));
 }
@@ -283,7 +283,7 @@ Field ARMA::getRealization() const
   thermalize();
 
   // Get the size of the realization
-  const UnsignedInteger size(RegularGrid(mesh_).getN());
+  const UnsignedInteger size = RegularGrid(mesh_).getN();
 
   // Go size steps further: newState contains (size + p_) X values and (q_ + size) epsilon values
   const ARMAState newState(computeReccurence(size));
@@ -303,7 +303,7 @@ TimeSeries ARMA::getFuture(const UnsignedInteger stepNumber) const
 {
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep(RegularGrid(mesh_).getStep());
+  const NumericalScalar timeStep = RegularGrid(mesh_).getStep();
   // The EndTime is not considered to be included in the TimeGrid
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
 

@@ -62,9 +62,9 @@ String ContinuousDistribution::__repr__() const
 /* Get the DDF of the distributionImplementation */
 NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint ddf(dimension);
-  const NumericalScalar h(std::pow(pdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
   LOGINFO(OSS() << "h=" << h);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -72,9 +72,9 @@ NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) 
     left[i] += h;
     NumericalPoint right(point);
     right[i] -= h;
-    const NumericalScalar denom(left[i] - right[i]);
-    const NumericalScalar pdfLeft(computePDF(left));
-    const NumericalScalar pdfRight(computePDF(right));
+    const NumericalScalar denom = left[i] - right[i];
+    const NumericalScalar pdfLeft = computePDF(left);
+    const NumericalScalar pdfRight = computePDF(right);
     ddf[i] = (pdfLeft - pdfRight) / denom;
     LOGINFO(OSS() << "left=" << left << ", right=" << right << ", pdfLeft=" << pdfLeft << ", pdfRight=" << pdfRight);
   }
@@ -90,7 +90,7 @@ NumericalScalar ContinuousDistribution::computePDF(const NumericalPoint & point)
 /* Get the CDF of the distribution */
 NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const NumericalPoint lowerBounds(getRange().getLowerBound());
   const NumericalPoint upperBounds(getRange().getUpperBound());
   // Indices of the components to take into account in the computation
@@ -98,7 +98,7 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
   NumericalPoint reducedPoint(0);
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
-    const NumericalScalar xK(point[k]);
+    const NumericalScalar xK = point[k];
     // Early exit if one component is less than its corresponding range lower bound
     if (xK <= lowerBounds[k]) return 0.0;
     // Keep only the indices for which xK is less than its corresponding range upper bound
@@ -135,18 +135,18 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
 /* Get the survival function of the distribution */
 NumericalScalar ContinuousDistribution::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
   const NumericalPoint lowerBounds(getRange().getLowerBound());
   const NumericalPoint upperBounds(getRange().getUpperBound());
-  Bool allOutside(true);
+  Bool allOutside = true;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (point[i] >= upperBounds[i]) return 0.0;
     allOutside &= (point[i] <= lowerBounds[i]);
   }
   if (allOutside) return 1.0;
-  const NumericalScalar survival(computeProbability(Interval(point, getRange().getUpperBound())));
+  const NumericalScalar survival = computeProbability(Interval(point, getRange().getUpperBound()));
   return survival;
 }
 
@@ -156,26 +156,26 @@ Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::int
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In ContinuousDistribution::interpolateCDF(const UnsignedInteger n): cannot interpolate CDF for multidimensional distributions.";
   const PDFWrapper pdfWrapper(this);
   const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, 1, 1));
-  const NumericalScalar xMin(getRange().getLowerBound()[0]);
-  const NumericalScalar xMax(getRange().getUpperBound()[0]);
-  const NumericalScalar mu(getMean()[0]);
+  const NumericalScalar xMin = getRange().getLowerBound()[0];
+  const NumericalScalar xMax = getRange().getUpperBound()[0];
+  const NumericalScalar mu = getMean()[0];
   NumericalPoint locationsCDF(n);
   NumericalPoint locationsCCDF(n);
   NumericalPoint valuesCDF(n);
   NumericalPoint valuesCCDF(n);
   NumericalPoint derivativesCDF(n);
   NumericalPoint derivativesCCDF(n);
-  NumericalScalar xCDFOld(xMin);
-  NumericalScalar xCCDFOld(xMax);
+  NumericalScalar xCDFOld = xMin;
+  NumericalScalar xCCDFOld = xMax;
   locationsCDF[0] = xMin;
   locationsCCDF[n - 1] = xMax;
   GaussKronrod algo;
-  const NumericalScalar stepCDF((mu - xMin) / (n - 1.0));
-  const NumericalScalar stepCCDF((xMax - mu) / (n - 1.0));
+  const NumericalScalar stepCDF = (mu - xMin) / (n - 1.0);
+  const NumericalScalar stepCCDF = (xMax - mu) / (n - 1.0);
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    const NumericalScalar xCDF(xMin + i * stepCDF);
-    const NumericalScalar xCCDF(xMax - i * stepCCDF);
+    const NumericalScalar xCDF = xMin + i * stepCDF;
+    const NumericalScalar xCCDF = xMax - i * stepCCDF;
     locationsCDF[i] = xCDF;
     locationsCCDF[n - i - 1] = xCCDF;
     NumericalPoint ai;

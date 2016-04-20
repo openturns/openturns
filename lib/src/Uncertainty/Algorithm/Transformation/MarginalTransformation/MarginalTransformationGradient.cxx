@@ -52,7 +52,7 @@ MarginalTransformationGradient * MarginalTransformationGradient::clone() const
 /* Gradient */
 Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   Matrix result(dimension, dimension);
   // (G^{-1} o F)' = F' . G^{-1}' o F = F' / (G' o G^{-1} o F)
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -60,18 +60,18 @@ Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) cons
     if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "AnalyticalNumericalMathGradientImplementation") result(i, i) = evaluation_.getExpressions()[i].gradient(NumericalPoint(1, inP[i]))(0, 0);
     else
     {
-      const NumericalScalar inputPDF(evaluation_.inputDistributionCollection_[i].computePDF(inP[i]));
+      const NumericalScalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
       // Quick rejection step: if the input PDF is zero, the result will be zero, so continue only if the value is > 0
       if (inputPDF > 0.0)
       {
-        NumericalScalar inputCDF(evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]));
+        NumericalScalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
         // For accuracy reason, check if we are in the upper tail of the distribution
-        const Bool upperTail(inputCDF > 0.5);
+        const Bool upperTail = inputCDF > 0.5;
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
         const NumericalPoint  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
-        const NumericalScalar outputPDF(evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile));
+        const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         // The output PDF should never be zero here, be it can occure due to some strange rounding error
         if (outputPDF > 0.0) result(i, i) = inputPDF / outputPDF;
       } // PDF > 0

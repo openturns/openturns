@@ -60,7 +60,7 @@ LegendreFactory::Coefficients LegendreFactory::getRecurrenceCoefficients(const U
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar factor(sqrt(2.0 * n + 3.0) / (n + 1.0));
+  const NumericalScalar factor = sqrt(2.0 * n + 3.0) / (n + 1.0);
   recurrenceCoefficients[0] = sqrt(2.0 * n + 1.0) * factor;
   recurrenceCoefficients[1] = 0.0;
   recurrenceCoefficients[2] = -factor * n / sqrt(2.0 * n - 1.0);

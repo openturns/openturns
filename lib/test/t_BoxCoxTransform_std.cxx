@@ -33,16 +33,16 @@ int main(int argc, char *argv[])
   try
   {
     // Realization issued from a Normal distribution
-    const UnsignedInteger dimension(1);
+    const UnsignedInteger dimension = 1;
 
     // Fix the realization as a Normal
     // Parameters are done such as the values are positive
     Normal myDistribution(10, 3);
 
     // get a realization
-    const UnsignedInteger n(101);
-    const NumericalScalar timeStart(0.);
-    const NumericalScalar timeStep(0.1);
+    const UnsignedInteger n = 101;
+    const NumericalScalar timeStart = 0.;
+    const NumericalScalar timeStep = 0.1;
     NumericalSample mySample(myDistribution.getSample(n));
     RegularGrid myTimeGrid(timeStart, timeStep, n);
 

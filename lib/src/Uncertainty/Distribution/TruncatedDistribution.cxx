@@ -230,7 +230,7 @@ NumericalPoint TruncatedDistribution::computeDDF(const NumericalPoint & point) c
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(1, 0.0);
   return normalizationFactor_ * distribution_.computeDDF(point);
 }
@@ -241,7 +241,7 @@ NumericalScalar TruncatedDistribution::computePDF(const NumericalPoint & point) 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x < lowerBound_ - quantileEpsilon_) || (x > upperBound_ + quantileEpsilon_)) return 0.0;
   return normalizationFactor_ * distribution_.computePDF(point);
 }
@@ -252,7 +252,7 @@ NumericalScalar TruncatedDistribution::computeCDF(const NumericalPoint & point) 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= lowerBound_) return 0.0;
   if (x >= upperBound_) return 1.0;
   // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -263,7 +263,7 @@ NumericalScalar TruncatedDistribution::computeComplementaryCDF(const NumericalPo
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= lowerBound_) return 1.0;
   if (x > upperBound_) return 0.0;
   // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -275,12 +275,12 @@ NumericalPoint TruncatedDistribution::computePDFGradient(const NumericalPoint & 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
   const NumericalPoint pdfGradientX(distribution_.computePDFGradient(point));
   const NumericalPoint cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, lowerBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
   const NumericalPoint cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, upperBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalScalar pdfPoint(distribution_.computePDF(point));
+  const NumericalScalar pdfPoint = distribution_.computePDF(point);
   NumericalPoint pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
   if (finiteLowerBound_)
@@ -300,12 +300,12 @@ NumericalPoint TruncatedDistribution::computeCDFGradient(const NumericalPoint & 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
   const NumericalPoint cdfGradientX(distribution_.computeCDFGradient(point));
   const NumericalPoint cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, lowerBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
   const NumericalPoint cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, upperBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalScalar cdfPoint(distribution_.computeCDF(point));
+  const NumericalScalar cdfPoint = distribution_.computeCDF(point);
   NumericalPoint cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
   if (finiteLowerBound_)

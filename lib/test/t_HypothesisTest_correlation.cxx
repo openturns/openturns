@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  UnsignedInteger size(100);
-  UnsignedInteger dim(10);
+  UnsignedInteger size = 100;
+  UnsignedInteger dim = 10;
   CorrelationMatrix R(dim);
   for (UnsignedInteger i = 0; i < dim; i++)
   {

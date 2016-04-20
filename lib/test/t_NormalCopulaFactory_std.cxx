@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
     CorrelationMatrix R(dim);
     for (UnsignedInteger i = 0; i < dim; i++)
     {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
       }
     }
     NormalCopula distribution(R);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     NormalCopulaFactory factory;
     CovarianceMatrix covariance;

@@ -62,7 +62,7 @@ RandomizedLHS * RandomizedLHS::clone() const
 NumericalSample RandomizedLHS::computeBlockSample()
 {
   // Size of a block
-  const UnsignedInteger blockSize(getBlockSize());
+  const UnsignedInteger blockSize = getBlockSize();
   // Compute a shuffle of given dimension and blocksize
   const Matrix shuffle(LHSExperiment::ComputeShuffle(dimension_, blockSize));
   // First, compute the input sub-sample based on the shuffling
@@ -72,7 +72,7 @@ NumericalSample RandomizedLHS::computeBlockSample()
     const NumericalPoint u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
-      NumericalScalar xi((shuffle(component, index) + u[component]) / blockSize);
+      NumericalScalar xi = (shuffle(component, index) + u[component]) / blockSize;
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }

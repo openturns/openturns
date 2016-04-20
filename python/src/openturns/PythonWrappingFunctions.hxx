@@ -790,8 +790,8 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
     Pointer< Collection< NumericalScalar > > ptr = buildCollectionFromPySequence< NumericalScalar >( implObj.get() );
-    UnsignedInteger nbColumns( checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() ) );
-    UnsignedInteger nbRows( checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() ) );
+    UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
+    UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     p_implementation = new MatrixImplementation( nbRows, nbColumns, *ptr );
   }
   else
@@ -1012,8 +1012,8 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
     Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
-    UnsignedInteger nbColumns( checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() ) );
-    UnsignedInteger nbRows( checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() ) );
+    UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
+    UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns, *ptr );
     return p_implementation;
   }
@@ -1161,9 +1161,9 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
     Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
-    UnsignedInteger nbColumns( checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() ) );
-    UnsignedInteger nbRows( checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() ) );
-    UnsignedInteger nbSheets( checkAndConvert< _PyInt_, UnsignedInteger >( sheetsObj.get() ) );
+    UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
+    UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
+    UnsignedInteger nbSheets = checkAndConvert< _PyInt_, UnsignedInteger >( sheetsObj.get() );
     p_implementation = new ComplexTensorImplementation( nbRows, nbColumns, nbSheets, *ptr );
   }
   return p_implementation;

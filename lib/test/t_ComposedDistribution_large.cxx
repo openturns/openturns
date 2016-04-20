@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     CorrelationMatrix R(1);
     R(0, 0) = 1.0;
     // Create a collection of distribution
-    UnsignedInteger dimension(2000);
+    UnsignedInteger dimension = 2000;
     fullprint << "Creating a composed distribution of dimension " << dimension << std::endl;
     ComposedDistribution::DistributionCollection aCollection(dimension, Normal(meanPoint, sigma, R));
 

@@ -91,18 +91,18 @@ NumericalScalar AbdoRackwitz::computeLineSearch()
 {
   /* Logal copy of the level function and the level value */
   const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
-  const NumericalScalar levelValue(getProblem().getLevelValue());
+  const NumericalScalar levelValue = getProblem().getLevelValue();
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
-  const NumericalScalar currentTheta(0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue));
+  const NumericalScalar currentTheta = 0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue);
   /* Min bound for step */
-  const NumericalScalar minStep(getMaximumAbsoluteError() / currentDirection_.norm());
+  const NumericalScalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const NumericalScalar levelIncrement(omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_));
+  const NumericalScalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
   /* Initialization of the line search */
   /* We start with step=1 */
-  NumericalScalar step(1.0);
+  NumericalScalar step = 1.0;
   NumericalPoint currentStepPoint(NumericalPoint(currentPoint_.getDimension()));
   NumericalScalar currentStepLevelValue;
   NumericalScalar currentStepTheta;
@@ -133,15 +133,15 @@ void AbdoRackwitz::run()
   /* Get a local copy of the level function */
   const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue(getProblem().getLevelValue());
+  const NumericalScalar levelValue = getProblem().getLevelValue();
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
-  Bool convergence(false);
+  Bool convergence = false;
   UnsignedInteger iterationNumber = 0;
-  NumericalScalar absoluteError(-1.0);
-  NumericalScalar constraintError(-1.0);
-  NumericalScalar relativeError(-1.0);
-  NumericalScalar residualError(-1.0);
+  NumericalScalar absoluteError = -1.0;
+  NumericalScalar constraintError = -1.0;
+  NumericalScalar relativeError = -1.0;
+  NumericalScalar residualError = -1.0;
 
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
@@ -158,7 +158,7 @@ void AbdoRackwitz::run()
     currentGradient_ = levelFunction.gradient(currentPoint_) * NumericalPoint(1, 1.0);
     if (getVerbose()) LOGINFO(OSS() << "current point=" << currentPoint_ << " current level value=" << currentLevelValue_ << " current gradient=" << currentGradient_);
     /* Compute the current Lagrange multiplier */
-    const NumericalScalar normGradientSquared(currentGradient_.normSquare());
+    const NumericalScalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
     if (normGradientSquared == 0)
     {
@@ -173,11 +173,11 @@ void AbdoRackwitz::run()
      */
     currentDirection_ = -currentLambda_ * currentGradient_ - currentPoint_;
     /* Perform a line search in the given direction */
-    const NumericalScalar alpha(computeLineSearch());
+    const NumericalScalar alpha = computeLineSearch();
     /* Check if convergence has been achieved */
     absoluteError = std::abs(alpha) * currentDirection_.norm();
     constraintError = std::abs(currentLevelValue_ - levelValue);
-    const NumericalScalar pointNorm(currentPoint_.norm());
+    const NumericalScalar pointNorm = currentPoint_.norm();
     if (pointNorm > 0.0)
     {
       relativeError = absoluteError / pointNorm;

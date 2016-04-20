@@ -91,7 +91,7 @@ NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(co
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
 
-  const NumericalScalar absTau(tauOverTheta.norm());
+  const NumericalScalar absTau = tauOverTheta.norm();
   if (absTau == 0.0) return 1.0 + nuggetFactor_;
   return exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
@@ -99,9 +99,9 @@ NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(co
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedInteger size(timeGrid.getN());
-  const UnsignedInteger fullSize(size * dimension_);
-  const NumericalScalar timeStep(timeGrid.getStep());
+  const UnsignedInteger size = timeGrid.getN();
+  const UnsignedInteger fullSize = size * dimension_;
+  const NumericalScalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 
@@ -112,7 +112,7 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
   // has to be copied
   for (UnsignedInteger diag = 0; diag < size; ++diag)
   {
-    const NumericalScalar covTau(computeAsScalar(NumericalPoint(1, diag * timeStep)));
+    const NumericalScalar covTau = computeAsScalar(NumericalPoint(1, diag * timeStep));
     for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
   }
 

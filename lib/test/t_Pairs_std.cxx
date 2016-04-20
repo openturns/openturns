@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
 
     // Instanciate one distribution object
-    UnsignedInteger dim(5);
+    UnsignedInteger dim = 5;
     NumericalPoint meanPoint(dim, 0.0);
     NumericalPoint sigma(dim, 5.0);
     CorrelationMatrix R(dim);

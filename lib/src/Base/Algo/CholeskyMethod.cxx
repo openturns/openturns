@@ -84,8 +84,8 @@ void CholeskyMethod::update(const Indices & addedIndices,
                             const Indices & removedIndices,
                             const Bool row)
 {
-  const UnsignedInteger addedSize(addedIndices.getSize());
-  const UnsignedInteger removedSize(removedIndices.getSize());
+  const UnsignedInteger addedSize = addedIndices.getSize();
+  const UnsignedInteger removedSize = removedIndices.getSize();
   // Early exit if nothing has changed
   if (addedSize == 0 && removedSize == 0) return;
   // On row modification
@@ -106,19 +106,19 @@ void CholeskyMethod::update(const Indices & addedIndices,
     Indices previousRowFilter(proxy_.getRowFilter());
     proxy_.setRowFilter(Indices(0));
     MatrixImplementation mPsiAk(computeWeightedDesign()); // current design
-    const UnsignedInteger nbRows(mPsiAk.getNbRows());
-    const UnsignedInteger nbColumns(mPsiAk.getNbColumns());
+    const UnsignedInteger nbRows = mPsiAk.getNbRows();
+    const UnsignedInteger nbColumns = mPsiAk.getNbColumns();
     proxy_.setRowFilter(previousRowFilter);
     NumericalPoint vector(nbColumns);
     // Start by the added vectors, as it increases the positiveness of
     // the Gram matrix
     for (UnsignedInteger i = 0; i < addedSize; ++i)
     {
-      UnsignedInteger shift(addedIndices[i]);
+      UnsignedInteger shift = addedIndices[i];
       // Extract the row giving the update
       for (UnsignedInteger j = 0; j < nbColumns; ++j)
       {
-        const NumericalScalar value(mPsiAk[shift]);
+        const NumericalScalar value = mPsiAk[shift];
         vector[j] = value;
         shift += nbRows;
       }
@@ -127,7 +127,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
     // Then the removed vectors
     for (UnsignedInteger i = 0; i < removedSize; ++i)
     {
-      UnsignedInteger shift(removedIndices[i]);
+      UnsignedInteger shift = removedIndices[i];
       // Extract the row giving the update
       for (UnsignedInteger j = 0; j < nbColumns; ++j)
       {
@@ -176,7 +176,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
         // solve lower triangular system L*rk=xk'*A to get the extra line panel
         const NumericalPoint colk(mPsiAk.genVectProd(xk, true));
         const NumericalPoint rk(l_.solveLinearSystem(colk));
-        const NumericalScalar rk2(rk.normSquare());
+        const NumericalScalar rk2 = rk.normSquare();
 
         // Check if the pivot is positive
         if (diagk > rk2)
@@ -260,7 +260,7 @@ NumericalScalar CholeskyMethod::getGramInverseTrace() const
   NumericalScalar traceInverse = 0.0;
   for (UnsignedInteger k = 0; k < l_.getDimension(); ++ k)
   {
-    const NumericalScalar dk(l_(k, k));
+    const NumericalScalar dk = l_(k, k);
     traceInverse += 1.0 / (dk * dk);
   }
   return traceInverse;

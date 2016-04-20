@@ -155,7 +155,7 @@ ComplexMatrix ComplexTensorImplementation::getSheet(const UnsignedInteger k) con
   if (k >= nbSheets_) throw InvalidDimensionException(HERE);
 
   ComplexMatrixImplementation sheet(nbRows_, nbColumns_);
-  const UnsignedInteger shift(convertPosition(0, 0, k));
+  const UnsignedInteger shift = convertPosition(0, 0, k);
   std::copy(begin() + shift, begin() + shift + nbRows_ * nbColumns_, sheet.begin());
   // memcpy( &sheet[0], &(*this)[this->convertPosition(0, 0, k)], nbRows_ * nbColumns_ * sizeof(NumericalComplex) );
   return sheet;

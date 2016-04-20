@@ -58,8 +58,8 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const NumericalSamp
     comparisonOperator_(comparisonOperator),
     threshold_(threshold)
 {
-  const UnsignedInteger inputSize(inputSample.getSize());
-  const UnsignedInteger inputDimension(inputSample.getDimension());
+  const UnsignedInteger inputSize = inputSample.getSize();
+  const UnsignedInteger inputDimension = inputSample.getDimension();
   // Check if the given sample have compatible size
   if (inputSize != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample has a size=" << inputSize << " which is not equal to the output sample size=" << outputSample.getSize();
   // Check if the samples are not empty
@@ -119,7 +119,7 @@ SimulationSensitivityAnalysis * SimulationSensitivityAnalysis::clone() const
 /* Mean point in event domain computation */
 NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const NumericalScalar threshold) const
 {
-  const UnsignedInteger inputSize(inputSample_.getSize());
+  const UnsignedInteger inputSize = inputSample_.getSize();
   NumericalSample filteredSample(0, inputSample_.getDimension());
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
@@ -161,13 +161,13 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
 {
   // Here we choose if we have to go forward or backward through the data
   // True if < or <=
-  const Bool goForward(comparisonOperator_(0.0, 1.0));
+  const Bool goForward = comparisonOperator_(0.0, 1.0);
   // True if > or >=
-  const Bool goBackward(comparisonOperator_(1.0, 0.0));
+  const Bool goBackward = comparisonOperator_(1.0, 0.0);
   // If both are false, the comparison operator checks for equality, for which the method is not implemented
   if ( (!goForward) && (!goBackward) ) throw InternalException(HERE) << "Error: the drawImportanceFactorsRange is not implemented for an equality comparison operator.";
   // Load the preconized sample margin to avoid too noisy estimate of importance factors
-  const UnsignedInteger sampleMargin(ResourceMap::GetAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin"));
+  const UnsignedInteger sampleMargin = ResourceMap::GetAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin");
   const UnsignedInteger size = inputSample_.getSize();
   if (sampleMargin >= size / 2) throw InternalException(HERE) << "Error: the default sample margin must be in less than half of the sample size, here sample margin=" << sampleMargin << " and sample size=" << size << ". Check the SimulationSensitivityAnalysis-DefaultSampleMargin key value in ResourceMap.";
   // iStart is the first index of the data to consider
@@ -196,11 +196,11 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // + The algorithm must duplicate the data at least because of the iso-probabilistic transformation
   // + In fact, each curve embeds its data, so the input sample is duplicated and the output data is copied d times
   // + In the case of ties in the output sample, the data stored in the curves are shorter than the initial data
-  const UnsignedInteger inputDimension(inputSample_.getDimension());
+  const UnsignedInteger inputDimension = inputSample_.getDimension();
   NumericalSample mergedSample(size, inputDimension + 1);
   // Use the loop to compute the number of points that compares favorably
   // to the internal threshold
-  UnsignedInteger good(0);
+  UnsignedInteger good = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++j) mergedSample[i][j] = inputSample_[i][j];
@@ -217,12 +217,12 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   NumericalPoint accumulator(inputDimension);
   // Here, we cannot use a simple loop as we have to deal with ties
   SignedInteger i = iStart;
-  UnsignedInteger accumulated(0);
-  Bool mustDraw(false);
+  UnsignedInteger accumulated = 0;
+  Bool mustDraw = false;
   while (i != iStopDrawing)
   {
     SignedInteger iThreshold = i;
-    NumericalScalar currentThreshold(mergedSample[iThreshold][inputDimension]);
+    NumericalScalar currentThreshold = mergedSample[iThreshold][inputDimension];
     // First, search for a valid threshold, ie one that needs to accumulate more points than the ones already accumulated
     while (!comparisonOperator_(mergedSample[i][inputDimension], currentThreshold))
     {
@@ -262,7 +262,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     {
       // Now, augmente the data in the collection
       // Initialize with values associated with probabilityScale == false
-      NumericalScalar xValue(currentThreshold);
+      NumericalScalar xValue = currentThreshold;
       // Change the values if probabilityScale == true
       if (probabilityScale) xValue = NumericalScalar(accumulated) / size;
       // Check if the point is in the exploration range
@@ -295,7 +295,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   } // while (i != iStopDrawing)
   // Initialize with values associated with probabilityScale == false
   String xLabel("threshold");
-  NumericalScalar internalX(threshold_);
+  NumericalScalar internalX = threshold_;
   // Change the values if probabilityScale == true
   if (probabilityScale)
   {

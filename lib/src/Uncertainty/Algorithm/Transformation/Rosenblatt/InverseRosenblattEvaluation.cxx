@@ -44,7 +44,7 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & di
   distribution_(distribution)
 {
   Description description(distribution.getDescription());
-  const UnsignedInteger size(description.getSize());
+  const UnsignedInteger size = description.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     OSS oss;
@@ -63,7 +63,7 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 /* Evaluation */
 NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply conditional Quantile o Phi over the components

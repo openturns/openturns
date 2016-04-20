@@ -88,12 +88,12 @@ String AnalyticalNumericalMathGradientImplementation::__str__(const String & off
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(evaluation_.getInputVariablesNames());
       const Description outputVariablesNames(evaluation_.getOutputVariablesNames());
-      UnsignedInteger length(0);
-      const UnsignedInteger iMax(getInputDimension());
-      const UnsignedInteger jMax(getOutputDimension());
+      UnsignedInteger length = 0;
+      const UnsignedInteger iMax = getInputDimension();
+      const UnsignedInteger jMax = getOutputDimension();
       for (UnsignedInteger i = 0; i < iMax; ++i)
       {
-        const UnsignedInteger lengthI(inputVariablesNames[i].length());
+        const UnsignedInteger lengthI = inputVariablesNames[i].length();
         for (UnsignedInteger j = 0; j < jMax; ++j)
           length = std::max(length, lengthI + static_cast<UnsignedInteger>(outputVariablesNames[j].length()) + 8);
       }
@@ -120,12 +120,12 @@ void AnalyticalNumericalMathGradientImplementation::initialize() const
 {
   if (isInitialized_) return;
   isAnalytical_ = false;
-  const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
-  const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
-  const UnsignedInteger gradientSize(inputSize * outputSize);
+  const UnsignedInteger inputSize = evaluation_.inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = evaluation_.outputVariablesNames_.getSize();
+  const UnsignedInteger gradientSize = inputSize * outputSize;
   Description gradientFormulas(gradientSize);
   // For each element of the gradient, do
-  UnsignedInteger gradientIndex(0);
+  UnsignedInteger gradientIndex = 0;
   for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
   {
     // Parse the current formula with Ev3
@@ -169,11 +169,11 @@ void AnalyticalNumericalMathGradientImplementation::initialize() const
 /* Gradient */
 Matrix AnalyticalNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The gradient does not have an analytical expression.";
-  const UnsignedInteger outputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension = getOutputDimension();
   Matrix out(inputDimension, outputDimension);
   NumericalPoint outP(parser_(inP));
   ++ callsNumber_;
@@ -205,7 +205,7 @@ UnsignedInteger AnalyticalNumericalMathGradientImplementation::getOutputDimensio
 String AnalyticalNumericalMathGradientImplementation::getFormula(const UnsignedInteger i,
     const UnsignedInteger j) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if ((i >= inputDimension) || (j >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
   if (!isInitialized_) initialize();
   return parser_.getFormulas()[i + j * inputDimension];
@@ -222,7 +222,7 @@ AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumerica
 AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal gradient must be in the range [0, dim-1] and  must be different";
-  const UnsignedInteger marginalDimension(indices.getSize());
+  const UnsignedInteger marginalDimension = indices.getSize();
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);
   Description outputNames(evaluation_.getOutputVariablesNames());

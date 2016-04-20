@@ -144,7 +144,7 @@ void OrthogonalProductFunctionFactory::load(Advocate & adv)
 /* Build the measure based on the one found in the family collection */
 void OrthogonalProductFunctionFactory::buildMeasure()
 {
-  const UnsignedInteger size(coll_.getSize());
+  const UnsignedInteger size = coll_.getSize();
   Collection<Distribution> distributions(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {

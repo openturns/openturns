@@ -74,10 +74,10 @@ CovarianceMatrix FunctionalChaosRandomVector::getCovariance() const
 /* Compute the covariance */
 void FunctionalChaosRandomVector::computeCovariance() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const Indices indices(functionalChaosResult_.getIndices());
   const NumericalSample coefficients(functionalChaosResult_.getCoefficients());
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   covariance_ = CovarianceMatrix(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -95,31 +95,31 @@ void FunctionalChaosRandomVector::computeCovariance() const
 NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger inputDimension(getAntecedent()->getDimension());
+  const UnsignedInteger inputDimension = getAntecedent()->getDimension();
   if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
-  const UnsignedInteger orderSobolIndice(variableIndices.getSize());
+  const UnsignedInteger orderSobolIndice = variableIndices.getSize();
   const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
-  const UnsignedInteger size(coefficients.getSize());
-  NumericalScalar covarianceVariables(0.0);
+  const UnsignedInteger size = coefficients.getSize();
+  NumericalScalar covarianceVariables = 0.0;
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
-  NumericalScalar totalVariance(0.0);
+  NumericalScalar totalVariance = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {
-      const NumericalScalar coefficientI(coefficients[i][0]);
+      const NumericalScalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
         totalVariance += coefficientI * coefficientI;
         Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-        Bool isProperSubset(true);
+        Bool isProperSubset = true;
         // First check that the exponents associated with the selected variables are > 0
         for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
         {
-          const UnsignedInteger varJ(variableIndices[j]);
+          const UnsignedInteger varJ = variableIndices[j];
           isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
           // We must set the value of the current variable index to 0 for the next test
           multiIndices[varJ] = 0;
@@ -152,31 +152,31 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const UnsignedInteger
 NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger inputDimension(getAntecedent()->getDimension());
+  const UnsignedInteger inputDimension = getAntecedent()->getDimension();
   if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
-  const UnsignedInteger orderSobolIndice(variableIndices.getSize());
+  const UnsignedInteger orderSobolIndice = variableIndices.getSize();
   const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
-  const UnsignedInteger size(coefficients.getSize());
-  NumericalScalar covarianceVariables(0.0);
+  const UnsignedInteger size = coefficients.getSize();
+  NumericalScalar covarianceVariables = 0.0;
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions to all the coefficients associated to a basis vector involving at least the variable i
-  NumericalScalar totalVariance(0.0);
+  NumericalScalar totalVariance = 0.0;
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {
-      const NumericalScalar coefficientI(coefficients[i][0]);
+      const NumericalScalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
         totalVariance += coefficientI * coefficientI;
         const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-        Bool isProperSubset(true);
+        Bool isProperSubset = true;
         // Check that the exponents associated with the selected variables are > 0
         for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
         {
-          const UnsignedInteger varJ(variableIndices[j]);
+          const UnsignedInteger varJ = variableIndices[j];
           isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
         }
         if (isProperSubset) covarianceVariables += coefficientI * coefficientI;

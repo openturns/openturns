@@ -99,11 +99,11 @@ int main(int argc, char *argv[])
   distributionCollection.add(userdefined);
   discreteDistributionCollection.add(userdefined);
 
-  UnsignedInteger size(100);
+  UnsignedInteger size = 100;
 
-  UnsignedInteger continuousDistributionNumber(continuousDistributionCollection.getSize());
-  UnsignedInteger discreteDistributionNumber(discreteDistributionCollection.getSize());
-  UnsignedInteger distributionNumber(continuousDistributionNumber + discreteDistributionNumber);
+  UnsignedInteger continuousDistributionNumber = continuousDistributionCollection.getSize();
+  UnsignedInteger discreteDistributionNumber = discreteDistributionCollection.getSize();
+  UnsignedInteger distributionNumber = continuousDistributionNumber + discreteDistributionNumber;
   Collection<NumericalSample> sampleCollection(distributionNumber);
   Collection<NumericalSample> continuousSampleCollection(continuousDistributionNumber);
   Collection<NumericalSample> discreteSampleCollection(discreteDistributionNumber);
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < distributionNumber; j++)
     {
-      const NumericalScalar value(FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0));
+      const NumericalScalar value = FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0);
       resultBIC(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < continuousDistributionNumber; j++)
     {
-      const NumericalScalar value(FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue());
+      const NumericalScalar value = FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue();
       resultKolmogorov(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < discreteDistributionNumber - 1; j++)
     {
-      const NumericalScalar value(FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue());
+      const NumericalScalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue();
       resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }

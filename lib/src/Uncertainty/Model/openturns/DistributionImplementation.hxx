@@ -708,7 +708,7 @@ protected:
 
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
-      const NumericalScalar cdf(p_distribution_->computeCDF(diagonalToSpace(u[0])));
+      const NumericalScalar cdf = p_distribution_->computeCDF(diagonalToSpace(u[0]));
       LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
       return NumericalPoint(1, cdf);
     }
@@ -738,8 +738,8 @@ protected:
 
     NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
     {
-      const NumericalScalar power(std::pow(point[0] - shift_, static_cast<NumericalScalar>(n_)));
-      const NumericalScalar pdf(p_distribution_->computePDF(point));
+      const NumericalScalar power = std::pow(point[0] - shift_, static_cast<NumericalScalar>(n_));
+      const NumericalScalar pdf = p_distribution_->computePDF(point);
       LOGINFO(OSS() << "computeShiftedMomentKernel, n=" << n_ << ", shift=" << shift_ << ", point=" << point[0] << ", power=" << power << ", pdf=" << pdf << ", power*pdf=" << power*pdf);
       return NumericalPoint(1, power * pdf);
     };

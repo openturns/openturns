@@ -154,16 +154,16 @@ TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const Unsig
 {
   // Convert the index into a frequency
   // The index k corresponds to the kth positive discretization point in the frequency domain [-f_max, f_max] discretized using the center of the regular partition into 2N cells of the interval.
-  const NumericalScalar frequency((k + 0.5) * frequencyStep_);
+  const NumericalScalar frequency = (k + 0.5) * frequencyStep_;
   // Compute the DSP matrix
   HermitianMatrix spectralDensityMatrix(spectralModel_(frequency));
   // Flag to tell if the regularization has to be increased
-  Bool continuationCondition(true);
+  Bool continuationCondition = true;
   // Scale control values
-  NumericalScalar cumulatedScaling(0.0);
-  const NumericalScalar startingScaling(ResourceMap::GetAsNumericalScalar("SpectralNormalProcess-StartingScaling"));
-  const NumericalScalar maximalScaling(ResourceMap::GetAsNumericalScalar("SpectralNormalProcess-MaximalScaling"));
-  NumericalScalar scaling(startingScaling);
+  NumericalScalar cumulatedScaling = 0.0;
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("SpectralNormalProcess-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("SpectralNormalProcess-MaximalScaling");
+  NumericalScalar scaling = startingScaling;
   TriangularComplexMatrix choleskyFactor;
   while (continuationCondition)
   {
@@ -259,7 +259,7 @@ void SpectralNormalProcess::setTimeGrid(const RegularGrid & tg)
   if (tg != RegularGrid(mesh_))
   {
     // The time grid must contains an even number of points
-    const UnsignedInteger nT(tg.getN());
+    const UnsignedInteger nT = tg.getN();
     if (nT % 2 != 0) throw InvalidArgumentException(HERE) << "Error: only time grids with an even (or better a power of two) number of points are allowed. You may use the AdaptGrid method.";
     // Fix the new timeGrid
     mesh_ = tg;
@@ -286,11 +286,11 @@ void SpectralNormalProcess::computeAlpha()
   alpha_ = PersistentNumericalComplexCollection(2 * nFrequency_);
   // Convert the frequency into pulsation, take into account that there are 2*nFrequency points and that
   // a sqrt(2) factor is needed to switch from Box Muller transform to normal complex random variable
-  const NumericalScalar factor(2.0 * nFrequency_ * sqrt(frequencyStep_));
-  const NumericalScalar beta(-M_PI * (1.0 - 1.0 / (2.0 * nFrequency_)));
+  const NumericalScalar factor = 2.0 * nFrequency_ * sqrt(frequencyStep_);
+  const NumericalScalar beta = -M_PI * (1.0 - 1.0 / (2.0 * nFrequency_));
   for (UnsignedInteger index = 0; index < 2 * nFrequency_; ++index)
   {
-    const NumericalScalar theta(beta * index);
+    const NumericalScalar theta = beta * index;
     alpha_[index] = factor * NumericalComplex(cos(theta), sin(theta));
   }
 }
@@ -299,7 +299,7 @@ void SpectralNormalProcess::computeAlpha()
 Field SpectralNormalProcess::getRealization() const
 {
   // Build the big collection of size dimension * number of frequencies
-  const UnsignedInteger twoNF(2 * nFrequency_);
+  const UnsignedInteger twoNF = 2 * nFrequency_;
   NumericalComplexCollection arrayCollection(dimension_ * twoNF);
   // Loop over the frequencies
   // Gaussian vector
@@ -319,11 +319,11 @@ Field SpectralNormalProcess::getRealization() const
     {
       // Care! Getting a realization of a random gaussian should be done using two intermediate variables
       // NumericalComplex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
-      const NumericalScalar realLeft(DistFunc::rNormal());
-      const NumericalScalar imagLeft(DistFunc::rNormal());
+      const NumericalScalar realLeft = DistFunc::rNormal();
+      const NumericalScalar imagLeft = DistFunc::rNormal();
       left[i] = NumericalComplex(realLeft, imagLeft);
-      const NumericalScalar realRight(DistFunc::rNormal());
-      const NumericalScalar imagRight(DistFunc::rNormal());
+      const NumericalScalar realRight = DistFunc::rNormal();
+      const NumericalScalar imagRight = DistFunc::rNormal();
       right[i] = NumericalComplex(realRight, imagRight);
     }
     // Use an efficient matrix/vector product here
@@ -361,9 +361,9 @@ Bool SpectralNormalProcess::isNormal() const
 /* Adapt a time grid in order to have a power of two time stamps. Both the starting point and the end point are preserved. */
 RegularGrid SpectralNormalProcess::AdaptGrid(const RegularGrid & grid)
 {
-  const NumericalScalar start(grid.getStart());
-  const NumericalScalar end(grid.getEnd());
-  UnsignedInteger powerOfTwo(SpecFunc::NextPowerOfTwo(grid.getN()));
+  const NumericalScalar start = grid.getStart();
+  const NumericalScalar end = grid.getEnd();
+  UnsignedInteger powerOfTwo = SpecFunc::NextPowerOfTwo(grid.getN());
   return RegularGrid(start, (end - start) / powerOfTwo, powerOfTwo);
 }
 

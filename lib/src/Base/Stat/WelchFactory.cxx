@@ -118,30 +118,30 @@ void WelchFactory::setOverlap(const NumericalScalar overlap)
 
 UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) const
 {
-  const UnsignedInteger dimension(sample.getDimension());
-  const UnsignedInteger sampleSize(sample.getSize());
+  const UnsignedInteger dimension = sample.getDimension();
+  const UnsignedInteger sampleSize = sample.getSize();
   const RegularGrid timeGrid(sample.getTimeGrid());
-  const UnsignedInteger N(timeGrid.getN());
-  const NumericalScalar timeStep(timeGrid.getStep());
-  const NumericalScalar T(timeGrid.getEnd() - timeGrid.getStart());
+  const UnsignedInteger N = timeGrid.getN();
+  const NumericalScalar timeStep = timeGrid.getStep();
+  const NumericalScalar T = timeGrid.getEnd() - timeGrid.getStart();
   // Preprocessing: the scaling factor, including the tappering window
   NumericalComplexCollection alpha(N);
-  const NumericalScalar factor(timeStep / sqrt(sampleSize * T));
+  const NumericalScalar factor = timeStep / sqrt(sampleSize * T);
   for (UnsignedInteger m = 0; m < N; ++m)
   {
     // The window argument is normalized on [0, 1]
-    const NumericalScalar xiM(static_cast<NumericalScalar>(m) / N);
+    const NumericalScalar xiM = static_cast<NumericalScalar>(m) / N;
     // Phase shift
-    const NumericalScalar theta(M_PI * (N - 1) * xiM);
+    const NumericalScalar theta = M_PI * (N - 1) * xiM;
     alpha[m] = factor * window_(xiM) * NumericalComplex(cos(theta), sin(theta));
   }
   // The DSP estimate will be done over a regular frequency grid containing only
   // nonnegative frequency values. It is then extended as a stepwise function of
   // the frequency on positive and negative values using the hermitian symmetry
   // If N is even, kMax = N / 2, else kMax = (N + 1) / 2.
-  UnsignedInteger kMax(N / 2);
-  const NumericalScalar frequencyStep(1.0 / T);
-  NumericalScalar frequencyMin(0.5 * frequencyStep);
+  UnsignedInteger kMax = N / 2;
+  const NumericalScalar frequencyStep = 1.0 / T;
+  NumericalScalar frequencyMin = 0.5 * frequencyStep;
   // Adjust kMax and frequencyMin if N is odd
   if (N % 2 == 1)
   {
@@ -183,13 +183,13 @@ UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) con
 UserDefinedSpectralModel * WelchFactory::build(const Field & timeSeries) const
 {
   // We split the time series into overlaping blockNumbers that are used as a ProcessSample
-  const UnsignedInteger size(timeSeries.getSize());
-  const UnsignedInteger dimension(timeSeries.getDimension());
+  const UnsignedInteger size = timeSeries.getSize();
+  const UnsignedInteger dimension = timeSeries.getDimension();
   // First, compute the block size
-  const UnsignedInteger blockSize(static_cast<UnsignedInteger>(size / (1.0 + (blockNumber_ - 1.0) * (1.0 - overlap_))));
+  const UnsignedInteger blockSize = static_cast<UnsignedInteger>(size / (1.0 + (blockNumber_ - 1.0) * (1.0 - overlap_)));
   // Then, compute the associated hop size, even if it is not exactly associated with the overlap value
   // No hop size if only one block
-  const UnsignedInteger hopSize(blockNumber_ == 1 ? 0 : (size - blockSize) / (blockNumber_ - 1));
+  const UnsignedInteger hopSize = blockNumber_ == 1 ? 0 : (size - blockSize) / (blockNumber_ - 1);
   const RegularGrid timeGrid(timeSeries.getTimeGrid());
   // Initialize the equivalent process sample with the correct time grid
   ProcessSample sample(blockNumber_, Field(RegularGrid(timeGrid.getStart(), timeGrid.getStep(), blockSize), dimension));

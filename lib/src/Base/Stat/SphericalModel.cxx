@@ -80,7 +80,7 @@ NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoi
     throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar normTauOverScaleA(tauOverTheta.norm()/a_);
+  const NumericalScalar normTauOverScaleA = tauOverTheta.norm()/a_;
   if (normTauOverScaleA == 0.0) return 1.0 + nuggetFactor_;
   if (normTauOverScaleA >= 1.0) return 0.0;
   return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
@@ -89,15 +89,15 @@ NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoi
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedInteger size(timeGrid.getN());
-  const UnsignedInteger fullSize(size);
-  const NumericalScalar timeStep(timeGrid.getStep());
+  const UnsignedInteger size = timeGrid.getN();
+  const UnsignedInteger fullSize = size;
+  const NumericalScalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 
   for (UnsignedInteger diag = 0; diag < size; ++diag)
   {
-    const NumericalScalar covTau(computeAsScalar(NumericalPoint(1, diag * timeStep)));
+    const NumericalScalar covTau = computeAsScalar(NumericalPoint(1, diag * timeStep));
     for (UnsignedInteger i = 0; i < size - diag; ++i)
       cov(i, i + diag) = covTau;
   }

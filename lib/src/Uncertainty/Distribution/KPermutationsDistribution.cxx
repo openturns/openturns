@@ -113,7 +113,7 @@ NumericalPoint KPermutationsDistribution::getRealization() const
   buffer.fill();
   for (UnsignedInteger i = 0; i < k_; ++i)
   {
-    UnsignedInteger index(i + RandomGenerator::IntegerGenerate(n_ - i));
+    UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
     realization[i] = buffer[index];
     buffer[index] = buffer[i];
   }
@@ -123,14 +123,14 @@ NumericalPoint KPermutationsDistribution::getRealization() const
 /* Get the PDF of the distribution */
 NumericalScalar KPermutationsDistribution::computeLogPDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   Indices x(k_);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar k(point[i]);
+    const NumericalScalar k = point[i];
     if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return -SpecFunc::MaxNumericalScalar;
-    const UnsignedInteger ik(static_cast< UnsignedInteger > (round(k)));
+    const UnsignedInteger ik = static_cast< UnsignedInteger > (round(k));
     if (std::abs(k - ik) > supportEpsilon_) return -SpecFunc::MaxNumericalScalar;
     x[i] = ik;
   }
@@ -140,7 +140,7 @@ NumericalScalar KPermutationsDistribution::computeLogPDF(const NumericalPoint & 
 
 NumericalScalar KPermutationsDistribution::computePDF(const NumericalPoint & point) const
 {
-  const NumericalScalar logPDF(computeLogPDF(point));
+  const NumericalScalar logPDF = computeLogPDF(point);
   if (logPDF == -SpecFunc::MaxNumericalScalar) return 0.0;
   return std::exp(logPDF);
 }
@@ -148,19 +148,19 @@ NumericalScalar KPermutationsDistribution::computePDF(const NumericalPoint & poi
 /* Get the CDF of the distribution */
 NumericalScalar KPermutationsDistribution::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   if (dimension == 1) return static_cast < NumericalScalar >(k_) / n_;
   NumericalPoint sortedPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar x(point[i]);
+    const NumericalScalar x = point[i];
     if (x < -supportEpsilon_) return 0.0;
     sortedPoint[i] = std::min(n_ - 1.0, floor(x + supportEpsilon_));
   }
   std::sort(sortedPoint.begin(), sortedPoint.end());
-  NumericalScalar cdfValue(1.0);
+  NumericalScalar cdfValue = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i) cdfValue *= (sortedPoint[i] + 1.0 - i) / (n_ - i);
   return cdfValue;
 }
@@ -169,14 +169,14 @@ NumericalScalar KPermutationsDistribution::computeCDF(const NumericalPoint & poi
 NumericalScalar KPermutationsDistribution::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  const UnsignedInteger i(static_cast< UnsignedInteger >(ceil(prob * (n_ - 1.0))));
+  const UnsignedInteger i = static_cast< UnsignedInteger >(ceil(prob * (n_ - 1.0)));
   return (tail ? n_ - 1.0 - i : i);
 } // computeScalarQuantile
 
 /* Get the i-th marginal distribution */
 KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal(const UnsignedInteger i) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   return new KPermutationsDistribution(1, n_);
 }
@@ -184,12 +184,12 @@ KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension = indices.getSize();
   return new KPermutationsDistribution(outputDimension, n_);
 } // getMarginal(Indices)
 
@@ -210,8 +210,8 @@ void KPermutationsDistribution::computeMean() const
 /* Compute the covariance of the distribution */
 void KPermutationsDistribution::computeCovariance() const
 {
-  const NumericalScalar var((n_ * n_ - 1.0) / 12.0);
-  const NumericalScalar cov(-(n_ + 1.0) / 12.0);
+  const NumericalScalar var = (n_ * n_ - 1.0) / 12.0;
+  const NumericalScalar cov = -(n_ + 1.0) / 12.0;
   covariance_ = CovarianceMatrix(k_, NumericalPoint(k_ * k_, cov));
   for (UnsignedInteger i = 0; i < k_; ++i) covariance_(i, i) = var;
   isAlreadyComputedCovariance_ = true;
@@ -220,7 +220,7 @@ void KPermutationsDistribution::computeCovariance() const
 /* Parameters value and description accessor */
 KPermutationsDistribution::NumericalPointWithDescriptionCollection KPermutationsDistribution::getParametersCollection() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {

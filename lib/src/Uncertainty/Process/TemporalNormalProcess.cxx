@@ -165,15 +165,15 @@ void TemporalNormalProcess::initialize() const
     covarianceMatrix = CovarianceMatrix(covarianceModel_.discretize(mesh_));
   }
   // Boolean flag to tell if the regularization is enough
-  Bool continuationCondition(true);
+  Bool continuationCondition = true;
   // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
   // The regularization is needed for fast decreasing covariance models
-  const NumericalScalar startingScaling(ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-StartingScaling"));
-  const NumericalScalar maximalScaling(ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-MaximalScaling"));
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-MaximalScaling");
   NumericalScalar assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
   NumericalScalar recompressionEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon");
-  NumericalScalar cumulatedScaling(0.0);
-  NumericalScalar scaling(startingScaling);
+  NumericalScalar cumulatedScaling = 0.0;
+  NumericalScalar scaling = startingScaling;
   while (continuationCondition && (cumulatedScaling < maximalScaling))
   {
     // Unroll the regularization to optimize the computation
@@ -212,7 +212,7 @@ void TemporalNormalProcess::initialize() const
     }
     else
     {
-      const UnsignedInteger fullSize(covarianceMatrix.getDimension());
+      const UnsignedInteger fullSize = covarianceMatrix.getDimension();
       for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
       LOGINFO(OSS() << "Factor the covariance matrix");
       try
@@ -323,8 +323,8 @@ Field TemporalNormalProcess::getRealization() const
 NumericalSample TemporalNormalProcess::getRealizationGibbs() const
 {
   const NumericalSample vertices(getMesh().getVertices());
-  const UnsignedInteger size(vertices.getSize());
-  const UnsignedInteger nMax(std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration")));
+  const UnsignedInteger size = vertices.getSize();
+  const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration"));
 
   NumericalSample values(size, 1);
   NumericalPoint diagonal(size);
@@ -335,7 +335,7 @@ NumericalSample TemporalNormalProcess::getRealizationGibbs() const
     const NumericalPoint permutation(permutationDistribution.getRealization());
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger index(static_cast< UnsignedInteger >(permutation[i]));
+      const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
       LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << size - 1);
       // Here we work on the normalized covariance, ie the correlation
       NumericalSample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
@@ -353,8 +353,8 @@ NumericalSample TemporalNormalProcess::getRealizationCholesky() const
 {
   if (!isInitialized_) initialize();
   // Constantes values
-  const UnsignedInteger size(getMesh().getVerticesNumber());
-  const UnsignedInteger fullSize(choleskyFactorCovarianceMatrix_.getDimension());
+  const UnsignedInteger size = getMesh().getVerticesNumber();
+  const UnsignedInteger fullSize = choleskyFactorCovarianceMatrix_.getDimension();
   const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
 
   NumericalSampleImplementation values(size, dimension_);
@@ -367,8 +367,8 @@ NumericalSample TemporalNormalProcess::getRealizationCholesky() const
 NumericalSample TemporalNormalProcess::getRealizationHMatrix() const
 {
   if (!isInitialized_) initialize();
-  const UnsignedInteger size(getMesh().getVerticesNumber());
-  const UnsignedInteger fullSize(covarianceHMatrix_.getNbRows());
+  const UnsignedInteger size = getMesh().getVerticesNumber();
+  const UnsignedInteger fullSize = covarianceHMatrix_.getNbRows();
   const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
 
   NumericalPoint y(fullSize);
@@ -408,7 +408,7 @@ void TemporalNormalProcess::checkStationaryTrend() const
 {
   hasStationaryTrend_ = true;
   checkedStationaryTrend_ = true;
-  const UnsignedInteger n(mesh_.getVerticesNumber());
+  const UnsignedInteger n = mesh_.getVerticesNumber();
   if (n == 0) return;
   stationaryTrendValue_ = (*trend_.getEvaluation())(mesh_.getVertices()[0]);
   for (UnsignedInteger i = 1; i < n; ++i)

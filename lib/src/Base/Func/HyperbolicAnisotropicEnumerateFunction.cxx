@@ -92,8 +92,8 @@ void HyperbolicAnisotropicEnumerateFunction::initialize()
 /* Returns the q-norm of the indice set */
 NumericalScalar HyperbolicAnisotropicEnumerateFunction::qNorm(const Indices & indices) const
 {
-  NumericalScalar result(0.0);
-  UnsignedInteger dimension(indices.getSize());
+  NumericalScalar result = 0.0;
+  UnsignedInteger dimension = indices.getSize();
   if (q_ == 1.0)
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -139,7 +139,7 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
     {
       Indices nextIndices( current.first );
       ++ nextIndices[j];
-      NumericalScalar nextNorm(qNorm( nextIndices ));
+      NumericalScalar nextNorm = qNorm( nextIndices );
       ValueType next( nextIndices, nextNorm );
       IndiceCache::iterator it = candidates_.begin();
 

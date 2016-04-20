@@ -60,25 +60,25 @@ Factorial * Factorial::clone() const
 NumericalSample Factorial::generate()
 {
   /* Dimension of the realizations */
-  const UnsignedInteger dimension(center_.getDimension());
+  const UnsignedInteger dimension = center_.getDimension();
   /* Hypercube number of vertices */
-  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2.0, static_cast<int>(dimension))));
+  const UnsignedInteger verticesNumber = (UnsignedInteger)round(pow(2.0, static_cast<int>(dimension)));
   /* Number of levels to be generated */
-  const UnsignedInteger levelNumber(levels_.getDimension());
+  const UnsignedInteger levelNumber = levels_.getDimension();
   /* Size of the sample to be generated: 1 + number of levels x 2^dimension */
-  const UnsignedInteger size(1 + levelNumber * verticesNumber);
+  const UnsignedInteger size = 1 + levelNumber * verticesNumber;
   NumericalSample factorialPlane(size, center_);
   factorialPlane.setName("Factorial plane");
-  UnsignedInteger index(1);
+  UnsignedInteger index = 1;
   /* For each level of the factorial plane */
   for(UnsignedInteger levelIndex = 0; levelIndex < levelNumber; ++levelIndex)
   {
-    const NumericalScalar levelValue(levels_[levelIndex]);
+    const NumericalScalar levelValue = levels_[levelIndex];
     /* For each vertex of the current level */
     for(UnsignedInteger vertex = 0; vertex < verticesNumber; ++vertex)
     {
       /* Compute the coordinates of the current vertex */
-      UnsignedInteger binaryIndex(vertex);
+      UnsignedInteger binaryIndex = vertex;
       for(UnsignedInteger coordinate = 0; coordinate < dimension; ++coordinate)
       {
         /* If the current bit of binaryIndex is 1, set the coordinate to center[coordinate]+levelValue, else set it to center[coordinate]-levelValue */

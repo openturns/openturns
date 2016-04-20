@@ -97,7 +97,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   // Build a normalization function if needed
   if (normalize_)
   {
-    const UnsignedInteger dimension(inputSample_.getDimension());
+    const UnsignedInteger dimension = inputSample_.getDimension();
     const NumericalPoint mean(inputSample_.computeMean());
     const NumericalPoint stdev(inputSample_.computeStandardDeviationPerComponent());
     SquareMatrix linear(dimension);
@@ -158,7 +158,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   // Build a normalization function if needed
   if (normalize_)
   {
-    const UnsignedInteger dimension(inputSample_.getDimension());
+    const UnsignedInteger dimension = inputSample_.getDimension();
     const NumericalPoint mean(inputSample_.computeMean());
     const NumericalPoint stdev(inputSample_.computeStandardDeviationPerComponent());
     SquareMatrix linear(dimension);
@@ -260,7 +260,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   // Build a normalization function if needed
   if (normalize_)
   {
-    const UnsignedInteger dimension(inputSample_.getDimension());
+    const UnsignedInteger dimension = inputSample_.getDimension();
     const NumericalPoint mean(inputSample_.computeMean());
     const NumericalPoint stdev(inputSample_.computeStandardDeviationPerComponent());
     SquareMatrix linear(dimension);
@@ -374,9 +374,9 @@ void GeneralizedLinearModelAlgorithm::setBasis(const BasisCollection & basis)
     throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, output sample dimension (" << outputSample_.getDimension()  << ") does not match multi-basis dimension (" << basis.getSize() << ")";
   // Get the output dimension of the basis
   // The first marginal may be an empty basis
-  Bool continuationCondition(true);
-  UnsignedInteger index(0);
-  UnsignedInteger outputDimension(0);
+  Bool continuationCondition = true;
+  UnsignedInteger index = 0;
+  UnsignedInteger outputDimension = 0;
   while(continuationCondition)
   {
     try
@@ -505,10 +505,10 @@ void GeneralizedLinearModelAlgorithm::run()
   Collection<NumericalPoint> trendCoefficients(basis_.getSize());
   NumericalSample trendCoefficientsSample(beta_.getSize(), covarianceModel_.getDimension());
 
-  UnsignedInteger cumulatedSize(0);
+  UnsignedInteger cumulatedSize = 0;
   for (UnsignedInteger outputIndex = 0; outputIndex < basis_.getSize(); ++ outputIndex)
   {
-    const UnsignedInteger localBasisSize(basis_[outputIndex].getSize());
+    const UnsignedInteger localBasisSize = basis_[outputIndex].getSize();
     NumericalPoint beta_i(localBasisSize);
     for(UnsignedInteger basisElement = 0; basisElement < localBasisSize; ++ basisElement)
     {
@@ -557,7 +557,7 @@ void GeneralizedLinearModelAlgorithm::run()
   NumericalPoint residuals(outputDimension);
   NumericalPoint relativeErrors(outputDimension);
 
-  const UnsignedInteger size(inputSample_.getSize());
+  const UnsignedInteger size = inputSample_.getSize();
   for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
   {
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
@@ -662,7 +662,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogLikelihood(cons
     rho_ -= Phi * beta_;
   }
   LOGINFO("Compute log(|det(R)|)");
-  NumericalScalar logDetR(0.0);
+  NumericalScalar logDetR = 0.0;
   for ( UnsignedInteger i = 0; i < covarianceCholeskyFactor_.getDimension(); ++i )
   {
     const NumericalScalar cii = covarianceCholeskyFactor_(i, i);
@@ -679,12 +679,12 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood(const 
   CovarianceModel model(covarianceModel_);
   model.setParameter(parameters);
 
-  Bool continuationCondition(true);
-  const NumericalScalar startingScaling(ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-StartingScaling"));
-  const NumericalScalar maximalScaling(ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-MaximalScaling"));
-  NumericalScalar cumulatedScaling(0.0);
-  NumericalScalar scaling(startingScaling);
-  const UnsignedInteger covarianceDimension(model.getDimension());
+  Bool continuationCondition = true;
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-MaximalScaling");
+  NumericalScalar cumulatedScaling = 0.0;
+  NumericalScalar scaling = startingScaling;
+  const UnsignedInteger covarianceDimension = model.getDimension();
 
   HMatrixFactory hmatrixFactory;
   NumericalScalar assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
@@ -754,11 +754,11 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood(const 
     rho_ -= Phi * beta_;
   }
   LOGINFO("Compute log(|det(R)|)");
-  NumericalScalar logDetR(0.0);
+  NumericalScalar logDetR = 0.0;
   NumericalPoint diagonal(covarianceHMatrix_.getDiagonal());
   for ( UnsignedInteger i = 0; i < rho_.getSize(); ++i )
   {
-    const NumericalScalar cii(diagonal[i]);
+    const NumericalScalar cii = diagonal[i];
     if (cii <= 0.0) return SpecFunc::MaxNumericalScalar;
     logDetR += log(cii);
   }
@@ -831,7 +831,7 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() 
   // If normlize is false, we return identity function
   if (!normalize_)
   {
-    const UnsignedInteger dimension(inputSample_.getDimension());
+    const UnsignedInteger dimension = inputSample_.getDimension();
     return LinearNumericalMathFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
   }
   return inputTransformation_;

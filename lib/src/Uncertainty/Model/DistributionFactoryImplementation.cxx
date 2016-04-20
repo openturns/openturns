@@ -86,7 +86,7 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
   BootstrapExperiment bootstrap(sample);
   /* Build the distribution based on the given sample */
   DistributionFactoryImplementation::Implementation distribution(build(sample));
-  const UnsignedInteger bootstrapSize(ResourceMap::GetAsUnsignedInteger("DistributionFactoryImplementation-DefaultBootstrapSize"));
+  const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactoryImplementation-DefaultBootstrapSize");
   NumericalSample parametersSample(bootstrapSize, distribution->getParameter());
   for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
   {

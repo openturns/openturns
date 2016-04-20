@@ -91,10 +91,10 @@ void Cobyla::run()
   NumericalPoint x(getStartingPoint());
 
   /* Compute the objective function at StartingPoint */
-  const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
+  const NumericalScalar sign = getProblem().isMinimization() == true ? 1.0 : -1.0;
   NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
 
-  NumericalScalar rhoEnd(getMaximumAbsoluteError());
+  NumericalScalar rhoEnd = getMaximumAbsoluteError();
   int maxFun = getMaximumIterationNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
@@ -226,7 +226,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   UnsignedInteger nbEqConst   = problem.getEqualityConstraint().getOutputDimension();
   NumericalPoint constraintValue(nbIneqConst+2*nbEqConst,0.0);
 
-  const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
+  const NumericalScalar sign = problem.isMinimization() == true ? 1.0 : -1.0;
   *f = sign * result;
 
     /* Compute the inequality constraints at inPoint */

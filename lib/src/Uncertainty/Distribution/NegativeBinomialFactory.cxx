@@ -57,13 +57,13 @@ struct NegativeBinomialFactoryParameterConstraint
 
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
-    const NumericalScalar r(parameter[0]);
+    const NumericalScalar r = parameter[0];
     if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
-    const UnsignedInteger size(sample_.getSize());
+    const UnsignedInteger size = sample_.getSize();
     /* \sum_{i=1}^N \psi(x_i + r) */
-    NumericalScalar sumPsi(0.0);
+    NumericalScalar sumPsi = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i) sumPsi += SpecFunc::Psi(sample_[i][0] + r);
-    const NumericalScalar value(sumPsi + size * (std::log(r / (r + mean_)) - SpecFunc::Psi(r)));
+    const NumericalScalar value = sumPsi + size * (std::log(r / (r + mean_)) - SpecFunc::Psi(r));
     return NumericalPoint(1, value);
   }
 
@@ -90,15 +90,15 @@ NegativeBinomialFactory::Implementation NegativeBinomialFactory::build() const
 
 NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalSample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar mean(0.0);
-  NumericalScalar var(0.0);
-  const NumericalScalar supportEpsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
+  NumericalScalar mean = 0.0;
+  NumericalScalar var = 0.0;
+  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x(sample[i][0]);
+    const NumericalScalar x = sample[i][0];
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
     if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample made of nonnegative integers, here x=" << x;
@@ -109,17 +109,17 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
   NegativeBinomialFactoryParameterConstraint constraint(sample, mean);
   const NumericalMathFunction f(bindMethod<NegativeBinomialFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval using the moment estimate
-  NumericalScalar a(1.0);
-  NumericalScalar b(2.0);
+  NumericalScalar a = 1.0;
+  NumericalScalar b = 2.0;
   // Try to improve the starting point of the bracketing using the moment estimate of r
   if (var > mean)
   {
-    const NumericalScalar rMoment(mean * mean / (var - mean));
+    const NumericalScalar rMoment = mean * mean / (var - mean);
     a = 0.5 * rMoment;
     b = 2.0 * rMoment;
   }
-  NumericalScalar fA(f(NumericalPoint(1, a))[0]);
-  NumericalScalar fB(f(NumericalPoint(1, b))[0]);
+  NumericalScalar fA = f(NumericalPoint(1, a))[0];
+  NumericalScalar fB = f(NumericalPoint(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0))
   {
@@ -132,9 +132,9 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
   // R estimate
-  const NumericalScalar r(solver.solve(f, 0.0, a, b, fA, fB));
+  const NumericalScalar r = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding p estimate
-  const NumericalScalar p(1.0 / (r / mean + 1.0));
+  const NumericalScalar p = 1.0 / (r / mean + 1.0);
   NegativeBinomial result(r, p);
   result.setDescription(sample.getDescription());
   return result;

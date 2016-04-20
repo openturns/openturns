@@ -134,7 +134,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
   {
     // Here, perform the P1 interpolation
     // First get the index of the nearest vertex
-    const UnsignedInteger nearestIndex(field_.getMesh().getNearestVertexIndex(inP));
+    const UnsignedInteger nearestIndex = field_.getMesh().getNearestVertexIndex(inP);
     const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
     const Mesh mesh(field_.getMesh());
     const NumericalSample vertices(mesh.getVertices());
@@ -145,7 +145,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
     NumericalPoint coordinates;
     for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
     {
-      const UnsignedInteger simplexIndex(simplicesCandidates[i]);
+      const UnsignedInteger simplexIndex = simplicesCandidates[i];
       if (mesh.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
       {
         const Indices simplex(simplices[simplexIndex]);

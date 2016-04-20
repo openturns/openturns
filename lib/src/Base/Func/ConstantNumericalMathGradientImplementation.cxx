@@ -70,7 +70,7 @@ String ConstantNumericalMathGradientImplementation::__repr__() const
 String ConstantNumericalMathGradientImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   const Description description(Description::BuildDefault(inputDimension, "x"));
   if (hasVisibleName()) oss << offset << getName() << ":\n";
   for (UnsignedInteger i = 0; i < inputDimension; ++i)

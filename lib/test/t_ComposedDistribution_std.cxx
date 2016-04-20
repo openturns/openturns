@@ -73,12 +73,12 @@ int main(int argc, char *argv[])
     // Instanciate one distribution object
     ComposedDistribution distribution(aCollection, aCopula);
     distribution.setName("myDist");
-    UnsignedInteger dim(distribution.getDimension());
+    UnsignedInteger dim = distribution.getDimension();
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
     fullprint << "Mean " << distribution.getMean() << std::endl;
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(2);
     fullprint << "Covariance " << distribution.getCovariance() << std::endl;
     PlatformInfo::SetNumericalPrecision(precision);

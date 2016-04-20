@@ -83,7 +83,7 @@ String NatafEllipticalCopulaEvaluation::__repr__() const
  */
 NumericalPoint NatafEllipticalCopulaEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   NumericalPoint result(dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // First, filter the commmon marginal distribution

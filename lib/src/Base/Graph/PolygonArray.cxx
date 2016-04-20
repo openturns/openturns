@@ -48,7 +48,7 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   , paletteFileName_("")
 {
   // Convert the collection of polygons into a valid (coordinates, verticesNumber) pair
-  const UnsignedInteger size(polygons.getSize());
+  const UnsignedInteger size = polygons.getSize();
   if (size > 0)
   {
     palette_ = Description(size);
@@ -56,7 +56,7 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
     verticesNumber_ = polygons[0].getData().getSize();
     if (verticesNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
     data_ = NumericalSample(size * verticesNumber_, 2);
-    UnsignedInteger index(0);
+    UnsignedInteger index = 0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalSample polygonData(polygons[i].getData());
@@ -106,8 +106,8 @@ String PolygonArray::draw() const
   // Store the data in a temporary file
   dataFileName_ = Path::BuildTemporaryFileName("RData.txt.XXXXXX");
   std::ofstream dataFile(dataFileName_.c_str());
-  const UnsignedInteger polygonNumber(palette_.getSize());
-  UnsignedInteger index(0);
+  const UnsignedInteger polygonNumber = palette_.getSize();
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < polygonNumber; ++i)
   {
     for (UnsignedInteger j = 0; j < verticesNumber_; ++j)

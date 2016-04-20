@@ -900,11 +900,11 @@ NumericalPoint DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScal
     const NumericalScalar saturation,
     const NumericalScalar value)
 {
-  const UnsignedInteger i(static_cast<UnsignedInteger>(hue / 60.0) % 6);
-  const NumericalScalar f(hue / 60.0 - i);
-  const NumericalScalar l(value * (1.0 - saturation));
-  const NumericalScalar m(value * (1.0 - f * saturation));
-  const NumericalScalar n(value * (1.0 - (1.0 - f) * saturation));
+  const UnsignedInteger i = static_cast<UnsignedInteger>(hue / 60.0) % 6;
+  const NumericalScalar f = hue / 60.0 - i;
+  const NumericalScalar l = value * (1.0 - saturation);
+  const NumericalScalar m = value * (1.0 - f * saturation);
+  const NumericalScalar n = value * (1.0 - (1.0 - f) * saturation);
   NumericalPoint redGreenBlue(3);
   switch (i)
   {
@@ -1065,7 +1065,7 @@ Bool DrawableImplementation::ScanColorCode(const String & key,
 {
   code = 255;
   // First, check if the color is given in RGB format
-  const UnsignedInteger keySize(key.size());
+  const UnsignedInteger keySize = key.size();
   if (keySize == 0) return false;
   // Check if it is a #RRGGBB[AA] code
   if (key[0] != '#') return false;
@@ -1074,14 +1074,14 @@ Bool DrawableImplementation::ScanColorCode(const String & key,
   // 9 for #RRGGBBAA
   if ((keySize != 7) && (keySize != 9)) return false;
   // Second, check that the values are ok
-  UnsignedInteger shift(1 << 28);
+  UnsignedInteger shift = 1 << 28;
   for (UnsignedInteger i = 1; i < keySize; ++i)
   {
     const char c(key[i]);
     // If the current character is not a valid hexadecimal figure
-    const Bool isNum((c >= '0') && (c <= '9'));
-    const Bool isValidLower((c >= 'a') && (c <= 'f'));
-    const Bool isValidUpper((c >= 'A') && (c <= 'F'));
+    const Bool isNum = (c >= '0') && (c <= '9');
+    const Bool isValidLower = (c >= 'a') && (c <= 'f');
+    const Bool isValidUpper = (c >= 'A') && (c <= 'F');
     if ((!isNum) && !(isValidLower) && !(isValidUpper)) return false;
     if (isNum) code += (c - '0') * shift;
     if (isValidLower) code += (c - 'a' + 10) * shift;
@@ -1180,7 +1180,7 @@ void DrawableImplementation::setData(const NumericalSample & data)
 void DrawableImplementation::setData(const NumericalPoint & data)
 {
   checkData(data);
-  const UnsignedInteger size(data.getDimension());
+  const UnsignedInteger size = data.getDimension();
   data_ = NumericalSample(size, 1);
   data_.getImplementation()->setData(data);
 }
@@ -1389,10 +1389,10 @@ void DrawableImplementation::setDrawLabels(const Bool & drawLabels)
 /* R command generating method, for plotting through R */
 String DrawableImplementation::draw() const
 {
-  const UnsignedInteger size(data_.getSize());
+  const UnsignedInteger size = data_.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
   // Two strategies: if data is small, it is inlined, else it is passed through a file
-  const UnsignedInteger dimension(data_.getDimension());
+  const UnsignedInteger dimension = data_.getDimension();
   dataFileName_ = "";
   if (size * dimension > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
   {
@@ -1414,17 +1414,17 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
 {
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
   Description palette(size);
-  const UnsignedInteger divider(std::min(size + 1, static_cast< UnsignedInteger >(12)));
-  const NumericalScalar multiplier(360.0 / divider);
-  const UnsignedInteger cycles(size / divider + 1);
-  UnsignedInteger paletteIndex(0);
+  const UnsignedInteger divider = std::min(size + 1, static_cast< UnsignedInteger >(12));
+  const NumericalScalar multiplier = 360.0 / divider;
+  const UnsignedInteger cycles = size / divider + 1;
+  UnsignedInteger paletteIndex = 0;
   for (UnsignedInteger iCycle = 0; iCycle < cycles; ++iCycle)
   {
-    const NumericalScalar value(1.0 - iCycle / static_cast< NumericalScalar >(cycles));
-    const UnsignedInteger iHueMax(std::min(size - paletteIndex, static_cast< UnsignedInteger >(12)));
+    const NumericalScalar value = 1.0 - iCycle / static_cast< NumericalScalar >(cycles);
+    const UnsignedInteger iHueMax = std::min(size - paletteIndex, static_cast< UnsignedInteger >(12));
     for (UnsignedInteger iHue = 0; iHue < iHueMax; ++iHue)
     {
-      const NumericalScalar hue(multiplier * iHue);
+      const NumericalScalar hue = multiplier * iHue;
       palette[paletteIndex] = ConvertFromHSV(hue, 1.0, value);
       ++paletteIndex;
     }

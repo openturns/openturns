@@ -97,7 +97,7 @@ NumericalSample Last::getSample() const
   NumericalSample outSample(maximumSize_, sample_.getDimension());
   for (UnsignedInteger i = 0; i < maximumSize_; ++i)
   {
-    UnsignedInteger circularIndex((index_ + i) % maximumSize_);
+    UnsignedInteger circularIndex = (index_ + i) % maximumSize_;
     outSample[i] = sample_[circularIndex];
   }
   return outSample;

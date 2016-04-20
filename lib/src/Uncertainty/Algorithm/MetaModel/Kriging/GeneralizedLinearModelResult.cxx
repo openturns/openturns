@@ -60,7 +60,7 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
 {
-  const UnsignedInteger size(inputSample.getSize());
+  const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelResult::GeneralizedLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
 }

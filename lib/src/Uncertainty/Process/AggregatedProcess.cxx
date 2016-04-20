@@ -81,7 +81,7 @@ Field AggregatedProcess::getRealization() const
 /* Continuous realization accessor */
 NumericalMathFunction AggregatedProcess::getContinuousRealization() const
 {
-  const UnsignedInteger size(processCollection_.getSize());
+  const UnsignedInteger size = processCollection_.getSize();
   Collection<NumericalMathFunction> continuousRealizations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     continuousRealizations[i] = processCollection_[i].getContinuousRealization();
@@ -103,7 +103,7 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep(timeGrid.getStep());
+  const NumericalScalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   NumericalSample values(processCollection_[0].getFuture(stepNumber).getValues());
   for (UnsignedInteger i = 1; i < processCollection_.getSize(); ++i) values.stack(processCollection_[i].getFuture(stepNumber).getValues());
@@ -115,10 +115,10 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
 AggregatedProcess::Implementation AggregatedProcess::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
-  UnsignedInteger lastBlock(0);
+  UnsignedInteger lastBlock = 0;
   for (UnsignedInteger k = 0; k < processCollection_.getSize(); ++k)
   {
-    const UnsignedInteger block(lastBlock + processCollection_[k].getDimension());
+    const UnsignedInteger block = lastBlock + processCollection_[k].getDimension();
     if (i < block) return processCollection_[k].getMarginal(i - lastBlock).getImplementation();
     lastBlock = block;
   }
@@ -136,18 +136,18 @@ AggregatedProcess::Implementation AggregatedProcess::getMarginal(const UnsignedI
 */
 AggregatedProcess::Implementation AggregatedProcess::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and  must be different";
   ProcessCollection marginalProcesses(0);
-  const UnsignedInteger indicesSize(indices.getSize());
-  const UnsignedInteger size(processCollection_.getSize());
+  const UnsignedInteger indicesSize = indices.getSize();
+  const UnsignedInteger size = processCollection_.getSize();
   // For each copula, see if there is something to extract
-  UnsignedInteger currentPosition(0);
-  UnsignedInteger currentIndex(indices[currentPosition]);
+  UnsignedInteger currentPosition = 0;
+  UnsignedInteger currentIndex = indices[currentPosition];
   // Lower bound of indices related to the current copula
-  UnsignedInteger lowerIndex(0);
+  UnsignedInteger lowerIndex = 0;
   // Upper bound of indices related to the current copula plus 1
-  UnsignedInteger upperIndex(0);
+  UnsignedInteger upperIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Process process(processCollection_[i]);
@@ -177,12 +177,12 @@ AggregatedProcess::Implementation AggregatedProcess::getMarginal(const Indices &
 /* Process collection accessor */
 void AggregatedProcess::setProcessCollection(const ProcessCollection & coll)
 {
-  const UnsignedInteger size(coll.getSize());
+  const UnsignedInteger size = coll.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated process based on an empty process collection.";
   processCollection_ = ProcessCollection(size);
   processCollection_[0] = coll[0];
-  const UnsignedInteger spatialDimension(processCollection_[0].getSpatialDimension());
-  UnsignedInteger dimension(processCollection_[0].getDimension());
+  const UnsignedInteger spatialDimension = processCollection_[0].getSpatialDimension();
+  UnsignedInteger dimension = processCollection_[0].getDimension();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     if (coll[i].getSpatialDimension() != spatialDimension) throw InvalidArgumentException(HERE) << "Error: expected a spatial dimension=" << spatialDimension << ", got process " << i << " with a spatial dimension=" << coll[i].getSpatialDimension();

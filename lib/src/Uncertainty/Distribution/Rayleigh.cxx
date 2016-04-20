@@ -109,10 +109,10 @@ NumericalPoint Rayleigh::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar y(x / sigma_);
-  const NumericalScalar sigma2(sigma_ * sigma_);
+  const NumericalScalar y = x / sigma_;
+  const NumericalScalar sigma2 = sigma_ * sigma_;
   return NumericalPoint(1, -std::exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
 }
 
@@ -122,9 +122,9 @@ NumericalScalar Rayleigh::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  const NumericalScalar y(x / (sigma_ * sigma_));
+  const NumericalScalar y = x / (sigma_ * sigma_);
   return y * std::exp(-0.5 * x * y);
 }
 
@@ -132,9 +132,9 @@ NumericalScalar Rayleigh::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  const NumericalScalar y(x / (sigma_ * sigma_));
+  const NumericalScalar y = x / (sigma_ * sigma_);
   return std::log(y) - 0.5 * x * y;
 }
 
@@ -144,9 +144,9 @@ NumericalScalar Rayleigh::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  const NumericalScalar y(x / sigma_);
+  const NumericalScalar y = x / sigma_;
   return 1.0 - std::exp(-0.5 * y * y);
 }
 
@@ -161,7 +161,7 @@ NumericalScalar Rayleigh::computeCDF(const NumericalPoint & point) const
 */
 NumericalComplex Rayleigh::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar t(sigma_ * x / std::sqrt(2.0));
+  const NumericalScalar t = sigma_ * x / std::sqrt(2.0);
   return NumericalComplex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(NumericalComplex(0.0, x * gamma_));
 }
 
@@ -170,12 +170,12 @@ NumericalPoint Rayleigh::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint pdfGradient(2, 0.0);
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar sigma2(sigma_ * sigma_);
-  const NumericalScalar factor1(computePDF(point) / sigma2);
-  const NumericalScalar factor2((x - sigma_) * (x + sigma_));
+  const NumericalScalar sigma2 = sigma_ * sigma_;
+  const NumericalScalar factor1 = computePDF(point) / sigma2;
+  const NumericalScalar factor2 = (x - sigma_) * (x + sigma_);
   pdfGradient[0] = factor1 * (factor2 - sigma2) / sigma_;
   pdfGradient[1] = factor1 *  factor2 / x;
   return pdfGradient;
@@ -186,9 +186,9 @@ NumericalPoint Rayleigh::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar pdf(computePDF(point));
+  const NumericalScalar pdf = computePDF(point);
   if (x <= 0.0) return cdfGradient;
   cdfGradient[0] = -x * pdf / sigma_;
   cdfGradient[1] = -pdf;

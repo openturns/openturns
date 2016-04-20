@@ -163,7 +163,7 @@ struct DiracCovarianceModelDiscretizePolicy
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
-      const UnsignedInteger indexBlock(index * dimension_);
+      const UnsignedInteger indexBlock = index * dimension_;
       for (UnsignedInteger j = 0; j < dimension_; ++j)
         for (UnsignedInteger i = 0; i < dimension_; ++i)
           output_(indexBlock + i, indexBlock + j) = model_.covariance_(i, j);
@@ -180,8 +180,8 @@ CovarianceMatrix DiracCovarianceModel::discretize(const NumericalSample & vertic
   if (vertices.getSize() == 0)
    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
-  const UnsignedInteger size(vertices.getSize());
-  const UnsignedInteger fullSize(size * dimension_);
+  const UnsignedInteger size = vertices.getSize();
+  const UnsignedInteger fullSize = size * dimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
   const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
@@ -212,7 +212,7 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
-      const UnsignedInteger indexBlock(index * dimension_);
+      const UnsignedInteger indexBlock = index * dimension_;
       for (UnsignedInteger j = 0; j < dimension_; ++j)
         for (UnsignedInteger i = j; i < dimension_; ++i)
           output_(indexBlock + i, indexBlock + j) = model_.covarianceFactor_(i, j);
@@ -229,8 +229,8 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const NumericalSam
   if (vertices.getSize() == 0)
    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
-  const UnsignedInteger size(vertices.getSize());
-  const UnsignedInteger fullSize(size * dimension_);
+  const UnsignedInteger size = vertices.getSize();
+  const UnsignedInteger fullSize = size * dimension_;
   TriangularMatrix covarianceFactor(fullSize);
 
   const DiracCovarianceModelDiscretizeAndFactorizePolicy policy( vertices, covarianceFactor, *this );
@@ -252,7 +252,7 @@ NumericalSample DiracCovarianceModel::discretizeRow(const NumericalSample & vert
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the index p should be lower or equal to " << vertices.getSize()-1
                                          << ", here, p=" << p;
 
-  const UnsignedInteger size(vertices.getSize());
+  const UnsignedInteger size = vertices.getSize();
   NumericalSample result(size * dimension_, dimension_);
   for(UnsignedInteger j = 0; j < dimension_; ++j)
     for(UnsignedInteger i = j; i < dimension_; ++i)

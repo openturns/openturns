@@ -147,18 +147,18 @@ NumericalScalar BayesDistribution::computePDF(const NumericalPoint & point) cons
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const UnsignedInteger conditionedDimension(conditionedDistribution_.getDimension());
-  const UnsignedInteger conditioningDimension(conditioningDistribution_.getDimension());
+  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
+  const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   NumericalPoint y(conditioningDimension);
   std::copy(point.begin() + conditionedDimension, point.end(), y.begin());
-  const NumericalScalar conditioningPDF(conditioningDistribution_.computePDF(y));
+  const NumericalScalar conditioningPDF = conditioningDistribution_.computePDF(y);
   if (conditioningPDF == 0.0) return 0.0;
   Distribution deconditioned(conditionedDistribution_);
   const NumericalPoint parameters(linkFunction_(y));
   deconditioned.setParameter(parameters);
   NumericalPoint x(conditionedDimension);
   std::copy(point.begin(), point.begin() + conditionedDimension, x.begin());
-  const NumericalScalar deconditionedPDF(deconditioned.computePDF(x));
+  const NumericalScalar deconditionedPDF = deconditioned.computePDF(x);
   return deconditionedPDF * conditioningPDF;
 }
 
@@ -201,8 +201,8 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
     const Distribution & conditioningDistribution,
     const NumericalMathFunction & linkFunction)
 {
-  const UnsignedInteger conditioningDimension(conditioningDistribution.getDimension());
-  const UnsignedInteger conditionedParametersDimension(conditionedDistribution.getParameterDimension());
+  const UnsignedInteger conditioningDimension = conditioningDistribution.getDimension();
+  const UnsignedInteger conditionedParametersDimension = conditionedDistribution.getParameterDimension();
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution.";
   if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";
@@ -221,7 +221,7 @@ BayesDistribution::Implementation BayesDistribution::getMarginal(const UnsignedI
   if (getDimension() == 1) return clone();
   // General case
   // If the index is in the conditioned part
-  const UnsignedInteger conditionedDimension(conditionedDistribution_.getDimension());
+  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   if (i < conditionedDimension) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i);
   return conditioningDistribution_.getImplementation()->getMarginal(i - conditionedDimension);
 }
@@ -229,17 +229,17 @@ BayesDistribution::Implementation BayesDistribution::getMarginal(const UnsignedI
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 BayesDistribution::Implementation BayesDistribution::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
   // If the indices are in the conditioned part
-  const UnsignedInteger conditionedDimension(conditionedDistribution_.getDimension());
+  const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   if (indices.check(conditionedDimension - 1)) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(indices);
   // If the indices are in the conditioning part
   Indices conditioningIndices(0);
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
     if (i >= conditionedDimension)
       conditioningIndices.add(i - conditionedDimension);

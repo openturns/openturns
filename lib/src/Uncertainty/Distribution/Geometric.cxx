@@ -105,7 +105,7 @@ NumericalScalar Geometric::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return p_ * std::pow(1.0 - p_, k - 1.0);
 }
@@ -116,7 +116,7 @@ NumericalScalar Geometric::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < 1.0) return 0.0;
   return 1.0 - std::pow(1.0 - p_, floor(k));
 }
@@ -125,7 +125,7 @@ NumericalScalar Geometric::computeComplementaryCDF(const NumericalPoint & point)
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < 1.0) return 1.0;
   return std::pow(1.0 - p_, floor(k));
 }
@@ -135,7 +135,7 @@ NumericalPoint Geometric::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
 }
@@ -145,7 +145,7 @@ NumericalPoint Geometric::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(floor(point[0]));
+  const NumericalScalar k = floor(point[0]);
   if ( k < 1.0 ) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, k * std::pow(1 - p_, k - 1.0));
 }
@@ -175,8 +175,8 @@ NumericalComplex Geometric::computeGeneratingFunction(const NumericalComplex & z
 NumericalSample Geometric::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedInteger kMax(static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0])));
+  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
+  const UnsignedInteger kMax = static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0]));
   NumericalSample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k)
     result.add(NumericalPoint(1, k));

@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Skellam distribution(10.0, 5.0);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     SkellamFactory factory;
     CovarianceMatrix covariance;

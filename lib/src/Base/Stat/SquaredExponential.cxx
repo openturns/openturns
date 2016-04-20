@@ -89,7 +89,7 @@ Matrix SquaredExponential::partialGradient(const NumericalPoint & s,
   // For zero norm
   if (norm2 == 0.0) return Matrix(spatialDimension_, 1);
   // General case
-  const NumericalScalar value(-std::exp(-0.5 * norm2));
+  const NumericalScalar value = -std::exp(-0.5 * norm2);
   // Compute tau/theta^2
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] /= scale_[i];
   return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0];

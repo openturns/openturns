@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     NumericalMathFunction myFunction(input, Description(1, "y1"), Description(1, "(x1-0.6)*(x1-0.6)-x2*x2"));
 
-    UnsignedInteger dim(myFunction.getInputDimension());
+    UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     NumericalPoint sigma(dim, 1.0);
@@ -85,9 +85,9 @@ int main(int argc, char *argv[])
     NumericalPoint pseudoDesignPoint(dim, 0.0);
     pseudoDesignPoint[0] = sqrt(seuil) + C;
 
-    NumericalScalar importanceLevel(0.01);
-    NumericalScalar accuracyLevel(2);
-    NumericalScalar confidenceLevel(0.999);
+    NumericalScalar importanceLevel = 0.01;
+    NumericalScalar accuracyLevel = 2;
+    NumericalScalar confidenceLevel = 0.999;
 
     StrongMaximumTest myTest(myStandardEvent, designPoint, importanceLevel, accuracyLevel, confidenceLevel);
     fullprint << "myTest=" << myTest << std::endl;

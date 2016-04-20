@@ -89,14 +89,14 @@ String NatafEllipticalCopulaHessian::__repr__() const
  */
 SymmetricTensor NatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
 {
-  UnsignedInteger dimension(getInputDimension());
+  UnsignedInteger dimension = getInputDimension();
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalPoint q(standardMarginal.computeQuantile(inP[i]));
-    NumericalScalar factor(1.0 / standardMarginal.computePDF(q));
-    NumericalScalar quantileSecondDerivative(-standardMarginal.computeDDF(q)[0] * factor * factor * factor);
+    NumericalScalar factor = 1.0 / standardMarginal.computePDF(q);
+    NumericalScalar quantileSecondDerivative = -standardMarginal.computeDDF(q)[0] * factor * factor * factor;
     // inverseCholesky_ is lower triangular
     for (UnsignedInteger j = i; j < dimension; ++j) result(i, i, j) = inverseCholesky_(j, i) * quantileSecondDerivative;
   } // i

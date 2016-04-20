@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 #endif
 
       // We populate the sample
-      UnsignedInteger size(sample.getSize());
+      UnsignedInteger size = sample.getSize();
       for(UnsignedInteger i = 0; i < size; i++)
       {
         sample(i, 0) = i;

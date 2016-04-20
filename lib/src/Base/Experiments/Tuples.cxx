@@ -54,9 +54,9 @@ Tuples * Tuples::clone() const
 CombinatorialGeneratorImplementation::IndicesCollection Tuples::generate()
 {
   /* Dimension of the realizations */
-  const UnsignedInteger dimension(bounds_.getSize());
+  const UnsignedInteger dimension = bounds_.getSize();
   /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
-  UnsignedInteger size(bounds_[0]);
+  UnsignedInteger size = bounds_[0];
   for (UnsignedInteger i = 1; i < dimension; ++i) size *= bounds_[i];
   IndicesCollection allTuples(size, Indices(dimension));
   /* Indices would have stored the indices of the nested loops if we were able to code "dimension" nested loops dynamically */

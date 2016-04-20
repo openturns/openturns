@@ -80,7 +80,7 @@ String ProductNumericalMathEvaluationImplementation::__str__(const String & offs
 /* Operator () */
 NumericalPoint ProductNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const NumericalPoint left(p_leftEvaluation_->operator()(inP));
   const NumericalPoint right(p_rightEvaluation_->operator()(inP));
@@ -97,9 +97,9 @@ NumericalPoint ProductNumericalMathEvaluationImplementation::operator() (const N
 /* Operator () */
 NumericalSample ProductNumericalMathEvaluationImplementation::operator() (const NumericalSample & inSample) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
-  const UnsignedInteger size(inSample.getSize());
+  const UnsignedInteger size = inSample.getSize();
   callsNumber_ += size;
   const NumericalSample leftSample(p_leftEvaluation_->operator()(inSample));
   NumericalSample rightSample(p_rightEvaluation_->operator()(inSample));
@@ -112,15 +112,15 @@ NumericalSample ProductNumericalMathEvaluationImplementation::operator() (const 
 NumericalPointWithDescription ProductNumericalMathEvaluationImplementation::getParameter() const
 {
   NumericalPointWithDescription rightParameters(p_rightEvaluation_->getParameter());
-  UnsignedInteger rightDimension(rightParameters.getDimension());
+  UnsignedInteger rightDimension = rightParameters.getDimension();
   Description rightDescription(rightParameters.getDescription());
   NumericalPointWithDescription leftParameters(p_leftEvaluation_->getParameter());
-  UnsignedInteger leftDimension(leftParameters.getDimension());
+  UnsignedInteger leftDimension = leftParameters.getDimension();
   Description leftDescription(leftParameters.getDescription());
-  UnsignedInteger dimension(rightDimension + leftDimension);
+  UnsignedInteger dimension = rightDimension + leftDimension;
   NumericalPointWithDescription parameters(dimension);
   Description description(dimension);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < leftDimension; i++)
   {
     parameters[index] = leftParameters[i];
@@ -140,13 +140,13 @@ NumericalPointWithDescription ProductNumericalMathEvaluationImplementation::getP
 void ProductNumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
   NumericalPointWithDescription rightParameters(p_rightEvaluation_->getParameter());
-  UnsignedInteger rightDimension(rightParameters.getDimension());
+  UnsignedInteger rightDimension = rightParameters.getDimension();
   NumericalPointWithDescription leftParameters(p_leftEvaluation_->getParameter());
-  UnsignedInteger leftDimension(leftParameters.getDimension());
+  UnsignedInteger leftDimension = leftParameters.getDimension();
   Description description(parameters.getDescription());
   Description rightDescription(rightDimension);
   Description leftDescription(leftDimension);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < leftDimension; ++i)
   {
     leftParameters[i] = parameters[index];

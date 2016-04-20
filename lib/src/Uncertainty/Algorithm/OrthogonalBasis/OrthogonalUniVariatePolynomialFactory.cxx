@@ -77,7 +77,7 @@ String OrthogonalUniVariatePolynomialFactory::__repr__() const
 /* The method to get the polynomial of any degree */
 OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(const UnsignedInteger degree) const
 {
-  const UnsignedInteger cacheSize(polynomialsCache_.getSize());
+  const UnsignedInteger cacheSize = polynomialsCache_.getSize();
   if (degree < cacheSize) return polynomialsCache_[degree];
   for (UnsignedInteger i = cacheSize; i <= degree; ++i)
   {
@@ -91,7 +91,7 @@ OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(cons
 /* Build the coefficients of the polynomial based on the recurrence coefficients */
 OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomialFactory::buildCoefficients(const UnsignedInteger n) const
 {
-  const UnsignedInteger size(coefficientsCache_.getSize());
+  const UnsignedInteger size = coefficientsCache_.getSize();
   // If we have already computed the coefficients
   if (n < size) return coefficientsCache_[n];
   // Else we have to compute all the coefficients from the last computed coefficients to the needed ones. The cache will be filled in the correct order thanks to the recursive call
@@ -180,7 +180,7 @@ NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const U
   NumericalPoint d(n);
   NumericalPoint e(n - 1);
   Coefficients recurrenceCoefficientsI(getRecurrenceCoefficients(0));
-  NumericalScalar alphaPrec(recurrenceCoefficientsI[0]);
+  NumericalScalar alphaPrec = recurrenceCoefficientsI[0];
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
   for (UnsignedInteger i = 1; i < n; ++i)
   {

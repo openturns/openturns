@@ -140,8 +140,8 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   // As we don't have access to f and Df here but only to D2f, we build an arbitrary cheap evaluation with the proper dimension in order to reuse the
   // generic implementation of the chain rule for the hessians. We choose to build a null function using an analytical function.
   // Fake f
-  const UnsignedInteger inputDimension(getInputDimension());
-  const UnsignedInteger outputDimension(getOutputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
 #ifdef OPENTURNS_HAVE_MUPARSER
   const AnalyticalNumericalMathEvaluationImplementation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
 #else
@@ -153,7 +153,7 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   // Fake DF
   const ConstantNumericalMathGradientImplementation rightGradient(Matrix(inputDimension, outputDimension));
   // Dg = A
-  const UnsignedInteger marginalOutputDimension(indices.getSize());
+  const UnsignedInteger marginalOutputDimension = indices.getSize();
   Matrix gradientExtraction(outputDimension, marginalOutputDimension);
   for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
     gradientExtraction(indices[i], i) = 1.0;

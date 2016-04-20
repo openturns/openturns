@@ -163,21 +163,21 @@ NumericalPoint VonMises::getRealization() const
 {
   for (;;)
   {
-    const NumericalScalar r1(RandomGenerator::Generate());
-    const NumericalScalar r2(RandomGenerator::Generate());
-    const NumericalScalar theta(ratioOfUniformsBound_ * (2.0 * r2 - 1.0) / r1);
+    const NumericalScalar r1 = RandomGenerator::Generate();
+    const NumericalScalar r2 = RandomGenerator::Generate();
+    const NumericalScalar theta = ratioOfUniformsBound_ * (2.0 * r2 - 1.0) / r1;
     // Quick rejection
     if (std::abs(theta) > M_PI) continue;
     // Quick acceptance
     if (kappa_ * theta * theta  < 4.0 - 4.0 * r1)
     {
-      const NumericalScalar y(theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI);
+      const NumericalScalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
       return NumericalPoint(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
     }
     // Slow rejection
     if (kappa_ * std::cos(theta) < 2.0 * std::log(r1) + kappa_) continue;
     // Acceptance
-    const NumericalScalar y(theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI);
+    const NumericalScalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
     return NumericalPoint(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
   }
   return NumericalPoint(1, 0.0);
@@ -188,7 +188,7 @@ NumericalPoint VonMises::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (std::abs(x) > M_PI) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, -kappa_ * std::sin(x - mu_) * computePDF(point));
 }
@@ -199,7 +199,7 @@ NumericalScalar VonMises::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (std::abs(x) > M_PI) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -208,7 +208,7 @@ NumericalScalar VonMises::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (std::abs(x) > M_PI) return -SpecFunc::MaxNumericalScalar;
   return normalizationFactor_ + kappa_ * std::cos(x - mu_);
 }

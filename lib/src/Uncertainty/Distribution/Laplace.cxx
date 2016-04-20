@@ -92,7 +92,7 @@ Laplace * Laplace::clone() const
 /* Get one realization of the distribution */
 NumericalPoint Laplace::getRealization() const
 {
-  const NumericalScalar d(RandomGenerator::Generate() - 0.5);
+  const NumericalScalar d = RandomGenerator::Generate() - 0.5;
   if (d < 0.0) return NumericalPoint(1, mu_ + log1p(2.0 * d) / lambda_);
   return NumericalPoint(1, mu_ - log1p(-2.0 * d) / lambda_);
 }
@@ -103,7 +103,7 @@ NumericalPoint Laplace::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar value(computePDF(point) * lambda_);
+  const NumericalScalar value = computePDF(point) * lambda_;
   return (point[0] < mu_ ? NumericalPoint(1, value) : NumericalPoint(1, -value));
 }
 
@@ -128,7 +128,7 @@ NumericalScalar Laplace::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar u(lambda_ * (point[0] - mu_));
+  const NumericalScalar u = lambda_ * (point[0] - mu_);
   if (u < 0.0) return 0.5 * std::exp(u);
   return 1.0 - 0.5 * std::exp(-u);
 }
@@ -138,7 +138,7 @@ NumericalScalar Laplace::computeComplementaryCDF(const NumericalPoint & point) c
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar u(lambda_ * (point[0] - mu_));
+  const NumericalScalar u = lambda_ * (point[0] - mu_);
   if (u < 0.0) return 1.0 - 0.5 * std::exp(u);
   return 0.5 * std::exp(-u);
 }
@@ -146,13 +146,13 @@ NumericalScalar Laplace::computeComplementaryCDF(const NumericalPoint & point) c
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Laplace::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar t(x / lambda_);
+  const NumericalScalar t = x / lambda_;
   return std::exp(NumericalComplex(0.0, mu_ * x)) / (1.0 + t * t);
 }
 
 NumericalComplex Laplace::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar t(x / lambda_);
+  const NumericalScalar t = x / lambda_;
   return NumericalComplex(0.0, mu_ * x) - log1p(t * t);
 }
 
@@ -162,8 +162,8 @@ NumericalPoint Laplace::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(2, 0.0);
-  const NumericalScalar factor(std::abs(point[0] - mu_) * lambda_);
-  const NumericalScalar expFactor(std::exp(-factor));
+  const NumericalScalar factor = std::abs(point[0] - mu_) * lambda_;
+  const NumericalScalar expFactor = std::exp(-factor);
   pdfGradient[0] = 0.5 * expFactor * (1.0 - factor);
   pdfGradient[1] = (point[0] > mu_ ? 0.5 * lambda_ * lambda_ * expFactor : -0.5 * lambda_ * lambda_ * expFactor);
   return pdfGradient;
@@ -175,8 +175,8 @@ NumericalPoint Laplace::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar factor(std::abs(point[0] - mu_) * lambda_);
-  const NumericalScalar expFactor(std::exp(-factor));
+  const NumericalScalar factor = std::abs(point[0] - mu_) * lambda_;
+  const NumericalScalar expFactor = std::exp(-factor);
   cdfGradient[0] = 0.5 * factor / lambda_ * expFactor;
   cdfGradient[1] = -0.5 * lambda_ * expFactor;
   return cdfGradient;
@@ -186,7 +186,7 @@ NumericalPoint Laplace::computeCDFGradient(const NumericalPoint & point) const
 NumericalScalar Laplace::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  const NumericalScalar d(tail ? 0.5 - prob : prob - 0.5);
+  const NumericalScalar d = tail ? 0.5 - prob : prob - 0.5;
   if (d < 0.0) return mu_ + log1p(2.0 * d) / lambda_;
   return mu_ - log1p(-2.0 * d) / lambda_;
 }

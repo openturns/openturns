@@ -59,7 +59,7 @@ GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalSample & sa
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar tau(sample.computeKendallTau().operator()(0, 1));
+  NumericalScalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample with Kendall tau equal to 1";
   GumbelCopula result(1.0 / (1.0 - tau));
   result.setDescription(sample.getDescription());

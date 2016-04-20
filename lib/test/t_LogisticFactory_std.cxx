@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Logistic distribution(2., 2.5);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     LogisticFactory factory;
     CovarianceMatrix covariance;

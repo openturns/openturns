@@ -217,7 +217,7 @@ void KrigingAlgorithm::run()
   const NumericalSample mY(metaModel(inputSample_));
   const NumericalPoint squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
-  const UnsignedInteger size(inputSample_.getSize());
+  const UnsignedInteger size = inputSample_.getSize();
   NumericalPoint residuals(outputDimension);
   NumericalPoint relativeErrors(outputDimension);
   for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )

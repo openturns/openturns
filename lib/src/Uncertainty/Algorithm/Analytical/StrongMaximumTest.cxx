@@ -333,7 +333,7 @@ void StrongMaximumTest::initializeParametersGivenConfidenceLevel()
   deltaEpsilon_ = computeDeltaEpsilon();
 
   /* evaluate the HyperSphereSurfaceRatio (see documentation) */
-  NumericalScalar p(computeHyperSphereSurfaceRatio());
+  NumericalScalar p = computeHyperSphereSurfaceRatio();
   // put eps1 and eps2 instead of 1.0 and 0.0
   if((p >= 1.0) || (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
 
@@ -352,7 +352,7 @@ void StrongMaximumTest::initializeParametersGivenPointNumber()
   deltaEpsilon_ = computeDeltaEpsilon();
 
   /* evaluate the HyperSphereSurfaceRatio (see documentation) */
-  NumericalScalar p(computeHyperSphereSurfaceRatio());
+  NumericalScalar p = computeHyperSphereSurfaceRatio();
 
   // put eps1 and eps2 instead of 1.0 and 0.0
   if((p >= 1.0) || (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
@@ -367,16 +367,16 @@ void StrongMaximumTest::initializeParametersGivenPointNumber()
 /*  the function that evaluates the HyperSphereSurfaceRatio (see documentation) */
 NumericalScalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
 {
-  const UnsignedInteger dimension(standardSpaceDesignPoint_.getDimension());
-  const NumericalScalar a( acos((1.0 + deltaEpsilon_) / ( 1.0 + accuracyLevel_ * deltaEpsilon_) ) );
-  const NumericalScalar sinA(sin(a));
-  const NumericalScalar squareSinA(sinA * sinA);
-  NumericalScalar sum(0.0);
+  const UnsignedInteger dimension = standardSpaceDesignPoint_.getDimension();
+  const NumericalScalar a = acos((1.0 + deltaEpsilon_) / ( 1.0 + accuracyLevel_ * deltaEpsilon_) );
+  const NumericalScalar sinA = sin(a);
+  const NumericalScalar squareSinA = sinA * sinA;
+  NumericalScalar sum = 0.0;
   /* even dimension  */
   if (dimension % 2 == 0)
   {
-    const UnsignedInteger indexMax(dimension / 2 - 1);
-    NumericalScalar u(sinA);
+    const UnsignedInteger indexMax = dimension / 2 - 1;
+    NumericalScalar u = sinA;
     for (UnsignedInteger index = 0; index < indexMax; ++index)
     {
       sum += u;
@@ -388,8 +388,8 @@ NumericalScalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
   else
     /* odd dimension  */
   {
-    const UnsignedInteger indexMax((dimension - 1) / 2);
-    NumericalScalar u(1.0);
+    const UnsignedInteger indexMax = (dimension - 1) / 2;
+    NumericalScalar u = 1.0;
     for (UnsignedInteger index = 0; index < indexMax; ++index)
     {
       sum += u;
@@ -403,23 +403,23 @@ NumericalScalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
 NumericalScalar StrongMaximumTest::computeDeltaEpsilon()
 {
   /* evaluate the reliability index */
-  const NumericalScalar betaSquare(standardSpaceDesignPoint_.normSquare());
+  const NumericalScalar betaSquare = standardSpaceDesignPoint_.normSquare();
 
   /* get the input distribution in the standard space */
   const Implementation p_inputStandardDistribution(event_.getImplementation()->getAntecedent()->getDistribution().getImplementation());
 
   /* evaluate the generator at beta square */
-  const NumericalScalar pdfMin(importanceLevel_ * p_inputStandardDistribution->computeDensityGenerator(betaSquare));
+  const NumericalScalar pdfMin = importanceLevel_ * p_inputStandardDistribution->computeDensityGenerator(betaSquare);
 
   /* research the interval [deltaMin deltaMax] including the solution */
-  NumericalScalar deltaMax(1.0);
+  NumericalScalar deltaMax = 1.0;
 
   while ( p_inputStandardDistribution->computeDensityGenerator(betaSquare * pow(1.0 + deltaMax, 2)) > pdfMin ) ++deltaMax;
-  NumericalScalar deltaMin(deltaMax - 1.0);
+  NumericalScalar deltaMin = deltaMax - 1.0;
 
   /* we proceed to the dichotomie on [deltaMin deltaMax] */
-  NumericalScalar deltaMiddle(0.0);
-  const NumericalScalar deltaEpsilon(ResourceMap::GetAsNumericalScalar( "StrongMaximumTest-DefaultDeltaPrecision" ));
+  NumericalScalar deltaMiddle = 0.0;
+  const NumericalScalar deltaEpsilon = ResourceMap::GetAsNumericalScalar( "StrongMaximumTest-DefaultDeltaPrecision" );
   while ( (deltaMax - deltaMin) > deltaEpsilon )
   {
     /* we evaluate the middle of  [deltaMin deltaMax] */
@@ -448,9 +448,9 @@ void StrongMaximumTest::run()
   /* prepare test parameters */
 
   /* radius of the inner sphere */
-  const NumericalScalar beta(standardSpaceDesignPoint_.norm());
+  const NumericalScalar beta = standardSpaceDesignPoint_.norm();
   /* radius of the sphere to be sampled */
-  const NumericalScalar radius(beta * (1.0 + accuracyLevel_ * deltaEpsilon_));
+  const NumericalScalar radius = beta * (1.0 + accuracyLevel_ * deltaEpsilon_);
   /* sample of the sphere */
   const NumericalSample sample(sampleSphere(radius, standardSpaceDesignPoint_.getDimension(), pointNumber_));
   /* create a nearestPointChecker, in charge of the evaluation of the level function over the sample and to classify the points according to the operator and the threshold */
@@ -480,12 +480,12 @@ void StrongMaximumTest::run()
   nearDesignPointVerifyingEventPoints_ = nearestPointCheckerResult.getVerifyingConstraintPoints();
   nearDesignPointVerifyingEventValues_ = nearestPointCheckerResult.getVerifyingConstraintValues();
 
-  UnsignedInteger sampleSize(nearDesignPointVerifyingEventPoints_.getSize());
+  UnsignedInteger sampleSize = nearDesignPointVerifyingEventPoints_.getSize();
   /* If there is something to classify */
   if (sampleSize > 0)
   {
-    UnsignedInteger leftCounter(0);
-    UnsignedInteger rightCounter(sampleSize - 1);
+    UnsignedInteger leftCounter = 0;
+    UnsignedInteger rightCounter = sampleSize - 1;
 
     /* we sort among the nearDesignPointVerifyingEventPoints_ (ie which realise the event) the ones which are in the vicinity of the design point */
     while (leftCounter < rightCounter)
@@ -528,8 +528,8 @@ void StrongMaximumTest::run()
   /* If there is something to classify */
   if (sampleSize > 0)
   {
-    UnsignedInteger leftCounter(0);
-    UnsignedInteger rightCounter(sampleSize - 1);
+    UnsignedInteger leftCounter = 0;
+    UnsignedInteger rightCounter = sampleSize - 1;
 
     /* we sort among the nearDesignPointViolatingEventPoints_ (ie which realise the event) the ones which are in the vicinity of the design point */
     while (leftCounter < rightCounter)
@@ -577,7 +577,7 @@ NumericalSample StrongMaximumTest::sampleSphere(const NumericalScalar radius,
   // Then, normalize the points to have length radius
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
-    NumericalScalar norm(static_cast<NumericalPoint>(sample[i]).norm());
+    NumericalScalar norm = static_cast<NumericalPoint>(sample[i]).norm();
     // If the point is the origin, we reject it
     while (norm == 0.0)
     {

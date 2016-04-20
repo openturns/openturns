@@ -44,7 +44,7 @@ Bool Indices::check(const UnsignedInteger bound) const
 /* Check if the indices are increasing */
 Bool Indices::isIncreasing() const
 {
-  const UnsignedInteger size(getSize());
+  const UnsignedInteger size = getSize();
   if (size <= 1) return true;
   for (UnsignedInteger i = 1; i < size; ++i)
     if (operator[](i) < operator[](i - 1)) return false;
@@ -55,8 +55,8 @@ Bool Indices::isIncreasing() const
 void Indices::fill(const UnsignedInteger initialValue,
                    const UnsignedInteger stepSize)
 {
-  const UnsignedInteger size(getSize());
-  UnsignedInteger value(initialValue);
+  const UnsignedInteger size = getSize();
+  UnsignedInteger value = initialValue;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     operator[](i) = value;

@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
   //   Log::Show( Log::Flags() | Log::INFO );
 
   // Problem parameters
-  UnsignedInteger dimension(8);
+  UnsignedInteger dimension = 8;
 
   // Reference analytical values
-  NumericalScalar covTh(1.0);
+  NumericalScalar covTh = 1.0;
   NumericalPoint a(dimension);
   a[0] = 1.0;
   a[1] = 2.0;
@@ -75,15 +75,15 @@ int main(int argc, char *argv[])
   {
     polynomialCollection[i] = LegendreFactory();
   }
-  const NumericalScalar q(0.4);
+  const NumericalScalar q = 0.4;
   HyperbolicAnisotropicEnumerateFunction enumerateFunction(dimension, q);
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
   // design experiment
-  UnsignedInteger samplingSize( 100 );
+  UnsignedInteger samplingSize = 100;
 
   // build basis
-  UnsignedInteger basisSize( 917 );
+  UnsignedInteger basisSize = 917;
 
   // run algorithm
   Collection<FittingAlgorithm> listFittingAlgorithm;

@@ -90,15 +90,15 @@ String AnalyticalNumericalMathHessianImplementation::__str__(const String & offs
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(evaluation_.getInputVariablesNames());
       const Description outputVariablesNames(evaluation_.getOutputVariablesNames());
-      UnsignedInteger length(0);
-      const UnsignedInteger iMax(getInputDimension());
-      const UnsignedInteger kMax(getOutputDimension());
+      UnsignedInteger length = 0;
+      const UnsignedInteger iMax = getInputDimension();
+      const UnsignedInteger kMax = getOutputDimension();
       for (UnsignedInteger k = 0; k < kMax; ++k)
       {
-        const UnsignedInteger lengthK(outputVariablesNames[k].length());
+        const UnsignedInteger lengthK = outputVariablesNames[k].length();
         for (UnsignedInteger i = 0; i < iMax; ++i)
         {
-          const UnsignedInteger lengthI(inputVariablesNames[i].length());
+          const UnsignedInteger lengthI = inputVariablesNames[i].length();
           // The diagonal term is always shorter than one of the off-diagonal terms
           for (UnsignedInteger j = 0; j < i; ++j)
             length = std::max(length, lengthI + lengthK + static_cast<UnsignedInteger>(inputVariablesNames[j].length()) + 14);
@@ -132,11 +132,11 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
   if (isInitialized_) return;
 
   isAnalytical_ = false;
-  const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
-  const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
-  const UnsignedInteger hessianSize(inputSize * (inputSize + 1) * outputSize / 2);
+  const UnsignedInteger inputSize = evaluation_.inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = evaluation_.outputVariablesNames_.getSize();
+  const UnsignedInteger hessianSize = inputSize * (inputSize + 1) * outputSize / 2;
   // For each element of the hessian, do
-  UnsignedInteger hessianIndex(0);
+  UnsignedInteger hessianIndex = 0;
   Description hessianFormulas(hessianSize);
   for (UnsignedInteger sheetIndex = 0; sheetIndex < outputSize; ++sheetIndex)
   {
@@ -196,11 +196,11 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
 /* Hessian */
 SymmetricTensor AnalyticalNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The hessian does not have an analytical expression.";
-  const UnsignedInteger outputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension = getOutputDimension();
   SymmetricTensor out(inputDimension, outputDimension);
   ++ callsNumber_;
   NumericalPoint outP(parser_(inP));
@@ -224,13 +224,13 @@ String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedIn
     const UnsignedInteger j,
     const UnsignedInteger k) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if ((i >= inputDimension) || (j >= inputDimension) || (k >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";
   if (!isInitialized_) initialize();
   // Convert the 3D index into a linear index
-  UnsignedInteger rowIndex(i);
-  UnsignedInteger columnIndex(j);
-  UnsignedInteger sheetIndex(k);
+  UnsignedInteger rowIndex = i;
+  UnsignedInteger columnIndex = j;
+  UnsignedInteger sheetIndex = k;
   // First, take the symmetry into account
   if (i < j)
   {
@@ -238,7 +238,7 @@ String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedIn
     columnIndex = i;
   }
   // Now, columnIndex <= rowIndex
-  UnsignedInteger linearIndex(0);
+  UnsignedInteger linearIndex = 0;
   // Each sheet adds a triangle with the main diagonal
   linearIndex += ((inputDimension * (inputDimension + 1)) / 2) * sheetIndex;
   // Compute the linear sub-index into the triangle
@@ -269,7 +269,7 @@ AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumerical
 AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumericalMathHessianImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, dim-1] and  must be different";
-  const UnsignedInteger marginalDimension(indices.getSize());
+  const UnsignedInteger marginalDimension = indices.getSize();
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);
   Description outputNames(evaluation_.getOutputVariablesNames());

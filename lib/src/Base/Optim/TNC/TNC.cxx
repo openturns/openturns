@@ -115,7 +115,7 @@ void TNC::run()
   NumericalPoint x(getStartingPoint());
 
   /* Compute the objective function at StartingPoint */
-  const NumericalScalar sign(getProblem().isMinimization() == true ? 1.0 : -1.0);
+  const NumericalScalar sign = getProblem().isMinimization() == true ? 1.0 : -1.0;
   NumericalScalar f = sign * getProblem().getObjective().operator()(x)[0];
 
   NumericalPoint low(boundConstraints.getLowerBound());
@@ -395,10 +395,10 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   NumericalPoint outPoint(2);
 
   /* Compute the objective function at inPoint */
-  const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
+  const NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
   outPoint[0]= result;
 
-  const NumericalScalar sign(problem.isMinimization() == true ? 1.0 : -1.0);
+  const NumericalScalar sign = problem.isMinimization() == true ? 1.0 : -1.0;
   *f = sign * result;
 
   Matrix objectiveGradient;

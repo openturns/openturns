@@ -57,7 +57,7 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , relativeError_(0.0)
   , verbose_(false)
 {
-  const UnsignedInteger dataSize(x.getSize());
+  const UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
   if (dataSize != y.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on samples of different size.";
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on output sample of dimension different from 1.";
@@ -81,7 +81,7 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , relativeError_(0.0)
   , verbose_(false)
 {
-  UnsignedInteger dataSize( x.getSize() );
+  UnsignedInteger dataSize = x.getSize();
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
   if (dataSize != y.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on samples of different size.";
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on output sample of dimension different from 1.";

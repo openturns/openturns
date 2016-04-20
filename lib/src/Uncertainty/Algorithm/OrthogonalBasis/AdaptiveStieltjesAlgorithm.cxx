@@ -88,9 +88,9 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   Coefficients currentCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar sigma(std::sqrt(measure_.getCovariance()(0, 0)));
+    const NumericalScalar sigma = std::sqrt(measure_.getCovariance()(0, 0));
     currentCoefficients[0] = 1.0 / sigma;
-    const NumericalScalar mu(measure_.getMean()[0]);
+    const NumericalScalar mu = measure_.getMean()[0];
     // To avoid -0.0 in print
     if (std::abs(mu) > ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")) currentCoefficients[1] = -mu / sigma;
     // Conventional value of 0.0 for currentCoefficients[2]
@@ -100,16 +100,16 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   // Compute the coefficients of the orthonormal polynomials involved in the relation
 
   const OrthogonalUniVariatePolynomial pN(recurrenceCoefficients_);
-  const NumericalScalar a0Prev(recurrenceCoefficients_[n - 1][0]);
-  const NumericalScalar betaN(1.0 / (a0Prev * a0Prev));
-  NumericalScalar error(0.0);
+  const NumericalScalar a0Prev = recurrenceCoefficients_[n - 1][0];
+  const NumericalScalar betaN = 1.0 / (a0Prev * a0Prev);
+  NumericalScalar error = 0.0;
   GaussKronrod algo;
   const DotProductWrapper dotProductWrapper(pN, measure_);
   if (isElliptical_)
     {
       const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
       const NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange(), error));
-      const NumericalScalar betaNP1(dotProduct[0] - betaN);
+      const NumericalScalar betaNP1 = dotProduct[0] - betaN;
       currentCoefficients[0] = 1.0 / std::sqrt(betaNP1);
       currentCoefficients[2] = -currentCoefficients[0] / a0Prev;
     }
@@ -117,8 +117,8 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
     {
       const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
       const NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange(), error));
-      const NumericalScalar alphaN(dotProduct[1]);
-      const NumericalScalar betaNP1(dotProduct[0] - alphaN * alphaN - betaN);
+      const NumericalScalar alphaN = dotProduct[1];
+      const NumericalScalar betaNP1 = dotProduct[0] - alphaN * alphaN - betaN;
       currentCoefficients[0] = 1.0 / std::sqrt(betaNP1);
       currentCoefficients[1] = -alphaN * currentCoefficients[0];
       currentCoefficients[2] = -currentCoefficients[0] / a0Prev;

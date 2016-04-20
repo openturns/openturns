@@ -205,11 +205,11 @@ void MeixnerDistribution::computeRange()
 {
   const NumericalPoint mu(getMean());
   const NumericalPoint sigma(getStandardDeviation());
-  const NumericalScalar logPDF(computeLogPDF(mu));
-  const NumericalScalar logPDFEpsilon(std::log(getPDFEpsilon()));
+  const NumericalScalar logPDF = computeLogPDF(mu);
+  const NumericalScalar logPDFEpsilon = std::log(getPDFEpsilon());
   NumericalPoint lowerBound(mu);
   // Find the numerical lower bound based on the PDF value
-  NumericalScalar logPDFLower(logPDF);
+  NumericalScalar logPDFLower = logPDF;
   while (logPDFLower > logPDFEpsilon)
   {
     lowerBound -= sigma;
@@ -218,7 +218,7 @@ void MeixnerDistribution::computeRange()
   // Find the numerical upper bound based on the PDF value
   NumericalPoint upperBound(mu);
   NumericalPoint stepUpper(sigma);
-  NumericalScalar logPDFUpper(logPDF);
+  NumericalScalar logPDFUpper = logPDF;
   while (logPDFUpper > logPDFEpsilon)
   {
     upperBound += sigma;
@@ -314,10 +314,10 @@ NumericalPoint MeixnerDistribution::getRealization() const
 {
   while (true)
   {
-    const NumericalScalar u(b_ * RandomGenerator::Generate());
+    const NumericalScalar u = b_ * RandomGenerator::Generate();
     if (u == 0.0) continue;
-    const NumericalScalar v(c_ + dc_ * RandomGenerator::Generate());
-    const NumericalScalar rho(v / u);
+    const NumericalScalar v = c_ + dc_ * RandomGenerator::Generate();
+    const NumericalScalar rho = v / u;
     if (2.0 * std::log(u) <= computeLogPDF(rho)) return NumericalPoint(1, rho);
   }
 }
@@ -334,7 +334,7 @@ NumericalScalar MeixnerDistribution::computeLogPDF(const NumericalPoint & point)
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z((point[0] - mu_) / alpha_);
+  const NumericalScalar z = (point[0] - mu_) / alpha_;
   return logNormalizationFactor_ + beta_ * z + 2.0 * SpecFunc::LogGamma(NumericalComplex(delta_, z)).real();
 }
 
@@ -358,11 +358,11 @@ NumericalScalar MeixnerDistribution::computeComplementaryCDF(const NumericalPoin
 NumericalScalar MeixnerDistribution::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  const NumericalScalar a(getRange().getLowerBound()[0]);
-  const NumericalScalar b(getRange().getUpperBound()[0]);
+  const NumericalScalar a = getRange().getLowerBound()[0];
+  const NumericalScalar b = getRange().getUpperBound()[0];
   if (prob <= 0.0) return (tail ? b : a);
   if (prob >= 1.0) return (tail ? a : b);
-  const UnsignedInteger n(cdfApproximation_.getLocations().getSize());
+  const UnsignedInteger n = cdfApproximation_.getLocations().getSize();
   if (tail)
   {
     // Here we have to solve ComplementaryCDF(x) = prob which is mathematically

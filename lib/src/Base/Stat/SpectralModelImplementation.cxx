@@ -244,13 +244,13 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
 {
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
   if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
-  const UnsignedInteger n(frequencyGrid_.getN());
-  const NumericalScalar fMin(frequencyGrid_.getStart());
-  const NumericalScalar fStep(frequencyGrid_.getStep());
+  const UnsignedInteger n = frequencyGrid_.getN();
+  const NumericalScalar fMin = frequencyGrid_.getStart();
+  const NumericalScalar fStep = frequencyGrid_.getStep();
   NumericalSample data(n, 2);
   for (UnsignedInteger i = 0; i < n; ++i)
   {
-    const NumericalScalar f(fMin + i * fStep);
+    const NumericalScalar f = fMin + i * fStep;
     const NumericalComplex value((*this)(f)(rowIndex, columnIndex));
     data[i][0] = f;
     if (module) data[i][1] = std::abs(value);

@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction indicator(analytical, Less(), 0.0);
     /* Does it work? */
     NumericalPoint x(NumericalPoint(2, 1.0));
-    NumericalScalar value(analytical(x)[0]);
+    NumericalScalar value = analytical(x)[0];
     fullprint << "Value of the function=" << value << " value of the indicator=" << indicator(x) << std::endl;
     x = NumericalPoint(2, -1.0);
     value = analytical(x)[0];

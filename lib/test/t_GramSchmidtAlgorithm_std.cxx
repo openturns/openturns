@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedInteger iMax(5);
+    const UnsignedInteger iMax = 5;
     Triangular distribution(-1.0, 0.3, 1.0);
     GramSchmidtAlgorithm algo(distribution);
     fullprint << "algo=" << algo << std::endl;

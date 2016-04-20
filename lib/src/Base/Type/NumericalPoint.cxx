@@ -80,11 +80,11 @@ NumericalPoint NumericalPoint::clean(const NumericalScalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
-  const UnsignedInteger size(getSize());
+  const UnsignedInteger size = getSize();
   NumericalPoint result(size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar value((*this)[i]);
+    const NumericalScalar value = (*this)[i];
     // Things are done this way to prevent spurious -0.0
     if (std::abs(value) < 0.5 * threshold) result[i] = 0.0;
     else result[i] = threshold * round(value / threshold);
@@ -328,7 +328,7 @@ NumericalScalar NumericalPoint::normSquare() const
 /*  Normalize */
 NumericalPoint NumericalPoint::normalize() const
 {
-  const NumericalScalar theNorm(norm());
+  const NumericalScalar theNorm = norm();
   if (theNorm == 0.0) throw InternalException(HERE) << "Error: cannot normalize a null vector";
   return (*this) / theNorm;
 }
@@ -336,7 +336,7 @@ NumericalPoint NumericalPoint::normalize() const
 /*  Square normalize */
 NumericalPoint NumericalPoint::normalizeSquare() const
 {
-  const NumericalScalar theNormSquare(normSquare());
+  const NumericalScalar theNormSquare = normSquare();
   if (theNormSquare == 0.0) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
   NumericalPoint result(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;

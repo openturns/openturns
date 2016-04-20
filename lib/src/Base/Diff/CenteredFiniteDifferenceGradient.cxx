@@ -90,7 +90,7 @@ String CenteredFiniteDifferenceGradient::__str__(const String & offset) const
 /* Gradient () */
 Matrix CenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(inP.getDimension());
+  const UnsignedInteger inputDimension = inP.getDimension();
   NumericalPoint step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim points. */

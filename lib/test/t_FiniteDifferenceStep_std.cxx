@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dimension( 2 );
+    UnsignedInteger dimension = 2;
     NumericalPoint epsilon( dimension, 1e-5 );
     NumericalPoint eta( dimension, 1.0 );
     Collection<FiniteDifferenceStep> coll;

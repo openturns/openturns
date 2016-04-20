@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger k(3);
-    UnsignedInteger n(5);
+    UnsignedInteger k = 3;
+    UnsignedInteger n = 5;
     {
       // Classical permutations
       KPermutations myGenerator(k);

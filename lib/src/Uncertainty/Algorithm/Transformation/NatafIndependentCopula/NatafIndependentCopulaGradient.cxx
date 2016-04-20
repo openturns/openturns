@@ -81,10 +81,10 @@ Matrix NatafIndependentCopulaGradient::gradient(const NumericalPoint & inP) cons
   Matrix result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalScalar x(inP[i]);
+    const NumericalScalar x = inP[i];
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaGradient if all the components are not in [0, 1], here in=" << inP;
     // q = Normal(0,1).computeQuantile(x)
-    const NumericalScalar q(DistFunc::qNormal(x));
+    const NumericalScalar q = DistFunc::qNormal(x);
     // 2.506628274631000502415765 = sqrt(2*Pi)
     result(i, i) = 2.506628274631000502415765 * exp(0.5 * q * q);
   }

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  const UnsignedInteger size(100);
+  const UnsignedInteger size = 100;
 
   ARMACoefficients ARCoefficients(NumericalPoint(1, 0.3));
   ARMACoefficients MACoefficients(0);

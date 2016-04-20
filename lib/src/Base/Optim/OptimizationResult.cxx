@@ -292,7 +292,7 @@ Graph OptimizationResult::drawErrorHistory() const
   result.setGrid(true);
   result.setGridColor("black");
   // create a sample with the iteration number to be plotted as x data
-  const UnsignedInteger size(getAbsoluteErrorHistory().getSize());
+  const UnsignedInteger size = getAbsoluteErrorHistory().getSize();
   {
     NumericalSample data(getAbsoluteErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;

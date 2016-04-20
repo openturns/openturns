@@ -135,19 +135,19 @@ NumericalScalar StationaryCovarianceModel::computeStandardRepresentative(const N
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedInteger size(timeGrid.getN());
-  const NumericalScalar timeStep(timeGrid.getStep());
-  const UnsignedInteger fullSize(size * dimension_);
+  const UnsignedInteger size = timeGrid.getN();
+  const NumericalScalar timeStep = timeGrid.getStep();
+  const UnsignedInteger fullSize = size * dimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
   // Fill-in the matrix by blocks
   for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
   {
     // Only the lower part has to be filled-in
-    const UnsignedInteger rowBase(rowIndex * dimension_);
+    const UnsignedInteger rowBase = rowIndex * dimension_;
     for (UnsignedInteger columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
     {
-      const UnsignedInteger columnBase(columnIndex * dimension_);
+      const UnsignedInteger columnBase = columnIndex * dimension_;
       const CovarianceMatrix localCovarianceMatrix(operator()( rowIndex * timeStep,  columnIndex * timeStep) );
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is

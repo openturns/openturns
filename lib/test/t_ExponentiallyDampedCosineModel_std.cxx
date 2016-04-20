@@ -32,13 +32,13 @@ int main(int argc, char *argv[])
   try
   {
     /* Spatial dimension of the model */
-    UnsignedInteger spatialDimension(1);
+    UnsignedInteger spatialDimension = 1;
     /* Amplitude values */
-    NumericalScalar amplitude(1.0);
+    NumericalScalar amplitude = 1.0;
     /* Scale values */
-    NumericalScalar scale(1.0);
+    NumericalScalar scale = 1.0;
     /* Frequency values */
-    NumericalScalar frequency(0.1);
+    NumericalScalar frequency = 0.1;
 
     /* Default constructor */
     ExponentiallyDampedCosineModel myDefautModel;
@@ -48,12 +48,12 @@ int main(int argc, char *argv[])
     ExponentiallyDampedCosineModel myModel(spatialDimension, amplitude, scale, frequency);
     fullprint << "myModel = " << myModel << std::endl;
 
-    const NumericalScalar timeValueOne(1.0);
+    const NumericalScalar timeValueOne = 1.0;
     fullprint << "covariance matrix at t = " << timeValueOne << " : " << myModel(timeValueOne) << std::endl;
     fullprint << "covariance matrix at t = " << -1.0 * timeValueOne << " : " << myModel(-1.0 * timeValueOne) << std::endl;
 
     /* Evaluation at time higher to check the decrease of the exponentiallyDampedCosine values */
-    const NumericalScalar timeValueHigh(4.0);
+    const NumericalScalar timeValueHigh = 4.0;
     fullprint << "covariance matrix at t = "  << timeValueHigh << " : " << myModel(timeValueHigh) << std::endl;
 
     /* Discretize the process on a small time grid */

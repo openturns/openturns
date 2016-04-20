@@ -31,13 +31,13 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger maxPoint(101);
-    NumericalScalar xMin(-2.0 * M_PI);
-    NumericalScalar xMax(2.0 * M_PI);
+    UnsignedInteger maxPoint = 101;
+    NumericalScalar xMin = -2.0 * M_PI;
+    NumericalScalar xMax = 2.0 * M_PI;
     NumericalSample data(maxPoint, 2);
     for (UnsignedInteger i = 0; i < maxPoint; ++i)
     {
-      NumericalScalar x(xMin + (xMax - xMin) * i / (maxPoint - 1.0));
+      NumericalScalar x = xMin + (xMax - xMin) * i / (maxPoint - 1.0);
       data[i][0] = x;
       data[i][1] = sin(x);
     }

@@ -51,7 +51,7 @@ IntegrationAlgorithmImplementation * IntegrationAlgorithmImplementation::clone()
 NumericalPoint IntegrationAlgorithmImplementation::integrate(const NumericalMathFunction & function,
     const Interval & interval) const
 {
-  NumericalScalar error(0.0);
+  NumericalScalar error = 0.0;
   return integrate(function, interval, error);
 }
 

@@ -54,7 +54,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   expressions_(inputDistributionCollection.getSize())
 {
   Description description;
-  const UnsignedInteger size(inputDistributionCollection.getSize());
+  const UnsignedInteger size = inputDistributionCollection.getSize();
   // Check that the collections of input and output distributions have the same size
   if (outputDistributionCollection_.getSize() != size) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using collections of input and output distributions of different size";
   // First, check that the distributions are all 1D
@@ -97,26 +97,26 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         const NumericalPoint inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
         const Distribution outputStandardDistribution(outputDistribution.getStandardRepresentative());
         const NumericalPoint outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
-        const NumericalScalar difference((inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm());
-        const Bool sameParameters(difference < ResourceMap::GetAsNumericalScalar("MarginalTransformationEvaluation-ParametersEpsilon"));
+        const NumericalScalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
+        const Bool sameParameters = difference < ResourceMap::GetAsNumericalScalar("MarginalTransformationEvaluation-ParametersEpsilon");
         if (sameParameters)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
           // The two affine transformations are obtained using quantiles in order to deal with distributions with no moments
-          const NumericalScalar q25Input(inputDistribution.computeQuantile(0.25)[0]);
-          const NumericalScalar q75Input(inputDistribution.computeQuantile(0.75)[0]);
-          const NumericalScalar q25Output(outputDistribution.computeQuantile(0.25)[0]);
-          const NumericalScalar q75Output(outputDistribution.computeQuantile(0.75)[0]);
-          const NumericalScalar a(0.5 * (q75Output + q25Output));
+          const NumericalScalar q25Input = inputDistribution.computeQuantile(0.25)[0];
+          const NumericalScalar q75Input = inputDistribution.computeQuantile(0.75)[0];
+          const NumericalScalar q25Output = outputDistribution.computeQuantile(0.25)[0];
+          const NumericalScalar q75Output = outputDistribution.computeQuantile(0.75)[0];
+          const NumericalScalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
-          const NumericalScalar b((q75Output - q25Output) / (q75Input - q25Input));
-          const NumericalScalar c(-0.5 * (q75Input + q25Input));
+          const NumericalScalar b = (q75Output - q25Output) / (q75Input - q25Input);
+          const NumericalScalar c = -0.5 * (q75Input + q25Input);
           OSS oss;
           oss.setPrecision(20);
           // First case, b = 1: we don't need to center the input variable
           if (b == 1.0)
           {
-            const NumericalScalar alpha(a + c);
+            const NumericalScalar alpha = a + c;
             if (alpha != 0.0) oss << alpha << "+";
             oss << xName;
           } // b == 1
@@ -204,11 +204,11 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       // Normal -> LogNormal simplification
       if ((inputClass == "Normal") && (outputClass == "LogNormal"))
       {
-        const NumericalScalar mu1(inputParameters[0]);
-        const NumericalScalar sigma1(inputParameters[1]);
-        const NumericalScalar muLog2(outputParameters[0]);
-        const NumericalScalar sigmaLog2(outputParameters[1]);
-        const NumericalScalar gamma2(outputParameters[2]);
+        const NumericalScalar mu1 = inputParameters[0];
+        const NumericalScalar sigma1 = inputParameters[1];
+        const NumericalScalar muLog2 = outputParameters[0];
+        const NumericalScalar sigmaLog2 = outputParameters[1];
+        const NumericalScalar gamma2 = outputParameters[2];
         OSS oss;
         oss.setPrecision(20);
         if (gamma2 != 0.0) oss << gamma2 << " + ";
@@ -226,11 +226,11 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       // LogNormal -> Normal simplification
       if ((inputClass == "LogNormal") && (outputClass == "Normal"))
       {
-        const NumericalScalar muLog1(inputParameters[0]);
-        const NumericalScalar sigmaLog1(inputParameters[1]);
-        const NumericalScalar gamma1(inputParameters[2]);
-        const NumericalScalar mu2(outputParameters[0]);
-        const NumericalScalar sigma2(outputParameters[1]);
+        const NumericalScalar muLog1 = inputParameters[0];
+        const NumericalScalar sigmaLog1 = inputParameters[1];
+        const NumericalScalar gamma1 = inputParameters[2];
+        const NumericalScalar mu2 = outputParameters[0];
+        const NumericalScalar sigma2 = outputParameters[1];
         OSS oss;
         oss.setPrecision(20);
         if (mu2 != 0.0) oss << mu2 << " + ";
@@ -279,14 +279,14 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   direction_ = direction;
   // Get all the parameters
   // The notion of parameters is used only for transformation from or to a standard space, so we have to extract the parameters of either the input distributions or the output distribution depending on the direction
-  const UnsignedInteger size(distributionCollection.getSize());
+  const UnsignedInteger size = distributionCollection.getSize();
   NumericalPointWithDescription parameters(0);
   Description parametersDescription(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // The marginal distribution is 1D, so the collection of parameters is of size 1
     NumericalPointWithDescription marginalParameters(distributionCollection[i].getParametersCollection()[0]);
-    const UnsignedInteger marginalParametersSize(marginalParameters.getSize());
+    const UnsignedInteger marginalParametersSize = marginalParameters.getSize();
     for (UnsignedInteger j = 0; j < marginalParametersSize; ++j)
     {
       parameters.add(marginalParameters[j]);
@@ -306,22 +306,22 @@ MarginalTransformationEvaluation * MarginalTransformationEvaluation::clone() con
 /* Evaluation */
 NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   NumericalPoint result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
-  const NumericalScalar tailThreshold(ResourceMap::GetAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" ));
+  const NumericalScalar tailThreshold = ResourceMap::GetAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (simplifications_[i]) result[i] = expressions_[i](NumericalPoint(1, inP[i]))[0];
     else
     {
-      NumericalScalar inputCDF(inputDistributionCollection_[i].computeCDF(inP[i]));
+      NumericalScalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
       // For accuracy reason, check if we are in the upper tail of the distribution
-      const Bool upperTail(inputCDF > tailThreshold);
+      const Bool upperTail = inputCDF > tailThreshold;
       if (upperTail) inputCDF = inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
       // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
       // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-      const NumericalScalar q(outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0]);
+      const NumericalScalar q = outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0];
       result[i] = q;
     }
   }
@@ -373,10 +373,10 @@ NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoi
 Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
   const NumericalPoint parameters(getParameter());
-  const UnsignedInteger parametersDimension(parameters.getDimension());
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger parametersDimension = parameters.getDimension();
+  const UnsignedInteger inputDimension = getInputDimension();
   Matrix result(parametersDimension, inputDimension);
-  UnsignedInteger rowIndex(0);
+  UnsignedInteger rowIndex = 0;
   switch (direction_)
   {
     case FROM:
@@ -389,13 +389,13 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
         const NumericalPoint x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
-        const NumericalScalar denominator(outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x))));
+        const NumericalScalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
         if (denominator > 0.0)
         {
           try
           {
             const NumericalPoint normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
-            const UnsignedInteger marginalParametersDimension(normalizedCDFGradient.getDimension());
+            const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
               result(rowIndex, j) = normalizedCDFGradient[i];
@@ -420,13 +420,13 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
         const NumericalPoint q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
-        const NumericalScalar denominator(outputMarginal.computePDF(q));
+        const NumericalScalar denominator = outputMarginal.computePDF(q);
         if (denominator > 0.0)
         {
           try
           {
             const NumericalPoint normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
-            const UnsignedInteger marginalParametersDimension(normalizedCDFGradient.getDimension());
+            const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
               result(rowIndex, j) = normalizedCDFGradient[i];
@@ -523,10 +523,10 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   if (hasVisibleName()) oss << offset << "Marginal transformation " << getName() << " :\n";
   const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
-  UnsignedInteger length(0);
+  UnsignedInteger length = 0;
   for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)
   {
-    const UnsignedInteger l(outputDescription[i].length());
+    const UnsignedInteger l = outputDescription[i].length();
     if (l > length) length = l;
   }
   for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)

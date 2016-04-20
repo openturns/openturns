@@ -74,13 +74,13 @@ struct IteratedQuadraturePartialFunctionWrapper
 
   NumericalPoint evaluate(const NumericalPoint & point) const
   {
-    const NumericalScalar x(point[0]);
+    const NumericalScalar x = point[0];
     // Create the arguments of the local integration problem
     const Indices index(1, 0);
     const NumericalMathFunction function(function_, index, NumericalPoint(function_.getInputDimension(), x));
-    const UnsignedInteger size(lowerBounds_.getSize() - 1);
-    const NumericalScalar a(lowerBounds_[0](point)[0]);
-    const NumericalScalar b(upperBounds_[0](point)[0]);
+    const UnsignedInteger size = lowerBounds_.getSize() - 1;
+    const NumericalScalar a = lowerBounds_[0](point)[0];
+    const NumericalScalar b = upperBounds_[0](point)[0];
     IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
     IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
     for (UnsignedInteger i = 0; i < size; ++i)
@@ -109,7 +109,7 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
     const NumericalMathFunctionCollection & upperBounds,
     const Bool check) const
 {
-  const UnsignedInteger inputDimension(function.getInputDimension());
+  const UnsignedInteger inputDimension = function.getInputDimension();
   if (check)
   {
     // Check the compatibility of the lower bound functions and the upper bound functions
@@ -137,13 +137,13 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
 NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & function,
     const Interval & interval) const
 {
-  const UnsignedInteger inputDimension(function.getInputDimension());
+  const UnsignedInteger inputDimension = function.getInputDimension();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
   // Build the bound functions associated with the interval
   const NumericalPoint lower(interval.getLowerBound());
   const NumericalPoint upper(interval.getUpperBound());
-  NumericalScalar a(lower[0]);
-  NumericalScalar b(upper[0]);
+  NumericalScalar a = lower[0];
+  NumericalScalar b = upper[0];
   NumericalMathFunctionCollection lowerBounds(inputDimension - 1);
   NumericalMathFunctionCollection upperBounds(inputDimension - 1);
   for (UnsignedInteger i = 1; i < inputDimension; ++i)

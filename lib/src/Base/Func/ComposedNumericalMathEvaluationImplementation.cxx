@@ -116,15 +116,15 @@ NumericalSample ComposedNumericalMathEvaluationImplementation::operator() (const
 NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::getParameter() const
 {
   const NumericalPointWithDescription rightParameters(p_rightFunction_->getParameter());
-  const UnsignedInteger rightDimension(rightParameters.getDimension());
+  const UnsignedInteger rightDimension = rightParameters.getDimension();
   const Description rightDescription(rightParameters.getDescription());
   const NumericalPointWithDescription leftParameters(p_leftFunction_->getParameter());
-  const UnsignedInteger leftDimension(leftParameters.getDimension());
+  const UnsignedInteger leftDimension = leftParameters.getDimension();
   const Description leftDescription(leftParameters.getDescription());
-  const UnsignedInteger dimension(rightDimension + leftDimension);
+  const UnsignedInteger dimension = rightDimension + leftDimension;
   NumericalPointWithDescription parameters(dimension);
   Description description(dimension);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++i)
   {
     parameters[index] = rightParameters[i];
@@ -144,13 +144,13 @@ NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::get
 void ComposedNumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
 {
   NumericalPointWithDescription rightParameters(p_rightFunction_->getParameter());
-  const UnsignedInteger rightDimension(rightParameters.getDimension());
+  const UnsignedInteger rightDimension = rightParameters.getDimension();
   NumericalPointWithDescription leftParameters(p_leftFunction_->getParameter());
-  const UnsignedInteger leftDimension(leftParameters.getDimension());
+  const UnsignedInteger leftDimension = leftParameters.getDimension();
   const Description description(parameters.getDescription());
   Description rightDescription(rightDimension);
   Description leftDescription(leftDimension);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++i)
   {
     rightParameters[i] = parameters[index];

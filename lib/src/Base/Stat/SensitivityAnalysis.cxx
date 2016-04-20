@@ -137,9 +137,9 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedInteger order) const
   {
     for (UnsignedInteger k = 0; k < spatialDimension; ++ k)
     {
-      const NumericalScalar FOIjk(firstOrderIndice_[j][k]);
-      const NumericalScalar CSMj(crossSquareMean[j]);
-      const NumericalScalar sample1Variancej(sample1Variance[j]);
+      const NumericalScalar FOIjk = firstOrderIndice_[j][k];
+      const NumericalScalar CSMj = crossSquareMean[j];
+      const NumericalScalar sample1Variancej = sample1Variance[j];
       firstOrderIndice_[j][k] = (FOIjk - CSMj) / sample1Variancej;
       if ((firstOrderIndice_[j][k] < 0.0) || (firstOrderIndice_[j][k] > 1.0)) LOGWARN(OSS() << "The estimated first order total Sobol index (" << k << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: FOIjk=" << FOIjk << ", CSMj=" << CSMj << ", sample1Variancej=" << sample1Variancej);
 
@@ -214,7 +214,7 @@ Graph SensitivityAnalysis::DrawImportanceFactors(const NumericalPoint & values,
   const UnsignedInteger dimension = values.getDimension();
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on empty data.";
   if ((names.getSize() != 0) && (names.getSize() != dimension)) throw InvalidArgumentException(HERE) << "Error: the names size must match the value dimension.";
-  NumericalScalar l1Norm(0.0);
+  NumericalScalar l1Norm = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i) l1Norm += std::abs(values[i]);
   if (l1Norm == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on null data.";
   NumericalPoint data(dimension);

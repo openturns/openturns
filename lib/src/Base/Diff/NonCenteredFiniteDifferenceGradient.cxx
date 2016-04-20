@@ -89,7 +89,7 @@ String NonCenteredFiniteDifferenceGradient::__str__(const String & offset) const
 /* Gradient () */
 Matrix NonCenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(inP.getDimension());
+  const UnsignedInteger inputDimension = inP.getDimension();
   NumericalPoint step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim pionts. */
