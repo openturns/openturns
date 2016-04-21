@@ -66,7 +66,7 @@ NumericalMathEvaluationImplementation::NumericalMathEvaluationImplementation()
   , inputStrategy_(Full())
   , outputStrategy_(Full())
   , isHistoryEnabled_(false)
-  , parameters_(0)
+  , parameter_(0)
   , inputDescription_(0)
   , outputDescription_(0)
 {
@@ -90,12 +90,15 @@ Bool NumericalMathEvaluationImplementation::operator ==(const NumericalMathEvalu
 /* String converter */
 String NumericalMathEvaluationImplementation::__repr__() const
 {
+  NumericalPointWithDescription parameters(parameter_);
+  parameters.setDescription(parameterDescription_);
+
   OSS oss(true);
   oss << "class=" << NumericalMathEvaluationImplementation::GetClassName()
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
-      << " parameters=" << parameters_;
+      << " parameters=" <<  parameters;
   return oss;
 }
 
@@ -282,24 +285,31 @@ HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
-  return Matrix(parameters_.getDimension(), getOutputDimension());
+  return Matrix(parameter_.getDimension(), getOutputDimension());
 }
 
-/* Parameters value and description accessor */
-NumericalPointWithDescription NumericalMathEvaluationImplementation::getParameter() const
+/* Parameters value accessor */
+NumericalPoint NumericalMathEvaluationImplementation::getParameter() const
 {
-  return parameters_;
+  return parameter_;
 }
 
-void NumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
+void NumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
 {
-  parameters_ = parameters;
+  parameter_ = parameter;
 }
 
-void NumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameters)
+void NumericalMathEvaluationImplementation::setParameterDescription(const Description & description)
 {
-  parameters_ = parameters;
+  parameterDescription_ = description;
 }
+
+/* Parameters description accessor */
+Description NumericalMathEvaluationImplementation::getParameterDescription() const
+{
+  return parameterDescription_;
+}
+
 
 /* Operator () */
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
@@ -329,7 +339,7 @@ UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() cons
 /* Accessor for input point dimension */
 UnsignedInteger NumericalMathEvaluationImplementation::getParameterDimension() const
 {
-  return parameters_.getDimension();
+  return parameter_.getDimension();
 }
 
 /* Get the i-th marginal function */
@@ -564,7 +574,8 @@ void NumericalMathEvaluationImplementation::save(Advocate & adv) const
   adv.saveAttribute( "cache_", *p_cache_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
-  adv.saveAttribute( "parameters_", parameters_ );
+  adv.saveAttribute( "parameter_", parameter_ );
+  adv.saveAttribute( "parameterDescription_", parameterDescription_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -577,7 +588,8 @@ void NumericalMathEvaluationImplementation::load(Advocate & adv)
   p_cache_ = cache.getImplementation();
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
-  adv.loadAttribute( "parameters_", parameters_ );
+  adv.loadAttribute( "parameter_", parameter_ );
+  adv.loadAttribute( "parameterDescription_", parameterDescription_ );
 }
 
 END_NAMESPACE_OPENTURNS

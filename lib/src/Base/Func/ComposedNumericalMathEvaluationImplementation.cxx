@@ -112,61 +112,62 @@ NumericalSample ComposedNumericalMathEvaluationImplementation::operator() (const
   return leftSample;
 }
 
-/* Parameters value and description accessor */
-NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::getParameter() const
+/* Parameters value accessor */
+NumericalPoint ComposedNumericalMathEvaluationImplementation::getParameter() const
 {
-  const NumericalPointWithDescription rightParameters(p_rightFunction_->getParameter());
-  const UnsignedInteger rightDimension(rightParameters.getDimension());
-  const Description rightDescription(rightParameters.getDescription());
-  const NumericalPointWithDescription leftParameters(p_leftFunction_->getParameter());
-  const UnsignedInteger leftDimension(leftParameters.getDimension());
-  const Description leftDescription(leftParameters.getDescription());
-  const UnsignedInteger dimension(rightDimension + leftDimension);
-  NumericalPointWithDescription parameters(dimension);
-  Description description(dimension);
-  UnsignedInteger index(0);
-  for (UnsignedInteger i = 0; i < rightDimension; ++i)
-  {
-    parameters[index] = rightParameters[i];
-    description[index] = rightDescription[i];
-    ++index;
-  }
-  for (UnsignedInteger i = 0; i < leftDimension; ++i)
-  {
-    parameters[index] = leftParameters[i];
-    description[index] = leftDescription[i];
-    ++index;
-  }
-  parameters.setDescription(description);
-  return parameters;
+  NumericalPoint parameter(p_rightFunction_->getParameter());
+  parameter.add(p_leftFunction_->getParameter());
+  return parameter;
 }
 
-void ComposedNumericalMathEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
+void ComposedNumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
 {
-  NumericalPointWithDescription rightParameters(p_rightFunction_->getParameter());
-  const UnsignedInteger rightDimension(rightParameters.getDimension());
-  NumericalPointWithDescription leftParameters(p_leftFunction_->getParameter());
-  const UnsignedInteger leftDimension(leftParameters.getDimension());
-  const Description description(parameters.getDescription());
-  Description rightDescription(rightDimension);
-  Description leftDescription(leftDimension);
+  NumericalPoint rightParameter(p_rightFunction_->getParameter());
+  const UnsignedInteger rightDimension(rightParameter.getDimension());
+  NumericalPoint leftParameter(p_leftFunction_->getParameter());
+  const UnsignedInteger leftDimension(leftParameter.getDimension());
   UnsignedInteger index(0);
-  for (UnsignedInteger i = 0; i < rightDimension; ++i)
+  for (UnsignedInteger i = 0; i < rightDimension; ++ i)
   {
-    rightParameters[i] = parameters[index];
+    rightParameter[i] = parameter[index];
+    ++ index;
+  }
+  p_rightFunction_->setParameter(rightParameter);
+  for (UnsignedInteger i = 0; i < leftDimension; ++ i)
+  {
+    leftParameter[i] = parameter[index];
+    ++ index;
+  }
+  p_leftFunction_->setParameter(leftParameter);
+}
+
+/* Parameters description accessor */
+Description ComposedNumericalMathEvaluationImplementation::getParameterDescription() const
+{
+  Description description(p_rightFunction_->getParameterDescription());
+  description.add(p_leftFunction_->getParameterDescription());
+  return description;
+}
+
+void ComposedNumericalMathEvaluationImplementation::setParameterDescription(const Description & description)
+{
+  Description rightDescription(p_rightFunction_->getParameterDescription());
+  const UnsignedInteger rightDimension(rightDescription.getSize());
+  Description leftDescription(p_leftFunction_->getParameterDescription());
+  const UnsignedInteger leftDimension(leftDescription.getSize());
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < rightDimension; ++ i)
+  {
     rightDescription[i] = description[index];
-    ++index;
+    ++ index;
   }
-  rightParameters.setDescription(rightDescription);
-  p_rightFunction_->setParameter(rightParameters);
-  for (UnsignedInteger i = 0; i < leftDimension; ++i)
+  p_rightFunction_->setParameterDescription(rightDescription);
+  for (UnsignedInteger i = 0; i < leftDimension; ++ i)
   {
-    leftParameters[i] = parameters[index];
     leftDescription[i] = description[index];
-    ++index;
+    ++ index;
   }
-  leftParameters.setDescription(leftDescription);
-  p_leftFunction_->setParameter(leftParameters);
+  p_leftFunction_->setParameterDescription(leftDescription);
 }
 
 /* Accessor for input point dimension */

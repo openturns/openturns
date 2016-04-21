@@ -84,5 +84,9 @@ OT_NumericalMathFunction_draw_doc
 OT_NumericalMathFunction_getParameter_doc
 %feature("docstring") OT::NumericalMathFunction::setParameter
 OT_NumericalMathFunction_setParameter_doc
+%feature("docstring") OT::NumericalMathFunction::getParameterDescription
+OT_NumericalMathFunction_getParameterDescription_doc
+%feature("docstring") OT::NumericalMathFunction::setParameterDescription
+OT_NumericalMathFunction_setParameterDescription_doc
 %feature("docstring") OT::NumericalMathFunction::parameterGradient
 OT_NumericalMathFunction_parameterGradient_doc

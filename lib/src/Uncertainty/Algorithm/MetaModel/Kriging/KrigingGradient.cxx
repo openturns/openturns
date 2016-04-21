@@ -66,7 +66,7 @@ KrigingGradient::KrigingGradient(const BasisCollection & basis,
   }
   if (covarianceModel.getSpatialDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the spatial dimension=" << covarianceModel.getSpatialDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getDimension();
-  setParameter(NumericalPointWithDescription(getInputDimension()));
+  setParameter(NumericalPoint(getInputDimension()));
 }
 
 /* Virtual constructor */

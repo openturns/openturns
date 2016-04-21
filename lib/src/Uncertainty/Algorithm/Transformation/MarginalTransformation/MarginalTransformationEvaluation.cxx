@@ -280,21 +280,15 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   // Get all the parameters
   // The notion of parameters is used only for transformation from or to a standard space, so we have to extract the parameters of either the input distributions or the output distribution depending on the direction
   const UnsignedInteger size(distributionCollection.getSize());
-  NumericalPointWithDescription parameters(0);
-  Description parametersDescription(0);
+  NumericalPoint parameter(0);
+  Description parameterDescription(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // The marginal distribution is 1D, so the collection of parameters is of size 1
-    NumericalPointWithDescription marginalParameters(distributionCollection[i].getParametersCollection()[0]);
-    const UnsignedInteger marginalParametersSize(marginalParameters.getSize());
-    for (UnsignedInteger j = 0; j < marginalParametersSize; ++j)
-    {
-      parameters.add(marginalParameters[j]);
-      parametersDescription.add(marginalParameters.getDescription()[j]);
-    }
-    parameters.setDescription(parametersDescription);
+    parameter.add(distributionCollection[i].getParameter());
+    parameterDescription.add(distributionCollection[i].getParameterDescription());
   } // get all the parameters
-  setParameter(parameters);
+  setParameter(parameter);
+  setParameterDescription(parameterDescription);
 }
 
 /* Virtual constructor */

@@ -225,6 +225,16 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getParameterDimension
+"Accessor to the dimension of the parameter.
+
+Returns
+-------
+parameter_dimension : int
+    Dimension of the parameter."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NumericalMathEvaluationImplementation::isCacheEnabled
 "Test whether the cache mechanism is enabled or not.
 
@@ -285,6 +295,61 @@ Returns
 -------
 description : :class:`~openturns.Description`
     Description of the outputs."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::parameterGradient
+"Gradient against the parameters.
+
+Parameters
+----------
+x : sequence of float
+    Input point
+
+Returns
+-------
+parameter_gradient : :class:`~openturns.Matrix`
+    The parameters gradient computed at x."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getParameter
+"Accessor to the parameter values.
+
+Returns
+-------
+parameter : :class:`~openturns.NumericalPoint`
+    The parameter values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::setParameter
+"Accessor to the parameter values.
+
+Parameters
+----------
+parameter : sequence of float
+    The parameter values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getParameterDescription
+"Accessor to the parameter description.
+
+Returns
+-------
+parameter : :class:`~openturns.Description`
+    The parameter description."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::setParameterDescription
+"Accessor to the parameter description.
+
+Parameters
+----------
+parameter : :class:`~openturns.Description`
+    The parameter description."
 
 // ---------------------------------------------------------------------
 

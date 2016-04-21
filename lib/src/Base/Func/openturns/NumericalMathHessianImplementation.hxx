@@ -77,7 +77,7 @@ public:
   /** Hessian method */
   virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
   virtual SymmetricTensor hessian(const NumericalPoint & inP,
-                                  const NumericalPoint & parameters);
+                                  const NumericalPoint & parameter);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -85,9 +85,9 @@ public:
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
 
-  /** Parameters value and description accessor */
-  virtual NumericalPointWithDescription getParameter() const;
-  virtual void setParameter(const NumericalPointWithDescription & parameters);
+  /** Parameters value accessor */
+  virtual NumericalPoint getParameter() const;
+  virtual void setParameter(const NumericalPoint & parameter);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
@@ -103,8 +103,8 @@ protected:
   /** Number of calls since the construction */
   mutable UnsignedInteger callsNumber_;
 
-  /** The value and description of all the parameters */
-  NumericalPointWithDescription parameters_;
+  /** The value of the parameters */
+  NumericalPoint parameter_;
 
 private:
 
