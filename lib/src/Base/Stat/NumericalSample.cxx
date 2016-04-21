@@ -732,6 +732,12 @@ NumericalSample NumericalSample::sortAccordingToAComponent(const UnsignedInteger
   return getImplementation()->sortAccordingToAComponent(index);
 }
 
+/* Sort and remove duplicated points */
+NumericalSample NumericalSample::unique() const
+{
+  return getImplementation()->unique();
+}
+
 /* Get the i-th marginal sample */
 NumericalSample NumericalSample::getMarginal(const UnsignedInteger index) const
 {

@@ -124,6 +124,13 @@ int main(int argc, char *argv[])
     fullprint << "Pearson correlation=" << RPearson << std::endl;
     CorrelationMatrix RSpearman(normalSample.computeSpearmanCorrelation());
     fullprint << "Spearman correlation=" << RSpearman << std::endl;
+
+    // Check unique()
+    fullprint << "Unique=" << sample.unique() << std::endl;
+    sample[2][0] = 1;
+    sample[2][1] = 0;
+    sample[2][2] = 9;
+    fullprint << "Unique=" << sample.unique() << std::endl;
   }
   catch (TestFailed & ex)
   {
