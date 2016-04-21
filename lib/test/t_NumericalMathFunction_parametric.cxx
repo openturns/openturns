@@ -46,12 +46,15 @@ int main(int argc, char *argv[])
     x[0] = 1.0;
     x[1] = 2.0;
     NumericalPoint referencePoint(2, 0.85);
-    // with reference point
     NumericalMathFunction g2(f, set, referencePoint, parametersSet);
     fullprint << "g2=" << g2 << std::endl;
     fullprint << "g2(x)=" << g2(x) << std::endl;
 
-
+    // marginal extraction
+    NumericalMathFunction g2_0(g2.getMarginal(0));
+    NumericalPoint theta(2, 0.1);
+    theta[1] = 8000.0;
+    fullprint << "g2_0(x)=" << g2_0(x, theta) << std::endl;
   }
   catch (TestFailed & ex)
   {
