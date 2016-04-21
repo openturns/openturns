@@ -127,7 +127,7 @@ struct GeneralizedParetoFactoryParameterConstraint
     : sampleY_(0, 1)
     , size_(sample.getSize())
   {
-    const NumericalSample sortedSample(sample.sort());
+    const NumericalSample sortedSample(sample.sort(0));
     sampleY_ = NumericalSample(size_ - 2, 1);
     const NumericalScalar xMin(sortedSample[0][0]);
     for (UnsignedInteger j = 0; j < size_ - 2; ++j)
@@ -196,7 +196,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   const NumericalScalar xi(solver_.getResult().getOptimalPoint()[0]);
 
   const NumericalScalar mean(sample.computeMean()[0]);
-  const NumericalSample sortedSample(sample.sort());
+  const NumericalSample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
   NumericalScalar m(0.0);
   const UnsignedInteger size(sample.getSize());
@@ -212,7 +212,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const
 {
   const NumericalScalar mean(sample.computeMean()[0]);
-  const NumericalSample sortedSample(sample.sort());
+  const NumericalSample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
   NumericalScalar m(0.0);
   const UnsignedInteger size(sample.getSize());

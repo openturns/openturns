@@ -38,7 +38,7 @@ TestResult NormalityTest::AndersonDarlingNormal(const NumericalSample & sample,
 {
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform an Anderson Darling normality test with sample of dimension > 1.";
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform an Anderson Darling normality test with sample of size < 8.";
-  NumericalSample sortedSample(sample.sort());
+  NumericalSample sortedSample(sample.sort(0));
   NumericalScalar mean(sortedSample.computeMean()[0]);
   NumericalScalar sd(sortedSample.computeStandardDeviationPerComponent()[0]);
   const UnsignedInteger size(sample.getSize());
@@ -89,7 +89,7 @@ TestResult NormalityTest::CramerVonMisesNormal(const NumericalSample & sample,
 {
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform a Cramer Von-Mises normality test with sample of dimension > 1.";
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform a Cramer Von-Mises normality test with sample of size < 8.";
-  NumericalSample sortedSample(sample.sort());
+  NumericalSample sortedSample(sample.sort(0));
   NumericalScalar mean(sortedSample.computeMean()[0]);
   NumericalScalar sd(sortedSample.computeStandardDeviationPerComponent()[0]);
   const UnsignedInteger size(sample.getSize());
