@@ -635,6 +635,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // NumericalMathEvaluation parameters //
   setAsUnsignedInteger( "NumericalMathEvaluationImplementation-DefaultPointNumber", 129 );
+  setAsNumericalScalar( "NumericalMathEvaluationImplementation-ParameterEpsilon", 1.0e-7 );
 
   // DualLinearCombinationEvaluationImplementation //
   setAsNumericalScalar( "DualLinearCombinationEvaluationImplementation-SmallCoefficient", 0.0);

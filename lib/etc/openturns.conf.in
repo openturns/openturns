@@ -365,9 +365,10 @@
   <RandomMixture-ProjectionDefaultSize value="25"      />
   <RandomMixture-MarginalIntegrationNodesNumber   value="128"    />
   <RandomMixture-MaximumIntegrationNodesNumber    value="1024"   />
-    
+
   <!-- OT::NumericalMathEvaluation parameters -->
   <NumericalMathEvaluationImplementation-DefaultPointNumber value="129" />
+  <NumericalMathEvaluationImplementation-ParameterEpsilon value="1.0e-7" />
 
   <!-- OT::DualLinearCombinationEvaluationImplementation parameters -->
   <DualLinearCombinationEvaluationImplementation-SmallCoefficient value="0.0" />
