@@ -1088,3 +1088,26 @@ Examples
 0 : [  0.608202  -1.26617   -0.355007   1.43725   ]
 1 : [ -0.438266   1.20548    0.810668   0.793156  ]
 2 : [ -2.18139    0.350042  -0.470526   0.261018  ]"
+
+%feature("docstring") OT::NumericalSample::sortUnique
+"Sort the sample and remove duplicate points.
+
+Returns
+-------
+unique_sample : :class:`~openturns.NumericalSample`
+    The requested sorted sample with duplicate points removed.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.NumericalSample([[3, 0, 3], [1, 1, 0], [0, 2, 2], [1, 1, 0]])
+>>> print(sample)
+0 : [ 3 0 3 ]
+1 : [ 1 1 0 ]
+2 : [ 0 2 2 ]
+3 : [ 1 1 0 ]
+>>> print(sample.sortUnique())
+0 : [ 0 2 2 ]
+1 : [ 1 1 0 ]
+2 : [ 3 0 3 ]"
+
