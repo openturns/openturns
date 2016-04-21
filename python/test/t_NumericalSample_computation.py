@@ -39,6 +39,7 @@ try:
     indices[1] = 0
     print("Marginal [2, 0]=", repr(sample.getMarginal(indices)))
     print("Rank=", repr(sample.rank()))
+    print("Sort=", repr(sample.sort()))
     print("Sort according to component 0=", repr(
         sample.sortAccordingToAComponent(0)))
     prob = 0.25
@@ -63,6 +64,7 @@ try:
     sample[3] = NumericalPoint((2, 2, 9))
     print("Rank=", repr(sample.rank()))
     print("Rank component 0=", repr(sample.rank(0)))
+    print("Sort=", repr(sample.sort()))
     print("Sort according to component 0=", repr(
         sample.sortAccordingToAComponent(0)))
     print("Spearman correlation=", repr(sample.computeSpearmanCorrelation()))

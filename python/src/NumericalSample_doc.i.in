@@ -959,13 +959,13 @@ getDescription"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NumericalSample::sort
-"Sort the sample componentwise.
+"Sort the sample.
 
 Parameters
 ----------
 marginal_index : int, :math:`0 \leq i < n`, optional
     The component to sort.
-    Default sorts the whole sample, componentwise.
+    Default sorts the whole sample.
 
 Returns
 -------
@@ -984,9 +984,9 @@ Examples
 2 : [ -2.18139    0.350042  ]
 >>> print(sample.sort())
     [ marginal 1 marginal 2 ]
-0 : [ -2.18139   -1.26617   ]
-1 : [ -0.438266   0.350042  ]
-2 : [  0.608202   1.20548   ]"
+0 : [ -2.18139    0.350042  ]
+1 : [ -0.438266   1.20548   ]
+2 : [  0.608202  -1.26617   ]"
 
 // ---------------------------------------------------------------------
 
