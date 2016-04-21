@@ -285,7 +285,35 @@ HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
-  return Matrix(parameter_.getDimension(), getOutputDimension());
+  NumericalPoint parameter(getParameter());
+  const UnsignedInteger parameterDimension = parameter.getDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
+
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("NumericalMathEvaluationImplementation-ParameterEpsilon");
+
+  NumericalSample inS(parameterDimension + 1, parameter);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
+  {
+    inS[1 + i][i] += epsilon;
+  }
+
+  NumericalSample outS(parameterDimension + 1, outputDimension);
+  // operator()(x, theta) is non-const as it sets the parameter
+  Pointer<NumericalMathEvaluationImplementation> p_evaluation(clone());
+  for (UnsignedInteger i = 0; i < parameterDimension + 1; ++ i)
+  {
+    outS[i] = p_evaluation->operator()(inP, inS[i]);
+  }
+
+  Matrix grad(parameterDimension, outputDimension);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+    {
+      grad(i, j) = (outS[1 + i][j] - outS[0][j]) / epsilon;
+    }
+  }
+  return grad;
 }
 
 /* Parameters value accessor */
@@ -318,9 +346,9 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
 }
 
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+                                                                  const NumericalPoint & parameter)
 {
-  setParameter(parameters);
+  setParameter(parameter);
   return (*this)(inP);
 }
 

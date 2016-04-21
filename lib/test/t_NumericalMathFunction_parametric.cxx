@@ -52,9 +52,10 @@ int main(int argc, char *argv[])
 
     // marginal extraction
     NumericalMathFunction g2_0(g2.getMarginal(0));
-    NumericalPoint theta(2, 0.1);
-    theta[1] = 8000.0;
-    fullprint << "g2_0(x)=" << g2_0(x, theta) << std::endl;
+    NumericalPoint theta(2, 0.2);
+    theta[1] = 50.0;
+    fullprint << "g2_0(x, theta)=" << g2_0(x, theta) << std::endl;
+    fullprint << "dg2_0/dtheta(x)=" << g2_0.parameterGradient(x) << std::endl;
   }
   catch (TestFailed & ex)
   {
