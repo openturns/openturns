@@ -87,7 +87,7 @@ NumericalPoint Wilks::computeQuantileBound(const NumericalScalar quantileLevel,
   // Compute the needed sample size
   const UnsignedInteger size(ComputeSampleSize(quantileLevel, confidenceLevel, marginIndex));
   // Generate a sorted sample of the needed size
-  const NumericalSample sample(vector_.getSample(size).sort());
+  const NumericalSample sample(vector_.getSample(size).sort(0));
   // The upper bound is the marginIndex upper statistics
   return sample[size - 1 - marginIndex];
 }

@@ -241,7 +241,7 @@ void Contour::checkData(const NumericalSample & data) const
 void Contour::buildDefaultLevels(const UnsignedInteger number)
 {
   // Use the empirical quantiles
-  const NumericalSample sortedData(data_.sort());
+  const NumericalSample sortedData(data_.sort(0));
   const UnsignedInteger size(data_.getSize());
   levels_ = NumericalPoint(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedInteger>(size * (i + 0.5) / number)][0];

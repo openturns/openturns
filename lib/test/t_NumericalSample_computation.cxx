@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
     indices[1] = 0;
     fullprint << "Marginal [2, 0]=" << sample.getMarginal(indices) << std::endl;
     fullprint << "Rank=" << sample.rank() << std::endl;
-    fullprint << "Sort=" << sample.sort() << std::endl;
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
     NumericalScalar prob(0.25);
     fullprint << "Quantile per component(" << prob << ")=" << sample.computeQuantilePerComponent(prob) << std::endl;
@@ -108,7 +107,6 @@ int main(int argc, char *argv[])
     sample[3][2] = 9;
     fullprint << "Rank=" << sample.rank() << std::endl;
     fullprint << "Rank component 0=" << sample.rank(0) << std::endl;
-    fullprint << "Sort=" << sample.sort() << std::endl;
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
