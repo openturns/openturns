@@ -1312,6 +1312,25 @@ NumericalSampleImplementation NumericalSampleImplementation::sortAccordingToACom
   return sortedSample;
 }
 
+/* Sort and remove duplicated points */
+NumericalSampleImplementation NumericalSampleImplementation::unique() const
+{
+  NumericalSampleImplementation sampleSorted(sort());
+  NumericalSampleImplementation sampleUnique(size_, dimension_);
+  sampleUnique[0] = sampleSorted[0];
+  UnsignedInteger last = 0;
+  for (UnsignedInteger i = 1; i < size_; ++i)
+  {
+    if (sampleSorted[i] != sampleUnique[last])
+    {
+      ++last;
+      sampleUnique[last] = sampleSorted[i];
+    }
+  }
+  if (last + 1 < size_) sampleUnique.erase(last + 1, size_);
+  return sampleUnique;
+}
+
 /*
  * Gives the Spearman correlation matrix of the sample
  */
