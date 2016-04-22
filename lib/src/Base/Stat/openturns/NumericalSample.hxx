@@ -318,6 +318,9 @@ public:
   /** Sorted according a component */
   NumericalSample sortAccordingToAComponent(const UnsignedInteger index) const;
 
+  /* Sorted and duplicated points removed */
+  NumericalSample sortUnique() const;
+
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   virtual String storeToTemporaryFile() const;
 

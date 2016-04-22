@@ -107,8 +107,8 @@ int main(int argc, char *argv[])
     sample[3][1] = 2;
     sample[3][2] = 9;
     fullprint << "Rank=" << sample.rank() << std::endl;
-    fullprint << "Rank component 0=" << sample.rank(0) << std::endl;
     fullprint << "Sort=" << sample.sort() << std::endl;
+    fullprint << "Rank component 0=" << sample.rank(0) << std::endl;
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
@@ -124,6 +124,13 @@ int main(int argc, char *argv[])
     fullprint << "Pearson correlation=" << RPearson << std::endl;
     CorrelationMatrix RSpearman(normalSample.computeSpearmanCorrelation());
     fullprint << "Spearman correlation=" << RSpearman << std::endl;
+
+    // Check sortUnique()
+    fullprint << "Unique=" << sample.sortUnique() << std::endl;
+    sample[2][0] = 1;
+    sample[2][1] = 0;
+    sample[2][2] = 9;
+    fullprint << "Unique=" << sample.sortUnique() << std::endl;
   }
   catch (TestFailed & ex)
   {

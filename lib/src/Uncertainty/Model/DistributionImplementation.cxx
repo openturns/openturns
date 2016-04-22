@@ -1497,12 +1497,12 @@ Collection<PiecewiseHermiteEvaluationImplementation> DistributionImplementation:
   ai.add(mu);
   NumericalSample locationsCDF(ai.getSize(), 1);
   locationsCDF.getImplementation()->setData(ai);
-  locationsCDF = locationsCDF.sort();
+  locationsCDF = locationsCDF.sort(0);
   algorithm.integrate(fPDF, mu, xMax, error, ai, bi, fi, ei);
   ai.add(xMax);
   NumericalSample locationsCCDF(ai.getSize(), 1);
   locationsCCDF.getImplementation()->setData(ai);
-  locationsCCDF = locationsCCDF.sort();
+  locationsCCDF = locationsCCDF.sort(0);
   Collection<PiecewiseHermiteEvaluationImplementation> coll(4);
   const NumericalSample valuesCDF(computeCDF(locationsCDF));
   const NumericalSample valuesPDF(computePDF(locationsCDF));

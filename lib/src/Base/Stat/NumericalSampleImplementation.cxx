@@ -1225,6 +1225,33 @@ NumericalSampleImplementation NumericalSampleImplementation::rank(const Unsigned
   return getMarginal(index).rank();
 }
 
+struct NSI_Sortable
+{
+  const NumericalSampleImplementation * p_nsi_;
+  UnsignedInteger index_;
+  NSI_Sortable(const NumericalSampleImplementation * nsi, UnsignedInteger index) : p_nsi_(nsi), index_(index) {}
+  NSI_Sortable() : p_nsi_(NULL), index_(0) {}
+  Bool operator < (const NSI_Sortable & other) const
+  {
+    return p_nsi_->operator[](index_) < other.p_nsi_->operator[](other.index_);
+  }
+  operator NSI_const_point() const { return NSI_const_point(p_nsi_, index_); }
+  inline UnsignedInteger getDimension() const
+  {
+    return p_nsi_->getDimension();
+  }
+
+  inline NSI_const_point::const_iterator begin()
+  {
+    return &NSI_const_point(p_nsi_, index_).operator[](0);
+  }
+  inline NSI_const_point::const_iterator end()
+  {
+    return &NSI_const_point(p_nsi_, index_).operator[](getDimension());
+  }
+
+};
+
 /* Sorted sample, component by component */
 NumericalSampleImplementation NumericalSampleImplementation::sort() const
 {
@@ -1240,14 +1267,10 @@ NumericalSampleImplementation NumericalSampleImplementation::sort() const
     return sortedSample;
   }
   // The nD samples
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    NumericalPoint data(size_);
-    for (UnsignedInteger j = 0; j < size_; ++j) data[j] = (*this)[j][i];
-    TBB::ParallelSort(data.begin(), data.end());
-    // copy
-    for (UnsignedInteger j = 0; j < size_; ++j) sortedSample[j][i] = data[j];
-  } // loop over dimension
+  Collection<NSI_Sortable> sortables(size_);
+  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(this, i);
+  TBB::ParallelSort(sortables.begin(), sortables.end());
+  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = sortables[i];
   if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
 }
@@ -1287,6 +1310,25 @@ NumericalSampleImplementation NumericalSampleImplementation::sortAccordingToACom
   for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = NumericalPoint(sortables[i].values_);
   if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
+}
+
+/* Sort and remove duplicated points */
+NumericalSampleImplementation NumericalSampleImplementation::sortUnique() const
+{
+  NumericalSampleImplementation sampleSorted(sort());
+  NumericalSampleImplementation sampleUnique(size_, dimension_);
+  sampleUnique[0] = sampleSorted[0];
+  UnsignedInteger last = 0;
+  for (UnsignedInteger i = 1; i < size_; ++i)
+  {
+    if (sampleSorted[i] != sampleUnique[last])
+    {
+      ++last;
+      sampleUnique[last] = sampleSorted[i];
+    }
+  }
+  if (last + 1 < size_) sampleUnique.erase(last + 1, size_);
+  return sampleUnique;
 }
 
 /*

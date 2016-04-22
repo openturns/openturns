@@ -274,7 +274,7 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
   if (estimatedParameters > 0) LOGINFO("Warning: using Kolmogorov test for a distribution with estimated parameters will result in an overestimated pValue");
   const UnsignedInteger size(sample.getSize());
   NumericalScalar value(0.0);
-  const NumericalSample cdfValues(distribution.computeCDF(sample.sort()));
+  const NumericalSample cdfValues(distribution.computeCDF(sample.sort(0)));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar cdfValue(cdfValues[i][0]);
@@ -320,7 +320,7 @@ TestResult FittingTest::ChiSquared(const NumericalSample & sample,
   // The test statistics
   NumericalScalar xi(0.0);
   // Sort the data
-  const NumericalSample sortedSample(sample.sort());
+  const NumericalSample sortedSample(sample.sort(0));
   const UnsignedInteger iMax(static_cast<UnsignedInteger>(round(size / nMin)));
   UnsignedInteger dataIndex(0);
   for (UnsignedInteger i = 1; i <= iMax; ++i)

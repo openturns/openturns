@@ -538,7 +538,7 @@ NumericalSample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Numerica
     }
     result[i] = NumericalPoint(1, cardinal / static_cast<NumericalScalar>(size - 1));
   }
-  return result.sort();
+  return result.sort(0);
 }
 
 /* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
