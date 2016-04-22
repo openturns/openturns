@@ -36,7 +36,6 @@ CumulativeDistributionNetwork::CumulativeDistributionNetwork()
   , graph_()
 {
   setName("CumulativeDistributionNetwork");
-  setParallel(true);
   // Set an empty range
   setDistributionCollection(DistributionCollection(1));
 }
@@ -127,7 +126,13 @@ void CumulativeDistributionNetwork::setDistributionCollection(const Distribution
   // Check the number of distributions
   if (size != graph_.getRedNodes().getSize()) throw InvalidArgumentException(HERE) << "Error: the given collection of distributions has a size=" << size << " different from the number of red nodes=" << graph_.getRedNodes().getSize();
   // Check the dimension of the distributions
-  for (UnsignedInteger i = 0; i < size; ++i) if (coll[i].getDimension() != graph_[i].getSize()) throw InvalidArgumentException(HERE) << "Error: the distribution " << i << " has a dimension=" << size << " which is different from the number of links=" << graph_[i].getSize() << " starting from red node " << i;
+  Bool parallel = true;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    if (coll[i].getDimension() != graph_[i].getSize()) throw InvalidArgumentException(HERE) << "Error: the distribution " << i << " has a dimension=" << size << " which is different from the number of links=" << graph_[i].getSize() << " starting from red node " << i;
+    parallel = parallel && coll[i].getImplementation()->isParallel();
+  }
+  setParallel(parallel);
   distributionCollection_ = coll;
   LOGINFO(OSS() << "graph=" << graph_ << ", dim=" << graph_.getBlackNodes().getSize());
   setDimension(graph_.getBlackNodes().getSize());
