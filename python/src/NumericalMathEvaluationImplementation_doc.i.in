@@ -136,6 +136,26 @@ output_history : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputPointHistory 
+"Accessor to the history of the input points values.
+
+Returns
+-------
+history : :class:`~openturns.NumericalSample`
+    All the input points stored in the history mecanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputParameterHistory 
+"Accessor to the history of the input parameter values.
+
+Returns
+-------
+history : :class:`~openturns.NumericalSample`
+    All the input parameters stored in the history mecanism."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NumericalMathEvaluationImplementation::getInputDescription
 "Accessor to the description of the inputs.
 

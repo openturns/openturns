@@ -36,6 +36,10 @@ OT_NumericalMathFunction_isHistoryEnabled_doc
 OT_NumericalMathFunction_getHistoryInput_doc
 %feature("docstring") OT::NumericalMathFunction::getHistoryOutput
 OT_NumericalMathFunction_getHistoryOutput_doc
+%feature("docstring") OT::NumericalMathFunction::getInputPointHistory
+OT_NumericalMathFunction_getInputPointHistory_doc
+%feature("docstring") OT::NumericalMathFunction::getInputParameterHistory
+OT_NumericalMathFunction_getInputParameterHistory_doc
 %feature("docstring") OT::NumericalMathFunction::getCallsNumber
 OT_NumericalMathFunction_getCallsNumber_doc
 %feature("docstring") OT::NumericalMathFunction::getEvaluationCallsNumber

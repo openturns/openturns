@@ -282,6 +282,19 @@ HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
   return outputStrategy_;
 }
 
+/* Input point / parameter history accessor */
+NumericalSample NumericalMathEvaluationImplementation::getInputPointHistory() const
+{
+  if (getParameterDimension() == 0) return inputStrategy_.getSample();
+  throw NotYetImplementedException(HERE) << "in NumericalMathEvaluationImplementation::getInputPointHistory";
+}
+
+NumericalSample NumericalMathEvaluationImplementation::getInputParameterHistory() const
+{
+  throw NotYetImplementedException(HERE) << "in NumericalMathEvaluationImplementation::getInputParameterHistory";
+}
+
+
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {

@@ -47,8 +47,13 @@ int main(int argc, char *argv[])
     x[1] = 2.0;
     NumericalPoint referencePoint(2, 0.85);
     NumericalMathFunction g2(f, set, referencePoint, parametersSet);
+    g2.enableHistory();
     fullprint << "g2=" << g2 << std::endl;
     fullprint << "g2(x)=" << g2(x) << std::endl;
+
+    // point / parameter history
+    fullprint << "point history=" << g2.getInputPointHistory() << std::endl;
+    fullprint << "parameter history=" << g2.getInputParameterHistory() << std::endl;
 
     // marginal extraction
     NumericalMathFunction g2_0(g2.getMarginal(0));

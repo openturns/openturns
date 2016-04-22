@@ -107,6 +107,10 @@ public:
    */
   HistoryStrategy getHistoryOutput() const;
 
+  /** Input point / parameter history accessor */
+  virtual NumericalSample getInputPointHistory() const;
+  virtual NumericalSample getInputParameterHistory() const;
+
   /** Enable or disable the internal cache */
   void enableCache() const;
   void disableCache() const;

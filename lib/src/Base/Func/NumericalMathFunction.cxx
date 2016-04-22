@@ -315,6 +315,16 @@ HistoryStrategy NumericalMathFunction::getHistoryOutput() const
   return getImplementation()->getHistoryOutput();
 }
 
+NumericalSample NumericalMathFunction::getInputPointHistory() const
+{
+  return getImplementation()->getInputPointHistory();
+}
+
+NumericalSample NumericalMathFunction::getInputParameterHistory() const
+{
+  return getImplementation()->getInputParameterHistory();
+}
+
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 ProductNumericalMathFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
 {

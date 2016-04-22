@@ -502,6 +502,32 @@ OT_NumericalMathFunction_getHistoryOutput_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_NumericalMathFunction_getInputPointHistory_doc
+"Accessor to the history of the input point values.
+
+Returns
+-------
+history : :class:`~openturns.NumericalSample`
+    All the input points stored in the history mecanism."
+%enddef
+%feature("docstring") OT::NumericalMathFunctionImplementation::getInputPointHistory
+OT_NumericalMathFunction_getInputPointHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_NumericalMathFunction_getInputParameterHistory_doc
+"Accessor to the history of the input parameter values.
+
+Returns
+-------
+history : :class:`~openturns.NumericalSample`
+    All the input parameters stored in the history mecanism."
+%enddef
+%feature("docstring") OT::NumericalMathFunctionImplementation::getInputParameterHistory
+OT_NumericalMathFunction_getInputParameterHistory_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_NumericalMathFunction_getCallsNumber_doc
 "Accessor to the number of times the function has been called.
 
