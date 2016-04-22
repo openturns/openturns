@@ -2,3 +2,4 @@ g2=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFu
 g2(x)=class=NumericalPoint name=Unnamed dimension=3 values=[0.690284,2.05998,0.190476]
 g2_0(x, theta)=class=NumericalPoint name=Unnamed dimension=1 values=[-16.1941]
 dg2_0/dtheta(x)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[17.0356,-0.340712]
+g2_0(x, thetas)=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=1 data=[[-16.1941],[0.72989],[0.841471]]

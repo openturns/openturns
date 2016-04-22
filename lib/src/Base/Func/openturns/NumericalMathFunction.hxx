@@ -271,7 +271,9 @@ public:
   /** Operator () */
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalPoint operator() (const NumericalPoint & inP,
-                             const NumericalPoint & parameters);
+                             const NumericalPoint & parameter);
+  NumericalSample operator() (const NumericalPoint & point,
+                              const NumericalSample & parameters);
 
   NumericalSample operator() (const NumericalSample & inS) const;
 

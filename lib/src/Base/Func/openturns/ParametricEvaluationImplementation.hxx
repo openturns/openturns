@@ -55,6 +55,8 @@ public:
   /** Evaluation operator */
   using NumericalMathEvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & point) const;
+  NumericalSample operator() (const NumericalPoint & point,
+                              const NumericalSample & parameters);
   NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Parameters positions accessor */
