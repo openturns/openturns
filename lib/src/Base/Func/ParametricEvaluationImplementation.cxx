@@ -156,7 +156,7 @@ NumericalPoint ParametricEvaluationImplementation::operator() (const NumericalPo
   const NumericalPoint value(function_(x));
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(point);
+    inputStrategy_.store(x);
     outputStrategy_.store(value);
   }
   ++callsNumber_;
@@ -180,7 +180,7 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalS
   const NumericalSample output(function_(input));
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(inSample);
+    inputStrategy_.store(input);
     outputStrategy_.store(output);
   }
   callsNumber_ += size;
@@ -205,7 +205,7 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalP
   const NumericalSample output(function_(input));
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(NumericalSample(size, point));
+    inputStrategy_.store(input);
     outputStrategy_.store(output);
   }
   callsNumber_ += size;
@@ -260,6 +260,19 @@ UnsignedInteger ParametricEvaluationImplementation::getParameterDimension() cons
 UnsignedInteger ParametricEvaluationImplementation::getOutputDimension() const
 {
   return function_.getOutputDimension();
+}
+
+/* Input point / parameter history accessor */
+NumericalSample ParametricEvaluationImplementation::getInputPointHistory() const
+{
+  NumericalSample sample(inputStrategy_.getSample());
+  return sample.getSize() > 0 ? sample.getMarginal(inputPositions_) : NumericalSample(0, getInputDimension());
+}
+
+NumericalSample ParametricEvaluationImplementation::getInputParameterHistory() const
+{
+  NumericalSample sample(inputStrategy_.getSample());
+  return sample.getSize() > 0 ? sample.getMarginal(parametersPositions_) : NumericalSample(0, getParameterDimension());
 }
 
 /* String converter */
