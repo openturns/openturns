@@ -319,7 +319,7 @@ public:
   NumericalSample sortAccordingToAComponent(const UnsignedInteger index) const;
 
   /* Sorted and duplicated points removed */
-  NumericalSample unique() const;
+  NumericalSample sortUnique() const;
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   virtual String storeToTemporaryFile() const;

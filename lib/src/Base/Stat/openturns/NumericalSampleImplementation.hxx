@@ -720,7 +720,7 @@ public:
   NumericalSampleImplementation sortAccordingToAComponent(const UnsignedInteger index) const;
 
   /* Sorted and duplicated points removed */
-  NumericalSampleImplementation unique() const;
+  NumericalSampleImplementation sortUnique() const;
 
   /** Get the i-th marginal sample */
   NumericalSampleImplementation getMarginal(const UnsignedInteger index) const;

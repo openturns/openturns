@@ -79,9 +79,9 @@ try:
     print("Pearson correlation=", repr(RPearson))
     RSpearman = normalSample.computeSpearmanCorrelation()
     print("Spearman correlation=", repr(RSpearman))
-    print("Unique=", repr(sample.unique()))
+    print("Unique=", repr(sample.sortUnique()))
     sample[2] = NumericalPoint((1, 0, 9))
-    print("Unique=", repr(sample.unique()))
+    print("Unique=", repr(sample.sortUnique()))
 # except TestFailed, ex :
 except:
     import sys

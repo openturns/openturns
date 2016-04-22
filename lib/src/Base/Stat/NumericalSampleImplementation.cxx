@@ -1313,7 +1313,7 @@ NumericalSampleImplementation NumericalSampleImplementation::sortAccordingToACom
 }
 
 /* Sort and remove duplicated points */
-NumericalSampleImplementation NumericalSampleImplementation::unique() const
+NumericalSampleImplementation NumericalSampleImplementation::sortUnique() const
 {
   NumericalSampleImplementation sampleSorted(sort());
   NumericalSampleImplementation sampleUnique(size_, dimension_);
