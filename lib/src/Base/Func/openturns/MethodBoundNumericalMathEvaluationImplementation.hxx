@@ -149,13 +149,6 @@ public:
   }
 
 
-  /** Test for actual implementation */
-  virtual Bool isActualImplementation() const
-  {
-    return true;
-  }
-
-
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */

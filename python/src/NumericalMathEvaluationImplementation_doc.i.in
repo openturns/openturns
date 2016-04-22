@@ -445,3 +445,13 @@ Examples
 >>> f = ot.NumericalMathFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)', 'y')
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::isActualImplementation
+"Accessor to the validity flag.
+
+Returns
+-------
+is_impl : bool
+    Whether the implementation is valid."
