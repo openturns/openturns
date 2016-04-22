@@ -216,6 +216,8 @@ public:
 
   virtual NumericalPoint operator()(const NumericalPoint & inP,
                                     const NumericalPoint & parameter);
+  virtual NumericalSample operator() (const NumericalPoint & point,
+                                      const NumericalSample & parameters);
 
   virtual NumericalSample operator() (const NumericalSample & inS) const;
 

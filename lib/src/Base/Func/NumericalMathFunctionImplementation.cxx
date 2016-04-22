@@ -389,10 +389,16 @@ NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalP
 }
 
 NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+                                                                const NumericalPoint & parameter)
 {
-  setParameter(parameters);
+  setParameter(parameter);
   return p_evaluationImplementation_->operator()(inP);
+}
+
+NumericalSample NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
+                                                                 const NumericalSample & parameters)
+{
+  return p_evaluationImplementation_->operator()(inP, parameters);
 }
 
 /* Operator () */
