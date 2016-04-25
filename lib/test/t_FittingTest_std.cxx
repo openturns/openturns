@@ -86,16 +86,15 @@ int main(int argc, char *argv[])
   distributionCollection.add(poisson);
   discreteDistributionCollection.add(poisson);
 
-  Collection<UserDefinedPair> collection(3, UserDefinedPair(NumericalPoint(1), 0.0));
-
-  NumericalPoint point(1);
-  point[0] = 1.0;
-  collection[0] = UserDefinedPair(point, 0.3);
-  point[0] = 2.0;
-  collection[1] = UserDefinedPair(point, 0.2);
-  point[0] = 3.0;
-  collection[2] = UserDefinedPair(point, 0.5);
-  UserDefined userdefined(collection);
+  NumericalSample x(3, 1);
+  x[0][0] = 1.0;
+  x[1][0] = 2.0;
+  x[2][0] = 3.0;
+  NumericalPoint p(3);
+  p[0] = 0.3;
+  p[1] = 0.2;
+  p[2] = 0.5;
+  UserDefined userdefined(x, p);
   distributionCollection.add(userdefined);
   discreteDistributionCollection.add(userdefined);
 

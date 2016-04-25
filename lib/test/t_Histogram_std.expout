@@ -1,5 +1,5 @@
-collection=[(width=1, height=0.5),(width=0.7, height=1.5),(width=1.2, height=3.5),(width=0.9, height=2.5)]
-Distribution class=Histogram name=Histogram dimension=1 first=-1.5 pair collection=[(width=1, height=0.0625),(width=0.7, height=0.1875),(width=1.2, height=0.4375),(width=0.9, height=0.3125)]
+l=class=NumericalPoint name=Unnamed dimension=4 values=[1,0.7,1.2,0.9] h=class=NumericalPoint name=Unnamed dimension=4 values=[0.5,1.5,3.5,2.5]
+Distribution class=Histogram name=Histogram dimension=1 first=-1.5 width=class=NumericalPoint name=Unnamed dimension=4 values=[1,0.7,1.2,0.9] height=class=NumericalPoint name=Unnamed dimension=4 values=[0.0625,0.1875,0.4375,0.3125]
 Distribution Histogram(origin = -1.5, {w0 = 1, h0 = 0.0625}, {w1 = 0.7, h1 = 0.1875}, {w2 = 1.2, h2 = 0.4375}, {w3 = 0.9, h3 = 0.3125})
 Elliptical = false
 Continuous = true

@@ -257,18 +257,15 @@ int main(int argc, char *argv[])
     study.add("truncatedNormal", truncatedNormal);
 
     // Create an UserDefined
-    UserDefined userDefined;
-    {
-      UserDefined::UserDefinedPairCollection collection(3);
-      NumericalPoint point(1);
-      point[0] = 1.0;
-      collection[0] = UserDefinedPair(point, 0.3);
-      point[0] = 2.0;
-      collection[1] = UserDefinedPair(point, 0.1);
-      point[0] = 3.0;
-      collection[2] = UserDefinedPair(point, 0.6);
-      userDefined = UserDefined(collection);
-    }
+    NumericalSample x(3,1);
+    x[0][0] = 1.0;
+    x[1][0] = 2.0;
+    x[2][0] = 3.0;
+    NumericalPoint p(3);
+    p[0] = 0.3;
+    p[1] = 0.1;
+    p[2] = 0.6;
+    UserDefined userDefined(x, p);
     study.add("userDefined", userDefined);
 
     // Create a Weibull distribution

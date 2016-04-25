@@ -53,22 +53,6 @@ Examples
 >>> vector
 [0,0,0,1]
 
-- Collection of **UserDefinedPair**:
-
->>> ot.UserDefinedPairCollection(2)
-[(class=NumericalPoint name=Unnamed dimension=1 values=[0],1),(class=NumericalPoint name=Unnamed dimension=1 values=[0],1)]
->>> ot.UserDefinedPairCollection(2, ot.UserDefinedPair([1, 2], 0.25))
-[(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.25),(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.25)]
->>> vector = ot.UserDefinedPairCollection([ot.UserDefinedPair([1, 2], 0.25), ot.UserDefinedPair([3, 2.5], 0.15)])
->>> vector
-[(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.25),(class=NumericalPoint name=Unnamed dimension=2 values=[3,2.5],0.15)]
->>> vector[1] = ot.UserDefinedPair([1, 2], 0.35)
->>> vector
-[(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.25),(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.35)]
->>> vector.add(ot.UserDefinedPair([0, 1], 0.6))
->>> vector
-[(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.25),(class=NumericalPoint name=Unnamed dimension=2 values=[1,2],0.35),(class=NumericalPoint name=Unnamed dimension=2 values=[0,1],0.6)]
-
 - Collection of **distributions**:
 
 >>> print(ot.DistributionCollection(2))

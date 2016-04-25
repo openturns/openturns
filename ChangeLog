@@ -22,6 +22,7 @@
  * Added the keys "LinearModelTest-DefaultLevel", "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" and "LinearModelTest-DefaultDurbinWatsonHypothesis" to the ResourceMap class.
  * Modified NumericalMathFunction::[sg]etParameter to operate on NumericalPoint instead NumericalPointWithDescription
  * Add NumericalMathFunction::[sg]etParameterDescription to access the parameter description
+ * Deprecated classes UserDefinedPair, HistogramPair
 
 === Python module ===
 

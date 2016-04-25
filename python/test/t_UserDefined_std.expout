@@ -1,4 +1,4 @@
-Distribution  class=UserDefined name=UserDefined dimension=1 collection=[(class=NumericalPoint name=Unnamed dimension=1 values=[1],0.1875),(class=NumericalPoint name=Unnamed dimension=1 values=[2],0.0625),(class=NumericalPoint name=Unnamed dimension=1 values=[3],0.75)]
+Distribution  class=UserDefined name=UserDefined dimension=1 points=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=1 data=[[1],[2],[3]] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[0.1875,0.0625,0.75]
 Distribution  UserDefined({x = [1], p = 0.1875}, {x = [2], p = 0.0625}, {x = [3], p = 0.75})
 Elliptical =  False
 Continuous =  False

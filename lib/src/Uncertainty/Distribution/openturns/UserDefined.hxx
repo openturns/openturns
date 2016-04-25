@@ -47,14 +47,14 @@ public:
   /** Default constructor */
   UserDefined();
 
-  /** Constructor from PairCollection */
+  /** @deprecated Constructor from PairCollection */
   explicit UserDefined(const UserDefinedPairCollection & collection);
 
   /** Constructor from a sample */
-  explicit UserDefined(const NumericalSample & sample);
+  explicit UserDefined(const NumericalSample & points);
 
   /** Constructor from a sample and associated weights */
-  UserDefined(const NumericalSample & sample,
+  UserDefined(const NumericalSample & points,
               const NumericalPoint & weights);
 
 
@@ -112,7 +112,13 @@ public:
 
   /* Interface specific to UserDefined */
 
-  /** Pair collection accessor */
+  /** Data accessors */
+  void setData(const NumericalSample & points,
+               const NumericalPoint & weights);
+  NumericalSample getX() const;
+  NumericalPoint getP() const;
+
+  /** @deprecated Pair collection accessor */
   void setPairCollection(const UserDefinedPairCollection & collection);
   UserDefinedPairCollection getPairCollection() const;
 
@@ -151,8 +157,9 @@ private:
   NumericalScalar computeScalarQuantile(const NumericalScalar prob,
                                         const Bool tail = false) const;
 
-  /** The collection of couple (xi,pi) of the UserDefined distribution */
-  UserDefinedPairPersistentCollection collection_;
+  /** The collection of couple (xi, pi) */
+  NumericalSample points_;
+  NumericalPoint probabilities_;
 
   /** The cumulative probabilities si = sum(pk, k=0..i) */
   NumericalPoint cumulativeProbabilities_;

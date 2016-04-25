@@ -33,12 +33,17 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger collectionSize(4);
-    Histogram::HistogramPairCollection collection(collectionSize);
-    collection[0] = HistogramPair(1.0, 0.5);
-    collection[1] = HistogramPair(0.7, 1.5);
-    collection[2] = HistogramPair(1.2, 3.5);
-    collection[3] = HistogramPair(0.9, 2.5);
-    Histogram distribution(-1.5, collection);
+    NumericalPoint l(collectionSize);
+    l[0] = 1.0;
+    l[1] = 0.7;
+    l[2] = 1.2;
+    l[3] = 0.9;
+    NumericalPoint h(collectionSize);
+    h[0] = 0.5;
+    h[1] = 1.5;
+    h[2] = 3.5;
+    h[3] = 2.5;
+    Histogram distribution(-1.5, l, h);
     UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     HistogramFactory factory;

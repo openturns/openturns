@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/HistogramPair.hxx"
-#include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +35,7 @@ HistogramPair::HistogramPair()
   , height_(1.0)
   , surface_(1.0)
 {
-  // Nothing to do
+  Log::Warn(OSS() << "HistogramPair class is deprecated.");
 }
 
 /* Parameters constructor */
@@ -45,6 +45,7 @@ HistogramPair::HistogramPair(const NumericalScalar width,
   , height_(height)
   , surface_(width * height)
 {
+  Log::Warn(OSS() << "HistogramPair class is deprecated.");
   // Check if the data are consistent
   if (width < 0.0) throw InvalidArgumentException(HERE) << "Error: an HistogramPair cannot have a negative width.";
   if (height < 0.0) throw InvalidArgumentException(HERE) << "Error: an HistogramPair cannot have a negative height.";

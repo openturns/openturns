@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/HistogramFactory.hxx"
-#include "openturns/HistogramPair.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
@@ -66,7 +65,7 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
     {
       const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultCDFEpsilon"));
       const NumericalScalar delta(std::max(std::abs(min), 10.0) * epsilon);
-      Histogram result(min - 0.5 * delta, Histogram::HistogramPairCollection(1, HistogramPair(delta, 1.0)));
+      Histogram result(min - 0.5 * delta, NumericalPoint(1, delta), NumericalPoint(1, 1.0));
       result.setDescription(sample.getDescription());
       return result;      
     }
@@ -89,9 +88,7 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
     heights[index] += 1.0;
   }
   const NumericalScalar inverseArea(1.0 / (hOpt * size));
-  Histogram::HistogramPairCollection collection(barNumber);
-  for(UnsignedInteger i = 0; i < barNumber; ++i) collection[i] = HistogramPair(hOpt, heights[i] * inverseArea);
-  Histogram result(min, collection);
+  Histogram result(min, NumericalPoint(barNumber, hOpt), heights * inverseArea);
   result.setDescription(sample.getDescription());
   return result;
 }
