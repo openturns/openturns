@@ -55,6 +55,8 @@ public:
   /** Evaluation operator */
   using NumericalMathEvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & point) const;
+  NumericalSample operator() (const NumericalPoint & point,
+                              const NumericalSample & parameters);
   NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Parameters positions accessor */
@@ -79,6 +81,10 @@ public:
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
+
+  /** Input point / parameter history accessor */
+  NumericalSample getInputPointHistory() const;
+  NumericalSample getInputParameterHistory() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

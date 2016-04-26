@@ -136,6 +136,26 @@ output_history : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputPointHistory 
+"Accessor to the history of the input points values.
+
+Returns
+-------
+history : :class:`~openturns.NumericalSample`
+    All the input points stored in the history mecanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputParameterHistory 
+"Accessor to the history of the input parameter values.
+
+Returns
+-------
+history : :class:`~openturns.NumericalSample`
+    All the input parameters stored in the history mecanism."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NumericalMathEvaluationImplementation::getInputDescription
 "Accessor to the description of the inputs.
 
@@ -425,3 +445,13 @@ Examples
 >>> f = ot.NumericalMathFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)', 'y')
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathEvaluationImplementation::isActualImplementation
+"Accessor to the validity flag.
+
+Returns
+-------
+is_impl : bool
+    Whether the implementation is valid."

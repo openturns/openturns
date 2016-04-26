@@ -156,7 +156,7 @@ NumericalPoint ParametricEvaluationImplementation::operator() (const NumericalPo
   const NumericalPoint value(function_(x));
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(point);
+    inputStrategy_.store(x);
     outputStrategy_.store(value);
   }
   ++callsNumber_;
@@ -180,7 +180,32 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalS
   const NumericalSample output(function_(input));
   if (isHistoryEnabled_)
   {
-    inputStrategy_.store(inSample);
+    inputStrategy_.store(input);
+    outputStrategy_.store(output);
+  }
+  callsNumber_ += size;
+  return output;
+}
+
+NumericalSample ParametricEvaluationImplementation::operator() (const NumericalPoint & point,
+                                                                const NumericalSample & parameters)
+{
+  const UnsignedInteger size = parameters.getSize();
+  const UnsignedInteger inputDimension = function_.getInputDimension();
+  const UnsignedInteger pointDimension = inputPositions_.getSize();
+  const UnsignedInteger parametersDimension = getParameterDimension();
+  if (point.getDimension() != pointDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << pointDimension << ", got dimension" << point.getDimension();
+  if (parameters.getDimension() != parametersDimension) throw InvalidArgumentException(HERE) << "Error: expected parameters of dimension=" << parametersDimension << ", got dimension=" << parameters.getDimension();
+  NumericalSample input(size, inputDimension);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameters[i][j];
+    for (UnsignedInteger j = 0; j < pointDimension; ++j) input[i][inputPositions_[j]] = point[j];
+  }
+  const NumericalSample output(function_(input));
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(input);
     outputStrategy_.store(output);
   }
   callsNumber_ += size;
@@ -235,6 +260,19 @@ UnsignedInteger ParametricEvaluationImplementation::getParameterDimension() cons
 UnsignedInteger ParametricEvaluationImplementation::getOutputDimension() const
 {
   return function_.getOutputDimension();
+}
+
+/* Input point / parameter history accessor */
+NumericalSample ParametricEvaluationImplementation::getInputPointHistory() const
+{
+  NumericalSample sample(inputStrategy_.getSample());
+  return sample.getSize() > 0 ? sample.getMarginal(inputPositions_) : NumericalSample(0, getInputDimension());
+}
+
+NumericalSample ParametricEvaluationImplementation::getInputParameterHistory() const
+{
+  NumericalSample sample(inputStrategy_.getSample());
+  return sample.getSize() > 0 ? sample.getMarginal(parametersPositions_) : NumericalSample(0, getParameterDimension());
 }
 
 /* String converter */

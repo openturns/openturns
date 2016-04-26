@@ -107,6 +107,10 @@ public:
    */
   HistoryStrategy getHistoryOutput() const;
 
+  /** Input point / parameter history accessor */
+  virtual NumericalSample getInputPointHistory() const;
+  virtual NumericalSample getInputParameterHistory() const;
+
   /** Enable or disable the internal cache */
   void enableCache() const;
   void disableCache() const;
@@ -145,6 +149,8 @@ public:
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
   virtual NumericalPoint operator() (const NumericalPoint & inP,
                                      const NumericalPoint & parameters);
+  virtual NumericalSample operator() (const NumericalPoint & point,
+                                      const NumericalSample & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
   virtual NumericalSample operator() (const NumericalSample & inSample) const;

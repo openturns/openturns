@@ -282,6 +282,19 @@ HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
   return outputStrategy_;
 }
 
+/* Input point / parameter history accessor */
+NumericalSample NumericalMathEvaluationImplementation::getInputPointHistory() const
+{
+  if (getParameterDimension() == 0) return inputStrategy_.getSample();
+  throw NotYetImplementedException(HERE) << "in NumericalMathEvaluationImplementation::getInputPointHistory";
+}
+
+NumericalSample NumericalMathEvaluationImplementation::getInputParameterHistory() const
+{
+  throw NotYetImplementedException(HERE) << "in NumericalMathEvaluationImplementation::getInputParameterHistory";
+}
+
+
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
@@ -296,14 +309,9 @@ Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalP
   {
     inS[1 + i][i] += epsilon;
   }
-
-  NumericalSample outS(parameterDimension + 1, outputDimension);
   // operator()(x, theta) is non-const as it sets the parameter
   Pointer<NumericalMathEvaluationImplementation> p_evaluation(clone());
-  for (UnsignedInteger i = 0; i < parameterDimension + 1; ++ i)
-  {
-    outS[i] = p_evaluation->operator()(inP, inS[i]);
-  }
+  NumericalSample outS(p_evaluation->operator()(inP, inS));
 
   Matrix grad(parameterDimension, outputDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
@@ -350,6 +358,19 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
 {
   setParameter(parameter);
   return (*this)(inP);
+}
+
+NumericalSample NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
+                                                                   const NumericalSample & parameters)
+{
+  const UnsignedInteger size = parameters.getSize();
+  NumericalSample outS(size, getOutputDimension());
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    setParameter(parameters[i]);
+    outS[i] = operator()(inP);
+  }
+  return outS;
 }
 
 /* Accessor for input point dimension */

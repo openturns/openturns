@@ -274,6 +274,16 @@ HistoryStrategy NumericalMathFunctionImplementation::getHistoryOutput() const
   return p_evaluationImplementation_->getHistoryOutput();
 }
 
+NumericalSample NumericalMathFunctionImplementation::getInputPointHistory() const
+{
+  return p_evaluationImplementation_->getInputPointHistory();
+}
+
+NumericalSample NumericalMathFunctionImplementation::getInputParameterHistory() const
+{
+  return p_evaluationImplementation_->getInputParameterHistory();
+}
+
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 NumericalMathFunctionImplementation NumericalMathFunctionImplementation::operator * (const NumericalMathFunctionImplementation & right) const
 {
@@ -389,10 +399,16 @@ NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalP
 }
 
 NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+                                                                const NumericalPoint & parameter)
 {
-  setParameter(parameters);
+  setParameter(parameter);
   return p_evaluationImplementation_->operator()(inP);
+}
+
+NumericalSample NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
+                                                                 const NumericalSample & parameters)
+{
+  return p_evaluationImplementation_->operator()(inP, parameters);
 }
 
 /* Operator () */

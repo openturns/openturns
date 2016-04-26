@@ -202,8 +202,8 @@ public:
 
   /** Enable or disable the input/output history
    * The input and output strategies store input and output values of the function,
-   * in order to allow to retrieve these values e.g. after the execution of an allgorithm
-   * for which the user has no access to the generated inputs and the corresponding outut.
+   * in order to allow to retrieve these values e.g. after the execution of an algorithm
+   * for which the user has no access to the generated inputs and the corresponding output.
    */
   void enableHistory() const;
 
@@ -231,6 +231,10 @@ public:
    * @see enableHistory()
    */
   HistoryStrategy getHistoryOutput() const;
+
+  /** Input point / parameter history accessor */
+  NumericalSample getInputPointHistory() const;
+  NumericalSample getInputParameterHistory() const;
 
   /** Function implementation accessors */
   void setEvaluation(const EvaluationImplementation & evaluation);
@@ -271,7 +275,9 @@ public:
   /** Operator () */
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalPoint operator() (const NumericalPoint & inP,
-                             const NumericalPoint & parameters);
+                             const NumericalPoint & parameter);
+  NumericalSample operator() (const NumericalPoint & point,
+                              const NumericalSample & parameters);
 
   NumericalSample operator() (const NumericalSample & inS) const;
 

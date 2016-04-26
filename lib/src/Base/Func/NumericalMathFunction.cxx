@@ -315,6 +315,16 @@ HistoryStrategy NumericalMathFunction::getHistoryOutput() const
   return getImplementation()->getHistoryOutput();
 }
 
+NumericalSample NumericalMathFunction::getInputPointHistory() const
+{
+  return getImplementation()->getInputPointHistory();
+}
+
+NumericalSample NumericalMathFunction::getInputParameterHistory() const
+{
+  return getImplementation()->getInputParameterHistory();
+}
+
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 ProductNumericalMathFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
 {
@@ -424,10 +434,10 @@ Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP) cons
 }
 
 Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+                                                const NumericalPoint & parameter)
 {
   copyOnWrite();
-  return getImplementation()->parameterGradient(inP, parameters);
+  return getImplementation()->parameterGradient(inP, parameter);
 }
 
 /* Parameters value accessor */
@@ -461,7 +471,14 @@ NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) co
 }
 
 NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+                                                  const NumericalPoint & parameter)
+{
+  copyOnWrite();
+  return getImplementation()->operator()(inP, parameter);
+}
+
+NumericalSample NumericalMathFunction::operator() (const NumericalPoint & inP,
+                                                   const NumericalSample & parameters)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameters);
