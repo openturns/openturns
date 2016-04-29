@@ -3,7 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
-ot.Log.Show(ot.Log.ALL)
+#ot.Log.Show(ot.Log.ALL)
 
 
 ## friedman
@@ -27,6 +27,6 @@ Y = model(X)
 nk = [10] * dim
 algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk)
 algo.run()
-#result = algo.getResult()
-#print(result)
+result = algo.getResult()
+print('residuals=', result.getResiduals())
 

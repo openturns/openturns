@@ -24,7 +24,7 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/CanonicalTensor.hxx"
-#include "openturns/FunctionalChaosResult.hxx"
+#include "openturns/TensorApproximationResult.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -63,7 +63,7 @@ public:
   void run();
 
   /** Result accessor */
-//   TensorApproximationResult getResult() const;
+  TensorApproximationResult getResult() const;
 
   /** Sample accessors */
   NumericalSample getInputSample() const;
@@ -86,9 +86,9 @@ protected:
 private:
 
   /** Marginal computation */
-  void runMarginal(const UnsignedInteger marginalIndex);
+  void runMarginal(const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError);
 
-  void rankOneApproximation(RankOneTensor & rank1Tensor, const UnsignedInteger marginalIndex);
+  void rankOneApproximation(RankOneTensor & rank1Tensor, const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   NumericalMathFunction transformation_;
@@ -100,7 +100,7 @@ private:
   NumericalMathFunction composedModel_;
 
   /** Result of the projection */
-  FunctionalChaosResult result_;
+  TensorApproximationResult result_;
 
   NumericalSample inputSample_;
   NumericalSample outputSample_;

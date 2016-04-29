@@ -44,15 +44,16 @@ Examples
 --------
 >>> import openturns as ot
 >>> # Define the model
->>> inputDim = 1
+>>> dim = 1
 >>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
 >>> # Create the input distribution
->>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
+>>> distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
 >>> factoryCollection = [ot.FourierSeriesFactory()] * dim
 >>> functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
+>>> size = 10
 >>> X = distribution.getSample(size)
 >>> Y = model(X)
->>> nk = [10] * inputDim
+>>> nk = [5] * dim
 >>> algo = TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk)"
 
 // ---------------------------------------------------------------------

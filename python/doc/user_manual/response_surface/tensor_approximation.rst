@@ -1,5 +1,5 @@
 ======================================
-Response surface: Tensor approximation
+Response surface: tensor approximation
 ======================================
 
 .. currentmodule:: openturns
@@ -9,3 +9,4 @@ Response surface: Tensor approximation
     :template: class.rst_t
 
     TensorApproximationAlgorithm
+    TensorApproximationResult

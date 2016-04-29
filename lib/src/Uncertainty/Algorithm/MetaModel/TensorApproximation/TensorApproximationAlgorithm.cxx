@@ -165,17 +165,19 @@ void TensorApproximationAlgorithm::run()
   } // Non-independent input copula
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   LOGINFO("Transform the input sample in the measure space if needed");
-  composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
+//   composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
   transformedInputSample_ = transformation_(inputSample_);
 
   NumericalMathFunctionCollection marginals(0);
-
+  NumericalPoint residuals(outputDimension);
+  NumericalPoint relativeErrors(outputDimension); 
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
-    runMarginal(outputIndex);
+    runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
 
     // build the metamodel
     UnsignedInteger r = tensor_.getRank();
+//     NumericalPointCollection coll;
     for (UnsignedInteger k = 0; k < r; ++ k)
     {
       const UnsignedInteger dimension = inputSample_.getDimension();
@@ -190,19 +192,23 @@ void TensorApproximationAlgorithm::run()
       NumericalMathFunction prod(prodColl[0]);
       for (UnsignedInteger i = 1; i < dimension; ++ i)
         prod = ProductNumericalMathFunction(prod.getImplementation(), prodColl[i].getImplementation());
+//       coll.add(prod);
     }
+//     marginals.add();
   }
-
+  // Build the result
+  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, composedModel_, residuals, relativeErrors);
+  
 
 }
 
 /* Marginal computation */
-void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalIndex)
+void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError)
 {
-  rankOneApproximation(tensor_.rank1tensors_[0], marginalIndex);
+  rankOneApproximation(tensor_.rank1tensors_[0], marginalIndex, marginalResidual, marginalRelativeError);
 }
 
-void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Tensor, const UnsignedInteger marginalIndex)
+void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Tensor, const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError)
 {
   Bool convergence = false;
   const UnsignedInteger dimension = inputSample_.getDimension();
@@ -326,7 +332,7 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
     Log::Info(OSS() << "alpha=" << rank1Tensor.alpha_);
 
     // compute residual
-    NumericalScalar residual = 0.0;
+    marginalResidual = 0.0;
     for (UnsignedInteger l = 0; l < size; ++ l)
     {
       NumericalScalar prod = rank1Tensor.alpha_;
@@ -335,13 +341,13 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
         prod *= V[l][i];
       }
       const NumericalScalar slack = y[l] - prod;
-      residual += slack * slack / size;
+      marginalResidual += slack * slack / size;
     }
 
 
 
-    convergence = (residual < 1e-8) || (coefficientsDeltaNorm2 < 1e-8);
-    Log::Info(OSS() << "iteration=" << iteration << " residual=" << residual << " coefficientsDeltaNorm2=" << coefficientsDeltaNorm2);
+    convergence = (marginalResidual < 1e-8) || (coefficientsDeltaNorm2 < 1e-8);
+    Log::Info(OSS() << "iteration=" << iteration << " residual=" << marginalResidual << " coefficientsDeltaNorm2=" << coefficientsDeltaNorm2);
 
     ++ iteration;
   }
@@ -352,10 +358,10 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
 
 
 /* Get the  result */
-// TensorApproximationResult TensorApproximationAlgorithm::getResult() const
-// {
-//   return result_;
-// }
+TensorApproximationResult TensorApproximationAlgorithm::getResult() const
+{
+  return result_;
+}
 
 
 NumericalSample TensorApproximationAlgorithm::getInputSample() const
@@ -377,6 +383,7 @@ void TensorApproximationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("result_", result_);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
+  adv.saveAttribute( "result_", result_ );
 }
 
 
@@ -387,6 +394,7 @@ void TensorApproximationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("result_", result_);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
+  adv.loadAttribute( "result_", result_ );
 }
 
 
