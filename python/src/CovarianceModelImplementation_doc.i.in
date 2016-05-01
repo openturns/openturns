@@ -53,7 +53,8 @@ where:
     \mat{L}_{\rho}(\vect{s}, \vect{t})\,\Tr{\mat{L}_{\rho}(\vect{s}, \vect{t})}
     = \mat{\rho}(\vect{s}, \vect{t})
 
-The covariance function may depend on additional specific parameters.
+The correlation function :math:`\mat{\rho}` may depend on additional
+specific parameters which are not made explicit here.
 
 The global correlation is given by two separate correlations: 
 
@@ -88,8 +89,7 @@ The global correlation is given by two separate correlations:
                             \forall (\vect{s}, \vect{t}) \in \cD
 
 
-Note that the correlation function :math:`\mat{\rho}` may depend on additional
-specific parameters."
+"
 
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation

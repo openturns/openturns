@@ -10,71 +10,57 @@ Available constructors:
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.NumericalSample`
-    The input and output samples of a model evaluated apart.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The surrogate model built thanks to :class:`~openturns.GeneralizedLinearModelAlgorithm`.
+    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
 residuals : :class:`~openturns.NumericalPoint`
     The residual errors.
 relativeErrors : :class:`~openturns.NumericalPoint`
     The relative errors.
 basis : collection of :class:`~openturns.Basis`
-    Its size should be equal to the output dimension or zero if no trend is estimated.
-    The n-th basis is the functional basis (or the generalized linear model) for the n-th output marginal.
+    Collection of the  :math:`p` functional basis: :math:`(\varphi_j^l: \Rset^d \rightarrow \Rset)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]`.
+    Its size should be equal to zero if the trend is not estimated.
 trendCoefficients : collection of :class:`~openturns.NumericalPoint`
-    The trend coeffients associated to the generalized linear model.
+   The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance function.
+    Covariance function of the normal process with its optimized parameters.
 covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
-    The Cholesky factor of associated to the evaluation of the covariance function evaluated at the inputSample.
+    The Cholesky factor :math:`\mat{L}` of :math:`\mat{C}`.
 covarianceHMatrix :  :class:`~openturns.HMatrix`
-    The *hmat* implementation of the Cholesky factor of the covariance matrix obtained by the discretization of the covariance function on the input sample.
+    The *hmat* implementation of :math:`\mat{L}`.
 
 
 Notes
 -----
-The structure is usually created by the method run() of a :class:`~openturns.GeneralizedLinearModelAlgorithm`, and obtained thanks to the *getResult()* method.
-We use the notations used for the :class:`~openturns.GeneralizedLinearModelAlgorithm` class.
-For a set :math:`(\vect{X}, \vect{Y})` such as:
+The structure is usually created by the method *run()* of a :class:`~openturns.GeneralizedLinearModelAlgorithm`, and obtained thanks to the *getResult()* method.
+
+The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
 
 .. math::
-    \vect{X} = \left(
+    :label: metaModel
+
+    \tilde{\cM}(\vect{x}) = \left(
       \begin{array}{l}
-        \vect{x}_1 \\
-        \dots \\
-        \vect{x}_n
-       \end{array}
-     \right) \in \mathcal{M}_{n, d}, \quad
-    \vect{Y} = \left(
-      \begin{array}{l}
-        \vect{y}_1 \\
-        \dots \\
-        \vect{y}_n
-       \end{array}
-       \right) \in \mathcal{M}_{n, p}
-
-we recall the expression of the genrealized linear model:
-
-.. math::
-    \vect{Y}(\vect{x}) = \vect{F}^t(\vect{x}) \vect{\beta} + \vect{Z}
-
-where :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)` and writes:
-
-.. math::
-    \mat{F}(\vect{x}) = \left(
-      \begin{array}{lcl}
-        \vect{f}_1(\vect{x}_1) & \dots & \vect{f}_M(\vect{x}_1) \\
-        \dots & \dots & \\
-        \vect{f}_1(\vect{x}_n) & \dots & \vect{f}_M(\vect{x}_n)
+        \mu_1(\vect{x}) \\
+        \dots  \\
+        \mu_p(\vect{x}) 
        \end{array}
      \right)
 
-:math:`\vect{\beta} \in \mathcal{M}_{np, M}(\Rset)` are the trend coefficients, estimated by a least-squares method.
+where :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` are the trend functions.
 
-Finally, :math:`\vect{Z} \sim \mathcal{N}(0, \mat{\Sigma})` is a noise with:
+If a normalizing transformation *T* has been used, the meta model is bilt on the inputs :math:`\vect{z}_k = T(\vect{x}_k)` and the meta model writes:
 
 .. math::
-    \mat{\Sigma}_{i,j} =  C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{x}_i,\vect{x}_j) \quad \forall (i,j) \in [1,n]
+    :label: metaModelWithT
 
+    \tilde{\cM}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1\circ T(\vect{x}) \\
+        \dots  \\
+        \mu_p\circ T(\vect{x}) 
+       \end{array}
+     \right)
 
 Examples
 --------
@@ -111,38 +97,13 @@ Get the meta model:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedLinearModelResult::getTrendCoefficients
-"Accessor to the coefficients of the generalized linear model of the trend.
+"Accessor to the trend coefficients.
 
 Returns
 -------
 trendCoef : collection of :class:`~openturns.NumericalPoint`
-    For each output marginal *j*, the list of :math:`\vect{\beta}_j`.
-
-    If a collection of basis has been fixed by the User, the vectors :math:`\vect{\beta}_j` don't have the same dimension according to the output marginal *j*.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
-
-Get the trend coefficients:
-
->>> trendCoefficients = result.getTrendCoefficients()"
+     The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -152,73 +113,23 @@ Get the trend coefficients:
 Returns
 -------
 covModel : :class:`~openturns.CovarianceModel`
-    The covariance model of the Normal process *Z*, noted :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}`.
-
-    Its spatial dimension is *d* and its dimension is *p*.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
->>> # Get the covariance model
-
-Get the covariance model:
-
->>> covariance = result.getCovarianceModel()"
+    The covariance model of the Normal process *W*.
+"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedLinearModelResult::getBasisCollection
-"Accessor to the multivariate basis of the generalized linear model.
+"Accessor to the collection of basis.
 
 Returns
 -------
 basisCollection : collection of :class:`~openturns.Basis`
-    Each element of this class is a :class:`~openturns.Basis` which is the functional basis (or the generalized linear model).
+    Collection of the :math:`p` function basis: :math:`(\varphi_j^l: \Rset^d \rightarrow \Rset)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]`.
 
 Notes
 -----
-If the trend is not estimated, the collection is empty. Otherwise, it contains a number of basis equal to the output dimension *p*.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
->>> # Get the basis collection
-
-Get the basis collection:
-
->>> basisCollection = result.getBasisCollection()"
+If the trend is not estimated, the collection is empty. 
+"
 
 // ---------------------------------------------------------------------
 
@@ -228,86 +139,40 @@ Get the basis collection:
 Returns
 -------
 metaModel : :class:`~openturns.NumericalMathFunction`
-
-Examples
---------
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x0'], ['f0'], ['x0 * sin(x0)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
->>> # Create the algorithm
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
->>> # Get the results
->>> result = algo.getResult()
->>> # The metamodel
->>> metaModel = result.getMetaModel()"
+    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
+"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedLinearModelResult::getTransformation
-"Accessor to the transformation applied to normalize the input sample.
+"Accessor to the normalizing transformation.
 
 Returns
 -------
 transformation : :class:`~openturns.NumericalMathFunction`
-    The transformation that isused to normalize the input sample.
+    The transformation *T* that normalizes the input sample.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedLinearModelResult::setTransformation
-"Set accessor to the transformation applied to normalize the input sample.
+"Set accessor to the normalizing transformation.
 
 Parameters
 ----------
 transformation : :class:`~openturns.NumericalMathFunction`
-    The transformation that should be applied to normalize the input sample.
+    The transformation *T* that normalizes the input sample.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedLinearModelResult::getNoise
-"Accessor to the underlying noise process.
+"Accessor to the normal process.
 
 Returns
 -------
 process : :class:`~openturns.Process`
-    Returns the underlying process modeling the noise.
-
-Notes
------
-The noise process writes:
-
-.. math::
-    \cY \sim \cN\left(0 , C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}} \right)
-
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
-
-Get the noise process:
-
->>> noise_process = result.getNoise()
+    Returns the normal process :math:`W` with the optimized parameters.
 "
 
 // ---------------------------------------------------------------------
