@@ -388,7 +388,7 @@ UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() cons
 /* Accessor for input point dimension */
 UnsignedInteger NumericalMathEvaluationImplementation::getParameterDimension() const
 {
-  return parameter_.getDimension();
+  return getParameter().getDimension();
 }
 
 /* Get the i-th marginal function */
