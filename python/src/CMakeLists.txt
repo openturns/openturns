@@ -14,7 +14,7 @@ add_custom_target (generate_docstrings)
 
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
 
-include_directories (${INTERNAL_INCLUDE_DIRS})
+include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 set (OPENTURNS_PYTHON_MODULES)
