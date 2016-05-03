@@ -13,23 +13,26 @@ Available constructors:
 Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
-    The input and output samples of a model evaluated apart.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 inputTransformation : :class:`~openturns.NumericalMathFunction`
-    Function that helps to normalize the input sample.
+    Function  *T* that helps to normalize the input sample.
+
+    If used, the meta model is built on the transformed data.
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend.
-    If the output dimension is greater than 1, the same basis is used for all marginals.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`.
+
+    If :math:`p>1`, the same basis is used for each marginal output.
 multivariateBasis : collection of :class:`~openturns.Basis`
-    Collection of functional basis: one basis for each marginal output.
+    Collection of :math:`p` functional basis: one basis for each marginal output: :math:`\left[(\varphi_j^1)_{1 \leq j \leq n_1}, \dots, (\varphi_j^p)_{1 \leq j \leq n_p}\right]`
+
     If the trend is not estimated, the collection must be empty.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model.
-    Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
-    See note for some particular applications.
+    Covariance model of the normal process. 
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
+
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
-    Default is *True*.
+    Default is set in resource map key `GeneralizedLinearModelAlgorithm-NormalizeData`
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *KrigingResult*.
 
@@ -37,61 +40,50 @@ keepCovariance : bool, optional
 
 Notes
 -----
-We note :math:`\cM:\Rset^d \mapsto \Rset^p` with :math:`\cM(\vect{x})= \vect{y}`.
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all *k*, with :math:`\cM:\Rset^d \mapsto \Rset^p` the model.
 
-We suppose we have an input sample :math:`(\vect{x}_1, \dots, \vect{x}_m)` associated to the output sample :math:`(\vect{y}_1, \dots, \vect{y}_m)` where :math:`\vect{y}_i = \cM(\vect{x}_i)` for all *i*.
+The meta model *Kriging* is based on the same principles as those of the generalized linear model: it assumes that the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the trace of a normal process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The normal process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
-Kriging method builds a metamodel of :math:`\tilde{\cM}` supposing that the output is a realization of a Normal process :math:`Y: \Omega \times \cD \mapsto \Rset^p` with :math:`\cD \in \Rset^d` that writes:
+
+.. math::
+    :label: metaModelKrigAlgo
+
+    \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + W(\omega, \vect{x})
+
+where:
 
 .. math::
 
-    Y(\omega, \vect{x}) = \sum_{i=1}^M \beta_i f_i(\vect{x}) + Z(\omega, \vect{x})
+    \vect{\mu}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \dots  \\
+        \mu_p(\vect{x}) 
+       \end{array}
+     \right)
 
-where :math:`(f_1, \dots, f_M)` is a functional basis with :math:`f_i: \Rset^d \mapsto \Rset^p` and :math:`\beta_i \in _Rset` for all *i*  and :math:`Z(\omega, \vect{x})` is a zero-mean Normal process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}: \Rset^d \times \Rset^d \mapsto \mathcal{S}^{+}_{p}(\Rset)`:
+with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` the trend functions.
 
-.. math::
-    C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{x}, \vect{y}) = \Expect{Z(\omega, \vect{x})Z(\omega, \vect{y})}
+:math:`W` is a normal process of dimension *p* with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
 
-where :math:`\vect{\sigma} \in \Rset^d` is the amplitude vector, :math:`\vect{\theta} \in \Rset^d` the scale vector and :math:`\vect{\lambda}` a set of residual parameters.
+The estimation of the parameters :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` are made by the :class:`~openturns.GeneralizedLinearModelAlgorithm` class.
 
-As *Z* is a stationary process, we write :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{\tau})` rather than :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{x},\vect{x}+\vect{\tau})`.
+The Kriging algorithm makes the generalized linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
-If :math:`R_{\vect{\theta}, \vect{\lambda}}` is the stationary correlation function, then we have:
-
-.. math::
-    C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}(\vect{\tau}) = diag(\vect{\sigma})R_{\vect{\theta}, \vect{\lambda}}(\vect{\tau})  diag(\vect{\sigma})
-    R_{\vect{\theta}, \vect{\lambda}}(\vect{\tau}) = \rho_{\vect{\lambda}}(\tau_1/\theta_1, \dots)
-
-
-If the covariance model fixed by the User has a spatial dimension (*d*)  equal to 1 with parameters :math:`(\sigma, \theta, \vect{\lambda})` whereas the input sample dimension has a greater dimension, then OpenTURNS builds a product model covariance that writes:
 
 .. math::
-    C_{\sigma, \theta, \vect{\lambda}}(\vect{\tau}) = \prod_{i=1}^d C_{\sigma, \theta, \vect{\lambda}}(\tau_i)
+    
+    \tilde{\cM}(\vect{x}) =  \vect{\mu}(\vect{x}) + \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
 
-Note also that covariance model's dimensions should be equal to input/output sample's dimension. Otherwise:
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for each :math:`k \in [1, N]`.
+    
+:eq:`metaModelKrigAlgo` writes:
 
-   - If the covariance model fixed by the User has a spatial dimension (*d*)  equal to 1 with parameters :math:`(\sigma, \theta, \vect{\lambda})` whereas the input sample dimension has a greater dimension, then OpenTURNS builds a product model covariance (see :class:`~openturns.ProductCovarianceModel`) that writes :math:`C_{\sigma, \theta, \vect{\lambda}}(\vect{\tau}) = \prod_{i=1}^d C_{\sigma, \theta, \vect{\lambda}}(\tau_i)`
+.. math::
+    
+    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_N))} \vect{\gamma}
 
-   - If output dimension (*p*) is greater than one, it is possible to build a tensorized covariance model thanks to the :class:`~openturns.TensorizedCovarianceModel`
-
-OpenTURNS estimates with the maximum likelihood method the following parameters:
-
-    - :math:`(\beta_1, \dots, \beta_M)`,
-    - :math:`\sigma_1, \dots, \sigma_p`,
-    - :math:`\theta_1= \dots, \theta_d`
-
-The class rely on :class:`~openturns.GeneralizedLinearModelAlgorithm` for the estimation of these parameters. It uses then the default optimizer defined by the `GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver` resource map key, which is set to :class:`~openturns.TNC`.
-
-It is also possible to proceed as follows:
-
-    - ask for the log-likelihood function to the *KrigingAlgorithm* after having launched the method *run()*
-    - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimisation algorithms (that can take into account some additional constraints if needed)
-    - fulfill the *KrigingAlgorithm* with the optimized value of these parameters.
-
-The *KrigingAlgorithm* class provides methods to build such a meta model using different input arguments. With huge data, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
-
-This implementation, which is based on a sparse representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `KrigingAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
-
+where :math:`\Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_N))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}_N)  \right)` is a matrix in :math:`\cM_{p,NP}(\Rset)` and :math:`\vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})`.
 
 Examples
 --------
@@ -169,26 +161,6 @@ Returns
 result : :class:`~openturns.KrigingResult`
     Structure containing all the results obtained after computation
     and created by the method :py:meth:`run`.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the result:
-
->>> result = algo.getResult()
 "
 
 //-----------------------------------------------------------------------
@@ -199,7 +171,8 @@ Get the result:
 Returns
 -------
 inputSample : :class:`~openturns.NumericalSample`
-    The input sample."
+    The input sample :math:`(\vect{x}_k)_{1 \leq k \leq N}`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -209,7 +182,8 @@ inputSample : :class:`~openturns.NumericalSample`
 Returns
 -------
 outputSample : :class:`~openturns.NumericalSample`
-    The output sample."
+    The output sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` .
+"
 
 // ---------------------------------------------------------------------
 
@@ -219,7 +193,7 @@ outputSample : :class:`~openturns.NumericalSample`
 Returns
 -------
 logLikelihood : :class:`~openturns.NumericalMathFunction`
-    The log-likelihood function as a fucntion of the covariance's model parameters.
+    The log-likelihood function as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
 
 Notes
 -----

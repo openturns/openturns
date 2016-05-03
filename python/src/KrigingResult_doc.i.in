@@ -10,101 +10,67 @@ Available constructors:
 Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
-    The input and output samples of a model evaluated apart.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The surrogate model built thanks to the kriging algorithm.
-residuals : sequence of float
+    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
+residuals : :class:`~openturns.NumericalPoint`
     The residual errors.
-relativeErrors : sequence of float
+relativeErrors : :class:`~openturns.NumericalPoint`
     The relative errors.
 basis : collection of :class:`~openturns.Basis`
-    Its size should be equal to the output dimension or zero if no trend is estimated.
-    The n-th basis is the functional basis (or the generalized linear model) for the n-th output marginal.
-trendCoefficients : collection of sequence of float
-    The trend coeffients associated to the generalized linear model.
+    Collection of the  :math:`p` functional basis: :math:`(\varphi_j^l)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]` with :math:`\varphi_j^l: \Rset^d \rightarrow \Rset`.
+    Its size must be equal to zero if the trend is not estimated.
+trendCoefficients : collection of :class:`~openturns.NumericalPoint`
+   The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance function.
+    Covariance function of the normal process.
 covarianceCoefficients : 2-d sequence of float
-    The covariance coefficients.
+    The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
 covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
-    The Cholesky factor of associated to the evaluation of the covariance function evaluated at the inputSample.
-covarianceHMatrix : :class:`~openturns.HMatrix`
-    The *hmat* implementation of the Cholesky factor of the covariance matrix obtained by the discretization of the covariance function on the input sample.
+    The Cholesky factor :math:`\mat{L}` of :math:`\mat{C}`.
+covarianceHMatrix :  :class:`~openturns.HMatrix`
+    The *hmat* implementation of :math:`\mat{L}`.
 
 
 Notes
 -----
-The structure is usually created by the method run() of a
-:class:`~openturns.KrigingAlgorithm`, and obtained thanks to the *getResult()* method.
-
-We use the notations used for the :class:`~openturns.KrigingAlgorithm` class and the additional following ones.
+The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
 .. math::
-    \mat{F} = \left(
-      \begin{array}{lcl}
-        \vect{f}_1(\vect{x}_1) & \dots & \vect{f}_M(\vect{x}_1) \\
-        \dots & \dots & \\
-        \vect{f}_1(\vect{x}_n) & \dots & \vect{f}_M(\vect{x}_n)
-       \end{array}
-     \right)
+    :label: metaModelKrig
+    
+    \tilde{\cM}(\vect{x}) =  \vect{\mu}(\vect{x}) + \Expect{\vect{Y}(\omega, \vect{x})\,| \,\cC}
 
-
-where :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`.
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for each :math:`k \in [1, N]`.
+    
+Equation :eq:`metaModelKrig` writes:
 
 .. math::
-    \vect{Y} = \left(
-      \begin{array}{l}
-        \vect{y}_1 \\
-        \dots \\
-        \vect{y}_n
-       \end{array}
-     \right) \in \Rset^{np}, \quad
-    \vect{Z} = \left(
-      \begin{array}{l}
-        \vect{Y}\\
-        \vect{y}
-       \end{array}
-     \right) \in \Rset^{(n+1)p}
 
-Then :math:`\vect{Z} \sim \mathcal{N}(\vect{\mu}, \mat{\Sigma})` where:
+    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,\vect{x}_1),\dots,\vect{Y}(\omega, \vect{x}_N))}\vect{\gamma}
+
+where 
 
 .. math::
-    \mat{\Sigma}_{i,j} = C(\vect{x}_i,\vect{x}_j) \quad \forall (i,j) \in [1,n]
 
-    \mat{\Sigma}_{n+1,j} = C(\vect{x},\vect{x}_j) \quad \forall j \in [1,n]
+    \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1),\dots,\vect{Y}(\omega, \vect{x}_N))} = \left(\mat{C}(\vect{x},\vect{x}_1)|\dots|\mat{C}(\vect{x},\vect{x}_N)\right)\in \cM_{p,NP}(\Rset)
 
-with :
-
-.. math::
-    \vect{\mu} = \left(
-      \begin{array}{l}
-        \mat{F}\vect{\beta} \\[1em]
-        \displaystyle \sum_{m=1}^M \beta_m \vect{f}_m(\vect{x})
-       \end{array}
-     \right) \in \Rset^{(n+1)p}
-
-The Kriging meta model is the conditional mean at point :math:`\vect{x}` that writes:
+and 
 
 .. math::
-    \hat{\vect{y}}(\vect{x}) = \Expect{\vect{y}|\vect{Y}} = \sum_{m=1}^M \beta_m \vect{f}_m(\vect{x}) + \mat{\Sigma}_{n+1,1:n}(\vect{x}) \, \mat{\Sigma}_{1:n,1:n}^{-1}\, \left(\vect{Y}- \mat{F}\vect{\beta} \right)
+    :label: gammaEq
 
-If evaluated on the sample  :math:`(\vect{x}_1, \dots, \vect{x}_h)`, the conditional mean is the sample :math:`(\hat{\vect{y}}(\vect{x}_1), \dots, \hat{\vect{y}}(\vect{x}_h))`.
+    \vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})
 
-The conditional covariance at :math:`\vect{x}` writes:
-
-.. math::
-    \Cov{\vect{y}|\vect{Y}} = \mat{\Sigma}_{n+1,1:n}(\vect{x})\,\mat{\Sigma}_{1:n,1:n}^{-1}\, \Tr{\mat{\Sigma}_{n+1,1:n}(\vect{x})} \in \mathcal{M}_{p}(\Rset)
-
-If evaluated on the sample :math:`(\vect{x}_1, \dots, \vect{x}_h)`, then the matrices :math:`(\Cov{\vect{y}_1|\vect{Y}}, \dots, \Cov{\vect{y}_h|\vect{Y}})` are grouped within one matrix that writes:
+At the end, the meta model writes:
 
 .. math::
-    \left(
-      \begin{array}{c}
-        \Cov{\vect{y}_1|\vect{Y}} \\
-        \dots \\
-        \Cov{\vect{y}_h|\vect{Y}}
-       \end{array}
-     \right) \in \mathcal{M}_{ph, p}(\Rset)
+    :label: metaModelKrigFinal
+
+    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^N \gamma_i  \mat{C}(\vect{x},\vect{x}_i)
+
+
+
 
 Examples
 --------
@@ -145,68 +111,19 @@ Get the meta model:
 Returns
 -------
 covCoeff : :class:`~openturns.NumericalSample`
-    Returns as a sample the columns of the matrix :math:`\mat{\Sigma}_{1:n,1:n}^{-1}\,\left(\vect{Y}- \mat{F}\vect{\beta}\right)`.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
-
-Get the covariance coefficients:
-
->>> covarianceCoefficients = result.getCovarianceCoefficients()
+    The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getTrendCoefficients
-"Accessor to the coefficients of the generalized linear model of the trend.
+"Accessor to the trend coefficients.
 
 Returns
 -------
 trendCoef : collection of :class:`~openturns.NumericalPoint`
-    For each output marginal *j*, the list of :math:`\vect{\beta}_j`.
-
-    If a collection of basis has been fixed by the User, the vectors :math:`\vect{\beta}_j` don't have the same dimension according to the output marginal *j*.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
-
-Get the trend coefficients:
-
->>> trendCoefficients = result.getTrendCoefficients()"
+    The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -216,72 +133,23 @@ Get the trend coefficients:
 Returns
 -------
 covModel : :class:`~openturns.CovarianceModel`
-    The covariance model of the Normal process *Z*, noted :math:`C_{\vect{\sigma}, \vect{\theta}, \vect{\lambda}}`.
-
-    Its spatial dimension is *d* and its dimension is *p*.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
-
-Get the covariance model:
-
->>> covariance = result.getCovarianceModel()"
+    The covariance model of the Normal process *W* with its optimized parameters.
+"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getBasisCollection
-"Accessor to the multivariate basis of the generalized linear model.
+"Accessor to the collection of basis
 
 Returns
 -------
 basisCollection : collection of :class:`~openturns.Basis`
-    Each element of this class is a :class:`~openturns.Basis` which is the functional basis (or the generalized linear model).
+    Collection of the :math:`p` function basis: :math:`(\varphi_j^l)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]` with :math:`\varphi_j^l: \Rset^d \rightarrow \Rset`.
 
 Notes
 -----
-If the trend is not estimated, the collection is empty. Otherwise, it contains a number of basis equal to the output dimension *p*.
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the results:
-
->>> result = algo.getResult()
->>> # Get the basis collection
-
-Get the basis collection:
-
->>> basisCollection = result.getBasisCollection()"
+If the trend is not estimated, the collection is empty. 
+"
 
 
 // ---------------------------------------------------------------------
@@ -297,37 +165,28 @@ Available usages:
 Parameters
 ----------
 x : sequence of float
-     The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{x}_1, \dots, \vect{x}_h)` where the conditional mean of the output has to be evaluated (*h* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
 
 Returns
 -------
 condMean : :class:`~openturns.NumericalPoint`
-     Returns :math:`\hat{\vect{y}}(\vect{x}) = \Expect{\vect{y}|\vect{Y}}` (see the section Notes to get the detailed expression) or :math:`(\hat{\vect{y}}(\vect{x}_1), \dots, \hat{\vect{y}}(\vect{x}_h))`.
+    The conditional mean :math:`\Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
+   
+    Or the conditional mean matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
 
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+.. math::
 
->>> import openturns as ot
->>> # use of Hmat implementation
->>> # ot.ResourceMap.Set('KrigingAlgorithm-LinearAlgebra', 'HMAT')
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
+    \left(
+      \begin{array}{l}
+         \Expect{\vect{Y}(\omega, \vect{\xi}_1)\, | \,  \cC}\\
+        \dots  \\
+        \Expect{\vect{Y}(\omega, \vect{\xi}_M)\, | \,  \cC}
+       \end{array}
+     \right)
 
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the conditional mean evaluated at point 0:
-
->>> result = algo.getResult()
->>> mu = result.getConditionalMean([0.0])"
+"
 
 
 // ---------------------------------------------------------------------
@@ -343,56 +202,29 @@ Available usages:
 Parameters
 ----------
 x : sequence of float
-     The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{x}_1, \dots, \vect{x}_h)` where the conditional mean of the output has to be evaluated (*h* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
 
 Returns
 -------
 condCov : :class:`~openturns.CovarianceMatrix`
-    Returns: :math:`\Cov{\vect{y}}` or
+    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
+   
+    Or the conditional covariance matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
 
 .. math::
+
     \left(
-      \begin{array}{c}
-        \Cov{\vect{y}_1|\vect{Y}} \\
-        \dots \\
-        \Cov{\vect{y}_h|\vect{Y}}
+      \begin{array}{lcl}
+         \Sigma_{11} & \dots & \Sigma_{1M} \\
+        \dots  \\
+        \Sigma_{M1} & \dots & \Sigma_{MM}
        \end{array}
-     \right) \in \mathcal{M}_{ph, p}(\Rset)
+     \right)
 
-where, for a :math:`\vect{x}`:
-
-.. math::
-      \begin{array}{ccc}
-      \Cov{\vect{y(x)}|\vect{Y}} & = & \mat{\Sigma}_{n+1,n+1}(\vect{x})- \mat{\Sigma}_{n+1,1:n}(\vect{x})\,\mat{\Sigma}_{1:n,1:n}^{-1}\, \Tr{\mat{\Sigma}_{n+1,1:n}(\vect{x})}\\
-      & - &  \Tr{u(\vect{x})} \left(\Tr{F} \mat{\Sigma}_{1:n,1:n}^{-1} F\right)^{-1} u(\vect{x})
-      \end{array}
-
-with :math:`\Cov{\vect{y(x)}|\vect{Y}} \in \mathcal{M}_{p}(\Rset)`, :math:`u(\vect{x})=f(\vect{x})-\Tr{F} \mat{\Sigma}_{1:n,1:n}^{-1} \Tr{\mat{\Sigma}_{n+1,1:n}(\vect{x})}`
-
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> # use of Hmat implementation
->>> # ot.ResourceMap.Set('KrigingAlgorithm-LinearAlgebra', 'HMAT')
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
-
-Create the algorithm:
-
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
-
-Get the conditional covariance matrix on a new point:
-
->>> result = algo.getResult()
->>> cov = result.getConditionalCovariance([0.0])"
+where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega, \vect{\xi}_j)\, | \,  \cC}`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -402,64 +234,18 @@ Get the conditional covariance matrix on a new point:
 Returns
 -------
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The kriging meta model :math:`\hat{\vect{y}}: \Rset^d \mapsto \Rset^p` (see the section Notes to get the detailed expression).
-
-Examples
---------
->>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x0'], ['f0'], ['x0 * sin(x0)'])
->>> inputSample = ot.NumericalSample([[1.], [3.], [5.], [6.,], [7.], [8.]])
->>> outputSample = f(inputSample)
->>> # Create the algorithm
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
->>> algo.run()
->>> # Get the results
->>> result = algo.getResult()
->>> # The metamodel
->>> metaModel = result.getMetaModel()"
+    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
+"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getInputTransformation
-"Accessor to the transformation applied to normalize the input sample.
+"Accessor to the normalizing transformation.
 
 Returns
 -------
 transformation : :class:`~openturns.NumericalMathFunction`
-    The transformation that isused to normalize the input sample.
+    The  transformation *T* that normalizes the input sample.
 "
 
-// ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingResult::getSigma2
-"Accessor to the sigma2 coefficient.
-
-Returns
--------
-sigma2 : float
-    The variance factor.
-
-
-Notes
------
-It deals with the variance scale factor such as:
-
-.. math::
-    \sigma^2 \mat{C}
-
-is the used covariance model.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::setSigma2
-"Set to the sigma2.
-
-Parameters
-----------
-sigma2 : float
-    The variance scale factor.
-
-"

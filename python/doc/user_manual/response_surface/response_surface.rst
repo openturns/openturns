@@ -28,6 +28,6 @@ Non-parametric
 .. toctree::
 
     functional_chaos_expansion
-    kriging
     glm
+    kriging
 
