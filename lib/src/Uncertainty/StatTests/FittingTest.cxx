@@ -287,6 +287,51 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
   return result;
 }
 
+/* Two-sample Kolmogorov–Smirnov test */
+TestResult FittingTest::TwoSamplesKolmogorov(const NumericalSample & sample1,
+                                             const NumericalSample & sample2,
+                                             const NumericalScalar level)
+{
+  if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
+  if ((sample1.getDimension() != 1) || (sample2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
+  if ((sample1.getSize() == 0) || (sample2.getSize() == 0)) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
+  const UnsignedInteger size1 = sample1.getSize();
+  const UnsignedInteger size2 = sample2.getSize();
+  NumericalSample sampleAllSorted(sample1.sort());
+  sampleAllSorted.add(sample2.sort());
+  NumericalScalar value = 0.0;
+  for (UnsignedInteger i = 0; i < size1 + size2; ++ i)
+  {
+    const NumericalScalar sampleAllSorted_i = sampleAllSorted[i][0];
+    NumericalScalar cdf1 = 0.0;
+    for (UnsignedInteger j = 0; j < size1; ++ j)
+    {
+      if (sampleAllSorted[j][0] <= sampleAllSorted_i)
+      {
+        cdf1 = (j + 1.0) / size1;
+      }
+      else
+        break;
+    }
+    NumericalScalar cdf2 = 0.0;
+    for (UnsignedInteger j = 0; j < size2; ++ j)
+    {
+      if (sampleAllSorted[size1 + j][0] <= sampleAllSorted_i)
+      {
+        cdf2 = (j + 1.0) / size2;
+      }
+      else
+        break;
+    }
+    value = std::max(value, std::abs(cdf1 - cdf2));
+  }
+  const NumericalScalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
+  TestResult result(OSS(false) << "Kolmogorov " << sample1.getName() << "/" << sample2.getName(), (pValue > 1.0 - level), pValue, 1.0 - level);
+  result.setDescription(Description(1, String(OSS() << "sample" << sample1.getName() << " vs sample " << sample2.getName())));
+  LOGDEBUG(OSS() << result);
+  return result;
+}
+
 /* Chi-squared test */
 TestResult FittingTest::ChiSquared(const NumericalSample & sample,
                                    const DistributionFactory & factory,
