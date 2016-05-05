@@ -702,7 +702,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 20 );
-  set("GeneralizedLinearModelAlgorithm-DefaultOptimiationSolver", "TNC");
+  set("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver", "TNC");
 
   // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );
