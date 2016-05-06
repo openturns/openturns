@@ -54,6 +54,9 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #cmakedefine OPENTURNS_HAVE_INTTYPES_H
 
+/* Define to 1 if you have the <libgen.h> header file. */
+#cmakedefine OPENTURNS_HAVE_LIBGEN_H
+
 /* Define if you have LAPACK library. */
 #cmakedefine OPENTURNS_HAVE_LAPACK
 
