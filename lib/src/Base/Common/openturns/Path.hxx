@@ -55,13 +55,6 @@ public:
    */
   static FileName GetInstallationDirectory();
 
-#ifdef WIN32
-  /**
-   * Return the main path of the OpenTURNS installation dir on Windows
-   */
-  static FileName GetWinDirectory();
-#endif
-
   /**
    * Analyse the process environment
    * and return a list of directories to search in for configuration files.
@@ -106,6 +99,13 @@ public:
    */
   static void DeleteTemporaryDirectory(const FileName & directoryName);
 
+#ifdef _WIN32
+  /** Convert slash to antislash. */
+  static void AntislashFileName(FileName & filename);
+
+  /** Add windows backslash to filename for compatibility with R. */
+  static void DoubleslashFileName(FileName & filename);
+#endif
 
 protected:
 
@@ -130,19 +130,9 @@ protected:
    */
   static const char * PrefixConfigSubdirectory_;
 
-public:
-
-#ifdef WIN32
-  /** Convert slash to antislash. */
-  static void AntislashFileName(FileName & filename);
-
-  /** Add windows backslash to filename for compatibility with R. */
-  static void DoubleslashFileName(FileName & filename);
-#endif
-
-protected:
-
 private:
+  /** Get the executable directory */
+  static FileName GetExecutableDirectory();
 
   /** Default constructor */
   Path();

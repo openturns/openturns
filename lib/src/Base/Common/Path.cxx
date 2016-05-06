@@ -29,8 +29,6 @@
 #ifdef _MSC_VER
 # include <direct.h>
 #define mkdir(p)  _mkdir(p)
-#else  /* _MSC_VER */
-#include <libgen.h>               // for dirname
 #endif /* _MSC_VER */
 #endif /* WIN32 */
 #include <sys/types.h>            // for stat
@@ -44,6 +42,9 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Log.hxx"
+#ifdef OPENTURNS_HAVE_LIBGEN_H
+#include <libgen.h>               // for dirname
+#endif
 
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."
@@ -111,33 +112,43 @@ FileName Path::GetInstallationDirectory()
   return directory;
 }
 
-#ifdef WIN32
-FileName Path::GetWinDirectory()
+
+FileName Path::GetExecutableDirectory()
 {
-  // get python.exe absolute path
+  // get executable absolute path
+#ifdef _WIN32
   TCHAR szPath[MAX_PATH];
   GetModuleFileName(NULL, szPath, MAX_PATH);
-#ifdef _MSC_VER
-  // remove executable name
-  String otModulePath(szPath);
-  if (otModulePath.empty()) return otModulePath;
-  for(UnsignedInteger i = otModulePath.size() - 1; i >= 0; --i)
+#else
+  const UnsignedInteger MAX_PATH = 512;
+  char path[MAX_PATH];
+  char szPath[MAX_PATH];
+  pid_t pid = getpid();
+  sprintf(path, "/proc/%d/exe", pid);
+  if (readlink(path, szPath, MAX_PATH) == -1)
+    perror("readlink");
+#endif
+
+  // get parent dir
+#ifdef OPENTURNS_HAVE_LIBGEN_H
+  String pythonDir(dirname(szPath));
+#else
+  String pythonDir(szPath);
+  if (pythonDir.empty()) return pythonDir;
+  for(SignedInteger i = pythonDir.size() - 1; i >= 0; -- i)
   {
     /* We do not care about escaped backslashes */
-    if(otModulePath.at(i) == '\\')
+    if(pythonDir.at(i) == '\\')
     {
-      otModulePath.resize(i);
+      pythonDir.resize(i);
       break;
     }
   }
-#else
-  String otModulePath(dirname(szPath));
 #endif
-  // add path to openturns module
-  otModulePath += "\\Lib\\site-packages\\openturns";
-  return otModulePath;
+
+  return pythonDir;
 }
-#endif
+
 
 
 /**
@@ -187,10 +198,6 @@ Path::DirectoryList Path::GetConfigDirectoryList()
     directoryList.push_back(directory);
   }
 
-#ifdef WIN32
-  directoryList.push_back(Path::GetWinDirectory());
-#endif
-
   // ... search in standard config directory
   // (${OPENTURNS_HOME}/etc/openturns or ${prefix}/etc/openturns)
   FileName directory;
@@ -211,6 +218,14 @@ Path::DirectoryList Path::GetConfigDirectoryList()
     directory = String(SYSCONFIG_PATH) + PrefixConfigSubdirectory_;
   }
   directoryList.push_back(directory);
+
+  // When the compile-time prefix is not the actual installation prefix,
+  // guess from the Python location, happens with the Windows installer or Conda
+#ifdef _WIN32
+  directoryList.push_back(GetExecutableDirectory() + "\\Lib\\site-packages\\openturns");
+#else
+  directoryList.push_back(GetExecutableDirectory() + "/../etc/openturns");
+#endif
 
   return directoryList;
 
