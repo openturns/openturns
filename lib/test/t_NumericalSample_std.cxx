@@ -142,6 +142,9 @@ int main(int argc, char *argv[])
     sample3.erase(pos);
     fullprint << "sample3=" << sample3 << std::endl;
 
+    // Partial copy constructor containing sample2[4:7]
+    NumericalSample sample4(sample2, 4, 8);
+    fullprint << "sample4=" << sample4 << std::endl;
 
   }
   catch (TestFailed & ex)

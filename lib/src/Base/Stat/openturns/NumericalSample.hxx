@@ -78,6 +78,11 @@ public:
   NumericalSample(const UnsignedInteger size,
                   const NumericalPoint & point);
 
+  /** Partial copy constructor */
+  NumericalSample(const NumericalSample other,
+                  const UnsignedInteger first,
+                  const UnsignedInteger last);
+
 #ifndef SWIG
   /** Constructor from a collection of NumericalPoint */
   NumericalSample(const Collection<NumericalPoint> & coll);

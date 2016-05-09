@@ -514,8 +514,8 @@ public:
 
   /** Partial copy constructor */
   NumericalSampleImplementation(const NumericalSampleImplementation & other,
-                                iterator first,
-                                iterator last);
+                                const_iterator first,
+                                const_iterator last);
 
   inline iterator begin()
   {
