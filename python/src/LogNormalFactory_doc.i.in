@@ -134,7 +134,7 @@ In the first usage, the parameters are evaluated according the following strateg
 - OpenTURNS first uses the local likelihood maximum based estimators. 
 - OpenTURNS uses the modified moments based estimators if the resolution of
   :eq:`mll_relation` is not possible.
-- OpenTURNS uses the the moments based estimators, which are always defined, if
+- OpenTURNS uses the moments based estimators, which are always defined, if
   the resolution of :eq:`omega_modified_moment_relation` is not possible.
 
 In the second usage, the covariance matrix *covMat* is fulfilled with the

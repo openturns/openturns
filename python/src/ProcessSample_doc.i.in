@@ -13,7 +13,7 @@ mesh : :class:`~openturns.Mesh`
 K : int
     Number of fields in the collection.
 d : int
-    Dimension  of the the values of the field.
+    Dimension  of the values of the field.
 field : :class:`~openturns.Field`
     One field.
 

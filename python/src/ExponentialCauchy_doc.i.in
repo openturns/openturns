@@ -40,7 +40,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %define OT_ExponentialCauchy_getAmplitude_doc
-"Get the amplitude parameter of the the second order model.
+"Get the amplitude parameter of the second order model.
 
 Returns
 -------
