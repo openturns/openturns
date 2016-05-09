@@ -86,9 +86,14 @@ protected:
 private:
 
   /** Marginal computation */
-  void runMarginal(const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError);
+  void runMarginal(const UnsignedInteger marginalIndex,
+                   NumericalScalar & marginalResidual,
+                   NumericalScalar & marginalRelativeError);
 
-  void rankOneApproximation(RankOneTensor & rank1Tensor, const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError);
+  void rankOneApproximation(RankOneTensor & rank1Tensor,
+                            const NumericalPoint & y,
+                            NumericalScalar & marginalResidual,
+                            NumericalScalar & marginalRelativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   NumericalMathFunction transformation_;

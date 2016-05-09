@@ -29,4 +29,6 @@ algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk)
 algo.run()
 result = algo.getResult()
 print('residuals=', result.getResiduals())
-
+metamodel = result.getMetaModel()
+x = [0.4] * dim
+print('x=', x, 'f(x)', model(x), 'f^(x)=', metamodel(x))

@@ -168,6 +168,8 @@ void TensorApproximationAlgorithm::run()
 //   composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
   transformedInputSample_ = transformation_(inputSample_);
 
+//   const UnsignedInteger dimension = inputSample_.getDimension();
+
   NumericalMathFunctionCollection marginals(0);
   NumericalPoint residuals(outputDimension);
   NumericalPoint relativeErrors(outputDimension); 
@@ -175,40 +177,27 @@ void TensorApproximationAlgorithm::run()
   {
     runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
 
-    // build the metamodel
-    UnsignedInteger r = tensor_.getRank();
-//     NumericalPointCollection coll;
-    for (UnsignedInteger k = 0; k < r; ++ k)
-    {
-      const UnsignedInteger dimension = inputSample_.getDimension();
-      NumericalMathFunctionCollection prodColl(dimension);
-      for (UnsignedInteger i = 0; i < dimension; ++ i)
-      {
-        NumericalMathFunction v(tensor_.rank1tensors_[k].basis_[i], tensor_.rank1tensors_[k].coefficients_[i]);
-        prodColl[i] = v;
-      }
 
-      // TODO
-      NumericalMathFunction prod(prodColl[0]);
-      for (UnsignedInteger i = 1; i < dimension; ++ i)
-        prod = ProductNumericalMathFunction(prod.getImplementation(), prodColl[i].getImplementation());
-//       coll.add(prod);
-    }
-//     marginals.add();
   }
   // Build the result
-  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, composedModel_, residuals, relativeErrors);
-  
-
+  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, composedModel_, tensor_, residuals, relativeErrors);
 }
 
 /* Marginal computation */
-void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError)
+void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
+                                               NumericalScalar & marginalResidual,
+                                               NumericalScalar & marginalRelativeError)
 {
-  rankOneApproximation(tensor_.rank1tensors_[0], marginalIndex, marginalResidual, marginalRelativeError);
+  rankOneApproximation(tensor_.rank1tensors_[0],
+                       outputSample_.getMarginal(marginalIndex).getImplementation()->getData(),
+                       marginalResidual,
+                       marginalRelativeError);
 }
 
-void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Tensor, const UnsignedInteger marginalIndex, NumericalScalar & marginalResidual, NumericalScalar & marginalRelativeError)
+void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Tensor,
+                                                        const NumericalPoint & y,
+                                                        NumericalScalar & marginalResidual,
+                                                        NumericalScalar & marginalRelativeError)
 {
   Bool convergence = false;
   const UnsignedInteger dimension = inputSample_.getDimension();
@@ -224,8 +213,6 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
   Indices nk(rank1Tensor.nk_);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-//       rank1Tensor.coefficients_[i] = ComposedDistribution(ComposedDistribution::DistributionCollection(nk[i], Uniform())).getRealization();
-//       rank1Tensor.coefficients_[i].normalize();
     if (nk[i] > 0)
       rank1Tensor.coefficients_[i][0] = 1.0;// vi(xi) = 1.0
   }
@@ -237,7 +224,6 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
   }
 
   UnsignedInteger iteration = 0;
-  const NumericalPoint y(outputSample_.getMarginal(marginalIndex).getImplementation()->getData());
 
 
   Collection<DesignProxy> proxy(dimension);

@@ -22,6 +22,8 @@
 #ifndef OPENTURNS_OTTENSORAPPROXIMATION_HXX
 #define OPENTURNS_OTTENSORAPPROXIMATION_HXX
 
+#include "openturns/RankOneTensor.hxx"
+#include "openturns/RankOneTensorEvaluation.hxx"
 #include "openturns/CanonicalTensor.hxx"
 #include "openturns/TensorApproximationAlgorithm.hxx"
 
