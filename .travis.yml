@@ -23,8 +23,22 @@ addons:
     - texlive-fonts-recommended
     - texlive-latex-extra
     - dvipng
+    - libkpathsea-dev
+    - libpotrace-dev
+    - python-lxml
+    - xmlto
+    - asciidoc
 
 install:
+# dvisvgm
+  - git clone https://github.com/mgieseki/dvisvgm.git
+  - pushd dvisvgm
+  - ./autogen.sh
+  - ./configure --prefix=$HOME/.local
+  - make -j2
+  - make install
+  - export PATH=$PATH:$HOME/.local/bin
+  - popd
 # sphinx >=1.2 is looking better
   - git clone https://github.com/sphinx-doc/sphinx.git
   - pushd sphinx
