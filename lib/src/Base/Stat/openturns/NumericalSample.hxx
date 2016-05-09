@@ -265,7 +265,7 @@ public:
 
   /**
    * Get the position of a point in the sample.
-   * Returns size+1 if the point does not belong to the sample.
+   * Returns size if the point does not belong to the sample.
    */
   UnsignedInteger find(const NumericalPoint & point) const;
 

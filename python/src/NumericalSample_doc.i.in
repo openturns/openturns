@@ -740,10 +740,10 @@ Examples
 
 Parameters
 ----------
-f : int, :math:`0 \leq f < n`
+f : int, :math:`0 \leq f < m`
     The index of the first point to erase.
-l : int, :math:`f < l < n`, optional
-    The index of the last point to erase.
+l : int, :math:`f < l \leq m`, optional
+    The index after the last point to erase.
     Default uses `l = f + 1` and only removes `sample[f]`.
 Returns
 -------
@@ -808,7 +808,7 @@ point : sequence of float
 Returns
 -------
 index : int,
-    Returns :math:`n` if the point does not belong to the sample.
+    Returns :math:`m` if the point does not belong to the sample.
 
 Examples
 --------
