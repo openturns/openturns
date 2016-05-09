@@ -129,6 +129,9 @@ public:
                         const String & outputVariableName = "outputVariable");
 
 #ifndef SWIG
+  /** Constructor from evaluation */
+  explicit NumericalMathFunction(const EvaluationImplementation & evaluationImplementation);
+
   /** Constructor from implementations */
   NumericalMathFunction(const EvaluationImplementation & evaluationImplementation,
                         const GradientImplementation & gradientImplenmentation,

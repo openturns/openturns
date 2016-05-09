@@ -160,6 +160,15 @@ NumericalMathFunction::NumericalMathFunction(const String & inputVariableName,
   // Nothing to do
 }
 
+
+/* Constructor from evaluation */
+NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & evaluationImplementation)
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluationImplementation))
+{
+  // Nothing to do
+}
+
+
 /* Constructor from implementations */
 NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & evaluationImplementation,
     const GradientImplementation & gradientImplementation,
