@@ -554,7 +554,7 @@ NumericalSampleImplementation::NumericalSampleImplementation(const Collection<In
 }
 
 /* Partial copy constructor */
-NumericalSampleImplementation::NumericalSampleImplementation(const NumericalSampleImplementation & other, iterator first, iterator last)
+NumericalSampleImplementation::NumericalSampleImplementation(const NumericalSampleImplementation & other, const_iterator first, const_iterator last)
   : PersistentObject()
   , size_(last - first)
   , dimension_(other.getDimension())

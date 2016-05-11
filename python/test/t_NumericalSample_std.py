@@ -82,8 +82,8 @@ try:
     sample3.erase(pos)
     print("sample3=", repr(sample3))
 
-    # Copy a sample
-    sample4 = NumericalSample(sample1)
+    # Partial copy constructor containing sample2[4:7]
+    sample4 = NumericalSample(sample2, 4, 8)
     print("sample4=", repr(sample4))
 
 except:

@@ -78,6 +78,11 @@ public:
   NumericalSample(const UnsignedInteger size,
                   const NumericalPoint & point);
 
+  /** Partial copy constructor */
+  NumericalSample(const NumericalSample other,
+                  const UnsignedInteger first,
+                  const UnsignedInteger last);
+
 #ifndef SWIG
   /** Constructor from a collection of NumericalPoint */
   NumericalSample(const Collection<NumericalPoint> & coll);
@@ -265,7 +270,7 @@ public:
 
   /**
    * Get the position of a point in the sample.
-   * Returns size+1 if the point does not belong to the sample.
+   * Returns size if the point does not belong to the sample.
    */
   UnsignedInteger find(const NumericalPoint & point) const;
 

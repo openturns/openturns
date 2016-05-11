@@ -1,6 +1,13 @@
 %feature("docstring") OT::NumericalSample
 "Sample of real vectors.
 
+Available constructors:
+    NumericalSample(*size, dim*)
+
+    NumericalSample(*size, point*)
+
+    NumericalSample(*other, first, last*)
+
 Parameters
 ----------
 size : int, :math:`m > 0`, optional
@@ -12,6 +19,12 @@ dimension : int, :math:`n > 0`, optional
 point : :class:`~openturns.NumericalPoint` or flat (1d) array, list or tuple of floats, optional
     The point that will be repeated along the sample.
     Default creates a sample filled with zeros (null vectors).
+other : :class:`~openturns.NumericalSample`
+    The sample contains points to copy.
+first : int, :math:`0 \leq first < m`
+    The index of the first point to copy.
+last : int, :math:`first < last \leq m`, optional
+    The index after the last point to copy.
 
 See Also
 --------
@@ -740,10 +753,10 @@ Examples
 
 Parameters
 ----------
-f : int, :math:`0 \leq f < n`
+f : int, :math:`0 \leq f < m`
     The index of the first point to erase.
-l : int, :math:`f < l < n`, optional
-    The index of the last point to erase.
+l : int, :math:`f < l \leq m`, optional
+    The index after the last point to erase.
     Default uses `l = f + 1` and only removes `sample[f]`.
 Returns
 -------
@@ -808,7 +821,7 @@ point : sequence of float
 Returns
 -------
 index : int,
-    Returns :math:`n` if the point does not belong to the sample.
+    Returns :math:`m` if the point does not belong to the sample.
 
 Examples
 --------

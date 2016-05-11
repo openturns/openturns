@@ -18,3 +18,4 @@ sample3=class=NumericalSample name=Unnamed implementation=class=NumericalSampleI
 sample3=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=6 dimension=3 data=[[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[-1000,-2000,-3000]]
 sample3=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=7 dimension=3 data=[[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[-1000,-2000,-3000],[1000,2000,3000]]
 sample3=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=6 dimension=3 data=[[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000],[1000,2000,3000]]
+sample4=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=4 dimension=2 data=[[10,20],[11,21],[10,20],[10,20]]

@@ -100,6 +100,15 @@ NumericalSample::NumericalSample(const UnsignedInteger size,
   // Nothing to do
 }
 
+/* Partial copy constructor */
+NumericalSample::NumericalSample(const NumericalSample other,
+                                 const UnsignedInteger first,
+                                 const UnsignedInteger last)
+  : TypedInterfaceObject<NumericalSampleImplementation>(new NumericalSampleImplementation(*other.getImplementation(), other.getImplementation()->begin()+first, other.getImplementation()->begin()+last))
+{
+  // Nothing to do
+}
+
 /* Constructor from a collection of NumericalPoint */
 NumericalSample::NumericalSample(const Collection<NumericalPoint> & coll)
   : TypedInterfaceObject<NumericalSampleImplementation>(new NumericalSampleImplementation(coll))
@@ -533,7 +542,7 @@ NumericalScalar NumericalSample::computeEmpiricalCDF(const NumericalPoint & poin
 
 /*
  * Get the position of a point in the sample.
- * Returns size+1 if the point does not belong to the sample.
+ * Returns size if the point does not belong to the sample.
  */
 UnsignedInteger NumericalSample::find(const NumericalPoint & point) const
 {
