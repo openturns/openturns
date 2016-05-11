@@ -72,6 +72,12 @@ public:
   NumericalScalar getLevel() const;
   void setLevel(const NumericalScalar level);
 
+  /** Lower bound of the bounding box */
+  NumericalPoint getLowerBound() const;
+
+  /** Upper bound of the bounding box */
+  NumericalPoint getUpperBound() const;
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;

@@ -190,3 +190,4 @@ Karhunen Loeve decomposition
     :template: classWithPlot.rst_t
 
     KarhunenLoeveP1Factory
+    KarhunenLoeveQuadratureFactory

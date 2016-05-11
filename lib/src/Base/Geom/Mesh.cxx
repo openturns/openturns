@@ -422,6 +422,19 @@ Bool Mesh::isRegular() const
   return regular;
 }
 
+/* Lower bound of the bounding box */
+NumericalPoint Mesh::getLowerBound() const
+{
+  return vertices_.getMin();
+}
+
+/* Upper bound of the bounding box */
+NumericalPoint Mesh::getUpperBound() const
+{
+  return vertices_.getMax();
+}
+
+
 /* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
 Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
 {

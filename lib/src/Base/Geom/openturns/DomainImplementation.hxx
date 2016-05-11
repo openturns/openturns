@@ -70,6 +70,12 @@ public:
   /** Dimension accessors */
   UnsignedInteger getDimension() const;
 
+  /** Lower bound of the bounding box */
+  virtual NumericalPoint getLowerBound() const;
+
+  /** Upper bound of the bounding box */
+  virtual NumericalPoint getUpperBound() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -88,6 +94,7 @@ protected:
 
   // Flag to tell if the global volume has already been computed
   mutable Bool isAlreadyComputedVolume_;
+
 }; /* class DomainImplementation */
 
 END_NAMESPACE_OPENTURNS

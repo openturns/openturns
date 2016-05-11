@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class KarhunenLoeveP1Factory
+ *  @brief The test file of class GaussKronrod
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -33,25 +33,18 @@ int main(int argc, char *argv[])
 
   try
   {
-    Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));
-    KarhunenLoeveP1Factory factory(mesh, 0.0);
+    UnsignedInteger dim(1);
+    Interval domain(NumericalPoint(dim, -1.0), NumericalPoint(dim, 1.0));
+    OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));
+    UnsignedInteger basisSize = 10;
+    LHSExperiment experiment(basis.getMeasure(), 1000);
+    Bool mustScale = false;
+    NumericalScalar threshold = 0.01;
+    KarhunenLoeveQuadratureFactory factory(domain, experiment, basis, basisSize, mustScale, threshold);
+    AbsoluteExponential model(NumericalPoint(dim, 1.0));
     NumericalPoint lambda;
-    ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(1, 1.0), lambda));
+    Basis KLModes(factory.build(model, lambda));
     fullprint << "KL modes=" << KLModes << std::endl;
-    fullprint << "KL eigenvalues=" << lambda << std::endl;
-    AbsoluteExponential cov1D(1, 1.0);
-    Basis KLFunctions(factory.build(cov1D, lambda));
-    fullprint << "KL functions=" << KLFunctions << std::endl;
-    fullprint << "KL eigenvalues=" << lambda << std::endl;
-    CorrelationMatrix R(2);
-    R(0, 1) = 0.5;
-    NumericalPoint scale(1, 1.0);
-    NumericalPoint amplitude(2);
-    amplitude[0] = 1.0;
-    amplitude[1] = 2.0;
-    ExponentialModel cov2D(1, amplitude, scale, R);
-    KLFunctions = factory.build(cov2D, lambda);
-    fullprint << "KL functions=" << KLFunctions << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
   }
   catch (TestFailed & ex)

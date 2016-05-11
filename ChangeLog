@@ -5,11 +5,12 @@
 === Library ===
 
 ==== Major changes ====
- * Changed Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
+ * Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
 
 ==== New classes ====
  * SubsetSampling
  * AdaptiveDirectionalSampling
+ * KarhunenLoeveQuadratureFactory
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
