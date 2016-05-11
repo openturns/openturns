@@ -22,7 +22,7 @@ bound : float
     If *side = ot.TruncatedDistribution.LOWER*: the interval
     :math:`[bound, +\infty)` is used to bound the distribution.
 
-    If *side = ot.TruncatedDistribution.LOWER*: the interval
+    If *side = ot.TruncatedDistribution.UPPER*: the interval
     :math:`(-\infty, bound]` is used to bound the distribution.
 side : int, optional
     Integer used when one of the bounds of the distribution is not finite.
