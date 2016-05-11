@@ -21,14 +21,14 @@ RandomDirection
 
 Notes
 -----
-This strategy is parameterized by :math:`k \in \{1, \ldots, n\}`, where *n* is
+This strategy is parameterized by :math:`k \in \{1, \ldots, n\}`, where :math:`n` is
 the dimension of the input random vector :math:`\vect{X}`. We generate one
-direct orthonormalized basis :math:`(e_1, \ldots, e_n)` uniformly distributed in
+direct orthonormalized basis :math:`(\vect{e}_1, \ldots, \vect{e}_n)` uniformly distributed in
 the set of direct orthonormal bases. We consider all the normalized linear
-combinations of *k* vectors chosen within the *n* vectors of the basis, where
+combinations of :math:`k` vectors chosen within the :math:`n` vectors of the basis, where
 the coefficients of the linear combinations are in :math:`\{+1, -1\}`. This
-generates :math:`\binom{k}{n} 2^k` new vectors :math:`v_i`. We sample according
-to all the directions defined by the vectors :math:`v_i`.
+generates :math:`\binom{k}{n} 2^k` new vectors :math:`\vect{v}_i`. We sample according
+to all the directions defined by the vectors :math:`\vect{v}_i`.
 
 If :math:`k = 1`, we consider all the axes of the standard space."
 

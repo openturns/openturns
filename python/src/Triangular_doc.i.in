@@ -2,7 +2,7 @@
 "Triangular distribution.
 
 Available constructors:
-    Triangular(*a=-1.0, m=0., b=1.0*)
+    Triangular(*a=-1.0, m=0.0, b=1.0*)
 
 Parameters
 ----------

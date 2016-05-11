@@ -30,7 +30,7 @@ StratifiedExperiment
 Examples
 --------
 >>> import openturns as ot
->>> levels = [4., 2.]
+>>> levels = [4.0, 2.0]
 >>> # Here : direction 1 will be discretized with 4 intermediate points
 >>> # and direction 2 with 2 intermediate points
 >>> myCenteredReductedGrid = ot.Box(levels)

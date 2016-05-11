@@ -52,7 +52,7 @@ Let us consider the partition of the domain as follows:
 
     - :math:`\Delta f` be the frequency step, :math:`\Delta f = \frac{2 \Omega_c}{M}`
 
-    - :math:`f_k` be the frequences on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,2,\hdots,M`
+    - :math:`f_k` be the frequences on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,\hdots,M`
 
 The equation :eq:`eq3` can be rewritten as:
 

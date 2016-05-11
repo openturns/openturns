@@ -20,7 +20,7 @@ Examples
 Create a matrix
 
 >>> import openturns as ot
->>> C = ot.CovarianceMatrix(2, [1., .5, .5, 1.])
+>>> C = ot.CovarianceMatrix(2, [1.0, 0.5, 0.5, 1.0])
 >>> print(C)
 [[ 1   0.5 ]
  [ 0.5 1   ]]
@@ -29,7 +29,7 @@ Get or set terms
 
 >>> print(C[0, 1])
 0.5
->>> C[0, 1] = .6
+>>> C[0, 1] = 0.6
 >>> print(C[0, 1])
 0.6
 >>> print(C[:, 0])
@@ -40,7 +40,7 @@ Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
 2d-list)...
 
 >>> import numpy as np
->>> np_2d_array = np.array([[1., .5], [.5, 1.]])
+>>> np_2d_array = np.array([[1.0, 0.5], [0.5, 1.0]])
 >>> ot_matrix = ot.CovarianceMatrix(np_2d_array)
 
 and back

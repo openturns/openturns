@@ -11,7 +11,7 @@ p : float, :math:`0 \geq p \geq 1`
 Examples
 --------
 >>> import openturns as ot
->>> ot.UserDefinedPair([2., 1.], 0.375)
+>>> ot.UserDefinedPair([2.0, 1.0], 0.375)
 (class=NumericalPoint name=Unnamed dimension=2 values=[2,1],0.375)"
 
 // ---------------------------------------------------------------------

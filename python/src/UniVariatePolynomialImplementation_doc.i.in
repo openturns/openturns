@@ -12,19 +12,19 @@ Examples
 
 Create a univariate polynomial from a list of coefficients:
 
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> print(P)
 1 + 2 * X + 3 * X^2
 
 Univariate polynomials are of course callable:
 
->>> print(P(1.))
+>>> print(P(1.0))
 6.0
 
 Addition, subtraction and multiplication of univariate polynomials:
 
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
->>> Q = ot.UniVariatePolynomial([1., 2.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
+>>> Q = ot.UniVariatePolynomial([1.0, 2.0])
 >>> print('(%s) + (%s) = %s' % (P, Q, P + Q))
 (1 + 2 * X + 3 * X^2) + (1 + 2 * X) = 2 + 4 * X + 3 * X^2
 >>> print('(%s) - (%s) = %s' % (P, Q, P - Q))
@@ -48,7 +48,7 @@ derivated_polynomial : :class:`~openturns.Univariate`
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> print(P.derivate())
 2 + 6 * X"
 %enddef
@@ -72,7 +72,7 @@ setCoefficients
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> print(P.getCoefficients())
 [1,2,3]"
 %enddef
@@ -92,7 +92,7 @@ degree : int
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> print(P.getDegree())
 2"
 %enddef
@@ -112,7 +112,7 @@ roots : list of complex values
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> print(P.getRoots())
 [(-0.333333,0.471405),(-0.333333,-0.471405)]"
 %enddef
@@ -138,7 +138,7 @@ incremented_degree_polynomial : :class:`~openturns.UniVariatePolynomial`
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
 >>> print(P.incrementDegree())
 X + 2 * X^2 + 3 * X^3
 >>> print(P.incrementDegree(2))
@@ -164,8 +164,8 @@ getCoefficients
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
->>> P.setCoefficients([4., 2., 1.])
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
+>>> P.setCoefficients([4.0, 2.0, 1.0])
 >>> print(P)
 4 + 2 * X + X^2"
 %enddef

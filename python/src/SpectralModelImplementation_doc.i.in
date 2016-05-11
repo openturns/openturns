@@ -26,7 +26,7 @@ Using the *stationary covariance function* :math:`C^{stat}` with :math:`C^{stat}
 
 .. math::
 
-   \forall \vect{f} \in \Rset^n, \cS(\vect{f}) = \int_{\Rset^n} \exp\left(-2\imath \pi <\vect{f}, \vect{\tau}>\right) C^{stat}(\vect{\tau}) d\vect{\tau}
+   \forall \vect{f} \in \Rset^n, \cS(\vect{f}) = \int_{\Rset^n} \exp\left(-2i \pi <\vect{f}, \vect{\tau}>\right) C^{stat}(\vect{\tau}) d\vect{\tau}
 
 A SpectralModel object can be created only through its derived classes:
 :class:`~openturns.CauchyModel`"

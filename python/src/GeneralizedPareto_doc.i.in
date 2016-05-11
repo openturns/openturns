@@ -2,7 +2,7 @@
 "Generalized Pareto distribution.
 
 Available constructors:
-    GeneralizedPareto(*sigma=1.0, xi=0.*)
+    GeneralizedPareto(*sigma=1.0, xi=0.0*)
 
 Parameters
 ----------
@@ -44,7 +44,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.GeneralizedPareto(1., 0.)
+>>> distribution = ot.GeneralizedPareto(1.0, 0.0)
 
 Draw a sample:
 

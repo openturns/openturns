@@ -44,7 +44,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Skellam(10., 5.)
+>>> distribution = ot.Skellam(10.0, 5.0)
 
 Draw a sample:
 

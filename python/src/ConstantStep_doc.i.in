@@ -23,7 +23,7 @@ Examples
 >>> import openturns as ot
 >>> epsilon = [1e-4, 2e-4]
 >>> steps = ot.ConstantStep(epsilon)
->>> print(steps([2.]*2))
+>>> print(steps([2.0]*2))
 [0.0001,0.0002]
->>> print(steps([0., 3.]))
+>>> print(steps([0.0, 3.0]))
 [0.0001,0.0002]"

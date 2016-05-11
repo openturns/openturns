@@ -35,7 +35,7 @@ StratifiedExperiment
 Examples
 --------
 >>> import openturns as ot
->>> levels = [4., 2., 7.]
+>>> levels = [4.0, 2.0, 7.0]
 >>> myCenteredReductedGrid = ot.Composite(2, levels)
 >>> mySample = myCenteredReductedGrid.generate()
 >>> # Translate the grid

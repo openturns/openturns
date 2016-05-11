@@ -38,7 +38,7 @@ Get or set terms
 Create an openturns matrix from a numpy 2d-array (or matrix, or 2d-list)...
 
 >>> import numpy as np
->>> np_2d_array = np.array([[1., 2., 3.], [4., 5., 6.]])
+>>> np_2d_array = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
 >>> ot_matrix = ot.Matrix(np_2d_array)
 
 and back
@@ -47,7 +47,7 @@ and back
 
 Basic linear algebra operations (provided the dimensions are compatible)
 
->>> A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> A = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> B = ot.Matrix(np.eye(2))
 >>> C = ot.Matrix(3, 2, [1.] * 3 * 2)
 >>> print(A * B - C)
@@ -129,7 +129,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> import numpy as np
->>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> Q1, R1 = M.computeQR()
 >>> np.testing.assert_array_almost_equal(Q1 * R1, M)"
 
@@ -162,7 +162,7 @@ computeSVD
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> print(M.computeSingularValues(True))
 [9.52552,0.514301]"
 
@@ -211,7 +211,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> import numpy as np
->>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> singular_values, U, VT = M.computeSVD(True)
 >>> Sigma = ot.Matrix(M.getNbRows(), M.getNbColumns())
 >>> for i in range(singular_values.getSize()):
@@ -270,8 +270,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> import numpy as np
->>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
->>> b = ot.NumericalPoint([1.] * 3)
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+>>> b = ot.NumericalPoint([1.0] * 3)
 >>> x = M.solveLinearSystem(b)
 >>> np.testing.assert_array_almost_equal(M * x, b)"
 
@@ -288,7 +288,7 @@ MT : :class:`~openturns.Matrix`
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> print(M)
 [[ 1 2 ]
  [ 3 4 ]
@@ -310,7 +310,7 @@ MT : :class:`~openturns.Matrix`
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> print(M.computeGram())
 [[ 35 44 ]
  [ 44 56 ]]"

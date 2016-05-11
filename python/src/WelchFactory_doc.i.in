@@ -40,7 +40,7 @@ Examples
 Create a time series from a stationary second order process:
 
 >>> import openturns as ot
->>> myTimeGrid = ot.RegularGrid(0.0, 0.1, pow(2,12))
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 2**12)
 >>> model = ot.ExponentialCauchy([5], [3])
 >>> myNormalProcess = ot.SpectralNormalProcess(model, myTimeGrid)
 >>> myTimeSeries = myNormalProcess.getRealization()

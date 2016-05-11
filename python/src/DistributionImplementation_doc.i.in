@@ -793,7 +793,7 @@ Examples
 >>> import openturns as ot
 >>> from openturns.viewer import View
 >>> distribution = ot.Normal(10)
->>> graph = distribution.drawMarginal1DCDF(2, -6., 6., 100)
+>>> graph = distribution.drawMarginal1DCDF(2, -6.0, 6.0, 100)
 >>> view = View(graph)
 >>> view.show()"
 %enddef
@@ -836,7 +836,7 @@ Examples
 >>> import openturns as ot
 >>> from openturns.viewer import View
 >>> distribution = ot.Normal(10)
->>> graph = distribution.drawMarginal1DPDF(2, -6., 6., 100)
+>>> graph = distribution.drawMarginal1DPDF(2, -6.0, 6.0, 100)
 >>> view = View(graph)
 >>> view.show()"
 %enddef
@@ -882,7 +882,7 @@ Examples
 >>> import openturns as ot
 >>> from openturns.viewer import View
 >>> distribution = ot.Normal(10)
->>> graph = distribution.drawMarginal2DCDF(2, 3, [-6.] * 2, [6.] * 2, [100] * 2)
+>>> graph = distribution.drawMarginal2DCDF(2, 3, [-6.0] * 2, [6.0] * 2, [100] * 2)
 >>> view = View(graph)
 >>> view.show()"
 %enddef
@@ -928,7 +928,7 @@ Examples
 >>> import openturns as ot
 >>> from openturns.viewer import View
 >>> distribution = ot.Normal(10)
->>> graph = distribution.drawMarginal2DPDF(2, 3, [-6.] * 2, [6.] * 2, [100] * 2)
+>>> graph = distribution.drawMarginal2DPDF(2, 3, [-6.0] * 2, [6.0] * 2, [100] * 2)
 >>> view = View(graph)
 >>> view.show()"
 %enddef

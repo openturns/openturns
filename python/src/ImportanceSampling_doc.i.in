@@ -66,7 +66,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
->>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> # We create a 'usual' RandomVector from the Distribution
 >>> vect = ot.RandomVector(myDistribution)
 >>> # We create a composite random vector
@@ -74,7 +74,7 @@ Examples
 >>> # We create an Event from this RandomVector
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create a ImportanceSampling algorithm
->>> myImportance = ot.Normal([49.969, 1.84194, 10.4454, 4.66776], [1.]*4, ot.IdentityMatrix(4))
+>>> myImportance = ot.Normal([49.969, 1.84194, 10.4454, 4.66776], [1.0]*4, ot.IdentityMatrix(4))
 >>> myAlgo = ot.ImportanceSampling(myEvent, myImportance)
 >>> myAlgo.setMaximumOuterSampling(250)
 >>> myAlgo.setBlockSize(4)

@@ -13,7 +13,7 @@ Examples
 >>> limitState = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['y'], ['-F*L^3/(3.*E*I)'])
 >>> # Enable the history mecanism in order to use the getImportanceFactors method
 >>> limitState.enableHistory()
->>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> output = ot.RandomVector(limitState, ot.RandomVector(myDistribution))
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> myLHS = ot.LHS(myEvent)

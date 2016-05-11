@@ -2,7 +2,7 @@
 "LogNormal distribution parameters.
 
 Available constructors:
-    LogNormalMuSigmaOverMu(*mu=* :math:`e^{0.5}` *, delta=* :math:`e^{-0.5}\sqrt{e^2-e}` *, gamma=0.*)
+    LogNormalMuSigmaOverMu(*mu=* :math:`\sqrt{e}` *, delta=* :math:`\sqrt{e-1}` *, gamma=0.0*)
 
 Parameters
 ----------

@@ -28,7 +28,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> # Create the Pie
->>> myPie = ot.Pie([.4, .3, .2, .1], ['a0', 'a1', 'a2', 'a3'])
+>>> myPie = ot.Pie([0.4, 0.3, 0.2, 0.1], ['a0', 'a1', 'a2', 'a3'])
 >>> # Create an empty graph
 >>> myGraph = ot.Graph('A Pie', ' ', ' ', True, '')
 >>> myGraph.add(myPie)"

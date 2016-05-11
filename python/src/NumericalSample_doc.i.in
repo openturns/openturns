@@ -41,7 +41,7 @@ Create a NumericalSample
 0 : [ 0 0 ]
 1 : [ 0 0 ]
 2 : [ 0 0 ]
->>> sample = ot.NumericalSample(3, [1., 2.])
+>>> sample = ot.NumericalSample(3, [1.0, 2.0])
 >>> print(sample)
 0 : [ 1 2 ]
 1 : [ 1 2 ]
@@ -50,7 +50,7 @@ Create a NumericalSample
 Create a NumericalSample from a (2d) array, list or tuple
 
 >>> import numpy as np
->>> sample = ot.NumericalSample(np.array([(1., 2.), (3., 4.), (5., 6.)]))
+>>> sample = ot.NumericalSample(np.array([(1.0, 2.0), (3.0, 4.0), (5.0, 6.0)]))
 
 and back
 
@@ -88,7 +88,7 @@ experiments
 with the points in the sample (this can be used e.g. for rotating all the
 points in a sample)
 
->>> angle = np.pi / 4.
+>>> angle = np.pi / 4.0
 >>> rotation_matrix = ot.SquareMatrix([[np.cos(angle), -np.sin(angle)],
 ...                                    [np.sin(angle),  np.cos(angle)]])
 >>> rotated_sample = sample * rotation_matrix
@@ -192,7 +192,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> sample = ot.NumericalSample(3, 2)
->>> sample.add([1., 2.])
+>>> sample.add([1.0, 2.0])
 >>> print(sample)
 0 : [ 0 0 ]
 1 : [ 0 0 ]
@@ -535,7 +535,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computeQuantilePerComponent(.2))
+>>> print(sample.computeQuantilePerComponent(0.2))
 [-0.696412,-0.767092]"
 
 // ---------------------------------------------------------------------
@@ -830,7 +830,7 @@ Examples
 >>> sample = ot.Normal(2).getSample(30)
 >>> print(sample.find(sample[10]))
 10
->>> print(sample.find([0., 0.]))
+>>> print(sample.find([0.0, 0.0]))
 30"
 
 // ---------------------------------------------------------------------

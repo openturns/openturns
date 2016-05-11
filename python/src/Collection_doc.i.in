@@ -27,7 +27,7 @@ Examples
 [(0,0),(0,0)]
 >>> ot.NumericalComplexCollection(2, 3+4j)
 [(3,4),(3,4)]
->>> vector = ot.NumericalComplexCollection([2+3j, 1-4j, 3.])
+>>> vector = ot.NumericalComplexCollection([2+3j, 1-4j, 3.0])
 >>> vector
 [(2,3),(1,-4),(3,0)]
 >>> vector[1] = 4+3j

@@ -9,7 +9,7 @@ Parameters
 first : float
     Lower bound.
 width : positive sequence of float
-    :math:`l_i` is the width of the class :math:`i`.
+    :math:`\ell_i` is the width of the class :math:`i`.
 height : positive sequence of float
     :math:`h_i` is the frequency of the class :math:`i`.
 
@@ -22,9 +22,9 @@ Its probability density function is defined as:
     f_X(x) = \sum_{i=1}^{n}H_i\;\boldsymbol{1}_{[x_i,x_{i+1}]}(x)
 
 where :math:`H_i=h_i/S` is the relative frequency,
-with :math:`S=\sum_{i=1}^n h_i\,l_i` the total frequency of data.
-:math:`l_i = x_{i+1} - x_i , 1\leq i \leq n` and :math:`n` is the size of the
-width collection :math:`l`.
+with :math:`S=\sum_{i=1}^n h_i\,\ell_i` the total frequency of data.
+:math:`\ell_i = x_{i+1} - x_i , 1\leq i \leq n` and :math:`n` is the size of the
+width collection :math:`\ell`.
 
 Its first moments are:
 
@@ -32,10 +32,10 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \frac{1}{2 \sum_{i=1}^n h_i\,l_i}
-                         \sum_{i=1}^n h_i\,l_i (x_{i+1} + x_i)\\
-        \Var{X} & = & \frac{1}{3 \sum_{i=1}^n h_i\,l_i}
-                      \sum_{i=1}^n h_i\,l_i (x_{i+1}^2 + x_i\,x_{i+1} + x_i^2)
+        \Expect{X} & = & \frac{1}{2 \sum_{i=1}^n h_i\,\ell_i}
+                         \sum_{i=1}^n h_i\,\ell_i (x_{i+1} + x_i)\\
+        \Var{X} & = & \frac{1}{3 \sum_{i=1}^n h_i\,\ell_i}
+                      \sum_{i=1}^n h_i\,\ell_i (x_{i+1}^2 + x_i\,x_{i+1} + x_i^2)
     \end{eqnarray*}
 
 Examples
@@ -65,7 +65,7 @@ first : float
 Returns
 -------
 width : :class:`~openturns.NumericalPoint`
-    The collection of :math:`l_i`, the width of class `i`."
+    The collection of :math:`\ell_i`, the width of class `i`."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Histogram::getHeight
@@ -74,7 +74,7 @@ width : :class:`~openturns.NumericalPoint`
 Returns
 -------
 height : :class:`~openturns.NumericalPoint`
-    The collection of :math:`l_i`, the height of class `i`."
+    The collection of :math:`h_i`, the height of class `i`."
 
 // ---------------------------------------------------------------------
 
@@ -94,6 +94,6 @@ first : float
 Parameters
 ----------
 width : :class:`~openturns.NumericalPoint`
-    The collection of :math:`l_i`, the width of class `i`.
+    The collection of :math:`\ell_i`, the width of class `i`.
 height : :class:`~openturns.NumericalPoint`
-    The collection of :math:`l_i`, the height of class `i`."
+    The collection of :math:`h_i`, the height of class `i`."

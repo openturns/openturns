@@ -31,12 +31,12 @@ Its first moments are:
 
     \begin{eqnarray*}
         \Expect{X} & = & \sigma \sqrt{\frac{\pi}{2}}
-                         L_{1/2}\left(-\frac{\nu^2}{2\sigma^2}\right) \\
+                         \mathrm{L}_{1/2}\left(-\frac{\nu^2}{2\sigma^2}\right) \\
         \Var{X} & = & 2\sigma^2 + \nu^2 - \frac{\pi\sigma^2}{2}
-                      L_{1/2}^2\left(\frac{-\nu^2}{2\sigma^2}\right)
+                      \mathrm{L}_{1/2}^2\left(\frac{-\nu^2}{2\sigma^2}\right)
     \end{eqnarray*}
 
-where :math:`L_q(x)` denotes a Laguerre polynomial.
+where :math:`\mathrm{L}_q(x)` denotes a Laguerre polynomial.
 
 Examples
 --------

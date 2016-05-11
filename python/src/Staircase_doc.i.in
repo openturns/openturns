@@ -36,12 +36,12 @@ Examples
 >>> data = ot.NumericalSample(20, 2)
 >>> cursor = ot.NumericalPoint(2)
 >>> for i in range(20):
-...     cursor[0] = 13. * i / 20 - 6.5
-...     count = 0.
+...     cursor[0] = 13.0 * i / 20.0 - 6.5
+...     count = 0
 ...     for j in range(200):
 ...         if(sample[j, 0] < cursor[0]):
-...             count += 1.
-...     cursor[1] = count / 200
+...             count += 1
+...     cursor[1] = count / 200.0
 ...     data[i] = cursor
 >>> # Create an empty graph
 >>> myGraph = ot.Graph('A staircase', 'x1', 'x2', True, 'topleft')

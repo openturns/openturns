@@ -45,7 +45,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Multinomial(1, [.5])
+>>> distribution = ot.Multinomial(1, [0.5])
 
 Draw a sample:
 

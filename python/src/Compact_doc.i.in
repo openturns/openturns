@@ -16,21 +16,21 @@ HistoryStrategy, Null, Full, Last
 Notes
 -----
 The compact strategy stores a regularly spaced sub-sample where the minimum size
-of the stored numerical sample is *N*. OpenTURNS proceeds as follows :
+of the stored numerical sample is :math:`N`. OpenTURNS proceeds as follows :
 
-1. it stores the first *2N* simulations : the size of the stored
-   sample is *2N*,
+1. it stores the first :math:`2N` simulations : the size of the stored
+   sample is :math:`2N`,
 2. it selects only 1 out of 2 of the stored simulations : then the size of
-   the stored sample decreases to *N* (this is the *compact* step),
-3. it stores the next *N* simulations when selecting 1 out of 2 of the
-   next simulations : the size of the stored sample is *2N*,
+   the stored sample decreases to :math:`N` (this is the *compact* step),
+3. it stores the next :math:`N` simulations when selecting 1 out of 2 of the
+   next simulations : the size of the stored sample is :math:`2N`,
 4. it selects only 1 out of 2 of the stored simulations : then the size of
-   the stored sample decreases to *N*,
-5. it stores the next *N* simulations when selecting 1 out of 4 of the
-   next simulations : the size of the stored sample is *2N*,
+   the stored sample decreases to :math:`N`,
+5. it stores the next :math:`N` simulations when selecting 1 out of 4 of the
+   next simulations : the size of the stored sample is :math:`2N`,
 6. then it keeps on until reaching the stopping criteria.
 
-The stored numerical sample will have a size within *N* and *2N*."
+The stored numerical sample will have a size within :math:`N` and :math:`2N` if at least one cycle has been done, else it will be at most :math:`N`."
 
 // ---------------------------------------------------------------------
 

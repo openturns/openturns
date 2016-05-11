@@ -20,7 +20,7 @@ Examples
 Create a matrix
 
 >>> import openturns as ot
->>> M = ot.SymmetricMatrix(2, [0., 2., 2., 1.])
+>>> M = ot.SymmetricMatrix(2, [0.0, 2.0, 2.0, 1.0])
 >>> print(M)
 [[ 0 2 ]
  [ 2 1 ]]
@@ -29,7 +29,7 @@ Get or set terms
 
 >>> print(M[0, 0])
 0.0
->>> M[0, 0] = 1.
+>>> M[0, 0] = 1.0
 >>> print(M[0, 0])
 1.0
 >>> print(M[:, 0])
@@ -40,7 +40,7 @@ Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
 2d-list)...
 
 >>> import numpy as np
->>> np_2d_array = np.array([[1., 2.], [2., 4.]])
+>>> np_2d_array = np.array([[1.0, 2.0], [2.0, 4.0]])
 >>> ot_matrix = ot.SymmetricMatrix(np_2d_array)
 
 and back
@@ -70,7 +70,7 @@ computeEV
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.SymmetricMatrix([[1., 2.], [2., -4.]])
+>>> M = ot.SymmetricMatrix([[1.0, 2.0], [2.0, -4.0]])
 >>> print(M.computeEigenValues())
 [-4.70156,1.70156]"
 
@@ -111,7 +111,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> import numpy as np
->>> M = ot.SymmetricMatrix([[1., 2.], [2., -4.]])
+>>> M = ot.SymmetricMatrix([[1.0, 2.0], [2.0, -4.0]])
 >>> eigen_values, Phi = M.computeEV()
 >>> Lambda = ot.SquareMatrix(M.getDimension())
 >>> for i in range(eigen_values.getSize()):

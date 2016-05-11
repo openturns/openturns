@@ -31,7 +31,7 @@ Examples
 >>> import openturns as ot
 >>> from math import floor
 >>> # Create data
->>> myDistribution = ot.Normal(0.5, 2.)
+>>> myDistribution = ot.Normal(0.5, 2.0)
 >>> sample = myDistribution.getSample(100)
 >>> minSample = sample.getMin()[0]
 >>> maxSample = sample.getMax()[0] + 0.1

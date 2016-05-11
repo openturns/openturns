@@ -32,7 +32,7 @@ Examples
 >>> myFunc = ot.NumericalMathFunction(['x1', 'x2'], ['y1', 'y2', 'y3'], formulas)
 >>> epsilon = [0.01]*2
 >>> myGradient = ot.NonCenteredFiniteDifferenceGradient(epsilon, myFunc.getEvaluation())
->>> inPoint = [1.]*2
+>>> inPoint = [1.0]*2
 >>> print(myGradient.gradient(inPoint))
 [[  0.841471 -0.907202  0.73945  ]
  [  0.536086 -0.907202 -1.09631  ]]"

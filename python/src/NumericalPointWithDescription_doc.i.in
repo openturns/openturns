@@ -32,7 +32,7 @@ Use the first constructor:
 
 Use the second constructor:
 
->>> vector = ot.NumericalPointWithDescription([('C1', 2.), ('C2', 3.), ('C3', 4.5)])
+>>> vector = ot.NumericalPointWithDescription([('C1', 2.0), ('C2', 3.0), ('C3', 4.5)])
 >>> print(vector)
 [C1 : 2, C2 : 3, C3 : 4.5]
 >>> print(vector.getDescription())

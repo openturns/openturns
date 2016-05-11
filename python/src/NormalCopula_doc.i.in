@@ -31,15 +31,15 @@ dimension :math:`n` :
     \Phi_{\mat{R}}^n(\vect{x}) = \int_{-\infty}^{x_1} \ldots
                                    \int_{-\infty}^{x_n}
                                    \frac{1}
-                                        {{(2\pi.\det{\mat{R}})}^{\frac{n}{2}}}
-                          \: . \: \exp \left(-\frac{\Tr{\vect{u}}.\mat{R}.\vect{u}}{2} \right)
+                                        {{(2\pi\det{\mat{R}})}^{\frac{n}{2}}}
+                                 \exp \left(-\frac{\Tr{\vect{u}}\mat{R}\vect{u}}{2} \right)
 
 with :math:`\Phi` is the cumulative distribution function of the normal law in
 dimension 1:
 
 .. math::
 
-      \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} \: e^{-\frac{t^2}{2}} \: dt
+      \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2}{2}} \: dt
 
 and with :math:`\mat{R}` is the correlation matrix. This matrix is defined
 by its algebric properties: symmetric, definite and positive.
@@ -58,15 +58,15 @@ The correlation matrix :math:`\mat{R}` is obtainable by different ways:
 
   .. math::
 
-      \mat{R}_{ij} = \sin \left( \frac{\pi}{2} . \tau_{ij} \right)
+      \mat{R}_{ij} = \sin \left( \frac{\pi}{2} \tau_{ij} \right)
 
   with
 
   .. math::
 
       \tau_{ij} = \tau(X_i,X_j)
-                = \Prob{(X_{i_1} - X_{i_2}).(X_{j_1} - X_{j_2}) > 0} -
-                  \Prob{(X_{i_1} - X_{i_2}).(X_{j_1} - X_{j_2}) < 0}
+                = \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) > 0} -
+                  \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) < 0}
 
   where :math:`(X_{i_1},X_{j_1}` and :math:`(X_{i_2},X_{j_2})` follow the law
   of :math:`(X_i,X_j)`.

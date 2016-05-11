@@ -13,11 +13,11 @@ event : :class:`~openturns.StandardEvent`
 designPoint : sequence of float
     Design point in the standard space resulting from the optimization
     algorithm.
-importanceLevel : float, :math:`0. < \varepsilon < 1.`
+importanceLevel : float, :math:`0 < \varepsilon < 1`
     Importance level.
 accuracyLevel : float, :math:`\tau > 0`
     Accuracy level. It is recommanded to take :math:`\tau \leq 4`.
-confidenceLevel : positive float, :math:`(1-q) \in ]0., 1.[`
+confidenceLevel : positive float, :math:`0 < (1-q) < 1`
     Confidence level.
 pointNumber : int, :math:`N > 0`
     Number of points used to perform the Strong Maximum Test, evaluated by the
@@ -58,12 +58,12 @@ Examples
 --------
 >>> import openturns as ot
 >>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
->>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # FORM analyse to get the design point
->>> myAlgo = ot.FORM(ot.Cobyla(), myEvent, [50., 1., 10., 5.])
+>>> myAlgo = ot.FORM(ot.Cobyla(), myEvent, [50.0, 1.0, 10.0, 5.0])
 >>> myAlgo.run()
 >>> FORMresult = myAlgo.getResult()
 >>> designPoint = FORMresult.getStandardSpaceDesignPoint()

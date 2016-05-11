@@ -39,7 +39,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Geometric(.5)
+>>> distribution = ot.Geometric(0.5)
 
 Draw a sample:
 

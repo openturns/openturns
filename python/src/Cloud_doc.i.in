@@ -30,7 +30,7 @@ Examples
 >>> import openturns as ot
 >>> R = ot.CorrelationMatrix(2)
 >>> R[1, 0] = -0.25
->>> distribution = ot.Normal([-1.5, 0.5], [4., 1.], R)
+>>> distribution = ot.Normal([-1.5, 0.5], [4.0, 1.0], R)
 >>> sample = distribution.getSample(100)
 >>> # Create an empty graph
 >>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, '')

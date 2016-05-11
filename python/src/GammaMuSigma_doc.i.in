@@ -2,7 +2,7 @@
 "Gamma distribution parameters.
 
 Available constructors:
-    GammaMuSigma(*mu=1.0, sigma=1.0, gamma=0.*)
+    GammaMuSigma(*mu=1.0, sigma=1.0, gamma=0.0*)
 
 Parameters
 ----------

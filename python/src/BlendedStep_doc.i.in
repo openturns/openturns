@@ -2,7 +2,7 @@
 "Blended step.
 
 Available constructors:
-    BlendedStep(*epsilon, eta=1.*)
+    BlendedStep(*epsilon, eta=1.0*)
 
 Parameters
 ----------
@@ -24,17 +24,17 @@ Examples
 --------
 >>> import openturns as ot
 >>> epsilon = [1e-4, 2e-4]
->>> x = [2.]*2
+>>> x = [2.0]*2
 >>> steps = ot.BlendedStep(epsilon)
 >>> print(steps(x))
 [0.0003,0.0006]
->>> steps = ot.BlendedStep(epsilon, 0.)
+>>> steps = ot.BlendedStep(epsilon, 0.0)
 >>> print(steps(x))
 [0.0002,0.0004]
->>> steps = ot.BlendedStep(epsilon, [1., 2.])
+>>> steps = ot.BlendedStep(epsilon, [1.0, 2.0])
 >>> print(steps(x))
 [0.0003,0.0008]
->>> steps = ot.BlendedStep(epsilon, 2.)
+>>> steps = ot.BlendedStep(epsilon, 2.0)
 >>> print(steps(x))
 [0.0004,0.0008]"
 

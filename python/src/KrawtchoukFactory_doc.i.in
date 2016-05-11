@@ -54,7 +54,7 @@ StandardDistributionPolynomialFactory
 Examples
 --------
 >>> import openturns as ot
->>> polynomial_factory = ot.KrawtchoukFactory(3, .5)
+>>> polynomial_factory = ot.KrawtchoukFactory(3, 0.5)
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1

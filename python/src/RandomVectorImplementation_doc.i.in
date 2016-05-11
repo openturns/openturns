@@ -114,7 +114,7 @@ covariance : :class:`~openturns.CovarianceMatrix`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal([0., 0.5], [1., 1.5], ot.CorrelationMatrix(2))
+>>> distribution = ot.Normal([0.0, 0.5], [1.0, 1.5], ot.CorrelationMatrix(2))
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getCovariance())
@@ -137,7 +137,7 @@ mean : :class:`~openturns.NumericalPoint`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal([0., 0.5], [1., 1.5], ot.CorrelationMatrix(2))
+>>> distribution = ot.Normal([0.0, 0.5], [1.0, 1.5], ot.CorrelationMatrix(2))
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getMean())
@@ -159,7 +159,7 @@ distribution : :class:`~openturns.Distribution`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal([0., 0.], [1., 1.], ot.CorrelationMatrix(2))
+>>> distribution = ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2))
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getDistribution())
@@ -212,7 +212,7 @@ Let's note :math:`\vect{Y}=\Tr{(Y_1,\dots,Y_n)}` a random vector and
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal([0., 0.], [1., 1.], ot.CorrelationMatrix(2))
+>>> distribution = ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2))
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getMarginal(1).getRealization())
@@ -248,7 +248,7 @@ getRealization
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal([0., 0.], [1., 1.], ot.CorrelationMatrix(2))
+>>> distribution = ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2))
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getSample(3))
@@ -345,7 +345,7 @@ getSample
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal([0., 0.], [1., 1.], ot.CorrelationMatrix(2))
+>>> distribution = ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2))
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getRealization())

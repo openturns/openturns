@@ -2,7 +2,7 @@
 "LogUniform distribution.
 
 Available constructors:
-    LogUniform(*a_log=-1., b_log=1.0*)
+    LogUniform(*a_log=-1.0, b_log=1.0*)
 
 Parameters
 ----------
@@ -40,7 +40,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.LogUniform(-1., 1.)
+>>> distribution = ot.LogUniform(-1.0, 1.0)
 
 Draw a sample:
 

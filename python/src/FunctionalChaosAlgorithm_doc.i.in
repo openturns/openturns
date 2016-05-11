@@ -161,7 +161,7 @@ Create the model:
 
 Build the multivariate orthonormal basis:
 
->>> polyColl = [0.]*inputDim
+>>> polyColl = [0.0]*inputDim
 >>> for i in range(distribution.getDimension()):
 ...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
