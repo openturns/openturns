@@ -32,7 +32,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Poisson(10.)
+>>> distribution = ot.Poisson(10.0)
 
 Draw a sample:
 

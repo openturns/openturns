@@ -60,8 +60,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> from openturns.viewer import View
->>> f = ot.UniVariatePolynomial([1., 2., -3., 5.])
->>> View(f.draw(-10., 10., 100)).show()"
+>>> f = ot.UniVariatePolynomial([1.0, 2.0, -3.0, 5.0])
+>>> View(f.draw(-10.0, 10.0, 100)).show()"
 %enddef
 %feature("docstring") OT::UniVariateFunctionImplementation::draw
 OT_UniVariateFunction_draw_doc

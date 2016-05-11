@@ -41,14 +41,14 @@ Get or set terms:
 
 >>> print(T[0, 0, 0])
 0j
->>> T[0, 0, 0] = 1.
+>>> T[0, 0, 0] = 1.0
 >>> print(T[0, 0, 0])
 (1+0j)
 
 Create an openturns tensor from a numpy 3d-array:
 
 >>> import numpy as np
->>> np_3d_array = np.array([[[1., 2., 3.], [4., 5., 6.]], [[7., 8., 9.], [10., 11., 12.]]])
+>>> np_3d_array = np.array([[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], [[7.0, 8.0, 9.0], [10.0, 11.0, 12.0]]])
 >>> ot_tensor = ot.ComplexTensor(np_3d_array)
 
 and back

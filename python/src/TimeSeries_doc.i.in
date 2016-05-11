@@ -36,7 +36,7 @@ Create a time series:
 >>> timeStep = 0.1
 >>> n = 5
 >>> myTimeGrid = ot.RegularGrid(tmin, timeStep, n)
->>> myValues = [[1.], [2.], [1.5], [4.5], [0.5]]
+>>> myValues = [[1.0], [2.0], [1.5], [4.5], [0.5]]
 >>> myTimeSeries = ot.TimeSeries(myTimeGrid, myValues)
 
 Draw the time series:

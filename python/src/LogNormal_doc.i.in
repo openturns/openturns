@@ -2,7 +2,7 @@
 "Lognormal distribution.
 
 Available constructors:
-    LogNormal(*arg1=0., arg2=1.0, gamma=0., parameters_set=ot.LogNormal.MUSIGMA_LOG*)
+    LogNormal(*arg1=0.0, arg2=1.0, gamma=0.0, parameters_set=ot.LogNormal.MUSIGMA_LOG*)
 
 Parameters
 ----------
@@ -58,7 +58,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.LogNormal(0., 1., 0.)
+>>> distribution = ot.LogNormal(0.0, 1.0, 0.0)
 
 Draw a sample:
 

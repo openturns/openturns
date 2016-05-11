@@ -83,14 +83,14 @@ Examples
 >>> # Calibration parameters
 >>> calibrationColl = [ot.CalibrationStrategy()]*chainDim
 >>> # Proposal distribution
->>> proposalColl = [ot.Uniform(-1., 1.)]*chainDim
+>>> proposalColl = [ot.Uniform(-1.0, 1.0)]*chainDim
 >>> # Prior distribution
 >>> sigma0 = [10.]*chainDim
 >>> #  Covariance matrix
 >>> Q0_inv = ot.CorrelationMatrix(chainDim)
 >>> for i in range(chainDim): 
 ...     Q0_inv[i, i] = sigma0[i] * sigma0[i]
->>> mu0 = [0.]*chainDim
+>>> mu0 = [0.0]*chainDim
 >>> #  x0 ~ N(mu0, sigma0)
 >>> prior = ot.Normal(mu0, Q0_inv)
 >>> # Conditional distribution y~N(z, 1.0)

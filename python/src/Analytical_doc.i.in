@@ -88,13 +88,13 @@ Examples
 --------
 >>> import openturns as ot
 >>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
->>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create an OptimizationSolver algorithm
 >>> myCobyla = ot.Cobyla()
->>> myAlgo = ot.Analytical(myCobyla, myEvent, [50., 1., 10., 5.])"
+>>> myAlgo = ot.Analytical(myCobyla, myEvent, [50.0, 1.0, 10.0, 5.0])"
 
 // ---------------------------------------------------------------------
 

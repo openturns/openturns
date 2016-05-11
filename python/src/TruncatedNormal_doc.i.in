@@ -2,7 +2,7 @@
 "TruncatedNormal distribution.
 
 Available constructors:
-    TruncatedNormal(*mu=0., sigma=1.0, a=-1.0, b=1.0*)
+    TruncatedNormal(*mu=0.0, sigma=1.0, a=-1.0, b=1.0*)
 
 Parameters
 ----------

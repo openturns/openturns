@@ -202,7 +202,7 @@ Estimate the Box Cox transformation from a field:
 
 >>> myIndices= ot.Indices([40,20])
 >>> myMesher=ot.IntervalMesher(myIndices)
->>> myInterval = ot.Interval([0., 0.], [2., 1.])
+>>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
 >>> myMesh=myMesher.build(myInterval)
 >>> amplitude=[1.0]
 >>> scale=[0.2, 0.2]

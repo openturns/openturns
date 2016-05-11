@@ -32,7 +32,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Burr(2., 3.)
+>>> distribution = ot.Burr(2.0, 3.0)
 
 Draw a sample:
 

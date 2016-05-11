@@ -8,6 +8,7 @@ myGaussKronrodPair : :class:`~openturns.GaussKronrodPair`
 
     Available rules: 
 
+    - GaussKronrodRule.G1K3, 
     - GaussKronrodRule.G3K7, 
     - GaussKronrodRule.G7K15, 
     - GaussKronrodRule.G11K23,

@@ -4,7 +4,7 @@
 .. math::
 
     \forall x \in \Rset, \quad
-    J_0(x) = \sum_{m=0}^\infty\frac{(-1)^m}{(m!)^2}\left(\frac{x}{2}\right)^{2m}
+    \mathrm{I}_0(x) = \sum_{m=0}^\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 
 Parameters
 ----------
@@ -22,7 +22,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    LogBesselI0(x) = \log (J_0(x))
+    LogBesselI0(x) = \log (\mathrm{I}_0(x))
 
 See also
 --------
@@ -44,7 +44,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    J_1(x) = \sum_{m=0}^\infty\frac{(-1)^m}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
+    \mathrm{I}_1(x) = \sum_{m=0}^\infty\frac{1}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
 
 Parameters
 ----------
@@ -62,7 +62,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    LogBesselI1(x) = \log (J_1(x))
+    LogBesselI1(x) = \log (\mathrm{I}_1(x))
 
 See also
 --------
@@ -84,7 +84,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    J_{\nu}(x) = \frac{\pi}{2}\frac{I_{-\nu}(x)-I_{\nu}(x)}{\sin{\nu\pi}}
+    \mathrm{K}_{\nu}(x) = \frac{\pi}{2}\frac{\mathrm{I}_{-\nu}(x)-\mathrm{I}_{\nu}(x)}{\sin{\nu\pi}}
 
 Parameters
 ----------
@@ -103,7 +103,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    LogBesselK(\nu, x) = \log (J_{\nu}(x))
+    LogBesselK(\nu, x) = \log(\mathrm{K}_{\nu}(x))
 
 See also
 --------
@@ -121,12 +121,12 @@ result : float"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SpecFunc::Beta
-"Beta function :math:`B`.
+"Beta function :math:`\mathrm{B}`.
 
 .. math::
 
     \forall (a, b) > 0, \quad
-    B(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1} dt
+    \mathrm{B}(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1} dt
 
 Parameters
 ----------
@@ -144,7 +144,7 @@ result : float"
 .. math::
 
     \forall (a, b) > 0, \quad
-    LogBeta(a, b) = \log (B(a, b))
+    LogBeta(a, b) = \log (\mathrm{B}(a, b))
 
 See also
 --------
@@ -166,7 +166,7 @@ result : float"
 .. math::
 
     \forall (a, b) > 0,\quad
-    LnBeta(a, b) = \ln (B(a, b)) = \log (B(a, b))
+    LnBeta(a, b) = \ln (\mathrm{B}(a, b)) = \log (\mathrm{B}(a, b))
 
 See also
 --------
@@ -188,7 +188,7 @@ result : float"
 .. math::
 
     \forall (a, b) > 0, t \in [0, 1], \quad
-    B(x; a, b) = \int_0^x t^{a-1}(1-t)^{b-1} dt
+    \mathrm{B}(x; a, b) = \int_0^x t^{a-1}(1-t)^{b-1} dt
 
 Parameters
 ----------
@@ -200,8 +200,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = B(x; a, b)`.
-    - If *tail* is *True*: :math:`result = B(a, b) - B(x; a, b)`."
+    - If *tail* is *False*: :math:`result = \mathrm{B}(x; a, b)`.
+    - If *tail* is *True*: :math:`result = \mathrm{B}(a, b) - \mathrm{B}(x; a, b)`."
 
 // ---------------------------------------------------------------------
 
@@ -211,7 +211,7 @@ result : float
 .. math::
 
     \forall (a, b) > 0 \quad
-    IncompleteBetaInverse(x; a, b) = I^{-1}(x/B(a, b); a, b)
+    IncompleteBetaInverse(x; a, b) = \mathrm{B}^{-1}(x/\mathrm{B}(a, b); a, b)
 
 See also
 --------
@@ -227,8 +227,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = I^{-1}(x/B(a, b); a, b)`.
-    - If *tail* is *True*: :math:`result = 1 - I^{-1}(x/B(a, b); b, a)`."
+    - If *tail* is *False*: :math:`result = \mathrm{B}^{-1}(x/\mathrm{B}(a, b); a, b)`.
+    - If *tail* is *True*: :math:`result = 1 - \mathrm{B}^{-1}(x/\mathrm{B}(a, b); b, a)`."
 
 // ---------------------------------------------------------------------
 
@@ -238,8 +238,8 @@ result : float
 .. math::
 
     \forall (a, b) > 0 \quad
-    I(x; a, b) = \frac{B(x; a, b)}{B(a, b)}
-               = \frac{1}{B(a, b)} \int_0^x t^{a-1}(1-t)^{b-1} dt
+    \mathrm{I}(x; a, b) = \frac{\mathrm{B}(x; a, b)}{\mathrm{B}(a, b)}
+                        = \frac{1}{\mathrm{B}(a, b)} \int_0^x t^{a-1}(1-t)^{b-1} dt
 
 with :math:`B(a, b)` the Beta function and :math:`B(x; a, b)` the incomplete
 Beta function.
@@ -258,8 +258,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = I(x; a, b)`.
-    - If *tail* is *True*: :math:`result = 1 - I(x; a, b)`."
+    - If *tail* is *False*: :math:`result = \mathrm{I}(x; a, b)`.
+    - If *tail* is *True*: :math:`result = 1 - \mathrm{I}(x; a, b)`."
 
 // ---------------------------------------------------------------------
 
@@ -269,7 +269,7 @@ result : float
 .. math::
 
     \forall (a, b) > 0, \quad
-    RegularizedIncompleteBetaInverse(x; a, b) = I^{-1}(x; a, b)
+    RegularizedIncompleteBetaInverse(x; a, b) = \mathrm{I}^{-1}(x; a, b)
 
 See also
 --------
@@ -285,8 +285,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = I^{-1}(x; a, b)`.
-    - If *tail* is *True*: :math:`result = 1 - I^{-1}(x; b, a)`."
+    - If *tail* is *False*: :math:`result = \mathrm{I}^{-1}(x; a, b)`.
+    - If *tail* is *True*: :math:`result = 1 - \mathrm{I}^{-1}(x; b, a)`."
 
 // ---------------------------------------------------------------------
 
@@ -296,7 +296,7 @@ result : float
 .. math::
 
     \forall x \in \Cset, \quad
-    D_+(x) = \exp(-x^2)\int_0^x \exp(t^2) dt
+    \mathrm{D}_+(x) = \exp(-x^2)\int_0^x \exp(t^2) dt
 
 Parameters
 ----------
@@ -314,7 +314,7 @@ result : float or complex"
 .. math::
 
     \forall x \in \Rset, \forall n \in \Nset^* \text{and} \, n \leq 20, \quad
-    D_n(x) = \frac{n}{x^n} \int_0^x \frac{t^n}{\exp(t)-1} dt
+    \mathrm{D}_n(x) = \frac{n}{x^n} \int_0^x \frac{t^n}{\exp(t)-1} dt
 
 Parameters
 ----------
@@ -333,7 +333,7 @@ result : float"
 .. math::
 
     \forall z \in \Cset, \quad
-    Ei(z) = -\int_{-z}^{\infty} \frac{\exp(-t)}{t} dt
+    \mathrm{Ei}(z) = -\int_{-z}^{\infty} \frac{\exp(-t)}{t} dt
 
 Parameters
 ----------
@@ -351,7 +351,7 @@ result : float or complex (same as z)"
 .. math::
 
     \forall x \in \Cset, \quad
-    w(x) = exp(-x^2)ErfC(-ix)
+    \mathrm{W}(x) = \exp(-x^2)\mathrm{erfc}(-ix)
 
 with :math:`ErfC` the complementary error function.
 
@@ -375,7 +375,7 @@ result : complex"
 .. math::
 
     \forall x \in \Rset, \quad
-    FaddeevaIm(x) = \Im (w(x))
+    FaddeevaIm(x) = \Im (\mathrm{W}(x))
 
 See also
 --------
@@ -437,7 +437,7 @@ result : float or complex"
 .. math::
 
     \forall a \in \Rset, \quad
-    LogGamma1p(a) = \log (\Gamma(a - 1.0))
+    LogGamma1p(a) = \log (\Gamma(1+a))
 
 with :math:`\Gamma` the Gamma function.
 
@@ -521,8 +521,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = P^{-1}(a, x/\Gamma(a))`.
-    - If *tail* is *True*: :math:`result = P^{-1}(a, (1-x)/\Gamma(a))`."
+    - If *tail* is *False*: :math:`result = \mathrm{P}^{-1}(a, x/\Gamma(a))`.
+    - If *tail* is *True*: :math:`result = \mathrm{P}^{-1}(a, (1-x)/\Gamma(a))`."
 
 // ---------------------------------------------------------------------
 
@@ -532,8 +532,8 @@ result : float
 .. math::
 
     \forall x \in \Rset, \quad
-    P(a, x) = \frac{\gamma(a, x)}{\Gamma(a)}
-            = \frac{1}{\Gamma(a)}\int_0^x t^{a-1}\exp(-t) dt
+    \mathrm{P}(a, x) = \frac{\gamma(a, x)}{\Gamma(a)}
+                     = \frac{1}{\Gamma(a)}\int_0^x t^{a-1}\exp(-t) dt
 
 See also
 --------
@@ -549,8 +549,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = P(a, x)`.
-    - If *tail* is *True*: :math:`result = \Gamma(a) - P(a, x)`."
+    - If *tail* is *False*: :math:`result = \mathrm{P}(a, x)`.
+    - If *tail* is *True*: :math:`result = \Gamma(a) - \mathrm{P}(a, x)`."
 
 // ---------------------------------------------------------------------
 
@@ -560,7 +560,7 @@ result : float
 .. math::
 
     \forall x \in \Rset, \quad
-    RegularizedIncompleteGammaInverse(a, x) = P^{-1}(a, x)
+    RegularizedIncompleteGammaInverse(a, x) = \mathrm{P}^{-1}(a, x)
 
 See also
 --------
@@ -576,8 +576,8 @@ tail : bool, optional
 Returns
 -------
 result : float
-    - If *tail* is *False*: :math:`result = P^{-1}(a, x)`.
-    - If *tail* is *True*: :math:`result = P^{-1}(a, 1-x)`."
+    - If *tail* is *False*: :math:`result = \mathrm{P}^{-1}(a, x)`.
+    - If *tail* is *True*: :math:`result = \mathrm{P}^{-1}(a, 1-x)`."
 
 // ---------------------------------------------------------------------
 
@@ -844,7 +844,7 @@ result : float"
 .. math::
 
     \forall x \in \Cset, \quad
-    ErfCX(x) = exp(x^2).ErfC(x)
+    ErfCX(x) = \exp(x^2).ErfC(x)
 
 with :math:`ErfC` the complementary error function.
 
@@ -868,7 +868,7 @@ result : float or complex"
 .. math::
 
     \forall x \in \Cset, \quad
-    ErfI(x) = -i.Erf(ix)
+    ErfI(x) = -i Erf(ix)
 
 with :math:`Erf` the error function.
 
@@ -892,7 +892,7 @@ result : float or complex"
 .. math::
 
     \forall x \in \Rset^+, \quad
-    Log1MExp(x) = \log (1-exp(-x))
+    Log1MExp(x) = \log (1-\exp(-x))
 
 Parameters
 ----------
@@ -910,7 +910,7 @@ result : complex"
 .. math::
 
     \forall x \in \Cset, \quad
-    Expm1(x) = exp(x)-1
+    Expm1(x) = \exp(x)-1
 
 Parameters
 ----------
@@ -1026,11 +1026,11 @@ Examples
 %feature("docstring") OT::SpecFunc::LambertW
 "Lambert W function.
 
-The Lambert W function :math:`W(x)` is defined by the relation:
+The Lambert W function :math:`\mathrm{W}(x)` is defined by the relation:
 
 .. math::
 
-    x = W(x) \exp(W(x))
+    x = \mathrm{W}(x) \exp(\mathrm{W}(x))
 
 Parameters
 ----------
@@ -1041,12 +1041,12 @@ principal : bool, optional
 Returns
 -------
 result : float
-    - If *principal* is *True* : :math:`result = W_0(x)`.
-      :math:`W_0(x)` is referred to as the principal branch of the Lambert W
+    - If *principal* is *True* : :math:`result = \mathrm{W}_0(x)`.
+      :math:`\mathrm{W}_0(x)` is referred to as the principal branch of the Lambert W
       function. It denotes the upper part of the function whose domain is
       :math:`[-1/e, +\infty[` and range :math:`[-1, +\infty[`.
-    - If *principal* is *False* : :math:`result = W_{-1}(x)`.
-      :math:`W_{-1}(x)` is the second real branch of the Lambert W function.
+    - If *principal* is *False* : :math:`result = \mathrm{W}_{-1}(x)`.
+      :math:`\mathrm{W}_{-1}(x)` is the second real branch of the Lambert W function.
       It denotes the lower part of the function whose domain is
       :math:`[-1/e, 0[` and range :math:`]-\infty, -1]`."
 

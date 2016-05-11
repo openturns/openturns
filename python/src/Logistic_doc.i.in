@@ -2,7 +2,7 @@
 "Logistic distribution.
 
 Available constructors:
-    Logistic(*alpha=0., beta=1.0*)
+    Logistic(*alpha=0.0, beta=1.0*)
 
 Parameters
 ----------
@@ -39,7 +39,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Logistic(0., 1.)
+>>> distribution = ot.Logistic(0.0, 1.0)
 
 Draw a sample:
 

@@ -27,8 +27,8 @@ In the first usage, the generator is built using the default values :math:`k = 1
 In the second usage, the generator is built using the value :math:`k = n`.
 
 In the third usage, the generator produces all the injective functions from a
-set with *k* elements into a set with *n* elements. If :math:`k = n` it means
-all the permutations of a set with *n* elements.
+set with :math:`k` elements into a set with :math:`n` elements. If :math:`k = n` it means
+all the permutations of a set with :math:`n` elements.
 
 The number of indices generated is:
 

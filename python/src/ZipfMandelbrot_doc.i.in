@@ -16,11 +16,11 @@ Its probability density function is defined as:
 
 .. math::
 
-    \Prob{X = k} = \frac{1}{(k+q)^s H(N,q,s)},
+    \Prob{X = k} = \frac{1}{(k+q)^s \mathrm{H}(N,q,s)},
                    \quad \forall k \in [1, N]
 
-where :math:`H(N,q,s)` is the Generalized Harmonic Number:
-:math:`H(N,q,s) = \sum_{i=1}^{N} \frac{1}{(i+q)^s}`.
+where :math:`\mathrm{H}(N,q,s)` is the Generalized Harmonic Number:
+:math:`\mathrm{H}(N,q,s) = \sum_{i=1}^{N} \frac{1}{(i+q)^s}`.
 
 Its first moments are:
 
@@ -28,9 +28,9 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & =  & \frac{H_{N,q,s-1}}{H_{N,q,s}}-q \\
+        \Expect{X} & =  & \frac{\mathrm{H}_{N,q,s-1}}{\mathrm{H}_{N,q,s}}-q \\
         \Var{X} & = & \frac{\displaystyle \sum_{i=1}^N
-                                \frac{(i - \Expect{X})^2}{(i+q)^s}}{H_{N,q,s}}
+                                \frac{(i - \Expect{X})^2}{(i+q)^s}}{\mathrm{H}_{N,q,s}}
     \end{eqnarray*}
 
 Examples
@@ -38,7 +38,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.ZipfMandelbrot(15, 1.2, 2.)
+>>> distribution = ot.ZipfMandelbrot(15, 1.2, 2.0)
 
 Draw a sample:
 

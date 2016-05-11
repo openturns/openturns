@@ -41,7 +41,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
->>> bounds = ot.Interval([1.]*4, [2.]*4)
+>>> bounds = ot.Interval([1.0]*4, [2.0]*4)
 >>> problem = ot.OptimizationProblem(model, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
 >>> algo = ot.TNC(problem)"
 

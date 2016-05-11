@@ -29,12 +29,12 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # observations
->>> realDist = ot.Normal(31., 1.2)
+>>> realDist = ot.Normal(31.0, 1.2)
 >>> data = realDist.getSample(10)
 >>> # proposal distribution
 >>> proposalColl = [ot.Uniform(-2.0, 2.0)]*2
 >>> # prior distribution
->>> prior = ot.ComposedDistribution([ot.Normal(25., 0.1), ot.Dirac(2.0)])
+>>> prior = ot.ComposedDistribution([ot.Normal(25.0, 0.1), ot.Dirac(2.0)])
 >>> # choose the initial state within the prior
 >>> initState = prior.getRealization()
 >>> # conditional distribution

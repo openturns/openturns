@@ -39,7 +39,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Kriging use case
 >>> # Learning data
->>> levels = [8., 5.]
+>>> levels = [8.0, 5.0]
 >>> box = ot.Box(levels)
 >>> inputSample = box.generate()
 >>> # Scale each direction
@@ -76,7 +76,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Kriging use case
 >>> # Learning data
->>> levels = [8., 5.]
+>>> levels = [8.0, 5.0]
 >>> box = ot.Box(levels)
 >>> inputSample = box.generate()
 >>> # Scale each direction

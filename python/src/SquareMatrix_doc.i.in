@@ -25,7 +25,7 @@ Get or set terms
 
 >>> print(M[0, 0])
 0.0
->>> M[0, 0] = 1.
+>>> M[0, 0] = 1.0
 >>> print(M[0, 0])
 1.0
 >>> print(M[:, 0])
@@ -36,7 +36,7 @@ Create an openturns matrix from a **square** numpy 2d-array (or matrix, or
 2d-list)...
 
 >>> import numpy as np
->>> np_2d_array = np.array([[1., 2.], [3., 4.]])
+>>> np_2d_array = np.array([[1.0, 2.0], [3.0, 4.0]])
 >>> ot_matrix = ot.SquareMatrix(np_2d_array)
 
 and back
@@ -45,14 +45,14 @@ and back
 
 Basic linear algebra operations (provided the dimensions are compatible)
 
->>> A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+>>> A = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 >>> B = ot.SquareMatrix(np.eye(2))
->>> C = ot.Matrix(3, 2, [1.] * 3 * 2)
+>>> C = ot.Matrix(3, 2, [1.0] * 3 * 2)
 >>> print(A * B - C)
 [[ 0 1 ]
  [ 2 3 ]
  [ 4 5 ]]
->>> A = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> A = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> print(A ** 2)
 [[  7 10 ]
  [ 15 22 ]]"
@@ -76,7 +76,7 @@ determinant : float
 Examples
 --------
 >>> import openturns as ot
->>> A = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> A = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> A.computeDeterminant()
 -2.0"
 
@@ -103,7 +103,7 @@ computeEV
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> M.computeEigenValues()
 [(-0.372281,0),(5.37228,0)]"
 
@@ -144,7 +144,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> import numpy as np
->>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> eigen_values, Phi = M.computeEV()
 >>> Lambda = ot.SquareComplexMatrix(M.getDimension())
 >>> for i in range(eigen_values.getSize()):
@@ -174,7 +174,7 @@ sign : float
 Examples
 --------
 >>> import openturns as ot
->>> A = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> A = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> A.computeLogAbsoluteDeterminant()
 [0.693147..., -1.0]"
 
@@ -229,8 +229,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> import numpy as np
->>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
->>> b = ot.NumericalPoint([1.] * 2)
+>>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
+>>> b = ot.NumericalPoint([1.0] * 2)
 >>> x = M.solveLinearSystem(b)
 >>> np.testing.assert_array_almost_equal(M * x, b)"
 
@@ -247,7 +247,7 @@ MT : :class:`~openturns.SquareMatrix`
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> print(M)
 [[ 1 2 ]
  [ 3 4 ]]
@@ -268,6 +268,6 @@ trace : float
 Examples
 --------
 >>> import openturns as ot
->>> M = ot.SquareMatrix([[1., 2.], [3., 4.]])
+>>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
 >>> M.computeTrace()
 5.0"

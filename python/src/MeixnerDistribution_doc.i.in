@@ -2,7 +2,7 @@
 "Meixner distribution.
 
 Available constructors:
-    MeixnerDistribution(*alpha=1.0, beta=0., delta=1.0, mu=0.*)
+    MeixnerDistribution(*alpha=1.0, beta=0.0, delta=1.0, mu=0.*)
 
 Parameters
 ----------
@@ -46,7 +46,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.MeixnerDistribution(1., 0., 1., 0.)
+>>> distribution = ot.MeixnerDistribution(1.0, 0.0, 1.0, 0.0)
 
 Draw a sample:
 

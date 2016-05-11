@@ -2,7 +2,7 @@
 "Gumbel distribution.
 
 Available constructors:
-    Gumbel(*arg1=1.0, arg2=0., parameters_set=ot.Gumbel.ALPHABETA*)
+    Gumbel(*arg1=1.0, arg2=0.0, parameters_set=ot.Gumbel.ALPHABETA*)
 
 Parameters
 ----------
@@ -52,7 +52,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Gumbel(1., 0.)
+>>> distribution = ot.Gumbel(1.0, 0.0)
 
 Draw a sample:
 

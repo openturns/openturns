@@ -2,7 +2,7 @@
 "BoxCox transformation.
 
 Available constructors:
-    BoxCoxTransform(*lambdaVect, shiftVect = 0*)
+    BoxCoxTransform(*lambdaVect, shiftVect = [0]*)
 
     BoxCoxTransform(*lambda, shift=0*)
 
@@ -77,7 +77,7 @@ Apply it to a field:
 
 >>> myIndices= ot.Indices([40,20])
 >>> myMesher=ot.IntervalMesher(myIndices)
->>> myInterval = ot.Interval([0., 0.], [2., 1.])
+>>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
 >>> myMesh=myMesher.build(myInterval)
 >>> amplitude=[1.0]
 >>> scale=[0.2, 0.2]

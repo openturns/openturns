@@ -41,7 +41,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Binomial(10, .5)
+>>> distribution = ot.Binomial(10, 0.5)
 
 Draw a sample:
 

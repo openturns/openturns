@@ -21,7 +21,7 @@ could:
 .. math::
 
     \left(x^{(i)},
-          \Phi^{-1}\left[\widehat{F}\left(x^{(i)}\right)\right]
+          \Phi^{-1}\left(\widehat{F}\left(x^{(i)}\right)\right)
     \right), \quad i = 1, \ldots, m
 
 where :math:`\widehat{F}` denotes the empirical CDF of the sample and
@@ -51,13 +51,13 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Normal(2., .5)
+>>> distribution = ot.Normal(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 
 Draw an Henry plot against a given (wrong) Normal distribution:
 
 >>> henry_graph = ot.VisualTest.DrawHenryLine(sample, distribution)
->>> henry_graph.setTitle('Henry plot against given %s' % ot.Normal(3., 1.))
+>>> henry_graph.setTitle('Henry plot against given %s' % ot.Normal(3.0, 1.0))
 >>> View(henry_graph).show()
 
 Draw an Henry plot against an inferred Normal distribution:
@@ -93,16 +93,16 @@ Notes
 -----
 The QQ-plot is a visual fitting test for univariate distributions. It
 opposes the sample quantiles to those of the tested quantity (either a
-distribution or another sample) by plotting the following points could:
+distribution or another sample) by plotting the following points cloud:
 
 .. math::
 
     \left(x^{(i)},
-          \bullet\left[\widehat{F}\left(x^{(i)}\right)\right]
+          \theta\left(\widehat{F}\left(x^{(i)}\right)\right)
     \right), \quad i = 1, \ldots, m
 
 where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
-sample and :math:`\bullet` denotes either the quantile function of the tested
+sample and :math:`\theta` denotes either the quantile function of the tested
 distribution or the empirical quantile function of the second tested sample.
 
 If the given sample fits to the tested distribution or sample, then the points
@@ -122,7 +122,7 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2., .5)
+>>> distribution = ot.Weibull(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 
@@ -206,7 +206,7 @@ Generate a random sample from a Normal distribution:
 
 Draw a Cobweb plot:
 
->>> cobweb = ot.VisualTest.DrawCobWeb(inputSample, outputSample, 1., 2., 'red', False)
+>>> cobweb = ot.VisualTest.DrawCobWeb(inputSample, outputSample, 1.0, 2.0, 'red', False)
 >>> View(cobweb).show()"
 
 // ---------------------------------------------------------------------

@@ -2,7 +2,7 @@
 "Exponential distribution.
 
 Available constructors:
-    Exponential(*lambda=1.0, gamma=0.*)
+    Exponential(*lambda=1.0, gamma=0.0*)
 
 Parameters
 ----------
@@ -37,7 +37,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Exponential(1.)
+>>> distribution = ot.Exponential(1.0)
 
 Draw a sample:
 

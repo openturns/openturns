@@ -36,7 +36,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.NegativeBinomial(1., 0.6)
+>>> distribution = ot.NegativeBinomial(1.0, 0.6)
 
 Draw a sample:
 
