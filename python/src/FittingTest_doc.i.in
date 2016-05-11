@@ -258,7 +258,7 @@ class=TestResult name=Unnamed type=KolmogorovDistribution binaryQualityMeasure=t
 %feature("docstring") OT::FittingTest::TwoSamplesKolmogorov
 "Performs a Kolmogorov goodness-of-fit test on two samples.
 
-If the the p-value is high, then we cannot reject the hypothesis that the
+If the p-value is high, then we cannot reject the hypothesis that the
 distributions of the two samples are the same.
 
 Parameters
