@@ -6,7 +6,7 @@
 
 %include OptimizationProblem_doc.i
 
-%template(OptimizationProblemImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::OptimizationProblemImplementation>;
+OTTypedInterfaceObjectHelper(OptimizationProblem)
 
 %include openturns/OptimizationProblem.hxx
 namespace OT{ %extend OptimizationProblem { OptimizationProblem(const OptimizationProblem & other) { return new OT::OptimizationProblem(other); } } }
