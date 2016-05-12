@@ -355,13 +355,13 @@ tool. Trac allows hyperlinking information between a bug database,
 revision control and wiki content. It also serves as a web interface to
 several revision control systems including Subversion.
 
-The timeline, available at http://trac.openturns.org/timeline lists the
+The `timeline <http://trac.openturns.org/timeline>`_ lists the
 recent changes ticket database and wiki pages:
 
 .. figure:: Figures/Timeline.png
    :alt: Trac interface: the timeline
 
-Trac provides a bug-tracker at http://trac.openturns.org/report.
+Trac provides a `bug-tracker <http://trac.openturns.org/report>`_.
 The snapshot shows the list of active tickets.
 
 .. figure:: Figures/Tickets1.png
