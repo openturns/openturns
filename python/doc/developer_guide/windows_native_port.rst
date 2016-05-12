@@ -26,36 +26,36 @@ further details.
 The following programs are required in order to build OpenTURNS on
 Windows:
 
--  Boost https://www.boost.org/
+-  `Boost <https://www.boost.org/>`_
 
--  OpenBLAS https://github.com/xianyi/OpenBLAS/ (or any other BLAS
+-  `OpenBLAS <https://github.com/xianyi/OpenBLAS/>`_ (or any other BLAS
    implementation)
 
 The following programs are optional, and we will show how to embed them
 into OpenTURNS:
 
--  hmat-oss https://github.com/jeromerobert/hmat-oss/
+-  `hmat-oss <https://github.com/jeromerobert/hmat-oss/>`_
 
--  LibXML2 http://www.xmlsoft.org/
+-  `LibXML2 <http://www.xmlsoft.org/>`_
 
--  muParser http://muparser.beltoforion.de/
+-  `muParser <http://muparser.beltoforion.de/>`_
 
--  TBB https://www.threadingbuildingblocks.org/
+-  `TBB <https://www.threadingbuildingblocks.org/>`_
 
 Precompiled binaries for all these programs are available on
 http://sourceforge.net/projects/openturns/files/openturns/openturns-x.y.
 If you want to recompile them from sources, you may also have to install
 
--  Subversion https://subversion.apache.org/
+-  `Subversion <https://subversion.apache.org/>`_
 
--  Git http://git-scm.com/
+-  `Git <http://git-scm.com/>`_
 
 The following programs are optional, and are currently not used by this
 native Windows port:
 
--  R http://www.r-project.org/
+-  `R <http://www.r-project.org/>`_
 
--  Python http://www.python.org/
+-  `Python <http://www.python.org/>`_
 
 Some OpenTURNS components will thus not be available. If R is installed
 on your computer, you should edit ``openturns.conf`` and set
@@ -93,9 +93,8 @@ only supported on Windows with Mingw compiler. But binaries can be used
 with Visual Studio, this is what we will do. Thus go to
 http://sourceforge.net/projects/openblas/files/ and download Windows
 binaries, for instance
-`OpenBLAS-v0.2.13-Win32.zip <OpenBLAS-v0.2.13-Win32.zip>`__ for Windows
-32 bits, and
-`OpenBLAS-v0.2.13-Win64-int32.zip <OpenBLAS-v0.2.13-Win64-int32.zip>`__
+``OpenBLAS-v0.2.13-Win32.zip`` for Windows 32 bits, or
+``OpenBLAS-v0.2.13-Win64-int32.zip`` for Windows 64 bits.
 
 Unzip these archives, and copy files to our installation folder:
 
@@ -187,8 +186,8 @@ OpenBLAS and TBB are low level libraries. Other libraries use STL, and
 care must be taken to avoid mismatch between runtime libraries. To this
 end, we decided to use a so called *SuperBuild* approach with CMake. We
 defined a metaproject which drives compilation of those dependencies,
-and also of OpenTURNS itself. Clone git repository
-https://bitbucket.org/dbarbier/ot-superbuild (or download an archive
+and also of OpenTURNS itself. Clone `ot-superbuild git repository
+<https://bitbucket.org/dbarbier/ot-superbuild>`_ (or download an archive
 from this URL), launch ``cmake-gui`` program, and follow the following
 steps:
 

@@ -46,7 +46,7 @@ Linux test Environment
 WINE
 ''''
 
-Install any WINE version (http://www.winehq.org/), for example, the one
+Install any `WINE <http://www.winehq.org/>`_ version, for example, the one
 given by your Linux distribution.
 
 Windows shared libraries
@@ -85,7 +85,7 @@ R
 '
 
 -  install R into WINE environment by using the standard Windows
-   installer from the official site http://cran.r-project.org.
+   installer from the `official site <http://cran.r-project.org>`_.
 
 -  add the path to R.exe to the PATH environment variable of WINE.
 
@@ -111,8 +111,8 @@ matplotlib module
 '''''''''''''''''
 
 Install a matplotlib version compatible with Python2.7 (e.g.:
-matplotlib-1.2.1.win32-py2.7.exe) from matplotlib download section:
-http://matplotlib.org/downloads.html.
+matplotlib-1.2.1.win32-py2.7.exe) from matplotlib
+`download <http://matplotlib.org/downloads.html>`_ section.
 
 Compilation
 ^^^^^^^^^^^
