@@ -345,8 +345,8 @@ class View(object):
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
+                contour_kwargs.setdefault('levels', drawable.getLevels())
                 if drawable.getDrawLabels():
-                    contour_kwargs.setdefault('levels', drawable.getLevels())
                     clabel_kwargs.setdefault('fontsize', 8)
                     clabel_kwargs.setdefault('fmt', '%g')
                 if ('linestyles' not in contour_kwargs_default) and ('ls' not in contour_kwargs_default):
