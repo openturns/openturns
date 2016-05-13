@@ -115,6 +115,8 @@ class OpenTURNSPythonFunction(object):
             raise TypeError('p argument is not an integer.')
         self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
         self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
+        self.__param = []
+        self.__paramDesc = []
 
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):
@@ -172,6 +174,17 @@ class OpenTURNSPythonFunction(object):
         """Implement exec from exec_sample."""
         return self._exec_sample([X])[0]
 
+    def setParameter(self, param):
+        self.__param = param
+
+    def getParameter(self):
+        return self.__param
+
+    def setParameterDescription(self, paramDesc):
+        self.__paramDesc = paramDesc
+
+    def getParameterDescription(self):
+        return self.__paramDesc
 
 class PythonFunction(NumericalMathFunction):
     """
