@@ -608,6 +608,19 @@ convert< NumericalPoint, _PySequence_ >(NumericalPoint inP)
   return point;
 }
 
+template <>
+inline
+PyObject *
+convert< Description, _PySequence_ >(Description inP)
+{
+  UnsignedInteger dimension = inP.getSize();
+  PyObject * point = PyTuple_New(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    PyTuple_SetItem(point, i, convert< String, _PyString_ >(inP[i]));
+  }
+  return point;
+}
 
 template <>
 struct traitsPythonType< Collection < NumericalComplex> >
