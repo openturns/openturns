@@ -94,60 +94,60 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
 {
   // Check for special cases. Need a more elegant conception and implementation.
   hasSpecificFamily_ = false;
+  OrthogonalUniVariatePolynomialFamily referenceFamily;
   const String measureType(measure_.getImplementation()->getClassName());
+  Bool hasClassMatch(false);
   // Legendre factory
   if (measureType == "Uniform")
   {
-    specificFamily_ = LegendreFactory();
-    hasSpecificFamily_ = true;
-    return;
+    referenceFamily = LegendreFactory();
+    hasClassMatch = true;
   }
   // Hermite factory
   if (measureType == "Normal")
   {
-    specificFamily_ = HermiteFactory();
-    hasSpecificFamily_ = true;
-    return;
+    referenceFamily = HermiteFactory();
+    hasClassMatch = true;
   }
   // Jacobi factory
   if (measureType == "Beta")
   {
     const NumericalPoint parameter(measure_.getParameter());
-    specificFamily_ = JacobiFactory(parameter[1] - parameter[0] - 1.0, parameter[0] - 1.0);
-    hasSpecificFamily_ = true;
-    return;
+    referenceFamily = JacobiFactory(parameter[1] - parameter[0] - 1.0, parameter[0] - 1.0);
+    hasClassMatch = true;
   }
   // Laguerre factory
   if (measureType == "Gamma")
   {
     const NumericalPoint parameter(measure_.getParameter());
-    specificFamily_ = LaguerreFactory(parameter[0] - 1.0);
-    hasSpecificFamily_ = true;
-    return;
+    referenceFamily = LaguerreFactory(parameter[0] - 1.0);
+    hasClassMatch = true;
   }
   // Charlier factory
   if (measureType == "Poisson")
   {
     const NumericalPoint parameter(measure_.getParameter());
-    specificFamily_ = CharlierFactory(parameter[0]);
-    hasSpecificFamily_ = true;
-    return;
+    referenceFamily = CharlierFactory(parameter[0]);
+    hasClassMatch = true;
   }
   // Krawtchouk factory
   if (measureType == "Binomial")
   {
     const NumericalPoint parameter(measure_.getParameter());
-    specificFamily_ = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
-    hasSpecificFamily_ = true;
-    return;
+    referenceFamily = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
+    hasClassMatch = true;
   }
   // Meixner factory
   if (measureType == "NegativeBinomial")
   {
     const NumericalPoint parameter(measure_.getParameter());
-    specificFamily_ = MeixnerFactory(parameter[0], parameter[1]);
+    referenceFamily = MeixnerFactory(parameter[0], parameter[1]);
+    hasClassMatch = true;
+  }
+  if (hasClassMatch && (referenceFamily.getMeasure() == measure_))
+  {
+    specificFamily_ = referenceFamily;
     hasSpecificFamily_ = true;
-    return;
   }
 }
 
