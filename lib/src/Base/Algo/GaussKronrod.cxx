@@ -40,7 +40,8 @@ GaussKronrod::GaussKronrod()
   , maximumError_(ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"))
   , rule_()
 {
-  // Nothing to do
+  // Check the maximum number of sub-intervals
+  if (maximumSubIntervals_ < 2) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals_ << ". Check the value of the key 'GaussKronrod-MaximumSubIntervals' in ResourceMap.";
 }
 
 /* Parameters constructor */
@@ -52,7 +53,8 @@ GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
   , maximumError_(maximumError)
   , rule_(rule)
 {
-  // Nothing to do
+  // Check the maximum number of sub-intervals
+  if (maximumSubIntervals < 2) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals;
 }
 
 /* Virtual constructor */

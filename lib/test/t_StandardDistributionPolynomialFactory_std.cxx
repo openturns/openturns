@@ -43,18 +43,19 @@ int main(int argc, char *argv[])
     Collection<Distribution> distributionCollection;
     distributionCollection.add(Laplace(1.0, 0.0));
     distributionCollection.add(Logistic(0.0, 1.0));
-    distributionCollection.add(LogNormal(0.0, 1.0, 0.0));
     distributionCollection.add(Normal(0.0, 1.0));
+    distributionCollection.add(Normal(1.0, 1.0));
     distributionCollection.add(Rayleigh(1.0));
-    distributionCollection.add(Student(22));
+    distributionCollection.add(Student(22.0));
     distributionCollection.add(Triangular(-1.0, 0.3, 1.0));
     distributionCollection.add(Uniform(-1.0, 1.0));
+    distributionCollection.add(Uniform(-1.0, 3.0));
     distributionCollection.add(Weibull(1.0, 3.0));
     for (UnsignedInteger n = 0; n < distributionCollection.getSize(); ++n)
     {
       const Distribution distribution(distributionCollection[n]);
       const String name(distribution.getImplementation()->getClassName());
-      StandardDistributionPolynomialFactory polynomialFactory(distribution);
+      StandardDistributionPolynomialFactory polynomialFactory(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution)));
       fullprint << "polynomialFactory(" << name << "=" << polynomialFactory << std::endl;
       for (UnsignedInteger i = 0; i < iMax; ++i)
         fullprint << name << " polynomial(" << i << ")=" << clean(polynomialFactory.build(i)).__str__() << std::endl;
