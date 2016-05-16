@@ -1,44 +1,49 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
 def clean(polynomial):
     coefficients = polynomial.getCoefficients()
     for i in range(coefficients.getDimension()):
         if abs(coefficients[i]) < 1.0e-12:
             coefficients[i] = 0.0
-    return UniVariatePolynomial(coefficients)
+    return ot.UniVariatePolynomial(coefficients)
 
-try:
-    iMax = 5
-    distributionCollection = DistributionCollection()
-    distributionCollection.add(Laplace(1.0, 0.0))
-    distributionCollection.add(Logistic(0.0, 1.0))
-    distributionCollection.add(LogNormal(0.0, 1.0, 0.0))
-    distributionCollection.add(Normal(0.0, 1.0))
-    distributionCollection.add(Rayleigh(1.0))
-    distributionCollection.add(Student(22))
-    distributionCollection.add(Triangular(-1.0, 0.3, 1.0))
-    distributionCollection.add(Uniform(-1.0, 1.0))
-    distributionCollection.add(Weibull(1.0, 3.0))
-    for n in range(distributionCollection.getSize()):
-        distribution = distributionCollection[n]
-        name = distribution.getImplementation().getClassName()
-        polynomialFactory = StandardDistributionPolynomialFactory(distribution)
-        print("polynomialFactory(", name, "=", polynomialFactory, ")")
-        for i in range(iMax):
-            print(name, " polynomial(", i, ")=", clean(polynomialFactory.build(i)))
-        roots = polynomialFactory.getRoots(iMax - 1)
-        print(name, " polynomial(", iMax - 1, ") roots=", roots)
-        nodes, weights = polynomialFactory.getNodesAndWeights(iMax - 1)
-        print(name, " polynomial(", iMax - 1, ") nodes=",
-              nodes, " and weights=", weights)
-
-except:
-    import sys
-    print("t_StandardDistributionPolynomialFactory_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+iMax = 5
+distributionCollection = [ot.Laplace(1.0, 0.0), \
+                          ot.Logistic(0.0, 1.0), \
+                          ot.Normal(0.0, 1.0), \
+                          ot.Normal(1.0, 1.0), \
+                          ot.Rayleigh(1.0), \
+                          ot.Student(22.0), \
+                          ot.Triangular(-1.0, 0.3, 1.0), \
+                          ot.Uniform(-1.0, 1.0), \
+                          ot.Uniform(-1.0, 3.0), \
+                          ot.Weibull(1.0, 3.0)]
+for n in range(len(distributionCollection)):
+    distribution = distributionCollection[n]
+    name = distribution.getClassName()
+    polynomialFactory = ot.StandardDistributionPolynomialFactory(ot.AdaptiveStieltjesAlgorithm(distribution))
+    print("polynomialFactory(", name, "=", polynomialFactory, ")")
+    for i in range(iMax):
+        print(name, " polynomial(", i, ")=", clean(polynomialFactory.build(i)))
+    roots = polynomialFactory.getRoots(iMax - 1)
+    print(name, " polynomial(", iMax - 1, ") roots=", roots)
+    nodes, weights = polynomialFactory.getNodesAndWeights(iMax - 1)
+    print(name, " polynomial(", iMax - 1, ") nodes=",
+          nodes, " and weights=", weights)
+    M = ot.SymmetricMatrix(iMax)
+    for i in range(iMax):
+        pI = polynomialFactory.build(i)
+        for j in range(i+1):
+            pJ = polynomialFactory.build(j)
+            
+            def kernel(x):
+                return [pI(x[0]) * pJ(x[0]) * distribution.computePDF(x)]
+            
+            M[i, j] = ot.GaussKronrod().integrate(ot.PythonFunction(1, 1, kernel), distribution.getRange())[0]
+    print("M=\n", M.clean(1.0e-8))

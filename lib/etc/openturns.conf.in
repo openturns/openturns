@@ -130,6 +130,10 @@
   <IteratedQuadrature-MaximumSubIntervals         value="32"     />
   <IteratedQuadrature-MaximumError                value="1.0e-7" />
 
+  <!-- OT::AdaptiveStieltjesAlgorithm parameters -->
+  <AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots value="64"      />
+  <AdaptiveStieltjesAlgorithm-MaximumError                    value="1.0e-12" />
+
   <!-- OT::LinearModelFactory parameters -->
   <LinearModelFactory-DefaultLevelValue value="0.95" />
 
