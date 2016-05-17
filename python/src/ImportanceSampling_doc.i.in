@@ -18,7 +18,7 @@ to evaluate the following probability:
 
 .. math::
 
-    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}f_{\uX}(\ux)d\ux
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}f_{\uX}(\ux)\di{\ux}
         = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
 
 Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
@@ -40,9 +40,9 @@ everywhere in the domain :math:`\cD_f`,
 .. math::
 
     P_f &= \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}
-           f_{\uX}(\ux)d\ux \\
+           f_{\uX}(\ux)\di{\ux} \\
         &= \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}
-           \frac{f_{\uX}(\ux)}{f_{\vect{Y}}(\ux)}f_{\vect{Y}}(\ux)d\ux
+           \frac{f_{\uX}(\ux)}{f_{\vect{Y}}(\ux)}f_{\vect{Y}}(\ux)\di{\ux}
 
 The estimator built by Importance Sampling method is:
 

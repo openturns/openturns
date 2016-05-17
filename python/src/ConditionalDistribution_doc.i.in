@@ -31,7 +31,7 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}(\vect{y})\, d\vect{y}
+    f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}(\vect{y})\di{\vect{y}}
 
 with  :math:`f_{\vect{X}|\vect{\Theta}=g(\vect{y})}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}`, where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`, :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and :math:`g` the linking function.
 

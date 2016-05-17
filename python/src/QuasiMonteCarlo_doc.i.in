@@ -18,7 +18,7 @@ to evaluate the following probability:
 
 .. math::
 
-    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)d\ux
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)\di{\ux}
         = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
 
 Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
@@ -44,7 +44,7 @@ can be approximated by using some low discrepancy sequence
 
 .. math::
 
-    \int_{\Delta} f(\vect{u})\,d\vect{u} \approx \frac{1}{N}\,\sum_{i=1}^N f(\vect{x}_i).
+    \int_{\Delta} f(\vect{u})\di{\vect{u}} \approx \frac{1}{N}\,\sum_{i=1}^N f(\vect{x}_i).
 
 The low discrepancy sequence is generated on :math:`\Delta` according to the
 Lebesgue measure then may be transformed to any measure :math:`\mu` thanks to
@@ -52,7 +52,7 @@ the inverse CDF technique in order to approximate the integral:
 
 .. math::
 
-    \int_{\Rset^s} f(\vect{u})\,d\vect{u} \approx \frac{1}{N}\,\sum_{i=1}^N f(\vect{x}_i)
+    \int_{\Rset^s} f(\vect{u})\di{\vect{u}} \approx \frac{1}{N}\,\sum_{i=1}^N f(\vect{x}_i)
 
 Examples
 --------

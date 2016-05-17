@@ -61,7 +61,7 @@ is the mean of the first order statistics of a standard normal sample of size
 .. math::
     :label: EZ1_equation
 
-    EZ_1(n) = \int_\Rset nz\phi(z) (1 - \Phi(z))^{n-1} dz
+    EZ_1(n) = \int_\Rset nz\phi(z) (1 - \Phi(z))^{n-1}\di{z}
 
 where :math:`\varphi` and :math:`\Phi` are the pdf and cdf of the standard
 normal distribution. The estimator :math:`\hat{\omega}_{n}` of :math:`\omega` is

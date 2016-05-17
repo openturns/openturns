@@ -99,7 +99,7 @@ measure** :math:`w(x) \di{x}` if and only if their scalar product:
 
 .. math::
 
-    \langle P, Q \rangle = \int_{\alpha}^{\beta} P(x) Q(x) w(x) \di{x}
+    \langle P, Q \rangle = \int_{\alpha}^{\beta} P(x) Q(x) w(x)\di{x}
                          = 0
 
 where :math:`\alpha \in \Rset \cup \{-\infty\}` and

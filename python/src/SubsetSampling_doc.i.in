@@ -9,8 +9,8 @@ The goal is to estimate the following probability
 
 .. math::
 
-    P_f = \int_{\mathcal D_f} f_{\uX}(\ux)d\ux\\
-        = \int_{\mathbb R^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \:\leq 0\: \}}f_{\uX}(\ux)d\ux\\
+    P_f = \int_{\mathcal D_f} f_{\uX}(\ux)\di{\ux}\\
+        = \int_{\mathbb R^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \:\leq 0\: \}}f_{\uX}(\ux)\di{\ux}\\
         = \Prob {\{g(\uX,\underline{d}) \leq 0\}}
 
 

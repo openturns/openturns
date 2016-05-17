@@ -22,15 +22,15 @@ The Karhunen-Loeve decomposition using Quadrature approximation allows to approx
 
 .. math::
 
-    \int_{\cD} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\, d\vect{s}=\lambda_n\vect{\phi}_n(\vect{t})
+    \int_{\cD} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\di{\vect{s}}=\lambda_n\vect{\phi}_n(\vect{t})
 
 
-with :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\vect{\phi}_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\vect{\phi}_n(\vect{s})\|^2\,d\vect{s}=1`.
+with :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\vect{\phi}_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\vect{\phi}_n(\vect{s})\|^2\di{\vect{s}}=1`.
 
 The Karhunen-Loeve quadrature approximation consists in replacing the integrals defining the Fredholm equation by its quadrature approximation counterpart:
 
 .. math::
-   \int_{\Rset^d} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\, d\vect{s}\simeq\sum_{\ell=1}^L\omega_{\ell}\mat{C}(\vect{\xi}_{\ell},\vect{t})\vect{\phi}_n(\vect{\xi}_{\ell})\dfrac{\fcar{\vect{\xi}_{\ell}}{\cD}}{p(\vect{\xi}_{\ell})}
+   \int_{\Rset^d} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\di{\vect{s}}\simeq\sum_{\ell=1}^L\omega_{\ell}\mat{C}(\vect{\xi}_{\ell},\vect{t})\vect{\phi}_n(\vect{\xi}_{\ell})\dfrac{\fcar{\vect{\xi}_{\ell}}{\cD}}{p(\vect{\xi}_{\ell})}
 
 Where :math:`(\omega_{\ell},\vect{\xi}_{\ell})_{\ell=1,\dots,L}` is a quadrature formula wrt the density function :math:`p` such that its support contains :math:`\cD`, ie the discrete measure :math:`\sum_{\ell=1}^L\omega_{\ell}\delta_{\vect{\xi}_{\ell}}` is an approximation of the probability measure defined by :math:`p`.
 

@@ -195,7 +195,7 @@ Returns
 meanPoint : :class:`~openturns.NumericalPoint`
     Mean point of the standard space distribution restricted to the event
     domain:
-    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1`
+    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
     where :math:`E_1` is the spheric univariate distribution of the standard
     space and :math:`\beta` the reliability index."
 
@@ -209,7 +209,7 @@ Parameters
 meanPoint : sequence of float
     Mean point of the standard space distribution restricted to the event
     domain:
-    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1`
+    :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
     where :math:`E_1` is the spheric univariate distribution of the standard
     space and :math:`\beta` the reliability index."
 

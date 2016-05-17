@@ -31,7 +31,7 @@ event :math:`\cD_f` is :
 
 .. math::
 
-    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})d\vect{x}
+    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})\di{\vect{x}}
 
 The analytical methods use an isoprobabilistic transformation to move from
 the physical space to the standard normal space (U-space) where distributions
@@ -49,7 +49,7 @@ Then, the event probability :math:`P_f` rewrites :
 .. math::
 
     P_f = \Prob{G(\vect{U}\,,\,\vect{d})\leq 0}
-        = \int_{\Rset^n} \boldsymbol{1}_{G(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\,d\vect{u}
+        = \int_{\Rset^n} \boldsymbol{1}_{G(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\di{\vect{u}}
 
 where :math:`f_{\vect{U}}` is the density function of the distribution in the
 standard space.

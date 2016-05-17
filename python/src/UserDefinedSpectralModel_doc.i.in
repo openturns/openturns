@@ -19,7 +19,7 @@ We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the time stamps of the tim
 .. math::
     :label: fourier_transform
 
-    \forall \vect{f} \in \Rset^n, \,S(\vect{f}) = \int_{\Rset^n}\exp\left\{  -2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\, d\vect{\tau}
+    \forall \vect{f} \in \Rset^n, \,S(\vect{f}) = \int_{\Rset^n}\exp\left\{  -2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\di{\vect{\tau}}
 
 exists, where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
 
