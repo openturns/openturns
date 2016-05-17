@@ -1,3 +1,4 @@
 dim=1, volume=2, calls=14
 dim=2, volume=3.14159, calls=3724
 dim=3, volume=4.18879, calls=50960
+value=class=NumericalPoint name=Unnamed dimension=2 values=[16,16], calls=2744

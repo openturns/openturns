@@ -89,7 +89,8 @@ struct IteratedQuadraturePartialFunctionWrapper
       upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, NumericalPoint(1, x));
     }
     const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
-    if (!SpecFunc::IsNormal(value[0])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+    for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
+      if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
     return value;
   }
 
@@ -129,7 +130,7 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
   if (inputDimension == 1) return algorithm_.integrate(function, Interval(a, b));
   // Prepare the integrand using a binding of IteratedQuadraturePartialFunctionWrapper::evaluate
   IteratedQuadraturePartialFunctionWrapper partialFunctionWrapper(*this, function, lowerBounds, upperBounds);
-  NumericalMathFunction partialFunction(bindMethod<IteratedQuadraturePartialFunctionWrapper, NumericalPoint, NumericalPoint>(partialFunctionWrapper, &IteratedQuadraturePartialFunctionWrapper::evaluate, 1, 1));
+  NumericalMathFunction partialFunction(bindMethod<IteratedQuadraturePartialFunctionWrapper, NumericalPoint, NumericalPoint>(partialFunctionWrapper, &IteratedQuadraturePartialFunctionWrapper::evaluate, 1, function.getOutputDimension()));
   return algorithm_.integrate(partialFunction, Interval(a, b));
 }
 

@@ -27,3 +27,10 @@ for n in range(3):
     value = algo.integrate(integrand, a, b, lower, upper)[0]
     print("dim=", n + 1, ", volume= %.12g" %
           value, ", calls=", integrand.getCallsNumber())
+# Second, integrate a multi-valued function
+bounds = ot.Interval([-1.0]*3, [1.0]*3)
+vars = ["x0", "x1", "x2"]
+formulas = ["x0^2 + 2*x1^2 + 3*x2^2", "x2^2 + 2*x1^2 + 3*x0^2"]
+integrand = ot.NumericalMathFunction(vars, formulas)
+value = algo.integrate(integrand, bounds)
+print("value=", value, ", calls=", integrand.getCallsNumber())
