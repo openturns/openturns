@@ -126,7 +126,7 @@ result : float"
 .. math::
 
     \forall (a, b) > 0, \quad
-    \mathrm{B}(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1} dt
+    \mathrm{B}(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1}\di{t}
 
 Parameters
 ----------
@@ -188,7 +188,7 @@ result : float"
 .. math::
 
     \forall (a, b) > 0, t \in [0, 1], \quad
-    \mathrm{B}(x; a, b) = \int_0^x t^{a-1}(1-t)^{b-1} dt
+    \mathrm{B}(x; a, b) = \int_0^x t^{a-1}(1-t)^{b-1}\di{t}
 
 Parameters
 ----------
@@ -239,7 +239,7 @@ result : float
 
     \forall (a, b) > 0 \quad
     \mathrm{I}(x; a, b) = \frac{\mathrm{B}(x; a, b)}{\mathrm{B}(a, b)}
-                        = \frac{1}{\mathrm{B}(a, b)} \int_0^x t^{a-1}(1-t)^{b-1} dt
+                        = \frac{1}{\mathrm{B}(a, b)} \int_0^x t^{a-1}(1-t)^{b-1}\di{t}
 
 with :math:`B(a, b)` the Beta function and :math:`B(x; a, b)` the incomplete
 Beta function.
@@ -296,7 +296,7 @@ result : float
 .. math::
 
     \forall x \in \Cset, \quad
-    \mathrm{D}_+(x) = \exp(-x^2)\int_0^x \exp(t^2) dt
+    \mathrm{D}_+(x) = \exp(-x^2)\int_0^x \exp(t^2)\di{t}
 
 Parameters
 ----------
@@ -314,7 +314,7 @@ result : float or complex"
 .. math::
 
     \forall x \in \Rset, \forall n \in \Nset^* \text{and} \, n \leq 20, \quad
-    \mathrm{D}_n(x) = \frac{n}{x^n} \int_0^x \frac{t^n}{\exp(t)-1} dt
+    \mathrm{D}_n(x) = \frac{n}{x^n} \int_0^x \frac{t^n}{\exp(t)-1}\di{t}
 
 Parameters
 ----------
@@ -333,7 +333,7 @@ result : float"
 .. math::
 
     \forall z \in \Cset, \quad
-    \mathrm{Ei}(z) = -\int_{-z}^{\infty} \frac{\exp(-t)}{t} dt
+    \mathrm{Ei}(z) = -\int_{-z}^{\infty} \frac{\exp(-t)}{t}\di{t}
 
 Parameters
 ----------
@@ -397,7 +397,7 @@ result : float"
 .. math::
 
     \forall a \in \Cset, \quad
-    \Gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
+    \Gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t)\di{t}
 
 Parameters
 ----------
@@ -483,7 +483,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    \gamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt
+    \gamma(a, x) = \int_0^x t^{a-1}\exp(-t)\di{t}
 
 Parameters
 ----------
@@ -533,7 +533,7 @@ result : float
 
     \forall x \in \Rset, \quad
     \mathrm{P}(a, x) = \frac{\gamma(a, x)}{\Gamma(a)}
-                     = \frac{1}{\Gamma(a)}\int_0^x t^{a-1}\exp(-t) dt
+                     = \frac{1}{\Gamma(a)}\int_0^x t^{a-1}\exp(-t)\di{t}
 
 See also
 --------
@@ -677,7 +677,7 @@ result : float"
 .. math::
 
     \forall x \in \Rset, \quad
-    IGamma1pm1(a, x) = \int_0^x t^{a-1}\exp(-t) dt
+    IGamma1pm1(a, x) = \int_0^x t^{a-1}\exp(-t)\di{t}
 
 Parameters
 ----------
@@ -780,7 +780,7 @@ result : float"
 .. math::
 
     \forall x \in \Cset, \quad
-    Erf(x) = \frac{2}{\sqrt{\pi}} \int_0^x \exp(-t^2) dt
+    Erf(x) = \frac{2}{\sqrt{\pi}} \int_0^x \exp(-t^2)\di{t}
 
 Parameters
 ----------
@@ -946,7 +946,7 @@ result : complex"
 .. math::
 
     \forall x \in ]-\infty, 1[, \quad
-    Li_2(x) = -\int_0^x \frac{\log (1-t)}{t} dt
+    Li_2(x) = -\int_0^x \frac{\log (1-t)}{t}\di{t}
 
 Parameters
 ----------

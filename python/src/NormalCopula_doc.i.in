@@ -32,14 +32,14 @@ dimension :math:`n` :
                                    \int_{-\infty}^{x_n}
                                    \frac{1}
                                         {{(2\pi\det{\mat{R}})}^{\frac{n}{2}}}
-                                 \exp \left(-\frac{\Tr{\vect{u}}\mat{R}\vect{u}}{2} \right)
+                                 \exp \left(-\frac{\Tr{\vect{u}}\mat{R}\vect{u}}{2} \right)\di{\vect{u}}
 
 with :math:`\Phi` is the cumulative distribution function of the normal law in
 dimension 1:
 
 .. math::
 
-      \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2}{2}} \: dt
+      \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2}{2}}\di{t}
 
 and with :math:`\mat{R}` is the correlation matrix. This matrix is defined
 by its algebric properties: symmetric, definite and positive.

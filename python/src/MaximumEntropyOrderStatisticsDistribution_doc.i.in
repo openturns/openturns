@@ -20,7 +20,7 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = f_1(x_1) \prod\limits_{k=2}^d \phi_k(x_k) \exp\left(-\int_{x_{k-1}}^{x_k} \phi_k(s) ds\right) \mathbf{1}_{x_1 \leq \dots \leq x_d}
+    f_X(x) = f_1(x_1) \prod\limits_{k=2}^d \phi_k(x_k) \exp\left(-\int_{x_{k-1}}^{x_k} \phi_k(s)\di{s}\right) \mathbf{1}_{x_1 \leq \dots \leq x_d}
 
              \text{with } \phi_k(x_k) = \frac{f_k(x_k)}{F_{k-1}(x_k)-F_k(x_k)}
 
@@ -28,7 +28,7 @@ We note:
 
 .. math::
 
-    \Phi_k(t) = \exp\left(-\int_{a_{k}}^{t} \phi_k(s) ds\right)
+    \Phi_k(t) = \exp\left(-\int_{a_{k}}^{t} \phi_k(s)\di{s}\right)
 
 
 Examples
