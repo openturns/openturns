@@ -58,6 +58,15 @@ int main(int argc, char *argv[])
       NumericalScalar value(algo.integrate(integrand, a, b, lower, upper)[0]);
       fullprint << "dim=" << n + 1 << ", volume=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
     }
+    // Second, integrate a multi-valued function
+    Interval bounds(NumericalPoint(3, -1.0), NumericalPoint(3, 1.0));
+    Description vars(Description::BuildDefault(3, "x"));
+    Description formulas(2);
+    formulas[0] = "x0^2 + 2*x1^2 + 3*x2^2";
+    formulas[1] = "x2^2 + 2*x1^2 + 3*x0^2";
+    NumericalMathFunction integrand(vars, formulas);
+    NumericalPoint value(algo.integrate(integrand, bounds));
+    fullprint << "value=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
   }
   catch (TestFailed & ex)
   {
