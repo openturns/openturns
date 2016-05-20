@@ -55,7 +55,8 @@ int main(int argc, char *argv[])
     {
       const Distribution distribution(distributionCollection[n]);
       const String name(distribution.getImplementation()->getClassName());
-      StandardDistributionPolynomialFactory polynomialFactory(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution)));
+      // Must use this construction for some compilers
+      StandardDistributionPolynomialFactory polynomialFactory = StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution));
       fullprint << "polynomialFactory(" << name << "=" << polynomialFactory << std::endl;
       for (UnsignedInteger i = 0; i < iMax; ++i)
         fullprint << name << " polynomial(" << i << ")=" << clean(polynomialFactory.build(i)).__str__() << std::endl;
