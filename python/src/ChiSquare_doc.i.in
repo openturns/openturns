@@ -35,7 +35,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.ChiSquare(2.)
+>>> distribution = ot.ChiSquare(2.0)
 
 Draw a sample:
 

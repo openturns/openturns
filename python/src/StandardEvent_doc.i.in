@@ -34,7 +34,7 @@ One way to evaluate the probability content :math:`P_f` of the event :math:`\cD_
 
 .. math::
 
-    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})d\vect{x}
+    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})\di{\vect{x}}
 
 is to use an isoprobabilistic transformation to move from the physical space
 to a standard normal space (U-space) where distributions are spherical

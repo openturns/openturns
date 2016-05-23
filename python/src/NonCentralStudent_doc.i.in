@@ -2,7 +2,7 @@
 "NonCentralStudent distribution.
 
 Available constructors:
-    NonCentralStudent(*nu=5.0, delta=0., gamma=0.*)
+    NonCentralStudent(*nu=5.0, delta=0.0, gamma=0.0*)
 
 Parameters
 ----------

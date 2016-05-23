@@ -47,13 +47,13 @@ Get or set terms:
 
 >>> print(T[0, 0, 0])
 0.0
->>> T[0, 0, 0] = 1.
+>>> T[0, 0, 0] = 1.0
 >>> print(T[0, 0, 0])
 1.0
 
 Create an openturns tensor from a sequence:
 
->>> T = ot.SymmetricTensor([[[1., 2., 3.], [7., 8., 9.]], [[7., 8., 9.], [10., 11., 12.]]])
+>>> T = ot.SymmetricTensor([[[1.0, 2.0, 3.0], [7.0, 8.0, 9.0]], [[7.0, 8.0, 9.0], [10.0, 11.0, 12.0]]])
 >>> print(T)
 sheet #0
 [[  1  7 ]

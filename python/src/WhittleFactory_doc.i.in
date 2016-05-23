@@ -107,7 +107,7 @@ Create a time series from a scalar ARMA(4,2) and a normal white noise:
 
 Estimate the ARMA process specifying the orders:
 
->>> myFactory_42 = ot.WhittleFactory(4,2)
+>>> myFactory_42 = ot.WhittleFactory(4, 2)
 
 Check the default SpectralModelFactory:
 

@@ -21,7 +21,7 @@ OpenTURNS estimates  :math:`C^{stat}` from a field or a sample of fields of *X*,
 
 .. math::
 
-    C^{stat}(\vect{\tau})  = \int_{\Rset^n}\exp\left\{  2i\pi <\vect{f}, \vect{\tau}> \right\}S(\vect{f})\, d\vect{f}
+    C^{stat}(\vect{\tau})  = \int_{\Rset^n}\exp\left\{  2i\pi <\vect{f}, \vect{\tau}> \right\}S(\vect{f})\di{\vect{f}}
 
 when it is possible.
 
@@ -36,14 +36,14 @@ Using the relation between the covariance model end the spectral function, the c
 .. math::
     :label: eq2
 
-    C_{i,j}^{stat}(\tau)  = \int_{\mathbb{R}}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df
+    C_{i,j}^{stat}(\tau)  = \int_{\mathbb{R}}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\di{f}
 
 where :math:`C_{i,j}^{stat}` is the element *(i,j)* of the matrix :math:`C^{stat}(\tau)` and :math:`S_{i,j}(f)` the one of :math:`S(f)`. The integral :eq:`eq2` is approximated by its evaluation on the finite domain :math:`\Omega \in \Rset`:
 
 .. math::
     :label: eq3
 
-    C_{i,j}^{stat}(\tau)  = \int_{\Omega}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df
+    C_{i,j}^{stat}(\tau)  = \int_{\Omega}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\di{f}
 
 
 Let us consider the partition of the domain as follows:
@@ -52,19 +52,19 @@ Let us consider the partition of the domain as follows:
 
     - :math:`\Delta f` be the frequency step, :math:`\Delta f = \frac{2 \Omega_c}{M}`
 
-    - :math:`f_k` be the frequences on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,2,\hdots,M`
+    - :math:`f_k` be the frequences on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,\hdots,M`
 
 The equation :eq:`eq3` can be rewritten as:
 
 .. math::
 
-    C_{i,j}^{stat}(\tau)  = \sum_{k=1}^{M}\int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df
+    C_{i,j}^{stat}(\tau)  = \sum_{k=1}^{M}\int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\di{f}
 
 We focus on the integral on each subdomain :math:`\mathcal{M}_k`. Using numerical approximation, we have:
 
 .. math::
 
-    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\, df \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau \right\}
+    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\di{f} \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau \right\}
 
 :math:`\tau` must be in correspondance with frequency values with respect to the Shannon criteria. Thus the temporal domain of estimation is the following:
 
@@ -79,7 +79,7 @@ The estimate of the covariance value at time value :math:`\tau_{m}` depends on t
 .. math::
     :label: eq4
 
-    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau_{m} \right\} S_{i,j}(f)\, df \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau_{m} \right\}
+    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau_{m} \right\} S_{i,j}(f)\di{f} \approx \Delta f S_{i,j}(f_k) \exp\left\{  2i\pi f_k \tau_{m} \right\}
 
 
 We develop the expression of :math:`f_k` and :math:`\tau_{m}` and we get:
@@ -122,7 +122,7 @@ Finally, we get the followig expression for integral in :eq:`eq4`:
 
 .. math::
 
-    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau_{m} \right\} S_{i,j}(f)\, df \approx \Delta f \exp\left\{2i \frac{\pi}{M} (m-1)(k-1)  \right\} \delta(m) \phi_k
+    \int_{\mathcal{M}_k}\exp\left\{  2i\pi f \tau_{m} \right\} S_{i,j}(f)\di{f} \approx \Delta f \exp\left\{2i \frac{\pi}{M} (m-1)(k-1)  \right\} \delta(m) \phi_k
 
 It follows that:
 

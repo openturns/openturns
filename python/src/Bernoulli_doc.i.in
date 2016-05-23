@@ -38,7 +38,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Bernoulli(.2)
+>>> distribution = ot.Bernoulli(0.2)
 
 Draw a sample:
 

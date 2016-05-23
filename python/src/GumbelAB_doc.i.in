@@ -2,7 +2,7 @@
 "Gumbel distribution parameters.
 
 Available constructors:
-    GumbelAB(*a=0., b=1.0*)
+    GumbelAB(*a=0.0, b=1.0*)
 
 Parameters
 ----------

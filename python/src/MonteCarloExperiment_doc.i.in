@@ -19,7 +19,7 @@ Notes
 MonteCarloExperiment is a random weighted design of experiments.
 The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
 independently from the distribution :math:`\mu`. The weights associated to the
-points are all equal to :math:`1/cardI`. When the :meth:`generate` method is
+points are all equal to :math:`1/\mathrm{card}\,I`. When the :meth:`generate` method is
 recalled, the generated sample changes.
 
 See also

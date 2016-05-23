@@ -48,7 +48,7 @@ The correlation function :math:`\rho` writes:
 
 .. math::
 
-    \rho(\vect{s}, \vect{t}) =1 - \frac{1}{2a} \left\|\vect{s}- \vect{t}\right\|_2  \left(3 -  \frac{1}{a^2}\left\| \vect{s}- \vect{t} \right\|_2^2\right), \quad \forall (\vect{s}, \vect{t}), \left\|  \vect{s}- \vect{t} \right\|_2 \leq a
+    \rho(\vect{s}, \vect{t}) = 1 - \frac{1}{2a} \left\|\vect{s} - \vect{t}\right\|_2 \left(3 - \frac{1}{a^2}\left\| \vect{s} - \vect{t} \right\|_2^2\right), \quad \forall (\vect{s}, \vect{t}), \left\|  \vect{s} - \vect{t} \right\|_2 \leq a
 
 and is equal to zero outside the sphere.
 

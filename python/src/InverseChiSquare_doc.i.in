@@ -42,7 +42,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.InverseChiSquare(1.)
+>>> distribution = ot.InverseChiSquare(1.0)
 
 Draw a sample:
 

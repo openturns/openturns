@@ -13,7 +13,7 @@ This class enables to approximate the following integral:
 
 .. math::
 
-    I_f = \int_{a}^{b}\, \int_{l_1(x_0)}^{u_1(x_0)}\, \int_{l_2(x_0, x_1)}^{u_2(x_0,x_1)}\, \int_{l_{n-1}(x_0, \dots, x_{n-2})}^{u_{n-1}(x_0, \dots, x_{n-2})} \, f(x_0, \dots, x_{n-1})\, dx_{n-1}\dots dx_0
+    I_f = \int_{a}^{b}\, \int_{l_1(x_0)}^{u_1(x_0)}\, \int_{l_2(x_0, x_1)}^{u_2(x_0,x_1)}\, \int_{l_{n-1}(x_0, \dots, x_{n-2})}^{u_{n-1}(x_0, \dots, x_{n-2})} \, f(x_0, \dots, x_{n-1})\di{x_{n-1}}\dots\di{x_0}
 
 with :math:`f: \Rset^n \mapsto \Rset^p`, :math:`l_k, u_k: \Rset^k \mapsto \Rset` and :math:`n\geq 1`. For :math:`n=1`, there is no bound functions :math:`l_k` and :math:`u_k`.
 

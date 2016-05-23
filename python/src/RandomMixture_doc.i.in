@@ -48,14 +48,14 @@ easily defined from the characteristic function of :math:`X_k` denoted
 
 .. math::
 
-    \phi(z_1,...,z_d) =  \prod_{j=1}^d {\exp(\imath z_j {y_0}_j)} \prod_{k=1}^n \phi_{X_k}((\Tr{\mat{M}} z)_k)
+    \phi(z_1,...,z_d) =  \prod_{j=1}^d {\exp(i z_j {y_0}_j)} \prod_{k=1}^n \phi_{X_k}((\Tr{\mat{M}} z)_k)
 
 It is possible to evaluate its density probability function once the
 characteristic function evaluated, using the Poisson summation formula:
 
 .. math::
 
-    \sum_{j_1 \in \mathbb{Z}}\hdots \sum_{j_d \in \mathbb{Z}} p(y_1 + 2\pi j_1/h_1,\hdots,y_d + 2\pi j_d/h_d) = (h_1\hdots h_d)/(2^d \pi^d) \sum_{k_1 \in \mathbb{Z}}\hdots \sum_{k_d \in \mathbb{Z}} \phi(k_1 h_1,\hdots,k_d h_d)\exp(-\imath(k_1 h_1+\hdots+k_d h_d))
+    \sum_{j_1 \in \mathbb{Z}}\hdots \sum_{j_d \in \mathbb{Z}} p(y_1 + 2\pi j_1/h_1,\hdots,y_d + 2\pi j_d/h_d) = (h_1\hdots h_d)/(2^d \pi^d) \sum_{k_1 \in \mathbb{Z}}\hdots \sum_{k_d \in \mathbb{Z}} \phi(k_1 h_1,\hdots,k_d h_d)\exp(-i(k_1 h_1+\hdots+k_d h_d))
 
 For :math:`h_i` small enough, the nested sums of the left term are reduced
 to the central term :math:`j_1=\hdots=j_d = 0`.
@@ -63,7 +63,7 @@ Thus, the density is approximated by:
 
 .. math::
 
-    p(y_1,\hdots,y_d) = (h_1\hdots h_d)/(2^d \pi^d) \sum_{|k_1| \leq N}\hdots \sum_{|k_d| \leq N} \phi(k_1 h_1,\hdots,k_d h_d)\exp(-\imath(k_1 h_1+\hdots+k_d h_d))
+    p(y_1,\hdots,y_d) = (h_1\hdots h_d)/(2^d \pi^d) \sum_{|k_1| \leq N}\hdots \sum_{|k_d| \leq N} \phi(k_1 h_1,\hdots,k_d h_d)\exp(-i(k_1 h_1+\hdots+k_d h_d))
 
 The nested sums of the right term are computed by blocks of form
 :math:`2^b \leq k < 2^{b+1}`, and are truncated when the contribution of a
@@ -72,7 +72,7 @@ setPDFPrecision method.
 Two other methods also may change the number of iterations; setBlockMin
 sets the block number from which truncation is possible, which means that
 computations are always performed for blocks lower than this parameter,
-even if their contributions are very small.  On the other hand, setBlockMax
+even if their contributions are very small. On the other hand, setBlockMax
 sets the maximum number of blocks, which can be useful to make sure that
 computations run in a limited time.
 

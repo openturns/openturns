@@ -38,7 +38,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.InverseNormal(1., 1.)
+>>> distribution = ot.InverseNormal(1.0, 1.0)
 
 Draw a sample:
 

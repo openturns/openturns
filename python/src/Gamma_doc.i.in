@@ -2,7 +2,7 @@
 "Gamma distribution.
 
 Available constructors:
-    Gamma(*arg1=1, arg2=1.0, gamma=0., ot.Gamma.KLAMBDA*)
+    Gamma(*arg1=1.0, arg2=1.0, gamma=0.0, ot.Gamma.KLAMBDA*)
 
 Parameters
 ----------
@@ -50,7 +50,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Gamma(1., 1.)
+>>> distribution = ot.Gamma(1.0, 1.0)
 
 Draw a sample:
 

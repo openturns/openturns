@@ -36,7 +36,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Uniform(2., 3.)
+>>> distribution = ot.Uniform(2.0, 3.0)
 
 Draw a sample:
 

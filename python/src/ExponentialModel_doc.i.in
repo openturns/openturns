@@ -57,15 +57,15 @@ Examples
 Create an exponential model from the amplitude :math:`\vect{\sigma}` and the scale :math:`\vect{\theta}`:
 
 >>> import openturns as ot
->>> amplitude = [1., 2.]
->>> scale = [4., 5.]
+>>> amplitude = [1.0, 2.0]
+>>> scale = [4.0, 5.0]
 >>> spatialDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
 
 Create an exponential model from the amplitude, scale and the correlation matrix:
 
->>> amplitude = [1., 2.]
->>> scale = [4., 5.]
+>>> amplitude = [1.0, 2.0]
+>>> scale = [4.0, 5.0]
 >>> spatialCorrelation = ot.CorrelationMatrix(2)
 >>> spatialCorrelation[0,1] = 0.8
 >>> spatialDimension = 2
@@ -73,8 +73,8 @@ Create an exponential model from the amplitude, scale and the correlation matrix
 
 Create an exponential model from the amplitude, scale and covariance matrix:
 
->>> amplitude = [1., 2.]
->>> scale = [4., 5.]
+>>> amplitude = [1.0, 2.0]
+>>> scale = [4.0, 5.0]
 >>> spatialCovariance = ot.CovarianceMatrix(2)
 >>> spatialCovariance[0,0] = 4.0
 >>> spatialCovariance[1,1] = 5.0

@@ -160,7 +160,7 @@ The gram matrix of the mesh is defined as the symmetric positive definite matrix
 
 .. math::
 
-    \forall i,j=1,\hdots,n,\quad K_{i,j}=\int_{\cD}\phi_i(\vect{x})\phi_j(\vect{x})\,\di\vect{x}
+    \forall i,j=1,\hdots,n,\quad K_{i,j}=\int_{\cD}\phi_i(\vect{x})\phi_j(\vect{x})\di{\vect{x}}
 
 This method is used in several algorithms related to stochastic process representation such as the Karhunen-Loeve decomposition.
 

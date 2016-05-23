@@ -2,7 +2,7 @@
 "Beta distribution parameters.
 
 Available constructors:
-    BetaMuSigma(*mu=0.5, sigma=* :math:`1/(2\sqrt{5})` *, a=0., b=1.0*)
+    BetaMuSigma(*mu=0.5, sigma=* :math:`1/(2\sqrt{5})` *, a=0.0, b=1.0*)
 
 Parameters
 ----------

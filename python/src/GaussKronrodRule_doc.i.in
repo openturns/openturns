@@ -8,6 +8,7 @@ myGaussKronrodPair : :class:`~openturns.GaussKronrodPair`
 
     Available rules: 
 
+    - GaussKronrodRule.G1K3, 
     - GaussKronrodRule.G3K7, 
     - GaussKronrodRule.G7K15, 
     - GaussKronrodRule.G11K23,
@@ -16,17 +17,17 @@ myGaussKronrodPair : :class:`~openturns.GaussKronrodPair`
 
 Notes
 -----
-The Gauss-Kronrod rules :math:`G_mK_{2m+1}` with  :math:`m=2n+1` enable to build two approximations of the definite integral :math:`\int_{-1}^1 f(t)\, dt` defined by:
+The Gauss-Kronrod rules :math:`G_mK_{2m+1}` with  :math:`m=2n+1` enable to build two approximations of the definite integral :math:`\int_{-1}^1 f(t)\di{t}` defined by:
 
 .. math::
 
-    \int_{-1}^1 f(t)\, dt \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
+    \int_{-1}^1 f(t)\di{t} \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
 
 and:
 
 .. math::
 
-  \int_{-1}^1 f(t)\, dt\simeq  \alpha_0f(0) + \sum_{k=1}^{m} \alpha_k (f(\zeta_k)+f(-\zeta_k))
+  \int_{-1}^1 f(t)\di{t}\simeq  \alpha_0f(0) + \sum_{k=1}^{m} \alpha_k (f(\zeta_k)+f(-\zeta_k))
 
 We have :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
 

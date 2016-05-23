@@ -39,7 +39,7 @@ The probability content of the event :math:`\cD_f` is :math:`P_f`:
 
 .. math::
 
-    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})d\vect{x}
+    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})\di{\vect{x}}
 
 Here, the event considered is explicited directly from the limit state function
 :math:`g(\vect{X}\,,\,\vect{d})` : this is the classical structural reliability
@@ -64,7 +64,7 @@ and the limit state function is:
 .. math::
 
     P_f &= P(Z \geq z_s) \\
-        &= \int_{g(\vect{X}\,,\,\vect{d}) \le 0}  \pdf\, d\vect{x}
+        &= \int_{g(\vect{X}, \vect{d}) \le 0} \pdf\di{\vect{x}}
 
 Examples
 --------
@@ -72,7 +72,7 @@ An event created from a limit state function:
 
 >>> import openturns as ot
 >>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
->>> myDistribution = ot.Normal([50., 1., 10., 5.], [1.]*4, ot.IdentityMatrix(4))
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)

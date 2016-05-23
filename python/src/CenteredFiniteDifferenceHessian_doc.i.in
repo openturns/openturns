@@ -37,7 +37,7 @@ Examples
 >>> myFunc = ot.NumericalMathFunction(['x1', 'x2'], ['y1', 'y2', 'y3'], formulas)
 >>> epsilon = [0.01]*2
 >>> myHessian = ot.CenteredFiniteDifferenceHessian(epsilon, myFunc.getEvaluation())
->>> inPoint = [1.]*2
+>>> inPoint = [1.0]*2
 >>> print(myHessian.hessian(inPoint))
 sheet #0
 [[  0         0.540293 ]

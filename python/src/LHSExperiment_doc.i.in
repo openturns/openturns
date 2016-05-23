@@ -12,7 +12,7 @@ distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with an independent copula used to generate the
     set of input data.
 size : positive int
-    Number :math:`cardI` of points that will be generated in the experiment.
+    Number :math:`\mathrm{card}\,I` of points that will be generated in the experiment.
 
 Notes
 -----
@@ -22,7 +22,7 @@ distribution :math:`\mu` with the LHS technique: some cells are determined,
 with the same probabilistic content according to the distribution, each line
 and each column contains exactly one cell, then points are selected among these
 selected cells. The weights associated to the points are all equal to
-:math:`1/cardI`. When recalled, the :meth:`generate` method generates a new
+:math:`1/\mathrm{card}\,I`. When recalled, the :meth:`generate` method generates a new
 sample: the point selection within the cells changes but not the cells
 selection. To change the cell selection, it is necessary to create a new LHS
 Experiment.
@@ -66,7 +66,7 @@ Parameters
 dimension : positive int
     Number of input dimension.
 totalSize : positive int
-    Number :math:`cardI` of points that need to be shuffled.
+    Number :math:`\mathrm{card}\,I` of points that need to be shuffled.
 
 Returns
 -------

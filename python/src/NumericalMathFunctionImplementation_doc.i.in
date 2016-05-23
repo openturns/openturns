@@ -211,7 +211,7 @@ Create a *NumericalMathFunction* from a collection of functions:
 >>> functions.append(ot.NumericalMathFunction(['x1', 'x2', 'x3'], ['y1', 'y2'],
 ...                                      ['x1 + 2 * x2 + x3', 'x1 + x2 - x3']))
 >>> myFunction = ot.NumericalMathFunction(functions)
->>> print(myFunction([1., 2., 3.]))
+>>> print(myFunction([1.0, 2.0, 3.0]))
 [3,6,8,0]
 
 Create a *NumericalMathFunction* which is the linear combination *linComb*
@@ -230,8 +230,8 @@ then the linear combination is:
                   \vect{X} & \mapsto & \displaystyle \sum_i c_if_i (\vect{X})
               \end{array}\right.
 
->>> myFunction2 = ot.NumericalMathFunction(functions, [2., 4.])
->>> print(myFunction2([1., 2., 3.]))
+>>> myFunction2 = ot.NumericalMathFunction(functions, [2.0, 4.0])
+>>> print(myFunction2([1.0, 2.0, 3.0]))
 [38,12]
 
 

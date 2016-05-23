@@ -47,13 +47,13 @@ The  *Matern* function is defined by:
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \sigma^2 \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
+    C(\vect{s}, \vect{t}) = \sigma^2 \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right)^{\nu} \mathrm{K}_{\nu} \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
 The correlation function :math:`\rho` writes:
 
 .. math::
 
-    \rho(\vect{s}, \vect{t}) = \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right)^{\nu} K_{\nu} \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
+    \rho(\vect{s}, \vect{t}) = \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right)^{\nu} \mathrm{K}_{\nu} \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
 
 

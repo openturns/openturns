@@ -14,7 +14,7 @@ Examples
 Create a NumericalPoint
 
 >>> import openturns as ot
->>> x = ot.NumericalPoint(3, 1.)
+>>> x = ot.NumericalPoint(3, 1.0)
 >>> x
 class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
 
@@ -22,7 +22,7 @@ Get or set terms
 
 >>> print(x[0])
 1.0
->>> x[0] = 0.
+>>> x[0] = 0.0
 >>> print(x[0])
 0.0
 >>> print(x[:2])
@@ -31,7 +31,7 @@ Get or set terms
 Create a NumericalPoint from a flat (1d) array, list or tuple
 
 >>> import numpy as np
->>> y = ot.NumericalPoint((0., 1., 2.))
+>>> y = ot.NumericalPoint((0.0, 1.0, 2.0))
 >>> y = ot.NumericalPoint(range(3))
 >>> y = ot.NumericalPoint(np.arange(3))
 
@@ -49,9 +49,9 @@ Addition, subtraction (with compatible dimensions)
 
 Multiplication, division with a scalar
 
->>> print(x * 3.)
+>>> print(x * 3.0)
 [0,3,3]
->>> print(x / 3.)
+>>> print(x / 3.0)
 [0,0.333333,0.333333]"
 
 // ---------------------------------------------------------------------
@@ -68,7 +68,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> x = ot.NumericalPoint(2)
->>> x.add(1.)
+>>> x.add(1.0)
 >>> print(x)
 [0,0,1]"
 
@@ -132,9 +132,9 @@ n : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NumericalPoint::norm
-"Compute the Euclidean (L2) norm.
+"Compute the Euclidean (:math:`L^2`) norm.
 
-The Euclidean (L2) norm of a vector is defined as:
+The Euclidean (:math:`L^2`) norm of a vector is defined as:
 
 .. math::
 
@@ -149,16 +149,16 @@ norm : int
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x = ot.NumericalPoint([1.0, 2.0, 3.0])
 >>> x.norm()
 3.741657..."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NumericalPoint::norm1
-"Compute the L1 norm.
+"Compute the :math:`L^1` norm.
 
-The L1 norm of a vector is defined as:
+The :math:`L^1` norm of a vector is defined as:
 
 .. math::
 
@@ -167,12 +167,12 @@ The L1 norm of a vector is defined as:
 Returns
 -------
 norm : int
-    The vector's L1 norm.
+    The vector's :math:`L^1` norm.
 
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x = ot.NumericalPoint([1.0, 2.0, 3.0])
 >>> x.norm1()
 6.0"
 
@@ -193,7 +193,7 @@ norm
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x = ot.NumericalPoint([1.0, 2.0, 3.0])
 >>> x.normSquare()
 14.0"
 
@@ -218,7 +218,7 @@ RuntimeError : If the Euclidean norm is zero.
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x = ot.NumericalPoint([1.0, 2.0, 3.0])
 >>> print(x.normalize())
 [0.267261,0.534522,0.801784]"
 
@@ -243,6 +243,6 @@ RuntimeError : If the squared Euclidean norm is zero.
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint([1., 2., 3.])
+>>> x = ot.NumericalPoint([1.0, 2.0, 3.0])
 >>> print(x.normalizeSquare())
 [0.0714286,0.285714,0.642857]"

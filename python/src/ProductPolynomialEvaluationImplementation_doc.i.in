@@ -17,9 +17,9 @@ dimension *n* is equal to the number of polynomials in *polCollection*.
 Examples
 --------
 >>> import openturns as ot
->>> P1 = ot.UniVariatePolynomial([1., 2., 3., 0])
->>> P2 = ot.UniVariatePolynomial([3., 2., 4., 5.])
->>> P3 = ot.UniVariatePolynomial([-1.,0. , 4, 0.])
+>>> P1 = ot.UniVariatePolynomial([1.0, 2.0, 3.0, 0])
+>>> P2 = ot.UniVariatePolynomial([3.0, 2.0, 4.0, 5.0])
+>>> P3 = ot.UniVariatePolynomial([-1.0, 0.0, 4, 0.0])
 >>> polyCol = ot.PolynomialCollection(1, P1)
 >>> polyCol.add(P2)
 >>> polyCol.add(P3)

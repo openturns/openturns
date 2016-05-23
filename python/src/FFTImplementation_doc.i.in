@@ -31,7 +31,7 @@ The Fast Fourier Transform writes as following:
 
 .. math::
 
-    {\rm y_k} = \sum_{n=0}^{N-1} x_n exp(-2 \imath \pi \frac{kn}{N})
+    {\rm y_k} = \sum_{n=0}^{N-1} x_n exp(-2 i \pi \frac{kn}{N})
 
 where :math:`x` denotes the data to be transformed, of size :math:`N`.
 
@@ -68,7 +68,7 @@ The Inverse Fast Fourier Transform writes as following:
 
 .. math::
 
-    {\rm y_k} = \sum_{n=0}^{N-1} \frac{1}{N} x_n exp(2 \imath \pi \frac{kn}{N})
+    {\rm y_k} = \sum_{n=0}^{N-1} \frac{1}{N} x_n exp(2 i \pi \frac{kn}{N})
 
 where :math:`x` denotes the data, of size :math:`N`, to be transformed.
 
@@ -105,7 +105,7 @@ The 2D Fast Fourier Transform writes as following:
 
 .. math::
 
-    {\rm Z_{k,l}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1} X_{m,n} exp(-2 \imath \pi \frac{km}{M}) exp(-2 \imath \pi \frac{ln}{N})
+    {\rm Z_{k,l}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1} X_{m,n} exp(-2 i \pi \frac{km}{M}) exp(-2 i \pi \frac{ln}{N})
 
 where :math:`X` denotes the data to be transformed with shape (:math:`M`,:math:`N`)
 
@@ -143,7 +143,7 @@ The 2D Fast Inverse Fourier Transform writes as following:
 
 .. math::
 
-    {\rm Y_{k,l}} = \frac{1}{M\times N}\sum_{m=0}^{M-1}\sum_{n=0}^{N-1} Z_{m,n} exp(2 \imath \pi \frac{km}{M}) exp(2 \imath \pi \frac{ln}{N})
+    {\rm Y_{k,l}} = \frac{1}{M\times N}\sum_{m=0}^{M-1}\sum_{n=0}^{N-1} Z_{m,n} exp(2 i \pi \frac{km}{M}) exp(2 i \pi \frac{ln}{N})
 
 where :math:`Z` denotes the data to be transformed with shape (:math:`M`,:math:`N`)
 
@@ -181,7 +181,7 @@ The 3D Fast Fourier Transform writes as following:
 
 .. math::
 
-    {\rm Z_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} X_{m,n,p} exp(-2 \imath \pi \frac{km}{M}) exp(-2 \imath \pi \frac{ln}{N}) exp(-2 \imath \pi \frac{rp}{P})
+    {\rm Z_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} X_{m,n,p} exp(-2 i \pi \frac{km}{M}) exp(-2 i \pi \frac{ln}{N}) exp(-2 i \pi \frac{rp}{P})
 
 where :math:`X` denotes the data to be transformed with shape (:math:`M`,:math:`N`, :math:`P`)
 
@@ -223,7 +223,7 @@ The 3D Inverse Fast Fourier Transform writes as following:
 
 .. math::
 
-    {\rm Y_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} \frac{1}{M\times N \times P} Z_{m,n,p} exp(2 \imath \pi \frac{km}{M}) exp(2 \imath \pi \frac{ln}{N}) exp(2 \imath \pi \frac{rp}{P})
+    {\rm Y_{k,l,r}} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} \frac{1}{M\times N \times P} Z_{m,n,p} exp(2 i \pi \frac{km}{M}) exp(2 i \pi \frac{ln}{N}) exp(2 i \pi \frac{rp}{P})
 
 where :math:`Z` denotes the data to be transformed with shape (:math:`M`, :math:`N`, :math:`P`)
 

@@ -24,7 +24,7 @@ The strategy implemented in OpenTURNS, is recommended by Enders (*Applied Econom
 
 
 
-We note :math:`(X_1, \hdots, X_n)` the data, by :math:`W(r)` the Wiener process, and :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r) dr`, :math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s) ds`.
+We note :math:`(X_1, \hdots, X_n)` the data, by :math:`W(r)` the Wiener process, and :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}`, :math:`W^{b}(r) = W^{a}(r) - 12 \left(r - \frac{1}{2} \right) \int_{0}^{1} \left(s - \frac{1}{2} \right) W(s)\di{s}`.
 
 
 **1.** We assume the model :eq:`Model1`:
@@ -91,7 +91,7 @@ which converges in distribution to the Dickey-Fuller distribution associated to 
 
 .. math::
 
-    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{b}(r) dW(r)}{\int_{1}^{0} W^{b}(r)^2 dr}
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{b}(r) \di{W(r)}}{\int_{1}^{0} W^{b}(r)^2 \di{r}}
 
 The null hypothesis :math:`\cH_0` from :eq:`TestModel1` is accepted when :math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
 
@@ -224,7 +224,7 @@ which converges in distribution to the Dickey-Fuller distribution associated to 
 
 .. math::
 
-    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{a}(r) dW(r)}{\int_{1}^{0} W^{a}(r)^2 dr}
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W^{a}(r) \di{W(r)}}{\int_{1}^{0} W^{a}(r)^2 \di{r}}
 
 The null hypothesis :math:`\cH_0` from :eq:`TestModel2` is accepted when :math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
 
@@ -340,7 +340,7 @@ which converges in distribution to the Dickey-Fuller distribution associated to 
 
 .. math::
 
-    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W(r) dW(r)}{\int_{1}^{0} W(r)^2 dr}
+    t_{\rho = 1} \stackrel{\mathcal{L}}{\longrightarrow} \frac{\int_{0}^{1}W(r) \di{W(r)}}{\int_{1}^{0} W(r)^2 \di{r}}
 
 The null hypothesis :math:`\cH_0` from :eq:`TestModel3` is accepted when :math:`t_{\rho=1} > C_{\alpha}` where :math:`C_{\alpha}` is the test threshold of level :math:`\alpha`.
 

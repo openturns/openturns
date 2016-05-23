@@ -36,7 +36,7 @@ Examples
 >>> correlation = ot.CorrelationMatrix(2)
 >>> correlation[1, 0] = 0.25
 >>> aCopula = ot.NormalCopula(correlation)
->>> marginals = [ot.Normal(1., 2.), ot.Normal(2., 3.)]
+>>> marginals = [ot.Normal(1.0, 2.0), ot.Normal(2.0, 3.0)]
 >>> distribution = ot.ComposedDistribution(marginals, aCopula)
 
 Draw a sample:

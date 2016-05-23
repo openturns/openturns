@@ -155,8 +155,8 @@ rho : float
 Notes
 -----
 It evaluates the scalar function 
-:math:`\rho(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta})` or 
-:math:`\rho(\dfrac{\vect{\tau}}{\theta})` if the model is stationary."
+:math:`\rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)` or 
+:math:`\rho\left(\dfrac{\vect{\tau}}{\theta}\right)` if the model is stationary."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::computeStandardRepresentative
 OT_CovarianceModel_computeStandardRepresentative_doc

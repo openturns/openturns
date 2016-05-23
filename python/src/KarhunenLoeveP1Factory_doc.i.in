@@ -14,10 +14,10 @@ The Karhunen-Loeve decomposition using P1 approximation allows to approximate th
 
 .. math::
 
-    \int_{\cD} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\, d\vect{s}=\lambda_n\vect{\phi}_n(\vect{t})
+    \int_{\cD} \mat{C}(\vect{s},\vect{t})\vect{\phi}_n(\vect{s})\di{\vect{s}}=\lambda_n\vect{\phi}_n(\vect{t})
 
 
-with :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\vect{\phi}_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\vect{\phi}_n(\vect{s})\|^2\,d\vect{s}=1`.
+with :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)` a given covariance function, :math:`\lambda_n` a nonincreasing sequence of nonnegative values (the **eigenvalues** of the equation) and :math:`\vect{\phi}_n: \cD\mapsto\Rset^d` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD_N}\|\vect{\phi}_n(\vect{s})\|^2\di{\vect{s}}=1`.
 
 The Karhunen-Loeve P1 approximation consists in replacing the covariance model :math:`\mat{C}` by its P1 approximation :math:`\hat{\mat{C}}` on a mesh :math:`\cD_N` which approximates the domain :math:`\cD`:
 

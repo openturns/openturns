@@ -20,10 +20,10 @@ Create a Study object:
 Add PersistentObjects to the study:
 
 >>> # a NumericalPoint:
->>> point = ot.NumericalPoint(3, 0.)
->>> point[0] = 10.
->>> point[1] = 11.
->>> point[2] = 12.
+>>> point = ot.NumericalPoint(3, 0.0)
+>>> point[0] = 10.0
+>>> point[1] = 11.0
+>>> point[2] = 12.0
 >>> myStudy.add('point', point)
 >>> # a Simulation::Result:
 >>> simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)

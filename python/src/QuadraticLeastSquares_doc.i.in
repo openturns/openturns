@@ -61,7 +61,7 @@ The following minimization problem has to be solved:
       \quad \cJ(\vect{a}) \, = \, \sum_{i=1}^N \;
                                 \left(
                                 y^{(i)} \; - \;
-                                \vect{a}^{\textsf{T}} \vect{\psi}(\vect{x}^{(i)})
+                                \Tr{\vect{a}} \vect{\psi}(\vect{x}^{(i)})
                                 \right)^2
 
 The solution is given by:
@@ -69,15 +69,15 @@ The solution is given by:
 .. math::
 
     \widehat{\vect{a}} \, = \, \left(
-                               \vect{\vect{\Psi}}^{\textsf{T}} \vect{\vect{\Psi}}
+                               \Tr{\mat{\Psi}} \mat{\Psi}
                                \right)^{-1} \;
-                               \vect{\vect{\Psi}}^{\textsf{T}}  \; \vect{\cY}
+                               \Tr{\mat{\Psi}}  \; \vect{\cY}
 
 where:
 
 .. math::
 
-    \vect{\vect{\Psi}} \, = \, (\psi_{j}(\vect{x}^{(i)}) \; , \; i=1,\cdots,N \; , \; j = 0,\cdots,n_X)
+    \mat{\Psi} \, = \, (\psi_{j}(\vect{x}^{(i)}) \; , \; i=1,\cdots,N \; , \; j = 0,\cdots,n_X)
 
 See also
 --------

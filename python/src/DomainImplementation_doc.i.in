@@ -152,7 +152,7 @@ isInside : bool
 Examples
 --------
 >>> import openturns as ot
->>> domain = ot.Domain([1., 2.], [1., 2.]) 
+>>> domain = ot.Domain([1.0, 2.0], [1.0, 2.0]) 
 >>> print(domain.isNumericallyEmpty())
 True"
 %enddef

@@ -27,7 +27,7 @@ We note :math:`Z=XY` the scalar random variable which distribution is :math:`f_Z
  
 .. math::
 
-    \displaystyle f_Z(z) = \int_{\Rset} f_X (t) f_{Y}(\dfrac{z}{t}) \, \dfrac{dt}{|t|}
+    \displaystyle f_Z(z) = \int_{\Rset} f_X (t) f_{Y}(\dfrac{z}{t}) \, \dfrac{\Diff t}{|t|}
 
 with :math:`f_X`,  and :math:`f_Y` the probability density functions of :math:`X`  and :math:`Y`.
 
