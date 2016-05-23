@@ -20,11 +20,7 @@
  */
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
-#include "openturns/Exception.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -100,7 +96,7 @@ String GaussProductExperiment::__repr__() const
 void GaussProductExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the GaussProductExperiment can only be used with distributions having an independent copula.";
-  for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i) collection_.add(StandardDistributionPolynomialFactory(distribution.getMarginal(i)));
+  for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i) collection_.add(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution.getMarginal(i))));
   WeightedExperiment::setDistribution(distribution);
   isAlreadyComputedNodesAndWeights_ = false;
 }

@@ -73,39 +73,46 @@ private:
   // Structure used to compute the two dot-products needed for the computation of three-terms relation coefficients
   struct DotProductWrapper
   {
-    DotProductWrapper(const OrthogonalUniVariatePolynomial & pN,
+    DotProductWrapper(const OrthogonalUniVariatePolynomial & qN,
 		      const Distribution & weight):
-      pN_(pN), weight_(weight) {};
+      qN_(qN), weight_(weight)
+    {
+      // Nothing to do
+    };
 
+    // This method allows to compute <qN, qN>
     NumericalPoint kernelSym(const NumericalPoint & point) const
     {
       const NumericalScalar pdf(weight_.computePDF(point));
       const NumericalScalar x(point[0]);
-      const NumericalScalar pNX(pN_(x));
-      const NumericalScalar xPNX(x * pNX);
+      const NumericalScalar qNX(qN_(x));
       NumericalPoint result(1);
-      result[0] = xPNX * xPNX * pdf;
+      result[0] = qNX * qNX * pdf;
       return result;
     };
 
+    // This method allows to compute <qN, qN> and <x.qN, qN>
     NumericalPoint kernelGen(const NumericalPoint & point) const
     {
       const NumericalScalar pdf(weight_.computePDF(point));
       const NumericalScalar x(point[0]);
-      const NumericalScalar pNX(pN_(x));
-      const NumericalScalar xPNX(x * pNX);
+      const NumericalScalar qNX(qN_(x));
+      const NumericalScalar xQNX(x * qNX);
       NumericalPoint result(2);
-      result[0] = xPNX * xPNX * pdf;
-      result[1] = xPNX * pNX * pdf;
+      result[0] = qNX * qNX * pdf;
+      result[1] = xQNX * qNX * pdf;
       return result;
     };
 
-    const OrthogonalUniVariatePolynomial & pN_;
+    const OrthogonalUniVariatePolynomial & qN_;
     const Distribution & weight_;
   }; // struct DotProductWrapper
 
   /** Cache to store the recurrence coefficients */
-  mutable CoefficientsPersistentCollection recurrenceCoefficients_;
+  mutable CoefficientsPersistentCollection monicRecurrenceCoefficients_;
+
+  /** Cache to store the squared norm of the monic orthogonal polynomials */
+  mutable NumericalPoint monicSquaredNorms_;
 
   /** Flag to tell if the underlying distribution is symmetric */
   Bool isElliptical_;

@@ -398,6 +398,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
   setAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
 
+  // AdaptiveStieltjesAlgorithm parameters //
+  setAsUnsignedInteger( "AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64 );
+  setAsNumericalScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );
+
   // LinearModelFactory parameters //
   setAsNumericalScalar( "LinearModelFactory-DefaultLevelValue", 0.95 );
 
