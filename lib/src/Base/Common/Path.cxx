@@ -66,6 +66,10 @@
 #error "OPENTURNS_HOME_ENV_VAR is NOT defined. Check configuration."
 #endif
 
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /* The environment variable name */
@@ -121,12 +125,18 @@ FileName Path::GetExecutableDirectory()
   GetModuleFileName(NULL, szPath, MAX_PATH);
 #else
   const UnsignedInteger MAX_PATH = 512;
-  char path[MAX_PATH];
   char szPath[MAX_PATH];
+#ifdef __APPLE__
+  uint32_t bufsize = MAX_PATH;
+  if (_NSGetExecutablePath(szPath, &bufsize))
+    perror("_NSGetExecutablePath");
+#else
   pid_t pid = getpid();
+  char path[MAX_PATH];
   sprintf(path, "/proc/%d/exe", pid);
   if (readlink(path, szPath, MAX_PATH) == -1)
     perror("readlink");
+#endif
 #endif
 
   // get parent dir
