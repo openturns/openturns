@@ -6,11 +6,17 @@
 
 ==== Major changes ====
  * Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
+ * New api for sensitivity analysis
 
 ==== New classes ====
  * SubsetSampling
  * AdaptiveDirectionalSampling
  * KarhunenLoeveQuadratureFactory
+ * SobolIndicesAlgorithm
+ * SaltelliSensitivityAlgorithm
+ * MartinezSensitivityAlgorithm
+ * JansenSensitivityAlgorithm
+ * MauntzKucherenkoSensitivityAlgorithm
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
@@ -24,6 +30,7 @@
  * Modified NumericalMathFunction::[sg]etParameter to operate on NumericalPoint instead NumericalPointWithDescription
  * Add NumericalMathFunction::[sg]etParameterDescription to access the parameter description
  * Deprecated classes UserDefinedPair, HistogramPair
+ * Removed SensitivityAnalysis class
 
 === Python module ===
 

@@ -50,7 +50,6 @@
 #include "openturns/SecondOrderModelImplementation.hxx"
 #include "openturns/SecondOrderModel.hxx"
 #include "openturns/ExponentialCauchy.hxx"
-#include "openturns/SensitivityAnalysis.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/TestResult.hxx"
 #include "openturns/TimeSeries.hxx"

@@ -1,0 +1,67 @@
+%feature("docstring") OT::JansenSensitivityAlgorithm
+"Sensitivity analysis using Jansen method
+
+Available constructors:
+    JansenSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
+
+    JansenSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
+    
+    JansenSensitivityAlgorithm(*experiment, model, computeSecondOrder*)
+
+Parameters
+----------
+inputDesign : :class:`~openturns.NumericalSample`
+    Design for the evaluation of sensitivity indices, obtained
+    thanks to the SobolIndicesAlgorithmImplementation.Generate method
+outputDesign : :class:`~openturns.NumericalSample`
+    Design for the evaluation of sensitivity indices, obtained as the evaluation
+    of a NumericalMathFunction (model) on the previous inputDesign
+distribution : :class:`~openturns.Distribution`
+    Input probabilistic model.
+    Should have independent copula
+experiment : :class:`~openturns.WeightedExperiment`
+    Experiment for the generation of two independent samples.
+N : int
+    Size of samples to generate
+computeSecondOrder : bool
+    If True, design that will be generated contains elements for the evaluation
+    of second order indices.
+
+Notes
+-----
+This class is concerned with analyzing the influence the random vector
+:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
+:math:`Y^k` which is being studied for uncertainty, by using the [Jansen1999]_
+method for the evaluation of both first and total order indices.
+
+These last ones are respectively given as follows:
+
+.. math::
+
+   \begin{array}{ccc}
+   \hat{V_i} & = & \frac{1}{n} \sum_{k=1}^{n} \left(G(A_k)^2 - G_0^2\right) - \frac{1}{2n} \sum_{k=1}^{n} \left( G(E_k) - G(B_k) \right)^2 \\
+   \hat{VT_{i}} & = & \frac{1}{n} \sum_{k=1}^{n} \left( G(A_k) -  G(E_k) \right)^2
+   \end{array}
+
+See also
+--------
+SobolIndicesAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formula = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+' + \
+...    '0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
+>>> model = ot.NumericalMathFunction(['X1', 'X2', 'X3'], ['Y'], formula)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
+...                                         ot.IndependentCopula(3))
+>>> # Define designs to pre-compute
+>>> size = 1000
+>>> inputDesign = ot.SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
+>>> outputDesign = model(inputDesign)
+>>> # sensitivity analysis algorithm
+>>> sensitivityAnalysis = ot.JansenSensitivityAlgorithm(inputDesign, outputDesign, size)
+>>> print(sensitivityAnalysis.getFirstOrderIndices())
+[0.367206,0.42367,0.0143613]"
+

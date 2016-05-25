@@ -155,7 +155,6 @@ ot_add_python_module(statistics statistics_module.i
                       RandomGenerator.i RandomGenerator_doc.i.in
                       RandomGeneratorState.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
-                      SensitivityAnalysis.i SensitivityAnalysis_doc.i.in
                       LowDiscrepancySequenceImplementation.i LowDiscrepancySequenceImplementation_doc.i.in
                       LowDiscrepancySequence.i LowDiscrepancySequence_doc.i.in
                       SobolSequence.i SobolSequence_doc.i.in
@@ -781,6 +780,12 @@ ot_add_python_module(uncertainty uncertainty_module.i
                       ANCOVA.i ANCOVA_doc.i.in
                       FAST.i FAST_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
+		      SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
+		      SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
+		      MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
+		      SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
+		      JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
+		      MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
                       UncertaintyTemplateDefs.i
                     )
 

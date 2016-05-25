@@ -56,7 +56,6 @@
 %include HaselgroveSequence.i 
 %include ReverseHaltonSequence.i 
 %include CorrelationAnalysis.i 
-%include SensitivityAnalysis.i 
 %include FilteringWindowsImplementation.i
 %include FilteringWindows.i
 %include Hamming.i
