@@ -1,0 +1,24 @@
+// SobolIndicesAlgorithm docstrings are defined in SobolIndicesAlgorithmImplementation_doc.i.in
+
+%feature("docstring") OT::SobolIndicesAlgorithm
+OT_SobolIndicesAlgorithm_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getFirstOrderIndices
+OT_SobolIndicesAlgorithm_getFirstOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getFirstOrderIndicesInterval
+OT_SobolIndicesAlgorithm_getFirstOrderIndicesInterval_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getAggregatedFirstOrderIndices
+OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getAggregatedTotalOrderIndices
+OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getSecondOrderIndices
+OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getTotalOrderIndices
+OT_SobolIndicesAlgorithm_getTotalOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getTotalOrderIndicesInterval
+OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::setBootstrapConfidenceLevel
+OT_SobolIndicesAlgorithm_setBootstrapConfidenceLevel_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::setBootstrapSize
+OT_SobolIndicesAlgorithm_setBootstrapSize_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::draw
+OT_SobolIndicesAlgorithm_draw_doc

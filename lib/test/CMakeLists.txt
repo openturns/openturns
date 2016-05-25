@@ -289,7 +289,6 @@ if (R_rot_FOUND)
 ot_check_test (LinearModelFactory_std)
 ot_check_test (LinearModel_std)
 endif ()
-ot_check_test (SensitivityAnalysis_std)
 ot_check_test (ProcessSample_std)
 ot_check_test (RandomGenerator_std)
 ot_check_test (SobolSequence_std)
@@ -626,6 +625,7 @@ endif ()
 # Sensitivity
 ot_check_test (ANCOVA_std)
 ot_check_test (FAST_std)
+ot_check_test (SobolIndicesAlgorithm_std)
 
 # Simulation
 ot_check_test (DirectionalSampling_std)
