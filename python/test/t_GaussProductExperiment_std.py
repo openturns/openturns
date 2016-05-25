@@ -9,6 +9,11 @@ try:
     distribution = ComposedDistribution(
         DistributionCollection([Exponential(), Triangular(-1.0, -0.5, 1.0)]))
     marginalDegrees = Indices([3, 6])
+    # Test the constructor based on marginal degrees
+    print("experiment1=", GaussProductExperiment(marginalDegrees))
+    # Test the constructor based on distribution
+    print("experiment2=", GaussProductExperiment(distribution))
+    # Test the constructor based on marginal degrees and distribution
     myPlane = GaussProductExperiment(
         Distribution(distribution), marginalDegrees)
     print("myPlane = ", myPlane)

@@ -21,6 +21,7 @@
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/AdaptiveStieltjesAlgorithm.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,6 +48,8 @@ GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees):
   marginalDegrees_(0),
   nodes_(0, 0)
 {
+  // Here we have to set a distribution of dimension compatible with the marginal degrees
+  setDistribution(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalDegrees.getSize())));
   setMarginalDegrees(marginalDegrees);
 }
 
