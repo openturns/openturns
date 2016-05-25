@@ -79,6 +79,10 @@ private:
   // Compute the tensor product nodes and weights
   void computeNodesAndWeights();
 
+  // Distribution and marginal degrees accessor
+  void setDistributionAndMarginalDegrees(const Distribution & distribution,
+					 const Indices & marginalDegrees);
+
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyCollection collection_;
 
