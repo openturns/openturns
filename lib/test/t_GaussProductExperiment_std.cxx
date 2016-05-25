@@ -38,6 +38,11 @@ int main(int argc, char *argv[])
     Indices marginalDegrees(0);
     marginalDegrees.add(3);
     marginalDegrees.add(6);
+    // Test the constructor based on marginal degrees
+    fullprint << "experiment1=" << GaussProductExperiment(marginalDegrees) << std::endl;
+    // Test the constructor based on distribution
+    fullprint << "experiment2=" << GaussProductExperiment(distribution) << std::endl;
+    // Test the constructor based on marginal degrees and distribution
     GaussProductExperiment myPlane(distribution, marginalDegrees);
     fullprint << "myPlane = " << myPlane << std::endl;
     NumericalPoint weights(0);
