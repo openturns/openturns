@@ -597,7 +597,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
   NumericalPoint boundingBox(4, -0.1);
   boundingBox[1] = aggregatedFO.getDimension() + 1;
   boundingBox[3] = 1.1 ;
-  if (bootstrapSize_ > 0 and confidenceLevel_ > 0.0)
+  if (bootstrapSize_ > 0 && confidenceLevel_ > 0.0)
   {
     // Add plot of intervals
     const Interval foInterval(getFirstOrderIndicesInterval());
