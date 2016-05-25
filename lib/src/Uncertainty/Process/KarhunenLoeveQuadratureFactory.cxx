@@ -170,7 +170,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   const UnsignedInteger nodesNumber(nodes_.getSize());
   const UnsignedInteger dimension(covarianceModel.getDimension());
   if (dimension != 1) throw NotYetImplementedException(HERE) << "Error: KarhunenLoeveQuadratureFactory does not allow for covariance models of dimension=" << dimension << " greater than 1";
-  const UnsignedInteger augmentedDimension(dimension * nodesNumber);
+
   // Discretize the covariance model
   CovarianceMatrix C(covarianceModel.discretize(nodes_));
   // Prepare the generalized eigenvalues problem
