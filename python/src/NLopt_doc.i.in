@@ -117,8 +117,17 @@ Examples
 >>> print(ot.NLopt.GetAlgorithmCodes())
 [36,37,21,23,8,9,19,0,1,4,2,5,3,42,35,20,22,6,7,38,39,31,33,41,11,10,24,40,15,17,18,16,13,14,30,32,34,25,28,26,27,12,29]#43"
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::NLopt::SetSeed
+"Initialize the random generator seed.
 
+Parameters
+----------
+seed : int
+    The RNG seed."
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::LBFGS
 "Low-storage BFGS algorithm.

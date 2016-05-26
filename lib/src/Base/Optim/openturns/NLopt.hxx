@@ -57,7 +57,10 @@ public:
   /** NLopt algorithm codes */
   static Indices GetAlgorithmCodes();
   static UnsignedInteger GetAlgorithmCode(const String & name);
-  
+
+  /** Initialize the random generator seed */
+  static void SetSeed(const UnsignedInteger seed);
+
   /** String converter */
   String __repr__() const;
 

@@ -35,15 +35,11 @@ static const Factory<NLopt> RegisteredFactory;
 /* Map to associate algorithm names and codes */
 std::map<String, UnsignedInteger> NLopt::AlgorithmNames_;
 
-/* Flag to tell if the algorithm names map has to be initialized */
-Bool NLopt::MustInitialize_ = true;
-
 /* Static method to initialize the algorithm names/codes pairing in nlopt */
 void NLopt::InitializeAlgorithmNames()
 {
-  if (!MustInitialize_) return;
-  AlgorithmNames_.erase(AlgorithmNames_.begin(), AlgorithmNames_.end());
 #ifdef OPENTURNS_HAVE_NLOPT
+  if (!AlgorithmNames_.empty()) return;
   AlgorithmNames_["GN_DIRECT"] = nlopt::GN_DIRECT;
   AlgorithmNames_["GN_DIRECT_L"] = nlopt::GN_DIRECT_L;
   AlgorithmNames_["GN_DIRECT_L_RAND"] = nlopt::GN_DIRECT_L_RAND;
@@ -90,7 +86,6 @@ void NLopt::InitializeAlgorithmNames()
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif    
-  MustInitialize_ = false;
 }
 
 /* Static methods to access algorithm names and codes */
@@ -129,6 +124,17 @@ UnsignedInteger NLopt::GetAlgorithmCode(const String & name)
   if (it == AlgorithmNames_.end()) throw InvalidArgumentException(HERE) << "Error: the given NLopt algorithm name=" << name << " is unknown.";
   return it->second;
 }
+
+
+void NLopt::SetSeed(const UnsignedInteger seed)
+{
+#ifdef OPENTURNS_HAVE_NLOPT
+  nlopt::srand(seed);
+#else
+  throw NotYetImplementedException(HERE) << "No NLopt support";
+#endif
+}
+
 
 /* Default constructor */
 NLopt::NLopt(const UnsignedInteger algoType)

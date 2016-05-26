@@ -73,9 +73,13 @@ int main(int argc, char *argv[])
         allAlgo.add(NLopt(allCodes[i]));
       for (UnsignedInteger i = 0; i < allAlgo.getSize(); ++i)
         {
-	  // Here we skip all the odd algorithms that results either in infinite loop or segmentation fault, as of NLopt version 2.4.2
-	  if ((i == 5) || (i == 9) || (i == 10) || (i == 22) || (i == 23) || (i == 41) || (i == 42) || (i == 44)) continue;
           OptimizationSolver algo(allAlgo[i]);
+	  // Here we skip all the odd algorithms that results either in infinite loop or segmentation fault, as of NLopt version 2.4.2
+	  if ((i == 5) || (i == 9) || (i == 10) || (i == 22) || (i == 23) || (i == 41) || (i == 42) || (i == 44) || (i == 46))
+	    {
+	      fullprint << "-- Skipped: algo=" << algo.getClassName() << std::endl;
+	      continue;
+	    }
           for (UnsignedInteger minimization = 0; minimization < 2; ++minimization)
             for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
               for (UnsignedInteger equality = 0; equality < 2; ++equality)
@@ -90,12 +94,13 @@ int main(int argc, char *argv[])
                     problem.setEqualityConstraint(NumericalMathFunction(inVars, Description(1, "eq"), Description(1, "x4-2")));
                   try
                     {
+                      NLopt::SetSeed(0);
                       algo.setProblem(problem);
                       algo.setStartingPoint(startingPoint);
                       fullprint << "algo=" << algo << std::endl;
                       algo.run();
                       OptimizationResult result(algo.getResult());
-                      //FIXME:fullprint << "x^=" << printNumericalPoint(result.getOptimalPoint(), 3) << std::endl;
+                      fullprint << "x^=" << printNumericalPoint(result.getOptimalPoint(), 3) << std::endl;
                     }
                   catch (...)
                     {

@@ -34,7 +34,8 @@ all_algo = [ot.SLSQP(), ot.LBFGS(), ot.MMA(), ot.CCSAQ(), ot.NelderMead(), ot.CO
 for code in ot.NLopt.GetAlgorithmCodes():
     all_algo.append(ot.NLopt(code))
 for i in range(len(all_algo)):
-    if ((i == 5) or (i == 9) or (i == 10) or (i == 22) or (i == 23) or (i == 41) or (i == 42) or (i == 44)):
+    if ((i == 5) or (i == 9) or (i == 10) or (i == 22) or (i == 23) or (i == 33) or (i == 41) or (i == 42) or (i == 44)):
+        print('-- Skipped: algo=', algo.getClassName())
         continue
     algo = all_algo[i]
     for minimization in [True, False]:
@@ -49,11 +50,12 @@ for i in range(len(all_algo)):
                     # x4 = 2
                     problem.setEqualityConstraint(ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['eq'], ['x4-2']))
                 try:
+                    ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
                     algo.setStartingPoint(startingPoint)
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()
-                    #print('x^=', printNumericalPoint(result.getOptimalPoint(), 3))
+                    print('x^=', printNumericalPoint(result.getOptimalPoint(), 3))
                 except:
                     print('-- Not supported: algo=', algo.getClassName(), 'inequality=', inequality, 'equality=', equality)
