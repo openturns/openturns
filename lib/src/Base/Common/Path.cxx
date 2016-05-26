@@ -220,11 +220,9 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   directoryList.push_back(directory);
 
   // When the compile-time prefix is not the actual installation prefix,
-  // guess from the Python location, happens with the Windows installer or Conda
+  // guess from the Python location, happens with the Windows installer
 #ifdef _WIN32
   directoryList.push_back(GetExecutableDirectory() + "\\Lib\\site-packages\\openturns");
-#else
-  directoryList.push_back(GetExecutableDirectory() + "/../etc/openturns");
 #endif
 
   return directoryList;
