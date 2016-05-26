@@ -49,8 +49,7 @@ GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees):
   nodes_(0, 0)
 {
   // Here we have to set a distribution of dimension compatible with the marginal degrees
-  setDistribution(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalDegrees.getSize())));
-  setMarginalDegrees(marginalDegrees);
+  setDistributionAndMarginalDegrees(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalDegrees.getSize())), marginalDegrees);
 }
 
 /* Constructor with parameters */
@@ -60,9 +59,7 @@ GaussProductExperiment::GaussProductExperiment(const Distribution & distribution
   marginalDegrees_(0),
   nodes_(0, 0)
 {
-  // The distribution must be set BEFORE the marginal degrees
-  setDistribution(distribution);
-  setMarginalDegrees(Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree" )));
+  setDistributionAndMarginalDegrees(distribution, Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree" )));
 }
 
 /* Constructor with parameters */
@@ -73,9 +70,7 @@ GaussProductExperiment::GaussProductExperiment(const Distribution & distribution
   marginalDegrees_(0),
   nodes_(0, 0)
 {
-  // The distribution must be set BEFORE the marginal degrees
-  setDistribution(distribution);
-  setMarginalDegrees(marginalDegrees);
+  setDistributionAndMarginalDegrees(distribution, marginalDegrees);
 }
 
 /* Virtual constructor */
@@ -99,7 +94,10 @@ String GaussProductExperiment::__repr__() const
 void GaussProductExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the GaussProductExperiment can only be used with distributions having an independent copula.";
-  for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i) collection_.add(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution.getMarginal(i))));
+  const UnsignedInteger dimension(distribution.getDimension());
+  if (dimension != marginalDegrees_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal degrees=" << marginalDegrees_.getSize() << ".";
+  collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
+  for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution.getMarginal(i))));
   WeightedExperiment::setDistribution(distribution);
   isAlreadyComputedNodesAndWeights_ = false;
 }
@@ -121,6 +119,15 @@ void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
     marginalDegrees_ = marginalDegrees;
     isAlreadyComputedNodesAndWeights_ = false;
   }
+}
+
+/** Marginal degrees accessor */
+void GaussProductExperiment::setDistributionAndMarginalDegrees(const Distribution & distribution,
+							       const Indices & marginalDegrees)
+{
+  // Set the marginal degrees here then the distribution with checks
+  marginalDegrees_ = marginalDegrees;
+  setDistribution(distribution);
 }
 
 Indices GaussProductExperiment::getMarginalDegrees() const
