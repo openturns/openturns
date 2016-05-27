@@ -343,7 +343,7 @@ void TruncatedDistribution::setParameter(const NumericalPoint & parameter)
 {
   const UnsignedInteger parametersSize = distribution_.getParameterDimension();
   if (parameter.getSize() != parametersSize + 4) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + 4 << " values, got " << parameter.getSize();
-  NumericalPoint newParameters;
+  NumericalPoint newParameters(parametersSize);
   std::copy(parameter.begin(), parameter.begin() + parametersSize, newParameters.begin());
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(newParameters);
