@@ -41,6 +41,8 @@ standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=
 Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = 4)
 lowerBound=1
 upperBound=4
+Distribution parameters      =[2,1.5,1,1,1,4]
+Distribution after setParameter =[1,1.5,1,1,1,4]
 Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=1 finiteLowerBound=true upperBound=13.4759 finiteUpperBound=false thresholdRealization=0.5
 Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = +inf)
 Elliptical = false
@@ -84,6 +86,8 @@ standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=
 Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = +inf)
 lowerBound=1
 upperBound=13.4759
+Distribution parameters      =[2,1.5,1,1,0,13.4759]
+Distribution after setParameter =[1,1.5,1,1,0,12.4759]
 Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=-9.47594 finiteLowerBound=false upperBound=4 finiteUpperBound=true thresholdRealization=0.5
 Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = -inf, b = 4)
 Elliptical = false
@@ -127,3 +131,5 @@ standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=
 Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = -inf, b = 4)
 lowerBound=-9.47594
 upperBound=4
+Distribution parameters      =[2,1.5,0,-9.47594,1,4]
+Distribution after setParameter =[1,1.5,0,-10.4759,1,4]
