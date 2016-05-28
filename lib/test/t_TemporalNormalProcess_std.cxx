@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger n(11);
 
     RegularGrid myTimeGrid(tmin, step, n);
-    const UnsignedInteger size(100);
+    const UnsignedInteger size(25);
 
     TemporalNormalProcess myProcess(myModel, myTimeGrid);
     fullprint << "myProcess=" << myProcess << std::endl;
