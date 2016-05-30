@@ -60,6 +60,7 @@ for algoName in algoNames:
                     ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
                     algo.setStartingPoint(startingPoint)
+                    #algo.setInitialStep([0.1] * dim)
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()

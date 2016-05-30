@@ -247,6 +247,14 @@ void NLopt::run()
     }
   }
 
+  if (initialStep_.getDimension() > 0)
+  {
+    if (initialStep_.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid dx point dimension, expected " << dimension;
+    std::vector<double> dx(dimension, 0.0);
+    std::copy(initialStep_.begin(), initialStep_.end(), dx.begin());
+    opt.set_default_initial_step(dx);
+  }
+
   std::vector<double> x(dimension, 0.0);
   NumericalPoint startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
@@ -287,6 +295,7 @@ void NLopt::save(Advocate & adv) const
 {
   OptimizationSolverImplementation::save(adv);
   adv.saveAttribute("algoName_", algoName_);
+  adv.saveAttribute("initialStep_", initialStep_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -294,11 +303,23 @@ void NLopt::load(Advocate & adv)
 {
   OptimizationSolverImplementation::load(adv);
   adv.loadAttribute("algoName_", algoName_);
+  adv.loadAttribute("initialStep_", initialStep_);
 }
 
 String NLopt::getAlgorithmName() const
 {
   return algoName_;
+}
+
+/* Initial derivative-free local-optimization algorithms step accessor */
+void NLopt::setInitialStep(const NumericalPoint & initialStep)
+{
+  initialStep_ = initialStep;
+}
+
+NumericalPoint NLopt::getInitialStep() const
+{
+  return initialStep_;
 }
 
 double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data)

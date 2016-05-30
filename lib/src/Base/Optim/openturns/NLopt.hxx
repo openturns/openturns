@@ -54,6 +54,10 @@ public:
   static Description GetAlgorithmNames();
   String getAlgorithmName() const;
 
+  /** Initial derivative-free local-optimization algorithms step accessor */
+  void setInitialStep(const NumericalPoint & initialStep);
+  NumericalPoint getInitialStep() const;
+
   /** Initialize the random generator seed */
   static void SetSeed(const UnsignedInteger seed);
 
@@ -74,6 +78,9 @@ protected:
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
   String algoName_;
+
+  /** Initial derivative-free local-optimization algorithms step */
+  NumericalPoint initialStep_;
 
   /** Map of NLopt algorithms names */
   static std::map<String, UnsignedInteger> AlgorithmNames_;
