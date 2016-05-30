@@ -634,6 +634,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       LaguerreFactory.i LaguerreFactory_doc.i.in
                       LegendreFactory.i LegendreFactory_doc.i.in
                       MeixnerFactory.i MeixnerFactory_doc.i.in
+                      SoizeGhanemFactory.i SoizeGhanemFactory_doc.i.in
                       OrthogonalUniVariatePolynomialFamily.i OrthogonalUniVariatePolynomialFamily_doc.i.in
                       OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in 
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i.in

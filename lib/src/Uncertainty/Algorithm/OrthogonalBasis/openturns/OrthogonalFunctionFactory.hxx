@@ -28,8 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
  * @class OrthogonalFunctionFactory
  *
@@ -45,6 +43,9 @@ public:
 
   /** Default constructor */
   OrthogonalFunctionFactory();
+
+  /** Parameter constructor */
+  OrthogonalFunctionFactory(const Distribution & measure);
 
   /** Build the NumericalMathFunction of the given index */
   virtual NumericalMathFunction build(const UnsignedInteger index) const;

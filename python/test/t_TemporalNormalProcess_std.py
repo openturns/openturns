@@ -29,7 +29,7 @@ try:
     n = 11
 
     myTimeGrid = RegularGrid(tmin, step, n)
-    size = 100
+    size = 25
 
     myProcess = TemporalNormalProcess(myModel, myTimeGrid)
     print("myProcess = ", myProcess)

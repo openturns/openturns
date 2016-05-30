@@ -1,0 +1,46 @@
+%feature("docstring") OT::SoizeGhanemFactory
+"SoizeGhanem orthonormal multivariate functional family.
+
+For the any multivariate distribution with continuous copula.
+
+Available constructor:
+    SoizeGhanemFactory()
+
+    SoizeGhanemFactory(*measure, useCopula*)
+
+    SoizeGhanemFactory(*measure, phi, useCopula*)
+
+
+Parameters
+----------
+measure : :class:`~openturns.Distribution`
+    The measure defining the inner product of the factory.
+phi : :class:`~openturns.EnumerateFunction`
+    The function mapping the index of the multivariate basis function to the multi-index of the marginal variables.
+    Default is to use the :class:`~openturns.LinearEnumerateFunction`.
+useCopula : bool
+    Flag to tell if the copula density has to be used directly or indirectly through the joint PDF of the measure. Default is True.
+
+Notes
+-----
+This class implements the multivariate orthonormal basis associated with an arbitrary multidimensional distribution with continuous copula and marginals with well-defined orthonormal polyomials of arbitrary order. The details are in [SoizeGhanem2004]_.
+
+See also
+--------
+StandardDistributionPolynomialFactory, OrthogonalProductPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> marginals = [ot.Uniform(-1.0, 1.0), ot.Normal(0.0, 1.0)]
+>>> copula = ot.ClaytonCopula(1.0)
+>>> distribution = ot.ComposedDistribution(marginals, copula)
+>>> factory = ot.SoizeGhanemFactory(distribution)
+>>> point = [0.5]*2
+>>> for i in range(3):
+...     value = factory.build(i)(point)
+...     print('SoizeGhanem_' + str(i) + '(' + str(point) + ')=' + str(value))
+SoizeGhanem_0([0.5, 0.5])=[0.870518]
+SoizeGhanem_1([0.5, 0.5])=[0.753891]
+SoizeGhanem_2([0.5, 0.5])=[0.435259]
+"

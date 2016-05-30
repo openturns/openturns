@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This is the orthogonal polynomial basis
+ *  @brief This is the natural orthogonal basis associated to a multidimensional
+ *         distribution.
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,46 +19,45 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_ORTHOGONALPRODUCTPOLYNOMIALFACTORY_HXX
-#define OPENTURNS_ORTHOGONALPRODUCTPOLYNOMIALFACTORY_HXX
+#ifndef OPENTURNS_SOIZEGHANEMFACTORY_HXX
+#define OPENTURNS_SOIZEGHANEMFACTORY_HXX
 
 #include "openturns/OrthogonalFunctionFactory.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/OrthogonalProductPolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class OrthogonalProductPolynomialFactory
+ * @class SoizeGhanemFactory
  *
  * This is the orthogonal polynomial basis
  */
 
-class OT_API OrthogonalProductPolynomialFactory
+class OT_API SoizeGhanemFactory
   : public OrthogonalFunctionFactory
 {
   CLASSNAME;
 public:
 
-  typedef Collection<OrthogonalUniVariatePolynomialFamily>           PolynomialFamilyCollection;
-  typedef PersistentCollection<OrthogonalUniVariatePolynomialFamily> PolynomialFamilyPersistentCollection;
-
-  friend class Factory<OrthogonalProductPolynomialFactory>;
+  friend class Factory<SoizeGhanemFactory>;
 
   /** Default constructor */
-  OrthogonalProductPolynomialFactory();
+  SoizeGhanemFactory();
 
   /** Constructor */
-  OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll);
+  explicit SoizeGhanemFactory(const Distribution & measure,
+                              const Bool useCopula = true);
 
   /** Constructor */
-  OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll,
-                                     const EnumerateFunction & phi);
+  SoizeGhanemFactory(const Distribution & measure,
+                     const EnumerateFunction & phi,
+                     const Bool useCopula = true);
 
   /** Build the NumericalMathFunction of the given index */
   NumericalMathFunction build(const UnsignedInteger index) const;
@@ -65,15 +65,8 @@ public:
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
 
-  /** Return the collection of univariate orthogonal polynomial families */
-  PolynomialFamilyCollection getPolynomialFamilyCollection() const;
-
   /** Virtual constructor */
-  virtual OrthogonalProductPolynomialFactory * clone() const;
-
-  /** Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
-  NumericalSample getNodesAndWeights(const Indices & degrees,
-                                     NumericalPoint & weights) const;
+  virtual SoizeGhanemFactory * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -87,18 +80,25 @@ public:
 protected:
 
 private:
-  /** Build the measure based on the one found in the family collection */
-  void buildMeasure();
 
-  /** The 1D polynomial family collection */
-  PolynomialFamilyPersistentCollection coll_;
+  /* Build the multivariate polynomial factory associated with the marginal distributions */
+  void buildProductPolynomialAndAdaptation(const Bool useCopula);
+
+  /** The underlying product polynomial factory */
+  OrthogonalProductPolynomialFactory productPolynomial_;
 
   /** The Phi function */
   EnumerateFunction phi_;
 
-} ; /* class OrthogonalProductPolynomialFactory */
+  /** Has independent copula? */
+  Bool hasIndependentCopula_;
+
+  /** Adaptation factor */
+  NumericalMathFunction adaptationFactor_;
+} ; /* class SoizeGhanemFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ORTHOGONALPRODUCTPOLYNOMIALFACTORY_HXX */
+#endif /* OPENTURNS_SOIZEGHANEMFACTORY_HXX */
+

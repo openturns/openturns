@@ -66,6 +66,11 @@ Orthogonal univariate function families
 
 Orthogonal multivariate functions
 =================================
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    SoizeGhanemFactory
 
 Making orthogonal multivariate functions from orthogonal univariate functions
 -----------------------------------------------------------------------------
