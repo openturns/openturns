@@ -23,7 +23,6 @@
 
 #include "openturns/Interval.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/MeshFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IntervalMesher
  */
 class OT_API IntervalMesher
-  : public MeshFactoryImplementation
+  : public PersistentObject
 {
   CLASSNAME;
 public:

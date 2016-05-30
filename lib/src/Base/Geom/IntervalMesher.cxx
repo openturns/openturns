@@ -32,7 +32,7 @@ static const Factory<IntervalMesher> RegisteredFactory;
 
 /* Default constructor */
 IntervalMesher::IntervalMesher()
-  : MeshFactoryImplementation()
+  : PersistentObject()
   , discretization_(0)
 {
   // Nothing to do
@@ -40,7 +40,7 @@ IntervalMesher::IntervalMesher()
 
 /* Parameter constructor */
 IntervalMesher::IntervalMesher(const Indices & discretization)
-  : MeshFactoryImplementation()
+  : PersistentObject()
   , discretization_(discretization)
 {
   // Check if the discretization is valid

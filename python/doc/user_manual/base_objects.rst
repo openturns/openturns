@@ -25,7 +25,6 @@ Domains
     RegularGrid
     Interval
     IntervalMesher
-    MeshFactory
 
 .. autosummary::
     :toctree: _generated/

@@ -32,6 +32,4 @@
 %include BipartiteGraph.i
 %include Mesh.i
 %include RegularGrid.i
-%include MeshFactoryImplementation.i
-%include MeshFactory.i
 %include IntervalMesher.i
