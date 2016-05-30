@@ -101,34 +101,7 @@ private:
 
 };
 
-
-class OT_API BOBYQA : public NLopt
-{
-  CLASSNAME;
-public:
-  BOBYQA();
-  virtual BOBYQA * clone() const;
-  explicit BOBYQA(const OptimizationProblem & problem);
-};
-
-class OT_API CCSAQ : public NLopt
-{
-  CLASSNAME;
-public:
-  CCSAQ();
-  virtual CCSAQ * clone() const;
-  explicit CCSAQ(const OptimizationProblem & problem);
-};
-
-class OT_API COBYLANLOPT : public NLopt
-{
-  CLASSNAME;
-public:
-  COBYLANLOPT();
-  virtual COBYLANLOPT * clone() const;
-  explicit COBYLANLOPT(const OptimizationProblem & problem);
-};
-
+/** @deprecated */
 class OT_API LBFGS : public NLopt
 {
   CLASSNAME;
@@ -138,15 +111,7 @@ public:
   explicit LBFGS(const OptimizationProblem & problem);
 };
 
-class OT_API MMA : public NLopt
-{
-  CLASSNAME;
-public:
-  MMA();
-  virtual MMA * clone() const;
-  explicit MMA(const OptimizationProblem & problem);
-};
-
+/** @deprecated */
 class OT_API NelderMead : public NLopt
 {
   CLASSNAME;
@@ -156,6 +121,7 @@ public:
   explicit NelderMead(const OptimizationProblem & problem);
 };
 
+/** @deprecated */
 class OT_API SLSQP : public NLopt
 {
   CLASSNAME;

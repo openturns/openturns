@@ -378,69 +378,40 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
 CLASSNAMEINIT(SLSQP);
 static const Factory<SLSQP> RegisteredFactory2;
 SLSQP::SLSQP() : NLopt("LD_SLSQP")
-{}
+{
+  Log::Warn(OSS() << "SLSQP class is deprecated.");
+}
 SLSQP::SLSQP(const OptimizationProblem & problem)
 : NLopt(problem, "LD_SLSQP")
-{}
+{
+  Log::Warn(OSS() << "SLSQP class is deprecated.");
+}
 SLSQP * SLSQP::clone() const { return new SLSQP(*this); }
-
 
 CLASSNAMEINIT(LBFGS);
 static const Factory<LBFGS> RegisteredFactory3;
 LBFGS::LBFGS() : NLopt("LD_LBFGS")
-{}
+{
+  Log::Warn(OSS() << "LBFGS class is deprecated.");
+}
 LBFGS::LBFGS(const OptimizationProblem & problem)
 : NLopt(problem, "LD_LBFGS")
-{}
+{
+  Log::Warn(OSS() << "LBFGS class is deprecated.");
+}
 LBFGS * LBFGS::clone() const { return new LBFGS(*this); }
-
-
-CLASSNAMEINIT(MMA);
-static const Factory<MMA> RegisteredFactory4;
-MMA::MMA() : NLopt("LD_MMA")
-{}
-MMA::MMA(const OptimizationProblem & problem)
-: NLopt(problem, "LD_MMA")
-{}
-MMA * MMA::clone() const { return new MMA(*this); }
-
-
-CLASSNAMEINIT(CCSAQ);
-static const Factory<CCSAQ> RegisteredFactory5;
-CCSAQ::CCSAQ() : NLopt("LD_CCSAQ")
-{}
-CCSAQ::CCSAQ(const OptimizationProblem & problem)
-: NLopt(problem, "LD_CCSAQ")
-{}
-CCSAQ * CCSAQ::clone() const { return new CCSAQ(*this); }
-
-
-CLASSNAMEINIT(COBYLANLOPT);
-static const Factory<COBYLANLOPT> RegisteredFactory6;
-COBYLANLOPT::COBYLANLOPT() : NLopt("LN_COBYLA")
-{}
-COBYLANLOPT::COBYLANLOPT(const OptimizationProblem & problem)
-: NLopt(problem, "LN_COBYLA")
-{}
-COBYLANLOPT * COBYLANLOPT::clone() const { return new COBYLANLOPT(*this); }
-
-
-CLASSNAMEINIT(BOBYQA);
-static const Factory<BOBYQA> RegisteredFactory7;
-BOBYQA::BOBYQA() : NLopt("LN_BOBYQA")
-{}
-BOBYQA::BOBYQA(const OptimizationProblem & problem)
-: NLopt(problem, "LN_BOBYQA")
-{}
-BOBYQA * BOBYQA::clone() const { return new BOBYQA(*this); }
 
 CLASSNAMEINIT(NelderMead);
 static const Factory<NelderMead> RegisteredFactory8;
 NelderMead::NelderMead() : NLopt("LN_NELDERMEAD")
-{}
+{
+  Log::Warn(OSS() << "NelderMead class is deprecated.");
+}
 NelderMead::NelderMead(const OptimizationProblem & problem)
 : NLopt(problem, "LN_NELDERMEAD")
-{}
+{
+  Log::Warn(OSS() << "NelderMead class is deprecated.");
+}
 NelderMead * NelderMead::clone() const { return new NelderMead(*this); }
 
 END_NAMESPACE_OPENTURNS

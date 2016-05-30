@@ -414,9 +414,9 @@ void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationSolver()
   if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver") == "TNC")
     solver_ = TNC();
   else if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver") == "NELDER-MEAD")
-    solver_ = NelderMead();
+    solver_ = NLopt("LN_NELDERMEAD");
   else if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver") == "LBFGS")
-    solver_ = LBFGS();
+    solver_ = NLopt("LD_LBFGS");
   else
     throw InvalidArgumentException(HERE) << "Uknown optimization solver";
   // Define Optimization Problem
