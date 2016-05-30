@@ -33,6 +33,26 @@ algoName : str
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NLopt::setInitialStep
+"Initial local derivative-free algorithms step accessor.
+
+Parameters
+----------
+dx : sequence of float
+    The initial step."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::getInitialStep
+"Initial local derivative-free algorithms step accessor.
+
+Returns
+-------
+dx : :class:`~openturns.NumericalPoint`
+    The initial step."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NLopt::GetAlgorithmNames
 "Accessor to the list of algorithms provided by NLopt, by names.
 
