@@ -96,7 +96,7 @@ public:
   virtual String __repr__() const;
 
   /** String converter */
-  virtual String __str__() const;
+  virtual String __str__(const String & offset = "") const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
