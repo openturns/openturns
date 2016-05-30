@@ -34,12 +34,11 @@ algoNames = ot.NLopt.GetAlgorithmNames()
 
 for algoName in algoNames:
 
-    # AUGLAG: nlopt invalid argument
     # MLSL freezes
     # STOGO might not be enabled
     # NEWUOA nan/-nan
     # COBYLA crashes on squeeze
-    if 'MLSL' in algoName or 'STOGO' in algoName or 'AUGLAG' in algoName or 'NEWUOA' in algoName or 'COBYLA' in algoName:
+    if 'MLSL' in algoName or 'STOGO' in algoName or 'NEWUOA' in algoName or 'COBYLA' in algoName:
         print('-- Skipped: algo=', algoName)
         continue
 
@@ -61,6 +60,8 @@ for algoName in algoNames:
                     algo.setProblem(problem)
                     algo.setStartingPoint(startingPoint)
                     #algo.setInitialStep([0.1] * dim)
+                    localAlgo = ot.NLopt('LD_MMA')
+                    algo.setLocalSolver(localAlgo)
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()
