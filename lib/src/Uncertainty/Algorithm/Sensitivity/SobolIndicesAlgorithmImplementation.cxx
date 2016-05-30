@@ -555,7 +555,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const N
 }
 
 /* String converter */
-String SobolIndicesAlgorithmImplementation::__str__() const
+String SobolIndicesAlgorithmImplementation::__str__(const String & offset) const
 {
   return __repr__();
 }

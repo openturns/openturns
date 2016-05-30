@@ -65,7 +65,7 @@ public:
   String __repr__() const;
 
   /** String converter */
-  String __str__() const;
+  String __str__(const String & offset = "") const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
