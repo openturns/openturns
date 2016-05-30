@@ -27,7 +27,7 @@ Create a mesh:
 
 Parameters
 ----------
-interval : :class:`~openturns.Domain`
+interval : :class:`~openturns.Interval`
     The domain defining the interval, of dimension equal to the dimension
     of `discretization`.
 

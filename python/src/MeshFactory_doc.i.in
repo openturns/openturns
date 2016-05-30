@@ -1,4 +1,0 @@
-// MeshFactory docstrings are defined in MeshFactoryImplementation_doc.i.in
-
-%feature("docstring") OT::MeshFactory
-OT_MeshFactory_doc
