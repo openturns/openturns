@@ -58,6 +58,10 @@ public:
   void setInitialStep(const NumericalPoint & initialStep);
   NumericalPoint getInitialStep() const;
 
+  /** Local optimizer */
+  void setLocalSolver(const NLopt & localSolver);
+  NLopt getLocalSolver() const;
+
   /** Initialize the random generator seed */
   static void SetSeed(const UnsignedInteger seed);
 
@@ -81,6 +85,9 @@ protected:
 
   /** Initial derivative-free local-optimization algorithms step */
   NumericalPoint initialStep_;
+
+  /** Auxiliary solver */
+  Pointer<NLopt> p_localSolver_;
 
   /** Map of NLopt algorithms names */
   static std::map<String, UnsignedInteger> AlgorithmNames_;

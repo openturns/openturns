@@ -149,7 +149,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
 
   const UnsignedInteger dimension = getProblem().getDimension();
-  const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(algoName_));
+  const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);
 
   if (problem.hasInequalityConstraint())
@@ -255,6 +255,25 @@ void NLopt::run()
     opt.set_default_initial_step(dx);
   }
 
+  if (!p_localSolver_.isNull())
+  {
+    const nlopt::algorithm local_algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(p_localSolver_->getAlgorithmName()));
+    nlopt::opt local_opt(local_algo, dimension);
+    local_opt.set_xtol_abs(p_localSolver_->getMaximumAbsoluteError());
+    local_opt.set_xtol_rel(p_localSolver_->getMaximumRelativeError());
+    local_opt.set_ftol_abs(p_localSolver_->getMaximumResidualError());
+    local_opt.set_maxeval(p_localSolver_->getMaximumEvaluationNumber());
+    if (p_localSolver_->getInitialStep().getDimension() > 0)
+    {
+      NumericalPoint localInitialStep(p_localSolver_->getInitialStep());
+      if (localInitialStep.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid local dx point dimension, expected " << dimension;
+      std::vector<double> local_dx(dimension, 0.0);
+      std::copy(localInitialStep.begin(), localInitialStep.end(), local_dx.begin());
+      local_opt.set_default_initial_step(local_dx);
+    }
+    opt.set_local_optimizer(local_opt);
+  }
+
   std::vector<double> x(dimension, 0.0);
   NumericalPoint startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
@@ -296,6 +315,8 @@ void NLopt::save(Advocate & adv) const
   OptimizationSolverImplementation::save(adv);
   adv.saveAttribute("algoName_", algoName_);
   adv.saveAttribute("initialStep_", initialStep_);
+  if (!p_localSolver_.isNull())
+    adv.saveAttribute("localSolver_", *p_localSolver_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -304,6 +325,12 @@ void NLopt::load(Advocate & adv)
   OptimizationSolverImplementation::load(adv);
   adv.loadAttribute("algoName_", algoName_);
   adv.loadAttribute("initialStep_", initialStep_);
+  if (adv.hasAttribute("localSolver_"))
+  {
+    NLopt localSolver;
+    adv.loadAttribute("localSolver_", localSolver);
+    p_localSolver_ = localSolver.clone();
+  }
 }
 
 String NLopt::getAlgorithmName() const
@@ -320,6 +347,17 @@ void NLopt::setInitialStep(const NumericalPoint & initialStep)
 NumericalPoint NLopt::getInitialStep() const
 {
   return initialStep_;
+}
+
+/* Local optimizer */
+void NLopt::setLocalSolver(const NLopt & localSolver)
+{
+  p_localSolver_ = localSolver.clone();
+}
+
+NLopt NLopt::getLocalSolver() const
+{
+  return *p_localSolver_;
 }
 
 double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data)

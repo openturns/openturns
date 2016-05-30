@@ -53,6 +53,26 @@ dx : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NLopt::setLocalSolver
+"Local solver accessor.
+
+Parameters
+----------
+solver : :class:`~openturns.NLopt`
+    The local solver."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::getLocalSolver
+"Local solver accessor.
+
+Returns
+-------
+solver : :class:`~openturns.NLopt`
+    The local solver."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NLopt::GetAlgorithmNames
 "Accessor to the list of algorithms provided by NLopt, by names.
 
