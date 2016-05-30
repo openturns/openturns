@@ -1,3 +1,27 @@
+%feature("docstring") OT::NLopt
+"Generic interface to NLopt solvers.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+algoType : int
+    The NLopt identifier of the actual algorithm.
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 4
+>>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
+>>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> solverID = ot.NLopt.GetAlgorithmCode('LD_MMA')
+>>> algo = ot.NLopt(problem, solverID)"
+
 %feature("docstring") OT::SLSQP
 "Sequential Least-Squares Quadratic Programming solver.
 
@@ -19,8 +43,91 @@ Examples
 >>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
 >>> algo = ot.SLSQP(problem)"
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::NLopt::GetAlgorithmName
+"Accessor to the name of an NLopt algorithm given its code.
 
+Parameters
+----------
+code : int
+    The code of the NLopt algorithm, according to its indexing convention.
+
+Returns
+-------
+names : :class:`~openturns.Description`
+    List of algorithm names provided by NLopt, according to its naming convention.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.NLopt.GetAlgorithmName(0))
+GN_DIRECT"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::GetAlgorithmNames
+"Accessor to the list of algorithms provided by NLopt, by names.
+
+Returns
+-------
+names : :class:`~openturns.Description`
+    List of algorithm names provided by NLopt, according to its naming convention.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.NLopt.GetAlgorithmNames())
+[AUGLAG,AUGLAG_EQ,GD_MLSL,GD_MLSL_LDS,GD_STOGO,GD_STOGO_RAND,GN_CRS2_LM,GN_DIRECT,GN_DIRECT_L,GN_DIRECT_L_NOSCAL,GN_DIRECT_L_RAND,GN_DIRECT_L_RAND_NOSCAL,GN_DIRECT_NOSCAL,GN_ESCH,GN_ISRES,GN_MLSL,GN_MLSL_LDS,GN_ORIG_DIRECT,GN_ORIG_DIRECT_L,G_MLSL,G_MLSL_LDS,LD_AUGLAG,LD_AUGLAG_EQ,LD_CCSAQ,LD_LBFGS,LD_LBFGS_NOCEDAL,LD_MMA,LD_SLSQP,LD_TNEWTON,LD_TNEWTON_PRECOND,LD_TNEWTON_PRECOND_RESTART,LD_TNEWTON_RESTART,LD_VAR1,LD_VAR2,LN_AUGLAG,LN_AUGLAG_EQ,LN_BOBYQA,LN_COBYLA,LN_NELDERMEAD,LN_NEWUOA,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#43"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::GetAlgorithmCode
+"Accessor to the code of an NLopt algorithm given its name.
+
+Parameters
+----------
+name : string
+    The name of the NLopt algorithm, according to its naming convention.
+
+Returns
+-------
+code : int
+    The code of the algorithm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.NLopt.GetAlgorithmCode('LD_MMA'))
+24"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::GetAlgorithmCodes
+"Accessor to the list of algorithms provided by NLopt, by codes.
+
+Returns
+-------
+codes : :class:`~openturns.Indices`
+    List of algorithm names provided by NLopt, according to its codes convention.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.NLopt.GetAlgorithmCodes())
+[36,37,21,23,8,9,19,0,1,4,2,5,3,42,35,20,22,6,7,38,39,31,33,41,11,10,24,40,15,17,18,16,13,14,30,32,34,25,28,26,27,12,29]#43"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::SetSeed
+"Initialize the random generator seed.
+
+Parameters
+----------
+seed : int
+    The RNG seed."
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::LBFGS
 "Low-storage BFGS algorithm.
@@ -42,6 +149,126 @@ Examples
 >>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
 >>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
 >>> algo = ot.LBFGS(problem)"
+
+
+
+
+%feature("docstring") OT::MMA
+"Method of moving asymptote algorithm.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 4
+>>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
+>>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> algo = ot.MMA(problem)"
+
+
+
+
+%feature("docstring") OT::CCSAQ
+"Conservative Convex Separable Approximations with simple quadratic approximations algorithm.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 4
+>>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
+>>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> algo = ot.CCSAQ(problem)"
+
+
+
+
+%feature("docstring") OT::CCSAQ
+"Conservative Convex Separable Approximations with simple quadratic approximations algorithm.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 4
+>>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
+>>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> algo = ot.CCSAQ(problem)"
+
+
+
+
+%feature("docstring") OT::COBYLANLOPT
+"Constrained Optimization BY Linear Approximations algorithm (NLopt version).
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 4
+>>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
+>>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> algo = ot.COBYLANLOPT(problem)"
+
+
+
+
+%feature("docstring") OT::BOBYQA
+"Bound-constrained optimization via quadratic models algorithm.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 4
+>>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
+>>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> algo = ot.BOBYQA(problem)"
 
 
 

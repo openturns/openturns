@@ -268,6 +268,9 @@ ot_check_test (Cobyla_std)
 ot_check_test (SQP_std)
 ot_check_test (TNC_std)
 ot_check_test (NearestPointChecker_std)
+if (NLOPT_FOUND)
+ot_check_test (NLopt_std)
+endif ()
 
 # Solver
 ot_check_test (Bisection_std)
