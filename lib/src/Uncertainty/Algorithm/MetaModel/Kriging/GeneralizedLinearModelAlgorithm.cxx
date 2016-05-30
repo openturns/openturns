@@ -411,14 +411,15 @@ void GeneralizedLinearModelAlgorithm::checkYCentered(const NumericalSample & Y)
 
 void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationSolver()
 {
-  if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver") == "TNC")
+  const String solverName(ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver"));
+  if (solverName == "TNC")
     solver_ = TNC();
-  else if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver") == "NELDER-MEAD")
+  else if (solverName == "NELDER-MEAD")
     solver_ = NLopt("LN_NELDERMEAD");
-  else if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver") == "LBFGS")
+  else if (solverName == "LBFGS")
     solver_ = NLopt("LD_LBFGS");
   else
-    throw InvalidArgumentException(HERE) << "Uknown optimization solver";
+    throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
   // Define Optimization Problem
   // Default problem takes into account the bounds and thus determine the dimension
   OptimizationProblem problem;
