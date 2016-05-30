@@ -27,8 +27,6 @@
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/LevelSet.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/MeshFactory.hxx"
-#include "openturns/MeshFactoryImplementation.hxx"
 #include "openturns/RegularGrid.hxx"
 
 #endif /* OPENTURNS_OTGEOM_HXX */

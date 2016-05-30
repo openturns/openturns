@@ -208,8 +208,6 @@ ot_add_python_module(geom geom_module.i
                       BipartiteGraph.i BipartiteGraph_doc.i.in
                       Mesh.i Mesh_doc.i.in
                       RegularGrid.i RegularGrid_doc.i.in
-                      MeshFactoryImplementation.i MeshFactoryImplementation_doc.i.in
-                      MeshFactory.i MeshFactory_doc.i.in
                       IntervalMesher.i IntervalMesher_doc.i.in
                       BaseGeomTemplateDefs.i
                     )

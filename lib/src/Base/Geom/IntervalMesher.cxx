@@ -32,7 +32,7 @@ static const Factory<IntervalMesher> RegisteredFactory;
 
 /* Default constructor */
 IntervalMesher::IntervalMesher()
-  : MeshFactoryImplementation()
+  : PersistentObject()
   , discretization_(0)
 {
   // Nothing to do
@@ -40,7 +40,7 @@ IntervalMesher::IntervalMesher()
 
 /* Parameter constructor */
 IntervalMesher::IntervalMesher(const Indices & discretization)
-  : MeshFactoryImplementation()
+  : PersistentObject()
   , discretization_(discretization)
 {
   // Check if the discretization is valid
@@ -85,7 +85,7 @@ Indices IntervalMesher::getDiscretization() const
 
 /* Here is the interface that all derived class must implement */
 
-Mesh IntervalMesher::build(const Domain & interval) const
+Mesh IntervalMesher::build(const Interval & interval) const
 {
   const UnsignedInteger dimension(interval.getDimension());
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
