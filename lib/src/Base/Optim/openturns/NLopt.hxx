@@ -77,7 +77,6 @@ protected:
 
   /** Map of NLopt algorithms names */
   static std::map<String, UnsignedInteger> AlgorithmNames_;
-  static Bool MustInitialize_;
 
   /** Method to initialize alrogithm names map */
   static void InitializeAlgorithmNames();
