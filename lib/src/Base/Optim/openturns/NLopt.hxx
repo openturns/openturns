@@ -38,11 +38,11 @@ class OT_API NLopt :
 public:
 
   /** Default constructor */
-  explicit NLopt(const UnsignedInteger algoType = 0);
+  explicit NLopt(const String & algoName = "LD_SLSQP");
 
   /** Constructor with parameters */
   explicit NLopt(const OptimizationProblem & problem,
-                 const UnsignedInteger algoType = 0);
+                 const String & algoName = "LD_SLSQP");
 
   /** Virtual constructor */
   virtual NLopt * clone() const;
@@ -52,11 +52,7 @@ public:
 
   /** NLopt algorithm names accessor */
   static Description GetAlgorithmNames();
-  static String GetAlgorithmName(const UnsignedInteger code);
-
-  /** NLopt algorithm codes */
-  static Indices GetAlgorithmCodes();
-  static UnsignedInteger GetAlgorithmCode(const String & name);
+  String getAlgorithmName() const;
 
   /** Initialize the random generator seed */
   static void SetSeed(const UnsignedInteger seed);
@@ -77,7 +73,7 @@ protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
-  UnsignedInteger algoType_;
+  String algoName_;
 
   /** Map of NLopt algorithms names */
   static std::map<String, UnsignedInteger> AlgorithmNames_;
@@ -87,6 +83,8 @@ protected:
   static void InitializeAlgorithmNames();
 
 private:
+  /** NLopt algorithm code */
+  static UnsignedInteger GetAlgorithmCode(const String & name);
 
   /** Compute the objective function of the optimization problem */
   static double ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
