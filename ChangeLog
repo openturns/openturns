@@ -41,6 +41,7 @@
  * Add HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals
  * Add two samples Kolmogorov test
  * Improved the speed of many algorithms based on method binding
+ * Added more options to control LHSExperiment and LowDiscrepancyExperiment
 
 === Bug fixes ===
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)

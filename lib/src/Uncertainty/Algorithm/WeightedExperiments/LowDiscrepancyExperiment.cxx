@@ -32,17 +32,20 @@ CLASSNAMEINIT(LowDiscrepancyExperiment);
 /* Default constructor */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment():
   WeightedExperiment(),
-  marginals_(),
-  sequence_(SobolSequence())
+  marginals_(0),
+  sequence_(SobolSequence()),
+  restart_(true)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size):
+LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
+    const Bool restart):
   WeightedExperiment(size),
-  marginals_(),
-  sequence_(SobolSequence())
+  marginals_(0),
+  sequence_(SobolSequence()),
+  restart_(restart)
 {
   // Nothing to do
 }
@@ -50,20 +53,27 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size):
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const Distribution & distribution,
-    const UnsignedInteger size):
-  WeightedExperiment(distribution, size),
+    const UnsignedInteger size,
+    const Bool restart):
+  WeightedExperiment(size),
   marginals_(0),
-  sequence_(sequence)
+  sequence_(sequence),
+  restart_(restart)
 {
+  // Warning! The distribution must not be given to the upper class directly
+  // because the correct initialization of the sequence depends on a test on
+  // its dimension
   setDistribution(distribution);
 }
 
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
-    const UnsignedInteger size):
+    const UnsignedInteger size,
+    const Bool restart):
   WeightedExperiment(size),
   marginals_(0),
-  sequence_(sequence)
+  sequence_(sequence),
+  restart_(restart)
 {
   // Nothing to do
 }
@@ -82,7 +92,19 @@ String LowDiscrepancyExperiment::__repr__() const
       << " name=" << getName()
       << " sequence=" << sequence_
       << " distribution=" << distribution_
-      << " size=" << size_;
+      << " size=" << size_
+      << " restart=" << restart_;
+  return oss;
+}
+
+String LowDiscrepancyExperiment::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << GetClassName()
+      << "(sequence=" << sequence_
+      << ", distribution=" << distribution_
+      << ", size" << size_
+      << ", restart=" << (restart_ ? "true" : "false");
   return oss;
 }
 
@@ -94,8 +116,9 @@ void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution
   marginals_ = DistributionCollection(dimension);
   // Get the marginal distributions
   for (UnsignedInteger i = 0; i < dimension; ++ i) marginals_[i] = distribution.getMarginal(i);
-  // initialize the low-discrepancy sequence
-  sequence_.initialize(dimension);
+  // restart the low-discrepancy sequence if asked for or mandatory (dimension changed)
+  if (restart_ || (dimension != getDistribution().getDimension()))
+    sequence_.initialize(dimension);
   WeightedExperiment::setDistribution(distribution);
 }
 
@@ -103,6 +126,17 @@ void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution
 LowDiscrepancySequence LowDiscrepancyExperiment::getSequence() const
 {
   return sequence_;
+}
+
+/* Restart accessor */
+Bool LowDiscrepancyExperiment::getRestart() const
+{
+  return restart_;
+}
+
+void LowDiscrepancyExperiment::setRestart(const Bool restart)
+{
+  restart_ = restart;
 }
 
 /* Sample generation */
@@ -118,3 +152,4 @@ NumericalSample LowDiscrepancyExperiment::generate()
 }
 
 END_NAMESPACE_OPENTURNS
+

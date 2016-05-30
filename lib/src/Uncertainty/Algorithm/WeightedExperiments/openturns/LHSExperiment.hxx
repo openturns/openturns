@@ -23,6 +23,7 @@
 
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/Matrix.hxx"
+#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,22 +40,28 @@ class OT_API LHSExperiment
   CLASSNAME;
 public:
 
+  typedef Collection<Distribution> DistributionCollection;
 
   /** Default constructor */
   LHSExperiment();
 
   /** Parameters constructor */
-  explicit LHSExperiment(const UnsignedInteger size);
+  explicit LHSExperiment(const UnsignedInteger size,
+                         const Bool alwaysShuffle = false,
+                         const Bool randomShift = true);
 
   /** Parameters constructor */
   LHSExperiment(const Distribution & distribution,
-                const UnsignedInteger size);
+                const UnsignedInteger size,
+                const Bool alwaysShuffle = false,
+		const Bool randomShift = true);
 
   /** Virtual constructor */
   virtual LHSExperiment * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
+  virtual String __str__(const String & offset = "") const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -72,12 +79,29 @@ public:
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution);
 
+  /** AlwaysShuffle accessor */
+  Bool getAlwaysShuffle() const;
+  void setAlwaysShuffle(const Bool alwaysShuffle);
+
+  /** Random shift accessor */
+  Bool getRandomShift() const;
+  void setRandomShift(const Bool randomShift);
+
 private:
-  /** Cells shuffle */
+  // Marginal distributions
+  DistributionCollection marginals_;
+
+  // Cells shuffle
   mutable Matrix shuffle_;
 
-  /** Flag to avoid redundant computation of the shuffle */
+  // Flag to avoid redundant computation of the shuffle
   mutable Bool isAlreadyComputedShuffle_;
+
+  // Initialization flag
+  Bool alwaysShuffle_;
+
+  // Random shift flag
+  Bool randomShift_;
 
 }; /* class LHSExperiment */
 
@@ -85,3 +109,4 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_LHSEXPERIMENT_HXX */
+

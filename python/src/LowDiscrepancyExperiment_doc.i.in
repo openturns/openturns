@@ -2,11 +2,11 @@
 "LowDiscrepancy experiment.
 
 Available constructors:
-    LowDiscrepancyExperiment(*size*)
+    LowDiscrepancyExperiment(*size, restart*)
 
-    LowDiscrepancyExperiment(*sequence, size*)
+    LowDiscrepancyExperiment(*sequence, size, restart*)
 
-    LowDiscrepancyExperiment(*sequence, distribution, size*)
+    LowDiscrepancyExperiment(*sequence, distribution, size, restart*)
 
 Parameters
 ----------
@@ -22,6 +22,11 @@ distribution :
     :math:`\Xi_i =F_i^{-1}(u_i)` to generate points :math:`(\Xi_i)_{i\in I}`
     according to the distribution :math:`\mu`. The weights are all equal to
     :math:`1/N`.
+restart : bool
+    Flag to tell if the low discrepancy sequence must be restarted from
+    its initial state at each change of distribution or not.
+    Default is *True*: the sequence is restarted at each change of
+    distribution.
 
 Notes
 -----
@@ -36,17 +41,62 @@ WeightedExperiment
 Examples
 --------
 >>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
->>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5)
+
+Generate the sample with a reinitialization of the sequence at each change
+of distribution:
+
+>>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, True)
 >>> print(myPlane.generate())
     [ marginal_1_marginal 1 marginal_2_marginal 1 ]
 0 : [ 0.5                   0.5                   ]
 1 : [ 0.75                  0.25                  ]
 2 : [ 0.25                  0.75                  ]
 3 : [ 0.375                 0.375                 ]
-4 : [ 0.875                 0.875                 ]"
+4 : [ 0.875                 0.875                 ]
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.625                 0.125                 ]
+1 : [ 0.125                 0.625                 ]
+2 : [ 0.1875                0.3125                ]
+3 : [ 0.6875                0.8125                ]
+4 : [ 0.9375                0.0625                ]
+>>> myPlane.setDistribution(distribution)
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.5                   0.5                   ]
+1 : [ 0.75                  0.25                  ]
+2 : [ 0.25                  0.75                  ]
+3 : [ 0.375                 0.375                 ]
+4 : [ 0.875                 0.875                 ]
 
+Generate the sample keeping the previous state of the sequence at each change
+of distribution:
+
+>>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.5                   0.5                   ]
+1 : [ 0.75                  0.25                  ]
+2 : [ 0.25                  0.75                  ]
+3 : [ 0.375                 0.375                 ]
+4 : [ 0.875                 0.875                 ]
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.625                 0.125                 ]
+1 : [ 0.125                 0.625                 ]
+2 : [ 0.1875                0.3125                ]
+3 : [ 0.6875                0.8125                ]
+4 : [ 0.9375                0.0625                ]
+>>> myPlane.setDistribution(distribution)
+>>> print(myPlane.generate())
+    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
+0 : [ 0.4375                0.5625                ]
+1 : [ 0.3125                0.1875                ]
+2 : [ 0.8125                0.6875                ]
+3 : [ 0.5625                0.4375                ]
+4 : [ 0.0625                0.9375                ]
+"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LowDiscrepancyExperiment::getSequence
@@ -56,3 +106,28 @@ Returns
 -------
 sequence : :class:`~openturns.LowDiscrepancySequence`
     Sequence of points :math:`(u_1, \cdots, u_N)` with low discrepancy."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LowDiscrepancyExperiment::getRestart
+"Return the value of the *restart* flag.
+
+Returns
+-------
+restart : bool
+    The value of the *restart* flag."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LowDiscrepancyExperiment::setRestart
+"Set the value of the *restart* flag.
+
+Parameters
+----------
+restart : bool
+    The value of the *restart* flag. If equals to *True*, the low
+    discrepancy sequence is restarted at each change of distribution,
+    else it is changed only if the new distribution has a dimension
+    different from the current one.
+"
+

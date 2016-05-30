@@ -46,28 +46,36 @@ public:
   LowDiscrepancyExperiment();
 
   /** Parameters constructor */
-  explicit LowDiscrepancyExperiment(const UnsignedInteger size);
+  explicit LowDiscrepancyExperiment(const UnsignedInteger size,
+                                    const Bool restart = true);
 
   /** Parameters constructor */
   LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
-                           const UnsignedInteger size);
+                           const UnsignedInteger size,
+                           const Bool restart = true);
 
   /** Parameters constructor */
   LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
                            const Distribution & distribution,
-                           const UnsignedInteger size);
+                           const UnsignedInteger size,
+                           const Bool restart = true);
 
   /** Virtual constructor */
   virtual LowDiscrepancyExperiment * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
+  virtual String __str__(const String & offset = "") const;
 
   /** Distribution accessor */
   virtual void setDistribution(const Distribution & distribution);
 
   /** Sequence accessor */
   LowDiscrepancySequence getSequence() const;
+
+  /** Restart accessor */
+  Bool getRestart() const;
+  void setRestart(const Bool restart);
 
   /* Here is the interface that all derived class must implement */
 
@@ -84,9 +92,13 @@ private:
   // Low discrepancy sequence
   LowDiscrepancySequence sequence_;
 
+  // Initialization flag
+  Bool restart_;
+
 }; /* class LowDiscrepancyExperiment */
 
 
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_LOWDISCREPANCYEXPERIMENT_HXX */
+
