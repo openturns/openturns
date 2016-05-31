@@ -107,9 +107,9 @@ Available usages:
 
 Parameters
 ----------
-s, t : floats or sequences of float
+s, t : sequences of float
     Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
-tau : floats orsequence of float
+tau : sequence of float
     Multivariate index :math:`\vect{\tau} \in \cD`.
 
 Returns
@@ -143,7 +143,7 @@ Parameters
 ----------
 s, t : floats or sequences of float
     Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
-tau : floats orsequence of float
+tau : float or sequence of float
     Multivariate index :math:`\vect{\tau} \in \cD`.
 
 Returns
@@ -565,7 +565,7 @@ Parameters
 ----------
 s, t : floats or sequences of float
     Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
-tau : floats orsequence of float
+tau : float or sequence of float
     Multivariate index :math:`\vect{\tau} \in \cD`.
 
 Returns
