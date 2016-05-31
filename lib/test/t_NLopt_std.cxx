@@ -63,12 +63,10 @@ int main(int argc, char *argv[])
       Description algoNames(NLopt::GetAlgorithmNames());
       for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
         {
-          // MLSL freezes
           // STOGO might not be enabled
           // NEWUOA nan/-nan
           // COBYLA crashes on squeeze
           if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND")
-           || (algoNames[i] == "GN_MLSL") || (algoNames[i] == "GD_MLSL") || (algoNames[i] == "GN_MLSL_LDS") || (algoNames[i] == "GD_MLSL_LDS") || (algoNames[i] == "G_MLSL") || (algoNames[i] == "G_MLSL_LDS")
            || (algoNames[i] == "LN_NEWUOA")
            || (algoNames[i] == "LN_COBYLA"))
             {
@@ -93,6 +91,7 @@ int main(int argc, char *argv[])
                     {
                       NLopt::SetSeed(0);
                       algo.setProblem(problem);
+                      algo.setMaximumEvaluationNumber(5000);
                       //algo.setInitialStep(NumericalPoint(dim, 0.1));
                       NLopt localAlgo("LD_MMA");
                       algo.setLocalSolver(localAlgo);
