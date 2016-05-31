@@ -25,6 +25,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/Compact.hxx"
+#include "openturns/OptimizationProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,12 +48,12 @@ public:
 
   /** Standard constructor */
   OptimizationResult(const NumericalPoint & optimalPoint,
-      const NumericalPoint & optimalValue,
-      const UnsignedInteger iterationNumber,
-      const NumericalScalar absoluteError,
-      const NumericalScalar relativeError,
-      const NumericalScalar residualError,
-      const NumericalScalar constraintError);
+                     const NumericalPoint & optimalValue,
+                     const UnsignedInteger iterationNumber,
+                     const NumericalScalar absoluteError,
+                     const NumericalScalar relativeError,
+                     const NumericalScalar residualError,
+                     const NumericalScalar constraintError, const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual OptimizationResult * clone() const;
@@ -85,6 +86,9 @@ public:
   /** Input / output sample accessor */
   NumericalSample getInputSample() const;
   NumericalSample getOutputSample() const;
+
+  /** Problem accessor */
+  OptimizationProblem getProblem() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -152,6 +156,7 @@ private:
   Compact constraintErrorHistory_;
   Compact inputHistory_;
   Compact outputHistory_;
+  OptimizationProblem problem_;
 
 }; // class OptimizationResult
 
@@ -159,3 +164,4 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_OPTIMIZATIONRESULT_HXX */
+

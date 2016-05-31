@@ -167,7 +167,7 @@ void SQP::run()
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
   // reset result
-  setResult(OptimizationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError));
+  setResult(OptimizationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {

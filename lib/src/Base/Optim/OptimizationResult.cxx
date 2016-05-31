@@ -47,18 +47,20 @@ OptimizationResult::OptimizationResult()
   , constraintErrorHistory_()
   , inputHistory_()
   , outputHistory_()
+  , problem_()
 {
   // Nothing to do
 }
 
 /* Standard constructor */
 OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
-    const NumericalPoint &  optimalValue,
-    const UnsignedInteger iterationNumber,
-    const NumericalScalar absoluteError,
-    const NumericalScalar relativeError,
-    const NumericalScalar residualError,
-    const NumericalScalar constraintError)
+                                       const NumericalPoint &  optimalValue,
+                                       const UnsignedInteger iterationNumber,
+                                       const NumericalScalar absoluteError,
+                                       const NumericalScalar relativeError,
+                                       const NumericalScalar residualError,
+                                       const NumericalScalar constraintError,
+                                       const OptimizationProblem & problem)
   : PersistentObject()
   , optimalPoint_(optimalPoint)
   , optimalValue_(optimalValue)
@@ -73,6 +75,7 @@ OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
   , constraintErrorHistory_()
   , inputHistory_()
   , outputHistory_()
+  , problem_(problem)
 {
   // Nothing to do
 }
@@ -194,18 +197,24 @@ NumericalSample OptimizationResult::getOutputSample() const
   return outputHistory_.getSample();
 }
 
+OptimizationProblem OptimizationResult::getProblem() const
+{
+  return problem_;
+}
+
 /* String converter */
 String OptimizationResult::__repr__() const
 {
   OSS oss;
   oss << "class=" << OptimizationResult::GetClassName()
       << " optimal point=" << optimalPoint_
-      << " optimal value="        << optimalValue_
+      << " optimal value=" << optimalValue_
       << " iterationNumber=" << iterationNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
       << " residualError=" << getResidualError()
-      << " constraintError=" << getConstraintError();
+      << " constraintError=" << getConstraintError()
+      << " problem=" << problem_;
   return oss;
 }
 
@@ -228,6 +237,8 @@ void OptimizationResult::save(Advocate & adv) const
 
   adv.saveAttribute( "inputHistory_", inputHistory_ );
   adv.saveAttribute( "outputHistory_", outputHistory_ );
+
+  adv.saveAttribute( "problem_", problem_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -249,6 +260,8 @@ void OptimizationResult::load(Advocate & adv)
 
   adv.loadAttribute( "inputHistory_", inputHistory_ );
   adv.loadAttribute( "outputHistory_", outputHistory_ );
+
+  adv.loadAttribute( "problem_", problem_ );
 }
 
 /* Update current state */
@@ -260,11 +273,11 @@ void OptimizationResult::update(const NumericalPoint & OptimalPoint, UnsignedInt
 
 /* Incremental history storage */
 void OptimizationResult::store(const NumericalPoint & x,
-    const NumericalPoint & y,
-    const NumericalScalar absoluteError,
-    const NumericalScalar relativeError,
-    const NumericalScalar residualError,
-    const NumericalScalar constraintError)
+                               const NumericalPoint & y,
+                               const NumericalScalar absoluteError,
+                               const NumericalScalar relativeError,
+                               const NumericalScalar residualError,
+                               const NumericalScalar constraintError)
 {
   // assume the last point stored is the optimum
   optimalPoint_ = x;
@@ -334,3 +347,4 @@ Graph OptimizationResult::drawErrorHistory() const
 
 
 END_NAMESPACE_OPENTURNS
+
