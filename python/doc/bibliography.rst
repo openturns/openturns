@@ -13,8 +13,10 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
 .. [Gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013
+    `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
 .. [Jansen1999] Jansen, M.J.W. *Analysis of variance designs for model output*,
     Computer Physics Communication, 1999, 117, 35-43.
+    `pdf <http://doc.openturns.org/papers/jansen1999.pdf>`__
 .. [Knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
@@ -57,10 +59,12 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/simard2011.pdf>`__
 .. [Sobol1993] Sobol, I. M. *Sensitivity analysis for non-linear mathematical
     model* Math. Modelling Comput. Exp., 1993, 1, 407-414.
+    `pdf <http://doc.openturns.org/papers/sobol1993.pdf>`__
 .. [Sobol2007] Sobol, I.M., Tarantola, S., Gatelli, D., Kucherenko, S.S. and
     Mauntz, W.  *Estimating the approximation errors when fixing unessential
     factors in global sensitivity analysis*, Reliability Engineering and System
     Safety, 2007, 92, 957-960.
+    `pdf <http://doc.openturns.org/papers/sobol2007.pdf>`__
 .. [SoizeGhanem2004] Soize, C., Ghanem, R. *Physical systems with random
     uncertainties: Chaos representations with arbitrary probability measure*,
     SIAM Journal on Scientific Computing, Society for Industrial and Applied
