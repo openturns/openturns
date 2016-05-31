@@ -284,7 +284,7 @@ void NLopt::run()
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0));
+  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0, getProblem()));
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
