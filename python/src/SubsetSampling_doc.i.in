@@ -1,10 +1,17 @@
 %feature("docstring") OT::SubsetSampling
 "Subset simulation.
 
-Available constructor:
-    SubsetSampling(*event*)
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event we are computing the probability of.
+proposalRange : float, optional
+    Proposal range length
+targetProbability : float, optional
+    Value of :math:`P(F_i|F_{i-1})` between successive steps
 
-
+Notes
+-----
 The goal is to estimate the following probability
 
 .. math::
@@ -53,11 +60,6 @@ autocorrelation between Markov chain samples.
 
 The first event :math:`F_1` not being conditional, :math:`\delta^2_1`
 expresses as the classic Monte Carlo c.o.v.
-
-Parameters
-----------
-event : :class:`~openturns.Event`
-    Event we are computing the probability of.
 
 See also
 --------
