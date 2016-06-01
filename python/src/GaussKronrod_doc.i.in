@@ -35,7 +35,7 @@ where :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\ome
 
 
 
-The Gauss-Kronrod algorithm evaluates the integral using the Gauss and the Konrod approximations. If the difference between both approximations is greater that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with the same length. The Gauss-Kronrod algorihtm is then applied on both subintervals with the sames rules. The algorithm is iterative until the  difference between both approximations is less that *maximumError*. In that case, the integral on the subinterval is approximated by the Kronrod sum. The subdivision process is limited by *maximumSubIntervals* that imposes the maximum number of subintervals.
+The Gauss-Kronrod algorithm evaluates the integral using the Gauss and the Konrod approximations. If the difference between both approximations is greater that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with the same length. The Gauss-Kronrod algorithm is then applied on both subintervals with the sames rules. The algorithm is iterative until the  difference between both approximations is less that *maximumError*. In that case, the integral on the subinterval is approximated by the Kronrod sum. The subdivision process is limited by *maximumSubIntervals* that imposes the maximum number of subintervals.
 
 The final integral is the sum of the integrals evaluated on the subintervals.
 

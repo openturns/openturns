@@ -8,7 +8,7 @@ domain : :class:`~openturns.Domain`
 experiment : :class:`~openturns.WeightedExperiment`
     The algorithm used to discretize the integrale defining the Fredholm equation.
 basis : :class:`~openturns.Basis`
-    The basis from which the base functions are taken to define the finite space on which leave the approximate eigenfunctions.
+    The basis from which the base functions are taken to define the finite space on which live the approximate eigenfunctions.
 basisSize : int
     The dimension of the finite approximation space.
 mustScale : bool

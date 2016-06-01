@@ -1,9 +1,21 @@
 %feature("docstring") OT::AdaptiveDirectionalSampling
 "Adaptative directional simulation.
 
-Available constructor:
-    SubsetSampling(*event*)
+Parameters
+----------
+event : :class:`~openturns.Event`
+    Event we are computing the probability of.
+rootStrategy : :class:`~openturns.RootStrategy`, optional
+    Strategy adopted to evaluate the intersections of each direction with the
+    limit state function and take into account the contribution of the
+    direction to the event probability.
+    Set to :class:`~openturns.SafeAndSlow` by default.
+samplingStrategy : :class:`~openturns.SamplingStrategy`, optional
+    Strategy adopted to sample directions.
+    Set to :class:`~openturns.RandomDirection` by default.
 
+Notes
+-----
 Let :math:`\mathcal D_f` denote the failure domain defined as
 :math:`\mathcal D_f = \{\ux \in \mathbb R^{n_X} | g(\ux) \leq 0\}`, where
 :math:`\ux` are realization of the random vector :math:`\uX` and :math:`g` is the limit-state
@@ -124,19 +136,6 @@ stratification even more efficient and thus save some evaluations of the model.
 
 This 2-step algorithm can be generalized to :math:`L > 2` steps by adding more
 than one learning step. For now, only ADS-2 is implemented.
-
-Parameters
-----------
-event : :class:`~openturns.Event`
-    Event we are computing the probability of.
-rootStrategy : :class:`~openturns.RootStrategy`
-    Strategy adopted to evaluate the intersections of each direction with the
-    limit state function and take into account the contribution of the
-    direction to the event probability. By default,
-    *rootStrategy = ot.RootStrategy(ot.SafeAndSlow())*.
-samplingStrategy : :class:`~openturns.SamplingStrategy`
-    Strategy adopted to sample directions. By default,
-    *samplingStrategy=ot.SamplingStrategy(ot.RandomDirection())*.
 
 See also
 --------
