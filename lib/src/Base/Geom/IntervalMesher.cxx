@@ -85,8 +85,7 @@ Indices IntervalMesher::getDiscretization() const
 
 /* Here is the interface that all derived class must implement */
 
-Mesh IntervalMesher::build(const Interval & interval,
-                           const Bool diamond) const
+Mesh IntervalMesher::build(const Domain & interval) const
 {
   const UnsignedInteger dimension(interval.getDimension());
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
