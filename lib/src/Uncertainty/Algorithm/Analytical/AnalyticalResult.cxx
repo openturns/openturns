@@ -38,7 +38,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-typedef Distribution::Implementation                        Implementation;
 typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
 typedef PersistentCollection<NumericalPointWithDescription> PersistentSensitivity;
 
@@ -229,7 +228,7 @@ void AnalyticalResult::computePhysicalImportanceFactors() const
 void AnalyticalResult::computeMeanPointInStandardEventDomain() const
 {
   // We use the implementation here in order to have access to the computeRadialDistributionCDF() method
-  Implementation p_standardDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getImplementation());
+  Distribution::Implementation p_standardDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getImplementation());
   // Perform the integration along the ray going from the origin to the infinity
   NumericalScalar scaling(hasoferReliabilityIndex_ * p_standardDistribution->computeRadialDistributionCDF(hasoferReliabilityIndex_, true));
   NumericalScalar a(hasoferReliabilityIndex_);
