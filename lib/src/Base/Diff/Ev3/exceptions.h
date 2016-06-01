@@ -14,12 +14,15 @@
 #include <string>
 #include <iostream>
 
-#define HELPURL "http://liberti.dhs.org/"
-#define NONE "[none]"
-#define STDACTION //std::cerr << interface_ << "::" << scope_ << ": in [" << operation_ << "]: " << description_ << ", code = " << code_ << ", see " << moreinfo_ << std::endl
-
 namespace Ev3
 {
+const std::string HELPURL = "http://liberti.dhs.org/";
+const std::string NONE = "[none]";
+inline void STDACTION()
+{
+  //std::cerr << interface_ << "::" << scope_ << ": in [" << operation_ << "]: " << description_ << ", code = " << code_ << ", see " << moreinfo_ << std::endl
+}
+
 class ErrBase
 {
 public:
@@ -37,7 +40,7 @@ public:
     description_(NONE),
     moreinfo_(HELPURL)
   {
-    STDACTION;
+    STDACTION();
   }
   ErrBase(const unsigned long mycode,
           const std::string & myif,
@@ -52,7 +55,7 @@ public:
     description_(mydesc),
     moreinfo_(myinfo)
   {
-    STDACTION;
+    STDACTION();
   }
 };
 
@@ -67,7 +70,7 @@ public:
              const std::string & myinfo) :
     ErrBase(mycode, myif, myscope, myop, mydesc, myinfo)
   {
-    STDACTION;
+    STDACTION();
   }
 };
 
@@ -82,7 +85,7 @@ public:
                   const std::string & myinfo) :
     ErrBase(mycode, myif, myscope, myop, mydesc, myinfo)
   {
-    STDACTION;
+    STDACTION();
   }
 };
 
@@ -100,7 +103,7 @@ public:
     ErrBase(mycode, myif, myscope, myop, mydesc, myinfo),
     dividend(mydiv)
   {
-    STDACTION;
+    STDACTION();
   }
 };
 } /* namespace Ev3 */
