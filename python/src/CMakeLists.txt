@@ -150,7 +150,6 @@ ot_add_python_module(typ typ_module.i
                    )
 
 ot_add_python_module(statistics statistics_module.i
-                      LevelSet.i LevelSet_doc.i.in
                       Compact.i Compact_doc.i.in
                       Full.i Full_doc.i.in
                       Last.i Last_doc.i.in
@@ -345,6 +344,8 @@ ot_add_python_module(optim optim_module.i
                       TNC.i TNC_doc.i.in
                       SQP.i SQP_doc.i.in
                       NLopt.i NLopt_doc.i.in
+                      LevelSet.i LevelSet_doc.i.in
+                      LevelSetMesher.i LevelSetMesher_doc.i.in
                       BaseOptimTemplateDefs.i
                    )
 

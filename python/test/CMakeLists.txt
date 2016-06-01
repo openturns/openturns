@@ -222,6 +222,8 @@ ot_pyinstallcheck_test (NonStationaryCovarianceModelFactory_std)
 ot_pyinstallcheck_test (Domain_std)
 ot_pyinstallcheck_test (Interval_std)
 ot_pyinstallcheck_test (IntervalMesher_std)
+ot_pyinstallcheck_test (LevelSet_std)
+ot_pyinstallcheck_test (LevelSetMesher_std)
 ot_pyinstallcheck_test (Mesh_std)
 
 ## Graph
