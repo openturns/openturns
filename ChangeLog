@@ -32,6 +32,7 @@
  * Add NumericalMathFunction::[sg]etParameterDescription to access the parameter description
  * Deprecated classes UserDefinedPair, HistogramPair
  * Removed SensitivityAnalysis class
+ * Deprecated SLSQP, LBFGS and NelderMead classes in favor of NLopt class
 
 === Python module ===
 

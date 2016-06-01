@@ -30,14 +30,19 @@ dim = 4
 startingPoint = [0.0] * dim
 
 bounds = ot.Interval([-3.]*dim,[5.]*dim)
-all_algo = [ot.SLSQP(), ot.LBFGS(), ot.MMA(), ot.CCSAQ(), ot.NelderMead(), ot.COBYLANLOPT(), ot.BOBYQA()]
-for code in ot.NLopt.GetAlgorithmCodes():
-    all_algo.append(ot.NLopt(code))
-for i in range(len(all_algo)):
-    if ((i == 5) or (i == 9) or (i == 10) or (i == 22) or (i == 23) or (i == 33) or (i == 41) or (i == 42) or (i == 44)):
-        print('-- Skipped: algo=', algo.getClassName())
+algoNames = ot.NLopt.GetAlgorithmNames()
+
+for algoName in algoNames:
+
+    # STOGO might not be enabled
+    # NEWUOA nan/-nan
+    # COBYLA crashes on squeeze
+    if 'STOGO' in algoName or 'NEWUOA' in algoName or 'COBYLA' in algoName:
+        print('-- Skipped: algo=', algoName)
         continue
-    algo = all_algo[i]
+
+    algo = ot.NLopt(algoName)
+
     for minimization in [True, False]:
         for inequality in [True, False]:
             for equality in [True, False]:
@@ -52,10 +57,14 @@ for i in range(len(all_algo)):
                 try:
                     ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
+                    algo.setMaximumEvaluationNumber(5000)
                     algo.setStartingPoint(startingPoint)
+                    #algo.setInitialStep([0.1] * dim)
+                    localAlgo = ot.NLopt('LD_MMA')
+                    algo.setLocalSolver(localAlgo)
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()
                     print('x^=', printNumericalPoint(result.getOptimalPoint(), 3))
                 except:
-                    print('-- Not supported: algo=', algo.getClassName(), 'inequality=', inequality, 'equality=', equality)
+                    print('-- Not supported: algo=', algoName, 'inequality=', inequality, 'equality=', equality)

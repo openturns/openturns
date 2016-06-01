@@ -1,1 +1,2 @@
 Remove QuadraticCumul class in TaylorExpansionsMoments.i
+Remove deprecated SLSQP, LBFGS and NelderMead classes

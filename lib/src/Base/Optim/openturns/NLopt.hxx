@@ -38,11 +38,11 @@ class OT_API NLopt :
 public:
 
   /** Default constructor */
-  explicit NLopt(const UnsignedInteger algoType = 0);
+  explicit NLopt(const String & algoName = "LD_SLSQP");
 
   /** Constructor with parameters */
   explicit NLopt(const OptimizationProblem & problem,
-                 const UnsignedInteger algoType = 0);
+                 const String & algoName = "LD_SLSQP");
 
   /** Virtual constructor */
   virtual NLopt * clone() const;
@@ -52,11 +52,15 @@ public:
 
   /** NLopt algorithm names accessor */
   static Description GetAlgorithmNames();
-  static String GetAlgorithmName(const UnsignedInteger code);
+  String getAlgorithmName() const;
 
-  /** NLopt algorithm codes */
-  static Indices GetAlgorithmCodes();
-  static UnsignedInteger GetAlgorithmCode(const String & name);
+  /** Initial derivative-free local-optimization algorithms step accessor */
+  void setInitialStep(const NumericalPoint & initialStep);
+  NumericalPoint getInitialStep() const;
+
+  /** Local optimizer */
+  void setLocalSolver(const NLopt & localSolver);
+  NLopt getLocalSolver() const;
 
   /** Initialize the random generator seed */
   static void SetSeed(const UnsignedInteger seed);
@@ -65,7 +69,7 @@ public:
   String __repr__() const;
 
   /** String converter */
-  String __str__() const;
+  String __str__(const String & offset = "") const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -77,16 +81,23 @@ protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
-  UnsignedInteger algoType_;
+  String algoName_;
+
+  /** Initial derivative-free local-optimization algorithms step */
+  NumericalPoint initialStep_;
+
+  /** Auxiliary solver */
+  Pointer<NLopt> p_localSolver_;
 
   /** Map of NLopt algorithms names */
   static std::map<String, UnsignedInteger> AlgorithmNames_;
-  static Bool MustInitialize_;
 
   /** Method to initialize alrogithm names map */
   static void InitializeAlgorithmNames();
 
 private:
+  /** NLopt algorithm code */
+  static UnsignedInteger GetAlgorithmCode(const String & name);
 
   /** Compute the objective function of the optimization problem */
   static double ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
@@ -103,34 +114,7 @@ private:
 
 };
 
-
-class OT_API BOBYQA : public NLopt
-{
-  CLASSNAME;
-public:
-  BOBYQA();
-  virtual BOBYQA * clone() const;
-  explicit BOBYQA(const OptimizationProblem & problem);
-};
-
-class OT_API CCSAQ : public NLopt
-{
-  CLASSNAME;
-public:
-  CCSAQ();
-  virtual CCSAQ * clone() const;
-  explicit CCSAQ(const OptimizationProblem & problem);
-};
-
-class OT_API COBYLANLOPT : public NLopt
-{
-  CLASSNAME;
-public:
-  COBYLANLOPT();
-  virtual COBYLANLOPT * clone() const;
-  explicit COBYLANLOPT(const OptimizationProblem & problem);
-};
-
+/** @deprecated */
 class OT_API LBFGS : public NLopt
 {
   CLASSNAME;
@@ -140,15 +124,7 @@ public:
   explicit LBFGS(const OptimizationProblem & problem);
 };
 
-class OT_API MMA : public NLopt
-{
-  CLASSNAME;
-public:
-  MMA();
-  virtual MMA * clone() const;
-  explicit MMA(const OptimizationProblem & problem);
-};
-
+/** @deprecated */
 class OT_API NelderMead : public NLopt
 {
   CLASSNAME;
@@ -158,6 +134,7 @@ public:
   explicit NelderMead(const OptimizationProblem & problem);
 };
 
+/** @deprecated */
 class OT_API SLSQP : public NLopt
 {
   CLASSNAME;

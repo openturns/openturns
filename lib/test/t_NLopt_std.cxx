@@ -60,26 +60,21 @@ int main(int argc, char *argv[])
 
       Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 5.0));
 
-      Collection<OptimizationSolver> allAlgo;
-      allAlgo.add(SLSQP());
-      allAlgo.add(LBFGS());
-      allAlgo.add(MMA());
-      allAlgo.add(NelderMead());
-      allAlgo.add(CCSAQ());
-      allAlgo.add(COBYLANLOPT());
-      allAlgo.add(BOBYQA());
-      Indices allCodes(NLopt::GetAlgorithmCodes());
-      for (UnsignedInteger i = 0; i < allCodes.getSize(); ++i)
-        allAlgo.add(NLopt(allCodes[i]));
-      for (UnsignedInteger i = 0; i < allAlgo.getSize(); ++i)
+      Description algoNames(NLopt::GetAlgorithmNames());
+      for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
         {
-          OptimizationSolver algo(allAlgo[i]);
-	  // Here we skip all the odd algorithms that results either in infinite loop or segmentation fault, as of NLopt version 2.4.2
-	  if ((i == 5) || (i == 9) || (i == 10) || (i == 22) || (i == 23) || (i == 41) || (i == 42) || (i == 44) || (i == 46))
-	    {
-	      fullprint << "-- Skipped: algo=" << algo.getClassName() << std::endl;
-	      continue;
-	    }
+          // STOGO might not be enabled
+          // NEWUOA nan/-nan
+          // COBYLA crashes on squeeze
+          if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND")
+           || (algoNames[i] == "LN_NEWUOA")
+           || (algoNames[i] == "LN_COBYLA"))
+            {
+              fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
+              continue;
+            }
+
+          NLopt algo(algoNames[i]);
           for (UnsignedInteger minimization = 0; minimization < 2; ++minimization)
             for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
               for (UnsignedInteger equality = 0; equality < 2; ++equality)
@@ -96,6 +91,10 @@ int main(int argc, char *argv[])
                     {
                       NLopt::SetSeed(0);
                       algo.setProblem(problem);
+                      algo.setMaximumEvaluationNumber(5000);
+                      //algo.setInitialStep(NumericalPoint(dim, 0.1));
+                      NLopt localAlgo("LD_MMA");
+                      algo.setLocalSolver(localAlgo);
                       algo.setStartingPoint(startingPoint);
                       fullprint << "algo=" << algo << std::endl;
                       algo.run();
@@ -104,7 +103,7 @@ int main(int argc, char *argv[])
                     }
                   catch (...)
                     {
-                      fullprint << "-- Not supported: algo=" << algo.getClassName() << " inequality=" << (inequality == 0 ? "true" : "false") << " equality=" << (equality == 0 ? "true" : "false") << std::endl;
+                      fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << (inequality == 0 ? "true" : "false") << " equality=" << (equality == 0 ? "true" : "false") << std::endl;
                     }
                 } // equality
         } // algo
