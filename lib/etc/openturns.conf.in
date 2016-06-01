@@ -86,6 +86,9 @@
   <!-- OT::Contour parameters -->
   <Contour-DefaultLevelsNumber value="10" />
 
+  <!-- OT::IntervalMesher parameters -->
+  <IntervalMesher-UseDiamond value="false" />
+
   <!-- OT::SQP parameters -->
   <SQP-DefaultTau    value="0.5"    />
   <SQP-DefaultOmega  value="1.0e-4" />

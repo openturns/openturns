@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Meshing algorithm for intervals
+ *  @brief Meshing algorithm for levelSets
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,32 +18,35 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_INTERVALMESHER_HXX
-#define OPENTURNS_INTERVALMESHER_HXX
+#ifndef OPENTURNS_LEVELSETMESHER_HXX
+#define OPENTURNS_LEVELSETMESHER_HXX
 
+#include "openturns/LevelSet.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/OptimizationSolver.hxx"
+#include "openturns/AbdoRackwitz.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class IntervalMesher
+ * @class LevelSetMesher
  */
-class OT_API IntervalMesher
+class OT_API LevelSetMesher
   : public PersistentObject
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  IntervalMesher();
+  LevelSetMesher();
 
   /** Default constructor */
-  explicit IntervalMesher(const Indices & discretization);
+  explicit LevelSetMesher(const Indices & discretization,
+                          const OptimizationSolver & solver = AbdoRackwitz());
 
   /** Virtual constructor */
-  virtual IntervalMesher * clone() const;
+  virtual LevelSetMesher * clone() const;
 
   /** Discretization accessors */
   void setDiscretization(const Indices & discretization);
@@ -55,9 +58,17 @@ public:
   /** String converter */
   virtual String __str__(const String & offset = "") const;
 
+  /** Optimization solver accessor */
+  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationSolver getOptimizationSolver() const;
+
   /* Here is the interface that all derived class must implement */
-  virtual Mesh build(const Interval & interval,
-                     const Bool diamond = ResourceMap::GetAsBool("IntervalMesher-UseDiamond")) const;
+  /** Build a mesh based on a domain */
+  virtual Mesh build(const LevelSet & levelSet,
+                     const Bool project = true) const;
+  virtual Mesh build(const LevelSet & levelSet,
+                     const Interval & boundingBox,
+                     const Bool project = true) const;
 
 protected:
 
@@ -66,8 +77,12 @@ private:
   /* Discretization in each dimension */
   Indices discretization_;
 
-}; /* class IntervalMesher */
+  /* Optimization solver used to project the vertices */
+  mutable OptimizationSolver solver_;
+
+}; /* class LevelSetMesher */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_INTERVALMESHER_HXX */
+#endif /* OPENTURNS_LEVELSETMESHER_HXX */
+

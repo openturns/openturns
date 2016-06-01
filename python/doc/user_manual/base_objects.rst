@@ -22,8 +22,17 @@ Domains
 
     Domain
     LevelSet
+
+    :template: classWithPlot.rst_t
+    LevelSetMesher
+
+    :template: class.rst_t
     RegularGrid
+
+    :template: class.rst_t
     Interval
+
+    :template: classWithPlot.rst_t
     IntervalMesher
 
 .. autosummary::
