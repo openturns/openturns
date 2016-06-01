@@ -115,7 +115,6 @@ private:
     NumericalSample operator()(const NumericalSample & sample) const
     {
       const UnsignedInteger sampleSize(sample.getSize());
-      const UnsignedInteger inputDimension(function_.getInputDimension());
       const UnsignedInteger outputDimension(function_.getOutputDimension());
       const UnsignedInteger size(lowerBounds_.getSize() - 1);
       IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
