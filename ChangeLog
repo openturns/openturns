@@ -48,6 +48,7 @@
  * #822 (Incorect Matrix / point operations with cast)
  * #824 (Confusing behavior of NumericalSample::sort)
  * #837 (TruncatedDistribution::setParameter segfaults)
+ * #838 (Symmetry of SymmetricMatrix not always enforced)
 
 == 1.7 release (2016-01-27) == #release-1.7
 

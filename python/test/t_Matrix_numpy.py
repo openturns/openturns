@@ -318,6 +318,7 @@ try:
     a0 = np.array(((1., 2.), (2., 4.)))
     m0 = SymmetricMatrix(a0)
     print("array", a0, "=> SymmetricMatrix", m0)
+    m0[1, 0] = 3.0
     a1 = np.array(m0)
     print("SymmetricMatrix", m0, "=> array", a1)
 
@@ -332,6 +333,7 @@ try:
     a0 = np.array((((1., 2.), (3., 4.)), ((3., 4.), (7., 8.))))
     m0 = SymmetricTensor(a0)
     print("array", a0, "=> SymmetricTensor", m0)
+    m0[1,0,0] = 9.0
     a1 = np.array(m0)
     print("SymmetricTensor", m0, "=> array", a1)
 
@@ -368,6 +370,7 @@ try:
     a0 = np.array(((1. + 3j, 2. - 5j), (2. + 5j, 4. - 9j)))
     m0 = HermitianMatrix(a0)
     print("array", a0, "=> HermitianMatrix", m0)
+    m0[1, 0] = 3.0 - 5j
     a1 = np.array(m0)
     print("HermitianMatrix", m0, "=> array", a1)
 

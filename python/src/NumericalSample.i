@@ -46,13 +46,13 @@
 # for details on how to write such a method.
 def NumericalSample___getattribute__(self, name):
     """Implement attribute accesses."""
-    if (name == '__array_interface__'):
+    if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
                                                 'typestr': "|f" + str(self.__elementsize__()),
                                                 'data': (int(self.__baseaddress__()), True),
                                                 'version': 3, 
                                                 }
-    return object.__getattribute__(self, name)
+    return super(NumericalSample, self).__getattribute__(name)
 NumericalSample.__getattribute__ = NumericalSample___getattribute__
 
 
