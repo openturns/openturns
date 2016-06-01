@@ -187,19 +187,19 @@ C++
 
 This section deals with coding rules for the C++ language.
 
-C++ language standard
-~~~~~~~~~~~~~~~~~~~~~
+Compilation flags
+~~~~~~~~~~~~~~~~~
 
-*Example: GCC compilation:*
+It is helpful to enable some compilation warnings to avoid questionable constructions.
+You may also want to enable debug symbols for further use with a debugger.
+
+*GCC compilation:*
 
 ::
 
-    g++ -c -ansi ...
-
-*Note: Compliance with the ISO/ANSI standard sometimes introduces
-significant limitations on the use of basic definitions or basic system
-functions. Moreover, strict checks on the compliance with the ANSI
-standard are switched on through options that are compiler-specific.*
+    mkdir -p build && cd build
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter" ..
+    make
 
 Namespaces
 ~~~~~~~~~~
@@ -553,6 +553,42 @@ from A:*
     /* ... some non trivial processing */
     return meanValue;
     }
+
+Explicit keyword
+~~~~~~~~~~~~~~~~
+
+Marking a single argument class constructors with the the *explicit* keyword
+allows to avoid unwanted conversions.
+
+It is relevant for constructors that have a single-argument, and also for
+constructors that have a single mandatory argument plus optional arguments.
+
+*Single argument:*
+
+::
+
+    class A {
+    public :
+      explicit A(const NumericalPoint value);
+    };
+
+*Optional argument:*
+
+::
+
+    class A {
+    public :
+      explicit A(UnsignedInteger max = 6);
+    };
+
+*Mandatory argument and optional argument:*
+
+::
+
+    class A {
+    public :
+      explicit A(const NumericalPoint value, UnsignedInteger max = 6);
+    };
 
 Inheritance
 ~~~~~~~~~~~
