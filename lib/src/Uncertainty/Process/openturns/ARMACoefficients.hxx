@@ -63,6 +63,7 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Definition of add method : control of SquareMatrix sizes */
+  using PersistentCollection<SquareMatrix>::add;
   void add(const SquareMatrix & matrix);
   void add(const NumericalScalar scalar);
 
