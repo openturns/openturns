@@ -25,27 +25,26 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
 CLASSNAMEINIT(LowDiscrepancyExperiment);
 
 
 /* Default constructor */
-LowDiscrepancyExperiment::LowDiscrepancyExperiment():
-  WeightedExperiment(),
-  marginals_(0),
-  sequence_(SobolSequence()),
-  restart_(true)
+LowDiscrepancyExperiment::LowDiscrepancyExperiment()
+  : WeightedExperiment()
+  , marginals_(0)
+  , sequence_(SobolSequence())
+  , restart_(true)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
-    const Bool restart):
-  WeightedExperiment(size),
-  marginals_(0),
-  sequence_(SobolSequence()),
-  restart_(restart)
+    const Bool restart)
+  : WeightedExperiment(size)
+  , marginals_(0)
+  , sequence_(SobolSequence())
+  , restart_(restart)
 {
   // Nothing to do
 }
@@ -54,11 +53,11 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const Distribution & distribution,
     const UnsignedInteger size,
-    const Bool restart):
-  WeightedExperiment(size),
-  marginals_(0),
-  sequence_(sequence),
-  restart_(restart)
+    const Bool restart)
+  : WeightedExperiment(size)
+  , marginals_(0)
+  , sequence_(sequence)
+  , restart_(restart)
 {
   // Warning! The distribution must not be given to the upper class directly
   // because the correct initialization of the sequence depends on a test on
@@ -69,11 +68,11 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const UnsignedInteger size,
-    const Bool restart):
-  WeightedExperiment(size),
-  marginals_(0),
-  sequence_(sequence),
-  restart_(restart)
+    const Bool restart)
+  : WeightedExperiment(size)
+  , marginals_(0)
+  , sequence_(sequence)
+  , restart_(restart)
 {
   // Nothing to do
 }

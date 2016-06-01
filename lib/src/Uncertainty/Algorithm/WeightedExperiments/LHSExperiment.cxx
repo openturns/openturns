@@ -26,19 +26,17 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 typedef Collection<Distribution> DistributionCollection;
 
 CLASSNAMEINIT(LHSExperiment);
 
 /* Default constructor */
-LHSExperiment::LHSExperiment():
-  WeightedExperiment(),
-  shuffle_(0, 0),
-  isAlreadyComputedShuffle_(false),
-  alwaysShuffle_(false),
-  randomShift_(true)
+LHSExperiment::LHSExperiment()
+  : WeightedExperiment()
+  , shuffle_(0, 0)
+  , isAlreadyComputedShuffle_(false)
+  , alwaysShuffle_(false)
+  , randomShift_(true)
 {
   // Nothing to do
 }
@@ -46,13 +44,13 @@ LHSExperiment::LHSExperiment():
 /* Constructor with parameters */
 LHSExperiment::LHSExperiment(const UnsignedInteger size,
                              const Bool alwaysShuffle,
-                             const Bool randomShift):
-  WeightedExperiment(size),
-  marginals_(0),
-  shuffle_(0, 0),
-  isAlreadyComputedShuffle_(false),
-  alwaysShuffle_(alwaysShuffle),
-  randomShift_(randomShift)
+                             const Bool randomShift)
+  : WeightedExperiment(size)
+  , marginals_(0)
+  , shuffle_(0, 0)
+  , isAlreadyComputedShuffle_(false)
+  , alwaysShuffle_(alwaysShuffle)
+  , randomShift_(randomShift)
 {
   // Nothing to do
 }
@@ -61,13 +59,13 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
 LHSExperiment::LHSExperiment(const Distribution & distribution,
                              const UnsignedInteger size,
                              const Bool alwaysShuffle,
-                             const Bool randomShift):
-  WeightedExperiment(distribution, size),
-  marginals_(0),
-  shuffle_(0, 0),
-  isAlreadyComputedShuffle_(false),
-  alwaysShuffle_(alwaysShuffle),
-  randomShift_(randomShift)
+                             const Bool randomShift)
+  : WeightedExperiment(distribution, size)
+  , marginals_(0)
+  , shuffle_(0, 0)
+  , isAlreadyComputedShuffle_(false)
+  , alwaysShuffle_(alwaysShuffle)
+  , randomShift_(randomShift)
 {
   // Check if the distribution has an independent copula
   setDistribution(distribution);
