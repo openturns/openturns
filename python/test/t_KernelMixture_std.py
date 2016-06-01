@@ -98,6 +98,24 @@ try:
     print("quantile=", repr(quantile))
     print("quantile (ref)=", repr(distributionRef.computeQuantile(0.95)))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    x = [1.1, 1.6, 2.2]
+    q = [0.1, 0.3, 0.7]
+    y = [[-0.5], [0.5], [1.5]]
+
+    condCDF = distribution.computeConditionalCDF(x[0], y[0])
+    print("cond. cdf=%.6f" % condCDF)
+    condCDFs = distribution.computeConditionalCDF(x, y)
+    print("cond. cdf (vect)=", condCDFs)
+    condPDF = distribution.computeConditionalPDF(x[0], y[0])
+    print("cond. pdf=%.6f" % condPDF)
+    condPDFs = distribution.computeConditionalPDF(x, y)
+    print("cond. pdf (vect)=", condPDFs)
+    condQuantile = distribution.computeConditionalQuantile(q[0], y[0])
+    print("cond. quantile=%.5f" % condQuantile)
+    condQuantiles = distribution.computeConditionalQuantile(q, y)
+    print("cond. quantile (vect)=", condQuantiles)
+    print("cond. cdf(cond. quantile)=", distribution.computeConditionalCDF(condQuantiles, y))
+
     mean = distribution.getMean()
     print("mean=", repr(mean))
     print("mean (ref)=", repr(distributionRef.getMean()))

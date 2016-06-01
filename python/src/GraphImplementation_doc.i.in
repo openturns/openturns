@@ -88,10 +88,10 @@ OT_Graph_getDrawable_doc
 
 Parameters
 ----------
-index : int
-    Position of the Drawable.
 drawable : :class:`~openturns.Drawable`
-    Drawable included in the Graph."
+    Drawable included in the Graph.
+index : int
+    Position of the Drawable."
 %enddef
 %feature("docstring") OT::GraphImplementation::setDrawable
 OT_Graph_setDrawable_doc

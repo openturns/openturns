@@ -68,14 +68,17 @@ public:
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using CopulaImplementation::computeConditionalPDF;
   NumericalScalar computeConditionalPDF(const NumericalScalar x,
                                         const NumericalPoint & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using CopulaImplementation::computeConditionalCDF;
   NumericalScalar computeConditionalCDF(const NumericalScalar x,
                                         const NumericalPoint & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
+  using CopulaImplementation::computeConditionalQuantile;
   NumericalScalar computeConditionalQuantile(const NumericalScalar q,
       const NumericalPoint & y) const;
 

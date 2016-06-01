@@ -113,6 +113,33 @@ int main(int argc, char *argv[])
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "quantile (ref)=" << distributionRef.computeQuantile( 0.95 ) << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    NumericalPoint x(3);
+    x[0] = 1.1;
+    x[1] = 1.6;
+    x[2] = 2.2;
+    NumericalPoint q(3);
+    q[0] = 0.1;
+    q[1] = 0.3;
+    q[2] = 0.7;
+    NumericalSample y(3, 1);
+    y[0][0] = -0.5;
+    y[1][0] =  0.5;
+    y[2][0] =  1.5;
+
+    NumericalScalar condCDF(distribution.computeConditionalCDF(x[0], y[0]));
+    fullprint << "cond. cdf=" << condCDF << std::endl;
+    NumericalPoint condCDFs(distribution.computeConditionalCDF(x, y));
+    fullprint << "cond. cdf (vect)=" << condCDFs << std::endl;
+    NumericalScalar condPDF(distribution.computeConditionalPDF(x[0], y[0]));
+    fullprint << "cond. pdf=" << condPDF << std::endl;
+    NumericalPoint condPDFs(distribution.computeConditionalPDF(x, y));
+    fullprint << "cond. pdf (vect)=" << condPDFs << std::endl;
+    NumericalScalar condQuantile(distribution.computeConditionalQuantile(q[0], y[0]));
+    fullprint << "cond. quantile=" << condQuantile << std::endl;
+    NumericalPoint condQuantiles(distribution.computeConditionalQuantile(q, y));
+    fullprint << "cond. quantile (vect)=" << condQuantiles << std::endl;
+    fullprint << "cond. cdf(cond. quantile)=" << distribution.computeConditionalCDF(condQuantiles, y) << std::endl;
+
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     fullprint << "mean (ref)=" << distributionRef.getMean() << std::endl;
