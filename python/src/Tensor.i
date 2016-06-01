@@ -109,14 +109,14 @@ fail:
 # for details on how to write such a method.
 def Tensor___getattribute__(self, name):
     """Implement attribute accesses."""
-    if (name == '__array_interface__'):
+    if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns(), self.getNbSheets()),
                                                 'typestr': "|f" + str(self.__elementsize__()),
                                                 'data': (int(self.__baseaddress__()), True),
                                                 'strides': (self.__stride__(0), self.__stride__(1), self.__stride__(2)),
                                                 'version': 3,
                                                 }
-    return object.__getattribute__(self, name)
+    return super(Tensor, self).__getattribute__(name)
 Tensor.__getattribute__ = Tensor___getattribute__
 %}
 

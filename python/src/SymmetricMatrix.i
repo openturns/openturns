@@ -17,6 +17,16 @@ OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const B
 
 %include openturns/SymmetricMatrix.hxx
 
+%pythoncode %{
+def SymmetricMatrix___getattribute__(self, name):
+    """Implement attribute accesses."""
+    if name == '__array_interface__':
+        # call the ignored method checkSymmetry
+        self.__str__()
+    return super(SymmetricMatrix, self).__getattribute__(name)
+SymmetricMatrix.__getattribute__ = SymmetricMatrix___getattribute__
+%}
+
 namespace OT {
 
 %extend SymmetricMatrix {

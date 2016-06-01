@@ -65,12 +65,3 @@ sheet #2
 [[  3  9 ]
  [  9 12 ]]"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::SymmetricTensor::checkSymmetry
-"Check if the internal representation is really symmetric.
-
-Returns
--------
-isSymmetric : str
-    *True* if the internal representation is really symmetric."
