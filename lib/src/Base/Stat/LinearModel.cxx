@@ -28,7 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static const Factory<PersistentCollection<NumericalScalar> > RegisteredFactory2;
 
 
 CLASSNAMEINIT(LinearModel);
