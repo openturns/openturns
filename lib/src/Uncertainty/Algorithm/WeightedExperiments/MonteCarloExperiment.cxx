@@ -28,14 +28,14 @@ CLASSNAMEINIT(MonteCarloExperiment);
 
 /* Default constructor */
 MonteCarloExperiment::MonteCarloExperiment():
-  WeightedExperiment()
+  WeightedExperimentImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 MonteCarloExperiment::MonteCarloExperiment(const UnsignedInteger size):
-  WeightedExperiment(size)
+  WeightedExperimentImplementation(size)
 {
   // Nothing to do
 }
@@ -43,7 +43,7 @@ MonteCarloExperiment::MonteCarloExperiment(const UnsignedInteger size):
 /* Constructor with parameters */
 MonteCarloExperiment::MonteCarloExperiment(const Distribution & distribution,
     const UnsignedInteger size):
-  WeightedExperiment(distribution, size)
+  WeightedExperimentImplementation(distribution, size)
 {
   // Nothing to do
 }

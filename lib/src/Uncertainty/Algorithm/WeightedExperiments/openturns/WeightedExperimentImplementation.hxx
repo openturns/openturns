@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief WeightedExperiment interface
+ *  @brief Abstract top-level view of an weightedExperiment plane
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,37 +18,42 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_WEIGHTEDEXPERIMENT_HXX
-#define OPENTURNS_WEIGHTEDEXPERIMENT_HXX
+#ifndef OPENTURNS_WEIGHTEDEXPERIMENTIMPLEMENTATION_HXX
+#define OPENTURNS_WEIGHTEDEXPERIMENTIMPLEMENTATION_HXX
 
-#include "openturns/OTprivate.hxx"
-#include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/WeightedExperimentImplementation.hxx"
+#include "openturns/ExperimentImplementation.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/NumericalPoint.hxx"
+#include "openturns/Indices.hxx"
+//#include "OrthogonalBasis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
+
+
 /**
- * @class WeightedExperiment
- * WeightedExperiment interface
+ * @class WeightedExperimentImplementation
+ *
+ * The class describes the probabilistic concept of weightedExperiment plan
  */
-
-class OT_API WeightedExperiment
-  : public TypedInterfaceObject<WeightedExperimentImplementation>
+class OT_API WeightedExperimentImplementation
+  : public ExperimentImplementation
 {
-
   CLASSNAME;
 public:
 
-  typedef Pointer<WeightedExperimentImplementation> Implementation;
-
   /** Default constructor */
-  WeightedExperiment();
+  WeightedExperimentImplementation();
 
-  /** Constructor from an implementation */
-  WeightedExperiment(const WeightedExperimentImplementation & implementation);
+  /** Parameters constructor */
+  explicit WeightedExperimentImplementation(const UnsignedInteger size);
 
-  /** Constructor from a Pointer to an implementation */
-  WeightedExperiment(const Implementation & p_implementation);
+  /** Parameters constructor */
+  WeightedExperimentImplementation(const Distribution & distribution,
+                     const UnsignedInteger size);
+
+  /** Virtual constructor */
+  virtual WeightedExperimentImplementation * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -72,8 +77,18 @@ public:
   /** Weight accessor */
   virtual NumericalPoint getWeight() const;
 
-} ; /* class WeightedExperiment */
+protected:
+
+  /** Distribution that defines the weights of the experiment */
+  Distribution distribution_;
+  /** The size of the sample to be generated */
+  UnsignedInteger size_;
+  /** The weights associated with the sample for numerical integration */
+  NumericalPoint weights_;
+
+}; /* class WeightedExperimentImplementation */
+
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_WEIGHTEDEXPERIMENT_HXX */
+#endif /* OPENTURNS_WEIGHTEDEXPERIMENTIMPLEMENTATION_HXX */

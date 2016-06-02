@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LHSEXPERIMENT_HXX
 #define OPENTURNS_LHSEXPERIMENT_HXX
 
-#include "openturns/WeightedExperiment.hxx"
+#include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Collection.hxx"
 
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of LHSExperiment plan
  */
 class OT_API LHSExperiment
-  : public WeightedExperiment
+  : public WeightedExperimentImplementation
 {
   CLASSNAME;
 public:
@@ -66,7 +66,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  using WeightedExperiment::generate;
+  using WeightedExperimentImplementation::generate;
   NumericalSample generate();
 
   /** Shuffle the cells. */

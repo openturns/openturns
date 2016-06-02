@@ -30,7 +30,7 @@ CLASSNAMEINIT(ImportanceSamplingExperiment);
 
 /* Default constructor */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment():
-  WeightedExperiment()
+  WeightedExperimentImplementation()
 {
   // Take the default distribution as the importance distribution
   importanceDistribution_ = distribution_;
@@ -39,7 +39,7 @@ ImportanceSamplingExperiment::ImportanceSamplingExperiment():
 /* Constructor with parameters */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & importanceDistribution,
     const UnsignedInteger size):
-  WeightedExperiment(size),
+  WeightedExperimentImplementation(size),
   importanceDistribution_(importanceDistribution)
 {
   // Take the default distribution as the importance distribution
@@ -49,7 +49,7 @@ ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & 
 ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & distribution,
     const Distribution & importanceDistribution,
     const UnsignedInteger size):
-  WeightedExperiment(distribution, size),
+  WeightedExperimentImplementation(distribution, size),
   importanceDistribution_(importanceDistribution)
 {
   // Check if the distributions have compatible dimensions

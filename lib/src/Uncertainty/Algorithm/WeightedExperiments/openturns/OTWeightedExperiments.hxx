@@ -30,5 +30,6 @@
 #include "openturns/LowDiscrepancyExperiment.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/WeightedExperiment.hxx"
+#include "openturns/WeightedExperimentImplementation.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */

@@ -30,14 +30,14 @@ CLASSNAMEINIT(BootstrapExperiment);
 
 /* Default constructor */
 BootstrapExperiment::BootstrapExperiment():
-  WeightedExperiment()
+  WeightedExperimentImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 BootstrapExperiment::BootstrapExperiment(const NumericalSample & sample):
-  WeightedExperiment(UserDefined(sample), sample.getSize())
+  WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
 {
   // Nothing to do
 }
