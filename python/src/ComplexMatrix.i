@@ -22,14 +22,14 @@
 # for details on how to write such a method.
 def ComplexMatrix___getattribute__(self, name):
     """Implement attribute accesses."""
-    if (name == '__array_interface__'):
+    if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns()),
                                                 'typestr': "|c" + str(self.__elementsize__()),
                                                 'data': (int(self.__baseaddress__()), True),
                                                 'strides': (self.__stride__(0), self.__stride__(1)),
                                                 'version': 3,
                                                 }
-    return object.__getattribute__(self, name)
+    return super(ComplexMatrix, self).__getattribute__(name)
 ComplexMatrix.__getattribute__ = ComplexMatrix___getattribute__
 %}
 
