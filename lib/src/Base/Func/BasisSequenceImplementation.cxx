@@ -29,7 +29,6 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT( PersistentCollection<Indices> );
 static const Factory<PersistentCollection<Indices> > RegisteredFactory_PC_I;
-static const Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory_PC_UL;
 
 
 

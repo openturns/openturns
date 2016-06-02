@@ -51,6 +51,7 @@ public:
   virtual KernelSmoothing * clone() const;
 
   /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
+  using DistributionFactoryImplementation::build;
   virtual Distribution build(const NumericalSample & sample,
                              const Bool boundaryCorrection = false);
 

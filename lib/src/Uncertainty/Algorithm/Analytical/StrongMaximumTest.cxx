@@ -38,7 +38,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StrongMaximumTest);
 
 static const Factory< StrongMaximumTest > RegisteredFactory;
-typedef DistributionImplementation::Implementation                        Implementation;
 typedef DistributionImplementation::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
 
 
@@ -406,7 +405,7 @@ NumericalScalar StrongMaximumTest::computeDeltaEpsilon()
   const NumericalScalar betaSquare(standardSpaceDesignPoint_.normSquare());
 
   /* get the input distribution in the standard space */
-  const Implementation p_inputStandardDistribution(event_.getImplementation()->getAntecedent()->getDistribution().getImplementation());
+  const DistributionImplementation::Implementation p_inputStandardDistribution(event_.getImplementation()->getAntecedent()->getDistribution().getImplementation());
 
   /* evaluate the generator at beta square */
   const NumericalScalar pdfMin(importanceLevel_ * p_inputStandardDistribution->computeDensityGenerator(betaSquare));
