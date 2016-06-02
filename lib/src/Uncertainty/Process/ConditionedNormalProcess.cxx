@@ -74,7 +74,7 @@ String ConditionedNormalProcess::__repr__() const
       << ", mesh=" << mesh_
       << ", trend=" << trend_
       << ", covariance=" << covarianceModel_
-      << ", conditional covariance =" << choleskyFactorCovarianceMatrix_;
+      << ", conditional covariance =" << covarianceCholeskyFactor_;
   return oss;
 }
 
@@ -85,7 +85,7 @@ String ConditionedNormalProcess::__str__(const String & offset) const
       << "mesh=" << mesh_.__str__(offset)
       << ", trend=" << trend_.__str__(offset)
       << ", covariance=" << covarianceModel_.__str__(offset)
-      << ", conditional covariance =" << choleskyFactorCovarianceMatrix_.__str__(offset)
+      << ", conditional covariance =" << covarianceCholeskyFactor_.__str__(offset)
       << ")";
   return oss;
 }
@@ -99,7 +99,7 @@ void ConditionedNormalProcess::initialize()
   CovarianceMatrix covarianceMatrix(krigingResult_.getConditionalCovariance(vertices));
   // Get the Cholesky factor
   LOGINFO(OSS(false) << "Evaluation of the Cholesky factor");
-  choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
+  covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
   const NumericalMathFunction krigingEvaluation(krigingResult_.getMetaModel());
@@ -147,13 +147,13 @@ Field ConditionedNormalProcess::getRealization() const
 {
   // 1) L.X product with L: cholesky factor, X the gaussian vector
   // Constantes values
-  const UnsignedInteger fullSize(choleskyFactorCovarianceMatrix_.getDimension());
+  const UnsignedInteger fullSize(covarianceCholeskyFactor_.getDimension());
   NumericalPoint gaussianPoint(fullSize);
   // N independent gaussian realizations
   for (UnsignedInteger index = 0; index < fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
 
   // 2) X <- LX
-  gaussianPoint = choleskyFactorCovarianceMatrix_ * gaussianPoint;
+  gaussianPoint = covarianceCholeskyFactor_ * gaussianPoint;
   const UnsignedInteger size(getMesh().getVerticesNumber());
   NumericalSample values(size, getDimension());
   values.getImplementation()->setData(gaussianPoint);
