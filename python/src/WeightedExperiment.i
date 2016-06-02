@@ -11,6 +11,8 @@ OT::NumericalPoint OT::WeightedExperiment::generateWithWeights(OT::NumericalPoin
 
 %include WeightedExperiment_doc.i
 
+OTTypedInterfaceObjectHelper(WeightedExperiment)
+
 %include openturns/WeightedExperiment.hxx
 namespace OT { %extend WeightedExperiment { WeightedExperiment(const WeightedExperiment & other) { return new OT::WeightedExperiment(other); } } }
 

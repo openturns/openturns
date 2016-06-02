@@ -64,6 +64,12 @@ try:
     print("Martinez method : asymptotic intervals")
     print("First order indices interval = ", interval_fo_asymptotic)
     print("Total order indices interval = ", interval_to_asymptotic)
+
+    # with experiment
+    sequence = ot.SobolSequence(input_dimension)
+    experiment = ot.LowDiscrepancyExperiment(sequence, ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*input_dimension), size)
+    sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(experiment, model)
+    print(sensitivity_algorithm.getFirstOrderIndices())
 except:
     import sys
     print("t_SensitivityAlgorithm_std.py", sys.exc_info()[0], sys.exc_info()[1])

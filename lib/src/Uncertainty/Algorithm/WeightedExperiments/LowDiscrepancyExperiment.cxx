@@ -31,7 +31,7 @@ CLASSNAMEINIT(LowDiscrepancyExperiment);
 
 /* Default constructor */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment()
-  : WeightedExperiment()
+  : WeightedExperimentImplementation()
   , marginals_(0)
   , sequence_(SobolSequence())
   , restart_(true)
@@ -42,7 +42,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment()
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
     const Bool restart)
-  : WeightedExperiment(size)
+  : WeightedExperimentImplementation(size)
   , marginals_(0)
   , sequence_(SobolSequence())
   , restart_(restart)
@@ -55,7 +55,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
     const Distribution & distribution,
     const UnsignedInteger size,
     const Bool restart)
-  : WeightedExperiment(size)
+  : WeightedExperimentImplementation(size)
   , marginals_(0)
   , sequence_(sequence)
   , restart_(restart)
@@ -70,7 +70,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const UnsignedInteger size,
     const Bool restart)
-  : WeightedExperiment(ComposedDistribution(DistributionCollection(sequence.getDimension())), size)
+  : WeightedExperimentImplementation(ComposedDistribution(DistributionCollection(sequence.getDimension())), size)
   , marginals_(0)
   , sequence_(sequence)
   , restart_(restart)
@@ -119,7 +119,7 @@ void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution
   // restart the low-discrepancy sequence if asked for or mandatory (dimension changed)
   if (restart_ || (dimension != getDistribution().getDimension()))
     sequence_.initialize(dimension);
-  WeightedExperiment::setDistribution(distribution);
+  WeightedExperimentImplementation::setDistribution(distribution);
 }
 
 /* Sequence accessor */

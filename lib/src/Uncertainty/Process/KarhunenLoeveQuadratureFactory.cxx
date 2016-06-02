@@ -71,8 +71,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
 {
   // Check the arguments
   const UnsignedInteger dimension(domain.getDimension());
-  Pointer<WeightedExperiment> p_experiment(experiment.clone());
-  const Distribution distribution(p_experiment->getDistribution());
+  const Distribution distribution(experiment.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
   // First thing to do: build a linear transformation that maps the range of the distribution associated with the weighted experiment to the bounding box of the domain
   const NumericalPoint domainLowerBound(domain.getLowerBound());
@@ -108,7 +107,8 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   // Compute the integration nodes and weights
   nodes_ = NumericalSample(0, dimension);
   NumericalPoint rawWeights;
-  NumericalSample rawNodes(p_experiment->generateWithWeights(rawWeights));
+  WeightedExperiment experimentCopy(experiment);
+  NumericalSample rawNodes(experimentCopy.generateWithWeights(rawWeights));
   const NumericalSample pdf(distribution.computePDF(rawNodes));
   if (!hasSameBounds) rawNodes = scaling(rawNodes);
   // Update the weights in order to match Lebesgue distribution on the domain

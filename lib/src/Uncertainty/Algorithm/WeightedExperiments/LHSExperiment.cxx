@@ -32,7 +32,7 @@ CLASSNAMEINIT(LHSExperiment);
 
 /* Default constructor */
 LHSExperiment::LHSExperiment()
-  : WeightedExperiment()
+  : WeightedExperimentImplementation()
   , shuffle_(0, 0)
   , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(false)
@@ -45,7 +45,7 @@ LHSExperiment::LHSExperiment()
 LHSExperiment::LHSExperiment(const UnsignedInteger size,
                              const Bool alwaysShuffle,
                              const Bool randomShift)
-  : WeightedExperiment(size)
+  : WeightedExperimentImplementation(size)
   , marginals_(0)
   , shuffle_(0, 0)
   , isAlreadyComputedShuffle_(false)
@@ -60,7 +60,7 @@ LHSExperiment::LHSExperiment(const Distribution & distribution,
                              const UnsignedInteger size,
                              const Bool alwaysShuffle,
                              const Bool randomShift)
-  : WeightedExperiment(distribution, size)
+  : WeightedExperimentImplementation(distribution, size)
   , marginals_(0)
   , shuffle_(0, 0)
   , isAlreadyComputedShuffle_(false)
@@ -170,7 +170,7 @@ void LHSExperiment::setDistribution(const Distribution & distribution)
   for (UnsignedInteger i = 0; i < dimension; ++ i) marginals_[i] = distribution.getMarginal(i);
   if (dimension != getDistribution().getDimension())
     isAlreadyComputedShuffle_ = false;
-  WeightedExperiment::setDistribution(distribution);
+  WeightedExperimentImplementation::setDistribution(distribution);
 }
 
 /* AlwaysShuffle accessor */

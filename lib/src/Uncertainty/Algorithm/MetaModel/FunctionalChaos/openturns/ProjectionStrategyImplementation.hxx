@@ -55,7 +55,6 @@ class OT_API ProjectionStrategyImplementation
 public:
 
   typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
-  typedef Pointer<WeightedExperiment>       WeightedExperimentImplementation;
 
   // friend class Factory<ProjectionStrategyImplementation>;
 
@@ -105,7 +104,7 @@ public:
 
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
-  virtual const WeightedExperiment & getExperiment() const;
+  virtual WeightedExperiment getExperiment() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   virtual void computeCoefficients(const NumericalMathFunction & function,
@@ -138,7 +137,7 @@ protected:
   Distribution measure_;
 
   // An  experiment that will be used to discretize the L2 integral
-  WeightedExperimentImplementation p_weightedExperiment_;
+  WeightedExperiment weightedExperiment_;
 
   // The input sample which will be used for the projection
   NumericalSample inputSample_;

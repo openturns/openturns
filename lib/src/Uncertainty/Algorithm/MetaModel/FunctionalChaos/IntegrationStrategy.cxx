@@ -88,7 +88,7 @@ IntegrationStrategy * IntegrationStrategy::clone() const
 String IntegrationStrategy::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-         << " experiment=" << p_weightedExperiment_->__repr__();
+         << " experiment=" << weightedExperiment_;
 }
 
 
@@ -111,7 +111,7 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   // upon this sample
   if (inputSample_.getSize() == 0)
   {
-    inputSample_  = p_weightedExperiment_->generateWithWeights(weights_);
+    inputSample_  = weightedExperiment_.generateWithWeights(weights_);
     outputSample_ = function(inputSample_);
   }
   // First, copy the coefficients that are common with the previous partial basis

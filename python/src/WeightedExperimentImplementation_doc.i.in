@@ -1,0 +1,184 @@
+%define OT_WeightedExperiment_doc
+"Weighted experiment.
+
+Available constructor:
+    WeightedExperiment(*distribution=ot.Uniform(), size=100*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` used to generate the set of input data.
+size : positive int
+    Number :math:`cardI` of points that will be generated in the experiment.
+
+Notes
+-----
+WeightedExperiment is used to generate the points :math:`\Xi_i` so that the
+mean :math:`E_{\mu}` is approximated as follows:
+
+.. math::
+
+    \Expect{ f(\vect{Z})}_{\mu} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
+
+where :math:`\mu` is a distribution, :math:`f` is a function :math:`L_1(\mu)`
+and :math:`\omega_i` are the weights associated with the points. By default,
+all the weights are equal to :math:`1/cardI`.
+
+A WeightedExperiment object can be created only through its derived classes
+which are distributed in three groups:
+
+1. The first category is made up of the random patterns, where the set of input
+   data is generated from the joint distribution of the input random vector,
+   according to these sampling techniques:
+
+   - :class:`Monte Carlo <openturns.MonteCarloExperiment>`
+
+   - :class:`LHS <openturns.LHSExperiment>`
+
+   - :class:`Bootstrap <openturns.BootstrapExperiment>`
+
+   - :class:`Importance Sampling <openturns.ImportanceSamplingExperiment>`
+
+2. The second category contains the :class:`low discrepancy sequences
+   <openturns.LowDiscrepancySequence>`. OpenTURNS proposes the Faure, Halton,
+   Haselgrove, Reverse Halton and Sobol sequences.
+
+3. The third category consists of deterministic patterns:
+
+   - :class:`Gauss product <openturns.GaussProductExperiment>`
+
+   - :class:`~openturns.FixedExperiment`
+
+   - :class:`~openturns.LowDiscrepancyExperiment`"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation
+OT_WeightedExperiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_generate_doc
+"Generate points according to the type of the experiment.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    Points :math:`(\Xi_i)_{i \in I}` which constitute the design of experiments
+    with :math:`card I = size`. The sampling method is defined by the nature of
+    the weighted experiment.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myExperiment = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> sample = myExperiment.generate()
+>>> print(sample)
+    [ marginal 1 marginal 2 ]
+0 : [  0.608202  -1.26617   ]
+1 : [ -0.438266   1.20548   ]
+2 : [ -2.18139    0.350042  ]
+3 : [ -0.355007   1.43725   ]
+4 : [  0.810668   0.793156  ]"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::generate
+OT_WeightedExperiment_generate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_generateWithWeights_doc
+"Generate points and their associated weight according to the type of the experiment.
+
+Returns
+-------
+sample : :class:`~openturns.NumericalSample`
+    The points which constitute the design of experiments. The sampling method
+    is defined by the nature of the experiment.
+weights : :class:`~openturns.NumericalPoint` of size :math:`cardI`
+    Weights :math:`(\omega_i)_{i \in I}` associated with the points. By default,
+    all the weights are equal to :math:`1/cardI`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myExperiment = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> sample, weights = myExperiment.generateWithWeights()
+>>> print(sample)
+    [ marginal 1 marginal 2 ]
+0 : [  0.608202  -1.26617   ]
+1 : [ -0.438266   1.20548   ]
+2 : [ -2.18139    0.350042  ]
+3 : [ -0.355007   1.43725   ]
+4 : [  0.810668   0.793156  ]
+>>> print(weights)
+[0.2,0.2,0.2,0.2,0.2]"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::generateWithWeights
+OT_WeightedExperiment_generateWithWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_getDistribution_doc
+"Accessor to the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution used to generate the set of input data."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::getDistribution
+OT_WeightedExperiment_getDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setDistribution_doc
+"Accessor to the distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution used to generate the set of input data."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setDistribution
+OT_WeightedExperiment_setDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_getSize_doc
+"Accessor to the size of the generated sample.
+
+Returns
+-------
+size : positive int
+    Number :math:`cardI` of points constituting the design of experiments."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::getSize
+OT_WeightedExperiment_getSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setSize_doc
+"Accessor to the size of the generated sample.
+
+Parameters
+----------
+size : positive int
+    Number :math:`cardI` of points constituting the design of experiments."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setSize
+OT_WeightedExperiment_setSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_getWeight_doc
+"Accessor to the weights associated with the points.
+
+Returns
+-------
+weights : :class:`~openturns.NumericalPoint` of size :math:`cardI`
+    Weights :math:`(\omega_i)_{i \in I}` associated with the points. By default,
+    all the weights are equal to :math:`1/cardI`."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::getWeight
+OT_WeightedExperiment_getWeight_doc
+

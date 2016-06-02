@@ -93,8 +93,8 @@ try:
             # Examine the results
             result = FunctionalChaosResult(algo.getResult())
             print("###################################")
-            print(AdaptiveStrategy(adaptiveStrategy))
-            print(ProjectionStrategy(projectionStrategy))
+            print(algo.getAdaptiveStrategy())
+            print(algo.getProjectionStrategy())
             # print "coefficients=", result.getCoefficients()
             residuals = result.getResiduals()
             print("residuals=", residuals)

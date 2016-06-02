@@ -100,7 +100,7 @@ LeastSquaresStrategy * LeastSquaresStrategy::clone() const
 String LeastSquaresStrategy::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-         << " experiment=" << p_weightedExperiment_->__repr__();
+         << " experiment=" << weightedExperiment_;
 }
 
 
@@ -124,7 +124,7 @@ void LeastSquaresStrategy::computeCoefficients(const NumericalMathFunction & fun
   if (inputSample_.getSize() == 0)
   {
     LOGINFO("Generate the weighted DOE");
-    inputSample_  = p_weightedExperiment_->generateWithWeights(weights_);
+    inputSample_  = weightedExperiment_.generateWithWeights(weights_);
     LOGINFO("Evaluate the model on the DOE");
     outputSample_ = function(inputSample_);
   }

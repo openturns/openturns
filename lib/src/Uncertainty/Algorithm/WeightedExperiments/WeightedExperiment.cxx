@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
-/**
- *  @brief Abstract top-level view of an weightedExperiment plane
+/*
+ *  @brief WeightedExperiment interface
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,112 +18,84 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-
-#include "openturns/OTprivate.hxx"
 #include "openturns/WeightedExperiment.hxx"
-#include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/MonteCarloExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(WeightedExperiment);
 
-
 /* Default constructor */
-WeightedExperiment::WeightedExperiment():
-  ExperimentImplementation(),
-  distribution_(),
-  size_(ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" )),
-  weights_(ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" ))
+WeightedExperiment::WeightedExperiment() :
+  TypedInterfaceObject<WeightedExperimentImplementation>(new MonteCarloExperiment())
 {
   // Nothing to do
 }
 
-/* Constructor with parameters */
-WeightedExperiment::WeightedExperiment(const UnsignedInteger size):
-  ExperimentImplementation(),
-  distribution_(),
-  size_(0),
-  weights_(0)
+/* Constructor from an implementation */
+WeightedExperiment::WeightedExperiment(const WeightedExperimentImplementation & implementation) :
+  TypedInterfaceObject<WeightedExperimentImplementation>(implementation.clone())
 {
-  // Check if the size is valid
-  setSize(size);
+  // Nothing to do
 }
 
-/* Constructor with parameters */
-WeightedExperiment::WeightedExperiment(const Distribution & distribution,
-                                       const UnsignedInteger size):
-  ExperimentImplementation(),
-  distribution_(distribution),
-  size_(0),
-  weights_(0)
+/* Constructor from a Pointer to an implementation */
+WeightedExperiment::WeightedExperiment(const Implementation & p_implementation) :
+  TypedInterfaceObject<WeightedExperimentImplementation>(p_implementation)
 {
-  // Check if the size is valid
-  setSize(size);
-}
-
-/* Virtual constructor */
-WeightedExperiment * WeightedExperiment::clone() const
-{
-  return new WeightedExperiment(*this);
+  // Nothing to do
 }
 
 /* String converter */
 String WeightedExperiment::__repr__() const
 {
-  OSS oss;
-  oss << "class=" << GetClassName()
-      << " name=" << getName ()
-      << " distribution=" << distribution_
-      << " size=" << size_;
-  return oss;
+  return getImplementation()->__repr__();
 }
 
 /* Distribution accessor */
 void WeightedExperiment::setDistribution(const Distribution & distribution)
 {
-  distribution_ = distribution;
+  copyOnWrite();
+  getImplementation()->setDistribution(distribution);
 }
 
 Distribution WeightedExperiment::getDistribution() const
 {
-  return distribution_;
+  return getImplementation()->getDistribution();
 }
 
 /* Size accessor */
 void WeightedExperiment::setSize(const UnsignedInteger size)
 {
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0.";
-  size_ = size;
-  weights_ = NumericalPoint(size_, 1.0 / size_);
+  copyOnWrite();
+  getImplementation()->setSize(size);
 }
 
 UnsignedInteger WeightedExperiment::getSize() const
 {
-  return size_;
+  return getImplementation()->getSize();
 }
+/* Here is the interface that all derived class must implement */
 
 /* Sample generation */
 NumericalSample WeightedExperiment::generate()
 {
-  throw NotYetImplementedException(HERE) << "In WeightedExperiment::generate()";
+  copyOnWrite();
+  return getImplementation()->generate();
 }
 
-/* Sample generation with weights */
+/* Sample generation with weights*/
 NumericalSample WeightedExperiment::generateWithWeights(NumericalPoint & weights)
 {
-  const NumericalSample sample(generate());
-  weights = weights_;
-  return sample;
+  copyOnWrite();
+  return getImplementation()->generateWithWeights(weights);
 }
 
 /* Weight accessor */
 NumericalPoint WeightedExperiment::getWeight() const
 {
-  return weights_;
+  return getImplementation()->getWeight();
 }
+
 
 END_NAMESPACE_OPENTURNS

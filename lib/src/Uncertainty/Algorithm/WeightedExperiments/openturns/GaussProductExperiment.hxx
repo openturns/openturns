@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_GAUSSPRODUCTEXPERIMENT_HXX
 #define OPENTURNS_GAUSSPRODUCTEXPERIMENT_HXX
 
-#include "openturns/WeightedExperiment.hxx"
+#include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Indices.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of monteCarloExperiment plan
  */
 class OT_API GaussProductExperiment
-  : public WeightedExperiment
+  : public WeightedExperimentImplementation
 {
   CLASSNAME;
 public:
@@ -63,7 +63,7 @@ public:
   virtual String __repr__() const;
 
   /** Sample generation */
-  using WeightedExperiment::generate;
+  using WeightedExperimentImplementation::generate;
   NumericalSample generate();
 
   /** Marginal degrees accessor */

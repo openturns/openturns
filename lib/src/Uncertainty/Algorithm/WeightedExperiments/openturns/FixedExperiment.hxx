@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_FIXEDEXPERIMENT_HXX
 #define OPENTURNS_FIXEDEXPERIMENT_HXX
 
-#include "openturns/WeightedExperiment.hxx"
+#include "openturns/WeightedExperimentImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of fixedExperiment plan
  */
 class OT_API FixedExperiment
-  : public WeightedExperiment
+  : public WeightedExperimentImplementation
 {
   CLASSNAME;
 public:
@@ -61,7 +61,7 @@ public:
   void setDistribution(const Distribution & distribution);
 
   /** Sample generation */
-  using WeightedExperiment::generate;
+  using WeightedExperimentImplementation::generate;
   NumericalSample generate();
 
 protected:

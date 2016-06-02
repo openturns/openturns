@@ -106,6 +106,8 @@ public:
   void setProjectionStrategy(const ProjectionStrategy & projectionStrategy);
   ProjectionStrategy getProjectionStrategy() const;
 
+  AdaptiveStrategy getAdaptiveStrategy() const;
+
   /** Computes the functional chaos */
   void run();
 

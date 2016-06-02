@@ -462,8 +462,8 @@
   <MaternModel-DefaultNu    value="1.5"   />
   <MaternModel-DefaultTheta value="10.0"  />
   
-  <!-- OT::WeightedExperiment parameters -->
-  <WeightedExperiment-DefaultSize value="100" />
+  <!-- OT::WeightedExperimentImplementation parameters -->
+  <WeightedExperimentImplementation-DefaultSize value="100" />
 
   <!-- OT::GaussProductExperiment parameters -->
   <GaussProductExperiment-DefaultMarginalDegree value="5" />

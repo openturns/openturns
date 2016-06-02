@@ -234,6 +234,16 @@ multivariate basis to define the subset *K*."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::FunctionalChaosAlgorithm::getAdaptiveStrategy
+"Get the adaptive strategy.
+
+Returns
+-------
+adaptiveStrategy : :class:`~openturns.AdaptiveStrategy`
+    Strategy of selection of the different terms of the multivariate basis."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::FunctionalChaosAlgorithm::getResult
 "Get the results of the metamodel computation.
 
