@@ -22,6 +22,8 @@ try:
     print("sample2 = ", repr(myPlane.generate()))
     myPlane.setDistribution(distribution)
     print("sample3 = ", repr(myPlane.generate()))
+    myPlane = LowDiscrepancyExperiment(HaltonSequence(2), size)
+    print("sample4 = ", repr(myPlane.generate()))
 except:
     import sys
     print("t_LowDiscrepancyExperiment_std.py",

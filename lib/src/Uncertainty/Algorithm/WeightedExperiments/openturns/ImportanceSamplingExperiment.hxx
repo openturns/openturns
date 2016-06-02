@@ -64,7 +64,7 @@ public:
 
   /** Sample generation */
   NumericalSample generate();
-  NumericalSample generate(NumericalPoint & weights);
+  NumericalSample generateWithWeights(NumericalPoint & weights);
 
 protected:
 
