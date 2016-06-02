@@ -38,8 +38,18 @@ int main(int argc, char *argv[])
     fullprint << "myPlane = " << myPlane << std::endl;
     NumericalPoint weights(0);
     NumericalSample sample(myPlane.generateWithWeights(weights));
-    fullprint << "sample = " << sample << std::endl;
+    fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
+    fullprint << "sample2 = " << myPlane.generate() << std::endl;
+    myPlane = LHSExperiment(distribution, size, true, true);
+    fullprint << "sample  = " << myPlane.generate() << std::endl;
+    fullprint << "sample2 = " << myPlane.generate() << std::endl;
+    myPlane = LHSExperiment(distribution, size, false, false);
+    fullprint << "sample  = " << myPlane.generate() << std::endl;
+    fullprint << "sample2 = " << myPlane.generate() << std::endl;
+    myPlane = LHSExperiment(distribution, size, true, false);
+    fullprint << "sample  = " << myPlane.generate() << std::endl;
+    fullprint << "sample2 = " << myPlane.generate() << std::endl;
   }
   catch (TestFailed & ex)
   {

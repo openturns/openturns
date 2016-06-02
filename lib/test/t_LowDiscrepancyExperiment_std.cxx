@@ -38,8 +38,18 @@ int main(int argc, char *argv[])
     fullprint << "myPlane = " << myPlane << std::endl;
     NumericalPoint weights(0);
     NumericalSample sample(myPlane.generateWithWeights(weights));
-    fullprint << "sample = " << sample << std::endl;
+    fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
+    // With reinitialization
+    fullprint << "sample 2=" << myPlane.generate() << std::endl;
+    myPlane.setDistribution(distribution);
+    fullprint << "sample 3=" << myPlane.generate() << std::endl;
+    myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, false);
+    fullprint << "sample  = " << sample << std::endl;
+    // With reinitialization
+    fullprint << "sample 2=" << myPlane.generate() << std::endl;
+    myPlane.setDistribution(distribution);
+    fullprint << "sample 3=" << myPlane.generate() << std::endl;    
   }
   catch (TestFailed & ex)
   {

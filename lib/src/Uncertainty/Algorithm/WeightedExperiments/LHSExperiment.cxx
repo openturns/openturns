@@ -26,36 +26,46 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 typedef Collection<Distribution> DistributionCollection;
 
 CLASSNAMEINIT(LHSExperiment);
 
 /* Default constructor */
-LHSExperiment::LHSExperiment():
-  WeightedExperiment(),
-  shuffle_(0, 0),
-  isAlreadyComputedShuffle_(false)
+LHSExperiment::LHSExperiment()
+  : WeightedExperiment()
+  , shuffle_(0, 0)
+  , isAlreadyComputedShuffle_(false)
+  , alwaysShuffle_(false)
+  , randomShift_(true)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-LHSExperiment::LHSExperiment(const UnsignedInteger size):
-  WeightedExperiment(size),
-  shuffle_(0, 0),
-  isAlreadyComputedShuffle_(false)
+LHSExperiment::LHSExperiment(const UnsignedInteger size,
+                             const Bool alwaysShuffle,
+                             const Bool randomShift)
+  : WeightedExperiment(size)
+  , marginals_(0)
+  , shuffle_(0, 0)
+  , isAlreadyComputedShuffle_(false)
+  , alwaysShuffle_(alwaysShuffle)
+  , randomShift_(randomShift)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 LHSExperiment::LHSExperiment(const Distribution & distribution,
-                             const UnsignedInteger size):
-  WeightedExperiment(distribution, size),
-  shuffle_(0, 0),
-  isAlreadyComputedShuffle_(false)
+                             const UnsignedInteger size,
+                             const Bool alwaysShuffle,
+                             const Bool randomShift)
+  : WeightedExperiment(distribution, size)
+  , marginals_(0)
+  , shuffle_(0, 0)
+  , isAlreadyComputedShuffle_(false)
+  , alwaysShuffle_(alwaysShuffle)
+  , randomShift_(randomShift)
 {
   // Check if the distribution has an independent copula
   setDistribution(distribution);
@@ -74,7 +84,20 @@ String LHSExperiment::__repr__() const
   oss << "class=" << GetClassName()
       << " name=" << getName()
       << " distribution=" << distribution_
-      << " size=" << size_;
+      << " size=" << size_
+      << " alwaysShuffle=" << alwaysShuffle_
+      << " random shift=" << randomShift_;
+  return oss;
+}
+
+String LHSExperiment::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << GetClassName()
+      << "(distribution=" << distribution_
+      << ", size" << size_
+      << ", always shuffle=" << (alwaysShuffle_ ? "true" : "false")
+      << ", random shift=" << (randomShift_ ? "true" : "false");
   return oss;
 }
 
@@ -83,18 +106,17 @@ NumericalSample LHSExperiment::generate()
 {
   const UnsignedInteger dimension(distribution_.getDimension());
   // To insure that the shuffle has been initialized
-  shuffle_ = getShuffle();
+  (void) getShuffle();
   NumericalSample sample(size_, dimension);
   sample.setDescription(distribution_.getDescription());
-  DistributionCollection marginals(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) marginals[i] = distribution_.getMarginal(i);
+  NumericalPoint u(dimension, 0.5);
   for(UnsignedInteger index = 0; index < size_; ++index)
   {
-    const NumericalPoint u(RandomGenerator::Generate(dimension));
+    if (randomShift_) u = RandomGenerator::Generate(dimension);
     for(UnsignedInteger component = 0; component < dimension; ++component)
     {
       const NumericalScalar xi((shuffle_(component, index) + u[component]) / size_);
-      sample[index][component] = marginals[component].computeQuantile(xi)[0];
+      sample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }
   return sample;
@@ -130,7 +152,7 @@ Matrix LHSExperiment::ComputeShuffle(const UnsignedInteger dimension,
 /* Shuffle accessor */
 Matrix LHSExperiment::getShuffle() const
 {
-  if (!isAlreadyComputedShuffle_)
+  if (alwaysShuffle_ || !isAlreadyComputedShuffle_)
   {
     shuffle_ = ComputeShuffle(distribution_.getDimension(), size_);
     isAlreadyComputedShuffle_ = true;
@@ -142,7 +164,37 @@ Matrix LHSExperiment::getShuffle() const
 void LHSExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use the LHS experiment with a non-independent copula.";
+  const UnsignedInteger dimension = distribution.getDimension();
+  marginals_ = DistributionCollection(dimension);
+  // Get the marginal distributions
+  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals_[i] = distribution.getMarginal(i);
+  if (dimension != getDistribution().getDimension())
+    isAlreadyComputedShuffle_ = false;
   WeightedExperiment::setDistribution(distribution);
 }
 
+/* AlwaysShuffle accessor */
+Bool LHSExperiment::getAlwaysShuffle() const
+{
+  return alwaysShuffle_;
+}
+
+void LHSExperiment::setAlwaysShuffle(const Bool alwaysShuffle)
+{
+  alwaysShuffle_ = alwaysShuffle;
+}
+
+/* Random shift accessor */
+Bool LHSExperiment::getRandomShift() const
+{
+  return randomShift_;
+}
+
+void LHSExperiment::setRandomShift(const Bool randomShift)
+{
+  randomShift_ = randomShift;
+}
+
+
 END_NAMESPACE_OPENTURNS
+
