@@ -12,8 +12,16 @@ try:
     myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size)
     print("myPlane = ", myPlane)
     sample, weights = myPlane.generateWithWeights()
-    print("sample = ", repr(sample))
+    print("sample  = ", repr(sample))
     print("weights = ", repr(weights))
+    print("sample2 = ", repr(myPlane.generate()))
+    myPlane.setDistribution(distribution)
+    print("sample3 = ", repr(myPlane.generate()))
+    myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, False)
+    print("sample  = ", repr(myPlane.generate()))
+    print("sample2 = ", repr(myPlane.generate()))
+    myPlane.setDistribution(distribution)
+    print("sample3 = ", repr(myPlane.generate()))
 except:
     import sys
     print("t_LowDiscrepancyExperiment_std.py",
