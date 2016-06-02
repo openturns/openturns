@@ -21,6 +21,7 @@
 #include "openturns/LowDiscrepancyExperiment.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -69,7 +70,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const UnsignedInteger size,
     const Bool restart)
-  : WeightedExperiment(size)
+  : WeightedExperiment(ComposedDistribution(DistributionCollection(sequence.getDimension())), size)
   , marginals_(0)
   , sequence_(sequence)
   , restart_(restart)
