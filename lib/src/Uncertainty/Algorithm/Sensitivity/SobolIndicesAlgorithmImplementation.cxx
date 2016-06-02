@@ -76,6 +76,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const N
   if (outputDesign.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
 
+  // center Y
+  NumericalPoint muY(outputDesign_.computeMean());
+  outputDesign_ -= muY;
+
   // Check if desing result is coherant
   if (inputDesign.getSize() != outputDesign.getSize())
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, input and output designs have different size. Input design size=" << inputDesign.getSize()
@@ -118,6 +122,11 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
                                          <<", model input dimension = " << inputDimension;
   inputDesign_ = Generate(distribution, size, computeSecondOrder);
   outputDesign_ = model(inputDesign_);
+
+  // center Y
+  NumericalPoint muY(outputDesign_.computeMean());
+  outputDesign_ -= muY;
+
   size_ = size;
   // Reference sample and its variance
   NumericalSample outReference(size, outputDesign_.getDimension());
@@ -150,6 +159,11 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
                                          <<", model input dimension = " << inputDimension;
   inputDesign_ = Generate(experiment, computeSecondOrder);
   outputDesign_ = model(inputDesign_);
+
+  // center Y
+  NumericalPoint muY(outputDesign_.computeMean());
+  outputDesign_ -= muY;
+
   size_ = experiment.getSize();
   // Reference sample and its variance
   NumericalSample outReference(size_, outputDesign_.getDimension());
