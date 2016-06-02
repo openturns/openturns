@@ -145,7 +145,7 @@ void Cobyla::run()
     relativeError = absoluteError / inP.norm();
     residualError = std::abs(outP[0] - outPM[0]);
     constraintError =  outP[1];
-    result_.store( inP, outP, absoluteError, relativeError, residualError, constraintError );
+    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
 
   // check the convergence criteria
