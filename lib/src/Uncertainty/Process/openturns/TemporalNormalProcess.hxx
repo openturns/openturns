@@ -123,7 +123,7 @@ protected:
   CovarianceModel covarianceModel_;
 
   /** Cholesky factor  */
-  mutable TriangularMatrix choleskyFactorCovarianceMatrix_;
+  mutable TriangularMatrix covarianceCholeskyFactor_;
 
   /** Cholesky factor  */
   mutable HMatrix covarianceHMatrix_;
