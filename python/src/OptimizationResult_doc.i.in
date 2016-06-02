@@ -18,7 +18,9 @@ relativeError : float
 residualError : float
     Residual error.
 constraintError : float
-    Constraint error."
+    Constraint error.
+problem : :class:`~openturns.OptimizationProblem`
+    Associated problem."
 
 // ---------------------------------------------------------------------
 
@@ -28,7 +30,17 @@ constraintError : float
 Returns
 -------
 absoluteError : float
-     absolute error."
+     Absolute error, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getAbsoluteErrorHistory
+"Accessor to the evolution of the absolute error.
+
+Returns
+-------
+absoluteErrorHistory : :class:`~openturns.NumericalSample`
+     Value of the absolute error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -38,7 +50,17 @@ absoluteError : float
 Returns
 -------
 constraintError : float
-     Constraint error."
+     Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gather all the equality and inequality constraints."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getConstraintErrorHistory
+"Accessor to the evolution of the constraint error.
+
+Returns
+-------
+constraintErrorHistory : :class:`~openturns.NumericalSample`
+     Value of the constrainte error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -58,7 +80,17 @@ iterationNumber : int
 Returns
 -------
 relativeError : float
-     allowed relative error."
+     Relative error, defined by :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getRelativeErrorHistory
+"Accessor to the evolution of the relative error.
+
+Returns
+-------
+relativeErrorHistory : :class:`~openturns.NumericalSample`
+     Value of the relative error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -68,7 +100,17 @@ relativeError : float
 Returns
 -------
 residualError : float
-     allowed residual error."
+     Residual error, defined by :math:`\eta^r_n=\|\nabla\cL{\vect{x}_n}\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`\cL` is the Lagrangian of the problem."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getResidualErrorHistory
+"Accessor to the evolution of the residual error.
+
+Returns
+-------
+residualErrorHistory : :class:`~openturns.NumericalSample`
+     Value of the residual error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -109,6 +151,16 @@ Returns
 -------
 outputSample : :class:`~openturns.NumericalSample`
      Output points used by the solver"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getProblem
+"Accessor to the underlying optimization problem.
+
+Returns
+-------
+problem : :class:`~openturns.OptimizationProblem`
+     Problem corresponding to the result"
 
 // ---------------------------------------------------------------------
 
