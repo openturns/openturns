@@ -31,8 +31,7 @@ print('algo=', algo)
 algo.run()
 result = algo.getResult()
 print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-
-
+print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
 
 
 
