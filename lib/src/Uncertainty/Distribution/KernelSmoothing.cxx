@@ -53,6 +53,7 @@ KernelSmoothing::KernelSmoothing()
   , kernel_(Normal())
   , bined_(true)
   , binNumber_(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ))
+  , boundaryCorrection_(false)
 {
   setName("KernelSmoothing");
   if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The default number of bins=" << binNumber_ << " is less than 2. Check the ResourceMap or the openturns.conf file.";
@@ -60,13 +61,15 @@ KernelSmoothing::KernelSmoothing()
 
 /* Default constructor */
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
-                                 const Bool & bined,
-                                 const UnsignedInteger binNumber)
+                                 const Bool bined,
+                                 const UnsignedInteger binNumber,
+                                 const Bool boundaryCorrection)
   : DistributionFactoryImplementation()
   , bandwidth_(NumericalPoint(0))
   , kernel_(kernel)
   , bined_(bined)
   , binNumber_(binNumber)
+  , boundaryCorrection_(boundaryCorrection)
 {
   setName("KernelSmoothing");
   // Only 1D kernel allowed here
@@ -81,7 +84,7 @@ KernelSmoothing * KernelSmoothing::clone() const
 }
 
 /* Compute the bandwidth according to Silverman's rule */
-NumericalPoint KernelSmoothing::computeSilvermanBandwidth(const NumericalSample & sample)
+NumericalPoint KernelSmoothing::computeSilvermanBandwidth(const NumericalSample & sample) const
 {
   UnsignedInteger dimension(sample.getDimension());
   UnsignedInteger size(sample.getSize());
@@ -162,7 +165,7 @@ struct PluginConstraint
    See Vikas Chandrakant Raykar, Ramani Duraiswami, "Very Fast optimal bandwidth selection for univariate kernel density estimation" CS-TR-4774
    We implement only the basic estimator, not the fast version of it.
 */
-NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & sample)
+NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & sample) const
 {
   const UnsignedInteger dimension(sample.getDimension());
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: plugin bandwidth is available only for 1D sample";
@@ -204,7 +207,7 @@ NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & s
  * scale the Silverman bandwidth computed on the full
  * sample with this ratio
  */
-NumericalPoint KernelSmoothing::computeMixedBandwidth(const NumericalSample & sample)
+NumericalPoint KernelSmoothing::computeMixedBandwidth(const NumericalSample & sample) const
 {
   const UnsignedInteger dimension(sample.getDimension());
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: mixed bandwidth is available only for 1D sample";
@@ -219,13 +222,12 @@ NumericalPoint KernelSmoothing::computeMixedBandwidth(const NumericalSample & sa
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
-Distribution KernelSmoothing::build(const NumericalSample & sample,
-                                    const Bool boundaryCorrection)
+KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & sample) const
 {
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
-  if (sample.getDimension() == 1) return build(sample, computeMixedBandwidth(sample), boundaryCorrection);
+  if (sample.getDimension() == 1) return build(sample, computeMixedBandwidth(sample));
   // For nD sample, use the only available rule
-  return build(sample, computeSilvermanBandwidth(sample), boundaryCorrection);
+  return build(sample, computeSilvermanBandwidth(sample));
 }
 
 /* Build a Normal kernel mixture based on the given sample and bandwidth
@@ -233,9 +235,8 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
  * If boundary correction: mirroring on the two sides, followed by truncation
  * If binning: condensation on a regular grid
  */
-Distribution KernelSmoothing::build(const NumericalSample & sample,
-                                    const NumericalPoint & bandwidth,
-                                    const Bool boundaryCorrection)
+KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & sample,
+                                                       const NumericalPoint & bandwidth) const
 {
   const UnsignedInteger dimension(sample.getDimension());
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
@@ -244,11 +245,11 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   // The usual case: no boundary correction, no binning
   const Bool mustBin(bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size)));
   if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
-  if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection)))
+  if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection_)))
   {
     KernelMixture result(kernel_, bandwidth, sample);
     result.setDescription(sample.getDescription());
-    return result;
+    return result.clone();
   }
   const NumericalPoint xmin(sample.getMin());
   const NumericalPoint xmax(sample.getMax());
@@ -256,7 +257,7 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   {
     Dirac result(xmin);
     result.setDescription(sample.getDescription());
-    return result;
+    return result.clone();
   }
   // 2D binning?
   if ((dimension == 2) && mustBin)
@@ -299,7 +300,7 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
     }
     Mixture result(atoms, reducedData);
     result.setDescription(sample.getDescription());
-    return result;
+    return result.clone();
   } // 2D binning
 
   // Here we are in the 1D case, with at least binning or boundary boundary correction
@@ -307,7 +308,7 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   NumericalScalar xminNew(xmin[0]);
   NumericalScalar xmaxNew(xmax[0]);
   // If boundary correction,
-  if (boundaryCorrection)
+  if (boundaryCorrection_)
   {
     NumericalScalar h(bandwidth[0]);
     // Reflect and add points close to the boundaries to the sample
@@ -323,9 +324,9 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   {
     TruncatedDistribution result(KernelMixture(kernel_, bandwidth, newSample), xmin[0], xmax[0]);
     result.setDescription(sample.getDescription());
-    return result;
+    return result.clone();
   }
-  if (boundaryCorrection)
+  if (boundaryCorrection_)
   {
     xminNew = newSample.getMin()[0];
     xmaxNew = newSample.getMax()[0];
@@ -351,19 +352,19 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
     KernelMixture atom(kernel_, bandwidth, NumericalSample(1, NumericalPoint(1, x[i])));
     atoms[i] = atom;
   }
-  if (boundaryCorrection)
+  if (boundaryCorrection_)
   {
     TruncatedDistribution result(Mixture(atoms, reducedData), xmin[0], xmax[0]);
     result.setDescription(sample.getDescription());
-    return result;
+    return result.clone();
   }
   Mixture result(atoms, reducedData);
   result.setDescription(sample.getDescription());
-  return result;
+  return result.clone();
 }
 
 /* Bandwidth accessor */
-void KernelSmoothing::setBandwidth(const NumericalPoint & bandwidth)
+void KernelSmoothing::setBandwidth(const NumericalPoint & bandwidth) const
 {
   // Check the given bandwidth
   for (UnsignedInteger i = 0; i < bandwidth.getDimension(); i++) if (bandwidth[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: the bandwidth must be > 0, here bandwith=" << bandwidth;
@@ -380,18 +381,31 @@ Distribution KernelSmoothing::getKernel() const
   return kernel_;
 }
 
+void KernelSmoothing::setBoundaryCorrection(const Bool boundaryCorrection)
+{
+  boundaryCorrection_ = boundaryCorrection;
+}
+
 /* Method save() stores the object through the StorageManager */
 void KernelSmoothing::save(Advocate & adv) const
 {
   DistributionFactoryImplementation::save(adv);
-  adv.saveAttribute( "bandwidth_", bandwidth_ );
+  adv.saveAttribute("bandwidth_", bandwidth_);
+  adv.saveAttribute("kernel_", kernel_);
+  adv.saveAttribute("bined_", bined_);
+  adv.saveAttribute("binNumber_", binNumber_);
+  adv.saveAttribute("boundaryCorrection_", boundaryCorrection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void KernelSmoothing::load(Advocate & adv)
 {
   DistributionFactoryImplementation::load(adv);
-  adv.loadAttribute( "bandwidth_", bandwidth_ );
+  adv.loadAttribute("bandwidth_", bandwidth_);
+  adv.loadAttribute("kernel_", kernel_);
+  adv.loadAttribute("bined_", bined_);
+  adv.loadAttribute("binNumber_", binNumber_);
+  adv.loadAttribute("boundaryCorrection_", boundaryCorrection_);
 }
 
 END_NAMESPACE_OPENTURNS

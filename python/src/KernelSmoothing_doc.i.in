@@ -9,7 +9,9 @@ bined : bool, optional
     Activates bining mecanism only in the univariate or bivariate cases. It allows to speed up the manipulation of the density function of the resulting distribution.  By default, the mecanism is activated.
 binNumber : int, :math:`binNumber \geq 2`, optional
     Indicates the number of bins used by the bining mecanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
-
+boundaryCorrection : bool, optional
+    Activates the boundary correction using the mirroring technique.
+    By default, the correction is not provided.
 
 Notes
 -----
@@ -44,8 +46,6 @@ sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
 bandwidth : :class:`~openturns.NumericalPoint`, optional
     Contains the bandwith in each direction. If not specified, the bandwith is calculated using the mixed rule from data.
-boundaryCorrection : bool, optional
-    Activates the boundary correction using the mirroring technique. By default, the correction is not provided.
 
 Returns
 -------
@@ -69,9 +69,10 @@ See the effect of the boundary correction:
 
 >>> import openturns as ot
 >>> sample = ot.Exponential(1.0).getSample(1000)
->>> kernel = ot.KernelSmoothing()
->>> fittedDistNoCorr = kernel.build(sample)
->>> fittedDistWithCorr = kernel.build(sample, True)
+>>> smoother = ot.KernelSmoothing()
+>>> fittedDistNoCorr = smoother.build(sample)
+>>> smoother.setBoundaryCorrection(True)
+>>> fittedDistWithCorr = smoother.build(sample)
 
 Compare the PDFs:
 
@@ -101,6 +102,16 @@ Returns
 kernel : :class:`~openturns.Distribution`
     Univariate distribution used to build the kernel.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setBoundaryCorrection
+"Accessor to the boundary correction flag.
+
+Parameters
+----------
+boundaryCorrection : bool
+    Activates the boundary correction using the mirroring technique."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeSilvermanBandwidth
