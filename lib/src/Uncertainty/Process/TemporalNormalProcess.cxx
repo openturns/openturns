@@ -39,7 +39,7 @@ static const Factory<TemporalNormalProcess> RegisteredFactory;
 TemporalNormalProcess::TemporalNormalProcess()
   : ProcessImplementation()
   , covarianceModel_()
-  , choleskyFactorCovarianceMatrix_(0)
+  , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
   , isInitialized_(false)
   , hasStationaryTrend_(true)
@@ -62,7 +62,7 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
     const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
-  , choleskyFactorCovarianceMatrix_(0)
+  , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
   , isInitialized_(false)
   , hasStationaryTrend_(false)
@@ -84,7 +84,7 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
     const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
-  , choleskyFactorCovarianceMatrix_(0)
+  , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
   , isInitialized_(false)
   , hasStationaryTrend_(false)
@@ -105,7 +105,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
     const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
-  , choleskyFactorCovarianceMatrix_(0)
+  , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
   , isInitialized_(false)
   , hasStationaryTrend_(true)
@@ -129,7 +129,7 @@ TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceM
     const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
-  , choleskyFactorCovarianceMatrix_(0)
+  , covarianceCholeskyFactor_(0)
   , covarianceHMatrix_()
   , isInitialized_(false)
   , hasStationaryTrend_(true)
@@ -217,7 +217,7 @@ void TemporalNormalProcess::initialize() const
       LOGINFO(OSS() << "Factor the covariance matrix");
       try
       {
-        choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
+        covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
 	continuationCondition = false;
       }
       catch (...)
@@ -247,7 +247,7 @@ String TemporalNormalProcess::__repr__() const
   oss << " mesh=" << mesh_
       << " trend=" << trend_
       << " covarianceModel=" << covarianceModel_
-      << " choleskyFactorCovarianceMatrix=" << choleskyFactorCovarianceMatrix_
+      << " covarianceCholeskyFactor=" << covarianceCholeskyFactor_
       << " isInitialized=" << isInitialized_
       << " hasStationaryTrend=" << hasStationaryTrend_
       << " checkedStationaryTrend=" << checkedStationaryTrend_;
@@ -270,7 +270,7 @@ void TemporalNormalProcess::setMesh(const Mesh & mesh)
   checkedStationaryTrend_ = false;
   ProcessImplementation::setMesh(mesh);
   isInitialized_ = false;
-  choleskyFactorCovarianceMatrix_ = TriangularMatrix();
+  covarianceCholeskyFactor_ = TriangularMatrix();
   covarianceHMatrix_ = HMatrix();
 }
 
@@ -292,7 +292,7 @@ void TemporalNormalProcess::setSamplingMethod(const UnsignedInteger samplingMeth
   {
     samplingMethod_ = samplingMethod;
     isInitialized_ = false;
-    choleskyFactorCovarianceMatrix_ = TriangularMatrix();
+    covarianceCholeskyFactor_ = TriangularMatrix();
     covarianceHMatrix_ = HMatrix();
   }
 
@@ -354,11 +354,11 @@ NumericalSample TemporalNormalProcess::getRealizationCholesky() const
   if (!isInitialized_) initialize();
   // Constantes values
   const UnsignedInteger size(getMesh().getVerticesNumber());
-  const UnsignedInteger fullSize(choleskyFactorCovarianceMatrix_.getDimension());
+  const UnsignedInteger fullSize(covarianceCholeskyFactor_.getDimension());
   const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
 
   NumericalSampleImplementation values(size, dimension_);
-  const NumericalPoint rawResult(choleskyFactorCovarianceMatrix_ * gaussianPoint);
+  const NumericalPoint rawResult(covarianceCholeskyFactor_ * gaussianPoint);
   LOGINFO(OSS() << "In TemporalNormalProcess::getRealizationCholesky(), size=" << size << ", fullSize=" << fullSize << ", gaussianPoint dimension=" << gaussianPoint.getDimension() << ", rawResult dimension=" << rawResult.getDimension());
   values.setData(rawResult);
   return values;
@@ -434,7 +434,7 @@ void TemporalNormalProcess::save(Advocate & adv) const
 {
   ProcessImplementation::save(adv);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
-  adv.saveAttribute("choleskyFactorCovarianceMatrix_", choleskyFactorCovarianceMatrix_);
+  adv.saveAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   adv.saveAttribute("isInitialized_", isInitialized_);
   adv.saveAttribute("hasStationaryTrend_", hasStationaryTrend_);
   adv.saveAttribute("checkedStationaryTrend_", checkedStationaryTrend_);
@@ -448,7 +448,7 @@ void TemporalNormalProcess::load(Advocate & adv)
 {
   ProcessImplementation::load(adv);
   adv.loadAttribute("covarianceModel_", covarianceModel_);
-  adv.loadAttribute("choleskyFactorCovarianceMatrix_", choleskyFactorCovarianceMatrix_);
+  adv.loadAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   adv.loadAttribute("isInitialized_", isInitialized_);
   adv.loadAttribute("hasStationaryTrend_", hasStationaryTrend_);
   adv.loadAttribute("checkedStationaryTrend_", checkedStationaryTrend_);
