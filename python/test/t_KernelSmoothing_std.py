@@ -65,16 +65,16 @@ try:
     distributionCollection[1] = Beta(0.7, 1.6, -1.0, 2.0)
     sampleCollection = [distributionCollection[0].getSample(
         discretization), distributionCollection[1].getSample(discretization)]
-    bounded = [False, True]
     for i in range(kernels.getSize()):
         kernel = kernels[i]
         print("kernel=", kernel.getName())
         smoother = KernelSmoothing(kernel)
         for j in range(2):
-            for k in range(2):
-                smoothed = smoother.build(sampleCollection[j], bounded[k])
+            for corr in [False, True]:
+                smoother.setBoundaryCorrection(corr)
+                smoothed = smoother.build(sampleCollection[j])
                 print("Bounded underlying distribution? ", j ==
-                      1, " bounded reconstruction? ", k == 1)
+                      1, " bounded reconstruction? ", corr)
                 # Define a point
                 point = NumericalPoint(smoothed.getDimension(), -0.9)
 

@@ -44,6 +44,7 @@
  * Added more options to control LHSExperiment and LowDiscrepancyExperiment
 
 === Bug fixes ===
+ * #698 (KernelSmoothing() as a factory)
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
  * #820 (Python distribution fails randomly when computing the PDF over a sample)
  * #822 (Incorect Matrix / point operations with cast)
