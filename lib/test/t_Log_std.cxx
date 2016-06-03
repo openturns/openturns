@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
   const int nbThreads = 128;
   pthread_t Threads[nbThreads];
 
-  const int nbFunctions = 7;
+  const int nbFunctions = 6;
   typedef void * (*FUNC) (void *);
   FUNC Functions[nbFunctions] = { printDebug, printInfo, printUser, printWarn, printError, printTrace };
 
