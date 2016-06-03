@@ -6,16 +6,13 @@
 
 %include HermitianMatrix_doc.i
 
-%ignore OT::HermitianMatrix::checkHermitian;
-
 %include openturns/HermitianMatrix.hxx
 
 %pythoncode %{
 def HermitianMatrix___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
-        # call the ignored method checkHermitian
-        self.__str__()
+        self.checkHermitian()
     return super(HermitianMatrix, self).__getattribute__(name)
 HermitianMatrix.__getattribute__ = HermitianMatrix___getattribute__
 %}
