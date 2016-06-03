@@ -84,7 +84,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> distCol = [ot.Normal(), ot.Normal(), ot.Normal()]
+>>> distCol = [ot.Normal()] * 3
 >>> S = ot.CorrelationMatrix(3)
 >>> S[0, 2] = 0.9
 >>> copula = ot.NormalCopula(S)
@@ -94,7 +94,7 @@ Examples
 >>> secondSample = sample[:, 2]
 >>> test_result = ot.HypothesisTest.FullPearson(firstSample, secondSample)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23865e-14 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 description=[]]
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 description=[]]
 
 "
 
