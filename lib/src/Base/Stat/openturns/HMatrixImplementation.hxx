@@ -197,8 +197,8 @@ private:
 class CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
 private:
-  const CovarianceModel & covarianceModel_;
-  const NumericalSample & vertices_;
+  const CovarianceModel covarianceModel_;
+  const NumericalSample vertices_;
   const UnsignedInteger covarianceDimension_;
   const double epsilon_;
 
@@ -225,8 +225,8 @@ public:
 class CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 private:
-  const CovarianceModel & covarianceModel_;
-  const NumericalSample & vertices_;
+  const CovarianceModel covarianceModel_;
+  const NumericalSample vertices_;
   const double epsilon_;
   CovarianceMatrix epsilonId_;
 
