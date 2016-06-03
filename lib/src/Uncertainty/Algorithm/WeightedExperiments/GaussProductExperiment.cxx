@@ -33,7 +33,7 @@ typedef Collection< NumericalPoint > NumericalPointCollection;
 
 /* Default constructor */
 GaussProductExperiment::GaussProductExperiment():
-  WeightedExperiment(),
+  WeightedExperimentImplementation(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -43,7 +43,7 @@ GaussProductExperiment::GaussProductExperiment():
 
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees):
-  WeightedExperiment(),
+  WeightedExperimentImplementation(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -54,7 +54,7 @@ GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees):
 
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Distribution & distribution):
-  WeightedExperiment(),
+  WeightedExperimentImplementation(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -65,7 +65,7 @@ GaussProductExperiment::GaussProductExperiment(const Distribution & distribution
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Distribution & distribution,
     const Indices & marginalDegrees):
-  WeightedExperiment(),
+  WeightedExperimentImplementation(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -98,7 +98,7 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
   if (dimension != marginalDegrees_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal degrees=" << marginalDegrees_.getSize() << ".";
   collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
   for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution.getMarginal(i))));
-  WeightedExperiment::setDistribution(distribution);
+  WeightedExperimentImplementation::setDistribution(distribution);
   isAlreadyComputedNodesAndWeights_ = false;
 }
 

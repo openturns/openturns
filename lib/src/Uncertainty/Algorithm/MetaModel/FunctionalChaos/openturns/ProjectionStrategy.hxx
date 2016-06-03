@@ -73,7 +73,7 @@ public:
 
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
-  virtual const WeightedExperiment & getExperiment() const;
+  virtual WeightedExperiment getExperiment() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const NumericalMathFunction & function,

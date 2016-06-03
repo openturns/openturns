@@ -42,13 +42,12 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation()
     residual_p_(0.0),
     relativeError_p_(0.0),
     measure_(),
-    p_weightedExperiment_(MonteCarloExperiment().clone()),
     inputSample_(0, 0),
     weights_(0),
     outputSample_(0, 0)
 {
   // The ProjectionStrategyImplementation imposes its distribution to the weighted experiment
-  p_weightedExperiment_->setDistribution(getMeasure());
+  weightedExperiment_.setDistribution(getMeasure());
 }
 
 
@@ -59,13 +58,12 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distrib
     residual_p_(0.0),
     relativeError_p_(0.0),
     measure_(measure),
-    p_weightedExperiment_(MonteCarloExperiment().clone()),
     inputSample_(0, 0),
     weights_(0),
     outputSample_(0, 0)
 {
   // The ProjectionStrategyImplementation imposes the distribution of the weighted experiment
-  p_weightedExperiment_->setDistribution(getMeasure());
+  weightedExperiment_.setDistribution(getMeasure());
 }
 
 
@@ -76,7 +74,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
     residual_p_(0.0),
     relativeError_p_(0.0),
     measure_(weightedExperiment.getDistribution()),
-    p_weightedExperiment_(weightedExperiment.clone()),
+    weightedExperiment_(weightedExperiment),
     inputSample_(0, 0),
     weights_(0),
     outputSample_(0, 0)
@@ -93,7 +91,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Numeric
     alpha_k_p_(0),
     residual_p_(0.0),
     measure_(UserDefined(inputSample)),
-    p_weightedExperiment_(FixedExperiment(inputSample, weights).clone()),
+    weightedExperiment_(FixedExperiment(inputSample, weights)),
     inputSample_(0, 0),
     weights_(0),
     outputSample_(0, 0)
@@ -116,13 +114,13 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distrib
     residual_p_(0.0),
     relativeError_p_(0.0),
     measure_(measure),
-    p_weightedExperiment_(weightedExperiment.clone()),
+    weightedExperiment_(weightedExperiment),
     inputSample_(0, 0),
     weights_(0),
     outputSample_(0, 0)
 {
   // The ProjectionStrategyImplementation imposes the distribution of the weighted experiment
-  p_weightedExperiment_->setDistribution(getMeasure());
+  weightedExperiment_.setDistribution(getMeasure());
 }
 
 
@@ -146,7 +144,7 @@ void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
 {
   measure_ = measure;
   // Set the measure as the distribution of the weighted experiment
-  p_weightedExperiment_->setDistribution(measure);
+  weightedExperiment_.setDistribution(measure);
 }
 
 Distribution ProjectionStrategyImplementation::getMeasure() const
@@ -157,13 +155,13 @@ Distribution ProjectionStrategyImplementation::getMeasure() const
 /* Experiment accessors */
 void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & weightedExperiment)
 {
-  p_weightedExperiment_ = weightedExperiment.clone();
-  p_weightedExperiment_->setDistribution(getMeasure());
+  weightedExperiment_ = weightedExperiment;
+  weightedExperiment_.setDistribution(getMeasure());
 }
 
-const WeightedExperiment & ProjectionStrategyImplementation::getExperiment() const
+WeightedExperiment ProjectionStrategyImplementation::getExperiment() const
 {
-  return *p_weightedExperiment_;
+  return weightedExperiment_;
 }
 
 /* Sample accessors */

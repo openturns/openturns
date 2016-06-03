@@ -729,8 +729,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "MaternModel-DefaultNu", 1.5 );
   setAsNumericalScalar( "MaternModel-DefaultTheta", 10.0 );
 
-  // WeightedExperiment parameters //
-  setAsUnsignedInteger( "WeightedExperiment-DefaultSize", 100 );
+  // WeightedExperimentImplementation parameters //
+  setAsUnsignedInteger( "WeightedExperimentImplementation-DefaultSize", 100 );
 
   // GaussProductExperiment parameters //
   setAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree", 5 );

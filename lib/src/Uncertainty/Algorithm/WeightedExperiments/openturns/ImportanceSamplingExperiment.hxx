@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_IMPORTANCESAMPLINGEXPERIMENT_HXX
 #define OPENTURNS_IMPORTANCESAMPLINGEXPERIMENT_HXX
 
-#include "openturns/WeightedExperiment.hxx"
+#include "openturns/WeightedExperimentImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of importanceSamplingExperiment plan
  */
 class OT_API ImportanceSamplingExperiment
-  : public WeightedExperiment
+  : public WeightedExperimentImplementation
 {
   CLASSNAME;
 public:

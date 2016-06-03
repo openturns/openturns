@@ -24,6 +24,7 @@
 %import UncertaintyModelCopulaTemplateDefs.i
 
 /* Uncertainty/Algorithm/Experiment */
+%include WeightedExperimentImplementation.i
 %include WeightedExperiment.i
 %include BootstrapExperiment.i
 %include FixedExperiment.i

@@ -104,7 +104,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   projectionStrategy_.getImplementation()->inputSample_ = inputSample;
   projectionStrategy_.getImplementation()->measure_ = UserDefined(inputSample);
   projectionStrategy_.getImplementation()->weights_ = NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize());
-  projectionStrategy_.getImplementation()->p_weightedExperiment_ = FixedExperiment(inputSample).clone();
+  projectionStrategy_.getImplementation()->weightedExperiment_ = FixedExperiment(inputSample);
   projectionStrategy_.getImplementation()->outputSample_ = outputSample;
 }
 
@@ -126,7 +126,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   projectionStrategy_.getImplementation()->inputSample_ = inputSample;
   projectionStrategy_.getImplementation()->measure_ = UserDefined(inputSample);
   projectionStrategy_.getImplementation()->weights_ = weights;
-  projectionStrategy_.getImplementation()->p_weightedExperiment_ = FixedExperiment(inputSample, weights).clone();
+  projectionStrategy_.getImplementation()->weightedExperiment_ = FixedExperiment(inputSample, weights);
   projectionStrategy_.getImplementation()->outputSample_ = outputSample;
 }
 
@@ -272,6 +272,11 @@ void FunctionalChaosAlgorithm::setProjectionStrategy(const ProjectionStrategy & 
 ProjectionStrategy FunctionalChaosAlgorithm::getProjectionStrategy() const
 {
   return projectionStrategy_;
+}
+
+AdaptiveStrategy FunctionalChaosAlgorithm::getAdaptiveStrategy() const
+{
+  return adaptiveStrategy_;
 }
 
 /* Computes the functional chaos */

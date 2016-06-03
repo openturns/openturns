@@ -22,6 +22,7 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 
+ot_add_source_file (WeightedExperimentImplementation.cxx)
 ot_add_source_file (WeightedExperiment.cxx)
 ot_add_source_file (FixedExperiment.cxx)
 ot_add_source_file (GaussProductExperiment.cxx)
@@ -32,6 +33,7 @@ ot_add_source_file (LHSExperiment.cxx)
 ot_add_source_file (LowDiscrepancyExperiment.cxx)
 
 ot_install_header_file (OTWeightedExperiments.hxx)
+ot_install_header_file (WeightedExperimentImplementation.hxx)
 ot_install_header_file (WeightedExperiment.hxx)
 ot_install_header_file (FixedExperiment.hxx)
 ot_install_header_file (GaussProductExperiment.hxx)

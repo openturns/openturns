@@ -168,8 +168,8 @@ try:
             # Examine the results
             result = algo.getResult()
             print("###################################")
-            print(adaptiveStrategy)
-            print(projectionStrategy)
+            print(algo.getAdaptiveStrategy())
+            print(algo.getProjectionStrategy())
             residuals = result.getResiduals()
             print("residuals=", residuals)
             relativeErrors = result.getRelativeErrors()

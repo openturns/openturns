@@ -614,6 +614,7 @@ ot_add_python_module(classification classification_module.i
 
 ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       WeightedExperiment.i WeightedExperiment_doc.i.in
+                      WeightedExperimentImplementation.i WeightedExperimentImplementation_doc.i.in
                       BootstrapExperiment.i BootstrapExperiment_doc.i.in
                       FixedExperiment.i FixedExperiment_doc.i.in
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in

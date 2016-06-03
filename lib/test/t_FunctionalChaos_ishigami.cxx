@@ -134,8 +134,8 @@ int main(int argc, char *argv[])
         // Examine the results
         result = algo.getResult();
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
-        fullprint << adaptiveStrategy << std::endl;
-        fullprint << projectionStrategy << std::endl;
+        fullprint << algo.getAdaptiveStrategy() << std::endl;
+        fullprint << algo.getProjectionStrategy() << std::endl;
         NumericalPoint residuals(result.getResiduals());
         fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
         NumericalPoint relativeErrors(result.getRelativeErrors());

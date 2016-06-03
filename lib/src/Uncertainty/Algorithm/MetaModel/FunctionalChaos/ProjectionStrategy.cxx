@@ -72,7 +72,7 @@ void ProjectionStrategy::setExperiment(const WeightedExperiment & weightedExperi
   getImplementation()->setExperiment(weightedExperiment);
 }
 
-const WeightedExperiment & ProjectionStrategy::getExperiment() const
+WeightedExperiment ProjectionStrategy::getExperiment() const
 {
   return getImplementation()->getExperiment();
 }
