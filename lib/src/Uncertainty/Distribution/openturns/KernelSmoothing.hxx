@@ -44,21 +44,20 @@ public:
 
   /** Default constructor */
   explicit KernelSmoothing(const Distribution & kernel,
-                           const Bool & bined = true,
-                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ));
+                           const Bool bined = true,
+                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
+                           const Bool boundaryCorrection = false);
 
   /** Virtual constructor */
   virtual KernelSmoothing * clone() const;
 
   /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build(const NumericalSample & sample,
-                             const Bool boundaryCorrection = false);
+  virtual Implementation build(const NumericalSample & sample) const;
 
   /** Build a (possibly truncated) kernel mixture based on the given sample and bandwidth */
-  virtual Distribution build(const NumericalSample & sample,
-                             const NumericalPoint & bandwidth,
-                             const Bool boundaryCorrection = false);
+  virtual Implementation build(const NumericalSample & sample,
+                               const NumericalPoint & bandwidth) const;
 
   /** Bandwidth accessor */
   NumericalPoint getBandwidth() const;
@@ -66,14 +65,16 @@ public:
   /** Kernel accessor */
   Distribution getKernel() const;
 
+  void setBoundaryCorrection(const Bool boundaryCorrection);
+
   /** Compute the bandwidth according to Silverman's rule */
-  NumericalPoint computeSilvermanBandwidth(const NumericalSample & sample);
+  NumericalPoint computeSilvermanBandwidth(const NumericalSample & sample) const;
 
   /** Compute the bandwidth according to the plugin rule. Warning!
    * it can take a lot of time for large samples, as the cost is
    * quadratic with the sample size
    */
-  NumericalPoint computePluginBandwidth(const NumericalSample & sample);
+  NumericalPoint computePluginBandwidth(const NumericalSample & sample) const;
 
   /** Compute the bandwidth according to a mixed rule:
    * simply use the plugin rule for small sample, and
@@ -82,7 +83,7 @@ public:
    * scale the Silverman bandwidth computed on the full
    * sample with this ratio
    */
-  NumericalPoint computeMixedBandwidth(const NumericalSample & sample);
+  NumericalPoint computeMixedBandwidth(const NumericalSample & sample) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -92,10 +93,10 @@ public:
 
 private:
 
-  void setBandwidth(const NumericalPoint & bandwidth);
+  void setBandwidth(const NumericalPoint & bandwidth) const;
 
   // Bandwith of the smoothing
-  NumericalPoint bandwidth_;
+  mutable NumericalPoint bandwidth_;
 
   // 1D kernel for kernel product
   Distribution kernel_;
@@ -105,6 +106,8 @@ private:
 
   // Number of bins
   UnsignedInteger binNumber_;
+
+  Bool boundaryCorrection_;
 
 }; /* class KernelSmoothing */
 

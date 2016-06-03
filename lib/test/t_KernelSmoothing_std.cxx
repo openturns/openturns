@@ -82,9 +82,6 @@ int main(int argc, char *argv[])
     Collection<NumericalSample> sampleCollection(2);
     sampleCollection[0] = distributionCollection[0].getSample(discretization);
     sampleCollection[1] = distributionCollection[1].getSample(discretization);
-    Collection<UnsignedInteger> bounded(2);
-    bounded[0] = 0;
-    bounded[1] = 1;
     for (UnsignedInteger i = 0; i < kernels.getSize(); ++i)
     {
       Distribution kernel(kernels[i]);
@@ -98,7 +95,8 @@ int main(int argc, char *argv[])
         fullprint << "Silverman's bandwidth=" << hSilverman << " plugin bandwidth=" << hPlugin << " mixed bandwidth=" << hMixed << std::endl;
         for (UnsignedInteger k = 0; k < 2; ++k)
         {
-          Distribution smoothed(smoother.build(sampleCollection[j], bounded[k]));
+          smoother.setBoundaryCorrection(k == 1);
+          Distribution smoothed(smoother.build(sampleCollection[j]));
           fullprint << "Bounded underlying distribution? " << (j == 0 ? "False" : "True") << " bounded reconstruction? " << (k == 0 ? "False" : "True") << std::endl;
           // Define a point
           NumericalPoint point( smoothed.getDimension(), -0.9 );
