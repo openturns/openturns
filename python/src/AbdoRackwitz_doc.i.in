@@ -19,14 +19,17 @@ smooth : float
 
 See also
 --------
-Cobyla, SQP, TNC
+Cobyla, SQP, TNC, NLopt
 
 Examples
 --------
 >>> import openturns as ot
 >>> model = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
 >>> problem = ot.OptimizationProblem(model, 5.0)
->>> algo = ot.AbdoRackwitz(problem)"
+>>> algo = ot.AbdoRackwitz(problem)
+>>> algo.setStartingPoint([0.0] * 4)
+>>> algo.run()
+>>> result = algo.getResult()"
 
 // ---------------------------------------------------------------------
 

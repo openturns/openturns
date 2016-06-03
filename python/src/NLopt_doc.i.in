@@ -6,7 +6,8 @@ Parameters
 problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
 algoName : str
-    The NLopt identifier of the actual algorithm.
+    The NLopt identifier of the algorithm.
+    Use :func:`GetAlgorithmNames()` to list available names.
 
 See also
 --------
@@ -19,7 +20,20 @@ Examples
 >>> bounds = ot.Interval([-3.] * dim, [5.] * dim)
 >>> linear = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
 >>> problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
->>> algo = ot.NLopt(problem, 'LD_MMA')"
+>>> algo = ot.NLopt(problem, 'LD_MMA')
+>>> algo.setStartingPoint([0.0] * 4)
+>>> algo.run()
+>>> result = algo.getResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NLopt::setAlgorithmName
+"Accessor to the algorithm name.
+
+Parameters
+----------
+algoName : str
+    The NLopt identifier of the algorithm."
 
 // ---------------------------------------------------------------------
 
@@ -29,7 +43,7 @@ Examples
 Returns
 -------
 algoName : str
-    The NLopt identifier of the actual algorithm."
+    The NLopt identifier of the algorithm."
 
 // ---------------------------------------------------------------------
 

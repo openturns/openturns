@@ -52,6 +52,8 @@ public:
 
   /** NLopt algorithm names accessor */
   static Description GetAlgorithmNames();
+
+  void setAlgorithmName(const String algoName);
   String getAlgorithmName() const;
 
   /** Initial derivative-free local-optimization algorithms step accessor */
