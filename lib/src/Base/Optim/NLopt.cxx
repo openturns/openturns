@@ -333,6 +333,12 @@ void NLopt::load(Advocate & adv)
   }
 }
 
+void NLopt::setAlgorithmName(const String algoName)
+{
+  algoName_ = algoName;
+  checkProblem(getProblem());
+}
+
 String NLopt::getAlgorithmName() const
 {
   return algoName_;

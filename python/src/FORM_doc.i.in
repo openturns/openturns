@@ -58,11 +58,12 @@ Examples
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.RandomVector(myFunction, vect)
->>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> event = ot.Event(output, ot.Less(), -3.0)
 >>> # We create an OptimizationSolver algorithm
->>> myCobyla = ot.Cobyla()
->>> myAlgo = ot.FORM(myCobyla, myEvent, [50.0, 1.0, 10.0, 5.0])"
-
+>>> solver = ot.Cobyla()
+>>> algo = ot.FORM(solver, event, [50.0, 1.0, 10.0, 5.0])
+>>> algo.run()
+>>> result = algo.getResult()"
 
 // ---------------------------------------------------------------------
 
