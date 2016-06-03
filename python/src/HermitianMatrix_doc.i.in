@@ -39,3 +39,8 @@ Returns
 -------
 dim : integer
     The dimension of the Hermitian matrix."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HermitianMatrix::checkHermitian
+"Check if the internal representation is really hermitian."

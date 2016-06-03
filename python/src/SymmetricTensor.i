@@ -6,8 +6,6 @@
 
 %include SymmetricTensor_doc.i
 
-%ignore OT::SymmetricTensor::checkSymmetry;
-
 %apply const NumericalScalarCollection & { const OT::SymmetricTensor::NumericalScalarCollection & };
 
 %include openturns/SymmetricTensor.hxx
@@ -16,8 +14,7 @@
 def SymmetricTensor___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
-        # call the ignored method checkSymmetry
-        self.__str__()
+        self.checkSymmetry()
     return super(SymmetricTensor, self).__getattribute__(name)
 SymmetricTensor.__getattribute__ = SymmetricTensor___getattribute__
 %}

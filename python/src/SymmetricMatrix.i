@@ -11,8 +11,6 @@ OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const B
 
 %include SymmetricMatrix_doc.i
 
-%ignore OT::SymmetricMatrix::checkSymmetry;
-
 %apply const NumericalScalarCollection & { const OT::SymmetricMatrix::NumericalScalarCollection & };
 
 %include openturns/SymmetricMatrix.hxx
@@ -21,8 +19,7 @@ OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const B
 def SymmetricMatrix___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
-        # call the ignored method checkSymmetry
-        self.__str__()
+        self.checkSymmetry()
     return super(SymmetricMatrix, self).__getattribute__(name)
 SymmetricMatrix.__getattribute__ = SymmetricMatrix___getattribute__
 %}

@@ -117,3 +117,8 @@ Examples
 >>> for i in range(eigen_values.getSize()):
 ...     Lambda[i, i] = eigen_values[i]
 >>> np.testing.assert_array_almost_equal(Phi * Lambda * Phi.transpose(), M)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricMatrix::checkSymmetry
+"Check if the internal representation is really symmetric."
