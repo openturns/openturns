@@ -26,11 +26,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceModel >);
 
-static const Factory<PersistentCollection<CovarianceModel> > RegisteredFactory1;
+static const Factory<PersistentCollection<CovarianceModel> > Factory_PersistentCollection_CovarianceModel;
 
 CLASSNAMEINIT(ProductCovarianceModel);
 
-static const Factory<ProductCovarianceModel> RegisteredFactory;
+static const Factory<ProductCovarianceModel> Factory_ProductCovarianceModel;
 
 
 /* Default constructor */

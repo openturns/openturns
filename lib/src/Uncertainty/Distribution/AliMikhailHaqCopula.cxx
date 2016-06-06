@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AliMikhailHaqCopula);
 
-static const Factory<AliMikhailHaqCopula> RegisteredFactory;
+static const Factory<AliMikhailHaqCopula> Factory_AliMikhailHaqCopula;
 
 /* Default constructor */
 AliMikhailHaqCopula::AliMikhailHaqCopula()

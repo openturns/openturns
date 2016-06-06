@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NormalGamma);
 
-static const Factory<NormalGamma> RegisteredFactory;
+static const Factory<NormalGamma> Factory_NormalGamma;
 
 
 /* Default constructor */

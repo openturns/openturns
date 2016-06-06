@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RandomWalk);
 
-static const Factory<RandomWalk> RegisteredFactory;
+static const Factory<RandomWalk> Factory_RandomWalk;
 
 /* Standard constructor */
 RandomWalk::RandomWalk()

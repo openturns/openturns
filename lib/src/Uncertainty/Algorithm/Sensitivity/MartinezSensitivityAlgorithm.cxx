@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MartinezSensitivityAlgorithm);
 
-static const Factory<MartinezSensitivityAlgorithm> RegisteredFactory;
+static const Factory<MartinezSensitivityAlgorithm> Factory_MartinezSensitivityAlgorithm;
 
 /* Default constructor */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()

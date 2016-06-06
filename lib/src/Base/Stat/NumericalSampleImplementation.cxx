@@ -54,7 +54,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalPoint>);
 
-static const Factory<PersistentCollection<NumericalPoint> > RegisteredFactory_PC_NP;
+static const Factory<PersistentCollection<NumericalPoint> > Factory_PersistentCollection_NumericalPoint;
 
 NSI_point::NSI_point(NumericalSampleImplementation * p_nsi, const UnsignedInteger index)
   : p_nsi_(p_nsi), index_(index), dimension_(p_nsi->dimension_) {}
@@ -278,7 +278,7 @@ OStream & operator << (OStream & OS, const NSI_const_point & point)
   return OS;
 }
 
-static const Factory<NumericalSampleImplementation> RegisteredFactory_NSI;
+static const Factory<NumericalSampleImplementation> Factory_NumericalSampleImplementation;
 
 CLASSNAMEINIT(NumericalSampleImplementation);
 

@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductUniVariateFunctionHessianImplementation);
 
-static const Factory<ProductUniVariateFunctionHessianImplementation> RegisteredFactory;
+static const Factory<ProductUniVariateFunctionHessianImplementation> Factory_ProductUniVariateFunctionHessianImplementation;
 
 
 /* Default constructor */

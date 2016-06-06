@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TrendFactory);
 
-// static const Factory<TrendFactory> RegisteredFactory;
+// static const Factory<TrendFactory> Factory_TrendFactory;
 
 /* Constructor with parameters */
 TrendFactory::TrendFactory(const BasisSequenceFactory & basisSequenceFactory,

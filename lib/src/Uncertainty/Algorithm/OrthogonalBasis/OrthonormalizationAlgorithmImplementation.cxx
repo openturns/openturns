@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OrthonormalizationAlgorithmImplementation);
 
-static const Factory<OrthonormalizationAlgorithmImplementation> RegisteredFactory;
+static const Factory<OrthonormalizationAlgorithmImplementation> Factory_OrthonormalizationAlgorithmImplementation;
 
 
 /* Default constructor */

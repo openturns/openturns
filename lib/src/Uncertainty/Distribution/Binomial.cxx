@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Binomial);
 
-static const Factory<Binomial> RegisteredFactory;
+static const Factory<Binomial> Factory_Binomial;
 
 /* Default constructor */
 Binomial::Binomial()

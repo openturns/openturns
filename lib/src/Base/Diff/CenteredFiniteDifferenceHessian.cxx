@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CenteredFiniteDifferenceHessian);
 
-static const Factory<CenteredFiniteDifferenceHessian> RegisteredFactory;
+static const Factory<CenteredFiniteDifferenceHessian> Factory_CenteredFiniteDifferenceHessian;
 
 /* Default constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian()

@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MetaModelResult);
 
-static const Factory<MetaModelResult> RegisteredFactory;
+static const Factory<MetaModelResult> Factory_MetaModelResult;
 
 /* Default constructor */
 MetaModelResult::MetaModelResult()

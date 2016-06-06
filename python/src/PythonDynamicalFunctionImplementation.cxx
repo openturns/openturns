@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PythonDynamicalFunctionImplementation);
 
-static const Factory<PythonDynamicalFunctionImplementation> RegisteredFactory;
+static const Factory<PythonDynamicalFunctionImplementation> Factory_PythonDynamicalFunctionImplementation;
 
 /* Default constructor */
 PythonDynamicalFunctionImplementation::PythonDynamicalFunctionImplementation()

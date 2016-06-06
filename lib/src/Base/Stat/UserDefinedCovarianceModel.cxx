@@ -27,11 +27,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceMatrix >);
 
-static const Factory<PersistentCollection<CovarianceMatrix> > RegisteredFactory1;
+static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
 
 CLASSNAMEINIT(UserDefinedCovarianceModel);
 
-static const Factory<UserDefinedCovarianceModel> RegisteredFactory;
+static const Factory<UserDefinedCovarianceModel> Factory_UserDefinedCovarianceModel;
 
 /* Constructor with parameters */
 UserDefinedCovarianceModel::UserDefinedCovarianceModel()

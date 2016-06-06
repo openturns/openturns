@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Uniform);
 
-static const Factory<Uniform> RegisteredFactory;
+static const Factory<Uniform> Factory_Uniform;
 
 /* Default constructor */
 Uniform::Uniform()

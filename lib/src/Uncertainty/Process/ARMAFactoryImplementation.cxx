@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ARMAFactoryImplementation);
 
-static const Factory<ARMAFactoryImplementation> RegisteredFactory;
+static const Factory<ARMAFactoryImplementation> Factory_ARMAFactoryImplementation;
 
 
 /* Default constructor */

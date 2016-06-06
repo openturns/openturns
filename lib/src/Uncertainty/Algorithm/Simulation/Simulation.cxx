@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Simulation);
 
-static const Factory<Simulation> RegisteredFactory;
+static const Factory<Simulation> Factory_Simulation;
 
 /** For save/load mechanism */
 Simulation::Simulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)

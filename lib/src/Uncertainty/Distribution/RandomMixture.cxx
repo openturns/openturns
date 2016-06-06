@@ -43,7 +43,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Distribution>);
-static const Factory<PersistentCollection<Distribution> > RegisteredFactory3;
+static const Factory<PersistentCollection<Distribution> > Factory_PersistentCollection_Distribution;
 
 
 typedef Collection<Distribution> DistributionCollection;
@@ -53,7 +53,7 @@ typedef Collection<NumericalComplex> NumericalComplexCollection;
 
 CLASSNAMEINIT(RandomMixture);
 
-static const Factory<RandomMixture> RegisteredFactory;
+static const Factory<RandomMixture> Factory_RandomMixture;
 
 /* Default constructor */
 RandomMixture::RandomMixture(const DistributionCollection & coll,

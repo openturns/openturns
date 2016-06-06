@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LeastSquaresMethodImplementation);
 
-static const Factory<LeastSquaresMethodImplementation> RegisteredFactory;
+static const Factory<LeastSquaresMethodImplementation> Factory_LeastSquaresMethodImplementation;
 
 /* Default constructor */
 LeastSquaresMethodImplementation::LeastSquaresMethodImplementation()

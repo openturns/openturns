@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProjectionStrategyImplementation);
 
-static const Factory<ProjectionStrategyImplementation> RegisteredFactory;
+static const Factory<ProjectionStrategyImplementation> Factory_ProjectionStrategyImplementation;
 
 
 /* Default constructor */

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MetaModelValidation);
 
-static const Factory<MetaModelValidation> RegisteredFactory;
+static const Factory<MetaModelValidation> Factory_MetaModelValidation;
 
 /* Default constructor */
 MetaModelValidation::MetaModelValidation()

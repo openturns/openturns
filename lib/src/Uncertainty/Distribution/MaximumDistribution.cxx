@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MaximumDistribution);
 
-static const Factory<MaximumDistribution> RegisteredFactory;
+static const Factory<MaximumDistribution> Factory_MaximumDistribution;
 
 /* Default constructor */
 MaximumDistribution::MaximumDistribution()

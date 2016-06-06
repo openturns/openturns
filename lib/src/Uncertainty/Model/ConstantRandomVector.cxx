@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConstantRandomVector);
 
-static const Factory<ConstantRandomVector> RegisteredFactory;
+static const Factory<ConstantRandomVector> Factory_ConstantRandomVector;
 
 /* Default constructor */
 ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription & point)

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SoizeGhanemFactory);
 
-static const Factory<SoizeGhanemFactory> RegisteredFactory_SGBF;
+static const Factory<SoizeGhanemFactory> Factory_SoizeGhanemFactory;
 
 /* Default constructor */
 SoizeGhanemFactory::SoizeGhanemFactory()

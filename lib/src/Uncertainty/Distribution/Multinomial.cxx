@@ -38,7 +38,7 @@ typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
 
 CLASSNAMEINIT(Multinomial);
 
-static const Factory<Multinomial> RegisteredFactory;
+static const Factory<Multinomial> Factory_Multinomial;
 
 /* Default constructor */
 Multinomial::Multinomial()

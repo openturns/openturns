@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LevelSet);
 
-static const Factory<LevelSet> RegisteredFactory;
+static const Factory<LevelSet> Factory_LevelSet;
 
 /* Default constructor */
 LevelSet::LevelSet(const UnsignedInteger dimension)

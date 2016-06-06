@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TemporalFunction);
 
-static const Factory<TemporalFunction> RegisteredFactory;
+static const Factory<TemporalFunction> Factory_TemporalFunction;
 
 /* Default constructor */
 TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)

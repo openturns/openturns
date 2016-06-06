@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RungeKutta);
 
-static const Factory<RungeKutta> RegisteredFactory;
+static const Factory<RungeKutta> Factory_RungeKutta;
 
 /* Default constructor */
 RungeKutta::RungeKutta()

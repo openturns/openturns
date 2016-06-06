@@ -30,7 +30,7 @@ CLASSNAMEINIT(LAR);
 
 typedef Collection<NumericalScalar>    NumericalScalarCollection;
 
-static const Factory<LAR> RegisteredFactory;
+static const Factory<LAR> Factory_LAR;
 
 /* Default constructor */
 LAR::LAR(const Bool verbose)

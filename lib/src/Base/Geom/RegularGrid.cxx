@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static const Factory<RegularGrid> RegisteredFactoryTG;
+static const Factory<RegularGrid> Factory_RegularGrid;
 
 CLASSNAMEINIT(RegularGrid);
 

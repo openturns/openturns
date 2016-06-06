@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LessOrEqual);
 
-static const Factory<LessOrEqual> RegisteredFactory;
+static const Factory<LessOrEqual> Factory_LessOrEqual;
 
 /* Default constructor */
 LessOrEqual::LessOrEqual()

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CorrectedLeaveOneOut);
 
-static const Factory<CorrectedLeaveOneOut> RegisteredFactory;
+static const Factory<CorrectedLeaveOneOut> Factory_CorrectedLeaveOneOut;
 
 /* Default constructor */
 CorrectedLeaveOneOut::CorrectedLeaveOneOut()

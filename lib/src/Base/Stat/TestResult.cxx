@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TestResult);
 
-static const Factory< TestResult > RegisteredFactory;
+static const Factory<TestResult> Factory_TestResult;
 
 /* Default constructor */
 TestResult::TestResult():

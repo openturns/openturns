@@ -40,22 +40,22 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef NumericalMathEvaluationImplementation::CacheType NumericalMathEvaluationImplementationCache;
 
-static const Factory<NumericalMathEvaluationImplementationCache> RegisteredFactory_Cache;
+static const Factory<NumericalMathEvaluationImplementationCache> Factory_NumericalMathEvaluationImplementationCache;
 
 /* These methods are implemented here for the needs of Cache */
 /* We should be careful because they may interfere with other definitions placed elsewhere */
-static const Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory_alt1;
+static const Factory<PersistentCollection<UnsignedInteger> > Factory_PersistentCollection_UnsignedInteger;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-static const Factory<PersistentCollection<Unsigned64BitsInteger> > RegisteredFactory_alt1b;
+static const Factory<PersistentCollection<Unsigned64BitsInteger> > Factory_PersistentCollection_Unsigned64BitsInteger;
 #endif
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<NumericalScalar> >);
-static const Factory<PersistentCollection<PersistentCollection<NumericalScalar> > > RegisteredFactory_alt2;
+static const Factory<PersistentCollection<PersistentCollection<NumericalScalar> > > Factory_PersistentCollection_PersistentCollection_NumericalScalar;
 
 
 CLASSNAMEINIT(NumericalMathEvaluationImplementation);
 
-static const Factory<NumericalMathEvaluationImplementation> RegisteredFactory;
+static const Factory<NumericalMathEvaluationImplementation> Factory_NumericalMathEvaluationImplementation;
 
 
 /* Default constructor */

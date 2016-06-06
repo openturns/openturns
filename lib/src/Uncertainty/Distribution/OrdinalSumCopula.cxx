@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OrdinalSumCopula);
 
-static const Factory<OrdinalSumCopula> RegisteredFactory;
+static const Factory<OrdinalSumCopula> Factory_OrdinalSumCopula;
 
 /* Default constructor */
 OrdinalSumCopula::OrdinalSumCopula()

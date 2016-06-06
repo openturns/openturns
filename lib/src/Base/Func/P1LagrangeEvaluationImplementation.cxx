@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(P1LagrangeEvaluationImplementation);
 
-static const Factory<P1LagrangeEvaluationImplementation> RegisteredFactory;
+static const Factory<P1LagrangeEvaluationImplementation> Factory_P1LagrangeEvaluationImplementation;
 
 
 /* Default constructor */

@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(QRMethod);
 
 
-static const Factory<QRMethod> RegisteredFactory;
+static const Factory<QRMethod> Factory_QRMethod;
 
 /* Default constructor */
 QRMethod::QRMethod()

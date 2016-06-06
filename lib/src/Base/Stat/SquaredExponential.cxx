@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SquaredExponential);
 
-static const Factory<SquaredExponential> RegisteredFactory;
+static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 
 /* Default constructor */

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PythonNumericalMathHessianImplementation);
 
-static const Factory<PythonNumericalMathHessianImplementation> RegisteredFactory;
+static const Factory<PythonNumericalMathHessianImplementation> Factory_PythonNumericalMathHessianImplementation;
 
 
 

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNatafEllipticalDistributionGradient);
 
-static const Factory<InverseNatafEllipticalDistributionGradient> RegisteredFactory;
+static const Factory<InverseNatafEllipticalDistributionGradient> Factory_InverseNatafEllipticalDistributionGradient;
 
 /* Default constructor */
 InverseNatafEllipticalDistributionGradient::InverseNatafEllipticalDistributionGradient():

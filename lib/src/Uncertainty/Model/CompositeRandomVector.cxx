@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CompositeRandomVector);
 
-static const Factory<CompositeRandomVector> RegisteredFactory;
+static const Factory<CompositeRandomVector> Factory_CompositeRandomVector;
 
 /* Standard constructor */
 CompositeRandomVector::CompositeRandomVector()

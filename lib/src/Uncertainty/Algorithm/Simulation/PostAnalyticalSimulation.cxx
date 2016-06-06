@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PostAnalyticalSimulation);
 
-static const Factory<PostAnalyticalSimulation> RegisteredFactory;
+static const Factory<PostAnalyticalSimulation> Factory_PostAnalyticalSimulation;
 
 /* Constructor with parameters */
 PostAnalyticalSimulation::PostAnalyticalSimulation()

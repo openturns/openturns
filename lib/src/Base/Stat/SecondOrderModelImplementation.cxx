@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SecondOrderModelImplementation);
 
-static const Factory<SecondOrderModelImplementation> RegisteredFactory;
+static const Factory<SecondOrderModelImplementation> Factory_SecondOrderModelImplementation;
 
 /* Constructor without parameters */
 SecondOrderModelImplementation::SecondOrderModelImplementation()

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 CLASSNAMEINIT(RandomizedQuasiMonteCarlo);
 
-static const Factory<RandomizedQuasiMonteCarlo> RegisteredFactory;
+static const Factory<RandomizedQuasiMonteCarlo> Factory_RandomizedQuasiMonteCarlo;
 
 /* Constructor with parameters */
 RandomizedQuasiMonteCarlo::RandomizedQuasiMonteCarlo()

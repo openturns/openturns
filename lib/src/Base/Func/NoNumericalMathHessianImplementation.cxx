@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NoNumericalMathHessianImplementation);
 
-static const Factory<NoNumericalMathHessianImplementation> RegisteredFactory;
+static const Factory<NoNumericalMathHessianImplementation> Factory_NoNumericalMathHessianImplementation;
 
 /* Default constructor */
 NoNumericalMathHessianImplementation::NoNumericalMathHessianImplementation()

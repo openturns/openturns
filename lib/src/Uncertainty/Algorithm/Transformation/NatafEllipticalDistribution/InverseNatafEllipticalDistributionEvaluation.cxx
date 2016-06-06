@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNatafEllipticalDistributionEvaluation);
 
-static const Factory<InverseNatafEllipticalDistributionEvaluation> RegisteredFactory;
+static const Factory<InverseNatafEllipticalDistributionEvaluation> Factory_InverseNatafEllipticalDistributionEvaluation;
 
 /* Default constructor */
 InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation()

@@ -60,7 +60,7 @@ struct FFTPolicy
 
 CLASSNAMEINIT(KissFFT);
 
-static const Factory<KissFFT> RegisteredFactory;
+static const Factory<KissFFT> Factory_KissFFT;
 
 /* Constructor with parameters */
 KissFFT::KissFFT()

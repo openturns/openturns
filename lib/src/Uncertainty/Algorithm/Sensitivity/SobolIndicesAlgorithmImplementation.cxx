@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SobolIndicesAlgorithmImplementation);
 
-static const Factory<SobolIndicesAlgorithmImplementation> RegisteredFactory;
+static const Factory<SobolIndicesAlgorithmImplementation> Factory_SobolIndicesAlgorithmImplementation;
 
 /* Default constructor */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()

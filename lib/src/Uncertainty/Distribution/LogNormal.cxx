@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LogNormal);
 
-static const Factory<LogNormal> RegisteredFactory;
+static const Factory<LogNormal> Factory_LogNormal;
 
 /* Default constructor */
 LogNormal::LogNormal()

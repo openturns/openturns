@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SORM);
 
-static const Factory< SORM > RegisteredFactory;
+static const Factory<SORM> Factory_SORM;
 
 /* Default constructor for the save/load mechanism */
 SORM::SORM()

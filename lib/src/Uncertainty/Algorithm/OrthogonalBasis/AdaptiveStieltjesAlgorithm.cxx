@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AdaptiveStieltjesAlgorithm);
 
-static const Factory<AdaptiveStieltjesAlgorithm> RegisteredFactory;
+static const Factory<AdaptiveStieltjesAlgorithm> Factory_AdaptiveStieltjesAlgorithm;
 
 /* Default constructor */
 AdaptiveStieltjesAlgorithm::AdaptiveStieltjesAlgorithm()

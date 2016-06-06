@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HaarWaveletFactory);
 
-static const Factory<HaarWaveletFactory> RegisteredFactory;
+static const Factory<HaarWaveletFactory> Factory_HaarWaveletFactory;
 
 
 /* Default constructor */

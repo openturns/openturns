@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Gamma);
 
-static const Factory<Gamma> RegisteredFactory;
+static const Factory<Gamma> Factory_Gamma;
 
 /* Default constructor */
 Gamma::Gamma()

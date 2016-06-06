@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SQPSpecificParameters);
 
-static const Factory<SQPSpecificParameters> RegisteredFactory;
+static const Factory<SQPSpecificParameters> Factory_SQPSpecificParameters;
 
 
 /* Default constructor */

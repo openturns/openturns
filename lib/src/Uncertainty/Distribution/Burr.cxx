@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Burr);
 
-static const Factory<Burr> RegisteredFactory;
+static const Factory<Burr> Factory_Burr;
 
 /* Default constructor */
 Burr::Burr()

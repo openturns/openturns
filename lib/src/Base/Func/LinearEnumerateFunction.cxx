@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearEnumerateFunction);
 
-static const Factory<LinearEnumerateFunction> RegisteredFactory;
+static const Factory<LinearEnumerateFunction> Factory_LinearEnumerateFunction;
 
 
 

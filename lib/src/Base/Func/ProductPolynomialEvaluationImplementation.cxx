@@ -26,11 +26,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<UniVariatePolynomial>);
 
-static const Factory<PersistentCollection<UniVariatePolynomial> > RegisteredFactory_PC_UVP;
+static const Factory<PersistentCollection<UniVariatePolynomial> > Factory_PersistentCollection_UniVariatePolynomial;
 
 CLASSNAMEINIT(ProductPolynomialEvaluationImplementation);
 
-static const Factory<ProductPolynomialEvaluationImplementation> RegisteredFactory_PPEI;
+static const Factory<ProductPolynomialEvaluationImplementation> Factory_ProductPolynomialEvaluationImplementation;
 
 
 /* Default constructor */

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Rayleigh);
 
-static const Factory<Rayleigh> RegisteredFactory;
+static const Factory<Rayleigh> Factory_Rayleigh;
 
 /* Default constructor */
 Rayleigh::Rayleigh()

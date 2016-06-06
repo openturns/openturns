@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SafeAndSlow);
 
-static const Factory<SafeAndSlow> RegisteredFactory;
+static const Factory<SafeAndSlow> Factory_SafeAndSlow;
 
 /* Constructor with parameters */
 SafeAndSlow::SafeAndSlow():

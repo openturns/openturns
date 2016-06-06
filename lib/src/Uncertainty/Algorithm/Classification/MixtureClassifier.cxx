@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MixtureClassifier);
 
-static const Factory<MixtureClassifier> RegisteredFactory;
+static const Factory<MixtureClassifier> Factory_MixtureClassifier;
 
 /* Default constructor */
 MixtureClassifier::MixtureClassifier()

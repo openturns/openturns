@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KrigingRandomVector);
 
-static const Factory<KrigingRandomVector> RegisteredFactory;
+static const Factory<KrigingRandomVector> Factory_KrigingRandomVector;
 
 /* Default constructor */
 KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,

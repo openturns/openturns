@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductDistribution);
 
-static const Factory<ProductDistribution> RegisteredFactory;
+static const Factory<ProductDistribution> Factory_ProductDistribution;
 
 /* Default constructor */
 ProductDistribution::ProductDistribution()

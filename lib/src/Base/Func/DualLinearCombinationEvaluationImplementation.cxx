@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DualLinearCombinationEvaluationImplementation);
 
-static const Factory<DualLinearCombinationEvaluationImplementation> RegisteredFactory;
+static const Factory<DualLinearCombinationEvaluationImplementation> Factory_DualLinearCombinationEvaluationImplementation;
 
 
 /* Default constructor */

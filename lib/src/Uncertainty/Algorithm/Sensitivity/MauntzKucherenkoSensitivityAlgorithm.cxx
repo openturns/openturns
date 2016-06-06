@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MauntzKucherenkoSensitivityAlgorithm);
 
-static const Factory<MauntzKucherenkoSensitivityAlgorithm> RegisteredFactory;
+static const Factory<MauntzKucherenkoSensitivityAlgorithm> Factory_MauntzKucherenkoSensitivityAlgorithm;
 
 /* Default constructor */
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm()

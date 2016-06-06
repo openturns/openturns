@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RatioDistribution);
 
-static const Factory<RatioDistribution> RegisteredFactory;
+static const Factory<RatioDistribution> Factory_RatioDistribution;
 
 /* Default constructor */
 RatioDistribution::RatioDistribution()

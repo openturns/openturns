@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PiecewiseHermiteEvaluationImplementation);
 
-static const Factory<PiecewiseHermiteEvaluationImplementation> RegisteredFactory;
+static const Factory<PiecewiseHermiteEvaluationImplementation> Factory_PiecewiseHermiteEvaluationImplementation;
 
 
 /* Default constructor */

@@ -22,7 +22,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AnalyticalNumericalMathEvaluationImplementation);
 
-static const Factory<AnalyticalNumericalMathEvaluationImplementation> RegisteredFactory;
+static const Factory<AnalyticalNumericalMathEvaluationImplementation> Factory_AnalyticalNumericalMathEvaluationImplementation;
 
 
 /* Default constructor */

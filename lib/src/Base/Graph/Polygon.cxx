@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Polygon);
 
-static const Factory<Polygon> RegisteredFactory;
+static const Factory<Polygon> Factory_Polygon;
 
 /* Default constructor */
 Polygon::Polygon(const String & legend)
