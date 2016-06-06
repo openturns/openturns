@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConditionalRandomVector);
 
-static const Factory<ConditionalRandomVector> RegisteredFactory;
+static const Factory<ConditionalRandomVector> Factory_ConditionalRandomVector;
 
 /* Default constructor */
 ConditionalRandomVector::ConditionalRandomVector(const Distribution & distribution,

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Logistic);
 
-static const Factory<Logistic> RegisteredFactory;
+static const Factory<Logistic> Factory_Logistic;
 
 /* Default constructor */
 Logistic::Logistic()

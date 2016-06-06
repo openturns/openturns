@@ -33,11 +33,11 @@ TEMPLATE_CLASSNAMEINIT(PersistentCollection<ProcessSample>);
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Field>);
 
-static const Factory<PersistentCollection<Field> > RegisteredFactory1;
+static const Factory<PersistentCollection<Field> > Factory_PersistentCollection_Field;
 
 CLASSNAMEINIT(ProcessSample);
 
-static const Factory<ProcessSample> RegisteredFactory;
+static const Factory<ProcessSample> Factory_ProcessSample;
 
 ProcessSample::ProcessSample()
   : PersistentObject()

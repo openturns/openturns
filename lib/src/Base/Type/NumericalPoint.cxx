@@ -30,9 +30,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NumericalPoint);
 
-static const Factory<PersistentCollection<NumericalScalar> > RegisteredFactory_alt1;
+static const Factory<PersistentCollection<NumericalScalar> > Factory_PersistentCollection_NumericalScalar;
 
-static const Factory<NumericalPoint> RegisteredFactory;
+static const Factory<NumericalPoint> Factory_NumericalPoint;
 
 /* Default constructor */
 NumericalPoint::NumericalPoint()

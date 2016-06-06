@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConditionedNormalProcess);
 
-static const Factory<ConditionedNormalProcess> RegisteredFactory;
+static const Factory<ConditionedNormalProcess> Factory_ConditionedNormalProcess;
 
 ConditionedNormalProcess::ConditionedNormalProcess()
   : TemporalNormalProcess()

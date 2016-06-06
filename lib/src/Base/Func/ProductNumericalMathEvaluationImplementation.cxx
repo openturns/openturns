@@ -22,7 +22,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductNumericalMathEvaluationImplementation);
 
-static const Factory<ProductNumericalMathEvaluationImplementation> RegisteredFactory;
+static const Factory<ProductNumericalMathEvaluationImplementation> Factory_ProductNumericalMathEvaluationImplementation;
 
 /* Default constructor */
 ProductNumericalMathEvaluationImplementation::ProductNumericalMathEvaluationImplementation(const EvaluationImplementation & p_leftEvaluation,

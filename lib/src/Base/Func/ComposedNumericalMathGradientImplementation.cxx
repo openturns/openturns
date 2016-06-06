@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComposedNumericalMathGradientImplementation);
 
-static const Factory<ComposedNumericalMathGradientImplementation> RegisteredFactory;
+static const Factory<ComposedNumericalMathGradientImplementation> Factory_ComposedNumericalMathGradientImplementation;
 
 /* Default constructor */
 ComposedNumericalMathGradientImplementation::ComposedNumericalMathGradientImplementation(const GradientImplementation & p_leftGradient,

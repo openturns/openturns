@@ -28,7 +28,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SobolSequence);
-static const Factory<SobolSequence> RegisteredFactory;
+static const Factory<SobolSequence> Factory_SobolSequence;
 
 
 const UnsignedInteger    SobolSequence::MaximumNumberOfDimension = 40;

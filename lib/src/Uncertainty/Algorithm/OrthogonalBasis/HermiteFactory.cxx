@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HermiteFactory);
 
-static const Factory<HermiteFactory> RegisteredFactory;
+static const Factory<HermiteFactory> Factory_HermiteFactory;
 
 
 /* Default constructor */

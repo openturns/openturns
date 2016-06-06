@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IndependentCopula);
 
-static const Factory<IndependentCopula> RegisteredFactory;
+static const Factory<IndependentCopula> Factory_IndependentCopula;
 
 /* Default constructor */
 IndependentCopula::IndependentCopula(const UnsignedInteger dimension)

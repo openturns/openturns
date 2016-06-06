@@ -79,7 +79,7 @@ typedef NumericalMathFunctionImplementation::GradientImplementation   GradientIm
 typedef NumericalMathFunctionImplementation::HessianImplementation    HessianImplementation;
 typedef Collection<Distribution>                                      DistributionCollection;
 
-static const Factory<DistributionImplementation> RegisteredFactory;
+static const Factory<DistributionImplementation> Factory_DistributionImplementation;
 
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SubsetSampling)
 
-static const Factory<SubsetSampling> RegisteredFactory;
+static const Factory<SubsetSampling> Factory_SubsetSampling;
 
 
 /* Default constructor */

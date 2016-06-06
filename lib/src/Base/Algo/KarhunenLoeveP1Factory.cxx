@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KarhunenLoeveP1Factory);
 
-static const Factory<KarhunenLoeveP1Factory> RegisteredFactory;
+static const Factory<KarhunenLoeveP1Factory> Factory_KarhunenLoeveP1Factory;
 
 /* Constructor without parameters */
 KarhunenLoeveP1Factory::KarhunenLoeveP1Factory()

@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Null);
 
-static const Factory<Null> RegisteredFactory;
+static const Factory<Null> Factory_Null;
 /* Constructor with parameters */
 Null::Null()
   : HistoryStrategyImplementation()

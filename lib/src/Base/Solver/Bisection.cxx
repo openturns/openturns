@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Bisection);
 
-static const Factory<Bisection> RegisteredFactory;
+static const Factory<Bisection> Factory_Bisection;
 
 /* Parameter constructor */
 Bisection::Bisection(const NumericalScalar absoluteError,

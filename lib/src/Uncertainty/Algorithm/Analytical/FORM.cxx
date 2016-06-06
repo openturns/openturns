@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FORM);
 
-static const Factory< FORM > RegisteredFactory;
+static const Factory<FORM> Factory_FORM;
 
 /* Default constructor for the save/load mechanism */
 FORM::FORM()

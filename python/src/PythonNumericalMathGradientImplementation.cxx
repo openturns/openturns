@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PythonNumericalMathGradientImplementation);
 
-static const Factory<PythonNumericalMathGradientImplementation> RegisteredFactory;
+static const Factory<PythonNumericalMathGradientImplementation> Factory_PythonNumericalMathGradientImplementation;
 
 
 

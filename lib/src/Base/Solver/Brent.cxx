@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Brent);
 
-static const Factory<Brent> RegisteredFactory;
+static const Factory<Brent> Factory_Brent;
 
 /* Parameter constructor */
 Brent::Brent(const NumericalScalar absoluteError,

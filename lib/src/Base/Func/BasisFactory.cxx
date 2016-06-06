@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BasisFactory);
 
-static const Factory<BasisFactory> RegisteredFactory;
+static const Factory<BasisFactory> Factory_BasisFactory;
 
 
 /* Default constructor */

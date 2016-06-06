@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EnumerateFunctionImplementation);
 
-static const Factory<EnumerateFunctionImplementation> RegisteredFactory;
+static const Factory<EnumerateFunctionImplementation> Factory_EnumerateFunctionImplementation;
 
 /* Parameter constructor */
 EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedInteger dimension)

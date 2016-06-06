@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FFTImplementation);
 
-static const Factory<FFTImplementation> RegisteredFactory;
+static const Factory<FFTImplementation> Factory_FFTImplementation;
 
 /* Constructor without parameters */
 FFTImplementation::FFTImplementation()

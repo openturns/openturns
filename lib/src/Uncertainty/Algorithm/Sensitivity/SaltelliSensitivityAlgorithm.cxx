@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SaltelliSensitivityAlgorithm);
 
-static const Factory<SaltelliSensitivityAlgorithm> RegisteredFactory;
+static const Factory<SaltelliSensitivityAlgorithm> Factory_SaltelliSensitivityAlgorithm;
 
 /* Default constructor */
 SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm()

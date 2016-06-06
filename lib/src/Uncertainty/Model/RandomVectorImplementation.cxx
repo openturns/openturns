@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RandomVectorImplementation);
 
-static const Factory<RandomVectorImplementation> RegisteredFactory;
+static const Factory<RandomVectorImplementation> Factory_RandomVectorImplementation;
 
 /* Default constructor */
 RandomVectorImplementation::RandomVectorImplementation()

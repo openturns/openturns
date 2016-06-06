@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Equal);
 
-static const Factory<Equal> RegisteredFactory;
+static const Factory<Equal> Factory_Equal;
 
 /* Default constructor */
 Equal::Equal()

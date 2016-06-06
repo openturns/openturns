@@ -19,7 +19,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseTrendEvaluationImplementation);
 
-static const Factory<InverseTrendEvaluationImplementation> RegisteredFactory;
+static const Factory<InverseTrendEvaluationImplementation> Factory_InverseTrendEvaluationImplementation;
 
 /* Default constructor */
 InverseTrendEvaluationImplementation::InverseTrendEvaluationImplementation()

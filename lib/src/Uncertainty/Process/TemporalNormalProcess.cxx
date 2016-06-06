@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TemporalNormalProcess);
 
-static const Factory<TemporalNormalProcess> RegisteredFactory;
+static const Factory<TemporalNormalProcess> Factory_TemporalNormalProcess;
 
 TemporalNormalProcess::TemporalNormalProcess()
   : ProcessImplementation()

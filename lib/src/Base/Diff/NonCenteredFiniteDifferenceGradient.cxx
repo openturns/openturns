@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NonCenteredFiniteDifferenceGradient);
 
-static const Factory<NonCenteredFiniteDifferenceGradient> RegisteredFactory;
+static const Factory<NonCenteredFiniteDifferenceGradient> Factory_NonCenteredFiniteDifferenceGradient;
 
 /* Default constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient() :

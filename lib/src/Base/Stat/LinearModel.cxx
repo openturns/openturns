@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearModel);
 
-static const Factory<LinearModel> RegisteredFactory;
+static const Factory<LinearModel> Factory_LinearModel;
 
 /* Default constructor */
 LinearModel::LinearModel()

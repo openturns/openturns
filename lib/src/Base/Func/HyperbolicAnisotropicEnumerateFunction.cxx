@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HyperbolicAnisotropicEnumerateFunction);
 
-static const Factory<HyperbolicAnisotropicEnumerateFunction> RegisteredFactory;
+static const Factory<HyperbolicAnisotropicEnumerateFunction> Factory_HyperbolicAnisotropicEnumerateFunction;
 
 /* Default constructor */
 HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction()

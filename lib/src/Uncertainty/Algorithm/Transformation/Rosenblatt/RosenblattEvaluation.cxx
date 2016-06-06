@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(RosenblattEvaluation);
 
 
-static const Factory<RosenblattEvaluation> RegisteredFactory;
+static const Factory<RosenblattEvaluation> Factory_RosenblattEvaluation;
 
 /* Default constructor */
 RosenblattEvaluation::RosenblattEvaluation():

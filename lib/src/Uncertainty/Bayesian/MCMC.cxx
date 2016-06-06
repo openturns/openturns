@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MCMC);
 
-static const Factory<MCMC> RegisteredFactory;
+static const Factory<MCMC> Factory_MCMC;
 
 /* Default constructor */
 MCMC::MCMC()

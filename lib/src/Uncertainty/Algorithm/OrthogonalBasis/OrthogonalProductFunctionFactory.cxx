@@ -35,11 +35,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariateFunctionFamily>);
 
-static const Factory<PersistentCollection<OrthogonalUniVariateFunctionFamily> > RegisteredFactory_PC_OUVFF;
+static const Factory<PersistentCollection<OrthogonalUniVariateFunctionFamily> > Factory_PersistentCollection_OrthogonalUniVariateFunctionFamily;
 
 CLASSNAMEINIT(OrthogonalProductFunctionFactory);
 
-static const Factory<OrthogonalProductFunctionFactory> RegisteredFactory_OPFF;
+static const Factory<OrthogonalProductFunctionFactory> Factory_OrthogonalProductFunctionFactory;
 
 typedef Collection<NumericalPoint> NumericalPointCollection;
 typedef ProductUniVariateFunctionEvaluationImplementation::UniVariateFunctionCollection UniVariateFunctionCollection;

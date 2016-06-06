@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConditionalDistribution);
 
-static const Factory<ConditionalDistribution> RegisteredFactory;
+static const Factory<ConditionalDistribution> Factory_ConditionalDistribution;
 
 
 /* Default constructor */

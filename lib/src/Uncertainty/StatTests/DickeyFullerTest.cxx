@@ -32,7 +32,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DickeyFullerTest);
-static const Factory<DickeyFullerTest> RegisteredFactory;
+static const Factory<DickeyFullerTest> Factory_DickeyFullerTest;
 
 
 /* Default constructor */

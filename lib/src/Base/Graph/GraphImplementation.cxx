@@ -35,11 +35,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Drawable>);
 
-static const Factory<PersistentCollection<Drawable> > RegisteredFactory1;
+static const Factory<PersistentCollection<Drawable> > Factory_PersistentCollection_Drawable;
 
 CLASSNAMEINIT(GraphImplementation);
 
-static const Factory<GraphImplementation> RegisteredFactory;
+static const Factory<GraphImplementation> Factory_GraphImplementation;
 
 Bool GraphImplementation::IsFirstInitialization = true;
 

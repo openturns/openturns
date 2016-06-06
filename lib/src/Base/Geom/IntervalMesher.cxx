@@ -27,7 +27,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IntervalMesher);
-static const Factory<IntervalMesher> RegisteredFactory;
+static const Factory<IntervalMesher> Factory_IntervalMesher;
 
 
 /* Default constructor */

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CovarianceModelImplementation);
 
-static const Factory<CovarianceModelImplementation> RegisteredFactory;
+static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImplementation;
 
 /* Dimension-based constructor */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension)

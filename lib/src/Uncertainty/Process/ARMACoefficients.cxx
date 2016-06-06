@@ -26,10 +26,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< ARMACoefficients >);
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< SquareMatrix >);
-static const Factory<PersistentCollection<SquareMatrix> > RegisteredFactory1;
+static const Factory<PersistentCollection<SquareMatrix> > Factory_PersistentCollection_SquareMatrix;
 
 CLASSNAMEINIT(ARMACoefficients);
-static const Factory<ARMACoefficients> RegisteredFactory;
+static const Factory<ARMACoefficients> Factory_ARMACoefficients;
 
 /* Default constructor */
 ARMACoefficients::ARMACoefficients(const UnsignedInteger & size,

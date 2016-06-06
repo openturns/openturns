@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DrawableImplementation);
 
-static const Factory<DrawableImplementation> RegisteredFactory;
+static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
 /* default graphic paramaters */
 

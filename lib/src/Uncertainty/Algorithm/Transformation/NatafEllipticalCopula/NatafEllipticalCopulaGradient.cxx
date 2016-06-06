@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NatafEllipticalCopulaGradient);
 
-static const Factory<NatafEllipticalCopulaGradient> RegisteredFactory;
+static const Factory<NatafEllipticalCopulaGradient> Factory_NatafEllipticalCopulaGradient;
 
 /* Default constructor */
 NatafEllipticalCopulaGradient::NatafEllipticalCopulaGradient()

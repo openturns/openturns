@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Staircase);
 
-static const Factory<Staircase> RegisteredFactory;
+static const Factory<Staircase> Factory_Staircase;
 
 /* Default constructor */
 Staircase::Staircase()

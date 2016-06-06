@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ARMALikelihoodFactory);
 
-static const Factory<ARMALikelihoodFactory> RegisteredFactory;
+static const Factory<ARMALikelihoodFactory> Factory_ARMALikelihoodFactory;
 
 static int modifiedCholeskyDecomposition(SquareMatrix &matrix,
     NumericalScalar epsilon);

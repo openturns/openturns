@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FiniteBasis);
 
-static const Factory<FiniteBasis> RegisteredFactory;
+static const Factory<FiniteBasis> Factory_FiniteBasis;
 
 FiniteBasis::FiniteBasis(const UnsignedInteger size)
   : BasisImplementation()

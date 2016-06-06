@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Student);
 
-static const Factory<Student> RegisteredFactory;
+static const Factory<Student> Factory_Student;
 
 /* Default constructor */
 Student::Student(const NumericalScalar nu,

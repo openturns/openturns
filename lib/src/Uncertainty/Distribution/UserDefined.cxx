@@ -28,10 +28,10 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<UserDefinedPair>);
-static const Factory<PersistentCollection<UserDefinedPair> > RegisteredFactory;
+static const Factory<PersistentCollection<UserDefinedPair> > Factory_PersistentCollection_UserDefinedPair;
 
 CLASSNAMEINIT(UserDefined);
-static const Factory<UserDefined> RegisteredFactory_alt2;
+static const Factory<UserDefined> Factory_UserDefined;
 
 
 /* Default constructor */

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TruncatedNormal);
 
-static const Factory<TruncatedNormal> RegisteredFactory;
+static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()

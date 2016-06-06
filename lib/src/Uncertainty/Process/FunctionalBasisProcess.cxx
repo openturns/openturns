@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FunctionalBasisProcess);
 
-static const Factory<FunctionalBasisProcess> RegisteredFactory;
+static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 
 /* Standard constructor */
 FunctionalBasisProcess::FunctionalBasisProcess()

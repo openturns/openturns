@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Analytical);
 
-static const Factory< Analytical > RegisteredFactory;
+static const Factory<Analytical> Factory_Analytical;
 
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point

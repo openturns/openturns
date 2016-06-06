@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(StandardDistributionPolynomialFactory);
 
-static const Factory<StandardDistributionPolynomialFactory> RegisteredFactory;
+static const Factory<StandardDistributionPolynomialFactory> Factory_StandardDistributionPolynomialFactory;
 
 
 /* Default constructor */

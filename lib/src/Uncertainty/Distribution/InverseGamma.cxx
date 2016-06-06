@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseGamma);
 
-static const Factory<InverseGamma> RegisteredFactory;
+static const Factory<InverseGamma> Factory_InverseGamma;
 
 /* Default constructor */
 InverseGamma::InverseGamma()

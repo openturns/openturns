@@ -60,7 +60,7 @@ typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
 
 CLASSNAMEINIT(FunctionalChaosAlgorithm);
 
-static const Factory<FunctionalChaosAlgorithm> RegisteredFactory;
+static const Factory<FunctionalChaosAlgorithm> Factory_FunctionalChaosAlgorithm;
 
 
 /* Default constructor */

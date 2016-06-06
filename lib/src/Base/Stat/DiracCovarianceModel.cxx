@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DiracCovarianceModel);
 
-static const Factory<DiracCovarianceModel> RegisteredFactory;
+static const Factory<DiracCovarianceModel> Factory_DiracCovarianceModel;
 
 class DiracAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {

@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CumulativeDistributionNetwork);
 
-static const Factory<CumulativeDistributionNetwork> RegisteredFactory;
+static const Factory<CumulativeDistributionNetwork> Factory_CumulativeDistributionNetwork;
 
 /* Default constructor */
 CumulativeDistributionNetwork::CumulativeDistributionNetwork()

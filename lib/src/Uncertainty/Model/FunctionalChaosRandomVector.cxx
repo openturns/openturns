@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FunctionalChaosRandomVector);
 
-static const Factory<FunctionalChaosRandomVector> RegisteredFactory;
+static const Factory<FunctionalChaosRandomVector> Factory_FunctionalChaosRandomVector;
 
 /* Default constructor */
 FunctionalChaosRandomVector::FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult)

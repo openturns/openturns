@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FORMResult);
 
-static const Factory<FORMResult> RegisteredFactory;
+static const Factory<FORMResult> Factory_FORMResult;
 
 typedef PersistentCollection<NumericalPointWithDescription> PersistentSensitivity;
 

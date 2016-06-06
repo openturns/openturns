@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(QuadraticBasisFactory);
 
-static const Factory<QuadraticBasisFactory> RegisteredFactory;
+static const Factory<QuadraticBasisFactory> Factory_QuadraticBasisFactory;
 
 /* Default constructor */
 QuadraticBasisFactory::QuadraticBasisFactory (const UnsignedInteger inputDimension)

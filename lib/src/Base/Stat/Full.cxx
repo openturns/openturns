@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Full);
 
-static const Factory<Full> RegisteredFactory;
+static const Factory<Full> Factory_Full;
 
 /* Constructor with parameters */
 Full::Full()

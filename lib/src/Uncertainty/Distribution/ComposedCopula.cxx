@@ -33,11 +33,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Copula>);
-static const Factory<PersistentCollection<Copula> > RegisteredFactory2;
+static const Factory<PersistentCollection<Copula> > Factory_PersistentCollection_Copula;
 
 CLASSNAMEINIT(ComposedCopula);
 
-static const Factory<ComposedCopula> RegisteredFactory;
+static const Factory<ComposedCopula> Factory_ComposedCopula;
 
 /* Default constructor */
 ComposedCopula::ComposedCopula()

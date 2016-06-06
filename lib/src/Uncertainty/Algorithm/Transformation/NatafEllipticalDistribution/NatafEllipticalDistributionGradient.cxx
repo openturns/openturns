@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NatafEllipticalDistributionGradient);
 
-static const Factory<NatafEllipticalDistributionGradient> RegisteredFactory;
+static const Factory<NatafEllipticalDistributionGradient> Factory_NatafEllipticalDistributionGradient;
 
 /* Default constructor */
 NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient()

@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Curve);
 
-static const Factory<Curve> RegisteredFactory;
+static const Factory<Curve> Factory_Curve;
 
 /* Default constructor */
 Curve::Curve(const String & legend)

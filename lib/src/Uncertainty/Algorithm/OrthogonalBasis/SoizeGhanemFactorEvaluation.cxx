@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SoizeGhanemFactorEvaluation);
 
-static const Factory<SoizeGhanemFactorEvaluation> RegisteredFactory_SGFE;
+static const Factory<SoizeGhanemFactorEvaluation> Factory_SoizeGhanemFactorEvaluation;
 
 /* Default constructor */
 SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation()

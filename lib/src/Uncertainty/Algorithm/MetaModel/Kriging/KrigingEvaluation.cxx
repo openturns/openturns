@@ -27,8 +27,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(KrigingEvaluation);
 
 
-static const Factory<KrigingEvaluation> RegisteredFactory;
-static const Factory<PersistentCollection<Basis> > RegisteredFactory_PC_Basis;
+static const Factory<KrigingEvaluation> Factory_KrigingEvaluation;
+static const Factory<PersistentCollection<Basis> > Factory_PersistentCollection_Basis;
 
 
 /* Constructor with parameters */

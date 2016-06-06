@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Pairs);
 
-static const Factory<Pairs> RegisteredFactory;
+static const Factory<Pairs> Factory_Pairs;
 
 /* Default constructor */
 Pairs::Pairs(const NumericalSample & data,

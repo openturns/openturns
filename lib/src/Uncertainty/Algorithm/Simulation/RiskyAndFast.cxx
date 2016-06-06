@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RiskyAndFast);
 
-static const Factory<RiskyAndFast> RegisteredFactory;
+static const Factory<RiskyAndFast> Factory_RiskyAndFast;
 
 /* Constructor with parameters */
 RiskyAndFast::RiskyAndFast():

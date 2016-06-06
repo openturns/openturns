@@ -43,7 +43,7 @@ typedef PersistentCollection<NumericalPointWithDescription> PersistentSensitivit
 
 CLASSNAMEINIT(AnalyticalResult);
 
-static const Factory<AnalyticalResult> RegisteredFactory;
+static const Factory<AnalyticalResult> Factory_AnalyticalResult;
 
 /*
  * @brief  Standard constructor
