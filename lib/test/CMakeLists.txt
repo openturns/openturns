@@ -105,6 +105,14 @@ macro (ot_check_test TESTNAME)
             DESTINATION ${EXAMPLE_PATH}
          )
 
+  if (USE_COTIRE)
+    option (COTIRE_TESTS "cotire tests" ON)
+    if (COTIRE_TESTS)
+      set_target_properties (${TESTNAME_TGT} PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
+      cotire (${TESTNAME_TGT})
+    endif ()
+  endif ()
+
 endmacro (ot_check_test)
 
 
