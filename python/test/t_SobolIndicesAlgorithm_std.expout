@@ -1,12 +1,12 @@
 Method of evaluation= Saltelli
-First order indices =  [0.288219,0.469262,-0.00493337]
-Total order indices =  [0.579906,0.409094,0.258698]
+First order indices =  [0.293134,0.451208,-0.00292283]
+Total order indices =  [0.57499,0.427147,0.256687]
 Method of evaluation= Jansen
 First order indices =  [0.322419,0.457314,0.0260925]
 Total order indices =  [0.55841,0.433746,0.240408]
 Method of evaluation= MauntzKucherenko
-First order indices =  [0.28813,0.469173,-0.0050224]
-Total order indices =  [0.579993,0.409181,0.258785]
+First order indices =  [0.293133,0.451207,-0.00292379]
+Total order indices =  [0.57499,0.427147,0.256687]
 Method of evaluation= Martinez
 First order indices =  [0.308902,0.459187,0.00683867]
 Total order indices =  [0.567786,0.430754,0.244293]
@@ -27,4 +27,4 @@ First order indices interval =  [0.308335, 0.309469]
 Total order indices interval =  [0.567276, 0.568296]
 [0.43033, 0.431178]
 [0.244024, 0.244562]
-[0.0104643,0.604425,0.305171]
+[0.0101493,0.60453,0.304954]

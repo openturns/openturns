@@ -138,6 +138,12 @@ the `getFirstOrderIndicesInterval` and `getTotalOrderIndicesInterval` methods. D
 and confidence level values are parametrized thanks to the resource map keys `SobolIndicesAlgorithm-BootstrapSize`
 and `SobolIndicesAlgorithm-BootstrapConfidenceLevel`. Appropriate setters
 might be called to change their values.
+
+Also note that for numerical stability reasons the ouputs are centered before indices estimation:
+
+.. math::
+
+    Y_k = Y_k - \Eset(Y_k)
 "
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation
