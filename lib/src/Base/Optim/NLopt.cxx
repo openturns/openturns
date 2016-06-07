@@ -231,7 +231,7 @@ void NLopt::run()
     for (UnsignedInteger i = 0; i < inequalityDimension; ++ i)
     {
       inequalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
-      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, inequalityData[i].get(), 1e-8);
+      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, inequalityData[i].get(), getMaximumConstraintError());
     }
   }
 
@@ -243,7 +243,7 @@ void NLopt::run()
     for (UnsignedInteger i = 0; i < equalityDimension; ++ i)
     {
       equalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
-      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), 1e-8);
+      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), getMaximumConstraintError());
     }
   }
 
