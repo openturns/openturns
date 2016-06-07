@@ -144,9 +144,9 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 {
 #ifdef OPENTURNS_HAVE_NLOPT
   if (problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+    throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
   if (problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
+    throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support level-function optimization";
 
   const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
@@ -157,7 +157,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     try {
       opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, 0);
     } catch (std::invalid_argument) {
-      throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support inequality constraints";
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support inequality constraints";
     }
   }
 
@@ -166,7 +166,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     try {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
     } catch (std::invalid_argument) {
-      throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support equality constraints";
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support equality constraints";
     }
   }
 #else
