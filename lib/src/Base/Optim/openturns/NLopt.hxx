@@ -110,6 +110,10 @@ private:
   /** Compute the equality constraint of the optimization problem */
   static double ComputeEqualityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
 
+  /** Nearest-point problem */
+  static double ComputeObjectiveNearest(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
+  static double ComputeLevelFunction(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
+
   /// temporary, used to track input/outputs
   NumericalSample evaluationInputHistory_;
   NumericalSample evaluationOutputHistory_;
