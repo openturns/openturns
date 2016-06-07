@@ -279,8 +279,23 @@ void NLopt::run()
   if (startingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
   std::copy(startingPoint.begin(), startingPoint.end(), x.begin());
   double optimalValue = 0.0;
-  nlopt::result err = opt.optimize(x, optimalValue);
-  if (err < 0) throw InternalException(HERE) << "NLopt returned error code " << err;
+
+  try
+  {
+    // The C++ interface of NLopt does not return a code for failures cases.
+    // It is either positive (termination criterion) or an exception is thrown.
+    opt.optimize(x, optimalValue);
+  }
+  catch (nlopt::roundoff_limited)
+  {
+    // Here we catch the roundoff_limited exception as the result
+    // of the optimization may be useful even if not at the requested precision
+    LOGWARN(OSS() << "NLopt raised a roundoff-limited exception");
+  }
+  catch (std::exception & exc)
+  {
+    throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
+  }
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
