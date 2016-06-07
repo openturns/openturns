@@ -439,3 +439,4 @@ x^= [-3.000,-3.000,5.000,-3.000]
 -- Not supported: algo= LN_SBPLX inequality= False equality= True
 algo= class=NLopt algorithm=LN_SBPLX
 x^= [5.000,5.000,-3.000,5.000]
+generalized reliability index=1.009255

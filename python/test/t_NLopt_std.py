@@ -68,3 +68,25 @@ for algoName in algoNames:
                     print('x^=', printNumericalPoint(result.getOptimalPoint(), 3))
                 except:
                     print('-- Not supported: algo=', algoName, 'inequality=', inequality, 'equality=', equality)
+
+# FORM
+f = ot.NumericalMathFunction(
+    ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
+dim = f.getInputDimension()
+mean = [50.0, 1.0, 10.0, 5.0]
+sigma = ot.NumericalPoint(dim, 1.0)
+R = ot.IdentityMatrix(dim)
+distribution = ot.Normal(mean, sigma, R)
+vect = ot.RandomVector(distribution)
+output = ot.RandomVector(f, vect)
+myEvent = ot.Event(output, ot.Less(), -3.0)
+solver = ot.NLopt('LD_AUGLAG')
+solver.setMaximumIterationNumber(400)
+solver.setMaximumAbsoluteError(1.0e-10)
+solver.setMaximumRelativeError(1.0e-10)
+solver.setMaximumResidualError(1.0e-10)
+solver.setMaximumConstraintError(1.0e-10)
+algo = ot.FORM(solver, myEvent, mean)
+algo.run()
+result = algo.getResult()
+print('generalized reliability index=%.6f' % result.getGeneralisedReliabilityIndex())
