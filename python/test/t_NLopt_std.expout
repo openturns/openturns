@@ -1,4 +1,5 @@
--- Not supported: algo= AUGLAG inequality= True equality= True
+algo= class=NLopt algorithm=AUGLAG
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=AUGLAG
 x^= [0.000,0.000,0.000,0.000]
 algo= class=NLopt algorithm=AUGLAG
@@ -13,7 +14,8 @@ algo= class=NLopt algorithm=AUGLAG
 x^= [5.000,5.000,-3.000,2.000]
 algo= class=NLopt algorithm=AUGLAG
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= AUGLAG_EQ inequality= True equality= True
+algo= class=NLopt algorithm=AUGLAG_EQ
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=AUGLAG_EQ
 x^= [5.000,-3.000,5.000,-3.000]
 algo= class=NLopt algorithm=AUGLAG_EQ
@@ -130,7 +132,8 @@ x^= [-2.998,-2.985,4.542,-2.984]
 -- Not supported: algo= GN_ESCH inequality= False equality= True
 algo= class=NLopt algorithm=GN_ESCH
 x^= [4.794,4.970,-2.999,4.733]
--- Not supported: algo= GN_ISRES inequality= True equality= True
+algo= class=NLopt algorithm=GN_ISRES
+x^= [4.743,-2.725,4.575,1.995]
 algo= class=NLopt algorithm=GN_ISRES
 x^= [4.942,-2.770,4.868,-2.901]
 algo= class=NLopt algorithm=GN_ISRES
@@ -209,7 +212,8 @@ x^= [-3.000,-3.000,5.000,-3.000]
 -- Not supported: algo= G_MLSL_LDS inequality= False equality= True
 algo= class=NLopt algorithm=G_MLSL_LDS
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= LD_AUGLAG inequality= True equality= True
+algo= class=NLopt algorithm=LD_AUGLAG
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=LD_AUGLAG
 x^= [0.000,0.000,0.000,0.000]
 algo= class=NLopt algorithm=LD_AUGLAG
@@ -224,7 +228,8 @@ algo= class=NLopt algorithm=LD_AUGLAG
 x^= [5.000,5.000,-3.000,2.000]
 algo= class=NLopt algorithm=LD_AUGLAG
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= LD_AUGLAG_EQ inequality= True equality= True
+algo= class=NLopt algorithm=LD_AUGLAG_EQ
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=LD_AUGLAG_EQ
 x^= [5.000,-3.000,5.000,-3.000]
 algo= class=NLopt algorithm=LD_AUGLAG_EQ
@@ -283,7 +288,8 @@ x^= [5.000,5.000,-3.000,5.000]
 -- Not supported: algo= LD_MMA inequality= False equality= True
 algo= class=NLopt algorithm=LD_MMA
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= LD_SLSQP inequality= True equality= True
+algo= class=NLopt algorithm=LD_SLSQP
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=LD_SLSQP
 x^= [5.000,-3.000,5.000,-3.000]
 algo= class=NLopt algorithm=LD_SLSQP
@@ -358,7 +364,8 @@ x^= [-3.000,-3.000,5.000,-3.000]
 -- Not supported: algo= LD_VAR2 inequality= False equality= True
 algo= class=NLopt algorithm=LD_VAR2
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= LN_AUGLAG inequality= True equality= True
+algo= class=NLopt algorithm=LN_AUGLAG
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=LN_AUGLAG
 x^= [0.000,0.000,0.000,0.000]
 algo= class=NLopt algorithm=LN_AUGLAG
@@ -373,7 +380,8 @@ algo= class=NLopt algorithm=LN_AUGLAG
 x^= [5.000,5.000,-3.000,2.000]
 algo= class=NLopt algorithm=LN_AUGLAG
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= LN_AUGLAG_EQ inequality= True equality= True
+algo= class=NLopt algorithm=LN_AUGLAG_EQ
+x^= [5.000,-3.000,5.000,2.000]
 algo= class=NLopt algorithm=LN_AUGLAG_EQ
 x^= [5.000,-3.000,5.000,-3.000]
 algo= class=NLopt algorithm=LN_AUGLAG_EQ

@@ -148,7 +148,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
 
-  const UnsignedInteger dimension = getProblem().getDimension();
+  const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);
 
