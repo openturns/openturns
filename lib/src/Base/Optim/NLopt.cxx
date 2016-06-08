@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #ifdef OPENTURNS_HAVE_NLOPT
-# include "nlopt.hpp"
+# include <nlopt.hpp>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -144,11 +144,9 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 {
 #ifdef OPENTURNS_HAVE_NLOPT
   if (problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
-  if (problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
+    throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
 
-  const UnsignedInteger dimension = getProblem().getDimension();
+  const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);
 
@@ -157,16 +155,16 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     try {
       opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, 0);
     } catch (std::invalid_argument) {
-      throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support inequality constraints";
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support inequality constraints";
     }
   }
 
-  if (problem.hasEqualityConstraint())
+  if (problem.hasEqualityConstraint() || problem.hasLevelFunction())
   {
     try {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
     } catch (std::invalid_argument) {
-      throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support equality constraints";
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support equality constraints";
     }
   }
 #else
@@ -231,7 +229,7 @@ void NLopt::run()
     for (UnsignedInteger i = 0; i < inequalityDimension; ++ i)
     {
       inequalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
-      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, inequalityData[i].get(), 1e-8);
+      opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, inequalityData[i].get(), getMaximumConstraintError());
     }
   }
 
@@ -243,8 +241,14 @@ void NLopt::run()
     for (UnsignedInteger i = 0; i < equalityDimension; ++ i)
     {
       equalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
-      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), 1e-8);
+      opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), getMaximumConstraintError());
     }
+  }
+
+  if (getProblem().hasLevelFunction())
+  {
+    opt.add_equality_constraint(NLopt::ComputeLevelFunction, this, getMaximumConstraintError());
+    opt.set_min_objective(NLopt::ComputeObjectiveNearest, this);
   }
 
   if (initialStep_.getDimension() > 0)
@@ -279,8 +283,23 @@ void NLopt::run()
   if (startingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
   std::copy(startingPoint.begin(), startingPoint.end(), x.begin());
   double optimalValue = 0.0;
-  nlopt::result err = opt.optimize(x, optimalValue);
-  if (err < 0) throw InternalException(HERE) << "NLopt returned error code " << err;
+
+  try
+  {
+    // The C++ interface of NLopt does not return a code for failures cases.
+    // It is either positive (termination criterion) or an exception is thrown.
+    opt.optimize(x, optimalValue);
+  }
+  catch (nlopt::roundoff_limited)
+  {
+    // Here we catch the roundoff_limited exception as the result
+    // of the optimization may be useful even if not at the requested precision
+    LOGWARN(OSS() << "NLopt raised a roundoff-limited exception");
+  }
+  catch (std::exception & exc)
+  {
+    throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
+  }
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
@@ -437,6 +456,51 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
     }
   }
   return outP[marginalIndex];
+}
+
+
+double NLopt::ComputeLevelFunction(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
+{
+  NLopt *algorithm = static_cast<NLopt *>(f_data);
+  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
+  NumericalPoint inP(dimension);
+  std::copy(x.begin(), x.end(), inP.begin());
+
+  // evaluation
+  NumericalPoint outP(algorithm->getProblem().getLevelFunction()(inP));
+
+  // gradient
+  if (!grad.empty())
+  {
+    Matrix gradient(algorithm->getProblem().getLevelFunction().gradient(inP));
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      grad[i] = gradient(i, 0);
+    }
+  }
+  return outP[0] - algorithm->getProblem().getLevelValue();
+}
+
+
+double NLopt::ComputeObjectiveNearest(const std::vector<double> & x, std::vector<double> & grad, void * f_data)
+{
+  NLopt *algorithm = static_cast<NLopt *>(f_data);
+  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
+  NumericalPoint inP(dimension);
+  std::copy(x.begin(), x.end(), inP.begin());
+
+  // evaluation
+  NumericalScalar outP = 0.5 * inP.normSquare();
+
+  // gradient
+  if (!grad.empty())
+  {
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      grad[i] = inP[i];
+    }
+  }
+  return outP;
 }
 
 
