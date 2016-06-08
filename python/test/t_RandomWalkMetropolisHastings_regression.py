@@ -5,7 +5,6 @@ from openturns import *
 import math as m
 
 TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
 
 try:
 
@@ -36,7 +35,7 @@ try:
 
     fullModel = NumericalMathFunction(
         ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'], ['p1*x1+p2*x2+p3*x3', '1.0'])
-    model = NumericalMathFunction(fullModel, list(range(chainDim)))
+    model = NumericalMathFunction(fullModel, range(chainDim), [0.0] * chainDim)
 
     # calibration parameters
     calibrationColl = CalibrationStrategyCollection(chainDim)
@@ -121,6 +120,6 @@ try:
     print('expected covariance=', Qn_inv)
 
 except:
-    import sys
-    import traceback
+    import os, traceback
     traceback.print_exc()
+    os._exit(1)

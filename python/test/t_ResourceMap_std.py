@@ -1,13 +1,18 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-print("ResourceMap={")
-for key in ResourceMap.GetKeys():
-    print("  %s => %s," % (key, ResourceMap.Get(key)))
-print("}")
-print("Extract from ResourceMap : R-executable-command -> ",
-      ResourceMap.Get("R-executable-command"))
+try:
+    print('ResourceMap={')
+    for key in ot.ResourceMap.GetKeys():
+        print('  %s => %s,' % (key, ot.ResourceMap.Get(key)))
+    print('}')
+    print('Extract from ResourceMap : R-executable-command -> ',
+          ot.ResourceMap.Get('R-executable-command'))
+except:
+    import os, traceback
+    traceback.print_exc()
+    os._exit(1)
