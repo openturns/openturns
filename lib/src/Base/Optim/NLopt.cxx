@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #ifdef OPENTURNS_HAVE_NLOPT
-# include "nlopt.hpp"
+# include <nlopt.hpp>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
