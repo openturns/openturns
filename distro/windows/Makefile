@@ -26,7 +26,8 @@ OT_VERSION ?= $(shell cat ../../VERSION)
 WINDEPS = $(PWD)/openturns-developers-windeps-$(OT_VERSION)
 
 # Wine
-WINE_PREFIX = $(WINDEPS)/wine-$(ARCH)
+WINE=/usr/bin/wine
+WINE_PREFIX = $(HOME)/.wine-$(TARGET)
 export WINEPREFIX = $(WINE_PREFIX)
 ifeq ($(ARCH), i686)
 export WINEARCH = win32
@@ -74,6 +75,16 @@ ot-check-compiler:
 	@ls $(OT_SRC) $(PYTHON_EXECUTABLE) > /dev/null
 	@echo "ok"
 	touch ot-check-compiler
+ifeq ($(PYBASEVER),3.5)
+ifneq ($(DISPLAY),)
+	winetricks -q vcrun2015
+else
+	wine wineboot
+	Xvfb :99 -screen 0 1024x768x24 &
+	sleep 10
+	DISPLAY=:99.0 winetricks -q vcrun2015
+endif
+endif
 
 
 ot-config: ot-check-compiler
