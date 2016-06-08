@@ -10,7 +10,7 @@ if (CMAKE_VERSION VERSION_GREATER 2.8)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
 endif ()
 
-project (OpenTURNS CXX)
+project (OpenTURNS)
 
 option (USE_BISON                    "Looks for Bison if true and then build parser"                         ON)
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
@@ -25,7 +25,6 @@ option (USE_SPHINX                    "Use sphinx for documentation"            
 option (USE_DOXYGEN                   "Use Doxygen for API documentation"                                     ON)
 option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ON)
 
-option (BUILD_LIB                    "Build the library"                                                     ON)
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
 option (LINK_PYTHON_LIBRARY          "Link python modules against python library"                            ON)
@@ -111,10 +110,6 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   set(WINTEL TRUE)
 endif()
 
-
-if (BUILD_LIB)
-
-enable_language (C)
 
 if (NOT LAPACKE_FOUND)
   # workaround for cmake issue #0009976
@@ -267,10 +262,6 @@ check_include_file (sys/time.h    OPENTURNS_HAVE_SYS_TIME_H   )
 check_include_file (sys/types.h   OPENTURNS_HAVE_SYS_TYPES_H  )
 check_include_file (sys/un.h      OPENTURNS_HAVE_SYS_UN_H     )
 check_include_file (unistd.h      OPENTURNS_HAVE_UNISTD_H     )
-
-else ()
-  find_package (OpenTURNS NO_MODULE REQUIRED)
-endif ()
 
 # Some useful macros to ease CMakeLists.txt file writing
 set (SOURCEFILES "" CACHE INTERNAL "List of source files to compile")
@@ -443,15 +434,10 @@ if (BUILD_PYTHON)
   endif ()
 endif ()
 
-
-if (BUILD_LIB)
-  add_subdirectory (lib)
-  add_dependencies (check cppcheck)
-endif (BUILD_LIB)
+add_subdirectory (lib)
 
 if (PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND SWIG_FOUND)
   add_subdirectory (python)
-  add_dependencies (installcheck pyinstallcheck)
 endif ()
 
 

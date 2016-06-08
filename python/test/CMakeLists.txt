@@ -609,3 +609,4 @@ endif ()
 add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"
                     DEPENDS ${PYINSTALLCHECK_TO_BE_RUN}
                     COMMENT "Run Python post-installation tests")
+add_dependencies (installcheck pyinstallcheck)

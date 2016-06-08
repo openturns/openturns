@@ -642,5 +642,6 @@ ot_check_test (LinearLeastSquares_std)
 add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^cppcheck_"
                     DEPENDS ${CHECK_TO_BE_RUN}
                     COMMENT "Run C++ pre-installation tests")
+add_dependencies (check cppcheck)
 
 
