@@ -29,7 +29,6 @@ option (BUILD_LIB                    "Build the library"                        
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
 option (LINK_PYTHON_LIBRARY          "Link python modules against python library"                            ON)
-option (INSTALL_TESTS                "Install compiled tests for native platform testing"                    OFF)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
 if (MSVC)
