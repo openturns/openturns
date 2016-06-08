@@ -39,49 +39,6 @@ set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc"
                         ${ADAPT_CHECK_TESTS_EXPONENT} 
    )
 
-
-set (EXCLUDE_TEST EXCLUDE_FROM_ALL)
-if (INSTALL_TESTS)
-  set (EXCLUDE_TEST "")
-
-  macro (create_check_file FILE_NAME)
-    file (WRITE ${FILE_NAME} "#!/bin/sh\n\n")
-    file (APPEND ${FILE_NAME} "#set -e\n\n")
-    #file (APPEND ${FILE_NAME} "#${CHECK_ENVIRONMENT}\n\n")
-    file (APPEND ${FILE_NAME} "export PRINTF_EXPONENT_DIGITS=2\n")
-    file (APPEND ${FILE_NAME} "export AUTOTEST_PATH=$PWD\n")
-    file (APPEND ${FILE_NAME} "export OPENTURNS_CONFIG_PATH=$PWD/..\n")
-    file (APPEND ${FILE_NAME} "#export OPENTURNS_LOG_SEVERITY=ALL\n")
-    file (APPEND ${FILE_NAME} "DEBUG_FILE=stdouterr.dbg \n")
-    file (APPEND ${FILE_NAME} "PATH=$PWD:$PWD/..:$PATH\n")
-    file (APPEND ${FILE_NAME} "FAILED_TEST=\"\"\n\n")
-    file (APPEND ${FILE_NAME} "function check_error {\nif [ \"$?\" != \"0\" ]; then\n  FAILED_TEST=\"$FAILED_TEST $1\"\n  echo \"std_err output:\"\n  cat $DEBUG_FILE\n  echo \"Test #$1: $2 failed!\"\n  echo\nfi\n}\n\n")
-  endmacro (create_check_file FILE_NAME)
-
-  macro (add_check_file FILE_NAME TESTNAME EXTERNAL_COMMAND CUR_CHECK)
-    file (APPEND ${FILE_NAME} "echo \"Test #${CUR_CHECK}/$NB_CHECK: ${TESTNAME}\"\n")
-    file (APPEND ${FILE_NAME} "${EXTERNAL_COMMAND}\n")
-    file (APPEND ${FILE_NAME} "check_error ${CUR_CHECK} ${TESTNAME}\n\n")
-  endmacro (add_check_file FILE_NAME TESTNAME EXTERNAL_COMMAND CUR_CHECK)
-
-  macro (finish_check_file FILE_NAME NB_CHECK)
-    file (APPEND ${FILE_NAME} "}\n\n")
-    file (APPEND ${FILE_NAME} "NB_CHECK=${NB_CHECK}\n")
-    file (APPEND ${FILE_NAME} "start_tests\necho\n")
-    file (APPEND ${FILE_NAME} "RC=0\nif [ \"$FAILED_TEST\" = \"\" ]; then\n  echo \"Every check tests are OK.\"\n")
-    file (APPEND ${FILE_NAME} "else\n  echo \"Tests$FAILED_TEST failed!\"\n  RC=1\nfi\n")
-    file (APPEND ${FILE_NAME} "exit $RC\n")
-  endmacro (finish_check_file FILE_NAME)
-
-  # create a standalone sh file that can launch tests
-  set (EXTERNAL_CHECK_FILE "${CMAKE_CURRENT_BINARY_DIR}/start_check_test.sh")
-  create_check_file (${EXTERNAL_CHECK_FILE})
-  file (APPEND ${EXTERNAL_CHECK_FILE} "\nstart_tests() {\n")
-  set (CUR_CHECK 0)
-  
-endif ()
-
-  
 # This macro compiles on the fly and run the corresponding pre-installation test
 # It can have two optional arguments PRE and POST followed by some shell command to be run
 # before or after the test if needed
@@ -92,7 +49,7 @@ macro (ot_check_test TESTNAME)
   set (TESTNAME_TGT t_${TESTNAME})
   set (TESTNAME_SRC ${TESTNAME_TGT}.cxx)
   set (TESTNAME_SRCS ${TESTNAME_SRC})
-  add_executable (${TESTNAME_TGT} ${EXCLUDE_TEST} ${TESTNAME_SRCS})
+  add_executable (${TESTNAME_TGT} EXCLUDE_FROM_ALL ${TESTNAME_SRCS})
   add_dependencies(tests ${TESTNAME_TGT}) 
   target_link_libraries (${TESTNAME_TGT} OT)
   if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -131,37 +88,22 @@ macro (ot_check_test TESTNAME)
 
   if (_IGNOREOUT)
     set (COMMAND "(${TESTNAME_LOC} ${_PARAMS} > /dev/null)")
-    set (EXTERNAL_COMMAND "./${TESTNAME_TGT} ${_PARAMS} > $DEBUG_FILE 2>&1")
   else (_IGNOREOUT)
     set (TESTNAME_OUT ${TESTNAME_TGT}.expout)
     set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_OUT})
     set (COMMAND "(${TESTNAME_LOC} ${_PARAMS} ${REPLACE_EOL} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
-    set (EXTERNAL_COMMAND "(./${TESTNAME_TGT} ${_PARAMS} 2>$DEBUG_FILE | tr -d '\\\\r' > ${TESTNAME_TGT}.out) && diff -u ${TESTNAME_OUT} ${TESTNAME_TGT}.out")
   endif (_IGNOREOUT)
 
   if (_PRE OR _POST)
     set (COMMAND "${_PRE}${COMMAND}${_POST}")
-    set (EXTERNAL_COMMAND "${_PRE}${EXTERNAL_COMMAND}${_POST}")
   endif (_PRE OR _POST)
 
   add_test (cppcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
   set_tests_properties (cppcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${CHECK_ENVIRONMENT}")
   list (APPEND CHECK_TO_BE_RUN ${TESTNAME_TGT})
   install (FILES ${TESTNAME_SRC}
-            DESTINATION ${EXAMPLE_PATH} 
+            DESTINATION ${EXAMPLE_PATH}
          )
-
-  if (INSTALL_TESTS)
-    install (FILES ${TESTNAME_OUT}
-              DESTINATION ${EXAMPLE_PATH} 
-           )
-    install (TARGETS ${TESTNAME_TGT}
-              DESTINATION ${EXAMPLE_PATH} 
-           )
-
-    add_check_file (${EXTERNAL_CHECK_FILE} ${TESTNAME_TGT} ${EXTERNAL_COMMAND} ${CUR_CHECK})
-    math(EXPR CUR_CHECK "${CUR_CHECK} + 1")
-  endif ()
 
 endmacro (ot_check_test)
 
@@ -701,13 +643,4 @@ add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^cppcheck_"
                     DEPENDS ${CHECK_TO_BE_RUN}
                     COMMENT "Run C++ pre-installation tests")
 
-if (INSTALL_TESTS)
-  finish_check_file (${EXTERNAL_CHECK_FILE} ${CUR_CHECK})
-
-  install (FILES ${EXTERNAL_CHECK_FILE}
-            DESTINATION ${EXAMPLE_PATH} 
-            PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
-         )
-
-endif ()
 
