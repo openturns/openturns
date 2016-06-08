@@ -66,6 +66,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Numer
   if (hasEqualityConstraint() && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
   if (hasInequalityConstraint() && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
   if (hasInequalityConstraint() && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if (hasBounds() && (bounds.getDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 }
 
 /* Constructor for nearest point problem */
@@ -156,7 +157,7 @@ void OptimizationProblemImplementation::setBounds(const Interval & bounds)
 
 Bool OptimizationProblemImplementation::hasBounds() const
 {
-  return bounds_.getDimension() == dimension_;
+  return bounds_.getDimension() > 0;
 }
 
 /* Level function accessor */
