@@ -105,6 +105,7 @@ ot-config: ot-check-compiler
 	  -DCMAKE_INSTALL_PREFIX=$(OT_PREFIX) \
 	  -DUSE_TBB=OFF \
 	  -DUSE_SPHINX=OFF \
+	  -DCMAKE_CROSSCOMPILING_EMULATOR=$(WINE) \
 	  $(OT_SRC)
 	touch ot-config
 
