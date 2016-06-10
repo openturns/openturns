@@ -76,14 +76,8 @@ ot-check-compiler:
 	@echo "ok"
 	touch ot-check-compiler
 ifeq ($(PYBASEVER),3.5)
-ifneq ($(DISPLAY),)
-	winetricks -q vcrun2015
-else
 	wine wineboot
-	Xvfb :99 -screen 0 1024x768x24 &
-	sleep 10
-	DISPLAY=:99.0 winetricks -q vcrun2015
-endif
+	xvfb-run winetricks -q vcrun2015
 endif
 
 
