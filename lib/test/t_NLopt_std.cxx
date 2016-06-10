@@ -66,9 +66,11 @@ int main(int argc, char *argv[])
           // STOGO might not be enabled
           // NEWUOA nan/-nan
           // COBYLA crashes on squeeze
+          // ESCH not same results with 2.4.1
           if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND")
            || (algoNames[i] == "LN_NEWUOA")
-           || (algoNames[i] == "LN_COBYLA"))
+           || (algoNames[i] == "LN_COBYLA")
+           || (algoNames[i] == "GN_ESCH"))
             {
               fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
               continue;
