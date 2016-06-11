@@ -27,7 +27,7 @@ WINDEPS = $(PWD)/openturns-developers-windeps-$(OT_VERSION)
 
 # Wine
 WINE=/usr/bin/wine
-WINE_PREFIX = $(HOME)/.wine-$(TARGET)
+WINE_PREFIX = $(WINDEPS)/wine-$(ARCH)
 export WINEPREFIX = $(WINE_PREFIX)
 ifeq ($(ARCH), i686)
 export WINEARCH = win32
