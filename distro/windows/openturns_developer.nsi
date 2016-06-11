@@ -152,6 +152,8 @@ Section "OpenTURNS checktests" SEC02
   ; delete the dead link used for 'make installcheck'
   File /r /x "libOT-0.dll" "${OPENTURNS_PREFIX}\share\openturns\examples\*.*"
 !endif
+  File "start_check_test.sh"
+  File "start_pythoninstallcheck_test.sh"
   File "start_all_check_test.sh"
   ${ConfigWrite} "$OT_INSTALL_PATH\examples\start_all_check_test.sh" "OT_PREFIX=" '"$OT_INSTALL_PATH"' $R0
 

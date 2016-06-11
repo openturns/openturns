@@ -20,48 +20,6 @@ set (PYINSTALLCHECK_ENVIRONMENT "AUTOTEST_PATH=${INSTALL_DESTDIR}${EXAMPLE_PATH}
                                  ${ADAPT_CHECK_TESTS_EXPONENT}
    )
 
-if (MINGW)
-  macro (create_check_file FILE_NAME)
-    file (WRITE ${FILE_NAME} "#!/bin/sh\n\n")
-    file (APPEND ${FILE_NAME} "#set -e\n\n")
-    #file (APPEND ${FILE_NAME} "#${CHECK_ENVIRONMENT}\n\n")
-    file (APPEND ${FILE_NAME} "export PRINTF_EXPONENT_DIGITS=2\n")
-    file (APPEND ${FILE_NAME} "export AUTOTEST_PATH=$PWD\n")
-    file (APPEND ${FILE_NAME} "export OPENTURNS_CONFIG_PATH=$PWD/..\n")
-    file (APPEND ${FILE_NAME} "#export OPENTURNS_LOG_SEVERITY=ALL\n")
-    file (APPEND ${FILE_NAME} "DEBUG_FILE=stdouterr.dbg \n")
-    file (APPEND ${FILE_NAME} "export OPENTURNS_HOME=$PWD/..\n")
-    file (APPEND ${FILE_NAME} "PATH=$PWD:$PWD/..:$PATH\n")
-    file (APPEND ${FILE_NAME} "PYTHON_EXE=../../../../python.exe\n\n")
-    file (APPEND ${FILE_NAME} "FAILED_TEST=\"\"\n")
-    file (APPEND ${FILE_NAME} "function check_error {\nif [ \"$?\" != \"0\" ]; then\n  FAILED_TEST=\"$FAILED_TEST $1\"\n  echo \"std_err output:\"\n  cat $DEBUG_FILE\n  echo \"Test #$1: $2 failed!\"\n  echo\nfi\n}\n\n")
-  endmacro (create_check_file FILE_NAME)
-
-  macro (add_check_file FILE_NAME TESTNAME EXTERNAL_COMMAND CUR_CHECK)
-    file (APPEND ${FILE_NAME} "echo \"Test #${CUR_CHECK}/$NB_CHECK: ${TESTNAME}\"\n")
-    file (APPEND ${FILE_NAME} "${EXTERNAL_COMMAND}\n")
-    file (APPEND ${FILE_NAME} "check_error ${CUR_CHECK} ${TESTNAME}\n\n")
-  endmacro (add_check_file FILE_NAME TESTNAME EXTERNAL_COMMAND CUR_CHECK)
-
-  macro (finish_check_file FILE_NAME NB_CHECK)
-    file (APPEND ${FILE_NAME} "}\n\n")
-    file (APPEND ${FILE_NAME} "NB_CHECK=${NB_CHECK}\n")
-    file (APPEND ${FILE_NAME} "start_tests\necho\n")
-    file (APPEND ${FILE_NAME} "RC=0\nif [ \"$FAILED_TEST\" = \"\" ]; then\n  echo \"Every check tests are OK.\"\n")
-    file (APPEND ${FILE_NAME} "else\n  echo \"Tests$FAILED_TEST failed!\"\n  RC=1\nfi\n")
-    file (APPEND ${FILE_NAME} "exit $RC\n")
-  endmacro (finish_check_file FILE_NAME)
-
-
-  set (EXTERNAL_PYTHONINSTALLCHECK_FILE "${CMAKE_CURRENT_BINARY_DIR}/start_pythoninstallcheck_test.sh")
-  create_check_file (${EXTERNAL_PYTHONINSTALLCHECK_FILE})
-  #file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "#${INSTALLCHECK_ENVIRONMENT}\n\n")
-  #file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "export abs_srcdir=$PWD\n")
-  file (APPEND ${EXTERNAL_PYTHONINSTALLCHECK_FILE} "start_tests() {\n")
-  set (CUR_PYTHONINSTALLCHECK 0)
-
-endif ()
-
 # This macro compiles on the fly and run the corresponding post-installation test
 # It can have two optional arguments PRE and POST followed by some shell command to be run
 # before or after the test if needed
@@ -98,40 +56,26 @@ macro (ot_pyinstallcheck_test TESTNAME)
       set (_CMD)
     endif (${ARG} MATCHES PRE)
   endforeach (_ARG)
-  
+
   if (_IGNOREOUT)
     set (COMMAND "(${PYTHON_EXECUTABLE} ${TESTNAME_LOC} ${_PARAMS} > /dev/null)")
-    set (EXTERNAL_COMMAND "$PYTHON_EXE ${TESTNAME_SRC} > $DEBUG_FILE 2>&1")
   else (_IGNOREOUT)
     set (TESTNAME_OUT ${TESTNAME_TGT}.expout)
     get_source_file_property (OUTFILE_LOC ${TESTNAME_OUT} LOCATION)
     set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_OUT})
     set (COMMAND "(${PYTHON_EXECUTABLE} ${TESTNAME_LOC} ${_PARAMS} ${REPLACE_EOL} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
-    set (EXTERNAL_COMMAND "($PYTHON_EXE ${TESTNAME_SRC} 2>$DEBUG_FILE | tr -d '\\\\r' > ${TESTNAME_TGT}.out) && diff -u ${TESTNAME_SRC}.expout ${TESTNAME_TGT}.out")
   endif (_IGNOREOUT)
 
   if (_PRE OR _POST)
     set (COMMAND "${_PRE}${COMMAND}${_POST}")
-    #not useful
-    #set (EXTERNAL_COMMAND "${_PRE}${EXTERNAL_COMMAND}${_POST}")
   endif (_PRE OR _POST)
 
   add_test (pyinstallcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
 
-  if (INSTALL_TESTS)
-    install (FILES ${TESTNAME_OUT}
-              DESTINATION ${EXAMPLE_PATH} 
-              RENAME ${TESTNAME_SRC}.expout
-           )
-          add_check_file (${EXTERNAL_PYTHONINSTALLCHECK_FILE} ${TESTNAME_SRC} ${EXTERNAL_COMMAND} ${CUR_PYTHONINSTALLCHECK})
-    math(EXPR CUR_PYTHONINSTALLCHECK "${CUR_PYTHONINSTALLCHECK} + 1")
-  endif ()
-
-
   set_tests_properties (pyinstallcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
   list (APPEND PYINSTALLCHECK_TO_BE_RUN ${TESTNAME_SRC})
   install (FILES ${TESTNAME_SRC}
-            DESTINATION ${EXAMPLE_PATH} 
+            DESTINATION ${EXAMPLE_PATH}
             PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
          )
 endmacro (ot_pyinstallcheck_test)
@@ -215,8 +159,6 @@ ot_pyinstallcheck_test (NumericalMathFunction_dual_linear_combination)
 ot_pyinstallcheck_test (NumericalMathFunction_indicator)
 ot_pyinstallcheck_test (NumericalMathFunction_linear_combination)
 ot_pyinstallcheck_test (ConstantNumericalMathGradientImplementation_std)
-ot_pyinstallcheck_test (ConstantNumericalMathHessianImplementation_std)
-ot_pyinstallcheck_test (ConstantNumericalMathHessianImplementation_std)
 ot_pyinstallcheck_test (ConstantNumericalMathHessianImplementation_std)
 ot_pyinstallcheck_test (Basis_std)
 ot_pyinstallcheck_test (BasisSequence_std)
@@ -667,14 +609,4 @@ endif ()
 add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"
                     DEPENDS ${PYINSTALLCHECK_TO_BE_RUN}
                     COMMENT "Run Python post-installation tests")
-
-
-if (MINGW)
-  finish_check_file (${EXTERNAL_PYTHONINSTALLCHECK_FILE} ${CUR_PYTHONINSTALLCHECK})
-
-  install (FILES ${EXTERNAL_PYTHONINSTALLCHECK_FILE}
-            DESTINATION ${EXAMPLE_PATH} 
-            PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
-         )
-endif ()
-
+add_dependencies (installcheck pyinstallcheck)

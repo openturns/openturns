@@ -26,7 +26,8 @@ OT_VERSION ?= $(shell cat ../../VERSION)
 WINDEPS = $(PWD)/openturns-developers-windeps-$(OT_VERSION)
 
 # Wine
-WINE_PREFIX = $(WINDEPS)/wine-$(ARCH)
+WINE=/usr/bin/wine
+WINE_PREFIX = $(HOME)/.wine-$(TARGET)
 export WINEPREFIX = $(WINE_PREFIX)
 ifeq ($(ARCH), i686)
 export WINEARCH = win32
@@ -52,9 +53,6 @@ CMAKE=cmake
 # launch OpenTURNS checktests before creating the installer (y,n)
 CHECK_OT=y
 
-# build and install tests
-INSTALL_TESTS_OPT=ON
-
 JOBS=$(shell getconf _NPROCESSORS_ONLN)
 JOBS_PYTHON=$(JOBS)
 JOBS_TEST=$(JOBS)
@@ -77,6 +75,10 @@ ot-check-compiler:
 	@ls $(OT_SRC) $(PYTHON_EXECUTABLE) > /dev/null
 	@echo "ok"
 	touch ot-check-compiler
+ifeq ($(PYBASEVER),3.5)
+	wine wineboot
+	xvfb-run winetricks -q vcrun2015
+endif
 
 
 ot-config: ot-check-compiler
@@ -95,14 +97,14 @@ ot-config: ot-check-compiler
 	  -DPYTHON_EXECUTABLE=$(PYTHON_EXECUTABLE) \
 	  -DR_EXECUTABLE=$(R_PATH)/bin/R.exe \
 	  -DCMAKE_INSTALL_PREFIX=$(OT_PREFIX) \
-	  -DINSTALL_TESTS=$(INSTALL_TESTS_OPT) \
 	  -DUSE_TBB=OFF \
 	  -DUSE_SPHINX=OFF \
+	  -DCMAKE_CROSSCOMPILING_EMULATOR=$(WINE) \
 	  $(OT_SRC)
 	touch ot-config
 
 ot-compile: ot-config
-	cd $(OT_BUILD)/lib && make -j$(JOBS)
+	cd $(OT_BUILD) && make OT -j$(JOBS)
 	cd $(OT_BUILD) && make -j$(JOBS_PYTHON)
 	-beep
 	touch ot-compile
@@ -113,9 +115,6 @@ ifeq ($(DEBUG_OT),n)
 	$(TARGET)-strip --strip-unneeded $(OT_PREFIX)/bin/*.dll
 	$(TARGET)-strip -g $(OT_PREFIX)/lib/*.a
 	$(TARGET)-strip --strip-unneeded $(OT_PREFIX)/Lib/site-packages/*/*.pyd
-ifeq ($(INSTALL_TESTS_OPT),ON)
-	$(TARGET)-strip --strip-all $(OT_PREFIX)/share/openturns/examples/*.exe
-endif
 endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgcc_s_*-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libquadmath-0.dll $(OT_PREFIX)/bin
@@ -143,10 +142,21 @@ ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).dll $(OT_BUILD)/python/test
 	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --timeout 1500
-	touch ot-test
 endif
+	touch ot-test
 
-ot-check-installer: ot-test
+ot-install-test: ot-test
+	cp $(OT_SRC)/lib/test/*.expout $(OT_PREFIX)/share/openturns/examples
+	for exp_file in `find $(OT_SRC)/python/test -name "t_*.expout"`; do \
+	  base_file=`basename $${exp_file} .expout`; \
+	  cp $${exp_file} $(OT_PREFIX)/share/openturns/examples/$${base_file}.py.expout; done
+	cp $(OT_BUILD)/lib/test/*.exe $(OT_PREFIX)/share/openturns/examples
+ifeq ($(DEBUG_OT),n)
+	$(TARGET)-strip --strip-all $(OT_PREFIX)/share/openturns/examples/*.exe
+endif
+	touch ot-install-test
+
+ot-check-installer: ot-install
 	@echo -n "Check OpenTURNS prefix: "
 	@ls $(OT_PREFIX) > /dev/null
 	@echo "ok"
@@ -160,8 +170,7 @@ ot-module-installer: ot-check-installer
 	makensis -DOPENTURNS_PREFIX=$(OT_PREFIX) -DPRODUCT_VERSION=$(OT_VERSION) -DPYBASEVER=$(PYBASEVER) -DPYBASEVER_NODOT=$(PYBASEVER_NODOT) -DARCH=$(ARCH) openturns.nsi
 	touch ot-module-installer
 
-
-ot-dev-installer: ot-check-installer
+ot-dev-installer: ot-install-test ot-check-installer
 	makensis -DOPENTURNS_PREFIX=$(OT_PREFIX) -DPRODUCT_VERSION=$(OT_VERSION) -DPYBASEVER=$(PYBASEVER) -DPYBASEVER_NODOT=$(PYBASEVER_NODOT) -DARCH=$(ARCH) openturns_developer.nsi
 	touch ot-dev-installer
 
