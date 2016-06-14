@@ -107,7 +107,6 @@ ot-config: ot-check-compiler
 ot-compile: ot-config
 	cd $(OT_BUILD) && make OT_unity -j$(JOBS)
 	cd $(OT_BUILD) && make python_unity -j$(JOBS_PYTHON)
-	-beep
 	touch ot-compile
 
 ot-install: ot-compile
@@ -133,7 +132,6 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgomp-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libcblas.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libhmat-oss.dll $(OT_PREFIX)/bin
-	-beep -r 2
 	touch ot-install
 
 ot-test: ot-install
@@ -142,7 +140,7 @@ ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).dll $(OT_BUILD)/python/test
-	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --timeout 1500
+	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --output-on-failure --timeout 1500
 endif
 	touch ot-test
 
@@ -177,7 +175,7 @@ ot-dev-installer: ot-install-test ot-check-installer
 
 
 ot-installer: ot-module-installer ot-dev-installer
-	-beep -r 3
+	@echo "ok"	
 
 
 clean:
