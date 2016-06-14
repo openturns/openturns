@@ -21,17 +21,16 @@
 #include "openturns/CanonicalTensor.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedDistribution.hxx"
-#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CanonicalTensor);
+CLASSNAMEINIT(RankOneTensor);
 
-static const Factory<CanonicalTensor> Factory_CanonicalTensor;
+static const Factory<RankOneTensor> Factory_RankOneTensor;
 
 RankOneTensor::RankOneTensor(const FunctionFamilyCollection & functionFamilies,
                              const Indices & nk)
-: alpha_(1.0)
+: radius_(1.0)
 , nk_(nk)
 , coefficients_(nk.getSize())
 , functionFamilies_(functionFamilies)
@@ -40,7 +39,6 @@ RankOneTensor::RankOneTensor(const FunctionFamilyCollection & functionFamilies,
   const UnsignedInteger dimension = nk.getSize();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-//     coefficients_[i] = ComposedDistribution(ComposedDistribution::DistributionCollection(nk[, Uniform())).getRealization();// norm != 1.0 at init
     coefficients_[i].resize(nk[i]);
     basis_[i] = Basis(nk[i]);
     for (UnsignedInteger l = 0; l < nk[i]; ++ l)
@@ -49,6 +47,36 @@ RankOneTensor::RankOneTensor(const FunctionFamilyCollection & functionFamilies,
     }
   }
 }
+
+
+RankOneTensor * RankOneTensor::clone() const
+{
+  return new RankOneTensor(*this);
+}
+
+/* Method save() stores the object through the StorageManager */
+void RankOneTensor::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("radius_", radius_);
+  adv.saveAttribute("coefficients_", coefficients_);
+  adv.saveAttribute("basis_", basis_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void RankOneTensor::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("radius_", radius_);
+  adv.loadAttribute("coefficients_", coefficients_);
+  adv.loadAttribute("basis_", basis_);
+}
+
+
+CLASSNAMEINIT(CanonicalTensor);
+
+static const Factory<CanonicalTensor> Factory_CanonicalTensor;
+
 
 
 /* Default constructor */
@@ -65,7 +93,6 @@ CanonicalTensor::CanonicalTensor (const FunctionFamilyCollection & functionFamil
   : PersistentObject()
   , functionFamilies_(functionFamilies)
   , rank1tensors_(rank, RankOneTensor(functionFamilies, nk))// this constructor assumes the same nks for all ranks
-  , weight_(rank, 1.0 / rank)
 {
   const UnsignedInteger dimension = functionFamilies.getSize();
   if (dimension != nk.getSize()) throw InvalidArgumentException(HERE) << "The number of function factories (" << dimension << ") is different from number of basis sizes (" << nk.getSize() << ")";
@@ -75,6 +102,17 @@ CanonicalTensor::CanonicalTensor (const FunctionFamilyCollection & functionFamil
 CanonicalTensor * CanonicalTensor::clone() const
 {
   return new CanonicalTensor(*this);
+}
+
+
+void CanonicalTensor::setRank(const UnsignedInteger rank)
+{
+  const UnsignedInteger oldRank = getRank();
+  rank1tensors_.resize(rank);
+  for (UnsignedInteger r = oldRank; r < rank; ++ r)
+  {
+    rank1tensors_[r] = rank1tensors_[0];
+  }
 }
 
 

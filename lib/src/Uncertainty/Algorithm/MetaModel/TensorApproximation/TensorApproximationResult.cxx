@@ -57,7 +57,7 @@ TensorApproximationResult::TensorApproximationResult(
     const NumericalMathFunction & transformation,
     const NumericalMathFunction & inverseTransformation,
     const NumericalMathFunction & composedModel,
-    const CanonicalTensor & tensor,
+    const Collection<CanonicalTensor> & tensor,
 //     const OrthogonalBasis & orthogonalBasis,
 //     const Indices & I,
 //     const NumericalSample & alpha_k,
@@ -78,18 +78,18 @@ TensorApproximationResult::TensorApproximationResult(
 {
   NumericalMathFunctionCollection marginals;
 //   const UnsignedInteger dimension = distribution.getDimension();
-  const UnsignedInteger outputDimension = 1;// for now
+  const UnsignedInteger outputDimension = tensor_.getSize();// for now
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     // build the metamodel
-    UnsignedInteger r = 1; //tensor_.getRank();
-    NumericalMathFunctionCollection prodColl(r);
-    NumericalPoint rk(r);
-    for (UnsignedInteger k = 0; k < r; ++ k)
+    UnsignedInteger rank = tensor_[outputIndex].getRank();
+    NumericalMathFunctionCollection prodColl(rank);
+    NumericalPoint rk(rank);
+    for (UnsignedInteger k = 0; k < rank; ++ k)
     {
-      Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(tensor_.rank1tensors_[k]);
+      Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(tensor_[outputIndex].rank1tensors_[k]);
       prodColl[k] = NumericalMathFunction(p_evaluation);
-      rk[k] = tensor_.rank1tensors_[k].alpha_;
+      rk[k] = tensor_[outputIndex].rank1tensors_[k].radius_;
     }
 
     NumericalMathFunction combination(prodColl, rk);

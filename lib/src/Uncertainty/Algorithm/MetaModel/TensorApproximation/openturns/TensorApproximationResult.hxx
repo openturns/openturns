@@ -66,7 +66,7 @@ public:
                         const NumericalMathFunction & transformation,
                         const NumericalMathFunction & inverseTransformation,
                         const NumericalMathFunction & composedModel,
-                        const CanonicalTensor & tensor,
+                        const Collection<CanonicalTensor> & tensor,
 //                         const OrthogonalBasis & orthogonalBasis,
 //                         const Indices & I,
 //                         const NumericalSample & alpha_k,
@@ -142,7 +142,7 @@ private:
 //   /** The collection of vectors upon which we project the (composed) model */
 //   NumericalMathFunctionPersistentCollection Psi_k_;
 
-  CanonicalTensor tensor_;
+  PersistentCollection<CanonicalTensor> tensor_;
 
   /** Composed meta model */
   NumericalMathFunction composedMetaModel_;

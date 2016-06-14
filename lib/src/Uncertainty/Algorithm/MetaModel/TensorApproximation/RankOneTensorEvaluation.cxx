@@ -41,11 +41,7 @@ RankOneTensorEvaluation::RankOneTensorEvaluation(const RankOneTensor & rankOneTe
   : NumericalMathEvaluationImplementation()
   , rankOneTensor_(rankOneTensor)
 {
-//   const UnsignedInteger inputDimension(function.getInputDimension());
-//   const UnsignedInteger setDimension(set.getSize());
-
-//   setInputDescription(inputDescription);
-//   setOutputDescription(function_.getOutputDescription());
+  // Nothing to do
 }
 
 /* Virtual constructor method */
@@ -69,7 +65,10 @@ NumericalPoint RankOneTensorEvaluation::operator() (const NumericalPoint & inP) 
     const UnsignedInteger basisSize = rankOneTensor_.coefficients_[i].getSize();
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
     {
-      sumI += rankOneTensor_.coefficients_[i][j] * rankOneTensor_.basis_[i][j](xi)[0];
+      if (rankOneTensor_.coefficients_[i][j] != 0.0)
+      {
+        sumI += rankOneTensor_.coefficients_[i][j] * rankOneTensor_.basis_[i][j](xi)[0];
+      }
     }
     prodI *= sumI;
   }
@@ -87,7 +86,7 @@ NumericalPoint RankOneTensorEvaluation::operator() (const NumericalPoint & inP) 
 /* Dimension accessor */
 UnsignedInteger RankOneTensorEvaluation::getInputDimension() const
 {
-  return rankOneTensor_.functionFamilies_.getSize();
+  return rankOneTensor_.coefficients_.getSize();
 }
 
 UnsignedInteger RankOneTensorEvaluation::getOutputDimension() const
@@ -115,14 +114,14 @@ String RankOneTensorEvaluation::__str__(const String & offset) const
 void RankOneTensorEvaluation::save(Advocate & adv) const
 {
   NumericalMathEvaluationImplementation::save( adv );
-//   adv.saveAttribute( "function_", function_ );
+  adv.saveAttribute("rankOneTensor_", rankOneTensor_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RankOneTensorEvaluation::load(Advocate & adv)
 {
   NumericalMathEvaluationImplementation::load( adv );
-//   adv.loadAttribute( "function_", function_ );
+  adv.loadAttribute("rankOneTensor_", rankOneTensor_);
 }
 
 

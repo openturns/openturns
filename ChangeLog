@@ -7,6 +7,8 @@
 ==== Major changes ====
  * Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
  * New api for sensitivity analysis
+ * Non-polynomial basis
+ * Canonical format low-rank tensor approximation
 
 ==== New classes ====
  * SubsetSampling
@@ -21,6 +23,9 @@
  * LevelSetMesher
  * HistogramPolynomialFactory
  * ChebychevFactory
+ * FourierSeriesFactory, HaarWaveletFactory
+ * OrthogonalProductFunctionFactory
+ * TensorApproximationAlgorithm|Result
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes

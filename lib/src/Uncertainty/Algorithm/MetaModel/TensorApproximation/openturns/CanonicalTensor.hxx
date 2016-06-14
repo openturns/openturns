@@ -29,25 +29,42 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-struct RankOneTensor {
-  typedef Collection<NumericalPoint> NumericalPointCollection;
+class OT_API RankOneTensor : public PersistentObject
+{
+  CLASSNAME;
+public:
+
   typedef Collection<OrthogonalUniVariateFunctionFamily> FunctionFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariateFunctionFamily> FunctionFamilyPersistentCollection;
 
-  RankOneTensor(const FunctionFamilyCollection & functionFamilies = FunctionFamilyCollection(0),
-                const Indices & nk = Indices());
+  explicit RankOneTensor(const FunctionFamilyCollection & functionFamilies = FunctionFamilyCollection(0),
+                         const Indices & nk = Indices());
+
+  /** Virtual constructor */
+  virtual RankOneTensor * clone() const;
+
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
+protected:
+  friend class TensorApproximationAlgorithm;
+  friend class TensorApproximationResult;
+  friend class RankOneTensorEvaluation;
 
   // constant factor
-  NumericalScalar alpha_;
+  NumericalScalar radius_;
 
   // subbasis sizes
   Indices nk_;
 
   // subbasis coefficients
-  NumericalPointCollection coefficients_;
+  PersistentCollection<NumericalPoint> coefficients_;
 
   FunctionFamilyPersistentCollection functionFamilies_;
-  Collection<Basis> basis_;
+  PersistentCollection<Basis> basis_;
 };
 
 
@@ -74,6 +91,7 @@ public:
                   const Indices & nk,
                   const UnsignedInteger rank = 1);
 
+  void setRank(const UnsignedInteger rank);
   UnsignedInteger getRank() const;
 
   /** Virtual constructor */
@@ -95,9 +113,6 @@ protected:
   FunctionFamilyPersistentCollection functionFamilies_;
 
   Collection<RankOneTensor> rank1tensors_;
-
-  // weight of each rank-one tensor
-  NumericalPoint weight_;
 
 }; // class CanonicalTensor
 

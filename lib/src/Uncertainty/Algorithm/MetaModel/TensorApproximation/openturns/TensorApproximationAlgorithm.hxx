@@ -26,6 +26,7 @@
 #include "openturns/CanonicalTensor.hxx"
 #include "openturns/TensorApproximationResult.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
+#include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,7 +52,8 @@ public:
                                const NumericalSample & outputSample,
                                const Distribution & distribution,
                                const OrthogonalProductFunctionFactory & functionFactory,
-                               const Indices & nk);
+                               const Indices & nk,
+                               const UnsignedInteger maxRank = 1);
 
   /** Virtual constructor */
   virtual TensorApproximationAlgorithm * clone() const;
@@ -75,6 +77,23 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
+  /** ApproximationAlgorithm accessor */
+  void setApproximationAlgorithmFactory(const ApproximationAlgorithmImplementationFactory & factory);
+
+  /** Max ALS iteration accessor */
+  void setMaximumAlternatingLeastSquaresIteration(const UnsignedInteger maximumAlternatingLeastSquaresIteration);
+  UnsignedInteger getMaximumAlternatingLeastSquaresIteration() const;
+
+  /** Radius error accessor */
+  void setMaximumRadiusError(const NumericalScalar maximumRadiusError);
+  NumericalScalar getMaximumRadiusError() const;
+
+  /** Residual error accessor */
+  void setMaximumResidual(const NumericalScalar maximumResidual);
+  NumericalScalar getMaximumResidual() const;
+
+  /** Selection flag */
+  void setRankSelection(const Bool rankSelection);
 
 protected:
 
@@ -90,10 +109,22 @@ private:
                    NumericalScalar & marginalResidual,
                    NumericalScalar & marginalRelativeError);
 
-  void rankOneApproximation(RankOneTensor & rank1Tensor,
-                            const NumericalPoint & y,
-                            NumericalScalar & marginalResidual,
-                            NumericalScalar & marginalRelativeError);
+  void greedyRankOneSelection(const UnsignedInteger marginalIndex,
+                              NumericalScalar & marginalResidual,
+                              NumericalScalar & marginalRelativeError);
+
+  void greedyRankOne(const UnsignedInteger marginalIndex,
+                     const NumericalSample & x,
+                     const NumericalSample & y,
+                     NumericalScalar & marginalResidual,
+                     NumericalScalar & marginalRelativeError);
+
+  void rankOne (const UnsignedInteger marginalIndex,
+                RankOneTensor & rank1Tensor,
+                const NumericalSample & x,
+                const NumericalSample & y,
+                NumericalScalar & marginalResidual,
+                NumericalScalar & marginalRelativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   NumericalMathFunction transformation_;
@@ -114,7 +145,17 @@ private:
 
   OrthogonalProductFunctionFactory basisFactory_;
 
-  CanonicalTensor tensor_;
+  Collection<CanonicalTensor> tensor_;
+
+  Pointer<ApproximationAlgorithmImplementationFactory> p_approximationAlgorithmImplementationFactory_;
+
+  UnsignedInteger maximumAlternatingLeastSquaresIteration_;
+  NumericalScalar maximumRadiusError_;
+  NumericalScalar maximumResidual_;
+
+  mutable Collection<DesignProxy> proxy_;
+
+  Bool rankSelection_;
 } ; /* class TensorApproximationAlgorithm */
 
 

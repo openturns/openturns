@@ -594,5 +594,13 @@
   <!-- OT::CholeskyMethod parameters -->
   <CholeskyMethod-LargeCase value="128"/>
 
+  <!-- OT::TensorApproximationAlgorithm parameters -->
+  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value="100"/>
+  <TensorApproximationAlgorithm-DefaultMaximumRadiusError value="1.0e-8"/>
+  <TensorApproximationAlgorithm-DefaultMaximumResidual value="1.0e-8"/>
+  <TensorApproximationAlgorithm-MaximumErrorFactor value="2.0"/>
+  <TensorApproximationAlgorithm-ErrorThreshold value="0.0"/>
+  <TensorApproximationAlgorithm-K value="3"/>
+
   <!-- <-your-variable value="its value" /> -->
 </openturns-configuration>

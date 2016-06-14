@@ -30,5 +30,5 @@ Non-parametric
     functional_chaos_expansion
     glm
     kriging
-    tensor_approximation
+    low_rank_approximation
 

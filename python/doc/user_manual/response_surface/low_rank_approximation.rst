@@ -1,6 +1,6 @@
-======================================
-Response surface: tensor approximation
-======================================
+========================================
+Response surface: low-rank approximation
+========================================
 
 .. currentmodule:: openturns
 

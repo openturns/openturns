@@ -30,21 +30,20 @@
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/MarginalTransformationGradient.hxx"
 #include "openturns/MarginalTransformationHessian.hxx"
-#include "openturns/FixedStrategy.hxx"
-#include "openturns/CleaningStrategy.hxx"
-#include "openturns/FixedExperiment.hxx"
-#include "openturns/LeastSquaresStrategy.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
-#include "openturns/KernelSmoothing.hxx"
+#include "openturns/RankOneTensorEvaluation.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/ConstantBasisFactory.hxx"
 #include "openturns/DistributionFactory.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/LeastSquaresMetaModelSelection.hxx"
+#include "openturns/PenalizedLeastSquaresAlgorithmFactory.hxx"
+#include "openturns/ApproximationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,12 +52,17 @@ typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
 
 CLASSNAMEINIT(TensorApproximationAlgorithm);
 
-static const Factory<TensorApproximationAlgorithm> RegisteredFactory;
+static const Factory<TensorApproximationAlgorithm> Factory_TensorApproximationAlgorithm;
 
 
 /* Default constructor */
 TensorApproximationAlgorithm::TensorApproximationAlgorithm()
   : MetaModelAlgorithm()
+  , p_approximationAlgorithmImplementationFactory_(PenalizedLeastSquaresAlgorithmFactory(true).clone())
+  , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
+  , maximumRadiusError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
+  , maximumResidual_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidual"))
+  , rankSelection_(false)
 {
   // Nothing to do
 }
@@ -68,11 +72,17 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
     const NumericalSample & outputSample,
     const Distribution & distribution,
     const OrthogonalProductFunctionFactory & basisFactory,
-    const Indices & nk)
+    const Indices & nk,
+    const UnsignedInteger maxRank)
   : MetaModelAlgorithm(distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())))
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , basisFactory_(basisFactory)
+  , p_approximationAlgorithmImplementationFactory_(PenalizedLeastSquaresAlgorithmFactory(true).clone())
+  , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
+  , maximumRadiusError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
+  , maximumResidual_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidual"))
+  , rankSelection_(false)
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -80,7 +90,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
   FunctionFamilyCollection functionFamilies(basisFactory.getFunctionFamilyCollection());
 
   if (nk.getSize() != functionFamilies.getSize()) throw InvalidArgumentException(HERE) << "nk size ("<<nk.getSize()<<") must match orthogonal basis factories ("<<functionFamilies.getSize()<<")";
-  tensor_ = CanonicalTensor(functionFamilies, nk);
+  tensor_ = Collection<CanonicalTensor>(outputSample.getDimension(), CanonicalTensor(functionFamilies, nk, maxRank));
 }
 
 /* Virtual constructor */
@@ -176,8 +186,6 @@ void TensorApproximationAlgorithm::run()
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
-
-
   }
   // Build the result
   result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, composedModel_, tensor_, residuals, relativeErrors);
@@ -188,31 +196,253 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
                                                NumericalScalar & marginalResidual,
                                                NumericalScalar & marginalRelativeError)
 {
-  rankOneApproximation(tensor_.rank1tensors_[0],
-                       outputSample_.getMarginal(marginalIndex).getImplementation()->getData(),
-                       marginalResidual,
-                       marginalRelativeError);
+  // proxies are reused accross marginals because the basis is the same
+  const UnsignedInteger dimension = transformedInputSample_.getDimension();
+  if (proxy_.getSize() == 0)
+  {
+    proxy_ = Collection<DesignProxy>(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      proxy_[i] = DesignProxy(transformedInputSample_.getMarginal(i), tensor_[marginalIndex].rank1tensors_[0].basis_[i]);
+    }
+  }
+
+  if (rankSelection_)
+  {
+    greedyRankOneSelection (marginalIndex,
+                            marginalResidual,
+                            marginalRelativeError);
+
+  }
+  else
+  {
+    greedyRankOne(marginalIndex,
+                  transformedInputSample_,
+                  outputSample_.getMarginal(marginalIndex),
+                  marginalResidual,
+                  marginalRelativeError);
+  }
 }
 
-void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Tensor,
-                                                        const NumericalPoint & y,
-                                                        NumericalScalar & marginalResidual,
-                                                        NumericalScalar & marginalRelativeError)
+
+void TensorApproximationAlgorithm::greedyRankOneSelection(const UnsignedInteger marginalIndex,
+                                                          NumericalScalar & marginalResidual,
+                                                          NumericalScalar & marginalRelativeError)
+{
+  const UnsignedInteger r = tensor_[marginalIndex].getRank();
+  const UnsignedInteger size = outputSample_.getSize();
+  const UnsignedInteger dimension = inputSample_.getDimension();
+  const NumericalSample y(outputSample_.getMarginal(marginalIndex));
+  const NumericalScalar variance = y.computeVariance()[0];
+
+  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-MaximumErrorFactor"));
+  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-ErrorThreshold"));
+
+  UnsignedInteger optimalRank = 0;
+  NumericalScalar minimumError = SpecFunc::MaxNumericalScalar;
+
+  const UnsignedInteger nFolds = ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-K");
+  const UnsignedInteger testSize = size / nFolds;
+
+  // Persistent residual per fold across successive ranks
+  Collection<NumericalSample> yResLearn(nFolds, NumericalSample(0, 1));
+  Collection<NumericalSample> yResTest(nFolds, NumericalSample(0, 1));
+  for (UnsignedInteger fold = 0; fold < nFolds; ++ fold)
+  {
+    for (UnsignedInteger l = 0; l < testSize * nFolds; ++ l)
+    {
+      const UnsignedInteger jModK = l % nFolds;
+      if (jModK != fold)
+      {
+        yResLearn[fold].add(y[l]);
+      }
+      else
+      {
+        yResTest[fold].add(y[l]);
+      }
+    }
+  }
+
+  for (UnsignedInteger k = 0; k < r; ++ k)
+  {
+    NumericalScalar quadraticResidual = 0.0;
+    for (UnsignedInteger fold = 0; fold < nFolds; ++ fold)
+    {
+      // build cross-validation samples
+      NumericalSample xLearn(0, dimension);
+      NumericalSample yLearn(0, 1);
+      NumericalSample xTest(0, dimension);
+      NumericalSample yTest(0, 1);
+      Indices rowFilter;
+
+      for (UnsignedInteger l = 0; l < testSize * nFolds; ++ l)
+      {
+        const UnsignedInteger jModK = l % nFolds;
+        if (jModK != fold)
+        {
+          xLearn.add(transformedInputSample_[l]);
+          yLearn.add(y[l]);
+          rowFilter.add(l);
+        }
+        else
+        {
+          xTest.add(transformedInputSample_[l]);
+          yTest.add(y[l]);
+        }
+      }
+
+      // indices of kfold
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+      {
+        proxy_[i].setRowFilter(rowFilter);
+      }
+
+      rankOne(marginalIndex,
+              tensor_[marginalIndex].rank1tensors_[k],
+              xLearn,
+              yResLearn[fold],
+              marginalResidual,
+              marginalRelativeError);
+
+      // build basis
+      NumericalMathFunctionCollection prodColl(k + 1);
+      for (UnsignedInteger k2 = 0; k2 <= k; ++ k2)
+      {
+        Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(tensor_[marginalIndex].rank1tensors_[k2]);
+        prodColl[k2] = NumericalMathFunction(p_evaluation);
+      }
+      const Basis basis(prodColl);
+      Indices indices(prodColl.getSize());
+      indices.fill();
+
+      // update alpha
+      PenalizedLeastSquaresAlgorithm algo(xLearn, yLearn, basis, indices);
+      algo.run();
+      NumericalPoint rk(algo.getCoefficients());
+      for (UnsignedInteger k2 = 0; k2 <= k; ++ k2)
+      {
+        tensor_[marginalIndex].rank1tensors_[k2].radius_ = rk[k2];
+      }
+
+      // compute residual
+      NumericalMathFunction combination(prodColl, rk);
+      yResLearn[fold] = yLearn - combination(xLearn);
+
+      yResTest[fold] = yTest - combination(xTest);
+
+      quadraticResidual += yResTest[fold].computeRawMoment(2)[0];
+
+    } // k-fold
+
+    const NumericalScalar empiricalError = quadraticResidual / (testSize * nFolds);
+    const NumericalScalar error = empiricalError / variance;
+
+    Log::Info(OSS() << "marginalIndex=" << marginalIndex << " rank=" << k + 1 << " relativeError=" << error);
+
+    if (error < minimumError)
+    {
+      optimalRank = k + 1;
+      minimumError = error;
+    }
+    else
+    {
+      if (error > alpha * minimumError)
+      {
+        LOGINFO(OSS() << "Error=" << error << " larger than " << alpha << "*" << minimumError << "=" << alpha * minimumError);
+        break;
+      }
+    }
+    if (minimumError < errorThreshold)
+    {
+      LOGINFO(OSS() << "Minimum error=" << minimumError << " smaller than threshold=" << errorThreshold);
+      break;
+    }
+
+  }
+
+  // shrink tensor if smaller optimal rank
+  tensor_[marginalIndex].setRank(optimalRank);
+
+  // reset proxies to expose entire sample
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    proxy_[i].setRowFilter(Indices());
+  }
+
+  greedyRankOne(marginalIndex,
+                transformedInputSample_,
+                outputSample_.getMarginal(marginalIndex),
+                marginalResidual,
+                marginalRelativeError);
+}
+
+
+void TensorApproximationAlgorithm::greedyRankOne (const UnsignedInteger marginalIndex,
+                                                  const NumericalSample & x,
+                                                  const NumericalSample & y,
+                                                  NumericalScalar & marginalResidual,
+                                                  NumericalScalar & marginalRelativeError)
+{
+  const UnsignedInteger r = tensor_[marginalIndex].getRank();
+  NumericalSample yRes(y);
+  for (UnsignedInteger k = 0; k < r; ++ k)
+  {
+    rankOne(marginalIndex,
+            tensor_[marginalIndex].rank1tensors_[k],
+            x,
+            yRes,
+            marginalResidual,
+            marginalRelativeError);
+
+    // build basis
+    NumericalMathFunctionCollection prodColl(k + 1);
+    for (UnsignedInteger k2 = 0; k2 <= k; ++ k2)
+    {
+      Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(tensor_[marginalIndex].rank1tensors_[k2]);
+      prodColl[k2] = NumericalMathFunction(p_evaluation);
+    }
+    const Basis basis(prodColl);
+    Indices indices(prodColl.getSize());
+    indices.fill();
+
+    // update alpha
+    PenalizedLeastSquaresAlgorithm algo(x, y, basis, indices);
+    algo.run();
+    NumericalPoint rk(algo.getCoefficients());
+    for (UnsignedInteger k2 = 0; k2 <= k; ++ k2)
+    {
+      tensor_[marginalIndex].rank1tensors_[k2].radius_ = rk[k2];
+    }
+
+    // compute residual
+    NumericalMathFunction combination(prodColl, rk);
+    yRes = y - combination(x);
+
+  }
+}
+
+void TensorApproximationAlgorithm::rankOne (const UnsignedInteger marginalIndex,
+                                            RankOneTensor & rank1Tensor,
+                                            const NumericalSample & x,
+                                            const NumericalSample & y,
+                                            NumericalScalar & marginalResidual,
+                                            NumericalScalar & marginalRelativeError)
 {
   Bool convergence = false;
-  const UnsignedInteger dimension = inputSample_.getDimension();
-  const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger dimension = x.getDimension();
+  const UnsignedInteger size = x.getSize();
   NumericalPoint weight(size, 1.0 / size);
-  UnsignedInteger r = tensor_.getRank();
+  UnsignedInteger r = tensor_[marginalIndex].getRank();
   Collection<Collection<Basis> > subBasis(r);
   NumericalSample V;
 
   // initialize
-  rank1Tensor.alpha_ = 1.0;
+  rank1Tensor.radius_ = 1.0;
   // nk may be different on each rank
   Indices nk(rank1Tensor.nk_);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
+    rank1Tensor.coefficients_[i] = NumericalPoint(nk[i]);
     if (nk[i] > 0)
       rank1Tensor.coefficients_[i][0] = 1.0;// vi(xi) = 1.0
   }
@@ -220,24 +450,13 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     NumericalMathFunction v(rank1Tensor.basis_[i], rank1Tensor.coefficients_[i]);
-    V.stack(v(transformedInputSample_.getMarginal(i)));
+    V.stack(v(x.getMarginal(i)));
   }
 
   UnsignedInteger iteration = 0;
 
-
-  Collection<DesignProxy> proxy(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  while (!convergence && (iteration < maximumAlternatingLeastSquaresIteration_))
   {
-    proxy[i] = DesignProxy(transformedInputSample_.getMarginal(i), rank1Tensor.basis_[i]);
-  }
-
-  while (!convergence || (iteration >= 1000))
-  {
-    // norm-2 of difference of coefficients along all directions
-    // to test for convergence of coefficients
-    NumericalScalar coefficientsDeltaNorm2 = 0;
-
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       Log::Info(OSS() << " i=" << i << "/"<< dimension);
@@ -245,7 +464,7 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
       Indices indices(basisSize);
       indices.fill();
 
-      NumericalPoint w(size, rank1Tensor.alpha_);// w_l
+      NumericalPoint w(size, 1.0);// w_l
       for (UnsignedInteger l = 0; l < size; ++ l)
       {
         for (UnsignedInteger i2 = 0; i2 < dimension; ++ i2)
@@ -253,45 +472,18 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
           if (i2 != i) w[l] *= V[l][i2];
         }
       }
-      MatrixImplementation basisMatrix(proxy[i].computeDesign(indices));
-      for (UnsignedInteger l = 0; l < size; ++ l)
-      {
-        for (UnsignedInteger j = 0; j < basisSize; ++ j)
-        {
-          basisMatrix(l, j) *= w[l];
-        }
-      }
 
-      NumericalPoint coefficients;
-      try
-      {
-        CovarianceMatrix normalMatrix(basisMatrix.computeGram(true));
-        coefficients = normalMatrix.solveLinearSystem(basisMatrix.genVectProd(y, true), false);
-      }
-      catch (NotDefinedException & ex)
-      {
-        Log::Info(OSS() << ex);
-        coefficients = basisMatrix.solveLinearSystemRect(y);
-      }
-      Log::Info(OSS() << "   coefficients(normal)=" << coefficients.__str__());
-//       NumericalSample rhs(size, 1);
-//       NumericalPoint w2(w);
-//       for (UnsignedInteger l = 0; l < size; ++ l) { rhs[l][0] = y[l] / w[l]; w2[l] *= w[l]; } 
-//       PenalizedLeastSquaresAlgorithm algo(transformedInputSample_.getMarginal(i), rhs, w2, rank1Tensor.basis_[i], indices);
-//       algo.run();
-//       Log::Info(OSS() << "   coefficients(ls)=" << algo.getCoefficients());
+      NumericalSample rhs(size, 1);
+      NumericalPoint w2(w);
+      for (UnsignedInteger l = 0; l < size; ++ l) { rhs[l][0] = y[l][0] / w[l]; w2[l] *= w[l]; } 
+      ApproximationAlgorithm approximationAlgorithm(p_approximationAlgorithmImplementationFactory_->build(x.getMarginal(i), rhs, w2, rank1Tensor.basis_[i], indices));
+      approximationAlgorithm.run(proxy_[i]);
+      rank1Tensor.coefficients_[i] = approximationAlgorithm.getCoefficients();
 
-      // normalize coefficients
-//       NumericalScalar norm = coefficients.norm();
-//       rank1Tensor.alpha_ *= norm;
-      coefficients.normalize();
-      coefficientsDeltaNorm2 += (coefficients - rank1Tensor.coefficients_[i]).normSquare();
-      rank1Tensor.coefficients_[i] = coefficients;
-
-      // update V[i], with modulus
+      // update current contribution
       NumericalMathFunction v(rank1Tensor.basis_[i], rank1Tensor.coefficients_[i]);
-      NumericalSample tX(transformedInputSample_.getMarginal(i));
-      NumericalSample vi(v(tX));
+      NumericalSample tXi(x.getMarginal(i));
+      NumericalSample vi(v(tXi));
       for (UnsignedInteger l = 0; l < size; ++ l)
       {
         V[l][i] = vi[l][0];
@@ -300,40 +492,53 @@ void TensorApproximationAlgorithm::rankOneApproximation(RankOneTensor & rank1Ten
     } // i loop
 
     // update alpha
-    NumericalScalar sumProdVi2 = 0.0;
-    NumericalScalar sumylProdvi = 0.0;
+    NumericalScalar currentRadius = 1.0;
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      NumericalPoint coefficients(rank1Tensor.coefficients_[i]);
+      const NumericalScalar norm = coefficients.norm();
+      currentRadius *= norm;
+      rank1Tensor.coefficients_[i] /= norm;
+    }
+    V = NumericalSample(size, 0);
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      NumericalMathFunction v(rank1Tensor.basis_[i], rank1Tensor.coefficients_[i]);
+      V.stack(v(x.getMarginal(i)));
+    }
+    NumericalPoint w(size, 1.0);// w_l
     for (UnsignedInteger l = 0; l < size; ++ l)
     {
-      NumericalScalar prodVi2 = 1.0;
-      NumericalScalar prodVi = 1.0;
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
-        prodVi2 *= V[l][i] * V[l][i];
-        prodVi *= V[l][i];
+        w[l] *= V[l][i];
       }
-      sumProdVi2 += prodVi2;
-      sumylProdvi += y[l] * prodVi;
     }
-    rank1Tensor.alpha_ = sumProdVi2 / sumylProdvi;
-    Log::Info(OSS() << "alpha=" << rank1Tensor.alpha_);
+    NumericalSample rhs(size, 1);
+    NumericalPoint w2(w);
+    for (UnsignedInteger l = 0; l < size; ++ l) { rhs[l][0] = y[l][0] / w[l]; w2[l] *= w[l]; } 
+    PenalizedLeastSquaresAlgorithm algo(NumericalSample(size, 1), rhs, w2, ConstantBasisFactory().build(), Indices(1));
+    algo.run();
+    rank1Tensor.radius_ = algo.getCoefficients()[0];
+    const NumericalScalar radiusError = std::abs(rank1Tensor.radius_ - currentRadius);
+    Log::Info(OSS() << "alpha=" << rank1Tensor.radius_);
 
     // compute residual
     marginalResidual = 0.0;
     for (UnsignedInteger l = 0; l < size; ++ l)
     {
-      NumericalScalar prod = rank1Tensor.alpha_;
+      NumericalScalar prod = rank1Tensor.radius_;
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
         prod *= V[l][i];
       }
-      const NumericalScalar slack = y[l] - prod;
+      const NumericalScalar slack = y[l][0] - prod;
       marginalResidual += slack * slack / size;
     }
 
-
-
-    convergence = (marginalResidual < 1e-8) || (coefficientsDeltaNorm2 < 1e-8);
-    Log::Info(OSS() << "iteration=" << iteration << " residual=" << marginalResidual << " coefficientsDeltaNorm2=" << coefficientsDeltaNorm2);
+    convergence = (marginalResidual < maximumResidual_) && (radiusError < maximumRadiusError_);
+//     convergence = (radiusError < maximumRadiusError_);
+    Log::Info(OSS() << "iteration=" << iteration << " residual=" << marginalResidual << " radiusError=" << radiusError);
 
     ++ iteration;
   }
@@ -361,6 +566,48 @@ NumericalSample TensorApproximationAlgorithm::getOutputSample() const
   return outputSample_;
 }
 
+void TensorApproximationAlgorithm::setApproximationAlgorithmFactory(const ApproximationAlgorithmImplementationFactory & factory)
+{
+  p_approximationAlgorithmImplementationFactory_ = factory.clone();
+}
+
+/* Max ALS iteration accessor */
+void TensorApproximationAlgorithm::setMaximumAlternatingLeastSquaresIteration(const UnsignedInteger maximumAlternatingLeastSquaresIteration)
+{
+  maximumAlternatingLeastSquaresIteration_ = maximumAlternatingLeastSquaresIteration;
+}
+
+UnsignedInteger TensorApproximationAlgorithm::getMaximumAlternatingLeastSquaresIteration() const
+{
+  return maximumAlternatingLeastSquaresIteration_;
+}
+
+/* Radius error accessor */
+void TensorApproximationAlgorithm::setMaximumRadiusError(const NumericalScalar maximumRadiusError)
+{
+  maximumRadiusError_ = maximumRadiusError_;
+}
+
+NumericalScalar TensorApproximationAlgorithm::getMaximumRadiusError() const
+{
+  return maximumRadiusError_;
+}
+
+/* Residual error accessor */
+void TensorApproximationAlgorithm::setMaximumResidual(const NumericalScalar maximumResidual)
+{
+  maximumResidual_ = maximumResidual;
+}
+
+NumericalScalar TensorApproximationAlgorithm::getMaximumResidual() const
+{
+  return maximumResidual_;
+}
+
+void TensorApproximationAlgorithm::setRankSelection(const Bool rankSelection)
+{
+  rankSelection_ = rankSelection;
+}
 
 /* Method save() stores the object through the StorageManager */
 void TensorApproximationAlgorithm::save(Advocate & adv) const
@@ -369,7 +616,12 @@ void TensorApproximationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("result_", result_);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
-  adv.saveAttribute( "result_", result_ );
+  adv.saveAttribute("result_", result_);
+  adv.saveAttribute("p_approximationAlgorithmImplementationFactory_" , *p_approximationAlgorithmImplementationFactory_);
+  adv.saveAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
+  adv.saveAttribute("maximumRadiusError_", maximumRadiusError_);
+  adv.saveAttribute("maximumResidual_", maximumResidual_);
+  adv.saveAttribute("rankSelection_", rankSelection_);
 }
 
 
@@ -380,7 +632,14 @@ void TensorApproximationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("result_", result_);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
-  adv.loadAttribute( "result_", result_ );
+  adv.loadAttribute("result_", result_);
+  ApproximationAlgorithmImplementationFactory approximationAlgorithmImplementationFactory;
+  adv.loadAttribute("p_approximationAlgorithmImplementationFactory_" , approximationAlgorithmImplementationFactory);
+  p_approximationAlgorithmImplementationFactory_ = approximationAlgorithmImplementationFactory.clone();
+  adv.loadAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
+  adv.loadAttribute("maximumRadiusError_", maximumRadiusError_);
+  adv.loadAttribute("maximumResidual_", maximumResidual_);
+  adv.loadAttribute("rankSelection_", rankSelection_);
 }
 
 
