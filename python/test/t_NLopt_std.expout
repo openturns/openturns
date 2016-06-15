@@ -122,16 +122,7 @@ x^= [-3.000,-3.000,5.000,-3.000]
 -- Not supported: algo= GN_DIRECT_NOSCAL inequality= False equality= True
 algo= class=NLopt algorithm=GN_DIRECT_NOSCAL
 x^= [5.000,5.000,-3.000,5.000]
--- Not supported: algo= GN_ESCH inequality= True equality= True
--- Not supported: algo= GN_ESCH inequality= True equality= False
--- Not supported: algo= GN_ESCH inequality= False equality= True
-algo= class=NLopt algorithm=GN_ESCH
-x^= [-2.998,-2.985,4.542,-2.984]
--- Not supported: algo= GN_ESCH inequality= True equality= True
--- Not supported: algo= GN_ESCH inequality= True equality= False
--- Not supported: algo= GN_ESCH inequality= False equality= True
-algo= class=NLopt algorithm=GN_ESCH
-x^= [4.794,4.970,-2.999,4.733]
+-- Skipped: algo= GN_ESCH
 algo= class=NLopt algorithm=GN_ISRES
 x^= [4.743,-2.725,4.575,1.995]
 algo= class=NLopt algorithm=GN_ISRES
