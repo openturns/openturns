@@ -213,14 +213,6 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalP
 }
 
 /* Parameters accessor */
-void ParametricEvaluationImplementation::setParameter(const NumericalPointWithDescription & parameters)
-{
-  const UnsignedInteger parametersDimension(parameters.getDimension());
-  if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;
-  parameter_ = parameters;
-}
-
-/* Parameters accessor */
 void ParametricEvaluationImplementation::setParameter(const NumericalPoint & parameters)
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
