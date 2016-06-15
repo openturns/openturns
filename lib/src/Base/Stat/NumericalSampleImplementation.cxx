@@ -289,6 +289,12 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromCSVFile(co
 {
   if (csvSeparator == " ") throw InvalidArgumentException(HERE) << "Error: the space separator is not compatible for CSV file.";
 
+
+
+  NumericalSampleImplementation impl(0, 0);
+
+#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
+
   FILE * theFile = std::fopen(fileName.c_str(), "r");
   if (!theFile)
   {
@@ -296,10 +302,6 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromCSVFile(co
     throw FileNotFoundException(HERE) << "Can NOT open file '" << fileName
                                       << "'. Reason: " << std::strerror(errno);
   }
-
-  NumericalSampleImplementation impl(0, 0);
-
-#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
 
   impl.setName(fileName);
   yyscan_t scanner = 0;
