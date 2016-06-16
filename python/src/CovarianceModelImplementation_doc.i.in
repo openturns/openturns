@@ -232,6 +232,10 @@ Parameters
 ----------
 meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
     Mesh or time grid of size :math:`N` associated with the process.
+nuggetFactor: float
+    nugget factor to be added to the discretized matrix
+hmatParam : :class:`~openturns.HMatrixParameters`
+    Parameter values for the HMatrix
 
 Returns
 -------
@@ -260,6 +264,10 @@ Parameters
 ----------
 meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
     Mesh or time grid of size :math:`N` associated with the process.
+nuggetFactor: float
+    nugget factor to be added to the discretized matrix
+hmatParam : :class:`~openturns.HMatrixParameters`
+    Parameter values for the HMatrix
 
 Returns
 -------
