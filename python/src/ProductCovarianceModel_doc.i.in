@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-covModelCollection : :class:`~openturns.CovarianceModelCollection`
+coll : sequence of :class:`~openturns.CovarianceModel`
     Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`d=1`.
 
 Notes
@@ -56,7 +56,4 @@ Create a product covariance function from two exponential functions, each one de
 >>> scale2 = [4.0]
 >>> cov1 = ot.ExponentialModel(scale1, amplitude)
 >>> cov2 = ot.ExponentialModel(scale2, amplitude)
->>> coll = ot.CovarianceModelCollection()
->>> coll.add(cov1)
->>> coll.add(cov2)
->>> myCovarianceModel = ot.ProductCovarianceModel(coll)"
+>>> myCovarianceModel = ot.ProductCovarianceModel([cov1, cov2])"
