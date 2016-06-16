@@ -86,20 +86,15 @@ test_model(myModel)
 myDefautModel = ot.ProductCovarianceModel()
 print("myDefautModel = ",  myDefautModel)
 
-coll = ot.CovarianceModelCollection()
-coll.add(ot.AbsoluteExponential([3.0]))
-coll.add(ot.SquaredExponential([2.0]))
-myModel = ot.ProductCovarianceModel(coll)
+cov1 = ot.AbsoluteExponential([3.0])
+cov2 = ot.SquaredExponential([2.0])
+myModel = ot.ProductCovarianceModel([cov1, cov2])
 test_model(myModel)
 
-collection = ot.CovarianceModelCollection()
 # Collection ==> add covariance models
 # Add AbsoluteExponentialModel to the collection
 myAbsoluteExponential = ot.AbsoluteExponential([3.0] * spatialDimension)
-collection.add(myAbsoluteExponential)
-# Add SquaredExponentialModel to the collection
 mySquaredExponential = ot.SquaredExponential([2.0] * spatialDimension)
-collection.add(mySquaredExponential)
 # Add exponentialModel to the collection
 amplitude = [4.0, 2.0]
 scale = [1.0] * spatialDimension
@@ -107,9 +102,8 @@ scale = [1.0] * spatialDimension
 spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
 spatialCorrelation[1,0] = 0.3
 myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
-collection.add(myExponentialModel)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
-myModel = ot.TensorizedCovarianceModel(collection)
+myModel = ot.TensorizedCovarianceModel([myAbsoluteExponential, mySquaredExponential, myExponentialModel])
 test_model(myModel)
 # Define new scale
 scale = [2.5, 1.5]
