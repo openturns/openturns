@@ -672,8 +672,8 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
   model.setParameter(parameters);
 
   Bool continuationCondition = true;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("KrigingAlgorithm-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   const UnsignedInteger covarianceDimension = model.getDimension();
@@ -716,7 +716,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
     }
   }
   if (scaling >= maximalScaling)
-    throw InvalidArgumentException(HERE) << "In KrigingAlgorithm::computeHMatLogLikelihood, could not compute the Cholesky factor"
+    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood, could not compute the Cholesky factor"
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)
     LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
@@ -879,7 +879,7 @@ void GeneralizedLinearModelAlgorithm::initializeMethod()
     method_ = 1;
 }
 
-/** Method accessor (lapack/hmat) - Protected but freind with KrigingAlgo class */
+/** Method accessor (lapack/hmat) - Protected but friend with GeneralizedLinearModelAlgorithm class */
 void GeneralizedLinearModelAlgorithm::setMethod(const UnsignedInteger method)
 {
   method_ = method;
