@@ -26,7 +26,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SpectralModelFactoryImplementation);
-static const Factory<SpectralModelFactoryImplementation> RegisteredFactory;
+static const Factory<SpectralModelFactoryImplementation> Factory_SpectralModelFactoryImplementation;
 
 /* Default constructor */
 SpectralModelFactoryImplementation::SpectralModelFactoryImplementation()

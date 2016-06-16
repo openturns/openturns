@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FunctionalBasisImplementation);
 
-static const Factory<FunctionalBasisImplementation> RegisteredFactory;
+static const Factory<FunctionalBasisImplementation> Factory_FunctionalBasisImplementation;
 
 
 /* Default constructor */

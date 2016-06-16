@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BipartiteGraph);
-static const Factory<BipartiteGraph> RegisteredFactory;
+static const Factory<BipartiteGraph> Factory_BipartiteGraph;
 
 /* Accessor to the red nodes */
 Indices BipartiteGraph::getRedNodes() const

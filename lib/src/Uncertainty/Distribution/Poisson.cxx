@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Poisson);
 
-static const Factory<Poisson> RegisteredFactory;
+static const Factory<Poisson> Factory_Poisson;
 
 /* Default constructor */
 Poisson::Poisson()

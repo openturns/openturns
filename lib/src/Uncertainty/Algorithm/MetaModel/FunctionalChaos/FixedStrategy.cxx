@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FixedStrategy);
 
-static const Factory<FixedStrategy> RegisteredFactory;
+static const Factory<FixedStrategy> Factory_FixedStrategy;
 
 /* Default constructor */
 FixedStrategy::FixedStrategy()

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GeneralizedPareto);
 
-static const Factory<GeneralizedPareto> RegisteredFactory;
+static const Factory<GeneralizedPareto> Factory_GeneralizedPareto;
 
 /* Default constructor */
 GeneralizedPareto::GeneralizedPareto()

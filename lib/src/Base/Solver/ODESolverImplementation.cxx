@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ODESolverImplementation);
 
-static const Factory<ODESolverImplementation> RegisteredFactory;
+static const Factory<ODESolverImplementation> Factory_ODESolverImplementation;
 
 /* Default constructor */
 ODESolverImplementation::ODESolverImplementation()

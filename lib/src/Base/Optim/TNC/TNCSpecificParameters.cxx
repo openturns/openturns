@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TNCSpecificParameters);
 
-static const Factory<TNCSpecificParameters> RegisteredFactory;
+static const Factory<TNCSpecificParameters> Factory_TNCSpecificParameters;
 
 /* Default with parameters */
 TNCSpecificParameters::TNCSpecificParameters()

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SQP);
 
-static const Factory<SQP> RegisteredFactory;
+static const Factory<SQP> Factory_SQP;
 
 /* Default constructor */
 SQP::SQP()

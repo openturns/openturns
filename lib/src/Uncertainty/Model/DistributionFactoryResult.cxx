@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionFactoryResult);
 
-static const Factory<DistributionFactoryResult> RegisteredFactory;
+static const Factory<DistributionFactoryResult> Factory_DistributionFactoryResult;
 
 /* Default constructor */
 DistributionFactoryResult::DistributionFactoryResult()

@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BoxCoxGradientImplementation);
 
-static const Factory<BoxCoxGradientImplementation> RegisteredFactory;
+static const Factory<BoxCoxGradientImplementation> Factory_BoxCoxGradientImplementation;
 
 /* Default constructor */
 BoxCoxGradientImplementation::BoxCoxGradientImplementation()

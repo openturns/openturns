@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(KFold);
 
 
-static const Factory<KFold> RegisteredFactory;
+static const Factory<KFold> Factory_KFold;
 
 
 /* Default constructor */

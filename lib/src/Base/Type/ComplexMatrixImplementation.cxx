@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(ComplexMatrixImplementation);
 
 
-static const Factory<ComplexMatrixImplementation> RegisteredFactory;
+static const Factory<ComplexMatrixImplementation> Factory_ComplexMatrixImplementation;
 
 /* Default constructor */
 ComplexMatrixImplementation::ComplexMatrixImplementation()

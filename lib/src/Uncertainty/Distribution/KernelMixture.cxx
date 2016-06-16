@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KernelMixture);
 
-static const Factory<KernelMixture> RegisteredFactory;
+static const Factory<KernelMixture> Factory_KernelMixture;
 
 /* Default constructor */
 KernelMixture::KernelMixture()

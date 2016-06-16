@@ -25,9 +25,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Description);
 
-static const Factory<PersistentCollection<String> > RegisteredFactory2;
+static const Factory<PersistentCollection<String> > Factory_PersistentCollection_String;
 
-static const Factory<Description> RegisteredFactory;
+static const Factory<Description> Factory_Description;
 
 /* Default constructor */
 Description::Description()

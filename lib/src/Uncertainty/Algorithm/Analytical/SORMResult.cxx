@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SORMResult);
 
-static const Factory<SORMResult> RegisteredFactory;
+static const Factory<SORMResult> Factory_SORMResult;
 
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point

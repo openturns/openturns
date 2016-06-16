@@ -24,6 +24,7 @@ option (USE_BOOST                    "Use Boost for distribution computation"   
 option (USE_SPHINX                    "Use sphinx for documentation"                                          ON)
 option (USE_DOXYGEN                   "Use Doxygen for API documentation"                                     ON)
 option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ON)
+option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
@@ -37,6 +38,15 @@ endif ()
 # Defines our own module path
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+
+if (USE_COTIRE)
+  set (USE_BISON OFF CACHE BOOL "" FORCE)
+  set (USE_FLEX OFF CACHE BOOL "" FORCE)
+  set (USE_SPHINX OFF CACHE BOOL "" FORCE)
+  set (CMAKE_BUILD_WITH_INSTALL_RPATH ON)
+  include (cotire)
+  add_custom_target (python_unity)
+endif ()
 
 set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME    )
 

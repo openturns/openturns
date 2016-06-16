@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SpatialFunction);
 
-static const Factory<SpatialFunction> RegisteredFactory;
+static const Factory<SpatialFunction> Factory_SpatialFunction;
 
 /* Default constructor */
 SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)

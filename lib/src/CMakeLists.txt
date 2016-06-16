@@ -82,3 +82,10 @@ if (UNIX AND BUILD_SHARED_LIBS)
   execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/libOT-gdb.py ${CMAKE_CURRENT_BINARY_DIR}/${OT_GDB_PY})
   install (FILES libOT-gdb.py DESTINATION ${OPENTURNS_DATA_PATH}/gdb/auto-load/${LIBRARY_PATH} RENAME ${OT_GDB_PY})
 endif ()
+
+
+if (USE_COTIRE)
+  set (COTIRE_UNITY_SOURCE_EXCLUDE_EXTENSIONS "c;cc")
+  cotire (OT)
+endif ()
+

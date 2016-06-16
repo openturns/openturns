@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationResult);
 
-static const Factory<OptimizationResult> RegisteredFactory;
+static const Factory<OptimizationResult> Factory_OptimizationResult;
 
 /* Default constructor */
 OptimizationResult::OptimizationResult()

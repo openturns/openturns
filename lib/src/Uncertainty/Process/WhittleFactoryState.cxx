@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(WhittleFactoryState);
 
-static const Factory<WhittleFactoryState> RegisteredFactory;
+static const Factory<WhittleFactoryState> Factory_WhittleFactoryState;
 
 
 /* Default constructor */

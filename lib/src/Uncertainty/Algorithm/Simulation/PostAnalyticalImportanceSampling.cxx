@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PostAnalyticalImportanceSampling);
 
-static const Factory<PostAnalyticalImportanceSampling> RegisteredFactory;
+static const Factory<PostAnalyticalImportanceSampling> Factory_PostAnalyticalImportanceSampling;
 
 /* Constructor with parameters */
 PostAnalyticalImportanceSampling::PostAnalyticalImportanceSampling()

@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Cloud);
 
-static const Factory<Cloud> RegisteredFactory;
+static const Factory<Cloud> Factory_Cloud;
 
 /* Default constructor */
 Cloud::Cloud(const NumericalSample & data,

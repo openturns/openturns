@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearNumericalMathEvaluationImplementation);
 
-static const Factory<LinearNumericalMathEvaluationImplementation> RegisteredFactory;
+static const Factory<LinearNumericalMathEvaluationImplementation> Factory_LinearNumericalMathEvaluationImplementation;
 
 /* Default constructor */
 LinearNumericalMathEvaluationImplementation::LinearNumericalMathEvaluationImplementation()

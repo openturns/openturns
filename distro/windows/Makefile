@@ -27,7 +27,7 @@ WINDEPS = $(PWD)/openturns-developers-windeps-$(OT_VERSION)
 
 # Wine
 WINE=/usr/bin/wine
-WINE_PREFIX = $(HOME)/.wine-$(TARGET)
+WINE_PREFIX = $(WINDEPS)/wine-$(ARCH)
 export WINEPREFIX = $(WINE_PREFIX)
 ifeq ($(ARCH), i686)
 export WINEARCH = win32
@@ -100,17 +100,17 @@ ot-config: ot-check-compiler
 	  -DUSE_TBB=OFF \
 	  -DUSE_SPHINX=OFF \
 	  -DCMAKE_CROSSCOMPILING_EMULATOR=$(WINE) \
+	  -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j$(JOBS)" \
 	  $(OT_SRC)
 	touch ot-config
 
 ot-compile: ot-config
-	cd $(OT_BUILD) && make OT -j$(JOBS)
-	cd $(OT_BUILD) && make -j$(JOBS_PYTHON)
-	-beep
+	cd $(OT_BUILD) && make OT_unity -j$(JOBS)
+	cd $(OT_BUILD) && make python_unity -j$(JOBS_PYTHON)
 	touch ot-compile
 
 ot-install: ot-compile
-	cd $(OT_BUILD) && make install -j$(JOBS)
+	cd $(OT_BUILD) && make install/fast -j$(JOBS)
 ifeq ($(DEBUG_OT),n)
 	$(TARGET)-strip --strip-unneeded $(OT_PREFIX)/bin/*.dll
 	$(TARGET)-strip -g $(OT_PREFIX)/lib/*.a
@@ -132,16 +132,15 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgomp-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libcblas.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libhmat-oss.dll $(OT_PREFIX)/bin
-	-beep -r 2
 	touch ot-install
 
 ot-test: ot-install
-	cd $(OT_BUILD) && make tests -j$(JOBS)
+	cd $(OT_BUILD) && make all_unity -j$(JOBS)
 ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).dll $(OT_BUILD)/python/test
-	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --timeout 1500
+	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --output-on-failure --timeout 1500
 endif
 	touch ot-test
 
@@ -176,7 +175,7 @@ ot-dev-installer: ot-install-test ot-check-installer
 
 
 ot-installer: ot-module-installer ot-dev-installer
-	-beep -r 3
+	@echo "ok"	
 
 
 clean:

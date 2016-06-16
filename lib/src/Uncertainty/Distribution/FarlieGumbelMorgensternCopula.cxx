@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FarlieGumbelMorgensternCopula);
 
-static const Factory<FarlieGumbelMorgensternCopula> RegisteredFactory;
+static const Factory<FarlieGumbelMorgensternCopula> Factory_FarlieGumbelMorgensternCopula;
 
 /* Default constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FourierSeriesFactory);
 
-static const Factory<FourierSeriesFactory> RegisteredFactory;
+static const Factory<FourierSeriesFactory> Factory_FourierSeriesFactory;
 
 
 /* Default constructor */

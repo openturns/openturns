@@ -54,7 +54,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalPoint>);
 
-static const Factory<PersistentCollection<NumericalPoint> > RegisteredFactory_PC_NP;
+static const Factory<PersistentCollection<NumericalPoint> > Factory_PersistentCollection_NumericalPoint;
 
 NSI_point::NSI_point(NumericalSampleImplementation * p_nsi, const UnsignedInteger index)
   : p_nsi_(p_nsi), index_(index), dimension_(p_nsi->dimension_) {}
@@ -278,7 +278,7 @@ OStream & operator << (OStream & OS, const NSI_const_point & point)
   return OS;
 }
 
-static const Factory<NumericalSampleImplementation> RegisteredFactory_NSI;
+static const Factory<NumericalSampleImplementation> Factory_NumericalSampleImplementation;
 
 CLASSNAMEINIT(NumericalSampleImplementation);
 
@@ -289,6 +289,12 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromCSVFile(co
 {
   if (csvSeparator == " ") throw InvalidArgumentException(HERE) << "Error: the space separator is not compatible for CSV file.";
 
+
+
+  NumericalSampleImplementation impl(0, 0);
+
+#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
+
   FILE * theFile = std::fopen(fileName.c_str(), "r");
   if (!theFile)
   {
@@ -296,10 +302,6 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromCSVFile(co
     throw FileNotFoundException(HERE) << "Can NOT open file '" << fileName
                                       << "'. Reason: " << std::strerror(errno);
   }
-
-  NumericalSampleImplementation impl(0, 0);
-
-#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
 
   impl.setName(fileName);
   yyscan_t scanner = 0;

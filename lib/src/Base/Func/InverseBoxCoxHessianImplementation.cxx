@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseBoxCoxHessianImplementation);
 
-static const Factory<InverseBoxCoxHessianImplementation> RegisteredFactory;
+static const Factory<InverseBoxCoxHessianImplementation> Factory_InverseBoxCoxHessianImplementation;
 
 /* Default constructor */
 InverseBoxCoxHessianImplementation::InverseBoxCoxHessianImplementation()

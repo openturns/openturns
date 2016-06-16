@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BoxCoxFactory);
 
-static const Factory<BoxCoxFactory> RegisteredFactory;
+static const Factory<BoxCoxFactory> Factory_BoxCoxFactory;
 
 class BoxCoxSampleOptimization
 {

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MatrixImplementation);
 
 
-static const Factory<MatrixImplementation> RegisteredFactory;
+static const Factory<MatrixImplementation> Factory_MatrixImplementation;
 
 // All the pivots with a magnitude less than this threshold are considered as zero
 /* Default constructor */

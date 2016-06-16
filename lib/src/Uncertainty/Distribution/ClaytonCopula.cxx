@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ClaytonCopula);
 
-static const Factory<ClaytonCopula> RegisteredFactory;
+static const Factory<ClaytonCopula> Factory_ClaytonCopula;
 
 /* Default constructor */
 ClaytonCopula::ClaytonCopula()

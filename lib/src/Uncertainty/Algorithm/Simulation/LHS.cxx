@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LHS);
 
-static const Factory<LHS> RegisteredFactory;
+static const Factory<LHS> Factory_LHS;
 
 /* Default constructor */
 LHS::LHS()

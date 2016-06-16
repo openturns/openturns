@@ -34,7 +34,7 @@ typedef Pointer<RandomVectorImplementation> Implementation;
 
 CLASSNAMEINIT(TaylorExpansionMoments);
 
-static const Factory<TaylorExpansionMoments> RegisteredFactory;
+static const Factory<TaylorExpansionMoments> Factory_TaylorExpansionMoments;
 
 /*
  * @class TaylorExpansionMoments

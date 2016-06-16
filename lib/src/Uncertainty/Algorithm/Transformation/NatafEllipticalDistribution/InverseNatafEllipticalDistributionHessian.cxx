@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNatafEllipticalDistributionHessian);
 
-static const Factory<InverseNatafEllipticalDistributionHessian> RegisteredFactory;
+static const Factory<InverseNatafEllipticalDistributionHessian> Factory_InverseNatafEllipticalDistributionHessian;
 
 /* Default constructor */
 InverseNatafEllipticalDistributionHessian::InverseNatafEllipticalDistributionHessian():

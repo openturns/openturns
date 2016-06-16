@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KernelSmoothing);
 
-static const Factory<KernelSmoothing> RegisteredFactory;
+static const Factory<KernelSmoothing> Factory_KernelSmoothing;
 
 /* Default constructor */
 KernelSmoothing::KernelSmoothing()

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KarhunenLoeveQuadratureFactory);
 
-static const Factory<KarhunenLoeveQuadratureFactory> RegisteredFactory;
+static const Factory<KarhunenLoeveQuadratureFactory> Factory_KarhunenLoeveQuadratureFactory;
 
 /* Constructor without parameters */
 KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory()

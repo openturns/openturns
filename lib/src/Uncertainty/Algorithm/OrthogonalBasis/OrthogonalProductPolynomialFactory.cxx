@@ -36,11 +36,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariatePolynomialFamily>);
 
-static const Factory<PersistentCollection<OrthogonalUniVariatePolynomialFamily> > RegisteredFactory_PC_OUVPF;
+static const Factory<PersistentCollection<OrthogonalUniVariatePolynomialFamily> > Factory_PersistentCollection_OrthogonalUniVariatePolynomialFamily;
 
 CLASSNAMEINIT(OrthogonalProductPolynomialFactory);
 
-static const Factory<OrthogonalProductPolynomialFactory> RegisteredFactory_OPPF;
+static const Factory<OrthogonalProductPolynomialFactory> Factory_OrthogonalProductPolynomialFactory;
 
 typedef Collection<NumericalPoint> NumericalPointCollection;
 typedef ProductPolynomialEvaluationImplementation::PolynomialCollection PolynomialCollection;

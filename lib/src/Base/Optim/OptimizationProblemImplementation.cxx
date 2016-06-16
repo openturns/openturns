@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationProblemImplementation);
 
-static const Factory<OptimizationProblemImplementation> RegisteredFactory;
+static const Factory<OptimizationProblemImplementation> Factory_OptimizationProblemImplementation;
 
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()

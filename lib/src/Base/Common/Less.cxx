@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Less);
 
-static const Factory<Less> RegisteredFactory;
+static const Factory<Less> Factory_Less;
 
 /* Default constructor */
 Less::Less()

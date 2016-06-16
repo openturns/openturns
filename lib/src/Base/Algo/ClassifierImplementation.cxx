@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ClassifierImplementation);
 
-static const Factory<ClassifierImplementation> RegisteredFactory;
+static const Factory<ClassifierImplementation> Factory_ClassifierImplementation;
 
 /* Default constructor */
 ClassifierImplementation::ClassifierImplementation()

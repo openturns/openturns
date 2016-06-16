@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(JansenSensitivityAlgorithm);
 
-static const Factory<JansenSensitivityAlgorithm> RegisteredFactory;
+static const Factory<JansenSensitivityAlgorithm> Factory_JansenSensitivityAlgorithm;
 
 /* Default constructor */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm()

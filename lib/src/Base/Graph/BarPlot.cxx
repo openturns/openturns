@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BarPlot);
 
-static const Factory<BarPlot> RegisteredFactory;
+static const Factory<BarPlot> Factory_BarPlot;
 
 /* Default constructor */
 BarPlot::BarPlot(const NumericalSample & data,

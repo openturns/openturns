@@ -28,13 +28,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 TEMPLATE_CLASSNAMEINIT( PersistentCollection<Indices> );
-static const Factory<PersistentCollection<Indices> > RegisteredFactory_PC_I;
+static const Factory<PersistentCollection<Indices> > Factory_PersistentCollection_Indices;
 
 
 
 CLASSNAMEINIT(BasisSequenceImplementation);
 
-static const Factory<BasisSequenceImplementation> RegisteredFactory_BSI;
+static const Factory<BasisSequenceImplementation> Factory_BasisSequenceImplementation;
 
 /* Default constructor */
 BasisSequenceImplementation::BasisSequenceImplementation()

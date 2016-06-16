@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NLopt);
 
-static const Factory<NLopt> RegisteredFactory;
+static const Factory<NLopt> Factory_NLopt;
 
 /* Map to associate algorithm names and codes */
 std::map<String, UnsignedInteger> NLopt::AlgorithmNames_;
@@ -505,7 +505,7 @@ double NLopt::ComputeObjectiveNearest(const std::vector<double> & x, std::vector
 
 
 CLASSNAMEINIT(SLSQP);
-static const Factory<SLSQP> RegisteredFactory2;
+static const Factory<SLSQP> Factory_SLSQP;
 SLSQP::SLSQP() : NLopt("LD_SLSQP")
 {
   Log::Warn(OSS() << "SLSQP class is deprecated.");
@@ -518,7 +518,7 @@ SLSQP::SLSQP(const OptimizationProblem & problem)
 SLSQP * SLSQP::clone() const { return new SLSQP(*this); }
 
 CLASSNAMEINIT(LBFGS);
-static const Factory<LBFGS> RegisteredFactory3;
+static const Factory<LBFGS> Factory_LBFGS;
 LBFGS::LBFGS() : NLopt("LD_LBFGS")
 {
   Log::Warn(OSS() << "LBFGS class is deprecated.");
@@ -531,7 +531,7 @@ LBFGS::LBFGS(const OptimizationProblem & problem)
 LBFGS * LBFGS::clone() const { return new LBFGS(*this); }
 
 CLASSNAMEINIT(NelderMead);
-static const Factory<NelderMead> RegisteredFactory8;
+static const Factory<NelderMead> Factory_NelderMead;
 NelderMead::NelderMead() : NLopt("LN_NELDERMEAD")
 {
   Log::Warn(OSS() << "NelderMead class is deprecated.");

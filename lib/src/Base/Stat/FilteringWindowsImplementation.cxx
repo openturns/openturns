@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FilteringWindowsImplementation);
 
-static const Factory<FilteringWindowsImplementation> RegisteredFactory;
+static const Factory<FilteringWindowsImplementation> Factory_FilteringWindowsImplementation;
 
 /* Constructor without parameters */
 FilteringWindowsImplementation::FilteringWindowsImplementation()

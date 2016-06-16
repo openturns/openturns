@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MediumSafe);
 
-static const Factory<MediumSafe> RegisteredFactory;
+static const Factory<MediumSafe> Factory_MediumSafe;
 
 /* Constructor with parameters */
 MediumSafe::MediumSafe():

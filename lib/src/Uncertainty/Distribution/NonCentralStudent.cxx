@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NonCentralStudent);
 
-static const Factory<NonCentralStudent> RegisteredFactory;
+static const Factory<NonCentralStudent> Factory_NonCentralStudent;
 
 
 /* Default constructor */

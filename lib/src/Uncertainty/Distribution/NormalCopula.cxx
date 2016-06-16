@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NormalCopula);
 
-static const Factory<NormalCopula> RegisteredFactory;
+static const Factory<NormalCopula> Factory_NormalCopula;
 
 /* Default constructor */
 NormalCopula::NormalCopula(const UnsignedInteger dim)

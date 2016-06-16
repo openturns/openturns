@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(JacobiFactory);
 
-static const Factory<JacobiFactory> RegisteredFactory;
+static const Factory<JacobiFactory> Factory_JacobiFactory;
 
 /* Default constructor: (1, 1) order Jacobi polynomial associated with the default Beta() = Beta(2, 4, -1, 1) distribution which is equal to the Epanechnikov distribution */
 JacobiFactory::JacobiFactory()

@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ComposedDistribution);
 
-static const Factory<ComposedDistribution> RegisteredFactory;
+static const Factory<ComposedDistribution> Factory_ComposedDistribution;
 
 /* Default constructor */
 ComposedDistribution::ComposedDistribution()

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BayesDistribution);
 
-static const Factory<BayesDistribution> RegisteredFactory;
+static const Factory<BayesDistribution> Factory_BayesDistribution;
 
 
 /* Default constructor */

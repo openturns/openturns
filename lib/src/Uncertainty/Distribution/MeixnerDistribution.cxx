@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MeixnerDistribution);
 
-static const Factory<MeixnerDistribution> RegisteredFactory;
+static const Factory<MeixnerDistribution> Factory_MeixnerDistribution;
 
 /* Default constructor */
 MeixnerDistribution::MeixnerDistribution()

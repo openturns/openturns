@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Gumbel);
 
-static const Factory<Gumbel> RegisteredFactory;
+static const Factory<Gumbel> Factory_Gumbel;
 
 /* Default constructor */
 Gumbel::Gumbel()

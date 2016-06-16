@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ConstantNumericalMathGradientImplementation);
 
-static const Factory<ConstantNumericalMathGradientImplementation> RegisteredFactory;
+static const Factory<ConstantNumericalMathGradientImplementation> Factory_ConstantNumericalMathGradientImplementation;
 
 
 /* Default constructor */

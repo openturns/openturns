@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LaguerreFactory);
 
-static const Factory<LaguerreFactory> RegisteredFactory;
+static const Factory<LaguerreFactory> Factory_LaguerreFactory;
 
 
 

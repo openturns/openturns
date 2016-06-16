@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProductUniVariateFunctionGradientImplementation);
 
-static const Factory<ProductUniVariateFunctionGradientImplementation> RegisteredFactory;
+static const Factory<ProductUniVariateFunctionGradientImplementation> Factory_ProductUniVariateFunctionGradientImplementation;
 
 
 /* Default constructor */

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(UniVariateFunctionImplementation);
 
-static const Factory<UniVariateFunctionImplementation> RegisteredFactory;
+static const Factory<UniVariateFunctionImplementation> Factory_UniVariateFunctionImplementation;
 
 
 /* Default constructor */
