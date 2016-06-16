@@ -119,8 +119,7 @@ String ExponentiallyDampedCosineModel::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
+  oss << " theta=" << scale_
       << " sigma=" << amplitude_
       << " frequency=" << frequency_;
   return oss;
@@ -130,11 +129,12 @@ String ExponentiallyDampedCosineModel::__repr__() const
 String ExponentiallyDampedCosineModel::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
-      << " frequency=" << frequency_;
+  oss << ExponentiallyDampedCosineModel::GetClassName();
+  oss << "("
+      << "scale=" << scale_
+      << ", amplitude=" << amplitude_
+      << ", frequency=" << frequency_
+      << ")";
   return oss;
 }
 
@@ -148,6 +148,30 @@ void ExponentiallyDampedCosineModel::setFrequency(const NumericalScalar frequenc
 {
   if (frequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
   frequency_ = frequency;
+}
+
+void ExponentiallyDampedCosineModel::setFullParameter(const NumericalPoint & parameter)
+{
+  CovarianceModelImplementation::setFullParameter(parameter);
+  setFrequency(parameter[parameter.getSize() - 1]);
+}
+
+NumericalPoint ExponentiallyDampedCosineModel::getFullParameter() const
+{
+  // Get the generic parameter
+  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  // Add the specific one
+  parameter.add(frequency_);
+  return parameter;
+}
+
+Description ExponentiallyDampedCosineModel::getFullParameterDescription() const
+{
+  // Description of the generic parameter
+  Description description(CovarianceModelImplementation::getFullParameterDescription());
+  // Description of the specific parameter
+  description.add("frequency");
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

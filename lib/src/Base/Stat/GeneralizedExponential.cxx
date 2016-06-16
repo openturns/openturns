@@ -31,31 +31,32 @@ static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 
 /* Default constructor */
 GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")))
+  : StationaryCovarianceModel(spatialDimension)
   , p_(1.0)
 {
   // Nothing to do
 }
 
-/** Parameters constructor */
-GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
-    const NumericalScalar p)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
-  , p_(p)
+/* Parameters constructor */
+GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
+                                               const NumericalScalar p)
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
+  , p_(0.0)
 {
-  // Nothing to do
+  setP(p);
 }
 
-/** Parameters constructor */
-GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
-    const NumericalPoint & sigma,
-    const NumericalScalar p)
-  : StationaryCovarianceModel(sigma, theta)
-  , p_(p)
+/* Parameters constructor */
+GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
+                                               const NumericalPoint & amplitude,
+                                               const NumericalScalar p)
+  : StationaryCovarianceModel(scale, amplitude)
+  , p_(0.0)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() << ")";
+                                         << " Here, (got dimension=" << getDimension() <<")";
+  setP(p);
 }
 
 /* Virtual constructor */
@@ -107,14 +108,37 @@ Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
   return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0];
 }
 
+void GeneralizedExponential::setFullParameter(const NumericalPoint & parameter)
+{
+  CovarianceModelImplementation::setFullParameter(parameter);
+  setP(parameter[parameter.getSize() - 1]);
+}
+
+NumericalPoint GeneralizedExponential::getFullParameter() const
+{
+  // Get the generic parameter
+  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  // Add the specific one
+  parameter.add(p_);
+  return parameter;
+}
+
+Description GeneralizedExponential::getFullParameterDescription() const
+{
+  // Description of the generic parameter
+  Description description(CovarianceModelImplementation::getFullParameterDescription());
+  // Description of the specific parameter
+  description.add("p");
+  return description;
+}
+
 /* String converter */
 String GeneralizedExponential::__repr__() const
 {
   OSS oss;
   oss << "class=" << GeneralizedExponential::GetClassName()
-      << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " p=" << p_;
   return oss;
 }
@@ -124,12 +148,23 @@ String GeneralizedExponential::__str__(const String & offset) const
 {
   OSS oss;
   oss << GeneralizedExponential::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << "(scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ", p=" << p_
       << ")";
   return oss;
+}
+
+/* P accessor */
+NumericalScalar GeneralizedExponential::getP() const
+{
+  return p_;
+}
+
+void GeneralizedExponential::setP(const NumericalScalar p)
+{
+  if (p <= 0.0) throw InvalidArgumentException(HERE) << "Error: p must be positive.";
+  p_ = p;
 }
 
 /* Method save() stores the object through the StorageManager */

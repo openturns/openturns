@@ -43,7 +43,7 @@ class OT_API CovarianceModelImplementation
 
   CLASSNAME;
 
-public:
+ public:
 
   typedef Pointer<CovarianceModelImplementation> Implementation;
 
@@ -182,7 +182,9 @@ public:
 
   /** Parameters accessor */
   virtual void setParameter(const NumericalPoint & parameter);
+  virtual void setActiveParameter(const Indices & active);
   virtual NumericalPoint getParameter() const;
+  virtual Indices getActiveParameter() const;
   virtual Description getParameterDescription() const;
 
   /** String converter */
@@ -200,7 +202,11 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-protected:
+ protected:
+
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
   // set the covariance structure
   void updateSpatialCovariance();
@@ -228,6 +234,9 @@ protected:
 
   /** Nugget factor */
   NumericalScalar nuggetFactor_;
+
+  /** Active parameters */
+  Indices activeParameter_;
 
 } ; /* class CovarianceModelImplementation */
 

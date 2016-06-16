@@ -273,12 +273,24 @@ NumericalScalar SpecFunc::DeltaLogBesselI10(const NumericalScalar x)
 NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
                                      const NumericalScalar x)
 {
-#ifdef OPENTURNS_HAVE_BOOST
-  return std::log(boost::math::cyl_bessel_k(nu, x));
-#else
   if (x <= 0.0) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
   // Reflection formula
   if (nu < 0.0) return LogBesselK(-nu, x);
+  // Special cases
+  if (nu == 0.5) return 0.5 * std::log(M_PI / (2.0 * x)) - x;
+  if (nu == 1.5)
+    {
+      const NumericalScalar num = 1.0 + 1.0 / x;
+      return 0.5 * std::log(M_PI * num * num / (2.0 * x)) - x;
+    }
+  if (nu == 2.5)
+    {
+      const NumericalScalar num = 1.0 + (3.0 / x) * (1.0 + 1.0 / x);
+      return 0.5 * std::log(M_PI * num * num / (2.0 * x)) - x;
+    }
+#ifdef OPENTURNS_HAVE_BOOST
+  return std::log(boost::math::cyl_bessel_k(nu, x));
+#else
   NumericalScalar logFactor;
   NumericalMathFunction integrand;
   UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();

@@ -78,18 +78,20 @@ public:
 
   /** Frequency accessor */
   NumericalScalar getFrequency() const;
-
-protected:
-
   void setFrequency(const NumericalScalar frequency);
-
-public:
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
+
+protected:
+
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 private :
 
@@ -101,3 +103,4 @@ private :
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_EXPONENTIALLYDAMPEDCOSINEMODEL_HXX */
+

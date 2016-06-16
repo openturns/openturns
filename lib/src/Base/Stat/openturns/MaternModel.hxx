@@ -40,11 +40,11 @@ public:
   explicit MaternModel(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  MaternModel(const NumericalPoint & theta,
+  MaternModel(const NumericalPoint & scale,
               const NumericalScalar nu);
 
-  MaternModel(const NumericalPoint & theta,
-              const NumericalPoint & sigma,
+  MaternModel(const NumericalPoint & scale,
+              const NumericalPoint & amplitude,
               const NumericalScalar nu);
 
   /** Virtual copy constructor */
@@ -68,15 +68,24 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const;
 
+  /** Nu accessor */
+  NumericalScalar getNu() const;
+  void setNu(const NumericalScalar nu);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-private:
+protected:
 
-  void initialize();
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
+
+private:
 
   // The shape parameter
   NumericalScalar nu_;
@@ -92,3 +101,4 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif
+
