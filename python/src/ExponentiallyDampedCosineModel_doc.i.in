@@ -6,7 +6,7 @@ Available constructors:
 
     ExponentiallyDampedCosineModel(*spatialDim, sigmaScalar, thetaScalar, f*)
 
-    ExponentiallyDampedCosineModel(*sigma, theta,f*)
+    ExponentiallyDampedCosineModel(*theta, sigma,f*)
 
 Parameters
 ----------
@@ -82,5 +82,5 @@ Create a exponentially damped cosine  covariance function specifying the amplitu
 
 Create a  exponentially damped cosine  covariance function specifying the amplitude and the scale:
 
->>> covModel3 = ot.ExponentiallyDampedCosineModel([3.5], [1.5, 2.5], 5.0)"
+>>> covModel3 = ot.ExponentiallyDampedCosineModel([1.5, 2.5], [3.5], 5.0)"
 

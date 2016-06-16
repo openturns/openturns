@@ -41,11 +41,10 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
 }
 
 /* Constructor with parameters */
-SphericalModel::SphericalModel(const UnsignedInteger spatialDimension,
+SphericalModel::SphericalModel(const NumericalPoint & scale,
                                const NumericalPoint & amplitude,
-                               const NumericalPoint & scale,
                                const NumericalScalar a)
-  : StationaryCovarianceModel(spatialDimension, amplitude, scale)
+  : StationaryCovarianceModel(amplitude, scale)
   , a_(a)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
