@@ -302,18 +302,35 @@ Examples
 %feature("docstring") OT::Matrix::computeGram
 "Compute the associated Gram matrix.
 
+Parameters
+----------
+transposed : bool
+    Tells if matrix is to be transposed or not.
+    Default value is True
+
 Returns
 -------
-MT : :class:`~openturns.Matrix`
+MMT : :class:`~openturns.Matrix`
     The Gram matrix.
+
+Notes
+-----
+When transposed is set to `True`, the method computes :math:`cM^t \times \cM`.
+Otherwise it computes :math:`\cM \ times \cM^t`
 
 Examples
 --------
 >>> import openturns as ot
 >>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
->>> print(M.computeGram())
+>>> MtM = M.computeGram()
+>>> print(MtM)
 [[ 35 44 ]
- [ 44 56 ]]"
+ [ 44 56 ]]
+>>> MMt = M.computeGram(False)
+>>> print(MMt)
+[[  5 11 17 ]
+ [ 11 25 39 ]
+ [ 17 39 61 ]]"
 
 // ---------------------------------------------------------------------
 
