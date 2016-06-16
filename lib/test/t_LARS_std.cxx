@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
   indices.fill();
 
   // run algorithm
-  LAR factory;
+  LARS factory;
   factory.setVerbose(true);
   fullprint << "factory = " << factory << std::endl;
 

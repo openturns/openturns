@@ -2,7 +2,7 @@
 "Trend estimator.
 
 Available constructors:
-    TrendFactory(*basisSequenceFactory=LAR(), fittingAlgorithm=CorrectedLeaveOneOut()*)
+    TrendFactory(*basisSequenceFactory=LARS(), fittingAlgorithm=CorrectedLeaveOneOut()*)
 
 Parameters
 ----------
@@ -80,7 +80,7 @@ Add the trend to the initial process and get a field:
 
 Estimate the trend function from the field:
 
->>> myBasisSequenceFactory = ot.LAR()
+>>> myBasisSequenceFactory = ot.LARS()
 >>> myFittingAlgorithm = ot.KFold()
 >>> func1 = ot.NumericalMathFunction(['t'], ['1'])
 >>> func2 = ot.NumericalMathFunction(['t'], ['t'])

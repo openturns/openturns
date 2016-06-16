@@ -19,7 +19,7 @@ myYProcess = ot.CompositeProcess(fTemp, myXProcess)
 myYField = myYProcess.getRealization()
 
 # Create a TrendFactory
-myBasisSequenceFactory = ot.LAR()
+myBasisSequenceFactory = ot.LARS()
 myFittingAlgorithm = ot.KFold()
 func1 = ot.NumericalMathFunction(["t"], ["1"])
 func2 = ot.NumericalMathFunction(["t"], ["t"])

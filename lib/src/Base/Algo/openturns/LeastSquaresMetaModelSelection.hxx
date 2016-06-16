@@ -25,7 +25,7 @@
 #include "openturns/FittingAlgorithm.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
-#include "openturns/LAR.hxx"
+#include "openturns/LARS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ public:
                                  const NumericalSample & y,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const BasisSequenceFactory & basisSequenceFactory = LAR(),
+                                 const BasisSequenceFactory & basisSequenceFactory = LARS(),
                                  const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** Default constructor */
@@ -55,7 +55,7 @@ public:
                                  const NumericalPoint & weight,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const BasisSequenceFactory & basisSequenceFactory = LAR(),
+                                 const BasisSequenceFactory & basisSequenceFactory = LARS(),
                                  const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** Virtual constructor */

@@ -51,7 +51,7 @@ try:
     # Select the fitting algorithm
     fittingAlgorithm = ot.KFold()
     leastSquaresFactory = ot.LeastSquaresMetaModelSelectionFactory(
-        ot.LAR(), fittingAlgorithm)
+        ot.LARS(), fittingAlgorithm)
 
     # Projection strategy
     projectionStrategy = ot.LeastSquaresStrategy(
