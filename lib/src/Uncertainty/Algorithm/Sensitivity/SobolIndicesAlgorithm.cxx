@@ -130,11 +130,23 @@ Graph SobolIndicesAlgorithm::draw(UnsignedInteger marginalIndex) const
   return getImplementation()->draw(marginalIndex);
 }
 
-// Setter for bootstrap number
+// Getter for bootstrap size
+UnsignedInteger SobolIndicesAlgorithm::getBootstrapSize() const
+{
+  return getImplementation()->getBootstrapSize();
+}
+
+// Setter for bootstrap size
 void SobolIndicesAlgorithm::setBootstrapSize(const UnsignedInteger bootstrapSize)
 {
   copyOnWrite();
   getImplementation()->setBootstrapSize(bootstrapSize);
+}
+
+// Getter for bootstrap confidence level
+NumericalScalar SobolIndicesAlgorithm::getBootstrapConfidenceLevel() const
+{
+  return getImplementation()->getBootstrapConfidenceLevel();
 }
 
 // Setter for bootstrap confidence level
