@@ -55,6 +55,10 @@ public:
   /** Parameters constructor */
   MaximumDistribution(const DistributionCollection & collection);
 
+  /** Parameters constructor */
+  MaximumDistribution(const Distribution & distribution,
+		      const UnsignedInteger size);
+
   /** Comparison operator */
   Bool operator ==(const MaximumDistribution & other) const;
 
@@ -114,6 +118,12 @@ private:
 
   /* The underlying joint distribution */
   Distribution distribution_;
+
+  /* Flag to tell if all the components are equal and independent */
+  Bool allSame_;
+
+  /* Number of variables upon which the maximum is taken */
+  UnsignedInteger variablesNumber_;
 
 }; /* class MaximumDistribution */
 
