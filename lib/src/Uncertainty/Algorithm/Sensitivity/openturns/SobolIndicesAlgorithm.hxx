@@ -89,10 +89,12 @@ public:
   /** Aggregated total order indices accessor for multivariate samples */
   NumericalPoint getAggregatedTotalOrderIndices() const;
 
-  // Setter for bootstrap number
+  // Setters for bootstrap size
+  UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
-  // Setter for bootstrap confidence level
+  // Setters for bootstrap confidence level
+  NumericalScalar getBootstrapConfidenceLevel() const;
   void setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel);
 
   /** Method that draw (plot) the sensitivity graph */

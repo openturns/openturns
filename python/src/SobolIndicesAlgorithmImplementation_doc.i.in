@@ -311,6 +311,19 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_SobolIndicesAlgorithm_getBootstrapConfidenceLevel_doc
+"Get the confidence interval level for bootstrap sampling.
+
+Returns
+-------
+confidenceLevel : float
+    Confidence level for boostrap sampling"
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel
+OT_SobolIndicesAlgorithm_getBootstrapConfidenceLevel_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_SobolIndicesAlgorithm_setBootstrapConfidenceLevel_doc
 "Set the confidence interval level for bootstrap sampling.
 
@@ -321,6 +334,19 @@ confidenceLevel : float
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel
 OT_SobolIndicesAlgorithm_setBootstrapConfidenceLevel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SobolIndicesAlgorithm_getBootstrapSize_doc
+"Get the number of bootstrap sampling size.
+
+Returns
+-------
+bootstrapSize : int
+    Number of bootsrap sampling"
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getBootstrapSize
+OT_SobolIndicesAlgorithm_getBootstrapSize_doc
 
 // ---------------------------------------------------------------------
 
