@@ -497,7 +497,13 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndic
   return mergedTotalOrderIndices_;
 }
 
-// Setter for bootstrap number
+// Getter for bootstrap size
+UnsignedInteger SobolIndicesAlgorithmImplementation::getBootstrapSize() const
+{
+  return bootstrapSize_;
+}
+
+// Setter for bootstrap size
 void SobolIndicesAlgorithmImplementation::setBootstrapSize(const UnsignedInteger bootstrapSize)
 {
   if (bootstrapSize <= 0.0)
@@ -505,6 +511,12 @@ void SobolIndicesAlgorithmImplementation::setBootstrapSize(const UnsignedInteger
   bootstrapSize_ = bootstrapSize;
   firstOrderIndiceInterval_ = Interval();
   totalOrderIndiceInterval_ = Interval();
+}
+
+// Getter for bootstrap confidence level
+NumericalScalar SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel() const
+{
+  return confidenceLevel_;
 }
 
 // Setter for bootstrap confidence level
