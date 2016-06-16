@@ -21,19 +21,19 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/BasisSequenceFactoryImplementation.hxx"
-#include "openturns/LAR.hxx"
+#include "openturns/LARS.hxx"
 #include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LAR);
+CLASSNAMEINIT(LARS);
 
 typedef Collection<NumericalScalar>    NumericalScalarCollection;
 
-static const Factory<LAR> Factory_LAR;
+static const Factory<LARS> Factory_LARS;
 
 /* Default constructor */
-LAR::LAR(const Bool verbose)
+LARS::LARS(const Bool verbose)
   : BasisSequenceFactoryImplementation(verbose)
   , relativeConvergence_(1.0)
   , oldCoefficientsL1Norm_(0.0)
@@ -43,13 +43,13 @@ LAR::LAR(const Bool verbose)
 }
 
 /* Virtual constructor */
-LAR * LAR::clone() const
+LARS * LARS::clone() const
 {
-  return new LAR( *this );
+  return new LARS( *this );
 }
 
 /* Method to create new BasisSequence objects */
-BasisSequence LAR::build (const NumericalSample & x,
+BasisSequence LARS::build (const NumericalSample & x,
                           const NumericalSample & y,
                           const Basis & basis,
                           const Indices & indices)
@@ -57,7 +57,7 @@ BasisSequence LAR::build (const NumericalSample & x,
   return BasisSequenceFactoryImplementation::build(x, y, basis, indices);
 }
 
-void LAR::initialize()
+void LARS::initialize()
 {
   BasisSequenceFactoryImplementation::initialize();
   oldCoefficientsL1Norm_ = 0.0;
@@ -71,7 +71,7 @@ void LAR::initialize()
 }
 
 /* Method to create new BasisSequence objects */
-void LAR::updateBasis(LeastSquaresMethod & method)
+void LARS::updateBasis(LeastSquaresMethod & method)
 {
   NumericalSample x(method.getInputSample());
   NumericalSample y(method.getOutputSample());
@@ -194,24 +194,24 @@ void LAR::updateBasis(LeastSquaresMethod & method)
 }
 
 /* String converter */
-String LAR::__repr__() const
+String LARS::__repr__() const
 {
   return OSS(true) << "class=" << getClassName();
 }
 
-String LAR::__str__(const String & offset) const
+String LARS::__str__(const String & offset) const
 {
   return OSS(false) << offset << __repr__();
 }
 
 /* Method save() stores the object through the StorageManager */
-void LAR::save(Advocate & adv) const
+void LARS::save(Advocate & adv) const
 {
   BasisSequenceFactoryImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void LAR::load(Advocate & adv)
+void LARS::load(Advocate & adv)
 {
   BasisSequenceFactoryImplementation::load(adv);
 }

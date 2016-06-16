@@ -102,7 +102,7 @@
 %include FunctionalBasis.i
 %include BasisSequenceFactoryImplementation.i
 %include BasisSequenceFactory.i
-%include LAR.i
+%include LARS.i
 %include BoxCoxEvaluationImplementation.i
 %include BoxCoxTransform.i
 %include InverseBoxCoxEvaluationImplementation.i

@@ -57,7 +57,7 @@ try:
     # From here, the model is no more needed
     listProjectionStrategy.append(LeastSquaresStrategy())
     listProjectionStrategy.append(LeastSquaresStrategy(
-        LeastSquaresMetaModelSelectionFactory(LAR(), CorrectedLeaveOneOut())))
+        LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut())))
     listProjectionStrategy.append(IntegrationStrategy())
     # Create the adaptive strategy
     # We can choose amongst several strategies

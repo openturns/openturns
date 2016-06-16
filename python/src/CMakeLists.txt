@@ -297,7 +297,7 @@ ot_add_python_module(func func_module.i
                       BasisSequence.i BasisSequence_doc.i.in
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
-                      LAR.i LAR_doc.i.in
+                      LARS.i LARS_doc.i.in
                       BoxCoxEvaluationImplementation.i
                       BoxCoxTransform.i BoxCoxTransform_doc.i.in
                       InverseBoxCoxEvaluationImplementation.i

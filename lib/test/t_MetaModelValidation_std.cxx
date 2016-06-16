@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     FittingAlgorithm fittingAlgorithm = KFold();
 
     // LSMSF
-    LeastSquaresMetaModelSelectionFactory leastSquaresFactory( LAR(), fittingAlgorithm);
+    LeastSquaresMetaModelSelectionFactory leastSquaresFactory(LARS(), fittingAlgorithm);
 
     // Projection strategy
     LeastSquaresStrategy projectionStrategy(inputSample, outputSample, leastSquaresFactory);

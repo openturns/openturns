@@ -28,7 +28,7 @@
 #include "openturns/FittingAlgorithm.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
-#include "openturns/LAR.hxx"
+#include "openturns/LARS.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Basis.hxx"
 
@@ -47,7 +47,7 @@ class OT_API TrendFactory
 public:
 
   /** Standard constructor  */
-  explicit TrendFactory(const BasisSequenceFactory & basisSequenceFactory = LAR(),
+  explicit TrendFactory(const BasisSequenceFactory & basisSequenceFactory = LARS(),
                         const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** BasisSequenceFactory accessors */

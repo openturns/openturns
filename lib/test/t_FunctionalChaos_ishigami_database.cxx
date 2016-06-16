@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     NumericalSample outputSample(model(inputSample));
     // From here, the model is no more needed
     listProjectionStrategy.add(LeastSquaresStrategy());
-    listProjectionStrategy.add(LeastSquaresStrategy(LeastSquaresMetaModelSelectionFactory ( LAR(), CorrectedLeaveOneOut())));
+    listProjectionStrategy.add(LeastSquaresStrategy(LeastSquaresMetaModelSelectionFactory (LARS(), CorrectedLeaveOneOut())));
     listProjectionStrategy.add(IntegrationStrategy());
     // Create the adaptive strategy
     // We can choose amongst several strategies

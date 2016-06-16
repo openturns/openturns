@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   Indices indices(coll.getSize());
   indices.fill();
 
-  LeastSquaresMetaModelSelectionFactory factory = LeastSquaresMetaModelSelectionFactory( LAR(), CorrectedLeaveOneOut() );
+  LeastSquaresMetaModelSelectionFactory factory = LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut());
   ApproximationAlgorithm algo(factory.build(x, y, weight, psi, indices));
   fullprint << "algo = " << algo << std::endl;
 

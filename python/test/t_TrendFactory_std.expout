@@ -14,7 +14,7 @@ myTimeSeries =        [            y0         y1         ]
 997 : [ 99.7       -0.0113032  1.93498   ]
 998 : [ 99.8        0.710777   0.968257  ]
 999 : [ 99.9       -0.377699   2.41082   ]
-myDefaultFactory =  class=TrendFactory fittingAlgorithm = class=CorrectedLeaveOneOut basisSequenceFactory = class=LAR
+myDefaultFactory =  class=TrendFactory fittingAlgorithm = class=CorrectedLeaveOneOut basisSequenceFactory = class=LARS
 myEstimateTrend =  [1.47317,2.50233] * ([t]->[1]) + [-0.49061,0.441109] * ([t]->[cos(2 * t)]) + [1.0026,0.964772] * ([t]->[sin(2 * t)])
-myDefaultFactory =  class=TrendFactory fittingAlgorithm = class=KFold basisSequenceFactory = class=LAR
+myDefaultFactory =  class=TrendFactory fittingAlgorithm = class=KFold basisSequenceFactory = class=LARS
 myNewEstimateTrend =  [1.47317,2.50233] * ([t]->[1]) + [-0.49061,0.441109] * ([t]->[cos(2 * t)]) + [1.0026,0.964772] * ([t]->[sin(2 * t)])
