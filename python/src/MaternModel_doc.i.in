@@ -78,7 +78,7 @@ Create a standard Matern covariance function:
 Create a  Matern covariance function specifying the scale vector and :math:`\nu`:
 
 >>> covModel2 = ot.MaternModel([1.5, 2.5], 2.3)
->>> covModel2bis = ot.MaternModel(3, 1.5, 2.3)
+>>> covModel2bis = ot.MaternModel([1.5]*3, 2.3)
 
 Create a  Matern covariance function specifying the scale vector, the amplitude and :math:`\nu`:
 

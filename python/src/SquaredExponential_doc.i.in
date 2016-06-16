@@ -50,7 +50,7 @@ The correlation function :math:`\rho` writes:
 
 .. math::
 
-    \rho(\vect{s}, \vect{t}) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD  
+    \rho(\vect{s}, \vect{t}) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
 
 See Also
@@ -71,10 +71,10 @@ Create a standard squared exponential covariance function:
 >>> print(covModel(tau))
 [[ 0.9995 ]]
 
-Create a  squared exponential covariance function specifying the scale vector:
+Create a squared exponential covariance function specifying the scale vector (amplitude is fixed to 1):
 
 >>> covModel2 = ot.SquaredExponential([1.5, 2.5])
->>> covModel2bis = ot.SquaredExponential(3, 1.5)
+>>> covModel2bis = ot.SquaredExponential([1.5] * 3)
 
 Create a  squared exponential covariance function specifying the scale vector and the amplitude :
 
