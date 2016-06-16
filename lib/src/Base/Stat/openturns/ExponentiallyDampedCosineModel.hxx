@@ -55,8 +55,8 @@ public:
                                  const NumericalScalar frequency);
 
   /** Standard constructor with amplitude and scale parameters */
-  ExponentiallyDampedCosineModel(const NumericalPoint & amplitude,
-                                 const NumericalPoint & scale,
+  ExponentiallyDampedCosineModel(const NumericalPoint & scale,
+                                 const NumericalPoint & amplitude,
                                  const NumericalScalar frequency);
 
   /** Virtual copy constructor */

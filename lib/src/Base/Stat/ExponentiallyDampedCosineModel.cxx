@@ -52,8 +52,8 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
 }
 
 /** Standard constructor with amplitude and scale parameters */
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & amplitude,
-                                                               const NumericalPoint & scale,
+ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & scale,
+                                                               const NumericalPoint & amplitude,
                                                                const NumericalScalar frequency)
   : StationaryCovarianceModel(amplitude, scale)
   , frequency_(0.0)

@@ -49,9 +49,8 @@ public:
   explicit SphericalModel(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with amplitude and range parameters parameters */
-  SphericalModel(const UnsignedInteger spatialDimension,
+  SphericalModel(const NumericalPoint & scale,
                  const NumericalPoint & amplitude,
-                 const NumericalPoint & scale,
                  const NumericalScalar a = 1);
 
   /** Virtual copy constructor */
