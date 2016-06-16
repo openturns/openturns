@@ -50,7 +50,7 @@ The correlation function :math:`\rho` writes:
 
 .. math::
 
-    \rho(\vect{s}, \vect{t}) = e^{- \left\| \vect{s}- \vect{t} \right\|_{1}}, \quad \forall (\vect{s}, \vect{t}) \in \cD  
+    \rho(\vect{s}, \vect{t}) = e^{- \left\| \vect{s}- \vect{t} \right\|_{1}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
 
 See Also
@@ -71,10 +71,10 @@ Create a standard absolute exponential covariance function:
 >>> print(covModel(tau))
 [[ 0.960789 ]]
 
-Create an absolute exponential covariance function specifying the scale vector:
+Create an absolute exponential covariance function specifying only the scale vector (amplitude is fixed to 1):
 
 >>> covModel2 = ot.AbsoluteExponential([1.5, 2.5])
->>> covModel2bis = ot.AbsoluteExponential(3, 1.5)
+>>> covModel2bis = ot.AbsoluteExponential([1.5]*3)
 
 Create an absolute exponential covariance function specifying the scale vector and the amplitude :
 

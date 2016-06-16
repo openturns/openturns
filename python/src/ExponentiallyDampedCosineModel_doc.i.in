@@ -78,7 +78,7 @@ Create a standard exponentially damped cosine covariance function:
 
 Create a exponentially damped cosine  covariance function specifying the amplitude and the scale:
 
->>> covModel2 = ot.ExponentiallyDampedCosineModel(2, 1.2, 3.3, 5.0)
+>>> covModel2 = ot.ExponentiallyDampedCosineModel([3.3], [1.2], 5.0)
 
 Create a  exponentially damped cosine  covariance function specifying the amplitude and the scale:
 

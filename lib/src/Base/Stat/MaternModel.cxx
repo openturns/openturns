@@ -47,6 +47,7 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension,
   , nu_(nu)
   , sqrt2nuOverTheta_(NumericalPoint(spatialDimension, 0.0))
 {
+  Log::Warn(OSS() << "The constructor " << getClassName() << "(spatialDimension, theta, nu) is deprecated in favor of " << getClassName() << "(theta, sigma, nu) or " << getClassName() << "(theta, nu). ");
   initialize();
 }
 
