@@ -58,9 +58,9 @@ int main(int argc, char *argv[])
 
     // 2) Definition of exponential model
     NumericalPoint scale(2);
-    scale[0] = 1.98824;
-    scale[1] =0.924731;
-    NumericalPoint amplitude(1, 3.15352);
+    scale[0] = 1.988;
+    scale[1] = 0.924;
+    NumericalPoint amplitude(1, 3.153);
     SquaredExponential covarianceModel(scale, amplitude);
 
     // 3) Basis definition
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
     // assert_almost_equal could not be applied to matrices
     NumericalPoint covariancePoint(*var.getImplementation());
-    assert_almost_equal(covariancePoint, NumericalPoint(covariancePoint.getSize()), 7e-7, 7e-7);
+    assert_almost_equal(covariancePoint, NumericalPoint(covariancePoint.getSize()), 1e-6, 1e-6);
 
     // Random vector evaluation
     NumericalSample unifRealization(Uniform(0.0, 10.0).getSample(2));

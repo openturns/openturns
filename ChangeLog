@@ -48,6 +48,7 @@
  * #698 (KernelSmoothing() as a factory)
  * #786 (Bug in sensitivity analysis)
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
+ * #815 (ConditionedNormalProcess test fails randomly)
  * #820 (Python distribution fails randomly when computing the PDF over a sample)
  * #822 (Incorect Matrix / point operations with cast)
  * #824 (Confusing behavior of NumericalSample::sort)
