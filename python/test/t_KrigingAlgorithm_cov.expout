@@ -1,28 +1,28 @@
-myDefautModel =  SquaredExponential(input dimension=1, theta=[10], sigma=[1])
-myModel =  SquaredExponential(input dimension=2, theta=[10,10], sigma=[1])
-myModel( [-1,-2] ,  [3,5] )= [[ 0.722527 ]]
-dCov = [[ 0.0289011 ]
- [ 0.0505769 ]]
-dCov (FD)= [0.0289011,0.0505769]
-myDefautModel =  GeneralizedExponential(input dimension=1, theta=[10], sigma=[1], p=1)
+myDefautModel =  SquaredExponential(input dimension=1, theta=[1], sigma=[1])
+myModel =  SquaredExponential(input dimension=2, theta=[1,1], sigma=[1])
+myModel( [-1,-2] ,  [3,5] )= [[ 7.6812e-15 ]]
+dCov = [[ 3.07248e-14 ]
+ [ 5.37684e-14 ]]
+dCov (FD)= [3.07254e-14,5.37703e-14]
+myDefautModel =  GeneralizedExponential(input dimension=1, theta=[1], sigma=[1], p=1)
 myModel =  GeneralizedExponential(input dimension=2, theta=[10,10], sigma=[1], p=1.5)
 myModel( [-1,-2] ,  [3,5] )= [[ 0.484852 ]]
 dCov = [[ 0.0323991 ]
  [ 0.0566984 ]]
 dCov (FD)= [0.032399,0.0566984]
-myDefautModel =  AbsoluteExponential(input dimension=1, theta=[10], sigma=[1])
-myModel =  AbsoluteExponential(input dimension=2, theta=[10,10], sigma=[1])
-myModel( [-1,-2] ,  [3,5] )= [[ 0.332871 ]]
-dCov = [[ -0.0332871 ]
- [ -0.0332871 ]]
-dCov (FD)= [0.0332871,0.0332871]
-myDefautModel =  MaternModel(input dimension=1, theta=[10], sigma=[1], nu=1.5)
+myDefautModel =  AbsoluteExponential(input dimension=1, theta=[1], sigma=[1])
+myModel =  AbsoluteExponential(input dimension=2, theta=[1,1], sigma=[1])
+myModel( [-1,-2] ,  [3,5] )= [[ 1.67017e-05 ]]
+dCov = [[ -1.67017e-05 ]
+ [ -1.67017e-05 ]]
+dCov (FD)= [1.67018e-05,1.67018e-05]
+myDefautModel =  MaternModel(input dimension=1, theta=[1], sigma=[1], nu=1.5)
 myModel =  MaternModel(input dimension=2, theta=[8,8], sigma=[1], nu=2)
 myModel( [-1,-2] ,  [3,5] )= [[ 0.503176 ]]
 dCov = [[ 0.0345258 ]
  [ 0.0604202 ]]
 dCov (FD)= [0.0345258,0.0604202]
-myDefautModel =  class=ProductCovarianceModel input dimension=1 models=[class=AbsoluteExponential input dimension=1 theta=class=NumericalPoint name=Unnamed dimension=1 values=[10] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1]]
+myDefautModel =  class=ProductCovarianceModel input dimension=1 models=[class=AbsoluteExponential input dimension=1 theta=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1]]
 myModel =  class=ProductCovarianceModel input dimension=2 models=[class=AbsoluteExponential input dimension=1 theta=class=NumericalPoint name=Unnamed dimension=1 values=[3] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1],class=SquaredExponential input dimension=1 theta=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1]]
 myModel( [-1,-2] ,  [3,5] )= [[ 0.000576616 ]]
 dCov = [[ -0.000192205 ]

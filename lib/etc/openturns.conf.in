@@ -450,17 +450,17 @@
   <KrigingAlgorithm-LinearAlgebra   value="LAPACK"  />
 
   <!-- OT::SquaredExponential parameters -->
-  <SquaredExponential-DefaultTheta value="10.0"  />
+  <SquaredExponential-DefaultTheta value="1.0"  />
   
   <!-- OT::AbsoluteExponential parameters -->
-  <AbsoluteExponential-DefaultTheta value="10.0"  />
+  <AbsoluteExponential-DefaultTheta value="1.0"  />
   
   <!-- OT::GeneralizedExponential parameters -->
-  <GeneralizedExponential-DefaultTheta value="10.0"  />
+  <GeneralizedExponential-DefaultTheta value="1.0"  />
   
   <!-- OT::MaternModel parameters -->
   <MaternModel-DefaultNu    value="1.5"   />
-  <MaternModel-DefaultTheta value="10.0"  />
+  <MaternModel-DefaultTheta value="1.0"  />
   
   <!-- OT::WeightedExperimentImplementation parameters -->
   <WeightedExperimentImplementation-DefaultSize value="100" />

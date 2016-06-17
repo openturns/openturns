@@ -60,10 +60,10 @@ Create a standard generalized exponential covariance function:
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
 >>> print(covModel(s, t))
-[[ 0.985957 ]]
+[[ 0.868123 ]]
 >>> tau = [0.1, 0.3]
 >>> print(covModel(tau))
-[[ 0.968872 ]]
+[[ 0.728893 ]]
 
 Create a  generalized exponential covariance function specifying the scale vector and p:
 

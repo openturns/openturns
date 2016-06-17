@@ -717,17 +717,17 @@ void ResourceMap::loadDefaultConfiguration()
   set("KrigingAlgorithm-LinearAlgebra", "LAPACK");
 
   // SquaredExponential parameters //
-  setAsNumericalScalar( "SquaredExponential-DefaultTheta", 10.0 );
+  setAsNumericalScalar( "SquaredExponential-DefaultTheta", 1.0 );
 
   // AbsoluteExponential parameters //
-  setAsNumericalScalar( "AbsoluteExponential-DefaultTheta", 10.0 );
+  setAsNumericalScalar( "AbsoluteExponential-DefaultTheta", 1.0 );
 
   // GeneralizedExponential parameters //
-  setAsNumericalScalar( "GeneralizedExponential-DefaultTheta", 10.0 );
+  setAsNumericalScalar( "GeneralizedExponential-DefaultTheta", 1.0 );
 
   // MaternModel parameters //
   setAsNumericalScalar( "MaternModel-DefaultNu", 1.5 );
-  setAsNumericalScalar( "MaternModel-DefaultTheta", 10.0 );
+  setAsNumericalScalar( "MaternModel-DefaultTheta", 1.0 );
 
   // WeightedExperimentImplementation parameters //
   setAsUnsignedInteger( "WeightedExperimentImplementation-DefaultSize", 100 );
