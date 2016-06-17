@@ -17,7 +17,7 @@ try:
     R = ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0])
     scale = [1.0]
     amplitude = [1.0, 2.0]
-    cov2D = ot.ExponentialModel(1, amplitude, scale, R)
+    cov2D = ot.ExponentialModel(scale, amplitude, R)
     KLFunctions = factory.build(cov2D, eigenValues)
     print("KL functions=", KLFunctions)
     print("KL eigenvalues=", eigenValues)

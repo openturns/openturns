@@ -29,7 +29,7 @@ try:
 
     # Sample a ExponentialModel
     referenceModel = ExponentialModel(
-        spatialDimension, amplitude, scale, spatialCorrelation)
+        scale, amplitude, spatialCorrelation)
 
     print("reference model=", referenceModel)
     size = 100

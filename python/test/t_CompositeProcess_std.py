@@ -70,7 +70,7 @@ myMesh = myMesher.build(myInterval)
 # with independent components
 amplitude = [1.0, 1.0]
 scale = [0.2, 0.3]
-myCovModel = ot.ExponentialModel(myMesh.getDimension(), amplitude, scale)
+myCovModel = ot.ExponentialModel(scale, amplitude)
 
 myXtProcess_temp = ot.TemporalNormalProcess(myCovModel, myMesh)
 

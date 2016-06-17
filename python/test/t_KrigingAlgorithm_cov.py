@@ -106,7 +106,7 @@ scale = [1.0] * spatialDimension
 # Define a spatial correlation
 spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
 spatialCorrelation[1,0] = 0.3
-myExponentialModel = ot.ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation)
+myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 collection.add(myExponentialModel)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
 myModel = ot.TensorizedCovarianceModel(collection)

@@ -8,7 +8,7 @@ N = 512
 a = 20.0
 # myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
 myMesh = ot.RegularGrid(0.0, 2 * a / N, N + 1)
-covarianceModel = ot.ExponentialModel(1, [1.0], [1.0])
+covarianceModel = ot.ExponentialModel([1.0], [1.0])
 
 myProcess = ot.TemporalNormalProcess(covarianceModel, myMesh)
 

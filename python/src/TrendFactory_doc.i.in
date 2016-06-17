@@ -64,7 +64,7 @@ Define a scalar temporal normal process on a mesh of dimension 1:
 >>> myGrid = ot.RegularGrid(0.0, 0.1, 100)
 >>> amplitude=[5.0]
 >>> scale=[0.2]
->>> myCovModel=ot.ExponentialModel(1, amplitude, scale)
+>>> myCovModel=ot.ExponentialModel(scale, amplitude)
 >>> myXProcess=ot.TemporalNormalProcess(myCovModel, myGrid)
 
 Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t)=1+2t+t^2`:

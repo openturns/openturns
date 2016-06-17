@@ -44,7 +44,7 @@ Create the each covariance models:
 >>> scale = [1.0, 1.0]
 >>> spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
 >>> spatialCorrelation[1,0] = 0.3
->>> myCov3 = ot.ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation)
+>>> myCov3 = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 
 Define the scale of the tensorized model:
 

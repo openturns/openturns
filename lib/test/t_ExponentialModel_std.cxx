@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     /* Second order model with parameters */
-    ExponentialModel myModel(spatialDimension, amplitude, scale);
+    ExponentialModel myModel(scale, amplitude);
     fullprint << "myModel = " << myModel << std::endl;
 
     const NumericalScalar timeValueOne(1.0);
@@ -79,11 +79,11 @@ int main(int argc, char *argv[])
     }
     fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;
     /* checking the cast*/
-    StationaryCovarianceModel mySecondOrderModel(ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation));
+    StationaryCovarianceModel mySecondOrderModel(ExponentialModel(scale, amplitude, spatialCorrelation));
     fullprint << "mySecondOrderModel = " << mySecondOrderModel << std::endl;
 
     /* Second order model - high dimension */
-    ExponentialModel myHighModel(spatialDimension, amplitude, scale, spatialCorrelation);
+    ExponentialModel myHighModel(scale, amplitude, spatialCorrelation);
     fullprint << "myHighModel = " << myHighModel << std::endl;
 
     fullprint << "covariance matrix at t = " << timeValueOne << " : " << myHighModel(timeValueOne) << std::endl;
