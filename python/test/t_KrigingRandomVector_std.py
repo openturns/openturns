@@ -29,7 +29,7 @@ outputValidSample = model(inputValidSample)
 # 2) Definition of exponential model
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
-covarianceModel = SquaredExponential([1.98824,0.924731], [3.15352])
+covarianceModel = SquaredExponential([1.988, 0.924], [3.153])
 
 # 3) Basis definition
 basisCollection = BasisCollection(1, ConstantBasisFactory(spatialDimension).build())
@@ -55,7 +55,7 @@ var = result.getConditionalCovariance(inputSample)
 # application to NumericalPoint
 covariancePoint = NumericalPoint(var.getImplementation())
 theoricalVariance = NumericalPoint(covariancePoint.getSize(), 0.0)
-assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
+assert_almost_equal(covariancePoint, theoricalVariance, 1e-6, 1e-6)
 
 # Random vector evaluation
 rvector = KrigingRandomVector(result, inputValidSample[0])
