@@ -84,7 +84,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 Create the algorithm:
 
 >>> basis = ot.Basis([ot.NumericalMathFunction('x', 'x'), ot.NumericalMathFunction('x', 'x^2')])
->>> covarianceModel = ot.GeneralizedExponential(1, 2.0, 2.0)
+>>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
 >>> algoKriging = ot.KrigingAlgorithm(sampleX, sampleY, basis, covarianceModel)
 >>> algoKriging.run()
 
