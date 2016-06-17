@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));
     KarhunenLoeveP1Factory factory(mesh, 0.0);
     NumericalPoint lambda;
-    ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(1, 1.0), lambda));
+    ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(NumericalPoint(1, 1.0)), lambda));
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
     AbsoluteExponential cov1D(NumericalPoint(1, 1.0));

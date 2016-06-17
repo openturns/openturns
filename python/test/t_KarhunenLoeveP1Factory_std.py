@@ -7,10 +7,10 @@ try:
     mesh = ot.IntervalMesher(ot.Indices(1, 9)).build(ot.Interval(-1.0, 1.0))
     factory = ot.KarhunenLoeveP1Factory(mesh, 0.0);
     eigenValues = ot.NumericalPoint()
-    KLModes = factory.buildAsProcessSample(ot.AbsoluteExponential(1, 1.0), eigenValues)
+    KLModes = factory.buildAsProcessSample(ot.AbsoluteExponential([1.0]), eigenValues)
     print("KL modes=", KLModes)
     print("KL eigenvalues=", eigenValues)
-    cov1D = ot.AbsoluteExponential(1, 1.0)
+    cov1D = ot.AbsoluteExponential([1.0])
     KLFunctions = factory.build(cov1D, eigenValues)
     print("KL functions=", KLFunctions)
     print("KL eigenvalues=", eigenValues)

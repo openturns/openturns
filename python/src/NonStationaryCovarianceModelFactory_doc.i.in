@@ -64,7 +64,7 @@ Examples
 Create the covariance model, a mesh and a process:
 
 >>> import openturns as ot
->>> myModel = ot.AbsoluteExponential(2, 0.1)
+>>> myModel = ot.AbsoluteExponential([0.1]*2)
 >>> myMesh = ot.IntervalMesher([10]*2).build(ot.Interval([0.0]*2, [1.0]*2))
 >>> myProcess = ot.TemporalNormalProcess(myModel, myMesh)
 

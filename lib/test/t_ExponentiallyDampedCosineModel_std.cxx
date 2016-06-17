@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
     /* Spatial dimension of the model */
     UnsignedInteger spatialDimension(1);
     /* Amplitude values */
-    NumericalScalar amplitude(1.0);
+    NumericalPoint amplitude(1, 1.0);
     /* Scale values */
-    NumericalScalar scale(1.0);
+    NumericalPoint scale(1, 1.0);
     /* Frequency values */
     NumericalScalar frequency(0.1);
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     /* Second order model with parameters */
-    ExponentiallyDampedCosineModel myModel(spatialDimension, amplitude, scale, frequency);
+    ExponentiallyDampedCosineModel myModel(scale, amplitude, frequency);
     fullprint << "myModel = " << myModel << std::endl;
 
     const NumericalScalar timeValueOne(1.0);

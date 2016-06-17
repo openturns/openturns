@@ -141,7 +141,7 @@ Create the Kriging algorithm with the optimizer option:
 
 >>> basis = ot.Basis([ot.NumericalMathFunction('x', '0.0')])
 >>> thetaInit = 1.0
->>> covariance = ot.GeneralizedExponential(1, thetaInit, 2.0)
+>>> covariance = ot.GeneralizedExponential([thetaInit], 2.0)
 >>> optimizer = ot.TNC()
 >>> bounds = ot.Interval(1e-2,1e2)
 >>> optimProblem = ot.OptimizationProblem()
