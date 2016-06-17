@@ -40,10 +40,6 @@ public:
   explicit AbsoluteExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  AbsoluteExponential(const UnsignedInteger spatialDimension,
-                      const NumericalScalar theta);
-
-  /** Parameters constructor */
   AbsoluteExponential(const NumericalPoint & theta);
 
   /** Parameters constructor */

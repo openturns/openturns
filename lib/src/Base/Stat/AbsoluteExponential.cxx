@@ -35,14 +35,6 @@ AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
   // Nothing to do
 }
 
-/* Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension,
-                                         const NumericalScalar theta)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, theta))
-{
-  Log::Warn(OSS() << "The constructor " << getClassName() << "(spatialDimension, theta) is deprecated in favor of " << getClassName() << "(theta, sigma) or " << getClassName() << "(theta).");
-}
-
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
   : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
