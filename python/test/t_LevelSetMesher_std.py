@@ -14,7 +14,7 @@ try:
     ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError", 1.0e-7 )
     ot.PlatformInfo.SetNumericalPrecision(4)
     # The 1D mesher
-    mesher1D =  ot.LevelSetMesher([5])
+    mesher1D =  ot.LevelSetMesher([7])
     print("mesher1D=", mesher1D)
 
     level = 0.5
@@ -30,7 +30,7 @@ try:
     print("mesh1D=", mesh1D)
 
     # The 2D mesher
-    mesher2D = ot.LevelSetMesher([4]*2)
+    mesher2D = ot.LevelSetMesher([5]*2)
     print("mesher2D=", mesher2D)
 
     function2D = ot.NumericalMathFunction(["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"])

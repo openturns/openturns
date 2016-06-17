@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError", 1.0e-7 );
     PlatformInfo::SetNumericalPrecision(4);
     // The 1D mesher
-    LevelSetMesher mesher1D(Indices(1, 5));
+    LevelSetMesher mesher1D(Indices(1, 7));
     fullprint << "mesher1D=" << mesher1D << std::endl;
 
     NumericalScalar level = 0.5;
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     fullprint << "mesh1D=" << mesh1D << std::endl;
 
     // The 2D mesher
-    LevelSetMesher mesher2D(Indices(2, 4));
+    LevelSetMesher mesher2D(Indices(2, 5));
     fullprint << "mesher2D=" << mesher2D << std::endl;
 
     NumericalMathFunction function2D(Description::BuildDefault(2, "x"), Description(1, "cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"));
