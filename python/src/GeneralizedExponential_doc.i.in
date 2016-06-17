@@ -4,8 +4,6 @@
 Available constructors:
     GeneralizedExponential(*spatialDim=1*)
 
-    GeneralizedExponential(*spatialDim, thetaScalar, p*)
-
     GeneralizedExponential(*theta, p*)
 
     GeneralizedExponential(*theta, sigma, p*)
@@ -15,26 +13,20 @@ Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
-
     When not fulfilled, the spatial dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
-
     By default, equal to 1.
-thetaScalar : float
-    Used to specify the scale coefficient :math:`\vect{\theta}=[thetaScalar]*spatialDim`.
 
-    By default, equal to 10.
 theta : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
-
     The size of :math:`\vect{\theta}` is the spatial dimension.
-p : int, :math:`p \geq 1`
-    Define the norm that is used within the model.
+
 sigma : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
-
     Must be of size equal to 1.
-
     By default, equal to :math:`[1]`.
+
+p : int, :math:`p \geq 1`
+    Define the norm that is used within the model.
 
 
 Notes

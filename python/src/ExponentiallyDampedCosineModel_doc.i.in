@@ -4,36 +4,23 @@
 Available constructors:
     ExponentiallyDampedCosineModel(*spatialDim=1*)
 
-    ExponentiallyDampedCosineModel(*spatialDim, sigmaScalar, thetaScalar, f*)
-
     ExponentiallyDampedCosineModel(*theta, sigma,f*)
 
 Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
-
     By default, equal to 1.
-sigmaScalar : positive float
-    Amplitude of the process :math:`\sigma`.
 
-    Used to specify the amplitude coefficient :math:`\vect{\sigma} = [\sigma]`.
-
-    By default, equal to 1.  
-thetaScalar : float
-    Used to specify the scale coefficient :math:`\vect{\theta}=[thetaScalar]*spatialDim`.
-
-    By default, equal to 1.
-sigma : sequence of positive floats
-    Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
-
-    Must be of size equal to 1.
-
-    By default, equal to :math:`[1]`.
 theta : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
-
     The size of :math:`\vect{\theta}` is the spatial dimension.
+
+sigma : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+
 f : positive float
     Frequency parameter.
 
