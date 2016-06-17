@@ -40,18 +40,6 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   // Nothing to do
 }
 
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension,
-                                                               const NumericalScalar amplitude,
-                                                               const NumericalScalar scale,
-                                                               const NumericalScalar frequency)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, amplitude), NumericalPoint(spatialDimension, scale))
-  , frequency_(0.0)
-{
-  Log::Warn(OSS() << "The constructor " << getClassName() << "(spatialDimension, amplitude, theta, frequency) is deprecated favor of " << getClassName() << "(scale, amplitude, frequency).");
-  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
-  setFrequency(frequency);
-}
-
 /** Standard constructor with amplitude and scale parameters */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & scale,
                                                                const NumericalPoint & amplitude,

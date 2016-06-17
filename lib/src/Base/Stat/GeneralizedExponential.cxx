@@ -37,16 +37,6 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
   // Nothing to do
 }
 
-/* Parameters constructor */
-GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension,
-                                               const NumericalScalar theta,
-                                               const NumericalScalar p)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, theta))
-  , p_(p)
-{
-  Log::Warn(OSS() << "The constructor " << getClassName() << "(spatialDimension, theta, p) is deprecated in favor of " << getClassName() << "(theta, sigma, p) or " << getClassName() << "(theta, p) ");
-}
-
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
                                                const NumericalScalar p)
