@@ -26,8 +26,8 @@ mean over  25  realizations =       [             y0          ]
  8 : [  0.8        -0.13351    ]
  9 : [  0.9        -0.096771   ]
 10 : [  1          -0.075824   ]
-myCovModel =  ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation)
-myProcess1 =  TemporalNormalProcess(trend=[x]->[0.0], covariance=ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation))
+myCovModel =  ExponentialModel(input dimension=1, scale=[1], amplitude=[1], no spatial correlation)
+myProcess1 =  TemporalNormalProcess(trend=[x]->[0.0], covariance=ExponentialModel(input dimension=1, scale=[1], amplitude=[1], no spatial correlation))
 is stationary?  True
 mean over  25  realizations =       [             y0          ]
  0 : [  0           0.301595   ]
@@ -53,7 +53,7 @@ mean over  25  realizations =       [          y0       ]
  8 : [ 0.8      0.151671 ]
  9 : [ 0.9      0.187193 ]
 10 : [ 1        0.180541 ]
-myProcess2 =  TemporalNormalProcess(trend=[t]->[4.0], covariance=ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation))
+myProcess2 =  TemporalNormalProcess(trend=[t]->[4.0], covariance=ExponentialModel(input dimension=1, scale=[1], amplitude=[1], no spatial correlation))
 is stationary?  True
 mean over  25  realizations=       [                outputVariable ]
  0 : [ 0              4.06085        ]
@@ -67,7 +67,7 @@ mean over  25  realizations=       [                outputVariable ]
  8 : [ 0.8            3.8367         ]
  9 : [ 0.9            3.88025        ]
 10 : [ 1              3.88796        ]
-myProcess3 =  TemporalNormalProcess(trend=[t]->[sin(t)], covariance=ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation))
+myProcess3 =  TemporalNormalProcess(trend=[t]->[sin(t)], covariance=ExponentialModel(input dimension=1, scale=[1], amplitude=[1], no spatial correlation))
 is stationary?  False
 mean over  25  realizations =       [            y0         ]
  0 : [  0         -0.186405  ]

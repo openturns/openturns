@@ -1,6 +1,6 @@
-myCovarianceModel =  ExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation)
+myCovarianceModel =  ExponentialModel(input dimension=1, scale=[1], amplitude=[1], no spatial correlation)
 mySpectralModel =  class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
-myModel =  class=SecondOrderModel implementation=class= SecondOrderModelImplementationExponentialModel(input dimension=1, amplitude=[1], scale=[1], no spatial correlation)class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
+myModel =  class=SecondOrderModel implementation=class= SecondOrderModelImplementationExponentialModel(input dimension=1, scale=[1], amplitude=[1], no spatial correlation)class=CauchyModel amplitude=[1] scale=[1] no spatial correlation
 covariance matrix at t =  1.0  :  [[ 0.367879 ]]
 covariance matrix at t =  -1.0  :  [[ 0.367879 ]]
 spectral density at f =  0.5  :  [[ (0.183999,0) ]]
