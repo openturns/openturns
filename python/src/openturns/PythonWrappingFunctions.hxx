@@ -1209,21 +1209,6 @@ convert< _PySequence_, WhittleFactoryState >(PyObject * pyObj)
 
 
 template <>
-struct traitsPythonType< CovarianceModel >
-{
-  typedef _PySequence_ Type;
-};
-
-template <>
-inline
-CovarianceModel
-convert< _PySequence_, CovarianceModel >(PyObject * pyObj)
-{
-  return CovarianceModel();
-}
-
-
-template <>
 struct traitsPythonType< Process >
 {
   typedef _PySequence_ Type;

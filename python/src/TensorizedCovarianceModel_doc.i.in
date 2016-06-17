@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-covModelCollection : :class:`~openturns.CovarianceModelCollection`
+coll : sequence of :class:`~openturns.CovarianceModel`
     Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`d_k`.
 
 Notes
@@ -52,10 +52,7 @@ Define the scale of the tensorized model:
 
 Create the tensorized model:
 
->>> coll = ot.CovarianceModelCollection()
->>> coll.add(myCov1)
->>> coll.add(myCov2)
->>> coll.add(myCov3)
+>>> coll = [myCov1, myCov2, myCov3]
 >>> covarianceModel = ot.TensorizedCovarianceModel(coll, scale)
 
 Fix the same scale to each model:
