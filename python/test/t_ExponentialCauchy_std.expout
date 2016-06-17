@@ -1,4 +1,4 @@
-myDefautModel =  class=ExponentialCauchy amplitude=[1] scale=[10]
+myDefautModel =  class=ExponentialCauchy amplitude=[1] scale=[1]
 myModel =  class=ExponentialCauchy amplitude=[1] scale=[1]
 covariance matrix at t =  1.0  :  [[ 0.367879 ]]
 covariance matrix at t =  -1.0  :  [[ 0.367879 ]]

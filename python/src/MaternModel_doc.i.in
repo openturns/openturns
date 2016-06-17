@@ -61,10 +61,10 @@ Create a standard Matern covariance function:
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
 >>> print(covModel(s, t))
-[[ 0.999705 ]]
+[[ 0.974477 ]]
 >>> tau = [0.1, 0.3]
 >>> print(covModel(tau))
-[[ 0.998554 ]]
+[[ 0.894994 ]]
 
 Create a  Matern covariance function specifying the scale vector and :math:`\nu`:
 
