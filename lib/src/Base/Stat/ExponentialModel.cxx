@@ -199,8 +199,8 @@ String ExponentialModel::__repr__() const
   OSS oss(true);
   oss << "class=" << ExponentialModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << getAmplitude()
       << " scale=" << getScale()
+      << " amplitude=" << getAmplitude()
       << " spatial correlation=" << getSpatialCorrelation()
       << " isDiagonal=" << isDiagonal();
   return oss;
@@ -212,8 +212,8 @@ String ExponentialModel::__str__(const String & offset) const
   OSS oss(false);
   oss << ExponentialModel::GetClassName();
   oss << "(input dimension=" << spatialDimension_
-      << ", amplitude=" << getAmplitude()
-      << ", scale=" << getScale();
+      << ", scale=" << getScale()
+  << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
     oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
   else
