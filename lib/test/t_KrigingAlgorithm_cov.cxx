@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
       // Define a spatial correlation
       CorrelationMatrix spatialCorrelation(spatialDimension);
       spatialCorrelation(1,0) = 0.3;
-      ExponentialModel myExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation);
+      ExponentialModel myExponentialModel(scale, amplitude, spatialCorrelation);
       collection.add(myExponentialModel);
       // Build TensorizedCovarianceModel with scale = [1,..,1]
       TensorizedCovarianceModel myModel(collection);

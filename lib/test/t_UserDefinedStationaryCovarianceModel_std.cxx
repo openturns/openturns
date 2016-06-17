@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     }
 
     /* Sample a CauchyModel */
-    ExponentialModel referenceModel(spatialDimension, amplitude, scale, spatialCorrelation);
+    ExponentialModel referenceModel(scale, amplitude, spatialCorrelation);
 
     UnsignedInteger size(20);
     RegularGrid timeGrid(0.0, 0.1, size);

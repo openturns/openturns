@@ -31,7 +31,7 @@ class GaussianConvolution(ot.OpenTURNSPythonDynamicalFunction):
 
 N = 5
 X = ot.TemporalNormalProcess(ot.GeneralizedExponential(
-    1, 0.1, 1.0), ot.RegularGrid(-5.0, 0.1, 101))
+    [0.1], 1.0), ot.RegularGrid(-5.0, 0.1, 101))
 f = ot.DynamicalFunction(GaussianConvolution())
 Y = ot.CompositeProcess(f, X)
 x_graph = X.getSample(N).drawMarginal(0)

@@ -27,7 +27,7 @@ for index in range(dimension):
 
 # Sample a ExponentialModel
 referenceModel = ExponentialModel(
-    spatialDimension, amplitude, scale, spatialCorrelation)
+    scale, amplitude, spatialCorrelation)
 
 size = 20
 timeGrid = RegularGrid(0.0, 0.1, size)

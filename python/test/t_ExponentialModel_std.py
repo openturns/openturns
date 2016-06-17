@@ -23,7 +23,7 @@ try:
     print("myDefautModel = ", myDefautModel)
 
     # Second order model with parameters
-    myModel = ExponentialModel(spatialDimension, amplitude, scale)
+    myModel = ExponentialModel(scale, amplitude)
     print("myModel = ", myModel)
 
     timeValueOne = 1.
@@ -54,12 +54,12 @@ try:
 
     # check the cast
     mySecondOrderModel = StationaryCovarianceModel(
-        ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation))
+        ExponentialModel(scale, amplitude, spatialCorrelation))
     print("mySecondOrderModel = ", mySecondOrderModel)
 
     # Second order model  - dimension 10
     myHighModel = ExponentialModel(
-        spatialDimension, amplitude, scale, spatialCorrelation)
+        scale, amplitude, spatialCorrelation)
     print("myHighModel = ", myHighModel)
 
     print("covariance matrix at t = ", timeValueOne,

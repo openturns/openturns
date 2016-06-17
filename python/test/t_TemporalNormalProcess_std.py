@@ -42,7 +42,7 @@ try:
           myProcess.getSample(size).computeMean())
 
     # Second order model with parameters
-    myCovModel = ExponentialModel(spatialDimension, amplitude, scale)
+    myCovModel = ExponentialModel(scale, amplitude)
     print("myCovModel = ", myCovModel)
 
     myProcess1 = TemporalNormalProcess(myCovModel, myTimeGrid)

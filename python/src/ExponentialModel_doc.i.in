@@ -2,30 +2,30 @@
 "Multivariate stationary exponential covariance function.
 
 Available constructors:
-    ExponentialModel(*spatialDim, sigma, theta*)
+    ExponentialModel(*spatialDim=1*)
 
-    ExponentialModel(*spatialDim, sigma, theta, spatialCorrelation*)
-
-    ExponentialModel(*spatialDim, theta, spatialCovariance*)
+    ExponentialModel(*theta, sigma*)
 
     ExponentialModel(*theta, sigma, spatialCorrelation*)
 
-    ExponentialModel(*theta, sigma, spatialCovariance*)
+    ExponentialModel(*theta, spatialCovariance*)
 
 Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
-
     By default, the spatial dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
+
 sigma : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
+
 theta : sequence of floats
      Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
-
     By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
+
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`C^{stat} \in \cS_d^+(\Rset)`.
 
@@ -59,8 +59,7 @@ Create an exponential model from the amplitude :math:`\vect{\sigma}` and the sca
 >>> import openturns as ot
 >>> amplitude = [1.0, 2.0]
 >>> scale = [4.0, 5.0]
->>> spatialDimension = 2
->>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
+>>> myCovarianceModel = ot.ExponentialModel(scale, amplitude)
 
 Create an exponential model from the amplitude, scale and the correlation matrix:
 
@@ -68,10 +67,9 @@ Create an exponential model from the amplitude, scale and the correlation matrix
 >>> scale = [4.0, 5.0]
 >>> spatialCorrelation = ot.CorrelationMatrix(2)
 >>> spatialCorrelation[0,1] = 0.8
->>> spatialDimension = 2
->>> myCovarianceModel = ot.ExponentialModel(spatialDimension, amplitude, scale)
+>>> myCovarianceModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 
-Create an exponential model from the amplitude, scale and covariance matrix:
+Create an exponential model from the scale and covariance matrix:
 
 >>> amplitude = [1.0, 2.0]
 >>> scale = [4.0, 5.0]
@@ -80,5 +78,5 @@ Create an exponential model from the amplitude, scale and covariance matrix:
 >>> spatialCovariance[1,1] = 5.0
 >>> spatialCovariance[0,1] = 1.2
 >>> spatialDimension = 2
->>> myCovarianceModel = ot.ExponentialModel(spatialDimension, scale, spatialCovariance)"
+>>> myCovarianceModel = ot.ExponentialModel(scale, spatialCovariance)"
 

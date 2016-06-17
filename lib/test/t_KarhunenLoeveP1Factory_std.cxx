@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     ProcessSample KLModes(factory.buildAsProcessSample(AbsoluteExponential(1, 1.0), lambda));
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
-    AbsoluteExponential cov1D(1, 1.0);
+    AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
     Basis KLFunctions(factory.build(cov1D, lambda));
     fullprint << "KL functions=" << KLFunctions << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     NumericalPoint amplitude(2);
     amplitude[0] = 1.0;
     amplitude[1] = 2.0;
-    ExponentialModel cov2D(1, amplitude, scale, R);
+    ExponentialModel cov2D(scale, amplitude, R);
     KLFunctions = factory.build(cov2D, lambda);
     fullprint << "KL functions=" << KLFunctions << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;

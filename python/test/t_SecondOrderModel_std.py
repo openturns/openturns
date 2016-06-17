@@ -19,7 +19,7 @@ try:
     scale = NumericalPoint(dimension, 1.0)
 
     # Covariance model
-    myCovarianceModel = ExponentialModel(spatialDimension, amplitude, scale)
+    myCovarianceModel = ExponentialModel(scale, amplitude)
     print("myCovarianceModel = ", myCovarianceModel)
 
     # Spectral model
