@@ -35,6 +35,8 @@ static const Factory<MaximumDistribution> Factory_MaximumDistribution;
 MaximumDistribution::MaximumDistribution()
   : DistributionImplementation()
   , distribution_()
+  , allSame_(true)
+  , variablesNumber_(1)
 {
   setName("MaximumDistribution");
   setDimension(1);
@@ -46,6 +48,8 @@ MaximumDistribution::MaximumDistribution()
 MaximumDistribution::MaximumDistribution(const Distribution & distribution)
   : DistributionImplementation()
   , distribution_()
+  , allSame_(false)
+  , variablesNumber_(distribution.getDimension())
 {
   setName("MaximumDistribution");
   setDimension(1);
@@ -56,10 +60,37 @@ MaximumDistribution::MaximumDistribution(const Distribution & distribution)
 MaximumDistribution::MaximumDistribution(const DistributionCollection & collection)
   : DistributionImplementation()
   , distribution_()
+  , allSame_(true)
+  , variablesNumber_(collection.getSize())
 {
+  if (variablesNumber_ == 0) throw InvalidArgumentException(HERE) << "Error: cannot take the maximum of an empty collection of distributions";
+  for (UnsignedInteger i = 0; i < variablesNumber_; ++i)
+    if (collection[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot take the maximum of a collection of multivariate distributions, here distribution=" << i << " has dimension=" << collection[i].getDimension();
   setName("MaximumDistribution");
   setDimension(1);
-  setDistribution(ComposedDistribution(collection));
+  for (UnsignedInteger i = 0; i < variablesNumber_; ++i)
+    if (collection[i] != collection[0])
+      {
+	allSame_ = false;
+	break;
+      }
+  if (allSame_) setDistribution(collection[0]);
+  else setDistribution(ComposedDistribution(collection));
+}
+
+/* Parameters constructor */
+MaximumDistribution::MaximumDistribution(const Distribution & distribution,
+					 const UnsignedInteger variablesNumber)
+  : DistributionImplementation()
+  , distribution_()
+  , allSame_(true)
+  , variablesNumber_(variablesNumber)
+{
+  if (variablesNumber_ == 0) throw InvalidArgumentException(HERE) << "Error: cannot take the maximum of an empty collection of distributions";
+  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot take the maximum of a collection of multivariate distributions, here distribution=0 has dimension=" << distribution.getDimension();
+  setName("MaximumDistribution");
+  setDimension(1);
+  setDistribution(distribution);
 }
 
 /* Comparison operator */
@@ -82,7 +113,7 @@ String MaximumDistribution::__repr__() const
 String MaximumDistribution::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(" << distribution_.__str__() << ")";
+  oss << offset << getClassName() << "(" << getDistribution().__str__() << ")";
   return oss;
 }
 
@@ -95,6 +126,7 @@ MaximumDistribution * MaximumDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void MaximumDistribution::computeRange()
 {
+  if (allSame_) setRange(distribution_.getRange());
   const NumericalPoint lower(distribution_.getRange().getLowerBound());
   const NumericalPoint upper(distribution_.getRange().getUpperBound());
   setRange(Interval(*std::max_element(lower.begin(), lower.end()), *std::max_element(upper.begin(), upper.end())));
@@ -103,6 +135,7 @@ void MaximumDistribution::computeRange()
 /* Get one realization of the distribution */
 NumericalPoint MaximumDistribution::getRealization() const
 {
+  if (allSame_) return distribution_.getSample(variablesNumber_).getMax();
   const NumericalPoint realization(distribution_.getRealization());
   return NumericalPoint(1, *std::max_element(realization.begin(), realization.end()));
 }
@@ -112,6 +145,9 @@ NumericalScalar MaximumDistribution::computePDF(const NumericalPoint & point) co
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
+  // Special case for identical independent variables
+  if (allSame_) return distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<NumericalScalar>(variablesNumber_) - 1.0);
+  // General case
   if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
   // Special treatment of the independent copula case
   const UnsignedInteger size(distribution_.getDimension());
@@ -139,24 +175,44 @@ NumericalScalar MaximumDistribution::computePDF(const NumericalPoint & point) co
 NumericalScalar MaximumDistribution::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  // Special case for identical independent variables
+  if (allSame_) return std::pow(distribution_.computeCDF(point), static_cast<NumericalScalar>(variablesNumber_));
+  // General case
   return distribution_.computeCDF(NumericalPoint(distribution_.getDimension(), point[0]));
 }
 
 /* Parameters value and description accessor */
 MaximumDistribution::NumericalPointWithDescriptionCollection MaximumDistribution::getParametersCollection() const
 {
+  // This is done on purpose to distinguish the case allSame == True
+  if (allSame_) return getDistribution().getParametersCollection();
   return distribution_.getParametersCollection();
 }
 
 void MaximumDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
-  distribution_.setParametersCollection(parametersCollection);
+  // This trick is needed n order to cope with the case allSame == True
+  if (allSame_)
+    {
+      Distribution clone(getDistribution());
+      clone.setParametersCollection(parametersCollection);
+      distribution_ = clone;
+    }
+  else
+    distribution_.setParametersCollection(parametersCollection);
 }
 
 /* Distribution accessor */
 void MaximumDistribution::setDistribution(const Distribution & distribution)
 {
+  // Here we suppose that variablesNumber_ has already been initialized with the
+  // correct value, ie either the distribution dimension is equal to 1 and
+  // variablesNumber_ can take any positive value, or the distribution dimension
+  // is greater than 1 and variablesNumber_ is equalt to this dimension
+  const UnsignedInteger dimension = distribution.getDimension();
+  if ((dimension > 1) && (dimension != variablesNumber_)) throw InvalidArgumentException(HERE) << "Error: the distribution dimension=" << dimension << " does not match the number of variables=" << variablesNumber_;
   distribution_ = distribution;
+  allSame_ = (dimension == 1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
@@ -166,6 +222,7 @@ void MaximumDistribution::setDistribution(const Distribution & distribution)
 
 Distribution MaximumDistribution::getDistribution() const
 {
+  if (allSame_) return ComposedDistribution(DistributionCollection(variablesNumber_, distribution_));
   return distribution_;
 }
 
@@ -191,6 +248,8 @@ void MaximumDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
+  adv.saveAttribute( "allSame_", allSame_ );
+  adv.saveAttribute( "variablesNumber_", variablesNumber_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -199,6 +258,8 @@ void MaximumDistribution::load(Advocate & adv)
   DistributionImplementation::load(adv);
   Distribution distribution;
   adv.loadAttribute( "distribution_", distribution );
+  adv.loadAttribute( "allSame_", allSame_ );
+  adv.loadAttribute( "variablesNumber_", variablesNumber_ );
   setDistribution(distribution);
 }
 
