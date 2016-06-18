@@ -353,6 +353,9 @@ void ResourceMap::loadDefaultConfiguration()
   // Contour parameters //
   setAsUnsignedInteger( "Contour-DefaultLevelsNumber", 10 );
 
+  // IntervalMesher parameters //
+  setAsBool( "IntervalMesher-UseDiamond", false );
+
   // SQP parameters //
   setAsNumericalScalar( "SQP-DefaultTau", 0.5 );
   setAsNumericalScalar( "SQP-DefaultOmega", 1.0e-4 );

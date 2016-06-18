@@ -32,11 +32,6 @@
 %import func_module.i
 %import BaseFuncTemplateDefs.i
 
-/* Base/Geom */
-%import geom_module.i
-%import BaseGeomTemplateDefs.i
-%include LevelSet.i
-
 /* Base/Stat */
 %include Compact.i  
 %include Full.i  

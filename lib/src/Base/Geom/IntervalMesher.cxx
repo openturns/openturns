@@ -85,7 +85,8 @@ Indices IntervalMesher::getDiscretization() const
 
 /* Here is the interface that all derived class must implement */
 
-Mesh IntervalMesher::build(const Interval & interval) const
+Mesh IntervalMesher::build(const Interval & interval,
+                           const Bool diamond) const
 {
   const UnsignedInteger dimension(interval.getDimension());
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
@@ -96,7 +97,7 @@ Mesh IntervalMesher::build(const Interval & interval) const
   if (dimension == 1)
   {
     // We must insure that the interval bounds will be within the vertices
-    const UnsignedInteger n(discretization_[0]);
+    const UnsignedInteger n(diamond ? 2 * discretization_[0] - 1 : discretization_[0]);
     NumericalSample vertices(n + 1, 1);
     // First the vertices
     const NumericalScalar a(interval.getLowerBound()[0]);
@@ -133,21 +134,52 @@ Mesh IntervalMesher::build(const Interval & interval) const
     } // j
     // Second the simplices
     Mesh::IndicesCollection simplices(0, Indices(3));
-    UnsignedInteger vertexIndex(0);
+    UnsignedInteger cellIndex(0);
     Indices index(3);
     for (UnsignedInteger j = 0; j < n; ++j)
     {
       for (UnsignedInteger i = 0; i < m; ++i)
       {
-        index[0] = vertexIndex;
-        index[1] = vertexIndex + 1;
-        index[2] = vertexIndex + 1 + m;
-        simplices.add(index);
-        index[0] = vertexIndex + 2 + m;
-        simplices.add(index);
-        ++vertexIndex;
+        // The current cell is
+        // c--d
+        // |  |
+        // a--b
+        const UnsignedInteger a(cellIndex);
+        const UnsignedInteger b(cellIndex + 1);
+        const UnsignedInteger c(cellIndex + 1 + m);
+        const UnsignedInteger d(cellIndex + 2 + m);
+        if (diamond)
+        {
+          const NumericalPoint center((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
+          const UnsignedInteger centerIndex(vertices.getSize());
+          vertices.add(center);
+          index[0] = a;
+          index[1] = b;
+          index[2] = centerIndex;
+          simplices.add(index);
+          index[0] = b;
+          index[1] = d;
+          simplices.add(index);
+          index[0] = d;
+          index[1] = c;
+          simplices.add(index);
+          index[0] = c;
+          index[1] = a;
+          simplices.add(index);
+        }
+        else
+        {
+          index[0] = a;
+          index[1] = b;
+          index[2] = c;
+          simplices.add(index);
+          index[0] = b;
+          index[1] = d;
+          simplices.add(index);
+        }
+        ++cellIndex;
       } // i
-      ++vertexIndex;
+      ++cellIndex;
     } // j
     result = Mesh(vertices, simplices);
   } // dimension == 2
@@ -174,7 +206,7 @@ Mesh IntervalMesher::build(const Interval & interval) const
     } // k
     // Second the simplices
     Mesh::IndicesCollection simplices(0, Indices(4));
-    UnsignedInteger vertexIndex(0);
+    UnsignedInteger cellIndex(0);
     const UnsignedInteger mp1(m + 1);
     const UnsignedInteger np1(n + 1);
     const UnsignedInteger mp1np1(mp1 * np1);
@@ -186,42 +218,182 @@ Mesh IntervalMesher::build(const Interval & interval) const
         for (UnsignedInteger i = 0; i < m; ++i)
         {
           // The current cube has vertices indices
-          // A = (     i*dx,      j*dy,      k*dz) -> vertexIndex
-          // B = (dx + i*dx,      j*dy,      k*dz) -> vertexIndex + 1
-          // C = (     i*dx, dy + j*dy,      k*dz) -> vertexIndex +     mp1
-          // D = (dx + i*dx, dy + j*dy,      k*dz) -> vertexIndex + 1 + mp1
-          // E = (     i*dx,      j*dy, dz + k*dz) -> vertexIndex +           mp1 * np1
-          // F = (dx + i*dx,      j*dy, dz + k*dz) -> vertexIndex + 1 +       mp1 * np1
-          // G = (     i*dx, dy + j*dy, dz + k*dz) -> vertexIndex +     mp1 + mp1 * np1
-          // H = (dx + i*dx, dy + j*dy, dz + k*dz) -> vertexIndex + 1 + mp1 + mp1 * np1
-          // The 6 simplices of the Kuhn triangulation are the shortest paths
-          // from A to H
-          // 1: ABDH
-          index[0] = vertexIndex;
-          index[1] = vertexIndex + 1;
-          index[2] = vertexIndex + 1 + mp1;
-          index[3] = vertexIndex + 1 + mp1 + mp1np1;
-          simplices.add(index);
-          // 2: ABFH
-          index[2] = vertexIndex + 1 + mp1np1;
-          simplices.add(index);
-          // 3: AEFH
-          index[1] = vertexIndex + mp1np1;
-          simplices.add(index);
-          // 4: AEGH
-          index[2] = vertexIndex + mp1 + mp1np1;
-          simplices.add(index);
-          // 5: ACGH
-          index[1] = vertexIndex + mp1;
-          simplices.add(index);
-          // 6: ACDH
-          index[2] = vertexIndex + 1 + mp1;
-          simplices.add(index);
-          ++vertexIndex;
+          // A = (     i*dx,      j*dy,      k*dz) -> cellIndex
+          // B = (dx + i*dx,      j*dy,      k*dz) -> cellIndex + 1
+          // C = (     i*dx, dy + j*dy,      k*dz) -> cellIndex +     mp1
+          // D = (dx + i*dx, dy + j*dy,      k*dz) -> cellIndex + 1 + mp1
+          // E = (     i*dx,      j*dy, dz + k*dz) -> cellIndex +           mp1 * np1
+          // F = (dx + i*dx,      j*dy, dz + k*dz) -> cellIndex + 1 +       mp1 * np1
+          // G = (     i*dx, dy + j*dy, dz + k*dz) -> cellIndex +     mp1 + mp1 * np1
+          // H = (dx + i*dx, dy + j*dy, dz + k*dz) -> cellIndex + 1 + mp1 + mp1 * np1
+	  // Its faces are
+	  //   G----H
+	  //  /|   /|
+	  // E----F |
+	  // | C--|-D
+	  // |/   |/
+	  // A----B
+	  // ABDC/EFHG/ACGE/BDHF/ABFE/CDHG
+          const UnsignedInteger a(cellIndex);
+          const UnsignedInteger b(cellIndex + 1);
+          const UnsignedInteger c(cellIndex + mp1);
+          const UnsignedInteger d(cellIndex + 1 + mp1);
+          const UnsignedInteger e(cellIndex + mp1np1);
+          const UnsignedInteger f(cellIndex + 1 + mp1np1);
+          const UnsignedInteger g(cellIndex + mp1 + mp1np1);
+          const UnsignedInteger h(cellIndex + 1 + mp1 + mp1np1);
+          if (diamond)
+          {
+	    // Center is the center of the cube (shortcut I)
+	    const NumericalPoint center((vertices[a] + vertices[b] + vertices[c] + vertices[d] + vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.125);
+	    const UnsignedInteger centerIndex(vertices.getSize());
+	    vertices.add(center);
+	    // c* is the center of the current face
+	    const NumericalPoint centerABDC((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
+	    const UnsignedInteger centerABDCIndex(vertices.getSize());
+	    vertices.add(centerABDC);
+	    // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
+	    index[0] = centerABDCIndex;
+	    index[1] = b;
+	    index[2] = a;
+	    index[3] = centerIndex;
+	    simplices.add(index);
+	    index[1] = d;
+	    index[2] = b;
+	    simplices.add(index);
+	    index[1] = c;
+	    index[2] = d;
+	    simplices.add(index);
+	    index[1] = a;
+	    index[2] = c;
+	    simplices.add(index);
+	    // c* is the center of the current face
+	    const NumericalPoint centerEFHG((vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.25);
+	    const UnsignedInteger centerEFHGIndex(vertices.getSize());
+	    vertices.add(centerEFHG);
+	    // EFHG->c*EFI/c*FHI/c*HGI/c*GEI
+	    index[0] = centerEFHGIndex;
+	    index[1] = e;
+	    index[2] = f;
+	    simplices.add(index);
+	    index[1] = f;
+	    index[2] = h;
+	    simplices.add(index);
+	    index[1] = h;
+	    index[2] = g;
+	    simplices.add(index);
+	    index[1] = g;
+	    index[2] = e;
+	    simplices.add(index);
+	    // c* is the center of the current face
+	    const NumericalPoint centerACGE((vertices[a] + vertices[c] + vertices[e] + vertices[g]) * 0.25);
+	    const UnsignedInteger centerACGEIndex(vertices.getSize());
+	    vertices.add(centerACGE);
+	    // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
+	    index[0] = centerACGEIndex;
+	    index[1] = c;
+	    index[2] = a;
+	    simplices.add(index);
+	    index[1] = g;
+	    index[2] = c;
+	    simplices.add(index);
+	    index[1] = e;
+	    index[2] = g;
+	    simplices.add(index);
+	    index[1] = a;
+	    index[2] = e;
+	    simplices.add(index);
+	    // c* is the center of the current face
+	    const NumericalPoint centerBDHF((vertices[b] + vertices[d] + vertices[f] + vertices[h]) * 0.25);
+	    const UnsignedInteger centerBDHFIndex(vertices.getSize());
+	    vertices.add(centerBDHF);
+	    // BDHF->c*BDI/c*DHI/c*HFI/c*FBI
+	    index[0] = centerBDHFIndex;
+	    index[1] = b;
+	    index[2] = d;
+	    simplices.add(index);
+	    index[1] = d;
+	    index[2] = h;
+	    simplices.add(index);
+	    index[1] = h;
+	    index[2] = f;
+	    simplices.add(index);
+	    index[1] = f;
+	    index[2] = b;
+	    simplices.add(index);
+	    // c* is the center of the current face
+	    const NumericalPoint centerABFE((vertices[a] + vertices[b] + vertices[e] + vertices[f]) * 0.25);
+	    const UnsignedInteger centerABFEIndex(vertices.getSize());
+	    vertices.add(centerABFE);
+	    // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
+	    index[0] = centerABFEIndex;
+	    index[1] = a;
+	    index[2] = b;
+	    simplices.add(index);
+	    index[1] = b;
+	    index[2] = f;
+	    simplices.add(index);
+	    index[1] = f;
+	    index[2] = e;
+	    simplices.add(index);
+	    index[1] = e;
+	    index[2] = a;
+	    simplices.add(index);
+	    // c* is the center of the current face
+	    const NumericalPoint centerCDHG((vertices[c] + vertices[d] + vertices[g] + vertices[h]) * 0.25);
+	    const UnsignedInteger centerCDHGIndex(vertices.getSize());
+	    vertices.add(centerCDHG);
+	    // CDHG->c*DCI/c*HDI/c*GHI/c*CGI
+	    index[0] = centerCDHGIndex;
+	    index[1] = d;
+	    index[2] = c;
+	    simplices.add(index);
+	    index[1] = h;
+	    index[2] = d;
+	    simplices.add(index);
+	    index[1] = g;
+	    index[2] = h;
+	    simplices.add(index);
+	    index[1] = c;
+	    index[2] = g;
+	    simplices.add(index);
+          }
+          else
+          {
+            // The 6 simplices of the Kuhn triangulation are the shortest paths
+            // from A to H
+            // 1: ABFH
+            index[0] = a;
+            index[1] = b;
+            index[2] = f;
+            index[3] = h;
+            simplices.add(index);
+            // 2: ADBH
+            index[1] = d;
+            index[2] = b;
+            simplices.add(index);
+            // 3: AFEH
+            index[1] = f;
+            index[2] = e;
+            simplices.add(index);
+            // 4: AEGH
+            index[1] = e;
+            index[2] = g;
+            simplices.add(index);
+            // 5: AGCH
+            index[1] = g;
+            index[2] = c;
+            simplices.add(index);
+            // 6: ACDH
+            index[1] = c;
+            index[2] = d;
+            simplices.add(index);
+          }
+          ++cellIndex;
         } // i
-        ++vertexIndex;
+        ++cellIndex;
       } // j
-      vertexIndex += mp1;
+      cellIndex += mp1;
     } // k
     result = Mesh(vertices, simplices);
   } // dimension == 3
@@ -229,3 +401,4 @@ Mesh IntervalMesher::build(const Interval & interval) const
 }
 
 END_NAMESPACE_OPENTURNS
+

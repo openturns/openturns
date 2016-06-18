@@ -18,6 +18,7 @@
  * JansenSensitivityAlgorithm
  * MauntzKucherenkoSensitivityAlgorithm
  * SoizeGhanemFactory
+ * LevelSetMesher
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
@@ -42,7 +43,8 @@
  * Add two samples Kolmogorov test
  * Improved the speed of many algorithms based on method binding
  * Added more options to control LHSExperiment and LowDiscrepancyExperiment
-
+ * Improved the IntervalMesher class: now it takes into account the diamond flag
+	
 === Bug fixes ===
  * #565 (The SensitivityAnalysis class manages only one single output.)
  * #698 (KernelSmoothing() as a factory)

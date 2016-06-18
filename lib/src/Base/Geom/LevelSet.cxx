@@ -66,13 +66,12 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   if (this == &other) return (*this);
   // else check dimension compatibility
   if (other.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
-  // The outsideBooleanFunction is true (ie takes value 1) iff the given point is outside of the resulting level set
-  const NumericalMathFunction outsideBooleanFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "(x0 > " << level_ << ") + (x1 > " << other.level_ << ") > 0.0"))));
+  // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
+  const NumericalMathFunction intersectFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(x0 - " << level_ << ", x1 - " << other.level_ << ")"))));
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  // Here, any value in [0, 1) is ok for the level value so we keep the default value of 0.0
-  return LevelSet(NumericalMathFunction(outsideBooleanFunction, NumericalMathFunction(coll)));
+  return LevelSet(NumericalMathFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
 }
 
 /* Returns the levelSet equals to the union between the levelSet and another one */
@@ -82,13 +81,12 @@ LevelSet LevelSet::join(const LevelSet & other) const
   if (this == &other) return (*this);
   // else check dimension compatibility
   if (other.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
-  // The outsideBooleanFunction is true (ie takes value 1) iff the given point is outside of the resulting level set
-  const NumericalMathFunction outsideBooleanFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "(x0 > " << level_ << ") * (x1 > " << other.level_ << ") > 0.0 "))));
+  // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if at least on function is less or equal to its level
+  const NumericalMathFunction intersectFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(x0 - " << level_ << ", x1 - " << other.level_ << ")"))));
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  // Here, any value in [0, 1) is ok for the level value so we keep the default value of 0.0
-  return LevelSet(NumericalMathFunction(outsideBooleanFunction, NumericalMathFunction(coll)));
+  return LevelSet(NumericalMathFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
 }
 
 /* Check if the given point is inside of the closed levelSet */

@@ -28,8 +28,13 @@ Create a mesh:
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
-    The domain defining the interval, of dimension equal to the dimension
+    The interval to mesh, of dimension equal to the dimension
     of `discretization`.
+diamond : bool
+    A flag telling if one want the usual mesh (rectangular cells cut along a
+    diagonal in dimension 2) or a diamond like mesh (rectangular cells cut
+    into 4 triangles with the center of the cell as shared vertex).
+    Default is *IntervalMesher-UseDiamond*, see :class:`~openturns.ResourceMap`.
 
 Returns
 -------

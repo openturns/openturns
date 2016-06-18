@@ -11,6 +11,7 @@
 #include "openturns/OTGraph.hxx"
 #include "openturns/OTFunc.hxx"
 #include "openturns/OTDiff.hxx"
+#include "openturns/OTGeom.hxx"
 #include "openturns/OTOptim.hxx"
 %}
 
@@ -51,6 +52,12 @@
 %include TNC.i
 %include SQP.i
 %include NLopt.i
+
+/* Base/Geom */
+%import geom_module.i
+%import BaseGeomTemplateDefs.i
+%include LevelSet.i
+%include LevelSetMesher.i
 
 /* At last we include template definitions */
 %include BaseOptimTemplateDefs.i
