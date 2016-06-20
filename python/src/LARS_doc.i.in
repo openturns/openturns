@@ -1,8 +1,8 @@
-%feature("docstring") OT::LAR
+%feature("docstring") OT::LARS
 "Least Angle Regression.
 
 Available constructors:
-    LAR()
+    LARS()
 
 See also
 --------
@@ -10,14 +10,14 @@ BasisSequenceFactory
 
 Notes
 -----
-LAR inherits from :class:`~openturns.BasisSequenceFactory`.
+LARS inherits from :class:`~openturns.BasisSequenceFactory`.
 
 If the size :math:`P` of the PC basis is of similar size to :math:`N`, or even
 possibly significantly larger than :math:`N` , then the following ordinary least
 squares problem is ill-posed:
 
 .. math::
-    
+
     \vect{a} = \argmin_{\vect{b} \in \Rset^P} E_{\mu} \left[ \left( g \circ T^{-1}
             (\vect{U}) - \vect{b}^{\intercal} \vect{\Psi}(\vect{U}) \right)^2 \right]
 

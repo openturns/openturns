@@ -7,7 +7,7 @@ from math import *
 TESTPREAMBLE()
 
 try:
-    f = LeastSquaresMetaModelSelectionFactory(LAR(), CorrectedLeaveOneOut())
+    f = LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut())
     print("factory =", f)
 
 except:

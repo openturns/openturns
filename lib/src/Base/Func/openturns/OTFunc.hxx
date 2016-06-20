@@ -53,7 +53,7 @@
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/ExpertMixture.hxx"
 #include "openturns/IndicatorNumericalMathEvaluationImplementation.hxx"
-#include "openturns/LAR.hxx"
+#include "openturns/LARS.hxx"
 #include "openturns/LinearCombinationEvaluationImplementation.hxx"
 #include "openturns/LinearCombinationGradientImplementation.hxx"
 #include "openturns/LinearCombinationHessianImplementation.hxx"

@@ -34,6 +34,7 @@
  * Deprecated classes UserDefinedPair, HistogramPair
  * Removed SensitivityAnalysis class
  * Deprecated SLSQP, LBFGS and NelderMead classes in favor of NLopt class
+ * Deprecated LAR in favor of LARS
 
 === Python module ===
 

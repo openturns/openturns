@@ -20,7 +20,7 @@
  */
 
 #include "openturns/BasisSequenceFactory.hxx"
-#include "openturns/LAR.hxx"
+#include "openturns/LARS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -30,7 +30,7 @@ CLASSNAMEINIT(BasisSequenceFactory);
 
 /* Default constructor */
 BasisSequenceFactory::BasisSequenceFactory()
-  : TypedInterfaceObject<BasisSequenceFactoryImplementation>( new LAR() )
+  : TypedInterfaceObject<BasisSequenceFactoryImplementation>(new LARS())
 {
   // Nothing to do
 }

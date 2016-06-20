@@ -56,7 +56,7 @@ try:
     basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
 
     # run algorithm
-    lar = LAR()
+    lar = LARS()
 
     listFittingAlgorithm = list()
     listFittingAlgorithm.append(KFold())
@@ -66,7 +66,7 @@ try:
         fittingAlgorithm = listFittingAlgorithm[fittingAlgorithmIndex]
         adaptiveStrategy = FixedStrategy(productBasis, basisSize)
         projectionStrategy = LeastSquaresStrategy(LowDiscrepancyExperiment(
-            SobolSequence(dimension), samplingSize), LeastSquaresMetaModelSelectionFactory(LAR(), fittingAlgorithm))
+            SobolSequence(dimension), samplingSize), LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm))
         algo = FunctionalChaosAlgorithm(
             model, distribution, adaptiveStrategy, projectionStrategy)
         RandomGenerator.SetSeed(0)

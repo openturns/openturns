@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LAR_HXX
-#define OPENTURNS_LAR_HXX
+#ifndef OPENTURNS_LARS_HXX
+#define OPENTURNS_LARS_HXX
 
 #include <limits>
 #include "openturns/Matrix.hxx"
@@ -28,11 +28,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LAR
+ * @class LARS
  *
  * A sequence of numerical math function collection.
  */
-class OT_API LAR
+class OT_API LARS
   : public BasisSequenceFactoryImplementation
 {
   CLASSNAME;
@@ -40,10 +40,10 @@ public:
 
 
   /** Default constructor */
-  explicit LAR(const Bool verbose = false);
+  explicit LARS(const Bool verbose = false);
 
   /** Virtual constructor */
-  virtual LAR * clone() const;
+  virtual LARS * clone() const;
 
   /** Method to create new BasisSequence objects */
   virtual BasisSequence build(const NumericalSample & x,
@@ -80,9 +80,9 @@ private:
   Indices inPredictors_;
 
   mutable Matrix mPsiX_;
-}; /* class LAR */
+}; /* class LARS */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LAR_HXX */
+#endif /* OPENTURNS_LARS_HXX */

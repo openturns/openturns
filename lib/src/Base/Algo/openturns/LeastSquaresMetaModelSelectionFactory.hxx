@@ -43,7 +43,7 @@ class OT_API LeastSquaresMetaModelSelectionFactory
 public:
 
   /** Constructor */
-  explicit LeastSquaresMetaModelSelectionFactory(const BasisSequenceFactory & fact = LAR(),
+  explicit LeastSquaresMetaModelSelectionFactory(const BasisSequenceFactory & fact = LARS(),
       const FittingAlgorithm & algo = CorrectedLeaveOneOut());
 
   /** Virtual constructor */

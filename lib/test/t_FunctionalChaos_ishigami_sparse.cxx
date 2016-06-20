@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   {
     FixedStrategy adaptiveStrategy( productBasis, basisSize );
     FittingAlgorithm fittingAlgorithm( listFittingAlgorithm[fittingAlgorithmIndex] );
-    LeastSquaresStrategy projectionStrategy( LowDiscrepancyExperiment(SobolSequence(dimension), samplingSize), LeastSquaresMetaModelSelectionFactory ( LAR(), fittingAlgorithm) );
+    LeastSquaresStrategy projectionStrategy( LowDiscrepancyExperiment(SobolSequence(dimension), samplingSize), LeastSquaresMetaModelSelectionFactory(LARS(), fittingAlgorithm));
     FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
     RandomGenerator::SetSeed(0);
     algo.run();

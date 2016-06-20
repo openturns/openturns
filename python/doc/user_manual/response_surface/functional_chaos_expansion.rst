@@ -41,7 +41,7 @@ Computation of the polynomial chaos coefficients
     LeastSquaresMetaModelSelectionFactory
     LeastSquaresMetaModelSelection
     BasisSequenceFactory
-    LAR
+    LARS
     FittingAlgorithm
     CorrectedLeaveOneOut
     KFold

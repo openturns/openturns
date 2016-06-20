@@ -48,7 +48,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
-#include "openturns/LAR.hxx"
+#include "openturns/LARS.hxx"
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/FittingTest.hxx"
@@ -198,7 +198,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
   if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-SmallSampleSize" ))
   {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), KFold()));
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
     // projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), CorrectedLeaveOneOut()));
     adaptiveStrategy_ = FixedStrategy(basis, enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LAR and KFold for a total degree of " << maximumTotalDegree);

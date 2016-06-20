@@ -30,7 +30,7 @@ This class is not usable because it has sense only whithin the
 Examples
 --------
 >>> import openturns as ot
->>> basisSequenceFactory = ot.LAR()
+>>> basisSequenceFactory = ot.LARS()
 >>> fittingAlgorithm = ot.CorrectedLeaveOneOut()
 >>> approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
 ...                                     basisSequenceFactory, fittingAlgorithm)"
