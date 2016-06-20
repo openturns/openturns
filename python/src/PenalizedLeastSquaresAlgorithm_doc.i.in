@@ -1,11 +1,41 @@
 %feature("docstring") OT::PenalizedLeastSquaresAlgorithm
 "Penalized least squares algorithm.
 
+Available constructors:
+    PenalizedLeastSquaresAlgorithm(*x, y, psi, indices, penalizationFactor=0, useNormal=False*)
+
+    PenalizedLeastSquaresAlgorithm(*x, y, weight, psi, indices, penalizationFactor=0, useNormal=False*)
+
+    PenalizedLeastSquaresAlgorithm(*x, y, weight, psi, indices, penalizationFactor=0, penalizationMatrix, useNormal=False*)
+
+Parameters
+----------
+x : :class:`~openturns.NumericalSample`
+    Input sample
+y : :class:`~openturns.NumericalSample`
+    Output sample
+weight : sequence of float
+    Output weights
+psi : :class:`~openturns.Basis`
+    Functional basis
+indices : sequence of int
+    Indices allowed in the basis
+penalizationFactor : float, optional
+    Penalization factor
+penalizationMatrix : 2-d sequence of float
+    Penalization matrix
+useNormal : bool, optional
+    Solve the normal equation
+
 See also
 --------
 ApproximationAlgorithm, LeastSquaresMetaModelSelection
 
 Notes
 -----
-The LeastSquaresMetaModelSelection is built from a penalized least squares
-algorithm factory."
+Solve the least-squares problem:
+
+.. math::
+
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P} ||y - \vect{b}^{\intercal} \vect{\Psi}(\vect{U})||^2
+"

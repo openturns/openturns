@@ -1,23 +1,16 @@
 %define OT_ApproximationAlgorithm_doc
 "Approximation algorithm.
 
-Available constructor:
-    ApproximationAlgorithm(*ApproxAlgoImp*)
-
-Parameters
-----------
-ApproxAlgoImp : ApproximationAlgorithmImplementation
-
 See also
 --------
-LeastSquaresStrategy, PenalizedLeastSquaresAlgorithmFactory,
+LeastSquaresStrategy, ApproximationAlgorithmImplementationFactory,
 LeastSquaresMetaModelSelectionFactory
 
 Notes
 -----
 The ApproximationAlgorithm is built from an approximation algorithm
 implementation factory which is a
-:class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` or a 
+:class:`~openturns.ApproximationAlgorithmImplementationFactory` or a
 :class:`~openturns.LeastSquaresMetaModelSelectionFactory`.
 
 This class is not usable because it has sense only whithin the
@@ -29,25 +22,124 @@ OT_ApproximationAlgorithm_doc
 // ---------------------------------------------------------------------
 
 %define OT_ApproximationAlgorithm_getVerbose_doc
-"Accessor to the verbosity.
+"Accessor to the verbosity flag.
 
 Returns
 -------
 v : bool.
     Verbosity"
 %enddef
-%feature("docstring") OT::ApproximationAlgorithm::getVerbose
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getVerbose
 OT_ApproximationAlgorithm_getVerbose_doc
 
 // ---------------------------------------------------------------------
 
 %define OT_ApproximationAlgorithm_setVerbose_doc
-"Accessor to the verbosity.
+"Accessor to the verbosity flag.
 
 Parameters
 ----------
 v : bool
     Enable or disable the verbosity."
 %enddef
-%feature("docstring") OT::ApproximationAlgorithm::setVerbose
+%feature("docstring") OT::ApproximationAlgorithmImplementation::setVerbose
 OT_ApproximationAlgorithm_setVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getCoefficients_doc
+"Accessor to the coefficients.
+
+Returns
+-------
+coefficients : :class:`~openturns.NumericalPoint`
+    The coefficients"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getCoefficients
+OT_ApproximationAlgorithm_getCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getPsi_doc
+"Accessor to the basis.
+
+Returns
+-------
+coefficients : :class:`~openturns.Basis`
+    The basis"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getPsi
+OT_ApproximationAlgorithm_getPsi_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getRelativeError_doc
+"Accessor to the coefficients.
+
+Returns
+-------
+relativeError : float
+    The relative error"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getRelativeError
+OT_ApproximationAlgorithm_getRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getResidual_doc
+"Accessor to the coefficients.
+
+Returns
+-------
+coefficients : float
+    The residual"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getResidual
+OT_ApproximationAlgorithm_getResidual_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getWeight_doc
+"Accessor to the weights.
+
+Returns
+-------
+weight : :class:`~openturns.NumericalPoint`
+    Output weights"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getWeight
+OT_ApproximationAlgorithm_getWeight_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getX_doc
+"Accessor to the input sample.
+
+Returns
+-------
+x : :class:`~openturns.NumericalSample`
+    Input sample"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getX
+OT_ApproximationAlgorithm_getX_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_getY_doc
+"Accessor to the output sample.
+
+Returns
+-------
+y : :class:`~openturns.NumericalSample`
+    Input sample"
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::getY
+OT_ApproximationAlgorithm_getY_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ApproximationAlgorithm_run_doc
+"Run the algorithm."
+%enddef
+%feature("docstring") OT::ApproximationAlgorithmImplementation::run
+OT_ApproximationAlgorithm_run_doc
