@@ -54,7 +54,7 @@ public:
   /** Draw the QQplot of two Samples when its dimension is 1 */
   static Graph DrawQQplot(const NumericalSample & sample1,
                           const NumericalSample & sample2,
-                          const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber"));
+                          const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
 
 
   /** Draw the QQplot of one Sample and one Distribution when its dimension is 1 */

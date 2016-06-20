@@ -117,7 +117,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
 {
   const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
-  const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
+  const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
   NumericalScalar step(std * std::sqrt(quantileEpsilon));
   const NumericalScalar xMin(sample.getMin()[0]);
   NumericalScalar right(xMin - quantileEpsilon);
@@ -198,7 +198,7 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample &
   NumericalScalar fA(f(NumericalPoint(1, a))[0]);
   NumericalScalar fB(f(NumericalPoint(1, b))[0]);
   // While f has the same sign at the two bounds, update the interval
-  const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
+  const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
   while ((fA * fB > 0.0) && (ea > quantileEpsilon))
   {
     ea = 0.5 * ea;

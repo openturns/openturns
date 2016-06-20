@@ -256,7 +256,7 @@ void RandomWalkMetropolisHastings::setProposal(const RandomWalkMetropolisHasting
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     Bool symmetric = proposal[i].isElliptical();
-    symmetric = symmetric && (std::abs(proposal[i].getMean()[0]) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
+    symmetric = symmetric && (std::abs(proposal[i].getMean()[0]) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
     if (!symmetric) throw InvalidArgumentException(HERE) << "The proposal density is not symmetric.";
   }
   proposal_ = proposal;

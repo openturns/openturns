@@ -974,7 +974,7 @@ Description ProductDistribution::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool ProductDistribution::isElliptical() const
 {
-  return (left_.isElliptical() && (std::abs(left_.getRange().getLowerBound()[0] + left_.getRange().getUpperBound()[0]) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"))) || (right_.isElliptical() && (std::abs(right_.getRange().getLowerBound()[0] + right_.getRange().getUpperBound()[0]) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")));
+  return (left_.isElliptical() && (std::abs(left_.getRange().getLowerBound()[0] + left_.getRange().getUpperBound()[0]) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"))) || (right_.isElliptical() && (std::abs(right_.getRange().getLowerBound()[0] + right_.getRange().getUpperBound()[0]) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")));
 }
 
 /* Left accessor */

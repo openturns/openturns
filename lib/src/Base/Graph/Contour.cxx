@@ -184,7 +184,7 @@ String Contour::draw() const
   oss << DrawableImplementation::draw() << "\n";
   // The specific R command for drawing
   // Here we store the discretizations of the axes
-  if (x_.getDimension() * x_.getSize() > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
+  if (x_.getDimension() * x_.getSize() > ResourceMap::GetAsUnsignedInteger("Drawable-DataThreshold"))
   {
     xFileName_ = x_.storeToTemporaryFile();
     yFileName_ = y_.storeToTemporaryFile();

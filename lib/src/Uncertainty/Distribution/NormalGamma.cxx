@@ -81,7 +81,7 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
 /* Compute the numerical range of the distribution given the parameters values */
 void NormalGamma::computeRange()
 {
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
   // Lower bound
   NumericalPoint lowerBound(2, 0.0);
   //const NumericalScalar lambdaMin(conditioningDistribution_.computeQuantile(epsilon)[0]);

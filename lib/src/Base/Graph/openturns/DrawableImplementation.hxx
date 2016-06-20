@@ -216,11 +216,11 @@ protected:
     : PersistentObject(),
       legend_(""),
       data_(),
-      color_(ResourceMap::Get("DrawableImplementation-DefaultColor")),
-      fillStyle_(ResourceMap::Get("DrawableImplementation-DefaultFillStyle")),
-      lineStyle_(ResourceMap::Get("DrawableImplementation-DefaultLineStyle")),
-      pointStyle_(ResourceMap::Get("DrawableImplementation-DefaultPointStyle")),
-      lineWidth_(ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DefaultLineWidth")),
+      color_(ResourceMap::Get("Drawable-DefaultColor")),
+      fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle")),
+      lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle")),
+      pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle")),
+      lineWidth_(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultLineWidth")),
       dataFileName_("")
   {};
   friend class Factory<DrawableImplementation>;

@@ -41,7 +41,7 @@ Staircase::Staircase()
 Staircase::Staircase(const NumericalSample & data,
                      const String & legend)
   : DrawableImplementation(data, legend)
-  , pattern_(ResourceMap::Get("DrawableImplementation-DefaultPattern"))
+  , pattern_(ResourceMap::Get("Drawable-DefaultPattern"))
 {
   // Check data validity
   setData(data);

@@ -442,7 +442,7 @@ void Weibull::setMuSigma(const NumericalScalar mu,
     betaMin = betaMax - 0.5 * step;
   }
   // Bisection loop
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
   for (;;)
   {
     beta_ = 0.5 * (betaMin + betaMax);

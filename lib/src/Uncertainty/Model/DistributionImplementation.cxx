@@ -88,14 +88,14 @@ DistributionImplementation::DistributionImplementation()
   , covariance_(CovarianceMatrix(0))
   , gaussNodes_()
   , gaussWeights_()
-  , integrationNodesNumber_(ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultIntegrationNodesNumber" ))
+  , integrationNodesNumber_(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber"))
   , isAlreadyComputedMean_(false)
   , isAlreadyComputedCovariance_(false)
   , isAlreadyComputedGaussNodesAndWeights_(false)
-  , pdfEpsilon_(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-DefaultPDFEpsilon" ))
-  , cdfEpsilon_(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-DefaultCDFEpsilon" ))
-  , quantileEpsilon_(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-DefaultQuantileEpsilon" ))
-  , quantileIterations_(ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultQuantileIteration" ))
+  , pdfEpsilon_(ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon"))
+  , cdfEpsilon_(ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon"))
+  , quantileEpsilon_(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"))
+  , quantileIterations_(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultQuantileIteration"))
   , isAlreadyComputedStandardDistribution_(false)
   , p_standardDistribution_()
   , isAlreadyCreatedGeneratingFunction_(false)
@@ -105,7 +105,7 @@ DistributionImplementation::DistributionImplementation()
   // The range is empty by default
   , range_(Interval(1.0, -1.0))
   , description_(1)
-  , isParallel_(ResourceMap::GetAsBool("DistributionImplementation-Parallel"))
+  , isParallel_(ResourceMap::GetAsBool("Distribution-Parallel"))
   , isCopula_(false)
   , isInitializedCF_(false)
   , pdfGrid_(0)
@@ -821,7 +821,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
   // In the continuous case, we use simple gauss integration with a fixed number of integration points. We divide the interval in order to have a sufficient number of integration points by interval. It is good for low to moderate value of x, but is prohibitive for large x. In this case, we use Filon's method with linear interpolation, it means the modified trapezoidal rule as in E. O. Tuck, 'A simple "Filon-Trapezoidal" Rule'
   if (isContinuous())
   {
-    const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("DistributionImplementation-CharacteristicFunctionNMax"));
+    const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("Distribution-CharacteristicFunctionNMax"));
     // The circular function will have x(b-a)/2\pi arches over [a, b], so we need a number of points of this order, we decide to take 8 points per arch
     NumericalPoint legendreWeights;
     const NumericalPoint legendreNodes(getGaussNodesAndWeights(legendreWeights));
@@ -855,7 +855,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
       const NumericalScalar dt(T / N);
       if (!isInitializedCF_)
       {
-        //              const UnsignedInteger nMax(ResourceMap::GetAsUnsignedLong("DistributionImplementation-CharacteristicFunctionNMax"));
+        //              const UnsignedInteger nMax(ResourceMap::GetAsUnsignedLong("Distribution-CharacteristicFunctionNMax"));
         NumericalSample locations(Box(Indices(1, 2 * N - 1)).generate());
         locations *= NumericalPoint(1, b - a);
         locations += NumericalPoint(1, a);
@@ -2325,7 +2325,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentGeneral(const Uns
   if (shift.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
   NumericalPoint moment(dimension_);
   const NumericalScalar epsilon(std::sqrt(quantileEpsilon_));
-  const UnsignedInteger MaximumLevel(ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultLevelNumber" ) + 3);
+  const UnsignedInteger MaximumLevel(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultLevelNumber") + 3);
   // For each component
   for(UnsignedInteger component = 0; component < dimension_; ++component)
   {
@@ -2658,9 +2658,9 @@ Graph DistributionImplementation::drawPDF(const UnsignedInteger pointNumber) con
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const NumericalScalar xMin(computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0]);
-  const NumericalScalar xMax(computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0]);
-  const NumericalScalar delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
+  const NumericalScalar xMin(computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0]);
+  const NumericalScalar xMax(computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0]);
+  const NumericalScalar delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
   if (isDiscrete())
   {
     NumericalScalar a(std::max(xMin - delta, range_.getLowerBound()[0] - 1.0));
@@ -2729,7 +2729,7 @@ Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
 Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax) const
 {
-  return drawPDF(xMin, xMax, Indices(2, ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber" )));
+  return drawPDF(xMin, xMax, Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
 }
 
 /* Draw the PDF of the distribution when its dimension is 2 */
@@ -2740,18 +2740,18 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber) const
   if (isCopula()) xMin = NumericalPoint(2, 0.0);
   else
   {
-    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
-    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
   }
   NumericalPoint xMax(2);
   if (isCopula()) xMax = NumericalPoint(2, 1.0);
   else
   {
-    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
-    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
+    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
   }
   NumericalPoint delta(2, 0.0);
-  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
   const Interval intersection(getRange().intersect(Interval(xMin - delta, xMax + delta)));
   Graph graph(drawPDF(intersection.getLowerBound(), intersection.getUpperBound(), pointNumber));
   // Add a border for a copula
@@ -2790,8 +2790,8 @@ Graph DistributionImplementation::drawPDF() const
 {
   UnsignedInteger dimension(getDimension());
   // Generic interface for the 1D and 2D cases
-  if (dimension == 1) return drawPDF(ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber" ));
-  if (dimension == 2) return drawPDF(Indices(2, ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber" )));
+  if (dimension == 1) return drawPDF(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
+  if (dimension == 2) return drawPDF(Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
   throw InvalidDimensionException(HERE) << "Error: can draw a PDF only if dimension equals 1 or 2, here dimension=" << dimension;
 }
 
@@ -2878,9 +2878,9 @@ Graph DistributionImplementation::drawCDF(const UnsignedInteger pointNumber) con
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const NumericalScalar xMin(computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0]);
-  const NumericalScalar xMax(computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0]);
-  const NumericalScalar delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
+  const NumericalScalar xMin(computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0]);
+  const NumericalScalar xMax(computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0]);
+  const NumericalScalar delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
   if (isDiscrete())
   {
     NumericalScalar a(std::max(xMin - delta, range_.getLowerBound()[0] - 1.0));
@@ -2955,7 +2955,7 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
 Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax) const
 {
-  return drawCDF(xMin, xMax, Indices(2, ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber" )));
+  return drawCDF(xMin, xMax, Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
 }
 
 /* Draw the CDF of the distribution when its dimension is 2 */
@@ -2966,18 +2966,18 @@ Graph DistributionImplementation::drawCDF(const Indices & pointNumber) const
   if (isCopula()) xMin = NumericalPoint(2, 0.0);
   else
   {
-    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
-    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
   }
   NumericalPoint xMax(2);
   if (isCopula()) xMax = NumericalPoint(2, 1.0);
   else
   {
-    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
-    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
+    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
   }
   NumericalPoint delta(2, 0.0);
-  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
   return drawCDF(xMin - delta, xMax + delta, pointNumber);
 }
 
@@ -3001,8 +3001,8 @@ Graph DistributionImplementation::drawCDF() const
 {
   const UnsignedInteger dimension(getDimension());
   // Generic interface for the 1D and 2D cases
-  if (dimension == 1) return drawCDF(ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber" ));
-  if (dimension == 2) return drawCDF(Indices(2, ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber" )));
+  if (dimension == 1) return drawCDF(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
+  if (dimension == 2) return drawCDF(Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
   throw InvalidDimensionException(HERE) << "Error: can draw a CDF only if dimension equals 1 or 2, here dimension=" << dimension;
 }
 

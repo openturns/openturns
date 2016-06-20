@@ -458,7 +458,7 @@ public:
   /** Draw the PDF of the distribution when its dimension is 1 */
   virtual Graph drawPDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   virtual Graph drawPDF(const UnsignedInteger pointNumber) const;
 
@@ -492,7 +492,7 @@ public:
   /** Draw the CDF of the distribution when its dimension is 1 */
   virtual Graph drawCDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   virtual Graph drawCDF(const UnsignedInteger pointNumber) const;
 
@@ -522,19 +522,19 @@ public:
                                   const Indices & pointNumber) const;
 
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   virtual Graph drawQuantile(const NumericalScalar qMin,
                              const NumericalScalar qMax,
-                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 protected:
   virtual Graph drawQuantile1D(const NumericalScalar qMin,
                                const NumericalScalar qMax,
-                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   virtual Graph drawQuantile2D(const NumericalScalar qMin,
                                const NumericalScalar qMax,
-                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 public:
 
   /** Parameters value and description accessor */
@@ -583,7 +583,7 @@ protected:
   /** Draw the PDF of a discrete distribution */
   virtual Graph drawDiscretePDF(const NumericalScalar xMin,
                                 const NumericalScalar xMax,
-                                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   /** Draw the CDF of a discrete distribution */
   Graph drawDiscreteCDF(const NumericalScalar xMin,

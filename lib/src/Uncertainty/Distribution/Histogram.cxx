@@ -391,7 +391,7 @@ void Histogram::setData(const NumericalPoint & l,
     cumulatedSurface_[i] = surface;
   }
   // Check if the surface is strictly positive
-  if (surface < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultCDFEpsilon")) throw InvalidArgumentException(HERE) << "Error: the surface of the histogram is zero.";
+  if (surface < ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon")) throw InvalidArgumentException(HERE) << "Error: the surface of the histogram is zero.";
   // Normalization
   NumericalScalar normalizationFactor(1.0 / surface);
   width_ = NumericalPoint(size, 1.0);
