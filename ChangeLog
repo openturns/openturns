@@ -58,6 +58,7 @@
  * #830 (more optim algos examples)
  * #837 (TruncatedDistribution::setParameter segfaults)
  * #838 (Symmetry of SymmetricMatrix not always enforced)
+ * #841 (Better CovarianceModelCollection in Python)
 
 == 1.7 release (2016-01-27) == #release-1.7
 
