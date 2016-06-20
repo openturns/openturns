@@ -27,10 +27,7 @@ try:
     print("a marginal process=", marginalProcess)
 
     # Parameter aggregated process creation
-    coll = ProcessCollection()
-    coll.add(WhiteNoise())
-    coll.add(ARMA())
-    coll.add(TemporalNormalProcess())
+    coll = [WhiteNoise(), ARMA(), TemporalNormalProcess()]
     myProcess = AggregatedProcess(coll)
     myProcess.setTimeGrid(timeGrid)
     print("myProcess=", myProcess)
