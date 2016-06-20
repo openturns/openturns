@@ -46,7 +46,7 @@ Create a second order normal porcess of dimension 3:
 
 >>> amplitude = [5]
 >>> scale = [3, 3]
->>> model = ot.ExponentialModel(myMesh.getDimension(), amplitude, scale)
+>>> model = ot.ExponentialModel(scale, amplitude)
 >>> myProcess = ot.TemporalNormalProcess(model, myMesh)
 
 Generate a sample of different fields:

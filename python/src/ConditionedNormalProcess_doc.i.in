@@ -86,7 +86,7 @@ Examples
 >>> outputSample = model(inputSample)
 >>> # Definition of exponential model
 >>> spatialDimension = 2
->>> covarianceModel = ot.SquaredExponential(spatialDimension, 0.95)
+>>> covarianceModel = ot.SquaredExponential(spatialDimension *[0.95])
 >>> # Basis definition
 >>> basis = ot.ConstantBasisFactory(spatialDimension).build()
 >>> # Kriring algorithm

@@ -52,10 +52,10 @@ Create a product covariance function from two exponential functions, each one de
 
 >>> import openturns as ot
 >>> amplitude = [1.0]
->>> scale = [4.0]
->>> spatialDimension = 1
->>> cov1 = ot.ExponentialModel(spatialDimension, amplitude, scale)
->>> cov2 = ot.ExponentialModel(spatialDimension, amplitude, scale)
+>>> scale1 = [4.0]
+>>> scale2 = [4.0]
+>>> cov1 = ot.ExponentialModel(scale1, amplitude)
+>>> cov2 = ot.ExponentialModel(scale2, amplitude)
 >>> coll = ot.CovarianceModelCollection()
 >>> coll.add(cov1)
 >>> coll.add(cov2)

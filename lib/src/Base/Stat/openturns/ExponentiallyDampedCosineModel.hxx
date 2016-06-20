@@ -49,14 +49,8 @@ public:
   explicit ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with amplitude and scale parameters */
-  ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension,
-                                 const NumericalScalar amplitude,
-                                 const NumericalScalar scale,
-                                 const NumericalScalar frequency);
-
-  /** Standard constructor with amplitude and scale parameters */
-  ExponentiallyDampedCosineModel(const NumericalPoint & amplitude,
-                                 const NumericalPoint & scale,
+  ExponentiallyDampedCosineModel(const NumericalPoint & scale,
+                                 const NumericalPoint & amplitude,
                                  const NumericalScalar frequency);
 
   /** Virtual copy constructor */

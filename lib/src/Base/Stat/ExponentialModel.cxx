@@ -39,32 +39,6 @@ ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)
   // Nothing to do
 }
 
-/* Constructor with parameters */
-ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension,
-                                   const NumericalPoint & amplitude,
-                                   const NumericalPoint & scale)
-  : StationaryCovarianceModel(spatialDimension, amplitude, scale)
-{
-  // Nothing to do
-}
-
-ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension,
-                                   const NumericalPoint & amplitude,
-                                   const NumericalPoint & scale,
-                                   const CorrelationMatrix & spatialCorrelation)
-  : StationaryCovarianceModel(spatialDimension, amplitude, scale, spatialCorrelation)
-{
-  // Nothing to do
-}
-
-ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension,
-                                   const NumericalPoint & scale,
-                                   const CovarianceMatrix & spatialCovariance)
-  : StationaryCovarianceModel(spatialDimension, scale, spatialCovariance)
-{
-  // Nothing to do
-}
-
 /** Standard constructor with amplitude and scale parameters parameters */
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
                                    const NumericalPoint & amplitude)
@@ -225,8 +199,8 @@ String ExponentialModel::__repr__() const
   OSS oss(true);
   oss << "class=" << ExponentialModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << getAmplitude()
       << " scale=" << getScale()
+      << " amplitude=" << getAmplitude()
       << " spatial correlation=" << getSpatialCorrelation()
       << " isDiagonal=" << isDiagonal();
   return oss;
@@ -238,8 +212,8 @@ String ExponentialModel::__str__(const String & offset) const
   OSS oss(false);
   oss << ExponentialModel::GetClassName();
   oss << "(input dimension=" << spatialDimension_
-      << ", amplitude=" << getAmplitude()
-      << ", scale=" << getScale();
+      << ", scale=" << getScale()
+  << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
     oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
   else

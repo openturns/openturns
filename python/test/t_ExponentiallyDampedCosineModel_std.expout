@@ -1,5 +1,5 @@
-myDefautModel =  class=ExponentiallyDampedCosineModel input dimension=1 amplitude=1 scale=1 frequency=1
-myModel =  class=ExponentiallyDampedCosineModel input dimension=1 amplitude=1 scale=1 frequency=0.1
+myDefautModel =  class=ExponentiallyDampedCosineModel input dimension=1 theta=[1] sigma=[1] frequency=1
+myModel =  class=ExponentiallyDampedCosineModel input dimension=1 theta=[1] sigma=[1] frequency=0.1
 covariance matrix at t =  1.0  :  [[ 0.367879 ]]
 covariance matrix at t =  -1.0  :  [[ 0.367879 ]]
 covariance matrix at t =  15.0  :  [[ 3.05902e-07 ]]

@@ -611,7 +611,7 @@ int main(int argc, char *argv[])
     study.add("exponentialCauchy", exponentialCauchy);
     study.add("absoluteExponential", absoluteExponential);
 
-    // Create an ExponentialModel
+    // Create a second order model
     SecondOrderModel secondOrderModel(absoluteExponential, cauchyModel);
     study.add("secondOrderModel", secondOrderModel);
 
@@ -917,7 +917,7 @@ int main(int argc, char *argv[])
       }
       for (UnsignedInteger index = 0 ; index < spatialDimension; ++index)
         scale[index] = (index + 1.0) / dimension ;
-      ExponentialModel referenceModel(spatialDimension, amplitude, scale, spatialCorrelation);
+      ExponentialModel referenceModel(scale, amplitude, spatialCorrelation);
       UnsignedInteger size(20);
       RegularGrid timeGrid(0.0, 0.1, size);
       {

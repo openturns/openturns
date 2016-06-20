@@ -35,14 +35,6 @@ SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension)
   // Nothing to do
 }
 
-/* Parameters constructor */
-SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension,
-                                       const NumericalScalar theta)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, theta))
-{
-  // Nothing to do
-}
-
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const NumericalPoint & theta)
   : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)

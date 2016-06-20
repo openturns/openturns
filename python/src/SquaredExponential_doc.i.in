@@ -4,8 +4,6 @@
 Available constructors:
     SquaredExponential(*spatialDim=1*)
 
-    SquaredExponential(*spatialDim, thetaScalar*)
-
     SquaredExponential(*theta*)
 
     SquaredExponential(*theta, sigma*)
@@ -14,25 +12,17 @@ Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
-
     When not fulfilled, the spatial dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
-
     By default, equal to 1.
-thetaScalar : float
-    Used to specify the scale coefficient :math:`\vect{\theta}=[thetaScalar]*spatialDim`.
 
-    By default, equal to 10.
 theta : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
-
     The size of :math:`\vect{\theta}` is the spatial dimension.
+
 sigma : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
-
     Must be of size equal to 1.
-
     By default, equal to :math:`[1]`.
-
 
 Notes
 -----
@@ -50,7 +40,7 @@ The correlation function :math:`\rho` writes:
 
 .. math::
 
-    \rho(\vect{s}, \vect{t}) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD  
+    \rho(\vect{s}, \vect{t}) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
 
 See Also
@@ -66,15 +56,15 @@ Create a standard squared exponential covariance function:
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
 >>> print(covModel(s, t))
-[[ 0.9999 ]]
+[[ 0.99005 ]]
 >>> tau = [0.1, 0.3]
 >>> print(covModel(tau))
-[[ 0.9995 ]]
+[[ 0.951229 ]]
 
-Create a  squared exponential covariance function specifying the scale vector:
+Create a squared exponential covariance function specifying the scale vector (amplitude is fixed to 1):
 
 >>> covModel2 = ot.SquaredExponential([1.5, 2.5])
->>> covModel2bis = ot.SquaredExponential(3, 1.5)
+>>> covModel2bis = ot.SquaredExponential([1.5] * 3)
 
 Create a  squared exponential covariance function specifying the scale vector and the amplitude :
 

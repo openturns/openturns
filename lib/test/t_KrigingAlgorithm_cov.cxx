@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
       GeneralizedExponential myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
-      GeneralizedExponential myModel(dimension, 10.0, 1.5);
+      GeneralizedExponential myModel(NumericalPoint(dimension, 10.0), 1.5);
       test_model(myModel);
     }
     {
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
       AbsoluteExponential myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
-      AbsoluteExponential myModel(dimension, 10.0);
+      AbsoluteExponential myModel(NumericalPoint(dimension, 10.0));
       test_model(myModel);
     }
     {
@@ -133,16 +133,16 @@ int main(int argc, char *argv[])
       MaternModel myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
-      MaternModel myModel(dimension, 8.0, 2.0);
+      MaternModel myModel(NumericalPoint(dimension, 8.0), 2.0);
       test_model(myModel);
     }
     {
       // Generate collection
       Collection<CovarianceModel> collection;
       // Collection ==> add covariance models
-      AbsoluteExponential myAbsoluteExponential(1, 3.0);
+      AbsoluteExponential myAbsoluteExponential(NumericalPoint(1, 3.0));
       collection.add(myAbsoluteExponential);
-      SquaredExponential mySquaredExponential(1, 2.0);
+      SquaredExponential mySquaredExponential(NumericalPoint(1, 2.0));
       collection.add(mySquaredExponential);
       // Build ProductCovarianceModel
       ProductCovarianceModel myModel(collection);
@@ -165,10 +165,10 @@ int main(int argc, char *argv[])
       Collection<CovarianceModel> collection;
       // Collection ==> add covariance models
       // Add AbsoluteExponentialModel to the collection
-      AbsoluteExponential myAbsoluteExponential(spatialDimension, 3.0);
+      AbsoluteExponential myAbsoluteExponential(NumericalPoint(spatialDimension, 3.0));
       collection.add(myAbsoluteExponential);
       // Add SquaredExponentialModel to the collection
-      SquaredExponential mySquaredExponential(spatialDimension, 2.0);
+      SquaredExponential mySquaredExponential(NumericalPoint(spatialDimension, 2.0));
       collection.add(mySquaredExponential);
       // Add exponentialModel to the collection
       NumericalPoint amplitude(2);
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
       // Define a spatial correlation
       CorrelationMatrix spatialCorrelation(spatialDimension);
       spatialCorrelation(1,0) = 0.3;
-      ExponentialModel myExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation);
+      ExponentialModel myExponentialModel(scale, amplitude, spatialCorrelation);
       collection.add(myExponentialModel);
       // Build TensorizedCovarianceModel with scale = [1,..,1]
       TensorizedCovarianceModel myModel(collection);

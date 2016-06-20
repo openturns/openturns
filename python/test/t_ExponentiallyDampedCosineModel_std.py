@@ -13,10 +13,10 @@ try:
     spatialDimension = 1
 
     # Amplitude values
-    amplitude = 1.0
+    amplitude = [1.0]
 
     # Scale values
-    scale = 1.0
+    scale = [1.0]
 
     # Frequency values
     frequency = 0.1
@@ -27,7 +27,7 @@ try:
 
     # Second order model with parameters
     myModel = ExponentiallyDampedCosineModel(
-        spatialDimension, amplitude, scale, frequency)
+        scale, amplitude, frequency)
     print("myModel = ", myModel)
 
     timeValueOne = 1.

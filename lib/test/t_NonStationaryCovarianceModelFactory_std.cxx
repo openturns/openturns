@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     RegularGrid timeGrid(0.0, 0.1, size);
     NumericalPoint amplitude(dimension, 1.0);
     NumericalPoint scale(dimension, 1.0);
-    ExponentialModel model(spatialDimension, amplitude, scale);
+    ExponentialModel model(scale, amplitude);
     TemporalNormalProcess myProcess(model, timeGrid);
 
     // Create a Process sample of size N

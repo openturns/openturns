@@ -41,11 +41,10 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
 }
 
 /* Constructor with parameters */
-SphericalModel::SphericalModel(const UnsignedInteger spatialDimension,
+SphericalModel::SphericalModel(const NumericalPoint & scale,
                                const NumericalPoint & amplitude,
-                               const NumericalPoint & scale,
                                const NumericalScalar a)
-  : StationaryCovarianceModel(spatialDimension, amplitude, scale)
+  : StationaryCovarianceModel(amplitude, scale)
   , a_(a)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
@@ -117,8 +116,8 @@ String SphericalModel::__repr__() const
   OSS oss(true);
   oss << "class=" << SphericalModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << amplitude_
-      << " scale=" << scale_
+      << " theta=" << scale_
+      << " sigma=" << amplitude_
       << " a=" << a_;
   return oss;
 }
@@ -131,7 +130,6 @@ String SphericalModel::__str__(const String & offset) const
       << "(input dimension=" << spatialDimension_
       << ", theta=" << scale_.__str__()
       << ", sigma=" << amplitude_.__str__()
-      << ", scale=" << scale_
       << ", a=" << a_
       << ")";
   return oss;

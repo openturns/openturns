@@ -7,7 +7,7 @@ myGrid = ot.RegularGrid(0.0, 0.1, 100)
 
 amplitude = [5.0]
 scale = [0.2]
-myCovModel = ot.ExponentialModel(1, amplitude, scale)
+myCovModel = ot.ExponentialModel(scale, amplitude)
 myXProcess = ot.TemporalNormalProcess(myCovModel, myGrid)
 
 # Create a trend

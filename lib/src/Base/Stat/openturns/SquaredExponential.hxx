@@ -40,10 +40,6 @@ public:
   explicit SquaredExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  SquaredExponential(const UnsignedInteger spatialDimension,
-                     const NumericalScalar theta);
-
-  /** Parameters constructor */
   SquaredExponential(const NumericalPoint & theta);
 
   /** Parameters constructor */

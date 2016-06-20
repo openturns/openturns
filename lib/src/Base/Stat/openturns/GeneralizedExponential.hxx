@@ -40,10 +40,6 @@ public:
   explicit GeneralizedExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  GeneralizedExponential(const UnsignedInteger spatialDimension,
-                         const NumericalScalar theta,
-                         const NumericalScalar p);
-
   GeneralizedExponential(const NumericalPoint & theta,
                          const NumericalScalar p);
 

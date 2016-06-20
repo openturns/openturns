@@ -37,16 +37,6 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
   // Nothing to do
 }
 
-/* Parameters constructor */
-GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension,
-                                               const NumericalScalar theta,
-                                               const NumericalScalar p)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, theta))
-  , p_(p)
-{
-  // Nothing to do
-}
-
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
                                                const NumericalScalar p)

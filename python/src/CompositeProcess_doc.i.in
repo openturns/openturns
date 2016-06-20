@@ -35,7 +35,7 @@ Create the process X:
 >>> import openturns as ot
 >>> amplitude = [1.0, 1.0]
 >>> scale = [0.2, 0.3]
->>> myCovModel = ot.ExponentialModel(2,amplitude,scale)
+>>> myCovModel = ot.ExponentialModel(scale, amplitude)
 >>> myMesh = ot.IntervalMesher([100]*2).build(ot.Interval([0.0]*2, [1.0]*2))
 >>> myXProcess = ot.TemporalNormalProcess(myCovModel, myMesh)
 

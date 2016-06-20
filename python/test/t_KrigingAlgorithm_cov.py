@@ -65,7 +65,7 @@ test_model(myModel)
 myDefautModel = ot.GeneralizedExponential()
 print("myDefautModel = ",  myDefautModel)
 
-myModel = ot.GeneralizedExponential(spatialDimension, 10.0, 1.5)
+myModel = ot.GeneralizedExponential([10.0]*spatialDimension, 1.5)
 test_model(myModel)
 
 
@@ -79,7 +79,7 @@ test_model(myModel)
 myDefautModel = ot.MaternModel()
 print("myDefautModel = ",  myDefautModel)
 
-myModel = ot.MaternModel(spatialDimension, 8.0, 2.0)
+myModel = ot.MaternModel([8.0]*spatialDimension, 2.0)
 test_model(myModel)
 
 
@@ -87,18 +87,18 @@ myDefautModel = ot.ProductCovarianceModel()
 print("myDefautModel = ",  myDefautModel)
 
 coll = ot.CovarianceModelCollection()
-coll.add(ot.AbsoluteExponential(1, 3.0))
-coll.add(ot.SquaredExponential(1, 2.0))
+coll.add(ot.AbsoluteExponential([3.0]))
+coll.add(ot.SquaredExponential([2.0]))
 myModel = ot.ProductCovarianceModel(coll)
 test_model(myModel)
 
 collection = ot.CovarianceModelCollection()
 # Collection ==> add covariance models
 # Add AbsoluteExponentialModel to the collection
-myAbsoluteExponential = ot.AbsoluteExponential(spatialDimension, 3.0)
+myAbsoluteExponential = ot.AbsoluteExponential([3.0] * spatialDimension)
 collection.add(myAbsoluteExponential)
 # Add SquaredExponentialModel to the collection
-mySquaredExponential = ot.SquaredExponential(spatialDimension, 2.0)
+mySquaredExponential = ot.SquaredExponential([2.0] * spatialDimension)
 collection.add(mySquaredExponential)
 # Add exponentialModel to the collection
 amplitude = [4.0, 2.0]
@@ -106,7 +106,7 @@ scale = [1.0] * spatialDimension
 # Define a spatial correlation
 spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
 spatialCorrelation[1,0] = 0.3
-myExponentialModel = ot.ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation)
+myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 collection.add(myExponentialModel)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
 myModel = ot.TensorizedCovarianceModel(collection)

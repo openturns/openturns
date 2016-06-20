@@ -6,7 +6,7 @@ from math import sqrt
 mesh = ot.IntervalMesher([256]).build(ot.Interval(-1.0, 1.0))
 threshold = 0.001
 factory = ot.KarhunenLoeveP1Factory(mesh, threshold)
-model = ot.AbsoluteExponential(1, 1.0)
+model = ot.AbsoluteExponential([1.0])
 ev = ot.NumericalPoint()
 modes = factory.buildAsProcessSample(model, ev)
 for i in range(modes.getSize()):

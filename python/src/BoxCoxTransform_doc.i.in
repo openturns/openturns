@@ -81,7 +81,7 @@ Apply it to a field:
 >>> myMesh=myMesher.build(myInterval)
 >>> amplitude=[1.0]
 >>> scale=[0.2, 0.2]
->>> myCovModel=ot.ExponentialModel(myMesh.getDimension(),amplitude, scale)
+>>> myCovModel=ot.ExponentialModel(scale, amplitude)
 >>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
 >>> g = ot.NumericalMathFunction(['x1'],  ['exp(x1)'])
 >>> myDynTransform = ot.SpatialFunction(g, 2)

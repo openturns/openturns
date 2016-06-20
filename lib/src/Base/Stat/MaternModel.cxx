@@ -39,17 +39,6 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
 }
 
-/* Parameters constructor */
-MaternModel::MaternModel(const UnsignedInteger spatialDimension,
-                         const NumericalScalar theta,
-                         const NumericalScalar nu)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, theta))
-  , nu_(nu)
-  , sqrt2nuOverTheta_(NumericalPoint(spatialDimension, 0.0))
-{
-  initialize();
-}
-
 /** Parameters constructor */
 MaternModel::MaternModel(const NumericalPoint & theta,
                          const NumericalScalar nu)

@@ -37,14 +37,14 @@ Create a tensorized covariance function from the tensorization of an absolute ex
 
 Create the each covariance models:
 
->>> myCov1 = ot.AbsoluteExponential(spatialDimension, 3.0)
->>> myCov2 = ot.SquaredExponential(spatialDimension, 2.0)
+>>> myCov1 = ot.AbsoluteExponential([3.0] * spatialDimension)
+>>> myCov2 = ot.SquaredExponential(spatialDimension *[2.0])
 
 >>> amplitude= [4.0, 2.0]
 >>> scale = [1.0, 1.0]
 >>> spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
 >>> spatialCorrelation[1,0] = 0.3
->>> myCov3 = ot.ExponentialModel(spatialDimension, amplitude, scale, spatialCorrelation)
+>>> myCov3 = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 
 Define the scale of the tensorized model:
 

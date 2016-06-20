@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     NumericalPoint scale(dimension, 1.0);
 
     /* Covariance model */
-    ExponentialModel myCovarianceModel(spatialDimension, amplitude, scale);
+    ExponentialModel myCovarianceModel(scale, amplitude);
     fullprint << "myCovarianceModel = " << myCovarianceModel << std::endl;
 
     /* Spectral model  */

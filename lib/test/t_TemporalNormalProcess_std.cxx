@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
 
     /* Second order model with parameters */
-    ExponentialModel myCovModel(spatialDimension, amplitude, scale);
+    ExponentialModel myCovModel(scale, amplitude);
     fullprint << "myCovModel=" << myCovModel << std::endl;
 
     TemporalNormalProcess myProcess1(myCovModel, myTimeGrid);

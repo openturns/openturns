@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     NumericalPoint xMin(vertices.getMin());
     NumericalPoint xMax(vertices.getMax());
     NumericalPoint scale(2, 0.1);
-    CovarianceModel covarianceModel(ExponentialModel(2, NumericalPoint(2, 1.0), scale));
+    CovarianceModel covarianceModel(ExponentialModel(scale, NumericalPoint(2, 1.0)));
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix

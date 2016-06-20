@@ -40,20 +40,9 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   // Nothing to do
 }
 
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension,
-                                                               const NumericalScalar amplitude,
-                                                               const NumericalScalar scale,
-                                                               const NumericalScalar frequency)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, amplitude), NumericalPoint(spatialDimension, scale))
-  , frequency_(0.0)
-{
-  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
-  setFrequency(frequency);
-}
-
 /** Standard constructor with amplitude and scale parameters */
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & amplitude,
-                                                               const NumericalPoint & scale,
+ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & scale,
+                                                               const NumericalPoint & amplitude,
                                                                const NumericalScalar frequency)
   : StationaryCovarianceModel(amplitude, scale)
   , frequency_(0.0)
@@ -131,8 +120,8 @@ String ExponentiallyDampedCosineModel::__repr__() const
   OSS oss(true);
   oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << amplitude_[0]
-      << " scale=" << scale_[0]
+      << " theta=" << scale_
+      << " sigma=" << amplitude_
       << " frequency=" << frequency_;
   return oss;
 }
@@ -143,8 +132,8 @@ String ExponentiallyDampedCosineModel::__str__(const String & offset) const
   OSS oss(false);
   oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " amplitude=" << amplitude_[0]
-      << " scale=" << scale_[0]
+      << " theta=" << scale_
+      << " sigma=" << amplitude_
       << " frequency=" << frequency_;
   return oss;
 }
