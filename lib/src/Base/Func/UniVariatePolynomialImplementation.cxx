@@ -195,7 +195,7 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator 
   Coefficients resultCoefficients(resultDimension);
   // For small total degree, use the elementary algorithm
   // We use a static local variable to avoid a systematic call to ResourceMap
-  const UnsignedInteger smallDegree = ResourceMap::GetAsUnsignedInteger("UniVariatePolynomialImplementation-SmallDegree");
+  const UnsignedInteger smallDegree = ResourceMap::GetAsUnsignedInteger("UniVariatePolynomial-SmallDegree");
   if (resultDimension < smallDegree)
   {
     for (UnsignedInteger i = 0; i < resultDimension; ++i)

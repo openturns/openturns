@@ -63,7 +63,7 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   if (max == min)
     {
-      const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultCDFEpsilon"));
+      const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon"));
       const NumericalScalar delta(std::max(std::abs(min), 10.0) * epsilon);
       Histogram result(min - 0.5 * delta, NumericalPoint(1, delta), NumericalPoint(1, 1.0));
       result.setDescription(sample.getDescription());
@@ -76,7 +76,7 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
   if (hOpt == 0.0) hOpt = sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
   const UnsignedInteger barNumber(static_cast<UnsignedInteger>(ceil((max - min) / hOpt + 0.5)));
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
-  const NumericalScalar delta(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon") * (max - min));
+  const NumericalScalar delta(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon") * (max - min));
   hOpt = ((max - min) + delta) / barNumber;
   NumericalPoint heights(barNumber, 0.0);
   const NumericalScalar step(1.0 / hOpt);

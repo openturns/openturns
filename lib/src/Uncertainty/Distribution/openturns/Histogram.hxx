@@ -128,7 +128,7 @@ public:
   /** Draw the PDF of the Histogram using a specific presentation */
   virtual Graph drawPDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

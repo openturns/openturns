@@ -62,7 +62,7 @@ public:
                       const String & yTitle,
                       const Bool showAxes,
                       const String & legendPosition = "",
-                      const NumericalScalar legendFontSize = ResourceMap::GetAsNumericalScalar("GraphImplementation-DefaultLegendFontSize"),
+                      const NumericalScalar legendFontSize = ResourceMap::GetAsNumericalScalar("Graph-DefaultLegendFontSize"),
                       const LogScale logScale = NONE);
 
   /** Virtual constructor */
@@ -143,8 +143,8 @@ public:
 
   /** The method that generates the graphic files */
   void draw(const String & file,
-            const NumericalScalar width = ResourceMap::GetAsUnsignedInteger("GraphImplementation-DefaultWidth"),
-            const NumericalScalar height = ResourceMap::GetAsUnsignedInteger("GraphImplementation-DefaultHeight"),
+            const NumericalScalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
+            const NumericalScalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
             SignedInteger format = ALL);
 
   /** Get the R command corresponding to the graph */

@@ -89,7 +89,7 @@ public:
   virtual void run();
 
   /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "SimulationResultImplementation-DefaultConfidenceLevel" )) const;
+  Graph drawProbabilityConvergence(const NumericalScalar level = ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

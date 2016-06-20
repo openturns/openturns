@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     Indices levels(spatialDimension, 1);
     Box box(levels);
     const NumericalSample vertices = box.generate();
-    const NumericalScalar nuggetFactor = ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor");
+    const NumericalScalar nuggetFactor = ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor");
     const HMatrixParameters parameters;
 
     fullprint << "Discretization on a grid of vertices" << std::endl;

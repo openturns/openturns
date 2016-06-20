@@ -373,7 +373,7 @@ Description TruncatedDistribution::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool TruncatedDistribution::isElliptical() const
 {
-  return distribution_.isElliptical() && finiteLowerBound_ && finiteUpperBound_ && (std::abs(distribution_.getRange().getLowerBound()[0] - lowerBound_ + distribution_.getRange().getUpperBound()[0] - upperBound_) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
+  return distribution_.isElliptical() && finiteLowerBound_ && finiteUpperBound_ && (std::abs(distribution_.getRange().getLowerBound()[0] - lowerBound_ + distribution_.getRange().getUpperBound()[0] - upperBound_) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
 }
 
 /* distribution accessor */

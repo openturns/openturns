@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 int main(int argc, char *argv[])
 {
-  ResourceMap::Set("DistributionImplementation-parallel", "1");
+  ResourceMap::Set("Distribution-parallel", "1");
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();

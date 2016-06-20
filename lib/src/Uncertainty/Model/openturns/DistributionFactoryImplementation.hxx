@@ -41,7 +41,7 @@ public:
   typedef DistributionImplementation::Implementation Implementation;
 
   /** Default constructor */
-  explicit DistributionFactoryImplementation(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactoryImplementation-DefaultBootstrapSize"));
+  explicit DistributionFactoryImplementation(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactory-DefaultBootstrapSize"));
 
   /** Virtual constructor */
   virtual DistributionFactoryImplementation * clone() const;

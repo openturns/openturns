@@ -404,7 +404,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   else if (meshDimension == 2)
   {
     graph.setYTitle(description_[1]);
-    const UnsignedInteger levelsNumber(ResourceMap::GetAsUnsignedInteger("FieldImplementation-LevelNumber"));
+    const UnsignedInteger levelsNumber(ResourceMap::GetAsUnsignedInteger("Field-LevelNumber"));
     if (interpolate)
     {
       // Compute the iso-values

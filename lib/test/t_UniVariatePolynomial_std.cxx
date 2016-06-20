@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     fullprint << "P1*P2=" << P1 * P2 << std::endl;
 
     // Multiplication of two polynomials using FFT
-    ResourceMap::SetAsUnsignedInteger("UniVariatePolynomialImplementation-LargeDegree", 0);
+    ResourceMap::SetAsUnsignedInteger("UniVariatePolynomial-LargeDegree", 0);
     fullprint << "P1*P2=" << P1 * P2 << std::endl;
 
   }

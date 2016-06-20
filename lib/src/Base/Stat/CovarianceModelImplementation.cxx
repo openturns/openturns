@@ -47,7 +47,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   updateSpatialCovariance();
 }
@@ -64,7 +64,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   if (scale.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, incompatible dimensions between spatial dimension and scale";
@@ -84,7 +84,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
  , spatialCorrelation_(0)
  , spatialCovariance_(0)
  , isDiagonal_(true)
- , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+ , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -103,7 +103,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   if (scale.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, incompatible dimensions between spatial dimension and scale";
@@ -125,7 +125,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
  , spatialCorrelation_(0)
  , spatialCovariance_(0)
  , isDiagonal_(true)
- , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+ , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -145,7 +145,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   setScale(scale);
   // spatialCovariance
@@ -175,7 +175,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
  , spatialCorrelation_(0)
  , spatialCovariance_(0)
  , isDiagonal_(true)
- , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModelImplementation-DefaultNuggetFactor"))
+ , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   // spatialCovariance
   spatialCovariance_ = spatialCovariance;
