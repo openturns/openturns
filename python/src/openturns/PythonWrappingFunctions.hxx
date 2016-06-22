@@ -1207,20 +1207,6 @@ convert< _PySequence_, WhittleFactoryState >(PyObject * pyObj)
   return WhittleFactoryState();
 }
 
-template <>
-struct traitsPythonType< Process >
-{
-  typedef _PySequence_ Type;
-};
-
-template <>
-inline
-Process
-convert< _PySequence_, Process >(PyObject * pyObj)
-{
-  return Process();
-}
-
 
 inline
 void handleException()
