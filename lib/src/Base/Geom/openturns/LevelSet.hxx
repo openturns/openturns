@@ -73,9 +73,11 @@ public:
   void setLevel(const NumericalScalar level);
 
   /** Lower bound of the bounding box */
+  void setLowerBound(const NumericalPoint & bound);
   NumericalPoint getLowerBound() const;
 
   /** Upper bound of the bounding box */
+  void setUpperBound(const NumericalPoint & bound);
   NumericalPoint getUpperBound() const;
 
   /** String converter */
@@ -90,12 +92,23 @@ public:
 
 private:
 
+  /** Compute the lower bound using optimization */
+  void computeLowerBound() const;
+
+  /** Compute the upper bound using optimization */
+  void computeUpperBound() const;
+
   /** Function defining the level set*/
   NumericalMathFunction function_;
 
   /** Level defining the level set */
   NumericalScalar level_;
 
+  /** Lower bound of the bounding box */
+  mutable NumericalPoint lowerBound_;
+
+  /** Upper bound of the bounding box */
+  mutable NumericalPoint upperBound_;
 }; /* class LevelSet */
 
 END_NAMESPACE_OPENTURNS
