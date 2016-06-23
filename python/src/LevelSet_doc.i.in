@@ -169,3 +169,23 @@ Examples
 >>> import openturns as ot
 >>> levelSet = ot.LevelSet()
 >>> levelSet.setLevel(3.0)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::setLowerBound
+"Set the lower bound of the bounding box.
+
+Parameters
+----------
+bound : sequence of floats
+    Lower bound of the bounding box of the level set. It allows to clip the level set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::setUpperBound
+"Set the upper bound of the bounding box.
+
+Parameters
+----------
+bound : sequence of floats
+    Upper bound of the bounding box of the level set. It allows to clip the level set."
