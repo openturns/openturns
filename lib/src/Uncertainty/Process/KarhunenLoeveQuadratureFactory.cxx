@@ -108,12 +108,16 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   nodes_ = NumericalSample(0, dimension);
   NumericalPoint rawWeights;
   WeightedExperiment experimentCopy(experiment);
+  LOGINFO("Generate the weighted experiment");
   NumericalSample rawNodes(experimentCopy.generateWithWeights(rawWeights));
+  LOGINFO(OSS(false) << "Initial number of integration nodes=" << rawNodes.getSize());
+  LOGINFO("Generate the pdf");
   const NumericalSample pdf(distribution.computePDF(rawNodes));
   if (!hasSameBounds) rawNodes = scaling(rawNodes);
   // Update the weights in order to match Lebesgue distribution on the domain
   // We keep only the nodes inside of the domain
   nodes_ = NumericalSample(0, dimension);
+  LOGINFO("Filter the integration nodes");
   for (UnsignedInteger i = 0; i < rawWeights.getDimension(); ++i)
     {
       const Bool isInside(domain.contains(rawNodes[i]));
@@ -125,6 +129,8 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
     }
   // Now we compute the basis functions over the nodes, properly scaled
   const UnsignedInteger nodesNumber(nodes_.getSize());
+  LOGINFO(OSS(false) << "Final number of integration nodes=" << nodesNumber);
+  LOGINFO("Compute the design matrix");
   theta_ = Matrix(nodesNumber, basisSize);
   for (UnsignedInteger j = 0; j < basisSize; ++j)
     {
@@ -133,6 +139,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
 	theta_(i, j) = weights_[i] * thetaj[i];
     }
   // Compute the Cholesky factor of \theta^t\theta
+  LOGINFO("Compute the Cholesky factor of the Gram matrix");
   cholesky_ = theta_.computeGram(true).computeCholesky(false);
 }
 
@@ -169,12 +176,12 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
 {
   const UnsignedInteger nodesNumber(nodes_.getSize());
   const UnsignedInteger dimension(covarianceModel.getDimension());
-  if (dimension != 1) throw NotYetImplementedException(HERE) << "Error: KarhunenLoeveQuadratureFactory does not allow for covariance models of dimension=" << dimension << " greater than 1";
-
   // Discretize the covariance model
+  LOGINFO("Discretize the covariance matrix");
   CovarianceMatrix C(covarianceModel.discretize(nodes_));
   // Prepare the generalized eigenvalues problem
   // Step 1: scale C by the weights
+  LOGINFO("Scale the covariance matrix");
   if (dimension == 1)
     {
       for (UnsignedInteger j = 0; j < nodesNumber; ++j)
@@ -198,6 +205,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   // Step 2: take theta into account
   const UnsignedInteger basisSize(coll_.getSize());
   Matrix omega;
+  LOGINFO("Scale the design matrix");
   // If dimension == 1 we can use theta_ directly
   if (dimension == 1) omega = theta_;
   // Here we have to expand theta if dimension > 1
@@ -217,8 +225,10 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   // M^t.N   si f1=true,  f2=false
   // M  .N^t si f1=false, f2=true
   // M^t.N^t si f1=true,  f2=true
+  LOGINFO("Build the lhs matrix of the generalized eigenvalues problem");
   C = omega.getImplementation()->genProd(*(C * omega).getImplementation(), true, false);
   // Cholesky decomposition of theta
+  LOGINFO("Expand the Cholesky factor");
   TriangularMatrix cholesky;
   // If dimension == 1 we can use cholesky_ directly
   if (dimension == 1) cholesky = cholesky_;
@@ -239,14 +249,18 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   //   = L^{-1}((CL^{-t})^t)^t as (A^t)^t=A
   //   = L^{-1}(L^{-1}C^t)^t as (MN)^t = N^tM^t
   //   = L^{-1}(L^{-1}C)^t as C^t = C
+  LOGINFO("Reduce the generalized eigenvalue problem to a standard eigenvalu problem");
   C = cholesky.solveLinearSystem((cholesky.solveLinearSystem(C)).transpose()).getImplementation();
   SquareMatrix eigenVectors;
   // Last time we need C, so we can overwrite it by eigenVectors
+  LOGINFO("Solve the standard eigenvalue problem");
   NumericalPoint eigenValues(C.computeEV(eigenVectors, false));
   const UnsignedInteger eigenDimension(eigenVectors.getDimension());
   // Transform the eigenvectors to the generalizd ones
   // Last time we need cholesky, so we can overwrite it by eigenVectors
+  LOGINFO("Get the generalized eigenvectors");
   eigenVectors = cholesky.transpose().solveLinearSystem(eigenVectors, false).getImplementation();
+  LOGINFO("Sort the eigenvectors by decreasing eigenvalues");
   NumericalSample eigenPairs(eigenDimension, eigenDimension + 1);
   for (UnsignedInteger i = 0; i < eigenDimension; ++i)
     {
@@ -259,10 +273,10 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
       for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
       eigenValues[i] = -eigenPairs[i][eigenDimension];
     }
-  LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
   selectedEV = NumericalPoint(0);
   UnsignedInteger j(0);
   NumericalMathFunctionCollection resultBasis(0);
+  LOGINFO("Keep only the relevant eigen pairs");
   while ((j < eigenDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
     {
       selectedEV.add(eigenValues[j]);
