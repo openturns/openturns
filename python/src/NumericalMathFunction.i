@@ -186,6 +186,32 @@ class OpenTURNSPythonFunction(object):
     def getParameterDescription(self):
         return self.__paramDesc
 
+def _exec_sample_multiprocessing(func, n_cpus):
+    """Return a distributed function using multiprocessing
+
+    Parameters
+    ----------
+    func : Function or calable
+        A callable python object, usually a function. The function should take
+        an input vector as argument and return an output vector.
+
+    n_cpus : int
+        Number of CPUs on which to distribute the function calls.
+
+    Returns
+    -------
+    _exec_sample : Function or callable
+        The parallelized funtion.
+    """
+
+    def _exec_sample(X):
+        from multiprocessing import Pool
+        p = Pool(processes=n_cpus)
+        rs = p.map_async(func, X)
+        p.close()
+        return rs.get()
+    return _exec_sample
+
 class PythonFunction(NumericalMathFunction):
     """
     Override NumericalMathFunction from Python.
@@ -208,10 +234,23 @@ class PythonFunction(NumericalMathFunction):
     hessian : a callable python object
         returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
+    n_cpus : integer
+        Number of cpus on which func should be distributed using multiprocessing.
+        If -1, it uses all the cpus available. If 1, it does nothing. If n_cpus
+        and func_sample are both given as arguments, n_cpus will be ignored and
+        samples will be handled by func_sample.
+        Default is None.
 
     Notes
     -----
-    You may provide either one of func or func_sample arguments
+    You must provide at least func or func_sample arguments. Notice that if
+    func_sample is provided, n_cpus is ignored. Note also that if PythonFunction
+    is distributed (n_cpus > 1), the traceback of a raised exception by a func
+    call is lost due to the way multiprocessing dispatches and handles func
+    calls. This can be solved by temporarily deactivating n_cpus during the
+    development of the wrapper or by manually handling the distribution of the
+    wrapper with external libraries like joblib that keep track of a raised
+    exception and shows the traceback to the user.
 
     Examples
     --------
@@ -232,7 +271,7 @@ class PythonFunction(NumericalMathFunction):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None):
+    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None):
         if func == None and func_sample == None:
             raise RuntimeError('no func nor func_sample given.')
         instance = OpenTURNSPythonFunction(n, p)
@@ -247,6 +286,13 @@ class PythonFunction(NumericalMathFunction):
             instance._exec_sample = func_sample
             if func == None:
                 instance._exec = instance._exec_point_on_exec_sample
+        elif n_cpus != None and n_cpus != 1 and func != None:
+            if not isinstance(n_cpus, int):
+                raise RuntimeError('n_cpus is not an integer')
+            if n_cpus == -1:
+                import multiprocessing
+                n_cpus = multiprocessing.cpu_count()
+            instance._exec_sample = _exec_sample_multiprocessing(func, n_cpus)
         if gradient != None:
             if not isinstance(gradient, collections.Callable):
                 raise RuntimeError('gradient argument is not callable.')

@@ -124,6 +124,15 @@ myFunc = PythonFunction(2, 1, func_sample=a_exec_sample)
 outSample = myFunc(a_sample)
 print(outSample)
 
+print('distributed exec only on a point')
+myFunc = PythonFunction(2, 1, a_exec, n_cpus=-1)
+outSample = myFunc([100., 100.])
+print(outSample)
+
+print('distributed exec only on a sample')
+myFunc = PythonFunction(2, 1, a_exec, n_cpus=-1)
+outSample = myFunc(a_sample)
+print(outSample)
 
 def a_grad(X):
     # wrong but allows to verify
