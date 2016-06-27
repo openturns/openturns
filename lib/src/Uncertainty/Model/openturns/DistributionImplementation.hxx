@@ -946,6 +946,9 @@ protected:
   /** Use parallelism */
   Bool isParallel_;
 
+  /** Flag to tell if the distribution is indeed a copula */
+  Bool isCopula_;
+
   /** Data for characteristic function computation */
   mutable Bool isInitializedCF_;
 

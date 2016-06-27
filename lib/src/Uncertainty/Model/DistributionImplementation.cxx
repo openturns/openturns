@@ -106,6 +106,7 @@ DistributionImplementation::DistributionImplementation()
   , range_(Interval(1.0, -1.0))
   , description_(1)
   , isParallel_(ResourceMap::GetAsBool("DistributionImplementation-Parallel"))
+  , isCopula_(false)
   , isInitializedCF_(false)
   , pdfGrid_(0)
 {
@@ -2390,7 +2391,7 @@ Bool DistributionImplementation::isElliptical() const
 /* Check if the distribution is a copula */
 Bool DistributionImplementation::isCopula() const
 {
-  return false;
+  return isCopula_;
 }
 
 /* Check if the distribution is continuous */
@@ -3242,6 +3243,7 @@ void DistributionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "weight_", weight_ );
   adv.saveAttribute( "range_", range_ );
   adv.saveAttribute( "description_", description_ );
+  adv.saveAttribute( "isCopula_", isCopula_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -3260,6 +3262,7 @@ void DistributionImplementation::load(Advocate & adv)
   adv.loadAttribute( "weight_", weight_ );
   adv.loadAttribute( "range_", range_ );
   adv.loadAttribute( "description_", description_ );
+  adv.loadAttribute( "isCopula_", isCopula_ );
 }
 
 /* Transformation of distributions by usual functions */
