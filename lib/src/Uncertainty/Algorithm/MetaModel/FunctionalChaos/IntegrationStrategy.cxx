@@ -92,6 +92,43 @@ String IntegrationStrategy::__repr__() const
 }
 
 
+struct IntegrationStrategyCoefficientsPolicy
+{
+  const NumericalPoint & weightedOutput_;
+  const Matrix & designMatrix_;
+  const Indices & addedRanks_;
+  NumericalPoint & alpha_;
+
+  IntegrationStrategyCoefficientsPolicy(const NumericalPoint & weightedOutput,
+					const Matrix & designMatrix,
+					const Indices & addedRanks,
+					NumericalPoint & alpha)
+    : weightedOutput_(weightedOutput)
+    , designMatrix_(designMatrix)
+    , addedRanks_(addedRanks)
+    , alpha_(alpha)
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
+      {
+	const UnsignedInteger indexAdded(addedRanks_[j]);
+	NumericalScalar result(0.0);
+	MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
+	for (NumericalPoint::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
+	  {
+	    result += (*outputSample) * (*columnMatrix);
+	  } // i
+	alpha_[j] = result;
+      } // j
+  } // operator()
+
+}; /* end struct IntegrationStrategyCoefficientsPolicy */
+
+
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis
    For the moment, there is no specific strategy for improving the approximation of
    the L2 integral by a finite sum: the same input sample is used for all the calls
@@ -111,8 +148,15 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   // upon this sample
   if (inputSample_.getSize() == 0)
   {
+    LOGINFO("Generate output data");
     inputSample_  = weightedExperiment_.generateWithWeights(weights_);
     outputSample_ = function(inputSample_);
+  }
+  // check if the proxy is initialized and if the given basis is the one in the proxy
+  if (proxy_.getInputSample().getSize() == 0 || !(proxy_.getBasis() == basis))
+  {
+    LOGINFO(OSS() << "Initialize the proxy, reason=" << (proxy_.getInputSample().getSize() == 0 ? "empty input sample" : "new basis"));
+    proxy_ = DesignProxy(inputSample_, basis);
   }
   // First, copy the coefficients that are common with the previous partial basis
   NumericalPoint alpha(0);
@@ -122,25 +166,23 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   // We have to compute the coefficients associated to the added indices
   const UnsignedInteger addedSize(addedRanks.getSize());
   const UnsignedInteger sampleSize(inputSample_.getSize());
-  for (UnsignedInteger i = 0; i < addedSize; ++i)
-  {
-    const UnsignedInteger indexAdded(addedRanks[i]);
-    NumericalScalar value(0.0);
-    // The integral is approximated by a weighted sum of f * Phi
-    for (UnsignedInteger j = 0; j < sampleSize; ++j) value += weights_[j] * outputSample_[j][marginalIndex] * basis[indices[indexAdded]](inputSample_[j])[0];
-    alpha.add(value);
-  }
+  // Second, compute the coefficients of the new basis entries
+  const Matrix designMatrix(proxy_.computeDesign(indices));
+  NumericalPoint addedAlpha(addedSize, 0.0);
+  NumericalPoint weightedOutput(sampleSize);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    weightedOutput[i] = weights_[i] * outputSample_[i][marginalIndex];
+  IntegrationStrategyCoefficientsPolicy policy(weightedOutput, designMatrix, addedRanks, addedAlpha);
+  TBB::ParallelFor( 0, addedSize, policy );
+  alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model
   residual_p_ = 0.0;
-  const UnsignedInteger basisDimension(indices.getSize());
+  const NumericalPoint values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    NumericalScalar value(0.0);
-    // Evaluate the meta model on the current integration point
-    for (UnsignedInteger j = 0; j < basisDimension; ++j) value += alpha_k_p_[j] * basis[indices[j]](inputSample_[i])[0];
-    // Accumulate the squared residual
-    residual_p_ += pow(outputSample_[i][marginalIndex] - value, 2);
+    const NumericalScalar delta(outputSample_[i][marginalIndex] - values[i]);
+    residual_p_ += delta * delta;
   }
   residual_p_ = sqrt(residual_p_) / sampleSize;
   relativeError_p_ = 0.0;
