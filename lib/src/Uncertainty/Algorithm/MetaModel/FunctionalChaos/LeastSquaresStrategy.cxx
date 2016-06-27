@@ -129,10 +129,10 @@ void LeastSquaresStrategy::computeCoefficients(const NumericalMathFunction & fun
     outputSample_ = function(inputSample_);
   }
 
-  // check that the proxy is initialized
-  if (proxy_.getInputSample().getSize() == 0)
+  // check if the proxy is initialized and if the given basis is the one in the proxy
+  if (proxy_.getInputSample().getSize() == 0 || !(proxy_.getBasis() == basis))
   {
-    LOGINFO("Initialize the proxy");
+    LOGINFO(OSS() << "Initialize the proxy, reason=" << (proxy_.getInputSample().getSize() == 0 ? "empty input sample" : "new basis"));
     proxy_ = DesignProxy(inputSample_, basis);
   }
 

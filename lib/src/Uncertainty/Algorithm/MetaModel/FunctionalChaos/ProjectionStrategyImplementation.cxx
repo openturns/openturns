@@ -28,8 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ProjectionStrategyImplementation);
 
 static const Factory<ProjectionStrategyImplementation> Factory_ProjectionStrategyImplementation;
@@ -37,48 +35,47 @@ static const Factory<ProjectionStrategyImplementation> Factory_ProjectionStrateg
 
 /* Default constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation()
-  : PersistentObject(),
-    alpha_k_p_(0),
-    residual_p_(0.0),
-    relativeError_p_(0.0),
-    measure_(),
-    inputSample_(0, 0),
-    weights_(0),
-    outputSample_(0, 0)
+  : PersistentObject()
+  , alpha_k_p_(0)
+  , residual_p_(0.0)
+  , relativeError_p_(0.0)
+  , measure_()
+  , inputSample_(0, 0)
+  , weights_(0)
+  , outputSample_(0, 0)
 {
   // The ProjectionStrategyImplementation imposes its distribution to the weighted experiment
-  weightedExperiment_.setDistribution(getMeasure());
+  weightedExperiment_.setDistribution(measure_);
 }
 
 
 /* Parameter constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distribution & measure)
-  : PersistentObject(),
-    alpha_k_p_(0),
-    residual_p_(0.0),
-    relativeError_p_(0.0),
-    measure_(measure),
-    inputSample_(0, 0),
-    weights_(0),
-    outputSample_(0, 0)
+  : PersistentObject()
+  , alpha_k_p_(0)
+  , residual_p_(0.0)
+  , relativeError_p_(0.0)
+  , measure_(measure)
+  , inputSample_(0, 0)
+  , weights_(0)
+  , outputSample_(0, 0)
 {
   // The ProjectionStrategyImplementation imposes the distribution of the weighted experiment
-  weightedExperiment_.setDistribution(getMeasure());
+  weightedExperiment_.setDistribution(measure_);
 }
 
 
 /* Parameter constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const WeightedExperiment & weightedExperiment)
-  : PersistentObject(),
-    alpha_k_p_(0),
-    residual_p_(0.0),
-    relativeError_p_(0.0),
-    measure_(weightedExperiment.getDistribution()),
-    weightedExperiment_(weightedExperiment),
-    inputSample_(0, 0),
-    weights_(0),
-    outputSample_(0, 0)
-
+  : PersistentObject()
+  , alpha_k_p_(0)
+  , residual_p_(0.0)
+  , relativeError_p_(0.0)
+  , measure_(weightedExperiment.getDistribution())
+  , weightedExperiment_(weightedExperiment)
+  , inputSample_(0, 0)
+  , weights_(0)
+  , outputSample_(0, 0)
 {
   // Nothing to do
 }
@@ -87,15 +84,14 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const NumericalSample & inputSample,
     const NumericalPoint & weights,
     const NumericalSample & outputSample)
-  : PersistentObject(),
-    alpha_k_p_(0),
-    residual_p_(0.0),
-    measure_(UserDefined(inputSample)),
-    weightedExperiment_(FixedExperiment(inputSample, weights)),
-    inputSample_(0, 0),
-    weights_(0),
-    outputSample_(0, 0)
-
+  : PersistentObject()
+  , alpha_k_p_(0)
+  , residual_p_(0.0)
+  , measure_(UserDefined(inputSample))
+  , weightedExperiment_(FixedExperiment(inputSample, weights))
+  , inputSample_(0, 0)
+  , weights_(0)
+  , outputSample_(0, 0)
 {
   if (inputSample.getSize() != weights.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a ProjectionStrategyImplementation with an input sample and weights of different size. Here, input sample size=" << inputSample.getSize() << ", weights size=" << weights.getSize();
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a ProjectionStrategyImplementation with samples of different size. Here, input sample size=" << inputSample.getSize() << ", output sample size=" << outputSample.getSize();
@@ -109,18 +105,18 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Numeric
 /* Parameter constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Distribution & measure,
     const WeightedExperiment & weightedExperiment)
-  : PersistentObject(),
-    alpha_k_p_(0),
-    residual_p_(0.0),
-    relativeError_p_(0.0),
-    measure_(measure),
-    weightedExperiment_(weightedExperiment),
-    inputSample_(0, 0),
-    weights_(0),
-    outputSample_(0, 0)
+  : PersistentObject()
+  , alpha_k_p_(0)
+  , residual_p_(0.0)
+  , relativeError_p_(0.0)
+  , measure_(measure)
+  , weightedExperiment_(weightedExperiment)
+  , inputSample_(0, 0)
+  , weights_(0)
+  , outputSample_(0, 0)
 {
   // The ProjectionStrategyImplementation imposes the distribution of the weighted experiment
-  weightedExperiment_.setDistribution(getMeasure());
+  weightedExperiment_.setDistribution(measure_);
 }
 
 
@@ -142,9 +138,13 @@ String ProjectionStrategyImplementation::__repr__() const
 /* Measure accessor */
 void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
 {
-  measure_ = measure;
-  // Set the measure as the distribution of the weighted experiment
-  weightedExperiment_.setDistribution(measure);
+  if (!(measure == measure_))
+    {
+      measure_ = measure;
+      // Set the measure as the distribution of the weighted experiment
+      weightedExperiment_.setDistribution(measure);
+      inputSample_ = NumericalSample(0, 0);
+    }
 }
 
 Distribution ProjectionStrategyImplementation::getMeasure() const
@@ -155,8 +155,12 @@ Distribution ProjectionStrategyImplementation::getMeasure() const
 /* Experiment accessors */
 void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & weightedExperiment)
 {
-  weightedExperiment_ = weightedExperiment;
-  weightedExperiment_.setDistribution(getMeasure());
+  if (!(weightedExperiment == weightedExperiment_))
+    {
+      weightedExperiment_ = weightedExperiment;
+      weightedExperiment_.setDistribution(getMeasure());
+      inputSample_ = NumericalSample(0, 0);
+    }
 }
 
 WeightedExperiment ProjectionStrategyImplementation::getExperiment() const
