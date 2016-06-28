@@ -74,9 +74,6 @@ public:
   /** Get the copula */
   Implementation getCopula() const;
 
-  /** Check if the copula is a copula */
-  Bool isCopula() const;
-
   /** String converter */
   String __repr__() const;
 

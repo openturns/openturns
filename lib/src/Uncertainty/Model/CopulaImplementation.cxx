@@ -39,7 +39,8 @@ CLASSNAMEINIT(CopulaImplementation);
 CopulaImplementation::CopulaImplementation()
   : ContinuousDistribution()
 {
-  // Nothing to do
+  // Set the flag isCopula_ here to avoid warnings on the initialization order
+  isCopula_ = true;
 }
 
 /* Virtual constructor */
@@ -281,12 +282,6 @@ CopulaImplementation::Implementation CopulaImplementation::getMarginal(const Uns
 CopulaImplementation::Implementation CopulaImplementation::getCopula() const
 {
   return clone();
-}
-
-/* Check if the copula is a copula */
-Bool CopulaImplementation::isCopula() const
-{
-  return true;
 }
 
 /* Compute the mathematical and numerical range of the copula.

@@ -218,6 +218,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   // Second loop, keep only the atoms with a significant weight and update the sum
   weightSum = 0.0;
   distributionCollection_ = DistributionCollection(0);
+  isCopula_ = true;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar w(weights[i]);
@@ -232,6 +233,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
       atom.setWeight(w);
       distributionCollection_.add(atom);
       weightSum += w;
+      isCopula_ = isCopula_ && atom.isCopula();
     }
   }
 
@@ -523,14 +525,6 @@ Mixture::NumericalPointWithDescriptionCollection Mixture::getParametersCollectio
   parameters[size].setName("dependence");
   return parameters;
 } // getParametersCollection
-
-/* Check if the distribution is elliptical */
-Bool Mixture::isCopula() const
-{
-  const UnsignedInteger size(distributionCollection_.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isCopula()) return false;
-  return true;
-}
 
 /* Check if the distribution is elliptical */
 Bool Mixture::isElliptical() const
