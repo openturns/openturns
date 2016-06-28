@@ -347,19 +347,19 @@ class View(object):
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
                 contour_kwargs.setdefault('levels', drawable.getLevels())
-                if drawable.getDrawLabels():
-                    clabel_kwargs.setdefault('fontsize', 8)
-                    clabel_kwargs.setdefault('fmt', '%g')
                 if ('linestyles' not in contour_kwargs_default) and ('ls' not in contour_kwargs_default):
                     try:
                         contour_kwargs['linestyles'] = lineStyleDict[
                             drawable.getLineStyle()]
                     except:
                         warnings.warn('-- Unknown line style')
-                if 'color' not in contour_kwargs_default:
-                    contour_kwargs['color'] = drawable.getColor()
+                if 'colors' not in contour_kwargs_default:
+                    contour_kwargs['colors'] = [drawable.getColorCode()]
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kwargs)
-                plt.clabel(contourset, **clabel_kwargs)
+                if drawable.getDrawLabels():
+                    clabel_kwargs.setdefault('fontsize', 8)
+                    clabel_kwargs.setdefault('fmt', '%g')
+                    plt.clabel(contourset, **clabel_kwargs)
 
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kwargs)
