@@ -360,6 +360,8 @@ class View(object):
                     clabel_kwargs.setdefault('fontsize', 8)
                     clabel_kwargs.setdefault('fmt', '%g')
                     plt.clabel(contourset, **clabel_kwargs)
+                for i in range(drawable.getLabels().getSize()):
+                    contourset.collections[i].set_label(drawable.getLabels()[i])
 
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kwargs)
@@ -438,6 +440,9 @@ class View(object):
 
             # enable shadow by default
             legend_kwargs.setdefault('shadow', True)
+
+            # by default legend is a bit too large
+            legend_kwargs.setdefault('prop', {'size': 10})
 
             self._ax[0].legend(**legend_kwargs)
 
