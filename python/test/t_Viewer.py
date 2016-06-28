@@ -173,6 +173,7 @@ try:
     size = 5
     array = ot.PolygonCollection(size)
     palette = ot.Drawable.BuildDefaultPalette(size)
+    palette[0] = 'blue'
     for i in range(size):
         vertices = generator.getSample(3)
         array[i] = ot.Polygon(vertices, palette[i], palette[size - i - 1])

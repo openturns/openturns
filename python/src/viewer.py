@@ -323,7 +323,8 @@ class View(object):
                 colors = drawable.getPalette()
                 colorsRGBA = []
                 for i in range(polygonsNumber):
-                    rgba = drawable.ConvertToRGBA(colors[i])
+                    hex_code = ot.Drawable.ConvertFromName(colors[i])
+                    rgba = ot.Drawable.ConvertToRGBA(hex_code)
                     colorsRGBA.append(
                         (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
                 if 'facecolors' not in polygoncollection_kwargs_default:
