@@ -99,6 +99,7 @@ NumericalMathFunction Basis::operator[](const UnsignedInteger index) const
 
 NumericalMathFunction & Basis::operator[](const UnsignedInteger index)
 {
+  copyOnWrite();
   return getImplementation()->operator[](index);
 }
 
@@ -109,6 +110,7 @@ Basis::NumericalMathFunctionCollection Basis::getSubBasis(const Indices & indice
 
 void Basis::add(const NumericalMathFunction & elt)
 {
+  copyOnWrite();
   getImplementation()->add(elt);
 }
 
