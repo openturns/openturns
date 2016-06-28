@@ -104,7 +104,10 @@ Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
   BernsteinCopulaFactoryPolicy policy(empiricalCopulaSample, binNumber, atomsMixture);
   LOGINFO("BernsteinCopulaFactory - Create the resulting Bernstein copula");
   TBB::ParallelFor( 0, size, policy );
-  return Mixture(atomsMixture);
+  Mixture result(atomsMixture);
+  // Here we know that the mixture is a copula even if none of its atoms is.
+  result.isCopula_ = true;
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS

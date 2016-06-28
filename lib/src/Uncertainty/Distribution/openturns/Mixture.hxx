@@ -37,6 +37,10 @@ class OT_API Mixture
   : public DistributionImplementation
 {
   CLASSNAME;
+  // Make the BernsteinCopulaFactory class a friend of Mixture as it has to 
+  // set the isCopula_ attribute directly
+  friend class BernsteinCopulaFactory;
+
 public:
 
   /** A type for distribution collection */
@@ -113,9 +117,6 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
-
-  /** Check if the distribution is a copula */
-  Bool isCopula() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
