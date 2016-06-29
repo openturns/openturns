@@ -33,6 +33,9 @@ class View(object):
     graph : :class:`~openturns.Graph, :class:`~openturns.Drawable`
         A Graph or Drawable object.
 
+    pixelsize : 2-tuple of int
+        The requested size in pixels (width, height).
+
     figure : :class:`matplotlib.figure.Figure`
         The figure to draw on.
 
@@ -107,6 +110,7 @@ class View(object):
 
     def __init__(self,
                  graph,
+                 pixelsize=None,
                  figure=None,
                  figure_kwargs=None,
                  axes=[],
@@ -136,7 +140,7 @@ class View(object):
 
         if not isinstance(graph, ot.Graph) and not isinstance(graph, ot.GraphImplementation):
             if not isinstance(graph, ot.Drawable) and not isinstance(graph, ot.DrawableImplementation):
-                raise RuntimeError(
+                raise TypeError(
                     '-- The given object cannot be converted into a Graph nor Drawable.')
             else:
                 # convert Drawable => Graph
@@ -145,8 +149,8 @@ class View(object):
                 graph.add(drawable)
 
         drawables = graph.getDrawables()
-        size = len(drawables)
-        if size == 0:
+        n_drawables = len(drawables)
+        if n_drawables == 0:
             warnings.warn('-- Nothing to draw.')
             return
 
@@ -164,6 +168,18 @@ class View(object):
         clabel_kwargs_default = self.CheckDict(clabel_kwargs)
         text_kwargs_default = self.CheckDict(text_kwargs)
         legend_kwargs = self.CheckDict(legend_kwargs)
+
+        # set image size in pixels
+        if pixelsize is not None:
+            if len(pixelsize) != 2:
+                raise ValueError('-- pixelsize must be a 2-tuple.')
+            figure_kwargs.setdefault('dpi', 100)
+            dpi = figure_kwargs['dpi']
+            border = 10 # guess
+            width, height = pixelsize
+            width -= border
+            height -= border
+            figure_kwargs.setdefault('figsize', (width * 1.0 / dpi, height * 1.0 / dpi))
 
         # set step drawstyle
         step_kwargs_default.setdefault('where', 'post')

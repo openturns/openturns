@@ -15,7 +15,7 @@ try:
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
-    view = View(graph, plot_kwargs={'color': 'blue'})
+    view = View(graph, pixelsize=(800, 600), plot_kwargs={'color': 'blue'})
     # view.save('curve1.png')
     view.show(block=False)
 
