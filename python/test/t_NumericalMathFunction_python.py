@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
+import sys
 
 TESTPREAMBLE()
 
@@ -125,12 +126,12 @@ outSample = myFunc(a_sample)
 print(outSample)
 
 print('distributed exec only on a point')
-myFunc = PythonFunction(2, 1, a_exec, n_cpus=-1)
+myFunc = PythonFunction(2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
 outSample = myFunc([100., 100.])
 print(outSample)
 
 print('distributed exec only on a sample')
-myFunc = PythonFunction(2, 1, a_exec, n_cpus=-1)
+myFunc = PythonFunction(2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
 outSample = myFunc(a_sample)
 print(outSample)
 
