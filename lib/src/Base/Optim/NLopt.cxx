@@ -22,6 +22,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 #ifdef OPENTURNS_HAVE_NLOPT
 # include <nlopt.hpp>
 #endif
@@ -214,8 +215,8 @@ void NLopt::run()
     std::copy(upperBound.begin(), upperBound.end(), ub.begin());
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      if (!finiteLowerBound[i]) lb[i] = -HUGE_VAL;
-      if (!finiteUpperBound[i]) ub[i] = HUGE_VAL;
+      if (!finiteLowerBound[i]) lb[i] = -SpecFunc::MaxNumericalScalar;
+      if (!finiteUpperBound[i]) ub[i] =  SpecFunc::MaxNumericalScalar;
     }
     opt.set_lower_bounds(lb);
     opt.set_upper_bounds(ub);
@@ -303,7 +304,7 @@ void NLopt::run()
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0, getProblem()));
+  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0, getProblem(), computeLagrangeMultipliers(optimizer)));
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif

@@ -239,7 +239,7 @@ struct MeixnerBounds
 
   NumericalPoint computeObjectiveB(const NumericalPoint & point) const
   {
-    return NumericalPoint(1, std::sqrt(distribution_.computePDF(point)));
+    return NumericalPoint(1, distribution_.computePDF(point));
   }
 
   NumericalPoint computeObjectiveCD(const NumericalPoint & point) const
@@ -287,7 +287,7 @@ void MeixnerDistribution::update()
   problem.setObjective(fB);
   solver_.setProblem(problem);
   solver_.run();
-  b_ = solver_.getResult().getOptimalValue()[0];
+  b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);
 
   // Define Optimization problem2 : minimization fCD
   problem.setMinimization(true);

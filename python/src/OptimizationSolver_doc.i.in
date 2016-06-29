@@ -2,6 +2,8 @@
 
 %feature("docstring") OT::OptimizationSolver
 OT_OptimizationSolver_doc
+%feature("docstring") OT::OptimizationSolver::computeLagrangeMultipliers
+OT_OptimizationSolver_computeLagrangeMultipliers_doc
 %feature("docstring") OT::OptimizationSolver::getMaximumAbsoluteError
 OT_OptimizationSolver_getMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationSolver::getMaximumConstraintError
@@ -22,7 +24,6 @@ OT_OptimizationSolver_getResult_doc
 OT_OptimizationSolver_getStartingPoint_doc
 %feature("docstring") OT::OptimizationSolver::run
 OT_OptimizationSolver_run_doc
-
 %feature("docstring") OT::OptimizationSolver::setMaximumAbsoluteError
 OT_OptimizationSolver_setMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationSolver::setMaximumConstraintError

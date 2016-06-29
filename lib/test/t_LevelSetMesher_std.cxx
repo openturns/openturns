@@ -37,7 +37,8 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7 );
     ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumResidualError", 1.0e-7 );
     ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7 );
-    PlatformInfo::SetNumericalPrecision(4);
+    PlatformInfo::SetNumericalPrecision(3);
+
     // The 1D mesher
     LevelSetMesher mesher1D(Indices(1, 7));
     fullprint << "mesher1D=" << mesher1D << std::endl;

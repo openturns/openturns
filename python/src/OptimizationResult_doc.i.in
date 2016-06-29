@@ -3,6 +3,11 @@
 
 Returned by optimization solvers, see :class:`~openturns.OptimizationSolver`.
 
+Available constructors:
+    OptimizationResult(*optimalPoint, optimalValue, iterationNumber, absoluteError, relativeError, residualError, constraintError*)
+
+    OptimizationResult(*optimalPoint, optimalValue, iterationNumber, absoluteError, relativeError, residualError, constraintError, lagrangeMultipliers*)
+
 Parameters
 ----------
 optimalPoint : sequence of float
@@ -19,6 +24,8 @@ residualError : float
     Residual error.
 constraintError : float
     Constraint error.
+lagrangeMultipliers : sequence of float
+    Lagrange multipliers.
 problem : :class:`~openturns.OptimizationProblem`
     Associated problem."
 
@@ -121,6 +128,21 @@ Returns
 -------
 optimalPoint : :class:`~openturns.NumericalPoint`
      Optimal point"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getLagrangeMultipliers
+"Accessor to the Lagrange multipliers.
+
+Returns
+-------
+multipliers : :class:`~openturns.NumericalPoint`
+     Lagrange multipliers.
+
+Notes
+-----
+See :class:`~openturns.OptimizationSolver` for the details on how the multipliers are defined and stored in the result.
+"
 
 // ---------------------------------------------------------------------
 

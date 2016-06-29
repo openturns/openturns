@@ -157,7 +157,7 @@ void SQP::run()
 
 
   Bool convergence(false);
-  UnsignedInteger iterationNumber = 0;
+  UnsignedInteger iterationNumber(0);
   NumericalScalar absoluteError(-1.0);
   NumericalScalar constraintError(-1.0);
   NumericalScalar relativeError(-1.0);
@@ -172,7 +172,7 @@ void SQP::run()
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
     /* Go to next iteration */
-    ++ iterationNumber;
+    ++iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * NumericalPoint(1, 1.0);
@@ -188,36 +188,33 @@ void SQP::run()
 
     //compute System matrix for evaluation of the direction
 
-    for ( UnsignedInteger i = 0; i < currentPoint_.getDimension(); ++i )
+    for ( UnsignedInteger i = 0; i < dimension; ++i )
     {
       for ( UnsignedInteger j = 0; j < i + 1; ++j )
       {
-        currentSystemMatrix_ ( i, j ) = currentLambda_ * currentHessian_ ( i, j );
+        currentSystemMatrix_( i, j ) = currentLambda_ * currentHessian_( i, j );
       }
 
-      currentSystemMatrix_ ( i, i) += 2;
+      currentSystemMatrix_( i, i) += 2;
 
-      currentSystemMatrix_ ( i, currentPoint_.getDimension() ) = currentGradient_[i];
+      currentSystemMatrix_( i, dimension ) = currentGradient_[i];
     }
 
     //compute System second member
 
-    for ( UnsignedInteger i = 0; i < currentPoint_.getDimension(); ++i )
+    for ( UnsignedInteger i = 0; i < dimension; ++i )
     {
-      currentSecondMember_[i] = - currentPoint_[i];
+      currentSecondMember_[i] = -currentPoint_[i];
     }
 
-    currentSecondMember_[currentPoint_.getDimension()] = - currentLevelValue_ + levelValue;
+    currentSecondMember_[dimension] = -currentLevelValue_ + levelValue;
 
     //solve the linear system
-    const NumericalPoint Solution ( currentSystemMatrix_.solveLinearSystem ( currentSecondMember_ ) );
+    const NumericalPoint solution(currentSystemMatrix_.solveLinearSystem(currentSecondMember_));
 
-    for ( UnsignedInteger i = 0; i < currentPoint_.getDimension(); ++i )
-    {
-      currentDirection_[i] = Solution[i];
-    }
+    std::copy(solution.begin(), solution.end() - 1, currentDirection_.begin());
 
-    currentLambda_ = Solution[ currentPoint_.getDimension() ];
+    currentLambda_ = solution[dimension];
 
     /* Perform a line search in the given direction */
     const NumericalScalar alpha(computeLineSearch());
@@ -243,7 +240,7 @@ void SQP::run()
 
     // update result
     result_.update(currentPoint_, iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError, NumericalPoint(1, currentLambda_));
     LOGINFO( getResult().__repr__() );
   }
 
@@ -253,6 +250,7 @@ void SQP::run()
   {
     LOGWARN(OSS() << "Warning! The SQP algorithm failed to converge after " << getMaximumIterationNumber() << " iterations");
   }
+
 } // run()
 
 /* Tau accessor */
