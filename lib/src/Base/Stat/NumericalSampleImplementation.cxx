@@ -664,8 +664,8 @@ String NumericalSampleImplementation::__repr__() const
       << " size=" << size_
       << " dimension=" << dimension_;
 
-  const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisThreshold");
-  const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisSize");
+  const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("NumericalSample-PrintEllipsisThreshold");
+  const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("NumericalSample-PrintEllipsisSize");
   const Bool ellipsis = (data_.getSize() > printEllipsisThreshold);
 
   const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
@@ -727,8 +727,8 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   // for the description that is not stored in the sample, producing a spurious output
   const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
 
-  const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisThreshold");
-  const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-PrintEllipsisSize");
+  const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("NumericalSample-PrintEllipsisThreshold");
+  const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("NumericalSample-PrintEllipsisSize");
   const Bool ellipsis = (data_.getSize() > printEllipsisThreshold);
 
   size_t twidth = 0; // column title max width
@@ -1394,7 +1394,7 @@ CorrelationMatrix NumericalSampleImplementation::computeKendallTau() const
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
 
   // Use external efficient C implementation of the O(Nlog(N)) or O(N^2) Kendall tau computation depending on the sample size
-  const Bool smallCase(size_ < ResourceMap::GetAsUnsignedInteger("NumericalSampleImplementation-SmallKendallTau"));
+  const Bool smallCase(size_ < ResourceMap::GetAsUnsignedInteger("NumericalSample-SmallKendallTau"));
   const UnsignedInteger caseNumber((dimension_ * (dimension_ - 1)) / 2);
   Indices indX(caseNumber);
   Indices indY(caseNumber);

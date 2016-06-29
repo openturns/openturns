@@ -237,7 +237,7 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   const NumericalPoint nodes(p_standardDistribution->getGaussNodesAndWeights(weights));
   const UnsignedInteger nodesSize(nodes.getSize());
   NumericalScalar sum(0.0);
-  const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-DefaultQuantileEpsilon" ));
+  const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
   do
   {
     // Integrate over a unit length segment [a, a+1]

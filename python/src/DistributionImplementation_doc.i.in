@@ -706,11 +706,11 @@ Parameters
 x_min : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, optional, :math:`x_{\max} > x_{\min}`
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 pointNumber : int
     The number of points that is used for meshing each axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
@@ -768,11 +768,11 @@ i : int, :math:`1 \leq i \leq n`
 x_min : float
     The starting value that is used for meshing the x-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : int
     The number of points that is used for meshing the x-axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
@@ -812,11 +812,11 @@ i : int, :math:`1 \leq i \leq n`
 x_min : float
     The starting value that is used for meshing the x-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : int
     The number of points that is used for meshing the x-axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
@@ -857,11 +857,11 @@ j : int, :math:`1 \leq i \neq j \leq n`
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
@@ -903,11 +903,11 @@ j : int, :math:`1 \leq i \neq j \leq n`
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
@@ -952,11 +952,11 @@ Parameters
 x_min : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMin` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, optional, :math:`x_{\max} > x_{\min}`
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
-    `DistributionImplementation-QMax` from the :class:`~openturns.ResourceMap`.
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 pointNumber : int
     The number of points that is used for meshing each axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the

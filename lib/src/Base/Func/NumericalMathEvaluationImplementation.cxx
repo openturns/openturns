@@ -302,7 +302,7 @@ Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalP
   const UnsignedInteger parameterDimension = parameter.getDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("NumericalMathEvaluationImplementation-ParameterEpsilon");
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("NumericalMathEvaluation-ParameterEpsilon");
 
   NumericalSample inS(parameterDimension + 1, parameter);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)

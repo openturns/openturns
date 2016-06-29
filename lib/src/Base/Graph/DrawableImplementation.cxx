@@ -748,7 +748,7 @@ void DrawableImplementation::InitializeValidParameterList()
 
   /* Accepted fill styles */
   ValidFillStyles.setName("ValidFillStyles");
-  ValidFillStyles.add(ResourceMap::Get("DrawableImplementation-DefaultFillStyle"));
+  ValidFillStyles.add(ResourceMap::Get("Drawable-DefaultFillStyle"));
   ValidFillStyles.add("shaded");
 }
 
@@ -969,11 +969,11 @@ DrawableImplementation::DrawableImplementation(const NumericalSample & data,
   : PersistentObject(),
     legend_(legend),
     data_(data),
-    color_(ResourceMap::Get("DrawableImplementation-DefaultColor")),
-    fillStyle_(ResourceMap::Get("DrawableImplementation-DefaultFillStyle")),
-    lineStyle_(ResourceMap::Get("DrawableImplementation-DefaultLineStyle")),
-    pointStyle_(ResourceMap::Get("DrawableImplementation-DefaultPointStyle")),
-    lineWidth_(ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DefaultLineWidth")),
+    color_(ResourceMap::Get("Drawable-DefaultColor")),
+    fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle")),
+    lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle")),
+    pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle")),
+    lineWidth_(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultLineWidth")),
     dataFileName_("")
 {
   setName(legend);
@@ -1150,7 +1150,7 @@ Bool DrawableImplementation::IsValidPattern(const String & pattern)
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  return (pattern == ResourceMap::Get("DrawableImplementation-DefaultPattern") || pattern == ResourceMap::Get("DrawableImplementation-AlternativePattern"));
+  return (pattern == ResourceMap::Get("Drawable-DefaultPattern") || pattern == ResourceMap::Get("Drawable-AlternativePattern"));
 }
 
 /* Check validity of the data */
@@ -1394,7 +1394,7 @@ String DrawableImplementation::draw() const
   // Two strategies: if data is small, it is inlined, else it is passed through a file
   const UnsignedInteger dimension(data_.getDimension());
   dataFileName_ = "";
-  if (size * dimension > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
+  if (size * dimension > ResourceMap::GetAsUnsignedInteger("Drawable-DataThreshold"))
   {
     dataFileName_ = data_.storeToTemporaryFile();
     return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))" << "\n";

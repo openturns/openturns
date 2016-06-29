@@ -81,7 +81,7 @@ Bool DomainImplementation::isEmpty() const
 /* Check if the domain is numerically empty, i.e if its numerical volume is zero */
 Bool DomainImplementation::isNumericallyEmpty() const
 {
-  return getNumericalVolume() <= ResourceMap::GetAsNumericalScalar("DomainImplementation-SmallVolume");
+  return getNumericalVolume() <= ResourceMap::GetAsNumericalScalar("Domain-SmallVolume");
 }
 
 /* Get the volume of the domain */

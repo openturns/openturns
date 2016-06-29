@@ -6,12 +6,12 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 try:
-    ot.ResourceMap.SetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration", 1000 )
-    ot.ResourceMap.SetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumEvaluationNumber", 100000)
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError", 1.0e-7 )
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError", 1.0e-7 )
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError", 1.0e-7 )
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError", 1.0e-7 )
+    ot.ResourceMap.SetAsUnsignedInteger( "OptimizationSolver-DefaultMaximumIteration", 1000 )
+    ot.ResourceMap.SetAsUnsignedInteger( "OptimizationSolver-DefaultMaximumEvaluationNumber", 100000)
+    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-7 )
+    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7 )
+    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumResidualError", 1.0e-7 )
+    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7 )
     ot.PlatformInfo.SetNumericalPrecision(4)
     # The 1D mesher
     mesher1D =  ot.LevelSetMesher([7])

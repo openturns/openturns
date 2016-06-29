@@ -45,7 +45,8 @@
  * Improved the speed of many algorithms based on method binding
  * Added more options to control LHSExperiment and LowDiscrepancyExperiment
  * Improved the IntervalMesher class: now it takes into account the diamond flag
-	
+ * Shortened ResourceMap keys to not contain 'Implementation'
+
 === Bug fixes ===
  * #565 (The SensitivityAnalysis class manages only one single output.)
  * #698 (KernelSmoothing() as a factory)

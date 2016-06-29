@@ -138,7 +138,7 @@ void PiecewiseLinearEvaluationImplementation::setLocations(const NumericalPoint 
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
   const NumericalScalar step(locations_[0] - locations_[0]);
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * std::abs(step));
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step));
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations[i] - locations[0] - i * step) < epsilon);
   locations_ = locations;
@@ -186,7 +186,7 @@ void PiecewiseLinearEvaluationImplementation::setLocationsAndValues(const Numeri
   locations_ = NumericalPoint(size);
   values_ = NumericalSample(size, dimension);
   const NumericalScalar step(data[1][0] - data[0][0]);
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluationImplementation-EpsilonRegular") * std::abs(step));
+  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step));
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {

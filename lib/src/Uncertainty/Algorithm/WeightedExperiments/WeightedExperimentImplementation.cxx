@@ -36,8 +36,8 @@ CLASSNAMEINIT(WeightedExperimentImplementation);
 WeightedExperimentImplementation::WeightedExperimentImplementation():
   ExperimentImplementation(),
   distribution_(),
-  size_(ResourceMap::GetAsUnsignedInteger( "WeightedExperimentImplementation-DefaultSize" )),
-  weights_(ResourceMap::GetAsUnsignedInteger( "WeightedExperimentImplementation-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedInteger( "WeightedExperimentImplementation-DefaultSize" ))
+  size_(ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize")),
+  weights_(ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize"))
 {
   // Nothing to do
 }

@@ -52,13 +52,13 @@
   <NonCenteredFiniteDifferenceGradient-DefaultEpsilon value="1.0e-7" />
 
   <!-- OT::PiecewiseHermiteEvaluationImplementation parameters -->
-  <PiecewiseHermiteEvaluationImplementation-EpsilonRegular value="1.0e-12" />
+  <PiecewiseHermiteEvaluation-EpsilonRegular value="1.0e-12" />
   
   <!-- OT::PiecewiseHermiteEvaluationImplementation parameters -->
-  <PiecewiseLinearEvaluationImplementation-EpsilonRegular value="1.0e-12" />
+  <PiecewiseLinearEvaluation-EpsilonRegular value="1.0e-12" />
   
   <!-- OT::UniVariatePolynomialImplementation parameters -->
-  <UniVariatePolynomialImplementation-SmallDegree value="400" />
+  <UniVariatePolynomial-SmallDegree value="400" />
 
   <!-- OT::Pie parameters -->
   <Pie-HorizontalMargin value="0.3"  />
@@ -66,22 +66,22 @@
   <Pie-LabelThreshold   value="0.02" />
 
   <!-- OT::DrawableImplementation parameters -->
-  <DrawableImplementation-NoSpecifiedLabel    value=""      />
-  <DrawableImplementation-DefaultColor        value="blue"  />
-  <DrawableImplementation-DefaultSurfaceColor value="white" />
-  <DrawableImplementation-DefaultFillStyle    value="solid" />
-  <DrawableImplementation-DefaultPointStyle   value="plus"  />
-  <DrawableImplementation-DefaultLineStyle    value="solid" />
-  <DrawableImplementation-DefaultPattern      value="s"     />
-  <DrawableImplementation-AlternativePattern  value="S"     />
-  <DrawableImplementation-DefaultLineWidth    value="1"     />
-  <DrawableImplementation-DataThreshold       value="2000"  />
+  <Drawable-NoSpecifiedLabel    value=""      />
+  <Drawable-DefaultColor        value="blue"  />
+  <Drawable-DefaultSurfaceColor value="white" />
+  <Drawable-DefaultFillStyle    value="solid" />
+  <Drawable-DefaultPointStyle   value="plus"  />
+  <Drawable-DefaultLineStyle    value="solid" />
+  <Drawable-DefaultPattern      value="s"     />
+  <Drawable-AlternativePattern  value="S"     />
+  <Drawable-DefaultLineWidth    value="1"     />
+  <Drawable-DataThreshold       value="2000"  />
 
   <!-- OT::GraphImplementation parameters -->
-  <GraphImplementation-NoSpecifiedLabel      value=""    />
-  <GraphImplementation-DefaultWidth          value="640" />
-  <GraphImplementation-DefaultHeight         value="480" />
-  <GraphImplementation-DefaultLegendFontSize value="1.0" />
+  <Graph-NoSpecifiedLabel      value=""    />
+  <Graph-DefaultWidth          value="640" />
+  <Graph-DefaultHeight         value="480" />
+  <Graph-DefaultLegendFontSize value="1.0" />
 
   <!-- OT::Contour parameters -->
   <Contour-DefaultLevelsNumber value="10" />
@@ -108,22 +108,22 @@
   <AbdoRackwitz-DefaultSmooth value="1.2"    />
 
   <!-- OT::OptimizationSolverImplementation parameters -->
-  <OptimizationSolverImplementation-DefaultLevelValue              value="0.0"    />
-  <OptimizationSolverImplementation-DefaultMaximumIteration        value="100"    />
-  <OptimizationSolverImplementation-DefaultMaximumEvaluationNumber value="100000" />
-  <OptimizationSolverImplementation-DefaultMaximumAbsoluteError    value="1.0e-5" />
-  <OptimizationSolverImplementation-DefaultMaximumRelativeError    value="1.0e-5" />
-  <OptimizationSolverImplementation-DefaultMaximumResidualError    value="1.0e-5" />
-  <OptimizationSolverImplementation-DefaultMaximumConstraintError  value="1.0e-5" />
+  <OptimizationSolver-DefaultLevelValue              value="0.0"    />
+  <OptimizationSolver-DefaultMaximumIteration        value="100"    />
+  <OptimizationSolver-DefaultMaximumEvaluationNumber value="100000" />
+  <OptimizationSolver-DefaultMaximumAbsoluteError    value="1.0e-5" />
+  <OptimizationSolver-DefaultMaximumRelativeError    value="1.0e-5" />
+  <OptimizationSolver-DefaultMaximumResidualError    value="1.0e-5" />
+  <OptimizationSolver-DefaultMaximumConstraintError  value="1.0e-5" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value="0.1" />
 
   <!-- OT::SolverImplementation parameters -->
-  <SolverImplementation-DefaultAbsoluteError             value="1.0e-5" />
-  <SolverImplementation-DefaultRelativeError             value="1.0e-5" />
-  <SolverImplementation-DefaultResidualError             value="1.0e-8" />
-  <SolverImplementation-DefaultMaximumFunctionEvaluation value="100"    />
+  <Solver-DefaultAbsoluteError             value="1.0e-5" />
+  <Solver-DefaultRelativeError             value="1.0e-5" />
+  <Solver-DefaultResidualError             value="1.0e-8" />
+  <Solver-DefaultMaximumFunctionEvaluation value="100"    />
 
   <!-- OT::GaussKronrod parameters -->
   <GaussKronrod-MaximumSubIntervals               value="100"     />
@@ -181,18 +181,18 @@
   <RandomGenerator-InitialSeed value="0" />
   
   <!-- OT::CovarianceModelImplementation parameters -->
-  <CovarianceModelImplementation-DefaultNuggetFactor value="1e-12" />
+  <CovarianceModel-DefaultNuggetFactor value="1e-12" />
 
   <!-- OT::FieldImplementation parameters -->
-  <FieldImplementation-LevelNumber value="30" />
+  <Field-LevelNumber value="30" />
 
   <!-- OT::NumericalSampleImplementation parameters -->
-  <NumericalSampleImplementation-SmallKendallTau value="23" />
-  <NumericalSampleImplementation-PrintEllipsisThreshold value="1000" />
-  <NumericalSampleImplementation-PrintEllipsisSize value="3" />
+  <NumericalSample-SmallKendallTau value="23" />
+  <NumericalSample-PrintEllipsisThreshold value="1000" />
+  <NumericalSample-PrintEllipsisSize value="3" />
 
   <!-- OT::DomainImplementation parameters -->
-  <DomainImplementation-SmallVolume   value="1.0e-12" />
+  <Domain-SmallVolume   value="1.0e-12" />
 
   <!-- OT::Mesh parameters -->
   <Mesh-VertexEpsilon value="1.0e-12" />
@@ -209,8 +209,8 @@
   <ComplexTensor-size-visible-in-str-from value="6"          />
 
   <!-- OT::MatrixImplementation parameters -->
-  <MatrixImplementation-DefaultSmallPivot value="1.0e-7"     />
-  <MatrixImplementation-SymmetryThreshold value="1.0e-12"    />
+  <Matrix-DefaultSmallPivot value="1.0e-7"     />
+  <Matrix-SymmetryThreshold value="1.0e-12"    />
 
   <!-- OT::BurrFactory parameters -->
   <BurrFactory-AbsolutePrecision value="1e-12" />
@@ -377,22 +377,22 @@
   <RandomMixture-MaximumIntegrationNodesNumber    value="1024"   />
 
   <!-- OT::NumericalMathEvaluation parameters -->
-  <NumericalMathEvaluationImplementation-DefaultPointNumber value="129" />
-  <NumericalMathEvaluationImplementation-ParameterEpsilon value="1.0e-7" />
+  <NumericalMathEvaluation-DefaultPointNumber value="129" />
+  <NumericalMathEvaluation-ParameterEpsilon value="1.0e-7" />
 
   <!-- OT::DualLinearCombinationEvaluationImplementation parameters -->
-  <DualLinearCombinationEvaluationImplementation-SmallCoefficient value="0.0" />
+  <DualLinearCombinationEvaluation-SmallCoefficient value="0.0" />
 
   <!-- OT::LinearCombinationEvaluationImplementation parameters -->
-  <LinearCombinationEvaluationImplementation-SmallCoefficient value="0.0" />
+  <LinearCombinationEvaluation-SmallCoefficient value="0.0" />
 
   <!-- OT::DistFunc parameters -->
   <DistFunc-Precision        value="1.0e-14" />
   <DistFunc-MaximumIteration value="5000"    />
 
   <!-- OT::RootStrategyImplementation parameters -->
-  <RootStrategyImplementation-DefaultMaximumDistance value="8.0" />
-  <RootStrategyImplementation-DefaultStepSize        value="1.0" />
+  <RootStrategy-DefaultMaximumDistance value="8.0" />
+  <RootStrategy-DefaultStepSize        value="1.0" />
 
   <!-- OT::Simulation parameters -->
   <Simulation-DefaultMaximumOuterSampling          value="1000"   />
@@ -401,7 +401,7 @@
   <Simulation-DefaultBlockSize                     value="1"      />
 
   <!-- OT::SimulationResultImplementation parameters -->
-  <SimulationResultImplementation-DefaultConfidenceLevel value="0.95" />
+  <SimulationResult-DefaultConfidenceLevel value="0.95" />
 
   <!-- OT::SimulationSensitivityAnalysis parameters -->
   <SimulationSensitivityAnalysis-DefaultSampleMargin value="400" />
@@ -466,7 +466,7 @@
   <MaternModel-DefaultTheta value="1.0"  />
   
   <!-- OT::WeightedExperimentImplementation parameters -->
-  <WeightedExperimentImplementation-DefaultSize value="100" />
+  <WeightedExperiment-DefaultSize value="100" />
 
   <!-- OT::GaussProductExperiment parameters -->
   <GaussProductExperiment-DefaultMarginalDegree value="5" />
@@ -480,19 +480,19 @@
   <MarginalTransformationEvaluation-ParametersEpsilon    value="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
-  <DistributionImplementation-DefaultPointNumber             value="129"     />
-  <DistributionImplementation-DefaultQuantileEpsilon         value="1.0e-12" />
-  <DistributionImplementation-DefaultPDFEpsilon              value="1.0e-14" />
-  <DistributionImplementation-DefaultCDFEpsilon              value="1.0e-14" />
-  <DistributionImplementation-DefaultQuantileIteration       value="100"     />
-  <DistributionImplementation-QMin                           value="0.15"  />
-  <DistributionImplementation-QMax                           value="0.85"  />
-  <DistributionImplementation-DefaultIntegrationNodesNumber  value="255"     />
-  <DistributionImplementation-DefaultLevelNumber             value="10"      />
-  <DistributionImplementation-DefaultQuantileCacheSize       value="128"     />
-  <DistributionImplementation-Parallel                       value="true"    />
-  <DistributionImplementation-CharacteristicFunctionBlockMax value="20"      />
-  <DistributionImplementation-CharacteristicFunctionNMax     value="1000000" />
+  <Distribution-DefaultPointNumber             value="129"     />
+  <Distribution-DefaultQuantileEpsilon         value="1.0e-12" />
+  <Distribution-DefaultPDFEpsilon              value="1.0e-14" />
+  <Distribution-DefaultCDFEpsilon              value="1.0e-14" />
+  <Distribution-DefaultQuantileIteration       value="100"     />
+  <Distribution-QMin                           value="0.15"  />
+  <Distribution-QMax                           value="0.85"  />
+  <Distribution-DefaultIntegrationNodesNumber  value="255"     />
+  <Distribution-DefaultLevelNumber             value="10"      />
+  <Distribution-DefaultQuantileCacheSize       value="128"     />
+  <Distribution-Parallel                       value="true"    />
+  <Distribution-CharacteristicFunctionBlockMax value="20"      />
+  <Distribution-CharacteristicFunctionNMax     value="1000000" />
 
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />
@@ -501,7 +501,7 @@
   <DiscreteDistribution-SupportEpsilon value="1.0e-14" />
 
   <!-- OT::DistributionFactoryImplementation parameters -->
-  <DistributionFactoryImplementation-DefaultBootstrapSize value="100" />
+  <DistributionFactory-DefaultBootstrapSize value="100" />
 
   <!-- OT::OrderStatisticsMarginalChecker parameters -->
   <OrderStatisticsMarginalChecker-QuantileIteration   value="100"    />
@@ -558,11 +558,11 @@
   <VisualTest-KendallPlot-MonteCarloSize value="100" />
   
   <!--  OT::CalibrationStrategyImplementation parameters -->
-  <CalibrationStrategyImplementation-DefaultLowerBound          value="0.117"  /> <!-- = 0.5 * 0.234 -->
-  <CalibrationStrategyImplementation-DefaultUpperBound          value="0.468" /> <!-- = 2.0 * 0.234 -->
-  <CalibrationStrategyImplementation-DefaultShrinkFactor        value="0.8"   />
-  <CalibrationStrategyImplementation-DefaultExpansionFactor     value="1.2"   />
-  <CalibrationStrategyImplementation-DefaultCalibrationStep     value="100" />
+  <CalibrationStrategy-DefaultLowerBound          value="0.117"  /> <!-- = 0.5 * 0.234 -->
+  <CalibrationStrategy-DefaultUpperBound          value="0.468" /> <!-- = 2.0 * 0.234 -->
+  <CalibrationStrategy-DefaultShrinkFactor        value="0.8"   />
+  <CalibrationStrategy-DefaultExpansionFactor     value="1.2"   />
+  <CalibrationStrategy-DefaultCalibrationStep     value="100" />
   
   <!-- OT::MCMC parameters -->
   <MCMC-DefaultBurnIn                                           value="0" />

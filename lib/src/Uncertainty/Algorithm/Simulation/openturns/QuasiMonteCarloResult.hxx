@@ -60,7 +60,7 @@ public:
   virtual NumericalScalar getStandardDeviation() const;
 
   /** Confidence length */
-  virtual NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "SimulationResultImplementation-DefaultConfidenceLevel" )) const;
+  virtual NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
   virtual String __repr__() const;
