@@ -109,7 +109,7 @@ SobolSequence * SobolSequence::clone() const
 void SobolSequence::initialize(const UnsignedInteger dimension)
 {
   if((dimension == 0) || (dimension > MaximumNumberOfDimension))
-    throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumNumberOfDimension << "].";
+    throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumNumberOfDimension << "], here dimension=" << dimension << ".";
   dimension_ = dimension;
   // copy initial direction numbers
   base_ = Unsigned64BitsIntegerCollection(dimension_ * MaximumBase2Logarithm, 0);

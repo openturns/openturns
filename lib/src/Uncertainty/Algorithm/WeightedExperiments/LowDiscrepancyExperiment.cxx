@@ -32,7 +32,7 @@ CLASSNAMEINIT(LowDiscrepancyExperiment);
 /* Default constructor */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment()
   : WeightedExperimentImplementation()
-  , marginals_(0)
+  , marginals_(1, distribution_)
   , sequence_(SobolSequence())
   , restart_(true)
 {
@@ -43,7 +43,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment()
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
     const Bool restart)
   : WeightedExperimentImplementation(size)
-  , marginals_(0)
+  , marginals_(1, distribution_)
   , sequence_(SobolSequence())
   , restart_(restart)
 {
@@ -70,12 +70,15 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const UnsignedInteger size,
     const Bool restart)
-  : WeightedExperimentImplementation(ComposedDistribution(DistributionCollection(sequence.getDimension())), size)
+  : WeightedExperimentImplementation(size)
   , marginals_(0)
   , sequence_(sequence)
   , restart_(restart)
 {
-  // Nothing to do
+  // Warning! The distribution must not be given to the upper class directly
+  // because the correct initialization of the sequence depends on a test on
+  // its dimension
+  setDistribution(ComposedDistribution(DistributionCollection(sequence.getDimension())));
 }
 
 /* Virtual constructor */
