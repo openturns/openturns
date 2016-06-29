@@ -15,7 +15,7 @@ try:
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
-    view = View(graph, plot_kwargs={'color': 'blue'})
+    view = View(graph, pixelsize=(800, 600), plot_kwargs={'color': 'blue'})
     # view.save('curve1.png')
     view.show(block=False)
 
@@ -173,6 +173,7 @@ try:
     size = 5
     array = ot.PolygonCollection(size)
     palette = ot.Drawable.BuildDefaultPalette(size)
+    palette[0] = 'blue'
     for i in range(size):
         vertices = generator.getSample(3)
         array[i] = ot.Polygon(vertices, palette[i], palette[size - i - 1])

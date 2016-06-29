@@ -33,6 +33,9 @@ class View(object):
     graph : :class:`~openturns.Graph, :class:`~openturns.Drawable`
         A Graph or Drawable object.
 
+    pixelsize : 2-tuple of int
+        The requested size in pixels (width, height).
+
     figure : :class:`matplotlib.figure.Figure`
         The figure to draw on.
 
@@ -107,6 +110,7 @@ class View(object):
 
     def __init__(self,
                  graph,
+                 pixelsize=None,
                  figure=None,
                  figure_kwargs=None,
                  axes=[],
@@ -136,7 +140,7 @@ class View(object):
 
         if not isinstance(graph, ot.Graph) and not isinstance(graph, ot.GraphImplementation):
             if not isinstance(graph, ot.Drawable) and not isinstance(graph, ot.DrawableImplementation):
-                raise RuntimeError(
+                raise TypeError(
                     '-- The given object cannot be converted into a Graph nor Drawable.')
             else:
                 # convert Drawable => Graph
@@ -145,8 +149,8 @@ class View(object):
                 graph.add(drawable)
 
         drawables = graph.getDrawables()
-        size = len(drawables)
-        if size == 0:
+        n_drawables = len(drawables)
+        if n_drawables == 0:
             warnings.warn('-- Nothing to draw.')
             return
 
@@ -164,6 +168,18 @@ class View(object):
         clabel_kwargs_default = self.CheckDict(clabel_kwargs)
         text_kwargs_default = self.CheckDict(text_kwargs)
         legend_kwargs = self.CheckDict(legend_kwargs)
+
+        # set image size in pixels
+        if pixelsize is not None:
+            if len(pixelsize) != 2:
+                raise ValueError('-- pixelsize must be a 2-tuple.')
+            figure_kwargs.setdefault('dpi', 100)
+            dpi = figure_kwargs['dpi']
+            border = 10 # guess
+            width, height = pixelsize
+            width -= border
+            height -= border
+            figure_kwargs.setdefault('figsize', (width * 1.0 / dpi, height * 1.0 / dpi))
 
         # set step drawstyle
         step_kwargs_default.setdefault('where', 'post')
@@ -323,7 +339,8 @@ class View(object):
                 colors = drawable.getPalette()
                 colorsRGBA = []
                 for i in range(polygonsNumber):
-                    rgba = drawable.ConvertToRGBA(colors[i])
+                    hex_code = ot.Drawable.ConvertFromName(colors[i])
+                    rgba = ot.Drawable.ConvertToRGBA(hex_code)
                     colorsRGBA.append(
                         (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
                 if 'facecolors' not in polygoncollection_kwargs_default:
@@ -346,19 +363,21 @@ class View(object):
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
                 contour_kwargs.setdefault('levels', drawable.getLevels())
-                if drawable.getDrawLabels():
-                    clabel_kwargs.setdefault('fontsize', 8)
-                    clabel_kwargs.setdefault('fmt', '%g')
                 if ('linestyles' not in contour_kwargs_default) and ('ls' not in contour_kwargs_default):
                     try:
                         contour_kwargs['linestyles'] = lineStyleDict[
                             drawable.getLineStyle()]
                     except:
                         warnings.warn('-- Unknown line style')
-                if 'color' not in contour_kwargs_default:
-                    contour_kwargs['color'] = drawable.getColor()
+                if 'colors' not in contour_kwargs_default:
+                    contour_kwargs['colors'] = [drawable.getColorCode()]
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kwargs)
-                plt.clabel(contourset, **clabel_kwargs)
+                if drawable.getDrawLabels():
+                    clabel_kwargs.setdefault('fontsize', 8)
+                    clabel_kwargs.setdefault('fmt', '%g')
+                    plt.clabel(contourset, **clabel_kwargs)
+                for i in range(drawable.getLabels().getSize()):
+                    contourset.collections[i].set_label(drawable.getLabels()[i])
 
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kwargs)
@@ -437,6 +456,9 @@ class View(object):
 
             # enable shadow by default
             legend_kwargs.setdefault('shadow', True)
+
+            # by default legend is a bit too large
+            legend_kwargs.setdefault('prop', {'size': 10})
 
             self._ax[0].legend(**legend_kwargs)
 
