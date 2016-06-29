@@ -37,6 +37,7 @@
  * Deprecated LAR in favor of LARS
 
 === Python module ===
+ * Add the possibility to distribute PythonFunction calls with multiprocessing
 
 === Miscellaneous ===
  * Improved the computeCDF() method of Normal
