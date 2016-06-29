@@ -37,6 +37,13 @@ exec_sample only on a sample
 0 : [ 200 ]
 1 : [ 202 ]
 2 : [ 204 ]
+distributed exec only on a point
+[200]
+distributed exec only on a sample
+    [ y0  ]
+0 : [ 200 ]
+1 : [ 202 ]
+2 : [ 204 ]
 gradient
 [[  1 ]
  [ -1 ]]
