@@ -40,6 +40,10 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 
 if (USE_COTIRE)
+  if (POLICY CMP0058)
+    # Ninja requires custom command byproducts to be explicit
+    cmake_policy (SET CMP0058 NEW)
+  endif()
   set (USE_BISON OFF CACHE BOOL "" FORCE)
   set (USE_FLEX OFF CACHE BOOL "" FORCE)
   set (USE_SPHINX OFF CACHE BOOL "" FORCE)
