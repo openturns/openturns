@@ -7,6 +7,15 @@ Installation
 From binary packages
 ====================
 
+Conda
+-----
+This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
+
+Install the package from `Anaconda.org <https://anaconda.org/conda-forge/openturns>`_::
+
+    conda install -c conda-forge openturns
+
+
 Windows
 -------
 Download the installer matching your python version and architecture from `SourceForge <http://sourceforge.net/projects/openturns/files/openturns/>`_
@@ -26,7 +35,7 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 14.04 LTS 'Trusty Tahr'      | deb http://ubuntu.openturns.org trusty main  |
     +-------------------------------------+----------------------------------------------+
-    | Ubuntu 15.10 'Wily Werewolf'        | deb http://ubuntu.openturns.org wily main    |
+    | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
     +-------------------------------------+----------------------------------------------+
     | Debian 7.0 'Wheezy'                 | deb http://debian.openturns.org wheezy main  |
     +-------------------------------------+----------------------------------------------+
@@ -42,10 +51,10 @@ repository address to your sources list. To do so, you may either use the
 graphical user interface of aptitude or you can edit the sources-list file
 (`/etc/apt/sources.list`).
 
-For instance, asuming you are running Ubuntu 14.04 'Trusty Tahr',
+For instance, asuming you are running Ubuntu 16.04,
 add the following source to your sources list::
 
-    deb http://ubuntu.openturns.org trusty main
+    echo deb http://ubuntu.openturns.org xenial main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
@@ -90,27 +99,18 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_23/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_24/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.1/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_23/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_24/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.1/repodata/repomd.xml.key
 
 Install the package::
 
     yum install python-openturns
-
-Conda
------
-This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
-
-Install the package::
-
-    conda install -c https://conda.anaconda.org/openturns openturns
-
 
 Archlinux/Parabola
 ------------------
