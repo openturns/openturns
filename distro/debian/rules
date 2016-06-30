@@ -69,8 +69,8 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.8 \
-            -DLIB_VERSION=0.8.0 \
+            -DLIB_SOVERSION=0.9 \
+            -DLIB_VERSION=0.9.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.7 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DLINK_PYTHON_LIBRARY:BOOL=OFF \
@@ -90,7 +90,7 @@ override_dh_auto_install: debian/tmp/usr/lib/R/site-library/rot $(PYALL:python%=
 
 cmake-install-%:
 	dh_auto_install -Bbuild-python$*
-	mkdir -p debian/libopenturns0.8-dbg/usr/lib/debug/usr/lib
+	mkdir -p debian/libopenturns0.9-dbg/usr/lib/debug/usr/lib
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
 	  CTEST_OUTPUT_ON_FAILURE=1 \
@@ -102,7 +102,7 @@ override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.8 --dbg-package=libopenturns0.8-dbg
+	dh_strip -plibopenturns0.9 --dbg-package=libopenturns0.9-dbg
 	dh_strip
 
 override_dh_python2:
