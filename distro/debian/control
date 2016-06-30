@@ -10,8 +10,8 @@ Build-Depends: debhelper (>= 8), quilt, gfortran, bison, flex, cmake, bc,
  r-base-core, python-dev, python3-dev, swig (>= 2.0.9)
 Standards-Version: 3.9.6
 Homepage: http://www.openturns.org/
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/openturns.git
-Vcs-Git: git://anonscm.debian.org/debian-science/packages/openturns.git
+Vcs-Browser: https://anonscm.debian.org/git/debian-science/packages/openturns.git
+Vcs-Git: https://anonscm.debian.org/git/debian-science/packages/openturns.git
 X-Python-Version: current
 X-Python3-Version: current
 
