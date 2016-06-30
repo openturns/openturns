@@ -29,8 +29,8 @@ RequestExecutionLevel user
 !define PRODUCT_DIR_REGKEY "Software\OpenTURNS"
 !define PRODUCT_INST_ROOT_KEY "HKLM"
 
-; Where win specific things reside : examples, dedendancies installers and headers... (relative path)
-!define WINDEPS openturns-developers-windeps-${PRODUCT_VERSION}
+; Where win-specific things reside : examples, dependencies installers (relative path)
+!define WINDEPS openturns-developers-windeps
 
 
 !macro CHECK_REG_VIEW
