@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ *  @brief This class build a stationary covariance model using a time grid and a collection of covariance matrices
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/UserDefinedStationaryCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

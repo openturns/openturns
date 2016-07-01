@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id: t_StationaryCovarianceModelFactory_std.cxx 2209 2011-11-22 11:09:10Z haddad $
  */
 #include <iostream>
 #include "openturns/OT.hxx"

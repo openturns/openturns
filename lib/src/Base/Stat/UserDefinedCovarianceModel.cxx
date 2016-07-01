@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ * @brief This class builds a spectral model using a frequency grid and a spectral function
+ *  given as a collection of Covariance Matrix
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -17,7 +18,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/UserDefinedCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
