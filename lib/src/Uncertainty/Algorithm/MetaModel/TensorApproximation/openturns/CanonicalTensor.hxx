@@ -69,7 +69,7 @@ protected:
 
   FunctionFamilyPersistentCollection functionFamilies_;
 
-  Collection<RankOneTensor> rank1tensors_;
+  PersistentCollection<RankOneTensor> rank1tensors_;
 
 }; // class CanonicalTensor
 

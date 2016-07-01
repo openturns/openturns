@@ -109,16 +109,19 @@ private:
                    NumericalScalar & marginalResidual,
                    NumericalScalar & marginalRelativeError);
 
+  /** Greedy rank-1 with selection of the optimal rank*/
   void greedyRankOneSelection(const UnsignedInteger marginalIndex,
                               NumericalScalar & marginalResidual,
                               NumericalScalar & marginalRelativeError);
 
+  /** Greedy rank-1 algorithm */
   void greedyRankOne(const UnsignedInteger marginalIndex,
                      const NumericalSample & x,
                      const NumericalSample & y,
                      NumericalScalar & marginalResidual,
                      NumericalScalar & marginalRelativeError);
 
+  /** Alternating least-squares algorithm to estimate a rank-1 tensor */
   void rankOne (const UnsignedInteger marginalIndex,
                 RankOneTensor & rank1Tensor,
                 const NumericalSample & x,

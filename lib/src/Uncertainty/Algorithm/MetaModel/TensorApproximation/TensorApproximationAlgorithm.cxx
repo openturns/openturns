@@ -178,8 +178,6 @@ void TensorApproximationAlgorithm::run()
 //   composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
   transformedInputSample_ = transformation_(inputSample_);
 
-//   const UnsignedInteger dimension = inputSample_.getDimension();
-
   NumericalMathFunctionCollection marginals(0);
   NumericalPoint residuals(outputDimension);
   NumericalPoint relativeErrors(outputDimension); 
@@ -246,7 +244,6 @@ void TensorApproximationAlgorithm::greedyRankOneSelection(const UnsignedInteger 
 
   // Persistent residual per fold across successive ranks
   Collection<NumericalSample> yResLearn(nFolds, NumericalSample(0, 1));
-  Collection<NumericalSample> yResTest(nFolds, NumericalSample(0, 1));
   for (UnsignedInteger fold = 0; fold < nFolds; ++ fold)
   {
     for (UnsignedInteger l = 0; l < testSize * nFolds; ++ l)
@@ -255,10 +252,6 @@ void TensorApproximationAlgorithm::greedyRankOneSelection(const UnsignedInteger 
       if (jModK != fold)
       {
         yResLearn[fold].add(y[l]);
-      }
-      else
-      {
-        yResTest[fold].add(y[l]);
       }
     }
   }
@@ -275,6 +268,7 @@ void TensorApproximationAlgorithm::greedyRankOneSelection(const UnsignedInteger 
       NumericalSample yTest(0, 1);
       Indices rowFilter;
 
+      // build learn/validation samples
       for (UnsignedInteger l = 0; l < testSize * nFolds; ++ l)
       {
         const UnsignedInteger jModK = l % nFolds;
@@ -328,9 +322,7 @@ void TensorApproximationAlgorithm::greedyRankOneSelection(const UnsignedInteger 
       NumericalMathFunction combination(prodColl, rk);
       yResLearn[fold] = yLearn - combination(xLearn);
 
-      yResTest[fold] = yTest - combination(xTest);
-
-      quadraticResidual += yResTest[fold].computeRawMoment(2)[0];
+      quadraticResidual += (yTest - combination(xTest)).computeRawMoment(2)[0];
 
     } // k-fold
 
@@ -405,7 +397,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const UnsignedInteger marginal
     Indices indices(prodColl.getSize());
     indices.fill();
 
-    // update alpha
+    // update radius
     PenalizedLeastSquaresAlgorithm algo(x, y, basis, indices);
     algo.run();
     NumericalPoint rk(algo.getCoefficients());
@@ -472,6 +464,7 @@ void TensorApproximationAlgorithm::rankOne (const UnsignedInteger marginalIndex,
         }
       }
 
+      // solve a least-squares problem along component i
       NumericalSample rhs(size, 1);
       NumericalPoint w2(w);
       for (UnsignedInteger l = 0; l < size; ++ l) { rhs[l][0] = y[l][0] / w[l]; w2[l] *= w[l]; } 
@@ -513,6 +506,8 @@ void TensorApproximationAlgorithm::rankOne (const UnsignedInteger marginalIndex,
         w[l] *= V[l][i];
       }
     }
+
+    // update radius
     NumericalSample rhs(size, 1);
     NumericalPoint w2(w);
     for (UnsignedInteger l = 0; l < size; ++ l) { rhs[l][0] = y[l][0] / w[l]; w2[l] *= w[l]; } 
