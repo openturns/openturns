@@ -160,7 +160,7 @@ key : str
 
 Returns
 -------
-value : float
+value : int
     The value associated to that key.
 
 Examples
