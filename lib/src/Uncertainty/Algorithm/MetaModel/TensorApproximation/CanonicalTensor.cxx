@@ -20,58 +20,8 @@
  */
 #include "openturns/CanonicalTensor.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-CLASSNAMEINIT(RankOneTensor);
-
-static const Factory<RankOneTensor> Factory_RankOneTensor;
-
-RankOneTensor::RankOneTensor(const FunctionFamilyCollection & functionFamilies,
-                             const Indices & nk)
-: radius_(1.0)
-, nk_(nk)
-, coefficients_(nk.getSize())
-, functionFamilies_(functionFamilies)
-, basis_(nk.getSize())
-{
-  const UnsignedInteger dimension = nk.getSize();
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
-  {
-    coefficients_[i].resize(nk[i]);
-    basis_[i] = Basis(nk[i]);
-    for (UnsignedInteger l = 0; l < nk[i]; ++ l)
-    {
-      basis_[i][l] = NumericalMathFunction(UniVariateFunctionEvaluationImplementation(functionFamilies_[i].build(l)));
-    }
-  }
-}
-
-
-RankOneTensor * RankOneTensor::clone() const
-{
-  return new RankOneTensor(*this);
-}
-
-/* Method save() stores the object through the StorageManager */
-void RankOneTensor::save(Advocate & adv) const
-{
-  PersistentObject::save(adv);
-  adv.saveAttribute("radius_", radius_);
-  adv.saveAttribute("coefficients_", coefficients_);
-  adv.saveAttribute("basis_", basis_);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void RankOneTensor::load(Advocate & adv)
-{
-  PersistentObject::load(adv);
-  adv.loadAttribute("radius_", radius_);
-  adv.loadAttribute("coefficients_", coefficients_);
-  adv.loadAttribute("basis_", basis_);
-}
-
 
 CLASSNAMEINIT(CanonicalTensor);
 
