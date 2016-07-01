@@ -54,25 +54,17 @@ public:
   typedef Collection<NumericalMathFunction>           NumericalMathFunctionCollection;
   typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
 
-  // friend class Factory<TensorApproximationResult>;
-
   /** Default constructor */
   TensorApproximationResult();
 #ifndef SWIG
   /** Parameter constructor */
-  TensorApproximationResult(
-//     const NumericalMathFunction & model,
-                        const Distribution & distribution,
-                        const NumericalMathFunction & transformation,
-                        const NumericalMathFunction & inverseTransformation,
-                        const NumericalMathFunction & composedModel,
-                        const Collection<CanonicalTensor> & tensor,
-//                         const OrthogonalBasis & orthogonalBasis,
-//                         const Indices & I,
-//                         const NumericalSample & alpha_k,
-//                         const NumericalMathFunctionCollection & Psi_k,
-                        const NumericalPoint & residuals,
-                        const NumericalPoint & relativeErrors);
+  TensorApproximationResult(const Distribution & distribution,
+                            const NumericalMathFunction & transformation,
+                            const NumericalMathFunction & inverseTransformation,
+                            const NumericalMathFunction & composedModel,
+                            const Collection<CanonicalTensor> & tensor,
+                            const NumericalPoint & residuals,
+                            const NumericalPoint & relativeErrors);
 #endif
   /** Virtual constructor */
   virtual TensorApproximationResult * clone() const;
@@ -92,18 +84,6 @@ public:
 
   /** Composed model accessor */
   virtual NumericalMathFunction getComposedModel() const;
-
-//   /** Orthogonal basis accessor */
-//   virtual OrthogonalBasis getOrthogonalBasis() const;
-// 
-//   /** Indices accessor */
-//   virtual Indices getIndices() const;
-// 
-//   /** Coefficients accessor */
-//   virtual NumericalSample getCoefficients() const;
-
-//   /** Reduced basis accessor */
-//   virtual NumericalMathFunctionCollection getReducedBasis() const;
 
   /** Composed meta model accessor */
   virtual NumericalMathFunction getComposedMetaModel() const;
@@ -129,18 +109,6 @@ private:
 
   /** The composed model */
   NumericalMathFunction composedModel_;
-
-  /** The orthogonal basis */
-//   OrthogonalBasis orthogonalBasis_;
-// 
-//   /** The collection of indices */
-//   Indices I_;
-// 
-//   /** The collection of Alpha_k coefficients */
-//   NumericalSample alpha_k_;
-// 
-//   /** The collection of vectors upon which we project the (composed) model */
-//   NumericalMathFunctionPersistentCollection Psi_k_;
 
   PersistentCollection<CanonicalTensor> tensor_;
 

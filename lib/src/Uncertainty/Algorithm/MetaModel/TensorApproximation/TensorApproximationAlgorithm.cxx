@@ -433,7 +433,6 @@ void TensorApproximationAlgorithm::rankOne (const UnsignedInteger marginalIndex,
   const UnsignedInteger size = x.getSize();
   NumericalPoint weight(size, 1.0 / size);
   UnsignedInteger r = tensor_[marginalIndex].getRank();
-  Collection<Collection<Basis> > subBasis(r);
   NumericalSample V;
 
   // initialize

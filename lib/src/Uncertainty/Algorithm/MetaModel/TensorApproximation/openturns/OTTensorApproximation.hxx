@@ -25,6 +25,7 @@
 #include "openturns/RankOneTensor.hxx"
 #include "openturns/RankOneTensorEvaluation.hxx"
 #include "openturns/CanonicalTensor.hxx"
+#include "openturns/TensorApproximationResult.hxx"
 #include "openturns/TensorApproximationAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTTENSORAPPROXIMATION_HXX */

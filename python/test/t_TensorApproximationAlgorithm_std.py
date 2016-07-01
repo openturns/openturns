@@ -30,7 +30,7 @@ result = algo.getResult()
 print('residuals=', result.getResiduals())
 metamodel = result.getMetaModel()
 x = [0.4] * dim
-print('x=', x, 'f(x)', model(x), 'f^(x)=', metamodel(x))
+print('x=', ot.NumericalPoint(x), 'f(x)', model(x), 'f^(x)=', metamodel(x))
 
 # selection
 algo = ot.TensorApproximationAlgorithm(X, Y[:,0], distribution, functionFactory, nk, maxRank)
@@ -40,7 +40,7 @@ result = algo.getResult()
 print('residuals=', result.getResiduals())
 metamodel = result.getMetaModel()
 x = [0.4] * dim
-print('x=', x, 'f(x)', model(x), 'f^(x)=', metamodel(x))
+print('x=', ot.NumericalPoint(x), 'f(x)', model(x), 'f^(x)=', metamodel(x))
 
 
 

@@ -41,10 +41,6 @@ TensorApproximationResult::TensorApproximationResult()
   , transformation_()
   , inverseTransformation_()
   , composedModel_()
-//   , orthogonalBasis_()
-//   , I_(0)
-//   , alpha_k_(0, 0)
-//   , Psi_k_(0)
 {
   // Nothing to do
 }
@@ -52,16 +48,11 @@ TensorApproximationResult::TensorApproximationResult()
 
 /* Default constructor */
 TensorApproximationResult::TensorApproximationResult(
-//   const NumericalMathFunction & model,
     const Distribution & distribution,
     const NumericalMathFunction & transformation,
     const NumericalMathFunction & inverseTransformation,
     const NumericalMathFunction & composedModel,
     const Collection<CanonicalTensor> & tensor,
-//     const OrthogonalBasis & orthogonalBasis,
-//     const Indices & I,
-//     const NumericalSample & alpha_k,
-//     const NumericalMathFunctionCollection & Psi_k,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors)
   : MetaModelResult(NumericalMathFunction(), NumericalMathFunction(), residuals, relativeErrors)
@@ -70,10 +61,6 @@ TensorApproximationResult::TensorApproximationResult(
   , inverseTransformation_(inverseTransformation)
   , composedModel_(composedModel)
   , tensor_(tensor)
-//   , orthogonalBasis_(orthogonalBasis)
-//   , I_(I)
-//   , alpha_k_(alpha_k)
-//   , Psi_k_(Psi_k)
   , composedMetaModel_()
 {
   NumericalMathFunctionCollection marginals;
@@ -116,11 +103,6 @@ String TensorApproximationResult::__repr__() const
          << " transformation=" << transformation_
          << " inverseTransformation=" << inverseTransformation_
          << " composedModel=" << composedModel_
-//          << " orthogonalBasis=" << orthogonalBasis_
-//          << " indices=" << I_
-//          << " coefficients=" << alpha_k_
-//          << " reduced basis=" << Psi_k_
-//          << " residuals=" << residuals_
          << " relativeErrors=" << relativeErrors_
          << " composedMetaModel=" << composedMetaModel_
          << " metaModel=" << metaModel_;
@@ -158,30 +140,6 @@ NumericalMathFunction TensorApproximationResult::getComposedModel() const
   return composedModel_;
 }
 
-// /* Orthogonal basis accessor */
-// OrthogonalBasis TensorApproximationResult::getOrthogonalBasis() const
-// {
-//   return orthogonalBasis_;
-// }
-// 
-// /* Indices accessor */
-// Indices TensorApproximationResult::getIndices() const
-// {
-//   return I_;
-// }
-// 
-// /* Coefficients accessor */
-// NumericalSample TensorApproximationResult::getCoefficients() const
-// {
-//   return alpha_k_;
-// }
-// 
-// /* Reduced basis accessor */
-// TensorApproximationResult::NumericalMathFunctionCollection TensorApproximationResult::getReducedBasis() const
-// {
-//   return Psi_k_;
-// }
-
 /* Composed meta model accessor */
 NumericalMathFunction TensorApproximationResult::getComposedMetaModel() const
 {
@@ -196,10 +154,6 @@ void TensorApproximationResult::save(Advocate & adv) const
   adv.saveAttribute( "transformation_", transformation_ );
   adv.saveAttribute( "inverseTransformation_", inverseTransformation_ );
   adv.saveAttribute( "composedModel_", composedModel_ );
-//   adv.saveAttribute( "orthogonalBasis_", orthogonalBasis_ );
-//   adv.saveAttribute( "I_", I_ );
-//   adv.saveAttribute( "alpha_k_", alpha_k_ );
-//   adv.saveAttribute( "Psi_k_", Psi_k_ );
   adv.saveAttribute( "composedMetaModel_", composedMetaModel_ );
 }
 
@@ -212,10 +166,6 @@ void TensorApproximationResult::load(Advocate & adv)
   adv.loadAttribute( "transformation_", transformation_ );
   adv.loadAttribute( "inverseTransformation_", inverseTransformation_ );
   adv.loadAttribute( "composedModel_", composedModel_ );
-//   adv.loadAttribute( "orthogonalBasis_", orthogonalBasis_ );
-//   adv.loadAttribute( "I_", I_ );
-//   adv.loadAttribute( "alpha_k_", alpha_k_ );
-//   adv.loadAttribute( "Psi_k_", Psi_k_ );
   adv.loadAttribute( "composedMetaModel_", composedMetaModel_ );
 }
 
