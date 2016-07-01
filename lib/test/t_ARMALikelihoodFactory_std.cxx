@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id: t_ARMALikelihoodFactory_std.cxx 2302 2012-01-04 11:26:21Z schueller $
  */
 #include <iostream>
 #include "openturns/OT.hxx"

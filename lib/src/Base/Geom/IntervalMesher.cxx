@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/IntervalMesher.hxx"
