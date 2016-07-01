@@ -233,7 +233,7 @@ NumericalScalar exmin1(const NumericalScalar x)
 NumericalScalar lnec(const NumericalScalar x)
 {
   // x > -1; lnec: = ln1: = ln(1+x)-x
-  if (std::abs(x) < 1.3e-5) return x * x * (-0.5 + x * (1.0 / 3.0 - 0.25 * x));;
+  if (std::abs(x) < 1.3e-5) return x * x * (-0.5 + x * (1.0 / 3.0 - 0.25 * x));
   return log1p(x) - x;
 } // lnec
 
