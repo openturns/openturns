@@ -253,7 +253,7 @@ NumericalSample KrigingAlgorithm::getInputSample() const
 
 NumericalSample KrigingAlgorithm::getOutputSample() const
 {
-  return outputSample_;;
+  return outputSample_;
 }
 
 

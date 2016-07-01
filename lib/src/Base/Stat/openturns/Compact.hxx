@@ -78,7 +78,7 @@ private:
   UnsignedInteger halfMaximumSize_;
 
   // Index where the next point will be stored
-  UnsignedInteger index_;;
+  UnsignedInteger index_;
 
   // Storage step
   UnsignedInteger step_;
