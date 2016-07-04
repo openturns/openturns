@@ -1,11 +1,11 @@
 %feature("docstring") OT::JansenSensitivityAlgorithm
-"Sensitivity analysis using Jansen method
+"Sensitivity analysis using Jansen method.
 
 Available constructors:
     JansenSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
 
     JansenSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
-    
+
     JansenSensitivityAlgorithm(*experiment, model, computeSecondOrder*)
 
 Parameters
