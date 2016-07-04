@@ -1,2 +1,2 @@
-residuals=class=NumericalPoint name=Unnamed dimension=1 values=[4.83485e-10]
-x=class=NumericalPoint name=Unnamed dimension=3 values=[0.4,0.4,0.4] f(x)=[0.535085] f^(x)=[0.535093]
+residuals=class=NumericalPoint name=Unnamed dimension=1 values=[4.68947e-10]
+x=class=NumericalPoint name=Unnamed dimension=3 values=[0.4,0.4,0.4] f(x)=[0.535085] f^(x)=[0.53509]

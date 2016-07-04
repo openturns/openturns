@@ -160,23 +160,23 @@ maxRadiusError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TensorApproximationAlgorithm::setMaximumResidual
-"Maximum residual accessor.
+%feature("docstring") OT::TensorApproximationAlgorithm::setMaximumResidualError
+"Maximum residual error accessor.
 
 Parameters
 ----------
-maxRes : float
+maxResErr : float
     Convergence criterion on the residual during alternating least-squares
     algorithm used for the rank-1 approximation."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TensorApproximationAlgorithm::getMaximumResidual
-"Maximum residual accessor.
+%feature("docstring") OT::TensorApproximationAlgorithm::getMaximumResidualError
+"Maximum residual error accessor.
 
 Returns
 -------
-maxRes : float
+maxResErr : float
     Convergence criterion on the residual during alternating least-squares
     algorithm used for the rank-1 approximation."
 

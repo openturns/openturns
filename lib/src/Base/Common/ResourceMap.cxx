@@ -863,8 +863,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // TensorApproximationAlgorithm parameters //
   setAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration", 100);
-  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-8);
-  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidual", 1.0e-8);
+  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
+  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
   setAsNumericalScalar("TensorApproximationAlgorithm-MaximumErrorFactor", 2.0);
   setAsNumericalScalar("TensorApproximationAlgorithm-ErrorThreshold", 0.0);
   setAsUnsignedInteger("TensorApproximationAlgorithm-K", 3);

@@ -62,7 +62,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm()
   , p_approximationAlgorithmImplementationFactory_(PenalizedLeastSquaresAlgorithmFactory(true).clone())
   , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
   , maximumRadiusError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidual"))
+  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
   , rankSelection_(false)
 {
   // Nothing to do
@@ -82,7 +82,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
   , p_approximationAlgorithmImplementationFactory_(PenalizedLeastSquaresAlgorithmFactory(true).clone())
   , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
   , maximumRadiusError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidual"))
+  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
   , rankSelection_(false)
 {
   // Check sample size
@@ -541,6 +541,8 @@ RankOneTensor TensorApproximationAlgorithm::rankOne(const UnsignedInteger margin
   NumericalPoint weight(size, 1.0 / size);
   NumericalSample V;
 
+  NumericalScalar currentResidual = SpecFunc::MaxNumericalScalar;;
+
   // initialize
   RankOneTensor rank1Tensor(canonicalTensor);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -643,10 +645,14 @@ RankOneTensor TensorApproximationAlgorithm::rankOne(const UnsignedInteger margin
       const NumericalScalar slack = y[l][0] - prod;
       marginalResidual += slack * slack / size;
     }
+    marginalRelativeError = marginalResidual / y.computeVariance()[0];
 
-    convergence = (marginalResidual < maximumResidual_) && (radiusError < maximumRadiusError_);
-//     convergence = (radiusError < maximumRadiusError_);
-    Log::Info(OSS() << "iteration=" << iteration << " residual=" << marginalResidual << " radiusError=" << radiusError);
+    const NumericalScalar residualError = std::abs(currentResidual - marginalResidual);
+    currentResidual = marginalResidual;
+
+    convergence = (residualError < maximumResidualError_) && (radiusError < maximumRadiusError_);
+
+    Log::Info(OSS() << "iteration=" << iteration << " residualError=" << residualError << " radiusError=" << radiusError);
 
     ++ iteration;
   }
@@ -704,14 +710,14 @@ NumericalScalar TensorApproximationAlgorithm::getMaximumRadiusError() const
 }
 
 /* Residual error accessor */
-void TensorApproximationAlgorithm::setMaximumResidual(const NumericalScalar maximumResidual)
+void TensorApproximationAlgorithm::setMaximumResidualError(const NumericalScalar maximumResidualError)
 {
-  maximumResidual_ = maximumResidual;
+  maximumResidualError_ = maximumResidualError;
 }
 
-NumericalScalar TensorApproximationAlgorithm::getMaximumResidual() const
+NumericalScalar TensorApproximationAlgorithm::getMaximumResidualError() const
 {
-  return maximumResidual_;
+  return maximumResidualError_;
 }
 
 void TensorApproximationAlgorithm::setRankSelection(const Bool rankSelection)
@@ -730,7 +736,7 @@ void TensorApproximationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("p_approximationAlgorithmImplementationFactory_" , *p_approximationAlgorithmImplementationFactory_);
   adv.saveAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
   adv.saveAttribute("maximumRadiusError_", maximumRadiusError_);
-  adv.saveAttribute("maximumResidual_", maximumResidual_);
+  adv.saveAttribute("maximumResidualError_", maximumResidualError_);
   adv.saveAttribute("rankSelection_", rankSelection_);
 }
 
@@ -748,7 +754,7 @@ void TensorApproximationAlgorithm::load(Advocate & adv)
   p_approximationAlgorithmImplementationFactory_ = approximationAlgorithmImplementationFactory.clone();
   adv.loadAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
   adv.loadAttribute("maximumRadiusError_", maximumRadiusError_);
-  adv.loadAttribute("maximumResidual_", maximumResidual_);
+  adv.loadAttribute("maximumResidualError_", maximumResidualError_);
   adv.loadAttribute("rankSelection_", rankSelection_);
 }
 

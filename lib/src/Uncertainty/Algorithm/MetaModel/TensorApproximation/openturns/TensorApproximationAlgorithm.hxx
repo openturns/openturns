@@ -89,8 +89,8 @@ public:
   NumericalScalar getMaximumRadiusError() const;
 
   /** Residual error accessor */
-  void setMaximumResidual(const NumericalScalar maximumResidual);
-  NumericalScalar getMaximumResidual() const;
+  void setMaximumResidualError(const NumericalScalar maximumResidualError);
+  NumericalScalar getMaximumResidualError() const;
 
   /** Selection flag */
   void setRankSelection(const Bool rankSelection);
@@ -166,7 +166,7 @@ private:
   // error on the radius for rank-1
   NumericalScalar maximumRadiusError_;
   // error on the residual for rank-1
-  NumericalScalar maximumResidual_;
+  NumericalScalar maximumResidualError_;
 
   mutable Collection<DesignProxy> proxy_;
 
