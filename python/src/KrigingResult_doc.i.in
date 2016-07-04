@@ -139,7 +139,7 @@ covModel : :class:`~openturns.CovarianceModel`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getBasisCollection
-"Accessor to the collection of basis
+"Accessor to the collection of basis.
 
 Returns
 -------

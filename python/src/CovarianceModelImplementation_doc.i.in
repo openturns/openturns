@@ -257,8 +257,9 @@ OT_CovarianceModel_discretizeHMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
-"Discretize and factorize the covariance function on a given mesh using HMatrix 
-result.
+"Discretize and factorize the covariance function on a given mesh.
+
+This uses HMatrix.
 
 Parameters
 ----------

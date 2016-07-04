@@ -187,7 +187,7 @@ class OpenTURNSPythonFunction(object):
         return self.__paramDesc
 
 def _exec_sample_multiprocessing(func, n_cpus):
-    """Return a distributed function using multiprocessing
+    """Return a distributed function using multiprocessing.
 
     Parameters
     ----------

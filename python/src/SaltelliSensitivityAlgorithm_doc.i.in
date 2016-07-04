@@ -1,11 +1,11 @@
 %feature("docstring") OT::SaltelliSensitivityAlgorithm
-"Sensitivity analysis using Saltelli method
+"Sensitivity analysis using Saltelli method.
 
 Available constructors:
     SaltelliSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
 
     SaltelliSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
-    
+
     SaltelliSensitivityAlgorithm(*experiment, model, computeSecondOrder*)
 
 Parameters
