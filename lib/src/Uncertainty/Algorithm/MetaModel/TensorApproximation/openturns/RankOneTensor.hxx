@@ -26,16 +26,31 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+class CanonicalTensor;
+
 class OT_API RankOneTensor : public PersistentObject
 {
   CLASSNAME;
 public:
+  typedef Collection<OrthogonalUniVariateFunctionFamily>           FunctionFamilyCollection;
 
-  typedef Collection<OrthogonalUniVariateFunctionFamily> FunctionFamilyCollection;
-  typedef PersistentCollection<OrthogonalUniVariateFunctionFamily> FunctionFamilyPersistentCollection;
+  RankOneTensor();
 
-  explicit RankOneTensor(const FunctionFamilyCollection & functionFamilies = FunctionFamilyCollection(0),
-                         const Indices & nk = Indices());
+  explicit RankOneTensor(const CanonicalTensor & canonicalTensor);
+
+  /** Radisu accessor */
+  void setRadius(const NumericalScalar radius);
+  NumericalScalar getRadius() const;
+
+  /** Coefficients accessor along i-th component */
+  void setCoefficients(const UnsignedInteger i, const NumericalPoint & coefficients);
+  NumericalPoint getCoefficients(const UnsignedInteger i) const;
+
+  /** Basis accessor along i-th component */
+  Basis getBasis(const UnsignedInteger i) const;
+
+  /** Dimension accessor */
+  UnsignedInteger getDimension() const;
 
   /** Virtual constructor */
   virtual RankOneTensor * clone() const;
@@ -47,20 +62,13 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  friend class TensorApproximationAlgorithm;
-  friend class TensorApproximationResult;
-  friend class RankOneTensorEvaluation;
 
   // constant factor
   NumericalScalar radius_;
 
-  // subbasis sizes
-  Indices nk_;
-
   // subbasis coefficients
   PersistentCollection<NumericalPoint> coefficients_;
 
-  FunctionFamilyPersistentCollection functionFamilies_;
   PersistentCollection<Basis> basis_;
 };
 

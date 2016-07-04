@@ -21,6 +21,7 @@
 #include "openturns/RankOneTensor.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/UniVariateFunctionEvaluationImplementation.hxx"
+#include "openturns/CanonicalTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -28,26 +29,69 @@ CLASSNAMEINIT(RankOneTensor);
 
 static const Factory<RankOneTensor> Factory_RankOneTensor;
 
-RankOneTensor::RankOneTensor(const FunctionFamilyCollection & functionFamilies,
-                             const Indices & nk)
+
+RankOneTensor::RankOneTensor()
 : radius_(1.0)
-, nk_(nk)
-, coefficients_(nk.getSize())
-, functionFamilies_(functionFamilies)
-, basis_(nk.getSize())
 {
+  // Nothing to do
+}
+
+
+RankOneTensor::RankOneTensor(const CanonicalTensor & canonicalTensor)
+: radius_(1.0)
+, coefficients_(canonicalTensor.getNk().getSize())
+, basis_(canonicalTensor.getNk().getSize())
+{
+  const Indices nk(canonicalTensor.getNk());
   const UnsignedInteger dimension = nk.getSize();
+  const FunctionFamilyCollection functionFamilies(canonicalTensor.getFunctionFamilies());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     coefficients_[i].resize(nk[i]);
     basis_[i] = Basis(nk[i]);
     for (UnsignedInteger l = 0; l < nk[i]; ++ l)
     {
-      basis_[i][l] = NumericalMathFunction(UniVariateFunctionEvaluationImplementation(functionFamilies_[i].build(l)));
+      basis_[i][l] = NumericalMathFunction(UniVariateFunctionEvaluationImplementation(functionFamilies[i].build(l)));
     }
   }
 }
 
+
+void RankOneTensor::setRadius(const NumericalScalar radius)
+{
+  radius_ = radius;
+}
+
+NumericalScalar RankOneTensor::getRadius() const
+{
+  return radius_;
+}
+
+
+/* Coefficients accessor along i-th component */
+void RankOneTensor::setCoefficients(const UnsignedInteger i, const NumericalPoint & coefficients)
+{
+  coefficients_[i] = coefficients;
+}
+
+
+NumericalPoint RankOneTensor::getCoefficients(const UnsignedInteger i) const
+{
+  return coefficients_[i];
+}
+
+
+/* Basis accessor along i-th component */
+Basis RankOneTensor::getBasis(const UnsignedInteger i) const
+{
+  return basis_[i];
+}
+
+
+UnsignedInteger RankOneTensor::getDimension() const
+{
+  return coefficients_.getSize();
+}
 
 RankOneTensor * RankOneTensor::clone() const
 {

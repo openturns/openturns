@@ -62,7 +62,7 @@ print('x=', ot.NumericalPoint(x), 'f(x)', model(x), 'f^(x)=', metamodel(x))
 # borehole
 #dim = 8
 #model = ot.NumericalMathFunction(['rw', 'r', 'Tu', 'Hu', 'Tl', 'Hl', 'L', 'Kw'], ['u'],
-  #['(2*pi_*Tu*(Hu-Hl))/(ln(r/rw)*(1+(2*L*Tu)/(ln(r/rw)*rw^2*Kw)+Tu/Tl))'])
+  #['(2*_pi*Tu*(Hu-Hl))/(ln(r/rw)*(1+(2*L*Tu)/(ln(r/rw)*rw^2*Kw)+Tu/Tl))'])
 #coll = [ot.Normal(0.1, 0.0161812),
         #ot.LogNormal(7.71, 1.0056),
         #ot.Uniform(63070.0, 115600.0),
@@ -70,9 +70,9 @@ print('x=', ot.NumericalPoint(x), 'f(x)', model(x), 'f^(x)=', metamodel(x))
         #ot.Uniform(63.1, 116.0),
         #ot.Uniform(700.0, 820.0),
         #ot.Uniform(1120.0, 1680.0),
-        #ot.Uniform(9855.0, 12045.0)])
+        #ot.Uniform(9855.0, 12045.0)]
 #distribution = ot.ComposedDistribution(coll)
-#factoryCollection = list[map(lambda dist: ot.OrthogonalUniVariateFunctionFamily(ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.StandardDistributionPolynomialFactory(dist))), coll))
+#factoryCollection = list(map(lambda dist: ot.OrthogonalUniVariateFunctionFamily(ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.StandardDistributionPolynomialFactory(dist))), coll))
 
 
 

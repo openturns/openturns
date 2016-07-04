@@ -42,10 +42,16 @@ CanonicalTensor::CanonicalTensor (const FunctionFamilyCollection & functionFamil
                                   const UnsignedInteger rank)
   : PersistentObject()
   , functionFamilies_(functionFamilies)
-  , rank1tensors_(rank, RankOneTensor(functionFamilies, nk))// this constructor assumes the same nks for all ranks
+  , nk_(nk)
+  , rank1tensors_(rank)
 {
   const UnsignedInteger dimension = functionFamilies.getSize();
   if (dimension != nk.getSize()) throw InvalidArgumentException(HERE) << "The number of function factories (" << dimension << ") is different from number of basis sizes (" << nk.getSize() << ")";
+
+  for (UnsignedInteger r = 0; r < rank; ++ r)
+  {
+    rank1tensors_[r] = RankOneTensor(*this);
+  }
 }
 
 /* Virtual constructor */
@@ -61,7 +67,7 @@ void CanonicalTensor::setRank(const UnsignedInteger rank)
   rank1tensors_.resize(rank);
   for (UnsignedInteger r = oldRank; r < rank; ++ r)
   {
-    rank1tensors_[r] = rank1tensors_[0];
+    rank1tensors_[r] = RankOneTensor(*this);
   }
 }
 
@@ -71,6 +77,30 @@ UnsignedInteger CanonicalTensor::getRank() const
   return rank1tensors_.getSize();
 }
 
+
+CanonicalTensor::FunctionFamilyCollection CanonicalTensor::getFunctionFamilies() const
+{
+  return functionFamilies_;
+}
+
+
+Indices CanonicalTensor::getNk() const
+{
+  return nk_;
+}
+
+
+void CanonicalTensor::setRankOneTensor(const UnsignedInteger k,
+                                       const RankOneTensor & rankOneTensor)
+{
+  rank1tensors_[k] = rankOneTensor;
+}
+
+
+RankOneTensor CanonicalTensor::getRankOneTensor(const UnsignedInteger k) const
+{
+  return rank1tensors_[k];
+}
 
 /* String converter */
 String CanonicalTensor::__repr__() const
@@ -84,12 +114,14 @@ String CanonicalTensor::__repr__() const
 void CanonicalTensor::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
+  adv.saveAttribute("nk_", nk_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CanonicalTensor::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+  adv.loadAttribute("nk_", nk_);
 }
 
 END_NAMESPACE_OPENTURNS

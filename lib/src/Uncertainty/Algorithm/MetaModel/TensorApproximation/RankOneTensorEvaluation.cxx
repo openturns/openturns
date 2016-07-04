@@ -60,14 +60,15 @@ NumericalPoint RankOneTensorEvaluation::operator() (const NumericalPoint & inP) 
   for (UnsignedInteger i = 0; i < inputDimension; ++ i)
   {
     const NumericalPoint xi(1, inP[i]);
- 
     NumericalScalar sumI = 0.0;
-    const UnsignedInteger basisSize = rankOneTensor_.coefficients_[i].getSize();
+    const Basis basisI(rankOneTensor_.getBasis(i));
+    const NumericalPoint coeffI(rankOneTensor_.getCoefficients(i));
+    const UnsignedInteger basisSize = coeffI.getSize();
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
     {
-      if (rankOneTensor_.coefficients_[i][j] != 0.0)
+      if (coeffI[j] != 0.0)
       {
-        sumI += rankOneTensor_.coefficients_[i][j] * rankOneTensor_.basis_[i][j](xi)[0];
+        sumI += coeffI[j] * basisI[j](xi)[0];
       }
     }
     prodI *= sumI;
@@ -86,7 +87,7 @@ NumericalPoint RankOneTensorEvaluation::operator() (const NumericalPoint & inP) 
 /* Dimension accessor */
 UnsignedInteger RankOneTensorEvaluation::getInputDimension() const
 {
-  return rankOneTensor_.coefficients_.getSize();
+  return rankOneTensor_.getDimension();
 }
 
 UnsignedInteger RankOneTensorEvaluation::getOutputDimension() const

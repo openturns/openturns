@@ -109,6 +109,11 @@ private:
                    NumericalScalar & marginalResidual,
                    NumericalScalar & marginalRelativeError);
 
+  /** Compute all coefficients at once */
+  void rankK (const UnsignedInteger marginalIndex,
+              NumericalScalar & marginalResidual,
+              NumericalScalar & marginalRelativeError);
+
   /** Greedy rank-1 with selection of the optimal rank*/
   void greedyRankOneSelection(const UnsignedInteger marginalIndex,
                               NumericalScalar & marginalResidual,
@@ -122,12 +127,12 @@ private:
                      NumericalScalar & marginalRelativeError);
 
   /** Alternating least-squares algorithm to estimate a rank-1 tensor */
-  void rankOne (const UnsignedInteger marginalIndex,
-                RankOneTensor & rank1Tensor,
-                const NumericalSample & x,
-                const NumericalSample & y,
-                NumericalScalar & marginalResidual,
-                NumericalScalar & marginalRelativeError);
+  RankOneTensor rankOne(const UnsignedInteger marginalIndex,
+                        const CanonicalTensor & canonicalTensor,
+                        const NumericalSample & x,
+                        const NumericalSample & y,
+                        NumericalScalar & marginalResidual,
+                        NumericalScalar & marginalRelativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   NumericalMathFunction transformation_;
@@ -141,24 +146,33 @@ private:
   /** Result of the projection */
   TensorApproximationResult result_;
 
+  // samples
   NumericalSample inputSample_;
   NumericalSample outputSample_;
 
   NumericalSample transformedInputSample_;
 
+  // tensorized basis
   OrthogonalProductFunctionFactory basisFactory_;
 
+  // tensor format
   Collection<CanonicalTensor> tensor_;
 
+  // factory for rank-1 approximation: allows to select plain or sparse
   Pointer<ApproximationAlgorithmImplementationFactory> p_approximationAlgorithmImplementationFactory_;
 
+  // maximum rank-1 iterations
   UnsignedInteger maximumAlternatingLeastSquaresIteration_;
+  // error on the radius for rank-1
   NumericalScalar maximumRadiusError_;
+  // error on the residual for rank-1
   NumericalScalar maximumResidual_;
 
   mutable Collection<DesignProxy> proxy_;
 
+  // rank selection or not
   Bool rankSelection_;
+
 } ; /* class TensorApproximationAlgorithm */
 
 

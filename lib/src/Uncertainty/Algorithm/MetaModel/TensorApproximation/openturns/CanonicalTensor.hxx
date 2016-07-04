@@ -51,6 +51,13 @@ public:
   void setRank(const UnsignedInteger rank);
   UnsignedInteger getRank() const;
 
+  FunctionFamilyCollection getFunctionFamilies() const;
+
+  Indices getNk() const;
+
+  void setRankOneTensor(const UnsignedInteger k, const RankOneTensor & rankOneTensor);
+  RankOneTensor getRankOneTensor(const UnsignedInteger k) const;
+
   /** Virtual constructor */
   virtual CanonicalTensor * clone() const;
 
@@ -65,9 +72,11 @@ public:
 
 protected:
   friend class TensorApproximationAlgorithm;
-  friend class TensorApproximationResult;
 
   FunctionFamilyPersistentCollection functionFamilies_;
+
+  // subbasis sizes
+  Indices nk_;
 
   PersistentCollection<RankOneTensor> rank1tensors_;
 

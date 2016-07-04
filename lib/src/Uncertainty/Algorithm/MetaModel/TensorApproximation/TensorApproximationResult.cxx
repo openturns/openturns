@@ -74,9 +74,10 @@ TensorApproximationResult::TensorApproximationResult(
     NumericalPoint rk(rank);
     for (UnsignedInteger k = 0; k < rank; ++ k)
     {
-      Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(tensor_[outputIndex].rank1tensors_[k]);
+      RankOneTensor rank1tensor(tensor_[outputIndex].getRankOneTensor(k));
+      Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(rank1tensor);
       prodColl[k] = NumericalMathFunction(p_evaluation);
-      rk[k] = tensor_[outputIndex].rank1tensors_[k].radius_;
+      rk[k] = rank1tensor.getRadius();
     }
 
     NumericalMathFunction combination(prodColl, rk);
