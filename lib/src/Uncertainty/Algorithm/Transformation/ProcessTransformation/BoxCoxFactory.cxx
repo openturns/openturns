@@ -25,7 +25,6 @@
 #include "openturns/Field.hxx"
 #include "openturns/BoxCoxEvaluationImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "algocobyla.h"
 #include "openturns/Log.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 #include "openturns/InverseBoxCoxTransform.hxx"
