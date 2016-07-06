@@ -25,7 +25,6 @@
 #include "openturns/ARMACoefficients.hxx"
 #include "openturns/UserDefinedSpectralModel.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "algocobyla.h"
 #include "openturns/Log.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
