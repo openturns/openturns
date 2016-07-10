@@ -22,7 +22,7 @@ standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.0932
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[3.56105]
 kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[42.039]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19515]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[d1,d2] values=[5.5,10.5]]
+parameters= [class=NumericalPointWithDescription name=X0 dimension=2 description=[d1,d2] values=[5.5,10.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [1.23529]
 standard moment n= 2  value= [2.7211]

@@ -41,4 +41,4 @@ standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.6236
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[-0.305441]
 kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[2.4]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.388889]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=3 description=[a,m,b] values=[-0.5,1.5,2.5]]
+parameters= [class=NumericalPointWithDescription name=X0 dimension=3 description=[a,m,b] values=[-0.5,1.5,2.5]]

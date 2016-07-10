@@ -30,7 +30,7 @@ standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.0840
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.67539]
 kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[0.623015]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.1752]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[aLog,bLog] values=[-0.5,1.5]]
+parameters= [class=NumericalPointWithDescription name=X0 dimension=2 description=[aLog,bLog] values=[-0.5,1.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [1.93758]
 standard moment n= 2  value= [4.92941]
