@@ -20,7 +20,7 @@ Examples
 >>> myLHS.run()
 >>> SimulationLHSResult = myLHS.getResult()
 >>> print(SimulationLHSResult.getImportanceFactors())
-[marginal 1 : 0.000722617, marginal 2 : 0.635094, marginal 3 : 0.275692, marginal 4 : 0.0884917]"
+[X0 : 0.000722617, X1 : 0.635094, X2 : 0.275692, X3 : 0.0884917]"
 %enddef
 %feature("docstring") OT::SimulationResultImplementation
 OT_SimulationResult_doc

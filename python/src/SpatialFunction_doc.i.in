@@ -64,6 +64,7 @@ mesh of the field on which :math:`g` will be applied:
 ...         data[i, j] = i * data.getDimension() + j
 >>> ts = ot.TimeSeries(tg, data)
 >>> print(ts)
+    [ t   v0  ]
 0 : [ 0   0   ]
 1 : [ 0.2 1   ]
 2 : [ 0.4 2   ]
@@ -71,7 +72,7 @@ mesh of the field on which :math:`g` will be applied:
 4 : [ 0.8 4   ]
 5 : [ 1   5   ]
 >>> print(mySpatialFunction(ts))
-    [                outputVariable ]
+    [ t              outputVariable ]
 0 : [  0              0             ]
 1 : [  0.2            1             ]
 2 : [  0.4            4             ]

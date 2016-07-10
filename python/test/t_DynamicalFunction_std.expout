@@ -8,7 +8,7 @@ myFunc spatial dimension= 1
 called  0  times
 myFunc= DynamicalFunction :
 class=PythonDynamicalFunctionImplementation name=OpenTURNSPythonDynamicalFunction
-X=     [                                  marginal 1 marginal 2 marginal 3 ]
+X=     [ v0         v1         v2         X0         X1         X2         ]
 0 : [  0          0          0          0.608202  -1.26617   -0.438266  ]
 1 : [  0          0          1          1.20548   -2.18139    0.350042  ]
 2 : [  0          1          0         -0.355007   1.43725    0.810668  ]
@@ -17,7 +17,7 @@ X=     [                                  marginal 1 marginal 2 marginal 3 ]
 5 : [  1          0          1         -0.0907838  0.995793  -0.139453  ]
 6 : [  1          1          0         -0.560206   0.44549    0.322925  ]
 7 : [  1          1          1          0.445785  -1.03808   -0.856712  ]
-Y=     [                                  marginal 1 ]
+Y=     [ v0         v1         v2         X0         ]
 0 : [  0          0          0          0.473617  ]
 1 : [  0          0          1         -0.125498  ]
 2 : [  0          1          0          0.351418  ]
