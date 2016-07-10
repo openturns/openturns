@@ -68,7 +68,7 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
   , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
-  for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
+  std::copy(elementsValues.begin(), elementsValues.begin() + matrixSize, begin());
 }
 
 /* Virtual constructor */
