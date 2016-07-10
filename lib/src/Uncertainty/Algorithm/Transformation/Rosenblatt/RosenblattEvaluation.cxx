@@ -31,26 +31,20 @@ CLASSNAMEINIT(RosenblattEvaluation);
 static const Factory<RosenblattEvaluation> Factory_RosenblattEvaluation;
 
 /* Default constructor */
-RosenblattEvaluation::RosenblattEvaluation():
-  NumericalMathEvaluationImplementation(),
-  distribution_()
+RosenblattEvaluation::RosenblattEvaluation()
+  : NumericalMathEvaluationImplementation()
+  , distribution_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution):
-  NumericalMathEvaluationImplementation(),
-  distribution_(distribution)
+RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution)
+  : NumericalMathEvaluationImplementation()
+  , distribution_(distribution)
 {
   Description description(distribution.getDescription());
-  const UnsignedInteger size(description.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  description.add(Description::BuildDefault(distribution.getDimension(), "Y"));
   setDescription(description);
 }
 

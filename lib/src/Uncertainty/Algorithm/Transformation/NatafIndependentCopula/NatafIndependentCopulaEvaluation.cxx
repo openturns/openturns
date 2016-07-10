@@ -48,19 +48,8 @@ NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation(const Unsigne
   : NumericalMathEvaluationImplementation()
   , dimension_(dimension)
 {
-  Description description;
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    OSS oss;
-    oss << "x" << i;
-    description.add(oss);
-  }
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  Description description(Description::BuildDefault(dimension_, "X"));
+  description.add(Description::BuildDefault(dimension_, "Y"));
   setDescription(description);
 }
 
@@ -77,6 +66,15 @@ String NatafIndependentCopulaEvaluation::__repr__() const
   oss << "class=" << NatafIndependentCopulaEvaluation::GetClassName()
       << " description=" << getDescription()
       << " dimension=" << dimension_;
+
+  return oss;
+}
+
+String NatafIndependentCopulaEvaluation::__str__(const String & offset) const
+{
+  OSS oss(false);
+  oss << offset << NatafIndependentCopulaEvaluation::GetClassName()
+      << "(IndependentCopula(" << dimension_ << ")->Normal(" << dimension_ << "))";
 
   return oss;
 }

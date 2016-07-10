@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all distributions
+ *  @brief Abstract top-level class for inverse trend function
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
