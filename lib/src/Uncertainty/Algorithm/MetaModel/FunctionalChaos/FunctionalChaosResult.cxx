@@ -74,7 +74,10 @@ FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model
 {
   // The composed meta model will be a dual linear combination
   composedMetaModel_ = NumericalMathFunction(Psi_k, alpha_k);
-  metaModel_ = NumericalMathFunction(composedMetaModel_, transformation);
+  if (transformation.getEvaluation()->getClassName() == "IdentityEvaluation")
+    metaModel_ = composedMetaModel_;
+  else
+    metaModel_ = NumericalMathFunction(composedMetaModel_, transformation);
 }
 
 
