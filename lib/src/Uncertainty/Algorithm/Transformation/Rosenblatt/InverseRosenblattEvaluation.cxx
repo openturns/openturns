@@ -31,26 +31,20 @@ CLASSNAMEINIT(InverseRosenblattEvaluation);
 static const Factory<InverseRosenblattEvaluation> Factory_InverseRosenblattEvaluation;
 
 /* Default constructor */
-InverseRosenblattEvaluation::InverseRosenblattEvaluation():
-  NumericalMathEvaluationImplementation(),
-  distribution_()
+InverseRosenblattEvaluation::InverseRosenblattEvaluation()
+  : NumericalMathEvaluationImplementation()
+  , distribution_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & distribution):
-  NumericalMathEvaluationImplementation(),
-  distribution_(distribution)
+InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & distribution)
+  : NumericalMathEvaluationImplementation()
+  , distribution_(distribution)
 {
-  Description description(distribution.getDescription());
-  const UnsignedInteger size(description.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  Description description(Description::BuildDefault(distribution.getDimension(), "X"));
+  description.add(distribution.getDescription());
   setDescription(description);
 }
 

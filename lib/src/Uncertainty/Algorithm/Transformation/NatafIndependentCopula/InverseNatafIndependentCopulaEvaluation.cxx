@@ -37,19 +37,8 @@ InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation
   : NumericalMathEvaluationImplementation()
   , dimension_(dimension)
 {
-  Description description;
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    OSS oss;
-    oss << "x" << i;
-    description.add(oss);
-  }
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  Description description(Description::BuildDefault(dimension_, "X"));
+  description.add(Description::BuildDefault(dimension_, "Y"));
   setDescription(description);
 }
 
@@ -66,6 +55,15 @@ String InverseNatafIndependentCopulaEvaluation::__repr__() const
   oss << "class=" << InverseNatafIndependentCopulaEvaluation::GetClassName()
       << " description=" << getDescription()
       << " dimension=" << dimension_;
+
+  return oss;
+}
+
+String InverseNatafIndependentCopulaEvaluation::__str__(const String & offset) const
+{
+  OSS oss(false);
+  oss << offset << InverseNatafIndependentCopulaEvaluation::GetClassName()
+      << "(Normal(" << dimension_ << ")->IndependentCopula(" << dimension_ << "))";
 
   return oss;
 }
