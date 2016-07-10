@@ -51,9 +51,8 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation(const Distribut
   , standardDistribution_(standardDistribution)
   , inverseCholesky_(inverseCholesky)
 {
-  Description description;
-  for (UnsignedInteger i = 0; i < inverseCholesky_.getNbColumns(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedInteger i = 0; i < inverseCholesky_.getNbRows(); ++i) description.add(OSS() << "y" << i);
+  Description description(Description::BuildDefault(cholesky_.getDimension(), "X"));
+  description.add(Description::BuildDefault(cholesky_.getDimension(), "Y"));
   setDescription(description);
 }
 

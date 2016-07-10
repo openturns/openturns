@@ -27,8 +27,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
-
 CLASSNAMEINIT(FunctionalChaosResult);
 static const Factory<FunctionalChaosResult> Factory_FunctionalChaosResult;
 

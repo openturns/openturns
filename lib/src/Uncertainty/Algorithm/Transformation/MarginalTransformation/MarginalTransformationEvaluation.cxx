@@ -64,18 +64,8 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
     if (outputDistributionCollection_[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using distributions with dimension > 1.";
   }
   // Second, build the description of the transformation
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "x" << i;
-    description.add(oss);
-  }
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  Description description(Description::BuildDefault(size, "X"));
+  description.add(Description::BuildDefault(size, "Y"));
   setDescription(description);
   if (simplify)
   {
