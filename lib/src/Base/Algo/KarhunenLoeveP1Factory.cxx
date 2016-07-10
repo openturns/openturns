@@ -56,6 +56,9 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
 {
   // Compute the gram of the mesh
   gram_ = mesh.computeP1Gram();
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Factory-RegularizationFactor");
+  if (epsilon > 0.0)
+    for (UnsignedInteger i = 0; i < gram_.getDimension(); ++i) gram_(i, i) += epsilon;
 }
 
 /* Virtual constructor */

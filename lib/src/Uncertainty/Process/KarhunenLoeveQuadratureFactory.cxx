@@ -130,6 +130,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   // Now we compute the basis functions over the nodes, properly scaled
   const UnsignedInteger nodesNumber(nodes_.getSize());
   LOGINFO(OSS(false) << "Final number of integration nodes=" << nodesNumber);
+  if (nodesNumber == 0) throw InternalException(HERE) << "Error: cannot compute a Karhunen Loeve decomposition with zero integration node.";
   LOGINFO("Compute the design matrix");
   theta_ = Matrix(nodesNumber, basisSize);
   for (UnsignedInteger j = 0; j < basisSize; ++j)
@@ -140,7 +141,11 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
     }
   // Compute the Cholesky factor of \theta^t\theta
   LOGINFO("Compute the Cholesky factor of the Gram matrix");
-  cholesky_ = theta_.computeGram(true).computeCholesky(false);
+  CovarianceMatrix gram(theta_.computeGram(true));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
+  if (epsilon > 0.0)
+    for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
+  cholesky_ = gram.computeCholesky(false);
 }
 
 /* Virtual constructor */
