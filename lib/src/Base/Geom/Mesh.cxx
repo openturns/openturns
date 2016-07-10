@@ -46,6 +46,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , tree_()
 {
   // Nothing to do
+  if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
 }
 
 /* Parameters constructor, simplified interface for 1D case */
@@ -94,6 +95,7 @@ void Mesh::setVertices(const NumericalSample & vertices)
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
   tree_ = KDTree(vertices_);
+  if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
 }
 
 /* Vertex accessor */

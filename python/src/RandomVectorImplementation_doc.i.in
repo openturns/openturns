@@ -252,10 +252,10 @@ Examples
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getSample(3))
-    [ marginal 1 marginal 2 ]
-0 : [  0.608202  -1.26617   ]
-1 : [ -0.438266   1.20548   ]
-2 : [ -2.18139    0.350042  ]"
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getSample
 OT_RandomVector_getSample_doc

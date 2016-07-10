@@ -598,7 +598,7 @@ void NumericalSampleImplementation::setDescription(const Description & descripti
 /* Description Accessor */
 Description NumericalSampleImplementation::getDescription() const
 {
-  if (p_description_.isNull()) return Description(dimension_);
+  if (p_description_.isNull()) return Description::BuildDefault(dimension_, "v");
   return *p_description_;
 }
 

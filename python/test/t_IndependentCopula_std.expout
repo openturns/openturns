@@ -18,7 +18,7 @@ quantile= class=NumericalPoint name=Unnamed dimension=3 values=[0.983048,0.98304
 cdf(quantile)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833333,0,0,0,0.0833333,0,0,0,0.0833333]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=0 description=[] values=[]]
+parameters= [class=NumericalPointWithDescription name=X0 dimension=0 description=[] values=[]]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000

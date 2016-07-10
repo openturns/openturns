@@ -38,12 +38,12 @@ Examples
 >>> importanceDistribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 >>> myPlane = ot.ImportanceSamplingExperiment(distribution, importanceDistribution, 5)
 >>> print(myPlane.generate())
-    [ marginal_1_marginal 1 marginal_2_marginal 1 ]
-0 : [ 0.629877              0.882805              ]
-1 : [ 0.135276              0.0325028             ]
-2 : [ 0.347057              0.969423              ]
-3 : [ 0.92068               0.50304               ]
-4 : [ 0.0632061             0.292757              ]"
+    [ X0        X1        ]
+0 : [ 0.629877  0.882805  ]
+1 : [ 0.135276  0.0325028 ]
+2 : [ 0.347057  0.969423  ]
+3 : [ 0.92068   0.50304   ]
+4 : [ 0.0632061 0.292757  ]"
 
 // ---------------------------------------------------------------------
 

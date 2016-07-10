@@ -110,7 +110,7 @@ DistributionImplementation::DistributionImplementation()
   , isInitializedCF_(false)
   , pdfGrid_(0)
 {
-  description_[0] = "marginal 1";
+  description_[0] = "X0";
 }
 
 /* Virtual constructor */
@@ -409,11 +409,7 @@ void DistributionImplementation::setDimension(const UnsignedInteger dim)
     isAlreadyComputedCovariance_ = false;
     isAlreadyComputedGaussNodesAndWeights_ = false;
     // Check if the current description is compatible with the new dimension
-    if (description_.getSize() != dim)
-    {
-      description_ = Description(dim);
-      for (UnsignedInteger i = 0; i < dim; ++ i) description_[i] = OSS() << "marginal " << i + 1;
-    }
+    if (description_.getSize() != dim) description_ = Description::BuildDefault(dim, "X");
   }
 }
 
@@ -3166,11 +3162,8 @@ void DistributionImplementation::setDescription(const Description & description)
   // Fourth, check if there was any duplicate
   if (it != test.end())
   {
-    LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Append unique identifier to fix it:");
-    Description newDescription(description);
-    for (UnsignedInteger i = 0; i < size; ++i) newDescription[i] = OSS() << "marginal_" << i + 1 << "_" << description[i];
-    LOGINFO(OSS() << "the new description is " << newDescription);
-    description_ = newDescription;
+    LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Use default description instead.");
+    description_ = Description::BuildDefault(dimension_, "X");
   }
   else description_ = description;
 }

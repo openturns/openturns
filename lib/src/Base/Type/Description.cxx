@@ -89,7 +89,6 @@ void Description::sort()
 Description Description::BuildDefault(const UnsignedInteger dimension,
                                       const String & prefix)
 {
-  if (dimension == 1) return Description(1, prefix);
   Description description(dimension);
   for (UnsignedInteger k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
   return description;
