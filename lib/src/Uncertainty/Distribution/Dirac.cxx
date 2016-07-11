@@ -70,6 +70,12 @@ Bool Dirac::operator ==(const Dirac & other) const
   return point_ == other.point_;
 }
 
+Bool Dirac::equals(const DistributionImplementation & other) const
+{
+  const Dirac* p_other = dynamic_cast<const Dirac*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Dirac::__repr__() const
 {

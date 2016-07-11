@@ -101,6 +101,12 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
   return (copula_ == other.copula_) && (distributionCollection_ == other.distributionCollection_);
 }
 
+Bool ComposedDistribution::equals(const DistributionImplementation & other) const
+{
+  const ComposedDistribution* p_other = dynamic_cast<const ComposedDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ComposedDistribution::__repr__() const
 {

@@ -55,6 +55,9 @@ class OT_API CompositeDistribution
 
   /** Comparison operator */
   Bool operator ==(const CompositeDistribution & other) const;
+ protected:
+  Bool equals(const DistributionImplementation & other) const;
+ public:
 
   /** String converter */
   String __repr__() const;

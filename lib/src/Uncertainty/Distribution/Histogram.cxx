@@ -86,6 +86,12 @@ Bool Histogram::operator ==(const Histogram & other) const
   return (first_ == other.first_) && (width_ == other.width_) && (height_ == other.height_);
 }
 
+Bool Histogram::equals(const DistributionImplementation & other) const
+{
+  const Histogram* p_other = dynamic_cast<const Histogram*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Histogram::__repr__() const
 {

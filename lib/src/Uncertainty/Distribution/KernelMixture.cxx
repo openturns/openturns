@@ -98,6 +98,12 @@ Bool KernelMixture::operator ==(const KernelMixture & other) const
   return (bandwidth_ == other.bandwidth_) && (kernel_ == other.kernel_) && (sample_ == other.sample_);
 }
 
+Bool KernelMixture::equals(const DistributionImplementation & other) const
+{
+  const KernelMixture* p_other = dynamic_cast<const KernelMixture*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String KernelMixture::__repr__() const
 {

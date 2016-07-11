@@ -65,6 +65,12 @@ Bool Binomial::operator ==(const Binomial & other) const
   return (n_ == other.n_) && (p_ == other.p_);
 }
 
+Bool Binomial::equals(const DistributionImplementation & other) const
+{
+  const Binomial* p_other = dynamic_cast<const Binomial*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Binomial::__repr__() const
 {

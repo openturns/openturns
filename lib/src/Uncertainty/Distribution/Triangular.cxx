@@ -63,6 +63,12 @@ Bool Triangular::operator ==(const Triangular & other) const
   return (a_ == other.a_) && (m_ == other.m_) && (b_ == other.b_);
 }
 
+Bool Triangular::equals(const DistributionImplementation & other) const
+{
+  const Triangular* p_other = dynamic_cast<const Triangular*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Triangular::__repr__() const
 {

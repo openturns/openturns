@@ -61,6 +61,12 @@ Bool CumulativeDistributionNetwork::operator ==(const CumulativeDistributionNetw
   return (distributionCollection_ == other.distributionCollection_) && (graph_ == other.graph_);
 }
 
+Bool CumulativeDistributionNetwork::equals(const DistributionImplementation & other) const
+{
+  const CumulativeDistributionNetwork* p_other = dynamic_cast<const CumulativeDistributionNetwork*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String CumulativeDistributionNetwork::__repr__() const
 {

@@ -62,6 +62,12 @@ Bool GumbelCopula::operator ==(const GumbelCopula & other) const
   return theta_ == other.theta_;
 }
 
+Bool GumbelCopula::equals(const DistributionImplementation & other) const
+{
+  const GumbelCopula* p_other = dynamic_cast<const GumbelCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String GumbelCopula::__repr__() const
 {

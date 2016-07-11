@@ -89,6 +89,12 @@ Bool MeixnerDistribution::operator ==(const MeixnerDistribution & other) const
   return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (delta_ == other.delta_) && (mu_ == other.mu_);
 }
 
+Bool MeixnerDistribution::equals(const DistributionImplementation & other) const
+{
+  const MeixnerDistribution* p_other = dynamic_cast<const MeixnerDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String MeixnerDistribution::__repr__() const
 {

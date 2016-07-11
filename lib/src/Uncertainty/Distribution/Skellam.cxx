@@ -66,6 +66,12 @@ Bool Skellam::operator ==(const Skellam & other) const
   return (lambda1_ == other.lambda1_) && (lambda2_ == other.lambda2_);
 }
 
+Bool Skellam::equals(const DistributionImplementation & other) const
+{
+  const Skellam* p_other = dynamic_cast<const Skellam*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Skellam::__repr__() const
 {

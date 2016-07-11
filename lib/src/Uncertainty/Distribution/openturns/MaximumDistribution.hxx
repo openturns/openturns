@@ -61,6 +61,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const MaximumDistribution & other) const;
+ protected:
+  Bool equals(const DistributionImplementation & other) const;
+ public:
 
   /** String converter */
   String __repr__() const;

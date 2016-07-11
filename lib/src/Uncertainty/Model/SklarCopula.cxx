@@ -75,6 +75,12 @@ Bool SklarCopula::operator ==(const SklarCopula & other) const
   return distribution_ == other.distribution_;
 }
 
+Bool SklarCopula::equals(const DistributionImplementation & other) const
+{
+  const SklarCopula* p_other = dynamic_cast<const SklarCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String SklarCopula::__repr__() const
 {

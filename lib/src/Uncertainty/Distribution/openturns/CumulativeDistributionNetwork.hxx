@@ -54,6 +54,9 @@ class OT_API CumulativeDistributionNetwork
 
   /** Comparison operator */
   Bool operator ==(const CumulativeDistributionNetwork & other) const;
+ protected:
+  Bool equals(const DistributionImplementation & other) const;
+ public:
 
   /** String converter */
   String __repr__() const;

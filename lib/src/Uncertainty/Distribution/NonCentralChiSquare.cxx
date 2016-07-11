@@ -53,6 +53,12 @@ Bool NonCentralChiSquare::operator ==(const NonCentralChiSquare & other) const
   return (nu_ == other.nu_) && (lambda_ == other.lambda_);
 }
 
+Bool NonCentralChiSquare::equals(const DistributionImplementation & other) const
+{
+  const NonCentralChiSquare* p_other = dynamic_cast<const NonCentralChiSquare*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NonCentralChiSquare::__repr__() const
 {

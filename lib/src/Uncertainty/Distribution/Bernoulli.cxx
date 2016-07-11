@@ -61,6 +61,12 @@ Bool Bernoulli::operator ==(const Bernoulli & other) const
   return p_ == other.p_;
 }
 
+Bool Bernoulli::equals(const DistributionImplementation & other) const
+{
+  const Bernoulli* p_other = dynamic_cast<const Bernoulli*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Bernoulli::__repr__() const
 {

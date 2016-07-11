@@ -72,6 +72,12 @@ Bool Dirichlet::operator ==(const Dirichlet & other) const
   return theta_ == other.theta_;
 }
 
+Bool Dirichlet::equals(const DistributionImplementation & other) const
+{
+  const Dirichlet* p_other = dynamic_cast<const Dirichlet*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Dirichlet::__repr__() const
 {

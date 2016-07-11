@@ -61,6 +61,12 @@ Bool SubSquareCopula::operator ==(const SubSquareCopula & other) const
   return phi_ == other.phi_;
 }
 
+Bool SubSquareCopula::equals(const DistributionImplementation & other) const
+{
+  const SubSquareCopula* p_other = dynamic_cast<const SubSquareCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String SubSquareCopula::__repr__() const
 {
