@@ -66,6 +66,12 @@ Bool NegativeBinomial::operator ==(const NegativeBinomial & other) const
   return (r_ == other.r_) && (p_ == other.p_);
 }
 
+Bool NegativeBinomial::equals(const DistributionImplementation & other) const
+{
+  const NegativeBinomial* p_other = dynamic_cast<const NegativeBinomial*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NegativeBinomial::__repr__() const
 {

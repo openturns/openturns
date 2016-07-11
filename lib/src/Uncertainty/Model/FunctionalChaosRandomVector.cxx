@@ -25,8 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(FunctionalChaosRandomVector);
 
 static const Factory<FunctionalChaosRandomVector> Factory_FunctionalChaosRandomVector;
@@ -84,7 +82,7 @@ void FunctionalChaosRandomVector::computeCovariance() const
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
       covariance_(i, j) = 0.0;
-      // The loop starts at 1 as indices[0] is supposed to be associated with the mean (constant basis function)
+      // The loop starts at 1 as indices[0] is supposed to be associated with the mean (constant term in the basis)
       for (UnsignedInteger k = 1; k < size; ++k) covariance_(i, j) += coefficients[k][i] * coefficients[k][j];
     } // Loop over the second index
   } // Loop over the first index
@@ -98,6 +96,10 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
   const UnsignedInteger inputDimension(getAntecedent()->getDimension());
   if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
+  // Check if the measure defining the basis has an independent copula else
+  // the conditional covariance cannot be extracted from the decomposition
+  if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
+  if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
   const UnsignedInteger orderSobolIndice(variableIndices.getSize());
   const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
@@ -155,6 +157,10 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
   const UnsignedInteger inputDimension(getAntecedent()->getDimension());
   if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
+  // Check if the measure defining the basis has an independent copula else
+  // the conditional covariance cannot be extracted from the decomposition
+  if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol total indices from a non-tensorized basis.";
+  if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol total indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the total indices may be misleading.");
   const UnsignedInteger orderSobolIndice(variableIndices.getSize());
   const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());

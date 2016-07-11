@@ -113,6 +113,12 @@ Bool ConditionalDistribution::operator ==(const ConditionalDistribution & other)
   return (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
 }
 
+Bool ConditionalDistribution::equals(const DistributionImplementation & other) const
+{
+  const ConditionalDistribution* p_other = dynamic_cast<const ConditionalDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ConditionalDistribution::__repr__() const
 {

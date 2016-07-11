@@ -61,6 +61,12 @@ Bool Logistic::operator ==(const Logistic & other) const
   return (alpha_ == other.alpha_) && (beta_ == other.beta_);
 }
 
+Bool Logistic::equals(const DistributionImplementation & other) const
+{
+  const Logistic* p_other = dynamic_cast<const Logistic*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Logistic::__repr__() const
 {

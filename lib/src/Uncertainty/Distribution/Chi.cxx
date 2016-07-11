@@ -63,6 +63,12 @@ Bool Chi::operator ==(const Chi & other) const
   return nu_ == other.nu_;
 }
 
+Bool Chi::equals(const DistributionImplementation & other) const
+{
+  const Chi* p_other = dynamic_cast<const Chi*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Chi::__repr__() const
 {

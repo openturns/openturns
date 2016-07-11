@@ -64,6 +64,12 @@ Bool Trapezoidal::operator ==(const Trapezoidal & other) const
   return (a_ == other.a_) && (b_ == other.b_) && (c_ == other.c_) && (d_ == other.d_);
 }
 
+Bool Trapezoidal::equals(const DistributionImplementation & other) const
+{
+  const Trapezoidal* p_other = dynamic_cast<const Trapezoidal*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Trapezoidal::__repr__() const
 {

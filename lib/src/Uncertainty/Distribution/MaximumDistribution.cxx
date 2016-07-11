@@ -100,6 +100,12 @@ Bool MaximumDistribution::operator ==(const MaximumDistribution & other) const
   return (distribution_ == other.distribution_);
 }
 
+Bool MaximumDistribution::equals(const DistributionImplementation & other) const
+{
+  const MaximumDistribution* p_other = dynamic_cast<const MaximumDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String MaximumDistribution::__repr__() const
 {

@@ -74,6 +74,12 @@ Bool Arcsine::operator ==(const Arcsine & other) const
   return (a_ == other.a_) && (b_ == other.b_);
 }
 
+Bool Arcsine::equals(const DistributionImplementation & other) const
+{
+  const Arcsine* p_other = dynamic_cast<const Arcsine*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Arcsine::__repr__() const
 {

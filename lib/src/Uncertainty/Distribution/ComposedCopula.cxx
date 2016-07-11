@@ -70,6 +70,12 @@ Bool ComposedCopula::operator ==(const ComposedCopula & other) const
   return copulaCollection_ == other.copulaCollection_;
 }
 
+Bool ComposedCopula::equals(const DistributionImplementation & other) const
+{
+  const ComposedCopula* p_other = dynamic_cast<const ComposedCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ComposedCopula::__repr__() const
 {

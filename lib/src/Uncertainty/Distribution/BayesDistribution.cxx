@@ -82,6 +82,12 @@ Bool BayesDistribution::operator ==(const BayesDistribution & other) const
   return (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
 }
 
+Bool BayesDistribution::equals(const DistributionImplementation & other) const
+{
+  const BayesDistribution* p_other = dynamic_cast<const BayesDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Compute the numerical range of the distribution given the parameters values */
 void BayesDistribution::computeRange()
 {

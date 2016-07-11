@@ -123,7 +123,13 @@ DistributionImplementation * DistributionImplementation::clone() const
 Bool DistributionImplementation::operator ==(const DistributionImplementation & other) const
 {
   if (this == &other) return true;
-  return (dimension_ == other.dimension_) && (weight_ == other.weight_) && (range_ == other.range_);
+  // Compare both this to other and other to this to ensure symmetry
+  return equals(other) && other.equals(*this);
+}
+
+Bool DistributionImplementation::equals(const DistributionImplementation & other) const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::equals";
 }
 
 /* Comparison operator */

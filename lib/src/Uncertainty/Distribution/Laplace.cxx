@@ -64,6 +64,12 @@ Bool Laplace::operator ==(const Laplace & other) const
   return (lambda_ == other.lambda_) && (mu_ == other.mu_);
 }
 
+Bool Laplace::equals(const DistributionImplementation & other) const
+{
+  const Laplace* p_other = dynamic_cast<const Laplace*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Laplace::__repr__() const
 {

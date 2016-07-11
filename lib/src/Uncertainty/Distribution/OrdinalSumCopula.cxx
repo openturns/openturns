@@ -77,6 +77,12 @@ Bool OrdinalSumCopula::operator ==(const OrdinalSumCopula & other) const
   return (copulaCollection_ == other.copulaCollection_) && (bounds_ == other.bounds_);
 }
 
+Bool OrdinalSumCopula::equals(const DistributionImplementation & other) const
+{
+  const OrdinalSumCopula* p_other = dynamic_cast<const OrdinalSumCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String OrdinalSumCopula::__repr__() const
 {

@@ -67,6 +67,12 @@ Bool FisherSnedecor::operator ==(const FisherSnedecor & other) const
   return (d1_ == other.d1_) && (d2_ == other.d2_);
 }
 
+Bool FisherSnedecor::equals(const DistributionImplementation & other) const
+{
+  const FisherSnedecor* p_other = dynamic_cast<const FisherSnedecor*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FisherSnedecor::__repr__() const
 {

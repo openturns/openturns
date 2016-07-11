@@ -45,6 +45,12 @@ Bool TracyWidomGOE::operator ==(const TracyWidomGOE & other) const
   return true;
 }
 
+Bool TracyWidomGOE::equals(const DistributionImplementation & other) const
+{
+  const TracyWidomGOE* p_other = dynamic_cast<const TracyWidomGOE*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String TracyWidomGOE::__repr__() const
 {

@@ -60,6 +60,12 @@ Bool ParametrizedDistribution::operator ==(const ParametrizedDistribution & othe
   return (this == &other);
 }
 
+Bool ParametrizedDistribution::equals(const DistributionImplementation & other) const
+{
+  const ParametrizedDistribution* p_other = dynamic_cast<const ParametrizedDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Get the DDF of the distribution */
 NumericalPoint ParametrizedDistribution::computeDDF(const NumericalPoint & point) const
 {

@@ -103,6 +103,12 @@ Bool TruncatedNormal::operator ==(const TruncatedNormal & other) const
          (a_ == other.a_) && (b_ == other.b_);
 }
 
+Bool TruncatedNormal::equals(const DistributionImplementation & other) const
+{
+  const TruncatedNormal* p_other = dynamic_cast<const TruncatedNormal*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String TruncatedNormal::__repr__() const
 {

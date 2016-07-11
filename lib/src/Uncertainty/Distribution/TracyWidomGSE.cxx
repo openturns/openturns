@@ -47,6 +47,12 @@ Bool TracyWidomGSE::operator ==(const TracyWidomGSE & other) const
   return true;
 }
 
+Bool TracyWidomGSE::equals(const DistributionImplementation & other) const
+{
+  const TracyWidomGSE* p_other = dynamic_cast<const TracyWidomGSE*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String TracyWidomGSE::__repr__() const
 {

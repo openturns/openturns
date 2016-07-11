@@ -87,10 +87,15 @@ EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
 Bool EllipticalDistribution::operator ==(const EllipticalDistribution & other) const
 {
   if (this == &other) return true;
-  return DistributionImplementation::operator ==(other) &&
-         (R_ == other.R_) &&
+  return (R_ == other.R_) &&
          (mean_ == other.mean_) &&
          (sigma_ == other.sigma_);
+}
+
+Bool EllipticalDistribution::equals(const DistributionImplementation & other) const
+{
+  const EllipticalDistribution* p_other = dynamic_cast<const EllipticalDistribution*>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Centers and reduces a value u = Diag(sigma_)^(-1) * (x - mean_) */
