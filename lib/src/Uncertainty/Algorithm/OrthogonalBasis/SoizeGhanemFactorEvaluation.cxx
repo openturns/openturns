@@ -112,6 +112,41 @@ NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & i
   return result;
 }
 
+NumericalSample SoizeGhanemFactorEvaluation::operator() (const NumericalSample & inS) const
+{
+  const UnsignedInteger inputDimension(getInputDimension());
+  if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
+  const UnsignedInteger size(inS.getSize());
+  if (size == 0) return NumericalSample(0, 1);
+  NumericalSample result(size, 1);
+  if (useCopula_)
+    {
+      NumericalSample u(size, 0);
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+	u.stack(marginals_[i].computeCDF(inS.getMarginal(i)));
+      const NumericalSample pdf(copula_.computePDF(u));
+      for (UnsignedInteger i = 0; i < size; ++i)
+	result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, pdf[i][0]));
+    }
+  else
+    {
+      NumericalSample logFactor(size, 1);
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+	logFactor += marginals_[i].computeLogPDF(inS.getMarginal(i));
+      // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
+      const NumericalSample logResult(logFactor - measure_.computeLogPDF(inS));
+      for (UnsignedInteger i = 0; i < size; ++i)
+	result[i][0] = std::exp(0.5 * logResult[i][0]);
+    }
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+    {
+      inputStrategy_.store(inS);
+      outputStrategy_.store(result);
+    }
+  return result;
+}
+
 
 /* Accessor for input point dimension */
 UnsignedInteger SoizeGhanemFactorEvaluation::getInputDimension() const
