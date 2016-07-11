@@ -54,6 +54,12 @@ Bool Frechet::operator ==(const Frechet & other) const
   return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
 }
 
+Bool Frechet::equals(const DistributionImplementation & other) const
+{
+  const Frechet* p_other = dynamic_cast<const Frechet*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Frechet::__repr__() const
 {

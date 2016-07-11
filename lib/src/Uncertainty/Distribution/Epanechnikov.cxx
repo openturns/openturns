@@ -47,6 +47,12 @@ Bool Epanechnikov::operator ==(const Epanechnikov & other) const
   return true;
 }
 
+Bool Epanechnikov::equals(const DistributionImplementation & other) const
+{
+  const Epanechnikov* p_other = dynamic_cast<const Epanechnikov*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Epanechnikov::__repr__() const
 {

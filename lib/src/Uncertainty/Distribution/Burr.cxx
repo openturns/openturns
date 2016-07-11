@@ -63,6 +63,12 @@ Bool Burr::operator ==(const Burr & other) const
   return (c_ == other.c_) && (k_ == other.k_);
 }
 
+Bool Burr::equals(const DistributionImplementation & other) const
+{
+  const Burr* p_other = dynamic_cast<const Burr*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Burr::__repr__() const
 {

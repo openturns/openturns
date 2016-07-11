@@ -307,6 +307,12 @@ Bool RandomMixture::operator ==(const RandomMixture & other) const
   return (distributionCollection_ == other.distributionCollection_) && (constant_ == other.constant_);
 }
 
+Bool RandomMixture::equals(const DistributionImplementation & other) const
+{
+  const RandomMixture* p_other = dynamic_cast<const RandomMixture*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String RandomMixture::__repr__() const
 {

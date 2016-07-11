@@ -61,6 +61,12 @@ Bool Poisson::operator ==(const Poisson & other) const
   return (lambda_ == other.lambda_);
 }
 
+Bool Poisson::equals(const DistributionImplementation & other) const
+{
+  const Poisson* p_other = dynamic_cast<const Poisson*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Poisson::__repr__() const
 {

@@ -60,6 +60,12 @@ Bool FarlieGumbelMorgensternCopula::operator ==(const FarlieGumbelMorgensternCop
   return theta_ == other.theta_;
 }
 
+Bool FarlieGumbelMorgensternCopula::equals(const DistributionImplementation & other) const
+{
+  const FarlieGumbelMorgensternCopula* p_other = dynamic_cast<const FarlieGumbelMorgensternCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FarlieGumbelMorgensternCopula::__repr__() const
 {

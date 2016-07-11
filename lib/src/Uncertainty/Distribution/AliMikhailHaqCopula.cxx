@@ -61,6 +61,12 @@ Bool AliMikhailHaqCopula::operator ==(const AliMikhailHaqCopula & other) const
   return theta_ == other.theta_;
 }
 
+Bool AliMikhailHaqCopula::equals(const DistributionImplementation & other) const
+{
+  const AliMikhailHaqCopula* p_other = dynamic_cast<const AliMikhailHaqCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String AliMikhailHaqCopula::__repr__() const
 {

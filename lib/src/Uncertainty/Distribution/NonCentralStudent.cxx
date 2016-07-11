@@ -56,6 +56,12 @@ Bool NonCentralStudent::operator ==(const NonCentralStudent & other) const
   return (nu_ == other.nu_) && (delta_ == other.delta_) && (gamma_ == other.gamma_);
 }
 
+Bool NonCentralStudent::equals(const DistributionImplementation & other) const
+{
+  const NonCentralStudent* p_other = dynamic_cast<const NonCentralStudent*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NonCentralStudent::__repr__() const
 {

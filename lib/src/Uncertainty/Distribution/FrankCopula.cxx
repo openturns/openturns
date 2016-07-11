@@ -60,6 +60,12 @@ Bool FrankCopula::operator ==(const FrankCopula & other) const
   return theta_ == other.theta_;
 }
 
+Bool FrankCopula::equals(const DistributionImplementation & other) const
+{
+  const FrankCopula* p_other = dynamic_cast<const FrankCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FrankCopula::__repr__() const
 {

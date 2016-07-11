@@ -82,6 +82,12 @@ Bool Gamma::operator ==(const Gamma & other) const
   return (k_ == other.k_) && (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
 }
 
+Bool Gamma::equals(const DistributionImplementation & other) const
+{
+  const Gamma* p_other = dynamic_cast<const Gamma*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Gamma::__repr__() const
 {

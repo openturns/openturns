@@ -49,6 +49,12 @@ Bool TracyWidomGUE::operator ==(const TracyWidomGUE & other) const
   return true;
 }
 
+Bool TracyWidomGUE::equals(const DistributionImplementation & other) const
+{
+  const TracyWidomGUE* p_other = dynamic_cast<const TracyWidomGUE*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String TracyWidomGUE::__repr__() const
 {

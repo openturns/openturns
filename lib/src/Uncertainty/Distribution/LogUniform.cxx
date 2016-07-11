@@ -66,6 +66,12 @@ Bool LogUniform::operator ==(const LogUniform & other) const
   return (aLog_ == other.aLog_) && (bLog_ == other.bLog_);
 }
 
+Bool LogUniform::equals(const DistributionImplementation & other) const
+{
+  const LogUniform* p_other = dynamic_cast<const LogUniform*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String LogUniform::__repr__() const
 {

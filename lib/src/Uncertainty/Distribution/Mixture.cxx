@@ -117,6 +117,12 @@ Bool Mixture::operator ==(const Mixture & other) const
   return distributionCollection_ == other.distributionCollection_;
 }
 
+Bool Mixture::equals(const DistributionImplementation & other) const
+{
+  const Mixture* p_other = dynamic_cast<const Mixture*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Mixture::__repr__() const
 {

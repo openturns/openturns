@@ -61,6 +61,12 @@ Bool Rayleigh::operator ==(const Rayleigh & other) const
   return (sigma_ == other.sigma_) && (gamma_ == other.gamma_);
 }
 
+Bool Rayleigh::equals(const DistributionImplementation & other) const
+{
+  const Rayleigh* p_other = dynamic_cast<const Rayleigh*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Rayleigh::__repr__() const
 {

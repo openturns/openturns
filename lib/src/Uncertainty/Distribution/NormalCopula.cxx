@@ -72,6 +72,12 @@ Bool NormalCopula::operator ==(const NormalCopula & other) const
   return correlation_ == other.correlation_;
 }
 
+Bool NormalCopula::equals(const DistributionImplementation & other) const
+{
+  const NormalCopula* p_other = dynamic_cast<const NormalCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NormalCopula::__repr__() const
 {

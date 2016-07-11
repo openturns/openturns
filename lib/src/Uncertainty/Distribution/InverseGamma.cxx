@@ -63,6 +63,12 @@ Bool InverseGamma::operator ==(const InverseGamma & other) const
   return (k_ == other.k_) && (lambda_ == other.lambda_);
 }
 
+Bool InverseGamma::equals(const DistributionImplementation & other) const
+{
+  const InverseGamma* p_other = dynamic_cast<const InverseGamma*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String InverseGamma::__repr__() const
 {
