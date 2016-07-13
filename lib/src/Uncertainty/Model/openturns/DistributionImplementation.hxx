@@ -877,6 +877,11 @@ protected:
       y_ = parameters;
     }
 
+    NumericalPoint getParameter() const
+    {
+      return y_;
+    }
+
     UnsignedInteger getInputDimension() const
     {
       return 1;
@@ -915,6 +920,11 @@ protected:
     void setParameter(const NumericalPoint & parameters)
     {
       y_ = parameters;
+    }
+
+    NumericalPoint getParameter() const
+    {
+      return y_;
     }
 
     UnsignedInteger getInputDimension() const
