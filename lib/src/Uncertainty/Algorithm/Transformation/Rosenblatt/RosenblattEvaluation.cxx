@@ -58,6 +58,7 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
   const UnsignedInteger dimension(getOutputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply Phi^{-1} o conditional CDF over the components
@@ -101,6 +102,15 @@ String RosenblattEvaluation::__repr__() const
   oss << "class=" << RosenblattEvaluation::GetClassName()
       << " description=" << getDescription()
       << " distribution=" << distribution_;
+  return oss;
+}
+
+String RosenblattEvaluation::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << offset << RosenblattEvaluation::GetClassName()
+      << "(" << distribution_
+      << "->Normal(" << distribution_.getDimension() << ")";
   return oss;
 }
 
