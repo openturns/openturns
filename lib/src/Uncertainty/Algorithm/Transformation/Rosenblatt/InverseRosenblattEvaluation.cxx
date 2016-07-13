@@ -58,6 +58,7 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
   const UnsignedInteger dimension(getOutputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply conditional Quantile o Phi over the components
@@ -109,6 +110,15 @@ String InverseRosenblattEvaluation::__repr__() const
   oss << "class=" << InverseRosenblattEvaluation::GetClassName()
       << " description=" << getDescription()
       << " distribution=" << distribution_;
+  return oss;
+}
+
+String InverseRosenblattEvaluation::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << offset << InverseRosenblattEvaluation::GetClassName()
+      << "(Normal(" << distribution_.getDimension() << ")->"
+      << distribution_ << ")";
   return oss;
 }
 
