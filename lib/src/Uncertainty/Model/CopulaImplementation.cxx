@@ -171,14 +171,15 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
   CorrelationMatrix tau(dimension);
   if (hasIndependentCopula()) return tau;
   // Here we have a circular dependency between copulas and distributions
-  // if (hasEllipticalCopula())
-  //   {
-  //     const CorrelationMatrix shape(getShapeMatrix());
-  //     for (UnsignedInteger i = 0; i < dimension; ++i)
-  //       for(UnsignedInteger j = 0; j < i; ++j)
-  //         tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
-  //     return tau;
-  //   }
+  if (hasEllipticalCopula())
+    {
+      std::cerr << "In CopulaImplementation::getKendallTau(), elliptical copula case" << std::endl;
+      const CorrelationMatrix shape(getShapeMatrix());
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+	for(UnsignedInteger j = 0; j < i; ++j)
+	  tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
+      return tau;
+    }
   const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
   const Interval square(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0));
   // Performs the integration in the strictly lower triangle of the tau matrix
