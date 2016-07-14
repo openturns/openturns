@@ -107,7 +107,7 @@ String RosenblattEvaluation::__repr__() const
 
 String RosenblattEvaluation::__str__(const String & offset) const
 {
-  OSS oss;
+  OSS oss(false);
   oss << offset << RosenblattEvaluation::GetClassName()
       << "(" << distribution_
       << "->Normal(" << distribution_.getDimension() << ")";

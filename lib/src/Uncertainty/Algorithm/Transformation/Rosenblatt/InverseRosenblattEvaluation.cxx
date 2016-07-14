@@ -115,7 +115,7 @@ String InverseRosenblattEvaluation::__repr__() const
 
 String InverseRosenblattEvaluation::__str__(const String & offset) const
 {
-  OSS oss;
+  OSS oss(false);
   oss << offset << InverseRosenblattEvaluation::GetClassName()
       << "(Normal(" << distribution_.getDimension() << ")->"
       << distribution_ << ")";
