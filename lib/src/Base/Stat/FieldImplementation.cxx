@@ -117,7 +117,7 @@ UnsignedInteger FieldImplementation::getDimension() const
 }
 
 /* Mesh accessor */
-Mesh FieldImplementation::getMesh() const
+const Mesh & FieldImplementation::getMesh() const
 {
   return mesh_;
 }
