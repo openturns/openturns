@@ -120,7 +120,7 @@ struct ComputeCovariancePolicy
 
 UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample) const
 {
-  const Mesh mesh(sample.getMesh());
+  const Mesh & mesh(sample.getMesh());
   const UnsignedInteger N(mesh.getVerticesNumber());
   // Create a collection of null CovarianceMatrix
   const UnsignedInteger size((N * (N + 1)) / 2);

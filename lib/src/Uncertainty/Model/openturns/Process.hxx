@@ -91,7 +91,7 @@ public:
   void setTimeGrid (const RegularGrid & timeGrid);
 
   /** Mesh accessor */
-  Mesh getMesh() const;
+  const Mesh & getMesh() const;
   void setMesh (const Mesh & mesh);
 
   /** Process sample accessors */
