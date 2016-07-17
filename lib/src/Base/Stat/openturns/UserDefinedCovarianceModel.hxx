@@ -72,7 +72,7 @@ public:
                                         const UnsignedInteger p) const;
 
   /** Mesh accessor */
-  Mesh getMesh() const;
+  const Mesh & getMesh() const;
 
   /** TimeGrid accessor */
   RegularGrid getTimeGrid() const;

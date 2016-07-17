@@ -79,7 +79,7 @@ public:
   virtual void setTimeGrid(const RegularGrid & timeGrid);
 
   /** Mesh accessor */
-  virtual Mesh getMesh() const;
+  virtual const Mesh & getMesh() const;
   virtual void setMesh(const Mesh & mesh);
 
   /** Discrete realization accessor */

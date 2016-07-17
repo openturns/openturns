@@ -84,7 +84,7 @@ Description Mesh::getDescription() const
 }
 
 /* Vertices accessor */
-NumericalSample Mesh::getVertices() const
+const NumericalSample & Mesh::getVertices() const
 {
   return vertices_;
 }
@@ -111,7 +111,7 @@ void Mesh::setVertex(const UnsignedInteger index,
 }
 
 /* Simplices accessor */
-Mesh::IndicesCollection Mesh::getSimplices() const
+const Mesh::IndicesCollection & Mesh::getSimplices() const
 {
   return simplices_;
 }
