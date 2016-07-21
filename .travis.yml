@@ -61,8 +61,7 @@ install:
 # use latest nlopt
   - git clone https://github.com/stevengj/nlopt.git
   - pushd nlopt
-  - ./autogen.sh --no-configure
-  - ./configure --prefix=$HOME/.local --enable-maintainer-mode --enable-shared
+  - cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_PYTHON=OFF -DBUILD_OCTAVE=OFF -DBUILD_GUILE=OFF .
   - make -j2
   - make install
   - popd
