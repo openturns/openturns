@@ -592,6 +592,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLogLikelihood(const Nume
   // The next step is to compute the norm of this last one and added
   // rho is the residual choleskyFactor * (Y-F*beta)
   const NumericalScalar epsilon = rho_.normSquare();
+  LOGDEBUG(OSS(false) << "epsilon=" << epsilon);
   if (epsilon <= 0) return SpecFunc::MaxNumericalScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   logLikelihood -= 0.5 * epsilon;
@@ -610,6 +611,10 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantChol
 
   LOGINFO("Discretize the covariance model...");
   CovarianceMatrix C(model.discretize(normalizedInputSample_));
+  if (noise_.getDimension() > 0)
+  {
+    for (UnsignedInteger i = 0; i < C.getDimension(); ++ i) C(i, i) += noise_[i];
+  }
   LOGINFO("Compute the Cholesky factor of the covariance matrix");
   Bool continuationCondition = true;
   const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-StartingScaling");
@@ -640,18 +645,24 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantChol
 
   // y corresponds to output data
   const NumericalPoint y(outputSample_.getImplementation()->getData());
+  LOGINFO(OSS(false) << "y=" << y);
   // rho = L^{-1}y
   LOGINFO("Solve L.rho = y");
   rho_ = covarianceCholeskyFactor_.solveLinearSystem(y);
+  LOGINFO(OSS(false) << "rho_=" << rho_);
   // If trend to estimate
   if (basis_.getSize() > 0)
   {
     // Phi = L^{-1}F
     LOGINFO("Solve L.Phi = F");
+    LOGINFO(OSS(false) << "F_=\n" << F_);
     Matrix Phi(covarianceCholeskyFactor_.solveLinearSystem(F_));
-    LOGINFO("Solve min_\beta||Phi\beta - rho||^2");
+    LOGINFO(OSS(false) << "Phi=\n" << Phi);
+    LOGINFO("Solve min_beta||Phi.beta - rho||^2");
     beta_ = Phi.solveLinearSystem(rho_);
+    LOGINFO(OSS(false) << "beta_=" << beta_);
     rho_ -= Phi * beta_;
+    LOGINFO(OSS(false) << "rho_=" << rho_);
   }
   LOGINFO("Compute log(|det(L)|)=log(sqrt(|det(C)|))");
   NumericalScalar logDetL = 0.0;
@@ -661,6 +672,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantChol
     if (lii <= 0.0) return -SpecFunc::LogMaxNumericalScalar;
     logDetL += log(lii);
   }
+  LOGINFO(OSS(false) << "-logDetL=" << -logDetL);
   return -logDetL;
 }
 
@@ -733,7 +745,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
     // Phi = L^{-1}F
     LOGINFO("Solve L.Phi = F");
     Matrix Phi(covarianceCholeskyFactorHMatrix_.solveLower(F_));
-    LOGINFO("Solve min_\beta||Phi\beta - rho||^2");
+    LOGINFO("Solve min_beta||Phi.beta - rho||^2");
     beta_ = Phi.solveLinearSystem(rho_);
     rho_ -= Phi * beta_;
   }
