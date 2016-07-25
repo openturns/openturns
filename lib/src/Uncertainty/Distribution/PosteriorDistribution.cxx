@@ -68,6 +68,12 @@ Bool PosteriorDistribution::operator ==(const PosteriorDistribution & other) con
   return (conditionalDistribution_ == other.conditionalDistribution_) && (observations_ == other.observations_);
 }
 
+Bool PosteriorDistribution::equals(const DistributionImplementation & other) const
+{
+  const PosteriorDistribution* p_other = dynamic_cast<const PosteriorDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String PosteriorDistribution::__repr__() const
 {

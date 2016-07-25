@@ -51,7 +51,7 @@ static const Factory<FieldImplementation> Factory_FieldImplementation;
 FieldImplementation::FieldImplementation()
   : PersistentObject()
   , mesh_()
-  , values_(0, 0)
+  , values_(mesh_.getVerticesNumber(), 0)
   , description_(mesh_.getDescription())
   , spatialMean_(0)
   , isAlreadyComputedSpatialMean_(false)
@@ -70,9 +70,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , isAlreadyComputedSpatialMean_(false)
 {
   // Build the default description
-  Description description(getSpatialDimension() + getDimension());
-  for (UnsignedInteger i = 0; i < getSpatialDimension(); ++i) description[i] = mesh_.getVertices().getDescription()[i];
-  for (UnsignedInteger i = 0; i < getDimension(); ++i) description[getSpatialDimension() + i] = values_.getDescription()[i];
+  Description description(mesh_.getVertices().getDescription());
+  description.add(values_.getDescription());
   setDescription(description);
 }
 
@@ -87,9 +86,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , isAlreadyComputedSpatialMean_(false)
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
-  Description description(getSpatialDimension() + getDimension());
-  for (UnsignedInteger i = 0; i < getSpatialDimension(); ++i) description[i] = mesh_.getVertices().getDescription()[i];
-  for (UnsignedInteger i = 0; i < getDimension(); ++i) description[getSpatialDimension() + i] = values_.getDescription()[i];
+  Description description(mesh_.getVertices().getDescription());
+  description.add(values_.getDescription());
   setDescription(description);
 }
 
@@ -117,7 +115,7 @@ UnsignedInteger FieldImplementation::getDimension() const
 }
 
 /* Mesh accessor */
-Mesh FieldImplementation::getMesh() const
+const Mesh & FieldImplementation::getMesh() const
 {
   return mesh_;
 }

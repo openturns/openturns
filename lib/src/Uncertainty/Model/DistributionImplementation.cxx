@@ -110,7 +110,7 @@ DistributionImplementation::DistributionImplementation()
   , isInitializedCF_(false)
   , pdfGrid_(0)
 {
-  description_[0] = "marginal 1";
+  description_[0] = "X0";
 }
 
 /* Virtual constructor */
@@ -123,7 +123,13 @@ DistributionImplementation * DistributionImplementation::clone() const
 Bool DistributionImplementation::operator ==(const DistributionImplementation & other) const
 {
   if (this == &other) return true;
-  return (dimension_ == other.dimension_) && (weight_ == other.weight_) && (range_ == other.range_);
+  // Compare both this to other and other to this to ensure symmetry
+  return equals(other) && other.equals(*this);
+}
+
+Bool DistributionImplementation::equals(const DistributionImplementation & other) const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::equals";
 }
 
 /* Comparison operator */
@@ -403,11 +409,7 @@ void DistributionImplementation::setDimension(const UnsignedInteger dim)
     isAlreadyComputedCovariance_ = false;
     isAlreadyComputedGaussNodesAndWeights_ = false;
     // Check if the current description is compatible with the new dimension
-    if (description_.getSize() != dim)
-    {
-      description_ = Description(dim);
-      for (UnsignedInteger i = 0; i < dim; ++ i) description_[i] = OSS() << "marginal " << i + 1;
-    }
+    if (description_.getSize() != dim) description_ = Description::BuildDefault(dim, "X");
   }
 }
 
@@ -1603,7 +1605,8 @@ NumericalScalar DistributionImplementation::computeConditionalCDF(const Numerica
   const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
   if (x >= xMax) return 1.0;
   // Numerical integration with respect to x
-  if (p_conditionalPDFWrapper_.isNull()) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
+  // Here we recreate a ConditionalPDFWrapper only if none has been created or if the parameter dimension has changed
+  if (p_conditionalPDFWrapper_.isNull() || (p_conditionalPDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
   p_conditionalPDFWrapper_->setParameter(y);
   GaussKronrod algo;
   const NumericalPoint value(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, x)));
@@ -1636,7 +1639,8 @@ NumericalPoint DistributionImplementation::computeConditionalCDF(const Numerical
   const NumericalScalar xMin(conditionedDistribution->getRange().getLowerBound()[conditioningDimension]);
   const NumericalScalar xMax(conditionedDistribution->getRange().getUpperBound()[conditioningDimension]);
   NumericalPoint result(size);
-  if (p_conditionalPDFWrapper_.isNull()) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
+  // Here we recreate a ConditionalPDFWrapper only if none has been created or if the parameter dimension has changed
+  if (p_conditionalPDFWrapper_.isNull() || (p_conditionalPDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
   GaussKronrod algo;
   for (UnsignedInteger i = 0; i < size; ++i)
     if (pdfConditioning[i][0] > 0.0)
@@ -1669,7 +1673,7 @@ NumericalPoint DistributionImplementation::computeConditionalQuantile(const Nume
   const UnsignedInteger size(q.getDimension());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if ((q[i] < 0.0) || (q[i] > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+    if ((q[i] < 0.0) || (q[i] > 1.0)) throw InvalidArgumentException(HERE) << "Error: point=" << i << ", cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
   }
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
@@ -1678,7 +1682,8 @@ NumericalPoint DistributionImplementation::computeConditionalQuantile(const Nume
   const NumericalScalar xMin(range_.getLowerBound()[conditioningDimension]);
   const NumericalScalar xMax(range_.getUpperBound()[conditioningDimension]);
   NumericalPoint result(size);
-  if (p_conditionalCDFWrapper_.isNull()) p_conditionalCDFWrapper_ = new ConditionalCDFWrapper(this);
+  // Here we recreate a ConditionalCDFWrapper only if none has been created or if the parameter dimension has changed
+  if (p_conditionalCDFWrapper_.isNull() || (p_conditionalCDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalCDFWrapper_ = new ConditionalCDFWrapper(this);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     p_conditionalCDFWrapper_->setParameter(y[i]);
@@ -3157,11 +3162,8 @@ void DistributionImplementation::setDescription(const Description & description)
   // Fourth, check if there was any duplicate
   if (it != test.end())
   {
-    LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Append unique identifier to fix it:");
-    Description newDescription(description);
-    for (UnsignedInteger i = 0; i < size; ++i) newDescription[i] = OSS() << "marginal_" << i + 1 << "_" << description[i];
-    LOGINFO(OSS() << "the new description is " << newDescription);
-    description_ = newDescription;
+    LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Use default description instead.");
+    description_ = Description::BuildDefault(dimension_, "X");
   }
   else description_ = description;
 }

@@ -54,9 +54,9 @@ tuple (1, 2) => Indices [1,2]
 Indices [1,2] => tuple (1, 2)
 list [3, 4, 5] => Indices [3,4,5]
 Indices [3,4,5] => list [3, 4, 5]
-[marginal 1,marginal 2,marginal 3]
-[marginal 1,marginal 3]
-[marginal 1,marginal 3]
+[X0,X1,X2]
+[X0,X2]
+[X0,X2]
 tuple ('blob', 'zou') => Description [blob,zou]
 Description [blob,zou] => tuple ('blob', 'zou')
 list ['blob', 'zou'] => Description [blob,zou]

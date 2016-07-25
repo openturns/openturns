@@ -102,6 +102,12 @@ Bool LogNormal::operator ==(const LogNormal & other) const
   return (muLog_ == other.muLog_) && (sigmaLog_ == other.sigmaLog_) && (gamma_ == other.gamma_);
 }
 
+Bool LogNormal::equals(const DistributionImplementation & other) const
+{
+  const LogNormal* p_other = dynamic_cast<const LogNormal*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String LogNormal::__repr__() const
 {

@@ -49,6 +49,12 @@ Bool MinCopula::operator ==(const MinCopula & other) const
   return getDimension() == other.getDimension();
 }
 
+Bool MinCopula::equals(const DistributionImplementation & other) const
+{
+  const MinCopula* p_other = dynamic_cast<const MinCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String MinCopula::__repr__() const
 {

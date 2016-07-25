@@ -81,6 +81,12 @@ Bool Weibull::operator ==(const Weibull & other) const
   return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
 }
 
+Bool Weibull::equals(const DistributionImplementation & other) const
+{
+  const Weibull* p_other = dynamic_cast<const Weibull*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Weibull::__repr__() const
 {

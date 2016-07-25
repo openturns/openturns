@@ -46,6 +46,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , tree_()
 {
   // Nothing to do
+  if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
 }
 
 /* Parameters constructor, simplified interface for 1D case */
@@ -84,7 +85,7 @@ Description Mesh::getDescription() const
 }
 
 /* Vertices accessor */
-NumericalSample Mesh::getVertices() const
+const NumericalSample & Mesh::getVertices() const
 {
   return vertices_;
 }
@@ -94,6 +95,7 @@ void Mesh::setVertices(const NumericalSample & vertices)
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
   tree_ = KDTree(vertices_);
+  if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
 }
 
 /* Vertex accessor */
@@ -111,7 +113,7 @@ void Mesh::setVertex(const UnsignedInteger index,
 }
 
 /* Simplices accessor */
-Mesh::IndicesCollection Mesh::getSimplices() const
+const Mesh::IndicesCollection & Mesh::getSimplices() const
 {
   return simplices_;
 }

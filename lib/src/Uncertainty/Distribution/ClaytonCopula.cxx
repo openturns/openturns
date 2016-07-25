@@ -61,6 +61,12 @@ Bool ClaytonCopula::operator ==(const ClaytonCopula & other) const
   return theta_ == other.theta_;
 }
 
+Bool ClaytonCopula::equals(const DistributionImplementation & other) const
+{
+  const ClaytonCopula* p_other = dynamic_cast<const ClaytonCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ClaytonCopula::__repr__() const
 {

@@ -62,6 +62,12 @@ Bool GeneralizedPareto::operator ==(const GeneralizedPareto & other) const
   return (sigma_ == other.sigma_) && (xi_ == other.xi_);
 }
 
+Bool GeneralizedPareto::equals(const DistributionImplementation & other) const
+{
+  const GeneralizedPareto* p_other = dynamic_cast<const GeneralizedPareto*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String GeneralizedPareto::__repr__() const
 {

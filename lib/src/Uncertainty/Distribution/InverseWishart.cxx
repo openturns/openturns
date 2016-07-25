@@ -62,6 +62,12 @@ Bool InverseWishart::operator ==(const InverseWishart & other) const
   return (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
 }
 
+Bool InverseWishart::equals(const DistributionImplementation & other) const
+{
+  const InverseWishart* p_other = dynamic_cast<const InverseWishart*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String InverseWishart::__repr__() const
 {

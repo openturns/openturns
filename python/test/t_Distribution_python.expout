@@ -1,5 +1,5 @@
 pyDist= PythonDistribution -> #1
-myDist= class=PythonDistributionImplementation name=UniformNdPy description=[marginal 1]
+myDist= class=PythonDistributionImplementation name=UniformNdPy description=[X0]
 dimension= 1
 realization= [0.629877]
 sample= 0 : [ 0.882805  ]
@@ -24,7 +24,7 @@ range= [0, 1]
 marginal= class=PythonDistributionImplementation name=UniformNdPy
 quantile= [42]
 pyDist= PythonDistribution -> #2
-myDist= class=PythonDistributionImplementation name=UniformNdPy description=[marginal 1,marginal 2]
+myDist= class=PythonDistributionImplementation name=UniformNdPy description=[X0,X1]
 dimension= 2
 realization= [0.92068,0.50304]
 sample= 0 : [ 0.0632061 0.292757  ]

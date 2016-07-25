@@ -70,6 +70,12 @@ Bool KPermutationsDistribution::operator ==(const KPermutationsDistribution & ot
   return (k_ == other.k_) && (n_ == other.n_);
 }
 
+Bool KPermutationsDistribution::equals(const DistributionImplementation & other) const
+{
+  const KPermutationsDistribution* p_other = dynamic_cast<const KPermutationsDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String KPermutationsDistribution::__repr__() const
 {

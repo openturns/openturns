@@ -6,7 +6,7 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= class=NumericalPoint name=Unnamed dimension=2 values=[0.659445,0.596689]
-oneSample= class=NumericalSample name=GumbelCopula implementation=class=NumericalSampleImplementation name=GumbelCopula size=10 dimension=2 description=[marginal 1,marginal 2] data=[[0.92546,0.834663],[0.239934,0.114143],[0.705071,0.41781],[0.94214,0.955906],[0.814987,0.721541],[0.254655,0.325386],[0.694987,0.506464],[0.87143,0.917787],[0.191102,0.290004],[0.881289,0.654839]]
+oneSample= class=NumericalSample name=GumbelCopula implementation=class=NumericalSampleImplementation name=GumbelCopula size=10 dimension=2 description=[X0,X1] data=[[0.92546,0.834663],[0.239934,0.114143],[0.705071,0.41781],[0.94214,0.955906],[0.814987,0.721541],[0.254655,0.325386],[0.694987,0.506464],[0.87143,0.917787],[0.191102,0.290004],[0.881289,0.654839]]
 anotherSample mean= class=NumericalPoint name=Unnamed dimension=2 values=[0.504187,0.500439]
 anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0840685,0.0659466,0.0659466,0.0842036]
 Point =  class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2]  pdf=2.220596  cdf=0.119592

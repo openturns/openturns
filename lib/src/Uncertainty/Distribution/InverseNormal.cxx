@@ -62,6 +62,12 @@ Bool InverseNormal::operator ==(const InverseNormal & other) const
   return (lambda_ == other.lambda_) && (mu_ == other.mu_);
 }
 
+Bool InverseNormal::equals(const DistributionImplementation & other) const
+{
+  const InverseNormal* p_other = dynamic_cast<const InverseNormal*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String InverseNormal::__repr__() const
 {

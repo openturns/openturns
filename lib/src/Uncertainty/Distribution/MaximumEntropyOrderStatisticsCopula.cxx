@@ -67,6 +67,12 @@ Bool MaximumEntropyOrderStatisticsCopula::operator ==(const MaximumEntropyOrderS
   return (distribution_ == other.distribution_);
 }
 
+Bool MaximumEntropyOrderStatisticsCopula::equals(const DistributionImplementation & other) const
+{
+  const MaximumEntropyOrderStatisticsCopula* p_other = dynamic_cast<const MaximumEntropyOrderStatisticsCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String MaximumEntropyOrderStatisticsCopula::__repr__() const
 {

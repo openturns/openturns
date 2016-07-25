@@ -198,7 +198,7 @@ NumericalSample UserDefinedCovarianceModel::discretizeRow(const NumericalSample 
 }
 
 /* Mesh accessor */
-Mesh UserDefinedCovarianceModel::getMesh() const
+const Mesh & UserDefinedCovarianceModel::getMesh() const
 {
   return *p_mesh_;
 }

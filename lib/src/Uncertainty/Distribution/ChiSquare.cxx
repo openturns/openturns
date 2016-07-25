@@ -64,6 +64,12 @@ Bool ChiSquare::operator ==(const ChiSquare & other) const
   return nu_ == other.nu_;
 }
 
+Bool ChiSquare::equals(const DistributionImplementation & other) const
+{
+  const ChiSquare* p_other = dynamic_cast<const ChiSquare*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ChiSquare::__repr__() const
 {

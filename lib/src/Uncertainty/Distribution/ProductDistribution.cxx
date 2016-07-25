@@ -65,6 +65,12 @@ Bool ProductDistribution::operator ==(const ProductDistribution & other) const
   return (left_ == other.getLeft()) && (right_ == other.getRight());
 }
 
+Bool ProductDistribution::equals(const DistributionImplementation & other) const
+{
+  const ProductDistribution* p_other = dynamic_cast<const ProductDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ProductDistribution::__repr__() const
 {

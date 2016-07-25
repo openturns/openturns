@@ -401,6 +401,12 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
   setAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
 
+  // KarhunenLoeveQuadratureFactory parameters //
+  setAsNumericalScalar( "KarhunenLoeveQuadratureFactory-RegularizationFactor", 0.0);
+
+  // KarhunenLoeveP1Factory parameters //
+  setAsNumericalScalar( "KarhunenLoeveP1Factory-RegularizationFactor", 0.0);
+
   // AdaptiveStieltjesAlgorithm parameters //
   setAsUnsignedInteger( "AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64 );
   setAsNumericalScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );

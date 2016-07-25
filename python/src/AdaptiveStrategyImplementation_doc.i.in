@@ -103,7 +103,7 @@ Examples
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, 3)
 >>> adaptiveStrategy.computeInitialBasis()
 >>> print(adaptiveStrategy.getPsi())
-[1,x,-0.707107 + 0.707107 * x^2]"
+[1,x0,-0.707107 + 0.707107 * x0^2]"
 
 %enddef
 %feature("docstring") OT::AdaptiveStrategyImplementation::getPsi

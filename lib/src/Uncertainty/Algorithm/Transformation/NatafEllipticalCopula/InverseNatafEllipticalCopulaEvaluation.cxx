@@ -49,9 +49,8 @@ InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation(c
   , standardDistribution_(standardDistribution)
   , cholesky_(cholesky)
 {
-  Description description;
-  for (UnsignedInteger i = 0; i < cholesky_.getNbColumns(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedInteger i = 0; i < cholesky_.getNbRows(); ++i) description.add(OSS() << "y" << i);
+  Description description(Description::BuildDefault(cholesky_.getDimension(), "x"));
+  description.add(Description::BuildDefault(cholesky_.getDimension(), "y"));
   setDescription(description);
 }
 
@@ -69,6 +68,15 @@ String InverseNatafEllipticalCopulaEvaluation::__repr__() const
       << " description=" << getDescription()
       << " standardDistribution=" << standardDistribution_
       << " cholesky=" << cholesky_;
+
+  return oss;
+}
+
+String InverseNatafEllipticalCopulaEvaluation::__str__(const String & offset) const
+{
+  OSS oss(false);
+  oss << offset << InverseNatafEllipticalCopulaEvaluation::GetClassName()
+      << "("  << standardDistribution_ << "->Copula(cholesky=" << cholesky_ << ", E=" << standardDistribution_.getMarginal(0) << "))";
 
   return oss;
 }
@@ -106,13 +114,13 @@ Matrix InverseNatafEllipticalCopulaEvaluation::parameterGradient(const Numerical
 /* Accessor for input point dimension */
 UnsignedInteger InverseNatafEllipticalCopulaEvaluation::getInputDimension() const
 {
-  return cholesky_.getNbColumns();
+  return cholesky_.getDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger InverseNatafEllipticalCopulaEvaluation::getOutputDimension() const
 {
-  return cholesky_.getNbRows();
+  return cholesky_.getDimension();
 }
 
 /* Method save() stores the object through the StorageManager */

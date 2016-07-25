@@ -49,6 +49,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const ParametrizedDistribution & other) const;
+ protected:
+  Bool equals(const DistributionImplementation & other) const;
+ public:
 
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;

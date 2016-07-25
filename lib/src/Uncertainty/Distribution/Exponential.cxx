@@ -62,6 +62,12 @@ Bool Exponential::operator ==(const Exponential & other) const
   return (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
 }
 
+Bool Exponential::equals(const DistributionImplementation & other) const
+{
+  const Exponential* p_other = dynamic_cast<const Exponential*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Exponential::__repr__() const
 {

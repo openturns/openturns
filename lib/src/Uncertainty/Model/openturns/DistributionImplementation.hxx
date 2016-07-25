@@ -64,6 +64,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
+ protected:
+  virtual Bool equals(const DistributionImplementation & other) const;
+ public:
   Bool operator !=(const DistributionImplementation & other) const;
 
   /** Addition operator */
@@ -874,6 +877,11 @@ protected:
       y_ = parameters;
     }
 
+    NumericalPoint getParameter() const
+    {
+      return y_;
+    }
+
     UnsignedInteger getInputDimension() const
     {
       return 1;
@@ -912,6 +920,11 @@ protected:
     void setParameter(const NumericalPoint & parameters)
     {
       y_ = parameters;
+    }
+
+    NumericalPoint getParameter() const
+    {
+      return y_;
     }
 
     UnsignedInteger getInputDimension() const

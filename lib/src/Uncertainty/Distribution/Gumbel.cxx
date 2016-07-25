@@ -79,6 +79,12 @@ Bool Gumbel::operator ==(const Gumbel & other) const
   return (alpha_ == other.alpha_) && (beta_ == other.beta_);
 }
 
+Bool Gumbel::equals(const DistributionImplementation & other) const
+{
+  const Gumbel* p_other = dynamic_cast<const Gumbel*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Gumbel::__repr__() const
 {

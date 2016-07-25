@@ -159,7 +159,7 @@ void Field::setValueAtNearestPosition(const NumericalPoint & position,
   getImplementation()->setValueAtNearestPosition(position, val);
 }
 
-Mesh Field::getMesh() const
+const Mesh & Field::getMesh() const
 {
   return getImplementation()->getMesh();
 }

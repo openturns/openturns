@@ -60,6 +60,12 @@ Bool InverseChiSquare::operator ==(const InverseChiSquare & other) const
   return nu_ == other.nu_;
 }
 
+Bool InverseChiSquare::equals(const DistributionImplementation & other) const
+{
+  const InverseChiSquare* p_other = dynamic_cast<const InverseChiSquare*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String InverseChiSquare::__repr__() const
 {

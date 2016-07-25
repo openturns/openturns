@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all distributions
+ *  @brief Abstract top-level class for all linear functions
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -41,7 +41,8 @@ LinearNumericalMathFunction::LinearNumericalMathFunction(const NumericalPoint & 
 /* Comparison operator */
 Bool LinearNumericalMathFunction::operator ==(const LinearNumericalMathFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
 }
 
 /* String converter */

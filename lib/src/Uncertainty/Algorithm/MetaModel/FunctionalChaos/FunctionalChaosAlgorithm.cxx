@@ -26,6 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/IdentityFunction.hxx"
 #include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
@@ -285,74 +286,117 @@ void FunctionalChaosAlgorithm::run()
   const UnsignedInteger outputDimension(model_.getOutputDimension());
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
-  // If we call Z a random vector which probability distribution is measure and X a random vector which probability distribution is distribution_, and T the isoprobabilistic transformation, we have:
-  // Z = T(X)
-  // X = T^{-1}(Z)
-  // The transformation is built using the isoprobabilistic transformations of both X and Z
-  // First, get the measure upon which the orthogonal basis is built
+  // We have two distributions here:
+  // + The distribution of the input, called distribution_
+  // + The distribution defining the inner product in basis, called measure
+  // The projection is done on the basis, ie wrt measure_, so we have to
+  // introduce an isoprobabilistic transformation that maps measure onto
+  // distribution_
+  //
+  // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
   const Distribution measure(basis.getMeasure());
   // Correct the measure of the projection strategy if no input sample
-  if (projectionStrategy_.getImplementation()->inputSample_.getSize() == 0)
-    projectionStrategy_.setMeasure(measure);
-  // Check that it is a product measure
+  const Bool databaseProjection = projectionStrategy_.getImplementation()->inputSample_.getSize() > 0;
+  if (!databaseProjection) projectionStrategy_.setMeasure(measure);
+  // The first case is when distribution_ == measure, in which case there is
+  // no isoprobabilistic transformation to introduce.
   LOGINFO("Build the iso-probabilistic transformation");
-  if (!measure.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use FunctionalChaosAlgorithm with an orthogonal basis not based on a product measure";
-  // Has the distribution an independent copula? Simply use marginal transformations
-  if (distribution_.hasIndependentCopula())
+  const Bool noTransformation = (measure == distribution_);
+  const UnsignedInteger dimension(distribution_.getDimension());
+  if (noTransformation)
   {
-    const UnsignedInteger dimension(distribution_.getDimension());
-    // We use empty collections to avoid the construction of default distributions
-    DistributionCollection marginalX(0);
-    DistributionCollection marginalZ(0);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      marginalX.add(distribution_.getMarginal(i));
-      marginalZ.add(measure.getMarginal(i));
-    }
-    // The distributions have an independent copula, they can be converted one into another by marginal transformation. T is such that T(X) = Z
-    const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
-    const MarginalTransformationGradient gradientT(evaluationT);
-    const MarginalTransformationHessian hessianT(evaluationT);
-    transformation_ = NumericalMathFunction(evaluationT.clone(), gradientT.clone(), hessianT.clone());
-    const MarginalTransformationEvaluation evaluationTinv(MarginalTransformationEvaluation(marginalZ, marginalX));
-    const MarginalTransformationGradient gradientTinv(evaluationTinv);
-    const MarginalTransformationHessian hessianTinv(evaluationTinv);
-    inverseTransformation_ = NumericalMathFunction(evaluationTinv.clone(), gradientTinv.clone(), hessianTinv.clone());
+    LOGINFO(OSS(false) << "Same distribution for input vector=" << distribution_ << " and basis="<< measure);
+    transformation_ = IdentityFunction(dimension);
+    inverseTransformation_ = transformation_;
   }
   else
   {
-    // Is the input distribution mapped into a normal standard space?
-    // We know that the standard space associated with Z is a normal space, as Z has an independent copula. We can check that X has the same standard space if its standard distribution has also an independent copula
-    if (distribution_.getStandardDistribution().hasIndependentCopula())
+    // The second case is when both distributions share the same copula
+    // in which case the transformation is made of maginal transformations
+    if (distribution_.getCopula() == measure.getCopula())
     {
-      // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
-      const NumericalMathFunction TX(distribution_.getIsoProbabilisticTransformation());
-      const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
-      const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
-      const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-      transformation_ = NumericalMathFunction(TinvZ, TX);
-      inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
+      // We use empty collections to avoid the construction of default distributions
+      LOGINFO("Same copula for input vector and basis");
+      DistributionCollection marginalX(0);
+      DistributionCollection marginalZ(0);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        marginalX.add(distribution_.getMarginal(i));
+        marginalZ.add(measure.getMarginal(i));
+      }
+      // The distributions have an independent copula, they can be converted one into another by marginal transformation. T is such that T(X) = Z
+      const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
+      const MarginalTransformationGradient gradientT(evaluationT);
+      const MarginalTransformationHessian hessianT(evaluationT);
+      transformation_ = NumericalMathFunction(evaluationT.clone(), gradientT.clone(), hessianT.clone());
+      const MarginalTransformationEvaluation evaluationTinv(MarginalTransformationEvaluation(marginalZ, marginalX));
+      const MarginalTransformationGradient gradientTinv(evaluationTinv);
+      const MarginalTransformationHessian hessianTinv(evaluationTinv);
+      inverseTransformation_ = NumericalMathFunction(evaluationTinv.clone(), gradientTinv.clone(), hessianTinv.clone());
     }
-    // The standard space is not normal, use Rosenblatt transformation instead of the native iso-probabilistic transformation.
+    // The third case is when both distributions share the same standard
+    // distribution in which case the transformation is made of
+    // isoprobabilistic transformations
     else
     {
-      // The distributions share the same standard space if we use a Rosenblatt transforation, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
-      const NumericalMathFunction TX(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
-      const NumericalMathFunction TinvX(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
-      const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
-      const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-      transformation_ = NumericalMathFunction(TinvZ, TX);
-      inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
-    }
-  } // Non-independent input copula
+      if (distribution_.getStandardDistribution() == measure.getStandardDistribution())
+      {
+	LOGINFO("Same standard space for input vector and basis");
+        // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
+        const NumericalMathFunction TX(distribution_.getIsoProbabilisticTransformation());
+        const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
+        const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
+        const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
+        transformation_ = NumericalMathFunction(TinvZ, TX);
+        inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
+      }
+      // The fourth and last case is when the standard spaces are different
+      // We use the Rosenblatt transformation for each distribution with non-normal
+      // standard space
+      else
+      {
+	LOGINFO("Different standard space for input vector and basis");
+        NumericalMathFunction TX;
+	NumericalMathFunction invTX;
+	if (distribution_.getStandardDistribution().hasIndependentCopula())
+	  {
+	    LOGINFO("Normal standard space for input vector");
+	    TX = distribution_.getIsoProbabilisticTransformation();
+	    invTX = distribution_.getInverseIsoProbabilisticTransformation();
+	  }
+	else
+	  {
+	    LOGINFO("Non-normal standard space for input vector");
+	    TX = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
+	    invTX = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
+	  }
+        NumericalMathFunction TZ;
+	NumericalMathFunction invTZ;
+	if (measure.getStandardDistribution().hasIndependentCopula())
+	  {
+	    LOGINFO("Normal standard space for basis");
+	    TZ = measure.getIsoProbabilisticTransformation();
+	    invTZ = measure.getInverseIsoProbabilisticTransformation();
+	  }
+	else
+	  {
+	    LOGINFO("Non-normal standard space for basis");
+	    TZ = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(measure.getImplementation()).clone()));
+	    invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
+	  }
+        transformation_ = NumericalMathFunction(invTZ, TX);
+        inverseTransformation_ = NumericalMathFunction(invTX, TZ);
+      }
+    } // Non-independent input copula
+  }
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   LOGINFO("Transform the input sample in the measure space if needed");
-  composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
+  if (noTransformation) composedModel_ = model_;
+  else composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
-  NumericalSample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
-  if (projectionStrategy_.getImplementation()->inputSample_.getSize() > 0)
-    projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);
+  const NumericalSample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
+  if (databaseProjection && !noTransformation) projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);
   // Second, compute the results for each marginal output and merge
   // these marginal results.
   // As all the components have been projected using the same basis,
@@ -493,3 +537,4 @@ void FunctionalChaosAlgorithm::load(Advocate & adv)
 
 
 END_NAMESPACE_OPENTURNS
+
