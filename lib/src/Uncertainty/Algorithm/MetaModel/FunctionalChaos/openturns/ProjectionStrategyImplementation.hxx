@@ -148,6 +148,7 @@ protected:
   // The sample value of the model
   NumericalSample outputSample_;
 
+  // Proxy to speed up evaluations of the basis over the input sample
   DesignProxy proxy_;
 private:
 

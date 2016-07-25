@@ -292,8 +292,9 @@ void FunctionalChaosAlgorithm::run()
   // First, get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
   const Distribution measure(basis.getMeasure());
-  // Correct the measure of the projection strategy
-  projectionStrategy_.setMeasure(measure);
+  // Correct the measure of the projection strategy if no input sample
+  if (projectionStrategy_.getImplementation()->inputSample_.getSize() == 0)
+    projectionStrategy_.setMeasure(measure);
   // Check that it is a product measure
   LOGINFO("Build the iso-probabilistic transformation");
   if (!measure.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use FunctionalChaosAlgorithm with an orthogonal basis not based on a product measure";
@@ -423,7 +424,6 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   // Initialize the projection basis Phi_k_p_ and I_p_
   LOGINFO("Compute the initial basis");
   adaptiveStrategy_.computeInitialBasis();
-
   do
   {
     LOGINFO("Compute the coefficients");

@@ -36,20 +36,36 @@ int main(int argc, char *argv[])
     UnsignedInteger size(10);
     LowDiscrepancyExperiment myPlane(HaltonSequence(), distribution, size);
     fullprint << "myPlane = " << myPlane << std::endl;
+    // Test sampling with weights
     NumericalPoint weights(0);
     NumericalSample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
-    // With reinitialization
+
+    // Test sampling with reinitialization each time the distribution is
+    // set (default behaviour)
+    // sample 2 != sample
     fullprint << "sample 2=" << myPlane.generate() << std::endl;
     myPlane.setDistribution(distribution);
+    // sample 3 == sample
     fullprint << "sample 3=" << myPlane.generate() << std::endl;
+
+    // Test sampling without reinitialization excepted when distribution
+    // dimension changes
     myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, false);
-    fullprint << "sample  = " << sample << std::endl;
-    // With reinitialization
+    fullprint << "sample  =" << myPlane.generate() << std::endl;
+    // sample 2 != sample
     fullprint << "sample 2=" << myPlane.generate() << std::endl;
     myPlane.setDistribution(distribution);
-    fullprint << "sample 3=" << myPlane.generate() << std::endl;    
+    // sample 3 != sample && sample 3 != sample 2
+    fullprint << "sample 3=" << myPlane.generate() << std::endl;
+    // Test dimension change    
+    myPlane.setDistribution(Normal());
+    fullprint << "sample =" << myPlane.generate() << std::endl;    
+
+    // Test constructor with no distribution and dimension>1
+    myPlane = LowDiscrepancyExperiment(HaltonSequence(2), size);
+    fullprint << "sample = " << myPlane.generate() << std::endl;
   }
   catch (TestFailed & ex)
   {
