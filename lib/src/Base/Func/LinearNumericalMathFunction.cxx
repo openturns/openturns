@@ -41,7 +41,8 @@ LinearNumericalMathFunction::LinearNumericalMathFunction(const NumericalPoint & 
 /* Comparison operator */
 Bool LinearNumericalMathFunction::operator ==(const LinearNumericalMathFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
 }
 
 /* String converter */
