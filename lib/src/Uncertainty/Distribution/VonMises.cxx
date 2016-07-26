@@ -70,6 +70,12 @@ Bool VonMises::operator ==(const VonMises & other) const
   return (mu_ == other.mu_) && (kappa_ == other.kappa_);
 }
 
+Bool VonMises::equals(const DistributionImplementation & other) const
+{
+  const VonMises* p_other = dynamic_cast<const VonMises*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String VonMises::__repr__() const
 {

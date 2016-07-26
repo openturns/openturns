@@ -70,6 +70,12 @@ Bool MarginalDistribution::operator ==(const MarginalDistribution & other) const
   return (distribution_ == other.distribution_) && (indices_ == other.indices_);
 }
 
+Bool MarginalDistribution::equals(const DistributionImplementation & other) const
+{
+  const MarginalDistribution* p_other = dynamic_cast<const MarginalDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String MarginalDistribution::__repr__() const
 {

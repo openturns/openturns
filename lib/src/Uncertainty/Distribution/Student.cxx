@@ -92,6 +92,12 @@ Bool Student::operator ==(const Student & other) const
   return EllipticalDistribution::operator==(other) && (nu_ == other.nu_);
 }
 
+Bool Student::equals(const DistributionImplementation & other) const
+{
+  const Student* p_other = dynamic_cast<const Student*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Student::__repr__() const
 {

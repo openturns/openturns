@@ -53,6 +53,12 @@ Bool IndependentCopula::operator ==(const IndependentCopula & other) const
   return getDimension() == other.getDimension();
 }
 
+Bool IndependentCopula::equals(const DistributionImplementation & other) const
+{
+  const IndependentCopula* p_other = dynamic_cast<const IndependentCopula*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String IndependentCopula::__repr__() const
 {

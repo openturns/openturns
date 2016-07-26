@@ -68,6 +68,12 @@ Bool Rice::operator ==(const Rice & other) const
   return (sigma_ == other.sigma_) && (nu_ == other.nu_);
 }
 
+Bool Rice::equals(const DistributionImplementation & other) const
+{
+  const Rice* p_other = dynamic_cast<const Rice*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Rice::__repr__() const
 {

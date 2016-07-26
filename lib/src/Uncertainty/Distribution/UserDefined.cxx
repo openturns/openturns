@@ -103,6 +103,12 @@ Bool UserDefined::operator ==(const UserDefined & other) const
   return (points_ == other.points_) && (probabilities_ == other.probabilities_);
 }
 
+Bool UserDefined::equals(const DistributionImplementation & other) const
+{
+  const UserDefined* p_other = dynamic_cast<const UserDefined*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String UserDefined::__repr__() const
 {

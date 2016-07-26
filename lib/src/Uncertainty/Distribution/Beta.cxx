@@ -88,6 +88,12 @@ Bool Beta::operator ==(const Beta & other) const
          (a_ == other.a_) && (b_ == other.b_);
 }
 
+Bool Beta::equals(const DistributionImplementation & other) const
+{
+  const Beta* p_other = dynamic_cast<const Beta*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Beta::__repr__() const
 {

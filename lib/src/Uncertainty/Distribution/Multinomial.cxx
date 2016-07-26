@@ -79,6 +79,12 @@ Bool Multinomial::operator ==(const Multinomial & other) const
   return (n_ == other.n_) && (p_ == other.p_);
 }
 
+Bool Multinomial::equals(const DistributionImplementation & other) const
+{
+  const Multinomial* p_other = dynamic_cast<const Multinomial*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Multinomial::__repr__() const
 {

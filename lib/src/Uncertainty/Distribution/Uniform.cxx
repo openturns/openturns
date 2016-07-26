@@ -60,6 +60,12 @@ Bool Uniform::operator ==(const Uniform & other) const
   return (a_ == other.a_) && (b_ == other.b_);
 }
 
+Bool Uniform::equals(const DistributionImplementation & other) const
+{
+  const Uniform* p_other = dynamic_cast<const Uniform*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Uniform::__repr__() const
 {

@@ -65,6 +65,12 @@ Bool RatioDistribution::operator ==(const RatioDistribution & other) const
   return (left_ == other.getLeft()) && (right_ == other.getRight());
 }
 
+Bool RatioDistribution::equals(const DistributionImplementation & other) const
+{
+  const RatioDistribution* p_other = dynamic_cast<const RatioDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String RatioDistribution::__repr__() const
 {

@@ -265,6 +265,12 @@ Bool CompositeDistribution::operator ==(const CompositeDistribution & other) con
   return (antecedent_ == other.antecedent_) && (function_ == other.function_);
 }
 
+Bool CompositeDistribution::equals(const DistributionImplementation & other) const
+{
+  const CompositeDistribution* p_other = dynamic_cast<const CompositeDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String CompositeDistribution::__repr__() const
 {

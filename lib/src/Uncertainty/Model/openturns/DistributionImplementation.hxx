@@ -64,6 +64,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
+ protected:
+  virtual Bool equals(const DistributionImplementation & other) const;
+ public:
   Bool operator !=(const DistributionImplementation & other) const;
 
   /** Addition operator */

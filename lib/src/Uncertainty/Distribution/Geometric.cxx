@@ -59,6 +59,12 @@ Bool Geometric::operator ==(const Geometric & other) const
   return p_ == other.p_;
 }
 
+Bool Geometric::equals(const DistributionImplementation & other) const
+{
+  const Geometric* p_other = dynamic_cast<const Geometric*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Geometric::__repr__() const
 {

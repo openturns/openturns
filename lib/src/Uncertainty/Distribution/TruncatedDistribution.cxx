@@ -168,6 +168,12 @@ Bool TruncatedDistribution::operator ==(const TruncatedDistribution & other) con
   return (lowerBound_ == other.getLowerBound()) && (upperBound_ == other.getUpperBound()) && (distribution_ == other.getDistribution());
 }
 
+Bool TruncatedDistribution::equals(const DistributionImplementation & other) const
+{
+  const TruncatedDistribution* p_other = dynamic_cast<const TruncatedDistribution*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String TruncatedDistribution::__repr__() const
 {

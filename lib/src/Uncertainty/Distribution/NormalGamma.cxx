@@ -104,6 +104,12 @@ Bool NormalGamma::operator ==(const NormalGamma & other) const
   return (mu_ == other.mu_) && (kappa_ == other.kappa_) && (alpha_ == other.alpha_) && (beta_ == other.beta_);
 }
 
+Bool NormalGamma::equals(const DistributionImplementation & other) const
+{
+  const NormalGamma* p_other = dynamic_cast<const NormalGamma*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NormalGamma::__repr__() const
 {

@@ -62,6 +62,12 @@ Bool Wishart::operator ==(const Wishart & other) const
   return (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
 }
 
+Bool Wishart::equals(const DistributionImplementation & other) const
+{
+  const Wishart* p_other = dynamic_cast<const Wishart*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String Wishart::__repr__() const
 {

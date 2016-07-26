@@ -48,6 +48,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const Rayleigh & other) const;
+ protected:
+  Bool equals(const DistributionImplementation & other) const;
+ public:
 
   /** String converter */
   String __repr__() const;

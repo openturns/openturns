@@ -74,6 +74,12 @@ Bool ZipfMandelbrot::operator ==(const ZipfMandelbrot & other) const
   return (n_ == other.n_) && (q_ == other.q_) && (s_ == other.s_);
 }
 
+Bool ZipfMandelbrot::equals(const DistributionImplementation & other) const
+{
+  const ZipfMandelbrot* p_other = dynamic_cast<const ZipfMandelbrot*>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ZipfMandelbrot::__repr__() const
 {
