@@ -117,7 +117,9 @@ int main(int argc, char *argv[])
     aSample.exportToCSVFile("sample.csv");
     NumericalSample sameSample = NumericalSample::ImportFromCSVFile("sample.csv");
     if (aSample != sameSample) throw TestFailed("Exported sample differs from imported sample");
-    // We export a sample with no description to a CSV file and then read it again
+
+    // We export a sample with a description containing parentheses
+    aSample.setDescription(Description::BuildDefault(aSample.getDimension(), "(test) (unit)"));
     aSample.exportToCSVFile("sample.csv");
     sameSample = NumericalSample::ImportFromCSVFile("sample.csv");
     if (aSample != sameSample) throw TestFailed("Exported sample differs from imported sample");
