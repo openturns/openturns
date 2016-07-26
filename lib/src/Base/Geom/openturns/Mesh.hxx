@@ -109,7 +109,7 @@ public:
 					  NumericalPoint & coordinates) const;
 
   /** Vertices accessor */
-  NumericalSample getVertices() const;
+  const NumericalSample & getVertices() const;
   void setVertices(const NumericalSample & vertices);
 
   /** Vertex accessor */
@@ -118,7 +118,7 @@ public:
                  const NumericalPoint & vertex);
 
   /** Simplices accessor */
-  IndicesCollection getSimplices() const;
+  const IndicesCollection & getSimplices() const;
   void setSimplices(const IndicesCollection & simplices);
 
   /** Simplex accessor */

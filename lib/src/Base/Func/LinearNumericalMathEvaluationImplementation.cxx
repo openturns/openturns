@@ -128,7 +128,26 @@ NumericalPoint LinearNumericalMathEvaluationImplementation::operator() (const Nu
 /* Operator () */
 NumericalSample LinearNumericalMathEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
-  return NumericalMathEvaluationImplementation::operator()(inS);
+  if (inS.getDimension() != center_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const UnsignedInteger size = inS.getSize();
+  if (size == 0) return NumericalSample(0, getOutputDimension());
+  NumericalSampleImplementation temporary(inS.getSize(), getOutputDimension());
+  // Some OT black magic
+  // + We use the parallelized translation of the input sample inS - center_
+  // + We cast the resulting sample into a matrix
+  // + We perform a matrix/matrix multiplication, using potentially
+  //   high-performance BLAS
+  // + Then the resulting matrix is converted into a sample and the final
+  //   translation is parallelized
+  temporary.setData(*(linear_ * Matrix(getInputDimension(), inS.getSize(), (inS - center_).getImplementation()->getData())).getImplementation());
+  const NumericalSample result(temporary + constant_);
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inS);
+    outputStrategy_.store(result);
+  }
+  return result;
 }
 
 /* Accessor for input point dimension */

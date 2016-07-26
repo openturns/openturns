@@ -75,7 +75,7 @@ public:
   Description getDescription() const;
 
   /** Mesh accessor */
-  Mesh getMesh() const;
+  const Mesh & getMesh() const;
   RegularGrid getTimeGrid() const;
 
   /** Comparison operator */

@@ -58,7 +58,7 @@ public:
   CovarianceMatrix operator() (const NumericalPoint & tau) const;
 
   /** Time grid/mesh accessor */
-  Mesh getMesh() const;
+  const Mesh & getMesh() const;
   RegularGrid getTimeGrid() const;
 
   /** String converter */
