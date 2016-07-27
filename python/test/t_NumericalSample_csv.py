@@ -40,6 +40,10 @@ try:
     with open('sample.csv') as f:
         print((f.read()))
 
+    # import with quotes in description
+    aSample = NumericalSample.ImportFromTextFile('sample.csv', ';')
+    print('import with quotes:', repr(aSample))
+
     # 3rd sample
     f = open('sample.csv', 'w')
     f.write(
