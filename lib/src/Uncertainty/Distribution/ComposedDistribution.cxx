@@ -98,7 +98,7 @@ ComposedDistribution::ComposedDistribution(const DistributionCollection & coll,
 Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
 {
   if (this == &other) return true;
-  return (copula_ == other.copula_) && (distributionCollection_ == other.distributionCollection_);
+  return ((hasIndependentCopula() && other.hasIndependentCopula()) || (copula_ == other.copula_)) && (distributionCollection_ == other.distributionCollection_);
 }
 
 Bool ComposedDistribution::equals(const DistributionImplementation & other) const
