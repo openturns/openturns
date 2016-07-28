@@ -168,7 +168,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Recover the distribution, taking into account that we look for performance
-  // so we avoid to rebuild expansive distributions as much as possible
+  // so we avoid to rebuild expensive distributions as much as possible
   const UnsignedInteger inputDimension(inputSample.getDimension());
   Collection< Distribution > marginals(inputDimension);
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
@@ -183,7 +183,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the UserDefined class
     const NumericalSample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
-    // This threshold is somewhat arbitrary. It is here to avoid expansive kernel smoothing.
+    // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() > ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
     else marginals[i] = ks.build(marginalSample.getMarginal(i));
     marginals[i].setDescription(Description(1, inputDescription[i]));
@@ -290,8 +290,8 @@ void FunctionalChaosAlgorithm::run()
   // + The distribution of the input, called distribution_
   // + The distribution defining the inner product in basis, called measure
   // The projection is done on the basis, ie wrt measure_, so we have to
-  // introduce an isoprobabilistic transformation that maps measure onto
-  // distribution_
+  // introduce an isoprobabilistic transformation that maps distribution_ onto
+  // measure
   //
   // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
