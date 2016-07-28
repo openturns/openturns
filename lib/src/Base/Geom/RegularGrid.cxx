@@ -37,6 +37,7 @@ RegularGrid::RegularGrid()
   , n_(0)
 {
   // Nothing to do
+  vertices_.setDescription(Description(1, "t"));
 }
 
 /* Parameters constructor */
@@ -64,6 +65,7 @@ RegularGrid::RegularGrid(const NumericalScalar start,
       simplices_[i] = element;
     }
   }
+  vertices_.setDescription(Description(1, "t"));
 }
 
 RegularGrid::RegularGrid(const Mesh & mesh)
@@ -79,6 +81,7 @@ RegularGrid::RegularGrid(const Mesh & mesh)
   if (n_ == 0) throw InvalidArgumentException(HERE) << "Error: the mesh must contains at least one vertex to be converted into a RegularGrid.";
   start_ = mesh.getVertices()[0][0];
   if (n_ > 1) step_ = (mesh.getVertices()[n_ - 1][0] - start_) / (n_ - 1);
+  vertices_.setDescription(Description(1, "t"));
 }
 
 /* Virtual constructor method */

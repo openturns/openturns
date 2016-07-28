@@ -1,6 +1,6 @@
 dist =  Uniform(a = -1, b = 1)
 process =  WhiteNoise(Uniform(a = -1, b = 1))
-timeSerie =       [            marginal 1 ]
+timeSerie =       [ t          X0         ]
  0 : [  0          0.259753  ]
  1 : [  1          0.76561   ]
  2 : [  2         -0.729447  ]

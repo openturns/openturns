@@ -31,26 +31,20 @@ CLASSNAMEINIT(InverseRosenblattEvaluation);
 static const Factory<InverseRosenblattEvaluation> Factory_InverseRosenblattEvaluation;
 
 /* Default constructor */
-InverseRosenblattEvaluation::InverseRosenblattEvaluation():
-  NumericalMathEvaluationImplementation(),
-  distribution_()
+InverseRosenblattEvaluation::InverseRosenblattEvaluation()
+  : NumericalMathEvaluationImplementation()
+  , distribution_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & distribution):
-  NumericalMathEvaluationImplementation(),
-  distribution_(distribution)
+InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & distribution)
+  : NumericalMathEvaluationImplementation()
+  , distribution_(distribution)
 {
-  Description description(distribution.getDescription());
-  const UnsignedInteger size(description.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  Description description(Description::BuildDefault(distribution.getDimension(), "X"));
+  description.add(distribution.getDescription());
   setDescription(description);
 }
 
@@ -64,6 +58,7 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
   const UnsignedInteger dimension(getOutputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply conditional Quantile o Phi over the components
@@ -115,6 +110,15 @@ String InverseRosenblattEvaluation::__repr__() const
   oss << "class=" << InverseRosenblattEvaluation::GetClassName()
       << " description=" << getDescription()
       << " distribution=" << distribution_;
+  return oss;
+}
+
+String InverseRosenblattEvaluation::__str__(const String & offset) const
+{
+  OSS oss(false);
+  oss << offset << InverseRosenblattEvaluation::GetClassName()
+      << "(Normal(" << distribution_.getDimension() << ")->"
+      << distribution_ << ")";
   return oss;
 }
 

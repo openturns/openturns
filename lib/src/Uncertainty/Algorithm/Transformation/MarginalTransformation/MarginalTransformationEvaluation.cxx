@@ -53,7 +53,6 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   simplifications_(inputDistributionCollection.getSize(), 0),
   expressions_(inputDistributionCollection.getSize())
 {
-  Description description;
   const UnsignedInteger size(inputDistributionCollection.getSize());
   // Check that the collections of input and output distributions have the same size
   if (outputDistributionCollection_.getSize() != size) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using collections of input and output distributions of different size";
@@ -64,18 +63,8 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
     if (outputDistributionCollection_[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using distributions with dimension > 1.";
   }
   // Second, build the description of the transformation
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "x" << i;
-    description.add(oss);
-  }
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  Description description(Description::BuildDefault(size, "x"));
+  description.add(Description::BuildDefault(size, "y"));
   setDescription(description);
   if (simplify)
   {

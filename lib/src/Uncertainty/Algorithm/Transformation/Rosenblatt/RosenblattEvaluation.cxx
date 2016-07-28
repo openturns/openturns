@@ -31,26 +31,20 @@ CLASSNAMEINIT(RosenblattEvaluation);
 static const Factory<RosenblattEvaluation> Factory_RosenblattEvaluation;
 
 /* Default constructor */
-RosenblattEvaluation::RosenblattEvaluation():
-  NumericalMathEvaluationImplementation(),
-  distribution_()
+RosenblattEvaluation::RosenblattEvaluation()
+  : NumericalMathEvaluationImplementation()
+  , distribution_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution):
-  NumericalMathEvaluationImplementation(),
-  distribution_(distribution)
+RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution)
+  : NumericalMathEvaluationImplementation()
+  , distribution_(distribution)
 {
   Description description(distribution.getDescription());
-  const UnsignedInteger size(description.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
+  description.add(Description::BuildDefault(distribution.getDimension(), "Y"));
   setDescription(description);
 }
 
@@ -64,6 +58,7 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
   const UnsignedInteger dimension(getOutputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply Phi^{-1} o conditional CDF over the components
@@ -107,6 +102,15 @@ String RosenblattEvaluation::__repr__() const
   oss << "class=" << RosenblattEvaluation::GetClassName()
       << " description=" << getDescription()
       << " distribution=" << distribution_;
+  return oss;
+}
+
+String RosenblattEvaluation::__str__(const String & offset) const
+{
+  OSS oss(false);
+  oss << offset << RosenblattEvaluation::GetClassName()
+      << "(" << distribution_
+      << "->Normal(" << distribution_.getDimension() << ")";
   return oss;
 }
 

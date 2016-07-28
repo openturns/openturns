@@ -2,7 +2,7 @@ myInverseBoxCox= InverseBoxCox(lambda=[0.2], shift=[0])
 myInverseBoxCox input dimension =  1
 myInverseBoxCox output dimension =  1
 input time series =
-     [            marginal 1 ]
+     [ t          X0         ]
  0 : [  0          0.259753  ]
  1 : [  0.1        0.76561   ]
  2 : [  0.2       -0.729447  ]
@@ -55,7 +55,7 @@ input time series =
 49 : [  4.9       -0.394761  ]
 50 : [  5         -0.565578  ]
 output time series = 
-     [          y        ]
+     [ t        y0       ]
  0 : [ 0        1.28818  ]
  1 : [ 0.1      2.03881  ]
  2 : [ 0.2      0.454538 ]

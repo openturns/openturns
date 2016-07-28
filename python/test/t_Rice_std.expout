@@ -18,7 +18,7 @@ quantile= class=NumericalPoint name=Unnamed dimension=1 values=[13.9273]
 cdf(quantile)= 0.95
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[7.23115]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.7104]
-parameters= [class=NumericalPointWithDescription name=marginal 1 dimension=2 description=[sigma,nu] values=[5,4]]
+parameters= [class=NumericalPointWithDescription name=X0 dimension=2 description=[sigma,nu] values=[5,4]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [7.23115]
 standard moment n= 2  value= [66]

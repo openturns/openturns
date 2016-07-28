@@ -6,7 +6,7 @@ Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
 oneRealization= class=NumericalPoint name=Unnamed dimension=2 values=[0.629877,0.901557]
-oneSample= class=NumericalSample name=ClaytonCopula implementation=class=NumericalSampleImplementation name=ClaytonCopula size=10 dimension=2 description=[marginal 1,marginal 2] data=[[0.135276,0.0526823],[0.347057,0.895953],[0.92068,0.794201],[0.0632061,0.0551566],[0.714382,0.621802],[0.373767,0.583326],[0.883503,0.65348],[0.92851,0.935197],[0.684575,0.88113],[0.359802,0.865943]]
+oneSample= class=NumericalSample name=ClaytonCopula implementation=class=NumericalSampleImplementation name=ClaytonCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0526823],[0.347057,0.895953],[0.92068,0.794201],[0.0632061,0.0551566],[0.714382,0.621802],[0.373767,0.583326],[0.883503,0.65348],[0.92851,0.935197],[0.684575,0.88113],[0.359802,0.865943]]
 anotherSample mean= class=NumericalPoint name=Unnamed dimension=2 values=[0.502777,0.50134]
 anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0628988,0.0628988,0.0838004]
 Point =  class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2]  pdf=3.387901  cdf=0.152117

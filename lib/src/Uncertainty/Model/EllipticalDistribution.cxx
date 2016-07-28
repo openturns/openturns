@@ -71,11 +71,6 @@ EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
     if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
   // Then we set the dimension of the Elliptical distribution
   setDimension(dimension);
-  // We initialize the description
-  Description description(dimension);
-  // Set default description
-  for (UnsignedInteger i = 0; i < dimension; ++i) description[i] = OSS() << "marginal " << i + 1;
-  setDescription(description);
   // The mean attribute is stored at an upper level
   mean_ = mean;
   // Compute the auxiliary attributes. It also set isAlreadyComputedMean to true

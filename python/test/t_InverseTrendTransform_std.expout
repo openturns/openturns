@@ -4,6 +4,7 @@ myInverseTrendFunc input dimension= 2
 myInverseTrendFunc output description= [y0,y1]
 myInverseTrendFunc output dimension= 2
 input time series =  
+     [ t        v0       v1       ]
  0 : [  0        1        1       ]
  1 : [  0.1      2.09983  1.995   ]
  2 : [  0.2      3.19867  2.98007 ]
@@ -16,7 +17,7 @@ input time series =
  9 : [  0.9     10.7833   9.62161 ]
 10 : [  1       11.8415  10.5403  ]
 output time series = 
-     [      y0   y1   ]
+     [ t    y0   y1   ]
  0 : [  0    1    0   ]
  1 : [  0.1  2    1   ]
  2 : [  0.2  3    2   ]
