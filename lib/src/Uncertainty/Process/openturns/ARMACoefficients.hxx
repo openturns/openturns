@@ -63,7 +63,9 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Definition of add method : control of SquareMatrix sizes */
+#ifndef SWIG
   using SquareMatrixCollection::add;
+#endif
   void add(const SquareMatrix & matrix);
   void add(const NumericalScalar scalar);
 
