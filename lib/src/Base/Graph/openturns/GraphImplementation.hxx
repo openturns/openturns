@@ -47,9 +47,6 @@ public:
   typedef Collection<Drawable>           DrawableCollection;
   typedef PersistentCollection<Drawable> DrawablePersistentCollection;
 
-  static Description ValidLegendPositions;
-  static Bool IsFirstInitialization;
-
   enum Format { PNG = 1, EPS = 2, FIG = 4, PDF = 8, ALL = 255 };
   enum LogScale { NONE = 0, LOGX, LOGY, LOGXY };
 
@@ -191,6 +188,9 @@ public:
   static Description GetValidLegendPositions();
 
 private:
+  static Description ValidLegendPositions;
+  static Bool IsFirstInitialization;
+
   /** Initialize valid legend positions **/
   static void InitializeValidLegendPositions();
 
