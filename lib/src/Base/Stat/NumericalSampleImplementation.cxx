@@ -394,7 +394,13 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromTextFile(c
         {
           if (numLine == 1)
           {
-            description.add(words[i]);
+            String word(words[i]);
+            // trim double quote delimiters
+            if ((word.size() >= 2) && (word[0] == '\"') && (word[word.size() - 1] == '\"'))
+            {
+              word = word.substr(1, word.size() - 2);
+            }
+            description.add(word);
             if (!isDescription && i == 0) isDescription = true;
             if (i == words.size() - 1) ++numLine;
           }
