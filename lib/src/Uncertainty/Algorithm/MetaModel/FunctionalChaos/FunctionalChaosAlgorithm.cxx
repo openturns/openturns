@@ -168,7 +168,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Recover the distribution, taking into account that we look for performance
-  // so we avoid to rebuild expansive distributions as much as possible
+  // so we avoid to rebuild expensive distributions as much as possible
   const UnsignedInteger inputDimension(inputSample.getDimension());
   Collection< Distribution > marginals(inputDimension);
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
@@ -183,7 +183,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the UserDefined class
     const NumericalSample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
-    // This threshold is somewhat arbitrary. It is here to avoid expansive kernel smoothing.
+    // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() > ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
     else marginals[i] = ks.build(marginalSample.getMarginal(i));
     marginals[i].setDescription(Description(1, inputDescription[i]));
@@ -200,27 +200,20 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-SmallSampleSize" ))
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), KFold()));
-    // projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), CorrectedLeaveOneOut()));
-    adaptiveStrategy_ = FixedStrategy(basis, enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LAR and KFold for a total degree of " << maximumTotalDegree);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and KFold for a total degree of " << maximumTotalDegree);
   } // Small sample
   else if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize" ))
   {
-    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-    const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
-    const UnsignedInteger basisSize(std::min(totalSize, maximumTotalDegree * maximumTotalDegree * inputSample.getDimension()));
-    CleaningStrategy cleaning(basis, totalSize);
-    cleaning.setMaximumSize(basisSize);
-    adaptiveStrategy_ = cleaning;
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a constrained chaos expansion based on CleaningStrategy for a total degree of " << maximumTotalDegree << " and a maximum number of terms of " << basisSize);
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut()));
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LARS and CorrectedLeaveOneOut for a total degree of " << maximumTotalDegree);
   } // Medium sample
   else
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
     const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
-    adaptiveStrategy_ = FixedStrategy(basis, totalSize);
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
   } // Large sample
+  adaptiveStrategy_ = FixedStrategy(basis, enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
 }
 
 /* Constructor */
@@ -290,8 +283,8 @@ void FunctionalChaosAlgorithm::run()
   // + The distribution of the input, called distribution_
   // + The distribution defining the inner product in basis, called measure
   // The projection is done on the basis, ie wrt measure_, so we have to
-  // introduce an isoprobabilistic transformation that maps measure onto
-  // distribution_
+  // introduce an isoprobabilistic transformation that maps distribution_ onto
+  // measure
   //
   // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
@@ -306,7 +299,7 @@ void FunctionalChaosAlgorithm::run()
   const UnsignedInteger dimension(distribution_.getDimension());
   if (noTransformation)
   {
-    LOGINFO(OSS(false) << "Same distribution for input vector=" << distribution_ << " and basis="<< measure);
+    LOGINFO(OSS(false) << "Same distribution for input vector=" << distribution_ << " and basis=" << measure);
     transformation_ = IdentityFunction(dimension);
     inverseTransformation_ = transformation_;
   }
@@ -342,7 +335,7 @@ void FunctionalChaosAlgorithm::run()
     {
       if (distribution_.getStandardDistribution() == measure.getStandardDistribution())
       {
-	LOGINFO("Same standard space for input vector and basis");
+        LOGINFO("Same standard space for input vector and basis");
         // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
         const NumericalMathFunction TX(distribution_.getIsoProbabilisticTransformation());
         const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
@@ -356,35 +349,35 @@ void FunctionalChaosAlgorithm::run()
       // standard space
       else
       {
-	LOGINFO("Different standard space for input vector and basis");
+        LOGINFO("Different standard space for input vector and basis");
         NumericalMathFunction TX;
-	NumericalMathFunction invTX;
-	if (distribution_.getStandardDistribution().hasIndependentCopula())
-	  {
-	    LOGINFO("Normal standard space for input vector");
-	    TX = distribution_.getIsoProbabilisticTransformation();
-	    invTX = distribution_.getInverseIsoProbabilisticTransformation();
-	  }
-	else
-	  {
-	    LOGINFO("Non-normal standard space for input vector");
-	    TX = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
-	    invTX = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
-	  }
+        NumericalMathFunction invTX;
+        if (distribution_.getStandardDistribution().hasIndependentCopula())
+        {
+          LOGINFO("Normal standard space for input vector");
+          TX = distribution_.getIsoProbabilisticTransformation();
+          invTX = distribution_.getInverseIsoProbabilisticTransformation();
+        }
+        else
+        {
+          LOGINFO("Non-normal standard space for input vector");
+          TX = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
+          invTX = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
+        }
         NumericalMathFunction TZ;
-	NumericalMathFunction invTZ;
-	if (measure.getStandardDistribution().hasIndependentCopula())
-	  {
-	    LOGINFO("Normal standard space for basis");
-	    TZ = measure.getIsoProbabilisticTransformation();
-	    invTZ = measure.getInverseIsoProbabilisticTransformation();
-	  }
-	else
-	  {
-	    LOGINFO("Non-normal standard space for basis");
-	    TZ = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(measure.getImplementation()).clone()));
-	    invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
-	  }
+        NumericalMathFunction invTZ;
+        if (measure.getStandardDistribution().hasIndependentCopula())
+        {
+          LOGINFO("Normal standard space for basis");
+          TZ = measure.getIsoProbabilisticTransformation();
+          invTZ = measure.getInverseIsoProbabilisticTransformation();
+        }
+        else
+        {
+          LOGINFO("Non-normal standard space for basis");
+          TZ = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(measure.getImplementation()).clone()));
+          invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
+        }
         transformation_ = NumericalMathFunction(invTZ, TX);
         inverseTransformation_ = NumericalMathFunction(invTX, TZ);
       }

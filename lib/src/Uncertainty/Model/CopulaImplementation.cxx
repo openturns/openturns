@@ -52,7 +52,7 @@ CopulaImplementation * CopulaImplementation::clone() const
 /* Comparison operator */
 Bool CopulaImplementation::operator ==(const CopulaImplementation & other) const
 {
-  return (this == &other);
+  return (this == &other) || (hasIndependentCopula() && other.hasIndependentCopula());
 }
 
 Bool CopulaImplementation::equals(const DistributionImplementation & other) const
