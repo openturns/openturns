@@ -14,7 +14,7 @@ distribution : :class:`~openturns.Distribution`
     of the physical input vector :math:`\vect{X}`.
 functionFactory : :class:`~openturns.OrthogonalProductFunctionFactory`
     The basis factory.
-nk : sequence of int
+degrees : sequence of int
     The size of the basis for each component
     Of size equal to the input dimension.
 maxRank : int, optional (default=1)

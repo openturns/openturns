@@ -42,7 +42,7 @@ CanonicalTensor::CanonicalTensor (const FunctionFamilyCollection & functionFamil
                                   const UnsignedInteger rank)
   : PersistentObject()
   , functionFamilies_(functionFamilies)
-  , nk_(nk)
+  , degrees_(nk)
   , rank1tensors_(rank)
 {
   const UnsignedInteger dimension = functionFamilies.getSize();
@@ -84,9 +84,9 @@ CanonicalTensor::FunctionFamilyCollection CanonicalTensor::getFunctionFamilies()
 }
 
 
-Indices CanonicalTensor::getNk() const
+Indices CanonicalTensor::getDegrees() const
 {
-  return nk_;
+  return degrees_;
 }
 
 
@@ -114,14 +114,14 @@ String CanonicalTensor::__repr__() const
 void CanonicalTensor::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute("nk_", nk_);
+  adv.saveAttribute("degrees_", degrees_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CanonicalTensor::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute("nk_", nk_);
+  adv.loadAttribute("degrees_", degrees_);
 }
 
 END_NAMESPACE_OPENTURNS

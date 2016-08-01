@@ -73,7 +73,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
     const NumericalSample & outputSample,
     const Distribution & distribution,
     const OrthogonalProductFunctionFactory & basisFactory,
-    const Indices & nk,
+    const Indices & degrees,
     const UnsignedInteger maxRank)
   : MetaModelAlgorithm(distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())))
   , inputSample_(inputSample)
@@ -90,8 +90,8 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
 
   FunctionFamilyCollection functionFamilies(basisFactory.getFunctionFamilyCollection());
 
-  if (nk.getSize() != functionFamilies.getSize()) throw InvalidArgumentException(HERE) << "nk size ("<<nk.getSize()<<") must match orthogonal basis factories ("<<functionFamilies.getSize()<<")";
-  tensor_ = Collection<CanonicalTensor>(outputSample.getDimension(), CanonicalTensor(functionFamilies, nk, maxRank));
+  if (degrees.getSize() != functionFamilies.getSize()) throw InvalidArgumentException(HERE) << "degrees size ("<<degrees.getSize()<<") must match orthogonal basis factories ("<<functionFamilies.getSize()<<")";
+  tensor_ = Collection<CanonicalTensor>(outputSample.getDimension(), CanonicalTensor(functionFamilies, degrees, maxRank));
 }
 
 /* Virtual constructor */
@@ -246,7 +246,7 @@ public:
   NumericalPoint operator()(const NumericalPoint & beta) const
   {
     if (beta.getDimension() != getInputDimension()) throw InvalidDimensionException(HERE) << "Invalid beta size";
-    const Indices nk(tensor_.getNk());
+    const Indices degrees(tensor_.getDegrees());
     const UnsignedInteger rank = tensor_.getRank();
 
     NumericalMathFunctionCollection prodColl(rank);
@@ -255,12 +255,12 @@ public:
     for (UnsignedInteger k = 0; k < rank; ++ k)
     {
       RankOneTensor rankOne(tensor_);
-      for (UnsignedInteger i = 0; i < nk.getSize(); ++ i)
+      for (UnsignedInteger i = 0; i < degrees.getSize(); ++ i)
       {
-        NumericalPoint tmp(nk[i]);
-        std::copy(beta.begin() + index, beta.begin() + index+nk[i], tmp.begin());
+        NumericalPoint tmp(degrees[i]);
+        std::copy(beta.begin() + index, beta.begin() + index+degrees[i], tmp.begin());
         rankOne.setCoefficients(i, tmp);
-        index += nk[i];
+        index += degrees[i];
       }
       tensor_.setRankOneTensor(k, rankOne);
       Pointer<NumericalMathEvaluationImplementation> p_evaluation = new RankOneTensorEvaluation(tensor_.getRankOneTensor(k));
@@ -273,10 +273,10 @@ public:
   UnsignedInteger getInputDimension() const
   {
     UnsignedInteger sumNk = 0;
-    const Indices nk(tensor_.getNk());
-    for (UnsignedInteger i = 0; i < nk.getSize(); ++ i)
+    const Indices degrees(tensor_.getDegrees());
+    for (UnsignedInteger i = 0; i < degrees.getSize(); ++ i)
     {
-      sumNk += nk[i];
+      sumNk += degrees[i];
     }
     return sumNk * tensor_.getRank();
   }
@@ -297,15 +297,15 @@ void TensorApproximationAlgorithm::rankK (const UnsignedInteger marginalIndex,
                                           NumericalScalar & marginalResidual,
                                           NumericalScalar & marginalRelativeError)
 {
-  const Indices nk(tensor_[marginalIndex].getNk());
+  const Indices degrees(tensor_[marginalIndex].getDegrees());
   const UnsignedInteger rank = tensor_[marginalIndex].getRank();
   RankKResidualEvaluation residualFunction(transformedInputSample_, outputSample_.getMarginal(marginalIndex), tensor_[marginalIndex]);
   NumericalPoint start;
   for (UnsignedInteger k = 0; k < rank; ++ k)
   {
-    for (UnsignedInteger i = 0; i < nk.getSize(); ++ i)
+    for (UnsignedInteger i = 0; i < degrees.getSize(); ++ i)
     {
-      NumericalPoint tmp(nk[i]);
+      NumericalPoint tmp(degrees[i]);
       tmp[0] = 1.0; // vi(xi) = 1.0
       start.add(tmp);
     }
@@ -326,12 +326,12 @@ void TensorApproximationAlgorithm::rankK (const UnsignedInteger marginalIndex,
   for (UnsignedInteger k = 0; k < rank; ++ k)
   {
     RankOneTensor rankOne(tensor_[marginalIndex]);
-    for (UnsignedInteger i = 0; i < nk.getSize(); ++ i)
+    for (UnsignedInteger i = 0; i < degrees.getSize(); ++ i)
     {
-      NumericalPoint tmp(nk[i]);
-      std::copy(beta.begin() + index, beta.begin() + index + nk[i], tmp.begin());
+      NumericalPoint tmp(degrees[i]);
+      std::copy(beta.begin() + index, beta.begin() + index + degrees[i], tmp.begin());
       rankOne.setCoefficients(i, tmp);
-      index += nk[i];
+      index += degrees[i];
     }
     tensor_[marginalIndex].setRankOneTensor(k, rankOne);
   }

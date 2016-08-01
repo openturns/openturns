@@ -45,7 +45,7 @@ public:
 
   /** Standard constructor */
   CanonicalTensor(const FunctionFamilyCollection & functionFamilies,
-                  const Indices & nk,
+                  const Indices & degrees,
                   const UnsignedInteger rank = 1);
 
   void setRank(const UnsignedInteger rank);
@@ -53,7 +53,7 @@ public:
 
   FunctionFamilyCollection getFunctionFamilies() const;
 
-  Indices getNk() const;
+  Indices getDegrees() const;
 
   void setRankOneTensor(const UnsignedInteger k, const RankOneTensor & rankOneTensor);
   RankOneTensor getRankOneTensor(const UnsignedInteger k) const;
@@ -76,7 +76,7 @@ protected:
   FunctionFamilyPersistentCollection functionFamilies_;
 
   // subbasis sizes
-  Indices nk_;
+  Indices degrees_;
 
   PersistentCollection<RankOneTensor> rank1tensors_;
 

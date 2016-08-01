@@ -39,10 +39,10 @@ RankOneTensor::RankOneTensor()
 
 RankOneTensor::RankOneTensor(const CanonicalTensor & canonicalTensor)
 : radius_(1.0)
-, coefficients_(canonicalTensor.getNk().getSize())
-, basis_(canonicalTensor.getNk().getSize())
+, coefficients_(canonicalTensor.getDegrees().getSize())
+, basis_(canonicalTensor.getDegrees().getSize())
 {
-  const Indices nk(canonicalTensor.getNk());
+  const Indices nk(canonicalTensor.getDegrees());
   const UnsignedInteger dimension = nk.getSize();
   const FunctionFamilyCollection functionFamilies(canonicalTensor.getFunctionFamilies());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
