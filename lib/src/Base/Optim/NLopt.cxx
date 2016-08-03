@@ -193,6 +193,10 @@ void NLopt::run()
 
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(algoName_));
 
+  // initialize history
+  evaluationInputHistory_ = NumericalSample(0, dimension);
+  evaluationOutputHistory_ = NumericalSample(0, 1);
+
   nlopt::opt opt(algo, dimension);
 
   if (getProblem().isMinimization()) {
@@ -310,7 +314,34 @@ void NLopt::run()
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result(optimizer, NumericalPoint(1, optimalValue), 0, -1.0, -1.0, -1.0, -1.0, getProblem());
+  OptimizationResult result;
+  result.setProblem(getProblem());
+
+  UnsignedInteger size = evaluationInputHistory_.getSize();
+
+  NumericalScalar absoluteError = -1.0;
+  NumericalScalar relativeError = -1.0;
+  NumericalScalar residualError = -1.0;
+  NumericalScalar constraintError = -1.0;
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const NumericalPoint inP(evaluationInputHistory_[i]);
+    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    if (i > 0)
+    {
+      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
+      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      absoluteError = (inP - inPM).normInf();
+      relativeError = absoluteError / inP.normInf();
+      residualError = std::abs(outP[0] - outPM[0]);
+      constraintError = outP[1];
+    }
+    result.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+  }
+
+  result.setOptimalPoint(optimizer);
+  result.setOptimalValue(NumericalPoint(1, optimalValue));
   result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
   setResult(result);
 #else
@@ -413,6 +444,11 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
       grad[i] = gradient(i, 0);
     }
   }
+
+  // track input/outputs
+  algorithm->evaluationInputHistory_.add(inP);
+  algorithm->evaluationOutputHistory_.add(outP);
+
   return outP[0];
 }
 

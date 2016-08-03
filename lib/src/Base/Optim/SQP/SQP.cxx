@@ -167,7 +167,9 @@ void SQP::run()
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
   // reset result
-  setResult(OptimizationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
+  result_ = OptimizationResult();
+  result_.setProblem(getProblem());
+  result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
@@ -242,6 +244,7 @@ void SQP::run()
     result_.update(currentPoint_, iterationNumber);
     result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
     result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
+
     LOGINFO(getResult().__repr__());
   }
 

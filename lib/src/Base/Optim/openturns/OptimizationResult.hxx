@@ -63,12 +63,15 @@ public:
   virtual OptimizationResult * clone() const;
 
   /** OptimalPoint accessors */
+  void setOptimalPoint(const NumericalPoint & optimalPoint);
   NumericalPoint getOptimalPoint() const;
 
   /** Optimal value accessor */
+  void setOptimalValue(const NumericalPoint & optimalValue);
   NumericalPoint getOptimalValue() const;
 
   /** Iteration number accessor */
+  void setIterationNumber(const UnsignedInteger iterationNumber);
   UnsignedInteger getIterationNumber() const;
 
   /** Absolute error accessor */
@@ -92,6 +95,7 @@ public:
   NumericalSample getOutputSample() const;
 
   /** Problem accessor */
+  void setProblem(const OptimizationProblem & problem);
   OptimizationProblem getProblem() const;
 
   /** Lagrange multipliers accessor */
@@ -122,16 +126,6 @@ public:
   Graph drawErrorHistory() const;
 
 protected:
-
-  /** OptimalPoint accessors */
-  void setOptimalPoint(const NumericalPoint & optimalPoint);
-
-  /** Iteration number accessor */
-  void setIterationNumber(const UnsignedInteger iterationNumber);
-
-  /** Optimal value accessor */
-  void setOptimalValue(const NumericalPoint & optimalValue);
-
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);
   void setAbsoluteErrorHistory(const NumericalSample & absoluteError);

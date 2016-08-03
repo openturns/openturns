@@ -92,21 +92,9 @@ void Cobyla::run()
     }
   }
 
-  /* Compute the objective function at StartingPoint */
-  const NumericalScalar sign(getProblem().isMinimization() ? 1.0 : -1.0);
-  NumericalScalar f(sign * getProblem().getObjective().operator()(x)[0]);
-
   NumericalScalar rhoEnd(getMaximumAbsoluteError());
   int maxFun(getMaximumIterationNumber());
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
-
-  NumericalScalar absoluteError(-1.0);
-  NumericalScalar relativeError(-1.0);
-  NumericalScalar residualError(-1.0);
-  NumericalScalar constraintError(-1.0);
-
-  // clear result
-  setResult(OptimizationResult(x, NumericalPoint(1, f), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
 
   // initialize history
   evaluationInputHistory_ = NumericalSample(0, dimension);
@@ -133,26 +121,36 @@ void Cobyla::run()
    */
   int returnCode(ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this));
 
-  // Update the result
-  UnsignedInteger size(evaluationInputHistory_.getSize());
+  result_ = OptimizationResult();
+  result_.setProblem(getProblem());
 
-  for ( UnsignedInteger i = 1; i < size; ++i )
+  // Update the result
+  UnsignedInteger size = evaluationInputHistory_.getSize();
+
+  NumericalScalar absoluteError = -1.0;
+  NumericalScalar relativeError = -1.0;
+  NumericalScalar residualError = -1.0;
+  NumericalScalar constraintError = -1.0;
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPoint inPM( evaluationInputHistory_[i - 1] );
-    const NumericalPoint inP( evaluationInputHistory_[i] );
-    const NumericalPoint outP( evaluationOutputHistory_[i] );
-    const NumericalPoint outPM( evaluationOutputHistory_[i - 1] );
-    absoluteError = (inP - inPM).normInf();
-    relativeError = absoluteError / inP.normInf();
-    residualError = std::abs(outP[0] - outPM[0]);
-    constraintError = outP[1];
+    const NumericalPoint inP(evaluationInputHistory_[i]);
+    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    if (i > 0)
+    {
+      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
+      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      absoluteError = (inP - inPM).normInf();
+      relativeError = absoluteError / inP.normInf();
+      residualError = std::abs(outP[0] - outPM[0]);
+      constraintError = outP[1];
+    }
     result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
 
   // Set the optimal point and the number of function calls
   result_.update(x, maxFun);
 
-  // Compute the Lagrange multipliers at the optimal point
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
