@@ -69,7 +69,7 @@ static int trstlp(int *n, int *m, double *a, double *b, double *rho,
 
 /* ------------------------------------------------------------------------ */
 
-int cobyla(int n, int m, double *x, double rhobeg, double rhoend, int iprint,
+int ot_cobyla(int n, int m, double *x, double rhobeg, double rhoend, int iprint,
            int *maxfun, cobyla_function *calcfc, void *state)
 {
   int icon, isim, isigb, idatm, iveta, isimi, ivsig, iwork, ia, idx, mpp, rc;
