@@ -187,6 +187,10 @@ void NLopt::run()
 {
 #ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = getProblem().getDimension();
+  NumericalPoint startingPoint(getStartingPoint());
+  if (startingPoint.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
+
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(algoName_));
 
   nlopt::opt opt(algo, dimension);
@@ -205,10 +209,14 @@ void NLopt::run()
 
   if (getProblem().hasBounds())
   {
-    Interval::BoolCollection finiteLowerBound(getProblem().getBounds().getFiniteLowerBound());
-    Interval::BoolCollection finiteUpperBound(getProblem().getBounds().getFiniteUpperBound());
-    NumericalPoint lowerBound(getProblem().getBounds().getLowerBound());
-    NumericalPoint upperBound(getProblem().getBounds().getUpperBound());
+    Interval bounds(getProblem().getBounds());
+    if (!bounds.contains(startingPoint))
+      throw InvalidArgumentException(HERE) << "The starting point is not feasible";
+
+    Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+    Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+    NumericalPoint lowerBound(bounds.getLowerBound());
+    NumericalPoint upperBound(bounds.getUpperBound());
     std::vector<double> lb(dimension, 0.0);
     std::vector<double> ub(dimension, 0.0);
     std::copy(lowerBound.begin(), lowerBound.end(), lb.begin());
@@ -280,8 +288,6 @@ void NLopt::run()
   }
 
   std::vector<double> x(dimension, 0.0);
-  NumericalPoint startingPoint(getStartingPoint());
-  if (startingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
   std::copy(startingPoint.begin(), startingPoint.end(), x.begin());
   double optimalValue = 0.0;
 

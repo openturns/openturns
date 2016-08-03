@@ -75,17 +75,22 @@ void Cobyla::run()
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
 
+  NumericalPoint x(getStartingPoint());
+  if (x.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
+
   if (getProblem().hasBounds())
   {
     Interval bounds(getProblem().getBounds());
+    if (!bounds.contains(x))
+      throw InvalidArgumentException(HERE) << "The starting point is not feasible";
+
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       if (bounds.getFiniteLowerBound()[i]) ++m;
       if (bounds.getFiniteUpperBound()[i]) ++m;
     }
   }
-
-  NumericalPoint x(getStartingPoint());
 
   /* Compute the objective function at StartingPoint */
   const NumericalScalar sign(getProblem().isMinimization() ? 1.0 : -1.0);
