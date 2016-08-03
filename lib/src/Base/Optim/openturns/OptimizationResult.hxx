@@ -111,9 +111,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-  /** Update current state */
-  void update(const NumericalPoint & optimalPoint, UnsignedInteger iterationNumber);
-
   /** Incremental history storage */
   void store(const NumericalPoint & inP,
              const NumericalPoint & outP,

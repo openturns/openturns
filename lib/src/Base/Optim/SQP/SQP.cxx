@@ -184,7 +184,6 @@ void SQP::run()
 
     if (normGradientSquared == 0)
     {
-      result_.update(currentPoint_, iterationNumber);
       throw InternalException(HERE) << "Error in Abdo SQP algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }
 
@@ -241,7 +240,7 @@ void SQP::run()
     convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
-    result_.update(currentPoint_, iterationNumber);
+    result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
     result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
 
