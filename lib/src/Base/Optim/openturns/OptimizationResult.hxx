@@ -59,17 +59,6 @@ public:
                      const NumericalScalar constraintError,
                      const OptimizationProblem & problem);
 
-  OptimizationResult(const NumericalPoint & optimalPoint,
-                     const NumericalPoint & optimalValue,
-                     const UnsignedInteger iterationNumber,
-                     const NumericalScalar absoluteError,
-                     const NumericalScalar relativeError,
-                     const NumericalScalar residualError,
-                     const NumericalScalar constraintError,
-                     const OptimizationProblem & problem,
-                     const NumericalPoint & lagrangeMultipliers);
-
-
   /** Virtual constructor */
   virtual OptimizationResult * clone() const;
 
@@ -106,6 +95,7 @@ public:
   OptimizationProblem getProblem() const;
 
   /** Lagrange multipliers accessor */
+  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
   NumericalPoint getLagrangeMultipliers() const;
 
   /** String converter */
@@ -121,14 +111,6 @@ public:
   void update(const NumericalPoint & optimalPoint, UnsignedInteger iterationNumber);
 
   /** Incremental history storage */
-  void store(const NumericalPoint & inP,
-             const NumericalPoint & outP,
-             const NumericalScalar absoluteError,
-             const NumericalScalar relativeError,
-             const NumericalScalar residualError,
-             const NumericalScalar constraintError,
-             const NumericalPoint & lagrangeMultipliers);
-
   void store(const NumericalPoint & inP,
              const NumericalPoint & outP,
              const NumericalScalar absoluteError,
@@ -165,9 +147,6 @@ protected:
   /** Constraint error accessor */
   void setConstraintError(const NumericalScalar constraintError);
   void setConstraintErrorHistory(const NumericalSample & constraintError);
-
-  /** Lagrange multipliers accessor */
-  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
 
 private:
 

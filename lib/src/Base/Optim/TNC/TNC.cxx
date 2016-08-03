@@ -233,7 +233,9 @@ void TNC::run()
   } // for i
 
   /* Store the result */
-  setResult(OptimizationResult(x, NumericalPoint(1, sign * f), nfeval, absoluteError, relativeError, residualError, constraintError, getProblem(), computeLagrangeMultipliers(x)));
+  OptimizationResult result(x, NumericalPoint(1, sign * f), nfeval, absoluteError, relativeError, residualError, constraintError, getProblem());
+  result.setLagrangeMultipliers(computeLagrangeMultipliers(x));
+  setResult(result);
 
   // check the convergence criteria
   const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));

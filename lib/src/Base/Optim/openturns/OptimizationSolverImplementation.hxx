@@ -120,9 +120,6 @@ protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
-  /** Accessor to protected methods of OptimizationResult for children */
-  void setLagrangeMultipliers(const NumericalPoint & multipliers);
-
   /** The result of the algorithm */
   OptimizationResult result_;
 

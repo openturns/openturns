@@ -240,8 +240,9 @@ void SQP::run()
 
     // update result
     result_.update(currentPoint_, iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError, NumericalPoint(1, currentLambda_));
-    LOGINFO( getResult().__repr__() );
+    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
+    LOGINFO(getResult().__repr__());
   }
 
   /* Check if we converged */
