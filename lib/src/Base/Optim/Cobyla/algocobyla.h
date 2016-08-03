@@ -110,7 +110,7 @@ typedef int cobyla_function(int n, int m, double *x, double *f, double *con,
  * The cobyla function returns a code defined in the cobyla_rc enum.
  *
  */
-extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
+extern int ot_cobyla(int n, int m, double *x, double rhobeg, double rhoend,
                   int message, int *maxfun, cobyla_function *calcfc, void *state);
 
 END_C_DECLS
