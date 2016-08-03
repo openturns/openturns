@@ -197,6 +197,11 @@ NumericalSample OptimizationResult::getOutputSample() const
   return outputHistory_.getSample();
 }
 
+void OptimizationResult::setProblem(const OptimizationProblem & problem)
+{
+  problem_ = problem;
+}
+
 OptimizationProblem OptimizationResult::getProblem() const
 {
   return problem_;

@@ -67,6 +67,16 @@ constraintErrorHistory : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setIterationNumber
+"Accessor to the number of iterations.
+
+Parameters
+----------
+iterationNumber : int
+     Number of evaluations."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getIterationNumber
 "Accessor to the number of iterations.
 
@@ -117,6 +127,16 @@ residualErrorHistory : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setOptimalPoint
+"Accessor to the optimal point.
+
+Parameters
+----------
+optimalPoint : :class:`~openturns.NumericalPoint`
+     Optimal point"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getOptimalPoint
 "Accessor to the optimal point.
 
@@ -157,6 +177,16 @@ See :class:`~openturns.OptimizationSolver` for the details on how the multiplier
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setOptimalValue
+"Accessor to the optimal value.
+
+Parameters
+----------
+optimalValue : :class:`~openturns.NumericalPoint`
+     Value at the optimal point"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getOptimalValue
 "Accessor to the optimal value.
 
@@ -184,6 +214,16 @@ Returns
 -------
 outputSample : :class:`~openturns.NumericalSample`
      Output points used by the solver"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setProblem
+"Accessor to the underlying optimization problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+     Problem corresponding to the result"
 
 // ---------------------------------------------------------------------
 
