@@ -163,7 +163,6 @@ void AbdoRackwitz::run()
     /* In case of a null gradient, throw an internal exception */
     if (normGradientSquared == 0)
     {
-      result_.update(currentPoint_, iterationNumber);
       throw InternalException(HERE) << "Error in Abdo Rackwitz algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }
     /* Lambda = (G - <Grad(G), u>) / ||Grad(G)||^2 */
@@ -191,7 +190,7 @@ void AbdoRackwitz::run()
     convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
-    result_.update(currentPoint_, iterationNumber);
+    result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
     result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
 

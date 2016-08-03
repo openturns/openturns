@@ -283,13 +283,6 @@ void OptimizationResult::load(Advocate & adv)
   adv.loadAttribute( "problem_", problem_ );
 }
 
-/* Update current state */
-void OptimizationResult::update(const NumericalPoint & OptimalPoint, UnsignedInteger iterationNumber)
-{
-  setOptimalPoint(OptimalPoint);
-  setIterationNumber(iterationNumber);
-}
-
 /* Incremental history storage */
 void OptimizationResult::store(const NumericalPoint & x,
                                const NumericalPoint & y,

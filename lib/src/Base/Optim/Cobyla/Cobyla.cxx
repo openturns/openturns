@@ -148,9 +148,11 @@ void Cobyla::run()
     result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
 
-  // Set the optimal point and the number of function calls
-  result_.update(x, maxFun);
-
+  result_.setOptimalPoint(x);
+  const UnsignedInteger index = evaluationInputHistory_.find(x);
+  NumericalScalar bestValue = evaluationOutputHistory_[index][0];
+  result_.setOptimalValue(NumericalPoint(1, bestValue));
+  result_.setIterationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
