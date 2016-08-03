@@ -304,7 +304,9 @@ void NLopt::run()
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0, getProblem(), computeLagrangeMultipliers(optimizer)));
+  OptimizationResult result(optimizer, NumericalPoint(1, optimalValue), 0, -1.0, -1.0, -1.0, -1.0, getProblem());
+  result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
+  setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif

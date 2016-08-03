@@ -80,35 +80,6 @@ OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
   // Nothing to do
 }
 
-OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
-                                       const NumericalPoint &  optimalValue,
-                                       const UnsignedInteger iterationNumber,
-                                       const NumericalScalar absoluteError,
-                                       const NumericalScalar relativeError,
-                                       const NumericalScalar residualError,
-                                       const NumericalScalar constraintError,
-                                       const OptimizationProblem & problem,
-                                       const NumericalPoint & lagrangeMultipliers)
-  : PersistentObject()
-  , optimalPoint_(optimalPoint)
-  , optimalValue_(optimalValue)
-  , iterationNumber_(iterationNumber)
-  , absoluteError_(absoluteError)
-  , relativeError_(relativeError)
-  , residualError_(residualError)
-  , constraintError_(constraintError)
-  , lagrangeMultipliers_(lagrangeMultipliers)
-  , absoluteErrorHistory_()
-  , relativeErrorHistory_()
-  , residualErrorHistory_()
-  , constraintErrorHistory_()
-  , inputHistory_()
-  , outputHistory_()
-  , problem_(problem)
-{
-  // Nothing to do
-}
-
 /* Virtual constructor */
 OptimizationResult * OptimizationResult::clone() const
 {
@@ -322,21 +293,10 @@ void OptimizationResult::store(const NumericalPoint & x,
                                const NumericalScalar residualError,
                                const NumericalScalar constraintError)
 {
-  store(x, y, absoluteError, relativeError, residualError, constraintError, NumericalPoint(0));
-}
-
-void OptimizationResult::store(const NumericalPoint & x,
-                               const NumericalPoint & y,
-                               const NumericalScalar absoluteError,
-                               const NumericalScalar relativeError,
-                               const NumericalScalar residualError,
-                               const NumericalScalar constraintError,
-                               const NumericalPoint & lagrangeMultipliers)
-{
   // assume the last point stored is the optimum
   optimalPoint_ = x;
   optimalValue_ = y;
-  lagrangeMultipliers_ = lagrangeMultipliers;
+
   // update values
   absoluteError_ = absoluteError;
   relativeError_ = relativeError;

@@ -186,12 +186,6 @@ void OptimizationSolverImplementation::checkProblem(const OptimizationProblem & 
   throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::checkProblem()";
 }
 
-/* Accessor to protected methods of OptimizationResult for children */
-void OptimizationSolverImplementation::setLagrangeMultipliers(const NumericalPoint & multipliers)
-{
-  result_.setLagrangeMultipliers(multipliers);
-}
-
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
 void OptimizationSolverImplementation::run()
 {

@@ -148,7 +148,7 @@ void Cobyla::run()
   result_.update(x, maxFun);
 
   // Compute the Lagrange multipliers at the optimal point
-  setLagrangeMultipliers(computeLagrangeMultipliers(x));
+  result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
   const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));
