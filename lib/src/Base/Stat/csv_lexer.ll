@@ -43,8 +43,7 @@ integer   {digit}+
 exponent  [eE]{sign}?{integer}
 real      {sign}?({integer}("."({integer})?)?|"."{integer}){exponent}?
 
-alpha     [a-zA-Z_]
-string    {alpha}({alpha}|{integer})*
+string    [[:alnum:] !#\$%&'()\*\+\-\./\:\<=\>\?@\[\\\]\^_`\{\|\}~]*
 
 space     [ \t]
 
