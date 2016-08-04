@@ -335,9 +335,8 @@ void NLopt::run()
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
-      constraintError = outP[1];
     }
-    result.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
   }
 
   result.setOptimalPoint(optimizer);
