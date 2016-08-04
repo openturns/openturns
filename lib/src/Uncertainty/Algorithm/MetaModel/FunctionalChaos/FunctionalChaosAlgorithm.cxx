@@ -210,10 +210,10 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   else
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-    const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
   } // Large sample
-  adaptiveStrategy_ = FixedStrategy(basis, enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+  const UnsignedInteger totalSize = enumerate.getStrataCumulatedCardinal(maximumTotalDegree);
+  adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
 
 /* Constructor */
