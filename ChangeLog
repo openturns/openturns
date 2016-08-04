@@ -57,6 +57,7 @@
  * #820 (Python distribution fails randomly when computing the PDF over a sample)
  * #822 (Incorect Matrix / point operations with cast)
  * #824 (Confusing behavior of NumericalSample::sort)
+ * #828 (ImportFromCSVFile fails on a file created by exportToCSVFile)
  * #830 (more optim algos examples)
  * #837 (TruncatedDistribution::setParameter segfaults)
  * #838 (Symmetry of SymmetricMatrix not always enforced)
