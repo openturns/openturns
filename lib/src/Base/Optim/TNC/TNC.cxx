@@ -220,7 +220,7 @@ void TNC::run()
       residualError = std::abs(outP[0] - outPM[0]);
     }
     constraintError = 0.0;
-    for ( UnsignedInteger j = 0; j < dimension; ++j )
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       if (finiteLow[j] && (inP[j] < low[j]))
       {

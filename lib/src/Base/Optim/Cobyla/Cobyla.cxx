@@ -243,6 +243,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
   }
+
   /* Compute the equality constraints at inPoint */
   if (problem.hasEqualityConstraint())
   {
@@ -255,7 +256,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Compute the bound constraints at inPoint */
   if (problem.hasBounds())
   {
-    const Interval bounds(algorithm->getProblem().getBounds());
+    const Interval bounds(problem.getBounds());
     for (UnsignedInteger index = 0; index < bounds.getDimension(); ++index)
     {
       if (bounds.getFiniteLowerBound()[index])
@@ -268,8 +269,12 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Convert the constraint vector in double format */
   memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(NumericalScalar));
 
-  /* Compute constraints norm */
-  outPoint[1]= constraintValue.normInf();
+  // only take violated constraints into account to compute error
+  for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)
+  {
+    if (constraintValue[j] > 0.0) constraintValue[j] = 0.0;
+  }
+  outPoint[1] = constraintValue.normInf();
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);
