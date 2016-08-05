@@ -73,7 +73,7 @@ SQP * SQP::clone() const
   return new SQP(*this);
 }
 
-/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+/* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void SQP::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())

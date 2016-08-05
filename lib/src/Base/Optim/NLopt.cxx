@@ -160,7 +160,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     }
   }
 
-  if (problem.hasEqualityConstraint() || problem.hasLevelFunction())
+  if (problem.hasEqualityConstraint())
   {
     try {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
@@ -256,12 +256,6 @@ void NLopt::run()
       equalityData[i] = Pointer<MarginalData>(new MarginalData(this, i));
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, equalityData[i].get(), getMaximumConstraintError());
     }
-  }
-
-  if (getProblem().hasLevelFunction())
-  {
-    opt.add_equality_constraint(NLopt::ComputeLevelFunction, this, getMaximumConstraintError());
-    opt.set_min_objective(NLopt::ComputeObjectiveNearest, this);
   }
 
   if (initialStep_.getDimension() > 0)
@@ -501,52 +495,6 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
   }
   return outP[marginalIndex];
 }
-
-
-double NLopt::ComputeLevelFunction(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
-{
-  NLopt *algorithm = static_cast<NLopt *>(f_data);
-  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
-
-  // evaluation
-  NumericalPoint outP(algorithm->getProblem().getLevelFunction()(inP));
-
-  // gradient
-  if (!grad.empty())
-  {
-    Matrix gradient(algorithm->getProblem().getLevelFunction().gradient(inP));
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      grad[i] = gradient(i, 0);
-    }
-  }
-  return outP[0] - algorithm->getProblem().getLevelValue();
-}
-
-
-double NLopt::ComputeObjectiveNearest(const std::vector<double> & x, std::vector<double> & grad, void * f_data)
-{
-  NLopt *algorithm = static_cast<NLopt *>(f_data);
-  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
-
-  // evaluation
-  NumericalScalar outP = 0.5 * inP.normSquare();
-
-  // gradient
-  if (!grad.empty())
-  {
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      grad[i] = inP[i];
-    }
-  }
-  return outP;
-}
-
 
 CLASSNAMEINIT(SLSQP);
 static const Factory<SLSQP> Factory_SLSQP;

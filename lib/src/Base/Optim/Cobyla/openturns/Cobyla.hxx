@@ -75,8 +75,7 @@ protected:
 private:
 
   /**
-   * Function that computes half of the squared norm of a Vector. It will
-   * become the objective function of the minimisation problem
+   * Evaluate general objective function and constraint values.
    */
   static int ComputeObjectiveAndConstraint(int n,
       int m,
