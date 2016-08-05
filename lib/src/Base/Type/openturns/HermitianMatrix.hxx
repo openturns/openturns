@@ -64,6 +64,9 @@ public:
   /** Constructor with implementation */
   HermitianMatrix(const Implementation & i);
 
+  /** Copy constructor, added to solve glitches with inheritance */
+  HermitianMatrix(const HermitianMatrix & h);
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;

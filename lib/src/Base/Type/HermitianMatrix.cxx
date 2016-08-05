@@ -55,6 +55,14 @@ HermitianMatrix::HermitianMatrix(const Implementation & i)
   // Nothing to do
 }
 
+/* Copy constructor, added to solve glitches with inheritance */
+HermitianMatrix::HermitianMatrix(const HermitianMatrix & h)
+  : SquareComplexMatrix(static_cast<const SquareComplexMatrix &>(h))
+  , hasBeenHermitianized_(false)
+{
+  // Nothing to do
+}
+
 /* String converter */
 String HermitianMatrix::__repr__() const
 {
