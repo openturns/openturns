@@ -95,8 +95,6 @@ TNC * TNC::clone() const
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void TNC::checkProblem(const OptimizationProblem & problem) const
 {
-  if (problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())

@@ -75,7 +75,7 @@ void AbdoRackwitz::initialize()
   currentLambda_ = 0.0;
 }
 
-/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+/* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())
