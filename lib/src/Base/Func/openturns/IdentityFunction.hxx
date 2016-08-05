@@ -43,7 +43,7 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  IdentityFunction(const UnsignedInteger dimension);
+  explicit IdentityFunction(const UnsignedInteger dimension);
 
 
   /** Comparison operator */
