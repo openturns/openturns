@@ -172,6 +172,10 @@ String ARMA::__str__(const String & offset) const
 /* Is the underlying a Normal process ? */
 Bool ARMA::isNormal() const
 {
+  // The easy case: the distribution is an interface to
+  // a Normal distribution
+  if (noiseDistribution_.getImplementation()->getClassName() == "Normal") return true;
+  // The hard case: the distribution has the properties of a Normal distribution
   return (noiseDistribution_.isElliptical() && noiseDistribution_.getStandardDistribution().hasIndependentCopula());
 }
 

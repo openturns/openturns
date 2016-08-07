@@ -216,6 +216,23 @@ void AggregatedProcess::setTimeGrid(const RegularGrid & timeGrid)
   ProcessImplementation::setTimeGrid(timeGrid);
 }
 
+/* Is the underlying a gaussian process ? */
+Bool AggregatedProcess::isNormal() const
+{
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    if (!processCollection_[i].isNormal()) return false;
+  return true;
+}
+
+/* Is the underlying a stationary process ? */
+Bool AggregatedProcess::isStationary() const
+{
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    if (!processCollection_[i].isStationary()) return false;
+  return true;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void AggregatedProcess::save(Advocate & adv) const
 {

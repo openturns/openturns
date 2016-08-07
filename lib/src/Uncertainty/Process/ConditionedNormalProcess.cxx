@@ -165,6 +165,19 @@ Field ConditionedNormalProcess::getRealization() const
   return Field(mesh_, values);
 }
 
+/* Is the underlying a gaussian process ? */
+Bool ConditionedNormalProcess::isNormal() const
+{
+  return true;
+}
+
+/* Is the underlying a stationary process ? */
+Bool ConditionedNormalProcess::isStationary() const
+{
+  // False since the conditioned variance is null at conditioning points
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void ConditionedNormalProcess::save(Advocate & adv) const
 {
