@@ -45,6 +45,7 @@ Orthogonal univariate polynomial families
     LaguerreFactory
     LegendreFactory
     CharlierFactory
+    ChebychevFactory
     KrawtchoukFactory
     MeixnerFactory
 

@@ -636,6 +636,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalUniVariatePolynomial.i OrthogonalUniVariatePolynomial_doc.i.in
                       OrthogonalUniVariatePolynomialFactory.i OrthogonalUniVariatePolynomialFactory_doc.i.in
                       CharlierFactory.i CharlierFactory_doc.i.in
+                      ChebychevFactory.i ChebychevFactory_doc.i.in
                       HermiteFactory.i HermiteFactory_doc.i.in
                       JacobiFactory.i JacobiFactory_doc.i.in
                       KrawtchoukFactory.i KrawtchoukFactory_doc.i.in
