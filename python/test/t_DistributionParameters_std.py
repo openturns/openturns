@@ -42,6 +42,7 @@ for distParam in distParams:
             xp[i] += eps
             xm = list(non_native)
             xm[i] -= eps
-            nativeParamGrad[i, j] = 0.5 * (distParam(xp)[j] - distParam(xm)[j]) / eps
+            nativeParamGrad[i, j] = 0.5 * \
+                (distParam(xp)[j] - distParam(xm)[j]) / eps
 
     print(nativeParamGrad)

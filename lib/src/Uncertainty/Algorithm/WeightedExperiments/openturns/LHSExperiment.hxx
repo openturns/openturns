@@ -54,7 +54,7 @@ public:
   LHSExperiment(const Distribution & distribution,
                 const UnsignedInteger size,
                 const Bool alwaysShuffle = false,
-		const Bool randomShift = true);
+                const Bool randomShift = true);
 
   /** Virtual constructor */
   virtual LHSExperiment * clone() const;

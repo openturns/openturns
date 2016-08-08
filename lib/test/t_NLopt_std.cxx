@@ -30,9 +30,9 @@ inline String printNumericalPoint(const NumericalPoint & point, const UnsignedIn
   oss << "[";
   NumericalScalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-    {
-      oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-    }
+  {
+    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
+  }
   oss << "]";
   return oss;
 }
@@ -43,78 +43,78 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
 
   try
+  {
+    // bounds
+    Description inVars;
+    inVars.add("x1");
+    inVars.add("x2");
+    inVars.add("x3");
+    inVars.add("x4");
+    Description outVar(1, "y1");
+    Description formula(1, "x1+2*x2-3*x3+4*x4");
+
+    NumericalMathFunction linear(inVars, outVar, formula);
+
+    UnsignedInteger dim = linear.getInputDimension();
+    NumericalPoint startingPoint(dim);
+
+    Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 5.0));
+
+    Description algoNames(NLopt::GetAlgorithmNames());
+    for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
     {
-      // bounds
-      Description inVars;
-      inVars.add("x1");
-      inVars.add("x2");
-      inVars.add("x3");
-      inVars.add("x4");
-      Description outVar(1, "y1");
-      Description formula(1, "x1+2*x2-3*x3+4*x4");
+      // STOGO might not be enabled
+      // NEWUOA nan/-nan
+      // COBYLA crashes on squeeze
+      // ESCH not same results with 2.4.1
+      if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND")
+          || (algoNames[i] == "LN_NEWUOA")
+          || (algoNames[i] == "LN_COBYLA")
+          || (algoNames[i] == "GN_ESCH"))
+      {
+        fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
+        continue;
+      }
 
-      NumericalMathFunction linear(inVars, outVar, formula);
-
-      UnsignedInteger dim = linear.getInputDimension();
-      NumericalPoint startingPoint(dim);
-
-      Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 5.0));
-
-      Description algoNames(NLopt::GetAlgorithmNames());
-      for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
-        {
-          // STOGO might not be enabled
-          // NEWUOA nan/-nan
-          // COBYLA crashes on squeeze
-          // ESCH not same results with 2.4.1
-          if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND")
-           || (algoNames[i] == "LN_NEWUOA")
-           || (algoNames[i] == "LN_COBYLA")
-           || (algoNames[i] == "GN_ESCH"))
+      NLopt algo(algoNames[i]);
+      for (UnsignedInteger minimization = 0; minimization < 2; ++minimization)
+        for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
+          for (UnsignedInteger equality = 0; equality < 2; ++equality)
+          {
+            OptimizationProblem problem(linear, NumericalMathFunction(), NumericalMathFunction(), bounds);
+            problem.setMinimization(minimization == 0);
+            if (inequality == 0)
+              // x3 <= x1
+              problem.setInequalityConstraint(NumericalMathFunction(inVars, Description(1, "ineq"), Description(1, "x1-x3")));
+            if (equality == 0)
+              // x4 = 2
+              problem.setEqualityConstraint(NumericalMathFunction(inVars, Description(1, "eq"), Description(1, "x4-2")));
+            try
             {
-              fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
-              continue;
+              NLopt::SetSeed(0);
+              algo.setProblem(problem);
+              algo.setMaximumEvaluationNumber(5000);
+              //algo.setInitialStep(NumericalPoint(dim, 0.1));
+              NLopt localAlgo("LD_MMA");
+              algo.setLocalSolver(localAlgo);
+              algo.setStartingPoint(startingPoint);
+              fullprint << "algo=" << algo << std::endl;
+              algo.run();
+              OptimizationResult result(algo.getResult());
+              fullprint << "x^=" << printNumericalPoint(result.getOptimalPoint(), 3) << std::endl;
             }
-
-          NLopt algo(algoNames[i]);
-          for (UnsignedInteger minimization = 0; minimization < 2; ++minimization)
-            for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
-              for (UnsignedInteger equality = 0; equality < 2; ++equality)
-                {
-                  OptimizationProblem problem(linear, NumericalMathFunction(), NumericalMathFunction(), bounds);
-                  problem.setMinimization(minimization == 0);
-                  if (inequality == 0)
-                    // x3 <= x1
-                    problem.setInequalityConstraint(NumericalMathFunction(inVars, Description(1, "ineq"), Description(1, "x1-x3")));
-                  if (equality == 0)
-                    // x4 = 2
-                    problem.setEqualityConstraint(NumericalMathFunction(inVars, Description(1, "eq"), Description(1, "x4-2")));
-                  try
-                    {
-                      NLopt::SetSeed(0);
-                      algo.setProblem(problem);
-                      algo.setMaximumEvaluationNumber(5000);
-                      //algo.setInitialStep(NumericalPoint(dim, 0.1));
-                      NLopt localAlgo("LD_MMA");
-                      algo.setLocalSolver(localAlgo);
-                      algo.setStartingPoint(startingPoint);
-                      fullprint << "algo=" << algo << std::endl;
-                      algo.run();
-                      OptimizationResult result(algo.getResult());
-                      fullprint << "x^=" << printNumericalPoint(result.getOptimalPoint(), 3) << std::endl;
-                    }
-                  catch (...)
-                    {
-                      fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << (inequality == 0 ? "true" : "false") << " equality=" << (equality == 0 ? "true" : "false") << std::endl;
-                    }
-                } // equality
-        } // algo
-    }
+            catch (...)
+            {
+              fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << (inequality == 0 ? "true" : "false") << " equality=" << (equality == 0 ? "true" : "false") << std::endl;
+            }
+          } // equality
+    } // algo
+  }
   catch (TestFailed & ex)
-    {
-      std::cerr << ex << std::endl;
-      return ExitCode::Error;
-    }
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
   return ExitCode::Success;
 }

@@ -227,7 +227,7 @@ NumericalPoint Skellam::getParameter() const
 
 void Skellam::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Skellam(parameter[0], parameter[1]);
   setWeight(w);

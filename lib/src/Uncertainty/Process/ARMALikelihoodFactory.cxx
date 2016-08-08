@@ -303,7 +303,7 @@ NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(c
 {
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-RootEpsilon");
 
-  NumericalPoint result(nbInequalityConstraint_,0.0);
+  NumericalPoint result(nbInequalityConstraint_, 0.0);
 
   UnsignedInteger constraintIndex = 0;
   UnsignedInteger currentIndex = 0;
@@ -394,7 +394,7 @@ NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(c
   for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::min(s, eigenValues[i]);
   // Constrain is that the min eigenvalue upper than 0
   result[constraintIndex] = s - epsilon;
-   
+
   return result;
 }
 
@@ -538,11 +538,11 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 {
   // Currently the implementation of the factory bases on m estimations of univariate models, m is the dimension of the
   // above time series
-  
+
   // Define Optimization problem (Maximization)
   OptimizationProblem problem;
   problem.setMinimization(false);
-  
+
   // Checking the size of time series
   if (timeSeries.getSize() < currentG_)
     throw InvalidArgumentException(HERE) << "Error : expected time series of size greater than " << currentG_;
@@ -612,12 +612,12 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   // use attributes to pass the data
   nbInequalityConstraint_ = m;
   inputDimension_ = n;
-  // Define Objective and Constraint functions for Optimization problem 
+  // Define Objective and Constraint functions for Optimization problem
   problem.setObjective(getLogLikelihoodFunction());
   problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
   solver_.setProblem(problem);
   solver_.setStartingPoint(beta);
-  
+
   // run Optimization problem
   solver_.run();
 

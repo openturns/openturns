@@ -69,16 +69,16 @@ public:
                         const Bool computeSecondOrder = true);
 
   /** First order indices accessor */
-  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex=0) const;
+  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the first order indices accessor */
   Interval getFirstOrderIndicesInterval() const;
 
   /** Second order indices accessor */
-  SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex=0) const;
+  SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex=0) const;
+  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the total order indices accessor */
   Interval getTotalOrderIndicesInterval() const;

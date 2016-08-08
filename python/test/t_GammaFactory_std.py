@@ -37,10 +37,10 @@ try:
     estimatedGamma = factory.buildAsGamma(
         distribution.getParameter())
     print("Gamma from parameters=", estimatedGamma)
-    sample = [[0.0]]*size
+    sample = [[0.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]]*size
+    sample = [[1.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
 

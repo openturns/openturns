@@ -380,8 +380,8 @@ void PythonNumericalMathEvaluationImplementation::setParameter(const NumericalPo
   ScopedPyObjectPointer methodName(convert< String, _PyString_>("setParameter"));
   ScopedPyObjectPointer probArg(convert< NumericalPoint, _PySequence_ >(parameter));
   ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                    methodName.get(),
-                                    probArg.get(), NULL));
+                                   methodName.get(),
+                                   probArg.get(), NULL));
   if (callResult.isNull())
   {
     handleException();
@@ -393,8 +393,8 @@ void PythonNumericalMathEvaluationImplementation::setParameter(const NumericalPo
 NumericalPoint PythonNumericalMathEvaluationImplementation::getParameter() const
 {
   ScopedPyObjectPointer callResult(PyObject_CallMethod(pyObj_,
-                               const_cast<char *>("getParameter"),
-                               const_cast<char *>("()")));
+                                   const_cast<char *>("getParameter"),
+                                   const_cast<char *>("()")));
   if (callResult.isNull())
   {
     handleException();
@@ -409,8 +409,8 @@ void PythonNumericalMathEvaluationImplementation::setParameterDescription(const 
   ScopedPyObjectPointer methodName(convert< String, _PyString_>("setParameterDescription"));
   ScopedPyObjectPointer probArg(convert< Description, _PySequence_ >(description));
   ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                    methodName.get(),
-                                    probArg.get(), NULL));
+                                   methodName.get(),
+                                   probArg.get(), NULL));
   if (callResult.isNull())
   {
     handleException();
@@ -421,8 +421,8 @@ void PythonNumericalMathEvaluationImplementation::setParameterDescription(const 
 Description PythonNumericalMathEvaluationImplementation::getParameterDescription() const
 {
   ScopedPyObjectPointer callResult(PyObject_CallMethod(pyObj_,
-                               const_cast<char *>("getParameterDescription"),
-                               const_cast<char *>("()")));
+                                   const_cast<char *>("getParameterDescription"),
+                                   const_cast<char *>("()")));
   if (callResult.isNull())
   {
     handleException();

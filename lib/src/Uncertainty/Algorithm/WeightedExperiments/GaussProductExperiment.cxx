@@ -123,7 +123,7 @@ void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
 
 /** Marginal degrees accessor */
 void GaussProductExperiment::setDistributionAndMarginalDegrees(const Distribution & distribution,
-							       const Indices & marginalDegrees)
+    const Indices & marginalDegrees)
 {
   // Set the marginal degrees here then the distribution with checks
   marginalDegrees_ = marginalDegrees;

@@ -88,7 +88,7 @@ Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP)
 
 /* Gradient method */
 Matrix NumericalMathGradientImplementation::gradient (const NumericalPoint & inP,
-                                                      const NumericalPoint & parameter)
+    const NumericalPoint & parameter)
 {
   setParameter(parameter);
   return gradient(inP);

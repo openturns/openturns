@@ -250,21 +250,21 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
   {
     GaussKronrodRule rule;
     switch (dimension)
-      {
+    {
       case 4:
-	rule = GaussKronrodRule::G15K31;
-	break;
+        rule = GaussKronrodRule::G15K31;
+        break;
       case 5:
-	rule = GaussKronrodRule::G11K23;
-	break;
+        rule = GaussKronrodRule::G11K23;
+        break;
       case 6:
-	rule = GaussKronrodRule::G7K15;
-	break;
+        rule = GaussKronrodRule::G7K15;
+        break;
       default:
-	LOGWARN(OSS() << "The dimension=" << dimension << " of the Normal distribution is large for Gauss quadrature! Expect a high computational cost and a reduced accuracy for CDF evaluation.");
-	rule = GaussKronrodRule::G7K15;
-	break;
-      }
+        LOGWARN(OSS() << "The dimension=" << dimension << " of the Normal distribution is large for Gauss quadrature! Expect a high computational cost and a reduced accuracy for CDF evaluation.");
+        rule = GaussKronrodRule::G7K15;
+        break;
+    }
     NumericalPoint kronrodWeights(1, rule.getZeroKronrodWeight());
     kronrodWeights.add(rule.getOtherKronrodWeights());
     kronrodWeights.add(rule.getOtherKronrodWeights());
@@ -278,25 +278,25 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     NumericalSample allNodes(size, dimension);
     NumericalPoint allWeights(size);
     for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
+    {
+      NumericalPoint node(dimension);
+      NumericalScalar weight = 1.0;
+      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-	NumericalPoint node(dimension);
-	NumericalScalar weight = 1.0;
-	for (UnsignedInteger j = 0; j < dimension; ++j)
-	  {
-	    const UnsignedInteger indiceJ = indices[j];
-	    const NumericalScalar delta = 0.5 * (reducedPoint[j] - lowerBounds[j]);
-	    node[j] = lowerBounds[j] + delta * (1.0 + kronrodNodes[indiceJ]);
-	    weight *= delta * kronrodWeights[indiceJ];
-	  }
-	allNodes[linearIndex] = node;
-	allWeights[linearIndex] = weight;
-	/* Update the indices */
-	++indices[0];
-	/* Propagate the remainders */
-	for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
-	/* Correction of the indices. The last index cannot overflow. */
-	for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
-      } // Loop over the n-D nodes
+        const UnsignedInteger indiceJ = indices[j];
+        const NumericalScalar delta = 0.5 * (reducedPoint[j] - lowerBounds[j]);
+        node[j] = lowerBounds[j] + delta * (1.0 + kronrodNodes[indiceJ]);
+        weight *= delta * kronrodWeights[indiceJ];
+      }
+      allNodes[linearIndex] = node;
+      allWeights[linearIndex] = weight;
+      /* Update the indices */
+      ++indices[0];
+      /* Propagate the remainders */
+      for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
+      /* Correction of the indices. The last index cannot overflow. */
+      for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
+    } // Loop over the n-D nodes
     // Parallel evalusation of the PDF
     const NumericalSample allPDF(computePDF(allNodes));
     // Some black magic to use BLAS on the internal representation of samples

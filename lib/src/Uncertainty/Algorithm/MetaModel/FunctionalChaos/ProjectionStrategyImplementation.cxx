@@ -139,12 +139,12 @@ String ProjectionStrategyImplementation::__repr__() const
 void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
 {
   if (!(measure == measure_))
-    {
-      measure_ = measure;
-      // Set the measure as the distribution of the weighted experiment
-      weightedExperiment_.setDistribution(measure);
-      inputSample_ = NumericalSample(0, 0);
-    }
+  {
+    measure_ = measure;
+    // Set the measure as the distribution of the weighted experiment
+    weightedExperiment_.setDistribution(measure);
+    inputSample_ = NumericalSample(0, 0);
+  }
 }
 
 Distribution ProjectionStrategyImplementation::getMeasure() const
@@ -156,11 +156,11 @@ Distribution ProjectionStrategyImplementation::getMeasure() const
 void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & weightedExperiment)
 {
   if (!(weightedExperiment == weightedExperiment_))
-    {
-      weightedExperiment_ = weightedExperiment;
-      weightedExperiment_.setDistribution(getMeasure());
-      inputSample_ = NumericalSample(0, 0);
-    }
+  {
+    weightedExperiment_ = weightedExperiment;
+    weightedExperiment_.setDistribution(getMeasure());
+    inputSample_ = NumericalSample(0, 0);
+  }
 }
 
 WeightedExperiment ProjectionStrategyImplementation::getExperiment() const

@@ -79,7 +79,7 @@ outputValidSample = model(inputValidSample)
 # 2) Definition of exponential model
 # The parameters have been calibrated using TNC optimization
 # and AbsoluteExponential models
-covarianceModel = SquaredExponential([1.98824,0.924731], [3.15352])
+covarianceModel = SquaredExponential([1.98824, 0.924731], [3.15352])
 
 # 3) Basis definition
 basisCollection = BasisCollection(

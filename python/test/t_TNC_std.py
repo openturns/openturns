@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 def printNumericalPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -51,7 +52,7 @@ print('multipliers=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.NumericalMathFunction(
-        ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
+    ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
 startingPoint = ot.NumericalPoint(4, -0.01)
 
 startingPointNearMinimizationCorner = ot.NumericalPoint(4)

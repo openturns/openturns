@@ -23,7 +23,8 @@ outputSample = model(inputSample)
 
 # Validation data
 sampleSize = 10
-inputValidSample = ComposedDistribution(2 * [Uniform(0, 10.0)]).getSample(sampleSize)
+inputValidSample = ComposedDistribution(
+    2 * [Uniform(0, 10.0)]).getSample(sampleSize)
 outputValidSample = model(inputValidSample)
 
 # 2) Definition of exponential model
@@ -32,10 +33,12 @@ outputValidSample = model(inputValidSample)
 covarianceModel = SquaredExponential([1.988, 0.924], [3.153])
 
 # 3) Basis definition
-basisCollection = BasisCollection(1, ConstantBasisFactory(spatialDimension).build())
+basisCollection = BasisCollection(
+    1, ConstantBasisFactory(spatialDimension).build())
 
 # Kriring algorithm
-algo = KrigingAlgorithm(inputSample, outputSample, basisCollection, covarianceModel)
+algo = KrigingAlgorithm(inputSample, outputSample,
+                        basisCollection, covarianceModel)
 algo.run()
 result = algo.getResult()
 # Get meta model

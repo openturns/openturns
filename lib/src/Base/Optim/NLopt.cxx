@@ -153,18 +153,24 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 
   if (problem.hasInequalityConstraint())
   {
-    try {
+    try
+    {
       opt.add_inequality_constraint(NLopt::ComputeInequalityConstraint, 0);
-    } catch (std::invalid_argument) {
+    }
+    catch (std::invalid_argument)
+    {
       throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support inequality constraints";
     }
   }
 
   if (problem.hasEqualityConstraint())
   {
-    try {
+    try
+    {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
-    } catch (std::invalid_argument) {
+    }
+    catch (std::invalid_argument)
+    {
       throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support equality constraints";
     }
   }
@@ -174,9 +180,10 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 }
 
 // Struct to store class ptr and marginal index as well
-struct MarginalData {
+struct MarginalData
+{
   MarginalData(NLopt * p_algo, const UnsignedInteger marginalIndex)
-  : p_algo_(p_algo), marginalIndex_(marginalIndex) {}
+    : p_algo_(p_algo), marginalIndex_(marginalIndex) {}
   NLopt * p_algo_;
   int marginalIndex_;
 };
@@ -199,10 +206,12 @@ void NLopt::run()
 
   nlopt::opt opt(algo, dimension);
 
-  if (getProblem().isMinimization()) {
+  if (getProblem().isMinimization())
+  {
     opt.set_min_objective(NLopt::ComputeObjective, this);
   }
-  else {
+  else
+  {
     opt.set_max_objective(NLopt::ComputeObjective, this);
   }
 
@@ -500,11 +509,14 @@ SLSQP::SLSQP() : NLopt("LD_SLSQP")
   Log::Warn(OSS() << "SLSQP class is deprecated.");
 }
 SLSQP::SLSQP(const OptimizationProblem & problem)
-: NLopt(problem, "LD_SLSQP")
+  : NLopt(problem, "LD_SLSQP")
 {
   Log::Warn(OSS() << "SLSQP class is deprecated.");
 }
-SLSQP * SLSQP::clone() const { return new SLSQP(*this); }
+SLSQP * SLSQP::clone() const
+{
+  return new SLSQP(*this);
+}
 
 CLASSNAMEINIT(LBFGS);
 static const Factory<LBFGS> Factory_LBFGS;
@@ -513,11 +525,14 @@ LBFGS::LBFGS() : NLopt("LD_LBFGS")
   Log::Warn(OSS() << "LBFGS class is deprecated.");
 }
 LBFGS::LBFGS(const OptimizationProblem & problem)
-: NLopt(problem, "LD_LBFGS")
+  : NLopt(problem, "LD_LBFGS")
 {
   Log::Warn(OSS() << "LBFGS class is deprecated.");
 }
-LBFGS * LBFGS::clone() const { return new LBFGS(*this); }
+LBFGS * LBFGS::clone() const
+{
+  return new LBFGS(*this);
+}
 
 CLASSNAMEINIT(NelderMead);
 static const Factory<NelderMead> Factory_NelderMead;
@@ -526,10 +541,13 @@ NelderMead::NelderMead() : NLopt("LN_NELDERMEAD")
   Log::Warn(OSS() << "NelderMead class is deprecated.");
 }
 NelderMead::NelderMead(const OptimizationProblem & problem)
-: NLopt(problem, "LN_NELDERMEAD")
+  : NLopt(problem, "LN_NELDERMEAD")
 {
   Log::Warn(OSS() << "NelderMead class is deprecated.");
 }
-NelderMead * NelderMead::clone() const { return new NelderMead(*this); }
+NelderMead * NelderMead::clone() const
+{
+  return new NelderMead(*this);
+}
 
 END_NAMESPACE_OPENTURNS

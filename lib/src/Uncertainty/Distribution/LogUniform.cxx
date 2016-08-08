@@ -284,7 +284,7 @@ NumericalPoint LogUniform::getParameter() const
 
 void LogUniform::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = LogUniform(parameter[0], parameter[1]);
   setWeight(w);

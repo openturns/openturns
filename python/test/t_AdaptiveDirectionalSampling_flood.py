@@ -39,7 +39,7 @@ for k in [0.0, 2.0, 5.0, 8.][0:1]:
     composite = ot.RandomVector(function, randomVector)
 
     print('--------------------')
-    print('model flood S <', k, 'gamma=',end=' ')
+    print('model flood S <', k, 'gamma=', end=' ')
     print('f(', ot.NumericalPoint(x), ')=', fx)
 
     event = ot.Event(composite, ot.Greater(), k)
@@ -61,5 +61,5 @@ for k in [0.0, 2.0, 5.0, 8.][0:1]:
             pf = result.getProbabilityEstimate()
             var = result.getVarianceEstimate()
             cov = result.getCoefficientOfVariation()
-            print(result,end=' ')
+            print(result, end=' ')
             print('callsNumber=%d' % calls + ' gamma=' + str(algo.getGamma()))

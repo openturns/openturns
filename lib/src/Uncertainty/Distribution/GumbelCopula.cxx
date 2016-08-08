@@ -313,7 +313,7 @@ NumericalPoint GumbelCopula::getParameter() const
 
 void GumbelCopula::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = GumbelCopula(parameter[0]);
   setWeight(w);

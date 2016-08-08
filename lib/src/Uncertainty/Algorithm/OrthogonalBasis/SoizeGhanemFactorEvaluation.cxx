@@ -43,8 +43,8 @@ SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation()
 
 /* Constructor */
 SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation(const Distribution & measure,
-							 const Collection<Distribution> & marginals,
-							 const Bool useCopula)
+    const Collection<Distribution> & marginals,
+    const Bool useCopula)
   : NumericalMathEvaluationImplementation()
   , measure_(measure)
   , useCopula_(useCopula)
@@ -89,26 +89,26 @@ NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & i
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   NumericalPoint result(1);
   if (useCopula_)
-    {
-      NumericalPoint u(inputDimension);
-      for (UnsignedInteger i = 0; i < inputDimension; ++i)
-	u[i] = marginals_[i].computeCDF(inP[i]);
-      result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, copula_.computePDF(u)));
-    }
+  {
+    NumericalPoint u(inputDimension);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      u[i] = marginals_[i].computeCDF(inP[i]);
+    result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, copula_.computePDF(u)));
+  }
   else
-    {
-      NumericalScalar logFactor = 0.0;
-      for (UnsignedInteger i = 0; i < inputDimension; ++i)
-	logFactor += marginals_[i].computeLogPDF(inP[i]);
-      // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
-      result[0] = std::exp(0.5 * (logFactor - measure_.computeLogPDF(inP)));
-    }
+  {
+    NumericalScalar logFactor = 0.0;
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      logFactor += marginals_[i].computeLogPDF(inP[i]);
+    // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
+    result[0] = std::exp(0.5 * (logFactor - measure_.computeLogPDF(inP)));
+  }
   ++callsNumber_;
   if (isHistoryEnabled_)
-    {
-      inputStrategy_.store(inP);
-      outputStrategy_.store(result);
-    }
+  {
+    inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
   return result;
 }
 
@@ -120,30 +120,30 @@ NumericalSample SoizeGhanemFactorEvaluation::operator() (const NumericalSample &
   if (size == 0) return NumericalSample(0, 1);
   NumericalSample result(size, 1);
   if (useCopula_)
-    {
-      NumericalSample u(size, 0);
-      for (UnsignedInteger i = 0; i < inputDimension; ++i)
-	u.stack(marginals_[i].computeCDF(inS.getMarginal(i)));
-      const NumericalSample pdf(copula_.computePDF(u));
-      for (UnsignedInteger i = 0; i < size; ++i)
-	result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, pdf[i][0]));
-    }
+  {
+    NumericalSample u(size, 0);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      u.stack(marginals_[i].computeCDF(inS.getMarginal(i)));
+    const NumericalSample pdf(copula_.computePDF(u));
+    for (UnsignedInteger i = 0; i < size; ++i)
+      result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, pdf[i][0]));
+  }
   else
-    {
-      NumericalSample logFactor(size, 1);
-      for (UnsignedInteger i = 0; i < inputDimension; ++i)
-	logFactor += marginals_[i].computeLogPDF(inS.getMarginal(i));
-      // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
-      const NumericalSample logResult(logFactor - measure_.computeLogPDF(inS));
-      for (UnsignedInteger i = 0; i < size; ++i)
-	result[i][0] = std::exp(0.5 * logResult[i][0]);
-    }
+  {
+    NumericalSample logFactor(size, 1);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      logFactor += marginals_[i].computeLogPDF(inS.getMarginal(i));
+    // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
+    const NumericalSample logResult(logFactor - measure_.computeLogPDF(inS));
+    for (UnsignedInteger i = 0; i < size; ++i)
+      result[i][0] = std::exp(0.5 * logResult[i][0]);
+  }
   callsNumber_ += size;
   if (isHistoryEnabled_)
-    {
-      inputStrategy_.store(inS);
-      outputStrategy_.store(result);
-    }
+  {
+    inputStrategy_.store(inS);
+    outputStrategy_.store(result);
+  }
   return result;
 }
 
@@ -191,13 +191,13 @@ String SoizeGhanemFactorEvaluation::__str__(const String & offset) const
   oss << input << "->1/sqrt(" << (useCopula_ ? copula_.__str__() : measure_.__str__()) << ".computePDF(";
   String separator(", ");
   for (UnsignedInteger i = 0; i < input.getSize(); ++i)
-    {
-      if (i == input.getSize() - 1) separator = ")";
-      if (useCopula_)
-	oss << marginals_[i].__str__() << ".computeCDF(" << input[i] << ")" << separator;
-      else
-	oss << input[i] << separator;
-    }
+  {
+    if (i == input.getSize() - 1) separator = ")";
+    if (useCopula_)
+      oss << marginals_[i].__str__() << ".computeCDF(" << input[i] << ")" << separator;
+    else
+      oss << input[i] << separator;
+  }
   return oss;
 }
 

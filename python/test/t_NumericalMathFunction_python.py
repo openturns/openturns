@@ -126,14 +126,17 @@ outSample = myFunc(a_sample)
 print(outSample)
 
 print('distributed exec only on a point')
-myFunc = PythonFunction(2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
+myFunc = PythonFunction(
+    2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
 outSample = myFunc([100., 100.])
 print(outSample)
 
 print('distributed exec only on a sample')
-myFunc = PythonFunction(2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
+myFunc = PythonFunction(
+    2, 1, a_exec, n_cpus=None if sys.platform.startswith('win') else -1)
 outSample = myFunc(a_sample)
 print(outSample)
+
 
 def a_grad(X):
     # wrong but allows to verify
@@ -167,7 +170,6 @@ else:
     raise Exception('no function not detected!')
 
 
-
 def a_exec(X):
     Y = [0]
     if X[0] == 0.0:
@@ -187,13 +189,15 @@ for n in range(2):
 
 
 class FUNC(OpenTURNSPythonFunction):
+
     def __init__(self):
         super(FUNC, self).__init__(2, 1)
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T'])
+
     def _exec(self, X):
         theta = self.getParameter()
-        Y = [X[0] + X[1]*theta[0]]
+        Y = [X[0] + X[1] * theta[0]]
         return Y
 
 myFunc = NumericalMathFunction(FUNC())

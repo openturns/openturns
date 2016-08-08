@@ -89,7 +89,7 @@ private:
   void buildMeasure();
 
   /** The 1D polynomial family collection */
-    FunctionFamilyPersistentCollection coll_;
+  FunctionFamilyPersistentCollection coll_;
 
   /** The Phi function */
   EnumerateFunction phi_;

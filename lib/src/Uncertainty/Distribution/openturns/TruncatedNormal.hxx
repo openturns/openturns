@@ -52,9 +52,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const TruncatedNormal & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** String converter */
   String __repr__() const;

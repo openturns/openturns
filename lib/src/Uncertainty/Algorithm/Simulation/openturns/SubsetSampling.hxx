@@ -27,9 +27,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSampling
-: public Simulation
+  : public Simulation
 {
-CLASSNAME
+  CLASSNAME
 public:
 
   /** Default Constructor */
@@ -95,7 +95,7 @@ private:
 
   /** Sort new seeds */
   void initializeSeed(NumericalScalar threshold);
-  
+
   /** Compute the correlation on markov chains at the current state of the algorithm */
   NumericalScalar computeVarianceGamma(NumericalScalar currentFailureProbability, NumericalScalar threshold);
 

@@ -310,7 +310,7 @@ NumericalPoint Distribution::getCenteredMoment(const UnsignedInteger n) const
 
 /* Get the shifted moments of the distribution */
 NumericalPoint Distribution::getShiftedMoment(const UnsignedInteger n,
-					      const NumericalPoint & shift) const
+    const NumericalPoint & shift) const
 {
   return getImplementation()->getShiftedMoment(n, shift);
 }

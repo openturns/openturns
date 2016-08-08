@@ -157,7 +157,8 @@ try:
     RandomGenerator.SetSeed(0)
     sample1 = Normal().getSample(20)
     sample2 = Normal(0.1, 1.1).getSample(30)
-    resultTwoSamplesKolmogorov = FittingTest.TwoSamplesKolmogorov(sample1, sample2)
+    resultTwoSamplesKolmogorov = FittingTest.TwoSamplesKolmogorov(
+        sample1, sample2)
     print(resultTwoSamplesKolmogorov)
 except:
     import sys

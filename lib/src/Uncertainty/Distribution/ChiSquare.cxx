@@ -276,7 +276,7 @@ NumericalPoint ChiSquare::getParameter() const
 
 void ChiSquare::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = ChiSquare(parameter[0]);
   setWeight(w);

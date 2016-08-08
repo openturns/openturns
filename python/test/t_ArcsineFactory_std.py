@@ -31,4 +31,3 @@ print("Default Arcsine=", estimatedArcsine)
 estimatedArcsine = factory.buildAsArcsine(
     distribution.getParameter())
 print("Arcsine from parameters=", estimatedArcsine)
-

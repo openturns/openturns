@@ -27,7 +27,7 @@ try:
     estimatedLogUniform = factory.buildAsLogUniform(
         distribution.getParameter())
     print("LogUniform from parameters=", estimatedLogUniform)
-    sample = [[1.0]]*size
+    sample = [[1.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
 

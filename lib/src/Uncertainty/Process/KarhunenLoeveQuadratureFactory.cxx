@@ -55,11 +55,11 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory()
 
 /* Constructor with parameters */
 KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & domain,
-							       const WeightedExperiment & experiment,
-							       const Basis & basis,
-							       const UnsignedInteger basisSize,
-							       const Bool mustScale,
-							       const NumericalScalar threshold)
+    const WeightedExperiment & experiment,
+    const Basis & basis,
+    const UnsignedInteger basisSize,
+    const Bool mustScale,
+    const NumericalScalar threshold)
   : PersistentObject()
   , domain_(domain)
   , coll_(basisSize)
@@ -86,20 +86,20 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   // Normalization factor takes into account the fact that we map the range of the distribution defining the weighted experiment with the bounding box of the domain
   NumericalScalar normalizationFactor = 1.0;
   if (!hasSameBounds)
+  {
+    TriangularMatrix T(dimension);
+    TriangularMatrix inverseT(dimension);
+    NumericalPoint center((distributionUpperBound + distributionLowerBound) * 0.5);
+    NumericalPoint constant((domainUpperBound + domainLowerBound) * 0.5);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      TriangularMatrix T(dimension);
-      TriangularMatrix inverseT(dimension);
-      NumericalPoint center((distributionUpperBound + distributionLowerBound) * 0.5);
-      NumericalPoint constant((domainUpperBound + domainLowerBound) * 0.5);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-	{
-	  T(i, i) = (domainUpperBound[i] - domainLowerBound[i]) / (distributionUpperBound[i] - distributionLowerBound[i]);
-	  normalizationFactor *= T(i, i);
-	  inverseT(i, i) = 1.0 / T(i, i);
-	}
-      scaling = LinearNumericalMathFunction(center, constant, T);
-      inverseScaling = LinearNumericalMathFunction(constant, center, inverseT);
+      T(i, i) = (domainUpperBound[i] - domainLowerBound[i]) / (distributionUpperBound[i] - distributionLowerBound[i]);
+      normalizationFactor *= T(i, i);
+      inverseT(i, i) = 1.0 / T(i, i);
     }
+    scaling = LinearNumericalMathFunction(center, constant, T);
+    inverseScaling = LinearNumericalMathFunction(constant, center, inverseT);
+  }
   // Here we set the collection of functions
   for (UnsignedInteger i = 0; i < basisSize; ++i)
     if (!hasSameBounds && mustScale) coll_[i] = NumericalMathFunction(basis.build(i), inverseScaling);
@@ -119,14 +119,14 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   nodes_ = NumericalSample(0, dimension);
   LOGINFO("Filter the integration nodes");
   for (UnsignedInteger i = 0; i < rawWeights.getDimension(); ++i)
+  {
+    const Bool isInside = domain.contains(rawNodes[i]);
+    if (isInside)
     {
-      const Bool isInside = domain.contains(rawNodes[i]);
-      if (isInside)
-	{
-	  nodes_.add(rawNodes[i]);
-	  weights_.add(std::sqrt(normalizationFactor * rawWeights[i] / pdf[i][0]));
-	}
+      nodes_.add(rawNodes[i]);
+      weights_.add(std::sqrt(normalizationFactor * rawWeights[i] / pdf[i][0]));
     }
+  }
   // Now we compute the basis functions over the nodes, properly scaled
   const UnsignedInteger nodesNumber = nodes_.getSize();
   LOGINFO(OSS(false) << "Final number of integration nodes=" << nodesNumber);
@@ -134,11 +134,11 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   LOGINFO("Compute the design matrix");
   theta_ = Matrix(nodesNumber, basisSize);
   for (UnsignedInteger j = 0; j < basisSize; ++j)
-    {
-      const NumericalPoint thetaj(coll_[j](nodes_).getImplementation()->getData());
-      for (UnsignedInteger i = 0; i < nodesNumber; ++i)
-	theta_(i, j) = weights_[i] * thetaj[i];
-    }
+  {
+    const NumericalPoint thetaj(coll_[j](nodes_).getImplementation()->getData());
+    for (UnsignedInteger i = 0; i < nodesNumber; ++i)
+      theta_(i, j) = weights_[i] * thetaj[i];
+  }
   // Compute the Cholesky factor of \theta^t\theta
   LOGINFO("Compute the Cholesky factor of the Gram matrix");
   CovarianceMatrix gram(theta_.computeGram(true));
@@ -177,7 +177,7 @@ KarhunenLoeveQuadratureFactory * KarhunenLoeveQuadratureFactory::clone() const
    with I the dxd identity matrix
 */
 Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceModel,
-					    NumericalPoint & selectedEV) const
+    NumericalPoint & selectedEV) const
 {
   const UnsignedInteger nodesNumber = nodes_.getSize();
   const UnsignedInteger dimension = covarianceModel.getDimension();
@@ -188,25 +188,25 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   // Step 1: scale C by the weights
   LOGINFO("Scale the covariance matrix");
   if (dimension == 1)
-    {
-      for (UnsignedInteger j = 0; j < nodesNumber; ++j)
-	for (UnsignedInteger i = j; i < nodesNumber; ++i)
-	  {
-	    const NumericalScalar factor = weights_[i] * weights_[j];
-	    C(i, j) *= factor;
-	  } // i
-    } // dimension == 1
+  {
+    for (UnsignedInteger j = 0; j < nodesNumber; ++j)
+      for (UnsignedInteger i = j; i < nodesNumber; ++i)
+      {
+        const NumericalScalar factor = weights_[i] * weights_[j];
+        C(i, j) *= factor;
+      } // i
+  } // dimension == 1
   else
-    {
-      for (UnsignedInteger j = 0; j < nodesNumber; ++j)
-	for (UnsignedInteger i = j; i < nodesNumber; ++i)
-	  {
-	    const NumericalScalar factor = weights_[i] * weights_[j];
-	    for (UnsignedInteger m = 0; m < dimension; ++m)
-	      for (UnsignedInteger n = 0; n < dimension; ++n)
-		C(m + i * dimension, n + j * dimension) *= factor;
-	  } // i
-    } // dimension > 1
+  {
+    for (UnsignedInteger j = 0; j < nodesNumber; ++j)
+      for (UnsignedInteger i = j; i < nodesNumber; ++i)
+      {
+        const NumericalScalar factor = weights_[i] * weights_[j];
+        for (UnsignedInteger m = 0; m < dimension; ++m)
+          for (UnsignedInteger n = 0; n < dimension; ++n)
+            C(m + i * dimension, n + j * dimension) *= factor;
+      } // i
+  } // dimension > 1
   // Step 2: take theta into account
   const UnsignedInteger basisSize = coll_.getSize();
   Matrix omega;
@@ -215,16 +215,16 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   if (dimension == 1) omega = theta_;
   // Here we have to expand theta if dimension > 1
   else
-    {
-      omega = Matrix(nodesNumber * dimension, basisSize * dimension);
-      for (UnsignedInteger j = 0; j < basisSize; ++j)
-	for (UnsignedInteger i = 0; i < nodesNumber; ++i)
-	  {
-	    const NumericalScalar value = theta_(i, j);
-	    for (UnsignedInteger k = 0; k < dimension; ++k)
-	      omega(k + i * dimension, k + j * dimension) = value;
-	  }
-    }
+  {
+    omega = Matrix(nodesNumber * dimension, basisSize * dimension);
+    for (UnsignedInteger j = 0; j < basisSize; ++j)
+      for (UnsignedInteger i = 0; i < nodesNumber; ++i)
+      {
+        const NumericalScalar value = theta_(i, j);
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+          omega(k + i * dimension, k + j * dimension) = value;
+      }
+  }
   // M.genProd(N, f1, f2) =
   // M  .N   si f1=false, f2=false
   // M^t.N   si f1=true,  f2=false
@@ -239,16 +239,16 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   if (dimension == 1) cholesky = cholesky_;
   // Here we have to expand cholesky if dimension > 1
   else
-    {
-      cholesky = TriangularMatrix(basisSize * dimension);
-      for (UnsignedInteger j = 0; j < basisSize; ++j)
-	for (UnsignedInteger i = j; i < basisSize; ++i)
-	  {
-	    const NumericalScalar value = cholesky_(i, j);
-	    for (UnsignedInteger k = 0; k < dimension; ++k)
-	      cholesky(k + i * dimension, k + j * dimension) = value;
-	  }
-    }
+  {
+    cholesky = TriangularMatrix(basisSize * dimension);
+    for (UnsignedInteger j = 0; j < basisSize; ++j)
+      for (UnsignedInteger i = j; i < basisSize; ++i)
+      {
+        const NumericalScalar value = cholesky_(i, j);
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+          cholesky(k + i * dimension, k + j * dimension) = value;
+      }
+  }
   // Step 3: reduction to a standard eigenvalues problem
   // A = L^{-1}CL^{-t}
   //   = L^{-1}((CL^{-t})^t)^t as (A^t)^t=A
@@ -268,35 +268,35 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   LOGINFO("Sort the eigenvectors by decreasing eigenvalues");
   NumericalSample eigenPairs(eigenDimension, eigenDimension + 1);
   for (UnsignedInteger i = 0; i < eigenDimension; ++i)
-    {
-      for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenPairs[i][j] = eigenVectors(j, i);
-      eigenPairs[i][eigenDimension] = -eigenValues[i];
-    }
+  {
+    for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenPairs[i][j] = eigenVectors(j, i);
+    eigenPairs[i][eigenDimension] = -eigenValues[i];
+  }
   eigenPairs = eigenPairs.sortAccordingToAComponent(eigenDimension);
   for (UnsignedInteger i = 0; i < eigenDimension; ++i)
-    {
-      for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
-      eigenValues[i] = -eigenPairs[i][eigenDimension];
-    }
+  {
+    for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
+    eigenValues[i] = -eigenPairs[i][eigenDimension];
+  }
   selectedEV = NumericalPoint(0);
   UnsignedInteger j = 0;
   NumericalMathFunctionCollection resultBasis(0);
   LOGINFO("Keep only the relevant eigen pairs");
   while ((j < eigenDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
+  {
+    selectedEV.add(eigenValues[j]);
+    const NumericalPoint a(*eigenVectors.getColumn(j).getImplementation());
+    const NumericalScalar norm = (omega * a).norm();
+    if (dimension == 1)
+      resultBasis.add(NumericalMathFunction(coll_, a / norm));
+    else
     {
-      selectedEV.add(eigenValues[j]);
-      const NumericalPoint a(*eigenVectors.getColumn(j).getImplementation());
-      const NumericalScalar norm = (omega * a).norm();
-      if (dimension == 1)
-	resultBasis.add(NumericalMathFunction(coll_, a / norm));
-      else
-	{
-	  NumericalSampleImplementation aSample(basisSize, dimension);
-	  aSample.setData(a / norm);
-	  resultBasis.add(NumericalMathFunction(coll_, aSample));
-	}
-      ++j;
+      NumericalSampleImplementation aSample(basisSize, dimension);
+      aSample.setData(a / norm);
+      resultBasis.add(NumericalMathFunction(coll_, aSample));
     }
+    ++j;
+  }
   return resultBasis;
 }
 

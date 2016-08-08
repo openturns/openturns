@@ -276,7 +276,7 @@ NumericalPoint Gumbel::getParameter() const
 
 void Gumbel::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Gumbel(parameter[0], parameter[1]);
   setWeight(w);

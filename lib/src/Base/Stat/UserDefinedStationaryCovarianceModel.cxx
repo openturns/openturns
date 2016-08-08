@@ -44,7 +44,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const Mesh & mesh,
-                                                                           const CovarianceMatrixCollection & covarianceFunction)
+    const CovarianceMatrixCollection & covarianceFunction)
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
 {
@@ -60,11 +60,11 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   dimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < size; ++k)
-    {
-      if (covarianceFunction[k].getDimension() != dimension_)
-        throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";
-      covarianceCollection_[k] = covarianceFunction[k];
-    }
+  {
+    if (covarianceFunction[k].getDimension() != dimension_)
+      throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";
+    covarianceCollection_[k] = covarianceFunction[k];
+  }
 }
 
 /* Virtual constructor */

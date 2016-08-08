@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
     study.add("truncatedNormal", truncatedNormal);
 
     // Create an UserDefined
-    NumericalSample x(3,1);
+    NumericalSample x(3, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;
     x[2][0] = 3.0;
@@ -392,7 +392,7 @@ int main(int argc, char *argv[])
       tnc.setStartingPoint(NumericalPoint(3, 1.0));
     }
     study.add("tnc", tnc);
- 
+
     // Create a SORM algorithm
     SORM sorm(abdoRackwitz, event, NumericalPoint(3, 4.));
     study.add("sorm", sorm);

@@ -54,8 +54,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
 
 /* Constructor with parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                                             const NumericalPoint & amplitude,
-                                                             const NumericalPoint & scale)
+    const NumericalPoint & amplitude,
+    const NumericalPoint & scale)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , dimension_(amplitude.getDimension())
@@ -75,16 +75,16 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
 
 /** Standard constructor with amplitude and scale parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
-                                                             const NumericalPoint & scale)
- : PersistentObject()
- , spatialDimension_(scale.getDimension())
- , dimension_(amplitude.getDimension())
- , amplitude_(0)
- , scale_(0)
- , spatialCorrelation_(0)
- , spatialCovariance_(0)
- , isDiagonal_(true)
- , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+    const NumericalPoint & scale)
+  : PersistentObject()
+  , spatialDimension_(scale.getDimension())
+  , dimension_(amplitude.getDimension())
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , spatialCovariance_(0)
+  , isDiagonal_(true)
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -92,9 +92,9 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
 }
 
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                                             const NumericalPoint & amplitude,
-                                                             const NumericalPoint & scale,
-                                                             const CorrelationMatrix & spatialCorrelation)
+    const NumericalPoint & amplitude,
+    const NumericalPoint & scale,
+    const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , dimension_(amplitude.getDimension())
@@ -115,17 +115,17 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
 
 /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
-                                                             const NumericalPoint & scale,
-                                                             const CorrelationMatrix & spatialCorrelation)
- : PersistentObject()
- , spatialDimension_(scale.getDimension())
- , dimension_(amplitude.getDimension())
- , amplitude_(0)
- , scale_(0)
- , spatialCorrelation_(0)
- , spatialCovariance_(0)
- , isDiagonal_(true)
- , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+    const NumericalPoint & scale,
+    const CorrelationMatrix & spatialCorrelation)
+  : PersistentObject()
+  , spatialDimension_(scale.getDimension())
+  , dimension_(amplitude.getDimension())
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , spatialCovariance_(0)
+  , isDiagonal_(true)
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -135,8 +135,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
 }
 
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                                             const NumericalPoint & scale,
-                                                             const CovarianceMatrix & spatialCovariance)
+    const NumericalPoint & scale,
+    const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , dimension_(spatialCovariance.getDimension())
@@ -166,16 +166,16 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
 
 /** Standard constructor with scale and spatial covariance parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
-                                                             const CovarianceMatrix & spatialCovariance)
- : PersistentObject()
- , spatialDimension_(scale.getDimension())
- , dimension_(spatialCovariance.getDimension())
- , amplitude_(0)
- , scale_(0)
- , spatialCorrelation_(0)
- , spatialCovariance_(0)
- , isDiagonal_(true)
- , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+    const CovarianceMatrix & spatialCovariance)
+  : PersistentObject()
+  , spatialDimension_(scale.getDimension())
+  , dimension_(spatialCovariance.getDimension())
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , spatialCovariance_(0)
+  , isDiagonal_(true)
+  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
 {
   // spatialCovariance
   spatialCovariance_ = spatialCovariance;
@@ -212,13 +212,13 @@ UnsignedInteger CovarianceModelImplementation::getSpatialDimension() const
 }
 
 CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScalar s,
-                                                            const NumericalScalar t) const
+    const NumericalScalar t) const
 {
   return operator() (NumericalPoint(1, s), NumericalPoint(1, t));
 }
 
 CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalPoint & s,
-                                                            const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   const NumericalScalar rho = computeStandardRepresentative(s, t);
   return CovarianceMatrix((spatialCovariance_ * rho).getImplementation());
@@ -226,13 +226,13 @@ CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalPoint
 
 // compute standard representative computes the term \rho(s, t)
 NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalPoint & s,
-                                                                             const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const NumericalPoint & s, const NumericalPoint & t) const";
 }
 
 NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalScalar & s,
-                                                                             const NumericalScalar & t) const
+    const NumericalScalar & t) const
 {
   return computeStandardRepresentative(NumericalPoint(1, s), NumericalPoint(1, t));
 }
@@ -249,14 +249,14 @@ NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(con
 
 
 NumericalScalar CovarianceModelImplementation::computeAsScalar (const NumericalPoint & s,
-                                                                const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return (*this)(s, t)(0, 0);
 }
 
 NumericalScalar CovarianceModelImplementation::computeAsScalar(const NumericalScalar s,
-                                                               const NumericalScalar t) const
+    const NumericalScalar t) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const NumericalScalar s, const NumericalScalar t) const";
 }
@@ -285,7 +285,7 @@ NumericalScalar CovarianceModelImplementation::computeAsScalar(const NumericalSc
 
 /* Gradient */
 Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
-                                                       const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -468,22 +468,22 @@ NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSamp
 
 /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const RegularGrid & timeGrid,
-                                                         const NumericalScalar nuggetFactor,
-                                                         const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return discretizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const Mesh & mesh,
-                                                         const NumericalScalar nuggetFactor,
-                                                         const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return discretizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample & vertices,
-                                                         const NumericalScalar nuggetFactor,
-                                                         const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   HMatrixFactory hmatrixFactory;
@@ -512,22 +512,22 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample &
 
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-                                                                     const NumericalScalar nuggetFactor,
-                                                                     const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return discretizeAndFactorizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-                                                                     const NumericalScalar nuggetFactor,
-                                                                     const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return discretizeAndFactorizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
-                                                                     const NumericalScalar nuggetFactor,
-                                                                     const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   // We suppose that covariance matrix is symmetric positive definite
   // We do not catch InternalException

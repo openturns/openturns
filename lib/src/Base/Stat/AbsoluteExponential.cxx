@@ -44,12 +44,12 @@ AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta,
-                                         const NumericalPoint & sigma)
+    const NumericalPoint & sigma)
   : StationaryCovarianceModel(sigma, theta)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() <<")";
+                                         << " Here, (got dimension=" << getDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -70,7 +70,7 @@ NumericalScalar AbsoluteExponential::computeStandardRepresentative(const Numeric
 
 /* Gradient */
 Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
-                                            const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -84,7 +84,7 @@ Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
   if (norm1 == 0.0)
   {
     Matrix gradient(spatialDimension_, 1);
-    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i,0) = -amplitude_[0] / scale_[i];
+    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] / scale_[i];
     return gradient;
   }
   // General case

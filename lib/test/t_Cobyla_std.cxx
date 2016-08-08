@@ -45,20 +45,20 @@ int main(int argc, char *argv[])
   try
   {
 
-      // Test function operator ()
-      Description input(4);
-      input[0] = "x1";
-      input[1] = "x2";
-      input[2] = "x3";
-      input[3] = "x4";
-      NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
-      NumericalPoint startingPoint(4, 0.0);
-      Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
-      myAlgorithm.setStartingPoint(startingPoint);
-      fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
-      myAlgorithm.run();
-      fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-      fullprint << "multipliers = " << printNumericalPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    // Test function operator ()
+    Description input(4);
+    input[0] = "x1";
+    input[1] = "x2";
+    input[2] = "x3";
+    input[3] = "x4";
+    NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
+    NumericalPoint startingPoint(4, 0.0);
+    Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
+    myAlgorithm.setStartingPoint(startingPoint);
+    fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
+    myAlgorithm.run();
+    fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers = " << printNumericalPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
   }
   catch (TestFailed & ex)
   {

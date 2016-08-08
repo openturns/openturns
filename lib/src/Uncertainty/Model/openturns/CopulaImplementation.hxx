@@ -43,9 +43,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const CopulaImplementation & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** Compute the survival function */
   virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;

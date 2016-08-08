@@ -57,9 +57,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const ConditionalDistribution & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
 
   /** String converter */

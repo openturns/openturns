@@ -36,7 +36,7 @@ def test_model(myModel):
         print("dCov =", repr(grad))
 
         gradfd = ot.Matrix(spatialDimension, dimension * dimension)
-        covarianceX1X2 = myModel(x1, x2);
+        covarianceX1X2 = myModel(x1, x2)
         # Symmetrize matrix
         covarianceX1X2.getImplementation().symmetrize()
         centralValue = ot.NumericalPoint(covarianceX1X2.getImplementation())
@@ -44,11 +44,12 @@ def test_model(myModel):
         for i in range(spatialDimension):
             currentPoint = ot.NumericalPoint(x1)
             currentPoint[i] += eps
-            localCovariance = myModel(currentPoint, x2);
+            localCovariance = myModel(currentPoint, x2)
             localCovariance.getImplementation().symmetrize()
-            currentValue = ot.NumericalPoint(localCovariance.getImplementation())
+            currentValue = ot.NumericalPoint(
+                localCovariance.getImplementation())
             for j in range(currentValue.getSize()):
-                gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps;
+                gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps
         print("dCov (FD)=", repr(gradfd))
 
 spatialDimension = 2
@@ -65,7 +66,7 @@ test_model(myModel)
 myDefautModel = ot.GeneralizedExponential()
 print("myDefautModel = ",  myDefautModel)
 
-myModel = ot.GeneralizedExponential([10.0]*spatialDimension, 1.5)
+myModel = ot.GeneralizedExponential([10.0] * spatialDimension, 1.5)
 test_model(myModel)
 
 
@@ -79,7 +80,7 @@ test_model(myModel)
 myDefautModel = ot.MaternModel()
 print("myDefautModel = ",  myDefautModel)
 
-myModel = ot.MaternModel([8.0]*spatialDimension, 2.0)
+myModel = ot.MaternModel([8.0] * spatialDimension, 2.0)
 test_model(myModel)
 
 
@@ -100,10 +101,11 @@ amplitude = [4.0, 2.0]
 scale = [1.0] * spatialDimension
 # Define a spatial correlation
 spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
-spatialCorrelation[1,0] = 0.3
+spatialCorrelation[1, 0] = 0.3
 myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
-myModel = ot.TensorizedCovarianceModel([myAbsoluteExponential, mySquaredExponential, myExponentialModel])
+myModel = ot.TensorizedCovarianceModel(
+    [myAbsoluteExponential, mySquaredExponential, myExponentialModel])
 test_model(myModel)
 # Define new scale
 scale = [2.5, 1.5]

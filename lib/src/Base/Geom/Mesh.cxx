@@ -195,8 +195,8 @@ Bool Mesh::checkPointInSimplex(const NumericalPoint & point,
 
 /* Check if the given point is in the given simplex and returns its barycentric coordinates */
 Bool Mesh::checkPointInSimplexWithCoordinates(const NumericalPoint & point,
-					      const UnsignedInteger index,
-					      NumericalPoint & coordinates) const
+    const UnsignedInteger index,
+    NumericalPoint & coordinates) const
 {
   SquareMatrix matrix(buildSimplexMatrix(index));
   NumericalPoint v(point);
@@ -357,19 +357,19 @@ CovarianceMatrix Mesh::computeP1Gram() const
   const UnsignedInteger simplicesSize = simplices_.getSize();
   SquareMatrix gram(verticesSize);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
+  {
+    const Indices simplex(getSimplex(i));
+    const NumericalScalar delta = computeSimplexVolume(i);
+    for (UnsignedInteger j = 0; j < simplexSize; ++j)
     {
-      const Indices simplex(getSimplex(i));
-      const NumericalScalar delta = computeSimplexVolume(i);
-      for (UnsignedInteger j = 0; j < simplexSize; ++j)
-	{
-	  const UnsignedInteger newJ = simplex[j];
-	  for (UnsignedInteger k = 0; k < simplexSize; ++k)
-	    {
-	      const UnsignedInteger newK = simplex[k];
-	      gram(newJ, newK) += delta * elementaryGram(j, k);
-	    } // Loop over second vertex
-	} // Loop over first vertex
-    } // Loop over simplices
+      const UnsignedInteger newJ = simplex[j];
+      for (UnsignedInteger k = 0; k < simplexSize; ++k)
+      {
+        const UnsignedInteger newK = simplex[k];
+        gram(newJ, newK) += delta * elementaryGram(j, k);
+      } // Loop over second vertex
+    } // Loop over first vertex
+  } // Loop over simplices
   return CovarianceMatrix(gram.getImplementation());
 }
 
@@ -444,14 +444,14 @@ Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
   const UnsignedInteger numVertices = getVerticesNumber();
   IndicesCollection verticesToSimplices(numVertices, Indices(0));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
+  {
+    const Indices simplex(simplices_[i]);
+    for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
     {
-      const Indices simplex(simplices_[i]);
-      for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
-        {
-          const UnsignedInteger index = simplex[j];
-          verticesToSimplices[index].add(i);
-        }
-    } // Loop over simplices
+      const UnsignedInteger index = simplex[j];
+      verticesToSimplices[index].add(i);
+    }
+  } // Loop over simplices
   return verticesToSimplices;
 }
 

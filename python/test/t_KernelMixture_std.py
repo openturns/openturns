@@ -114,7 +114,8 @@ try:
     print("cond. quantile=%.5f" % condQuantile)
     condQuantiles = distribution.computeConditionalQuantile(q, y)
     print("cond. quantile (vect)=", condQuantiles)
-    print("cond. cdf(cond. quantile)=", distribution.computeConditionalCDF(condQuantiles, y))
+    print("cond. cdf(cond. quantile)=",
+          distribution.computeConditionalCDF(condQuantiles, y))
 
     mean = distribution.getMean()
     print("mean=", repr(mean))

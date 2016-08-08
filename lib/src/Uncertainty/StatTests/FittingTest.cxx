@@ -289,8 +289,8 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
 
 /* Two-sample Kolmogorov–Smirnov test */
 TestResult FittingTest::TwoSamplesKolmogorov(const NumericalSample & sample1,
-                                             const NumericalSample & sample2,
-                                             const NumericalScalar level)
+    const NumericalSample & sample2,
+    const NumericalScalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if ((sample1.getDimension() != 1) || (sample2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";

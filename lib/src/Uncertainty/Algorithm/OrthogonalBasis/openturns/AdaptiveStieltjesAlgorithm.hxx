@@ -74,7 +74,7 @@ private:
   struct DotProductWrapper
   {
     DotProductWrapper(const OrthogonalUniVariatePolynomial & qN,
-		      const Distribution & weight):
+                      const Distribution & weight):
       qN_(qN), weight_(weight)
     {
       // Nothing to do

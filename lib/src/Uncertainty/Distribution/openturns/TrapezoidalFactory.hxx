@@ -67,7 +67,7 @@ protected:
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalSample sample_;
 
-  /**   OptimizationSolver   */ 
+  /**   OptimizationSolver   */
   mutable OptimizationSolver solver_;
 
 }; /* class TrapezoidalFactory */

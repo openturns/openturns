@@ -27,8 +27,8 @@ using namespace OT::Test;
 struct KernelWrapper
 {
   KernelWrapper(const NumericalMathFunction & left,
-		const NumericalMathFunction & right,
-		const Distribution & weight)
+                const NumericalMathFunction & right,
+                const Distribution & weight)
     : left_(left)
     , right_(right)
     , weight_(weight)
@@ -66,28 +66,28 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 2048 );
     ResourceMap::SetAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-6 );
     for (UnsignedInteger i = 0; i < factories.getSize(); ++i)
+    {
+      SoizeGhanemFactory soize(factories[i]);
+      Distribution distribution(soize.getMeasure());
+      fullprint << "SoizeGhanem=" << soize << std::endl;
+      Collection<NumericalMathFunction> functions(kMax);
+      for (UnsignedInteger k = 0; k < kMax; ++k)
       {
-	SoizeGhanemFactory soize(factories[i]);
-	Distribution distribution(soize.getMeasure());
-	fullprint << "SoizeGhanem=" << soize << std::endl;
-	Collection<NumericalMathFunction> functions(kMax);
-	for (UnsignedInteger k = 0; k < kMax; ++k)
-	  {
-	    functions[k] = soize.build(k);
-	    fullprint << "SoizeGhanem(" << k << ")=" << functions[k].getEvaluation()->__str__() << std::endl;
-	    fullprint << "SoizeGhanem(" << k << ")(" << x.__str__() << "=" << functions[k](x).__str__() << std::endl;
-	  }
-	SymmetricMatrix M(kMax);
-	for (UnsignedInteger m = 0; m < kMax; ++m)
-	  for (UnsignedInteger n = 0; n <= m; ++n)
-	    {
-	      KernelWrapper wrapper(functions[m], functions[n], distribution);
-	      NumericalMathFunction kernel(bindMethod<KernelWrapper, NumericalPoint, NumericalPoint>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
-	      NumericalScalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
-	      M(m, n) = (std::abs(value) < 1e-6 ? 0.0 : value);
-	    }
-	fullprint << "M=\n" << M.__str__() << std::endl;
+        functions[k] = soize.build(k);
+        fullprint << "SoizeGhanem(" << k << ")=" << functions[k].getEvaluation()->__str__() << std::endl;
+        fullprint << "SoizeGhanem(" << k << ")(" << x.__str__() << "=" << functions[k](x).__str__() << std::endl;
       }
+      SymmetricMatrix M(kMax);
+      for (UnsignedInteger m = 0; m < kMax; ++m)
+        for (UnsignedInteger n = 0; n <= m; ++n)
+        {
+          KernelWrapper wrapper(functions[m], functions[n], distribution);
+          NumericalMathFunction kernel(bindMethod<KernelWrapper, NumericalPoint, NumericalPoint>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
+          NumericalScalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
+          M(m, n) = (std::abs(value) < 1e-6 ? 0.0 : value);
+        }
+      fullprint << "M=\n" << M.__str__() << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

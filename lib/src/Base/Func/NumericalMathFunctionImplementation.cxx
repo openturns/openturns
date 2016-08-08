@@ -362,7 +362,7 @@ Matrix NumericalMathFunctionImplementation::parameterGradient(const NumericalPoi
 
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathFunctionImplementation::parameterGradient(const NumericalPoint & inP,
-                                                              const NumericalPoint & parameter)
+    const NumericalPoint & parameter)
 {
   setParameter(parameter);
   return p_evaluationImplementation_->parameterGradient(inP);
@@ -399,14 +399,14 @@ NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalP
 }
 
 NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
-                                                                const NumericalPoint & parameter)
+    const NumericalPoint & parameter)
 {
   setParameter(parameter);
   return p_evaluationImplementation_->operator()(inP);
 }
 
 NumericalSample NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
-                                                                 const NumericalSample & parameters)
+    const NumericalSample & parameters)
 {
   return p_evaluationImplementation_->operator()(inP, parameters);
 }
@@ -429,23 +429,23 @@ Matrix NumericalMathFunctionImplementation::gradient(const NumericalPoint & inP)
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
   try
-    {
-      return p_gradientImplementation_->gradient(inP);
-    }
+  {
+    return p_gradientImplementation_->gradient(inP);
+  }
   catch (...)
+  {
+    // Fallback on non-centered finite difference gradient
+    try
     {
-      // Fallback on non-centered finite difference gradient
-      try
-	{
-	  LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
-	  const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
-	  return gradientFD.gradient(inP);
-	}
-      catch (...)
-	{
-	  throw InternalException(HERE) << "Error: cannot compute gradient at point=" << inP;
-	}
-    } // Usual gradient failed
+      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
+      const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
+      return gradientFD.gradient(inP);
+    }
+    catch (...)
+    {
+      throw InternalException(HERE) << "Error: cannot compute gradient at point=" << inP;
+    }
+  } // Usual gradient failed
 }
 
 Matrix NumericalMathFunctionImplementation::gradient(const NumericalPoint & inP,
@@ -462,23 +462,23 @@ SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoin
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
   try
-    {
-      return p_hessianImplementation_->hessian(inP);
-    }
+  {
+    return p_hessianImplementation_->hessian(inP);
+  }
   catch (...)
+  {
+    // Fallback on non-centered finite difference gradient
+    try
     {
-      // Fallback on non-centered finite difference gradient
-      try
-	{
-	  LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
-	  const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
-	  return hessianFD.hessian(inP);
-	}
-      catch (...)
-	{
-	  throw InternalException(HERE) << "Error: cannot compute hessian at point=" << inP;
-	}
-    } // Usual gradient failed
+      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
+      const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
+      return hessianFD.hessian(inP);
+    }
+    catch (...)
+    {
+      throw InternalException(HERE) << "Error: cannot compute hessian at point=" << inP;
+    }
+  } // Usual gradient failed
 }
 
 SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoint & inP,

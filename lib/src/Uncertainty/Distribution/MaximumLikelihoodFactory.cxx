@@ -52,7 +52,7 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
   , solver_(new TNC())
   , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
-  // Initialize optimization solver parameter using the ResourceMap 
+  // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
@@ -93,11 +93,11 @@ struct MaximumLikelihoodFactoryLogLikelihood
                                         const NumericalPoint & knownParameterValues,
                                         const Indices & knownParameterIndices,
                                         const Bool & isParallel)
-  : sample_(sample)
-  , distribution_(distribution)
-  , knownParameterValues_(knownParameterValues)
-  , knownParameterIndices_(knownParameterIndices)
-  , isParallel_(isParallel)
+    : sample_(sample)
+    , distribution_(distribution)
+    , knownParameterValues_(knownParameterValues)
+    , knownParameterIndices_(knownParameterIndices)
+    , isParallel_(isParallel)
   {
     // Nothing to do
   }
@@ -136,7 +136,7 @@ struct MaximumLikelihoodFactoryLogLikelihood
           {
             result += logPdf;
           }
-	} // Loop over the realizations
+        } // Loop over the realizations
       } // Sequential computeLogPDF
     } // try
     catch (...)
@@ -170,10 +170,10 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   problem.setObjective(logLikelihood);
   OptimizationSolver solver(solver_);
   if (solver.getStartingPoint().getDimension() != parameterDimension)
-    {
-      LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << parameterDimension << ". Switching to the default parameter value=" << distribution_.getParameter());
-      solver.setStartingPoint(distribution_.getParameter());
-    }
+  {
+    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << parameterDimension << ". Switching to the default parameter value=" << distribution_.getParameter());
+    solver.setStartingPoint(distribution_.getParameter());
+  }
   solver.setProblem(problem);
   solver.run();
   NumericalPoint parameter(solver.getResult().getOptimalPoint());

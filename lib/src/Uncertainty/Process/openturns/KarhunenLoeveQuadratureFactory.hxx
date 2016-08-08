@@ -48,7 +48,7 @@ class OT_API KarhunenLoeveQuadratureFactory
 
   CLASSNAME;
 
- public:
+public:
   typedef Collection<NumericalMathFunction>           NumericalMathFunctionCollection;
   typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
 
@@ -57,11 +57,11 @@ class OT_API KarhunenLoeveQuadratureFactory
 
   /** Default constructor without parameters */
   KarhunenLoeveQuadratureFactory(const Domain & domain,
-				 const WeightedExperiment & experiment,
-				 const Basis & basis,
-				 const UnsignedInteger basisSize,
-				 const Bool mustScale,
-				 const NumericalScalar threshold);
+                                 const WeightedExperiment & experiment,
+                                 const Basis & basis,
+                                 const UnsignedInteger basisSize,
+                                 const Bool mustScale,
+                                 const NumericalScalar threshold);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveQuadratureFactory * clone() const;
@@ -87,7 +87,7 @@ class OT_API KarhunenLoeveQuadratureFactory
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
- private:
+private:
   /** Underlying domain */
   Domain domain_;
 

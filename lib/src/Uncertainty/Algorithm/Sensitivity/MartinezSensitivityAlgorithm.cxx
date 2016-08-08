@@ -40,8 +40,8 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()
 
 /** Constructor with parameters */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const NumericalSample & inputDesign,
-                                                           const NumericalSample & outputDesign,
-                                                           const UnsignedInteger size)
+    const NumericalSample & outputDesign,
+    const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
@@ -50,9 +50,9 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const NumericalSample
 
 /** Constructor with distribution / model parameters */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & distribution,
-                                                           const UnsignedInteger size,
-                                                           const NumericalMathFunction & model,
-                                                           const Bool computeSecondOrder)
+    const UnsignedInteger size,
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
@@ -61,8 +61,8 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & 
 
 /** Constructor with experiment / model parameters */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const WeightedExperiment & experiment,
-                                                           const NumericalMathFunction & model,
-                                                           const Bool computeSecondOrder)
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
@@ -76,7 +76,7 @@ MartinezSensitivityAlgorithm * MartinezSensitivityAlgorithm::clone() const
 }
 
 NumericalSample MartinezSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-                                                             NumericalSample & VTi) const
+    NumericalSample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
@@ -92,7 +92,7 @@ NumericalSample MartinezSensitivityAlgorithm::computeIndices(const NumericalSamp
   // center sample yA
   yA -= muA;
   // Reference sample yB
-  NumericalSample yB(sample, size, 2*size);
+  NumericalSample yB(sample, size, 2 * size);
   const NumericalPoint muB(yB.computeMean());
   const NumericalPoint sigmaB(yB.computeStandardDeviationPerComponent());
   // center-reduce sample yB

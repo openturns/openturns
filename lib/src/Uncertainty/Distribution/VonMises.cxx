@@ -230,7 +230,7 @@ NumericalPoint VonMises::getParameter() const
 
 void VonMises::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = VonMises(parameter[0], parameter[1]);
   setWeight(w);

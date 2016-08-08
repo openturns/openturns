@@ -54,32 +54,32 @@ Graph BipartiteGraph::draw() const
 {
   Graph graph("Bipartite graph", "", "", true, "topright");
   for (UnsignedInteger i = 0; i < getSize(); ++i)
+  {
+    NumericalPoint redPoint(2);
+    redPoint[0] = i;
+    redPoint[1] = 2.0;
+    for (UnsignedInteger j = 0; j < (*this)[i].getSize(); ++j)
     {
-      NumericalPoint redPoint(2);
-      redPoint[0] = i;
-      redPoint[1] = 2.0;
-      for (UnsignedInteger j = 0; j < (*this)[i].getSize(); ++j)
-        {
-          NumericalPoint blackPoint(2);
-          blackPoint[0] = (*this)[i][j];
-          blackPoint[1] = 1.0;
-          // First, the link
-          NumericalSample data(2, 2);
-          data[0] = redPoint;
-          data[1] = blackPoint;
-          Curve curve(data);
-          curve.setColor("blue");
-          graph.add(curve);
-          Cloud cloud(NumericalSample(1, blackPoint));
-          cloud.setColor("black");
-          cloud.setPointStyle("fcircle");
-	  graph.add(cloud);
-        }
-      Cloud cloud(NumericalSample(1, redPoint));
-      cloud.setColor("red");
+      NumericalPoint blackPoint(2);
+      blackPoint[0] = (*this)[i][j];
+      blackPoint[1] = 1.0;
+      // First, the link
+      NumericalSample data(2, 2);
+      data[0] = redPoint;
+      data[1] = blackPoint;
+      Curve curve(data);
+      curve.setColor("blue");
+      graph.add(curve);
+      Cloud cloud(NumericalSample(1, blackPoint));
+      cloud.setColor("black");
       cloud.setPointStyle("fcircle");
       graph.add(cloud);
     }
+    Cloud cloud(NumericalSample(1, redPoint));
+    cloud.setColor("red");
+    cloud.setPointStyle("fcircle");
+    graph.add(cloud);
+  }
   NumericalPoint bb(graph.getBoundingBox());
   bb[0] -= 0.5;
   bb[1] += 0.5;

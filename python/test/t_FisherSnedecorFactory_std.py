@@ -23,5 +23,6 @@ typedEstimatedDistribution = factory.buildAsFisherSnedecor(sample)
 print('Typed estimated distribution      =', typedEstimatedDistribution)
 defaultTypedDistribution = factory.buildAsFisherSnedecor()
 print('Default typed distribution        =', defaultTypedDistribution)
-typedFromParameterDistribution = factory.buildAsFisherSnedecor(distribution.getParameter())
+typedFromParameterDistribution = factory.buildAsFisherSnedecor(
+    distribution.getParameter())
 print('Typed distribution from parameters=', typedFromParameterDistribution)

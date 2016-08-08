@@ -238,7 +238,7 @@ public:
 
   /** Get the shifted moments of the distribution */
   NumericalPoint getShiftedMoment(const UnsignedInteger n,
-				  const NumericalPoint & shift) const;
+                                  const NumericalPoint & shift) const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
   TriangularMatrix getInverseCholesky() const;

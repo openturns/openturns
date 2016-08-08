@@ -46,7 +46,7 @@ public:
   /** Default constructor */
   SpectralModelImplementation();
 
-    /** Standard constructor with amplitude and scale parameters parameters */
+  /** Standard constructor with amplitude and scale parameters parameters */
   SpectralModelImplementation(const NumericalPoint & amplitude,
                               const NumericalPoint & scale);
 
@@ -104,8 +104,8 @@ public:
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
-             const UnsignedInteger columnIndex = 0,
-             const Bool module = true) const;
+                     const UnsignedInteger columnIndex = 0,
+                     const Bool module = true) const;
 
 protected:
 

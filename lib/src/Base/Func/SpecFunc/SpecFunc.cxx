@@ -606,13 +606,13 @@ NumericalScalar SpecFunc::LogGamma(const NumericalScalar a)
 NumericalScalar SpecFunc::LogGamma1p(const NumericalScalar a)
 {
   return (std::abs(a) < 0.5 ? -a * (0.34229051727072805652 +
-                                (0.75305954018877769214 +
-                                 (0.25594427350421023219 +
-                                  (-0.54867134418632830931 +
-                                   (-0.57006260085649768851 +
-                                    (-0.20361938002564003637 +
-                                     (-0.27922966566918143201e-1 -
-                                      0.10180389882069314488e-2 * a) * a) * a) * a) * a) * a) * a) /
+                                    (0.75305954018877769214 +
+                                     (0.25594427350421023219 +
+                                      (-0.54867134418632830931 +
+                                       (-0.57006260085649768851 +
+                                        (-0.20361938002564003637 +
+                                         (-0.27922966566918143201e-1 -
+                                          0.10180389882069314488e-2 * a) * a) * a) * a) * a) * a) * a) /
           (0.59300282040876235168 +
            (0.21496034951064079616e1 +
             (0.30947091018029240660e1 +
@@ -1027,7 +1027,8 @@ UnsignedInteger SpecFunc::Log2(const Unsigned64BitsInteger n)
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be positive";
 
   // De Bruijn sequence
-  const UnsignedInteger tab64[64] = {
+  const UnsignedInteger tab64[64] =
+  {
     63,  0, 58,  1, 59, 47, 53,  2,
     60, 39, 48, 27, 54, 33, 42,  3,
     61, 51, 37, 40, 49, 18, 28, 20,
@@ -1035,7 +1036,8 @@ UnsignedInteger SpecFunc::Log2(const Unsigned64BitsInteger n)
     62, 57, 46, 52, 38, 26, 32, 41,
     50, 36, 17, 19, 29, 10, 13, 21,
     56, 45, 25, 31, 35, 16,  9, 12,
-    44, 24, 15,  8, 23,  7,  6,  5};
+    44, 24, 15,  8, 23,  7,  6,  5
+  };
 
   // http://www.pearsonhighered.com/samplechapter/0201914654.pdf
   Unsigned64BitsInteger value = n;
@@ -1046,7 +1048,7 @@ UnsignedInteger SpecFunc::Log2(const Unsigned64BitsInteger n)
   value |= value >> 16;
   value |= value >> 32;
 
-  return tab64[((Unsigned64BitsInteger)((value - (value >> 1))*0x07EDD5E59A4E28C2)) >> 58];
+  return tab64[((Unsigned64BitsInteger)((value - (value >> 1)) * 0x07EDD5E59A4E28C2)) >> 58];
 }
 
 // Compute the smallest power of two greater or equal to the given n

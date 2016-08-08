@@ -70,10 +70,10 @@ LogUniform LogUniformFactory::buildAsLogUniform(const NumericalSample & sample) 
   NumericalScalar bLog = std::log(b);
   if (!SpecFunc::IsNormal(aLog) || !SpecFunc::IsNormal(bLog)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
-    {
-      aLog *= 1.0 - SpecFunc::NumericalScalarEpsilon;
-      bLog *= 1.0 + SpecFunc::NumericalScalarEpsilon;
-    }
+  {
+    aLog *= 1.0 - SpecFunc::NumericalScalarEpsilon;
+    bLog *= 1.0 + SpecFunc::NumericalScalarEpsilon;
+  }
   LogUniform result(aLog, bLog);
   result.setDescription(sample.getDescription());
   return result;

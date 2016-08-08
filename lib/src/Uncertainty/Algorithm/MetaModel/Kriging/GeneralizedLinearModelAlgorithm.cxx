@@ -65,10 +65,10 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm ()
 
 /** Parameters constructor */
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
-                                                                  const NumericalSample & outputSample,
-                                                                  const CovarianceModel & covarianceModel,
-                                                                  const Bool normalize,
-                                                                  const Bool keepCholeskyFactor)
+    const NumericalSample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const Bool normalize,
+    const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_(0, 0)
   , normalizedInputSample_(0, 0)
@@ -114,11 +114,11 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
 }
 
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
-                                                                  const NumericalSample & outputSample,
-                                                                  const CovarianceModel & covarianceModel,
-                                                                  const Basis & basis,
-                                                                  const Bool normalize,
-                                                                  const Bool keepCholeskyFactor)
+    const NumericalSample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const Basis & basis,
+    const Bool normalize,
+    const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_()
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -176,11 +176,11 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
 
 /** Parameters constructor */
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
-                                                                  const NumericalMathFunction & inputTransformation,
-                                                                  const NumericalSample & outputSample,
-                                                                  const CovarianceModel & covarianceModel,
-                                                                  const Basis & basis,
-                                                                  const Bool keepCholeskyFactor)
+    const NumericalMathFunction & inputTransformation,
+    const NumericalSample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const Basis & basis,
+    const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_()
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -224,13 +224,13 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
   initializeDefaultOptimizationSolver();
 }
 
-  /** Parameters constructor */
+/** Parameters constructor */
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
-                                                                  const NumericalSample & outputSample,
-                                                                  const CovarianceModel & covarianceModel,
-                                                                  const BasisCollection & multivariateBasis,
-                                                                  const Bool normalize,
-                                                                  const Bool keepCholeskyFactor)
+    const NumericalSample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const BasisCollection & multivariateBasis,
+    const Bool normalize,
+    const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -278,11 +278,11 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
 
 /** Parameters constructor */
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
-                                                                  const NumericalMathFunction & inputTransformation,
-                                                                  const NumericalSample & outputSample,
-                                                                  const CovarianceModel & covarianceModel,
-                                                                  const BasisCollection & multivariateBasis,
-                                                                  const Bool keepCholeskyFactor)
+    const NumericalMathFunction & inputTransformation,
+    const NumericalSample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const BasisCollection & multivariateBasis,
+    const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_()
   , normalizedInputSample_(0, inputSample.getDimension())
@@ -317,7 +317,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
 
 /** set sample  method */
 void GeneralizedLinearModelAlgorithm::setData(const NumericalSample & inputSample,
-                                              const NumericalSample & outputSample)
+    const NumericalSample & outputSample)
 {
   // Check the sample sizes
   if (inputSample.getSize() != outputSample.getSize())
@@ -336,7 +336,7 @@ void GeneralizedLinearModelAlgorithm::setCovariance(const CovarianceModel & cova
   // Check dimensions of the covariance model
   // Normal case
   if ((covarianceModel.getDimension() == dimension) && (inputDimension == covarianceModel.getSpatialDimension()))
-      covarianceModel_ = covarianceModel;
+    covarianceModel_ = covarianceModel;
   else if ((covarianceModel.getDimension() == dimension) && (inputDimension != covarianceModel.getSpatialDimension()))
   {
     if ((covarianceModel.getSpatialDimension() == 1) && dimension == 1)
@@ -541,11 +541,11 @@ void GeneralizedLinearModelAlgorithm::run()
   else
   {
     // If no basis ==> zero function
-    #ifdef OPENTURNS_HAVE_MUPARSER
-      metaModel = NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
-    #else
-      metaModel = NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, covarianceModel_.getDimension()));
-    #endif
+#ifdef OPENTURNS_HAVE_MUPARSER
+    metaModel = NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
+#else
+    metaModel = NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, covarianceModel_.getDimension()));
+#endif
   }
 
   // Add transformation if needed

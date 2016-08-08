@@ -213,7 +213,7 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSam
 }
 
 void DistributionFactory::setKnownParameter(const NumericalPoint & values,
-                                            const Indices & indices)
+    const Indices & indices)
 {
   copyOnWrite();
   getImplementation()->setKnownParameter(values, indices);

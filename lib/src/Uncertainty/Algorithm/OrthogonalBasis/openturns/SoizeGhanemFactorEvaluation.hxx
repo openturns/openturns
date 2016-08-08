@@ -40,7 +40,7 @@ class OT_API SoizeGhanemFactorEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;
- public:
+public:
 
   typedef Collection<Distribution>           DistributionCollection;
   typedef PersistentCollection<Distribution> DistributionPersistentCollection;
@@ -88,9 +88,9 @@ class OT_API SoizeGhanemFactorEvaluation
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
- protected:
+protected:
 
- private:
+private:
 
   /** The underlying measure */
   Distribution measure_;

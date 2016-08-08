@@ -176,33 +176,33 @@ NumericalSample P1LagrangeEvaluationImplementation::operator()( const NumericalS
   const NumericalSample vertices(mesh.getVertices());
   if (inS == vertices) result = field_.getValues();
   else
+  {
+    // Here, perform the P1 interpolation
+    // First get the indices of the nearest vertices, in parallel
+    const Mesh::IndicesCollection simplices(mesh.getSimplices());
+    const NumericalSample values(field_.getValues());
+    const Indices nearestIndices(mesh.getNearestVertexIndex(inS));
+    for (UnsignedInteger n = 0; n < size; ++n)
     {
-      // Here, perform the P1 interpolation
-      // First get the indices of the nearest vertices, in parallel
-      const Mesh::IndicesCollection simplices(mesh.getSimplices());
-      const NumericalSample values(field_.getValues());
-      const Indices nearestIndices(mesh.getNearestVertexIndex(inS));
-      for (UnsignedInteger n = 0; n < size; ++n)
-	{
-	  const UnsignedInteger nearestIndex = nearestIndices[n];
-	  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
-	  // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
-	  result[n] = values[nearestIndex];
-	  NumericalPoint coordinates;
-	  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
-	    {
-	      const UnsignedInteger simplexIndex = simplicesCandidates[i];
-	      if (mesh.checkPointInSimplexWithCoordinates(inS[n], simplexIndex, coordinates))
-		{
-		  const Indices simplex(simplices[simplexIndex]);
-		  result[n] = values[simplex[0]] * coordinates[0];
-		  for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-		    result[n] += values[simplex[j]] * coordinates[j];
-		  break;
-		}
-	    } // Loop over the simplices candidates
-	} // Loop over the input sample
-    } // The input sample is different from 
+      const UnsignedInteger nearestIndex = nearestIndices[n];
+      const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
+      // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
+      result[n] = values[nearestIndex];
+      NumericalPoint coordinates;
+      for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+      {
+        const UnsignedInteger simplexIndex = simplicesCandidates[i];
+        if (mesh.checkPointInSimplexWithCoordinates(inS[n], simplexIndex, coordinates))
+        {
+          const Indices simplex(simplices[simplexIndex]);
+          result[n] = values[simplex[0]] * coordinates[0];
+          for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
+            result[n] += values[simplex[j]] * coordinates[j];
+          break;
+        }
+      } // Loop over the simplices candidates
+    } // Loop over the input sample
+  } // The input sample is different from
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

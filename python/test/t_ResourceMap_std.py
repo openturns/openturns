@@ -13,6 +13,7 @@ try:
     print('Extract from ResourceMap : R-executable-command -> ',
           ot.ResourceMap.Get('R-executable-command'))
 except:
-    import os, traceback
+    import os
+    import traceback
     traceback.print_exc()
     os._exit(1)

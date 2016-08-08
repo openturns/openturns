@@ -70,17 +70,17 @@ MaximumDistribution::MaximumDistribution(const DistributionCollection & collecti
   setDimension(1);
   for (UnsignedInteger i = 0; i < variablesNumber_; ++i)
     if (collection[i] != collection[0])
-      {
-	allSame_ = false;
-	break;
-      }
+    {
+      allSame_ = false;
+      break;
+    }
   if (allSame_) setDistribution(collection[0]);
   else setDistribution(ComposedDistribution(collection));
 }
 
 /* Parameters constructor */
 MaximumDistribution::MaximumDistribution(const Distribution & distribution,
-					 const UnsignedInteger variablesNumber)
+    const UnsignedInteger variablesNumber)
   : DistributionImplementation()
   , distribution_()
   , allSame_(true)
@@ -199,11 +199,11 @@ void MaximumDistribution::setParametersCollection(const NumericalPointCollection
 {
   // This trick is needed n order to cope with the case allSame == True
   if (allSame_)
-    {
-      Distribution clone(getDistribution());
-      clone.setParametersCollection(parametersCollection);
-      distribution_ = clone;
-    }
+  {
+    Distribution clone(getDistribution());
+    clone.setParametersCollection(parametersCollection);
+    distribution_ = clone;
+  }
   else
     distribution_.setParametersCollection(parametersCollection);
 }

@@ -73,7 +73,7 @@ protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
   NumericalSample computeIndices(const NumericalSample & sample,
-	                         NumericalSample & VTi) const;
+                                 NumericalSample & VTi) const;
 
 }; /* class MauntzKucherenkoSensitivityAlgorithm */
 

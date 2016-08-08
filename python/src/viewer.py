@@ -175,11 +175,12 @@ class View(object):
                 raise ValueError('-- pixelsize must be a 2-tuple.')
             figure_kwargs.setdefault('dpi', 100)
             dpi = figure_kwargs['dpi']
-            border = 10 # guess
+            border = 10  # guess
             width, height = pixelsize
             width -= border
             height -= border
-            figure_kwargs.setdefault('figsize', (width * 1.0 / dpi, height * 1.0 / dpi))
+            figure_kwargs.setdefault(
+                'figsize', (width * 1.0 / dpi, height * 1.0 / dpi))
 
         # set step drawstyle
         step_kwargs_default.setdefault('where', 'post')
@@ -377,7 +378,8 @@ class View(object):
                     clabel_kwargs.setdefault('fmt', '%g')
                     plt.clabel(contourset, **clabel_kwargs)
                 for i in range(drawable.getLabels().getSize()):
-                    contourset.collections[i].set_label(drawable.getLabels()[i])
+                    contourset.collections[i].set_label(
+                        drawable.getLabels()[i])
 
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kwargs)
