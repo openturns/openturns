@@ -75,7 +75,7 @@ void AbdoRackwitz::initialize()
   currentLambda_ = 0.0;
 }
 
-/** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+/* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 {
   if (!problem.hasLevelFunction())
@@ -146,7 +146,9 @@ void AbdoRackwitz::run()
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
   // reset result
-  setResult(OptimizationResult(currentPoint_, NumericalPoint(1, currentLevelValue_), 0, absoluteError, relativeError, residualError, constraintError, getProblem()));
+  result_ = OptimizationResult();
+  result_.setProblem(getProblem());
+  result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
@@ -161,7 +163,6 @@ void AbdoRackwitz::run()
     /* In case of a null gradient, throw an internal exception */
     if (normGradientSquared == 0)
     {
-      result_.update(currentPoint_, iterationNumber);
       throw InternalException(HERE) << "Error in Abdo Rackwitz algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }
     /* Lambda = (G - <Grad(G), u>) / ||Grad(G)||^2 */
@@ -189,9 +190,11 @@ void AbdoRackwitz::run()
     convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
-    result_.update(currentPoint_, iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError, NumericalPoint(1, currentLambda_));
-    LOGINFO( getResult().__repr__() );
+    result_.setIterationNumber(iterationNumber);
+    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
+
+    LOGINFO(getResult().__repr__());
   }
 
   /* Check if we converged */

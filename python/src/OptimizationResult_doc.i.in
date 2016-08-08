@@ -6,8 +6,6 @@ Returned by optimization solvers, see :class:`~openturns.OptimizationSolver`.
 Available constructors:
     OptimizationResult(*optimalPoint, optimalValue, iterationNumber, absoluteError, relativeError, residualError, constraintError*)
 
-    OptimizationResult(*optimalPoint, optimalValue, iterationNumber, absoluteError, relativeError, residualError, constraintError, lagrangeMultipliers*)
-
 Parameters
 ----------
 optimalPoint : sequence of float
@@ -24,8 +22,6 @@ residualError : float
     Residual error.
 constraintError : float
     Constraint error.
-lagrangeMultipliers : sequence of float
-    Lagrange multipliers.
 problem : :class:`~openturns.OptimizationProblem`
     Associated problem."
 
@@ -68,6 +64,16 @@ Returns
 -------
 constraintErrorHistory : :class:`~openturns.NumericalSample`
      Value of the constrainte error at each iteration of the solver."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setIterationNumber
+"Accessor to the number of iterations.
+
+Parameters
+----------
+iterationNumber : int
+     Number of evaluations."
 
 // ---------------------------------------------------------------------
 
@@ -121,6 +127,16 @@ residualErrorHistory : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setOptimalPoint
+"Accessor to the optimal point.
+
+Parameters
+----------
+optimalPoint : :class:`~openturns.NumericalPoint`
+     Optimal point"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getOptimalPoint
 "Accessor to the optimal point.
 
@@ -128,6 +144,21 @@ Returns
 -------
 optimalPoint : :class:`~openturns.NumericalPoint`
      Optimal point"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setLagrangeMultipliers
+"Accessor to the Lagrange multipliers.
+
+Parameters
+----------
+multipliers : :class:`~openturns.NumericalPoint`
+     Lagrange multipliers.
+
+Notes
+-----
+See :class:`~openturns.OptimizationSolver` for the details on how the multipliers are defined and stored in the result.
+"
 
 // ---------------------------------------------------------------------
 
@@ -143,6 +174,16 @@ Notes
 -----
 See :class:`~openturns.OptimizationSolver` for the details on how the multipliers are defined and stored in the result.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setOptimalValue
+"Accessor to the optimal value.
+
+Parameters
+----------
+optimalValue : :class:`~openturns.NumericalPoint`
+     Value at the optimal point"
 
 // ---------------------------------------------------------------------
 
@@ -173,6 +214,16 @@ Returns
 -------
 outputSample : :class:`~openturns.NumericalSample`
      Output points used by the solver"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setProblem
+"Accessor to the underlying optimization problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+     Problem corresponding to the result"
 
 // ---------------------------------------------------------------------
 

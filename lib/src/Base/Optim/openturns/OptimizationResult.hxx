@@ -59,27 +59,19 @@ public:
                      const NumericalScalar constraintError,
                      const OptimizationProblem & problem);
 
-  OptimizationResult(const NumericalPoint & optimalPoint,
-                     const NumericalPoint & optimalValue,
-                     const UnsignedInteger iterationNumber,
-                     const NumericalScalar absoluteError,
-                     const NumericalScalar relativeError,
-                     const NumericalScalar residualError,
-                     const NumericalScalar constraintError,
-                     const OptimizationProblem & problem,
-                     const NumericalPoint & lagrangeMultipliers);
-
-
   /** Virtual constructor */
   virtual OptimizationResult * clone() const;
 
   /** OptimalPoint accessors */
+  void setOptimalPoint(const NumericalPoint & optimalPoint);
   NumericalPoint getOptimalPoint() const;
 
   /** Optimal value accessor */
+  void setOptimalValue(const NumericalPoint & optimalValue);
   NumericalPoint getOptimalValue() const;
 
   /** Iteration number accessor */
+  void setIterationNumber(const UnsignedInteger iterationNumber);
   UnsignedInteger getIterationNumber() const;
 
   /** Absolute error accessor */
@@ -103,9 +95,11 @@ public:
   NumericalSample getOutputSample() const;
 
   /** Problem accessor */
+  void setProblem(const OptimizationProblem & problem);
   OptimizationProblem getProblem() const;
 
   /** Lagrange multipliers accessor */
+  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
   NumericalPoint getLagrangeMultipliers() const;
 
   /** String converter */
@@ -117,18 +111,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-  /** Update current state */
-  void update(const NumericalPoint & optimalPoint, UnsignedInteger iterationNumber);
-
   /** Incremental history storage */
-  void store(const NumericalPoint & inP,
-             const NumericalPoint & outP,
-             const NumericalScalar absoluteError,
-             const NumericalScalar relativeError,
-             const NumericalScalar residualError,
-             const NumericalScalar constraintError,
-             const NumericalPoint & lagrangeMultipliers);
-
   void store(const NumericalPoint & inP,
              const NumericalPoint & outP,
              const NumericalScalar absoluteError,
@@ -140,16 +123,6 @@ public:
   Graph drawErrorHistory() const;
 
 protected:
-
-  /** OptimalPoint accessors */
-  void setOptimalPoint(const NumericalPoint & optimalPoint);
-
-  /** Iteration number accessor */
-  void setIterationNumber(const UnsignedInteger iterationNumber);
-
-  /** Optimal value accessor */
-  void setOptimalValue(const NumericalPoint & optimalValue);
-
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);
   void setAbsoluteErrorHistory(const NumericalSample & absoluteError);
@@ -165,9 +138,6 @@ protected:
   /** Constraint error accessor */
   void setConstraintError(const NumericalScalar constraintError);
   void setConstraintErrorHistory(const NumericalSample & constraintError);
-
-  /** Lagrange multipliers accessor */
-  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
 
 private:
 

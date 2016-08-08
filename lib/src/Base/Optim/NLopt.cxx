@@ -160,7 +160,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     }
   }
 
-  if (problem.hasEqualityConstraint() || problem.hasLevelFunction())
+  if (problem.hasEqualityConstraint())
   {
     try {
       opt.add_equality_constraint(NLopt::ComputeEqualityConstraint, 0);
@@ -187,7 +187,15 @@ void NLopt::run()
 {
 #ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = getProblem().getDimension();
+  NumericalPoint startingPoint(getStartingPoint());
+  if (startingPoint.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
+
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(algoName_));
+
+  // initialize history
+  evaluationInputHistory_ = NumericalSample(0, dimension);
+  evaluationOutputHistory_ = NumericalSample(0, 1);
 
   nlopt::opt opt(algo, dimension);
 
@@ -205,10 +213,14 @@ void NLopt::run()
 
   if (getProblem().hasBounds())
   {
-    Interval::BoolCollection finiteLowerBound(getProblem().getBounds().getFiniteLowerBound());
-    Interval::BoolCollection finiteUpperBound(getProblem().getBounds().getFiniteUpperBound());
-    NumericalPoint lowerBound(getProblem().getBounds().getLowerBound());
-    NumericalPoint upperBound(getProblem().getBounds().getUpperBound());
+    Interval bounds(getProblem().getBounds());
+    if (!bounds.contains(startingPoint))
+      throw InvalidArgumentException(HERE) << "The starting point is not feasible";
+
+    Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+    Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+    NumericalPoint lowerBound(bounds.getLowerBound());
+    NumericalPoint upperBound(bounds.getUpperBound());
     std::vector<double> lb(dimension, 0.0);
     std::vector<double> ub(dimension, 0.0);
     std::copy(lowerBound.begin(), lowerBound.end(), lb.begin());
@@ -246,12 +258,6 @@ void NLopt::run()
     }
   }
 
-  if (getProblem().hasLevelFunction())
-  {
-    opt.add_equality_constraint(NLopt::ComputeLevelFunction, this, getMaximumConstraintError());
-    opt.set_min_objective(NLopt::ComputeObjectiveNearest, this);
-  }
-
   if (initialStep_.getDimension() > 0)
   {
     if (initialStep_.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid dx point dimension, expected " << dimension;
@@ -280,8 +286,6 @@ void NLopt::run()
   }
 
   std::vector<double> x(dimension, 0.0);
-  NumericalPoint startingPoint(getStartingPoint());
-  if (startingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
   std::copy(startingPoint.begin(), startingPoint.end(), x.begin());
   double optimalValue = 0.0;
 
@@ -304,7 +308,35 @@ void NLopt::run()
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  setResult(OptimizationResult(optimizer, NumericalPoint(1, optimalValue), 0, 0.0, 0.0, 0.0, 0.0, getProblem(), computeLagrangeMultipliers(optimizer)));
+  OptimizationResult result;
+  result.setProblem(getProblem());
+
+  UnsignedInteger size = evaluationInputHistory_.getSize();
+
+  NumericalScalar absoluteError = -1.0;
+  NumericalScalar relativeError = -1.0;
+  NumericalScalar residualError = -1.0;
+  NumericalScalar constraintError = -1.0;
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const NumericalPoint inP(evaluationInputHistory_[i]);
+    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    if (i > 0)
+    {
+      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
+      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      absoluteError = (inP - inPM).normInf();
+      relativeError = absoluteError / inP.normInf();
+      residualError = std::abs(outP[0] - outPM[0]);
+    }
+    result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
+  }
+
+  result.setOptimalPoint(optimizer);
+  result.setOptimalValue(NumericalPoint(1, optimalValue));
+  result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
+  setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
@@ -405,6 +437,11 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
       grad[i] = gradient(i, 0);
     }
   }
+
+  // track input/outputs
+  algorithm->evaluationInputHistory_.add(inP);
+  algorithm->evaluationOutputHistory_.add(outP);
+
   return outP[0];
 }
 
@@ -458,52 +495,6 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
   }
   return outP[marginalIndex];
 }
-
-
-double NLopt::ComputeLevelFunction(const std::vector< double >& x, std::vector< double >& grad, void* f_data)
-{
-  NLopt *algorithm = static_cast<NLopt *>(f_data);
-  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
-
-  // evaluation
-  NumericalPoint outP(algorithm->getProblem().getLevelFunction()(inP));
-
-  // gradient
-  if (!grad.empty())
-  {
-    Matrix gradient(algorithm->getProblem().getLevelFunction().gradient(inP));
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      grad[i] = gradient(i, 0);
-    }
-  }
-  return outP[0] - algorithm->getProblem().getLevelValue();
-}
-
-
-double NLopt::ComputeObjectiveNearest(const std::vector<double> & x, std::vector<double> & grad, void * f_data)
-{
-  NLopt *algorithm = static_cast<NLopt *>(f_data);
-  const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
-
-  // evaluation
-  NumericalScalar outP = 0.5 * inP.normSquare();
-
-  // gradient
-  if (!grad.empty())
-  {
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      grad[i] = inP[i];
-    }
-  }
-  return outP;
-}
-
 
 CLASSNAMEINIT(SLSQP);
 static const Factory<SLSQP> Factory_SLSQP;

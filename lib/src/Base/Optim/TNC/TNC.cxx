@@ -95,8 +95,6 @@ TNC * TNC::clone() const
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void TNC::checkProblem(const OptimizationProblem & problem) const
 {
-  if (problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support level-function optimization";
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
@@ -114,10 +112,6 @@ void TNC::run()
   }
 
   NumericalPoint x(getStartingPoint());
-
-  /* Compute the objective function at StartingPoint */
-  const NumericalScalar sign(getProblem().isMinimization() ? 1.0 : -1.0);
-  NumericalScalar f(sign * getProblem().getObjective().operator()(x)[0]);
 
   NumericalPoint low(boundConstraints.getLowerBound());
   NumericalPoint up(boundConstraints.getUpperBound());
@@ -137,18 +131,11 @@ void TNC::run()
   double *refOffset(offset.getDimension() == 0 ? NULL : &offset[0]);
   int nfeval(0);
 
-  NumericalScalar absoluteError(-1.0);
-  NumericalScalar relativeError(-1.0);
-  NumericalScalar residualError(-1.0);
-  NumericalScalar constraintError(-1.0);
-
-  // clear result
-  setResult(OptimizationResult(x, NumericalPoint(1, f), nfeval, absoluteError, relativeError, residualError, constraintError, getProblem()));
-  setResult(OptimizationResult(x, NumericalPoint(1, sign * f), nfeval, absoluteError, relativeError, residualError, constraintError, getProblem()));
-
   // clear history
   evaluationInputHistory_ = NumericalSample(0.0, dimension);
   evaluationOutputHistory_ = NumericalSample(0.0, 2);
+
+  NumericalScalar f = -1.0;
 
   /*
    * tnc : minimize a function with variables subject to bounds, using
@@ -207,33 +194,49 @@ void TNC::run()
 
   int returnCode(tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumIterationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval));
 
+  result_ = OptimizationResult();
+  result_.setProblem(getProblem());
+
   // Update the result
-  const UnsignedInteger size(evaluationInputHistory_.getSize());
-  for (UnsignedInteger i = 1; i < size; ++i)
+  const UnsignedInteger size = evaluationInputHistory_.getSize();
+
+  NumericalScalar absoluteError = -1.0;
+  NumericalScalar relativeError = -1.0;
+  NumericalScalar residualError = -1.0;
+  NumericalScalar constraintError = -1.0;
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPoint x_m(evaluationInputHistory_[i - 1]);
-    const NumericalPoint xi(evaluationInputHistory_[i]);
-    const NumericalPoint y(evaluationOutputHistory_[i]);
-    const NumericalPoint y_m(evaluationOutputHistory_[i - 1]);
-    absoluteError = (xi - x_m).norm();
-    relativeError = absoluteError / xi.norm();
-    residualError = NumericalPoint(1, y[0] - y_m[0]).norm();
-    constraintError = 0.0;
-    for ( UnsignedInteger j = 0; j < dimension; ++j )
+    const NumericalPoint inP(evaluationInputHistory_[i]);
+    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    if (i > 0)
     {
-      if (finiteLow[j] && (xi[j] < low[j]))
+      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
+      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      absoluteError = (inP - inPM).normInf();
+      relativeError = absoluteError / inP.normInf();
+      residualError = std::abs(outP[0] - outPM[0]);
+    }
+    constraintError = 0.0;
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      if (finiteLow[j] && (inP[j] < low[j]))
       {
-        constraintError += low[j] - xi[j];
+        constraintError += low[j] - inP[j];
       }
-      if (finiteUp[j] && (up[j] < xi[j]))
+      if (finiteUp[j] && (up[j] < inP[j]))
       {
-        constraintError += xi[j] - up[j];
+        constraintError += inP[j] - up[j];
       }
     } // for j
+    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   } // for i
 
   /* Store the result */
-  setResult(OptimizationResult(x, NumericalPoint(1, sign * f), nfeval, absoluteError, relativeError, residualError, constraintError, getProblem(), computeLagrangeMultipliers(x)));
+  result_.setOptimalPoint(x);
+  const NumericalScalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
+  result_.setOptimalValue(NumericalPoint(1, sign * f));
+  result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
   const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));
