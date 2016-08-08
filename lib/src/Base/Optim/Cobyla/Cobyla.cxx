@@ -82,9 +82,6 @@ void Cobyla::run()
   if (getProblem().hasBounds())
   {
     Interval bounds(getProblem().getBounds());
-    if (!bounds.contains(x))
-      throw InvalidArgumentException(HERE) << "The starting point is not feasible";
-
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       if (bounds.getFiniteLowerBound()[i]) ++m;

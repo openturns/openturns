@@ -214,9 +214,6 @@ void NLopt::run()
   if (getProblem().hasBounds())
   {
     Interval bounds(getProblem().getBounds());
-    if (!bounds.contains(startingPoint))
-      throw InvalidArgumentException(HERE) << "The starting point is not feasible";
-
     Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
     Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
     NumericalPoint lowerBound(bounds.getLowerBound());
