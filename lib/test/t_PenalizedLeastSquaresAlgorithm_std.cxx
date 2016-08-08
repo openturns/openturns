@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dimension(2);
+    UnsignedInteger dimension = 2;
     // Reference function
     Description inVar(dimension);
     inVar[0] = "x1";
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     indices.fill();
 
     // Input sample
-    UnsignedInteger size(5);
+    UnsignedInteger size = 5;
     NumericalSample inputSample(size * size, dimension);
     NumericalPoint weight(inputSample.getSize());
     for (UnsignedInteger i = 0; i < inputSample.getSize(); ++i)
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
       inputSample[i][1] = NumericalScalar (i / size) / size;
       weight[i] = (i % size + 1) * (i / size + 1);
     }
-    NumericalScalar penalizationFactor(0.25);
+    NumericalScalar penalizationFactor = 0.25;
     // Uniform weight, no penalization
     {
       PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), NumericalPoint(inputSample.getSize(), 1.0), basis, indices);

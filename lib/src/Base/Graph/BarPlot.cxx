@@ -108,7 +108,7 @@ BarPlot::BoundingBox BarPlot::getBoundingBox() const
   const NumericalPoint min(data_.getMin());
   boundingBox[0] = origin_;
   boundingBox[1] = origin_;
-  const UnsignedInteger size(data_.getSize());
+  const UnsignedInteger size = data_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     boundingBox[1] += data_[i][0];

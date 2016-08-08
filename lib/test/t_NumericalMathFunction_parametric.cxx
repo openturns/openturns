@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     Indices set(2);
     set[0] = 3;
     set[1] = 1;
-    Bool parametersSet(true);
+    Bool parametersSet = true;
     NumericalPoint x(set.getSize());
     x[0] = 1.0;
     x[1] = 2.0;

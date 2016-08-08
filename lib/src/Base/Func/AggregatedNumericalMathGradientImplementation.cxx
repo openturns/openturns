@@ -56,11 +56,11 @@ AggregatedNumericalMathGradientImplementation * AggregatedNumericalMathGradientI
 /* Gradient method */
 Matrix AggregatedNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
   Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  UnsignedInteger columnIndex(0);
+  UnsignedInteger columnIndex = 0;
   // Loop over the contributors
   for (UnsignedInteger contributorIndex = 0; contributorIndex < size; ++contributorIndex)
   {

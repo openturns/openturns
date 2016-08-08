@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
@@ -142,14 +142,14 @@ int main(int argc, char *argv[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
     // Specific to this distribution
-    NumericalScalar mu(distribution.getMu());
+    NumericalScalar mu = distribution.getMu();
     fullprint << "mu=" << mu << std::endl;
-    NumericalScalar sigma(distribution.getSigma());
+    NumericalScalar sigma = distribution.getSigma();
     fullprint << "sigma=" << sigma << std::endl;
     LogNormal newDistribution(mu, sigma, distribution.getGamma(), LogNormal::MUSIGMA);
     fullprint << "muLog from (mu, sigma)=" << newDistribution.getMuLog() << std::endl;
     fullprint << "sigmaLog from (mu, sigma)=" << newDistribution.getSigmaLog() << std::endl;
-    NumericalScalar sigmaOverMu(distribution.getSigmaOverMu());
+    NumericalScalar sigmaOverMu = distribution.getSigmaOverMu();
     fullprint << "sigmaOverMu=" << sigmaOverMu << std::endl;
     newDistribution = LogNormal(mu, sigmaOverMu, distribution.getGamma(), LogNormal::MU_SIGMAOVERMU);
     fullprint << "muLog from (mu, sigmaOverMu)=" << newDistribution.getMuLog() << std::endl;

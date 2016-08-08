@@ -71,7 +71,7 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
  */
 void Cobyla::run()
 {
-  const UnsignedInteger dimension(getStartingPoint().getDimension());
+  const UnsignedInteger dimension = getStartingPoint().getDimension();
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
 
@@ -92,7 +92,7 @@ void Cobyla::run()
     }
   }
 
-  NumericalScalar rhoEnd(getMaximumAbsoluteError());
+  NumericalScalar rhoEnd = getMaximumAbsoluteError();
   int maxFun(getMaximumIterationNumber());
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
@@ -156,7 +156,7 @@ void Cobyla::run()
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
-  const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));
+  const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
   if (returnCode != 0)
   {
@@ -223,17 +223,17 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   const OptimizationProblem problem(algorithm->getProblem());
   NumericalPoint outPoint(2);
 
-  NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
+  NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
   // cobyla freezes when dealing with MaxNumericalScalar
   if (std::abs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
   outPoint[0] = result;
 
-  const NumericalScalar sign(problem.isMinimization() ? 1.0 : -1.0);
+  const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;
   *f = sign * result;
 
-  UnsignedInteger shift(0);
-  UnsignedInteger nbIneqConst(problem.getInequalityConstraint().getOutputDimension());
-  UnsignedInteger nbEqConst(problem.getEqualityConstraint().getOutputDimension());
+  UnsignedInteger shift = 0;
+  UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
+  UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
   NumericalPoint constraintValue(nbIneqConst + 2 * nbEqConst);
 
   /* Compute the inequality constraints at inPoint */

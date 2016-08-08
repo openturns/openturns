@@ -57,14 +57,14 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 /* Evaluation */
 NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply Phi^{-1} o conditional CDF over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar conditionalCDF(distribution_.computeConditionalCDF(inP[i], y));
+    const NumericalScalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
     result[i] = DistFunc::qNormal(conditionalCDF);
     y.add(inP[i]);
   }

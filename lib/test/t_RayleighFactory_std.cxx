@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Rayleigh distribution(2.5, -1.0);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     RayleighFactory factory;
     CovarianceMatrix covariance;

@@ -71,7 +71,7 @@ RandomizedQuasiMonteCarlo * RandomizedQuasiMonteCarlo::clone() const
 NumericalSample RandomizedQuasiMonteCarlo::computeBlockSample()
 {
   // Size of a block
-  const UnsignedInteger blockSize(getBlockSize());
+  const UnsignedInteger blockSize = getBlockSize();
 
   // allocate the input sample
   NumericalSample inputSample(lowDiscrepancySequence_.generate(blockSize));

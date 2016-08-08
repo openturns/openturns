@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger inputDimension(3);
-    UnsignedInteger outputDimension(2);
+    UnsignedInteger inputDimension = 3;
+    UnsignedInteger outputDimension = 2;
     // Center
     NumericalPoint center(inputDimension);
     center[0] = -1.0;

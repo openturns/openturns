@@ -69,7 +69,7 @@ BlendedStep * BlendedStep::clone() const
 /* Compute step */
 NumericalPoint BlendedStep::operator()(const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension( epsilon_.getDimension() );
+  const UnsignedInteger dimension = epsilon_.getDimension();
   if (dimension != inP.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension eps:" << dimension << " x:" << inP.getDimension();
   NumericalPoint result( epsilon_ );
   for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -95,7 +95,7 @@ void BlendedStep::load(Advocate & adv)
 /* Eta accessor */
 void BlendedStep::setEta(const NumericalPoint & eta)
 {
-  const UnsignedInteger dimension( epsilon_.getDimension() );
+  const UnsignedInteger dimension = epsilon_.getDimension();
   if (eta.getDimension() != epsilon_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension: eta dimension doesn't match epsilon dimension";
   for( UnsignedInteger i = 0; i < dimension; ++ i )
   {

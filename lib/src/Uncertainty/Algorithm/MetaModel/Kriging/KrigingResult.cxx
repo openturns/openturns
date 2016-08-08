@@ -61,7 +61,7 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
   , phiT_()
   , Gt_()
 {
-  const UnsignedInteger size(inputSample.getSize());
+  const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
 }
@@ -95,8 +95,8 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
   , phiT_()
   , Gt_()
 {
-  const UnsignedInteger outputDimension(outputSample.getDimension());
-  const UnsignedInteger size(inputSample.getSize());
+  const UnsignedInteger outputDimension = outputSample.getDimension();
+  const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In KrigingResult::KrigingResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
   if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
@@ -183,10 +183,10 @@ NumericalPoint KrigingResult::getConditionalMean(const NumericalSample & xi) con
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
-  const UnsignedInteger spatialDimension(xi.getDimension());
+  const UnsignedInteger spatialDimension = xi.getDimension();
   if (spatialDimension != covarianceModel_.getSpatialDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getMean, input data should have the same dimension as covariance model's spatial dimension. Here, (input dimension = " << spatialDimension << ", covariance model spatial's dimension = " << covarianceModel_.getSpatialDimension() << ")";
-  const UnsignedInteger sampleSize(xi.getSize());
+  const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMean, expected a non empty sample";
   // Use of metamodel to return result
@@ -237,10 +237,10 @@ struct KrigingResultCrossCovarianceFunctor
       // jBase : use of block size to determine first element of matrix
       // iLocal : for a fixed jLocal row, which iLocal-th element to fill
       // iBase : same as jBase but for rows
-      const UnsignedInteger jLocal(i / conditionnedPoints_.getSize());
-      const UnsignedInteger jBase(jLocal * dimension_);
-      const UnsignedInteger iLocal(i - jLocal * conditionnedPoints_.getSize());
-      const UnsignedInteger iBase(iLocal * dimension_);
+      const UnsignedInteger jLocal = i / conditionnedPoints_.getSize();
+      const UnsignedInteger jBase = jLocal * dimension_;
+      const UnsignedInteger iLocal = i - jLocal * conditionnedPoints_.getSize();
+      const UnsignedInteger iBase = iLocal * dimension_;
       // Local covariance matrix
       const CovarianceMatrix localCovariance(model_(conditionnedPoints_[iLocal], input_[jLocal]));
       for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
@@ -265,10 +265,10 @@ Matrix KrigingResult::getCrossMatrix(const NumericalSample & x) const
   // Each block is of size d x d
   // So we have trainingSize * sampleSize blocks
   // We fill the matrix by columns
-  const UnsignedInteger trainingSize(inputData_.getSize());
-  const UnsignedInteger trainingFullSize(trainingSize * covarianceModel_.getDimension());
-  const UnsignedInteger sampleSize(x.getSize());
-  const UnsignedInteger sampleFullSize(sampleSize * covarianceModel_.getDimension());
+  const UnsignedInteger trainingSize = inputData_.getSize();
+  const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getDimension();
+  const UnsignedInteger sampleSize = x.getSize();
+  const UnsignedInteger sampleFullSize = sampleSize * covarianceModel_.getDimension();
   Matrix result(trainingFullSize, sampleFullSize);
   const KrigingResultCrossCovarianceFunctor policy( inputTransformedData_, x, result, covarianceModel_);
   // The loop is over the lower block-triangular part
@@ -281,10 +281,10 @@ void KrigingResult::computeF() const
 {
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
-  const UnsignedInteger outputDimension(covarianceModel_.getDimension());
-  const UnsignedInteger sampleSize(inputData_.getSize());
-  const UnsignedInteger basisCollectionSize(basis_.getSize());
-  UnsignedInteger totalSize(0);
+  const UnsignedInteger outputDimension = covarianceModel_.getDimension();
+  const UnsignedInteger sampleSize = inputData_.getSize();
+  const UnsignedInteger basisCollectionSize = basis_.getSize();
+  UnsignedInteger totalSize = 0;
   for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basis_[i].getSize();
   // basis_ is of size 0 or outputDimension
   if (totalSize == 0) return;
@@ -294,7 +294,7 @@ void KrigingResult::computeF() const
   for (UnsignedInteger outputMarginal = 0; outputMarginal < basisCollectionSize; ++ outputMarginal )
   {
     const Basis localBasis(basis_[outputMarginal]);
-    const UnsignedInteger localBasisSize(localBasis.getSize());
+    const UnsignedInteger localBasisSize = localBasis.getSize();
     for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
@@ -311,11 +311,11 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
   // returned matrix should have dimensions (p * s) x (p * s)
   if (!hasCholeskyFactor_)
     throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalCovariance, Cholesky factor was not provided. This last one is mandatory to compute the covariance";
-  const UnsignedInteger spatialDimension(xi.getDimension());
+  const UnsignedInteger spatialDimension = xi.getDimension();
   if (spatialDimension != covarianceModel_.getSpatialDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's spatial dimension. Here, (input dimension = " << spatialDimension << ", covariance model spatial's dimension = " << covarianceModel_.getSpatialDimension() << ")";
-  const UnsignedInteger outputDimension(covarianceModel_.getDimension());
-  const UnsignedInteger sampleSize(xi.getSize());
+  const UnsignedInteger outputDimension = covarianceModel_.getDimension();
+  const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, expected a non empty sample";
   // 0) Take into account transformation
@@ -402,7 +402,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
   for (UnsignedInteger basisMarginal = 0; basisMarginal < basis_.getSize(); ++ basisMarginal )
   {
     const Basis localBasis(basis_[basisMarginal]);
-    const UnsignedInteger localBasisSize(localBasis.getSize());
+    const UnsignedInteger localBasisSize = localBasis.getSize();
     for (UnsignedInteger j = 0; j < localBasisSize; ++ j )
     {
       // Here we use potential parallelism in the evaluation of the basis functions

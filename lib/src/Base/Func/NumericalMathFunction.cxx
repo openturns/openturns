@@ -103,7 +103,7 @@ NumericalMathFunction::NumericalMathFunction(const Description & inputVariablesN
     const Description & formulas)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>()
 {
-  const UnsignedInteger size(formulas.getSize());
+  const UnsignedInteger size = formulas.getSize();
   Description outputVariablesNames(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     outputVariablesNames[i] = String(OSS() << "y" << i);

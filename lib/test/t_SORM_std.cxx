@@ -28,7 +28,7 @@ String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger d
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps(pow(0.1, 1.0 * digits));
+  NumericalScalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     input[3] = "I";
     NumericalMathFunction myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
 
-    UnsignedInteger dim(myFunction.getInputDimension());
+    UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     mean[0] = 50.0; // E
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 
     /* Stream out the result */
     SORMResult result(myAlgo.getResult());
-    UnsignedInteger digits(4);
+    UnsignedInteger digits = 4;
     fullprint << "Breitung event probability=" << result.getEventProbabilityBreitung() << std::endl;
     fullprint << "Breitung generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexBreitung() << std::endl;
     fullprint << "HohenBichler event probability=" << std::setprecision(digits) << result.getEventProbabilityHohenBichler() << std::endl;

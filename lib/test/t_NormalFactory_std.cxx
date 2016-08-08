@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
     NumericalPoint mean(dim);
     NumericalPoint sigma(dim);
     CorrelationMatrix R(dim);
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
       }
     }
     Normal distribution(mean, sigma, R);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     NormalFactory factory;
     CovarianceMatrix covariance;

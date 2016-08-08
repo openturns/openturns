@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     InverseNatafIndependentCopulaGradient transformation(dim);
     fullprint << "transformation=" << transformation << std::endl;
     NumericalPoint point(dim, 0.75);

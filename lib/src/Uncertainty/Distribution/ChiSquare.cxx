@@ -139,7 +139,7 @@ NumericalPoint ChiSquare::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, ((0.5 * nu_ - 1.0) / x - 0.5) * computePDF(point));
 }
@@ -150,7 +150,7 @@ NumericalScalar ChiSquare::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -159,7 +159,7 @@ NumericalScalar ChiSquare::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
   return normalizationFactor_ + (0.5 * nu_ - 1) * std::log(x) - 0.5 * x;
 }
@@ -169,7 +169,7 @@ NumericalScalar ChiSquare::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all nu_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x);
@@ -179,7 +179,7 @@ NumericalScalar ChiSquare::computeComplementaryCDF(const NumericalPoint & point)
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all nu_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x, true);
@@ -202,9 +202,9 @@ NumericalPoint ChiSquare::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(1, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  NumericalScalar pdf(computePDF(point));
+  NumericalScalar pdf = computePDF(point);
   pdfGradient[0] = 0.5 * (std::log(0.5 * x) - SpecFunc::Psi(0.5 * nu_)) * pdf;
   return pdfGradient;
 }
@@ -215,9 +215,9 @@ NumericalPoint ChiSquare::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(1, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + eps), 0.5 * x) - DistFunc::pGamma(0.5 * (nu_ - eps), 0.5 * x)) / (2.0 * eps);
   return cdfGradient;
 }

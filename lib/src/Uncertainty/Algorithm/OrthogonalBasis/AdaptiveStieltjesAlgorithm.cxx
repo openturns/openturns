@@ -59,7 +59,7 @@ AdaptiveStieltjesAlgorithm::AdaptiveStieltjesAlgorithm(const Distribution & meas
   , isElliptical_(measure.isElliptical())
 {
   // Here we initialize the monic coefficients cache
-  const NumericalScalar mu(measure.getMean()[0]);
+  const NumericalScalar mu = measure.getMean()[0];
   monicRecurrenceCoefficients_[0][0] = 1.0;
   // To avoid -0.0 in print, we test for the mean of the distribution.
   if (std::abs(mu) > ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"))
@@ -99,7 +99,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   // Get the coefficients from the cache if possible
   if (n < cacheSize - 1)
     {
-      const NumericalScalar inverseSqrtBetaNp1(1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]));
+      const NumericalScalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
       Coefficients coefficients(3);
       coefficients[0] = inverseSqrtBetaNp1;
       if (std::abs(monicRecurrenceCoefficients_[n][1]) > 0.0)

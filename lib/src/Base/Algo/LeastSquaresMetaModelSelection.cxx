@@ -171,9 +171,9 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   PenalizedLeastSquaresAlgorithm penalizedLeastSquaresAlgorithm(x_, y_, weight_, method.getBasis(), optimalBasisIndices);
   penalizedLeastSquaresAlgorithm.run(proxy);
   const NumericalPoint optimalBasisCoefficients(penalizedLeastSquaresAlgorithm.getCoefficients());
-  const NumericalScalar optimalResidual(penalizedLeastSquaresAlgorithm.getResidual());
+  const NumericalScalar optimalResidual = penalizedLeastSquaresAlgorithm.getResidual();
   // New relative error based on cross-validation error
-  const NumericalScalar optimalRelativeError(minimumError / y_.getSize());
+  const NumericalScalar optimalRelativeError = minimumError / y_.getSize();
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
   NumericalPoint optimalCoefficients( currentIndices_.getSize() );

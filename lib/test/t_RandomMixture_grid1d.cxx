@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     RandomMixture distribution(coll, weights);
     Gamma referenceDistribution(3.0, 1.0);
     // Compute PDF on regular grid
-    const UnsignedInteger N(256);
+    const UnsignedInteger N = 256;
     Indices points(1, N);
     NumericalPoint mean(distribution.getMean());
     NumericalPoint sigma(distribution.getStandardDeviation());

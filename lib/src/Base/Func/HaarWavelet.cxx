@@ -46,7 +46,7 @@ HaarWavelet::HaarWavelet(const UnsignedInteger j,
   // Nothing to do
   if (!isScaling)
     {
-      const NumericalScalar denominator(1 << j);
+      const NumericalScalar denominator = 1 << j;
       value_ = std::sqrt(denominator);
       a_ = k / denominator;
       m_ = (k + 0.5) / denominator;

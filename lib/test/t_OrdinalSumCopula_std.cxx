@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     NumericalSample oneSample = copula.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(5);
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
     PlatformInfo::SetNumericalPrecision(precision);

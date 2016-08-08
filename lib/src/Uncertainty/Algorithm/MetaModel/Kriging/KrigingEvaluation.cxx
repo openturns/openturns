@@ -57,7 +57,7 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
     if (basis.getSize() != covarianceModel.getDimension())
       throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension (" << covarianceModel.getDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
     // Total basis size = sum of all sizes
-    UnsignedInteger basisCollectionTotalSize(0);
+    UnsignedInteger basisCollectionTotalSize = 0;
     for (UnsignedInteger i = 0; i < basis.getSize(); ++i) basisCollectionTotalSize += basis[i].getSize();
   }
   if (covarianceModel.getSpatialDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the spatial dimension=" << covarianceModel.getSpatialDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
@@ -144,7 +144,7 @@ struct KrigingEvaluationPointFunctor
 /* Operator () */
 NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
 {
-  const UnsignedInteger trainingSize(inputSample_.getSize());
+  const UnsignedInteger trainingSize = inputSample_.getSize();
   // Evaluate the kernel part in parallel
   KrigingEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, trainingSize, functor );
@@ -156,7 +156,7 @@ NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
     const NumericalPoint betaBasis(beta_[i]);
-    const UnsignedInteger basisSize(localBasis.getSize());
+    const UnsignedInteger basisSize = localBasis.getSize();
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       value[i] += localBasis[j](inP)[0] * betaBasis[j];
   }
@@ -183,9 +183,9 @@ struct KrigingEvaluationSampleFunctor
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    const UnsignedInteger start(r.begin());
-    const UnsignedInteger dimension(evaluation_.getOutputDimension());
-    const UnsignedInteger size(r.end() - start);
+    const UnsignedInteger start = r.begin();
+    const UnsignedInteger dimension = evaluation_.getOutputDimension();
+    const UnsignedInteger size = r.end() - start;
     Matrix R(dimension , trainingSize_ * dimension);
     for (UnsignedInteger i = 0; i != size; ++i)
     {
@@ -204,8 +204,8 @@ struct KrigingEvaluationSampleFunctor
 NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
 {
   // Evaluation on the sample using parallel functors
-  const UnsignedInteger size(inS.getSize());
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger size = inS.getSize();
+  const UnsignedInteger dimension = getOutputDimension();
 
   NumericalSample result(size, dimension);
   const KrigingEvaluationSampleFunctor functor( inS, result, *this );
@@ -219,7 +219,7 @@ NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
     const NumericalPoint betaBasis(beta_[i]);
-    const UnsignedInteger basisSize(localBasis.getSize());
+    const UnsignedInteger basisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
     NumericalSample fi(size, 1);
 

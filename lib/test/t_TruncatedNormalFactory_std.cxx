@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     {
       PlatformInfo::SetNumericalPrecision(i == 2 ? 1 : 2);
       TruncatedNormal distribution(mu[i], sigma[i], a[i], b[i]);
-      UnsignedInteger size(10000);
+      UnsignedInteger size = 10000;
       NumericalSample sample(distribution.getSample(size));
       TruncatedNormalFactory factory;
       CovarianceMatrix covariance;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     }
     // Test for constant sample
     TruncatedNormalFactory factory;
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(size, NumericalPoint(1, 0.0));
     // Test for constant sample
     sample = NumericalSample(size, NumericalPoint(1, 0.0));

@@ -44,7 +44,7 @@ UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequency
   : SpectralModelImplementation(),
     DSPCollection_(0)
 {
-  const UnsignedInteger N(frequencyGrid.getN());
+  const UnsignedInteger N = frequencyGrid.getN();
   if (N != spectralFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: Frequency grid and spectral functions have different sizes";
   if (frequencyGrid.getStart() < 0.0)
@@ -75,13 +75,13 @@ UserDefinedSpectralModel * UserDefinedSpectralModel::clone() const
 /* Computation of the spectral density function */
 HermitianMatrix UserDefinedSpectralModel::operator() (const NumericalScalar frequency) const
 {
-  Bool nonNegative(frequency >= 0.0);
+  Bool nonNegative = frequency >= 0.0;
   // If the grid size is one , return the spectral function
   // else find in the grid the nearest frequency value
   if (getFrequencyGrid().getN() == 1) return DSPCollection_[0];
-  const NumericalScalar frequencyStep(getFrequencyGrid().getStep());
-  const UnsignedInteger nFrequency(getFrequencyGrid().getN());
-  const UnsignedInteger index(std::min<UnsignedInteger>( nFrequency - 1, static_cast<UnsignedInteger>( std::max<NumericalScalar>( 0.0, nearbyint( ( std::abs(frequency) - frequencyGrid_.getStart() ) / frequencyStep) ) ) ));
+  const NumericalScalar frequencyStep = getFrequencyGrid().getStep();
+  const UnsignedInteger nFrequency = getFrequencyGrid().getN();
+  const UnsignedInteger index = std::min<UnsignedInteger>( nFrequency - 1, static_cast<UnsignedInteger>( std::max<NumericalScalar>( 0.0, nearbyint( ( std::abs(frequency) - frequencyGrid_.getStart() ) / frequencyStep) ) ) );
   // Use the relation S(-f) = conjugate(S(f))
   return (nonNegative ? DSPCollection_[index] : DSPCollection_[index].conjugate());
 }

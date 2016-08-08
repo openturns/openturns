@@ -28,7 +28,7 @@ inline String printNumericalPoint(const NumericalPoint & point, const UnsignedIn
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps(pow(0.1, 1.0 * digits));
+  NumericalScalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
     {
       oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
       NumericalMathFunction linear(inVars, outVar, formula);
 
-      UnsignedInteger dim(linear.getInputDimension());
+      UnsignedInteger dim = linear.getInputDimension();
       NumericalPoint startingPoint(dim);
 
       Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 5.0));

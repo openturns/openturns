@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     Normal distribution(dim);
 
     //

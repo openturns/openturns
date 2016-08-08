@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     NumericalSample oneSample = copula.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(4);
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
     PlatformInfo::SetNumericalPrecision(precision);
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     // Specific to this copula
 
     // Extract a 5-D marginal
-    UnsignedInteger dim(5);
+    UnsignedInteger dim = 5;
     point = NumericalPoint(dim, 0.25);
     Indices indices(dim, 0);
     indices[0] = 1;

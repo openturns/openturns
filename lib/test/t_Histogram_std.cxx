@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
@@ -153,10 +153,10 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
-    UnsignedInteger testSize(0);
+    UnsignedInteger testSize = 0;
     for (UnsignedInteger i = 0; i < testSize; i++)
     {
-      NumericalScalar q(RandomGenerator::Generate());
+      NumericalScalar q = RandomGenerator::Generate();
       if (std::abs(q - distribution.computeCDF(distribution.computeQuantile(q))) > eps)
       {
         fullprint << "q=" << q << " quantile=" << distribution.computeQuantile(q)[0] << " CDF(quantile)=" << distribution.computeCDF(distribution.computeQuantile(q)) << std::endl;

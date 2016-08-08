@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
     fullprint << "test 11 : multiplication and division by a numerical scalar methods" << std::endl;
 
     /* Check the multiplication method */
-    NumericalScalar s(3.0);
+    NumericalScalar s = 3.0;
     TriangularMatrix scalprod1 = triangularMatrix1.operator * (s) ;
     TriangularMatrix scalprod2 = s * triangularMatrix1 ;
     fullprint << "scalprod1 = " << scalprod1 << std::endl;

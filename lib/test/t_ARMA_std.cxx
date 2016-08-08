@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     RandomGenerator::SetSeed(0);
 
     /* Matrices of the process */
-    const UnsignedInteger dim(2);
+    const UnsignedInteger dim = 2;
     SquareMatrix squareMatrix1(dim);
     squareMatrix1(0, 0) = 0.2 ;
     squareMatrix1(1, 0) = 0.3 ;
@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
     squareMatrix2(1, 1) = 0.5;
 
     /* ARMA(p, q) */
-    const UnsignedInteger p(1);
-    const UnsignedInteger q(1);
+    const UnsignedInteger p = 1;
+    const UnsignedInteger q = 1;
 
     /* ARMACoefficients with default constructor */
 
@@ -70,9 +70,9 @@ int main(int argc, char *argv[])
 
 
     /* Time grid creation and White Noise */
-    NumericalScalar Tmin(0.0);
-    NumericalScalar deltaT(0.1);
-    UnsignedInteger steps(11);
+    NumericalScalar Tmin = 0.0;
+    NumericalScalar deltaT = 0.1;
+    UnsignedInteger steps = 11;
 
     /* Initialization of the time grid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, steps);

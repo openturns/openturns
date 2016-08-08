@@ -53,16 +53,16 @@ struct RiceFactoryParameterConstraint
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
     // Here u = \theta^2 wrt reference
-    const NumericalScalar u(parameter[0]);
-    const NumericalScalar relation(u - (r2p1_ * computeXi(u) - 2.0));
+    const NumericalScalar u = parameter[0];
+    const NumericalScalar relation = u - (r2p1_ * computeXi(u) - 2.0);
     return NumericalPoint(1, relation);
   }
 
   NumericalScalar computeXi(const NumericalScalar u) const
   {
     if (u <= 0.0) throw InvalidArgumentException(HERE) << "Error: the argument u=" << u << " in the constraint must be positive.";
-    const NumericalScalar up2(u + 2.0);
-    const NumericalScalar quarterU(0.25 * u);
+    const NumericalScalar up2 = u + 2.0;
+    const NumericalScalar quarterU = 0.25 * u;
     return up2 - 0.125 * M_PI * std::exp(-0.5 * u + 2.0 * SpecFunc::LogBesselI0(quarterU)) * std::pow(up2 + u * std::exp(SpecFunc::DeltaLogBesselI10(quarterU)), 2.0);
   }
 
@@ -91,22 +91,22 @@ RiceFactory::Implementation RiceFactory::build() const
 */
 Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Rice distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar mu(sample.computeMean()[0]);
-  const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
+  const NumericalScalar mu = sample.computeMean()[0];
+  const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
   // Koay inversion method
   RiceFactoryParameterConstraint constraint(mu / std);
   const NumericalMathFunction f(bindMethod<RiceFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
-  NumericalScalar a(1.0);
-  NumericalScalar b(2.0);
-  NumericalScalar fA(f(NumericalPoint(1, a))[0]);
-  NumericalScalar fB(f(NumericalPoint(1, b))[0]);
-  const NumericalScalar largeValue(std::sqrt(SpecFunc::MaxNumericalScalar));
-  const UnsignedInteger maximumIteration(ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" ));
-  UnsignedInteger iteration(0);
+  NumericalScalar a = 1.0;
+  NumericalScalar b = 2.0;
+  NumericalScalar fA = f(NumericalPoint(1, a))[0];
+  NumericalScalar fB = f(NumericalPoint(1, b))[0];
+  const NumericalScalar largeValue = std::sqrt(SpecFunc::MaxNumericalScalar);
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" );
+  UnsignedInteger iteration = 0;
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
   {
@@ -122,12 +122,12 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar( "RiceFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "RiceFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "RiceFactory-ResidualPrecision" ), maximumIteration);
   // u estimate
-  const NumericalScalar u(solver.solve(f, 0.0, a, b, fA, fB));
-  const NumericalScalar xiU(constraint.computeXi(u));
+  const NumericalScalar u = solver.solve(f, 0.0, a, b, fA, fB);
+  const NumericalScalar xiU = constraint.computeXi(u);
   // Corresponding sigma estimate
-  const NumericalScalar sigma(std / std::sqrt(xiU));
+  const NumericalScalar sigma = std / std::sqrt(xiU);
   // Corresponding nu estimate
-  const NumericalScalar nu(std::sqrt(mu * mu + sigma * sigma * (xiU - 2.0)));
+  const NumericalScalar nu = std::sqrt(mu * mu + sigma * sigma * (xiU - 2.0));
   try
   {
     Rice result(sigma, nu);

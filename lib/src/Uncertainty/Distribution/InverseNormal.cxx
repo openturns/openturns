@@ -96,12 +96,12 @@ InverseNormal * InverseNormal::clone() const
 /* Get one realization of the distribution */
 NumericalPoint InverseNormal::getRealization() const
 {
-  const NumericalScalar nu(DistFunc::rNormal());
-  const NumericalScalar y(nu * nu);
-  const NumericalScalar w(mu_ * y / lambda_);
+  const NumericalScalar nu = DistFunc::rNormal();
+  const NumericalScalar y = nu * nu;
+  const NumericalScalar w = mu_ * y / lambda_;
   // Lower bound computed by Maple to insure double precision
-  const NumericalScalar x(w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - std::sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w);
-  const NumericalScalar z(RandomGenerator::Generate());
+  const NumericalScalar x = w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - std::sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w;
+  const NumericalScalar z = RandomGenerator::Generate();
   if (z * (mu_ + x) <= mu_) return NumericalPoint(1, x);
   return NumericalPoint(1, mu_ * mu_ / x);
 }
@@ -112,7 +112,7 @@ NumericalScalar InverseNormal::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * std::exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
 }
@@ -121,7 +121,7 @@ NumericalScalar InverseNormal::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
   return 0.5 * ( std::log(lambda_) - std::log(2.0 * M_PI * x * x * x)) - lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_);
 }
@@ -131,15 +131,15 @@ NumericalScalar InverseNormal::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
-  const NumericalScalar lx(std::sqrt(lambda_ / x));
-  const NumericalScalar phiArg1( lx * ( x / mu_ - 1.0));
+  const NumericalScalar lx = std::sqrt(lambda_ / x);
+  const NumericalScalar phiArg1 = lx * ( x / mu_ - 1.0);
   // Quick return if in the far right tail. The pNormal() function is constant
   // equal to 1 in double precision for argument greater than 8.24, and the
   // InverseNormal CDF is greater than pNormal()
   if (phiArg1 > 8.24) return 1.0;
-  const NumericalScalar phiArg2(-lx * ( x / mu_ + 1.0));
+  const NumericalScalar phiArg2 = -lx * ( x / mu_ + 1.0);
   return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
 }
 
@@ -161,7 +161,7 @@ NumericalComplex InverseNormal::computeLogCharacteristicFunction(const Numerical
 void InverseNormal::computeRange()
 {
   const NumericalPoint lowerBound(1, 0.0);
-  const NumericalScalar q(DistFunc::qNormal(cdfEpsilon_, true));
+  const NumericalScalar q = DistFunc::qNormal(cdfEpsilon_, true);
   const NumericalPoint upperBound(1, 2.0 * lambda_ * mu_ / (2.0 * lambda_ + mu_ * q * q - q * std::sqrt(mu_ * (q * q * mu_ + 4.0 * lambda_))));
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
@@ -205,9 +205,9 @@ NumericalPoint InverseNormal::getKurtosis() const
 NumericalPoint InverseNormal::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
-  NumericalScalar moment(1.0);
-  NumericalScalar rho(0.5 * mu_ / lambda_);
-  NumericalScalar product(1.0);
+  NumericalScalar moment = 1.0;
+  NumericalScalar rho = 0.5 * mu_ / lambda_;
+  NumericalScalar product = 1.0;
   for (UnsignedInteger k = 1; k < n; ++k)
   {
     product *= (n - k) * (n + k - 1) * rho / k;

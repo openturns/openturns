@@ -74,7 +74,7 @@ String FourierSeries::__str__(const String & offset) const
 /* FourierSeries are evaluated as functors */
 NumericalScalar FourierSeries::operator() (const NumericalScalar x) const
 {
-  const NumericalScalar coef(k_ == 0 ? 1.0 : M_SQRT2);
+  const NumericalScalar coef = k_ == 0 ? 1.0 : M_SQRT2;
   return coef * (isCosine_ ? cos(k_ * x) : sin(k_ * x));
 }
 

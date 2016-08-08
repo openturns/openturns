@@ -93,7 +93,7 @@ String InverseNatafEllipticalDistributionEvaluation::__repr__() const
 
 Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const NumericalPoint & inP) const
 {
-  UnsignedInteger inputDimension(getInputDimension());
+  UnsignedInteger inputDimension = getInputDimension();
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i
   for (UnsignedInteger i = 0; i < inputDimension; ++i) result(i, i) = 1.0;

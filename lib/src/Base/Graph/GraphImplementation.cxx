@@ -202,7 +202,7 @@ void GraphImplementation::setDrawable(const Drawable & drawable,
 /** Global color accessor */
 Description GraphImplementation::getColors() const
 {
-  const UnsignedInteger size(drawablesCollection_.getSize());
+  const UnsignedInteger size = drawablesCollection_.getSize();
   Description colors(size);
   for (UnsignedInteger i = 0; i < size; ++i) colors[i] = drawablesCollection_[i].getColor();
   return colors;
@@ -210,21 +210,21 @@ Description GraphImplementation::getColors() const
 
 void GraphImplementation::setColors(const Description & colors)
 {
-  const UnsignedInteger size(drawablesCollection_.getSize());
-  const UnsignedInteger inputSize(colors.getSize());
+  const UnsignedInteger size = drawablesCollection_.getSize();
+  const UnsignedInteger inputSize = colors.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setColor(colors[i % inputSize]);
 }
 
 void GraphImplementation::setDefaultColors()
 {
-  const UnsignedInteger size(drawablesCollection_.getSize());
+  const UnsignedInteger size = drawablesCollection_.getSize();
   setColors(Drawable::BuildDefaultPalette(size));
 }
 
 /** Global legend accessor */
 Description GraphImplementation::getLegends() const
 {
-  const UnsignedInteger size(drawablesCollection_.getSize());
+  const UnsignedInteger size = drawablesCollection_.getSize();
   Description legends(size);
   for (UnsignedInteger i = 0; i < size; ++i) legends[i] = drawablesCollection_[i].getLegend();
   return legends;
@@ -232,8 +232,8 @@ Description GraphImplementation::getLegends() const
 
 void GraphImplementation::setLegends(const Description & legends)
 {
-  const UnsignedInteger size(drawablesCollection_.getSize());
-  const UnsignedInteger inputSize(legends.getSize());
+  const UnsignedInteger size = drawablesCollection_.getSize();
+  const UnsignedInteger inputSize = legends.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setLegend(legends[i % inputSize]);
 }
 
@@ -472,7 +472,7 @@ String GraphImplementation::makeRCoreCommand() const
   graphCommand << ", cex.main=2, cex.axis=1.5, cex.lab=1.5)\n";
 
   // add the R code attached to each drawable
-  UnsignedInteger drawablesSize(drawablesCollection_.getSize());
+  UnsignedInteger drawablesSize = drawablesCollection_.getSize();
   for(UnsignedInteger i = 0; i < drawablesSize; ++i)
   {
     if (drawablesCollection_[i].getData().getSize() != 0)
@@ -567,7 +567,7 @@ void GraphImplementation::draw(const String & file,
 /* Clean temporary files */
 void GraphImplementation::clean()
 {
-  UnsignedInteger drawableNumber(drawablesCollection_.getSize());
+  UnsignedInteger drawableNumber = drawablesCollection_.getSize();
   // Clean all the temporary data created by the drawables during their drawing
   for (UnsignedInteger i = 0; i < drawableNumber; ++i)
   {
@@ -619,7 +619,7 @@ void GraphImplementation::setAutomaticBoundingBox(const Bool automaticBoundingBo
 /* Compute the best bounding box to enclose all the drawables */
 void GraphImplementation::computeBoundingBox() const
 {
-  UnsignedInteger size(drawablesCollection_.getSize());
+  UnsignedInteger size = drawablesCollection_.getSize();
   boundingBox_ = BoundingBox(4);
   // First exceptional case: no drawable, we default to default bounding box
   if (size == 0)

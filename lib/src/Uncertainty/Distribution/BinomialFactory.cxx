@@ -59,17 +59,17 @@ BinomialFactory::Implementation BinomialFactory::build() const
 
 Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar mean(0.0);
-  NumericalScalar var(0.0);
-  NumericalScalar sum(0.0);
-  UnsignedInteger upperBound(0);
-  const NumericalScalar supportEpsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
+  NumericalScalar mean = 0.0;
+  NumericalScalar var = 0.0;
+  NumericalScalar sum = 0.0;
+  UnsignedInteger upperBound = 0;
+  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x(sample[i][0]);
+    const NumericalScalar x = sample[i][0];
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
     if (!(std::abs(x - iX) <= supportEpsilon) || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample made of nonnegative integers, here x=" << x;
@@ -86,14 +86,14 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
   // mean = np
   // var = np(1-p)
   // p = 1.0 - var / mean
-  UnsignedInteger n(upperBound);
-  NumericalScalar p(mean / n);
+  UnsignedInteger n = upperBound;
+  NumericalScalar p = mean / n;
   if (mean > var) n = std::max(upperBound, (UnsignedInteger)round(mean * mean / (mean - var)));
   // Loop over n to get the maximum likelihood
   // First, compute the likelihood resulting from the first estimate
-  NumericalScalar logLikelihood(ComputeLogLikelihood(n, p, sample));
-  NumericalScalar maxLogLikelihood(logLikelihood);
-  UnsignedInteger maxN(n);
+  NumericalScalar logLikelihood = ComputeLogLikelihood(n, p, sample);
+  NumericalScalar maxLogLikelihood = logLikelihood;
+  UnsignedInteger maxN = n;
   // Check if we have to try the backward direction
   int step(1);
   if (n > upperBound)
@@ -113,7 +113,7 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
     else n += step;
   }
   // Loop over n
-  Bool loop(true);
+  Bool loop = true;
   while (loop)
   {
     n += step;
@@ -139,14 +139,14 @@ NumericalScalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
     const NumericalSample & sample)
 {
   std::map<UnsignedInteger, NumericalScalar> logLikelihoodCache;
-  const UnsignedInteger size(sample.getSize());
-  const NumericalScalar logNFactorial(SpecFunc::LnGamma(n + 1.0));
-  const NumericalScalar logP(std::log(p));
-  const NumericalScalar logQ(log1p(-p));
-  NumericalScalar logLikelihood(0.0);
+  const UnsignedInteger size = sample.getSize();
+  const NumericalScalar logNFactorial = SpecFunc::LnGamma(n + 1.0);
+  const NumericalScalar logP = std::log(p);
+  const NumericalScalar logQ = log1p(-p);
+  NumericalScalar logLikelihood = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger k(static_cast<UnsignedInteger>(round(sample[i][0])));
+    const UnsignedInteger k = static_cast<UnsignedInteger>(round(sample[i][0]));
     if (logLikelihoodCache.find(k) == logLikelihoodCache.end()) logLikelihoodCache[k] = logNFactorial - SpecFunc::LnGamma(n - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * logP + (n - k) * logQ;
     logLikelihood += logLikelihoodCache[k];
   }

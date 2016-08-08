@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
     // graph = result.drawPDF(1024);
     // graph.draw("distG1_pow.png");
     result = dist1.inverse();
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(3);
     fullprint << "inverse(dist1):" << result << std::endl;
     PlatformInfo::SetNumericalPrecision(precision);

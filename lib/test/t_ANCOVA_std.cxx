@@ -33,13 +33,13 @@ int main(int argc, char *argv[])
   try
   {
     // Problem parameters
-    UnsignedInteger dimension(2);
-    NumericalScalar rho(0.3);
-    NumericalScalar a(4.);
-    NumericalScalar b(5.);
+    UnsignedInteger dimension = 2;
+    NumericalScalar rho = 0.3;
+    NumericalScalar a = 4.;
+    NumericalScalar b = 5.;
 
     // Reference analytical values
-    NumericalScalar covTh(a * a + b * b + 2 * a * b * rho);
+    NumericalScalar covTh = a * a + b * b + 2 * a * b * rho;
     NumericalSample Si(2, 2);
     Si[0][0] = (a * a + a * b * rho) / covTh;
     Si[1][0] = (b * b + a * b * rho) / covTh;
@@ -81,11 +81,11 @@ int main(int argc, char *argv[])
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Adaptive strategy
-    UnsignedInteger degree(4);
+    UnsignedInteger degree = 4;
     FixedStrategy adaptiveStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree));
 
     // Projection strategy
-    UnsignedInteger samplingSize(250);
+    UnsignedInteger samplingSize = 250;
     MonteCarloExperiment experiment(samplingSize);
     LeastSquaresStrategy projectionStrategy(experiment);
 

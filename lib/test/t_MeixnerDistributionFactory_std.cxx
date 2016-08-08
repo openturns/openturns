@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     MeixnerDistribution distribution(1.5, 0.5, 2.5, -0.5);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     MeixnerDistributionFactory factory;
     CovarianceMatrix covariance;

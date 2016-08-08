@@ -39,7 +39,7 @@ NumericalScalar CorrelationAnalysis::PearsonCorrelation(const NumericalSample & 
   if (index >= inputSample.getDimension()) throw InvalidArgumentException(HERE) << "Error: given index out of bound";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedInteger size(inputSample.getSize());
+  const UnsignedInteger size = inputSample.getSize();
   NumericalSample pairedSample(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -66,11 +66,11 @@ NumericalPoint CorrelationAnalysis::SRC(const NumericalSample & inputSample,
 {
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedInteger dimension(inputSample.getDimension());
+  const UnsignedInteger dimension = inputSample.getDimension();
   LinearLeastSquares regressionAlgorithm(inputSample, outputSample);
   regressionAlgorithm.run();
   const NumericalPoint linear(regressionAlgorithm.getLinear() * NumericalPoint(1, 1.0));
-  const NumericalScalar varOutput(outputSample.computeVariance()[0]);
+  const NumericalScalar varOutput = outputSample.computeVariance()[0];
   NumericalPoint src(inputSample.computeVariance());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -87,8 +87,8 @@ NumericalPoint CorrelationAnalysis::PCC(const NumericalSample & inputSample,
   if (inputSample.getDimension() < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedInteger dimension(inputSample.getDimension());
-  const UnsignedInteger size(inputSample.getSize());
+  const UnsignedInteger dimension = inputSample.getDimension();
+  const UnsignedInteger size = inputSample.getSize();
   NumericalPoint pcc(dimension);
   // For each component i, perform an analysis on the truncated input sample where Xi has been removed
   NumericalSample truncatedInput(size, dimension - 1);

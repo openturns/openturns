@@ -97,8 +97,8 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
     throw NotYetImplementedException(HERE) << "Unable to initialize HMat library";
   }
 
-  const UnsignedInteger size(sample.getSize());
-  const UnsignedInteger spatialDimension(sample.getDimension());
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger spatialDimension = sample.getDimension();
   double* points = new double[spatialDimension * outputDimension * size];
   for (UnsignedInteger i = 0; i < size; ++i)
   {

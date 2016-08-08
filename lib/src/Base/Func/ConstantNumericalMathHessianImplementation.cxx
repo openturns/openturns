@@ -70,7 +70,7 @@ String ConstantNumericalMathHessianImplementation::__repr__() const
 String ConstantNumericalMathHessianImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   const Description description(Description::BuildDefault(inputDimension, "x"));
   if (hasVisibleName()) oss << offset << getName() << ":" << Os::GetEndOfLine();
   for (UnsignedInteger i = 0; i < inputDimension; ++i)

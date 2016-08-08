@@ -104,7 +104,7 @@ String LHSExperiment::__str__(const String & offset) const
 /* Sample generation */
 NumericalSample LHSExperiment::generate()
 {
-  const UnsignedInteger dimension(distribution_.getDimension());
+  const UnsignedInteger dimension = distribution_.getDimension();
   // To insure that the shuffle has been initialized
   (void) getShuffle();
   NumericalSample sample(size_, dimension);
@@ -115,7 +115,7 @@ NumericalSample LHSExperiment::generate()
     if (randomShift_) u = RandomGenerator::Generate(dimension);
     for(UnsignedInteger component = 0; component < dimension; ++component)
     {
-      const NumericalScalar xi((shuffle_(component, index) + u[component]) / size_);
+      const NumericalScalar xi = (shuffle_(component, index) + u[component]) / size_;
       sample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }
@@ -140,8 +140,8 @@ Matrix LHSExperiment::ComputeShuffle(const UnsignedInteger dimension,
     // Then swap the corresponding components
     for (UnsignedInteger component = 0; component < dimension; ++component)
     {
-      const UnsignedInteger newPosition(index + u[component]);
-      const NumericalScalar newValue(result(component, newPosition));
+      const UnsignedInteger newPosition = index + u[component];
+      const NumericalScalar newValue = result(component, newPosition);
       result(component, newPosition) = result(component, index);
       result(component, index) = newValue;
     }

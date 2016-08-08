@@ -82,13 +82,13 @@ SafeAndSlow::NumericalScalarCollection SafeAndSlow::solve(const NumericalMathFun
   }
   // If the origin is in the failure domain add it to the roots
   if (infValue == value) result.add(infPoint);
-  const NumericalScalar maximumDistance(getMaximumDistance());
-  const NumericalScalar stepSize(getStepSize());
+  const NumericalScalar maximumDistance = getMaximumDistance();
+  const NumericalScalar stepSize = getStepSize();
   Solver solver(getSolver());
   while(infPoint < maximumDistance)
   {
-    const NumericalScalar supPoint(std::min(infPoint + stepSize, maximumDistance));
-    const NumericalScalar supValue(function(NumericalPoint(1, supPoint))[0]);
+    const NumericalScalar supPoint = std::min(infPoint + stepSize, maximumDistance);
+    const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
     if ((infValue - value) * (supValue - value) < 0.0)
     {
       result.add(solver.solve(function, value, infPoint, supPoint, infValue, supValue));

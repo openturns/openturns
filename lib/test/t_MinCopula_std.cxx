@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
 
     MinCopula copula(dim);
     copula.setName("a min copula");

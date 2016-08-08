@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
   NumericalPoint vectR(1, 12.0);
   NumericalSample testSample(1, 1);
 
-  NumericalScalar begin(-1.0);
-  NumericalScalar end(36.92);
+  NumericalScalar begin = -1.0;
+  NumericalScalar end = 36.92;
   Interval testInterval(NumericalPoint(1, begin), NumericalPoint(1, end));
   testInterval.setName("testInterval");
 
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
   /** TEST NUMBER TWO : GET PREDICT/RESIDUAL */
   fullprint << "test number two : get predicted/residual" << std::endl;
   LinearModelFactory lmfact;
-  UnsignedInteger size(20);
+  UnsignedInteger size = 20;
   NumericalSample oneSample(size, 1);
   NumericalSample twoSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)

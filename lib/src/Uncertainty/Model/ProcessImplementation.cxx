@@ -195,7 +195,7 @@ ProcessImplementation::Implementation ProcessImplementation::getMarginal(const U
 /* Get the marginal random vector corresponding to indices components */
 ProcessImplementation::Implementation ProcessImplementation::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and  must be different";
   if (dimension == 1) return clone();
   throw NotYetImplementedException(HERE) << "In ProcessImplementation::getMarginal(const Indices & indices) const";

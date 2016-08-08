@@ -49,7 +49,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
   , currentIndices_(indices)
   , initialIndices_(indices)
 {
-  const UnsignedInteger size(outputSample.getSize());
+  const UnsignedInteger size = outputSample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
   // Check the argument compatibility
   if (proxy.getInputSample().getSize() != size) throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << size << " is different from the size of the input sample=" << proxy.getInputSample().getSize();
@@ -123,7 +123,7 @@ NumericalPoint LeastSquaresMethodImplementation::solve(const NumericalPoint & rh
   // If uniform weights, no scaling of the rhs
   if (hasUniformWeight_) return solveNormal(computeWeightedDesign().genVectProd(rhs, true));
   NumericalPoint y(rhs);
-  const UnsignedInteger size(rhs.getSize());
+  const UnsignedInteger size = rhs.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) y[i] *= weightSqrt_[i];
   return solveNormal(computeWeightedDesign().genVectProd(y, true));
 }
@@ -213,9 +213,9 @@ MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(con
   MatrixImplementation design(proxy_.computeDesign(indices));
   if (hasUniformWeight_) return design;
   // Here we take the weights into account
-  UnsignedInteger flatIndex(0);
-  const UnsignedInteger basisDimension(design.getNbColumns());
-  const UnsignedInteger sampleSize(design.getNbRows());
+  UnsignedInteger flatIndex = 0;
+  const UnsignedInteger basisDimension = design.getNbColumns();
+  const UnsignedInteger sampleSize = design.getNbRows();
   for (UnsignedInteger j = 0; j < basisDimension; ++j)
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
@@ -228,7 +228,7 @@ MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(con
 
 Basis LeastSquaresMethodImplementation::buildCurrentBasis() const
 {
-  const UnsignedInteger currentBasisSize(currentIndices_.getSize());
+  const UnsignedInteger currentBasisSize = currentIndices_.getSize();
   const Basis fullBasis(proxy_.getBasis());
   Basis basis(currentBasisSize);
   for (UnsignedInteger j = 0; j < currentBasisSize; ++j)

@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction analytical(input, output, formulas);
     Secant myAlgo;
     fullprint << "myAlgo=" << myAlgo << std::endl;
-    NumericalScalar value(0.0);
+    NumericalScalar value = 0.0;
     fullprint << "Solve " << formulas[0] << "=" << value << " for " << input[0] << std::endl;
     OSS oss;
     oss.setPrecision(5);

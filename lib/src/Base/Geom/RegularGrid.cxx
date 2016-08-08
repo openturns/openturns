@@ -143,7 +143,7 @@ Bool RegularGrid::isRegular() const
 UnsignedInteger RegularGrid::getNearestVertexIndex(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got a point of dimension " << point.getDimension();
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= start_) return 0;
   if (x >= start_ + (n_ - 1) * step_) return n_ - 1;
   return static_cast<UnsignedInteger>(round((x - start_) / step_));

@@ -95,7 +95,7 @@ Matrix NatafEllipticalDistributionEvaluation::parameterGradient(const NumericalP
 {
   NumericalPoint center(getCenter()); // \mu
   Matrix linear(getLinear()); // \Gamma^t, transposed inverse Cholesky
-  UnsignedInteger inputDimension(getInputDimension());
+  UnsignedInteger inputDimension = getInputDimension();
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i
   for (UnsignedInteger i = 0; i < inputDimension; ++i)

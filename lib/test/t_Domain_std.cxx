@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
     // The 1D interface
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     NumericalPoint a(dim, -1.0);
     NumericalPoint b(dim, 2.0);
     Domain domain  = Interval(a, b);

@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
   try
   {
     PlatformInfo::SetNumericalPrecision(4);
-    UnsignedInteger inputDimension(3);
-    UnsignedInteger outputDimension(2);
+    UnsignedInteger inputDimension = 3;
+    UnsignedInteger outputDimension = 2;
     // Constant term
     SymmetricTensor constant(inputDimension, outputDimension);
     constant(0, 0, 0) = 7.0;

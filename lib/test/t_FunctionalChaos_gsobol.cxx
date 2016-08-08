@@ -27,7 +27,7 @@ using namespace OT::Test;
 NumericalScalar sobol(const Indices & indices,
                       const NumericalPoint & a)
 {
-  NumericalScalar value(1.0);
+  NumericalScalar value = 1.0;
   for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
   {
     value *= 1.0 / (3.0 * pow(1.0 + a[indices[i]], 2.0));
@@ -45,11 +45,11 @@ int main(int argc, char *argv[])
   {
 
     // Problem parameters
-    UnsignedInteger dimension(5);
+    UnsignedInteger dimension = 5;
 
     // Reference analytical values
-    NumericalScalar meanTh(1.0);
-    NumericalScalar covTh(1.0);
+    NumericalScalar meanTh = 1.0;
+    NumericalScalar covTh = 1.0;
     NumericalPoint a(dimension);
     // Create the gSobol function
     Description inputVariables(dimension);
@@ -89,10 +89,10 @@ int main(int argc, char *argv[])
     // We can choose amongst several strategies
     // First, the most efficient (but more complex!) strategy
     Collection<AdaptiveStrategy> listAdaptiveStrategy(0);
-    UnsignedInteger degree(4);
-    UnsignedInteger indexMax(enumerateFunction.getStrataCumulatedCardinal(degree));
-    UnsignedInteger basisDimension(enumerateFunction.getStrataCumulatedCardinal(degree / 2));
-    NumericalScalar threshold(1.0e-6);
+    UnsignedInteger degree = 4;
+    UnsignedInteger indexMax = enumerateFunction.getStrataCumulatedCardinal(degree);
+    UnsignedInteger basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree / 2);
+    NumericalScalar threshold = 1.0e-6;
     listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     {
       AdaptiveStrategy adaptiveStrategy(listAdaptiveStrategy[adaptiveStrategyIndex]);
       // Create the projection strategy
-      UnsignedInteger samplingSize(250);
+      UnsignedInteger samplingSize = 250;
       Collection<ProjectionStrategy> listProjectionStrategy(0);
       // The least squares strategy
       // Monte Carlo sampling
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
       {
         ProjectionStrategy projectionStrategy(listProjectionStrategy[projectionStrategyIndex]);
         // Create the polynomial chaos algorithm
-        NumericalScalar maximumResidual(1.0e-10);
+        NumericalScalar maximumResidual = 1.0e-10;
         FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
         algo.setMaximumResidual(maximumResidual);
         // Reinitialize the RandomGenerator to see the effect of the sampling method only
@@ -143,26 +143,26 @@ int main(int argc, char *argv[])
 
         // Post-process the results
         FunctionalChaosRandomVector vector(result);
-        NumericalScalar mean(vector.getMean()[0]);
+        NumericalScalar mean = vector.getMean()[0];
         fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
-        NumericalScalar variance(vector.getCovariance()(0, 0));
+        NumericalScalar variance = vector.getCovariance()(0, 0);
         fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
         Indices indices(1);
         for(UnsignedInteger i = 0; i < dimension; ++i)
         {
           indices[0] = i;
-          NumericalScalar value(vector.getSobolIndex(i));
+          NumericalScalar value = vector.getSobolIndex(i);
           fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
         }
         indices = Indices(2);
-        UnsignedInteger k(0);
+        UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < dimension; ++i)
         {
           indices[0] = i;
           for (UnsignedInteger j = i + 1; j < dimension; ++j)
           {
             indices[1] = j;
-            NumericalScalar value(vector.getSobolIndex(indices));
+            NumericalScalar value = vector.getSobolIndex(indices);
             fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
             k = k + 1;
           }
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
         indices[0] = 0;
         indices[1] = 1;
         indices[2] = 2;
-        NumericalScalar value(vector.getSobolIndex(indices));
+        NumericalScalar value = vector.getSobolIndex(indices);
         fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
       }
     }

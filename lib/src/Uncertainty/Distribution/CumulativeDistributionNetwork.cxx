@@ -96,9 +96,9 @@ String CumulativeDistributionNetwork::__str__(const String & offset) const
 /* Compute the numerical range of the distribution given the parameters values */
 void CumulativeDistributionNetwork::computeRange()
 {
-  const UnsignedInteger size(distributionCollection_.getSize());
+  const UnsignedInteger size = distributionCollection_.getSize();
   if (size == 0) return;
-  const UnsignedInteger dim(getDimension());
+  const UnsignedInteger dim = getDimension();
   const NumericalPoint infiniteLowerBounds(dim, -SpecFunc::MaxNumericalScalar);
   const NumericalPoint infiniteUpperBounds(dim,  SpecFunc::MaxNumericalScalar);
   const Interval::BoolCollection infiniteLowerBoundsFlags(dim, false);
@@ -114,7 +114,7 @@ void CumulativeDistributionNetwork::computeRange()
       const Indices indices(graph_[i]);
       for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
 	{
-	  const UnsignedInteger index(indices[j]);
+	  const UnsignedInteger index = indices[j];
 	  lowerBounds[index] = cdfRange.getLowerBound()[j];
 	  upperBounds[index] = cdfRange.getUpperBound()[j];
 	  lowerBoundsFlags[index] = cdfRange.getFiniteLowerBound()[j];
@@ -128,7 +128,7 @@ void CumulativeDistributionNetwork::computeRange()
 /* Distribution collection accessor */
 void CumulativeDistributionNetwork::setDistributionCollection(const DistributionCollection & coll)
 {
-  const UnsignedInteger size(coll.getSize());
+  const UnsignedInteger size = coll.getSize();
   // Check the number of distributions
   if (size != graph_.getRedNodes().getSize()) throw InvalidArgumentException(HERE) << "Error: the given collection of distributions has a size=" << size << " different from the number of red nodes=" << graph_.getRedNodes().getSize();
   // Check the dimension of the distributions
@@ -154,7 +154,7 @@ const CumulativeDistributionNetwork::DistributionCollection & CumulativeDistribu
 /* Graph accessor */
 void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
 {
-  const UnsignedInteger size(distributionCollection_.getSize());
+  const UnsignedInteger size = distributionCollection_.getSize();
   // Check the number of distributions
   if (size != graph.getRedNodes().getSize()) throw InvalidArgumentException(HERE) << "Error: the given graph has a number of red nodes=" << graph_.getRedNodes().getSize() << " different from the collection of distributions size=" << size;
   // Check the dimension of the distributions
@@ -192,7 +192,7 @@ NumericalSample CumulativeDistributionNetwork::getSample(const UnsignedInteger s
 							   const UnsignedInteger index) const
  {
    const Indices indices(graph_[index]);
-   const UnsignedInteger size(indices.getSize());
+   const UnsignedInteger size = indices.getSize();
    NumericalPoint reducedPoint(size);
    for (UnsignedInteger i = 0; i < size; ++i) reducedPoint[i] = point[indices[i]];
    return reducedPoint;
@@ -201,7 +201,7 @@ NumericalSample CumulativeDistributionNetwork::getSample(const UnsignedInteger s
 /* Get the PDF of the CumulativeDistributionNetwork */
 NumericalScalar CumulativeDistributionNetwork::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   return DistributionImplementation::computePDF(point);
 }
@@ -210,10 +210,10 @@ NumericalScalar CumulativeDistributionNetwork::computePDF(const NumericalPoint &
 /* Get the CDF of the CumulativeDistributionNetwork */
 NumericalScalar CumulativeDistributionNetwork::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  NumericalScalar cdf(distributionCollection_[0].computeCDF(reducePoint(point, 0)));
-  const UnsignedInteger size(distributionCollection_.getSize());
+  NumericalScalar cdf = distributionCollection_[0].computeCDF(reducePoint(point, 0));
+  const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 1; i < size; ++i) cdf *= distributionCollection_[i].computeCDF(reducePoint(point, i));
   return cdf;
 }
@@ -222,7 +222,7 @@ NumericalScalar CumulativeDistributionNetwork::computeCDF(const NumericalPoint &
 /* Get the i-th marginal distribution */
 CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::getMarginal(const UnsignedInteger i) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
   if (dimension == 1) return clone();
@@ -232,7 +232,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
   for (UnsignedInteger j = 0; j < distributionCollection_.getSize(); ++j)
     {
       // Check if the current contributor contains k
-      UnsignedInteger localIndex(dimension);
+      UnsignedInteger localIndex = dimension;
       Indices currentIndices(graph_[j]);
       for (UnsignedInteger k = 0; k < currentIndices.getSize(); ++k)
 	if (i == currentIndices[k])
@@ -256,7 +256,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
 {
   LOGINFO(OSS() << "in getMarginal(" << indices << "), contributors=" << distributionCollection_ << ", graph=" << graph_);
   if (indices.getSize() == 1) return getMarginal(indices[0]);
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   return DistributionImplementation::getMarginal(indices);
   /*
@@ -271,7 +271,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
       LOGINFO(OSS() << "j=" << j << ", currentIndices=" << currentIndices);
       for (UnsignedInteger k = 0; k < indices.getSize(); ++k)
 	{
-	  const UnsignedInteger i(indices[k]);
+	  const UnsignedInteger i = indices[k];
 	  for (UnsignedInteger n = 0; n < currentIndices.getSize(); ++n)
 	    if (i == currentIndices[n])
 	      {
@@ -299,7 +299,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
 /* Check if the distribution is continuous */
 Bool CumulativeDistributionNetwork::isContinuous() const
 {
-  const UnsignedInteger size(distributionCollection_.getSize());
+  const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isContinuous()) return false;
   return true;
 }
@@ -307,7 +307,7 @@ Bool CumulativeDistributionNetwork::isContinuous() const
 /* Check if the distribution is discrete */
 Bool CumulativeDistributionNetwork::isDiscrete() const
 {
-  const UnsignedInteger size(distributionCollection_.getSize());
+  const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
   return true;
 }
@@ -315,7 +315,7 @@ Bool CumulativeDistributionNetwork::isDiscrete() const
 /* Check if the distribution is integral */
 Bool CumulativeDistributionNetwork::isIntegral() const
 {
-  const UnsignedInteger size(distributionCollection_.getSize());
+  const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isIntegral()) return false;
   return true;
 }
@@ -323,7 +323,7 @@ Bool CumulativeDistributionNetwork::isIntegral() const
 /* Tell if the distribution has independent copula */
 Bool CumulativeDistributionNetwork::hasIndependentCopula() const
 {
-  const UnsignedInteger size(distributionCollection_.getSize());
+  const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
     if (!distributionCollection_[i].hasIndependentCopula()) return false;
   return true;

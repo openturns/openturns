@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     factories[1] = SoizeGhanemFactory(ComposedDistribution(marginals, copula), false);
     factories[2] = SoizeGhanemFactory(ComposedDistribution(marginals, copula), true);
     NumericalPoint x(2, 0.5);
-    UnsignedInteger kMax(5);
+    UnsignedInteger kMax = 5;
     ResourceMap::SetAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 2048 );
     ResourceMap::SetAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-6 );
     for (UnsignedInteger i = 0; i < factories.getSize(); ++i)
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 	    {
 	      KernelWrapper wrapper(functions[m], functions[n], distribution);
 	      NumericalMathFunction kernel(bindMethod<KernelWrapper, NumericalPoint, NumericalPoint>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
-	      NumericalScalar value(IteratedQuadrature().integrate(kernel, distribution.getRange())[0]);
+	      NumericalScalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
 	      M(m, n) = (std::abs(value) < 1e-6 ? 0.0 : value);
 	    }
 	fullprint << "M=\n" << M.__str__() << std::endl;

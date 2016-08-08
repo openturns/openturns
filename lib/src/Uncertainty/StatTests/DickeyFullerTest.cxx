@@ -115,8 +115,8 @@ void DickeyFullerTest::computeNoConstantCharacteristics()
     // Computation of \sum_{t=1}^{N} y_{t-1} * y{t-1}
     for (UnsignedInteger t = 0; t < T_; ++t)
     {
-      const NumericalScalar y_t_minus_one(timeSeries_.getValueAtIndex(t)[0]);
-      const NumericalScalar y_t(timeSeries_.getValueAtIndex(t + 1)[0]);
+      const NumericalScalar y_t_minus_one = timeSeries_.getValueAtIndex(t)[0];
+      const NumericalScalar y_t = timeSeries_.getValueAtIndex(t + 1)[0];
       sum_yt_yt_minus_one_ += y_t_minus_one * y_t;
       sum_squared_yt_minus_one_ += y_t_minus_one * y_t_minus_one;
     }
@@ -132,7 +132,7 @@ void DickeyFullerTest::computeDriftCharacteristics()
 {
   if (!isComputedDriftCharacteristics_)
   {
-    NumericalScalar partialSum(0.0);
+    NumericalScalar partialSum = 0.0;
     for (UnsignedInteger t = 1; t < T_; ++t) partialSum += timeSeries_.getValueAtIndex(t)[0];
     sum_yt_minus_one_ = partialSum + timeSeries_.getValueAtIndex(0)[0];
     sum_yt_ = partialSum + timeSeries_.getValueAtIndex(T_)[0];
@@ -149,17 +149,17 @@ void DickeyFullerTest::computeDriftCharacteristics()
 void DickeyFullerTest::computeTrendCharacteristics()
 {
   RegularGrid timeGrid(timeSeries_.getTimeGrid());
-  const NumericalScalar dt(timeGrid.getStep());
-  const NumericalScalar t0(timeGrid.getStart());
+  const NumericalScalar dt = timeGrid.getStep();
+  const NumericalScalar t0 = timeGrid.getStart();
   if (!isComputedTrendCharacteristics_)
   {
     // Computation of \sum_{t=1}^{N} t * y{t-1}
     // and \sum_{t=1}^{N} t * y{t}
     for (UnsignedInteger t = 0; t < T_; ++t)
     {
-      const NumericalScalar y_t_minus_one(timeSeries_.getValueAtIndex(t)[0]);
-      const NumericalScalar time(timeGrid.getValue(t + 1));
-      const NumericalScalar y_t(timeSeries_.getValueAtIndex(t + 1)[0]);
+      const NumericalScalar y_t_minus_one = timeSeries_.getValueAtIndex(t)[0];
+      const NumericalScalar time = timeGrid.getValue(t + 1);
+      const NumericalScalar y_t = timeSeries_.getValueAtIndex(t + 1)[0];
       sum_t_yt_minus_one_ += y_t_minus_one * time;
       sum_t_yt_ += y_t * time;
     }
@@ -302,7 +302,7 @@ void DickeyFullerTest::estimateAR1Model()
     rho_ = sum_yt_yt_minus_one_ / sum_squared_yt_minus_one_;
 
     // Expected error residual
-    NumericalScalar error(0.0);
+    NumericalScalar error = 0.0;
     for (UnsignedInteger t = 0; t < T_; ++ t)
     {
       const NumericalScalar x = timeSeries_.getValueAtIndex(t)[0];
@@ -324,7 +324,7 @@ TestResult DickeyFullerTest::testUnitRootInDriftAndLinearTrendModel(const Numeri
   estimateDriftAndLinearTrendModel();
   const NumericalScalar statistic ((rho_ - 1.0) / sigmaRho_);
   // Statistical test : the null hypothesis is that there is a unit root
-  const NumericalScalar pValue(DistFunc::pDickeyFullerTrend(statistic));
+  const NumericalScalar pValue = DistFunc::pDickeyFullerTrend(statistic);
   return TestResult("DickeyFullerUnitRootInDriftAndLinearTrendModel", pValue > 1.0 - level, pValue, 1.0 - level);
 }
 
@@ -337,7 +337,7 @@ TestResult DickeyFullerTest::testUnitRootInDriftModel(const NumericalScalar leve
   const NumericalScalar statistic = (rho_ - 1.0) / sigmaRho_;
 
   // We compare the statistic of the test with the critical value of the DF test
-  NumericalScalar pValue(DistFunc::pDickeyFullerConstant(statistic));
+  NumericalScalar pValue = DistFunc::pDickeyFullerConstant(statistic);
   return TestResult("DickeyFullerUnitRootInDriftModel", pValue > 1.0 - level, pValue, 1.0 - level);
 }
 
@@ -345,9 +345,9 @@ TestResult DickeyFullerTest::testUnitRootInDriftModel(const NumericalScalar leve
 TestResult DickeyFullerTest::testUnitRootInAR1Model(const NumericalScalar level)
 {
   estimateAR1Model();
-  const NumericalScalar statistic((rho_ - 1.0) / sigmaRho_);
+  const NumericalScalar statistic = (rho_ - 1.0) / sigmaRho_;
   // We get now the statistic of the test and compare it with the critical value of the DF test
-  const NumericalScalar pValue(DistFunc::pDickeyFullerNoConstant(statistic));
+  const NumericalScalar pValue = DistFunc::pDickeyFullerNoConstant(statistic);
   return TestResult("DickeyFullerUnitRootAR1Model", pValue > 1.0 - level, pValue, 1.0 - level);
 }
 
@@ -501,8 +501,8 @@ TestResult DickeyFullerTest::testUnitRootAndNoLinearTrendInDriftAndLinearTrendMo
   const RegularGrid timeGrid(timeSeries_.getTimeGrid());
   for (UnsignedInteger t = 0; t < T_; ++t)
   {
-    const NumericalScalar deltaX(timeSeries_[t + 1][1] - timeSeries_[t][1]);
-    const NumericalScalar epsilon_t(deltaX - c);
+    const NumericalScalar deltaX = timeSeries_[t + 1][1] - timeSeries_[t][1];
+    const NumericalScalar epsilon_t = deltaX - c;
     SCR3c += epsilon_t * epsilon_t;
     // Perform since it is computed previously
     const NumericalScalar x = timeSeries_.getValueAtIndex(t)[0];
@@ -514,10 +514,10 @@ TestResult DickeyFullerTest::testUnitRootAndNoLinearTrendInDriftAndLinearTrendMo
 
   // F3 statistic
   // Fisher statistic
-  const NumericalScalar fisherStatisticNullTrend(0.5 * (SCR3c - SCR3) * (T_ -  2) / SCR3);
+  const NumericalScalar fisherStatisticNullTrend = 0.5 * (SCR3c - SCR3) * (T_ -  2) / SCR3;
   // Fisher test
   const FisherSnedecor fisherSnedecor(2, T_ - 2);
-  const NumericalScalar pValueNullTrend(fisherSnedecor.computeCDF(fisherStatisticNullTrend));
+  const NumericalScalar pValueNullTrend = fisherSnedecor.computeCDF(fisherStatisticNullTrend);
 
   // Decision
   const TestResult result("DickeyFullerTrendNullWithUnitRoot", pValueNullTrend < level, 1.0 - pValueNullTrend, 1.0 - level);
@@ -543,9 +543,9 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoLinearTrendInDriftAndLinearTrend
   // Care: check that the variance is the non biased estimator
   // Student quantile ==> T(n - p - 1) with n: size of sample and p: number of variables
   // p here is 3 (rho, drift and trend)
-  const NumericalScalar studentStatisticNullTrend(std::abs(trend_) / sigmaTrend_);
+  const NumericalScalar studentStatisticNullTrend = std::abs(trend_) / sigmaTrend_;
   // Here, T_ = n - 1
-  const NumericalScalar complementaryCDFNullTrend(DistFunc::pStudent(T_ - 3, studentStatisticNullTrend, true));
+  const NumericalScalar complementaryCDFNullTrend = DistFunc::pStudent(T_ - 3, studentStatisticNullTrend, true);
   // True pValue = 1 - F(s) with s the student statistic and F the Student cumulative function
 
   // Test is rejected if the the statistic is greater than the quantile
@@ -575,17 +575,17 @@ TestResult DickeyFullerTest::testUnitRootAndNoDriftInDriftModel(const NumericalS
     LOGWARN("The model has no unit root. The result test may have no sense. The statistical \"testNoUnitRootAndNoDriftInDriftModel\" test is suggested ");
   }
 
-  NumericalScalar SCR2c(0.0);
-  NumericalScalar SCR2(0.0);
+  NumericalScalar SCR2c = 0.0;
+  NumericalScalar SCR2 = 0.0;
 
   for (UnsignedInteger t = 0; t < T_; ++ t)
   {
     const NumericalScalar epsilon_t = timeSeries_[t + 1][1] - timeSeries_[t][1];
     SCR2c += epsilon_t * epsilon_t;
     // Perform since it is computed previously
-    const NumericalScalar X(timeSeries_.getValueAtIndex(t)[0]);
-    const NumericalScalar Y(timeSeries_.getValueAtIndex(t + 1)[0]);
-    const NumericalScalar epsilon(Y - rho_ * X  - drift_ );
+    const NumericalScalar X = timeSeries_.getValueAtIndex(t)[0];
+    const NumericalScalar Y = timeSeries_.getValueAtIndex(t + 1)[0];
+    const NumericalScalar epsilon = Y - rho_ * X  - drift_;
     SCR2 += epsilon * epsilon;
   }
 

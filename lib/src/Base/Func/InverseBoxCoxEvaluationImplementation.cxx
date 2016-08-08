@@ -116,8 +116,8 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
     {
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
-        const NumericalScalar lambda_j(evaluation_.getLambda()[j]);
-        const NumericalScalar x(input_[i][j] - evaluation_.getShift()[j]);
+        const NumericalScalar lambda_j = evaluation_.getLambda()[j];
+        const NumericalScalar x = input_[i][j] - evaluation_.getShift()[j];
         if (std::abs(lambda_j * x * x) < 1e-8) output_[i][j] = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
         else output_[i][j] = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
       } // j
@@ -129,7 +129,7 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
 NumericalSample InverseBoxCoxEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   NumericalSample result(size, getInputDimension());
   const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBB::ParallelFor( 0, size, policy );
@@ -147,7 +147,7 @@ NumericalSample InverseBoxCoxEvaluationImplementation::operator() (const Numeric
 /* Operator () */
 NumericalPoint InverseBoxCoxEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getInputDimension());
+  const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
   NumericalPoint result(dimension);
 
@@ -155,12 +155,12 @@ NumericalPoint InverseBoxCoxEvaluationImplementation::operator() (const Numerica
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
-    const NumericalScalar x(inP[index] - shift_[index]);
-    const NumericalScalar lambda_i(lambda_[index]);
+    const NumericalScalar x = inP[index] - shift_[index];
+    const NumericalScalar lambda_i = lambda_[index];
     if (std::abs(lambda_i * x * x) < 1e-8) result[index] = exp(x) * (1.0 - 0.5 * lambda_i * x * x);
     else
     {
-      const NumericalScalar evaluation(lambda_i * x + 1.0);
+      const NumericalScalar evaluation = lambda_i * x + 1.0;
       if (evaluation <= 0) throw InvalidArgumentException(HERE) << "Can not apply the inverse Box Cox function " ;
       result[index] = pow(evaluation, 1.0 / lambda_i);
     }

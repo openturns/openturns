@@ -28,7 +28,7 @@ String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger d
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps(pow(0.1, 1.0 * digits));
+  NumericalScalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "formulas=" << formulas << std::endl;
     NumericalMathFunction myFunction(inputFunc, outputFunc, formulas);
 
-    UnsignedInteger dim(myFunction.getInputDimension());
+    UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     mean[0] = 5.0; // x0
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
     /* Stream out the result */
     FORMResult result(myAlgo.getResult());
-    UnsignedInteger digits(5);
+    UnsignedInteger digits = 5;
     fullprint << "importance factors=" << printNumericalPoint(result.getImportanceFactors(), digits) << std::endl;
     fullprint << "importance factors (classical)=" << printNumericalPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
 

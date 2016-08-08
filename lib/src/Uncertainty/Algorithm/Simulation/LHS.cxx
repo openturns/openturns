@@ -67,11 +67,11 @@ LHS * LHS::clone() const
 NumericalSample LHS::computeBlockSample()
 {
   // Size of a block
-  const UnsignedInteger blockSize(getBlockSize());
+  const UnsignedInteger blockSize = getBlockSize();
   // Compute the total sample size
-  const UnsignedInteger totalSize(blockSize * getMaximumOuterSampling());
+  const UnsignedInteger totalSize = blockSize * getMaximumOuterSampling();
   // Compute the total sample base position
-  UnsignedInteger basePosition(blockIndex_ * blockSize);
+  UnsignedInteger basePosition = blockIndex_ * blockSize;
   // First, compute the input sub-sample based on the shuffling
   NumericalSample inputSample(blockSize, NumericalPoint(dimension_));
   for(UnsignedInteger index = 0; index < blockSize; ++index)
@@ -79,7 +79,7 @@ NumericalSample LHS::computeBlockSample()
     const NumericalPoint u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
-      NumericalScalar xi((shuffle_(component, basePosition) + u[component]) / totalSize);
+      NumericalScalar xi = (shuffle_(component, basePosition) + u[component]) / totalSize;
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
     // Update the base position

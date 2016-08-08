@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction myFunction(input_r, output_r, formula_r);
 
     /* We create a distribution */
-    UnsignedInteger dim(myFunction.getInputDimension());
+    UnsignedInteger dim = myFunction.getInputDimension();
     CorrelationMatrix R(dim);
     for (UnsignedInteger i = 0; i < dim; i++)
     {

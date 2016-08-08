@@ -81,11 +81,11 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
 /* Compute the numerical range of the distribution given the parameters values */
 void NormalGamma::computeRange()
 {
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
   // Lower bound
   NumericalPoint lowerBound(2, 0.0);
   //const NumericalScalar lambdaMin(conditioningDistribution_.computeQuantile(epsilon)[0]);
-  const NumericalScalar lambdaMax(conditioningDistribution_.computeQuantile(epsilon, true)[0]);
+  const NumericalScalar lambdaMax = conditioningDistribution_.computeQuantile(epsilon, true)[0];
   const Normal deconditionedDistribution(mu_, 1.0 / std::sqrt(kappa_ * lambdaMax));
   lowerBound[0] = deconditionedDistribution.computeQuantile(epsilon)[0];
   // Upper bound

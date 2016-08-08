@@ -85,7 +85,7 @@ Bool SoizeGhanemFactorEvaluation::operator ==(const SoizeGhanemFactorEvaluation 
  */
 NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   NumericalPoint result(1);
   if (useCopula_)
@@ -97,7 +97,7 @@ NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & i
     }
   else
     {
-      NumericalScalar logFactor(0.0);
+      NumericalScalar logFactor = 0.0;
       for (UnsignedInteger i = 0; i < inputDimension; ++i)
 	logFactor += marginals_[i].computeLogPDF(inP[i]);
       // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
@@ -114,9 +114,9 @@ NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & i
 
 NumericalSample SoizeGhanemFactorEvaluation::operator() (const NumericalSample & inS) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   if (size == 0) return NumericalSample(0, 1);
   NumericalSample result(size, 1);
   if (useCopula_)

@@ -191,8 +191,8 @@ void TaylorExpansionMoments::computeCovariance() const
 
   /* a matrix, in fact a square symmetric matrix but we don't know it from its C++ definition */
   /* outputCovariance is a pxp matrix */
-  const UnsignedInteger inputDimension(gradientAtMean_.getNbRows());
-  const UnsignedInteger outputDimension(gradientAtMean_.getNbColumns());
+  const UnsignedInteger inputDimension = gradientAtMean_.getNbRows();
+  const UnsignedInteger outputDimension = gradientAtMean_.getNbColumns();
   covariance_ = CovarianceMatrix(outputDimension);
   /* we unroll the matrix multiplications transpose(gradient).covariance.gradient */
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
@@ -217,7 +217,7 @@ void TaylorExpansionMoments::computeImportanceFactors() const
   computeCovariance();
   /* we compute here the importance factors */
   /* in this scalar case, gradientAtMean is a NumericalPoint */
-  const UnsignedInteger dimension(gradientAtMean_.getNbRows());
+  const UnsignedInteger dimension = gradientAtMean_.getNbRows();
 
   /* in this scalar case, importance factors is a NumericalPoint, defined as importanceFactors = gradient .* inputCovariance * gradient / outputCovariance, where .* means an element-wise multiplication between vectors */
   importanceFactors_ = NumericalPointWithDescription(dimension, 0.0);
@@ -252,15 +252,15 @@ void TaylorExpansionMoments::computeMeanSecondOrder() const
   /* tensoriel writting : setCovariance(getGradientAtMean() + 0.5*getHessianAtMean().dotdot(getInputCovariance())); */
   /* developped formula */
 
-  const UnsignedInteger rowDimension(hessianAtMean_.getNbRows());
+  const UnsignedInteger rowDimension = hessianAtMean_.getNbRows();
   /* i */
-  const UnsignedInteger sheetDimension(hessianAtMean_.getNbSheets());
+  const UnsignedInteger sheetDimension = hessianAtMean_.getNbSheets();
   /* k */
   meanSecondOrder_ = valueAtMean_;
   /* loop on k */
   for (UnsignedInteger k = 0; k < sheetDimension; ++k)
   {
-    NumericalScalar kSecondOrderContribution(0.0);
+    NumericalScalar kSecondOrderContribution = 0.0;
     /* loop on i */
     for (UnsignedInteger i = 0; i < rowDimension; ++i)
     {

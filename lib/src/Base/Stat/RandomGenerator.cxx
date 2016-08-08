@@ -62,8 +62,8 @@ void RandomGenerator::SetSeed(const UnsignedInteger seed)
 /* State accessor */
 void RandomGenerator::SetState(const RandomGeneratorState & state)
 {
-  UnsignedInteger size(state.buffer_.getSize());
-  UnsignedInteger stateSize(Generator.get_state_length_32());
+  UnsignedInteger size = state.buffer_.getSize();
+  UnsignedInteger stateSize = Generator.get_state_length_32();
   /* The unusual case, the given seed is too small. It is completed with 0 */
   Indices stateArray(state.buffer_);
   for (UnsignedInteger i = size; i < stateSize; i++) stateArray.add(0);
@@ -78,7 +78,7 @@ void RandomGenerator::SetState(const RandomGeneratorState & state)
 /* Seed accessor */
 RandomGeneratorState RandomGenerator::GetState()
 {
-  UnsignedInteger size((UnsignedInteger)(Generator.get_state_length_32()));
+  UnsignedInteger size = (UnsignedInteger)(Generator.get_state_length_32());
   // Create the state and get the index at the same time
   RandomGeneratorState state(Indices(size, 0), (UnsignedInteger)(Generator.get_index()));
   // Get the state array

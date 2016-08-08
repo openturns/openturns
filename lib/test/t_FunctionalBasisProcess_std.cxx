@@ -33,18 +33,18 @@ int main(int argc, char *argv[])
   try
   {
 
-    const NumericalScalar Tmin(0.0);
-    const NumericalScalar deltaT(0.1);
-    const UnsignedInteger N(11);
+    const NumericalScalar Tmin = 0.0;
+    const NumericalScalar deltaT = 0.1;
+    const UnsignedInteger N = 11;
 
     /* Initialization of the RegularGrid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, N);
 
     /* Functional basis */
-    UnsignedInteger basisDimension(10);
+    UnsignedInteger basisDimension = 10;
     Basis basis(basisDimension);
     Collection<Distribution> coefficients(basisDimension);
-    UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(20);
     for (UnsignedInteger i = 0; i < basisDimension; ++i)
     {

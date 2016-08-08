@@ -56,7 +56,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
   {
-    const UnsignedInteger basisSize(indices.getSize());
+    const UnsignedInteger basisSize = indices.getSize();
     penalizationMatrix_ = IdentityMatrix(basisSize);
   }
 }
@@ -78,7 +78,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
   {
-    const UnsignedInteger basisSize(indices.getSize());
+    const UnsignedInteger basisSize = indices.getSize();
     penalizationMatrix_ = IdentityMatrix(basisSize);
   }
 }
@@ -97,7 +97,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
   , penalizationMatrix_(penalizationMatrix)
   , useNormal_(useNormal)
 {
-  const UnsignedInteger basisSize(indices.getSize());
+  const UnsignedInteger basisSize = indices.getSize();
   // Check if the penalization matrix has the proper dimension
   if (penalizationMatrix_.getDimension() != basisSize) throw InvalidArgumentException(HERE) << "Error: the given penalization matrix has an improper dimension.";
   // Must const_cast here because the isPositiveDefinite() method is not const in
@@ -114,7 +114,7 @@ void PenalizedLeastSquaresAlgorithm::run()
 void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
 {
   const UnsignedInteger basisDimension = currentIndices_.getSize();
-  const UnsignedInteger sampleSize(x_.getSize());
+  const UnsignedInteger sampleSize = x_.getSize();
   // Here we use directly a MatrixImplementation in order to have access to
   // the flat indexing of the data
   MatrixImplementation basisMatrix;
@@ -145,7 +145,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
         rightHandSide[i] *= weightSqrt[i];
       }
       // Update the design matrix
-      UnsignedInteger flatIndex(0);
+      UnsignedInteger flatIndex = 0;
       for (UnsignedInteger j = 0; j < basisDimension; ++j)
         for (UnsignedInteger i = 0; i < sampleSize; ++i)
         {
@@ -159,7 +159,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
   {
     // Here we have a more complex situation: the penalized least-squares problem is reduced to a classical one by extending the matrix
     // First, get the data as if the weights were uniform
-    const UnsignedInteger newNbRows(sampleSize + basisDimension);
+    const UnsignedInteger newNbRows = sampleSize + basisDimension;
     basisMatrix = MatrixImplementation(newNbRows, basisDimension);
     const MatrixImplementation Phi(proxy.computeDesign(currentIndices_));
     rightHandSide = y_.getImplementation()->getData();
@@ -180,7 +180,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     // If the weights are uniform, they are taken into account by a change in the penalization factor
     if (hasUniformWeight_)
     {
-      const NumericalScalar rho(std::sqrt(penalizationFactor_ / weight_[0]));
+      const NumericalScalar rho = std::sqrt(penalizationFactor_ / weight_[0]);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
       {
         // The cholesky factor has to be transposed, thus we fill only the upper triangular part of the trailing block
@@ -190,7 +190,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     } // (hasUniformWeight_)
     else
     {
-      const NumericalScalar rho(std::sqrt(penalizationFactor_));
+      const NumericalScalar rho = std::sqrt(penalizationFactor_);
       // Here the upper part of the matrix and the right-hand side have to be changed to take into account the weights, the lower part to take into account the regularization
       NumericalPoint weightSqrt(sampleSize);
       for (UnsignedInteger i = 0; i < sampleSize; ++i)
@@ -199,7 +199,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
         rightHandSide[i] *= weightSqrt[i];
       }
       // Update the design matrix
-      UnsignedInteger flatIndex(0);
+      UnsignedInteger flatIndex = 0;
       for (UnsignedInteger j = 0; j < basisDimension; ++j)
       {
         for (UnsignedInteger i = 0; i < sampleSize; ++i)
@@ -215,7 +215,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
   } // penalizationFactor_ > 0.0
   // Solve the linear system (least squares solution)
   // If we can use the normal equation (fastest method, not very stable)
-  Bool isSolved(false);
+  Bool isSolved = false;
   // The normal matrix will be singular if not enough rows
   if (useNormal_ && (basisMatrix.getNbRows() >= basisMatrix.getNbColumns()))
   {
@@ -238,12 +238,12 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use QR decomposition");
     setCoefficients(basisMatrix.solveLinearSystemRect(rightHandSide));
   }
-  NumericalScalar quadraticResidual((basisMatrix.genVectProd(getCoefficients()) - rightHandSide).normSquare());
+  NumericalScalar quadraticResidual = (basisMatrix.genVectProd(getCoefficients()) - rightHandSide).normSquare();
   if (hasUniformWeight_) quadraticResidual *= weight_[0];
   // The residual is the mean L2 norm of the fitting
   setResidual(std::sqrt(quadraticResidual) / sampleSize);
 
-  const NumericalScalar empiricalError(quadraticResidual / sampleSize);
+  const NumericalScalar empiricalError = quadraticResidual / sampleSize;
 
   // The relative error
   setRelativeError(empiricalError / y_.computeVariance()[0]);

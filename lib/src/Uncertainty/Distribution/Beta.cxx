@@ -147,7 +147,7 @@ NumericalPoint Beta::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, ((r_ - 1.0) / (x - a_) - (t_ - r_ - 1.0) / (b_ - x)) * computePDF(point));
 }
@@ -158,7 +158,7 @@ NumericalScalar Beta::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x == b_) && (t_ - r_ == 1.0)) return 1.0;
   if ((x <= a_) || (x >= b_)) return 0.0;
   return std::exp(computeLogPDF(point));
@@ -168,7 +168,7 @@ NumericalScalar Beta::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x == b_) && (t_ - r_ == 1.0)) return 0.0;
   if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxNumericalScalar;
   return normalizationFactor_ + (r_ - 1.0) * std::log(x - a_) + (t_ - r_ - 1.0) * std::log(b_ - x);
@@ -180,7 +180,7 @@ NumericalScalar Beta::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
   return DistFunc::pBeta(r_, t_ - r_, (x - a_) / (b_ - a_));
@@ -192,15 +192,15 @@ NumericalPoint Beta::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(4, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return pdfGradient;
-  const NumericalScalar pdf(computePDF(point));
-  const NumericalScalar psiTR(SpecFunc::Psi(t_ - r_));
-  const NumericalScalar iBA(1.0 / (b_ - a_));
-  const NumericalScalar BX(b_ - x);
-  const NumericalScalar iBX(1.0 / BX);
-  const NumericalScalar XA(x - a_);
-  const NumericalScalar iXA(1.0 / XA);
+  const NumericalScalar pdf = computePDF(point);
+  const NumericalScalar psiTR = SpecFunc::Psi(t_ - r_);
+  const NumericalScalar iBA = 1.0 / (b_ - a_);
+  const NumericalScalar BX = b_ - x;
+  const NumericalScalar iBX = 1.0 / BX;
+  const NumericalScalar XA = x - a_;
+  const NumericalScalar iXA = 1.0 / XA;
   pdfGradient[0] = pdf * (std::log(XA * iBX) + psiTR - SpecFunc::Psi(r_));
   pdfGradient[1] = pdf * (std::log(BX * iBA) - psiTR + SpecFunc::Psi(t_));
   pdfGradient[2] = pdf * ((t_ - 1.0) * iBA - (r_ - 1.0) * iXA);
@@ -214,13 +214,13 @@ NumericalPoint Beta::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(4, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar cdf(computeCDF(point));
-  const NumericalScalar iBA(1.0 / (b_ - a_));
-  const NumericalScalar cdfShift(DistFunc::pBeta(r_ + 1.0, t_ - r_ - 1.0, (x - a_) * iBA));
-  const NumericalScalar cdfDiff(cdfShift - cdf);
-  const NumericalScalar factor(r_ * iBA);
+  const NumericalScalar cdf = computeCDF(point);
+  const NumericalScalar iBA = 1.0 / (b_ - a_);
+  const NumericalScalar cdfShift = DistFunc::pBeta(r_ + 1.0, t_ - r_ - 1.0, (x - a_) * iBA);
+  const NumericalScalar cdfDiff = cdfShift - cdf;
+  const NumericalScalar factor = r_ * iBA;
   static const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
   static const NumericalScalar i2Eps(0.5 / eps);
   cdfGradient[0] = i2Eps * (DistFunc::pBeta(r_ + eps, t_ - r_ - eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(r_ - eps, t_ - r_ + eps, (x - a_) / (b_ - a_)));
@@ -241,7 +241,7 @@ NumericalScalar Beta::computeScalarQuantile(const NumericalScalar prob,
 NumericalComplex Beta::computeCharacteristicFunction(const NumericalScalar x) const
 {
   if (x == 0.0) return 1.0;
-  const NumericalScalar r1(std::abs(x * r_ / t_));
+  const NumericalScalar r1 = std::abs(x * r_ / t_);
   // We have numerical stability issues for large values of r1
   if (r1 <= 1.0) return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(r_, t_, NumericalComplex(0.0, (b_ - a_) * x));
   return DistributionImplementation::computeCharacteristicFunction(x);
@@ -250,7 +250,7 @@ NumericalComplex Beta::computeCharacteristicFunction(const NumericalScalar x) co
 /* Get the roughness, i.e. the L2-norm of the PDF */
 NumericalScalar Beta::getRoughness() const
 {
-  const NumericalScalar den(SpecFunc::Beta(r_, t_ - r_));
+  const NumericalScalar den = SpecFunc::Beta(r_, t_ - r_);
   return SpecFunc::Beta(2.0 * r_ - 1.0, 2.0 * (t_ - r_) - 1.0) / (den * den * (b_ - a_));
 }
 
@@ -283,7 +283,7 @@ NumericalPoint Beta::getKurtosis() const
 void Beta::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar eta((b_ - a_) / t_);
+  const NumericalScalar eta = (b_ - a_) / t_;
   covariance_(0, 0) = eta * eta * r_ * (t_ - r_) / (t_ + 1.0);
   isAlreadyComputedCovariance_ = true;
 }
@@ -293,7 +293,7 @@ NumericalPoint Beta::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   // Here we have to convert n to a signed type else -n will produce an overflow
-  const NumericalScalar value((n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(r_, -static_cast<NumericalScalar>(n), t_, 2.0));
+  const NumericalScalar value = (n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(r_, -static_cast<NumericalScalar>(n), t_, 2.0);
   return NumericalPoint(1, value);
 }
 
@@ -397,8 +397,8 @@ void Beta::setRT(const NumericalScalar r,
 void Beta::setMuSigma(const NumericalScalar mu,
                       const NumericalScalar sigma)
 {
-  const NumericalScalar t((b_ - mu) * (mu - a_) / (sigma * sigma) - 1);
-  const NumericalScalar r(t * (mu - a_) / (b_ - a_));
+  const NumericalScalar t = (b_ - mu) * (mu - a_) / (sigma * sigma) - 1;
+  const NumericalScalar r = t * (mu - a_) / (b_ - a_);
   setRT(r, t);
 }
 

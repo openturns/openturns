@@ -351,7 +351,7 @@ FileName Path::BuildTemporaryFileName(const FileName & pattern)
 {
 #ifndef WIN32
   String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + pattern);
-  UnsignedInteger size(fullPattern.size());
+  UnsignedInteger size = fullPattern.size();
   char temporaryFileName[size + 1];
   strcpy(temporaryFileName, fullPattern.c_str());
   temporaryFileName[size] = 0;

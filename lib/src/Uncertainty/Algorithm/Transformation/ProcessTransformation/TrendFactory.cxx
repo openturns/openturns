@@ -78,10 +78,10 @@ TrendTransform TrendFactory::build(const Field & field,
                                    const Basis & basis) const
 {
   // size of the collection
-  const UnsignedInteger N(basis.getSize());
+  const UnsignedInteger N = basis.getSize();
 
   // Dimension and size of the time series
-  const UnsignedInteger dimension(field.getDimension());
+  const UnsignedInteger dimension = field.getDimension();
   NumericalSample inputSample(field.getMesh().getVertices());
 
   // We need a sample to get coefficients result

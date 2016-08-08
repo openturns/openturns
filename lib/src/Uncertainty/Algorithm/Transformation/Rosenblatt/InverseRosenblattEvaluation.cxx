@@ -57,7 +57,7 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 /* Evaluation */
 NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   NumericalPoint result(dimension);
   NumericalPoint y(0);

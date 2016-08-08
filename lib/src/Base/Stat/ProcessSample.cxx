@@ -167,7 +167,7 @@ UnsignedInteger ProcessSample::getSize() const
 
 Field ProcessSample::computeMean() const
 {
-  const UnsignedInteger size(getSize());
+  const UnsignedInteger size = getSize();
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
   NumericalSample meanValues(data_[0]);
@@ -186,8 +186,8 @@ NumericalSample ProcessSample::computeTemporalMean() const
 /* Compute the sample of spatial means of each field */
 NumericalSample ProcessSample::computeSpatialMean() const
 {
-  const UnsignedInteger size(getSize());
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger size = getSize();
+  const UnsignedInteger dimension = getDimension();
   NumericalSample result(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].computeMean();
   return result;
@@ -198,12 +198,12 @@ NumericalSample ProcessSample::computeSpatialMean() const
  */
 Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) const
 {
-  const UnsignedInteger size(getSize());
+  const UnsignedInteger size = getSize();
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
   // This initialization set the correct time grid into result
-  const UnsignedInteger dimension(data_[0].getDimension());
-  const UnsignedInteger length(data_[0].getSize());
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
   NumericalSample result(length, dimension);
   // Loop over the location indices
   for (UnsignedInteger i = 0; i < length; ++i)
@@ -225,7 +225,7 @@ Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
   // Discretization of the x axis
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, "Time", "Values", true, "topright");
-  const UnsignedInteger size(data_.getSize());
+  const UnsignedInteger size = data_.getSize();
   const Description colors(Drawable::BuildDefaultPalette(size));
   for (UnsignedInteger i = 0; i < size; ++i)
   {

@@ -123,10 +123,10 @@ NumericalPoint ComposedNumericalMathEvaluationImplementation::getParameter() con
 void ComposedNumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
 {
   NumericalPoint rightParameter(p_rightFunction_->getParameter());
-  const UnsignedInteger rightDimension(rightParameter.getDimension());
+  const UnsignedInteger rightDimension = rightParameter.getDimension();
   NumericalPoint leftParameter(p_leftFunction_->getParameter());
-  const UnsignedInteger leftDimension(leftParameter.getDimension());
-  UnsignedInteger index(0);
+  const UnsignedInteger leftDimension = leftParameter.getDimension();
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++ i)
   {
     rightParameter[i] = parameter[index];
@@ -152,10 +152,10 @@ Description ComposedNumericalMathEvaluationImplementation::getParameterDescripti
 void ComposedNumericalMathEvaluationImplementation::setParameterDescription(const Description & description)
 {
   Description rightDescription(p_rightFunction_->getParameterDescription());
-  const UnsignedInteger rightDimension(rightDescription.getSize());
+  const UnsignedInteger rightDimension = rightDescription.getSize();
   Description leftDescription(p_leftFunction_->getParameterDescription());
-  const UnsignedInteger leftDimension(leftDescription.getSize());
-  UnsignedInteger index(0);
+  const UnsignedInteger leftDimension = leftDescription.getSize();
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++ i)
   {
     rightDescription[i] = description[index];

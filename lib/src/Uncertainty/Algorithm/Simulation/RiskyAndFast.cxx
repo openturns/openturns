@@ -79,8 +79,8 @@ RiskyAndFast::NumericalScalarCollection RiskyAndFast::solve(const NumericalMathF
     infValue = function(NumericalPoint(1, infPoint))[0];
     setOriginValue(infValue);
   }
-  const NumericalScalar supPoint(getMaximumDistance());
-  const NumericalScalar supValue(function(NumericalPoint(1, supPoint))[0]);
+  const NumericalScalar supPoint = getMaximumDistance();
+  const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
   Solver solver(getSolver());
   // If the origin is in the failure domain we don't look for additional roots
   if (infValue == value)

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedInteger iMax(5);
+    const UnsignedInteger iMax = 5;
     Collection<Distribution> distributionCollection;
     distributionCollection.add(Laplace(1.0, 0.0));
     distributionCollection.add(Logistic(0.0, 1.0));

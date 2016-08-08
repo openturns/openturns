@@ -107,9 +107,9 @@ LinearModel::NumericalScalarCollection LinearModel::getPValues() const
 NumericalSample LinearModel::getPredicted(const NumericalSample & predictor) const
 {
   if (predictor.getDimension() + 1 != regression_.getDimension()) throw InvalidArgumentException(HERE) << "Error: predictors must have a dimension compatible with the linear model dimension";
-  UnsignedInteger size(predictor.getSize());
+  UnsignedInteger size = predictor.getSize();
   NumericalSample predicted(size, 1);
-  UnsignedInteger dimension(predictor.getDimension());
+  UnsignedInteger dimension = predictor.getDimension();
   NumericalPoint linear(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
   for (UnsignedInteger i = 0; i < size; ++i) predicted[i][0] = dot(linear, predictor[i]) + regression_[0];
@@ -121,10 +121,10 @@ NumericalSample LinearModel::getResidual(const NumericalSample & predictor,
     const NumericalSample & measured) const
 {
   if (predictor.getDimension() + 1 != regression_.getDimension()) throw InvalidArgumentException(HERE) << "Error: predictors must have a dimension compatible with the linear model dimension";
-  UnsignedInteger size(predictor.getSize());
+  UnsignedInteger size = predictor.getSize();
   if (measured.getSize() != size) throw InvalidArgumentException(HERE) << "Error: measured must have the same size as predictor";
   NumericalSample residual(size, 1);
-  UnsignedInteger dimension(predictor.getDimension());
+  UnsignedInteger dimension = predictor.getDimension();
   NumericalPoint linear(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
   for (UnsignedInteger i = 0; i < size; ++i) residual[i][0] = measured[i][0] - dot(linear, predictor[i]) - regression_[0];

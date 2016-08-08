@@ -157,7 +157,7 @@ NumericalPoint TracyWidomGSE::getKurtosis() const
 void TracyWidomGSE::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar sigma(getStandardDeviation()[0]);
+  const NumericalScalar sigma = getStandardDeviation()[0];
   covariance_(0, 0) = sigma * sigma;
   isAlreadyComputedCovariance_ = true;
 }

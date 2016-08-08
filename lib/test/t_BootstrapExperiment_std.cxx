@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger size(5);
-    UnsignedInteger dim(6);
+    UnsignedInteger size = 5;
+    UnsignedInteger dim = 6;
     NumericalSample refSample(size, dim);
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dim; ++j)

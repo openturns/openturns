@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger defaultDimension(1);
+    const UnsignedInteger defaultDimension = 1;
 
     /* Default spaatial dimension parameter */
-    const UnsignedInteger spatialDimension(1);
+    const UnsignedInteger spatialDimension = 1;
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
     /* Scale values */
@@ -51,20 +51,20 @@ int main(int argc, char *argv[])
     ExponentialCauchy myModel(amplitude, scale);
     fullprint << "myModel = " << myModel << std::endl;
 
-    const NumericalScalar frequencyValueOne(1.0);
+    const NumericalScalar frequencyValueOne = 1.0;
     fullprint << "spectral density matrix at f = " << frequencyValueOne << " : " << myModel.computeSpectralDensity(frequencyValueOne) << std::endl;
     fullprint << "spectral density matrix at f = " << -frequencyValueOne << " : " << myModel.computeSpectralDensity(-frequencyValueOne) << std::endl;
 
-    const NumericalScalar frequencyValueHigh(4.0);
+    const NumericalScalar frequencyValueHigh = 4.0;
     fullprint << "spectral density matrix at f = " << frequencyValueHigh << " : " << myModel.computeSpectralDensity(frequencyValueHigh) << std::endl;
     fullprint << "spectral density matrix at f = " << -frequencyValueHigh << " : " << myModel.computeSpectralDensity(-frequencyValueHigh) << std::endl;
 
-    const NumericalScalar timeValueOne(1.0);
+    const NumericalScalar timeValueOne = 1.0;
     fullprint << "covariance matrix at t = " << timeValueOne << " : " << myModel.computeCovariance(timeValueOne) << std::endl;
     fullprint << "covariance matrix at t = " << -timeValueOne << " : " << myModel.computeCovariance(-timeValueOne) << std::endl;
 
     /* Evaluation at time higher to check the decrease of the exponential values */
-    const NumericalScalar timeValueHigh(4.0);
+    const NumericalScalar timeValueHigh = 4.0;
     fullprint << "covariance matrix at t = "  << timeValueHigh << " : " << myModel.computeCovariance(timeValueHigh) << std::endl;
 
     /* Discretize the process on a small time grid */

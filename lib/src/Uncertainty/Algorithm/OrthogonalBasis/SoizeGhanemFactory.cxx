@@ -105,7 +105,7 @@ NumericalMathFunction SoizeGhanemFactory::build(const UnsignedInteger index) con
   /* Build the multivariate polynomial factory associated with the marginal distributions */
 void SoizeGhanemFactory::buildProductPolynomialAndAdaptation(const Bool useCopula)
 {
-  const UnsignedInteger dimension(measure_.getDimension());
+  const UnsignedInteger dimension = measure_.getDimension();
   Collection<Distribution> marginals(dimension);
   OrthogonalProductPolynomialFactory::PolynomialFamilyCollection coll(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)

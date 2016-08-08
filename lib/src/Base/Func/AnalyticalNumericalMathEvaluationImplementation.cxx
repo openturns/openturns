@@ -135,12 +135,12 @@ AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumeri
 AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and  must be different";
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   Description marginalOutputVariablesNames(size);
   Description marginalFormulas(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger j(indices[i]);
+    const UnsignedInteger j = indices[i];
     marginalOutputVariablesNames[i] = outputVariablesNames_[j];
     marginalFormulas[i] = formulas_[j];
   }

@@ -82,7 +82,7 @@ void ANCOVA::run() const
       NumericalSample inputOutput(inputSize, 2);
       for (UnsignedInteger j = 0; j < inputSize; ++j)
       {
-        NumericalScalar temp(0.);
+        NumericalScalar temp = 0.;
         for (UnsignedInteger k = 0; k < counter + 1; ++k)
           temp += coefficients[coefList[k]][0] * B[coefList[k]](T(correlatedInput_[j]))[0];
 

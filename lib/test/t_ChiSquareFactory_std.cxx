@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     ChiSquare distribution(0.5);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     ChiSquareFactory factory;
     CovarianceMatrix covariance;

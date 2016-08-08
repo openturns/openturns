@@ -67,7 +67,7 @@ NumericalPoint HaselgroveSequence::generate()
 {
   NumericalPoint realization(dimension_);
   // Loop over the components
-  NumericalScalar scratch(0.0);
+  NumericalScalar scratch = 0.0;
   for (UnsignedInteger i = 0; i < dimension_; ++i) realization[i] = modf(seed_ * base_[i], &scratch);
   ++seed_;
   return realization;

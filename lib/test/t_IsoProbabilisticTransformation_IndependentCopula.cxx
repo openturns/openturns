@@ -29,9 +29,9 @@ typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilis
 
 SymmetricTensor clean(SymmetricTensor in)
 {
-  UnsignedInteger rowDim(in.getNbRows());
-  UnsignedInteger colDim(in.getNbColumns());
-  UnsignedInteger sheetDim(in.getNbSheets());
+  UnsignedInteger rowDim = in.getNbRows();
+  UnsignedInteger colDim = in.getNbColumns();
+  UnsignedInteger sheetDim = in.getNbSheets();
   for(UnsignedInteger i = 0; i < rowDim; i++)
     for(UnsignedInteger j = 0; j < colDim; j++)
       for (UnsignedInteger k = 0; k < sheetDim; k++)
@@ -46,7 +46,7 @@ void print(NumericalPoint point)
 {
   OStream fullprint(std::cout);
 
-  UnsignedInteger dimension(point.getDimension());
+  UnsignedInteger dimension = point.getDimension();
   fullprint << "[";
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
@@ -60,8 +60,8 @@ void print(Matrix matrix)
 {
   OStream fullprint(std::cout);
 
-  UnsignedInteger rowDimension(matrix.getNbRows());
-  UnsignedInteger colDimension(matrix.getNbColumns());
+  UnsignedInteger rowDimension = matrix.getNbRows();
+  UnsignedInteger colDimension = matrix.getNbColumns();
   for (UnsignedInteger i = 0; i < rowDimension; i++)
   {
     fullprint << "|";
@@ -78,7 +78,7 @@ void print(SymmetricTensor tensor)
 {
   OStream fullprint(std::cout);
 
-  UnsignedInteger sheetDimension(tensor.getNbSheets());
+  UnsignedInteger sheetDimension = tensor.getNbSheets();
   for (UnsignedInteger k = 0; k < sheetDimension; k++)
   {
     print(Matrix(tensor.getSheet(k)));
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     aCollection.add(Uniform(-1.0, 2.0));
     aCollection.add(Gamma(2.0, 2.0, 0.0));
 
-    UnsignedInteger dim(aCollection.getSize());
+    UnsignedInteger dim = aCollection.getSize();
 
     // Instanciate one distribution object
     ComposedDistribution distribution(aCollection, IndependentCopula(dim));
@@ -146,8 +146,8 @@ int main(int argc, char *argv[])
     fullprint << "parameters gradient at point=" << transform.parameterGradient(point) << std::endl;
     {
       // Validation using finite difference
-      NumericalScalar eps(1e-5);
-      NumericalScalar factor(1.0 / (2.0 * eps));
+      NumericalScalar eps = 1e-5;
+      NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
       NumericalPoint dTdp;
       {
@@ -211,8 +211,8 @@ int main(int argc, char *argv[])
     fullprint << "(inverse) parameters gradient at point=" << inverseTransform.parameterGradient(point) << std::endl;
     {
       // Validation using finite difference
-      NumericalScalar eps(1e-5);
-      NumericalScalar factor(1.0 / (2.0 * eps));
+      NumericalScalar eps = 1e-5;
+      NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
       NumericalPoint dTdp;
       {

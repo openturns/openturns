@@ -34,7 +34,7 @@ NumericalScalar clean(NumericalScalar in)
 
 HermitianMatrix clean(HermitianMatrix in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     for(UnsignedInteger j = 0; j <= i; j++)
     {
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger dimension(2);
+    const UnsignedInteger dimension = 2;
 
     /* Amplitude values */
     NumericalPoint amplitude(dimension);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     /* Sample a CauchyModel */
     CauchyModel referenceModel(amplitude, scale, spatialCorrelation);
 
-    UnsignedInteger size(5);
+    UnsignedInteger size = 5;
     UserDefinedSpectralModel::HermitianMatrixCollection dspCollection(size);
     RegularGrid frequencyGrid(0.0, 2.0 / size, size);
     for (UnsignedInteger i = 0; i < size; ++i)
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     RegularGrid samplingGrid(-0.4, 1.0 / 16, 5 * size);
     for (UnsignedInteger i = 0; i < samplingGrid.getN(); ++i)
     {
-      NumericalScalar frequency(samplingGrid.getValue(i));
+      NumericalScalar frequency = samplingGrid.getValue(i);
       fullprint << "frequency=" << clean(frequency) << ", myModel=\n" << clean(myModel(frequency)) << ", referenceModel=\n" << clean(referenceModel(frequency)) << std::endl;
     }
 

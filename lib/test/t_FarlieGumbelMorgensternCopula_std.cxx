@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     FarlieGumbelMorgensternCopula copula(0.7);
     copula.setName("a farlieGumbelMorgenstern copula");
     fullprint << "Copula " << copula << std::endl;

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedInteger iMax(5);
+    const UnsignedInteger iMax = 5;
     Triangular distribution(-1.0, 0.3, 1.0);
     ChebychevAlgorithm algo(distribution);
     fullprint << "algo=" << algo << std::endl;

@@ -83,13 +83,13 @@ GramSchmidtAlgorithm::Coefficients GramSchmidtAlgorithm::getRecurrenceCoefficien
   // An orthonormal polynomial of degree n writes P(x) = k_n * x^n + l_n * x^{n-1} + ...
   // Degree n+1
   const Coefficients coefficientsNp1(buildPolynomial(n + 1).getCoefficients());
-  const NumericalScalar kNp1(coefficientsNp1[n + 1]);
-  const NumericalScalar lNp1(coefficientsNp1[n]);
+  const NumericalScalar kNp1 = coefficientsNp1[n + 1];
+  const NumericalScalar lNp1 = coefficientsNp1[n];
   // Degree n
   const Coefficients coefficientsN(buildPolynomial(n).getCoefficients());
-  const NumericalScalar kN(coefficientsN[n]);
-  NumericalScalar lN(0.0);
-  NumericalScalar kNm1(0.0);
+  const NumericalScalar kN = coefficientsN[n];
+  NumericalScalar lN = 0.0;
+  NumericalScalar kNm1 = 0.0;
   if (n > 0)
   {
     // Degree n-1, not used for n = 0
@@ -111,7 +111,7 @@ NumericalScalar GramSchmidtAlgorithm::getStandardMoment(const UnsignedInteger or
 {
   // We know that the raw moments will be accessed in a particular pattern: the moments not already
   // computed will always be accessed in a successive increasing order
-  const UnsignedInteger maxOrder(standardMoments_.getSize());
+  const UnsignedInteger maxOrder = standardMoments_.getSize();
   if (order > maxOrder) throw InvalidArgumentException(HERE) << "Error: cannot access to the raw moments in arbitrary order.";
   if (order == maxOrder)
     standardMoments_.add(measure_.getStandardMoment(order)[0]);
@@ -157,16 +157,16 @@ NumericalScalar GramSchmidtAlgorithm::dotProduct(const UniVariatePolynomial & p1
 {
   const UniVariatePolynomial q(p1 * p2);
   const Coefficients ai(q.getCoefficients());
-  const UnsignedInteger dimension(ai.getDimension());
+  const UnsignedInteger dimension = ai.getDimension();
 #define MOMENT
 #ifdef MOMENT
-  NumericalScalar value(0.0);
+  NumericalScalar value = 0.0;
   // Use the Kahan compensated summation to reduce roundoff errors
-  NumericalScalar e(0.0);
+  NumericalScalar e = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar temp(value);
-    const NumericalScalar y(ai[i] * getStandardMoment(i) + e);
+    const NumericalScalar temp = value;
+    const NumericalScalar y = ai[i] * getStandardMoment(i) + e;
     value = temp + y;
     e = (temp - value) + y;
   }
@@ -176,16 +176,16 @@ NumericalScalar GramSchmidtAlgorithm::dotProduct(const UniVariatePolynomial & p1
   measure_.getImplementation()->setIntegrationNodesNumber(std::max(measure_.getImplementation()->getIntegrationNodesNumber(), std::min(ai.getSize(), 50)));
   NumericalPoint weights;
   NumericalPoint nodes(measure_.getImplementation()->getGaussNodesAndWeights(weights));
-  const NumericalScalar lowerBound(measure_.getRange().getLowerBound()[0]);
-  const NumericalScalar upperBound(measure_.getRange().getUpperBound()[0]);
-  const NumericalScalar halfLength(0.5 * (upperBound - lowerBound));
-  NumericalScalar newValue(0.0);
+  const NumericalScalar lowerBound = measure_.getRange().getLowerBound()[0];
+  const NumericalScalar upperBound = measure_.getRange().getUpperBound()[0];
+  const NumericalScalar halfLength = 0.5 * (upperBound - lowerBound);
+  NumericalScalar newValue = 0.0;
   NumericalScalar e = 0.0;
   for (UnsignedInteger i = 0; i < nodes.getSize(); ++i)
   {
-    const NumericalScalar temp(newValue);
-    const NumericalScalar xi(lowerBound + halfLength * (1.0 + nodes[i]));
-    const NumericalScalar y(weights[i] * p1(xi) * p2(xi) * measure_.computePDF(xi));
+    const NumericalScalar temp = newValue;
+    const NumericalScalar xi = lowerBound + halfLength * (1.0 + nodes[i]);
+    const NumericalScalar y = weights[i] * p1(xi) * p2(xi) * measure_.computePDF(xi);
     newValue = temp + y;
     e = (temp - newValue) + y;
   }

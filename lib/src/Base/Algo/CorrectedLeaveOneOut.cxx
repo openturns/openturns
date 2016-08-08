@@ -103,7 +103,7 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method) const
   const NumericalMathFunction metamodel(coll, coefficients);
   const NumericalSample yHat(metamodel(x));
   const NumericalPoint h(method.getHDiag());
-  NumericalScalar empiricalError(0.0);
+  NumericalScalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
     const NumericalScalar ns = (y[i][0] - yHat[i][0]) / (1.0 - h[i]);

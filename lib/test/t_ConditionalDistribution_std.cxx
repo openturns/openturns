@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
       coll1.add(Uniform());
       ComposedDistribution d1(coll1);
       ConditionalDistribution distribution(d1, d2);
-      UnsignedInteger dim(distribution.getDimension());
+      UnsignedInteger dim = distribution.getDimension();
       fullprint << "distribution=" << distribution << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
       fullprint << "Mean " << distribution.getMean() << std::endl;
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
     {
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
       ConditionalDistribution distribution(conditionedDistribution, conditioningDistributionCollection[i]);
-      UnsignedInteger dim(distribution.getDimension());
+      UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;

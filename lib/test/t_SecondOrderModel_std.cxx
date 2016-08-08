@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger dimension(1);
+    const UnsignedInteger dimension = 1;
 
     /* Spatial dimension of the the model */
-    const UnsignedInteger spatialDimension(1);
+    const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
     NumericalPoint amplitude(dimension, 1.0);
@@ -56,8 +56,8 @@ int main(int argc, char *argv[])
     fullprint << "myModel = " << myModel << std::endl;
 
     /* Some computations ==> call the sub models methods */
-    const NumericalScalar instant(1.0);
-    const NumericalScalar frequency(0.5);
+    const NumericalScalar instant = 1.0;
+    const NumericalScalar frequency = 0.5;
     fullprint << "covariance matrix at t = " << instant << " : " << myModel.computeCovariance(instant) << std::endl;
     fullprint << "covariance matrix at t = " << -instant << " : " << myModel.computeCovariance(-instant) << std::endl;
     fullprint << "spectral density at f = " << frequency << " : " << myModel.computeSpectralDensity(frequency) << std::endl;

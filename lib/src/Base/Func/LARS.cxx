@@ -76,7 +76,7 @@ void LARS::updateBasis(LeastSquaresMethod & method)
   NumericalSample x(method.getInputSample());
   NumericalSample y(method.getOutputSample());
 
-  const UnsignedInteger sampleSize( x.getSize() );
+  const UnsignedInteger sampleSize = x.getSize();
 
   if (sampleSize == 0) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
