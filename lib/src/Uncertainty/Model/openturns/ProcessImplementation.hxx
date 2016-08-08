@@ -29,6 +29,8 @@
 #include "openturns/Field.hxx"
 #include "openturns/TimeSeries.hxx"
 #include "openturns/ProcessSample.hxx"
+#include "openturns/CovarianceModel.hxx"
+#include "openturns/TrendTransform.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -69,6 +71,12 @@ public:
 
   /** Is the underlying a composite process ? */
   virtual Bool isComposite() const;
+
+  /** Covariance model accessor */
+  virtual CovarianceModel getCovarianceModel() const;
+
+  /** Trend accessor */
+  virtual TrendTransform getTrend() const;
 
   /** Dimension accessor */
   virtual UnsignedInteger getSpatialDimension() const;
