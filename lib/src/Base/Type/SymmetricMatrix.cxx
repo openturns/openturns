@@ -50,6 +50,13 @@ SymmetricMatrix::SymmetricMatrix(const MatrixImplementation & i)
   // Nothing to do
 }
 
+/* Copy constructor, added to solve glitches with inheritance */
+SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix & s)
+  : SquareMatrix(static_cast<const SquareMatrix &>(s))
+  , hasBeenSymmetrized_(false)
+{
+  // Nothing to do
+}
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)

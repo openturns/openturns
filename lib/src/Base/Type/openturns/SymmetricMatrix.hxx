@@ -55,6 +55,9 @@ public:
   /** Constructor with implementation */
   SymmetricMatrix(const MatrixImplementation & i);
 
+  /** Copy constructor, added to solve glitches with inheritance */
+  SymmetricMatrix(const SymmetricMatrix & s);
+
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
   explicit SymmetricMatrix(const UnsignedInteger dim);
 #if 0
