@@ -154,7 +154,7 @@ escapedDataList: escapedData
 	;
 
 escapedData: data
-	|    SPACE                   { theState.St += $1; }
+	|    SPACE                   { theState.St += ' '; }
 	|    COMMA                   { theState.St += $1; }
 	|    CRLF                    { theState.St += '\n'; }
 	|    DOUBLEQUOTE DOUBLEQUOTE { theState.St += '"'; }
