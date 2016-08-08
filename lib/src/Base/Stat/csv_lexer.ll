@@ -43,7 +43,7 @@ integer   {digit}+
 exponent  [eE]{sign}?{integer}
 real      {sign}?({integer}("."({integer})?)?|"."{integer}){exponent}?
 
-string    [[:alnum:] !#\$%&'()\*\+\-\./\:\<=\>\?@\[\\\]\^_`\{\|\}~]*
+string    [[:alnum:]!#\$%&'()\*\+\-\./\:\<=\>\?@\[\\\]\^_`\{\|\}~]*
 
 space     [ \t]
 
