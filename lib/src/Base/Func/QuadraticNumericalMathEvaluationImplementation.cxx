@@ -126,7 +126,7 @@ NumericalPoint QuadraticNumericalMathEvaluationImplementation::operator() (const
   const NumericalPoint delta(inP - center_);
   NumericalPoint result(constant_ + linear_ * delta);
   /* As we don't have a sheet extractor yet, we can't use the following code */
-  const UnsignedInteger sheetNumber(quadratic_.getNbSheets());
+  const UnsignedInteger sheetNumber = quadratic_.getNbSheets();
   for(UnsignedInteger index = 0; index < sheetNumber; ++index)
     result[index] += 0.5 * dot(delta, quadratic_.getSheet(index) * delta);
   ++callsNumber_;

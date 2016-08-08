@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   setRandomGenerator();
   try
   {
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     }
     // Instanciate one distribution object
     Normal distribution(meanPoint, sigma, R);
-    UnsignedInteger discretization(300);
+    UnsignedInteger discretization = 300;
     NumericalSample sample(distribution.getSample(discretization));
     Collection<Distribution> kernels;
     kernels.add(Normal());
@@ -89,9 +89,9 @@ int main(int argc, char *argv[])
       KernelSmoothing smoother(kernel);
       for (UnsignedInteger j = 0; j < 2; ++j)
       {
-        NumericalScalar hSilverman(smoother.computeSilvermanBandwidth(sampleCollection[j])[0]);
-        NumericalScalar hPlugin(smoother.computePluginBandwidth(sampleCollection[j])[0]);
-        NumericalScalar hMixed(smoother.computeMixedBandwidth(sampleCollection[j])[0]);
+        NumericalScalar hSilverman = smoother.computeSilvermanBandwidth(sampleCollection[j])[0];
+        NumericalScalar hPlugin = smoother.computePluginBandwidth(sampleCollection[j])[0];
+        NumericalScalar hMixed = smoother.computeMixedBandwidth(sampleCollection[j])[0];
         fullprint << "Silverman's bandwidth=" << hSilverman << " plugin bandwidth=" << hPlugin << " mixed bandwidth=" << hMixed << std::endl;
         for (UnsignedInteger k = 0; k < 2; ++k)
         {

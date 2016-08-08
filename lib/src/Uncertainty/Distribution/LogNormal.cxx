@@ -155,10 +155,10 @@ NumericalPoint LogNormal::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return NumericalPoint(1, 0.0);
-  NumericalScalar v(sigmaLog_ * sigmaLog_);
+  NumericalScalar v = sigmaLog_ * sigmaLog_;
   return NumericalPoint(1, (muLog_ - std::log(x) - v) / (v * x) * computePDF(point));
 }
 
@@ -168,10 +168,10 @@ NumericalScalar LogNormal::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return 0.0;
-  NumericalScalar logX((std::log(x) - muLog_) / sigmaLog_);
+  NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
 }
 
@@ -179,10 +179,10 @@ NumericalScalar LogNormal::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  NumericalScalar logX((std::log(x) - muLog_) / sigmaLog_);
+  NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return std::log(normalizationFactor_) - 0.5 * logX * logX - std::log(x);
 }
 
@@ -191,10 +191,10 @@ NumericalScalar LogNormal::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return 0.0;
-  NumericalScalar logX((std::log(x) - muLog_) / sigmaLog_);
+  NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return DistFunc::pNormal(logX);
 }
 
@@ -202,10 +202,10 @@ NumericalScalar LogNormal::computeComplementaryCDF(const NumericalPoint & point)
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return 1.0;
-  NumericalScalar logX((std::log(x) - muLog_) / sigmaLog_);
+  NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return DistFunc::pNormal(logX, true);
 }
 
@@ -234,18 +234,18 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
   // Quick return for null argument
   if (x == 0.0) return 0.0;
   // Compute the characteristic function for the positive arguments
-  const NumericalScalar nu(std::abs(x) * std::exp(muLog_));
-  const NumericalScalar sigma2(sigmaLog_ * sigmaLog_);
+  const NumericalScalar nu = std::abs(x) * std::exp(muLog_);
+  const NumericalScalar sigma2 = sigmaLog_ * sigmaLog_;
   NumericalComplex logCFValue(0.0);
   // Quick return for small argument
   if (nu < 0.001 * std::exp(-1.5 * sigma2))
   {
-    const NumericalScalar nu2(nu * nu);
+    const NumericalScalar nu2 = nu * nu;
     logCFValue = std::log(NumericalComplex(1.0 - 0.5 * nu2 * std::exp(2.0 * sigma2), nu * std::exp(0.5 * sigma2) * (1.0 - nu2 * std::exp(4.0 * sigma2) / 6.0)));
   }
   else
   {
-    UnsignedInteger integrationNodesNumber(ResourceMap::GetAsUnsignedInteger("LogNormal-CharacteristicFunctionIntegrationNodes"));
+    UnsignedInteger integrationNodesNumber = ResourceMap::GetAsUnsignedInteger("LogNormal-CharacteristicFunctionIntegrationNodes");
     // Check if the integration nodes have to be recomputed
     if (integrationNodesNumber != hermiteNodes_.getSize()) hermiteNodes_ = HermiteFactory().getNodesAndWeights(integrationNodesNumber, hermiteWeights_);
     // Hermite integration of the Fourier transform for small sigma
@@ -268,7 +268,7 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
     {
       // Hermite integration centered on the maximal amplitude
       // Compute the characteristic function for the positive arguments
-      const NumericalScalar sStar(-SpecFunc::LambertW(sigmaLog_ * sigmaLog_ * nu) / sigmaLog_);
+      const NumericalScalar sStar = -SpecFunc::LambertW(sigmaLog_ * sigmaLog_ * nu) / sigmaLog_;
       NumericalComplex value(0.0);
       for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * characteristicIntegrand(hermiteNodes_[i], sStar);
       logCFValue = std::log(value) + H_ - NumericalComplex(sStar * sStar / 2.0, M_PI * sStar / (2.0 * sigmaLog_));
@@ -285,12 +285,12 @@ NumericalPoint LogNormal::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint pdfGradient(3, 0.0);
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return pdfGradient;
-  NumericalScalar logX((std::log(x) - muLog_) / sigmaLog_);
-  NumericalScalar pdf(normalizationFactor_ * std::exp(-0.5 * logX * logX) / x);
+  NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
+  NumericalScalar pdf = normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
   pdfGradient[0] = pdf * logX / sigmaLog_;
   pdfGradient[1] = pdf * (logX - 1.0) * (logX + 1.0) / sigmaLog_;
   pdfGradient[2] = pdf * (1.0 + logX / sigmaLog_) / x;
@@ -302,12 +302,12 @@ NumericalPoint LogNormal::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint cdfGradient(3, 0.0);
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return cdfGradient;
-  NumericalScalar logX((std::log(x) - muLog_) / sigmaLog_);
-  NumericalScalar pdf(normalizationFactor_ * std::exp(-0.5 * logX * logX) / x);
+  NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
+  NumericalScalar pdf = normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
   cdfGradient[0] = -x * pdf;
   cdfGradient[1] = -logX * x * pdf;
   cdfGradient[2] = -pdf;
@@ -337,14 +337,14 @@ NumericalPoint LogNormal::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint LogNormal::getSkewness() const
 {
-  NumericalScalar expSigmaLog2(std::exp(sigmaLog_ * sigmaLog_));
+  NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
   return NumericalPoint(1, (expSigmaLog2 + 2.0) * std::sqrt(expSigmaLog2 - 1.0));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint LogNormal::getKurtosis() const
 {
-  NumericalScalar expSigmaLog2(std::exp(sigmaLog_ * sigmaLog_));
+  NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
   return NumericalPoint(1, -3.0 + expSigmaLog2 * expSigmaLog2 * (3.0 + expSigmaLog2 * (2.0 + expSigmaLog2)));
 }
 
@@ -364,7 +364,7 @@ LogNormal::Implementation LogNormal::getStandardRepresentative() const
 void LogNormal::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar expSigmaLog2(std::exp(sigmaLog_ * sigmaLog_));
+  const NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
   covariance_(0, 0) = expSigmaLog2 * std::exp(2.0 * muLog_) * (expSigmaLog2 - 1.0);
   isAlreadyComputedCovariance_ = true;
 }
@@ -410,8 +410,8 @@ void LogNormal::setMuLogSigmaLog(const NumericalScalar muLog,
     sigmaLog_ = sigmaLog;
     // Check if the parameters values are not crazy
     static const Interval range(Normal().getRange());
-    const NumericalScalar rMin(muLog_ + range.getUpperBound()[0] * sigmaLog_);
-    const NumericalScalar rMax(muLog_ + range.getLowerBound()[0] * sigmaLog_);
+    const NumericalScalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
+    const NumericalScalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
     if ((rMin >= SpecFunc::LogMaxNumericalScalar) ||
         (rMax <= SpecFunc::LogMinNumericalScalar)) throw InvalidArgumentException(HERE) << "MuLog=" << muLog_ << " and SigmaLog=" << sigmaLog_ << " lead to a LogNormal distribution with a too much wide range";
     H_ = M_PI * M_PI / (8.0 * sigmaLog_ * sigmaLog_);
@@ -429,8 +429,8 @@ void LogNormal::setMuLog(const NumericalScalar muLog)
     muLog_ = muLog;
     // Check if the parameters values are not crazy
     static const Interval range(Normal().getRange());
-    const NumericalScalar rMin(muLog_ + range.getUpperBound()[0] * sigmaLog_);
-    const NumericalScalar rMax(muLog_ + range.getLowerBound()[0] * sigmaLog_);
+    const NumericalScalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
+    const NumericalScalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
     if ((rMin >= SpecFunc::LogMaxNumericalScalar) ||
         (rMax <= SpecFunc::LogMinNumericalScalar)) throw InvalidArgumentException(HERE) << "MuLog and SigmaLog lead to a LogNormal distribution with a too much wide range";
     isAlreadyComputedMean_ = false;
@@ -454,8 +454,8 @@ void LogNormal::setSigmaLog(const NumericalScalar sigmaLog)
     sigmaLog_ = sigmaLog;
     // Check if the parameters values are not crazy
     static const Interval range(Normal().getRange());
-    const NumericalScalar rMin(muLog_ + range.getUpperBound()[0] * sigmaLog_);
-    const NumericalScalar rMax(muLog_ + range.getLowerBound()[0] * sigmaLog_);
+    const NumericalScalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
+    const NumericalScalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
     if ((rMin >= SpecFunc::LogMaxNumericalScalar) ||
         (rMax <= SpecFunc::LogMinNumericalScalar)) throw InvalidArgumentException(HERE) << "MuLog and SigmaLog lead to a LogNormal distribution with a too much wide range";
     H_ = std::pow(M_PI / (2.0 * sigmaLog_), 2.0) / 2.0 - 0.5 * std::log(2.0 * M_PI);
@@ -482,16 +482,16 @@ void LogNormal::setMuSigma(const NumericalScalar mu,
 {
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma_) throw InvalidArgumentException(HERE) << "Error: mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma_;
-  NumericalScalar shift(mu - gamma_);
-  NumericalScalar shiftSquared(shift * shift);
-  NumericalScalar deltaSquareRoot(std::sqrt(shiftSquared + sigma * sigma));
+  NumericalScalar shift = mu - gamma_;
+  NumericalScalar shiftSquared = shift * shift;
+  NumericalScalar deltaSquareRoot = std::sqrt(shiftSquared + sigma * sigma);
   // This call takes care of the range and the mean and covariance flags
   setMuLogSigmaLog(std::log(shiftSquared / deltaSquareRoot), std::sqrt(2 * std::log(deltaSquareRoot / shift)));
 }
 
 NumericalScalar LogNormal::getSigma() const
 {
-  NumericalScalar expSigmaLog2(std::exp(sigmaLog_ * sigmaLog_));
+  NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
   return std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
 }
 
@@ -515,7 +515,7 @@ NumericalScalar LogNormal::getGamma() const
 /* SigmaOverMu accessor */
 NumericalScalar LogNormal::getSigmaOverMu() const
 {
-  NumericalScalar mu(getMu());
+  NumericalScalar mu = getMu();
   if (mu == 0.0) throw NotDefinedException(HERE) << "Error: trying to get sigmaOverMu with mu equal to zero";
   return getSigma() / mu;
 }

@@ -158,7 +158,7 @@ NumericalMathGradientImplementation::Implementation NumericalMathGradientImpleme
   const LinearNumericalMathEvaluationImplementation right(center, constant, linear);
 #endif
   // A
-  const UnsignedInteger marginalOutputDimension(indices.getSize());
+  const UnsignedInteger marginalOutputDimension = indices.getSize();
   Matrix gradientExtraction(outputDimension, marginalOutputDimension);
   for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
     gradientExtraction(indices[i], i) = 1.0;

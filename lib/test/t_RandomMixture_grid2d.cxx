@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     // Build the RandomMixture
     RandomMixture dist_2D(coll, weights);
     // Defining RandomMixture
-    const UnsignedInteger N(16);
+    const UnsignedInteger N = 16;
     Indices points(2, N);
     NumericalPoint mean(dist_2D.getMean());
     NumericalPoint sigma(dist_2D.getStandardDeviation());

@@ -95,9 +95,9 @@ Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
 					   const UnsignedInteger binNumber)
 {
   if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidDimensionException(HERE) << "Error: cannot build a copula using the Bernstein copula factory based on an empty sample";
-  const UnsignedInteger dimension(sample.getDimension());
+  const UnsignedInteger dimension = sample.getDimension();
   LOGINFO("BernsteinCopulaFactory - Create the empirical copula sample");
   const NumericalSample empiricalCopulaSample(sample.rank() * NumericalPoint(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
   Mixture::DistributionCollection atomsMixture(size);

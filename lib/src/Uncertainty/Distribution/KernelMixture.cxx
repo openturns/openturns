@@ -128,7 +128,7 @@ String KernelMixture::__str__(const String & offset) const
 void KernelMixture::computeRange()
 {
   const Interval kernelRange(kernel_.getRange());
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const NumericalPoint lowerBound(sample_.getMin() + kernelRange.getLowerBound()[0] * bandwidth_);
   const NumericalPoint upperBound(sample_.getMax() + kernelRange.getUpperBound()[0] * bandwidth_);
   const Interval::BoolCollection finiteLowerBound(dimension, kernelRange.getFiniteLowerBound()[0]);
@@ -182,13 +182,13 @@ NumericalSample KernelMixture::getInternalSample() const
 /* Bandwidth accessor */
 void KernelMixture::setBandwidth(const NumericalPoint & bandwidth)
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   normalizationFactor_ = sample_.getSize();
   if (bandwidth.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the dimensions of the bandwidth and the sample must be equal";
   bandwidthInverse_ = NumericalPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar hi(bandwidth[i]);
+    const NumericalScalar hi = bandwidth[i];
     if (hi <= 0.0) throw InvalidArgumentException(HERE) << "Error: the bandwidth components must be > 0, here bandwidth=" << bandwidth;
     bandwidthInverse_[i] = 1.0 / hi;
     normalizationFactor_ *= hi;
@@ -218,7 +218,7 @@ NumericalPoint KernelMixture::getRealization() const
   // Select the atom uniformly amongst the possible points
   NumericalPoint result(sample_[RandomGenerator::IntegerGenerate(sample_.getSize())]);
   // Then add a random noise according to the product kernel
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const NumericalSample kernelSample(kernel_.getSample(dimension));
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] += bandwidth_[i] * kernelSample[i][0];
   return result;
@@ -227,18 +227,18 @@ NumericalPoint KernelMixture::getRealization() const
 /* Get the DDF of the KernelMixture */
 NumericalPoint KernelMixture::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   NumericalPoint ddfValue(dimension, 0.0);
   // Quick rejection test
   if (!getRange().numericallyContains(point)) return ddfValue;
-  const UnsignedInteger size(sample_.getSize());
+  const UnsignedInteger size = sample_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalPoint atom(dimension, 0.0);
     NumericalPoint kernelPdfAtom(dimension, 0.0);
-    NumericalScalar pdfAtom(1.0);
+    NumericalScalar pdfAtom = 1.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       atom[j] = (point[j] - sample_[i][j]) * bandwidthInverse_[j];
@@ -258,28 +258,28 @@ NumericalPoint KernelMixture::computeDDF(const NumericalPoint & point) const
 /* Get the PDF of the KernelMixture */
 NumericalScalar KernelMixture::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   if (useApproximatePDFCDF_)
   {
     if (point[0] < getMean()[0]) return pdfApproximationCDF_(point)[0];
     else return pdfApproximationCCDF_(point)[0];
   }
-  NumericalScalar pdfValue(0.0);
-  const UnsignedInteger size(sample_.getSize());
+  NumericalScalar pdfValue = 0.0;
+  const UnsignedInteger size = sample_.getSize();
   if (dimension == 1)
   {
-    const NumericalScalar x(point[0]);
-    const NumericalScalar h(bandwidth_[0]);
+    const NumericalScalar x = point[0];
+    const NumericalScalar h = bandwidth_[0];
     for(UnsignedInteger i = 0; i < size; ++i) pdfValue += kernel_.computePDF((x - sample_[i][0]) / h);
     return pdfValue / (h * size);
   }
   // Quick rejection test
   if (!getRange().numericallyContains(point)) return pdfValue;
-  const NumericalScalar pdfEpsilon(kernel_.getPDFEpsilon());
+  const NumericalScalar pdfEpsilon = kernel_.getPDFEpsilon();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar pdfAtom(kernel_.computePDF(NumericalPoint(1, (point[0] - sample_[i][0]) * bandwidthInverse_[0])));
+    NumericalScalar pdfAtom = kernel_.computePDF(NumericalPoint(1, (point[0] - sample_[i][0]) * bandwidthInverse_[0]));
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (pdfAtom < pdfEpsilon) break;
@@ -293,26 +293,26 @@ NumericalScalar KernelMixture::computePDF(const NumericalPoint & point) const
 /* Get the CDF of the KernelMixture */
 NumericalScalar KernelMixture::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   if (useApproximatePDFCDF_)
   {
     if (point[0] < getMean()[0]) return cdfApproximation_(point)[0];
     else return 1.0 - ccdfApproximation_(point)[0];
   }
-  NumericalScalar cdfValue(0.0);
-  const UnsignedInteger size(sample_.getSize());
+  NumericalScalar cdfValue = 0.0;
+  const UnsignedInteger size = sample_.getSize();
   if (dimension == 1)
   {
-    const NumericalScalar x(point[0]);
-    const NumericalScalar h(bandwidth_[0]);
+    const NumericalScalar x = point[0];
+    const NumericalScalar h = bandwidth_[0];
     for(UnsignedInteger i = 0; i < size; ++i)
       cdfValue += kernel_.computeCDF((x - sample_[i][0]) / h);
     return cdfValue / size;
   }
   // Check against the range of the distribution
-  Bool allTooLarge(true);
-  Bool oneTooSmall(false);
+  Bool allTooLarge = true;
+  Bool oneTooSmall = false;
   const NumericalPoint lower(getRange().getLowerBound());
   const NumericalPoint upper(getRange().getUpperBound());
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -322,10 +322,10 @@ NumericalScalar KernelMixture::computeCDF(const NumericalPoint & point) const
   }
   if (allTooLarge) return 1.0;
   if (oneTooSmall) return 0.0;
-  const NumericalScalar cdfEpsilon(kernel_.getCDFEpsilon());
+  const NumericalScalar cdfEpsilon = kernel_.getCDFEpsilon();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar cdfAtom(kernel_.computeCDF((point[0] - sample_[i][0]) * bandwidthInverse_[0]));
+    NumericalScalar cdfAtom = kernel_.computeCDF((point[0] - sample_[i][0]) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (cdfAtom < cdfEpsilon) break;
@@ -339,7 +339,7 @@ NumericalScalar KernelMixture::computeCDF(const NumericalPoint & point) const
 /* Get the complementary CDF of the distribution */
 NumericalScalar KernelMixture::computeComplementaryCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   if (useApproximatePDFCDF_)
   {
@@ -355,7 +355,7 @@ NumericalScalar KernelMixture::computeComplementaryCDF(const NumericalPoint & po
 /* Get the survival function of the KernelMixture */
 NumericalScalar KernelMixture::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   if (useApproximatePDFCDF_)
   {
@@ -363,8 +363,8 @@ NumericalScalar KernelMixture::computeSurvivalFunction(const NumericalPoint & po
     else return ccdfApproximation_(point)[0];
   }
   // Check against the range of the distribution
-  Bool oneTooLarge(true);
-  Bool allTooSmall(false);
+  Bool oneTooLarge = true;
+  Bool allTooSmall = false;
   const NumericalPoint lower(getRange().getLowerBound());
   const NumericalPoint upper(getRange().getUpperBound());
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -374,12 +374,12 @@ NumericalScalar KernelMixture::computeSurvivalFunction(const NumericalPoint & po
   }
   if (oneTooLarge) return 0.0;
   if (allTooSmall) return 1.0;
-  const NumericalScalar cdfEpsilon(kernel_.getCDFEpsilon());
-  NumericalScalar survivalValue(0.0);
-  const UnsignedInteger size(sample_.getSize());
+  const NumericalScalar cdfEpsilon = kernel_.getCDFEpsilon();
+  NumericalScalar survivalValue = 0.0;
+  const UnsignedInteger size = sample_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar cdfAtom(kernel_.computeSurvivalFunction((point[0] - sample_[i][0]) * bandwidthInverse_[0]));
+    NumericalScalar cdfAtom = kernel_.computeSurvivalFunction((point[0] - sample_[i][0]) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (cdfAtom < cdfEpsilon) break;
@@ -396,11 +396,11 @@ NumericalScalar KernelMixture::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   if (!useApproximatePDFCDF_) return DistributionImplementation::computeScalarQuantile(prob, tail);
-  const NumericalScalar a(getRange().getLowerBound()[0]);
-  const NumericalScalar b(getRange().getUpperBound()[0]);
+  const NumericalScalar a = getRange().getLowerBound()[0];
+  const NumericalScalar b = getRange().getUpperBound()[0];
   if (prob <= 0.0) return (tail ? b : a);
   if (prob >= 1.0) return (tail ? a : b);
-  const UnsignedInteger n(cdfApproximation_.getLocations().getSize());
+  const UnsignedInteger n = cdfApproximation_.getLocations().getSize();
   if (tail)
   {
     // Here we have to solve ComplementaryCDF(x) = prob which is mathematically
@@ -423,7 +423,7 @@ NumericalComplex KernelMixture::computeCharacteristicFunction(const NumericalSca
 {
   if (x == 0.0) return 1.0;
   NumericalComplex cfValue(0.0);
-  const UnsignedInteger size(sample_.getSize());
+  const UnsignedInteger size = sample_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(NumericalComplex(0.0, sample_[i][0] * x));
@@ -434,7 +434,7 @@ NumericalComplex KernelMixture::computeCharacteristicFunction(const NumericalSca
 /* Get the PDF gradient of the distribution */
 NumericalPoint KernelMixture::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   throw NotYetImplementedException(HERE) << "In KernelMixture::computePDFGradient(const NumericalPoint & point) const";
@@ -443,7 +443,7 @@ NumericalPoint KernelMixture::computePDFGradient(const NumericalPoint & point) c
 /* Get the CDF gradient of the distribution */
 NumericalPoint KernelMixture::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   throw NotYetImplementedException(HERE) << "In KernelMixture::computeCDFGradient(const NumericalPoint & point) const";
@@ -452,7 +452,7 @@ NumericalPoint KernelMixture::computeCDFGradient(const NumericalPoint & point) c
 /* Get the i-th marginal distribution */
 KernelMixture::Implementation KernelMixture::getMarginal(const UnsignedInteger i) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
   if (dimension == 1) return clone();
@@ -463,12 +463,12 @@ KernelMixture::Implementation KernelMixture::getMarginal(const UnsignedInteger i
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 KernelMixture::Implementation KernelMixture::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger marginalDimension(indices.getSize());
+  const UnsignedInteger marginalDimension = indices.getSize();
   NumericalPoint marginalBandwidth(marginalDimension);
   for (UnsignedInteger i = 0; i < marginalDimension; ++i) marginalBandwidth[i] = bandwidth_[indices[i]];
   return new KernelMixture(kernel_, marginalBandwidth, sample_.getMarginal(indices));
@@ -486,7 +486,7 @@ KernelMixture::Implementation KernelMixture::getMarginal(const Indices & indices
 void KernelMixture::computeMean() const
 {
   // We know that the kernel is 1D, so its mean value is actually a scalar
-  const NumericalScalar meanKernel(kernel_.getMean()[0]);
+  const NumericalScalar meanKernel = kernel_.getMean()[0];
   mean_ = sample_.computeMean();
   isAlreadyComputedMean_ = true;
   // Special case for symmetric kernel
@@ -500,9 +500,9 @@ void KernelMixture::computeMean() const
 */
 void KernelMixture::computeCovariance() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const NumericalScalar sigmaKernel(kernel_.getStandardDeviation()[0]);
+  const NumericalScalar sigmaKernel = kernel_.getStandardDeviation()[0];
   // Covariance(sample) term, with the proper scaling
   covariance_ = CovarianceMatrix(dimension, Collection<NumericalScalar>(sample_.computeCovariance().getImplementation()->operator*(1.0 - 1.0 / sample_.getSize())));
   // Add the diagonal kernel covariance contribution
@@ -516,9 +516,9 @@ void KernelMixture::computeCovariance() const
 */
 NumericalPoint KernelMixture::getStandardDeviation() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const NumericalScalar sigmaKernel(kernel_.getStandardDeviation()[0]);
+  const NumericalScalar sigmaKernel = kernel_.getStandardDeviation()[0];
   NumericalPoint result(sample_.computeCenteredMoment(2));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = std::sqrt(result[i] + std::pow(bandwidth_[i] * sigmaKernel, 2));
@@ -530,11 +530,11 @@ NumericalPoint KernelMixture::getStandardDeviation() const
 */
 NumericalPoint KernelMixture::getSkewness() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const NumericalScalar sigmaKernel(kernel_.getStandardDeviation()[0]);
+  const NumericalScalar sigmaKernel = kernel_.getStandardDeviation()[0];
   // We know that the kernel is 1D, so its skewness is actually a scalar
-  const NumericalScalar skewnessKernel(kernel_.getSkewness()[0]);
+  const NumericalScalar skewnessKernel = kernel_.getSkewness()[0];
   // Standard deviation of the KernelMixture
   const NumericalPoint sigma(getStandardDeviation());
   NumericalPoint result(sample_.computeCenteredMoment(3));
@@ -548,11 +548,11 @@ NumericalPoint KernelMixture::getSkewness() const
 */
 NumericalPoint KernelMixture::getKurtosis() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const NumericalScalar sigmaKernel(kernel_.getStandardDeviation()[0]);
+  const NumericalScalar sigmaKernel = kernel_.getStandardDeviation()[0];
   // We know that the kernel is 1D, so its skewness is actually a scalar
-  const NumericalScalar kurtosisKernel(kernel_.getKurtosis()[0]);
+  const NumericalScalar kurtosisKernel = kernel_.getKurtosis()[0];
   // Standard deviation of the sample
   const NumericalPoint varSample(sample_.computeCenteredMoment(2));
   // Standard deviation of the KernelMixture
@@ -566,8 +566,8 @@ NumericalPoint KernelMixture::getKurtosis() const
 /* Parameters value and description accessor */
 KernelMixture::NumericalPointWithDescriptionCollection KernelMixture::getParametersCollection() const
 {
-  const UnsignedInteger dimension(getDimension());
-  const UnsignedInteger size(sample_.getSize());
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = sample_.getSize();
   NumericalPointWithDescriptionCollection parameters(dimension + (dimension > 1 ? 1 : 0));
   // The marginal parameters : the sample and the bandwidth
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -591,7 +591,7 @@ KernelMixture::NumericalPointWithDescriptionCollection KernelMixture::getParamet
   {
     NumericalPointWithDescription dependence(dimension * (size + 1));
     Description description(dependence.getDimension());
-    UnsignedInteger index(0);
+    UnsignedInteger index = 0;
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {

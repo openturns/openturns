@@ -149,7 +149,7 @@ String ComposedNumericalMathFunction::__repr__() const
  */
 Matrix ComposedNumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // y = G(x, pg)
   const NumericalPoint y(p_rightFunction_->operator()(inP));
@@ -162,10 +162,10 @@ Matrix ComposedNumericalMathFunction::parameterGradient(const NumericalPoint & i
   // (dF/dy)(G(x, pg), pf) . (dG/dpg)(x, pg)
   const Matrix upper(rightGradientP * leftGradientY);
   // Build the full gradient
-  const UnsignedInteger rightParametersDimension(upper.getNbRows());
-  const UnsignedInteger leftParametersDimension(leftGradientP.getNbRows());
+  const UnsignedInteger rightParametersDimension = upper.getNbRows();
+  const UnsignedInteger leftParametersDimension = leftGradientP.getNbRows();
   Matrix grad(rightParametersDimension + leftParametersDimension, inputDimension);
-  UnsignedInteger rowIndex(0);
+  UnsignedInteger rowIndex = 0;
   // Gradient according to left parameters
   for (UnsignedInteger i = 0; i < rightParametersDimension; ++i)
   {

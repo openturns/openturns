@@ -98,22 +98,22 @@ RatioDistribution * RatioDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void RatioDistribution::computeRange()
 {
-  const NumericalScalar a(left_.getRange().getLowerBound()[0]);
-  const NumericalScalar b(left_.getRange().getUpperBound()[0]);
-  const NumericalScalar c(right_.getRange().getLowerBound()[0]);
-  const NumericalScalar d(right_.getRange().getUpperBound()[0]);
+  const NumericalScalar a = left_.getRange().getLowerBound()[0];
+  const NumericalScalar b = left_.getRange().getUpperBound()[0];
+  const NumericalScalar c = right_.getRange().getLowerBound()[0];
+  const NumericalScalar d = right_.getRange().getUpperBound()[0];
   if ((c > 0.0) || (d < 0.0))
   {
-    const NumericalScalar aOverC(a / c);
-    const NumericalScalar aOverD(a / d);
-    const NumericalScalar bOverC(b / c);
-    const NumericalScalar bOverD(b / d);
+    const NumericalScalar aOverC = a / c;
+    const NumericalScalar aOverD = a / d;
+    const NumericalScalar bOverC = b / c;
+    const NumericalScalar bOverD = b / d;
     setRange(Interval(std::min(std::min(aOverC, aOverD), std::min(bOverC, bOverD)), std::max(std::max(aOverC, aOverD), std::max(bOverC, bOverD))));
   }
-  const NumericalScalar ac(a * c);
-  const NumericalScalar ad(a * d);
-  const NumericalScalar bc(b * c);
-  const NumericalScalar bd(b * d);
+  const NumericalScalar ac = a * c;
+  const NumericalScalar ad = a * d;
+  const NumericalScalar bc = b * c;
+  const NumericalScalar bd = b * d;
   setRange(Interval(std::min(std::min(ac, ad), std::min(bc, bd)), std::max(std::max(ac, ad), std::max(bc, bd))));
 }
 
@@ -128,14 +128,14 @@ NumericalScalar RatioDistribution::computePDF(const NumericalPoint & point) cons
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
-  const NumericalScalar a(getRange().getLowerBound()[0]);
-  const NumericalScalar b(getRange().getUpperBound()[0]);
+  const NumericalScalar x = point[0];
+  const NumericalScalar a = getRange().getLowerBound()[0];
+  const NumericalScalar b = getRange().getUpperBound()[0];
   if ((x < a) || (x > b)) return 0.0;
-  const NumericalScalar aLeft(left_.getRange().getLowerBound()[0]);
-  const NumericalScalar bLeft(left_.getRange().getUpperBound()[0]);
-  const NumericalScalar aRight(right_.getRange().getLowerBound()[0]);
-  const NumericalScalar bRight(right_.getRange().getUpperBound()[0]);
+  const NumericalScalar aLeft = left_.getRange().getLowerBound()[0];
+  const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];
+  const NumericalScalar aRight = right_.getRange().getLowerBound()[0];
+  const NumericalScalar bRight = right_.getRange().getUpperBound()[0];
   // First, the case where the joint support of left and right is included in a unique quadrant
   if ((aLeft >= 0.0) && (aRight >= 0.0)) return computePDFQ1(x, aLeft, bLeft, aRight, bRight);
   if ((bLeft <= 0.0) && (aRight >= 0.0)) return computePDFQ2(x, aLeft, bLeft, aRight, bRight);
@@ -150,10 +150,10 @@ NumericalScalar RatioDistribution::computePDF(const NumericalPoint & point) cons
   // Fifth, the case where the support is in Q2 U Q3
   if (bLeft < 0.0) return computePDFQ2(x, aLeft, bLeft, 0.0, bRight) + computePDFQ3(x, aLeft, bLeft, aRight, 0.0);
   // Sixth, the case where the support is in Q1 U Q2 U Q3 U Q4
-  const NumericalScalar q1(computePDFQ1(x, 0.0, bLeft, 0.0, bRight));
-  const NumericalScalar q2(computePDFQ2(x, aLeft, 0.0, 0.0, bRight));
-  const NumericalScalar q3(computePDFQ3(x, aLeft, 0.0, aRight, 0.0));
-  const NumericalScalar q4(computePDFQ4(x, 0.0, bLeft, aRight, 0.0));
+  const NumericalScalar q1 = computePDFQ1(x, 0.0, bLeft, 0.0, bRight);
+  const NumericalScalar q2 = computePDFQ2(x, aLeft, 0.0, 0.0, bRight);
+  const NumericalScalar q3 = computePDFQ3(x, aLeft, 0.0, aRight, 0.0);
+  const NumericalScalar q4 = computePDFQ4(x, 0.0, bLeft, aRight, 0.0);
   return q1 + q2 + q3 + q4;
 }
 
@@ -164,10 +164,10 @@ NumericalScalar RatioDistribution::computePDFQ1(const NumericalScalar x,
     const NumericalScalar c,
     const NumericalScalar d) const
 {
-  const NumericalScalar ac(a * c);
-  const NumericalScalar ad(a * d);
-  const NumericalScalar bc(b * c);
-  const NumericalScalar bd(b * d);
+  const NumericalScalar ac = a * c;
+  const NumericalScalar ad = a * d;
+  const NumericalScalar bc = b * c;
+  const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
   const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
@@ -197,10 +197,10 @@ NumericalScalar RatioDistribution::computePDFQ2(const NumericalScalar x,
     const NumericalScalar c,
     const NumericalScalar d) const
 {
-  const NumericalScalar ac(a * c);
-  const NumericalScalar ad(a * d);
-  const NumericalScalar bc(b * c);
-  const NumericalScalar bd(b * d);
+  const NumericalScalar ac = a * c;
+  const NumericalScalar ad = a * d;
+  const NumericalScalar bc = b * c;
+  const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
   const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
@@ -230,10 +230,10 @@ NumericalScalar RatioDistribution::computePDFQ3(const NumericalScalar x,
     const NumericalScalar c,
     const NumericalScalar d) const
 {
-  const NumericalScalar ac(a * c);
-  const NumericalScalar ad(a * d);
-  const NumericalScalar bc(b * c);
-  const NumericalScalar bd(b * d);
+  const NumericalScalar ac = a * c;
+  const NumericalScalar ad = a * d;
+  const NumericalScalar bc = b * c;
+  const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
   const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
@@ -263,10 +263,10 @@ NumericalScalar RatioDistribution::computePDFQ4(const NumericalScalar x,
     const NumericalScalar c,
     const NumericalScalar d) const
 {
-  const NumericalScalar ac(a * c);
-  const NumericalScalar ad(a * d);
-  const NumericalScalar bc(b * c);
-  const NumericalScalar bd(b * d);
+  const NumericalScalar ac = a * c;
+  const NumericalScalar ad = a * d;
+  const NumericalScalar bc = b * c;
+  const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
   const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
@@ -292,21 +292,21 @@ NumericalScalar RatioDistribution::computePDFQ4(const NumericalScalar x,
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex RatioDistribution::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar muLeft(left_.getMean()[0]);
-  const NumericalScalar muRight(right_.getMean()[0]);
-  const NumericalScalar varLeft(left_.getCovariance()(0, 0));
-  const NumericalScalar varRight(right_.getCovariance()(0, 0));
+  const NumericalScalar muLeft = left_.getMean()[0];
+  const NumericalScalar muRight = right_.getMean()[0];
+  const NumericalScalar varLeft = left_.getCovariance()(0, 0);
+  const NumericalScalar varRight = right_.getCovariance()(0, 0);
   if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::NumericalScalarEpsilon) return NumericalComplex(1.0, -x * muLeft * muRight);
   if (std::abs(x) > ResourceMap::GetAsNumericalScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
   NumericalComplex result(0.0);
-  const NumericalScalar aLeft(left_.getRange().getLowerBound()[0]);
-  const NumericalScalar bLeft(left_.getRange().getUpperBound()[0]);
+  const NumericalScalar aLeft = left_.getRange().getLowerBound()[0];
+  const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
   const CFKernelWrapper cfKernelWrapper(left_, right_, x);
   const NumericalMathFunction cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
-  NumericalScalar negativeError(0.0);
+  NumericalScalar negativeError = 0.0;
   const NumericalPoint negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
-  NumericalScalar positiveError(0.0);
+  NumericalScalar positiveError = 0.0;
   const NumericalPoint positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
   NumericalComplex value(negativePart[0] + positivePart[0], negativePart[1] + positivePart[1]);
   return value;
@@ -323,10 +323,10 @@ void RatioDistribution::computeMean() const
 void RatioDistribution::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar meanLeft(left_.getMean()[0]);
-  const NumericalScalar meanRight(right_.getMean()[0]);
-  const NumericalScalar varLeft(left_.getCovariance()(0, 0));
-  const NumericalScalar varRight(right_.getCovariance()(0, 0));
+  const NumericalScalar meanLeft = left_.getMean()[0];
+  const NumericalScalar meanRight = right_.getMean()[0];
+  const NumericalScalar varLeft = left_.getCovariance()(0, 0);
+  const NumericalScalar varRight = right_.getCovariance()(0, 0);
   covariance_(0, 0) = meanLeft * meanLeft * varRight + meanRight * meanRight * varLeft + varLeft * varRight;
   isAlreadyComputedCovariance_ = true;
 }

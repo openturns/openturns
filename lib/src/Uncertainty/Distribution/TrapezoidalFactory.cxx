@@ -107,7 +107,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   //  if (max <= min - std::sqrt(SpecFunc::NumericalScalarEpsilon))
   if (min == max)
     {
-      const NumericalScalar delta(std::max(std::abs(min), 10.0) * SpecFunc::NumericalScalarEpsilon);
+      const NumericalScalar delta = std::max(std::abs(min), 10.0) * SpecFunc::NumericalScalarEpsilon;
       Trapezoidal result(min - delta, min, max, max + delta);
       result.setDescription(sample.getDescription());
       return result;

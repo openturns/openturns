@@ -63,13 +63,13 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar tau(sample.computeKendallTau().operator()(0, 1));
+  NumericalScalar tau = sample.computeKendallTau().operator()(0, 1);
   if ((tau < (5.0 - 8.0 * std::log(2.0)) / 3.0) || (tau > 1.0 / 3.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample with Kendall tau not in [(5-8ln(2))/3 ~ -0.182, 1/3~0.333]. Here tau=" << tau;
   // Search the value of the AliMikhailHaq copula parameter by numerically inverting the relation:
   // between Kendall's tau and AliMikhailHaq copula's parameter
-  NumericalScalar theta(0.0);
-  NumericalScalar step(0.5);
-  NumericalScalar tauTheta(KendallTauFromParameter(theta));
+  NumericalScalar theta = 0.0;
+  NumericalScalar step = 0.5;
+  NumericalScalar tauTheta = KendallTauFromParameter(theta);
   // Find a lower bound
   while (tauTheta > tau)
   {
@@ -78,10 +78,10 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
     step *= 0.5;
   }
   // Here, tauTheta <= tau, hence theta is a lower bound of the parameter
-  NumericalScalar minTheta(theta);
+  NumericalScalar minTheta = theta;
   // Now, look for an upper bound
   // If we started from a value of theta such that tauTheta > tau, theta + 2 * step is an upper bound
-  NumericalScalar maxTheta(theta + 2.0 * step);
+  NumericalScalar maxTheta = theta + 2.0 * step;
   // but if step = 0.5, it is because tauTheta was < tau for the initial choice of theta
   if (step < 0.5)
   {
@@ -96,7 +96,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
     maxTheta = theta;
   }
   // Bisection
-  const NumericalScalar thetaEpsilon(ResourceMap::GetAsNumericalScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" ));
+  const NumericalScalar thetaEpsilon = ResourceMap::GetAsNumericalScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" );
   while (maxTheta - minTheta > thetaEpsilon)
   {
     theta = 0.5 * (maxTheta + minTheta);

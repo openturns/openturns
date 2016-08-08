@@ -59,16 +59,16 @@ LinearCombinationHessianImplementation * LinearCombinationHessianImplementation:
 /* Hessian method */
 SymmetricTensor LinearCombinationHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
-  const UnsignedInteger sheetSize(evaluation_.getOutputDimension());
+  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
+  const UnsignedInteger sheetSize = evaluation_.getOutputDimension();
   SymmetricTensor result(evaluation_.getInputDimension(), sheetSize);
   // We work on a sheet basis because there is no tensor arithmetic
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const SymmetricTensor currentTensor(evaluation_.functionsCollection_[i].hessian(inP));
-    const NumericalScalar factor(evaluation_.coefficients_[i]);
+    const NumericalScalar factor = evaluation_.coefficients_[i];
     for (UnsignedInteger k = 0; k < sheetSize; ++k)
     {
       SymmetricMatrix sheet(result.getSheet(k) + factor * currentTensor.getSheet(k));
@@ -101,7 +101,7 @@ String LinearCombinationHessianImplementation::__str__(const String & offset) co
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradient()->__str__();
   return oss;
 }

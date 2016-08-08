@@ -136,7 +136,7 @@ ProcessSample DynamicalFunctionImplementation::operator() (const ProcessSample &
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
   if (inPS.getMesh().getDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getSpatialDimension() << ", got " << inPS.getMesh().getDimension();
-  const UnsignedInteger size(inPS.getSize());
+  const UnsignedInteger size = inPS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
   Field field0(operator()(inPS.getField(0)));
   ProcessSample outSample(field0.getMesh(), size, field0.getDimension());

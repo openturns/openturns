@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Weibull distribution(1., 2.5, -1.0);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     WeibullFactory factory;
     CovarianceMatrix covariance;

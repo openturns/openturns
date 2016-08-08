@@ -70,22 +70,22 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: Brent's method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedInteger usedFunctionEvaluation(0);
-  const UnsignedInteger maximumFunctionEvaluation(getMaximumFunctionEvaluation());
-  NumericalScalar a(infPoint);
-  NumericalScalar fA(infValue - value);
+  UnsignedInteger usedFunctionEvaluation = 0;
+  const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
+  NumericalScalar a = infPoint;
+  NumericalScalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  NumericalScalar b(supPoint);
-  NumericalScalar fB(supValue - value);
+  NumericalScalar b = supPoint;
+  NumericalScalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
-  NumericalScalar c(a);
-  NumericalScalar fC(fA);
+  NumericalScalar c = a;
+  NumericalScalar fC = fA;
   // Main loop
   for (;;)
   {
     // Interval length
-    const NumericalScalar oldDelta(b - a);
+    const NumericalScalar oldDelta = b - a;
 
     // B will be the best approximation
     if (std::abs(fC) < std::abs(fB))
@@ -98,10 +98,10 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
       fC = fA;
     }
     // Current error on the root
-    const NumericalScalar error(2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError());
+    const NumericalScalar error = 2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError();
 
     // Bisection step
-    NumericalScalar newDelta(0.5 * (c - b));
+    NumericalScalar newDelta = 0.5 * (c - b);
 
     // If the current approximation of the root is good enough, return it
     if ((std::abs(newDelta) <= error) || (std::abs(fB) <= getResidualError())) break;
@@ -112,21 +112,21 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
       // The new increment for the root will be p / q with p > 0
       NumericalScalar p;
       NumericalScalar q;
-      const NumericalScalar cb(c - b);
+      const NumericalScalar cb = c - b;
 
       // We can just perform a linear inverse interpolation here
       if (a == c)
       {
-        const NumericalScalar slopeBA(fB / fA);
+        const NumericalScalar slopeBA = fB / fA;
         p = cb * slopeBA;
         q = 1.0 - slopeBA;
       }
       // Here we can perform an inverse quadratic interpolation
       else
       {
-        const NumericalScalar slopeAC(fA / fC);
-        const NumericalScalar slopeBC(fB / fC);
-        const NumericalScalar slopeBA(fB / fA);
+        const NumericalScalar slopeAC = fA / fC;
+        const NumericalScalar slopeBC = fB / fC;
+        const NumericalScalar slopeBA = fB / fA;
         p = slopeBA * (cb * slopeAC * (slopeAC - slopeBC) - (b - a) * (slopeBC - 1.0));
         q = (slopeAC - 1.0) * (slopeBC - 1.0) * (slopeBA - 1.0);
       }

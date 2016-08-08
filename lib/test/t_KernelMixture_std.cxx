@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedInteger dimension(3);
+    UnsignedInteger dimension = 3;
     NumericalPoint meanPoint(dimension, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (ref)=" << distributionRef.computeDDF( point ) << std::endl;
@@ -126,15 +126,15 @@ int main(int argc, char *argv[])
     y[1][0] =  0.5;
     y[2][0] =  1.5;
 
-    NumericalScalar condCDF(distribution.computeConditionalCDF(x[0], y[0]));
+    NumericalScalar condCDF = distribution.computeConditionalCDF(x[0], y[0]);
     fullprint << "cond. cdf=" << condCDF << std::endl;
     NumericalPoint condCDFs(distribution.computeConditionalCDF(x, y));
     fullprint << "cond. cdf (vect)=" << condCDFs << std::endl;
-    NumericalScalar condPDF(distribution.computeConditionalPDF(x[0], y[0]));
+    NumericalScalar condPDF = distribution.computeConditionalPDF(x[0], y[0]);
     fullprint << "cond. pdf=" << condPDF << std::endl;
     NumericalPoint condPDFs(distribution.computeConditionalPDF(x, y));
     fullprint << "cond. pdf (vect)=" << condPDFs << std::endl;
-    NumericalScalar condQuantile(distribution.computeConditionalQuantile(q[0], y[0]));
+    NumericalScalar condQuantile = distribution.computeConditionalQuantile(q[0], y[0]);
     fullprint << "cond. quantile=" << condQuantile << std::endl;
     NumericalPoint condQuantiles(distribution.computeConditionalQuantile(q, y));
     fullprint << "cond. quantile (vect)=" << condQuantiles << std::endl;

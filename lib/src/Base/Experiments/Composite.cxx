@@ -61,13 +61,13 @@ Composite * Composite::clone() const
 NumericalSample Composite::generate()
 {
   /* Dimension of the realizations */
-  const UnsignedInteger dimension(center_.getDimension());
+  const UnsignedInteger dimension = center_.getDimension();
   /* Hypercube number of vertices */
-  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2.0, static_cast<int>(dimension))));
+  const UnsignedInteger verticesNumber = (UnsignedInteger)round(pow(2.0, static_cast<int>(dimension)));
   /* Number of levels to be generated */
-  const UnsignedInteger levelNumber(levels_.getDimension());
+  const UnsignedInteger levelNumber = levels_.getDimension();
   /* Size of the sample to be generated: 1 + number of levels x (2 x dimension + 2^dimension) */
-  UnsignedInteger size(1 + levelNumber * (2 * dimension + verticesNumber));
+  UnsignedInteger size = 1 + levelNumber * (2 * dimension + verticesNumber);
   /* A composite plane is made of an axial plane and a factorial plane with the same levels */
   /* First the axial plane */
   Axial axial(center_, levels_);
@@ -78,7 +78,7 @@ NumericalSample Composite::generate()
   /* We create the composite plane by copying the factorial plane (larger than the axial plane) then we append all the elements of the axial plane excepted its first one, which is the center of the plane and thus already present in the factorial plane */
   NumericalSample compositePlane(size, center_);
   compositePlane.setName("Composite plane");
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   size = factorialPlane.getSize();
   for(UnsignedInteger factorialIndex = 0; factorialIndex < size; factorialIndex++)
   {

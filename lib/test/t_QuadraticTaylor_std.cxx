@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalScalar eps(0.4);
+    NumericalScalar eps = 0.4;
     /** Instance creation */
     Description input(2);
     input[0] = "x1";

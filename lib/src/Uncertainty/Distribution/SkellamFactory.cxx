@@ -66,17 +66,17 @@ Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Skellam distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // Check if all the components of the sample are integers
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar x(sample[i][0]);
+    NumericalScalar x = sample[i][0];
     if (x != trunc(x)) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample with integer components, here sample[" << i << "][0]=" << x;
   }
-  const NumericalScalar mean(sample.computeMean()[0]);
-  const NumericalScalar var(sample.computeVariance()[0]);
-  const NumericalScalar lambda2(0.5 * (var - mean));
+  const NumericalScalar mean = sample.computeMean()[0];
+  const NumericalScalar var = sample.computeVariance()[0];
+  const NumericalScalar lambda2 = 0.5 * (var - mean);
   if (lambda2 <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a skellam distribution only if lambda2 > 0, here lambda2=" << lambda2;
-  const NumericalScalar lambda1(0.5 * (var + mean));
+  const NumericalScalar lambda1 = 0.5 * (var + mean);
   Skellam result(lambda1, lambda2);
   result.setDescription(sample.getDescription());
   return result;

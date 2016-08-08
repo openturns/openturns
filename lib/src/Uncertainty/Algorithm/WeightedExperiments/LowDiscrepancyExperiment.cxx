@@ -148,7 +148,7 @@ NumericalSample LowDiscrepancyExperiment::generate()
   // In-place transformation to reduce memory consumption
   NumericalSample sample(sequence_.generate(size_));
   sample.setDescription(distribution_.getDescription());
-  const UnsignedInteger dimension(marginals_.getSize());
+  const UnsignedInteger dimension = marginals_.getSize();
   for (UnsignedInteger i = 0; i < size_; ++ i)
     for (UnsignedInteger j = 0; j < dimension; ++ j) sample[i][j] = marginals_[j].computeQuantile(sample[i][j])[0];
   return sample;

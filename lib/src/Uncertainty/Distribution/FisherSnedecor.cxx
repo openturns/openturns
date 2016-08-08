@@ -128,7 +128,7 @@ NumericalScalar FisherSnedecor::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -137,7 +137,7 @@ NumericalScalar FisherSnedecor::computeLogPDF(const NumericalPoint & point) cons
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
   return normalizationFactor_ + (0.5 * d1_ - 1.0) * std::log(x) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
 }
@@ -147,7 +147,7 @@ NumericalScalar FisherSnedecor::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0) return 0.0;
   return DistFunc::pBeta(0.5 * d1_, 0.5 * d2_, d1_ * x / (d1_ * x + d2_));
 }
@@ -157,8 +157,8 @@ NumericalScalar FisherSnedecor::computeScalarQuantile(const NumericalScalar prob
     const Bool tail) const
 {
   if (getRange().getUpperBound()[0] < 0.0) return DistributionImplementation::computeScalarQuantile(prob, tail);
-  const NumericalScalar p(tail ? 1.0 - prob : prob);
-  const NumericalScalar q(DistFunc::qBeta(0.5 * d1_, 0.5 * d2_, p));
+  const NumericalScalar p = tail ? 1.0 - prob : prob;
+  const NumericalScalar q = DistFunc::qBeta(0.5 * d1_, 0.5 * d2_, p);
   if (q >= 1.0) return getRange().getUpperBound()[0];
   return d2_ * q / (d1_ * (1.0 - q));
 }

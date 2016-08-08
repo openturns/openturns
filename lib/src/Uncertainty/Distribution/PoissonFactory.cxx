@@ -61,11 +61,11 @@ Poisson PoissonFactory::buildAsPoisson(const NumericalSample & sample) const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Poisson distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Poisson distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // Check if all the components of the sample are integers > 0
-  const UnsignedInteger size(sample.getSize());
-  NumericalScalar lambda(0.0);
+  const UnsignedInteger size = sample.getSize();
+  NumericalScalar lambda = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar x(sample[i][0]);
+    NumericalScalar x = sample[i][0];
     if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Poisson distribution only from a sample with integer components >= 0, here sample[" << i << "][0]=" << x;
     lambda += x;
   }

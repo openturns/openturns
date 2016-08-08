@@ -86,7 +86,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
 {
   isParallel_ = false;
   // Initialize the distribution manually in order to avoid costly checks that are not needed here
-  const UnsignedInteger size(coll.getSize());
+  const UnsignedInteger size = coll.getSize();
   setDimension(size);
   computeRange();
   setDescription(description);
@@ -136,7 +136,7 @@ MaximumEntropyOrderStatisticsDistribution * MaximumEntropyOrderStatisticsDistrib
 /* Compute the numerical range of the distribution given the parameters values */
 void MaximumEntropyOrderStatisticsDistribution::computeRange()
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint lowerBound(dimension);
   NumericalPoint upperBound(dimension);
   Interval::BoolCollection finiteLowerBound(dimension);
@@ -168,12 +168,12 @@ struct MaximumEntropyOrderStatisticsDistributionWrapper
 
   NumericalPoint computePhi(const NumericalPoint & point) const
   {
-    const NumericalScalar pdfUpper(distribution_.distributionCollection_[upper_].computePDF(point));
-    NumericalScalar value(0.0);
+    const NumericalScalar pdfUpper = distribution_.distributionCollection_[upper_].computePDF(point);
+    NumericalScalar value = 0.0;
     if (pdfUpper > 0.0)
     {
       // First, try to use complementary CDF
-      NumericalScalar a(distribution_.distributionCollection_[lower_].computeComplementaryCDF(point));
+      NumericalScalar a = distribution_.distributionCollection_[lower_].computeComplementaryCDF(point);
       NumericalScalar b;
       // If the smallest complementary CDF is less than 1/2 it is better to use complementary CDF
       if (a < 0.5) b = distribution_.distributionCollection_[upper_].computeComplementaryCDF(point);
@@ -212,26 +212,26 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFac
 {
   if (y < x)
   {
-    const NumericalScalar value(computeExponentialFactor(k, y, x));
+    const NumericalScalar value = computeExponentialFactor(k, y, x);
     if (value == 0.0) return SpecFunc::MaxNumericalScalar;
     return 1.0 / value;
   }
   // Generic part, no approximation here
   if (x == y)
   {
-    const NumericalScalar value(1.0);
+    const NumericalScalar value = 1.0;
     return value;
   }
-  const NumericalScalar a(distributionCollection_[k].getRange().getLowerBound()[0]);
+  const NumericalScalar a = distributionCollection_[k].getRange().getLowerBound()[0];
   if (y <= a) return 1.0;
-  const NumericalScalar b(distributionCollection_[k].getRange().getUpperBound()[0]);
+  const NumericalScalar b = distributionCollection_[k].getRange().getUpperBound()[0];
   if (y >= b) return 0.0;
-  const NumericalScalar beta(distributionCollection_[k - 1].getRange().getUpperBound()[0]);
+  const NumericalScalar beta = distributionCollection_[k - 1].getRange().getUpperBound()[0];
   if (x >= beta) return distributionCollection_[k].computeComplementaryCDF(y) / distributionCollection_[k].computeComplementaryCDF(x);
   // Here the computation depends on the use of approximation
   if (!useApproximation_)
   {
-    const NumericalScalar factor(computeFactor(k, x, y));
+    const NumericalScalar factor = computeFactor(k, x, y);
     return std::exp(-factor);
   }
   // Here we know that x < y, y > a, y < b, x < beta
@@ -240,18 +240,18 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFac
     // x <= a, y > a, y <= beta
     if (y <= beta) return exponentialFactorApproximation_[k - 1](NumericalPoint(1, y))[0];
     // x <= a, y > beta, y < b
-    const NumericalScalar ccdfY(distributionCollection_[k].computeComplementaryCDF(y));
-    const NumericalScalar ccdfBeta(distributionCollection_[k].computeComplementaryCDF(beta));
-    const NumericalScalar rho(ccdfY / ccdfBeta);
+    const NumericalScalar ccdfY = distributionCollection_[k].computeComplementaryCDF(y);
+    const NumericalScalar ccdfBeta = distributionCollection_[k].computeComplementaryCDF(beta);
+    const NumericalScalar rho = ccdfY / ccdfBeta;
     return exponentialFactorApproximation_[k - 1](NumericalPoint(1, beta))[0] * rho;
   }
   // x > a, x < beta
   // y <= beta
   if (y <= beta) return exponentialFactorApproximation_[k - 1](NumericalPoint(1, y))[0] / exponentialFactorApproximation_[k - 1](NumericalPoint(1, x))[0];
   // x > a, y > beta, y < b
-  const NumericalScalar ccdfY(distributionCollection_[k].computeComplementaryCDF(y));
-  const NumericalScalar ccdfBeta(distributionCollection_[k].computeComplementaryCDF(beta));
-  const NumericalScalar rho(ccdfY / ccdfBeta);
+  const NumericalScalar ccdfY = distributionCollection_[k].computeComplementaryCDF(y);
+  const NumericalScalar ccdfBeta = distributionCollection_[k].computeComplementaryCDF(beta);
+  const NumericalScalar rho = ccdfY / ccdfBeta;
   return exponentialFactorApproximation_[k - 1](NumericalPoint(1, beta))[0] / exponentialFactorApproximation_[k - 1](NumericalPoint(1, x))[0] * rho;
 }
 
@@ -264,22 +264,22 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const U
   // Generic part, no approximation here
   if (x == y)
   {
-    const NumericalScalar value(0.0);
+    const NumericalScalar value = 0.0;
     return value;
   }
-  const NumericalScalar a(distributionCollection_[k].getRange().getLowerBound()[0]);
+  const NumericalScalar a = distributionCollection_[k].getRange().getLowerBound()[0];
   if (y <= a) return 0.0;
-  const NumericalScalar b(distributionCollection_[k].getRange().getUpperBound()[0]);
+  const NumericalScalar b = distributionCollection_[k].getRange().getUpperBound()[0];
   if (y >= b) return SpecFunc::LogMaxNumericalScalar;
-  const NumericalScalar beta(distributionCollection_[k - 1].getRange().getUpperBound()[0]);
+  const NumericalScalar beta = distributionCollection_[k - 1].getRange().getUpperBound()[0];
   if (x >= beta)
   {
-    const NumericalScalar value(std::log(distributionCollection_[k].computeComplementaryCDF(y) / distributionCollection_[k].computeComplementaryCDF(x)));
+    const NumericalScalar value = std::log(distributionCollection_[k].computeComplementaryCDF(y) / distributionCollection_[k].computeComplementaryCDF(x));
     return value;
   }
   if (useApproximation_)
   {
-    const NumericalScalar exponentialFactor(computeExponentialFactor(k, x, y));
+    const NumericalScalar exponentialFactor = computeExponentialFactor(k, x, y);
     if (exponentialFactor == 0.0) return SpecFunc::LogMaxNumericalScalar;
     return -std::log(exponentialFactor);
   }
@@ -292,41 +292,41 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const U
     // x <= a, y > a, y <= beta
     if (y <= beta)
     {
-      const NumericalScalar value(integrator_.integrate(fPhiK, Interval(a, y), error)[0]);
+      const NumericalScalar value = integrator_.integrate(fPhiK, Interval(a, y), error)[0];
       return value;
     }
     // x <= a, y > beta, y < b
-    const NumericalScalar ccdfY(distributionCollection_[k].computeComplementaryCDF(y));
-    const NumericalScalar ccdfBeta(distributionCollection_[k].computeComplementaryCDF(beta));
-    const NumericalScalar rho(ccdfY / ccdfBeta);
-    const NumericalScalar value(integrator_.integrate(fPhiK, Interval(a, beta), error)[0] - std::log(rho));
+    const NumericalScalar ccdfY = distributionCollection_[k].computeComplementaryCDF(y);
+    const NumericalScalar ccdfBeta = distributionCollection_[k].computeComplementaryCDF(beta);
+    const NumericalScalar rho = ccdfY / ccdfBeta;
+    const NumericalScalar value = integrator_.integrate(fPhiK, Interval(a, beta), error)[0] - std::log(rho);
     return value;
   }
   // x > a, x < beta
   // x > a, y <= beta
   if (y <= beta)
   {
-    const NumericalScalar value(integrator_.integrate(fPhiK, Interval(x, y), error)[0]);
+    const NumericalScalar value = integrator_.integrate(fPhiK, Interval(x, y), error)[0];
     return value;
   }
   // x > a, y > beta, y < b
-  const NumericalScalar ccdfY(distributionCollection_[k].computeComplementaryCDF(y));
-  const NumericalScalar ccdfBeta(distributionCollection_[k].computeComplementaryCDF(beta));
-  const NumericalScalar rho(ccdfY / ccdfBeta);
-  const NumericalScalar value(integrator_.integrate(fPhiK, Interval(x, beta), error)[0] - std::log(rho));
+  const NumericalScalar ccdfY = distributionCollection_[k].computeComplementaryCDF(y);
+  const NumericalScalar ccdfBeta = distributionCollection_[k].computeComplementaryCDF(beta);
+  const NumericalScalar rho = ccdfY / ccdfBeta;
+  const NumericalScalar value = integrator_.integrate(fPhiK, Interval(x, beta), error)[0] - std::log(rho);
   return value;
 }
 
 /* Get one realization of the distribution */
 NumericalPoint MaximumEntropyOrderStatisticsDistribution::getRealization() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
 
   NumericalPoint x(1);
   x[0] = distributionCollection_[0].getRealization()[0];
   for(UnsignedInteger k = 1; k < dimension; ++ k)
   {
-    const NumericalScalar xK(computeConditionalQuantile(RandomGenerator::Generate(), x));
+    const NumericalScalar xK = computeConditionalQuantile(RandomGenerator::Generate(), x);
     x.add(xK);
   }
   return x;
@@ -339,8 +339,8 @@ PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistributi
     const NumericalScalar shift) const
 {
   if (lower >= upper) throw InvalidArgumentException(HERE) << "Error: expected lower=" << lower << " to be less than upper=" << upper;
-  const NumericalScalar xMin(distributionCollection_[upper].getRange().getLowerBound()[0]);
-  const NumericalScalar xMax(distributionCollection_[lower].getRange().getUpperBound()[0]);
+  const NumericalScalar xMin = distributionCollection_[upper].getRange().getLowerBound()[0];
+  const NumericalScalar xMax = distributionCollection_[lower].getRange().getUpperBound()[0];
   const MaximumEntropyOrderStatisticsDistributionWrapper phiWrapper(*this, lower, upper, xMin);
   const NumericalMathFunction phi(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePartialExponentialFactor, 1, 1));
   NumericalPoint lowerBounds;
@@ -353,22 +353,22 @@ PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistributi
   // Now, we have to sort the intervals in order to build the approximation
   std::sort(upperBounds.begin(), upperBounds.end());
   // Here we have to subdivide the intervals to take into account the poorer approximation given by Hermite polynomials
-  NumericalScalar a(std::abs(xMin) < shift ? shift : xMin + shift * std::abs(xMin));
+  NumericalScalar a = std::abs(xMin) < shift ? shift : xMin + shift * std::abs(xMin);
   NumericalPoint locations(1, a);
   for (UnsignedInteger i = 0; i < upperBounds.getSize(); ++i)
   {
-    const NumericalScalar b(upperBounds[i]);
-    const NumericalScalar step((b - a) / maximumSubdivision);
+    const NumericalScalar b = upperBounds[i];
+    const NumericalScalar step = (b - a) / maximumSubdivision;
     for (UnsignedInteger j = 1; j <= maximumSubdivision; ++j) locations.add(a + j * step);
     a = b;
   }
-  const UnsignedInteger size(locations.getSize());
+  const UnsignedInteger size = locations.getSize();
   NumericalPoint values(size);
   NumericalPoint derivatives(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint x(1, locations[i]);
-    const NumericalScalar exponentialScalar(phiWrapper.computePartialExponentialFactor(x)[0]);
+    const NumericalScalar exponentialScalar = phiWrapper.computePartialExponentialFactor(x)[0];
     values[i] = exponentialScalar;
     derivatives[i] = -phiWrapper.computePhi(x)[0] * exponentialScalar;
   }
@@ -380,10 +380,10 @@ void MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactors()
 {
   // Use exact values to build the approximation
   useApproximation_ = false;
-  UnsignedInteger dimension(getDimension());
+  UnsignedInteger dimension = getDimension();
   exponentialFactorApproximation_ = Collection<PiecewiseHermiteEvaluationImplementation>(dimension - 1);
-  const UnsignedInteger maximumSubdivision(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision"));
-  const NumericalScalar shift(ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift"));
+  const UnsignedInteger maximumSubdivision = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision");
+  const NumericalScalar shift = ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift");
   for(UnsignedInteger k = 1; k < dimension; ++k)
   {
     if (!partition_.contains(k - 1))
@@ -404,7 +404,7 @@ PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistributi
 /* Get the PDF of the distribution */
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
 
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -416,24 +416,24 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computePDF(const Nume
   // Early exit for the independent case
   if (hasIndependentCopula())
   {
-    NumericalScalar pdfValue(distributionCollection_[0].computePDF(point[0]));
+    NumericalScalar pdfValue = distributionCollection_[0].computePDF(point[0]);
     for (UnsignedInteger k = 1; k < dimension; ++k) pdfValue *= distributionCollection_[k].computePDF(point[k]);
     return pdfValue;
   }
 
   // Here we have to compute something
-  NumericalScalar productPDF(distributionCollection_[0].computePDF(point[0]));
+  NumericalScalar productPDF = distributionCollection_[0].computePDF(point[0]);
   for (UnsignedInteger k = 1; k < dimension; ++k)
   {
     if (!partition_.contains(k - 1))
     {
       // Compute the lower bound of the integral. The integrand is zero outside of the range of the kth distribution
-      const NumericalScalar xMin(std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]));
+      const NumericalScalar xMin = std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]);
       // Compute the upper bound of the integral. The integral has a closed form outside of the range of the (k-1)th distribution, but we have still to compute the integral on the intersection with this range
-      const NumericalScalar xK(point[k]);
-      const NumericalScalar bKm1(distributionCollection_[k - 1].getRange().getUpperBound()[0]);
-      NumericalScalar xMax(0.0);
-      NumericalScalar cdfKm1(0.0);
+      const NumericalScalar xK = point[k];
+      const NumericalScalar bKm1 = distributionCollection_[k - 1].getRange().getUpperBound()[0];
+      NumericalScalar xMax = 0.0;
+      NumericalScalar cdfKm1 = 0.0;
       if (bKm1 < xK)
       {
         xMax = bKm1;
@@ -444,9 +444,9 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computePDF(const Nume
         xMax = xK;
         cdfKm1 = distributionCollection_[k - 1].computeCDF(xMax);
       }
-      NumericalScalar cdfK(distributionCollection_[k].computeCDF(xMax));
-      const NumericalScalar pdfK(distributionCollection_[k].computePDF(point[k]));
-      const NumericalScalar exponentialFactor(computeExponentialFactor(k, xMin, xMax));
+      NumericalScalar cdfK = distributionCollection_[k].computeCDF(xMax);
+      const NumericalScalar pdfK = distributionCollection_[k].computePDF(point[k]);
+      const NumericalScalar exponentialFactor = computeExponentialFactor(k, xMin, xMax);
       productPDF *=  pdfK * exponentialFactor / (cdfKm1 - cdfK);
     } // Partition
   } // Loop over k
@@ -457,7 +457,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computePDF(const Nume
 /* Get the log PDF of the distribution */
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
 
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -469,24 +469,24 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const N
   // Early exit for the independent case
   if (hasIndependentCopula())
   {
-    NumericalScalar logPDFValue(distributionCollection_[0].computeLogPDF(point[0]));
+    NumericalScalar logPDFValue = distributionCollection_[0].computeLogPDF(point[0]);
     for (UnsignedInteger k = 1; k < dimension; ++k) logPDFValue += distributionCollection_[k].computeLogPDF(point[k]);
     return logPDFValue;
   }
 
   // Here we have to compute something
-  NumericalScalar sumLogPDF(distributionCollection_[0].computeLogPDF(point[0]));
+  NumericalScalar sumLogPDF = distributionCollection_[0].computeLogPDF(point[0]);
   for (UnsignedInteger k = 1; k < dimension; ++k)
   {
     if (!partition_.contains(k - 1))
     {
       // Compute the lower bound of the integral. The integrand is zero outside of the range of the kth distribution
-      const NumericalScalar xMin(std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]));
+      const NumericalScalar xMin = std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]);
       // Compute the upper bound of the integral. The integral has a closed form outside of the range of the (k-1)th distribution, but we have still to compute the integral on the intersection with this range
-      const NumericalScalar xK(point[k]);
-      const NumericalScalar bKm1(distributionCollection_[k - 1].getRange().getUpperBound()[0]);
-      NumericalScalar xMax(0.0);
-      NumericalScalar cdfKm1(0.0);
+      const NumericalScalar xK = point[k];
+      const NumericalScalar bKm1 = distributionCollection_[k - 1].getRange().getUpperBound()[0];
+      NumericalScalar xMax = 0.0;
+      NumericalScalar cdfKm1 = 0.0;
       if (bKm1 < xK)
       {
         xMax = bKm1;
@@ -497,9 +497,9 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const N
         xMax = xK;
         cdfKm1 = distributionCollection_[k - 1].computeCDF(xMax);
       }
-      NumericalScalar cdfK(distributionCollection_[k].computeCDF(xMax));
-      const NumericalScalar logPDFK(distributionCollection_[k].computeLogPDF(point[k]));
-      const NumericalScalar factor(computeFactor(k, xMin, xMax));
+      NumericalScalar cdfK = distributionCollection_[k].computeCDF(xMax);
+      const NumericalScalar logPDFK = distributionCollection_[k].computeLogPDF(point[k]);
+      const NumericalScalar factor = computeFactor(k, xMin, xMax);
       sumLogPDF +=  logPDFK - factor - std::log(cdfKm1 - cdfK);
     } // Partition
   } // Loop over k
@@ -510,12 +510,12 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const N
 /* Get the CDF of the distribution */
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   // If there is a miracle: we are in the independent case!
   if (hasIndependentCopula())
   {
-    NumericalScalar cdf(distributionCollection_[0].computeCDF(point[0]));
+    NumericalScalar cdf = distributionCollection_[0].computeCDF(point[0]);
     for (UnsignedInteger k = 1; k < dimension; ++k) cdf *= distributionCollection_[k].computeCDF(point[k]);
     return cdf;
   }
@@ -526,12 +526,12 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Nume
   const NumericalPoint upperBound(getRange().getUpperBound());
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
-    const NumericalScalar xK(point[k]);
+    const NumericalScalar xK = point[k];
     // Early exit if one component is nonpositive
     if (xK <= lowerBound[k]) return 0.0;
     // Keep only the indices for which xK is in (xk_min, xk_max) and xK < xKp1
     // Marginalize the others
-    const NumericalScalar bound(k < dimension - 1 ? std::min(point[k + 1], upperBound[k]) : upperBound[k]);
+    const NumericalScalar bound = k < dimension - 1 ? std::min(point[k + 1], upperBound[k]) : upperBound[k];
     if (xK < bound)
     {
       toKeep.add(k);
@@ -546,27 +546,27 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Nume
   // If one or more components (but not all) are greater or equal to their marginal upper bound compute a marginal CDF
   if (toKeep.getSize() < dimension)
   {
-    const NumericalScalar cdf(getMarginal(toKeep)->computeCDF(reducedPoint));
+    const NumericalScalar cdf = getMarginal(toKeep)->computeCDF(reducedPoint);
     return cdf;
   }
   // Else we have to do some work
   // Try to split the work into smaller pieces using potential block-independence
-  const UnsignedInteger partitionSize(partition_.getSize());
+  const UnsignedInteger partitionSize = partition_.getSize();
   if (partitionSize > 0)
   {
-    NumericalScalar cdf(1.0);
-    UnsignedInteger firstIndex(0);
+    NumericalScalar cdf = 1.0;
+    UnsignedInteger firstIndex = 0;
     for (UnsignedInteger i = 0; i <= partitionSize; ++i)
     {
-      const UnsignedInteger lastIndex(i < partitionSize ? partition_[i] + 1 : dimension);
+      const UnsignedInteger lastIndex = i < partitionSize ? partition_[i] + 1 : dimension;
       Indices dependentBlockIndices(lastIndex - firstIndex);
       dependentBlockIndices.fill(firstIndex);
-      const UnsignedInteger blockSize(dependentBlockIndices.getSize());
+      const UnsignedInteger blockSize = dependentBlockIndices.getSize();
       reducedPoint = NumericalPoint(blockSize);
       for (UnsignedInteger k = 0; k < blockSize; ++k) reducedPoint[k] = point[firstIndex + k];
       // The cdf is obtained by multiplying lower dimensional cdf, which are much more cheaper to compute than a full multidimensional integration
       const Implementation marginal(getMarginal(dependentBlockIndices));
-      const NumericalScalar blockCDF(marginal->computeCDF(reducedPoint));
+      const NumericalScalar blockCDF = marginal->computeCDF(reducedPoint);
       cdf *= blockCDF;
       firstIndex = lastIndex;
     }
@@ -575,32 +575,32 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Nume
 
   // Here we are in the full dependent case. Use Gauss-Legendre integration restricted to the support of the copula.
   // We know that for each k, xk is in (xk_min, xk_max) and for k<dim, xk<xkp1
-  NumericalScalar cdf(0.0);
+  NumericalScalar cdf = 0.0;
 
   NumericalPoint gaussWeights;
   const NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
   // Perform the integration
   // There are N^{d-1} integration points to compute:
   // I = \int_{lb_1}^{x_1}\int_{\max(t_1, lb_2)}^{x_2}\dots\int_{\max(t_{d-2}, lb_{d-1})}^{x_{d-1}}F(x_d|t_1,\dots,t_{d-1})pdf(t_1,\dots,t_{d-1})dt_1\dots dt_{d-1}
-  const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
-  const UnsignedInteger size(std::pow(static_cast< NumericalScalar > (marginalNodesNumber), static_cast< NumericalScalar > (dimension - 1)));
+  const UnsignedInteger marginalNodesNumber = getIntegrationNodesNumber();
+  const UnsignedInteger size = std::pow(static_cast< NumericalScalar > (marginalNodesNumber), static_cast< NumericalScalar > (dimension - 1));
   Indices indices(dimension, 0);
   Indices marginalIndices(dimension - 1);
   marginalIndices.fill();
-  const NumericalScalar x(point[dimension - 1]);
+  const NumericalScalar x = point[dimension - 1];
   Implementation marginal(getMarginal(marginalIndices));
   for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
   {
     NumericalPoint node(dimension - 1);
-    const NumericalScalar delta0(0.5 * (point[0] - lowerBound[0]));
-    const UnsignedInteger index0(indices[0]);
+    const NumericalScalar delta0 = 0.5 * (point[0] - lowerBound[0]);
+    const UnsignedInteger index0 = indices[0];
     node[0] = lowerBound[0] + delta0 * (1.0 + gaussNodes[index0]);
-    NumericalScalar weight(delta0 * gaussWeights[index0]);
+    NumericalScalar weight = delta0 * gaussWeights[index0];
     for (UnsignedInteger j = 1; j < dimension - 1; ++j)
     {
-      const UnsignedInteger indexJ(indices[j]);
-      const NumericalScalar aJ(std::max(node[j - 1], distributionCollection_[j].getRange().getLowerBound()[0]));
-      const NumericalScalar deltaJ(0.5 * (point[j] - aJ));
+      const UnsignedInteger indexJ = indices[j];
+      const NumericalScalar aJ = std::max(node[j - 1], distributionCollection_[j].getRange().getLowerBound()[0]);
+      const NumericalScalar deltaJ = 0.5 * (point[j] - aJ);
       node[j] = aJ + deltaJ * (1.0 + gaussNodes[indexJ]);
       weight *= deltaJ * gaussWeights[indexJ];
     }
@@ -618,12 +618,12 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Nume
 
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   // If there is a miracle: we are in the independent case!
   if (hasIndependentCopula())
   {
-    NumericalScalar cdf(distributionCollection_[0].computeCDF(point[0]));
+    NumericalScalar cdf = distributionCollection_[0].computeCDF(point[0]);
     for (UnsignedInteger k = 1; k < dimension; ++k) cdf *= distributionCollection_[k].computeCDF(point[k]);
     return cdf;
   }
@@ -634,12 +634,12 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const N
   const NumericalPoint upperBound(getRange().getUpperBound());
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
-    const NumericalScalar xK(point[k]);
+    const NumericalScalar xK = point[k];
     // Early exit if one component is nonpositive
     if (xK <= lowerBound[k]) return 0.0;
     // Keep only the indices for which xK is in (xk_min, xk_max) and xK < xKp1
     // Marginalize the others
-    const NumericalScalar bound(k < dimension - 1 ? std::min(point[k + 1], upperBound[k]) : upperBound[k]);
+    const NumericalScalar bound = k < dimension - 1 ? std::min(point[k + 1], upperBound[k]) : upperBound[k];
     if (xK < bound)
     {
       toKeep.add(k);
@@ -654,27 +654,27 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const N
   // If one or more components (but not all) are greater or equal to their marginal upper bound compute a marginal CDF
   if (toKeep.getSize() < dimension)
   {
-    const NumericalScalar cdf(getMarginal(toKeep)->computeCDF(reducedPoint));
+    const NumericalScalar cdf = getMarginal(toKeep)->computeCDF(reducedPoint);
     return cdf;
   }
   // Else we have to do some work
   // Try to split the work into smaller pieces using potential block-independence
-  const UnsignedInteger partitionSize(partition_.getSize());
+  const UnsignedInteger partitionSize = partition_.getSize();
   if (partitionSize > 0)
   {
-    NumericalScalar cdf(1.0);
-    UnsignedInteger firstIndex(0);
+    NumericalScalar cdf = 1.0;
+    UnsignedInteger firstIndex = 0;
     for (UnsignedInteger i = 0; i <= partitionSize; ++i)
     {
-      const UnsignedInteger lastIndex(i < partitionSize ? partition_[i] + 1 : dimension);
+      const UnsignedInteger lastIndex = i < partitionSize ? partition_[i] + 1 : dimension;
       Indices dependentBlockIndices(lastIndex - firstIndex);
       dependentBlockIndices.fill(firstIndex);
-      const UnsignedInteger blockSize(dependentBlockIndices.getSize());
+      const UnsignedInteger blockSize = dependentBlockIndices.getSize();
       reducedPoint = NumericalPoint(blockSize);
       for (UnsignedInteger k = 0; k < blockSize; ++k) reducedPoint[k] = point[firstIndex + k];
       // The cdf is obtained by multiplying lower dimensional cdf, which are much more cheaper to compute than a full multidimensional integration
       const Implementation marginal(getMarginal(dependentBlockIndices));
-      const NumericalScalar blockCDF(marginal->computeCDF(reducedPoint));
+      const NumericalScalar blockCDF = marginal->computeCDF(reducedPoint);
       cdf *= blockCDF;
       firstIndex = lastIndex;
     }
@@ -683,28 +683,28 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const N
 
   // Here we are in the full dependent case. Use Gauss-Legendre integration restricted to the support of the copula.
   // We know that for each k, xk is in (xk_min, xk_max) and for k<dim, xk<xkp1
-  NumericalScalar cdf(0.0);
+  NumericalScalar cdf = 0.0;
 
   NumericalPoint gaussWeights;
   const NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
   // Perform the integration
   // There are N^{d-1} integration points to compute:
   // I = \int_{lb_1}^{x_1}\int_{\max(t_1, lb_2)}^{x_2}\dots\int_{\max(t_{d-2}, lb_{d-1})}^{x_{d-1}}F(x_d|t_1,\dots,t_{d-1})pdf(t_1,\dots,t_{d-1})dt_1\dots dt_{d-1}
-  const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
-  const UnsignedInteger size(std::pow(static_cast< NumericalScalar > (marginalNodesNumber), static_cast< NumericalScalar > (dimension)));
+  const UnsignedInteger marginalNodesNumber = getIntegrationNodesNumber();
+  const UnsignedInteger size = std::pow(static_cast< NumericalScalar > (marginalNodesNumber), static_cast< NumericalScalar > (dimension));
   Indices indices(dimension, 0);
   for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
   {
     NumericalPoint node(dimension);
-    const NumericalScalar delta0(0.5 * (point[0] - lowerBound[0]));
-    const UnsignedInteger index0(indices[0]);
+    const NumericalScalar delta0 = 0.5 * (point[0] - lowerBound[0]);
+    const UnsignedInteger index0 = indices[0];
     node[0] = lowerBound[0] + delta0 * (1.0 + gaussNodes[index0]);
-    NumericalScalar weight(delta0 * gaussWeights[index0]);
+    NumericalScalar weight = delta0 * gaussWeights[index0];
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
-      const UnsignedInteger indexJ(indices[j]);
-      const NumericalScalar aJ(std::max(node[j - 1], distributionCollection_[j].getRange().getLowerBound()[0]));
-      const NumericalScalar deltaJ(0.5 * (point[j] - aJ));
+      const UnsignedInteger indexJ = indices[j];
+      const NumericalScalar aJ = std::max(node[j - 1], distributionCollection_[j].getRange().getLowerBound()[0]);
+      const NumericalScalar deltaJ = 0.5 * (point[j] - aJ);
       node[j] = aJ + deltaJ * (1.0 + gaussNodes[indexJ]);
       weight *= deltaJ * gaussWeights[indexJ];
     }
@@ -724,22 +724,22 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const N
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalPDF (const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
 
   if (conditioningDimension == 0) return distributionCollection_[0].computePDF(x);
-  const UnsignedInteger k(conditioningDimension);
-  const NumericalScalar aK(getRange().getLowerBound()[k]);
-  const NumericalScalar bK(getRange().getUpperBound()[k]);
+  const UnsignedInteger k = conditioningDimension;
+  const NumericalScalar aK = getRange().getLowerBound()[k];
+  const NumericalScalar bK = getRange().getUpperBound()[k];
   // If x is outside of the range of the kth marginal, the conditional PDF is zero
   if ((x <= aK) || (x > bK)) return 0.0;
   // The conditional PDF depends only on the last component of the conditioning vector
-  const NumericalScalar xKm1(y[k - 1]);
+  const NumericalScalar xKm1 = y[k - 1];
   // If the conditioning component is greater than the argument the conditional PDF is zero
   if (xKm1 > x) return 0.0;
   // If the conditioning component is outside of the (k-1)th marginal range
-  const NumericalScalar aKm1(getRange().getLowerBound()[k - 1]);
-  const NumericalScalar bKm1(getRange().getUpperBound()[k - 1]);
+  const NumericalScalar aKm1 = getRange().getLowerBound()[k - 1];
+  const NumericalScalar bKm1 = getRange().getUpperBound()[k - 1];
   if ((xKm1 <= aKm1) || (xKm1 > bKm1)) return 0.0;
   // Here we have something to do
   // If x is independent of the previous components
@@ -756,17 +756,17 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalPDF
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF (const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
 
   if (conditioningDimension == 0)
   {
-    const NumericalScalar value(distributionCollection_[0].computeCDF(x));
+    const NumericalScalar value = distributionCollection_[0].computeCDF(x);
     return value;
   }
-  const UnsignedInteger k(conditioningDimension);
-  const NumericalScalar aK(getRange().getLowerBound()[k]);
-  const NumericalScalar bK(getRange().getUpperBound()[k]);
+  const UnsignedInteger k = conditioningDimension;
+  const NumericalScalar aK = getRange().getLowerBound()[k];
+  const NumericalScalar bK = getRange().getUpperBound()[k];
   // If x is less than the lower bound of its associated marginal, the conditional CDF is zero
   if (x <= aK)
   {
@@ -778,15 +778,15 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF
     return 1.0;
   }
   // The conditional CDF depends only on the last component of the conditioning vector
-  const NumericalScalar xKm1(y[k - 1]);
+  const NumericalScalar xKm1 = y[k - 1];
   // If the conditioning component is greater than the argument the conditional CDF is zero
   if (xKm1 > x)
   {
     return 1.0;
   }
   // If the conditioning component is outside of the (k-1)th marginal range
-  const NumericalScalar aKm1(getRange().getLowerBound()[k - 1]);
-  const NumericalScalar bKm1(getRange().getUpperBound()[k - 1]);
+  const NumericalScalar aKm1 = getRange().getLowerBound()[k - 1];
+  const NumericalScalar bKm1 = getRange().getUpperBound()[k - 1];
   if ((xKm1 <= aKm1) || (xKm1 > bKm1))
   {
     return 0.0;
@@ -795,13 +795,13 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF
   // If x is independent of the previous components
   if (partition_.contains(k - 1))
   {
-    const NumericalScalar value(distributionCollection_[k].computeCDF(x));
+    const NumericalScalar value = distributionCollection_[k].computeCDF(x);
     return value;
   }
   // Else the difficult case
   // CDF(x|xKm1) = 1 - exp(-\int_{xKm1}^x\phi(s)ds)
-  const NumericalScalar factor(computeFactor(k, xKm1, x));
-  const NumericalScalar value(-expm1(-factor));
+  const NumericalScalar factor = computeFactor(k, xKm1, x);
+  const NumericalScalar value = -expm1(-factor);
   return value;
 }
 
@@ -810,12 +810,12 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF
 NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
 
   if (conditioningDimension == 0) return distributionCollection_[0].computeQuantile(q)[0];
-  const UnsignedInteger k(conditioningDimension);
+  const UnsignedInteger k = conditioningDimension;
   if (partition_.contains(k - 1))
   {
     return distributionCollection_[k].computeQuantile(q)[0];
@@ -825,27 +825,27 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQua
   // <->
   // Phi(x) - Phi(xKm1) = -log(1 - q)
   // Factor(x, xKm1) = -log(1 - q)
-  const NumericalScalar xKm1(y[k - 1]);
+  const NumericalScalar xKm1 = y[k - 1];
   if (q == 0.0) return xKm1;
-  NumericalScalar b(getRange().getUpperBound()[k]);
+  NumericalScalar b = getRange().getUpperBound()[k];
   if (q == 1.0) return b;
-  const NumericalScalar logU(log1p(-q));
+  const NumericalScalar logU = log1p(-q);
   // First, try Newton iterations:
   // Factor(xKm1, x+dx) = -log(1 - q) = Factor(xKm1, x) + f_k(x) / (F_{k-1}(x) - F_k(x)) dk
   // -> dx = (log(1 - q) + Factor(xKm1, x))(F_k(x) - F_{k-1}(x)) / f_k(x)
-  NumericalScalar a(xKm1);
-  NumericalScalar x(0.5 * (a + b));
-  UnsignedInteger iteration(0);
-  const UnsignedInteger maximumIteration(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration"));
-  Bool convergence(false);
+  NumericalScalar a = xKm1;
+  NumericalScalar x = 0.5 * (a + b);
+  UnsignedInteger iteration = 0;
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration");
+  Bool convergence = false;
   do
   {
     ++iteration;
-    const NumericalScalar pdfKX(distributionCollection_[k].computePDF(x));
+    const NumericalScalar pdfKX = distributionCollection_[k].computePDF(x);
     if (pdfKX == 0.0) break;
-    const NumericalScalar cdfKX(distributionCollection_[k].computeCDF(x));
-    const NumericalScalar cdfKm1X(distributionCollection_[k - 1].computeCDF(x));
-    const NumericalScalar fX(logU + computeFactor(k, xKm1, x));
+    const NumericalScalar cdfKX = distributionCollection_[k].computeCDF(x);
+    const NumericalScalar cdfKm1X = distributionCollection_[k - 1].computeCDF(x);
+    const NumericalScalar fX = logU + computeFactor(k, xKm1, x);
     if (fX < 0.0)
     {
       a = x;
@@ -854,7 +854,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQua
     {
       b = x;
     }
-    const NumericalScalar delta(fX * (cdfKX - cdfKm1X) / pdfKX);
+    const NumericalScalar delta = fX * (cdfKX - cdfKm1X) / pdfKX;
     x += delta;
     convergence = std::abs(delta) < quantileEpsilon_;
   }
@@ -881,16 +881,16 @@ MaximumEntropyOrderStatisticsDistribution::Implementation MaximumEntropyOrderSta
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 MaximumEntropyOrderStatisticsDistribution::Implementation MaximumEntropyOrderStatisticsDistribution::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   if (size == 1) return getMarginal(indices[0]);
   return getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices).clone();
 }
 
 MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribution::getMarginalAsMaximumEntropyOrderStatisticsDistribution(const Indices & indices) const
 {
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "indices must be of size at least 2";
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   if (!indices.isIncreasing()) throw InvalidArgumentException(HERE) << "Cannot take the marginal distribution of an order statistics distribution with nonincreasing indices.";
   // Here we know that if the size is equal to the dimension, the indices are [0,...,dimension-1]
@@ -902,12 +902,12 @@ MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribut
   Collection<PiecewiseHermiteEvaluationImplementation> marginalExponentialFactorApproximation(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger j(indices[i]);
+    const UnsignedInteger j = indices[i];
     marginalDistributions[i] = distributionCollection_[j];
     marginalDescription[i] = description[j];
     if (useApproximation_ && (i > 0))
     {
-      const UnsignedInteger jPrec(indices[i - 1]);
+      const UnsignedInteger jPrec = indices[i - 1];
       if (j == jPrec + 1) marginalExponentialFactorApproximation.add(exponentialFactorApproximation_[j - 1]);
       else
       {
@@ -933,7 +933,7 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
   setDimension(coll.getSize());
 
   // Check if the collection is not empty
-  const UnsignedInteger size(coll.getSize());
+  const UnsignedInteger size = coll.getSize();
   if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the distribution dimension";
   Description description(size);
   NumericalPoint lowerBound(size);

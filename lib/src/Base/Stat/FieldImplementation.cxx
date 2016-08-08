@@ -280,11 +280,11 @@ struct FieldSpatialMeanFunctor
 
   void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
   {
-    const UnsignedInteger meshDimension(field_.getSpatialDimension());
-    const UnsignedInteger dimension(field_.getDimension());
+    const UnsignedInteger meshDimension = field_.getSpatialDimension();
+    const UnsignedInteger dimension = field_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const NumericalScalar volume(field_.mesh_.computeSimplexVolume(i));
+      const NumericalScalar volume = field_.mesh_.computeSimplexVolume(i);
       const Indices simplex(field_.mesh_.getSimplex(i));
       NumericalPoint meanValue(dimension, 0.0);
       for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
@@ -379,7 +379,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
   if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
-  const UnsignedInteger meshDimension(getSpatialDimension());
+  const UnsignedInteger meshDimension = getSpatialDimension();
   if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
   const NumericalSample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
@@ -402,7 +402,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   else if (meshDimension == 2)
   {
     graph.setYTitle(description_[1]);
-    const UnsignedInteger levelsNumber(ResourceMap::GetAsUnsignedInteger("Field-LevelNumber"));
+    const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
     if (interpolate)
     {
       // Compute the iso-values
@@ -410,21 +410,21 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
-        const NumericalScalar q((i + 1.0) / (levelsNumber + 1.0));
+        const NumericalScalar q = (i + 1.0) / (levelsNumber + 1.0);
         levels[i] = marginalValues.computeQuantile(q)[0];
         palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
       }
       // Loop over the simplices to draw the segments (if any) associated with the different levels
-      const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
+      const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
       for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
       {
         const Indices currentSimplex(mesh_.getSimplex(i));
-        UnsignedInteger i0(currentSimplex[0]);
-        UnsignedInteger i1(currentSimplex[1]);
-        UnsignedInteger i2(currentSimplex[2]);
-        NumericalScalar v0(marginalValues[i0][0]);
-        NumericalScalar v1(marginalValues[i1][0]);
-        NumericalScalar v2(marginalValues[i2][0]);
+        UnsignedInteger i0 = currentSimplex[0];
+        UnsignedInteger i1 = currentSimplex[1];
+        UnsignedInteger i2 = currentSimplex[2];
+        NumericalScalar v0 = marginalValues[i0][0];
+        NumericalScalar v1 = marginalValues[i1][0];
+        NumericalScalar v2 = marginalValues[i2][0];
         // Sort the vertices such that v0 <= v1 <= v2
         if (v0 > v1)
         {
@@ -441,7 +441,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         // For the current simplex, check all levels
         for (UnsignedInteger j = 0; j < levelsNumber; ++j)
         {
-          const NumericalScalar level(levels[j]);
+          const NumericalScalar level = levels[j];
           if ((level >= v0) && (level <= v2))
           {
             const NumericalPoint x0(mesh_.getVertex(i0));
@@ -459,8 +459,8 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         } // j
       } // i
       // Simple colorbar
-      const NumericalScalar minValue(marginalValues.getMin()[0]);
-      const NumericalScalar maxValue(marginalValues.getMax()[0]);
+      const NumericalScalar minValue = marginalValues.getMin()[0];
+      const NumericalScalar maxValue = marginalValues.getMax()[0];
       const NumericalPoint xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
@@ -474,12 +474,12 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     } // interpolate
     else
     {
-      const UnsignedInteger size(marginalValues.getSize());
+      const UnsignedInteger size = marginalValues.getSize();
       Description palette(size);
       for (UnsignedInteger i = 0; i < size; ++i) palette[i] = Curve::ConvertFromHSV((270.0 * (size - i - 1)) / size, 1.0, 1.0);
-      const NumericalScalar minValue(marginalValues.getMin()[0]);
-      const NumericalScalar maxValue(marginalValues.getMax()[0]);
-      const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
+      const NumericalScalar minValue = marginalValues.getMin()[0];
+      const NumericalScalar maxValue = marginalValues.getMax()[0];
+      const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
       if (simplicesNumber > 0)
       {
         NumericalSample data(0, 2);
@@ -490,7 +490,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           data.add(mesh_.getVertex(simplex[0]));
           data.add(mesh_.getVertex(simplex[1]));
           data.add(mesh_.getVertex(simplex[2]));
-          const NumericalScalar meanValue((marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0);
+          const NumericalScalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
           colors.add(color);
         }
@@ -554,7 +554,7 @@ void FieldImplementation::exportToVTKFile(const String & fileName) const
   std::ofstream file(fileName.c_str(), std::ios::out);
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
   const String content(mesh_.streamToVTKFormat());
-  const UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
+  const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
   file << content << "\nPOINT_DATA " << getSize() << "\n";
 

@@ -57,11 +57,11 @@ AggregatedNumericalMathHessianImplementation * AggregatedNumericalMathHessianImp
 /* Hessian method */
 SymmetricTensor AggregatedNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
   SymmetricTensor result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  UnsignedInteger sheetIndex(0);
+  UnsignedInteger sheetIndex = 0;
   // Loop over the contributors
   for (UnsignedInteger contributorIndex = 0; contributorIndex < size; ++contributorIndex)
   {

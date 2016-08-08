@@ -69,7 +69,7 @@ LinearModel LinearModelFactory::build(const NumericalSample & samplePred,
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
   std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
-  UnsignedInteger dimension(samplePred.getDimension() + 1);
+  UnsignedInteger dimension = samplePred.getDimension() + 1;
   NumericalPoint regression(dimension);
   // Read the regression parameters
   for (UnsignedInteger i = 0; i < dimension; i++)

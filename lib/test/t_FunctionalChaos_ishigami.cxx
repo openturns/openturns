@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
   {
 
     // Problem parameters
-    UnsignedInteger dimension(3);
-    NumericalScalar a(7.0);
-    NumericalScalar b(0.1);
+    UnsignedInteger dimension = 3;
+    NumericalScalar a = 7.0;
+    NumericalScalar b = 0.1;
     // Reference analytical values
-    NumericalScalar meanTh(a / 2);
-    NumericalScalar covTh((pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0);
+    NumericalScalar meanTh = a / 2;
+    NumericalScalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
     NumericalPoint sob_1(3);
     sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
     sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
@@ -89,10 +89,10 @@ int main(int argc, char *argv[])
     // We can choose amongst several strategies
     // First, the most efficient (but more complex!) strategy
     Collection<AdaptiveStrategy> listAdaptiveStrategy(0);
-    UnsignedInteger degree(6);
-    UnsignedInteger indexMax(enumerateFunction.getStrataCumulatedCardinal(degree));
-    UnsignedInteger basisDimension(enumerateFunction.getStrataCumulatedCardinal(degree / 2));
-    NumericalScalar threshold(1.0e-6);
+    UnsignedInteger degree = 6;
+    UnsignedInteger indexMax = enumerateFunction.getStrataCumulatedCardinal(degree);
+    UnsignedInteger basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree / 2);
+    NumericalScalar threshold = 1.0e-6;
     listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
     {
       AdaptiveStrategy adaptiveStrategy(listAdaptiveStrategy[adaptiveStrategyIndex]);
       // Create the projection strategy
-      UnsignedInteger samplingSize(250);
+      UnsignedInteger samplingSize = 250;
       Collection<ProjectionStrategy> listProjectionStrategy(0);
       // Monte Carlo sampling
       listProjectionStrategy.add(LeastSquaresStrategy(MonteCarloExperiment(samplingSize)));
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
       {
         ProjectionStrategy projectionStrategy(listProjectionStrategy[projectionStrategyIndex]);
         // Create the polynomial chaos algorithm
-        NumericalScalar maximumResidual(1.0e-10);
+        NumericalScalar maximumResidual = 1.0e-10;
         FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
         algo.setMaximumResidual(maximumResidual);
         // Reinitialize the RandomGenerator to see the effect of the sampling method only
@@ -143,24 +143,24 @@ int main(int argc, char *argv[])
 
         // Post-process the results
         FunctionalChaosRandomVector vector(result);
-        NumericalScalar mean(vector.getMean()[0]);
+        NumericalScalar mean = vector.getMean()[0];
         fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh) << std::endl;
-        NumericalScalar variance(vector.getCovariance()(0, 0));
+        NumericalScalar variance = vector.getCovariance()(0, 0);
         fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh) << std::endl;
         for(UnsignedInteger i = 0; i < dimension; ++i)
         {
-          NumericalScalar value(vector.getSobolIndex(i));
+          NumericalScalar value = vector.getSobolIndex(i);
           fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i]) << std::endl;
         }
         Indices indices(2);
-        UnsignedInteger k(0);
+        UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < dimension; ++i)
         {
           indices[0] = i;
           for (UnsignedInteger j = i + 1; j < dimension; ++j)
           {
             indices[1] = j;
-            NumericalScalar value(vector.getSobolIndex(indices));
+            NumericalScalar value = vector.getSobolIndex(indices);
             fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k]) << std::endl;
             k = k + 1;
           }
@@ -169,11 +169,11 @@ int main(int argc, char *argv[])
         indices[0] = 0;
         indices[1] = 1;
         indices[2] = 2;
-        NumericalScalar value(vector.getSobolIndex(indices));
+        NumericalScalar value = vector.getSobolIndex(indices);
         fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[0]) << std::endl;
         for (UnsignedInteger i = 0; i < dimension; ++i)
         {
-          NumericalScalar value(vector.getSobolTotalIndex(i));
+          NumericalScalar value = vector.getSobolTotalIndex(i);
           fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
         }
         indices = Indices(2);
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
           for (UnsignedInteger j = i + 1; j < dimension; ++j)
           {
             indices[1] = j;
-            NumericalScalar value(vector.getSobolTotalIndex(indices));
+            NumericalScalar value = vector.getSobolTotalIndex(indices);
             fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k]) << std::endl;
             k = k + 1;
           }

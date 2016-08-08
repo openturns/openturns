@@ -32,7 +32,7 @@ inline NumericalScalar clean(NumericalScalar in)
 
 inline NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
-      NumericalScalar eps(1e-4);
+      NumericalScalar eps = 1e-4;
       NumericalPoint DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << clean(DDF) << std::endl;
       NumericalPoint ddfFD(distribution.ContinuousDistribution::computeDDF(point));
@@ -186,18 +186,18 @@ int main(int argc, char *argv[])
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution
-      NumericalScalar beta(point.normSquare());
-      NumericalScalar densityGenerator(distribution.computeDensityGenerator(beta));
+      NumericalScalar beta = point.normSquare();
+      NumericalScalar densityGenerator = distribution.computeDensityGenerator(beta);
       fullprint << "density generator=" << densityGenerator << std::endl;
       fullprint << "pdf via density generator=" << distribution.EllipticalDistribution::computePDF(point) << std::endl;
-      NumericalScalar densityGeneratorDerivative(distribution.computeDensityGeneratorDerivative(beta));
+      NumericalScalar densityGeneratorDerivative = distribution.computeDensityGeneratorDerivative(beta);
       fullprint << "density generator derivative     =" << densityGeneratorDerivative << std::endl;
       fullprint << "density generator derivative (FD)=" << clean((distribution.computeDensityGenerator(beta + eps) - distribution.computeDensityGenerator(beta - eps)) / (2.0 * eps)) << std::endl;
-      NumericalScalar densityGeneratorSecondDerivative(distribution.computeDensityGeneratorSecondDerivative(beta));
+      NumericalScalar densityGeneratorSecondDerivative = distribution.computeDensityGeneratorSecondDerivative(beta);
       fullprint << "density generator second derivative     =" << densityGeneratorSecondDerivative << std::endl;
       fullprint << "density generator second derivative (FD)=" << clean((distribution.computeDensityGeneratorDerivative(beta + eps) - distribution.computeDensityGeneratorDerivative(beta - eps)) / (2.0 * eps)) << std::endl;
       // Compute the radial CDF
-      NumericalScalar radius(2.0);
+      NumericalScalar radius = 2.0;
       fullprint << "Radial CDF(" << radius << ")=" << distribution.computeRadialDistributionCDF(radius) << std::endl;
       // Extract the marginals
       for (UnsignedInteger i = 0; i < dim; i++)

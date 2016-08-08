@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Beta distribution(0.2, 0.6, -1.0, 2.0);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     BetaFactory factory;
     CovarianceMatrix covariance;

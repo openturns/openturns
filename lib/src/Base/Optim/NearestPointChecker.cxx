@@ -116,7 +116,7 @@ const NumericalSample & NearestPointChecker::getSample() const
 void  NearestPointChecker::run()
 {
   /* Total number of points to be sampled */
-  UnsignedInteger pointNumber(sample_.getSize());
+  UnsignedInteger pointNumber = sample_.getSize();
   /* Compute the level function on the sample */
   NumericalSample levelValuesSample(getLevelFunction()(sample_));
   NumericalSample notVerifyingPoints(0, NumericalPoint(sample_.getDimension()));
@@ -125,8 +125,8 @@ void  NearestPointChecker::run()
   if (pointNumber > 0)
   {
     /* Sort the points according to the comparison operator and the threshold */
-    UnsignedInteger toBeClassified(0);
-    UnsignedInteger notClassified(pointNumber - 1);
+    UnsignedInteger toBeClassified = 0;
+    UnsignedInteger notClassified = pointNumber - 1;
     /* While some points remain to be classified */
     while (toBeClassified < notClassified)
     {

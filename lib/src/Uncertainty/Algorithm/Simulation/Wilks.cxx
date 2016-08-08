@@ -53,9 +53,9 @@ UnsignedInteger Wilks::ComputeSampleSize(const NumericalScalar quantileLevel,
   if ((quantileLevel <= 0.0) || (quantileLevel >= 1.0)) throw InvalidArgumentException(HERE) << "Error: quantile level must be in ]0, 1[, here quantile level=" << quantileLevel;
   if ((confidenceLevel <= 0.0) || (confidenceLevel >= 1.0)) throw InvalidArgumentException(HERE) << "Error: confidence level must be in ]0, 1[, here confidence level=" << confidenceLevel;
   // Initial guess based on asymptotic normality of the empirical quantile
-  NumericalScalar x(DistFunc::qNormal(confidenceLevel));
-  NumericalScalar x2(x * x);
-  UnsignedInteger n((UnsignedInteger)(ceil((quantileLevel * x2 + 2.0 * marginIndex + sqrt(quantileLevel * x2 * (quantileLevel * x2 + 4.0 * marginIndex))) / (2.0 * (1.0 - quantileLevel)))));
+  NumericalScalar x = DistFunc::qNormal(confidenceLevel);
+  NumericalScalar x2 = x * x;
+  UnsignedInteger n = (UnsignedInteger)(ceil((quantileLevel * x2 + 2.0 * marginIndex + sqrt(quantileLevel * x2 * (quantileLevel * x2 + 4.0 * marginIndex))) / (2.0 * (1.0 - quantileLevel))));
   // Initialize cQuantileLevel to cQuantileLevel[i] = Binomial(n, n - marginIndex + i) * quantileLevel ^ (n - marginIndex + i) * (1 - quantileLevel) ^ (marginIndex - i)
   // For i = marginIndex, cQuantileLevel[i] = quantileLevel ^ n
   NumericalPoint cQuantileLevel(marginIndex + 1, pow(quantileLevel, static_cast<int>(n)));
@@ -85,7 +85,7 @@ NumericalPoint Wilks::computeQuantileBound(const NumericalScalar quantileLevel,
     const UnsignedInteger marginIndex) const
 {
   // Compute the needed sample size
-  const UnsignedInteger size(ComputeSampleSize(quantileLevel, confidenceLevel, marginIndex));
+  const UnsignedInteger size = ComputeSampleSize(quantileLevel, confidenceLevel, marginIndex);
   // Generate a sorted sample of the needed size
   const NumericalSample sample(vector_.getSample(size).sort(0));
   // The upper bound is the marginIndex upper statistics

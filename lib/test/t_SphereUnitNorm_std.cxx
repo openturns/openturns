@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedInteger maxDistance(4);
+    const UnsignedInteger maxDistance = 4;
     for (UnsignedInteger symmetric = 0 ; symmetric < 2; ++symmetric)
     {
       for (UnsignedInteger dimension = 1 ; dimension <= 3; ++dimension)

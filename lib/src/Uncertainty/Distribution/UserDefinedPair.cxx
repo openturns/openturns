@@ -62,7 +62,7 @@ NumericalPoint UserDefinedPair::getX() const
 /* P accessor */
 void UserDefinedPair::setP(const NumericalScalar p)
 {
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
   if ((p < -epsilon) || (p > 1.0 + epsilon)) throw InvalidArgumentException(HERE) << "Error: the probability of a UserDefinedPair must be in [0, 1], here p=" << p << " and 1-p=" << 1.0 - p;
   p_ = std::min(1.0, std::max(0.0, p));
 }

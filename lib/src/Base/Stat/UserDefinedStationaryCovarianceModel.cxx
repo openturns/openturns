@@ -48,7 +48,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
 {
-  const UnsignedInteger size(mesh.getVerticesNumber());
+  const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
                                          << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();

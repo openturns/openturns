@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger defaultDimension(1);
+    const UnsignedInteger defaultDimension = 1;
 
     /* Default spatial dimension parameter  */
-    const UnsignedInteger spatialDimension(1);
+    const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -52,15 +52,15 @@ int main(int argc, char *argv[])
     CauchyModel myModel(amplitude, scale);
     fullprint << "myModel = " << myModel << std::endl;
 
-    const NumericalScalar frequencyValue(1.0);
+    const NumericalScalar frequencyValue = 1.0;
     fullprint << "spectral density matrix at f = " << frequencyValue << " : " << myModel(frequencyValue) << std::endl;
 
     /* Evaluation at time higher to check the decrease of the cauchy values */
-    const NumericalScalar frequencyValueHigh(10.0);
+    const NumericalScalar frequencyValueHigh = 10.0;
     fullprint << "spectral density matrix at f = " << frequencyValueHigh << " : " << myModel(frequencyValueHigh) << std::endl;
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger highDimension(3);
+    const UnsignedInteger highDimension = 3;
 
     /* Reallocation of adequate sizes*/
     amplitude.resize(highDimension);

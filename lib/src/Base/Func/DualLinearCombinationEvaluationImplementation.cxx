@@ -63,8 +63,8 @@ void DualLinearCombinationEvaluationImplementation::setDescription(const Descrip
 {
   NumericalMathEvaluationImplementation::setDescription(description);
   const Description inputDescription(getInputDescription());
-  const UnsignedInteger inputDimension(getInputDimension());
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Description atomDescription(functionsCollection_[i].getDescription());
@@ -78,7 +78,7 @@ DualLinearCombinationEvaluationImplementation::Implementation DualLinearCombinat
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   // We use a LinearCombinationEvaluationImplementation instead of a DualLinearCombinationEvaluationImplementation as it is more efficient and more easy to read
-  const UnsignedInteger size(coefficients_.getSize());
+  const UnsignedInteger size = coefficients_.getSize();
   NumericalPoint marginalCoefficients(size);
   for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++marginalIndex) marginalCoefficients[marginalIndex] = coefficients_[marginalIndex][i];
   return new LinearCombinationEvaluationImplementation(functionsCollection_, marginalCoefficients);
@@ -105,15 +105,15 @@ String DualLinearCombinationEvaluationImplementation::__str__(const String & off
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedInteger size(functionsCollection_.getSize());
-  const UnsignedInteger outputDimension(getOutputDimension());
-  Bool first(true);
+  const UnsignedInteger size = functionsCollection_.getSize();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  Bool first = true;
   static const String valid("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_()[]{}^*/");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (outputDimension == 1)
     {
-      const NumericalScalar value(coefficients_[i][0]);
+      const NumericalScalar value = coefficients_[i][0];
       if (value != 0.0)
       {
         if (first) oss << value;
@@ -126,7 +126,7 @@ String DualLinearCombinationEvaluationImplementation::__str__(const String & off
         {
           oss << " * ";
 
-          const Bool complexString(expr.find_first_not_of(valid) != String::npos);
+          const Bool complexString = expr.find_first_not_of(valid) != String::npos;
           if (complexString) oss << "(";
           oss << expr;
           if (complexString) oss << ")";
@@ -143,7 +143,7 @@ String DualLinearCombinationEvaluationImplementation::__str__(const String & off
       {
         oss << " * ";
 
-        const Bool complexString(expr.find_first_not_of(valid) != String::npos);
+        const Bool complexString = expr.find_first_not_of(valid) != String::npos;
         if (complexString) oss << "(";
         oss << expr;
         if (complexString) oss << ")";
@@ -189,9 +189,9 @@ struct DualLinearCombinationEvaluationPointFunctor
 /* Evaluation operator */
 NumericalPoint DualLinearCombinationEvaluationImplementation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   DualLinearCombinationEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, size, functor );
   const NumericalPoint result(functor.accumulator_);
@@ -206,13 +206,13 @@ NumericalPoint DualLinearCombinationEvaluationImplementation::operator () (const
 
 NumericalSample DualLinearCombinationEvaluationImplementation::operator () (const NumericalSample & inS) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  const UnsignedInteger sampleSize(inS.getSize());
+  const UnsignedInteger sampleSize = inS.getSize();
   NumericalSample result(sampleSize, getOutputDimension());
   result.setDescription(getOutputDescription());
   if (sampleSize == 0) return result;
-  const UnsignedInteger size(functionsCollection_.getSize());
+  const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Exploit possible parallelism in the basis functions
@@ -244,13 +244,13 @@ DualLinearCombinationEvaluationImplementation::NumericalMathFunctionCollection D
 void DualLinearCombinationEvaluationImplementation::setFunctionsCollectionAndCoefficients(const NumericalMathFunctionCollection & functionsCollection,
     const NumericalSample & coefficients)
 {
-  const UnsignedInteger size(functionsCollection.getSize());
+  const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
   // Check for incompatible number of functions and coefficients
   if (size != coefficients.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination with a different number of functions and coefficients.";
   // Check for coherent input and output dimensions of the functions
-  UnsignedInteger inputDimension(functionsCollection[0].getInputDimension());
+  UnsignedInteger inputDimension = functionsCollection[0].getInputDimension();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given functions have incompatible input dimension.";
@@ -260,7 +260,7 @@ void DualLinearCombinationEvaluationImplementation::setFunctionsCollectionAndCoe
   coefficients_ = NumericalSample(0, coefficients.getDimension());
   functionsCollection_ = NumericalMathFunctionCollection(0);
   // First pass, extract the maximum absolute coefficient
-  NumericalScalar maximumAbsoluteCoefficient(0.0);
+  NumericalScalar maximumAbsoluteCoefficient = 0.0;
   NumericalPoint absoluteCoefficients(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -270,7 +270,7 @@ void DualLinearCombinationEvaluationImplementation::setFunctionsCollectionAndCoe
   }
   if (maximumAbsoluteCoefficient == 0.0) throw InvalidArgumentException(HERE) << "Error: all the coefficients are zero.";
   // Second pass, remove the small coefficients
-  const NumericalScalar epsilon(maximumAbsoluteCoefficient * ResourceMap::GetAsNumericalScalar("DualLinearCombinationEvaluation-SmallCoefficient"));
+  const NumericalScalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsNumericalScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (absoluteCoefficients[i] > epsilon)

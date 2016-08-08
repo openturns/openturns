@@ -41,10 +41,10 @@ int main(int argc, char *argv[])
     fullprint << reverseHaltonSample << std::endl;
 
     // Create another ReverseHalton' sequence of dimension 2 to estimate Pi in [0; 1)^2
-    UnsignedInteger dimension(2);
+    UnsignedInteger dimension = 2;
     sequence = ReverseHaltonSequence(dimension);
-    UnsignedInteger pointInsideCircle(0);
-    UnsignedInteger sampleSize(1000);
+    UnsignedInteger pointInsideCircle = 0;
+    UnsignedInteger sampleSize = 1000;
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
       NumericalPoint reverseHaltonPoint(sequence.generate());
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
       if(reverseHaltonPoint.norm() < 1.0)
         ++ pointInsideCircle;
     }
-    NumericalScalar probabilityEstimate(1.0 * pointInsideCircle / sampleSize);
-    NumericalScalar probability(M_PI / 4.0);
-    NumericalScalar relativeError(std::abs(probability - probabilityEstimate) / probability);
+    NumericalScalar probabilityEstimate = 1.0 * pointInsideCircle / sampleSize;
+    NumericalScalar probability = M_PI / 4.0;
+    NumericalScalar relativeError = std::abs(probability - probabilityEstimate) / probability;
     fullprint << "sample size=" << sampleSize << std::endl;
     fullprint << "relative error to Pi=" << relativeError << std::endl;
   }

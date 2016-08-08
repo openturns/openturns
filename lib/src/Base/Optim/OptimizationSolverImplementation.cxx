@@ -205,13 +205,13 @@ void OptimizationSolverImplementation::run()
  */
 NumericalPoint OptimizationSolverImplementation::computeLagrangeMultipliers(const NumericalPoint & x) const
 {
-  const UnsignedInteger equalityDimension(problem_.getEqualityConstraint().getOutputDimension());
-  const UnsignedInteger inequalityDimension(problem_.getInequalityConstraint().getOutputDimension());
-  const UnsignedInteger boundDimension(problem_.getBounds().getDimension());
+  const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
+  const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
+  const UnsignedInteger boundDimension = problem_.getBounds().getDimension();
   // If no constraint
   if (equalityDimension + inequalityDimension + boundDimension == 0) return NumericalPoint(0);
   // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
-  const UnsignedInteger inputDimension(x.getDimension());
+  const UnsignedInteger inputDimension = x.getDimension();
   // Get the lhs as a NumericalPoint
   const NumericalPoint lhs(NumericalPoint(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
   // In order to ease the construction of the rhs matrix, we use its internal storage representation as a NumericalPoint in column-major storage.

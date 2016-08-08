@@ -145,19 +145,19 @@ UserDefined * UserDefined::clone() const
 NumericalPoint UserDefined::getRealization() const
 {
   // Efficient algorithm for uniform weights
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   if (hasUniformWeights_)
   {
-    const UnsignedInteger j(RandomGenerator::IntegerGenerate(size));
+    const UnsignedInteger j = RandomGenerator::IntegerGenerate(size);
     return points_[j];
   }
-  const NumericalScalar uniformRealization(RandomGenerator::Generate());
+  const NumericalScalar uniformRealization = RandomGenerator::Generate();
   if (uniformRealization <= cumulativeProbabilities_[0]) return points_[0];
-  UnsignedInteger j0(0);
-  UnsignedInteger j1(size - 1);
+  UnsignedInteger j0 = 0;
+  UnsignedInteger j1 = size - 1;
   while (j1 - j0 > 1)
   {
-    const UnsignedInteger jm((j0 + j1) / 2);
+    const UnsignedInteger jm = (j0 + j1) / 2;
     if (uniformRealization > cumulativeProbabilities_[jm]) j0 = jm;
     else j1 = jm;
   }
@@ -167,25 +167,25 @@ NumericalPoint UserDefined::getRealization() const
 /* Get the PDF of the distribution */
 NumericalScalar UserDefined::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const UnsignedInteger size(points_.getSize());
-  NumericalScalar pdf(0.0);
+  const UnsignedInteger size = points_.getSize();
+  NumericalScalar pdf = 0.0;
   // Quick search for 1D case
-  const NumericalScalar x(point[0]);
-  UnsignedInteger upper(size - 1);
-  NumericalScalar xUpper(points_[upper][0]);
+  const NumericalScalar x = point[0];
+  UnsignedInteger upper = size - 1;
+  NumericalScalar xUpper = points_[upper][0];
   if (x > xUpper + supportEpsilon_) return 0.0;
-  UnsignedInteger lower(0);
-  NumericalScalar xLower(points_[lower][0]);
+  UnsignedInteger lower = 0;
+  NumericalScalar xLower = points_[lower][0];
   if (x < xLower - supportEpsilon_) return 0.0;
   // Use bisection search of the correct index
   while (upper - lower > 1)
   {
     // The integer arithmetic ensure that middle will be strictly between lower and upper as far as upper - lower > 1
-    const UnsignedInteger middle((upper + lower) / 2);
-    const NumericalScalar xMiddle(points_[middle][0]);
+    const UnsignedInteger middle = (upper + lower) / 2;
+    const NumericalScalar xMiddle = points_[middle][0];
     if (xMiddle > x + supportEpsilon_)
     {
       upper = middle;
@@ -198,7 +198,7 @@ NumericalScalar UserDefined::computePDF(const NumericalPoint & point) const
     }
   } // while
   // At this point we have upper == lower or upper == lower + 1, with lower - epsilon <= x < upper + epsilon
-  SignedInteger index(upper);
+  SignedInteger index = upper;
   while ((index < static_cast<SignedInteger>(size)) && (std::abs(x - points_[index][0]) <= supportEpsilon_))
   {
     if ((point - points_[index]).norm() <= supportEpsilon_) pdf += probabilities_[index];
@@ -219,25 +219,25 @@ NumericalScalar UserDefined::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  NumericalScalar cdf(0.0);
-  const UnsignedInteger size(points_.getSize());
-  const UnsignedInteger dimension(getDimension());
+  NumericalScalar cdf = 0.0;
+  const UnsignedInteger size = points_.getSize();
+  const UnsignedInteger dimension = getDimension();
   // Quick search for 1D case
   if (dimension == 1)
   {
-    const NumericalScalar x(point[0]);
-    UnsignedInteger upper(size - 1);
-    NumericalScalar xUpper(points_[upper][0]);
+    const NumericalScalar x = point[0];
+    UnsignedInteger upper = size - 1;
+    NumericalScalar xUpper = points_[upper][0];
     if (x > xUpper - supportEpsilon_) return 1.0;
-    UnsignedInteger lower(0);
-    NumericalScalar xLower(points_[lower][0]);
+    UnsignedInteger lower = 0;
+    NumericalScalar xLower = points_[lower][0];
     if (x <= xLower - supportEpsilon_) return 0.0;
     // Use dichotomic search of the correct index
     while (upper - lower > 1)
     {
       // The integer arithmetic insure that middle will be strictly between lower and upper as far as upper - lower > 1
-      const UnsignedInteger middle((upper + lower) / 2);
-      const NumericalScalar xMiddle(points_[middle][0]);
+      const UnsignedInteger middle = (upper + lower) / 2;
+      const NumericalScalar xMiddle = points_[middle][0];
       if (xMiddle > x + supportEpsilon_)
       {
         upper = middle;
@@ -259,7 +259,7 @@ NumericalScalar UserDefined::computeCDF(const NumericalPoint & point) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint x(points_[i]);
-    UnsignedInteger j(0);
+    UnsignedInteger j = 0;
     while ((j < dimension) && (x[j] <= point[j] + supportEpsilon_)) ++j;
     if (j == dimension) cdf += probabilities_[i];
   }
@@ -271,7 +271,7 @@ NumericalPoint UserDefined::computePDFGradient(const NumericalPoint & point) con
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   NumericalPoint pdfGradient(size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -290,13 +290,13 @@ NumericalPoint UserDefined::computeCDFGradient(const NumericalPoint & point) con
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const UnsignedInteger size(points_.getSize());
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger size = points_.getSize();
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint cdfGradient(size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint x(points_[i]);
-    UnsignedInteger j(0);
+    UnsignedInteger j = 0;
     while ((j < dimension) && (point[j] <= x[j])) ++j;
     if (j == dimension) cdfGradient[i] = 1.0;
   }
@@ -306,8 +306,8 @@ NumericalPoint UserDefined::computeCDFGradient(const NumericalPoint & point) con
 /* Compute the numerical range of the distribution given the parameters values */
 void UserDefined::computeRange()
 {
-  const UnsignedInteger size(points_.getSize());
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger size = points_.getSize();
+  const UnsignedInteger dimension = getDimension();
   // Return an empty interval for the empty collection case
   if (size == 0)
   {
@@ -324,7 +324,7 @@ void UserDefined::computeRange()
     const NumericalPoint pt(points_[i]);
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const NumericalScalar x(pt[j]);
+      const NumericalScalar x = pt[j];
       if (x < lowerBound[j]) lowerBound[j] = x;
       if (x > upperBound[j]) upperBound[j] = x;
     }
@@ -337,7 +337,7 @@ NumericalSample UserDefined::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   NumericalSample result(0, getDimension());
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint x(points_[i]);
@@ -350,10 +350,10 @@ NumericalSample UserDefined::getSupport(const Interval & interval) const
 Bool UserDefined::isIntegral() const
 {
   if (getDimension() != 1) return false;
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x(points_[i][0]);
+    const NumericalScalar x = points_[i][0];
     if (std::abs(x - round(x)) >= supportEpsilon_) return false;
   }
   return true;
@@ -362,7 +362,7 @@ Bool UserDefined::isIntegral() const
 /* Compute the mean of the distribution */
 void UserDefined::computeMean() const
 {
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   NumericalPoint mean(getDimension());
   for (UnsignedInteger i = 0; i < size; ++i) mean += probabilities_[i] * points_[i];
   mean_ = mean;
@@ -372,15 +372,15 @@ void UserDefined::computeMean() const
 /* Compute the covariance of the distribution */
 void UserDefined::computeCovariance() const
 {
-  const UnsignedInteger size(points_.getSize());
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger size = points_.getSize();
+  const UnsignedInteger dimension = getDimension();
   covariance_ = CovarianceMatrix(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) covariance_(i, i) = 0.0;
   const NumericalPoint mean(getMean());
   for (UnsignedInteger k = 0; k < size; ++k)
   {
     const NumericalPoint xK(points_[k] - mean);
-    const NumericalScalar pK(probabilities_[k]);
+    const NumericalScalar pK = probabilities_[k];
     for (UnsignedInteger i = 0; i < dimension; ++i)
       for (UnsignedInteger j = 0; j <= i; ++j)
         covariance_(i, j) += pK * xK[i] * xK[j];
@@ -391,9 +391,9 @@ void UserDefined::computeCovariance() const
 /* Parameters value and description accessor */
 UserDefined::NumericalPointWithDescriptionCollection UserDefined::getParametersCollection() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPointWithDescriptionCollection parameters(dimension + 1);
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   // Loop over the dimension to extract the marginal coordinates of the support
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -469,7 +469,7 @@ Description UserDefined::getParameterDescription() const
 /* Get the i-th marginal distribution */
 UserDefined::Implementation UserDefined::getMarginal(const UnsignedInteger i) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
   if (dimension == 1) return clone();
@@ -481,7 +481,7 @@ UserDefined::Implementation UserDefined::getMarginal(const UnsignedInteger i) co
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 UserDefined::Implementation UserDefined::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
@@ -495,11 +495,11 @@ UserDefined::Implementation UserDefined::getMarginal(const Indices & indices) co
 void UserDefined::setData(const NumericalSample & sample,
                           const NumericalPoint & weights)
 {
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the collection is empty";
   if (weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution if the weights don't have the same dimension as the sample size.";
   hasUniformWeights_ = true;
-  const UnsignedInteger dimension(sample[0].getDimension());
+  const UnsignedInteger dimension = sample[0].getDimension();
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
   // Check if all the given probabilities are >= 0
   // Check if all the points have the same dimension
@@ -516,12 +516,12 @@ void UserDefined::setData(const NumericalSample & sample,
   // Sort the pairs
   weightedData = weightedData.sortAccordingToAComponent(0);
   // Check the probabilities and normalize them
-  const NumericalScalar firstProbability(weightedData[0][dimension]);
-  NumericalScalar sum(0.0);
+  const NumericalScalar firstProbability = weightedData[0][dimension];
+  NumericalScalar sum = 0.0;
   cumulativeProbabilities_ = NumericalPoint(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar p(weightedData[i][dimension]);
+    const NumericalScalar p = weightedData[i][dimension];
     if (p < 0.0) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities, which is not the case here collection=" << getPairCollection();
     sum += p;
     cumulativeProbabilities_[i] = sum;
@@ -594,8 +594,8 @@ NumericalPoint UserDefined::getP() const
 NumericalScalar UserDefined::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  UnsignedInteger index(0);
-  const NumericalScalar p(tail ? 1 - prob : prob);
+  UnsignedInteger index = 0;
+  const NumericalScalar p = tail ? 1 - prob : prob;
   while (cumulativeProbabilities_[index] < p) ++index;
   return points_[index][0];
 }
@@ -605,23 +605,23 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
 {
   // No compaction if epsilon is negative
   if (epsilon < 0.0) return;
-  const UnsignedInteger size(points_.getSize());
+  const UnsignedInteger size = points_.getSize();
   if (size == 0) return;
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalSample compactX(0, dimension);
   NumericalPoint compactP(0);
   if (dimension > 1)
   {
     // Build a hash table with rounded components
-    const UnsignedInteger hashSize(511);
+    const UnsignedInteger hashSize = 511;
     Collection<Indices> indices(hashSize);
     Collection<Indices> residuals(hashSize);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalPoint x(points_[i]);
-      NumericalScalar roundedComponent(x[0]);
+      NumericalScalar roundedComponent = x[0];
       if (epsilon > 0.0) roundedComponent = epsilon * round(roundedComponent / epsilon);
-      UnsignedInteger index(*reinterpret_cast<Unsigned64BitsInteger*>(&roundedComponent));
+      UnsignedInteger index = *reinterpret_cast<Unsigned64BitsInteger*>(&roundedComponent);
       for (UnsignedInteger j = 1; j < dimension; ++j)
       {
         roundedComponent = x[j];
@@ -629,8 +629,8 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
         // XOR based hash function on the binary representation of the floating point coordinates
         index ^= *reinterpret_cast<Unsigned64BitsInteger*>(&roundedComponent);
       }
-      const UnsignedInteger hash(index % hashSize);
-      const UnsignedInteger quotient(index / hashSize);
+      const UnsignedInteger hash = index % hashSize;
+      const UnsignedInteger quotient = index / hashSize;
       indices[hash].add(i);
       residuals[hash].add(quotient);
     }
@@ -639,7 +639,7 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
     {
       const Indices bucket(indices[i]);
       const Indices keys(residuals[i]);
-      const UnsignedInteger bucketSize(bucket.getSize());
+      const UnsignedInteger bucketSize = bucket.getSize();
       if (bucketSize == 0) continue;
       if (bucketSize == 1)
       {
@@ -655,16 +655,16 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
         Indices flagToRemove(bucketSize, 0);
         for (UnsignedInteger j = 0; j < bucketSize; ++j)
         {
-          const UnsignedInteger currentIndex(bucket[j]);
-          const UnsignedInteger currentKey(keys[j]);
+          const UnsignedInteger currentIndex = bucket[j];
+          const UnsignedInteger currentKey = keys[j];
           weights[j] = probabilities_[currentIndex];
           const NumericalPoint current(points_[currentIndex]);
           if (flagToRemove[j] == 0)
           {
             for (UnsignedInteger k = j + 1; k < bucketSize; ++k)
             {
-              const UnsignedInteger candidateIndex(bucket[k]);
-              const UnsignedInteger candidateKey(keys[k]);
+              const UnsignedInteger candidateIndex = bucket[k];
+              const UnsignedInteger candidateKey = keys[k];
               const NumericalPoint candidate(points_[candidateIndex]);
               if ((currentKey == candidateKey) && (current - candidate).norm() <= epsilon)
               {
@@ -688,12 +688,12 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
     setData(compactX, compactP);
     return;
   }
-  NumericalScalar lastLocation(points_[0][0]);
-  NumericalScalar lastWeight(probabilities_[0]);
+  NumericalScalar lastLocation = points_[0][0];
+  NumericalScalar lastWeight = probabilities_[0];
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    const NumericalScalar currentLocation(points_[i][0]);
-    const NumericalScalar currentWeight(probabilities_[i]);
+    const NumericalScalar currentLocation = points_[i][0];
+    const NumericalScalar currentWeight = probabilities_[i];
     // The current point must be merged
     if (std::abs(currentLocation - lastLocation) <= epsilon) lastWeight += probabilities_[i];
     else

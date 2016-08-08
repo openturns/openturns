@@ -61,7 +61,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
 void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & collection)
 {
   // Check if the given models have the same spatial dimension
-  const UnsignedInteger size(collection.getSize());
+  const UnsignedInteger size = collection.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
   NumericalPoint amplitude(0);
   spatialDimension_ = collection[0].getSpatialDimension();
@@ -69,12 +69,12 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   dimension_ = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localSpatialDimension(collection[i].getSpatialDimension());
+    const UnsignedInteger localSpatialDimension = collection[i].getSpatialDimension();
     if (spatialDimension_ != localSpatialDimension)
       throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setCollection, incompatible spatial dimension of the element #" << i
                                            << " spatial dimension of element = " << localSpatialDimension << ", spatial dimension of the model = " << spatialDimension_;
 
-    const UnsignedInteger localDimension(collection[i].getDimension());
+    const UnsignedInteger localDimension = collection[i].getDimension();
     dimension_ += localDimension;
     const NumericalPoint localAmplitude(collection[i].getAmplitude());
     amplitude.add(localAmplitude);
@@ -110,7 +110,7 @@ CovarianceMatrix TensorizedCovarianceModel::operator() (const NumericalPoint & s
   {
     // Compute the ith block
     const CovarianceMatrix localCovariance = collection_[i](s, t);
-    const UnsignedInteger localDimension(collection_[i].getDimension());
+    const UnsignedInteger localDimension = collection_[i].getDimension();
     // Fill lower part of the covariance matrix
     for (UnsignedInteger localColumn = 0; localColumn < localDimension; ++localColumn)
       for (UnsignedInteger localRow = localColumn; localRow < localDimension; ++localRow)
@@ -166,7 +166,7 @@ Matrix TensorizedCovarianceModel::partialGradient(const NumericalPoint & s,
 /* Parameters accessor */
 void TensorizedCovarianceModel::setParameter(const NumericalPoint & parameter)
 {
-  const UnsignedInteger parameterDimension(getParameter().getDimension());
+  const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << getParameter().getDimension()
                                                                                              << " (got " << parameter.getDimension() << ")";
   NumericalPoint scale(spatialDimension_);
@@ -222,7 +222,7 @@ void TensorizedCovarianceModel::setAmplitude(const NumericalPoint & amplitude)
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    const UnsignedInteger localDimension(collection_[i].getDimension());
+    const UnsignedInteger localDimension = collection_[i].getDimension();
     NumericalPoint localAmplitude(collection_[i].getAmplitude());
     for (UnsignedInteger j = 0; j < localDimension; ++j)
     {

@@ -104,8 +104,8 @@ Bool FunctionalBasisProcess::isNormal() const
 Field FunctionalBasisProcess::getRealization() const
 {
   state_ = distribution_.getRealization();
-  const UnsignedInteger timeGridSize(mesh_.getVerticesNumber());
-  const UnsignedInteger basisSize(basis_.getSize());
+  const UnsignedInteger timeGridSize = mesh_.getVerticesNumber();
+  const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
   NumericalSample result(timeGridSize, NumericalPoint(dimension_, 0.0));
   // Loop over the basis
@@ -142,9 +142,9 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep(timeGrid.getStep());
+  const NumericalScalar timeStep = timeGrid.getStep();
   const RegularGrid futureTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  const UnsignedInteger basisSize(basis_.getSize());
+  const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
   NumericalSample result(stepNumber, NumericalPoint(dimension_, 0.0));
   for (UnsignedInteger i = 0; i  < stepNumber; ++i)
@@ -170,7 +170,7 @@ FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const
   // First the marginal distribution
   Distribution marginalDistribution(distribution_.getMarginal(indices));
   // Second the marginal basis
-  const UnsignedInteger basisSize(basis_.getSize());
+  const UnsignedInteger basisSize = basis_.getSize();
   Basis marginalBasis(basisSize);
   for (UnsignedInteger i = 0; i < basisSize; ++i) marginalBasis[i] = basis_[i].getMarginal(indices);
   // Return the associated FunctionalBasisProcess
@@ -200,14 +200,14 @@ Basis FunctionalBasisProcess::getBasis() const
 /* Basis accessor */
 void FunctionalBasisProcess::setBasis(const Basis & basis)
 {
-  const UnsignedInteger size(basis.getSize());
+  const UnsignedInteger size = basis.getSize();
   // Check if the basis is not empty
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given basis is empty.";
   // Check the basis against the distribution
   if (size != distribution_.getDimension() ) throw InvalidArgumentException(HERE) << "Error: the given basis has a size=" << size << " that does not match the distribution dimension=" << distribution_.getDimension();
   // Check if the functions in the basis are from R to R^n for the same n
   dimension_ = basis[0].getOutputDimension();
-  const UnsignedInteger inputDimension(mesh_.getDimension());
+  const UnsignedInteger inputDimension = mesh_.getDimension();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Check the input dimension

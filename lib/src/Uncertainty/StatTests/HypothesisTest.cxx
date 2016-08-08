@@ -181,7 +181,7 @@ HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Numeri
     const NumericalSample & secondSample,
     const NumericalScalar level)
 {
-  const UnsignedInteger dimension(firstSample.getDimension());
+  const UnsignedInteger dimension = firstSample.getDimension();
   Indices selection(dimension);
   selection.fill();
   return PartialRegression(firstSample, secondSample, selection, level);
@@ -192,7 +192,7 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Numerica
     const NumericalSample & secondSample,
     const NumericalScalar level)
 {
-  const UnsignedInteger dimension(firstSample.getDimension());
+  const UnsignedInteger dimension = firstSample.getDimension();
   Indices selection(dimension);
   selection.fill();
   return PartialSpearman(firstSample, secondSample, selection, level);

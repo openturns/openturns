@@ -52,7 +52,7 @@ MarginalTransformationHessian * MarginalTransformationHessian::clone() const
 /* Hessian */
 SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getOutputDimension());
+  const UnsignedInteger dimension = getOutputDimension();
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -60,22 +60,22 @@ SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & in
     else
     {
       // (`@`(-(`@`((D@@2)(G), 1/G))/(`@`(D(G), 1/G))^3, F))*D(F)^2+(`@`(1/(`@`(D(G), 1/G)), F))*(D@@2)(F)
-      const NumericalScalar inputPDF(evaluation_.inputDistributionCollection_[i].computePDF(inP[i]));
+      const NumericalScalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
       // Quick rejection step: if the input PDF is zero, the result will be zero, so continue only if the value is > 0
       if (inputPDF > 0.0)
       {
-        NumericalScalar inputCDF(evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]));
+        NumericalScalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
         // For accuracy reason, check if we are in the upper tail of the distribution
-        const Bool upperTail(inputCDF > 0.5);
+        const Bool upperTail = inputCDF > 0.5;
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
         const NumericalPoint  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
-        const NumericalScalar outputPDF(evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile));
+        const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         if (outputPDF > 0.0)
         {
-          const NumericalScalar inputDDF(evaluation_.inputDistributionCollection_[i].computeDDF(inP[i]));
-          const NumericalScalar outputDDF(evaluation_.outputDistributionCollection_[i].computeDDF(outputQuantile[0]));
+          const NumericalScalar inputDDF = evaluation_.inputDistributionCollection_[i].computeDDF(inP[i]);
+          const NumericalScalar outputDDF = evaluation_.outputDistributionCollection_[i].computeDDF(outputQuantile[0]);
           result(i, i, i) = (inputDDF - outputDDF * pow(inputPDF / outputPDF, 2)) / outputPDF;
         } // output PDF > 0
       } // input PDF > 0

@@ -42,7 +42,7 @@ public:
 
   NumericalSample getPoints(const UnsignedInteger distance) const
   {
-    const UnsignedInteger size(getSizeOfLevel(distance));
+    const UnsignedInteger size = getSizeOfLevel(distance);
     NumericalSample points(size, 1);
     if (distance == 0)
     {
@@ -50,7 +50,7 @@ public:
     }
     else
     {
-      const NumericalScalar cx(distance * stepX_);
+      const NumericalScalar cx = distance * stepX_;
       NumericalPoint element(1, cx);
       element[0] = cx;
       points[0] = element;
@@ -102,11 +102,11 @@ public:
     // TODO use of iterators ?
     if (distance == 0) return NumericalSample(1, 2);
 
-    const UnsignedInteger size(getSizeOfLevel(distance));
+    const UnsignedInteger size = getSizeOfLevel(distance);
     NumericalSample points(size, 2);
-    UnsignedInteger iterator(0);
-    const NumericalScalar cx(distance * stepX_);
-    const NumericalScalar cy(distance * stepY_);
+    UnsignedInteger iterator = 0;
+    const NumericalScalar cx = distance * stepX_;
+    const NumericalScalar cy = distance * stepY_;
     if (isSymmetric())
     {
       NumericalPoint element(2, 0.0);
@@ -206,12 +206,12 @@ public:
     // TODO use of iterators ?
     if (distance == 0) return NumericalSample(1, 3);
 
-    const UnsignedInteger size(getSizeOfLevel(distance));
+    const UnsignedInteger size = getSizeOfLevel(distance);
     NumericalSample points(size, 3);
-    UnsignedInteger iterator(0);
-    const NumericalScalar cx(distance * stepX_);
-    const NumericalScalar cy(distance * stepY_);
-    const NumericalScalar cz(distance * stepZ_);
+    UnsignedInteger iterator = 0;
+    const NumericalScalar cx = distance * stepX_;
+    const NumericalScalar cy = distance * stepY_;
+    const NumericalScalar cz = distance * stepZ_;
     if (isSymmetric())
     {
       NumericalPoint element(3, 0.0);

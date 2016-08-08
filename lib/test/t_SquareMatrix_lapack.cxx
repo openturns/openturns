@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     fullprint << "matrix2=\n" << matrix2.__str__() << std::endl;
     NumericalScalar sign;
-    NumericalScalar value(matrix2.computeLogAbsoluteDeterminant(sign));
+    NumericalScalar value = matrix2.computeLogAbsoluteDeterminant(sign);
     fullprint << "log(|det|)=" << value << ", sign=" << sign << std::endl;
     value = matrix2.computeDeterminant();
     fullprint << "det=" << value << std::endl;

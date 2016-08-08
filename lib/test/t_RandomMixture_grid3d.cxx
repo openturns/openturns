@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     fullprint << "mean = " <<  distribution.getMean() << std::endl;
     fullprint << "cov = " << distribution.getCovariance() << std::endl;
     fullprint << "sigma = " << distribution.getStandardDeviation() << std::endl;
-    const UnsignedInteger N(4);
+    const UnsignedInteger N = 4;
     Indices points(3, N);
     NumericalPoint mean(distribution.getMean());
     NumericalPoint sigma(distribution.getStandardDeviation());

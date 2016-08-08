@@ -95,7 +95,7 @@ ClaytonCopula * ClaytonCopula::clone() const
 NumericalPoint ClaytonCopula::getRealization() const
 {
   NumericalPoint realization(2);
-  const NumericalScalar u1(RandomGenerator::Generate());
+  const NumericalScalar u1 = RandomGenerator::Generate();
   // We use the general algorithm based on conditional CDF inversion
   // W case
   if (theta_ == -1.0)
@@ -105,7 +105,7 @@ NumericalPoint ClaytonCopula::getRealization() const
     return realization;
   }
   // The inverse conditional CDF U2|U1
-  const NumericalScalar u2(RandomGenerator::Generate());
+  const NumericalScalar u2 = RandomGenerator::Generate();
   // Independent case
   if (theta_ == 0.0)
   {
@@ -122,9 +122,9 @@ NumericalPoint ClaytonCopula::getRealization() const
 #ifdef CLAYTON_USE_LAPLACE
   if (theta_ > 0.0)
   {
-    const NumericalScalar x(-std::log(u1));
-    const NumericalScalar y(-std::log(u2));
-    const NumericalScalar z(DistFunc::rGamma(1.0 / theta_));
+    const NumericalScalar x = -std::log(u1);
+    const NumericalScalar y = -std::log(u2);
+    const NumericalScalar z = DistFunc::rGamma(1.0 / theta_);
     realization[0] = std::exp(-theta_ * log1p(x / z));
     realization[1] = std::exp(-theta_ * log1p(y / z));
     return realization;
@@ -133,8 +133,8 @@ NumericalPoint ClaytonCopula::getRealization() const
   realization[0] = u1;
   if (theta_ < 1.0e-8)
   {
-    const NumericalScalar logU1(std::log(u1));
-    const NumericalScalar logU2(std::log(u2));
+    const NumericalScalar logU1 = std::log(u1);
+    const NumericalScalar logU2 = std::log(u2);
     realization[1] = u2 * (1.0 - logU2 * theta_ * (1.0 + logU1 - 0.5 * theta_ * ((1.0 + logU2) * logU1 * logU1 + (2.0 + logU2) * (1.0 + logU1))));
   }
   if (theta_ < 1.0e8) realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
@@ -145,15 +145,15 @@ NumericalPoint ClaytonCopula::getRealization() const
 /* Get the DDF of the distribution */
 NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar u(point[0]);
-  NumericalScalar v(point[1]);
+  NumericalScalar u = point[0];
+  NumericalScalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(2, 0.0);
   // We can impose u <= v as the copula is symmetric in (u, v)
-  Bool exchanged(false);
+  Bool exchanged = false;
   if (u > v)
   {
     std::swap(u, v);
@@ -172,11 +172,11 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
   // cancellation for |theta|<<1 so we use a truncated series of order 2
   if (std::abs(theta_) < 1.0e-8)
   {
-    const NumericalScalar logU(std::log(u));
-    const NumericalScalar logV(std::log(v));
+    const NumericalScalar logU = std::log(u);
+    const NumericalScalar logV = std::log(v);
     if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return ddf;
-    const NumericalScalar ddfU(0.5 * theta_ * (2.0 * (logV + 1.0) + theta_ * (2.0 + 2.0 * logU + 8.0 * logV + 3.0 * logV * logV + 6.0 * logU * logV + 2.0 * logU * logV * logV)) / u);
-    const NumericalScalar ddfV(0.5 * theta_ * (2.0 * (logU + 1.0) + theta_ * (2.0 + 2.0 * logV + 8.0 * logU + 3.0 * logU * logU + 6.0 * logV * logU + 2.0 * logV * logU * logU)) / v);
+    const NumericalScalar ddfU = 0.5 * theta_ * (2.0 * (logV + 1.0) + theta_ * (2.0 + 2.0 * logU + 8.0 * logV + 3.0 * logV * logV + 6.0 * logU * logV + 2.0 * logU * logV * logV)) / u;
+    const NumericalScalar ddfV = 0.5 * theta_ * (2.0 * (logU + 1.0) + theta_ * (2.0 + 2.0 * logV + 8.0 * logU + 3.0 * logU * logU + 6.0 * logV * logU + 2.0 * logV * logU * logU)) / v;
     if (exchanged)
     {
       ddf[0] = ddfV;
@@ -202,16 +202,16 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
 
   // For moderate theta, this form is cancellation-free
   NumericalScalar factor;
-  const NumericalScalar logU(std::log(u));
-  const NumericalScalar logV(std::log(v));
-  const NumericalScalar logUOverV(std::log(u / v));
+  const NumericalScalar logU = std::log(u);
+  const NumericalScalar logV = std::log(v);
+  const NumericalScalar logUOverV = std::log(u / v);
   if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
   // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
   else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
   if (factor <= -1.0) return ddf;
-  const NumericalScalar ddfU( theta_ * (1.0 + theta_) * (1.0 - (1.0 + 1.0 / theta_) * factor) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + (theta_ - 1.0) * logUOverV - 2.0 * logV));
-  const NumericalScalar t(-std::exp(theta_ * logUOverV) + 1.0 / theta_ - (1.0 + 1.0 / theta_) * std::exp(theta_ * logU));
-  const NumericalScalar ddfV(-theta_ * (1.0 + theta_) * (1.0 + t) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + theta_ * logUOverV - 2.0 * logV));
+  const NumericalScalar ddfU = theta_ * (1.0 + theta_) * (1.0 - (1.0 + 1.0 / theta_) * factor) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + (theta_ - 1.0) * logUOverV - 2.0 * logV);
+  const NumericalScalar t = -std::exp(theta_ * logUOverV) + 1.0 / theta_ - (1.0 + 1.0 / theta_) * std::exp(theta_ * logU);
+  const NumericalScalar ddfV = -theta_ * (1.0 + theta_) * (1.0 + t) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + theta_ * logUOverV - 2.0 * logV);
   if (exchanged)
   {
     ddf[0] = ddfV;
@@ -228,11 +228,11 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
 /* Get the PDF of the distribution */
 NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar u(point[0]);
-  NumericalScalar v(point[1]);
+  NumericalScalar u = point[0];
+  NumericalScalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return 0.0;
   // We can impose u <= v as the copula is symmetric in (u, v)
@@ -249,8 +249,8 @@ NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
   // cancellation for |theta|<<1 so we use a truncated series of order 2
   if (std::abs(theta_) < 1.0e-8)
   {
-    const NumericalScalar logU(std::log(u));
-    const NumericalScalar logV(std::log(v));
+    const NumericalScalar logU = std::log(u);
+    const NumericalScalar logV = std::log(v);
     if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return 0.0;
     return 1.0 + theta_ * (1.0 + logU + logV + logU * logV + theta_ * (logU + logV + 0.5 * (logU * logU + logV * logV + logU * logV * (8.0 + 3.0 * (logU + logV) + logU * logV))));
   }
@@ -260,9 +260,9 @@ NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
   // = (theta+1)exp(theta*log(u)-log(v)-(1/theta+2)log1p(expm1(theta*log(u/v))-expm1(theta*log(u))))
   // For moderate theta, this form is cancellation-free
   NumericalScalar factor;
-  const NumericalScalar logU(std::log(u));
-  const NumericalScalar logV(std::log(v));
-  const NumericalScalar logUOverV(std::log(u / v));
+  const NumericalScalar logU = std::log(u);
+  const NumericalScalar logV = std::log(v);
+  const NumericalScalar logUOverV = std::log(u / v);
   if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
   // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
   else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
@@ -273,11 +273,11 @@ NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
 /* Get the CDF of the distribution */
 NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar u(point[0]);
-  NumericalScalar v(point[1]);
+  NumericalScalar u = point[0];
+  NumericalScalar v = point[1];
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0)) return 0.0;
   // We can impose u <= v as the copula is symmetric in (u, v)
@@ -295,8 +295,8 @@ NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
   // cancellation for |theta|<<1 so we use a truncated series
   if (std::abs(theta_) < 1.0e-8)
   {
-    const NumericalScalar logU(std::log(u));
-    const NumericalScalar logV(std::log(v));
+    const NumericalScalar logU = std::log(u);
+    const NumericalScalar logV = std::log(v);
     if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return 0.0;
     return u * v * (1.0 + theta_ * logU * logV * (1.0 + 0.5 * theta_ * (logU * logV + logU + logV)));
   }
@@ -329,46 +329,46 @@ CorrelationMatrix ClaytonCopula::getKendallTau() const
 /* Get the PDFGradient of the distribution */
 NumericalPoint ClaytonCopula::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u(point[0]);
-  const NumericalScalar v(point[1]);
+  const NumericalScalar u = point[0];
+  const NumericalScalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(1, 0.0);
-  const NumericalScalar t1(std::pow(u, -theta_));
-  const NumericalScalar t2(std::pow(v, -theta_));
-  const NumericalScalar t3(t1 + t2 - 1.0);
+  const NumericalScalar t1 = std::pow(u, -theta_);
+  const NumericalScalar t2 = std::pow(v, -theta_);
+  const NumericalScalar t3 = t1 + t2 - 1.0;
   if (t3 <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar t5(std::pow(t3, -1.0 / theta_));
-  const NumericalScalar t7(std::log(v));
-  const NumericalScalar t8(theta_ * theta_);
-  const NumericalScalar t9(t7 * t8);
-  const NumericalScalar t10(std::log(u));
-  const NumericalScalar t11(t10 * t8);
-  const NumericalScalar t16(std::log(t3));
-  const NumericalScalar t17(t16 * t1);
-  const NumericalScalar t19(t16 * t2);
-  const NumericalScalar t21(t8 * t1);
-  const NumericalScalar t24(t8 * t2);
-  const NumericalScalar t27(t8 * theta_);
-  const NumericalScalar t28(t7 * t27);
-  const NumericalScalar t32(t9 + t11 + theta_ * t2 * t7 + theta_ * t1 * t10 + t17 * theta_ + t19 * theta_ + 2 * t21 * t10 + 2 * t24 * t7 - t28 * t1 + t28 * t2 - t9 * t1);
-  const NumericalScalar t33(t10 * t27);
-  const NumericalScalar t38(-t33 * t2 - t11 * t2 - t16 - t8 + t17 + t19 - t16 * theta_ + t28 + t33 + t21 + t24 + t33 * t1);
-  const NumericalScalar t43(t3 * t3);
-  const NumericalScalar t51(t5 * t2 * t1 * (t32 + t38) / (t8 * t43 * t3 * v * u));
+  const NumericalScalar t5 = std::pow(t3, -1.0 / theta_);
+  const NumericalScalar t7 = std::log(v);
+  const NumericalScalar t8 = theta_ * theta_;
+  const NumericalScalar t9 = t7 * t8;
+  const NumericalScalar t10 = std::log(u);
+  const NumericalScalar t11 = t10 * t8;
+  const NumericalScalar t16 = std::log(t3);
+  const NumericalScalar t17 = t16 * t1;
+  const NumericalScalar t19 = t16 * t2;
+  const NumericalScalar t21 = t8 * t1;
+  const NumericalScalar t24 = t8 * t2;
+  const NumericalScalar t27 = t8 * theta_;
+  const NumericalScalar t28 = t7 * t27;
+  const NumericalScalar t32 = t9 + t11 + theta_ * t2 * t7 + theta_ * t1 * t10 + t17 * theta_ + t19 * theta_ + 2 * t21 * t10 + 2 * t24 * t7 - t28 * t1 + t28 * t2 - t9 * t1;
+  const NumericalScalar t33 = t10 * t27;
+  const NumericalScalar t38 = -t33 * t2 - t11 * t2 - t16 - t8 + t17 + t19 - t16 * theta_ + t28 + t33 + t21 + t24 + t33 * t1;
+  const NumericalScalar t43 = t3 * t3;
+  const NumericalScalar t51 = t5 * t2 * t1 * (t32 + t38) / (t8 * t43 * t3 * v * u);
   return NumericalPoint(1, t51);
 }
 
 /* Get the CDFGradient of the distribution */
 NumericalPoint ClaytonCopula::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u(point[0]);
-  const NumericalScalar v(point[1]);
+  const NumericalScalar u = point[0];
+  const NumericalScalar v = point[1];
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0)) return NumericalPoint(1, 0.0);
   // If we are outside of the support, in the upper part
@@ -378,11 +378,11 @@ NumericalPoint ClaytonCopula::computeCDFGradient(const NumericalPoint & point) c
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return NumericalPoint(1, 0.0);
   // If we are in the support
-  const NumericalScalar powUMinusTheta(std::pow(u, -theta_));
-  const NumericalScalar powVMinusTheta(std::pow(v, -theta_));
-  const NumericalScalar sum1(powUMinusTheta + powVMinusTheta - 1.0);
+  const NumericalScalar powUMinusTheta = std::pow(u, -theta_);
+  const NumericalScalar powVMinusTheta = std::pow(v, -theta_);
+  const NumericalScalar sum1 = powUMinusTheta + powVMinusTheta - 1.0;
   if (sum1 <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar factor1(std::pow(sum1, -1.0 / theta_));
+  const NumericalScalar factor1 = std::pow(sum1, -1.0 / theta_);
   return NumericalPoint(1, factor1 * (std::log(sum1) * (powUMinusTheta + powVMinusTheta - 1) + theta_ * (powUMinusTheta * std::log(u) + powVMinusTheta * std::log(v))) / (theta_ * theta_ * sum1));
 }
 
@@ -403,14 +403,14 @@ NumericalPoint ClaytonCopula::computeQuantile(const NumericalScalar prob,
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ClaytonCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  const NumericalScalar u(y[0]);
-  const NumericalScalar v(x);
+  const NumericalScalar u = y[0];
+  const NumericalScalar v = x;
   // If we are in the support
-  const NumericalScalar factor(std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0);
+  const NumericalScalar factor = std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0;
   if (factor <= 0.0) return 0.0;
   return std::pow(factor, -1.0 - 1.0 / theta_) * std::pow(u, -1.0 - theta_);
 }
@@ -418,7 +418,7 @@ NumericalScalar ClaytonCopula::computeConditionalCDF(const NumericalScalar x, co
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ClaytonCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for no conditioning or independent copula
@@ -426,7 +426,7 @@ NumericalScalar ClaytonCopula::computeConditionalQuantile(const NumericalScalar 
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  const NumericalScalar z(y[0]);
+  const NumericalScalar z = y[0];
   return z * std::pow(std::pow(q, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(z, theta_), -1.0 / theta_);
 }
 

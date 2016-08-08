@@ -28,7 +28,7 @@ static String printNumericalPoint(const NumericalPoint & point, const UnsignedIn
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps(pow(0.1, 1.0 * digits));
+  NumericalScalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::scientific << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
   try
   {
     // Set Numerical precision to 3
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(3);
 
     {

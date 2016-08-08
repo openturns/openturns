@@ -133,9 +133,9 @@ Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedInteger size(timeGrid.getN());
-  const UnsignedInteger fullSize(size * dimension_);
-  const NumericalScalar timeStep(timeGrid.getStep());
+  const UnsignedInteger size = timeGrid.getN();
+  const UnsignedInteger fullSize = size * dimension_;
+  const NumericalScalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 
@@ -149,7 +149,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   // Loop over the main diagonal block
   for (UnsignedInteger block = 0; block < size; ++block)
   {
-    const UnsignedInteger base(block * dimension_);
+    const UnsignedInteger base = block * dimension_;
     // Copy of the lower triangle only
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
@@ -171,8 +171,8 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
     // Loop over the main block diagonal
     for (UnsignedInteger block = 0; block < size - diag; ++block)
     {
-      const UnsignedInteger base(block * dimension_);
-      const UnsignedInteger baseDiag((block + diag) * dimension_);
+      const UnsignedInteger base = block * dimension_;
+      const UnsignedInteger baseDiag = (block + diag) * dimension_;
       // Copy of the full block
       for (UnsignedInteger i = 0; i < dimension_; ++i)
       {

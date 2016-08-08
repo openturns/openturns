@@ -97,7 +97,7 @@ String ProductNumericalMathHessianImplementation::__repr__() const
  */
 SymmetricTensor ProductNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   const NumericalPoint leftValue(p_leftEvaluation_->operator()(inP));
@@ -106,14 +106,14 @@ SymmetricTensor ProductNumericalMathHessianImplementation::hessian(const Numeric
   const Matrix rightGradient(p_rightGradient_->gradient(inP));
   const SymmetricTensor leftHessian(p_leftHessian_->hessian(inP));
   const SymmetricTensor rightHessian(p_rightHessian_->hessian(inP));
-  const UnsignedInteger sheetDimension(getOutputDimension());
+  const UnsignedInteger sheetDimension = getOutputDimension();
   SymmetricTensor result(inputDimension, sheetDimension);
   for (UnsignedInteger k = 0; k < sheetDimension; ++k)
   {
     const SymmetricMatrix leftHessianSheet(leftHessian.getSheet(0));
     const SymmetricMatrix rightHessianSheet(rightHessian.getSheet(k));
-    const NumericalScalar rightValueScalar(rightValue[k]);
-    const NumericalScalar leftValueScalar(leftValue[0]);
+    const NumericalScalar rightValueScalar = rightValue[k];
+    const NumericalScalar leftValueScalar = leftValue[0];
     const SymmetricMatrix term1(leftHessianSheet * rightValueScalar);
     const SymmetricMatrix term2(rightHessianSheet * leftValueScalar);
     const Matrix term3(leftGradient * rightGradient.transpose().getRow(k));

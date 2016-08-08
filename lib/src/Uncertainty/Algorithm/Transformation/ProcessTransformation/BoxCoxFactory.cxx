@@ -81,14 +81,14 @@ public:
   /** Likelihood function */
   NumericalScalar computeLogLikelihood(const NumericalPoint & lambda) const
   {
-    const UnsignedInteger size(sample_.getSize());
+    const UnsignedInteger size = sample_.getSize();
     // Define BoxCox trannsformation for sample
     BoxCoxEvaluationImplementation myBoxFunction(NumericalPoint(1, lambda[0]));
     // compute the mean of the transformed sample using the Box-Cox function
     const NumericalSample outSample(myBoxFunction(sample_));
-    const NumericalScalar ratio(1.0 - 1.0 / size);
-    const NumericalScalar sigma2(outSample.computeVariance()[0]);
-    NumericalScalar result(-0.5 * size * log(sigma2 * ratio));
+    const NumericalScalar ratio = 1.0 - 1.0 / size;
+    const NumericalScalar sigma2 = outSample.computeVariance()[0];
+    NumericalScalar result = -0.5 * size * log(sigma2 * ratio);
 
     // result is translated
     result += (lambda[0] - 1.0) * sumLog_;
@@ -98,7 +98,7 @@ public:
   void computeSumLog() const
   {
     // Compute the sum of the log-data
-    const UnsignedInteger size(sample_.getSize());
+    const UnsignedInteger size = sample_.getSize();
     sumLog_ = 0.0;
     for (UnsignedInteger k = 0; k < size; ++k) sumLog_ += std::log(sample_[k][0]);
   }
@@ -179,7 +179,7 @@ public:
     // Parameters for the evaluation of likelihood function
     const NumericalPoint covarianceParameters(conditionalCovarianceModel.getParameter());
     // Finally evaluate the log-likelihood function
-    const NumericalScalar loglikelihood(algo.getObjectiveFunction()(covarianceParameters)[0]);
+    const NumericalScalar loglikelihood = algo.getObjectiveFunction()(covarianceParameters)[0];
     return loglikelihood;
   }
 
@@ -273,12 +273,12 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
                                      Graph & graph) const
 {
   // Check the input size
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0)
     throw InvalidArgumentException(HERE) << "Error: cannot build a Box-Cox factory from an empty time series";
 
   // Check the input dimensions
-  const UnsignedInteger dimension(sample.getDimension());
+  const UnsignedInteger dimension = sample.getDimension();
   if (shift.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the sample dimension=" << dimension;
 
@@ -303,11 +303,11 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   }
   // Graphical inspection
   graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood", true, "topright");
-  const NumericalScalar lambdaMax(*std::max_element(lambda.begin(), lambda.end()));
-  const NumericalScalar lambdaMin(*std::min_element(lambda.begin(), lambda.end()));
-  const NumericalScalar xMin(std::min(0.0, 0.002 * round(1000.0 * lambdaMin)));
-  const NumericalScalar xMax(std::max(0.0, 0.002 * round(1000.0 * lambdaMax)));
-  const UnsignedInteger npts(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber"));
+  const NumericalScalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
+  const NumericalScalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
+  const NumericalScalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));
+  const NumericalScalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
+  const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
   NumericalSample lambdaValues(npts, 1);
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
   for (UnsignedInteger d = 0; d < dimension; ++d)

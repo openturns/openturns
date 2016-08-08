@@ -51,7 +51,7 @@ StandardEvent::StandardEvent(const RandomVector & antecedent,
   // StandardEvent can only be constructed from composite random vector whose antecedent has a spherical distribution. As we cannot check it, we just check that the distribution is elliptical
   if (!antecedent.getImplementation()->getAntecedent()->getDistribution().isElliptical()) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent()->getDistribution().getImplementation()->__str__();
   CovarianceMatrix covariance(antecedent.getImplementation()->getAntecedent()->getDistribution().getCovariance());
-  const UnsignedInteger dimension(antecedent.getImplementation()->getAntecedent()->getDistribution().getDimension());
+  const UnsignedInteger dimension = antecedent.getImplementation()->getAntecedent()->getDistribution().getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (covariance(i, i) != 1.0) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent()->getDistribution().getImplementation()->__str__();

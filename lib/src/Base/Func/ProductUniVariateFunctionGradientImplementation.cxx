@@ -65,16 +65,16 @@ String ProductUniVariateFunctionGradientImplementation::__repr__() const
 /* Compute the gradient of a product of univariate polynomials */
 Matrix ProductUniVariateFunctionGradientImplementation::gradient (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inDimension(inP.getDimension());
+  const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
-  NumericalScalar productEvaluation(1.0);
+  NumericalScalar productEvaluation = 1.0;
   NumericalPoint evaluations(inDimension);
   NumericalPoint derivatives(inDimension);
   for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
-    const NumericalScalar x(inP[i]);
-    const NumericalScalar y(p_evaluation_->functions_[i](x));
-    const NumericalScalar dy(p_evaluation_->functions_[i].gradient(x));
+    const NumericalScalar x = inP[i];
+    const NumericalScalar y = p_evaluation_->functions_[i](x);
+    const NumericalScalar dy = p_evaluation_->functions_[i].gradient(x);
     evaluations[i] = y;
     derivatives[i] = dy;
     productEvaluation *= y;

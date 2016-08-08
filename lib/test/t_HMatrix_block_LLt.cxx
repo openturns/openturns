@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     HMatrixFactory hmatrixFactory;
     if (!hmatrixFactory.IsAvailable()) throw NotYetImplementedException(HERE);
 
-    const UnsignedInteger n(20);
+    const UnsignedInteger n = 20;
 
     Indices indices(0);
     indices.add(n);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
-    NumericalScalar threshold(1.e-10);
+    NumericalScalar threshold = 1.e-10;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

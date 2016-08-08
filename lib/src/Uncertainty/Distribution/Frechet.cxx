@@ -114,10 +114,10 @@ NumericalPoint Frechet::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar y(x / beta_);
-  const NumericalScalar minusAlphalogY(-alpha_ * std::log(y));
+  const NumericalScalar y = x / beta_;
+  const NumericalScalar minusAlphalogY = -alpha_ * std::log(y);
   return NumericalPoint(1, -alpha_ * (-alpha_ * expm1(minusAlphalogY) + 1.0) * std::exp(-std::exp(minusAlphalogY) + minusAlphalogY) / (x * x));
 }
 
@@ -230,7 +230,7 @@ void Frechet::computeCovariance() const
   if (alpha_ <= 2.0) throw InvalidArgumentException(HERE) << "covariance is not defined for alpha <= 2";
 
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar gammaInvAlpha(SpecFunc::Gamma(1.0 - 1.0 / alpha_));
+  const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
   covariance_(0, 0) = beta_ * beta_ * (SpecFunc::Gamma(1.0 - 2.0 / alpha_) - gammaInvAlpha * gammaInvAlpha);
   isAlreadyComputedCovariance_ = true;
 }
@@ -241,11 +241,11 @@ NumericalPoint Frechet::getSkewness() const
 {
   if (alpha_ <= 3.0) throw InvalidArgumentException(HERE) << "skewness is not defined for alpha <= 3";
 
-  const NumericalScalar gammaInvAlpha(SpecFunc::Gamma(1.0 - 1.0 / alpha_));
-  const NumericalScalar gamma2InvAlpha(SpecFunc::Gamma(1.0 - 2.0 / alpha_));
-  const NumericalScalar gamma3InvAlpha(SpecFunc::Gamma(1.0 - 3.0 / alpha_));
-  const NumericalScalar gammaInvAlpha2(gammaInvAlpha * gammaInvAlpha);
-  const NumericalScalar skewness((gamma3InvAlpha + gammaInvAlpha * (2.0 * gammaInvAlpha2 - 3.0 * gamma2InvAlpha)) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 1.5));
+  const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
+  const NumericalScalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
+  const NumericalScalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
+  const NumericalScalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
+  const NumericalScalar skewness = (gamma3InvAlpha + gammaInvAlpha * (2.0 * gammaInvAlpha2 - 3.0 * gamma2InvAlpha)) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 1.5);
   return NumericalPoint(1, skewness);
 }
 
@@ -254,11 +254,11 @@ NumericalPoint Frechet::getKurtosis() const
 {
   if (alpha_ <= 4.0) throw InvalidArgumentException(HERE) << "kurtosis is not defined for alpha <= 4";
 
-  const NumericalScalar gammaInvAlpha(SpecFunc::Gamma(1.0 - 1.0 / alpha_));
-  const NumericalScalar gamma2InvAlpha(SpecFunc::Gamma(1.0 - 2.0 / alpha_));
-  const NumericalScalar gamma3InvAlpha(SpecFunc::Gamma(1.0 - 3.0 / alpha_));
-  const NumericalScalar gamma4InvAlpha(SpecFunc::Gamma(1.0 - 4.0 / alpha_));
-  const NumericalScalar gammaInvAlpha2(gammaInvAlpha * gammaInvAlpha);
+  const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
+  const NumericalScalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
+  const NumericalScalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
+  const NumericalScalar gamma4InvAlpha = SpecFunc::Gamma(1.0 - 4.0 / alpha_);
+  const NumericalScalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
   const NumericalScalar kurtosis((gamma4InvAlpha + gammaInvAlpha * (-4.0 * gamma3InvAlpha + 3.0 * gammaInvAlpha * (2.0 * gamma2InvAlpha - gammaInvAlpha2))) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 2.0)); 
   return NumericalPoint(1, kurtosis);
 }

@@ -108,7 +108,7 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
     Indices rowFilter(0);
     for ( UnsignedInteger j = 0; j < ( k_ * testSize ); ++ j )
     {
-      const UnsignedInteger jModK(j % k_);
+      const UnsignedInteger jModK = j % k_;
       // If j is in the learning database
       if (jModK != i)
       {

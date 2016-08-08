@@ -60,16 +60,16 @@ NumericalSample RungeKutta::solve(const NumericalPoint & initialState,
 {
   if (initialState.getDimension() != transitionFunction_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the initial state has a dimension=" << initialState.getDimension() << ", expected dimension=" << transitionFunction_.getInputDimension();
   // Quick return if the time grid is empty
-  const UnsignedInteger steps(timeGrid.getSize());
+  const UnsignedInteger steps = timeGrid.getSize();
   NumericalSample result(steps, transitionFunction_.getOutputDimension());
   if (steps == 0) return result;
-  NumericalScalar t(timeGrid[0]);
+  NumericalScalar t = timeGrid[0];
   NumericalPoint state(initialState);
   result[0] = state;
   for (UnsignedInteger i = 1; i < steps; ++i)
   {
-    const NumericalScalar newT(timeGrid[i]);
-    const NumericalScalar timeStep(newT - t);
+    const NumericalScalar newT = timeGrid[i];
+    const NumericalScalar timeStep = newT - t;
     const NumericalPoint phi(computeStep(t, state, timeStep));
     state += timeStep * phi;
     result[i] = state;

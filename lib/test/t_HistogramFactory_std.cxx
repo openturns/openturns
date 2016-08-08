@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger collectionSize(4);
+    UnsignedInteger collectionSize = 4;
     NumericalPoint l(collectionSize);
     l[0] = 1.0;
     l[1] = 0.7;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     h[2] = 3.5;
     h[3] = 2.5;
     Histogram distribution(-1.5, l, h);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     HistogramFactory factory;
     Distribution estimatedDistribution(factory.build(sample));

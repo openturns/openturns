@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Student distribution(3.5, 2.5);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     StudentFactory factory;
     CovarianceMatrix covariance;

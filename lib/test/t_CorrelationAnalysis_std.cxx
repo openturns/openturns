@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dimension(2);
-    UnsignedInteger sampleSize(1000);
+    UnsignedInteger dimension = 2;
+    UnsignedInteger sampleSize = 1000;
 
     // we create an analytical function
     Description input(dimension);

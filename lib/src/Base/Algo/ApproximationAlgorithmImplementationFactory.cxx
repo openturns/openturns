@@ -51,7 +51,7 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
     const Basis & psi,
     const Indices & indices) const
 {
-  const UnsignedInteger size( x.getSize() );
+  const UnsignedInteger size = x.getSize();
   return build( x, y, NumericalPoint( size, 1.0 ), psi, indices);
 }
 

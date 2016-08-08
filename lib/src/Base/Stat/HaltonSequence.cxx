@@ -60,11 +60,11 @@ NumericalPoint HaltonSequence::generate()
   // Loop over the components
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    NumericalScalar xI(0.0);
-    const Unsigned64BitsInteger radix(base_[i]);
-    const NumericalScalar inverseRadix(1.0 / radix);
-    NumericalScalar inverseRadixN(inverseRadix);
-    Unsigned64BitsInteger currentSeed(seed_);
+    NumericalScalar xI = 0.0;
+    const Unsigned64BitsInteger radix = base_[i];
+    const NumericalScalar inverseRadix = 1.0 / radix;
+    NumericalScalar inverseRadixN = inverseRadix;
+    Unsigned64BitsInteger currentSeed = seed_;
     while (currentSeed > 0)
     {
       xI += (currentSeed % radix) * inverseRadixN;

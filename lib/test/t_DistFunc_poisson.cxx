@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
     // Poisson related functions
     {
       // rPoisson
-      NumericalScalar lambdaMin(0.2);
-      NumericalScalar lambdaMax(5.0);
-      UnsignedInteger n1(5);
-      UnsignedInteger nR(5);
+      NumericalScalar lambdaMin = 0.2;
+      NumericalScalar lambdaMax = 5.0;
+      UnsignedInteger n1 = 5;
+      UnsignedInteger nR = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar lambda(lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1));
+        NumericalScalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
         for (UnsignedInteger iR = 0; iR < nR; ++iR)
         {
           fullprint << "rPoisson(" << lambda << ")=" << DistFunc::rPoisson(lambda) << std::endl;

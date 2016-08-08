@@ -71,9 +71,9 @@ String CopulaImplementation::__repr__() const
 
 NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
-  Bool allOutside(true);
+  Bool allOutside = true;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       if (point[i] >= 1.0) return 0.0;
@@ -81,13 +81,13 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoi
     }
   if (allOutside) return 1.0;
   // Use Poincaré's formula
-  NumericalScalar value(1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point));
+  NumericalScalar value = 1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point);
   // We know the explicit value of the 1D marginal distributions
   for (UnsignedInteger i = 0; i < dimension; ++i) value -= point[i];
-  NumericalScalar sign(1.0);
+  NumericalScalar sign = 1.0;
   for (UnsignedInteger i = 2; i < dimension - 1; ++i)
     {
-      NumericalScalar contribution(0.0);
+      NumericalScalar contribution = 0.0;
       Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
       NumericalPoint subPoint(i);
       for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
@@ -105,24 +105,24 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoi
 NumericalPoint CopulaImplementation::computeQuantile(const NumericalScalar prob,
                                                      const Bool tail) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // Special case for bording values
-  const NumericalScalar q(tail ? 1.0 - prob : prob);
+  const NumericalScalar q = tail ? 1.0 - prob : prob;
   if (q <= 0.0) return NumericalPoint(dimension, 0.0);
   if (q >= 1.0) return NumericalPoint(dimension, 1.0);
   // Special case for dimension 1
   if (dimension == 1) return NumericalPoint(1, q);
   QuantileWrapper wrapper(this);
   const NumericalMathFunction f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
-  NumericalScalar leftTau(q);
+  NumericalScalar leftTau = q;
   const NumericalPoint leftPoint(1, leftTau);
   const NumericalPoint leftValue(f(leftPoint));
-  NumericalScalar leftCDF(leftValue[0]);
+  NumericalScalar leftCDF = leftValue[0];
   // Upper bound of the bracketing interval
-  NumericalScalar rightTau(1.0 - (1.0 - q) / dimension);
+  NumericalScalar rightTau = 1.0 - (1.0 - q) / dimension;
   NumericalPoint rightPoint(1, rightTau);
   const NumericalPoint rightValue(f(rightPoint));
-  NumericalScalar rightCDF(rightValue[0]);
+  NumericalScalar rightCDF = rightValue[0];
   // Use Brent's method to compute the quantile efficiently
   Brent solver(cdfEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   return NumericalPoint(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));
@@ -167,7 +167,7 @@ struct CopulaImplementationKendallTauWrapper
 /* Get the Kendall concordance of the copula */
 CorrelationMatrix CopulaImplementation::getKendallTau() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   CorrelationMatrix tau(dimension);
   if (hasIndependentCopula()) return tau;
   // Here we have a circular dependency between copulas and distributions
@@ -235,7 +235,7 @@ struct CopulaImplementationCovarianceWrapper
 /* Compute the covariance of the copula */
 void CopulaImplementation::computeCovariance() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We need this to initialize the covariance matrix in two cases:
   // + this is the first call to this routine (which could be checked by testing the dimension of the copula and the dimension of the matrix
   // + the copula has changed from a non-independent one to the independent copula

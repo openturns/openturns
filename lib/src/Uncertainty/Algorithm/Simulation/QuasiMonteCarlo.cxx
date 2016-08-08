@@ -75,7 +75,7 @@ QuasiMonteCarlo * QuasiMonteCarlo::clone() const
 NumericalSample QuasiMonteCarlo::computeBlockSample()
 {
   // Size of a block
-  const UnsignedInteger blockSize(getBlockSize());
+  const UnsignedInteger blockSize = getBlockSize();
 
   // allocate the input sample
   NumericalSample inputSample(lowDiscrepancySequence_.generate(blockSize));
@@ -93,7 +93,7 @@ NumericalSample QuasiMonteCarlo::computeBlockSample()
   NumericalSample blockSample(event_.getImplementation()->getFunction()(inputSample));
   for (UnsignedInteger i = 0; i < blockSize_; ++i)
   {
-    const Bool isRealized(getEvent().getOperator()(blockSample[i][0], event_.getThreshold()));
+    const Bool isRealized = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
     if (isRealized) blockSample[i][0] = 1.0;
     else blockSample[i][0] = 0.0;
   }

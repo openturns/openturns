@@ -124,12 +124,12 @@ void InverseChiSquare::update()
   // normalizationFactor = log(2*k^{k-1}/Gamma(k))
   //                     = log(2) + (k+1)log(k) - log(Gamma(k))
   // which is expanded wrt k
-  const NumericalScalar k(0.5 * nu_);
+  const NumericalScalar k = 0.5 * nu_;
   if (k >= 6.9707081224932495879)
   {
     static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
-    const NumericalScalar ik(1.0 / k);
-    const NumericalScalar ik2(ik * ik);
+    const NumericalScalar ik = 1.0 / k;
+    const NumericalScalar ik2 = ik * ik;
     normalizationFactor_ = std::log(2.0) + k + 1.5 * std::log(k) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
   // For small k, the normalization factor is:
@@ -153,7 +153,7 @@ NumericalPoint InverseChiSquare::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, (1.0 / (2.0 * x) - (0.5 * nu_ + 1.0)) * computePDF(point) / x);
 }
@@ -173,11 +173,11 @@ NumericalScalar InverseChiSquare::computeLogPDF(const NumericalPoint & point) co
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
-  const NumericalScalar u(2.0 * point[0]);
+  const NumericalScalar u = 2.0 * point[0];
   if (u <= 0.0) return -SpecFunc::MaxNumericalScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(2*x)-1/(2*x)
-  const NumericalScalar k(0.5 * nu_);
+  const NumericalScalar k = 0.5 * nu_;
   if (k >= 6.9707081224932495879) return normalizationFactor_ - (k + 1.0) * std::log(k * u) - 1.0 / u;
   return normalizationFactor_ - (k + 1.0) * std::log(u) - 1.0 / u;
 }
@@ -187,7 +187,7 @@ NumericalScalar InverseChiSquare::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all k
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 / x, true);
@@ -197,7 +197,7 @@ NumericalScalar InverseChiSquare::computeComplementaryCDF(const NumericalPoint &
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all k
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 / x);
@@ -220,9 +220,9 @@ NumericalPoint InverseChiSquare::computePDFGradient(const NumericalPoint & point
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(2);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf(computePDF(point));
+  const NumericalScalar pdf = computePDF(point);
   pdfGradient[0] = -(std::log(2.0) + std::log(x) + SpecFunc::DiGamma(0.5 * nu_)) * pdf;
   pdfGradient[1] = 0.5 * (0.5 / x - nu_) * pdf;
   return pdfGradient;
@@ -234,11 +234,11 @@ NumericalPoint InverseChiSquare::computeCDFGradient(const NumericalPoint & point
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar lambdaXInverse(0.5 / x);
-  const NumericalScalar pdf(computePDF(x));
-  const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar lambdaXInverse = 0.5 / x;
+  const NumericalScalar pdf = computePDF(x);
+  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(0.5 * nu_ + eps, lambdaXInverse, true) - DistFunc::pGamma(0.5 * nu_ - eps, lambdaXInverse, true)) / (2.0 * eps);
   cdfGradient[1] = 0.5 * pdf * x;
   return cdfGradient;

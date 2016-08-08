@@ -58,17 +58,17 @@ UniformFactory::Implementation UniformFactory::build() const
 
 Uniform UniformFactory::buildAsUniform(const NumericalSample & sample) const
 {
-  const NumericalScalar size(sample.getSize());
+  const NumericalScalar size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Uniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar a(xMin - std::abs(xMin) / (2.0 + size));
-  const NumericalScalar xMax(sample.getMax()[0]);
-  const NumericalScalar b(xMax + std::abs(xMax) / (2.0 + size));
+  const NumericalScalar xMin = sample.getMin()[0];
+  const NumericalScalar a = xMin - std::abs(xMin) / (2.0 + size);
+  const NumericalScalar xMax = sample.getMax()[0];
+  const NumericalScalar b = xMax + std::abs(xMax) / (2.0 + size);
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
     {
-      const NumericalScalar delta(std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon);
+      const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon;
       Uniform result(xMin - delta, xMax + delta);
       result.setDescription(sample.getDescription());
       return result;

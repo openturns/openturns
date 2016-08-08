@@ -68,9 +68,9 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperim
 NumericalSample SaltelliSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
                                                              NumericalSample & VTi) const
 {
-  const UnsignedInteger inputDimension(inputDesign_.getDimension());
-  const UnsignedInteger outputDimension(outputDesign_.getDimension());
-  const UnsignedInteger size(size_);
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  const UnsignedInteger size = size_;
   NumericalSample varianceI(outputDimension, inputDimension);
   VTi = NumericalSample(outputDimension, inputDimension);
 

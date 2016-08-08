@@ -75,7 +75,7 @@ String ComposedNumericalMathGradientImplementation::__repr__() const
  * it is an n by q matrix                                                            */
 Matrix ComposedNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   return  p_rightGradient_->gradient(inP) * p_leftGradient_->gradient(p_rightFunction_->operator()(inP));

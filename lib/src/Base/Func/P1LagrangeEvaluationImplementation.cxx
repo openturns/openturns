@@ -135,7 +135,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
     // Here, perform the P1 interpolation
     // First get the index of the nearest vertex
     const Mesh & mesh(field_.getMesh());
-    const UnsignedInteger nearestIndex(mesh.getNearestVertexIndex(inP));
+    const UnsignedInteger nearestIndex = mesh.getNearestVertexIndex(inP);
     const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
     const NumericalSample vertices(mesh.getVertices());
     const Mesh::IndicesCollection & simplices(mesh.getSimplices());
@@ -145,7 +145,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
     NumericalPoint coordinates;
     for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
     {
-      const UnsignedInteger simplexIndex(simplicesCandidates[i]);
+      const UnsignedInteger simplexIndex = simplicesCandidates[i];
       if (mesh.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
       {
         const Indices simplex(simplices[simplexIndex]);
@@ -169,7 +169,7 @@ NumericalSample P1LagrangeEvaluationImplementation::operator()( const NumericalS
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   NumericalSample result(size, field_.getDimension());
   if (size == 0) return result;
   const Mesh & mesh(field_.getMesh());
@@ -191,7 +191,7 @@ NumericalSample P1LagrangeEvaluationImplementation::operator()( const NumericalS
 	  NumericalPoint coordinates;
 	  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
 	    {
-	      const UnsignedInteger simplexIndex(simplicesCandidates[i]);
+	      const UnsignedInteger simplexIndex = simplicesCandidates[i];
 	      if (mesh.checkPointInSimplexWithCoordinates(inS[n], simplexIndex, coordinates))
 		{
 		  const Indices simplex(simplices[simplexIndex]);

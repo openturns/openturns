@@ -77,7 +77,7 @@ NumericalScalar RegularizedIncompleteGammaInverse(const NumericalScalar a,
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
 #else
-  const NumericalScalar y(0.5 + (0.5 - x));
+  const NumericalScalar y = 0.5 + (0.5 - x);
   NumericalScalar xr;
   SignedInteger ierr;
   invincgam(a, (tail ? y : x), (tail ? x : y), xr, ierr);

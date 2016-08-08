@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < qValues.getDimension(); ++ j)
       {
-        NumericalScalar q(qValues[j]);
+        NumericalScalar q = qValues[j];
         fullprint << "First " << size << " values dimension=" << dimension << " q=" << q << std::endl;
         HyperbolicAnisotropicEnumerateFunction f( dimension,  q);
         for (UnsignedInteger index = 0; index < size; ++index)

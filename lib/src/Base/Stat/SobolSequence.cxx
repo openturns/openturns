@@ -127,7 +127,7 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
   {
     // number of bits of PrimitivePolynomial[i]
     UnsignedInteger polynomialCoefficientDegree = 0;
-    Unsigned64BitsInteger polynomialCoefficient(PrimitivePolynomial[i]);
+    Unsigned64BitsInteger polynomialCoefficient = PrimitivePolynomial[i];
 
     // get number of bits of the PrimitivePolynomial[i] coefficient (could have used log2)
     while(polynomialCoefficient > 1)
