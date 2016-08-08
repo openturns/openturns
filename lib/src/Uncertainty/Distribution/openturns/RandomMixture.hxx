@@ -298,7 +298,7 @@ private:
     /** Compute the Kolmogorov distance based on the given data, for a given parameter set */
     NumericalPoint computeNorm(const NumericalPoint & parameters) const
     {
-      NumericalScalar norm(0.0);
+      NumericalScalar norm = 0.0;
       try
       {
         const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));

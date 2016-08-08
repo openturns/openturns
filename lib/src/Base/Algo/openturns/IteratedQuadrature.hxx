@@ -96,9 +96,9 @@ private:
       // Create the arguments of the local integration problem
       const Indices index(1, 0);
       const NumericalMathFunction function(function_, index, point);
-      const UnsignedInteger size(lowerBounds_.getSize() - 1);
-      const NumericalScalar a(lowerBounds_[0](point)[0]);
-      const NumericalScalar b(upperBounds_[0](point)[0]);
+      const UnsignedInteger size = lowerBounds_.getSize() - 1;
+      const NumericalScalar a = lowerBounds_[0](point)[0];
+      const NumericalScalar b = upperBounds_[0](point)[0];
       IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
       IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
       for (UnsignedInteger i = 0; i < size; ++i)
@@ -114,9 +114,9 @@ private:
 
     NumericalSample operator()(const NumericalSample & sample) const
     {
-      const UnsignedInteger sampleSize(sample.getSize());
-      const UnsignedInteger outputDimension(function_.getOutputDimension());
-      const UnsignedInteger size(lowerBounds_.getSize() - 1);
+      const UnsignedInteger sampleSize = sample.getSize();
+      const UnsignedInteger outputDimension = function_.getOutputDimension();
+      const UnsignedInteger size = lowerBounds_.getSize() - 1;
       IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
       IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
       NumericalSample result(sampleSize, outputDimension);
@@ -128,8 +128,8 @@ private:
 	  const NumericalPoint x(sample[k]);
 	  // Create the arguments of the local integration problem
 	  const NumericalMathFunction function(function_, index, x);
-	  const NumericalScalar a(sampleA[k][0]);
-	  const NumericalScalar b(sampleB[k][0]);
+	  const NumericalScalar a = sampleA[k][0];
+	  const NumericalScalar b = sampleB[k][0];
 	  for (UnsignedInteger i = 0; i < size; ++i)
 	    {
 	      lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, x);

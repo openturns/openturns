@@ -176,10 +176,10 @@ private:
 
     NumericalPoint eval(const NumericalPoint & point) const
     {
-      const NumericalScalar value(left_.computePDF(point));
+      const NumericalScalar value = left_.computePDF(point);
       if (value == 0.0) return NumericalPoint(1, 0.0);
-      const NumericalScalar u(point[0]);
-      const NumericalScalar absU(std::abs(u));
+      const NumericalScalar u = point[0];
+      const NumericalScalar absU = std::abs(u);
       // x_ == 0
       if (isZero_)
       {
@@ -190,7 +190,7 @@ private:
       // x_ != 0
       if (absU == 0.0)
       {
-        const NumericalScalar epsilon(1e-7);
+        const NumericalScalar epsilon = 1e-7;
         return NumericalPoint(1, value * 0.5 * (right_.computePDF(x_ / epsilon) + right_.computePDF(-x_ / epsilon)) / epsilon);
       }
       return NumericalPoint(1, value * right_.computePDF(x_ / u) / absU);
@@ -214,22 +214,22 @@ private:
 
     NumericalPoint eval(const NumericalPoint & point) const
     {
-      const NumericalScalar value(left_.computePDF(point));
+      const NumericalScalar value = left_.computePDF(point);
       if (value == 0.0) return NumericalPoint(1, 0.0);
       // x_ == 0
       if (isZero_) return NumericalPoint(1, value * cdf0_);
-      const NumericalScalar u(point[0]);
+      const NumericalScalar u = point[0];
       if (u == 0.0) return NumericalPoint(1, x_ < 0.0 ? 0.0 : value);
       return NumericalPoint(1, value * right_.computeCDF(x_ / u));
     };
 
     NumericalPoint evalComplementary(const NumericalPoint & point) const
     {
-      const NumericalScalar value(left_.computePDF(point));
+      const NumericalScalar value = left_.computePDF(point);
       if (value == 0.0) return NumericalPoint(1, 0.0);
       // x_ == 0
       if (isZero_) return NumericalPoint(1, value * ccdf0_);
-      const NumericalScalar u(point[0]);
+      const NumericalScalar u = point[0];
       if (u == 0.0) return NumericalPoint(1, x_ < 0.0 ? 0.0 : value);
       return NumericalPoint(1, value * right_.computeComplementaryCDF(x_ / u));
     };
@@ -251,9 +251,9 @@ private:
     NumericalPoint eval(const NumericalPoint & point) const
     {
       NumericalPoint value(2);
-      const NumericalScalar u(point[0]);
+      const NumericalScalar u = point[0];
       const NumericalComplex phi(right_.computeCharacteristicFunction(u * x_));
-      const NumericalScalar pdf(left_.computePDF(point));
+      const NumericalScalar pdf = left_.computePDF(point);
       value[0] = pdf * phi.real();
       value[1] = pdf * phi.imag();
       return value;

@@ -713,7 +713,7 @@ protected:
 
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
-      const NumericalScalar cdf(p_distribution_->computeCDF(diagonalToSpace(u[0])));
+      const NumericalScalar cdf = p_distribution_->computeCDF(diagonalToSpace(u[0]));
       LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
       return NumericalPoint(1, cdf);
     }
@@ -757,7 +757,7 @@ protected:
     
     NumericalSample operator() (const NumericalSample & sample) const
     {
-      const UnsignedInteger size(sample.getSize());
+      const UnsignedInteger size = sample.getSize();
       NumericalSample result(size, 1);
       const NumericalSample pdf(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i)
@@ -811,14 +811,14 @@ protected:
 
     NumericalPoint operator() (const NumericalPoint & point) const
     {
-      const NumericalScalar power(std::pow(point[0] - shift_, n_));
-      const NumericalScalar pdf(p_distribution_->computePDF(point));
+      const NumericalScalar power = std::pow(point[0] - shift_, n_);
+      const NumericalScalar pdf = p_distribution_->computePDF(point);
       return NumericalPoint(1, power * pdf);
     };
 
     NumericalSample operator() (const NumericalSample & sample) const
     {
-      const UnsignedInteger size(sample.getSize());
+      const UnsignedInteger size = sample.getSize();
       NumericalSample result(size, 1);
       const NumericalSample pdf(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i)
@@ -866,7 +866,7 @@ protected:
 
     NumericalSample operator() (const NumericalSample & sample) const
     {
-      const UnsignedInteger size(sample.getSize());
+      const UnsignedInteger size = sample.getSize();
       NumericalSample z(size, y_);
       z.stack(sample);
       return p_distribution_->computePDF(z);
