@@ -113,7 +113,7 @@ private:
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
       const NumericalPoint point(dimension_, u[0]);
-      const NumericalScalar cdf(p_distribution_->computeCDF(point));
+      const NumericalScalar cdf = p_distribution_->computeCDF(point);
       const NumericalPoint value(1, cdf);
       return value;
     }
