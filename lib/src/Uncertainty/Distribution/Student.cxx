@@ -554,8 +554,8 @@ void Student::setParametersCollection(const NumericalPointCollection & parameter
 /* Parameters value accessor */
 NumericalPoint Student::getParameter() const
 {
-  NumericalPoint point(EllipticalDistribution::getParameter());
-  point.add(nu_);
+  NumericalPoint point(1, nu_);
+  point.add(EllipticalDistribution::getParameter());
   return point;
 }
 
@@ -566,11 +566,11 @@ void Student::setParameter(const NumericalPoint & parameter)
   NumericalScalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) - 1.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for Student";
   const UnsignedInteger dimension = dimReal;
-  const NumericalScalar nu = parameter[size - 1];
+  const NumericalScalar nu = parameter[0];
 
   if (dimension == 1)
   {
-    *this = Student(nu, parameter[0], parameter[1]);
+    *this = Student(nu, parameter[1], parameter[2]);
   }
   else
   {
@@ -579,8 +579,8 @@ void Student::setParameter(const NumericalPoint & parameter)
     CorrelationMatrix R(dimension);
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      mean[i] = parameter[2 * i];
-      sigma[i] = parameter[2 * i + 1];
+      mean[i] = parameter[2 * i + 1];
+      sigma[i] = parameter[2 * i + 2];
     }
     UnsignedInteger parameterIndex = 2 * dimension;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -598,8 +598,8 @@ void Student::setParameter(const NumericalPoint & parameter)
 /* Parameters description accessor */
 Description Student::getParameterDescription() const
 {
-  Description description(EllipticalDistribution::getParameterDescription());
-  description.add("nu");
+  Description description(1, "nu");
+  description.add(EllipticalDistribution::getParameterDescription());
   return description;
 }
 

@@ -25,6 +25,7 @@ for distParam in distParams:
     print('native=', native)
     non_native = distParam.inverse(native)
     print('non-native=', non_native)
+    print('built dist=', distParam.getDistribution())
 
     # derivative of the native parameters with regards the parameters of the
     # distribution

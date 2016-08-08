@@ -132,6 +132,7 @@ int main(int argc, char *argv[])
     fullprint << "kendall=" << kendall << std::endl;
     Student::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
+    distribution.setParametersCollection(parameters);
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
