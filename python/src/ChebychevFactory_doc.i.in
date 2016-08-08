@@ -1,0 +1,35 @@
+%feature("docstring") OT::ChebychevFactory
+"Chebychev specific orthonormal univariate polynomial family.
+
+For the :class:`~openturns.Arcsine` distribution.
+
+Available constructors:
+    Chebychev()
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i > 0
+
+The recurrence coefficients for the Chebychev polynomials come analytically and
+read :math:`a_0=\sqrt{2}, b_0=0, c_0=0`, :math:`a_1=2, b_1=0,c_1=-\sqrt{2}` and for :math:`i>1`, :math:`a_i=2, b_i=0, c_i=-1`.
+
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.ChebychevFactory()
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+1.41421 * X
+-1.41421 + 2.82843 * X^2"
+

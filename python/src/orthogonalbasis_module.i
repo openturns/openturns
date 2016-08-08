@@ -30,6 +30,7 @@
 %include OrthogonalUniVariatePolynomial.i
 %include OrthogonalUniVariatePolynomialFactory.i
 %include CharlierFactory.i
+%include ChebychevFactory.i
 %include HermiteFactory.i
 %include JacobiFactory.i
 %include KrawtchoukFactory.i
