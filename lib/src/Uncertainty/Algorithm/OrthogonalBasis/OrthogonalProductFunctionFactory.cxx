@@ -110,8 +110,8 @@ NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInte
   }
   const Pointer<ProductUniVariateFunctionEvaluationImplementation> p_evaluation(ProductUniVariateFunctionEvaluationImplementation(functions).clone());
   return NumericalMathFunctionImplementation(p_evaluation,
-                                             ProductUniVariateFunctionGradientImplementation(p_evaluation).clone(),
-                                             ProductUniVariateFunctionHessianImplementation(p_evaluation).clone());
+         ProductUniVariateFunctionGradientImplementation(p_evaluation).clone(),
+         ProductUniVariateFunctionHessianImplementation(p_evaluation).clone());
 }
 
 

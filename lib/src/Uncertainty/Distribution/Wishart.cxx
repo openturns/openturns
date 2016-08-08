@@ -292,7 +292,7 @@ NumericalPoint Wishart::getParameter() const
 {
   const CovarianceMatrix V(getCovariance());
   const UnsignedInteger p = V.getDimension();
-  NumericalPoint point((p*(p+1))/2+1);
+  NumericalPoint point((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++ i)
     for (UnsignedInteger j = 0; j <= i; ++ j)
@@ -327,7 +327,7 @@ void Wishart::setParameter(const NumericalPoint & parameter)
 Description Wishart::getParameterDescription() const
 {
   const UnsignedInteger p = getDimension();
-  Description description((p*(p+1))/2+1);
+  Description description((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
   {

@@ -20,7 +20,7 @@ algo.run()
 print("result = ", algo.getResult())
 
 levelFunction = ot.NumericalMathFunction(
-        ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
+    ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
 # Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
 # needs it
 myGradient = ot.NonCenteredFiniteDifferenceGradient(

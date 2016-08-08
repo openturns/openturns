@@ -59,7 +59,8 @@ for dim in [3, 5, 8][1:2]:
             event = ot.Event(composite, ot.Less(), k)
 
             print('--------------------')
-            print('model H' + str(ih) + ' dim=%d' % dim, 'pft=%.2e' % pft, 'k=%g' % k)
+            print('model H' + str(ih) + ' dim=%d' %
+                  dim, 'pft=%.2e' % pft, 'k=%g' % k)
 
             for n in [100, 1000][1:]:
                 for gamma1 in [0.25, 0.5, 0.75][1:2]:
@@ -79,5 +80,6 @@ for dim in [3, 5, 8][1:2]:
                     pf = result.getProbabilityEstimate()
                     var = result.getVarianceEstimate()
                     cov = result.getCoefficientOfVariation()
-                    print(result,end=' ')
-                    print('callsNumber=%d' % calls + ' gamma=' + str(algo.getGamma()))
+                    print(result, end=' ')
+                    print('callsNumber=%d' %
+                          calls + ' gamma=' + str(algo.getGamma()))

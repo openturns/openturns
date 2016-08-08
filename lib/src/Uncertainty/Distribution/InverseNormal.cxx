@@ -256,7 +256,7 @@ NumericalPoint InverseNormal::getParameter() const
 
 void InverseNormal::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = InverseNormal(parameter[0], parameter[1]);
   setWeight(w);

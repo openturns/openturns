@@ -39,13 +39,13 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 
 /* Default constructor */
 SubsetSampling::SubsetSampling()
-: Simulation()
-, proposalRange_(0.)
-, targetProbability_(0.)
-, iSubset_(false)
-, betaMin_(0.)
-, keepEventSample_(false)
-, numberOfSteps_(0)
+  : Simulation()
+  , proposalRange_(0.)
+  , targetProbability_(0.)
+  , iSubset_(false)
+  , betaMin_(0.)
+  , keepEventSample_(false)
+  , numberOfSteps_(0)
 {
 }
 
@@ -54,13 +54,13 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const Event & event,
                                const NumericalScalar proposalRange,
                                const NumericalScalar targetProbability)
-: Simulation(event)
-, proposalRange_(proposalRange)
-, targetProbability_(targetProbability)
-, iSubset_(false)
-, betaMin_(ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultBetaMin"))
-, keepEventSample_(false)
-, numberOfSteps_(0)
+  : Simulation(event)
+  , proposalRange_(proposalRange)
+  , targetProbability_(targetProbability)
+  , iSubset_(false)
+  , betaMin_(ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultBetaMin"))
+  , keepEventSample_(false)
+  , numberOfSteps_(0)
 {
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// overide simulation default outersampling
   UnsignedInteger outputDimension = event.getFunction().getOutputDimension();
@@ -78,7 +78,7 @@ SubsetSampling * SubsetSampling::clone() const
 
 /* Performs the actual computation. */
 void SubsetSampling::run()
-{ 
+{
   // First, initialize some parameters
   convergenceStrategy_.clear();
   numberOfSteps_ = 0;
@@ -113,16 +113,18 @@ void SubsetSampling::run()
   const UnsignedInteger N = maximumOuterSampling * blockSize;
   currentPointSample_ = NumericalSample(N, dimension_);
   currentLevelSample_ = NumericalSample(N, getEvent().getFunction().getOutputDimension());
-  
+
   // Step 1: sampling
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
     NumericalSample inputSample;
-    if (!iSubset_) {
+    if (!iSubset_)
+    {
       // crude MC
       inputSample = standardEvent_.getAntecedent()->getDistribution().getSample(blockSize);
     }
-    else {
+    else
+    {
       // conditional sampling
       TruncatedDistribution truncatedChiSquare(Chi(dimension_), betaMin_, TruncatedDistribution::LOWER);
       Normal normal(dimension_);
@@ -156,7 +158,7 @@ void SubsetSampling::run()
   if (stop)
   {
     currentThreshold = getEvent().getThreshold();
-  }  
+  }
   thresholdPerStep_.add(currentThreshold);
 
   // compute monte carlo probability estimate
@@ -209,7 +211,7 @@ void SubsetSampling::run()
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
     NumericalScalar currentProbabilityEstimate = computeProbability(probabilityEstimate, currentThreshold);
 
-    // update coefficient of variation 
+    // update coefficient of variation
     NumericalScalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
     currentCoVsquare = (1.0 - currentProbabilityEstimate) / (currentProbabilityEstimate * currentLevelSample_.getSize() * 1.0);
     coefficientOfVariationSquare += (1.0 + gamma) * currentCoVsquare;
@@ -236,7 +238,7 @@ void SubsetSampling::run()
   // keep the event sample if requested
   if (keepEventSample_)
   {
-    eventInputSample_ = NumericalSample(0, dimension_);  
+    eventInputSample_ = NumericalSample(0, dimension_);
     eventOutputSample_ = NumericalSample (0, getEvent().getFunction().getOutputDimension());
     for (UnsignedInteger i = 0; i < currentPointSample_.getSize(); ++ i)
     {
@@ -294,7 +296,7 @@ NumericalScalar SubsetSampling::computeProbability(NumericalScalar probabilityEs
         varianceBlock += 1.0 * 1.0 / blockSize;
       }
     }
-    varianceBlock -= pow(meanBlock, 2.0);   
+    varianceBlock -= pow(meanBlock, 2.0);
 
     // update global mean and variance
     varianceEstimate = (varianceBlock + (size - 1.0) * varianceEstimate) / size + (1.0 - 1.0 / size) * (probabilityEstimate - meanBlock) * (probabilityEstimate - meanBlock) / size;
@@ -350,7 +352,7 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
   {
     for (UnsignedInteger j = 0; j < Nc; ++ j)
     {
-      IndicatorMatrice(j, i) = getEvent().getOperator()(currentLevelSample_[ i*Nc+j ][0], threshold);
+      IndicatorMatrice(j, i) = getEvent().getOperator()(currentLevelSample_[ i * Nc + j ][0], threshold);
     }
   }
   for (UnsignedInteger k = 0; k < N / Nc - 1; ++ k)
@@ -381,7 +383,7 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
 {
   UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   UnsignedInteger blockSize = getBlockSize();
-  Distribution randomWalk(ComposedDistribution(ComposedDistribution::DistributionCollection(dimension_, Uniform(-0.5*proposalRange_, 0.5*proposalRange_))));
+  Distribution randomWalk(ComposedDistribution(ComposedDistribution::DistributionCollection(dimension_, Uniform(-0.5 * proposalRange_, 0.5 * proposalRange_))));
   UnsignedInteger N = currentPointSample_.getSize(); // total sample size
   UnsignedInteger Nc = targetProbability_ * N; //number of seeds (also = maximumOuterSampling*blockSize)
 
@@ -391,10 +393,10 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
     for (UnsignedInteger j = 0; j < blockSize; ++ j)
     {
       // assign the new point to the seed, seed points being regrouped at the beginning of the sample
-      if (i*blockSize+j >= Nc)
+      if (i*blockSize + j >= Nc)
       {
-        currentPointSample_[i * blockSize + j] = currentPointSample_[ i*blockSize+j-Nc ];
-        currentLevelSample_[i * blockSize + j] = currentLevelSample_[ i*blockSize+j-Nc ];     
+        currentPointSample_[i * blockSize + j] = currentPointSample_[ i * blockSize + j - Nc ];
+        currentLevelSample_[i * blockSize + j] = currentLevelSample_[ i * blockSize + j - Nc ];
       }
 
       // generate a new point
@@ -541,7 +543,7 @@ void SubsetSampling::save(Advocate & adv) const
   adv.saveAttribute("targetProbability_", targetProbability_);
   adv.saveAttribute("iSubset_", iSubset_);
   adv.saveAttribute("betaMin_", betaMin_);
-  adv.saveAttribute("keepEventSample_", keepEventSample_);  
+  adv.saveAttribute("keepEventSample_", keepEventSample_);
 
   adv.saveAttribute("numberOfSteps_", numberOfSteps_);
   adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);

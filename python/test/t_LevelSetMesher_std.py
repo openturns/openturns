@@ -6,16 +6,22 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 try:
-    ot.ResourceMap.SetAsUnsignedInteger( "OptimizationSolver-DefaultMaximumIteration", 1000 )
-    ot.ResourceMap.SetAsUnsignedInteger( "OptimizationSolver-DefaultMaximumEvaluationNumber", 100000)
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-7 )
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7 )
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumResidualError", 1.0e-7 )
-    ot.ResourceMap.SetAsNumericalScalar( "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7 )
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "OptimizationSolver-DefaultMaximumIteration", 1000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "OptimizationSolver-DefaultMaximumEvaluationNumber", 100000)
+    ot.ResourceMap.SetAsNumericalScalar(
+        "OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-7)
+    ot.ResourceMap.SetAsNumericalScalar(
+        "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7)
+    ot.ResourceMap.SetAsNumericalScalar(
+        "OptimizationSolver-DefaultMaximumResidualError", 1.0e-7)
+    ot.ResourceMap.SetAsNumericalScalar(
+        "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7)
     ot.PlatformInfo.SetNumericalPrecision(3)
 
     # The 1D mesher
-    mesher1D =  ot.LevelSetMesher([7])
+    mesher1D = ot.LevelSetMesher([7])
     print("mesher1D=", mesher1D)
 
     level = 0.5
@@ -25,40 +31,42 @@ try:
     # Automatic bounding box
     mesh1D = mesher1D.build(levelSet1D)
     print("mesh1D=", mesh1D)
-    
+
     # Manual bounding box
     mesh1D = mesher1D.build(levelSet1D, ot.Interval(-10.0, 10.0))
     print("mesh1D=", mesh1D)
 
     # The 2D mesher
-    mesher2D = ot.LevelSetMesher([5]*2)
+    mesher2D = ot.LevelSetMesher([5] * 2)
     print("mesher2D=", mesher2D)
 
-    function2D = ot.NumericalMathFunction(["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"])
+    function2D = ot.NumericalMathFunction(
+        ["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"])
     levelSet2D = ot.LevelSet(function2D, level)
-    
+
     # Automatic bounding box
     mesh2D = ot.Mesh(mesher2D.build(levelSet2D))
     print("mesh2D=", mesh2D)
 
     # Manual bounding box
-    mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0]*2, [10.0]*2))
+    mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0] * 2, [10.0] * 2))
     print("mesh2D=", mesh2D)
 
     # The 3D mesher
-    mesher3D = ot.LevelSetMesher([3]*3)
+    mesher3D = ot.LevelSetMesher([3] * 3)
     print("mesher3D=", mesher3D)
 
-    function3D = ot.NumericalMathFunction(["x0", "x1", "x2"], ["cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"])
+    function3D = ot.NumericalMathFunction(
+        ["x0", "x1", "x2"], ["cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"])
     levelSet3D = ot.LevelSet(function3D, level)
 
     # Automatic bounding box
     mesh3D = ot.Mesh(mesher3D.build(levelSet3D))
-    
+
     print("mesh3D=", mesh3D)
 
     # Manual bounding box
-    mesh3D = mesher3D.build(levelSet3D, ot.Interval([-10.0]*3, [10.0]*3))
+    mesh3D = mesher3D.build(levelSet3D, ot.Interval([-10.0] * 3, [10.0] * 3))
     print("mesh3D=", mesh3D)
 
 except:

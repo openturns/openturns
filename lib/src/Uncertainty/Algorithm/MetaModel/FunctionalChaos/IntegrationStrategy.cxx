@@ -100,9 +100,9 @@ struct IntegrationStrategyCoefficientsPolicy
   NumericalPoint & alpha_;
 
   IntegrationStrategyCoefficientsPolicy(const NumericalPoint & weightedOutput,
-					const Matrix & designMatrix,
-					const Indices & addedRanks,
-					NumericalPoint & alpha)
+                                        const Matrix & designMatrix,
+                                        const Indices & addedRanks,
+                                        NumericalPoint & alpha)
     : weightedOutput_(weightedOutput)
     , designMatrix_(designMatrix)
     , addedRanks_(addedRanks)
@@ -114,16 +114,16 @@ struct IntegrationStrategyCoefficientsPolicy
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
+    {
+      const UnsignedInteger indexAdded = addedRanks_[j];
+      NumericalScalar result = 0.0;
+      MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
+      for (NumericalPoint::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
       {
-	const UnsignedInteger indexAdded = addedRanks_[j];
-	NumericalScalar result = 0.0;
-	MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
-	for (NumericalPoint::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
-	  {
-	    result += (*outputSample) * (*columnMatrix);
-	  } // i
-	alpha_[j] = result;
-      } // j
+        result += (*outputSample) * (*columnMatrix);
+      } // i
+      alpha_[j] = result;
+    } // j
   } // operator()
 
 }; /* end struct IntegrationStrategyCoefficientsPolicy */

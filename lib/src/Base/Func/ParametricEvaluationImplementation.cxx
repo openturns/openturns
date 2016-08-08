@@ -188,7 +188,7 @@ NumericalSample ParametricEvaluationImplementation::operator() (const NumericalS
 }
 
 NumericalSample ParametricEvaluationImplementation::operator() (const NumericalPoint & point,
-                                                                const NumericalSample & parameters)
+    const NumericalSample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
   const UnsignedInteger inputDimension = function_.getInputDimension();

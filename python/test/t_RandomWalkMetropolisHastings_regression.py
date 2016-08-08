@@ -120,6 +120,7 @@ try:
     print('expected covariance=', Qn_inv)
 
 except:
-    import os, traceback
+    import os
+    import traceback
     traceback.print_exc()
     os._exit(1)

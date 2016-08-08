@@ -56,8 +56,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
 
 /** Constructor with parameters */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const NumericalSample & inputDesign,
-                                                                         const NumericalSample & outputDesign,
-                                                                         const UnsignedInteger size)
+    const NumericalSample & outputDesign,
+    const UnsignedInteger size)
   : PersistentObject()
   , inputDesign_(inputDesign)
   , outputDesign_(outputDesign)
@@ -98,9 +98,9 @@ SobolIndicesAlgorithmImplementation * SobolIndicesAlgorithmImplementation::clone
 
 /** Constructor with distribution / model parameters */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const Distribution & distribution,
-                                                                         const UnsignedInteger size,
-                                                                         const NumericalMathFunction & model,
-                                                                         const Bool computeSecondOrder)
+    const UnsignedInteger size,
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : PersistentObject()
   , inputDesign_()
   , outputDesign_()
@@ -119,7 +119,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   const UnsignedInteger inputDimension = model.getInputDimension();
   if (inputDimension != distribution.getDimension())
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. distribution dimension=" << distribution.getDimension()
-                                         <<", model input dimension = " << inputDimension;
+                                         << ", model input dimension = " << inputDimension;
   inputDesign_ = Generate(distribution, size, computeSecondOrder);
   outputDesign_ = model(inputDesign_);
 
@@ -136,8 +136,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
 
 /** Constructor with distribution / model parameters */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const WeightedExperiment & experiment,
-                                                                         const NumericalMathFunction & model,
-                                                                         const Bool computeSecondOrder)
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : PersistentObject()
   , inputDesign_()
   , outputDesign_()
@@ -156,7 +156,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   const UnsignedInteger inputDimension = model.getInputDimension();
   if (inputDimension != experiment.getDistribution().getDimension())
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. Experiment dimension=" << experiment.getDistribution().getDimension()
-                                         <<", model input dimension = " << inputDimension;
+                                         << ", model input dimension = " << inputDimension;
   inputDesign_ = Generate(experiment, computeSecondOrder);
   outputDesign_ = model(inputDesign_);
 
@@ -172,8 +172,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
 }
 
 NumericalSample SobolIndicesAlgorithmImplementation::Generate(const Distribution & distribution,
-                                                              const UnsignedInteger size,
-                                                              const Bool computeSecondOrder)
+    const UnsignedInteger size,
+    const Bool computeSecondOrder)
 {
   if (!distribution.hasIndependentCopula())
     throw InvalidDimensionException(HERE) << "In SensistivityAlgorithmImplementation::Generate, distribution should have independent copula";
@@ -204,7 +204,7 @@ NumericalSample SobolIndicesAlgorithmImplementation::Generate(const Distribution
 }
 
 NumericalSample SobolIndicesAlgorithmImplementation::Generate(const WeightedExperiment & experiment,
-                                                              const Bool computeSecondOrder)
+    const Bool computeSecondOrder)
 {
   if (!experiment.getDistribution().hasIndependentCopula())
     throw InvalidDimensionException(HERE) << "In SensistivityAlgorithmImplementation::Generate, weighted's distribution should have independent copula";
@@ -248,18 +248,18 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const U
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension-1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const NumericalPoint firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   for (UnsignedInteger p = 0; p < inputDesign_.getDimension(); ++p)
   {
     if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-                    << p <<"=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
+              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
     // Another case : Si > STi
     if (varianceI_[marginalIndex][p] > varianceTI_[marginalIndex][p])
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-                    << p <<"=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
+              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
   }
   return firstOrderSensitivity;
 }
@@ -427,7 +427,7 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
     }
   }
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getSecondOrderIndices, marginalIndex should be in [0," << outputDimension-1 << "]";
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getSecondOrderIndices, marginalIndex should be in [0," << outputDimension - 1 << "]";
   return secondOrderIndices_.getSheet(marginalIndex);
 }
 
@@ -443,13 +443,13 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const U
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension-1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // Another case : Si > STi
     if (varianceI_[marginalIndex][p] > varianceTI_[marginalIndex][p])
       LOGWARN(OSS() << "The estimated total order Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
-                    << p <<"=" <<  varianceI_[marginalIndex][p] / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
+              << p << "=" <<  varianceI_[marginalIndex][p] / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
   }
   // return value
   return varianceTI_[marginalIndex] / referenceVariance_[marginalIndex] ;
@@ -541,7 +541,7 @@ String SobolIndicesAlgorithmImplementation::__repr__() const
 // Multiplication and sum of two NumericalSamples
 // TODO Write method in NumericalSample ?
 NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const NumericalSample & x,
-                                                                         const NumericalSample & y) const
+    const NumericalSample & y) const
 {
   // Internal method
   // Suppose that samples have the same size, same dimension
@@ -561,9 +561,9 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const N
 
 // Multiplication and sum of two NumericalSamples, contained in the sampe sample
 NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const NumericalSample & sample,
-                                                                         const UnsignedInteger size,
-                                                                         const UnsignedInteger indexX,
-                                                                         const UnsignedInteger indexY) const
+    const UnsignedInteger size,
+    const UnsignedInteger indexX,
+    const UnsignedInteger indexY) const
 {
   // Internal method
   // Suppose that samples have the same size, same dimension
@@ -588,7 +588,7 @@ String SobolIndicesAlgorithmImplementation::__str__(const String & offset) const
 
 /** Internal method that compute Vi/VTi using a collection of samples */
 NumericalSample SobolIndicesAlgorithmImplementation::computeIndices(const NumericalSample & design,
-                                                                    NumericalSample & VTi) const
+    NumericalSample & VTi) const
 {
   // Method is defined in Jansan/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);
@@ -699,7 +699,7 @@ NumericalSample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const In
     NumericalScalar* yPermData = &y[0][0];
 
     const NumericalScalar* yData = &outputDesign_[p * size_][0];
-    for (UnsignedInteger k = 0; k < size_; ++k, yPermData+=outputDimension)
+    for (UnsignedInteger k = 0; k < size_; ++k, yPermData += outputDimension)
       memcpy(yPermData, &yData[indices[k] * outputDimension], outputDimension * sizeof(NumericalScalar));
     // add samples to the collection
     bootstrapDesign.add(y);
@@ -709,9 +709,9 @@ NumericalSample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const In
 
 /** Function that computes merged indices using Vi/VTi + variance  */
 NumericalPoint SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const NumericalSample & Vi,
-                                                                             const NumericalSample & VTi,
-                                                                             const NumericalPoint & variance,
-                                                                             NumericalPoint & mergedTotal) const
+    const NumericalSample & VTi,
+    const NumericalPoint & variance,
+    NumericalPoint & mergedTotal) const
 {
   // Generic implementation
   const UnsignedInteger inputDimension = Vi.getDimension();
@@ -732,15 +732,15 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeAggregatedIndices(con
 
 /* ImportanceFactors graph */
 Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const NumericalPointWithDescription & importanceFactors,
-                                                                 const String & title)
+    const String & title)
 {
   return DrawImportanceFactors(importanceFactors, importanceFactors.getDescription(), title);
 }
 
 /* ImportanceFactors graph */
 Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const NumericalPoint & values,
-                                                                 const Description & names,
-                                                                 const String & title)
+    const Description & names,
+    const String & title)
 {
   /* build data for the pie */
   const UnsignedInteger dimension = values.getDimension();

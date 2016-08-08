@@ -81,7 +81,7 @@ private:
 
   // Distribution and marginal degrees accessor
   void setDistributionAndMarginalDegrees(const Distribution & distribution,
-					 const Indices & marginalDegrees);
+                                         const Indices & marginalDegrees);
 
   // Marginal orthogonal univariate polynomial family collection
   OrthogonalUniVariatePolynomialFamilyCollection collection_;

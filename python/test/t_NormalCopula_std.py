@@ -92,7 +92,8 @@ try:
 
     # computeProbability
     spearman_corr = CorrelationMatrix([[1., .74], [.74, 1.]])
-    copula = NormalCopula(NormalCopula.GetCorrelationFromSpearmanCorrelation(spearman_corr))
+    copula = NormalCopula(
+        NormalCopula.GetCorrelationFromSpearmanCorrelation(spearman_corr))
     interval = Interval([0.958722, 0.902063], [1., 1.])
     prob = copula.computeProbability(interval)
     print("prob=%.6f" % prob)

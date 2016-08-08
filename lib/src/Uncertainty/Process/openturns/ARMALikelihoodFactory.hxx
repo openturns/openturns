@@ -175,7 +175,7 @@ private :
   /** likelihood estimate */
   NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & beta ) const;
 
- /** only used to pass data to be used in computeLogLikelihood and computeLogLikelihoodInequalityConstraint  */
+  /** only used to pass data to be used in computeLogLikelihood and computeLogLikelihoodInequalityConstraint  */
   mutable UnsignedInteger inputDimension_;
 
   /** only used to pass data to be used in computeLogLikelihoodInequalityConstraint */

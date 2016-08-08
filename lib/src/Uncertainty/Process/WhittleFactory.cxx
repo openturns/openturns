@@ -190,7 +190,7 @@ NumericalPoint WhittleFactory::computeLogLikelihoodInequalityConstraint(const Nu
 {
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("WhittleFactory-RootEpsilon");
 
-  NumericalPoint result(nbInequalityConstraint_,0.0);
+  NumericalPoint result(nbInequalityConstraint_, 0.0);
 
   UnsignedInteger constraintIndex = 0;
   // If not pure MA, check the roots of the AR polynom
@@ -247,7 +247,7 @@ NumericalMathFunction WhittleFactory::getLogLikelihoodFunction() const
 
 
 NumericalMathFunction WhittleFactory::getLogLikelihoodInequalityConstraint() const
-{	
+{
   return bindMethod <WhittleFactory, NumericalPoint, NumericalPoint> ( *this, &WhittleFactory::computeLogLikelihoodInequalityConstraint, currentP_ + currentQ_, nbInequalityConstraint_);
 }
 
@@ -394,7 +394,7 @@ ARMA WhittleFactory::build(const ProcessSample & sample) const
 ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria) const
 {
 
-  // Define Optimization problem 
+  // Define Optimization problem
   OptimizationProblem problem;
   problem.setMinimization(false);
 
@@ -436,19 +436,19 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
       // Optimize only if there is some ARMA parameters to estimate
       if (n > 0)
       {
-  	// Define Objective and Constraint functions for Optimization problem 
-  	problem.setObjective(getLogLikelihoodFunction());
- 	// use attributes to pass the data
-  	nbInequalityConstraint_ = m;
-	problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  	solver_.setProblem(problem);
-  	solver_.setStartingPoint(startingPoints_[pointIndex]);
+        // Define Objective and Constraint functions for Optimization problem
+        problem.setObjective(getLogLikelihoodFunction());
+        // use attributes to pass the data
+        nbInequalityConstraint_ = m;
+        problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
+        solver_.setProblem(problem);
+        solver_.setStartingPoint(startingPoints_[pointIndex]);
 
-  	// run Optimization problem
-  	solver_.run();
+        // run Optimization problem
+        solver_.run();
 
- 	// optimal point
-  	const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+        // optimal point
+        const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
         theta = optpoint;
       }
       // Compute the information criteria

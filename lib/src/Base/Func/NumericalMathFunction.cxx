@@ -443,7 +443,7 @@ Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP) cons
 }
 
 Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
-                                                const NumericalPoint & parameter)
+    const NumericalPoint & parameter)
 {
   copyOnWrite();
   return getImplementation()->parameterGradient(inP, parameter);
@@ -480,14 +480,14 @@ NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) co
 }
 
 NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP,
-                                                  const NumericalPoint & parameter)
+    const NumericalPoint & parameter)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameter);
 }
 
 NumericalSample NumericalMathFunction::operator() (const NumericalPoint & inP,
-                                                   const NumericalSample & parameters)
+    const NumericalSample & parameters)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameters);

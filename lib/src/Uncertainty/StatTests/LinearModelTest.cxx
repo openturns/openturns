@@ -166,21 +166,21 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const NumericalSample
 
 /*  */
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & firstSample,
-  const NumericalSample & secondSample,
-  const LinearModel & linearModel,
-  const NumericalScalar level,
-  const NumericalScalar breakPoint,
-  const NumericalScalar simulationSize)
+    const NumericalSample & secondSample,
+    const LinearModel & linearModel,
+    const NumericalScalar level,
+    const NumericalScalar breakPoint,
+    const NumericalScalar simulationSize)
 {
   const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
   const UnsignedInteger residualSize = firstSample.getSize();
 
-  /* Split the sample using the breakPoint*/ 
+  /* Split the sample using the breakPoint*/
   const UnsignedInteger breakIndex = std::floor(residualSize * breakPoint);
 
   NumericalScalar sumSelectResiduals = 0;
   for(UnsignedInteger i = 0; i < breakIndex; ++i)
-  { 
+  {
     const NumericalPoint residual(residuals[i]);
     sumSelectResiduals += residual.normSquare();
   }
@@ -189,7 +189,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
 
   /* compute Harrison McCabe statistic */
   const NumericalScalar hmc = sumSelectResiduals / sumSquaredResiduals;
-  
+
   /* p-value computed by simultation */
   NumericalScalar pValue = 0;
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
@@ -198,7 +198,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
     const NumericalSample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
     NumericalScalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
-    { 
+    {
       const NumericalPoint stantardSamplePoint(stantardSample[j]);
       sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
     }
@@ -216,11 +216,11 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
 
 /*  */
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & firstSample,
-  const NumericalSample & secondSample,
-  const NumericalScalar level,
-  const NumericalScalar breakPoint,
-  const NumericalScalar simulationSize)
-{   
+    const NumericalSample & secondSample,
+    const NumericalScalar level,
+    const NumericalScalar breakPoint,
+    const NumericalScalar simulationSize)
+{
   return LinearModelHarrisonMcCabe(firstSample, secondSample,
                                    LinearModelFactory().build(firstSample, secondSample, level),
                                    level,
@@ -230,9 +230,9 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const NumericalSample & fi
 
 /*  */
 TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firstSample,
-  const NumericalSample & secondSample,
-  const LinearModel & linearModel,
-  const NumericalScalar level)
+    const NumericalSample & secondSample,
+    const LinearModel & linearModel,
+    const NumericalScalar level)
 {
   const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
   const UnsignedInteger residualSize = firstSample.getSize();
@@ -266,9 +266,9 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firs
 
 /*  */
 TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firstSample,
-  const NumericalSample & secondSample,
-  const NumericalScalar level)
-{   
+    const NumericalSample & secondSample,
+    const NumericalScalar level)
+{
   return LinearModelBreuschPagan(firstSample, secondSample,
                                  LinearModelFactory().build(firstSample, secondSample, level),
                                  level);
@@ -277,10 +277,10 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const NumericalSample & firs
 
 /*  */
 TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firstSample,
-  const NumericalSample & secondSample,
-  const LinearModel & linearModel,
-  const String hypothesis,
-  const NumericalScalar level)
+    const NumericalSample & secondSample,
+    const LinearModel & linearModel,
+    const String hypothesis,
+    const NumericalScalar level)
 {
   const NumericalSample residuals(linearModel.getResidual(firstSample, secondSample));
   const UnsignedInteger residualSize = firstSample.getSize();
@@ -292,7 +292,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
   for(UnsignedInteger i = 1; i < residualSize; ++i)
   {
     const NumericalPoint residualDifference(residuals[i] - residuals[i - 1]);
-    sumSquaredDifference += residualDifference.normSquare(); 
+    sumSquaredDifference += residualDifference.normSquare();
   }
 
   /* Compute the Durbin Watson statistic */
@@ -309,7 +309,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
 
   Matrix AX(residualSize, dimension + 1);
   AX(0, 1) = firstSample[0][0] - firstSample[1][0];
-  AX(residualSize - 1, 1) = firstSample[residualSize-1][0] - firstSample[residualSize-2][0];
+  AX(residualSize - 1, 1) = firstSample[residualSize - 1][0] - firstSample[residualSize - 2][0];
   for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
   {
     AX(i + 1, 1) = -firstSample[i][0] + 2 * firstSample[i + 1][0] - firstSample[i + 2][0];
@@ -328,7 +328,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
   NumericalScalar pValue = 2 * DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
   Description description(1, "Hypothesis test: autocorrelation equals 0.");
   if(hypothesis == "Less")
-  { 
+  {
     pValue = 1 - pValue / 2;
     description[0] = "Hypothesis test: autocorrelation is less than 0";
   }
@@ -346,10 +346,10 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
 
 /*  */
 TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firstSample,
-  const NumericalSample & secondSample,
-  const String hypothesis,
-  const NumericalScalar level)
-{   
+    const NumericalSample & secondSample,
+    const String hypothesis,
+    const NumericalScalar level)
+{
   return LinearModelDurbinWatson(firstSample, secondSample,
                                  LinearModelFactory().build(firstSample, secondSample, level),
                                  hypothesis,

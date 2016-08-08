@@ -6,6 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
+
 def clean(polynomial):
     coefficients = polynomial.getCoefficients()
     for i in range(coefficients.getDimension()):
@@ -14,20 +15,21 @@ def clean(polynomial):
     return ot.UniVariatePolynomial(coefficients)
 
 iMax = 5
-distributionCollection = [ot.Laplace(1.0, 0.0), \
-                          ot.Logistic(0.0, 1.0), \
-                          ot.Normal(0.0, 1.0), \
-                          ot.Normal(1.0, 1.0), \
-                          ot.Rayleigh(1.0), \
-                          ot.Student(22.0), \
-                          ot.Triangular(-1.0, 0.3, 1.0), \
-                          ot.Uniform(-1.0, 1.0), \
-                          ot.Uniform(-1.0, 3.0), \
+distributionCollection = [ot.Laplace(1.0, 0.0),
+                          ot.Logistic(0.0, 1.0),
+                          ot.Normal(0.0, 1.0),
+                          ot.Normal(1.0, 1.0),
+                          ot.Rayleigh(1.0),
+                          ot.Student(22.0),
+                          ot.Triangular(-1.0, 0.3, 1.0),
+                          ot.Uniform(-1.0, 1.0),
+                          ot.Uniform(-1.0, 3.0),
                           ot.Weibull(1.0, 3.0)]
 for n in range(len(distributionCollection)):
     distribution = distributionCollection[n]
     name = distribution.getClassName()
-    polynomialFactory = ot.StandardDistributionPolynomialFactory(ot.AdaptiveStieltjesAlgorithm(distribution))
+    polynomialFactory = ot.StandardDistributionPolynomialFactory(
+        ot.AdaptiveStieltjesAlgorithm(distribution))
     print("polynomialFactory(", name, "=", polynomialFactory, ")")
     for i in range(iMax):
         print(name, " polynomial(", i, ")=", clean(polynomialFactory.build(i)))
@@ -39,11 +41,12 @@ for n in range(len(distributionCollection)):
     M = ot.SymmetricMatrix(iMax)
     for i in range(iMax):
         pI = polynomialFactory.build(i)
-        for j in range(i+1):
+        for j in range(i + 1):
             pJ = polynomialFactory.build(j)
-            
+
             def kernel(x):
                 return [pI(x[0]) * pJ(x[0]) * distribution.computePDF(x)]
-            
-            M[i, j] = ot.GaussKronrod().integrate(ot.PythonFunction(1, 1, kernel), distribution.getRange())[0]
+
+            M[i, j] = ot.GaussKronrod().integrate(
+                ot.PythonFunction(1, 1, kernel), distribution.getRange())[0]
     print("M=\n", M.clean(1.0e-8))

@@ -47,7 +47,7 @@ SoizeGhanemFactory::SoizeGhanemFactory()
 
 /* Constructor */
 SoizeGhanemFactory::SoizeGhanemFactory(const Distribution & measure,
-						 const Bool useCopula)
+                                       const Bool useCopula)
   : OrthogonalFunctionFactory(measure)
   , productPolynomial_()
   , phi_(measure.getDimension())
@@ -59,8 +59,8 @@ SoizeGhanemFactory::SoizeGhanemFactory(const Distribution & measure,
 
 /* Constructor */
 SoizeGhanemFactory::SoizeGhanemFactory(const Distribution & measure,
-						 const EnumerateFunction & phi,
-						 const Bool useCopula)
+                                       const EnumerateFunction & phi,
+                                       const Bool useCopula)
   : OrthogonalFunctionFactory(measure)
   , productPolynomial_()
   , phi_(phi)
@@ -102,17 +102,17 @@ NumericalMathFunction SoizeGhanemFactory::build(const UnsignedInteger index) con
   return productPolynomial * adaptationFactor_;
 }
 
-  /* Build the multivariate polynomial factory associated with the marginal distributions */
+/* Build the multivariate polynomial factory associated with the marginal distributions */
 void SoizeGhanemFactory::buildProductPolynomialAndAdaptation(const Bool useCopula)
 {
   const UnsignedInteger dimension = measure_.getDimension();
   Collection<Distribution> marginals(dimension);
   OrthogonalProductPolynomialFactory::PolynomialFamilyCollection coll(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      marginals[i] = measure_.getMarginal(i);
-      coll[i] = StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(marginals[i]));
-    }
+  {
+    marginals[i] = measure_.getMarginal(i);
+    coll[i] = StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(marginals[i]));
+  }
   productPolynomial_ = OrthogonalProductPolynomialFactory(coll, phi_);
   // Build the adaptation factor only if needed
   if (!hasIndependentCopula_)
@@ -124,10 +124,10 @@ String SoizeGhanemFactory::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << getClassName()
-  << " productPolynomial=" << productPolynomial_
-  << " phi=" << phi_
-  << " measure=" << measure_
-  << " hasIndependentCopula=" << hasIndependentCopula_;
+      << " productPolynomial=" << productPolynomial_
+      << " phi=" << phi_
+      << " measure=" << measure_
+      << " hasIndependentCopula=" << hasIndependentCopula_;
   if (!hasIndependentCopula_)
     oss << " adaptationFactor=" << adaptationFactor_;
   return oss;

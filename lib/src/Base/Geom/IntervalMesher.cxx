@@ -225,14 +225,14 @@ Mesh IntervalMesher::build(const Interval & interval,
           // F = (dx + i*dx,      j*dy, dz + k*dz) -> cellIndex + 1 +       mp1 * np1
           // G = (     i*dx, dy + j*dy, dz + k*dz) -> cellIndex +     mp1 + mp1 * np1
           // H = (dx + i*dx, dy + j*dy, dz + k*dz) -> cellIndex + 1 + mp1 + mp1 * np1
-	  // Its faces are
-	  //   G----H
-	  //  /|   /|
-	  // E----F |
-	  // | C--|-D
-	  // |/   |/
-	  // A----B
-	  // ABDC/EFHG/ACGE/BDHF/ABFE/CDHG
+          // Its faces are
+          //   G----H
+          //  /|   /|
+          // E----F |
+          // | C--|-D
+          // |/   |/
+          // A----B
+          // ABDC/EFHG/ACGE/BDHF/ABFE/CDHG
           const UnsignedInteger a = cellIndex;
           const UnsignedInteger b = cellIndex + 1;
           const UnsignedInteger c = cellIndex + mp1;
@@ -243,119 +243,119 @@ Mesh IntervalMesher::build(const Interval & interval,
           const UnsignedInteger h = cellIndex + 1 + mp1 + mp1np1;
           if (diamond)
           {
-	    // Center is the center of the cube (shortcut I)
-	    const NumericalPoint center((vertices[a] + vertices[b] + vertices[c] + vertices[d] + vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.125);
-	    const UnsignedInteger centerIndex = vertices.getSize();
-	    vertices.add(center);
-	    // c* is the center of the current face
-	    const NumericalPoint centerABDC((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
-	    const UnsignedInteger centerABDCIndex = vertices.getSize();
-	    vertices.add(centerABDC);
-	    // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
-	    index[0] = centerABDCIndex;
-	    index[1] = b;
-	    index[2] = a;
-	    index[3] = centerIndex;
-	    simplices.add(index);
-	    index[1] = d;
-	    index[2] = b;
-	    simplices.add(index);
-	    index[1] = c;
-	    index[2] = d;
-	    simplices.add(index);
-	    index[1] = a;
-	    index[2] = c;
-	    simplices.add(index);
-	    // c* is the center of the current face
-	    const NumericalPoint centerEFHG((vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.25);
-	    const UnsignedInteger centerEFHGIndex = vertices.getSize();
-	    vertices.add(centerEFHG);
-	    // EFHG->c*EFI/c*FHI/c*HGI/c*GEI
-	    index[0] = centerEFHGIndex;
-	    index[1] = e;
-	    index[2] = f;
-	    simplices.add(index);
-	    index[1] = f;
-	    index[2] = h;
-	    simplices.add(index);
-	    index[1] = h;
-	    index[2] = g;
-	    simplices.add(index);
-	    index[1] = g;
-	    index[2] = e;
-	    simplices.add(index);
-	    // c* is the center of the current face
-	    const NumericalPoint centerACGE((vertices[a] + vertices[c] + vertices[e] + vertices[g]) * 0.25);
-	    const UnsignedInteger centerACGEIndex = vertices.getSize();
-	    vertices.add(centerACGE);
-	    // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
-	    index[0] = centerACGEIndex;
-	    index[1] = c;
-	    index[2] = a;
-	    simplices.add(index);
-	    index[1] = g;
-	    index[2] = c;
-	    simplices.add(index);
-	    index[1] = e;
-	    index[2] = g;
-	    simplices.add(index);
-	    index[1] = a;
-	    index[2] = e;
-	    simplices.add(index);
-	    // c* is the center of the current face
-	    const NumericalPoint centerBDHF((vertices[b] + vertices[d] + vertices[f] + vertices[h]) * 0.25);
-	    const UnsignedInteger centerBDHFIndex = vertices.getSize();
-	    vertices.add(centerBDHF);
-	    // BDHF->c*BDI/c*DHI/c*HFI/c*FBI
-	    index[0] = centerBDHFIndex;
-	    index[1] = b;
-	    index[2] = d;
-	    simplices.add(index);
-	    index[1] = d;
-	    index[2] = h;
-	    simplices.add(index);
-	    index[1] = h;
-	    index[2] = f;
-	    simplices.add(index);
-	    index[1] = f;
-	    index[2] = b;
-	    simplices.add(index);
-	    // c* is the center of the current face
-	    const NumericalPoint centerABFE((vertices[a] + vertices[b] + vertices[e] + vertices[f]) * 0.25);
-	    const UnsignedInteger centerABFEIndex = vertices.getSize();
-	    vertices.add(centerABFE);
-	    // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
-	    index[0] = centerABFEIndex;
-	    index[1] = a;
-	    index[2] = b;
-	    simplices.add(index);
-	    index[1] = b;
-	    index[2] = f;
-	    simplices.add(index);
-	    index[1] = f;
-	    index[2] = e;
-	    simplices.add(index);
-	    index[1] = e;
-	    index[2] = a;
-	    simplices.add(index);
-	    // c* is the center of the current face
-	    const NumericalPoint centerCDHG((vertices[c] + vertices[d] + vertices[g] + vertices[h]) * 0.25);
-	    const UnsignedInteger centerCDHGIndex = vertices.getSize();
-	    vertices.add(centerCDHG);
-	    // CDHG->c*DCI/c*HDI/c*GHI/c*CGI
-	    index[0] = centerCDHGIndex;
-	    index[1] = d;
-	    index[2] = c;
-	    simplices.add(index);
-	    index[1] = h;
-	    index[2] = d;
-	    simplices.add(index);
-	    index[1] = g;
-	    index[2] = h;
-	    simplices.add(index);
-	    index[1] = c;
-	    index[2] = g;
-	    simplices.add(index);
+            // Center is the center of the cube (shortcut I)
+            const NumericalPoint center((vertices[a] + vertices[b] + vertices[c] + vertices[d] + vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.125);
+            const UnsignedInteger centerIndex = vertices.getSize();
+            vertices.add(center);
+            // c* is the center of the current face
+            const NumericalPoint centerABDC((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
+            const UnsignedInteger centerABDCIndex = vertices.getSize();
+            vertices.add(centerABDC);
+            // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
+            index[0] = centerABDCIndex;
+            index[1] = b;
+            index[2] = a;
+            index[3] = centerIndex;
+            simplices.add(index);
+            index[1] = d;
+            index[2] = b;
+            simplices.add(index);
+            index[1] = c;
+            index[2] = d;
+            simplices.add(index);
+            index[1] = a;
+            index[2] = c;
+            simplices.add(index);
+            // c* is the center of the current face
+            const NumericalPoint centerEFHG((vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.25);
+            const UnsignedInteger centerEFHGIndex = vertices.getSize();
+            vertices.add(centerEFHG);
+            // EFHG->c*EFI/c*FHI/c*HGI/c*GEI
+            index[0] = centerEFHGIndex;
+            index[1] = e;
+            index[2] = f;
+            simplices.add(index);
+            index[1] = f;
+            index[2] = h;
+            simplices.add(index);
+            index[1] = h;
+            index[2] = g;
+            simplices.add(index);
+            index[1] = g;
+            index[2] = e;
+            simplices.add(index);
+            // c* is the center of the current face
+            const NumericalPoint centerACGE((vertices[a] + vertices[c] + vertices[e] + vertices[g]) * 0.25);
+            const UnsignedInteger centerACGEIndex = vertices.getSize();
+            vertices.add(centerACGE);
+            // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
+            index[0] = centerACGEIndex;
+            index[1] = c;
+            index[2] = a;
+            simplices.add(index);
+            index[1] = g;
+            index[2] = c;
+            simplices.add(index);
+            index[1] = e;
+            index[2] = g;
+            simplices.add(index);
+            index[1] = a;
+            index[2] = e;
+            simplices.add(index);
+            // c* is the center of the current face
+            const NumericalPoint centerBDHF((vertices[b] + vertices[d] + vertices[f] + vertices[h]) * 0.25);
+            const UnsignedInteger centerBDHFIndex = vertices.getSize();
+            vertices.add(centerBDHF);
+            // BDHF->c*BDI/c*DHI/c*HFI/c*FBI
+            index[0] = centerBDHFIndex;
+            index[1] = b;
+            index[2] = d;
+            simplices.add(index);
+            index[1] = d;
+            index[2] = h;
+            simplices.add(index);
+            index[1] = h;
+            index[2] = f;
+            simplices.add(index);
+            index[1] = f;
+            index[2] = b;
+            simplices.add(index);
+            // c* is the center of the current face
+            const NumericalPoint centerABFE((vertices[a] + vertices[b] + vertices[e] + vertices[f]) * 0.25);
+            const UnsignedInteger centerABFEIndex = vertices.getSize();
+            vertices.add(centerABFE);
+            // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
+            index[0] = centerABFEIndex;
+            index[1] = a;
+            index[2] = b;
+            simplices.add(index);
+            index[1] = b;
+            index[2] = f;
+            simplices.add(index);
+            index[1] = f;
+            index[2] = e;
+            simplices.add(index);
+            index[1] = e;
+            index[2] = a;
+            simplices.add(index);
+            // c* is the center of the current face
+            const NumericalPoint centerCDHG((vertices[c] + vertices[d] + vertices[g] + vertices[h]) * 0.25);
+            const UnsignedInteger centerCDHGIndex = vertices.getSize();
+            vertices.add(centerCDHG);
+            // CDHG->c*DCI/c*HDI/c*GHI/c*CGI
+            index[0] = centerCDHGIndex;
+            index[1] = d;
+            index[2] = c;
+            simplices.add(index);
+            index[1] = h;
+            index[2] = d;
+            simplices.add(index);
+            index[1] = g;
+            index[2] = h;
+            simplices.add(index);
+            index[1] = c;
+            index[2] = g;
+            simplices.add(index);
           }
           else
           {

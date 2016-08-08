@@ -111,9 +111,9 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
   } // k
   // The point has all its components greater than the corresponding range upper bound
   if (toKeep.getSize() == 0)
-    {
-      return 1.0;
-    }
+  {
+    return 1.0;
+  }
   // The point has some components greater than the corresponding range upper bound
   if (toKeep.getSize() != dimension)
   {

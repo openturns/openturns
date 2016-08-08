@@ -55,7 +55,7 @@ WeightedExperimentImplementation::WeightedExperimentImplementation(const Unsigne
 
 /* Constructor with parameters */
 WeightedExperimentImplementation::WeightedExperimentImplementation(const Distribution & distribution,
-                                       const UnsignedInteger size):
+    const UnsignedInteger size):
   ExperimentImplementation(),
   distribution_(distribution),
   size_(0),

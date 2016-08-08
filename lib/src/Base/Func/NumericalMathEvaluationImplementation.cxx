@@ -354,14 +354,14 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
 }
 
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
-                                                                  const NumericalPoint & parameter)
+    const NumericalPoint & parameter)
 {
   setParameter(parameter);
   return (*this)(inP);
 }
 
 NumericalSample NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
-                                                                   const NumericalSample & parameters)
+    const NumericalSample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
   NumericalSample outS(size, getOutputDimension());

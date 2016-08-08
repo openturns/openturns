@@ -36,7 +36,7 @@ print(result)
 
 # DPADS-2
 algo3 = algo2
-algo3.setQuadrantOrientation([1.]*dim) # enables DPADS-2, sets design
+algo3.setQuadrantOrientation([1.] * dim)  # enables DPADS-2, sets design
 algo3.run()
 result = algo3.getResult()
 print(result)

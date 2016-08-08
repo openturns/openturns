@@ -66,16 +66,16 @@ public:
   virtual SobolIndicesAlgorithmImplementation * clone() const;
 
   /** First order indices accessor */
-  virtual NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex=0) const;
+  virtual NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the first order indices accessor */
   virtual Interval getFirstOrderIndicesInterval() const;
 
   /** Second order indices accessor */
-  virtual SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex=0) const;
+  virtual SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  virtual NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex=0) const;
+  virtual NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the total order indices accessor */
   virtual Interval getTotalOrderIndicesInterval() const;

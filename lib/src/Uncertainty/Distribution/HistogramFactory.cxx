@@ -62,13 +62,13 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
   const NumericalScalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   if (max == min)
-    {
-      const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon");
-      const NumericalScalar delta = std::max(std::abs(min), 10.0) * epsilon;
-      Histogram result(min - 0.5 * delta, NumericalPoint(1, delta), NumericalPoint(1, 1.0));
-      result.setDescription(sample.getDescription());
-      return result;      
-    }
+  {
+    const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon");
+    const NumericalScalar delta = std::max(std::abs(min), 10.0) * epsilon;
+    Histogram result(min - 0.5 * delta, NumericalPoint(1, delta), NumericalPoint(1, 1.0));
+    result.setDescription(sample.getDescription());
+    return result;
+  }
   const UnsignedInteger size = sample.getSize();
   // First, try to use the robust estimation of dispersion based on inter-quartile
   NumericalScalar hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));

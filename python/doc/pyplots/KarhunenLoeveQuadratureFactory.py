@@ -9,7 +9,8 @@ basisSize = 10
 experiment = ot.LHSExperiment(basis.getMeasure(), 10000)
 mustScale = False
 threshold = 0.001
-factory = ot.KarhunenLoeveQuadratureFactory(domain, experiment, basis, basisSize, mustScale, threshold)
+factory = ot.KarhunenLoeveQuadratureFactory(
+    domain, experiment, basis, basisSize, mustScale, threshold)
 model = ot.AbsoluteExponential([1.0])
 ev = ot.NumericalPoint()
 functions = factory.build(model, ev)
@@ -17,7 +18,8 @@ g = ot.Graph()
 g.setXTitle("$t$")
 g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
 for i in range(functions.getSize()):
-    g.add((functions.build(i) * ot.LinearNumericalMathFunction(ot.NumericalPoint(domain.getDimension()), ot.NumericalPoint(1, sqrt(ev[i])), ot.Matrix(1, domain.getDimension()))).draw(-1.0, 1.0, 256))
+    g.add((functions.build(i) * ot.LinearNumericalMathFunction(ot.NumericalPoint(domain.getDimension()),
+                                                               ot.NumericalPoint(1, sqrt(ev[i])), ot.Matrix(1, domain.getDimension()))).draw(-1.0, 1.0, 256))
 g.setColors(ot.Drawable.BuildDefaultPalette(functions.getSize()))
 
 fig = plt.figure(figsize=(6, 4))

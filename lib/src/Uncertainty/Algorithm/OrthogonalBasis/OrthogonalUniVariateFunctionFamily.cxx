@@ -62,7 +62,7 @@ Distribution OrthogonalUniVariateFunctionFamily::getMeasure() const
 String OrthogonalUniVariateFunctionFamily::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << " implementation=" << getImplementation()->__repr__();
+         << " implementation=" << getImplementation()->__repr__();
 }
 
 END_NAMESPACE_OPENTURNS

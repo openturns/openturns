@@ -41,8 +41,8 @@ public:
 
   /** Parameter constructor */
   explicit HaarWavelet(const UnsignedInteger j = 0,
-                               const UnsignedInteger k = 0,
-			       const Bool isScaling = true);
+                       const UnsignedInteger k = 0,
+                       const Bool isScaling = true);
 
   /** Virtual constructor */
   virtual HaarWavelet * clone() const;

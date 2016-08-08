@@ -90,7 +90,7 @@ NumericalScalar ExponentialModel::computeStandardRepresentative(const NumericalP
 
 /** Gradient */
 Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
-                                         const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   /* Computation of the gradient
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
@@ -213,7 +213,7 @@ String ExponentialModel::__str__(const String & offset) const
   oss << ExponentialModel::GetClassName();
   oss << "(input dimension=" << spatialDimension_
       << ", scale=" << getScale()
-  << ", amplitude=" << getAmplitude();
+      << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
     oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
   else

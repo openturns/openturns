@@ -25,7 +25,7 @@ using namespace OT;
 using namespace OT::Test;
 
 inline NumericalScalar sobol(const Indices & indices,
-                      const NumericalPoint & a)
+                             const NumericalPoint & a)
 {
   NumericalScalar value = 1.0;
   for (UnsignedInteger i = 0; i < indices.getSize(); ++i)

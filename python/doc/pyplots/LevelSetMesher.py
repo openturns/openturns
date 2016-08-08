@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create the mesher
-mesher = ot.LevelSetMesher([50]*2)
+mesher = ot.LevelSetMesher([50] * 2)
 
 # Create a level set
 function = ot.NumericalMathFunction(["x0", "x1"], ["10*(x0^3+x1)^2+x0^2"])
@@ -11,7 +11,7 @@ level = 0.5
 set = ot.LevelSet(function, level)
 
 # Mesh the level set
-mesh = mesher.build(set, ot.Interval([-1.0]*2, [1.0]*2))
+mesh = mesher.build(set, ot.Interval([-1.0] * 2, [1.0] * 2))
 
 # Draw the first mesh
 graph = mesh.draw()

@@ -99,7 +99,7 @@ void OrderStatisticsMarginalChecker::check() const
   }
   // Third test, find the minimum of F_i - F_{i+1}
 
-  // Initilalyse Optimization problem 
+  // Initilalyse Optimization problem
   OptimizationProblem problem;
 
   const FiniteDifferenceStep step(BlendedStep(NumericalPoint(1, std::pow(SpecFunc::NumericalScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::NumericalScalarEpsilon)));

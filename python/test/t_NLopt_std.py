@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 def printNumericalPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -29,7 +30,7 @@ linear = ot.NumericalMathFunction(
 dim = 4
 startingPoint = [0.0] * dim
 
-bounds = ot.Interval([-3.]*dim,[5.]*dim)
+bounds = ot.Interval([-3.] * dim, [5.] * dim)
 algoNames = ot.NLopt.GetAlgorithmNames()
 
 for algoName in algoNames:
@@ -47,14 +48,17 @@ for algoName in algoNames:
     for minimization in [True, False]:
         for inequality in [True, False]:
             for equality in [True, False]:
-                problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+                problem = ot.OptimizationProblem(
+                    linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
                 problem.setMinimization(minimization)
                 if inequality:
                     # x3 <= x1
-                    problem.setInequalityConstraint(ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['ineq'], ['x1-x3']))
+                    problem.setInequalityConstraint(ot.NumericalMathFunction(
+                        ['x1', 'x2', 'x3', 'x4'], ['ineq'], ['x1-x3']))
                 if equality:
                     # x4 = 2
-                    problem.setEqualityConstraint(ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['eq'], ['x4-2']))
+                    problem.setEqualityConstraint(ot.NumericalMathFunction(
+                        ['x1', 'x2', 'x3', 'x4'], ['eq'], ['x4-2']))
                 try:
                     ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
@@ -66,9 +70,11 @@ for algoName in algoNames:
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()
-                    print('x^=', printNumericalPoint(result.getOptimalPoint(), 3))
+                    print('x^=', printNumericalPoint(
+                        result.getOptimalPoint(), 3))
                 except:
-                    print('-- Not supported: algo=', algoName, 'inequality=', inequality, 'equality=', equality)
+                    print('-- Not supported: algo=', algoName,
+                          'inequality=', inequality, 'equality=', equality)
 
 # FORM
 f = ot.NumericalMathFunction(
@@ -90,4 +96,5 @@ solver.setMaximumConstraintError(1.0e-10)
 algo = ot.FORM(solver, myEvent, mean)
 algo.run()
 result = algo.getResult()
-print('generalized reliability index=%.6f' % result.getGeneralisedReliabilityIndex())
+print('generalized reliability index=%.6f' %
+      result.getGeneralisedReliabilityIndex())

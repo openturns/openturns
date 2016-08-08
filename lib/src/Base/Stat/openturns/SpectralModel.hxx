@@ -88,7 +88,7 @@ public:
   /** Spatial correlation accessor */
   CorrelationMatrix getSpatialCorrelation() const;
 
-/** String converter */
+  /** String converter */
   virtual String __repr__() const;
 
   /** String converter */

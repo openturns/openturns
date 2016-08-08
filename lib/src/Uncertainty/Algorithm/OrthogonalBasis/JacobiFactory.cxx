@@ -90,19 +90,19 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
   // To avoid spurious -0.0
   if (alpha_ != beta_) recurrenceCoefficients[1] = -factor2 * (alpha_ - beta_) * (alpha_ + beta_) / (twoNAlphaBetaP2 - 2);
   if (n == 1)
+  {
+    const NumericalScalar epsilon = alpha_ + beta_ + 1.0;
+    // The case where |epsilon| << 1 leads to an indeterminate form 0/0
+    // when n==1, which is the only case where such a problem can occur.
+    // We use a series expansion, the threshold 1.0e-8 insures that the
+    // resulting error is less than machine precision
+    // Here we know that alpha>-1, beta>-1 so alpha+beta+1=0 imposes beta<0
+    if (std::abs(epsilon) < 1.0e-8)
     {
-      const NumericalScalar epsilon = alpha_ + beta_ + 1.0;
-      // The case where |epsilon| << 1 leads to an indeterminate form 0/0
-      // when n==1, which is the only case where such a problem can occur. 
-      // We use a series expansion, the threshold 1.0e-8 insures that the
-      // resulting error is less than machine precision
-      // Here we know that alpha>-1, beta>-1 so alpha+beta+1=0 imposes beta<0
-      if (std::abs(epsilon) < 1.0e-8)
-	{
-	  recurrenceCoefficients[2] = (1.5 * epsilon / (-1.0 + beta_) + beta_ * (3.0 - 3.125 * epsilon)) * sqrt(2.0 * (1.0 + beta_) / (beta_ * (-1.0 + beta_) * (2.0 + beta_)));
-	  return recurrenceCoefficients;
-	} 
+      recurrenceCoefficients[2] = (1.5 * epsilon / (-1.0 + beta_) + beta_ * (3.0 - 3.125 * epsilon)) * sqrt(2.0 * (1.0 + beta_) / (beta_ * (-1.0 + beta_) * (2.0 + beta_)));
+      return recurrenceCoefficients;
     }
+  }
   recurrenceCoefficients[2] = -twoNAlphaBetaP2 / (twoNAlphaBetaP2 - 2) * sqrt((nAlphaP1 - 1) * (nBetaP1 - 1) * (nAlphaP1 + beta_ - 1) * n * factor1 / (twoNAlphaBetaP2 - 3));
   return recurrenceCoefficients;
 }

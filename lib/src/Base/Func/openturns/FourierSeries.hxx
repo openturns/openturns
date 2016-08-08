@@ -42,7 +42,7 @@ public:
 
   /** Parameter constructor */
   explicit FourierSeries(const Bool isCosine = true,
-                                 const UnsignedInteger k = 0);
+                         const UnsignedInteger k = 0);
 
   /** Virtual constructor */
   virtual FourierSeries * clone() const;

@@ -12,6 +12,7 @@ try:
     print('}')
 
 except:
-    import os, traceback
+    import os
+    import traceback
     traceback.print_exc()
     os._exit(1)

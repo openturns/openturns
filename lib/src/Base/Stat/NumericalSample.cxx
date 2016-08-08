@@ -104,7 +104,7 @@ NumericalSample::NumericalSample(const UnsignedInteger size,
 NumericalSample::NumericalSample(const NumericalSample other,
                                  const UnsignedInteger first,
                                  const UnsignedInteger last)
-  : TypedInterfaceObject<NumericalSampleImplementation>(new NumericalSampleImplementation(*other.getImplementation(), other.getImplementation()->begin()+first, other.getImplementation()->begin()+last))
+  : TypedInterfaceObject<NumericalSampleImplementation>(new NumericalSampleImplementation(*other.getImplementation(), other.getImplementation()->begin() + first, other.getImplementation()->begin() + last))
 {
   // Nothing to do
 }

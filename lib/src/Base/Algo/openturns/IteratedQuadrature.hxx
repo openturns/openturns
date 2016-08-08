@@ -79,9 +79,9 @@ private:
   public:
     /* Default constructor */
     PartialFunctionWrapper(const IteratedQuadrature & quadrature,
-			   const NumericalMathFunction & function,
-			   const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds,
-			   const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds)
+                           const NumericalMathFunction & function,
+                           const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds,
+                           const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds)
       : NumericalMathFunctionImplementation()
       , quadrature_(quadrature)
       , function_(function)
@@ -90,7 +90,7 @@ private:
     {
       // Nothing to do
     }
-    
+
     NumericalPoint operator()(const NumericalPoint & point) const
     {
       // Create the arguments of the local integration problem
@@ -102,13 +102,13 @@ private:
       IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
       IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
       for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, point);
-	  upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, point);
-	}
+      {
+        lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, point);
+        upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, point);
+      }
       const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
       for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
-	if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
+        if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
       return value;
     }
 
@@ -124,21 +124,21 @@ private:
       const NumericalSample sampleA(lowerBounds_[0](sample));
       const NumericalSample sampleB(upperBounds_[0](sample));
       for (UnsignedInteger k = 0; k < sampleSize; ++k)
-	{
-	  const NumericalPoint x(sample[k]);
-	  // Create the arguments of the local integration problem
-	  const NumericalMathFunction function(function_, index, x);
-	  const NumericalScalar a = sampleA[k][0];
-	  const NumericalScalar b = sampleB[k][0];
-	  for (UnsignedInteger i = 0; i < size; ++i)
-	    {
-	      lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, x);
-	      upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, x);
-	    } // Loop over bound functions
-	  result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
-	  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-	    if (!SpecFunc::IsNormal(result[k][i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
-	} // Loop over sample points
+      {
+        const NumericalPoint x(sample[k]);
+        // Create the arguments of the local integration problem
+        const NumericalMathFunction function(function_, index, x);
+        const NumericalScalar a = sampleA[k][0];
+        const NumericalScalar b = sampleB[k][0];
+        for (UnsignedInteger i = 0; i < size; ++i)
+        {
+          lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, x);
+          upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, x);
+        } // Loop over bound functions
+        result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
+        for (UnsignedInteger i = 0; i < outputDimension; ++i)
+          if (!SpecFunc::IsNormal(result[k][i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+      } // Loop over sample points
       return result;
     }
 

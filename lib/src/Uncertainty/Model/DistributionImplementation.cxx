@@ -764,10 +764,10 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, dimension_, 1));
   NumericalScalar probability;
   if (dimension_ == 1)
-    {
-      NumericalScalar error;
-      probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
-    }
+  {
+    NumericalScalar error;
+    probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
+  }
   else probability = IteratedQuadrature().integrate(fPDF, reducedInterval)[0];
   return std::min(1.0, std::max(0.0, probability));
 }
@@ -1649,8 +1649,8 @@ NumericalPoint DistributionImplementation::computeConditionalCDF(const Numerical
       else if (x[i] > xMin)
       {
         // Numerical integration with respect to x
-	p_conditionalPDFWrapper_->setParameter(y[i]);
-	const NumericalPoint value(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, x[i])));
+        p_conditionalPDFWrapper_->setParameter(y[i]);
+        const NumericalPoint value(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, x[i])));
         result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning[i][0]));
       } // xMin < x < xMax
     } // pdfConditioning[i][0] > 0
@@ -2001,13 +2001,13 @@ void DistributionImplementation::computeCovarianceContinuous() const
         const NumericalScalar muJ = mean_[columnIndex];
         const Implementation marginalDistribution(getMarginal(indices));
         if (!marginalDistribution->hasIndependentCopula())
-	  {
-	    // Compute the covariance element
-	    const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
-	    const Interval interval(marginalDistribution->getRange());
-	    const NumericalPoint value(integrator.integrate(kernel, interval));
-	    covariance_(rowIndex, columnIndex) = integrator.integrate(kernel.clone(), interval)[0];
-	  }
+        {
+          // Compute the covariance element
+          const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
+          const Interval interval(marginalDistribution->getRange());
+          const NumericalPoint value(integrator.integrate(kernel, interval));
+          covariance_(rowIndex, columnIndex) = integrator.integrate(kernel.clone(), interval)[0];
+        }
       } // loop over column indices
     } // loop over row indices
   } // if !hasIndependentCopula
@@ -2182,14 +2182,14 @@ CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
 CorrelationMatrix DistributionImplementation::getKendallTau() const
 {
   if (isElliptical())
-    {
-      const CorrelationMatrix shape(getCorrelation());
-      CorrelationMatrix tau(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	for(UnsignedInteger j = 0; j < i; ++j)
-	  tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
-      return tau;
-    }
+  {
+    const CorrelationMatrix shape(getCorrelation());
+    CorrelationMatrix tau(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for(UnsignedInteger j = 0; j < i; ++j)
+        tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
+    return tau;
+  }
   return getCopula()->getKendallTau();
 }
 

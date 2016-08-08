@@ -275,7 +275,7 @@ NumericalPoint Uniform::getParameter() const
 
 void Uniform::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Uniform(parameter[0], parameter[1]);
   setWeight(w);

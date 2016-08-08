@@ -197,7 +197,7 @@ void TemporalNormalProcess::initialize() const
       try
       {
         covarianceHMatrix_.factorize("LLt");
-	continuationCondition = false;
+        continuationCondition = false;
       }
       catch (InternalException)
       {
@@ -218,7 +218,7 @@ void TemporalNormalProcess::initialize() const
       try
       {
         covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
-	continuationCondition = false;
+        continuationCondition = false;
       }
       catch (...)
       {

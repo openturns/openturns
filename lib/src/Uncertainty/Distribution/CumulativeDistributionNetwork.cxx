@@ -42,7 +42,7 @@ CumulativeDistributionNetwork::CumulativeDistributionNetwork()
 
 /* Parameters constructor */
 CumulativeDistributionNetwork::CumulativeDistributionNetwork(const DistributionCollection & coll,
-							     const BipartiteGraph & graph)
+    const BipartiteGraph & graph)
   : DistributionImplementation()
   , distributionCollection_()
   , graph_(graph)
@@ -105,23 +105,23 @@ void CumulativeDistributionNetwork::computeRange()
   const Interval::BoolCollection infiniteUpperBoundsFlags(dim, false);
   Interval range(infiniteLowerBounds, infiniteUpperBounds, infiniteLowerBoundsFlags, infiniteUpperBoundsFlags);
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    NumericalPoint lowerBounds(infiniteLowerBounds);
+    NumericalPoint upperBounds(infiniteUpperBounds);
+    Interval::BoolCollection lowerBoundsFlags(infiniteLowerBoundsFlags);
+    Interval::BoolCollection upperBoundsFlags(infiniteUpperBoundsFlags);
+    Interval cdfRange(distributionCollection_[i].getRange());
+    const Indices indices(graph_[i]);
+    for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
-      NumericalPoint lowerBounds(infiniteLowerBounds);
-      NumericalPoint upperBounds(infiniteUpperBounds);
-      Interval::BoolCollection lowerBoundsFlags(infiniteLowerBoundsFlags);
-      Interval::BoolCollection upperBoundsFlags(infiniteUpperBoundsFlags);
-      Interval cdfRange(distributionCollection_[i].getRange());
-      const Indices indices(graph_[i]);
-      for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
-	{
-	  const UnsignedInteger index = indices[j];
-	  lowerBounds[index] = cdfRange.getLowerBound()[j];
-	  upperBounds[index] = cdfRange.getUpperBound()[j];
-	  lowerBoundsFlags[index] = cdfRange.getFiniteLowerBound()[j];
-	  upperBoundsFlags[index] = cdfRange.getFiniteUpperBound()[j];
-	  range = range.intersect(Interval(lowerBounds, upperBounds, lowerBoundsFlags, upperBoundsFlags));
-	}
-    } // Red nodes
+      const UnsignedInteger index = indices[j];
+      lowerBounds[index] = cdfRange.getLowerBound()[j];
+      upperBounds[index] = cdfRange.getUpperBound()[j];
+      lowerBoundsFlags[index] = cdfRange.getFiniteLowerBound()[j];
+      upperBoundsFlags[index] = cdfRange.getFiniteUpperBound()[j];
+      range = range.intersect(Interval(lowerBounds, upperBounds, lowerBoundsFlags, upperBoundsFlags));
+    }
+  } // Red nodes
   setRange(range);
 }
 
@@ -188,15 +188,15 @@ NumericalSample CumulativeDistributionNetwork::getSample(const UnsignedInteger s
 }
 
 /* Extract the components of a full dimension point to feed the index distribution */
- NumericalPoint CumulativeDistributionNetwork::reducePoint(const NumericalPoint & point,
-							   const UnsignedInteger index) const
- {
-   const Indices indices(graph_[index]);
-   const UnsignedInteger size = indices.getSize();
-   NumericalPoint reducedPoint(size);
-   for (UnsignedInteger i = 0; i < size; ++i) reducedPoint[i] = point[indices[i]];
-   return reducedPoint;
- }
+NumericalPoint CumulativeDistributionNetwork::reducePoint(const NumericalPoint & point,
+    const UnsignedInteger index) const
+{
+  const Indices indices(graph_[index]);
+  const UnsignedInteger size = indices.getSize();
+  NumericalPoint reducedPoint(size);
+  for (UnsignedInteger i = 0; i < size; ++i) reducedPoint[i] = point[indices[i]];
+  return reducedPoint;
+}
 
 /* Get the PDF of the CumulativeDistributionNetwork */
 NumericalScalar CumulativeDistributionNetwork::computePDF(const NumericalPoint & point) const
@@ -230,23 +230,23 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
   DistributionCollection contributors(0);
   BipartiteGraph marginalGraph(0);
   for (UnsignedInteger j = 0; j < distributionCollection_.getSize(); ++j)
+  {
+    // Check if the current contributor contains k
+    UnsignedInteger localIndex = dimension;
+    Indices currentIndices(graph_[j]);
+    for (UnsignedInteger k = 0; k < currentIndices.getSize(); ++k)
+      if (i == currentIndices[k])
+      {
+        localIndex = k;
+        break;
+      }
+    // If the marginal index is in the current indices
+    if (localIndex < dimension)
     {
-      // Check if the current contributor contains k
-      UnsignedInteger localIndex = dimension;
-      Indices currentIndices(graph_[j]);
-      for (UnsignedInteger k = 0; k < currentIndices.getSize(); ++k)
-	if (i == currentIndices[k])
-	  {
-	    localIndex = k;
-	    break;
-	  }
-      // If the marginal index is in the current indices
-      if (localIndex < dimension)
-	{
-	  contributors.add(distributionCollection_[j].getMarginal(localIndex));
-	  marginalGraph.add(Indices(1, 0));
-	}
-    } // Loop over the CDFs
+      contributors.add(distributionCollection_[j].getMarginal(localIndex));
+      marginalGraph.add(Indices(1, 0));
+    }
+  } // Loop over the CDFs
   if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
   return CumulativeDistributionNetwork(contributors, marginalGraph).clone();
 }
@@ -270,25 +270,25 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
       Indices currentIndices(graph_[j]);
       LOGINFO(OSS() << "j=" << j << ", currentIndices=" << currentIndices);
       for (UnsignedInteger k = 0; k < indices.getSize(); ++k)
-	{
-	  const UnsignedInteger i = indices[k];
-	  for (UnsignedInteger n = 0; n < currentIndices.getSize(); ++n)
-	    if (i == currentIndices[n])
-	      {
-		localIndices.add(n);
-		break;
-	      }
-	  LOGINFO(OSS() << "k=" << k << ", localIndices=" << localIndices);
-	} // Loop over the marginal indices
+  {
+    const UnsignedInteger i = indices[k];
+    for (UnsignedInteger n = 0; n < currentIndices.getSize(); ++n)
+      if (i == currentIndices[n])
+        {
+  	localIndices.add(n);
+  	break;
+        }
+    LOGINFO(OSS() << "k=" << k << ", localIndices=" << localIndices);
+  } // Loop over the marginal indices
       LOGINFO(OSS() << "j=" << j << ", currentIndices=" << currentIndices << ", localIndices=" << localIndices);
       // If the marginal index is in the current indices
       if (localIndices.getSize() > 0)
-	{
-	  contributors.add(distributionCollection_[j].getMarginal(localIndices));
-	  Indices graphPart(localIndices.getSize());
-	  graphPart.fill();
-	  marginalGraph.add(graphPart);
-	}
+  {
+    contributors.add(distributionCollection_[j].getMarginal(localIndices));
+    Indices graphPart(localIndices.getSize());
+    graphPart.fill();
+    marginalGraph.add(graphPart);
+  }
     } // Loop over the CDFs
   if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
   LOGINFO(OSS() << "in getMarginal(" << indices << "), marginal contributors=" << contributors << ", marginalGraph=" << marginalGraph);

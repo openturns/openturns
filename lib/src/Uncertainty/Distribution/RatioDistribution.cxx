@@ -344,7 +344,7 @@ void RatioDistribution::setParameter(const NumericalPoint & parameter)
   const UnsignedInteger leftSize = left_.getParameterDimension();
   const UnsignedInteger rightSize = right_.getParameterDimension();
   if (parameter.getSize() != leftSize + rightSize)
-    throw InvalidArgumentException(HERE) << "Error: expected "<< leftSize + rightSize << " values, got " << parameter.getSize();
+    throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " values, got " << parameter.getSize();
   NumericalPoint newLeftParameters(leftSize);
   NumericalPoint newRightParameters(rightSize);
   std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
