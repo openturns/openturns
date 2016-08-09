@@ -93,6 +93,7 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
+  if (interval.getDimension() == 1) return algorithm_.integrate(function, interval);
   // Build the bound functions associated with the interval
   const NumericalPoint lower(interval.getLowerBound());
   const NumericalPoint upper(interval.getUpperBound());
