@@ -68,13 +68,7 @@ NumericalPoint(PyObject * pyObj)
   return new OT::NumericalPoint(OT::convert<OT::_PySequence_,OT::NumericalPoint>(pyObj));
 }
 
-OT_COLLECTION_GETITEM(OT::NumericalPoint, OT::NumericalScalar)
-OT_COLLECTION_SETITEM(OT::NumericalPoint, OT::NumericalScalar)
-
-Bool __eq__(const NumericalPoint & other)
-{
- return operator == (*self, other);
-}
+OTCollectionOperatorsHelper(OT::NumericalPoint, OT::NumericalScalar)
 
 /* NumericalPoint __add__(const NumericalPoint & other) */
 /* { */

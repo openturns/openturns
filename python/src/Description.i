@@ -39,8 +39,7 @@ Description(PyObject * pyObj)
  return new OT::Description( *p_coll );
 }
 
-OT_COLLECTION_GETITEM(OT::Description, OT::String)
-OT_COLLECTION_SETITEM(OT::Description, OT::String)
+OTCollectionOperatorsHelper(OT::Description, OT::String)
 
 } // Description
 } // OT

@@ -17,3 +17,7 @@ desc6[1:3] =  [S2,S3]
 desc6[:] =  [S1,S2,S3,S4,S5]
 desc6 =  [S1,88,99,S4,S5]
 desc7 =  [forunicode,r2,n3]
+True
+False
+False
+True
