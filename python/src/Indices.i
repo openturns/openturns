@@ -25,18 +25,15 @@
 %apply const Indices & { const OT::Indices & };
 
 %include openturns/Indices.hxx
-namespace OT {  
+namespace OT {
 
 %extend Indices {
 
   Indices(const Indices & other) { return new OT::Indices(other); }  
 
   Indices(PyObject * pyObj) { return new OT::Indices( OT::convert<OT::_PySequence_,OT::Indices>(pyObj) ); }
-  
-  OT_COLLECTION_GETITEM(OT::Indices, OT::UnsignedInteger)
-  OT_COLLECTION_SETITEM(OT::Indices, OT::UnsignedInteger)
 
-  Bool __eq__(const Indices & other) { return (*self) == other; }
+  OTCollectionOperatorsHelper(OT::Indices, OT::UnsignedInteger)
 
 } // Indices
 
