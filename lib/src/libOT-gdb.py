@@ -37,7 +37,7 @@ class PointerPrinter(object):
         global int_ptr
 
         pointee = self.val['ptr_']['ptr_']
-        if long(pointee) == 0L:
+        if long(pointee) == long(0):
             return "NULL"
         else:
             atomicVal = self.val['ptr_']['count_']['p_impl_']['use_count_']['val_']
@@ -67,7 +67,7 @@ class PersistentCollectionPrinter(object):
     def to_string(self):
         # Dereference PersistentObject
         name = self.val['p_name_']['ptr_']['ptr_']
-        if long(name) == 0L:
+        if long(name) == long(0):
             decoratedName = "[unnamed]"
         else:
             decoratedName = "[name=%s]" % (str(name.dereference()))
