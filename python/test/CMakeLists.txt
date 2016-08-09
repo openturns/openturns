@@ -1,7 +1,5 @@
 #                                               -*- cmake -*-
 
-set (NEW_PATH "$ENV{PATH}:${INSTALL_DESTDIR}${EXAMPLE_PATH}")
-
 set (ADAPT_CHECK_TESTS_EXPONENT)
 set (REPLACE_EOL " | cat ")
 if (MINGW)
@@ -12,10 +10,7 @@ if (MINGW)
 endif ()
 
 
-set (PYINSTALLCHECK_ENVIRONMENT "AUTOTEST_PATH=${INSTALL_DESTDIR}${EXAMPLE_PATH}"
-                                 "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
-                                 "PATH=${NEW_PATH}"
-                                 "LD_LIBRARY_PATH=${INSTALL_DESTDIR}${LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
+set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
                                  "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}"
                                  ${ADAPT_CHECK_TESTS_EXPONENT}
    )
