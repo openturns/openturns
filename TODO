@@ -1,3 +1,1 @@
-Remove QuadraticCumul class in TaylorExpansionsMoments.i
-Remove deprecated SLSQP, LBFGS and NelderMead classes
 Remove deprecated LAR class in 1.10 version
