@@ -27,9 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<UserDefinedPair>);
-static const Factory<PersistentCollection<UserDefinedPair> > Factory_PersistentCollection_UserDefinedPair;
-
 CLASSNAMEINIT(UserDefined);
 static const Factory<UserDefined> Factory_UserDefined;
 
@@ -45,21 +42,6 @@ UserDefined::UserDefined()
   setName("UserDefined");
   // Empty range
   setRange(Interval(1.0, 0.0));
-}
-
-/* Constructor from UserDefinedPairCollection */
-UserDefined::UserDefined(const UserDefinedPairCollection & collection)
-  : DiscreteDistribution()
-  , points_(0, 0)
-  , probabilities_(0)
-  , cumulativeProbabilities_(0)
-  , hasUniformWeights_(false)
-{
-  setName("UserDefined");
-  // We set the dimension of the UserDefined distribution
-  // This call set also the range
-  setPairCollection( collection );
-  if ((getDimension() == 1) || (points_.getSize() <= ResourceMap::GetAsUnsignedInteger("UserDefined-SmallSize"))) compactSupport();
 }
 
 /* Constructor from a sample */
@@ -503,7 +485,7 @@ void UserDefined::setData(const NumericalSample & sample,
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
   // Check if all the given probabilities are >= 0
   // Check if all the points have the same dimension
-  for (UnsignedInteger i = 1; i < size; ++i) if (sample[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "UserDefined distribution must have all its point with the same dimension, which is not the case here collection=" << getPairCollection();
+  for (UnsignedInteger i = 1; i < size; ++i) if (sample[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "UserDefined distribution must have all its point with the same dimension";
   setDimension(dimension);
   // First, sort the collection such that the sample made with the first component is in ascending order
   NumericalSample weightedData(size, dimension + 1);
@@ -522,7 +504,7 @@ void UserDefined::setData(const NumericalSample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar p = weightedData[i][dimension];
-    if (p < 0.0) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities, which is not the case here collection=" << getPairCollection();
+    if (p < 0.0) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities";
     sum += p;
     cumulativeProbabilities_[i] = sum;
     hasUniformWeights_ = hasUniformWeights_ && (std::abs(p - firstProbability) < pdfEpsilon_);
@@ -549,32 +531,6 @@ void UserDefined::setData(const NumericalSample & sample,
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
   computeRange();
-}
-
-
-/* Pair collection accessor */
-void UserDefined::setPairCollection(const UserDefinedPairCollection & collection)
-{
-  const UnsignedInteger size = collection.getSize();
-  NumericalSample x(size, size > 0 ? collection[0].getX().getDimension() : 0);
-  NumericalPoint p(size);
-  for (UnsignedInteger i = 0; i < collection.getSize(); ++ i)
-  {
-    x[i] = collection[i].getX();
-    p[i] = collection[i].getP();
-  }
-  setData(x, p);
-}
-
-UserDefined::UserDefinedPairCollection UserDefined::getPairCollection() const
-{
-  const UnsignedInteger size = points_.getSize();
-  UserDefinedPairCollection collection(size);
-  for (UnsignedInteger i = 0; i < points_.getSize(); ++ i)
-  {
-    collection[i] = UserDefinedPair(points_[i], probabilities_[i]);
-  }
-  return collection;
 }
 
 

@@ -9,6 +9,12 @@
 ==== New classes ====
 
 ==== API changes ====
+  * Removed deprecated SLSQP, LBFGS and NelderMead classes
+  * Removed deprecated QuadraticCumul class
+  * Removed classes UserDefinedPair, HistogramPair
+  * Removed deprecated method WeightedExperiment::getWeight
+  * Removed deprecated method DistributionFactory::build(NumericalSample, CovarianceMatrix&)
+  * Removed deprecated distributions alternative parameters constructors, accessors
 
 === Python module ===
 

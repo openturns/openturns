@@ -66,41 +66,6 @@ Beta::Beta(const NumericalScalar r,
   computeRange();
 }
 
-/* Parameters constructor */
-Beta::Beta(const NumericalScalar arg1,
-           const NumericalScalar arg2,
-           const NumericalScalar a,
-           const NumericalScalar b,
-           const ParameterSet set)
-  : ContinuousDistribution()
-  , r_(0.0)
-  , t_(0.0)
-  , a_(a)
-  , b_(b)
-  , normalizationFactor_(0.0)
-{
-  Log::Warn(OSS() << "Beta parameter set constructor is deprecated.");
-  setName("Beta");
-  setA(a);
-  setB(b);
-  switch (set)
-  {
-    case RT:
-      setRT(arg1, arg2);
-      break;
-
-    case MUSIGMA:
-      setMuSigma(arg1, arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-
-  } /* end switch */
-  setDimension(1);
-  computeRange();
-}
-
 /* Comparison operator */
 Bool Beta::operator ==(const Beta & other) const
 {
@@ -413,28 +378,6 @@ void Beta::setRT(const NumericalScalar r,
     update();
   }
 }
-
-/* Mu accessor */
-void Beta::setMuSigma(const NumericalScalar mu,
-                      const NumericalScalar sigma)
-{
-  const NumericalScalar t = (b_ - mu) * (mu - a_) / (sigma * sigma) - 1;
-  const NumericalScalar r = t * (mu - a_) / (b_ - a_);
-  setRT(r, t);
-}
-
-NumericalScalar Beta::getMu() const
-{
-  Log::Warn(OSS() << "Beta::getMu is deprecated");
-  return a_ + (b_ - a_) * r_ / t_;
-}
-
-NumericalScalar Beta::getSigma() const
-{
-  Log::Warn(OSS() << "Beta::getSigma is deprecated");
-  return (b_ - a_) / t_ * std::sqrt(r_ * (t_ - r_) / (t_ + 1.0));
-}
-
 
 /* A accessor */
 void Beta::setA(const NumericalScalar a)

@@ -540,7 +540,6 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                    )
 
 ot_add_python_module(dist_bundle2 dist_bundle2_module.i
-                      HistogramPair.i HistogramPair_doc.i.in
                       Histogram.i Histogram_doc.i.in
                       HistogramFactory.i HistogramFactory_doc.i.in
                       InverseChiSquare.i InverseChiSquare_doc.i.in
@@ -606,7 +605,6 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
-                      UserDefinedPair.i UserDefinedPair_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
                       Weibull.i Weibull_doc.i.in

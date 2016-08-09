@@ -78,33 +78,6 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const NumericalSample & sample) const";
 }
 
-/* Build a distribution based on a sample and gives the covariance matrix of the estimate */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalSample & sample,
-    CovarianceMatrix & covariance) const
-{
-  Log::Warn(OSS() << "DistributionFactory::build(NumericalSample, CovarianceMatrix&) is deprecated");
-
-  /* The bootstrap sampler */
-  BootstrapExperiment bootstrap(sample);
-  /* Build the distribution based on the given sample */
-  DistributionFactoryImplementation::Implementation distribution(build(sample));
-  const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactory-DefaultBootstrapSize");
-  NumericalSample parametersSample(bootstrapSize, distribution->getParameter());
-  for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
-  {
-    /* Draw a bootstrap sample */
-    const NumericalSample bootstrapSample(bootstrap.generate());
-    /* Build the associated distribution */
-    const DistributionImplementation::Implementation newDistribution(build(bootstrapSample));
-    /* Add the parameters to the parameters sample */
-    parametersSample.add(newDistribution->getParameter());
-  }
-  /* Compute the bootstrap covariance */
-  covariance = parametersSample.computeCovariance();
-  return distribution;
-}
-
-
 /* Build a distribution based on a set of parameters */
 DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalPoint & parameters) const
 {

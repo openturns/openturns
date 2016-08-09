@@ -124,3 +124,9 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 
+    standardDeviation = distribution.getStandardDeviation()
+    print("standard deviation=", standardDeviation)
+    skewness = distribution.getSkewness()
+    print("skewness=", skewness)
+    kurtosis = distribution.getKurtosis()
+    print("kurtosis=", kurtosis)

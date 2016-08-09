@@ -155,7 +155,6 @@ int main(int argc, char *argv[])
       for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
-      // Specific to this distribution
       NumericalPoint standardDeviation = distribution.getStandardDeviation();
       fullprint << "standard deviation=" << standardDeviation << std::endl;
       NumericalPoint skewness = distribution.getSkewness();

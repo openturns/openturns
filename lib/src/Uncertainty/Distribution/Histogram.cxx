@@ -28,9 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<HistogramPair>);
-static const Factory<PersistentCollection<HistogramPair> > Factory_PersistentCollection_HistogramPair;
-
 CLASSNAMEINIT(Histogram);
 
 static const Factory<Histogram> Factory_Histogram;
@@ -50,20 +47,6 @@ Histogram::Histogram()
 }
 
 /* Parameters constructor */
-Histogram::Histogram(const NumericalScalar first,
-                     const HistogramPairCollection & collection)
-  : ContinuousDistribution()
-  , first_(first)
-  , width_(0)
-  , height_(0)
-  , cumulatedWidth_(0)
-{
-  setName( "Histogram" );
-  // This call set also the range.
-  setPairCollection(collection);
-  setDimension( 1 );
-}
-
 Histogram::Histogram(const NumericalScalar first,
                      const NumericalPoint & width,
                      const NumericalPoint & height)
@@ -454,31 +437,6 @@ NumericalPoint Histogram::getHeight() const
   return height_;
 }
 
-
-/* Collection accessor */
-void Histogram::setPairCollection(const HistogramPairCollection & collection)
-{
-  const UnsignedInteger size = collection.getSize();
-  NumericalPoint l(size);
-  NumericalPoint h(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    l[i] = collection[i].getWidth();
-    h[i] = collection[i].getHeight();
-  }
-  setData(l, h);
-}
-
-Histogram::HistogramPairCollection Histogram::getPairCollection() const
-{
-  const UnsignedInteger size = width_.getSize();
-  HistogramPairCollection collection(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    collection[i] = HistogramPair(width_[i], height_[i]);
-  }
-  return collection;
-}
 
 /* Get the PDF singularities inside of the range - 1D only */
 NumericalPoint Histogram::getSingularities() const
