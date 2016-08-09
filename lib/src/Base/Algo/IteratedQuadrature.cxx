@@ -64,7 +64,7 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
     const NumericalMathFunctionCollection & upperBounds,
     const Bool check) const
 {
-  const UnsignedInteger inputDimension(function.getInputDimension());
+  const UnsignedInteger inputDimension = function.getInputDimension();
   if (check)
   {
     // Check the compatibility of the lower bound functions and the upper bound functions
@@ -91,13 +91,13 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
 NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & function,
     const Interval & interval) const
 {
-  const UnsignedInteger inputDimension(function.getInputDimension());
+  const UnsignedInteger inputDimension = function.getInputDimension();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
   // Build the bound functions associated with the interval
   const NumericalPoint lower(interval.getLowerBound());
   const NumericalPoint upper(interval.getUpperBound());
-  NumericalScalar a(lower[0]);
-  NumericalScalar b(upper[0]);
+  NumericalScalar a = lower[0];
+  NumericalScalar b = upper[0];
   NumericalMathFunctionCollection lowerBounds(inputDimension - 1);
   NumericalMathFunctionCollection upperBounds(inputDimension - 1);
   for (UnsignedInteger i = 1; i < inputDimension; ++i)

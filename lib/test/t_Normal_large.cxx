@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     // Big test case for correlated components
     // Instanciate one distribution object
-    UnsignedInteger dim(4);
+    UnsignedInteger dim = 4;
     NumericalPoint meanPoint(dim, 1.0);
     NumericalPoint sigma(dim, 1.0);
     CorrelationMatrix R(dim);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     NumericalPoint mean(oneSample.computeMean());
     fullprint << "mean error (relative)=" << (mean - meanPoint).norm() / meanPoint.norm() << std::endl;
     CovarianceMatrix covariance(oneSample.computeCovariance());
-    NumericalScalar errorCovariance(0.0);
+    NumericalScalar errorCovariance = 0.0;
     for (UnsignedInteger i = 0; i < dim; i++)
     {
       for (UnsignedInteger j = 0; j < dim; j++)

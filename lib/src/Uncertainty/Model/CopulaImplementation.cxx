@@ -71,58 +71,58 @@ String CopulaImplementation::__repr__() const
 
 NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
-  Bool allOutside(true);
+  Bool allOutside = true;
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      if (point[i] >= 1.0) return 0.0;
-      allOutside &= (point[i] <= 0.0);
-    }
+  {
+    if (point[i] >= 1.0) return 0.0;
+    allOutside &= (point[i] <= 0.0);
+  }
   if (allOutside) return 1.0;
   // Use Poincaré's formula
-  NumericalScalar value(1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point));
+  NumericalScalar value = 1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point);
   // We know the explicit value of the 1D marginal distributions
   for (UnsignedInteger i = 0; i < dimension; ++i) value -= point[i];
-  NumericalScalar sign(1.0);
+  NumericalScalar sign = 1.0;
   for (UnsignedInteger i = 2; i < dimension - 1; ++i)
+  {
+    NumericalScalar contribution = 0.0;
+    Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
+    NumericalPoint subPoint(i);
+    for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
-      NumericalScalar contribution(0.0);
-      Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
-      NumericalPoint subPoint(i);
-      for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
-        {
-          for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
-          contribution += getMarginal(indices[j])->computeCDF(subPoint);
-        }
-      value += sign * contribution;
-      sign = -sign;
+      for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
+      contribution += getMarginal(indices[j])->computeCDF(subPoint);
     }
+    value += sign * contribution;
+    sign = -sign;
+  }
   return value;
 }
 
 /* Generic implementation of the quantile computation for copulas */
 NumericalPoint CopulaImplementation::computeQuantile(const NumericalScalar prob,
-                                                     const Bool tail) const
+    const Bool tail) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // Special case for bording values
-  const NumericalScalar q(tail ? 1.0 - prob : prob);
+  const NumericalScalar q = tail ? 1.0 - prob : prob;
   if (q <= 0.0) return NumericalPoint(dimension, 0.0);
   if (q >= 1.0) return NumericalPoint(dimension, 1.0);
   // Special case for dimension 1
   if (dimension == 1) return NumericalPoint(1, q);
   QuantileWrapper wrapper(this);
   const NumericalMathFunction f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
-  NumericalScalar leftTau(q);
+  NumericalScalar leftTau = q;
   const NumericalPoint leftPoint(1, leftTau);
   const NumericalPoint leftValue(f(leftPoint));
-  NumericalScalar leftCDF(leftValue[0]);
+  NumericalScalar leftCDF = leftValue[0];
   // Upper bound of the bracketing interval
-  NumericalScalar rightTau(1.0 - (1.0 - q) / dimension);
+  NumericalScalar rightTau = 1.0 - (1.0 - q) / dimension;
   NumericalPoint rightPoint(1, rightTau);
   const NumericalPoint rightValue(f(rightPoint));
-  NumericalScalar rightCDF(rightValue[0]);
+  NumericalScalar rightCDF = rightValue[0];
   // Use Brent's method to compute the quantile efficiently
   Brent solver(cdfEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   return NumericalPoint(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));
@@ -167,39 +167,39 @@ struct CopulaImplementationKendallTauWrapper
 /* Get the Kendall concordance of the copula */
 CorrelationMatrix CopulaImplementation::getKendallTau() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   CorrelationMatrix tau(dimension);
   if (hasIndependentCopula()) return tau;
   // Here we have a circular dependency between copulas and distributions
   if (hasEllipticalCopula())
-    {
-      std::cerr << "In CopulaImplementation::getKendallTau(), elliptical copula case" << std::endl;
-      const CorrelationMatrix shape(getShapeMatrix());
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-	for(UnsignedInteger j = 0; j < i; ++j)
-	  tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
-      return tau;
-    }
+  {
+    std::cerr << "In CopulaImplementation::getKendallTau(), elliptical copula case" << std::endl;
+    const CorrelationMatrix shape(getShapeMatrix());
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for(UnsignedInteger j = 0; j < i; ++j)
+        tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
+    return tau;
+  }
   const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
   const Interval square(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0));
   // Performs the integration in the strictly lower triangle of the tau matrix
   Indices indices(2);
   for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
+  {
+    indices[0] = rowIndex;
+    for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
     {
-      indices[0] = rowIndex;
-      for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
-        {
-          indices[1] = columnIndex;
-          const Implementation marginalDistribution(getMarginal(indices));
-          if (!marginalDistribution->hasIndependentCopula())
-            {
-              // Build the integrand
-              const CopulaImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-              const NumericalMathFunction function(bindMethod<CopulaImplementationKendallTauWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
-              tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
-            }
-        } // loop over column indices
-    } // loop over row indices
+      indices[1] = columnIndex;
+      const Implementation marginalDistribution(getMarginal(indices));
+      if (!marginalDistribution->hasIndependentCopula())
+      {
+        // Build the integrand
+        const CopulaImplementationKendallTauWrapper functionWrapper(marginalDistribution);
+        const NumericalMathFunction function(bindMethod<CopulaImplementationKendallTauWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
+        tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
+      }
+    } // loop over column indices
+  } // loop over row indices
   return tau;
 }
 
@@ -235,7 +235,7 @@ struct CopulaImplementationCovarianceWrapper
 /* Compute the covariance of the copula */
 void CopulaImplementation::computeCovariance() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We need this to initialize the covariance matrix in two cases:
   // + this is the first call to this routine (which could be checked by testing the dimension of the copula and the dimension of the matrix
   // + the copula has changed from a non-independent one to the independent copula
@@ -243,38 +243,38 @@ void CopulaImplementation::computeCovariance() const
   // First the diagonal terms, which are the marginal covariances
   // Uniform marginals, the diagonal is 1/12
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      // 0.08333333333333333333333333 = 1 / 12
-      covariance_(i, i) = 0.08333333333333333333333333;
-    }
+  {
+    // 0.08333333333333333333333333 = 1 / 12
+    covariance_(i, i) = 0.08333333333333333333333333;
+  }
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())
+  {
+    const IteratedQuadrature integrator;
+    const Interval unitSquare(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0));
+    // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
+    // We start with the loop over the coefficients because the most expensive task is to get the 2D marginal copulas
+    Indices indices(2);
+    for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
     {
-      const IteratedQuadrature integrator;
-      const Interval unitSquare(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0));
-      // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
-      // We start with the loop over the coefficients because the most expensive task is to get the 2D marginal copulas
-      Indices indices(2);
-      for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+      indices[0] = rowIndex;
+      for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+      {
+        indices[1] = columnIndex;
+        // For the usual case of a bidimensional copula, no need to extract marginal distributions
+        Distribution marginalDistribution(*this);
+        if (dimension > 2) marginalDistribution = getMarginal(indices);
+        if (!marginalDistribution.getImplementation()->hasIndependentCopula())
         {
-          indices[0] = rowIndex;
-          for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
-            {
-              indices[1] = columnIndex;
-              // For the usual case of a bidimensional copula, no need to extract marginal distributions
-              Distribution marginalDistribution(*this);
-              if (dimension > 2) marginalDistribution = getMarginal(indices);
-              if (!marginalDistribution.getImplementation()->hasIndependentCopula())
-                {
-                  // Build the integrand
-                  CopulaImplementationCovarianceWrapper functionWrapper(marginalDistribution);
-                  NumericalMathFunction function(bindMethod<CopulaImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationCovarianceWrapper::kernel, 2, 1));
-                  // Compute the covariance element
-                  covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
-                }
-            } // loop over column indices
-        } // loop over row indices
-    } // if !hasIndependentCopula
+          // Build the integrand
+          CopulaImplementationCovarianceWrapper functionWrapper(marginalDistribution);
+          NumericalMathFunction function(bindMethod<CopulaImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationCovarianceWrapper::kernel, 2, 1));
+          // Compute the covariance element
+          covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
+        }
+      } // loop over column indices
+    } // loop over row indices
+  } // if !hasIndependentCopula
   isAlreadyComputedCovariance_ = true;
 } // computeCovariance
 

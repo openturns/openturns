@@ -31,20 +31,20 @@ static const Factory<SubsetSamplingResult> Factory_SubsetSamplingResult;
 
 /* Default constructor */
 SubsetSamplingResult::SubsetSamplingResult()
-: SimulationResultImplementation()
+  : SimulationResultImplementation()
 {
 }
 
 
 /* Constructor with parameters */
 SubsetSamplingResult::SubsetSamplingResult(const Event & event,
-  const NumericalScalar probabilityEstimate,
-  const NumericalScalar varianceEstimate,
-  const UnsignedInteger outerSampling,
-  const UnsignedInteger blockSize,
-  const NumericalScalar coefficientOfVariation)
-: SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize),
-  coefficientOfVariation_(coefficientOfVariation)
+    const NumericalScalar probabilityEstimate,
+    const NumericalScalar varianceEstimate,
+    const UnsignedInteger outerSampling,
+    const UnsignedInteger blockSize,
+    const NumericalScalar coefficientOfVariation)
+  : SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize),
+    coefficientOfVariation_(coefficientOfVariation)
 {
 }
 

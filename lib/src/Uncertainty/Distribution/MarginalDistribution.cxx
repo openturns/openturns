@@ -134,7 +134,7 @@ void MarginalDistribution::setDistributionAndIndices(const Distribution & distri
   distribution_ = distribution;
   indices_ = indices;
   // Set the dimension
-  const UnsignedInteger dimension(indices.getSize());
+  const UnsignedInteger dimension = indices.getSize();
   setDimension(dimension);
   // Compute the range
   // From the underlying distribution
@@ -151,7 +151,7 @@ void MarginalDistribution::setDistributionAndIndices(const Distribution & distri
   Interval::BoolCollection finiteUpperBound(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const UnsignedInteger j(indices[i]);
+    const UnsignedInteger j = indices[i];
     lowerBound[i] = distributionLowerBound[j];
     finiteLowerBound[i] = distributionFiniteLowerBound[j];
     upperBound[i] = distributionUpperBound[j];
@@ -176,7 +176,7 @@ MarginalDistribution * MarginalDistribution::clone() const
 /* Get one realization of the MarginalDistribution */
 NumericalPoint MarginalDistribution::getRealization() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const NumericalPoint distributionRealization(distribution_.getRealization());
   NumericalPoint realization(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -193,7 +193,7 @@ NumericalSample MarginalDistribution::getSample(const UnsignedInteger size) cons
 NumericalScalar MarginalDistribution::computeCDF(const NumericalPoint & point) const
 {
   const NumericalPoint x(expandPoint(point));
-  const NumericalScalar cdf(distribution_.computeCDF(x));
+  const NumericalScalar cdf = distribution_.computeCDF(x);
   return cdf;
 }
 
@@ -224,15 +224,15 @@ NumericalPoint MarginalDistribution::getStandardDeviation() const
 /* Compute the covariance of the distribution */
 void MarginalDistribution::computeCovariance() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const CovarianceMatrix distributionCovariance(distribution_.getCovariance());
   covariance_ = CovarianceMatrix(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++j)
   {
-    const UnsignedInteger jDistribution(indices_[j]);
+    const UnsignedInteger jDistribution = indices_[j];
     for (UnsignedInteger i = j; i < dimension; ++i)
     {
-      const UnsignedInteger iDistribution(indices_[i]);
+      const UnsignedInteger iDistribution = indices_[i];
       covariance_(i, j) = distributionCovariance(iDistribution, jDistribution);
     }
   }
@@ -254,15 +254,15 @@ NumericalPoint MarginalDistribution::getKurtosis() const
 /* Get the Spearman correlation of the distribution */
 CorrelationMatrix MarginalDistribution::getSpearmanCorrelation() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const CorrelationMatrix distributionSpearmanCorrelation(distribution_.getSpearmanCorrelation());
   CorrelationMatrix spearmanCorrelation(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++j)
   {
-    const UnsignedInteger jDistribution(indices_[j]);
+    const UnsignedInteger jDistribution = indices_[j];
     for (UnsignedInteger i = j; i < dimension; ++i)
     {
-      const UnsignedInteger iDistribution(indices_[i]);
+      const UnsignedInteger iDistribution = indices_[i];
       spearmanCorrelation(i, j) = distributionSpearmanCorrelation(iDistribution, jDistribution);
     }
   }
@@ -272,15 +272,15 @@ CorrelationMatrix MarginalDistribution::getSpearmanCorrelation() const
 /* Get the Spearman correlation of the distribution */
 CorrelationMatrix MarginalDistribution::getKendallTau() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   const CorrelationMatrix distributionKendallTau(distribution_.getKendallTau());
   CorrelationMatrix kendallTau(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++j)
   {
-    const UnsignedInteger jDistribution(indices_[j]);
+    const UnsignedInteger jDistribution = indices_[j];
     for (UnsignedInteger i = j; i < dimension; ++i)
     {
-      const UnsignedInteger iDistribution(indices_[i]);
+      const UnsignedInteger iDistribution = indices_[i];
       kendallTau(i, j) = distributionKendallTau(iDistribution, jDistribution);
     }
   }
@@ -297,11 +297,11 @@ MarginalDistribution::Implementation MarginalDistribution::getMarginal(const Uns
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 MarginalDistribution::Implementation MarginalDistribution::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   if (dimension == 1) return clone();
   // Build the indices associated to the marginal of the marginal
-  const UnsignedInteger outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension = indices.getSize();
   Indices marginalIndices(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
     marginalIndices[i] = indices_[indices[i]];
@@ -366,7 +366,7 @@ Bool MarginalDistribution::isIntegral() const
 NumericalPoint MarginalDistribution::expandPoint(const NumericalPoint & point,
     const Bool upper) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();
   NumericalPoint distributionPoint(upper ? upperBound_ : lowerBound_);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -378,7 +378,7 @@ NumericalPoint MarginalDistribution::expandPoint(const NumericalPoint & point,
 NumericalPoint MarginalDistribution::reducePoint(const NumericalPoint & point) const
 {
   if (point.getDimension() != distribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << distribution_.getDimension() << ", got dimension=" << point.getDimension();
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint marginalPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     marginalPoint[i] = point[indices_[i]];

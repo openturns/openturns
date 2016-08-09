@@ -318,7 +318,7 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromCSVFile(co
   // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
   {
-    const UnsignedInteger dimension(impl.getDimension());
+    const UnsignedInteger dimension = impl.getDimension();
     Description defaultDescription(dimension);
     for (UnsignedInteger i = 0; i < dimension; ++i)
       defaultDescription[i] = String(OSS() << "data_" << i);
@@ -349,10 +349,10 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromTextFile(c
   }
 
   String line;
-  Bool isDescription(false);
+  Bool isDescription = false;
   Description description;
   NumericalScalar f;
-  UnsignedInteger numLine(1);
+  UnsignedInteger numLine = 1;
 
   // While there are lines to read
   while (std::getline(theFile, line))
@@ -444,7 +444,7 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromTextFile(c
   }
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
   {
-    const UnsignedInteger dimension(impl.getDimension());
+    const UnsignedInteger dimension = impl.getDimension();
     Description defaultDescription(dimension);
     for (UnsignedInteger i = 0; i < dimension; ++i)
       defaultDescription[i] = String(OSS() << "data_" << i);
@@ -469,8 +469,8 @@ String NumericalSampleImplementation::storeToTemporaryFile() const
     String separator = "";
     for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
     {
-      const NumericalScalar value(operator[](i)[j]);
-      const Bool isNaN(value != value);
+      const NumericalScalar value = operator[](i)[j];
+      const Bool isNaN = value != value;
       dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
     dataFile << std::endl;
@@ -489,8 +489,8 @@ String NumericalSampleImplementation::streamToRFormat() const
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
     {
-      const NumericalScalar value(operator[](i)[j]);
-      const Bool isNaN(value != value);
+      const NumericalScalar value = operator[](i)[j];
+      const Bool isNaN = value != value;
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
   oss << "), nrow=" << size_ << ", ncol=" << dimension_ << ")";
@@ -676,16 +676,21 @@ String NumericalSampleImplementation::__repr__() const
 
   const Bool printDescription = !p_description_.isNull() && (p_description_->getSize() == dimension_) && !p_description_->isBlank();
 
-  if (printDescription) {
+  if (printDescription)
+  {
     const char * sep = "";
 
     oss << " description=[";
-    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep = ",") {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+    for (UnsignedInteger j = 0; j < dimension_; ++ j, sep = ",")
+    {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -697,12 +702,16 @@ String NumericalSampleImplementation::__repr__() const
   oss << " data=[";
   const char * sep = "";
 
-  for (UnsignedInteger i = 0; i < size_; ++ i, sep = ",") {
-    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
-      if (i == printEllipsisSize) {
+  for (UnsignedInteger i = 0; i < size_; ++ i, sep = ",")
+  {
+    if (ellipsis && (size_ > 2 * printEllipsisSize))
+    {
+      if (i == printEllipsisSize)
+      {
         oss << sep << "...";
       }
-      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
+      {
         continue;
       }
     }
@@ -710,11 +719,14 @@ String NumericalSampleImplementation::__repr__() const
     const char * sep2 = "";
     for (UnsignedInteger j = 0; j < dimension_; ++ j, sep2 = ",")
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep2 << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -746,8 +758,10 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   {
     for( UnsignedInteger j = 0; j < dimension_; ++j )
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -757,15 +771,19 @@ String NumericalSampleImplementation::__str__(const String & offset) const
 
   for( UnsignedInteger i = 0; i < size_; ++i )
   {
-    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
-      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+    if (ellipsis && (size_ > 2 * printEllipsisSize))
+    {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
+      {
         continue;
       }
     }
     for (UnsignedInteger j = 0; j < dimension_; ++ j)
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -795,11 +813,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -811,11 +832,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
   const char * newline = "";
   for( UnsignedInteger i = 0; i < size_; ++i, newline = "\n" )
   {
-    if (ellipsis && (size_ > 2 * printEllipsisSize)) {
-      if (i == printEllipsisSize) {
+    if (ellipsis && (size_ > 2 * printEllipsisSize))
+    {
+      if (i == printEllipsisSize)
+      {
         oss << "\n...";
       }
-      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize)) {
+      if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
+      {
         continue;
       }
     }
@@ -824,11 +848,14 @@ String NumericalSampleImplementation::__str__(const String & offset) const
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
-      if (ellipsis && (dimension_ > 2 * printEllipsisSize)) {
-        if (j == printEllipsisSize) {
+      if (ellipsis && (dimension_ > 2 * printEllipsisSize))
+      {
+        if (j == printEllipsisSize)
+        {
           oss << sep << "...";
         }
-        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize)) {
+        if ((j >= printEllipsisSize) && (j < dimension_ - printEllipsisSize))
+        {
           continue;
         }
       }
@@ -880,7 +907,7 @@ NumericalSampleImplementation & NumericalSampleImplementation::add(const Numeric
 NumericalSampleImplementation & NumericalSampleImplementation::stack(const NumericalSampleImplementation & sample)
 {
   if (sample.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given sample has size=" << sample.getSize() << ", expected size=" << size_;
-  const UnsignedInteger otherDimension(sample.getDimension());
+  const UnsignedInteger otherDimension = sample.getDimension();
   NumericalSampleImplementation result(size_, dimension_ + otherDimension);
   // First, the values
   for (UnsignedInteger i = 0; i < size_; ++i)
@@ -889,7 +916,8 @@ NumericalSampleImplementation & NumericalSampleImplementation::stack(const Numer
     for (UnsignedInteger j = 0; j < otherDimension; ++j) result[i][dimension_ + j] = sample[i][j];
   }
   // Second, the description
-  if (!p_description_.isNull() || !sample.p_description_.isNull()) {
+  if (!p_description_.isNull() || !sample.p_description_.isNull())
+  {
     Description description(getDescription());
     const Description otherDescription(sample.getDescription());
     for (UnsignedInteger i = 0; i < otherDimension; ++i) description.add(otherDescription[i]);
@@ -991,13 +1019,13 @@ struct CovariancePolicy
 
   inline value_type & inplace_op( value_type & var, NSI_const_point point ) const
   {
-    UnsignedInteger baseIndex(0);
+    UnsignedInteger baseIndex = 0;
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar deltaI(point[i] - mean_[i]);
+      const NumericalScalar deltaI = point[i] - mean_[i];
       for (UnsignedInteger j = i; j < dimension_; ++j)
       {
-        const NumericalScalar deltaJ(point[j] - mean_[j]);
+        const NumericalScalar deltaJ = point[j] - mean_[j];
         var[baseIndex + j] += deltaI * deltaJ;
       }
       baseIndex += dimension_;
@@ -1059,7 +1087,7 @@ struct VariancePerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val(point[i] - mean_[i]);
+      const NumericalScalar val = point[i] - mean_[i];
       var[i] += val * val;
     }
     return var;
@@ -1170,10 +1198,10 @@ struct Comparison
 
   Bool operator() (const UnsignedInteger i, const UnsignedInteger j) const
   {
-    const NumericalScalar xI(nsi_[ permutation_[i] ][ first_  ]);
-    const NumericalScalar xJ(nsi_[ permutation_[j] ][ first_  ]);
-    const NumericalScalar yI(nsi_[ permutation_[i] ][ second_ ]);
-    const NumericalScalar yJ(nsi_[ permutation_[j] ][ second_ ]);
+    const NumericalScalar xI = nsi_[ permutation_[i] ][ first_  ];
+    const NumericalScalar xJ = nsi_[ permutation_[j] ][ first_  ];
+    const NumericalScalar yI = nsi_[ permutation_[i] ][ second_ ];
+    const NumericalScalar yJ = nsi_[ permutation_[j] ][ second_ ];
     hasTies_ |= (xI == xJ);
     return ( (xI < xJ) || ((xI == xJ) && (yI < yJ)) );
   }
@@ -1243,7 +1271,10 @@ struct NSI_Sortable
   {
     return p_nsi_->operator[](index_) < other.p_nsi_->operator[](other.index_);
   }
-  operator NSI_const_point() const { return NSI_const_point(p_nsi_, index_); }
+  operator NSI_const_point() const
+  {
+    return NSI_const_point(p_nsi_, index_);
+  }
   inline UnsignedInteger getDimension() const
   {
     return p_nsi_->getDimension();
@@ -1378,9 +1409,9 @@ struct ComputeKendallPolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const UnsignedInteger size(input_.getSize());
-      const UnsignedInteger indX(indicesX_[i]);
-      const UnsignedInteger indY(indicesY_[i]);
+      const UnsignedInteger size = input_.getSize();
+      const UnsignedInteger indX = indicesX_[i];
+      const UnsignedInteger indY = indicesY_[i];
       NumericalPoint x(size);
       NumericalPoint y(size);
       for (UnsignedInteger k = 0; k < size; ++k)
@@ -1400,13 +1431,13 @@ CorrelationMatrix NumericalSampleImplementation::computeKendallTau() const
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
 
   // Use external efficient C implementation of the O(Nlog(N)) or O(N^2) Kendall tau computation depending on the sample size
-  const Bool smallCase(size_ < ResourceMap::GetAsUnsignedInteger("NumericalSample-SmallKendallTau"));
-  const UnsignedInteger caseNumber((dimension_ * (dimension_ - 1)) / 2);
+  const Bool smallCase = size_ < ResourceMap::GetAsUnsignedInteger("NumericalSample-SmallKendallTau");
+  const UnsignedInteger caseNumber = (dimension_ * (dimension_ - 1)) / 2;
   Indices indX(caseNumber);
   Indices indY(caseNumber);
   // The resulting matrix
   CorrelationMatrix tau(dimension_);
-  UnsignedInteger index(0);
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {
     for (UnsignedInteger j = i + 1; j < dimension_; ++j)
@@ -1471,8 +1502,8 @@ struct SkewnessPerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val(point[i] - mean_[i]);
-      const NumericalScalar val2(val * val);
+      const NumericalScalar val = point[i] - mean_[i];
+      const NumericalScalar val2 = val * val;
       var[i] += val2;
       var[i + dimension_] += val2 * val;
     }
@@ -1500,7 +1531,7 @@ NumericalPoint NumericalSampleImplementation::computeSkewness() const
   ReductionFunctor<SkewnessPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
   NumericalPoint skewness(dimension_);
-  const NumericalScalar factor(size_ * sqrt(size_ - 1.0) / (size_ - 2));
+  const NumericalScalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
@@ -1528,8 +1559,8 @@ struct KurtosisPerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val(point[i] - mean_[i]);
-      const NumericalScalar val2(val * val);
+      const NumericalScalar val = point[i] - mean_[i];
+      const NumericalScalar val2 = val * val;
       var[i] += val2;
       var[i + dimension_] += val2 * val2;
     }
@@ -1557,8 +1588,8 @@ NumericalPoint NumericalSampleImplementation::computeKurtosis() const
   ReductionFunctor<KurtosisPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
   NumericalPoint kurtosis(dimension_);
-  const NumericalScalar factor1((size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0)));
-  const NumericalScalar factor2(-3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0)));
+  const NumericalScalar factor1 = (size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0));
+  const NumericalScalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
@@ -1587,7 +1618,7 @@ struct CenteredMomentPerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val(point[i] - mean_[i]);
+      const NumericalScalar val = point[i] - mean_[i];
       var[i] += pow(val, static_cast<int>(k_));
     }
     return var;
@@ -1649,14 +1680,14 @@ NumericalPoint NumericalSampleImplementation::computeQuantilePerComponent(const 
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
 
   // Special case for prob outside of the allowed bounds
-  const NumericalScalar scalarIndex(prob * size_ - 0.5);
+  const NumericalScalar scalarIndex = prob * size_ - 0.5;
   if (scalarIndex >= size_ - 1) return getMax();
   // Special case for prob <= 0.0
   if (scalarIndex <= 0.0) return getMin();
 
-  const UnsignedInteger index(static_cast<UnsignedInteger>( floor( scalarIndex) ));
-  const NumericalScalar beta(scalarIndex - index);
-  const NumericalScalar alpha(1.0 - beta);
+  const UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
+  const NumericalScalar beta = scalarIndex - index;
+  const NumericalScalar alpha = 1.0 - beta;
   NumericalPoint quantile(dimension_);
   NumericalPoint component(size_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -1712,7 +1743,7 @@ struct CDFPolicy
   inline value_type & inplace_op( value_type & a,
                                   const T & pt ) const
   {
-    UnsignedInteger j(0);
+    UnsignedInteger j = 0;
     while ( (j < dimension_) && (tail_ ^ (pt[j] <= point_[j])) ) ++j;
     if (j == dimension_) ++a;
     return a;
@@ -2111,7 +2142,7 @@ NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const I
   if (dimension_ == 1) return *this;
 
   // General case
-  const UnsignedInteger outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension = indices.getSize();
   NumericalSampleImplementation marginalSample(size_, outputDimension);
 
   // If the sample has a description, extract the marginal description
@@ -2154,7 +2185,7 @@ void NumericalSampleImplementation::exportToCSVFile(const FileName & filename,
     for (UnsignedInteger i = 0; i < dimension_; ++i, separator = csvSeparator)
     {
       String label(description[i]);
-      Bool isBlank(true);
+      Bool isBlank = true;
       for (UnsignedInteger j = 0; isBlank && j < label.size(); ++j) isBlank = (label[j] == ' ') || (label[j] == '\t');
       if (isBlank) csvFile << separator << "\"NoDescription\"";
       else csvFile << separator << "\"" << description[i] << "\"";

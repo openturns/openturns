@@ -41,13 +41,13 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult()
 
 /* Constructor with parameters & Cholesky factor */
 GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample & inputSample,
-                                                           const NumericalSample & outputSample,
-                                                           const NumericalMathFunction & metaModel,
-                                                           const NumericalPoint & residuals,
-                                                           const NumericalPoint & relativeErrors,
-                                                           const BasisCollection & basis,
-                                                           const NumericalPointCollection & trendCoefficients,
-                                                           const CovarianceModel & covarianceModel)
+    const NumericalSample & outputSample,
+    const NumericalMathFunction & metaModel,
+    const NumericalPoint & residuals,
+    const NumericalPoint & relativeErrors,
+    const BasisCollection & basis,
+    const NumericalPointCollection & trendCoefficients,
+    const CovarianceModel & covarianceModel)
   : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
@@ -60,7 +60,7 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
 {
-  const UnsignedInteger size(inputSample.getSize());
+  const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelResult::GeneralizedLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
 }
@@ -68,15 +68,15 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
 
 /* Constructor with parameters & Cholesky factor */
 GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample & inputSample,
-                                                           const NumericalSample & outputSample,
-                                                           const NumericalMathFunction & metaModel,
-                                                           const NumericalPoint & residuals,
-                                                           const NumericalPoint & relativeErrors,
-                                                           const BasisCollection & basis,
-                                                           const NumericalPointCollection & trendCoefficients,
-                                                           const CovarianceModel & covarianceModel,
-                                                           const TriangularMatrix & covarianceCholeskyFactor,
-                                                           const HMatrix & covarianceHMatrix)
+    const NumericalSample & outputSample,
+    const NumericalMathFunction & metaModel,
+    const NumericalPoint & residuals,
+    const NumericalPoint & relativeErrors,
+    const BasisCollection & basis,
+    const NumericalPointCollection & trendCoefficients,
+    const CovarianceModel & covarianceModel,
+    const TriangularMatrix & covarianceCholeskyFactor,
+    const HMatrix & covarianceHMatrix)
   : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
@@ -116,9 +116,9 @@ GeneralizedLinearModelResult * GeneralizedLinearModelResult::clone() const
 String GeneralizedLinearModelResult::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-                   << ", covariance models=" << covarianceModel_
-                   << ", basis=" << basis_
-                   << ", trend coefficients=" << beta_;
+         << ", covariance models=" << covarianceModel_
+         << ", basis=" << basis_
+         << ", trend coefficients=" << beta_;
 }
 
 String GeneralizedLinearModelResult::__str__(const String & offset) const

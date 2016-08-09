@@ -135,21 +135,21 @@ void WhittleFactory::computeSpectralDensity(const SpectralModel & spectralModel)
   const RegularGrid frequencyGrid(spectralModel.getFrequencyGrid());
   m_ = frequencyGrid.getN();
   // Index of the first frequency to take into account
-  UnsignedInteger kStart(0);
+  UnsignedInteger kStart = 0;
   // Suppress first value if the associated frequency is zero
   if (frequencyGrid.getStart() == 0.0)
   {
     --m_;
     kStart = 1;
   }
-  const NumericalScalar fMax(frequencyGrid.getEnd());
+  const NumericalScalar fMax = frequencyGrid.getEnd();
   normalizedFrequencies_ = NumericalPoint(m_);
   spectralDensity_ = NumericalPoint(m_);
-  NumericalScalar dt(timeGrid_.getStep());
+  NumericalScalar dt = timeGrid_.getStep();
   for (UnsignedInteger k = 0; k < m_ ; ++k)
   {
-    const NumericalScalar frequency(frequencyGrid.getValue(k + kStart));
-    const NumericalScalar estimatedValue(std::real(spectralModel(frequency)(0, 0)) / dt);
+    const NumericalScalar frequency = frequencyGrid.getValue(k + kStart);
+    const NumericalScalar estimatedValue = std::real(spectralModel(frequency)(0, 0)) / dt;
     spectralDensity_[k] = estimatedValue;
     normalizedFrequencies_[k] = M_PI * frequency / fMax;
   }
@@ -158,13 +158,13 @@ void WhittleFactory::computeSpectralDensity(const SpectralModel & spectralModel)
 /* Compute the log-likelihood function */
 NumericalScalar WhittleFactory::computeLogLikelihood(const NumericalPoint & theta) const
 {
-  NumericalScalar logTerm(0.0);
-  NumericalScalar ratioTerm(0.0);
+  NumericalScalar logTerm = 0.0;
+  NumericalScalar ratioTerm = 0.0;
   for (UnsignedInteger j = 0; j < m_; ++j)
   {
-    const NumericalScalar frequency(normalizedFrequencies_[j]);
+    const NumericalScalar frequency = normalizedFrequencies_[j];
     // Gj computation
-    const UnsignedInteger n(std::max(currentP_, currentQ_));
+    const UnsignedInteger n = std::max(currentP_, currentQ_);
     NumericalComplex numerator(1.0, 0.0);
     NumericalComplex denominator(1.0, 0.0);
     NumericalComplex y(std::polar(1.0, -frequency));
@@ -175,7 +175,7 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const NumericalPoint & thet
       if (i < currentQ_) numerator += theta[currentP_ + i] * z;
       if (i < currentP_) denominator += theta[i] * z;
     }
-    const NumericalScalar gJ(std::norm(numerator) / std::norm(denominator));
+    const NumericalScalar gJ = std::norm(numerator) / std::norm(denominator);
     // Whittle likelihood update
     logTerm += log(gJ);
     ratioTerm += spectralDensity_[j] / gJ;
@@ -188,11 +188,11 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const NumericalPoint & thet
 /* Compute the log-likelihood constraint */
 NumericalPoint WhittleFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & theta) const
 {
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("WhittleFactory-RootEpsilon"));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("WhittleFactory-RootEpsilon");
 
-  NumericalPoint result(nbInequalityConstraint_,0.0);
+  NumericalPoint result(nbInequalityConstraint_, 0.0);
 
-  UnsignedInteger constraintIndex(0);
+  UnsignedInteger constraintIndex = 0;
   // If not pure MA, check the roots of the AR polynom
   if (currentP_ > 0)
   {
@@ -203,10 +203,10 @@ NumericalPoint WhittleFactory::computeLogLikelihoodInequalityConstraint(const Nu
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
-      NumericalScalar minRootModule(std::norm(roots[0]));
+      NumericalScalar minRootModule = std::norm(roots[0]);
       for (UnsignedInteger i = 1; i < currentP_; ++i)
       {
-        const NumericalScalar rootModule(std::norm(roots[i]));
+        const NumericalScalar rootModule = std::norm(roots[i]);
         if (rootModule < minRootModule) minRootModule = rootModule;
       }
       result[constraintIndex] = minRootModule - 1.0 - epsilon;
@@ -225,10 +225,10 @@ NumericalPoint WhittleFactory::computeLogLikelihoodInequalityConstraint(const Nu
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
-      NumericalScalar minRootModule(std::norm(roots[0]));
+      NumericalScalar minRootModule = std::norm(roots[0]);
       for (UnsignedInteger i = 1; i < currentQ_; ++i)
       {
-        const NumericalScalar rootModule(std::norm(roots[i]));
+        const NumericalScalar rootModule = std::norm(roots[i]);
         if (rootModule < minRootModule) minRootModule = rootModule;
       }
       result[constraintIndex] = minRootModule - 1.0 - epsilon;
@@ -247,7 +247,7 @@ NumericalMathFunction WhittleFactory::getLogLikelihoodFunction() const
 
 
 NumericalMathFunction WhittleFactory::getLogLikelihoodInequalityConstraint() const
-{	
+{
   return bindMethod <WhittleFactory, NumericalPoint, NumericalPoint> ( *this, &WhittleFactory::computeLogLikelihoodInequalityConstraint, currentP_ + currentQ_, nbInequalityConstraint_);
 }
 
@@ -394,23 +394,23 @@ ARMA WhittleFactory::build(const ProcessSample & sample) const
 ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria) const
 {
 
-  // Define Optimization problem 
+  // Define Optimization problem
   OptimizationProblem problem;
   problem.setMinimization(false);
 
   // First, clean the history
   clearHistory();
-  const UnsignedInteger sizeP(p_.getSize());
-  const UnsignedInteger sizeQ(q_.getSize());
+  const UnsignedInteger sizeP = p_.getSize();
+  const UnsignedInteger sizeQ = q_.getSize();
 
   // Best parameters
   NumericalPoint bestTheta(0);
-  NumericalScalar bestSigma2(0.0);
+  NumericalScalar bestSigma2 = 0.0;
   NumericalPoint bestInformationCriteria(3, SpecFunc::MaxNumericalScalar);
-  UnsignedInteger bestP(0);
-  UnsignedInteger bestQ(0);
+  UnsignedInteger bestP = 0;
+  UnsignedInteger bestQ = 0;
 
-  UnsignedInteger pointIndex(0);
+  UnsignedInteger pointIndex = 0;
 
   for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
@@ -436,24 +436,24 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
       // Optimize only if there is some ARMA parameters to estimate
       if (n > 0)
       {
-  	// Define Objective and Constraint functions for Optimization problem 
-  	problem.setObjective(getLogLikelihoodFunction());
- 	// use attributes to pass the data
-  	nbInequalityConstraint_ = m;
-	problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  	solver_.setProblem(problem);
-  	solver_.setStartingPoint(startingPoints_[pointIndex]);
+        // Define Objective and Constraint functions for Optimization problem
+        problem.setObjective(getLogLikelihoodFunction());
+        // use attributes to pass the data
+        nbInequalityConstraint_ = m;
+        problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
+        solver_.setProblem(problem);
+        solver_.setStartingPoint(startingPoints_[pointIndex]);
 
-  	// run Optimization problem
-  	solver_.run();
+        // run Optimization problem
+        solver_.run();
 
- 	// optimal point
-  	const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+        // optimal point
+        const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
         theta = optpoint;
       }
       // Compute the information criteria
       // First, the corrected AIC
-      const NumericalScalar logLikelihood(computeLogLikelihood(theta));
+      const NumericalScalar logLikelihood = computeLogLikelihood(theta);
       NumericalPoint currentInformationCriteria(3);
       if (m_ > static_cast<UnsignedInteger>(n + 2)) currentInformationCriteria[0] = -2.0 * logLikelihood + 2.0 * (n + 1) * m_ / (m_ - n - 2);
       else
@@ -488,20 +488,20 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
 /* Starting points accessor */
 void WhittleFactory::setStartingPoints(const Collection< NumericalPoint > & startingPoints)
 {
-  const UnsignedInteger sizeP(p_.getSize());
-  const UnsignedInteger sizeQ(q_.getSize());
+  const UnsignedInteger sizeP = p_.getSize();
+  const UnsignedInteger sizeQ = q_.getSize();
   // First, check the size of the collection
   if (startingPoints.getSize() != sizeP * sizeQ) throw InvalidArgumentException(HERE) << "Error: the given collection has size=" << startingPoints.getSize() << " but should have size=" << sizeP * sizeQ;
   // Second, check that all the points have the correct dimension
-  UnsignedInteger k(0);
+  UnsignedInteger k = 0;
   for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
-    const UnsignedInteger p(p_[pIndex]);
+    const UnsignedInteger p = p_[pIndex];
     for (UnsignedInteger qIndex = 0; qIndex < sizeQ; ++qIndex)
     {
-      const UnsignedInteger q(q_[qIndex]);
+      const UnsignedInteger q = q_[qIndex];
       // Dimension of the optimization problem
-      const UnsignedInteger n(p + q);
+      const UnsignedInteger n = p + q;
       if (startingPoints[k].getSize() != n) throw InvalidArgumentException(HERE) << "Error: the point at index=" << k << " should have a size=" << n << " instead of size=" << startingPoints[k].getSize();
       ++k;
     }
@@ -521,17 +521,17 @@ void WhittleFactory::initializeStartingPoints()
 {
   startingPoints_ = Collection< NumericalPoint >(0);
   // Initialization of the starting point
-  const NumericalScalar theta0(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultStartingPointScale"));
-  const UnsignedInteger sizeP(p_.getSize());
-  const UnsignedInteger sizeQ(q_.getSize());
+  const NumericalScalar theta0 = ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultStartingPointScale");
+  const UnsignedInteger sizeP = p_.getSize();
+  const UnsignedInteger sizeQ = q_.getSize();
   for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
-    const UnsignedInteger p(p_[pIndex]);
+    const UnsignedInteger p = p_[pIndex];
     for (UnsignedInteger qIndex = 0; qIndex < sizeQ; ++qIndex)
     {
-      const UnsignedInteger q(q_[qIndex]);
+      const UnsignedInteger q = q_[qIndex];
       // Dimension of the optimization problem
-      const UnsignedInteger n(p + q);
+      const UnsignedInteger n = p + q;
       NumericalPoint theta(n);
       if (n > 0)
       {

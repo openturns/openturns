@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ * @brief This class builds a spectral model using a frequency grid and a spectral function
+ *  given as a collection of Covariance Matrix
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -17,7 +18,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/UserDefinedCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -49,8 +49,8 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   , covarianceCollection_(0)
   , p_mesh_(0)
 {
-  const UnsignedInteger N(mesh.getVerticesNumber());
-  const UnsignedInteger size((N * (N + 1)) / 2);
+  const UnsignedInteger N = mesh.getVerticesNumber();
+  const UnsignedInteger size = (N * (N + 1)) / 2;
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
@@ -85,7 +85,7 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
-  const UnsignedInteger N(p_mesh_->getVerticesNumber());
+  const UnsignedInteger N = p_mesh_->getVerticesNumber();
   if (N == 1) return covarianceCollection_[0];
 
   // Use the evaluation based on indices
@@ -95,8 +95,8 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
-  UnsignedInteger sIndex(i);
-  UnsignedInteger tIndex(j);
+  UnsignedInteger sIndex = i;
+  UnsignedInteger tIndex = j;
   // The covariance matrices correspond to sIndex >= tIndex.
   // As C(s, t) = C(t, s), we swap sIndex and tIndex if sIndex < tIndex
   if (sIndex < tIndex) std::swap(sIndex, tIndex);
@@ -108,13 +108,13 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i
   // sIndex=2, tIndex=1 -> index=4
   // sIndex=2, tIndex=2 -> index=5
   // ie index = tIndex + sIndex * (sIndex + 1) / 2
-  const SignedInteger index(tIndex + (sIndex * (sIndex + 1)) / 2);
+  const SignedInteger index = tIndex + (sIndex * (sIndex + 1)) / 2;
   return covarianceCollection_[index];
 }
 
 CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
 {
-  const UnsignedInteger verticesNumber(mesh.getVerticesNumber());
+  const UnsignedInteger verticesNumber = mesh.getVerticesNumber();
   CovarianceMatrix covariance(verticesNumber * dimension_);
   // It is better to check vertices as the simplices don't play a role in the discretization
   if (p_mesh_->getVertices() == mesh.getVertices())
@@ -122,8 +122,8 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
     // Here we know that the given mesh is exactly the one defining the covariance model
     for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
     {
-      const UnsignedInteger jBase(static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5));
-      const UnsignedInteger kBase(i - (jBase * (jBase + 1)) / 2);
+      const UnsignedInteger jBase = static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5);
+      const UnsignedInteger kBase = i - (jBase * (jBase + 1)) / 2;
       for (UnsignedInteger k = 0; k < dimension_; ++k)
         for (UnsignedInteger j = 0; j < dimension_; ++j)
           covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
@@ -143,11 +143,11 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
   // Fill-in the matrix by blocks
   for (UnsignedInteger rowIndex = 0; rowIndex < verticesNumber; ++rowIndex)
   {
-    const UnsignedInteger rowBase(rowIndex * dimension_);
+    const UnsignedInteger rowBase = rowIndex * dimension_;
     // Only the lower part has to be filled-in
     for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
-      const UnsignedInteger columnBase(columnIndex * dimension_);
+      const UnsignedInteger columnBase = columnIndex * dimension_;
       const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
@@ -168,17 +168,17 @@ NumericalSample UserDefinedCovarianceModel::discretizeRow(const NumericalSample 
     const UnsignedInteger p) const
 {
   if (dimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if the output dimension is not 1. Here, dimension=" << dimension_;
-  const UnsignedInteger size(vertices.getSize());
+  const UnsignedInteger size = vertices.getSize();
   NumericalSample result(size, 1);
   if (vertices == p_mesh_->getVertices())
   {
-    UnsignedInteger index((p * (p + 1)) / 2);
+    UnsignedInteger index = (p * (p + 1)) / 2;
     for (UnsignedInteger i = 0; i < p; ++i)
     {
       result[i][0] = covarianceCollection_[index](0, 0);
       ++index;
     }
-    UnsignedInteger shift(p);
+    UnsignedInteger shift = p;
     for (UnsignedInteger i = p; i < size; ++i)
     {
       result[i][0] = covarianceCollection_[index](0, 0);

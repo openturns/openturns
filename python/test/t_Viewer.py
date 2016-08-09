@@ -115,7 +115,7 @@ try:
     graph = ot.Graph('Pairs', ' ', ' ', True, 'topright')
     labels = list(['x' + str(i) for i in range(dim)])
     myPairs = ot.Pairs(sample, 'Pairs example',
-                      labels, 'green', 'bullet')
+                       labels, 'green', 'bullet')
     graph.add(myPairs)
     # graph.draw('curve9.png')
     view = View(graph)
@@ -128,7 +128,8 @@ try:
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)
-    LimitState = ot.NumericalMathFunction(('R', 'F'), ('G',), ('R-F/(_pi*100.0)',))
+    LimitState = ot.NumericalMathFunction(
+        ('R', 'F'), ('G',), ('R-F/(_pi*100.0)',))
     G = ot.RandomVector(LimitState, vect)
     myEvent = ot.Event(G, ot.Less(), 0.0)
     myAlgo = ot.MonteCarlo(myEvent)
@@ -140,7 +141,6 @@ try:
     view = View(graph)
     # view.save('curve10.png')
     view.show(block=False)
-
 
     # Polygon
     size = 50

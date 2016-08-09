@@ -57,13 +57,13 @@ WeibullFactory::Implementation WeibullFactory::build() const
 
 Weibull WeibullFactory::buildAsWeibull(const NumericalSample & sample) const
 {
-  const NumericalScalar size(sample.getSize());
+  const NumericalScalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Weibull distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar xMin(sample.getMin()[0]);
-  NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
-  const NumericalScalar mean(sample.computeMean()[0]);
-  const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
+  const NumericalScalar xMin = sample.getMin()[0];
+  NumericalScalar gamma = xMin - std::abs(xMin) / (2.0 + size);
+  const NumericalScalar mean = sample.computeMean()[0];
+  const NumericalScalar sigma = sample.computeStandardDeviationPerComponent()[0];
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution if data contains NaN or Inf";
   try
   {

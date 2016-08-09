@@ -37,7 +37,7 @@ class OT_API Mixture
   : public DistributionImplementation
 {
   CLASSNAME;
-  // Make the BernsteinCopulaFactory class a friend of Mixture as it has to 
+  // Make the BernsteinCopulaFactory class a friend of Mixture as it has to
   // set the isCopula_ attribute directly
   friend class BernsteinCopulaFactory;
 
@@ -57,9 +57,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const Mixture & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** String converter */
   String __repr__() const;

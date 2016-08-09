@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     // Default constructor: null polynomial
     OrthogonalUniVariatePolynomial P;
-    NumericalScalar point(1.2);
+    NumericalScalar point = 1.2;
     fullprint << "P=" << P << std::endl;
     fullprint << "P(" << point << ")=" << P(point) << std::endl;
 

@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     //    checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
     IndependentCopula copula(dim);
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;

@@ -51,15 +51,15 @@ HaarWaveletFactory * HaarWaveletFactory::clone() const
 String HaarWaveletFactory::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << " measure=" << measure_;
+         << " measure=" << measure_;
 }
 
 /* The method to get the function of any order */
 UniVariateFunction HaarWaveletFactory::build(const UnsignedInteger order) const
 {
   if (order == 0) return HaarWavelet(0, 0, true);
-  const UnsignedInteger j(SpecFunc::Log2(order));
-  const UnsignedInteger k(order - (1 << j));
+  const UnsignedInteger j = SpecFunc::Log2(order);
+  const UnsignedInteger k = order - (1 << j);
   return HaarWavelet(j, k, false);
 }
 

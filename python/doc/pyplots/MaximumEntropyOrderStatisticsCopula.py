@@ -9,8 +9,6 @@ graphPDF = myOrderStatCop.drawPDF()
 graphCDF = myOrderStatCop.drawCDF()
 
 
-
-
 fig = plt.figure(figsize=(8, 4))
 plt.suptitle("Max Entropy Order Statistics Copula: pdf and cdf")
 pdf_axis = fig.add_subplot(121)

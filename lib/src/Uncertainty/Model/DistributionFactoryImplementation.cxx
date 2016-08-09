@@ -86,7 +86,7 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
   BootstrapExperiment bootstrap(sample);
   /* Build the distribution based on the given sample */
   DistributionFactoryImplementation::Implementation distribution(build(sample));
-  const UnsignedInteger bootstrapSize(ResourceMap::GetAsUnsignedInteger("DistributionFactory-DefaultBootstrapSize"));
+  const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactory-DefaultBootstrapSize");
   NumericalSample parametersSample(bootstrapSize, distribution->getParameter());
   for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
   {
@@ -121,7 +121,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
 }
 
 DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample,
-                                                                            const DistributionParameters & parameters) const
+    const DistributionParameters & parameters) const
 {
   DistributionFactoryResult nativeResult(buildEstimator(sample));
   Distribution nativeDistribution(nativeResult.getDistribution());
@@ -157,7 +157,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
 }
 
 DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstimator(const NumericalSample & sample,
-                                                                                     const Bool isGaussian) const
+    const Bool isGaussian) const
 {
   Distribution distribution(build(sample));
   UnsignedInteger bootstrapSize = getBootstrapSize();
@@ -170,10 +170,13 @@ DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstim
     parameterSample.add(estimatedDistribution.getParameter());
   }
   Distribution parameterDistribution;
-  if (isGaussian) {
+  if (isGaussian)
+  {
     NormalFactory factory;
     parameterDistribution = factory.build(parameterSample);
-  } else {
+  }
+  else
+  {
     KernelSmoothing factory;
     parameterDistribution = factory.build(parameterSample);
   }
@@ -182,13 +185,14 @@ DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstim
 }
 
 DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelihoodEstimator (const NumericalSample & sample,
-                                                                                              const Bool isRegular) const
+    const Bool isRegular) const
 {
   const UnsignedInteger size = sample.getSize();
   const Distribution distribution(build(sample));
   const UnsignedInteger parameterDimension = distribution.getParameterDimension();
   Distribution parameterDistribution;
-  if (isRegular) {
+  if (isRegular)
+  {
     Matrix theta(parameterDimension, parameterDimension);
     const NumericalSample pdf(distribution.computePDF(sample));
     const NumericalSample dpdf(distribution.computePDFGradient(sample));
@@ -200,7 +204,9 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
     }
     CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());
     parameterDistribution = Normal(distribution.getParameter(), covariance);
-  } else {
+  }
+  else
+  {
     const UnsignedInteger bootstrapSize = getBootstrapSize();
     BootstrapExperiment experiment(sample);
     NumericalSample parameterSample(0, distribution.getParameterDimension());
@@ -218,7 +224,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
 }
 
 void DistributionFactoryImplementation::setKnownParameter(const NumericalPoint & values,
-                                                          const Indices & indices)
+    const Indices & indices)
 {
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
   knownParameterValues_ = values;

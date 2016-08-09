@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id: t_DickeyFullerTest_std.cxx 2392 2012-02-17 18:35:43Z schueller $
  */
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
@@ -31,7 +30,7 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  const UnsignedInteger size(100);
+  const UnsignedInteger size = 100;
 
   ARMACoefficients ARCoefficients(NumericalPoint(1, 0.3));
   ARMACoefficients MACoefficients(0);

@@ -39,7 +39,7 @@ class OT_API CumulativeDistributionNetwork
   : public DistributionImplementation
 {
   CLASSNAME;
- public:
+public:
 
   /** A type for distribution collection */
   typedef Collection<Distribution>           DistributionCollection;
@@ -54,9 +54,9 @@ class OT_API CumulativeDistributionNetwork
 
   /** Comparison operator */
   Bool operator ==(const CumulativeDistributionNetwork & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** String converter */
   String __repr__() const;
@@ -114,10 +114,10 @@ class OT_API CumulativeDistributionNetwork
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
- protected:
+protected:
 
 
- private:
+private:
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

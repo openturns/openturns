@@ -169,7 +169,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Recover the distribution, taking into account that we look for performance
   // so we avoid to rebuild expensive distributions as much as possible
-  const UnsignedInteger inputDimension(inputSample.getDimension());
+  const UnsignedInteger inputDimension = inputSample.getDimension();
   Collection< Distribution > marginals(inputDimension);
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   // The strategy is to test first a Uniform distribution, then a Normal distribution, then a kernel smoothing for the marginals
@@ -194,7 +194,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   setDistribution(ComposedDistribution(marginals, NormalCopulaFactory().build(inputSample)));
   const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-QNorm" ));
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
-  const UnsignedInteger maximumTotalDegree(ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" ));
+  const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" );
   // For small sample size, use sparse regression
   LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
   if (inputSample.getSize() < ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-SmallSampleSize" ))
@@ -210,10 +210,10 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   else
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-    const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
   } // Large sample
-  adaptiveStrategy_ = FixedStrategy(basis, enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+  const UnsignedInteger totalSize = enumerate.getStrataCumulatedCardinal(maximumTotalDegree);
+  adaptiveStrategy_ = FixedStrategy(basis, totalSize);
 }
 
 /* Constructor */
@@ -276,7 +276,7 @@ AdaptiveStrategy FunctionalChaosAlgorithm::getAdaptiveStrategy() const
 /* Computes the functional chaos */
 void FunctionalChaosAlgorithm::run()
 {
-  const UnsignedInteger outputDimension(model_.getOutputDimension());
+  const UnsignedInteger outputDimension = model_.getOutputDimension();
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
   // We have two distributions here:
@@ -296,7 +296,7 @@ void FunctionalChaosAlgorithm::run()
   // no isoprobabilistic transformation to introduce.
   LOGINFO("Build the iso-probabilistic transformation");
   const Bool noTransformation = (measure == distribution_);
-  const UnsignedInteger dimension(distribution_.getDimension());
+  const UnsignedInteger dimension = distribution_.getDimension();
   if (noTransformation)
   {
     LOGINFO(OSS(false) << "Same distribution for input vector=" << distribution_ << " and basis=" << measure);
@@ -414,11 +414,11 @@ void FunctionalChaosAlgorithm::run()
     for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {
       // Deal only with non-zero coefficients
-      const NumericalScalar marginalAlpha_kj(marginalAlpha_k[j]);
+      const NumericalScalar marginalAlpha_kj = marginalAlpha_k[j];
       if (marginalAlpha_kj != 0.0)
       {
         // Current index in the decomposition of the current marginal output
-        const UnsignedInteger index(marginalIndices[j]);
+        const UnsignedInteger index = marginalIndices[j];
         // If the current index is not in the map, create it
         if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = NumericalPoint(outputDimension, 0.0);
         // Add the current scalar coefficient to the corresponding component of the vectorial coefficient
@@ -436,7 +436,7 @@ void FunctionalChaosAlgorithm::run()
   NumericalMathFunctionCollection Psi_k(0);
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
   {
-    const UnsignedInteger i(iter->first);
+    const UnsignedInteger i = iter->first;
     const NumericalPoint currentcoefficient(iter->second);
     I_k.add(i);
     alpha_k.add(currentcoefficient);

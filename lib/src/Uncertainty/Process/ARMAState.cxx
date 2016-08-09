@@ -69,18 +69,18 @@ String ARMAState::__str__(const String & offset) const
   // are needed to compute the current value
   oss << offset;
   String separator("");
-  const UnsignedInteger xSize(x_.getSize());
+  const UnsignedInteger xSize = x_.getSize();
   for (UnsignedInteger i = 0; i < xSize; ++i, separator = "\n")
   {
-    const UnsignedInteger index(xSize - i);
+    const UnsignedInteger index = xSize - i;
     oss << separator << "X(t-" << index << ")" << std::setw(String(OSS() << xSize).size() - String(OSS() << index).size() + 3) << " = " << x_[i];
   }
   // The epsilon part of the state stores the q past values of the noise
   // that are needed to compute the current value
-  const UnsignedInteger epsilonSize(epsilon_.getSize());
+  const UnsignedInteger epsilonSize = epsilon_.getSize();
   for (UnsignedInteger i = 0; i < epsilonSize; ++i)
   {
-    const UnsignedInteger index(epsilonSize - i);
+    const UnsignedInteger index = epsilonSize - i;
     oss << separator << "epsilon(t-" << index << ")" << std::setw(String(OSS() << epsilonSize).size() - String(OSS() << index).size() + 3) << " = " << epsilon_[i];
   }
   return oss;

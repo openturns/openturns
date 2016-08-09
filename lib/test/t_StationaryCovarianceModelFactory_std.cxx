@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id: t_StationaryCovarianceModelFactory_std.cxx 2209 2011-11-22 11:09:10Z haddad $
  */
 #include <iostream>
 #include "openturns/OT.hxx"
@@ -38,8 +37,8 @@ int main(int argc, char *argv[])
   {
     // Dimension of the input model
     // Size of the TimeGrid
-    const UnsignedInteger size(128);
-    const UnsignedInteger dimension(1);
+    const UnsignedInteger size = 128;
+    const UnsignedInteger dimension = 1;
     const RegularGrid timeGrid(0.0, 0.1, size);
     const NumericalPoint amplitude(dimension, 1.0);
     const NumericalPoint scale(dimension, 1.0);
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
     SpectralNormalProcess myProcess(model, timeGrid);
 
     // Create a sample of time series
-    const UnsignedInteger N(1000);
+    const UnsignedInteger N = 1000;
     ProcessSample sample(myProcess.getSample(N));
 
     // Create the spectral density factory
@@ -63,9 +62,9 @@ int main(int argc, char *argv[])
     RegularGrid myTimeGrid(myCovarianceModel.getTimeGrid());
     for (UnsignedInteger i = 0 ; i < myTimeGrid.getN() ; ++i)
     {
-      const NumericalScalar t(myTimeGrid.getValue(i));
-      const NumericalScalar estimatedValue(myCovarianceModel(t)(0, 0));
-      const NumericalScalar modelValue(model.computeCovariance(t)(0, 0));
+      const NumericalScalar t = myTimeGrid.getValue(i);
+      const NumericalScalar estimatedValue = myCovarianceModel(t)(0, 0);
+      const NumericalScalar modelValue = model.computeCovariance(t)(0, 0);
       fullprint << "Covariance C(" << t << ") : ";
       fullprint << " evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
     }

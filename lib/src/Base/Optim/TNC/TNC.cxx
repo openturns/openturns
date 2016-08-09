@@ -104,7 +104,7 @@ void TNC::checkProblem(const OptimizationProblem & problem) const
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {
-  const UnsignedInteger dimension(getStartingPoint().getDimension());
+  const UnsignedInteger dimension = getStartingPoint().getDimension();
   Interval boundConstraints(getProblem().getBounds());
   if (!getProblem().hasBounds())
   {
@@ -239,7 +239,7 @@ void TNC::run()
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
-  const Bool convergence(((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError())));
+  const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED))
   {
@@ -393,7 +393,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   TNC *algorithm = static_cast<TNC *>(state);
 
   /* Convert the input vector in OpenTURNS format */
-  const UnsignedInteger dimension(algorithm->getStartingPoint().getDimension());
+  const UnsignedInteger dimension = algorithm->getStartingPoint().getDimension();
   NumericalPoint inPoint(dimension);
   memcpy(&inPoint[0], &x[0], dimension * sizeof(NumericalScalar));
   const OptimizationProblem problem(algorithm->getProblem());
@@ -402,10 +402,10 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   NumericalPoint outPoint(2);
 
   /* Compute the objective function at inPoint */
-  const NumericalScalar result(problem.getObjective().operator()(inPoint)[0]);
+  const NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
   outPoint[0] = result;
 
-  const NumericalScalar sign(problem.isMinimization() ? 1.0 : -1.0);
+  const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;
   *f = sign * result;
 
   NumericalPoint objectiveGradient;

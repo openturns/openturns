@@ -96,7 +96,7 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   hasSpecificFamily_ = false;
   OrthogonalUniVariatePolynomialFamily referenceFamily;
   const String measureType(measure_.getImplementation()->getClassName());
-  Bool hasClassMatch(false);
+  Bool hasClassMatch = false;
   // Legendre factory
   if (measureType == "Uniform")
   {

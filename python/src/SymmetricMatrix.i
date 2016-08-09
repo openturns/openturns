@@ -28,8 +28,6 @@ namespace OT {
 
 %extend SymmetricMatrix {
 
-  SymmetricMatrix(const SymmetricMatrix & other) { return new OT::SymmetricMatrix(other); }
-
   SymmetricMatrix(PyObject * pyObj) { return new OT::SymmetricMatrix( OT::convert<OT::_PySequence_,OT::SymmetricMatrix>(pyObj) ); }
 
   OTMatrixAccessors()

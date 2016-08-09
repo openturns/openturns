@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include <iostream>
 #include "openturns/OT.hxx"
@@ -61,7 +60,7 @@ int main(int argc, char *argv[])
     fullprint << "myModel2 = " << myModel2 << std::endl;
     fullprint << "Pretty print of myModel2 = " << myModel2.__str__() << std::endl;
 
-     // Evaluation on some points
+    // Evaluation on some points
     Indices levels(spatialDimension, 1);
     Box box(levels);
     const NumericalSample vertices = box.generate();

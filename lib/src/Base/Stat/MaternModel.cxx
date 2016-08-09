@@ -59,7 +59,7 @@ MaternModel::MaternModel(const NumericalPoint & theta,
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() <<")";
+                                         << " Here, (got dimension=" << getDimension() << ")";
   initialize();
 }
 
@@ -84,7 +84,7 @@ NumericalScalar MaternModel::computeStandardRepresentative(const NumericalPoint 
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   NumericalPoint scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
-  const NumericalScalar scaledPoint(scaledTau.norm());
+  const NumericalScalar scaledPoint = scaledTau.norm();
   if (std::abs(scaledPoint) <= SpecFunc::NumericalScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
@@ -111,14 +111,14 @@ Matrix MaternModel::partialGradient(const NumericalPoint & s,
     if (nu_ == 0.5)
     {
       Matrix gradient(spatialDimension_, 1);
-      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i,0) = -amplitude_[0] / scale_[i];
+      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] / scale_[i];
       return gradient;
     }
     // Zero gradient for p > 1
     return Matrix(spatialDimension_, 1);
   }
   // General case
-  const NumericalScalar value(std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2);
+  const NumericalScalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
   NumericalPoint tauDotsquareSqrt2nuOverTheta(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
   return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0];

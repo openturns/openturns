@@ -164,8 +164,8 @@ void InverseGamma::update()
   if (k_ >= 6.9707081224932495879)
   {
     static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
-    const NumericalScalar ik(1.0 / k_);
-    const NumericalScalar ik2(ik * ik);
+    const NumericalScalar ik = 1.0 / k_;
+    const NumericalScalar ik2 = ik * ik;
     normalizationFactor_ = std::log(lambda_) + k_ + 1.5 * std::log(k_) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
   // For small k, the normalization factor is:
@@ -189,7 +189,7 @@ NumericalPoint InverseGamma::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, (1.0 / (lambda_ * x) - (k_ + 1.0)) * computePDF(point) / x);
 }
@@ -209,7 +209,7 @@ NumericalScalar InverseGamma::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
-  const NumericalScalar u(lambda_ * point[0]);
+  const NumericalScalar u = lambda_ * point[0];
   if (u <= 0.0) return -SpecFunc::MaxNumericalScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(lambda*x)-1/(lambda*x)
@@ -222,7 +222,7 @@ NumericalScalar InverseGamma::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(k_, 1.0 / (lambda_ * x), true);
@@ -232,7 +232,7 @@ NumericalScalar InverseGamma::computeComplementaryCDF(const NumericalPoint & poi
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(k_, 1.0 / (lambda_ * x));
@@ -255,9 +255,9 @@ NumericalPoint InverseGamma::computePDFGradient(const NumericalPoint & point) co
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(2);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf(computePDF(point));
+  const NumericalScalar pdf = computePDF(point);
   pdfGradient[0] = -(std::log(lambda_) + std::log(x) + SpecFunc::DiGamma(k_)) * pdf;
   pdfGradient[1] = (1.0 / (lambda_ * x) - k_) * pdf / lambda_;
   return pdfGradient;
@@ -269,11 +269,11 @@ NumericalPoint InverseGamma::computeCDFGradient(const NumericalPoint & point) co
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar lambdaXInverse(1.0 / (lambda_ * x));
-  const NumericalScalar pdf(computePDF(x));
-  const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar lambdaXInverse = 1.0 / (lambda_ * x);
+  const NumericalScalar pdf = computePDF(x);
+  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
   cdfGradient[1] = pdf * x / lambda_;
   return cdfGradient;
@@ -348,7 +348,7 @@ NumericalPoint InverseGamma::getParameter() const
 
 void InverseGamma::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = InverseGamma(parameter[0], parameter[1]);
   setWeight(w);

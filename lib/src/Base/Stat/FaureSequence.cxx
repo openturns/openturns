@@ -71,15 +71,15 @@ NumericalPoint FaureSequence::generate()
   NumericalPoint realization(dimension_);
   // First, compute the decomposition of seed_ in base modulus_
   Unsigned64BitsIntegerCollection aI(logSeed_);
-  UnsignedInteger n(seed_);
+  UnsignedInteger n = seed_;
   for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
     aI[i] = n % modulus_;
     n /= modulus_;
   }
   // Stores the first component of the point
-  NumericalScalar xI(0.0);
-  NumericalScalar factor(modulusInverse_);
+  NumericalScalar xI = 0.0;
+  NumericalScalar factor = modulusInverse_;
   for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
     xI += aI[i] * factor;
@@ -93,13 +93,13 @@ NumericalPoint FaureSequence::generate()
     Unsigned64BitsIntegerCollection aINew(logSeed_);
     for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {
-      Unsigned64BitsInteger aINewJ(0);
+      Unsigned64BitsInteger aINewJ = 0;
       // We perform the reduction modulo modulus_ in order to avoid integer overflow as much as possible
       for (UnsignedInteger k = j; k < logSeed_; ++k) aINewJ = (aINewJ + coefficients_[j + (k * (k + 1)) / 2] * aI[k]) % modulus_;
       aINew[j] = aINewJ;
     }
     // Compute the current component
-    NumericalScalar xJ(0.0);
+    NumericalScalar xJ = 0.0;
     factor = modulusInverse_;
     for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {
@@ -140,9 +140,9 @@ void FaureSequence::computeInitialBinomialCoefficients()
   // C(n, k) = n! / (k! (n - k)!) is at position (k, n) with flat index n + k(k + 1) / 2
   coefficients_ = Unsigned64BitsIntegerCollection((logSeed_ * (logSeed_ + 1)) / 2, 1);
   // Main part of the array
-  UnsignedInteger currentIndex(4);
-  UnsignedInteger previousIndex1(2);
-  UnsignedInteger previousIndex2(1);
+  UnsignedInteger currentIndex = 4;
+  UnsignedInteger previousIndex1 = 2;
+  UnsignedInteger previousIndex2 = 1;
   for(UnsignedInteger n = 2; n < logSeed_; ++n)
   {
     for (UnsignedInteger k = 1; k < n; ++k)
@@ -164,8 +164,8 @@ void FaureSequence::computeInitialBinomialCoefficients()
 void FaureSequence::updateBinomialCoefficients()
 {
   // Here, we assume that the coefficient table has already been initialized and stores the values associated with logSeed-1
-  UnsignedInteger previousIndex2(coefficients_.getSize() - logSeed_ + 1);
-  UnsignedInteger previousIndex1(previousIndex2 + 1);
+  UnsignedInteger previousIndex2 = coefficients_.getSize() - logSeed_ + 1;
+  UnsignedInteger previousIndex1 = previousIndex2 + 1;
   coefficients_.add(1);
   for (UnsignedInteger k = 2; k < logSeed_; ++k)
   {

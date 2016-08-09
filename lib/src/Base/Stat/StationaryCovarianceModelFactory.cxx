@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/StationaryCovarianceModelFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -76,37 +75,37 @@ String StationaryCovarianceModelFactory::__str__(const String & offset) const
 UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel) const
 {
   // We get the dimension of the model
-  const UnsignedInteger dimension(mySpectralModel.getDimension());
+  const UnsignedInteger dimension = mySpectralModel.getDimension();
   // From the spectral model, we want to evaluate the autocovariance function
   // We first get the frequency grid : the grid contains only positive frequencies
   const RegularGrid frequencyGrid(mySpectralModel.getFrequencyGrid());
-  const UnsignedInteger N(frequencyGrid.getN());
-  const NumericalScalar df(frequencyGrid.getStep());
-  const NumericalScalar maximalFrequency(frequencyGrid.getValue(N - 1) + 0.5 * df);
+  const UnsignedInteger N = frequencyGrid.getN();
+  const NumericalScalar df = frequencyGrid.getStep();
+  const NumericalScalar maximalFrequency = frequencyGrid.getValue(N - 1) + 0.5 * df;
   // We use the integrale of the spectral density through the frequencies, i.e.
   // \int_{\Omega_c} S(f) exp(i2\pi f h) df  ==> the algorithm works on frequencies
   // The used algorithm imposes both positive and negative ones
   // Some transformations are needed
-  const UnsignedInteger size(2 * N);
+  const UnsignedInteger size = 2 * N;
   // Care!!! Check the expression of dt - The time grid should corresponds to the frequency grid
-  const NumericalScalar dt(0.5 / maximalFrequency);
+  const NumericalScalar dt = 0.5 / maximalFrequency;
 
   // As we need Fourier transformations, we need to have a structure which enables to stock elements
   // For d = dimension, we need dimension * 0.5 * (dimension + 1) transformations
-  const UnsignedInteger numberOfFFT(dimension * (dimension + 1) / 2);
+  const UnsignedInteger numberOfFFT = dimension * (dimension + 1) / 2;
   ComplexMatrix matrix(size, numberOfFFT);
   for (UnsignedInteger k = 0; k < size; ++k)
   {
-    UnsignedInteger columnIndex(0);
+    UnsignedInteger columnIndex = 0;
     // Computation is done for the current frequency value
     // The frequency is computed thanks to the formula (2k +1 -size) *0.5 * df with k=0,.,..,size-1
-    const NumericalScalar currentFrequency((2.0 * k + 1 - size) * 0.5 * df);
+    const NumericalScalar currentFrequency = (2.0 * k + 1 - size) * 0.5 * df;
     const HermitianMatrix spectralDensity(mySpectralModel(currentFrequency));
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        const NumericalScalar theta((size - 1.0) * k * M_PI / size);
+        const NumericalScalar theta = (size - 1.0) * k * M_PI / size;
         const NumericalComplex alpha(cos(theta), -sin(theta));
         const NumericalComplex spectralValue(spectralDensity(i, j));
         const NumericalComplex phi_k(spectralValue * alpha);
@@ -121,7 +120,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   Collection<NumericalComplex> delta(size);
   for (UnsignedInteger m = 0; m < size; ++m)
   {
-    const NumericalScalar theta((size - 1.0) / size * 0.5 * M_PI * (2.0 * m + 1.0 - size));
+    const NumericalScalar theta = (size - 1.0) / size * 0.5 * M_PI * (2.0 * m + 1.0 - size);
     const NumericalComplex alpha(cos(theta), -1.0 * sin(theta));
     delta[m] = df * size * alpha;
   }
@@ -144,9 +143,9 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   CovarianceMatrixCollection collection(N);
   for (UnsignedInteger currentIndex = 0; currentIndex < N; ++currentIndex)
   {
-    const UnsignedInteger index(currentIndex + N);
+    const UnsignedInteger index = currentIndex + N;
     CovarianceMatrix covariance(dimension);
-    UnsignedInteger columnIndex(0);
+    UnsignedInteger columnIndex = 0;
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       for (UnsignedInteger j = 0; j <= i; ++j)

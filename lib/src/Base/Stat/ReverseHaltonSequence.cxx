@@ -61,14 +61,14 @@ NumericalPoint ReverseHaltonSequence::generate()
   // Loop over the components
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    NumericalScalar xI(0.0);
-    const Unsigned64BitsInteger radix(base_[i]);
-    const NumericalScalar inverseRadix(1.0 / radix);
-    NumericalScalar inverseRadixN(inverseRadix);
-    Unsigned64BitsInteger currentSeed(seed_);
+    NumericalScalar xI = 0.0;
+    const Unsigned64BitsInteger radix = base_[i];
+    const NumericalScalar inverseRadix = 1.0 / radix;
+    NumericalScalar inverseRadixN = inverseRadix;
+    Unsigned64BitsInteger currentSeed = seed_;
     while (currentSeed > 0)
     {
-      const UnsignedInteger digit(currentSeed % radix);
+      const UnsignedInteger digit = currentSeed % radix;
       if (digit != 0) xI += (radix - digit) * inverseRadixN;
       currentSeed /= radix;
       inverseRadixN *= inverseRadix;

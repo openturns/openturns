@@ -40,6 +40,10 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 
 if (USE_COTIRE)
+  if (POLICY CMP0058)
+    # Ninja requires custom command byproducts to be explicit
+    cmake_policy (SET CMP0058 NEW)
+  endif()
   set (USE_BISON OFF CACHE BOOL "" FORCE)
   set (USE_FLEX OFF CACHE BOOL "" FORCE)
   set (USE_SPHINX OFF CACHE BOOL "" FORCE)
@@ -331,7 +335,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 7)
+set (CPACK_PACKAGE_VERSION_MINOR 8rc1)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ           "OFF"         )

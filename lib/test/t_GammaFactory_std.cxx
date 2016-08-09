@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Gamma distribution(0.2, 1.0, 1.0);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     GammaFactory factory;
     CovarianceMatrix covariance;

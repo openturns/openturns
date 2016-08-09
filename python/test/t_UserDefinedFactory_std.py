@@ -23,9 +23,9 @@ try:
     print("Estimated UserDefined=", estimatedUserDefined)
     estimatedUserDefined = factory.buildAsUserDefined()
     print("Default UserDefined=", estimatedUserDefined)
-    estimatedDistribution = factory.build([[10]]*2000)
+    estimatedDistribution = factory.build([[10]] * 2000)
     print("Estimated distribution=", repr(estimatedDistribution))
-    
+
 except:
     import sys
     print("t_UserDefinedFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])

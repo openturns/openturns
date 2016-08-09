@@ -72,12 +72,12 @@ int main(int argc, char *argv[])
     xValues.add(50.0);
     for (UnsignedInteger i = 0; i < nValues.getSize(); ++i)
     {
-      const UnsignedInteger n(nValues[i]);
+      const UnsignedInteger n = nValues[i];
       for (UnsignedInteger j = 0; j < xValues.getSize(); ++j)
       {
-        const NumericalScalar x(xValues[j]);
-        const NumericalScalar cdf(DistFunc::pKolmogorov(n, x));
-        const NumericalScalar ccdf(DistFunc::pKolmogorov(n, x, true));
+        const NumericalScalar x = xValues[j];
+        const NumericalScalar cdf = DistFunc::pKolmogorov(n, x);
+        const NumericalScalar ccdf = DistFunc::pKolmogorov(n, x, true);
         fullprint << "pKolmogorov(" << n << ", " << x << ")=" << std::fixed << (cdf < 1e-16 ? 0.0 : cdf) << ", complementary=" << (ccdf < 1e-16 ? 0.0 : ccdf) << std::endl;
       }
     }

@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dim(1);
+    UnsignedInteger dim = 1;
     Interval domain(NumericalPoint(dim, -1.0), NumericalPoint(dim, 1.0));
     OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));
     UnsignedInteger basisSize = 10;

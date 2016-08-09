@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 
     RandomGenerator::SetSeed(0);
 
-    UnsignedInteger inputDimension(3);
-    UnsignedInteger outputDimension(1);
+    UnsignedInteger inputDimension = 3;
+    UnsignedInteger outputDimension = 1;
 
     Description inputName(inputDimension);
     inputName[0] = "X1";
@@ -57,9 +57,9 @@ int main(int argc, char *argv[])
     ComposedDistribution maDistribution(ComposedDistribution(marginals, IndependentCopula(inputDimension)));
 
 
-    const UnsignedInteger size(10000);
-    const UnsignedInteger nr_bootstrap(100);
-    const NumericalScalar confidence_level(0.95);
+    const UnsignedInteger size = 10000;
+    const UnsignedInteger nr_bootstrap = 100;
+    const NumericalScalar confidence_level = 0.95;
 
     const NumericalSample inputDesign(SobolIndicesAlgorithmImplementation::Generate(maDistribution, size, true));
     const NumericalSample outputDesign(model(inputDesign));

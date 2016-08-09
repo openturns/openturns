@@ -60,7 +60,7 @@ ConstantStep * ConstantStep::clone() const
 /* Compute step */
 NumericalPoint ConstantStep::operator()(const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension( epsilon_.getDimension() );
+  const UnsignedInteger dimension = epsilon_.getDimension();
   if (dimension != inP.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension eps:" << dimension << " x:" << inP.getDimension();
   return epsilon_;
 }

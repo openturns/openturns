@@ -59,7 +59,7 @@ AdaptiveStieltjesAlgorithm::AdaptiveStieltjesAlgorithm(const Distribution & meas
   , isElliptical_(measure.isElliptical())
 {
   // Here we initialize the monic coefficients cache
-  const NumericalScalar mu(measure.getMean()[0]);
+  const NumericalScalar mu = measure.getMean()[0];
   monicRecurrenceCoefficients_[0][0] = 1.0;
   // To avoid -0.0 in print, we test for the mean of the distribution.
   if (std::abs(mu) > ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"))
@@ -98,15 +98,15 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   const UnsignedInteger cacheSize = monicRecurrenceCoefficients_.getSize();
   // Get the coefficients from the cache if possible
   if (n < cacheSize - 1)
-    {
-      const NumericalScalar inverseSqrtBetaNp1(1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]));
-      Coefficients coefficients(3);
-      coefficients[0] = inverseSqrtBetaNp1;
-      if (std::abs(monicRecurrenceCoefficients_[n][1]) > 0.0)
-	coefficients[1] = monicRecurrenceCoefficients_[n][1] * inverseSqrtBetaNp1;
-      coefficients[2] = -sqrt(-monicRecurrenceCoefficients_[n][2]) * inverseSqrtBetaNp1;
-      return coefficients;
-    }
+  {
+    const NumericalScalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
+    Coefficients coefficients(3);
+    coefficients[0] = inverseSqrtBetaNp1;
+    if (std::abs(monicRecurrenceCoefficients_[n][1]) > 0.0)
+      coefficients[1] = monicRecurrenceCoefficients_[n][1] * inverseSqrtBetaNp1;
+    coefficients[2] = -sqrt(-monicRecurrenceCoefficients_[n][2]) * inverseSqrtBetaNp1;
+    return coefficients;
+  }
   // This loop is to go to the first coefficients not in the cache. Here we cannot use cacheSize as
   // the size of the cache is increased by each call to getRecurrenceCoefficients()
   while (n >= monicRecurrenceCoefficients_.getSize()) getRecurrenceCoefficients(n - 1);
@@ -120,33 +120,33 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsNumericalScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
   const DotProductWrapper dotProductWrapper(qN, measure_);
   if (isElliptical_)
+  {
+    // In the case of elliptical distributions, the coefficient \alpha is
+    // always equal to the mean of the distribution
+    monicCoefficients[1] = monicRecurrenceCoefficients_[n][1];
+    // For n == 1 beta_1 is the variance
+    if (n == 0)
     {
-      // In the case of elliptical distributions, the coefficient \alpha is
-      // always equal to the mean of the distribution
-      monicCoefficients[1] = monicRecurrenceCoefficients_[n][1];
-      // For n == 1 beta_1 is the variance
-      if (n == 0)
-	{
-	  monicSquaredNorms_.add(measure_.getCovariance()(0, 0));
-	  monicCoefficients[2] = -monicSquaredNorms_[1];
-	}
-      else
-	{
-	  const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
-	  monicSquaredNorms_.add(algo.integrate(dotProductKernel, measure_.getRange())[0]);
-	  monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
-	} // n != 1
-    } // isElliptical_
-  else
+      monicSquaredNorms_.add(measure_.getCovariance()(0, 0));
+      monicCoefficients[2] = -monicSquaredNorms_[1];
+    }
+    else
     {
-      // \beta_n = Rn / Rn-1 with Rn-1 = \beta_{n-1}Rn-2 = \beta_{n-1}\beta_{n-2}Rn-3 = ... = \prod_{k=0}^{n-1}\beta_k
-      // Compute Rn and <x.Qn, Qn>
-      const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
-      NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange()));
-      monicSquaredNorms_.add(dotProduct[0]);
-      monicCoefficients[1] = -dotProduct[1] / monicSquaredNorms_[n + 1];
+      const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
+      monicSquaredNorms_.add(algo.integrate(dotProductKernel, measure_.getRange())[0]);
       monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
-    } // !isElliptical_
+    } // n != 1
+  } // isElliptical_
+  else
+  {
+    // \beta_n = Rn / Rn-1 with Rn-1 = \beta_{n-1}Rn-2 = \beta_{n-1}\beta_{n-2}Rn-3 = ... = \prod_{k=0}^{n-1}\beta_k
+    // Compute Rn and <x.Qn, Qn>
+    const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
+    NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange()));
+    monicSquaredNorms_.add(dotProduct[0]);
+    monicCoefficients[1] = -dotProduct[1] / monicSquaredNorms_[n + 1];
+    monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
+  } // !isElliptical_
   monicRecurrenceCoefficients_.add(monicCoefficients);
   // Now n == cacheSize - 2
   return getRecurrenceCoefficients(n);

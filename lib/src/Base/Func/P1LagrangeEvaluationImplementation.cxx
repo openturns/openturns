@@ -135,7 +135,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
     // Here, perform the P1 interpolation
     // First get the index of the nearest vertex
     const Mesh & mesh(field_.getMesh());
-    const UnsignedInteger nearestIndex(mesh.getNearestVertexIndex(inP));
+    const UnsignedInteger nearestIndex = mesh.getNearestVertexIndex(inP);
     const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
     const NumericalSample vertices(mesh.getVertices());
     const Mesh::IndicesCollection & simplices(mesh.getSimplices());
@@ -145,7 +145,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
     NumericalPoint coordinates;
     for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
     {
-      const UnsignedInteger simplexIndex(simplicesCandidates[i]);
+      const UnsignedInteger simplexIndex = simplicesCandidates[i];
       if (mesh.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
       {
         const Indices simplex(simplices[simplexIndex]);
@@ -169,40 +169,40 @@ NumericalSample P1LagrangeEvaluationImplementation::operator()( const NumericalS
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   NumericalSample result(size, field_.getDimension());
   if (size == 0) return result;
   const Mesh & mesh(field_.getMesh());
   const NumericalSample vertices(mesh.getVertices());
   if (inS == vertices) result = field_.getValues();
   else
+  {
+    // Here, perform the P1 interpolation
+    // First get the indices of the nearest vertices, in parallel
+    const Mesh::IndicesCollection simplices(mesh.getSimplices());
+    const NumericalSample values(field_.getValues());
+    const Indices nearestIndices(mesh.getNearestVertexIndex(inS));
+    for (UnsignedInteger n = 0; n < size; ++n)
     {
-      // Here, perform the P1 interpolation
-      // First get the indices of the nearest vertices, in parallel
-      const Mesh::IndicesCollection simplices(mesh.getSimplices());
-      const NumericalSample values(field_.getValues());
-      const Indices nearestIndices(mesh.getNearestVertexIndex(inS));
-      for (UnsignedInteger n = 0; n < size; ++n)
-	{
-	  const UnsignedInteger nearestIndex = nearestIndices[n];
-	  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
-	  // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
-	  result[n] = values[nearestIndex];
-	  NumericalPoint coordinates;
-	  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
-	    {
-	      const UnsignedInteger simplexIndex(simplicesCandidates[i]);
-	      if (mesh.checkPointInSimplexWithCoordinates(inS[n], simplexIndex, coordinates))
-		{
-		  const Indices simplex(simplices[simplexIndex]);
-		  result[n] = values[simplex[0]] * coordinates[0];
-		  for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-		    result[n] += values[simplex[j]] * coordinates[j];
-		  break;
-		}
-	    } // Loop over the simplices candidates
-	} // Loop over the input sample
-    } // The input sample is different from 
+      const UnsignedInteger nearestIndex = nearestIndices[n];
+      const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
+      // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
+      result[n] = values[nearestIndex];
+      NumericalPoint coordinates;
+      for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+      {
+        const UnsignedInteger simplexIndex = simplicesCandidates[i];
+        if (mesh.checkPointInSimplexWithCoordinates(inS[n], simplexIndex, coordinates))
+        {
+          const Indices simplex(simplices[simplexIndex]);
+          result[n] = values[simplex[0]] * coordinates[0];
+          for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
+            result[n] += values[simplex[j]] * coordinates[j];
+          break;
+        }
+      } // Loop over the simplices candidates
+    } // Loop over the input sample
+  } // The input sample is different from
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

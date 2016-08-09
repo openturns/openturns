@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include <iostream>
 #include "openturns/OT.hxx"
@@ -40,10 +39,10 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     // Default dimension parameter to evaluate the model
-    const UnsignedInteger dimension(1);
+    const UnsignedInteger dimension = 1;
 
     // Spatial dimension of the model
-    const UnsignedInteger spatialDimension(1);
+    const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
     NumericalPoint amplitude(dimension);
@@ -62,12 +61,12 @@ int main(int argc, char *argv[])
     /* Sample a CauchyModel */
     ExponentialModel referenceModel(scale, amplitude, spatialCorrelation);
 
-    UnsignedInteger size(20);
+    UnsignedInteger size = 20;
     RegularGrid timeGrid(0.0, 0.1, size);
     UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar t(timeGrid.getValue(i));
+      const NumericalScalar t = timeGrid.getValue(i);
       covarianceCollection[i] = referenceModel(0, t);
     }
 
@@ -78,7 +77,7 @@ int main(int argc, char *argv[])
     /* Sample the UserDefinedStationaryCovarianceModel */
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
-      const NumericalScalar t(timeGrid.getValue(i));
+      const NumericalScalar t = timeGrid.getValue(i);
       // We look for cov(t) ==> when adding to the collection, we compute cov(t)
       fullprint << "myModel = " << myModel(t)(0, 0) << ", referenceModel = " << referenceModel(t)(0 , 0) << std::endl;
     }

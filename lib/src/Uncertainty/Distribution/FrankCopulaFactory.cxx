@@ -65,15 +65,15 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalSample & sampl
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar tau(sample.computeKendallTau().operator()(0, 1));
+  NumericalScalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1.0) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample with Kendall tau equal to 1";
   if (tau == -1.0) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample with Kendall tau equal to -1";
   // Search the value of the Frank copula parameter by numerically inverting the relation between Kendall's tau and Frank copula's parameter
-  const Bool isTauNegative(tau < 0.0);
+  const Bool isTauNegative = tau < 0.0;
   tau = std::abs(tau);
-  NumericalScalar theta(1.0);
-  NumericalScalar step(0.5);
-  NumericalScalar tauTheta(KendallTauFromParameter(NumericalPoint(1, theta))[0]);
+  NumericalScalar theta = 1.0;
+  NumericalScalar step = 0.5;
+  NumericalScalar tauTheta = KendallTauFromParameter(NumericalPoint(1, theta))[0];
   // Find a lower bound
   while (tauTheta > tau)
   {
@@ -82,8 +82,8 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalSample & sampl
     step *= 0.5;
   }
   // Here, tauTheta <= tau, hence theta is a lower bound of the parameter
-  const NumericalScalar minTheta(theta);
-  const NumericalScalar minTau(tauTheta);
+  const NumericalScalar minTheta = theta;
+  const NumericalScalar minTau = tauTheta;
   // Now, look for an upper bound
   while (tauTheta <= tau)
   {
@@ -91,8 +91,8 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalSample & sampl
     tauTheta = KendallTauFromParameter(NumericalPoint(1, theta))[0];
     step *= 2.0;
   }
-  const NumericalScalar maxTheta(theta);
-  const NumericalScalar maxTau(tauTheta);
+  const NumericalScalar maxTheta = theta;
+  const NumericalScalar maxTau = tauTheta;
   const NumericalMathFunction f(bindMethod<FrankCopulaFactory, NumericalPoint, NumericalPoint>(*this, &FrankCopulaFactory::KendallTauFromParameter, 1, 1));
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "FrankCopulaFactory-MaximumIteration" ));

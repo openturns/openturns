@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
 
     // Instanciate one distribution object
-    UnsignedInteger dim(2);
+    UnsignedInteger dim = 2;
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     input[3] = "I";
     NumericalMathFunction myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
 
-    UnsignedInteger dim(myFunction.getInputDimension());
+    UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     mean[0] = 50.0; // E

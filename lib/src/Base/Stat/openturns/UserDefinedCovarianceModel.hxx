@@ -1,8 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class build a spectral model using a frequency grid and a spectral function
+ *  @brief This class builds a spectral model using a frequency grid and a spectral function
  *  given as a collection of Covariance Matrix
- *  This is the interface class
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *

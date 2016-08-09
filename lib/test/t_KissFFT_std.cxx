@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
 
     // for fft, the best implementation is given for N = 2^p
-    const UnsignedInteger size(16);
+    const UnsignedInteger size = 16;
 
     // collection for test
     NumericalComplexCollection collection(size);
@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
     // Create a complex gaussian sample
     for (UnsignedInteger index = 0; index < size; ++index)
     {
-      const NumericalScalar realPart( 0.1 * (1.0 + index) / size );
-      const NumericalScalar imagPart( 0.3 * (1.0 + index) / size );
+      const NumericalScalar realPart = 0.1 * (1.0 + index) / size;
+      const NumericalScalar imagPart = 0.3 * (1.0 + index) / size;
       collection[index] = NumericalComplex(realPart, imagPart);
     }
 
@@ -66,10 +66,10 @@ int main(int argc, char *argv[])
     const NumericalComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
     fullprint << "FFT back=" << inverseTransformedCollection << std::endl;
 
-    const NumericalScalar threshold(1e-14);
+    const NumericalScalar threshold = 1e-14;
 
     // 2D case now
-    const UnsignedInteger N(8);
+    const UnsignedInteger N = 8;
     Normal distribution(N);
     NumericalSample sample(distribution.getSample(2 * N));
 

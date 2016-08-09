@@ -80,13 +80,13 @@ public:
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
   using CovarianceModelImplementation::computeAsScalar;
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-                                           const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
   virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::computeStandardRepresentative;
   virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
-                                                        const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
 

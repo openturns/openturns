@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
 
     CorrelationMatrix R = IdentityMatrix(dim);
     for(UnsignedInteger i = 0; i < dim - 1; i++) R(i, i + 1) = 0.25;

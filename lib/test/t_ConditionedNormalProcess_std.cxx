@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
 
   // Set Numerical precision to 3
-  UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+  UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(3);
 
   // Process with empty constructor

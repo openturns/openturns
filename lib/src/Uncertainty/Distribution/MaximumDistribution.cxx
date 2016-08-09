@@ -70,17 +70,17 @@ MaximumDistribution::MaximumDistribution(const DistributionCollection & collecti
   setDimension(1);
   for (UnsignedInteger i = 0; i < variablesNumber_; ++i)
     if (collection[i] != collection[0])
-      {
-	allSame_ = false;
-	break;
-      }
+    {
+      allSame_ = false;
+      break;
+    }
   if (allSame_) setDistribution(collection[0]);
   else setDistribution(ComposedDistribution(collection));
 }
 
 /* Parameters constructor */
 MaximumDistribution::MaximumDistribution(const Distribution & distribution,
-					 const UnsignedInteger variablesNumber)
+    const UnsignedInteger variablesNumber)
   : DistributionImplementation()
   , distribution_()
   , allSame_(true)
@@ -156,22 +156,22 @@ NumericalScalar MaximumDistribution::computePDF(const NumericalPoint & point) co
   // General case
   if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
   // Special treatment of the independent copula case
-  const UnsignedInteger size(distribution_.getDimension());
+  const UnsignedInteger size = distribution_.getDimension();
   NumericalPoint marginalCDF(size);
-  NumericalScalar product(1.0);
+  NumericalScalar product = 1.0;
   DistributionCollection marginals(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     marginals[i] = distribution_.getMarginal(i);
-    const NumericalScalar cdf(marginals[i].computeCDF(point));
+    const NumericalScalar cdf = marginals[i].computeCDF(point);
     if ((cdf == 0) || (cdf == 1.0)) return 0.0;
     marginalCDF[i] = cdf;
     product *= cdf;
   }
-  NumericalScalar sum(0.0);
+  NumericalScalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar pdfI(marginals[i].computePDF(point));
+    const NumericalScalar pdfI = marginals[i].computePDF(point);
     if (pdfI > 0.0) sum += pdfI / marginalCDF[i];
   }
   return sum * product;
@@ -199,11 +199,11 @@ void MaximumDistribution::setParametersCollection(const NumericalPointCollection
 {
   // This trick is needed n order to cope with the case allSame == True
   if (allSame_)
-    {
-      Distribution clone(getDistribution());
-      clone.setParametersCollection(parametersCollection);
-      distribution_ = clone;
-    }
+  {
+    Distribution clone(getDistribution());
+    clone.setParametersCollection(parametersCollection);
+    distribution_ = clone;
+  }
   else
     distribution_.setParametersCollection(parametersCollection);
 }

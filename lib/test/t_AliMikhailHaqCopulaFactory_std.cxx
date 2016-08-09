@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     AliMikhailHaqCopula distribution(0.5);
-    UnsignedInteger size(1000);
+    UnsignedInteger size = 1000;
     NumericalSample sample(distribution.getSample(size));
     AliMikhailHaqCopulaFactory factory;
     CovarianceMatrix covariance;

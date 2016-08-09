@@ -148,7 +148,7 @@ TimeSeries & TimeSeries::add(const NumericalSample & sample)
 {
   if ((n_ > 0) && (sample.getDimension() != getDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   if (sample.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension greater than 0";
-  const UnsignedInteger size(sample.getSize());
+  const UnsignedInteger size = sample.getSize();
   if (size == 0) return *this;
   // Update the vertices
   NumericalSample vertices(mesh_.getVertices());
@@ -157,7 +157,7 @@ TimeSeries & TimeSeries::add(const NumericalSample & sample)
   values_.add(sample);
   // Update the simplices
   // If there is currently no point in the TimeSeries the new points create (size-1) elements
-  UnsignedInteger iStart(0);
+  UnsignedInteger iStart = 0;
   if (n_ == 0) iStart = 1;
   Collection<Indices> simplices(mesh_.getSimplices());
   for (UnsignedInteger i = iStart; i < size; ++i)

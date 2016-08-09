@@ -76,13 +76,13 @@ public:
 
   /** Computation of the covariance matrix */
   virtual CovarianceMatrix computeCovariance(const NumericalScalar s,
-                                             const NumericalScalar t) const;
+      const NumericalScalar t) const;
 
   virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
 
 
   virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-                                             const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
 
   virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
 

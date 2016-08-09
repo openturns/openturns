@@ -28,7 +28,7 @@ static String printNumericalPoint(const NumericalPoint & point, const UnsignedIn
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps(pow(0.1, 1.0 * digits));
+  NumericalScalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::scientific << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
   try
   {
     // Set Numerical precision to 3
-    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(3);
 
     std::cout << "=============" << std::endl;
@@ -68,19 +68,19 @@ int main(int argc, char *argv[])
     NumericalSample X(sampleSize, spatialDimension);
     NumericalSample X2(sampleSize, spatialDimension);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
-      {
-        X[i][0] = 3.0 + i;
-        X2[i][0] = 2.5 + i;
-      }
+    {
+      X[i][0] = 3.0 + i;
+      X2[i][0] = 2.5 + i;
+    }
     X[0][0] = 1.0;
     X[1][0] = 3.0;
     X2[0][0] = 2.0;
     X2[1][0] = 4.0;
     NumericalSample Y = model(X);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
-      {
-        Y[i][0] += 0.01 * DistFunc::rNormal();
-      }
+    {
+      Y[i][0] += 0.01 * DistFunc::rNormal();
+    }
     // Add a small noise to data
     NumericalSample Y2 = model(X2);
 

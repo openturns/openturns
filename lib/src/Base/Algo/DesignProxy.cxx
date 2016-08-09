@@ -88,14 +88,14 @@ String DesignProxy::__repr__() const
 /* Compute the design matrix with the provided basis terms indices */
 MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
 {
-  const UnsignedInteger cacheSize(designCache_.getNbColumns());
-  const UnsignedInteger indicesSize(indices.getSize());
-  const UnsignedInteger xSize(x_.getSize());
+  const UnsignedInteger cacheSize = designCache_.getNbColumns();
+  const UnsignedInteger indicesSize = indices.getSize();
+  const UnsignedInteger xSize = x_.getSize();
   MatrixImplementation design(xSize, indicesSize);
   MatrixImplementation::iterator startDesign(design.begin());
   for (UnsignedInteger j = 0; j < indicesSize; ++j)
   {
-    const UnsignedInteger phiIndex(indices[j]);
+    const UnsignedInteger phiIndex = indices[j];
     // If the index is too large for the cache, compute the column and copy it directly in the design matrix
     if (phiIndex >= cacheSize)
     {
@@ -128,10 +128,10 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
   // Apply row filter if needed
   if (hasRowFilter_)
   {
-    const UnsignedInteger newRowDim(rowFilter_.getSize());
+    const UnsignedInteger newRowDim = rowFilter_.getSize();
     MatrixImplementation filteredDesign(newRowDim, indicesSize);
-    UnsignedInteger linearIndex(0);
-    UnsignedInteger shift(0);
+    UnsignedInteger linearIndex = 0;
+    UnsignedInteger shift = 0;
     for (UnsignedInteger j = 0; j < indicesSize; ++j)
     {
       for (UnsignedInteger i = 0; i < newRowDim; ++i)

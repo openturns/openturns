@@ -82,9 +82,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const RandomMixture & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** String converter */
   String __repr__() const;
@@ -298,7 +298,7 @@ private:
     /** Compute the Kolmogorov distance based on the given data, for a given parameter set */
     NumericalPoint computeNorm(const NumericalPoint & parameters) const
     {
-      NumericalScalar norm(0.0);
+      NumericalScalar norm = 0.0;
       try
       {
         const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));

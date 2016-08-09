@@ -62,13 +62,13 @@ protected:
 
 
 AnalyticalParser::AnalyticalParser()
-: Object()
+  : Object()
 {
 }
 
 
 void AnalyticalParser::setVariablesFormulas(const Description & inputVariablesNames,
-                                    const Description & formulas)
+    const Description & formulas)
 {
   inputVariablesNames_ = inputVariablesNames;
   formulas_ = formulas;

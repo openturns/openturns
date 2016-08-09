@@ -70,7 +70,7 @@ try:
     myStudy.add('simulationResult', simulationResult)
 
     cNameList = ['MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
-                'DirectionalSampling', 'RandomizedLHS', 'SimulationSensitivityAnalysis']
+                 'DirectionalSampling', 'RandomizedLHS', 'SimulationSensitivityAnalysis']
     for cName in cNameList:
         otClass = getattr(ot, cName)
         instance = otClass()
@@ -148,7 +148,8 @@ try:
 
     # Create a RandomGeneratorState
     ot.RandomGenerator.SetSeed(0)
-    randomGeneratorState = ot.RandomGeneratorState(ot.RandomGenerator.GetState())
+    randomGeneratorState = ot.RandomGeneratorState(
+        ot.RandomGenerator.GetState())
     myStudy.add('randomGeneratorState', randomGeneratorState)
 
     # Create a GeneralizedLinearModelResult
@@ -221,7 +222,8 @@ try:
 
     # Create a GeneralizedLinearModelResult from the one stored in the Study
     generalizedLinearModelResult = ot.GeneralizedLinearModelResult()
-    myStudy.fillObject('generalizedLinearModelResult', generalizedLinearModelResult)
+    myStudy.fillObject('generalizedLinearModelResult',
+                       generalizedLinearModelResult)
 
     print('generalizedLinearModelResult = ', generalizedLinearModelResult)
 
@@ -229,6 +231,7 @@ try:
     os.remove(fileName)
 
 except:
-    import os, traceback
+    import os
+    import traceback
     traceback.print_exc()
     os._exit(1)

@@ -115,7 +115,7 @@ NumericalScalar Exponential::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x < 0.0) return 0.0;
   return lambda_ * std::exp(-lambda_ * x);
 }
@@ -124,7 +124,7 @@ NumericalScalar Exponential::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x < 0.0) return -SpecFunc::MaxNumericalScalar;
   return std::log(lambda_) - lambda_ * x;
 }
@@ -134,7 +134,7 @@ NumericalScalar Exponential::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return -expm1(-lambda_ * x);
 }
@@ -144,7 +144,7 @@ NumericalScalar Exponential::computeComplementaryCDF(const NumericalPoint & poin
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x < 0.0) return 1.0;
   return std::exp(-lambda_ * x);
 }
@@ -165,10 +165,10 @@ NumericalPoint Exponential::computePDFGradient(const NumericalPoint & point) con
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint pdfGradient(2, 0.0);
   if (x < 0.0) return pdfGradient;
-  const NumericalScalar expX(std::exp(-lambda_ * x));
+  const NumericalScalar expX = std::exp(-lambda_ * x);
   pdfGradient[0] = (1.0 - lambda_ * x) * expX;
   pdfGradient[1] = lambda_ * lambda_ * expX;
   return pdfGradient;
@@ -179,10 +179,10 @@ NumericalPoint Exponential::computeCDFGradient(const NumericalPoint & point) con
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint cdfGradient(2, 0.0);
   if (x < 0.0) return cdfGradient;
-  const NumericalScalar expX(std::exp(-lambda_ * x));
+  const NumericalScalar expX = std::exp(-lambda_ * x);
   cdfGradient[0] = x * expX;
   cdfGradient[1] = -lambda_ * expX;
   return cdfGradient;
@@ -252,7 +252,7 @@ NumericalPoint Exponential::getParameter() const
 
 void Exponential::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Exponential(parameter[0], parameter[1]);
   setWeight(w);

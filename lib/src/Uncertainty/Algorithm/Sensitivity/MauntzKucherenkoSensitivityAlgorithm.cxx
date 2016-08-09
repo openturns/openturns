@@ -38,8 +38,8 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm()
 
 /** Constructor with parameters */
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const NumericalSample & inputDesign,
-                                                                           const NumericalSample & outputDesign,
-                                                                           const UnsignedInteger size)
+    const NumericalSample & outputDesign,
+    const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
   // Nothing to do
@@ -47,9 +47,9 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
 
 /** Constructor with distribution / model parameters */
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const Distribution & distribution,
-                                                                           const UnsignedInteger size,
-                                                                           const NumericalMathFunction & model,
-                                                                           const Bool computeSecondOrder)
+    const UnsignedInteger size,
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
   // Nothing to do
@@ -57,8 +57,8 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
 
 /** Constructor with experiment / model parameters */
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const WeightedExperiment & experiment,
-                                                                           const NumericalMathFunction & model,
-                                                                           const Bool computeSecondOrder)
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
   // Nothing to do
@@ -72,11 +72,11 @@ MauntzKucherenkoSensitivityAlgorithm * MauntzKucherenkoSensitivityAlgorithm::clo
 
 /** Internal method that compute Vi/VTi using a huge sample */
 NumericalSample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-                                                                     NumericalSample & VTi) const
+    NumericalSample & VTi) const
 {
-  const UnsignedInteger inputDimension(inputDesign_.getDimension());
-  const UnsignedInteger outputDimension(outputDesign_.getDimension());
-  const UnsignedInteger size(size_);
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  const UnsignedInteger size = size_;
   NumericalSample varianceI(outputDimension, inputDimension);
   VTi = NumericalSample(outputDimension, inputDimension);
 
@@ -103,7 +103,7 @@ NumericalSample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Numer
         // Vti = Var - V_{-i}
         // \sum_{k} yA[k] * yA[k] - yA[k]*yE[k]
         // yA[k] * yA[k]  = sigma_a^2 + muA^2
-        VTi[q][p] = referenceVariance_[q] + (size * muA[q] *  muA[q] - yEDotyA[q])/ (size - 1.0);
+        VTi[q][p] = referenceVariance_[q] + (size * muA[q] *  muA[q] - yEDotyA[q]) / (size - 1.0);
       }
     }
   }

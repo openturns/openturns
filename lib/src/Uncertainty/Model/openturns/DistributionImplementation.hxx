@@ -64,9 +64,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
- protected:
+protected:
   virtual Bool equals(const DistributionImplementation & other) const;
- public:
+public:
   Bool operator !=(const DistributionImplementation & other) const;
 
   /** Addition operator */
@@ -140,16 +140,16 @@ public:
 
   /** Get one realization of the distributionImplementation */
   virtual NumericalPoint getRealization() const;
- protected:
+protected:
   virtual NumericalPoint getRealizationByInversion() const;
 
- public:
+public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual NumericalSample getSample(const UnsignedInteger size) const;
- protected:
+protected:
   virtual NumericalSample getSampleByInversion(const UnsignedInteger size) const;
 
- public:
+public:
   /** Get the DDF of the distributionImplementation */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
   virtual NumericalPoint  computeDDF(const NumericalPoint & point) const;
@@ -329,7 +329,7 @@ public:
 
   /** Get the shifted moments of the distribution */
   virtual NumericalPoint getShiftedMoment(const UnsignedInteger n,
-      const NumericalPoint & shift) const;
+                                          const NumericalPoint & shift) const;
 
   /** Get the covariance of the distribution */
   virtual CovarianceMatrix getCovariance() const;
@@ -713,7 +713,7 @@ protected:
 
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
-      const NumericalScalar cdf(p_distribution_->computeCDF(diagonalToSpace(u[0])));
+      const NumericalScalar cdf = p_distribution_->computeCDF(diagonalToSpace(u[0]));
       LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
       return NumericalPoint(1, cdf);
     }
@@ -735,8 +735,8 @@ protected:
   {
   public:
     CovarianceWrapper(const DistributionImplementation::Implementation & p_distribution,
-		      const NumericalScalar muI,
-		      const NumericalScalar muJ)
+                      const NumericalScalar muI,
+                      const NumericalScalar muJ)
       : NumericalMathFunctionImplementation()
       , p_distribution_(p_distribution)
       , muI_(muI)
@@ -744,7 +744,7 @@ protected:
     {
       // Nothing to do
     }
-    
+
     CovarianceWrapper * clone() const
     {
       return new CovarianceWrapper(*this);
@@ -754,14 +754,14 @@ protected:
     {
       return NumericalPoint(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
     }
-    
+
     NumericalSample operator() (const NumericalSample & sample) const
     {
-      const UnsignedInteger size(sample.getSize());
+      const UnsignedInteger size = sample.getSize();
       NumericalSample result(size, 1);
       const NumericalSample pdf(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i)
-	result[i][0] = (sample[i][0] - muI_) * (sample[i][1] - muJ_) * pdf[i][0];
+        result[i][0] = (sample[i][0] - muI_) * (sample[i][1] - muJ_) * pdf[i][0];
       return result;
     };
 
@@ -790,14 +790,14 @@ protected:
     const NumericalScalar muI_;
     const NumericalScalar muJ_;
   };  // class CovarianceWrapper
-  
+
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
   class ShiftedMomentWrapper: public NumericalMathFunctionImplementation
   {
   public:
     ShiftedMomentWrapper(const UnsignedInteger n,
-			 const NumericalScalar shift,
-			 const DistributionImplementation::Implementation & p_distribution)
+                         const NumericalScalar shift,
+                         const DistributionImplementation::Implementation & p_distribution)
       : NumericalMathFunctionImplementation()
       , n_(1.0 * n)
       , shift_(shift)
@@ -811,18 +811,18 @@ protected:
 
     NumericalPoint operator() (const NumericalPoint & point) const
     {
-      const NumericalScalar power(std::pow(point[0] - shift_, n_));
-      const NumericalScalar pdf(p_distribution_->computePDF(point));
+      const NumericalScalar power = std::pow(point[0] - shift_, n_);
+      const NumericalScalar pdf = p_distribution_->computePDF(point);
       return NumericalPoint(1, power * pdf);
     };
 
     NumericalSample operator() (const NumericalSample & sample) const
     {
-      const UnsignedInteger size(sample.getSize());
+      const UnsignedInteger size = sample.getSize();
       NumericalSample result(size, 1);
       const NumericalSample pdf(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i)
-	result[i][0] = std::pow(sample[i][0] - shift_, n_) * pdf[i][0];
+        result[i][0] = std::pow(sample[i][0] - shift_, n_) * pdf[i][0];
       return result;
     };
 
@@ -866,7 +866,7 @@ protected:
 
     NumericalSample operator() (const NumericalSample & sample) const
     {
-      const UnsignedInteger size(sample.getSize());
+      const UnsignedInteger size = sample.getSize();
       NumericalSample z(size, y_);
       z.stack(sample);
       return p_distribution_->computePDF(z);

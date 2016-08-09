@@ -103,7 +103,7 @@ NumericalScalar Bernoulli::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (std::abs(k) < supportEpsilon_) return 1.0 - p_;
   if (std::abs(k - 1.0) < supportEpsilon_) return p_;
   return 0.0;
@@ -115,7 +115,7 @@ NumericalScalar Bernoulli::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   // k < 0.0
   if (k < -supportEpsilon_) return 0.0;
   // k >= 1.0
@@ -129,7 +129,7 @@ NumericalPoint Bernoulli::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   NumericalPoint pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE) << "In Bernoulli::computePDFGradient(const NumericalPoint & point) const";
@@ -141,7 +141,7 @@ NumericalPoint Bernoulli::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
   throw NotYetImplementedException(HERE) << "In Bernoulli::computeCDFGradient(const NumericalPoint & point) const";
 }
@@ -214,8 +214,8 @@ void Bernoulli::computeCovariance() const
 NumericalSample Bernoulli::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedInteger kMax(static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), 1.0)));
+  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
+  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), 1.0));
   NumericalSample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
@@ -229,7 +229,7 @@ NumericalPoint Bernoulli::getParameter() const
 
 void Bernoulli::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize(); 
+  if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Bernoulli(parameter[0]);
   setWeight(w);

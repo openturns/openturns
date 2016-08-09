@@ -38,7 +38,7 @@ class OT_API IdentityEvaluation
 public:
 
   /** Parameter constructor */
-  IdentityEvaluation(const UnsignedInteger dimension = 1);
+  explicit IdentityEvaluation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
   virtual IdentityEvaluation * clone() const;

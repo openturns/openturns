@@ -38,8 +38,8 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm()
 
 /** Constructor with parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const NumericalSample & inputDesign,
-                                                       const NumericalSample & outputDesign,
-                                                       const UnsignedInteger size)
+    const NumericalSample & outputDesign,
+    const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
   // Nothing to do
@@ -47,9 +47,9 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const NumericalSample & i
 
 /** Constructor with distribution / model parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & distribution,
-                                                       const UnsignedInteger size,
-                                                       const NumericalMathFunction & model,
-                                                       const Bool computeSecondOrder)
+    const UnsignedInteger size,
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
   // Nothing to do
@@ -58,8 +58,8 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & dist
 
 /** Constructor with experiment / model parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const WeightedExperiment & experiment,
-                                                       const NumericalMathFunction & model,
-                                                       const Bool computeSecondOrder)
+    const NumericalMathFunction & model,
+    const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
   // Nothing to do
@@ -73,11 +73,11 @@ JansenSensitivityAlgorithm * JansenSensitivityAlgorithm::clone() const
 
 /** Internal method that compute Vi/VTi using a huge sample */
 NumericalSample JansenSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-                                                           NumericalSample & VTi) const
+    NumericalSample & VTi) const
 {
-  const UnsignedInteger inputDimension(inputDesign_.getDimension());
-  const UnsignedInteger outputDimension(outputDesign_.getDimension());
-  const UnsignedInteger size(size_);
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  const UnsignedInteger size = size_;
   NumericalSample varianceI(outputDimension, inputDimension);
   VTi = NumericalSample(outputDimension, inputDimension);
 
@@ -85,7 +85,7 @@ NumericalSample JansenSensitivityAlgorithm::computeIndices(const NumericalSample
   // Reference sample yA
   const NumericalSample yA(sample, 0, size);
   // Reference sample yB
-  const NumericalSample yB(sample, size, 2*size);
+  const NumericalSample yB(sample, size, 2 * size);
 
   // main loop
   for (UnsignedInteger p = 0; p < inputDimension; ++p)

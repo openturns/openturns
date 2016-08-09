@@ -80,7 +80,7 @@ String ProductNumericalMathEvaluationImplementation::__str__(const String & offs
 /* Operator () */
 NumericalPoint ProductNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const NumericalPoint left(p_leftEvaluation_->operator()(inP));
   const NumericalPoint right(p_rightEvaluation_->operator()(inP));
@@ -97,9 +97,9 @@ NumericalPoint ProductNumericalMathEvaluationImplementation::operator() (const N
 /* Operator () */
 NumericalSample ProductNumericalMathEvaluationImplementation::operator() (const NumericalSample & inSample) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
-  const UnsignedInteger size(inSample.getSize());
+  const UnsignedInteger size = inSample.getSize();
   callsNumber_ += size;
   const NumericalSample leftSample(p_leftEvaluation_->operator()(inSample));
   NumericalSample rightSample(p_rightEvaluation_->operator()(inSample));
@@ -121,10 +121,10 @@ NumericalPoint ProductNumericalMathEvaluationImplementation::getParameter() cons
 void ProductNumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
 {
   NumericalPoint rightParameter(p_rightEvaluation_->getParameter());
-  const UnsignedInteger rightDimension(rightParameter.getDimension());
+  const UnsignedInteger rightDimension = rightParameter.getDimension();
   NumericalPointWithDescription leftParameter(p_leftEvaluation_->getParameter());
-  const UnsignedInteger leftDimension(leftParameter.getDimension());
-  UnsignedInteger index(0);
+  const UnsignedInteger leftDimension = leftParameter.getDimension();
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++ i)
   {
     rightParameter[i] = parameter[index];

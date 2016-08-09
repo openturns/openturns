@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
     Staircase staircase;
     {
       // Instanciate one distribution object
-      UnsignedInteger dim(1);
+      UnsignedInteger dim = 1;
       NumericalPoint meanPoint(dim, 1.0);
       meanPoint[0] = 0.5;
       NumericalPoint sigma(dim, 1.0);
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
     study.add("truncatedNormal", truncatedNormal);
 
     // Create an UserDefined
-    NumericalSample x(3,1);
+    NumericalSample x(3, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;
     x[2][0] = 3.0;
@@ -392,7 +392,7 @@ int main(int argc, char *argv[])
       tnc.setStartingPoint(NumericalPoint(3, 1.0));
     }
     study.add("tnc", tnc);
- 
+
     // Create a SORM algorithm
     SORM sorm(abdoRackwitz, event, NumericalPoint(3, 4.));
     study.add("sorm", sorm);
@@ -441,7 +441,7 @@ int main(int argc, char *argv[])
     // Create an ARMACoefficients
     ARMACoefficients armaCoefficients;
     {
-      const UnsignedInteger dim(2);
+      const UnsignedInteger dim = 2;
       SquareMatrix squareMatrix1(dim);
       squareMatrix1(0, 0) = 1.;
       squareMatrix1(1, 0) = 2.;
@@ -451,7 +451,7 @@ int main(int argc, char *argv[])
       SquareMatrix squareMatrix2 = squareMatrix1.operator * (s) ;
       double t = 1.5;
       SquareMatrix squareMatrix3 = squareMatrix1.operator / (t) ;
-      const UnsignedInteger size(3);
+      const UnsignedInteger size = 3;
       armaCoefficients = ARMACoefficients(size, dim);
       armaCoefficients[0] = squareMatrix1 ;
       armaCoefficients[1] = squareMatrix2 ;
@@ -462,9 +462,9 @@ int main(int argc, char *argv[])
     // Create an ARMAState
     ARMAState armaState;
     {
-      const UnsignedInteger dim(1);
-      const UnsignedInteger p(6);
-      const UnsignedInteger q(4);
+      const UnsignedInteger dim = 1;
+      const UnsignedInteger p = 6;
+      const UnsignedInteger q = 4;
       NumericalSample valuesX(p, dim);
       NumericalSample valuesEpsilon(q, dim);
       for(UnsignedInteger j = 0 ; j < dim ; ++j)
@@ -485,9 +485,9 @@ int main(int argc, char *argv[])
     // Create a RegularGrid
     RegularGrid regularGrid;
     {
-      const UnsignedInteger points(8);
-      const NumericalScalar tMin(0.0);
-      const NumericalScalar tStep(1.0 / (points - 1));
+      const UnsignedInteger points = 8;
+      const NumericalScalar tMin = 0.0;
+      const NumericalScalar tStep = 1.0 / (points - 1);
       regularGrid = RegularGrid(tMin, tStep, points);
     }
     study.add("regularGrid", regularGrid);
@@ -509,8 +509,8 @@ int main(int argc, char *argv[])
     // Create an WhittleFactory
     WhittleFactory whittleFactory;
     {
-      const UnsignedInteger p(1);
-      const UnsignedInteger q(2);
+      const UnsignedInteger p = 1;
+      const UnsignedInteger q = 2;
       whittleFactory = WhittleFactory( p, q );
     }
     study.add("whittleFactory", whittleFactory);
@@ -518,7 +518,7 @@ int main(int argc, char *argv[])
     // Create an ARMA
     ARMA arma;
     {
-      const UnsignedInteger dim(2);
+      const UnsignedInteger dim = 2;
       SquareMatrix squareMatrix1(dim);
       squareMatrix1(0, 0) = 0.2 ;
       squareMatrix1(1, 0) = 0.3 ;
@@ -529,8 +529,8 @@ int main(int argc, char *argv[])
       squareMatrix2(1, 0) = 0.0;
       squareMatrix2(0, 1) = 0.0;
       squareMatrix2(1, 1) = 0.5;
-      const UnsignedInteger p(1);
-      const UnsignedInteger q(1);
+      const UnsignedInteger p = 1;
+      const UnsignedInteger q = 1;
       ARMACoefficients coefficientsP(p, dim);
       coefficientsP[0] = squareMatrix1 ;
       ARMACoefficients coefficientsQ(q, dim);
@@ -599,8 +599,8 @@ int main(int argc, char *argv[])
     // Create an AbsoluteExponential
     AbsoluteExponential absoluteExponential;
     {
-      const UnsignedInteger defaultDimension(1);
-      const UnsignedInteger spatialDimension(1);
+      const UnsignedInteger defaultDimension = 1;
+      const UnsignedInteger spatialDimension = 1;
       NumericalPoint amplitude(defaultDimension, 1.0);
       NumericalPoint scale(spatialDimension, 1.0);
       cauchyModel = CauchyModel (amplitude, scale);
@@ -622,7 +622,7 @@ int main(int argc, char *argv[])
     // Create an  UserDefinedSpectralModel
     UserDefinedSpectralModel userDefinedSpectralModel;
     {
-      UnsignedInteger size(5);
+      UnsignedInteger size = 5;
       UserDefinedSpectralModel::HermitianMatrixCollection dspCollection(size);
       RegularGrid frequencyGrid(0.0, 2.0 / size, size);
       for (UnsignedInteger i = 0; i < size; ++i)
@@ -638,9 +638,9 @@ int main(int argc, char *argv[])
     // Create a CompositeProcess Object
     CompositeProcess compositeProcess;
     {
-      NumericalScalar Tmin(0.0);
-      NumericalScalar deltaT(0.1);
-      UnsignedInteger steps(11);
+      NumericalScalar Tmin = 0.0;
+      NumericalScalar deltaT = 0.1;
+      UnsignedInteger steps = 11;
       RegularGrid timeGrid(Tmin, deltaT, steps);
       ARMA myARMAProcess;
       myARMAProcess.setTimeGrid(timeGrid);
@@ -655,7 +655,7 @@ int main(int argc, char *argv[])
     // Create a Domain Object
     Domain domain;
     {
-      UnsignedInteger dim(2);
+      UnsignedInteger dim = 2;
       NumericalPoint a(dim, -1.0);
       NumericalPoint b(dim, 2.0);
       domain  = Interval(a, b);
@@ -665,7 +665,7 @@ int main(int argc, char *argv[])
     // Create an EventDomainImplementation
     EventDomainImplementation eventDomainImplementation;
     {
-      UnsignedInteger dim(2);
+      UnsignedInteger dim = 2;
       Normal distribution(dim);
       RandomVector X(distribution);
       Description inVars(dim);
@@ -680,7 +680,7 @@ int main(int argc, char *argv[])
     // Create an EventProcess
     EventProcess eventProcess;
     {
-      UnsignedInteger dim(2);
+      UnsignedInteger dim = 2;
       Normal distribution(dim);
 
       WhiteNoise X(distribution);
@@ -706,7 +706,7 @@ int main(int argc, char *argv[])
     // Create a FunctionalBasisProcess
     FunctionalBasisProcess functionalBasisProcess;
     {
-      UnsignedInteger basisDimension(10);
+      UnsignedInteger basisDimension = 10;
       Basis basis(basisDimension);
       Collection<Distribution> coefficients(basisDimension);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
@@ -794,7 +794,7 @@ int main(int argc, char *argv[])
     // Create a Mixture
     Mixture mixture;
     {
-      UnsignedInteger dimension(3);
+      UnsignedInteger dimension = 3;
       NumericalPoint meanPoint(dimension, 1.0);
       meanPoint[0] = 0.5;
       meanPoint[1] = -0.5;
@@ -865,16 +865,16 @@ int main(int argc, char *argv[])
     // Create a StrongMaximumTest
     StrongMaximumTest strongMaximumTest;
     {
-      UnsignedInteger dim(analytical.getInputDimension());
+      UnsignedInteger dim = analytical.getInputDimension();
       double seuil(10);
       NumericalPoint designPoint(dim, 0.0);
       double C(0.3);
       designPoint[0] = - sqrt(seuil) + C;
       NumericalPoint pseudoDesignPoint(dim, 0.0);
       pseudoDesignPoint[0] = sqrt(seuil) + C;
-      NumericalScalar importanceLevel(0.01);
-      NumericalScalar accuracyLevel(2);
-      NumericalScalar confidenceLevel(0.999999);
+      NumericalScalar importanceLevel = 0.01;
+      NumericalScalar accuracyLevel = 2;
+      NumericalScalar confidenceLevel = 0.999999;
       strongMaximumTest = StrongMaximumTest(standardEvent, designPoint, importanceLevel, accuracyLevel, confidenceLevel);
     }
     study.add("strongMaximumTest", strongMaximumTest);
@@ -905,8 +905,8 @@ int main(int argc, char *argv[])
     UserDefinedCovarianceModel userDefinedCovarianceModel;
     UserDefinedStationaryCovarianceModel userDefinedStationaryCovarianceModel;
     {
-      const UnsignedInteger dimension(1);
-      const UnsignedInteger spatialDimension(1);
+      const UnsignedInteger dimension = 1;
+      const UnsignedInteger spatialDimension = 1;
       NumericalPoint amplitude(dimension);
       NumericalPoint scale(spatialDimension);
       CorrelationMatrix spatialCorrelation(dimension);
@@ -918,18 +918,18 @@ int main(int argc, char *argv[])
       for (UnsignedInteger index = 0 ; index < spatialDimension; ++index)
         scale[index] = (index + 1.0) / dimension ;
       ExponentialModel referenceModel(scale, amplitude, spatialCorrelation);
-      UnsignedInteger size(20);
+      UnsignedInteger size = 20;
       RegularGrid timeGrid(0.0, 0.1, size);
       {
-        const UnsignedInteger collectionSize(size * (size + 1) / 2);
+        const UnsignedInteger collectionSize = size * (size + 1) / 2;
         UserDefinedCovarianceModel::CovarianceMatrixCollection covarianceCollection(collectionSize);
-        UnsignedInteger k(0);
+        UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
         {
-          const NumericalScalar t(timeGrid.getValue(i));
+          const NumericalScalar t = timeGrid.getValue(i);
           for (UnsignedInteger j = i; j < timeGrid.getN(); ++j)
           {
-            const NumericalScalar s(timeGrid.getValue(j));
+            const NumericalScalar s = timeGrid.getValue(j);
             covarianceCollection[k] = referenceModel(t, s);
             k++;
           }
@@ -940,7 +940,7 @@ int main(int argc, char *argv[])
         UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
         for (UnsignedInteger i = 0; i < size; ++i)
         {
-          const NumericalScalar t(timeGrid.getValue(i));
+          const NumericalScalar t = timeGrid.getValue(i);
           covarianceCollection[i] = referenceModel(0, t);
         }
         userDefinedStationaryCovarianceModel = UserDefinedStationaryCovarianceModel(timeGrid, covarianceCollection);

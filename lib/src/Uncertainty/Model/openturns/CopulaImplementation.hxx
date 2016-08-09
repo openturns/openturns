@@ -43,9 +43,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const CopulaImplementation & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** Compute the survival function */
   virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
@@ -113,7 +113,7 @@ private:
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
       const NumericalPoint point(dimension_, u[0]);
-      const NumericalScalar cdf(p_distribution_->computeCDF(point));
+      const NumericalScalar cdf = p_distribution_->computeCDF(point);
       const NumericalPoint value(1, cdf);
       return value;
     }

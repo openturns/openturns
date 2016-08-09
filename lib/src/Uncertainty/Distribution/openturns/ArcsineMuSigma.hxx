@@ -47,9 +47,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const ArcsineMuSigma & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** Build a distribution based on a set of native parameters */
   Distribution getDistribution() const;

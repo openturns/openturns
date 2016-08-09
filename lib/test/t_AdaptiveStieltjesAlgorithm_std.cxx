@@ -26,12 +26,12 @@ using namespace OT::Test;
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
-    {
-      if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
-      in[i] = 1.0e-4 * round(1.0e4 * in[i]);
-    }
+  {
+    if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
+    in[i] = 1.0e-4 * round(1.0e4 * in[i]);
+  }
   return in;
 }
 
@@ -41,38 +41,38 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
 
   try
+  {
+    const UnsignedInteger iMax = 5;
     {
-      const UnsignedInteger iMax(5);
+      Uniform distribution;
+      LegendreFactory algo0;
+      AdaptiveStieltjesAlgorithm algo1(distribution);
+      fullprint << algo1 << std::endl;
+      // Centered case
+      for (UnsignedInteger i = 0; i < iMax; ++i)
       {
-        Uniform distribution;
-        LegendreFactory algo0;
-        AdaptiveStieltjesAlgorithm algo1(distribution);
-        fullprint << algo1 << std::endl;
-        // Centered case
-        for (UnsignedInteger i=0; i < iMax; ++i)
-          {
-            fullprint << distribution.getClassName() << " Reference(" << i << ")=" << clean(algo0.getRecurrenceCoefficients(i)) << std::endl;
-            fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << clean(algo1.getRecurrenceCoefficients(i)) << std::endl;
-          }
-      }
-      {
-        // Non-centered case
-        Beta distribution(0.5, 3.0, -1.0, 1.0);
-        JacobiFactory algo0(-0.5, 1.5);
-        AdaptiveStieltjesAlgorithm algo1(distribution);
-        fullprint << algo1 << std::endl;
-        for (UnsignedInteger i=0; i < iMax; ++i)
-          {
-            fullprint << distribution.getClassName() << " Reference(" << i << ")=" << clean(algo0.getRecurrenceCoefficients(i)) << std::endl;
-            fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << clean(algo1.getRecurrenceCoefficients(i)) << std::endl;
-          }
+        fullprint << distribution.getClassName() << " Reference(" << i << ")=" << clean(algo0.getRecurrenceCoefficients(i)) << std::endl;
+        fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << clean(algo1.getRecurrenceCoefficients(i)) << std::endl;
       }
     }
+    {
+      // Non-centered case
+      Beta distribution(0.5, 3.0, -1.0, 1.0);
+      JacobiFactory algo0(-0.5, 1.5);
+      AdaptiveStieltjesAlgorithm algo1(distribution);
+      fullprint << algo1 << std::endl;
+      for (UnsignedInteger i = 0; i < iMax; ++i)
+      {
+        fullprint << distribution.getClassName() << " Reference(" << i << ")=" << clean(algo0.getRecurrenceCoefficients(i)) << std::endl;
+        fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << clean(algo1.getRecurrenceCoefficients(i)) << std::endl;
+      }
+    }
+  }
   catch (TestFailed & ex)
-    {
-      std::cerr << ex << std::endl;
-      return ExitCode::Error;
-    }
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
   return ExitCode::Success;
 }

@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id: t_NumericalMathFunction_product.cxx 434 2007-05-10 14:43:31Z dutka $
  */
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"

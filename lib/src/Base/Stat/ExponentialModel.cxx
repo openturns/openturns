@@ -90,7 +90,7 @@ NumericalScalar ExponentialModel::computeStandardRepresentative(const NumericalP
 
 /** Gradient */
 Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
-                                         const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   /* Computation of the gradient
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
@@ -133,9 +133,9 @@ Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedInteger size(timeGrid.getN());
-  const UnsignedInteger fullSize(size * dimension_);
-  const NumericalScalar timeStep(timeGrid.getStep());
+  const UnsignedInteger size = timeGrid.getN();
+  const UnsignedInteger fullSize = size * dimension_;
+  const NumericalScalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 
@@ -149,7 +149,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   // Loop over the main diagonal block
   for (UnsignedInteger block = 0; block < size; ++block)
   {
-    const UnsignedInteger base(block * dimension_);
+    const UnsignedInteger base = block * dimension_;
     // Copy of the lower triangle only
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
@@ -171,8 +171,8 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
     // Loop over the main block diagonal
     for (UnsignedInteger block = 0; block < size - diag; ++block)
     {
-      const UnsignedInteger base(block * dimension_);
-      const UnsignedInteger baseDiag((block + diag) * dimension_);
+      const UnsignedInteger base = block * dimension_;
+      const UnsignedInteger baseDiag = (block + diag) * dimension_;
       // Copy of the full block
       for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
@@ -213,7 +213,7 @@ String ExponentialModel::__str__(const String & offset) const
   oss << ExponentialModel::GetClassName();
   oss << "(input dimension=" << spatialDimension_
       << ", scale=" << getScale()
-  << ", amplitude=" << getAmplitude();
+      << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
     oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
   else

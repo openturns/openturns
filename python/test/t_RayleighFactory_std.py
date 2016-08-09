@@ -27,10 +27,10 @@ try:
     estimatedRayleigh = factory.buildAsRayleigh(
         distribution.getParameter())
     print("Rayleigh from parameters=", estimatedRayleigh)
-    sample = [[0.0]]*size
+    sample = [[0.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]]*size
+    sample = [[1.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
 

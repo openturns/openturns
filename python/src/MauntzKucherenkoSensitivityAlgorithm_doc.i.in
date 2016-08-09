@@ -1,11 +1,11 @@
 %feature("docstring") OT::MauntzKucherenkoSensitivityAlgorithm
-"Sensitivity analysis using MauntzKucherenko method
+"Sensitivity analysis using MauntzKucherenko method.
 
 Available constructors:
     MauntzKucherenkoSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
 
     MauntzKucherenkoSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
-    
+
     MauntzKucherenkoSensitivityAlgorithm(*experiment, model, computeSecondOrder*)
 
 Parameters

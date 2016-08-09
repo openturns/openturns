@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include <iostream>
 #include "openturns/OT.hxx"
@@ -40,10 +39,10 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     // Default dimension parameter to evaluate the model
-    const UnsignedInteger dimension(1);
+    const UnsignedInteger dimension = 1;
 
     // Spatial dimension of the model
-    UnsignedInteger spatialDimension(1);
+    UnsignedInteger spatialDimension = 1;
     /* Amplitude values */
     NumericalPoint amplitude(dimension);
 
@@ -61,17 +60,17 @@ int main(int argc, char *argv[])
     /* Sample a CauchyModel */
     ExponentialModel referenceModel(scale, amplitude, spatialCorrelation);
 
-    UnsignedInteger size(20);
+    UnsignedInteger size = 20;
     RegularGrid timeGrid(0.0, 0.1, size);
-    const UnsignedInteger collectionSize(size * (size + 1) / 2);
+    const UnsignedInteger collectionSize = size * (size + 1) / 2;
     UserDefinedCovarianceModel::CovarianceMatrixCollection covarianceCollection(collectionSize);
-    UnsignedInteger k(0);
+    UnsignedInteger k = 0;
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
-      const NumericalScalar t(timeGrid.getValue(i));
+      const NumericalScalar t = timeGrid.getValue(i);
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        const NumericalScalar s(timeGrid.getValue(j));
+        const NumericalScalar s = timeGrid.getValue(j);
         covarianceCollection[k] = referenceModel(t, s);
         ++k;
       }
@@ -84,10 +83,10 @@ int main(int argc, char *argv[])
     /* Sample the UserDefinedCovarianceModel */
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
-      const NumericalScalar t(timeGrid.getValue(i));
+      const NumericalScalar t = timeGrid.getValue(i);
       for (UnsignedInteger j = i; j < timeGrid.getN(); ++j)
       {
-        const NumericalScalar s(timeGrid.getValue(j));
+        const NumericalScalar s = timeGrid.getValue(j);
         // We look for cov(s,t) ==> when adding to the collection, we compute cov(t,s)
         // Because of symmetry, we check the right index computation
         fullprint << "myModel = " << myModel(s, t)(0, 0) << ", referenceModel = " << referenceModel(s, t)(0 , 0) << std::endl;

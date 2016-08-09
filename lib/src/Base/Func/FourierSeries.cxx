@@ -52,8 +52,8 @@ FourierSeries * FourierSeries::clone() const
 String FourierSeries::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-                   << " isCosine=" << isCosine_
-                   << " k=" << k_;
+         << " isCosine=" << isCosine_
+         << " k=" << k_;
 }
 
 
@@ -62,11 +62,10 @@ String FourierSeries::__str__(const String & offset) const
   OSS oss(false);
   if (k_ == 0)
     oss << offset << "f:X -> 1";
+  else if (k_ == 1)
+    oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(X)" : "sin(X)");
   else
-    if (k_ == 1)
-      oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(X)" : "sin(X)");
-    else
-      oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(" : "sin(") << k_ << " * X)";
+    oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(" : "sin(") << k_ << " * X)";
   return oss;
 }
 
@@ -74,7 +73,7 @@ String FourierSeries::__str__(const String & offset) const
 /* FourierSeries are evaluated as functors */
 NumericalScalar FourierSeries::operator() (const NumericalScalar x) const
 {
-  const NumericalScalar coef(k_ == 0 ? 1.0 : M_SQRT2);
+  const NumericalScalar coef = k_ == 0 ? 1.0 : M_SQRT2;
   return coef * (isCosine_ ? cos(k_ * x) : sin(k_ * x));
 }
 

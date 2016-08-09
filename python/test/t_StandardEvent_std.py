@@ -71,7 +71,7 @@ try:
     print("Failure probability (StandardEvent)=%.6f" %
           stdEvent.getSample(size).computeMean()[0])
 
-    x = [[1.0,0.5, 1.0, 0.5], [2.0, 1.0, 2.0, 1.0], [3.0, 1.5, 3.0, 1.5]]
+    x = [[1.0, 0.5, 1.0, 0.5], [2.0, 1.0, 2.0, 1.0], [3.0, 1.5, 3.0, 1.5]]
     p = [0.3, 0.325, 0.375]
     myDistribution3 = UserDefined(x, p)
 

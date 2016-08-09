@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    UnsignedInteger observationsSize(5);
+    UnsignedInteger observationsSize = 5;
     // Create a collection of distribution
     Normal conditionedDistribution;
     Collection< Distribution > conditioningDistributionCollection;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
       observationsDistribution.setParametersCollection(conditioningDistributionCollection[i].getMean());
       NumericalSample observations(observationsDistribution.getSample(observationsSize));
       PosteriorDistribution distribution(ConditionalDistribution(conditionedDistribution, conditioningDistributionCollection[i]), observations);
-      UnsignedInteger dim(distribution.getDimension());
+      UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
       fullprint << "range=" << distribution.getRange() << std::endl;

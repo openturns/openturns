@@ -75,11 +75,11 @@ CombinatorialGeneratorImplementation::IndicesCollection KPermutations::generate(
   Indices indices(k_);
   indices.fill();
   /* Size of the sample to be generated: A(k, n) */
-  const UnsignedInteger size(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1)))));
+  const UnsignedInteger size = static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1))));
   IndicesCollection allKPermutations(size, indices);
   /* First, generate all the permutations of k integers */
   IndicesCollection allPermutations(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(k_ + 1)))), indices);
-  UnsignedInteger flatIndex(1);
+  UnsignedInteger flatIndex = 1;
   while (std::next_permutation(indices.begin(), indices.end()))
   {
     std::copy(indices.begin(), indices.end(), allPermutations[flatIndex].begin());
@@ -90,8 +90,8 @@ CombinatorialGeneratorImplementation::IndicesCollection KPermutations::generate(
   /* Second, generate all the combinations of k out of n elements */
   IndicesCollection allCombinations(Combinations(k_, n_).generate());
   flatIndex = 0;
-  const UnsignedInteger combinationSize(allCombinations.getSize());
-  const UnsignedInteger permutationSize(allPermutations.getSize());
+  const UnsignedInteger combinationSize = allCombinations.getSize();
+  const UnsignedInteger permutationSize = allPermutations.getSize();
   for (UnsignedInteger i = 0; i < combinationSize; ++i)
   {
     /* Base combination */

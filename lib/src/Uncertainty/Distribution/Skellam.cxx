@@ -110,7 +110,7 @@ NumericalScalar Skellam::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (std::abs(k - round(k)) > supportEpsilon_) return 0.0;
   if (k < 0) return 2 * DistFunc::dNonCentralChiSquare(2.0 * (1.0 - k), 2.0 * lambda1_, 2.0 * lambda2_, pdfEpsilon_, maximumIteration_);
   return 2 * DistFunc::dNonCentralChiSquare(2.0 * (k + 1.0), 2.0 * lambda2_, 2.0 * lambda1_, pdfEpsilon_, maximumIteration_);
@@ -122,7 +122,7 @@ NumericalScalar Skellam::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < 0.0) return DistFunc::pNonCentralChiSquare(-2.0 * k, 2.0 * lambda1_, 2.0 * lambda2_, false, cdfEpsilon_, maximumIteration_);
   return DistFunc::pNonCentralChiSquare(2.0 * (k + 1.0), 2.0 * lambda2_, 2.0 * lambda1_, true, cdfEpsilon_, maximumIteration_);
 }
@@ -208,8 +208,8 @@ void Skellam::computeCovariance() const
 NumericalSample Skellam::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const SignedInteger kMin(static_cast< SignedInteger > (ceil(interval.getLowerBound()[0])));
-  const SignedInteger kMax(static_cast< SignedInteger > (floor(interval.getUpperBound()[0])));
+  const SignedInteger kMin = static_cast< SignedInteger > (ceil(interval.getLowerBound()[0]));
+  const SignedInteger kMax = static_cast< SignedInteger > (floor(interval.getUpperBound()[0]));
   NumericalSample result(0, 1);
   for (SignedInteger k = kMin; k <= kMax; ++k)
     result.add(NumericalPoint(1, k));
@@ -227,7 +227,7 @@ NumericalPoint Skellam::getParameter() const
 
 void Skellam::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Skellam(parameter[0], parameter[1]);
   setWeight(w);

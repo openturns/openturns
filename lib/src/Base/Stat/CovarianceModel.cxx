@@ -73,25 +73,25 @@ UnsignedInteger CovarianceModel::getDimension() const
 
 /* Computation of the covariance function */
 CovarianceMatrix CovarianceModel::operator() (const NumericalScalar s,
-                                              const NumericalScalar t) const
+    const NumericalScalar t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
 CovarianceMatrix CovarianceModel::operator() (const NumericalPoint & s,
-                                              const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
 NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalPoint & s,
-                                                               const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return getImplementation()->computeStandardRepresentative(s, t);
 }
 
 NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalScalar & s,
-                                                               const NumericalScalar & t) const
+    const NumericalScalar & t) const
 {
   return getImplementation()->computeStandardRepresentative(s, t);
 }
@@ -108,7 +108,7 @@ NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalSc
 }
 
 NumericalScalar CovarianceModel::computeAsScalar (const NumericalPoint & s,
-                                                  const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return getImplementation()->computeAsScalar(s, t);
 }
@@ -176,44 +176,44 @@ TriangularMatrix CovarianceModel::discretizeAndFactorize(const NumericalSample &
 
 /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeHMatrix(const RegularGrid & timeGrid,
-                                           const NumericalScalar nuggetFactor,
-                                           const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeHMatrix(timeGrid, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Mesh & mesh,
-                                           const NumericalScalar nuggetFactor,
-                                           const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeHMatrix(mesh, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const NumericalSample & vertices,
-                                           const NumericalScalar nuggetFactor,
-                                           const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeHMatrix(vertices, nuggetFactor, parameters);
 }
 
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-                                                       const NumericalScalar nuggetFactor,
-                                                       const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(timeGrid, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-                                                       const NumericalScalar nuggetFactor,
-                                                       const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(mesh, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
-                                                       const NumericalScalar nuggetFactor,
-                                                       const HMatrixParameters & parameters) const
+    const NumericalScalar nuggetFactor,
+    const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters);
 }

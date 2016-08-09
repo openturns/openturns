@@ -27,10 +27,10 @@ try:
     estimatedUniform = factory.buildAsUniform(
         distribution.getParameter())
     print("Uniform from parameters=", estimatedUniform)
-    sample = [[0.0]]*size
+    sample = [[0.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]]*size
+    sample = [[1.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
 

@@ -78,7 +78,7 @@ String ProductUniVariateFunctionEvaluationImplementation::__str__(const String &
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 NumericalPoint ProductUniVariateFunctionEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inDimension(inP.getDimension());
+  const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation(1.0) ;
   for (UnsignedInteger i = 0; i < inDimension; ++ i) productEvaluation *= functions_[i](inP[i]);
@@ -111,7 +111,7 @@ struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
-      NumericalScalar value(functions_[0](input_[i][0]));
+      NumericalScalar value = functions_[0](input_[i][0]);
       for (UnsignedInteger j = 1; j < functions_.getSize(); ++j)
         value *= functions_[j](input_[i][j]);
       output_[i][0] = value;
@@ -122,9 +122,9 @@ struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 NumericalSample ProductUniVariateFunctionEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
-  const UnsignedInteger inDimension(inS.getDimension());
+  const UnsignedInteger inDimension = inS.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   NumericalSample result(size, getOutputDimension());
   const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
   TBB::ParallelFor( 0, size, policy );

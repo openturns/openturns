@@ -89,7 +89,7 @@ String InverseNatafEllipticalCopulaEvaluation::__str__(const String & offset) co
  */
 NumericalPoint InverseNatafEllipticalCopulaEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedInteger dimension(getInputDimension());
+  const UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
   NumericalPoint result(cholesky_ * inP);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));

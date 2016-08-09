@@ -55,24 +55,24 @@ ParametricHessianImplementation * ParametricHessianImplementation::clone() const
 SymmetricTensor ParametricHessianImplementation::hessian(const NumericalPoint & point,
     const NumericalPoint & parameters) const
 {
-  const UnsignedInteger parametersDimension(parameters.getDimension());
+  const UnsignedInteger parametersDimension = parameters.getDimension();
   if (parametersDimension != p_evaluation_->getParametersPositions().getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << p_evaluation_->getParametersPositions().getSize() << ", got dimension=" << parametersDimension;
-  const UnsignedInteger inputDimension(p_evaluation_->function_.getInputDimension());
-  const UnsignedInteger pointDimension(point.getDimension());
+  const UnsignedInteger inputDimension = p_evaluation_->function_.getInputDimension();
+  const UnsignedInteger pointDimension = point.getDimension();
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
   NumericalPoint x(inputDimension);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[p_evaluation_->parametersPositions_[i]] = parameters[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[p_evaluation_->inputPositions_[i]] = point[i];
-  const UnsignedInteger outputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension = getOutputDimension();
   const SymmetricTensor fullHessian(p_evaluation_->function_.hessian(x));
   // The gradient wrt x corresponds to the inputPositions rows of the full gradient
   SymmetricTensor result(pointDimension, outputDimension);
   for (UnsignedInteger i = 0; i < pointDimension; ++i)
   {
-    const UnsignedInteger i0(p_evaluation_->inputPositions_[i]);
+    const UnsignedInteger i0 = p_evaluation_->inputPositions_[i];
     for (UnsignedInteger j = 0; j < pointDimension; ++j)
     {
-      const UnsignedInteger j0(p_evaluation_->inputPositions_[j]);
+      const UnsignedInteger j0 = p_evaluation_->inputPositions_[j];
       {
         for (UnsignedInteger k = 0; k < outputDimension; ++k)
           result(i, j, k) = fullHessian(i0, j0, k);

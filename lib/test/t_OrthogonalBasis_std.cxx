@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger dim(3);
+    UnsignedInteger dim = 3;
     OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomCollection(dim);
     polynomCollection[0] = LaguerreFactory(2.5);
     polynomCollection[1] = LegendreFactory();

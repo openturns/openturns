@@ -1,8 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class is a top-level class for the history mechanism of
- *  simulation algorithms. It delegates to its children the effective
- *  history strategy.
+ *  @brief Compact history storage
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      Compact.hxx 2392 2012-02-17 18:35:43Z schueller
  */
 #ifndef OPENTURNS_COMPACT_HXX
 #define OPENTURNS_COMPACT_HXX
@@ -81,7 +78,7 @@ private:
   UnsignedInteger halfMaximumSize_;
 
   // Index where the next point will be stored
-  UnsignedInteger index_;;
+  UnsignedInteger index_;
 
   // Storage step
   UnsignedInteger step_;

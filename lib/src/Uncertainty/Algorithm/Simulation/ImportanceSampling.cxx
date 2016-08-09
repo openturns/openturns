@@ -51,7 +51,7 @@ ImportanceSampling * ImportanceSampling::clone() const
 /* Compute the block sample */
 NumericalSample ImportanceSampling::computeBlockSample()
 {
-  const UnsignedInteger blockSize(getBlockSize());
+  const UnsignedInteger blockSize = getBlockSize();
   // First, compute a sample of the importance distribution
   const NumericalSample inputSample(importanceDistribution_.getSample(blockSize));
   // Then, evaluate the function on this sample
@@ -60,12 +60,12 @@ NumericalSample ImportanceSampling::computeBlockSample()
   // realizedEventSample = NumericalSample(blockSize_, inputSample.getDimension());
   for (UnsignedInteger i = 0; i < blockSize; i++)
   {
-    const Bool isRealized(getEvent().getOperator()(blockSample[i][0], getEvent().getThreshold()));
+    const Bool isRealized = getEvent().getOperator()(blockSample[i][0], getEvent().getThreshold());
     if (isRealized)
     {
       // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
       // Having access to p_initial is a long trip...
-      const NumericalScalar weight(getEvent().getImplementation()->getAntecedent()->getDistribution().computePDF(inputSample[i]) / importanceDistribution_.computePDF(inputSample[i]));
+      const NumericalScalar weight = getEvent().getImplementation()->getAntecedent()->getDistribution().computePDF(inputSample[i]) / importanceDistribution_.computePDF(inputSample[i]);
       blockSample[i][0] = weight;
     }
     else blockSample[i][0] = 0.0;

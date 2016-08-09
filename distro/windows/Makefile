@@ -23,7 +23,7 @@ OT_PREFIX ?= $(OT_BUILD)/install
 
 OT_VERSION ?= $(shell cat ../../VERSION)
 
-WINDEPS = $(PWD)/openturns-developers-windeps-$(OT_VERSION)
+WINDEPS = $(PWD)/openturns-developers-windeps
 
 # Wine
 WINE=/usr/bin/wine
@@ -124,11 +124,11 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libblas.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/liblapack.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libiconv-2.dll $(OT_PREFIX)/bin
+	cp $(MINGW_PREFIX)/$(TARGET)/bin/liblzma-5.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libxml2-2.dll $(OT_PREFIX)/bin
-	cp $(MINGW_PREFIX)/$(TARGET)/bin/*muparser*.dll $(OT_PREFIX)/bin
+	cp $(MINGW_PREFIX)/$(TARGET)/bin/muparser.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/zlib1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libnlopt-0.dll $(OT_PREFIX)/bin
-# 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libtbb.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgomp-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libcblas.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libhmat-oss.dll $(OT_PREFIX)/bin
@@ -212,7 +212,7 @@ ot-vc:
 	  -Dot_configure_date=\"now\" \
 	$(OT_SRC)
 	cd $(OT_BUILD_VC) && $(VCBOTTLE)/vc-make OT -j$(JOBS)
-	cd $(OT_BUILD_VC) && $(VCBOTTLE)/vc-make t_NumericalPoint_std t_ComparisonOperator_std t_Interval_std t_RandomGenerator_std t_Combinations_std t_Mesh_std t_Arcsine_std
+	cd $(OT_BUILD_VC) && $(VCBOTTLE)/vc-make t_Mesh_std t_Arcsine_std
 	cp $(OT_BUILD_VC)/lib/src/OT.dll $(OT_BUILD_VC)/lib/test
 	cp $(VCBOTTLE)/drive_c/local/OpenBLAS-v0.2.14-Win32/bin/libopenblas.dll $(OT_BUILD_VC)/lib/test
 	cp $(MINGW_PREFIX)/i686-w64-mingw32/bin/libquadmath-0.dll $(OT_BUILD_VC)/lib/test

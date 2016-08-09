@@ -95,7 +95,7 @@ Logistic * Logistic::clone() const
 /* Get one realization of the distribution */
 NumericalPoint Logistic::getRealization() const
 {
-  NumericalScalar prob(RandomGenerator::Generate());
+  NumericalScalar prob = RandomGenerator::Generate();
   return NumericalPoint(1, alpha_ + beta_ * std::log(prob / (1.0 - prob)));
 }
 
@@ -105,8 +105,8 @@ NumericalPoint Logistic::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalScalar expX(std::exp((point[0] - alpha_) / beta_));
-  NumericalScalar betaExpX(beta_ * (1.0 + expX));
+  NumericalScalar expX = std::exp((point[0] - alpha_) / beta_);
+  NumericalScalar betaExpX = beta_ * (1.0 + expX);
   return NumericalPoint(1, beta_ * expX * (1.0 - expX) / (betaExpX * betaExpX * betaExpX));
 }
 
@@ -115,18 +115,18 @@ NumericalPoint Logistic::computeDDF(const NumericalPoint & point) const
 NumericalScalar Logistic::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z((point[0] - alpha_) / beta_);
+  const NumericalScalar z = (point[0] - alpha_) / beta_;
   if (z > 12.38075336)
   {
-    const NumericalScalar expMZ(std::exp(-z));
+    const NumericalScalar expMZ = std::exp(-z);
     return expMZ * (1.0 - 2.0 * expMZ) / beta_;
   }
   if (z < -12.38075336)
   {
-    const NumericalScalar expZ(std::exp(z));
+    const NumericalScalar expZ = std::exp(z);
     return expZ * (1.0 - 2.0 * expZ) / beta_;
   }
-  const NumericalScalar expMZ(std::exp(-z));
+  const NumericalScalar expMZ = std::exp(-z);
   return expMZ / (beta_ * std::pow(1.0 + expMZ, 2.0));
 }
 
@@ -134,7 +134,7 @@ NumericalScalar Logistic::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z((point[0] - alpha_) / beta_);
+  const NumericalScalar z = (point[0] - alpha_) / beta_;
   if (z > 12.38075336) return -z + log1p(-2.0 * std::exp(-z)) - std::log(beta_);
   if (z < -12.38075336) return z + log1p(-2.0 * std::exp(z)) - std::log(beta_);
   return -z - std::log(beta_) - 2.0 * log1p(std::exp(-z));
@@ -145,15 +145,15 @@ NumericalScalar Logistic::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z((point[0] - alpha_) / beta_);
+  const NumericalScalar z = (point[0] - alpha_) / beta_;
   if (z > 12.01454911)
   {
-    const NumericalScalar expMZ(std::exp(-z));
+    const NumericalScalar expMZ = std::exp(-z);
     return 1.0 - expMZ * (1.0 - expMZ);
   }
   if (z < -12.01454911)
   {
-    const NumericalScalar expZ(std::exp(z));
+    const NumericalScalar expZ = std::exp(z);
     return expZ * (1.0 - expZ);
   }
   return 1.0 / (1.0 + std::exp(-z));
@@ -163,15 +163,15 @@ NumericalScalar Logistic::computeComplementaryCDF(const NumericalPoint & point) 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z((point[0] - alpha_) / beta_);
+  const NumericalScalar z = (point[0] - alpha_) / beta_;
   if (z > 12.01454911)
   {
-    const NumericalScalar expMZ(std::exp(-z));
+    const NumericalScalar expMZ = std::exp(-z);
     return expMZ * (1.0 - expMZ);
   }
   if (z < -12.01454911)
   {
-    const NumericalScalar expZ(std::exp(z));
+    const NumericalScalar expZ = std::exp(z);
     return 1.0 - expZ * (1.0 - expZ);
   }
   return 1.0 / (1.0 + std::exp(z));
@@ -180,22 +180,22 @@ NumericalScalar Logistic::computeComplementaryCDF(const NumericalPoint & point) 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Logistic::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar piBetaU(M_PI * beta_ * x);
+  const NumericalScalar piBetaU = M_PI * beta_ * x;
   return std::exp(NumericalComplex(0.0, x * alpha_)) * piBetaU / std::sinh(piBetaU);
 }
 
 NumericalComplex Logistic::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar piBetaU(M_PI * beta_ * x);
+  const NumericalScalar piBetaU = M_PI * beta_ * x;
   return NumericalComplex(0.0, x * alpha_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
 }
 
 /* Get the PDFGradient of the distribution */
 NumericalPoint Logistic::computePDFGradient(const NumericalPoint & point) const
 {
-  NumericalScalar x((point[0] - alpha_) / beta_);
-  NumericalScalar expX(std::exp(x));
-  NumericalScalar betaExpX(beta_ * (1.0 + expX));
+  NumericalScalar x = (point[0] - alpha_) / beta_;
+  NumericalScalar expX = std::exp(x);
+  NumericalScalar betaExpX = beta_ * (1.0 + expX);
   NumericalPoint pdfGradient(2);
   pdfGradient[0] = beta_ * expX * (expX - 1.0) / (betaExpX * betaExpX * betaExpX);
   pdfGradient[1] = pdfGradient[0] * x - expX / (betaExpX * betaExpX);
@@ -205,9 +205,9 @@ NumericalPoint Logistic::computePDFGradient(const NumericalPoint & point) const
 /* Get the CDFGradient of the distribution */
 NumericalPoint Logistic::computeCDFGradient(const NumericalPoint & point) const
 {
-  NumericalScalar x((point[0] - alpha_) / beta_);
-  NumericalScalar expX(std::exp(x));
-  NumericalScalar betaExpX(beta_ * (1.0 + expX));
+  NumericalScalar x = (point[0] - alpha_) / beta_;
+  NumericalScalar expX = std::exp(x);
+  NumericalScalar betaExpX = beta_ * (1.0 + expX);
   NumericalPoint cdfGradient(2);
   cdfGradient[0] = -beta_ * expX / (betaExpX * betaExpX);
   cdfGradient[1] = cdfGradient[0] * x;
@@ -312,7 +312,7 @@ NumericalPoint Logistic::getParameter() const
 
 void Logistic::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Logistic(parameter[0], parameter[1]);
   setWeight(w);

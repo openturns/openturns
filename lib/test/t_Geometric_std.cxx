@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalScalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     NumericalScalar PDF = distribution.computePDF( point );

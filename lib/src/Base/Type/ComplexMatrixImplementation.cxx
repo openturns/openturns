@@ -64,7 +64,7 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
-  const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
+  const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
@@ -76,7 +76,7 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
-  const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
+  const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   //  Implicit cast from NumericalScalar into NumericalComplex
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
@@ -88,7 +88,7 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const MatrixImplementat
   , nbColumns_(matrix.getNbColumns())
 {
   // Copy from matrix
-  const UnsignedInteger matrixSize(nbRows_ * nbColumns_);
+  const UnsignedInteger matrixSize = nbRows_ * nbColumns_;
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = matrix[i];
 }
 
@@ -147,7 +147,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
 ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::solveLinearSystemRect (const NumericalComplexCollection & b,
     const Bool keepIntact)
 {
-  const UnsignedInteger m(b.getSize());
+  const UnsignedInteger m = b.getSize();
   if (nbRows_ != m) throw InvalidDimensionException(HERE);
   if (nbRows_ == 0) throw InvalidDimensionException(HERE);
   // Solve the matrix linear system
@@ -167,8 +167,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
       const NumericalComplex value((*this)[convertPosition(i, j)]);
-      NumericalScalar realPart(std::real(value));
-      NumericalScalar imagPart(std::imag(value));
+      NumericalScalar realPart = std::real(value);
+      NumericalScalar imagPart = std::imag(value);
       if (std::abs(realPart) < 0.5 * threshold) realPart = 0.0;
       else realPart = threshold * round(realPart / threshold);
       if (std::abs(imagPart) < 0.5 * threshold) imagPart = 0.0;
@@ -587,14 +587,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::triangularProd(const Co
 /* Integer power, general matrix */
 ComplexMatrixImplementation ComplexMatrixImplementation::genPower(const UnsignedInteger n) const
 {
-  Bool first(true);
-  UnsignedInteger exponent(n);
+  Bool first = true;
+  UnsignedInteger exponent = n;
   ComplexMatrixImplementation y;
   ComplexMatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedInteger t(exponent % 2);
+    const UnsignedInteger t = exponent % 2;
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -619,14 +619,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::genPower(const Unsigned
 /* Integer power, symmetric matrix */
 ComplexMatrixImplementation ComplexMatrixImplementation::symPower(const UnsignedInteger n) const
 {
-  Bool first(true);
-  UnsignedInteger exponent(n);
+  Bool first = true;
+  UnsignedInteger exponent = n;
   ComplexMatrixImplementation y;
   ComplexMatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedInteger t(exponent % 2);
+    const UnsignedInteger t = exponent % 2;
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -651,14 +651,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::symPower(const Unsigned
 /* Integer power, hermitian matrix */
 ComplexMatrixImplementation ComplexMatrixImplementation::hermPower(const UnsignedInteger n) const
 {
-  Bool first(true);
-  UnsignedInteger exponent(n);
+  Bool first = true;
+  UnsignedInteger exponent = n;
   ComplexMatrixImplementation y;
   ComplexMatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedInteger t(exponent % 2);
+    const UnsignedInteger t = exponent % 2;
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -954,7 +954,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
 Bool ComplexMatrixImplementation::operator == (const ComplexMatrixImplementation & rhs) const
 {
   const ComplexMatrixImplementation &lhs(*this);
-  Bool equality(true);
+  Bool equality = true;
 
   if (&lhs != &rhs)   // Not the same object
   {

@@ -333,7 +333,7 @@ try:
     a0 = np.array((((1., 2.), (3., 4.)), ((3., 4.), (7., 8.))))
     m0 = SymmetricTensor(a0)
     print("array", a0, "=> SymmetricTensor", m0)
-    m0[1,0,0] = 9.0
+    m0[1, 0, 0] = 9.0
     a1 = np.array(m0)
     print("SymmetricTensor", m0, "=> array", a1)
 

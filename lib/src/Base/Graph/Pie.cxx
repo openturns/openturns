@@ -154,11 +154,11 @@ String Pie::draw() const
   oss << DrawableImplementation::draw() << "\n";
   // The specific R command for drawing
   // Labels are drawn only if the associated data shares a sufficient amount of the total
-  NumericalScalar labelThreshold(data_.getMax()[0] * ResourceMap::GetAsNumericalScalar("Pie-LabelThreshold"));
+  NumericalScalar labelThreshold = data_.getMax()[0] * ResourceMap::GetAsNumericalScalar("Pie-LabelThreshold");
   oss << "pie(dataOT[,1],"
       << "center=c(" << center_[0] << "," << center_[1]
       << "),radius=" << radius_;
-  UnsignedInteger size(labels_.getSize());
+  UnsignedInteger size = labels_.getSize();
   // If there is any label defined
   if (size > 0)
   {
@@ -198,7 +198,7 @@ Bool Pie::IsValidColorPalette(const Description & palette)
 
 void Pie::checkData(const NumericalPoint & data) const
 {
-  const UnsignedInteger size(data.getSize());
+  const UnsignedInteger size = data.getSize();
   // Check if there is any data to display
   if (size == 0)
   {
@@ -206,10 +206,10 @@ void Pie::checkData(const NumericalPoint & data) const
   }
 
   // Then, check the positivity of the data
-  NumericalScalar max(0.0);
+  NumericalScalar max = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar x(data[i]);
+    NumericalScalar x = data[i];
     if (x < 0.0)
     {
       throw InvalidArgumentException(HERE) << "Expected positive values";
@@ -235,9 +235,9 @@ void Pie::buildDefaultPalette()
 /* Build default labels */
 void Pie::buildDefaultLabels()
 {
-  const UnsignedInteger size(data_.getSize());
+  const UnsignedInteger size = data_.getSize();
   labels_ = Description(size);
-  NumericalScalar sum(0.0);
+  NumericalScalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i) sum += data_[i][0];
   for (UnsignedInteger i = 0; i < size; ++i) labels_[i] = String(OSS() << "L" << i << " " << 0.1 * round(1000.0 * data_[i][0] / sum) << "%");
 }

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     RandomGenerator::SetSeed(0);
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger defaultDimension(1);
+    const UnsignedInteger defaultDimension = 1;
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     /* checking the copy-cast*/
     SecondOrderModel mySecondOrderModel(myModel);
 
-    const UnsignedInteger points(8);
-    const NumericalScalar tMin(0.0);
-    const NumericalScalar tStep(1.0 / (points - 1));
+    const UnsignedInteger points = 8;
+    const NumericalScalar tMin = 0.0;
+    const NumericalScalar tStep = 1.0 / (points - 1);
 
     // RegularGrid --> Build list of frequencies using the RegularGrid
     RegularGrid myTimeGrid(tMin, tStep, points);
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     fullprint << "Realization = " << mySpectralProcess0.getRealization().__str__() << std::endl;
 
     // Constructor using maximalFrequency value and size of discretization
-    const NumericalScalar maximalFrequency(10.0);
+    const NumericalScalar maximalFrequency = 10.0;
     SpectralNormalProcess mySpectralProcess1(myModel, maximalFrequency, points);
     RegularGrid tg(mySpectralProcess1.getTimeGrid());
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     fullprint << "Realization = " << mySpectralProcess1.getRealization().__str__() << std::endl;
 
     /* Second order model with parameters */
-    const UnsignedInteger highDimension(3);
+    const UnsignedInteger highDimension = 3;
     amplitude.resize(highDimension);
     for (UnsignedInteger k = 0; k < highDimension; ++k) amplitude[k] = 1.0;
     CauchyModel mySpecModel(amplitude, scale);

@@ -70,7 +70,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Numer
 
 /* Constructor for nearest point problem */
 OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & levelFunction,
-                                                                     NumericalScalar levelValue)
+    NumericalScalar levelValue)
   : PersistentObject()
   , objective_()
   , equalityConstraint_()
@@ -205,7 +205,7 @@ void OptimizationProblemImplementation::setNearestPointConstraints()
   const Matrix linear(dimension_, 1);
   LinearNumericalMathFunction constantFunction(center, NumericalPoint(1, levelValue_), linear.transpose());
   NumericalMathFunction equalityConstraint(levelFunction_);
-  equalityConstraint_ = equalityConstraint.operator-(constantFunction);
+  equalityConstraint_ = equalityConstraint.operator - (constantFunction);
   inequalityConstraint_ = NumericalMathFunction();
 }
 

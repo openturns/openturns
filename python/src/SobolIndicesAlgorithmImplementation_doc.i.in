@@ -152,11 +152,13 @@ OT_SobolIndicesAlgorithm_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_Generate_doc
-"Usage:
+"Generate the input design of experiment.
 
-  SobolIndicesAlgorithmImplementation.Generate(distribution, N, computeSecondOrder)
+Usage:
 
-  SobolIndicesAlgorithmImplementation.Generate(experiment, computeSecondOrder)
+  SobolIndicesAlgorithmImplementation.Generate(*distribution, N, computeSecondOrder*)
+
+  SobolIndicesAlgorithmImplementation.Generate(*experiment, computeSecondOrder*)
 
 Parameters
 ----------
@@ -352,6 +354,7 @@ OT_SobolIndicesAlgorithm_getBootstrapSize_doc
 
 %define OT_SobolIndicesAlgorithm_setBootstrapSize_doc
 "Set the number of bootstrap sampling size.
+
 Default value is 0.
 
 Parameters
@@ -364,10 +367,12 @@ OT_SobolIndicesAlgorithm_setBootstrapSize_doc
 
 // ---------------------------------------------------------------------
 %define OT_SobolIndicesAlgorithm_draw_doc
-"
-Usage :
+"Draw sensitivity indices.
+
+Usage:
   draw()
-  draw(marginalIndex)
+
+  draw(*marginalIndex*)
 
 With the first usage, draw the aggregated first and total order indices.
 With the second usage, draw the first and total order indices of a specific marginal in case of vectorial output

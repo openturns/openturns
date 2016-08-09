@@ -29,6 +29,7 @@ try:
     ot.Path.DeleteTemporaryDirectory(directory2)
 
 except:
-    import os, traceback
+    import os
+    import traceback
     traceback.print_exc()
     os._exit(1)

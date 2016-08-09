@@ -1,9 +1,36 @@
-openturns (1.7-1) experimental; urgency=low
+openturns (1.8~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 30 Jun 2016 18:14:47 +0200
+
+openturns (1.7-3) unstable; urgency=medium
+
+  * Team upload.
+  * Keep swig files only in libopenturns-dev, not also in python-openturns-dev.
+    Closes: #826688
+
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 21 Jun 2016 08:16:28 +0000
+
+openturns (1.7-2) unstable; urgency=medium
+
+  * Team upload.
+  * Upload to unstable.
+  * debian/control: Use https in Vcs-* fields.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Mon, 20 Jun 2016 19:34:28 +0000
+
+openturns (1.7-1) experimental; urgency=medium
 
   [ Julien Schueller ]
   * New upstream release.
 
- -- Denis Barbier <barbier@debian.org>  Wed, 27 Jan 2016 10:14:47 +0100
+  [ Denis Barbier ]
+  * debian/docs: Remove ChangeLog, this file is already copied
+    by dh_installchangelogs.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 05 Jun 2016 17:54:45 +0100
 
 openturns (1.7~rc1-1) experimental; urgency=low
 

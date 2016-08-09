@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.8 release (in-progress) == #release-1.8
+== 1.8rc1 release (2016-08-08) == #release-1.8rc1
 
 === Library ===
 
@@ -28,7 +28,6 @@
  * Removed deprecated PersistentFactory string constructor
  * Deprecated QuadraticCumul class in favor of TaylorExpansionMoments
  * Renamed __contains__ to contains
- * Added the keys "LinearModelTest-DefaultLevel", "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" and "LinearModelTest-DefaultDurbinWatsonHypothesis" to the ResourceMap class.
  * Modified NumericalMathFunction::[sg]etParameter to operate on NumericalPoint instead NumericalPointWithDescription
  * Add NumericalMathFunction::[sg]etParameterDescription to access the parameter description
  * Deprecated classes UserDefinedPair, HistogramPair
@@ -52,6 +51,7 @@
  * #565 (The SensitivityAnalysis class manages only one single output.)
  * #698 (KernelSmoothing() as a factory)
  * #786 (Bug in sensitivity analysis)
+ * #803 (prefix openturns includes)
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
  * #815 (ConditionedNormalProcess test fails randomly)
  * #820 (Python distribution fails randomly when computing the PDF over a sample)
@@ -59,10 +59,13 @@
  * #824 (Confusing behavior of NumericalSample::sort)
  * #828 (ImportFromCSVFile fails on a file created by exportToCSVFile)
  * #830 (more optim algos examples)
+ * #831 (Missing get/setParameter in OpenTURNSPythonFunction)
  * #837 (TruncatedDistribution::setParameter segfaults)
  * #838 (Symmetry of SymmetricMatrix not always enforced)
  * #841 (Better CovarianceModelCollection in Python)
  * #842 (Better ProcessCollection in Python)
+ * #843 (Remove all the specific isCopula() methods)
+ * #845 (Wrong comparison operator for interface classes with derivative implementation classes)
 
 == 1.7 release (2016-01-27) == #release-1.7
 

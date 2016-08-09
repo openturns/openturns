@@ -50,7 +50,7 @@ public:
 
   /** Parameters constructor */
   WeightedExperimentImplementation(const Distribution & distribution,
-                     const UnsignedInteger size);
+                                   const UnsignedInteger size);
 
   /** Virtual constructor */
   virtual WeightedExperimentImplementation * clone() const;

@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     Arcsine distribution(1., 2.5);
-    UnsignedInteger size(10000);
+    UnsignedInteger size = 10000;
     NumericalSample sample(distribution.getSample(size));
     ArcsineFactory factory;
     Distribution estimatedDistribution(factory.build(sample));

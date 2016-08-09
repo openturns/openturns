@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LevelSetMesher.hxx"
@@ -33,7 +32,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LevelSetMesher);
-static const Factory<LevelSetMesher> RegisteredFactory;
+static const Factory<LevelSetMesher> Factory_LevelSetMesher;
 
 
 /* Default constructor */
@@ -108,7 +107,7 @@ Indices LevelSetMesher::getDiscretization() const
 Mesh LevelSetMesher::build(const LevelSet & levelSet,
                            const Bool project) const
 {
-  const UnsignedInteger dimension(levelSet.getDimension());
+  const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (dimension > 3) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Bool project) const";
   return build(levelSet, Interval(levelSet.getLowerBound(), levelSet.getUpperBound()), project);
@@ -118,7 +117,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                            const Interval & boundingBox,
                            const Bool project) const
 {
-  const UnsignedInteger dimension(levelSet.getDimension());
+  const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (dimension > 3) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Interval & boundingBox, const Bool project) const";
 
@@ -164,7 +163,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     // Count the vertices in the level set
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
-      const UnsignedInteger globalVertexIndex(currentSimplex[j]);
+      const UnsignedInteger globalVertexIndex = currentSimplex[j];
       if (values[globalVertexIndex][0] <= level)
       {
         ++numGood;
@@ -182,7 +181,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         NumericalPoint localValues(dimension + 1, dimension);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
-          const UnsignedInteger index(currentSimplex[j]);
+          const UnsignedInteger index = currentSimplex[j];
           localVertices[j] = boundingVertices[index];
           localValues[j] = values[index][0];
         }
@@ -201,7 +200,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         // using a linear interpolation between the center and the vertex
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
-          const UnsignedInteger globalVertexIndex(currentSimplex[j]);
+          const UnsignedInteger globalVertexIndex = currentSimplex[j];
           // If the vertex has to be moved
           if ((flagGoodVertices[globalVertexIndex] == 0) && (localValues[j] > level))
           {
@@ -229,7 +228,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               catch(...)
               {
                 // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
-                const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon"));
+                const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
                 levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + NumericalPoint(dimension, epsilon), levelFunction.getEvaluation()).clone());
                 problem.setLevelFunction(levelFunction);
                 solver_.setProblem(problem);

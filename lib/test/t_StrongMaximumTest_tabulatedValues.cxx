@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
     for (UnsignedInteger indexDimension = 0; indexDimension < dimension.getSize(); indexDimension++)
     {
-      UnsignedInteger dim(dimension[indexDimension]);
+      UnsignedInteger dim = dimension[indexDimension];
       fullprint << "dimension = " << dim << std::endl;
 
       /* We create a numerical math function */

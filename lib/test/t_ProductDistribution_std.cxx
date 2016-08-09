@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 static NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedInteger dim(in.getDimension());
+  UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
     if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;

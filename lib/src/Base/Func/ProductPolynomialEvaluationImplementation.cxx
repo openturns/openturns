@@ -71,18 +71,18 @@ String ProductPolynomialEvaluationImplementation::__str__(const String & offset)
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedInteger size(polynomials_.getSize());
+  const UnsignedInteger size = polynomials_.getSize();
   if (size == 0) return oss;
   const Description description(getInputDescription());
   if (size == 1) return (oss << polynomials_[0].__str__(description[0], ""));
-  Bool allScalar(true);
-  NumericalScalar scalarValue(1.0);
-  Bool onlyOneNotScalar(false);
-  UnsignedInteger indexNotScalar(0);
+  Bool allScalar = true;
+  NumericalScalar scalarValue = 1.0;
+  Bool onlyOneNotScalar = false;
+  UnsignedInteger indexNotScalar = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger degree(polynomials_[i].getDegree());
-    const Bool isScalar(degree == 0);
+    const UnsignedInteger degree = polynomials_[i].getDegree();
+    const Bool isScalar = degree == 0;
     // Only one non-scalar so far, and the current one is not scalar
     if (onlyOneNotScalar && !isScalar) onlyOneNotScalar = false;
     // Only scalars so far, and the current is not scalar
@@ -102,12 +102,12 @@ String ProductPolynomialEvaluationImplementation::__str__(const String & offset)
   else
   {
     const String scalarValueString(OSS(false) << scalarValue);
-    Bool first(scalarValueString == "1");
+    Bool first = scalarValueString == "1";
     // There is a non-unit factor
     if (!first) oss << scalarValue;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger degree(polynomials_[i].getDegree());
+      const UnsignedInteger degree = polynomials_[i].getDegree();
       // All the degree 0 factors have already been taken into account
       if (degree > 0)
       {
@@ -124,7 +124,7 @@ String ProductPolynomialEvaluationImplementation::__str__(const String & offset)
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 NumericalPoint ProductPolynomialEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inDimension(inP.getDimension());
+  const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation(1.0) ;
   for (UnsignedInteger i = 0; i < inDimension; ++i) productEvaluation *= polynomials_[i](inP[i]);
@@ -157,7 +157,7 @@ struct ProductPolynomialEvaluationComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      NumericalScalar value(polynomials_[0](input_[i][0]));
+      NumericalScalar value = polynomials_[0](input_[i][0]);
       for (UnsignedInteger j = 1; j < polynomials_.getSize(); ++j)
         value *= polynomials_[j](input_[i][j]);
       output_[i][0] = value;
@@ -168,9 +168,9 @@ struct ProductPolynomialEvaluationComputeSamplePolicy
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 NumericalSample ProductPolynomialEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
-  const UnsignedInteger inDimension(inS.getDimension());
+  const UnsignedInteger inDimension = inS.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   NumericalSample result(size, getOutputDimension());
   const ProductPolynomialEvaluationComputeSamplePolicy policy( inS, result, polynomials_ );
   TBB::ParallelFor( 0, size, policy );

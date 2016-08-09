@@ -94,7 +94,7 @@ String GaussProductExperiment::__repr__() const
 void GaussProductExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the GaussProductExperiment can only be used with distributions having an independent copula.";
-  const UnsignedInteger dimension(distribution.getDimension());
+  const UnsignedInteger dimension = distribution.getDimension();
   if (dimension != marginalDegrees_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal degrees=" << marginalDegrees_.getSize() << ".";
   collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
   for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution.getMarginal(i))));
@@ -112,7 +112,7 @@ NumericalSample GaussProductExperiment::generate()
 /** Marginal degrees accessor */
 void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
 {
-  const UnsignedInteger dimension(distribution_.getDimension());
+  const UnsignedInteger dimension = distribution_.getDimension();
   if (marginalDegrees.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal degrees number must match the distribution dimension. Here, the degrees are " << marginalDegrees << " and the dimension is " << dimension;
   if (marginalDegrees != marginalDegrees_)
   {
@@ -123,7 +123,7 @@ void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
 
 /** Marginal degrees accessor */
 void GaussProductExperiment::setDistributionAndMarginalDegrees(const Distribution & distribution,
-							       const Indices & marginalDegrees)
+    const Indices & marginalDegrees)
 {
   // Set the marginal degrees here then the distribution with checks
   marginalDegrees_ = marginalDegrees;
@@ -138,7 +138,7 @@ Indices GaussProductExperiment::getMarginalDegrees() const
 /* Compute the tensor product nodes and weights */
 void GaussProductExperiment::computeNodesAndWeights()
 {
-  const UnsignedInteger dimension(distribution_.getDimension());
+  const UnsignedInteger dimension = distribution_.getDimension();
   // Build the integration nodes and weights
   // First, get the marginal nodes and weights
   NumericalPointCollection marginalNodes(dimension);
@@ -146,7 +146,7 @@ void GaussProductExperiment::computeNodesAndWeights()
   size_ = 1;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const UnsignedInteger dI(marginalDegrees_[i]);
+    const UnsignedInteger dI = marginalDegrees_[i];
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
     size_ *= dI;
   }
@@ -159,7 +159,7 @@ void GaussProductExperiment::computeNodesAndWeights()
   {
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const UnsignedInteger indiceJ(indices[j]);
+      const UnsignedInteger indiceJ = indices[j];
       nodes_[linearIndex][j] = marginalNodes[j][indiceJ];
       weights_[linearIndex] *= marginalWeights[j][indiceJ];
     }

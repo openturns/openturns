@@ -32,8 +32,8 @@ static const Factory<HaarWavelet> Factory_HaarWavelet;
 
 /* Parameter constructor */
 HaarWavelet::HaarWavelet(const UnsignedInteger j,
-			 const UnsignedInteger k,
-			 const Bool isScaling)
+                         const UnsignedInteger k,
+                         const Bool isScaling)
   : UniVariateFunctionImplementation()
   , j_(j)
   , k_(k)
@@ -45,13 +45,13 @@ HaarWavelet::HaarWavelet(const UnsignedInteger j,
 {
   // Nothing to do
   if (!isScaling)
-    {
-      const NumericalScalar denominator(1 << j);
-      value_ = std::sqrt(denominator);
-      a_ = k / denominator;
-      m_ = (k + 0.5) / denominator;
-      b_ = (k + 1.0) / denominator;
-    }
+  {
+    const NumericalScalar denominator = 1 << j;
+    value_ = std::sqrt(denominator);
+    a_ = k / denominator;
+    m_ = (k + 0.5) / denominator;
+    b_ = (k + 1.0) / denominator;
+  }
 }
 
 
@@ -66,12 +66,12 @@ HaarWavelet * HaarWavelet::clone() const
 String HaarWavelet::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-                   << " j=" << j_
-                   << " k=" << k_
-                   << " isScaling=" << isScaling_
-                   << " a=" << a_
-                   << " m=" << m_
-                   << " b=" << b_;
+         << " j=" << j_
+         << " k=" << k_
+         << " isScaling=" << isScaling_
+         << " a=" << a_
+         << " m=" << m_
+         << " b=" << b_;
 }
 
 

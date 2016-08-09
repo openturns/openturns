@@ -100,9 +100,9 @@ struct IntegrationStrategyCoefficientsPolicy
   NumericalPoint & alpha_;
 
   IntegrationStrategyCoefficientsPolicy(const NumericalPoint & weightedOutput,
-					const Matrix & designMatrix,
-					const Indices & addedRanks,
-					NumericalPoint & alpha)
+                                        const Matrix & designMatrix,
+                                        const Indices & addedRanks,
+                                        NumericalPoint & alpha)
     : weightedOutput_(weightedOutput)
     , designMatrix_(designMatrix)
     , addedRanks_(addedRanks)
@@ -114,16 +114,16 @@ struct IntegrationStrategyCoefficientsPolicy
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
+    {
+      const UnsignedInteger indexAdded = addedRanks_[j];
+      NumericalScalar result = 0.0;
+      MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
+      for (NumericalPoint::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
       {
-	const UnsignedInteger indexAdded(addedRanks_[j]);
-	NumericalScalar result(0.0);
-	MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
-	for (NumericalPoint::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
-	  {
-	    result += (*outputSample) * (*columnMatrix);
-	  } // i
-	alpha_[j] = result;
-      } // j
+        result += (*outputSample) * (*columnMatrix);
+      } // i
+      alpha_[j] = result;
+    } // j
   } // operator()
 
 }; /* end struct IntegrationStrategyCoefficientsPolicy */
@@ -160,12 +160,12 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   }
   // First, copy the coefficients that are common with the previous partial basis
   NumericalPoint alpha(0);
-  const UnsignedInteger conservedSize(conservedRanks.getSize());
+  const UnsignedInteger conservedSize = conservedRanks.getSize();
   for (UnsignedInteger i = 0; i < conservedSize; ++i)
     alpha.add(alpha_k_p_[conservedRanks[i]]);
   // We have to compute the coefficients associated to the added indices
-  const UnsignedInteger addedSize(addedRanks.getSize());
-  const UnsignedInteger sampleSize(inputSample_.getSize());
+  const UnsignedInteger addedSize = addedRanks.getSize();
+  const UnsignedInteger sampleSize = inputSample_.getSize();
   // Second, compute the coefficients of the new basis entries
   const Matrix designMatrix(proxy_.computeDesign(indices));
   NumericalPoint addedAlpha(addedSize, 0.0);
@@ -181,7 +181,7 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   const NumericalPoint values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    const NumericalScalar delta(outputSample_[i][marginalIndex] - values[i]);
+    const NumericalScalar delta = outputSample_[i][marginalIndex] - values[i];
     residual_p_ += delta * delta;
   }
   residual_p_ = sqrt(residual_p_) / sampleSize;

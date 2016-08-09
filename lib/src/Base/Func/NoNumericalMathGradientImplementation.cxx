@@ -75,7 +75,7 @@ Bool NoNumericalMathGradientImplementation::isActualImplementation() const
 /* Gradient method */
 Matrix NoNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   return Matrix();

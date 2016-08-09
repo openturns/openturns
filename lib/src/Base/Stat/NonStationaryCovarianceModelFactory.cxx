@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Id:      $Id$
  */
 #include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -95,16 +94,16 @@ struct ComputeCovariancePolicy
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
-      const UnsignedInteger i(static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5));
-      const UnsignedInteger j(index - (i * (i + 1)) / 2);
+      const UnsignedInteger i = static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5);
+      const UnsignedInteger j = index - (i * (i + 1)) / 2;
       CovarianceMatrix & matrix(output_[index]);
       for (UnsignedInteger k = 0; k < dimension_; ++k)
       {
-        const NumericalScalar muIK(mean_.getValueAtIndex(i)[k]);
+        const NumericalScalar muIK = mean_.getValueAtIndex(i)[k];
         for (UnsignedInteger l = 0; l <= k; ++l)
         {
-          const NumericalScalar muJL(mean_.getValueAtIndex(j)[l]);
-          NumericalScalar coef(0.0);
+          const NumericalScalar muJL = mean_.getValueAtIndex(j)[l];
+          NumericalScalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
             coef += (input_[sampleIndex][i][k] - muIK)
@@ -121,10 +120,10 @@ struct ComputeCovariancePolicy
 UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample) const
 {
   const Mesh & mesh(sample.getMesh());
-  const UnsignedInteger N(mesh.getVerticesNumber());
+  const UnsignedInteger N = mesh.getVerticesNumber();
   // Create a collection of null CovarianceMatrix
-  const UnsignedInteger size((N * (N + 1)) / 2);
-  const UnsignedInteger dimension(sample.getDimension());
+  const UnsignedInteger size = (N * (N + 1)) / 2;
+  const UnsignedInteger dimension = sample.getDimension();
   CovarianceMatrixCollection collection(size);
   for (UnsignedInteger i = 0; i < size; ++i) collection[i] = CovarianceMatrix(SquareMatrix(dimension).getImplementation());
 

@@ -29,23 +29,23 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace ExponentialIntegralFunctions
 {
 
-  NumericalComplex Ei(const NumericalComplex & z);
-  NumericalScalar Ei(const NumericalScalar z);
+NumericalComplex Ei(const NumericalComplex & z);
+NumericalScalar Ei(const NumericalScalar z);
 
-  NumericalComplex EiPowerSeries(const NumericalComplex & z);
-  NumericalScalar EiPowerSeries(const NumericalScalar z);
+NumericalComplex EiPowerSeries(const NumericalComplex & z);
+NumericalScalar EiPowerSeries(const NumericalScalar z);
 
-  NumericalComplex EiAsymptoticSeries(const NumericalComplex & z);
-  NumericalScalar EiAsymptoticSeries(const NumericalScalar z);
+NumericalComplex EiAsymptoticSeries(const NumericalComplex & z);
+NumericalScalar EiAsymptoticSeries(const NumericalScalar z);
 
-  NumericalComplex EiContinuedFractionBackward(const NumericalComplex & z);
-  NumericalScalar EiContinuedFractionBackward(const NumericalScalar z);
+NumericalComplex EiContinuedFractionBackward(const NumericalComplex & z);
+NumericalScalar EiContinuedFractionBackward(const NumericalScalar z);
 
-  NumericalComplex EiContinuedFractionForward(const NumericalComplex & z);
-  NumericalScalar EiContinuedFractionForward(const NumericalScalar z);
+NumericalComplex EiContinuedFractionForward(const NumericalComplex & z);
+NumericalScalar EiContinuedFractionForward(const NumericalScalar z);
 
-  Bool hasConverged(const NumericalComplex & current,
-                    const NumericalComplex & previous);
+Bool hasConverged(const NumericalComplex & current,
+                  const NumericalComplex & previous);
 
 } // ExponentialIntegralFunctions
 

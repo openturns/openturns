@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 def printNumericalPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
@@ -60,11 +61,12 @@ linear = ot.NumericalMathFunction(
 dim = 4
 startingPoint = [0.] * dim
 
-bounds = ot.Interval([-3.]*dim,[5.]*dim)
+bounds = ot.Interval([-3.] * dim, [5.] * dim)
 
 for minimization in [True, False]:
 
-    problem = ot.OptimizationProblem(linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+    problem = ot.OptimizationProblem(
+        linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
     problem.setMinimization(minimization)
     algo = ot.Cobyla(problem)
     algo.setMaximumIterationNumber(150)
@@ -75,5 +77,3 @@ for minimization in [True, False]:
     print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
     print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
     print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
-
-

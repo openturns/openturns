@@ -136,9 +136,9 @@ NumericalPoint Weibull::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar powX(std::pow(x / alpha_, beta_));
+  const NumericalScalar powX = std::pow(x / alpha_, beta_);
   return NumericalPoint(1, (beta_ * (1.0 - powX) - 1.0) / (x * x) * beta_ * powX * std::exp(-powX));
 }
 
@@ -148,7 +148,7 @@ NumericalScalar Weibull::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
@@ -157,9 +157,9 @@ NumericalScalar Weibull::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  const NumericalScalar y(x / alpha_);
+  const NumericalScalar y = x / alpha_;
   return std::log(beta_) + (beta_ - 1.0) * std::log(y) - std::log(alpha_) - std::pow(y, beta_);
 }
 
@@ -169,7 +169,7 @@ NumericalScalar Weibull::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return -expm1(-std::pow(x / alpha_, beta_));
 }
@@ -178,7 +178,7 @@ NumericalScalar Weibull::computeComplementaryCDF(const NumericalPoint & point) c
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 1.0;
   return std::exp(-std::pow(x / alpha_, beta_));
 }
@@ -197,22 +197,22 @@ NumericalComplex Weibull::computeCharacteristicFunction(const NumericalScalar x)
   // If beta < 1.0, the series based on the Gamma function is divergente so use the generic implementation
   if (beta_ < 1.0) return DistributionImplementation::computeCharacteristicFunction(x);
   NumericalComplex value(1.0);
-  const NumericalScalar u(x * alpha_);
-  const NumericalScalar sign(x < 0.0 ? -1.0 : 1.0);
-  const NumericalScalar logAbsU(std::log(std::abs(u)));
-  NumericalScalar oldNorm(0.0);
-  NumericalScalar norm(oldNorm);
-  UnsignedInteger r(1);
-  Bool increasing(true);
+  const NumericalScalar u = x * alpha_;
+  const NumericalScalar sign = x < 0.0 ? -1.0 : 1.0;
+  const NumericalScalar logAbsU = std::log(std::abs(u));
+  NumericalScalar oldNorm = 0.0;
+  NumericalScalar norm = oldNorm;
+  UnsignedInteger r = 1;
+  Bool increasing = true;
   while (increasing || (norm > std::abs(value) * SpecFunc::NumericalScalarEpsilon))
   {
-    const NumericalScalar term1(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    const NumericalScalar term1 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const NumericalScalar term2(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    const NumericalScalar term2 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const NumericalScalar term3(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    const NumericalScalar term3 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const NumericalScalar term4(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    const NumericalScalar term4 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
     const NumericalComplex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
     oldNorm = norm;
@@ -231,11 +231,11 @@ NumericalPoint Weibull::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint pdfGradient(3, 0.0);
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar powX(std::pow(x / alpha_, beta_));
-  const NumericalScalar factor(powX / x * std::exp(-powX));
+  const NumericalScalar powX = std::pow(x / alpha_, beta_);
+  const NumericalScalar factor = powX / x * std::exp(-powX);
   pdfGradient[0] = factor * (powX - 1.0) * beta_ * beta_ / alpha_;
   pdfGradient[1] = factor * (1.0 + (1.0 - powX) * std::log(powX));
   pdfGradient[2] = factor * (1.0 - beta_ + beta_ * powX) / x * beta_;
@@ -247,11 +247,11 @@ NumericalPoint Weibull::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0] - gamma_);
+  const NumericalScalar x = point[0] - gamma_;
   NumericalPoint cdfGradient(3, 0.0);
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar powX(std::pow(x / alpha_, beta_));
-  const NumericalScalar factor(powX * std::exp(-powX));
+  const NumericalScalar powX = std::pow(x / alpha_, beta_);
+  const NumericalScalar factor = powX * std::exp(-powX);
   cdfGradient[0] = -factor * beta_ / alpha_;
   cdfGradient[1] = factor * std::log(x / alpha_);
   cdfGradient[2] = -factor * beta_ / x;
@@ -282,21 +282,21 @@ NumericalPoint Weibull::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint Weibull::getSkewness() const
 {
-  const NumericalScalar gamma1(SpecFunc::Gamma(1.0 + 1.0 / beta_));
-  const NumericalScalar gamma1_2(gamma1 * gamma1);
-  const NumericalScalar gamma2(SpecFunc::Gamma(1.0 + 2.0 / beta_));
-  const NumericalScalar gamma3(SpecFunc::Gamma(1.0 + 3.0 / beta_));
+  const NumericalScalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
+  const NumericalScalar gamma1_2 = gamma1 * gamma1;
+  const NumericalScalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / beta_);
+  const NumericalScalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / beta_);
   return NumericalPoint(1, (2.0 * gamma1_2 * gamma1 - 3.0 * gamma1 * gamma2 + gamma3) / std::pow((gamma2 - gamma1_2), 1.5));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint Weibull::getKurtosis() const
 {
-  const NumericalScalar gamma1(SpecFunc::Gamma(1.0 + 1.0 / beta_));
-  const NumericalScalar gamma1_2(gamma1 * gamma1);
-  const NumericalScalar gamma2(SpecFunc::Gamma(1.0 + 2.0 / beta_));
-  const NumericalScalar gamma3(SpecFunc::Gamma(1.0 + 3.0 / beta_));
-  const NumericalScalar gamma4(SpecFunc::Gamma(1.0 + 4.0 / beta_));
+  const NumericalScalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
+  const NumericalScalar gamma1_2 = gamma1 * gamma1;
+  const NumericalScalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / beta_);
+  const NumericalScalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / beta_);
+  const NumericalScalar gamma4 = SpecFunc::Gamma(1.0 + 4.0 / beta_);
   return NumericalPoint(1, (6.0 * gamma1_2 * gamma2 + gamma4 - 4.0 * gamma1 * gamma3 - 3.0 * gamma1_2 * gamma1_2) / std::pow(gamma2 - gamma1_2, 2.0));
 }
 
@@ -332,7 +332,7 @@ NumericalPoint Weibull::getParameter() const
 
 void Weibull::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Weibull(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
@@ -415,11 +415,11 @@ void Weibull::setMuSigma(const NumericalScalar mu,
 {
   if (mu <= gamma_) throw InvalidArgumentException(HERE) << "Mu MUST be > gamma, here mu=" << mu << " and gamma=" << gamma_;
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be > 0.0, here sigma=" << sigma;
-  const NumericalScalar ratio(1.0 + std::pow(sigma / (mu - gamma_), 2.0));
+  const NumericalScalar ratio = 1.0 + std::pow(sigma / (mu - gamma_), 2.0);
   NumericalScalar t;
-  NumericalScalar betaMin(1.0);
-  NumericalScalar betaMax(1.0);
-  NumericalScalar step(0.5);
+  NumericalScalar betaMin = 1.0;
+  NumericalScalar betaMax = 1.0;
+  NumericalScalar step = 0.5;
   // Bracketing interval
   // Case beta < 1, i.e. ratio > 2
   if (ratio > 2)
@@ -448,7 +448,7 @@ void Weibull::setMuSigma(const NumericalScalar mu,
     betaMin = betaMax - 0.5 * step;
   }
   // Bisection loop
-  const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
   for (;;)
   {
     beta_ = 0.5 * (betaMin + betaMax);

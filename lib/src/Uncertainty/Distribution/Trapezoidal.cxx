@@ -117,7 +117,7 @@ NumericalPoint Trapezoidal::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
 
   if ((a_ < x) && (x < b_)) return NumericalPoint(1, h_ / (b_ - a_));
   return NumericalPoint(1, -h_ / (d_ - c_));
@@ -129,7 +129,7 @@ NumericalScalar Trapezoidal::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
 
   if (x <= a_) return 0.0;
   // Will never go there if a_ == b_
@@ -145,7 +145,7 @@ NumericalScalar Trapezoidal::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
 
   if (x <= a_) return 0.0;
   // Will never go there if a_ == b_
@@ -159,13 +159,13 @@ NumericalScalar Trapezoidal::computeCDF(const NumericalPoint & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Trapezoidal::computeCharacteristicFunction(const NumericalScalar u) const
 {
-  const NumericalScalar au(a_ * u);
-  const NumericalScalar bu(b_ * u);
-  const NumericalScalar cu(c_ * u);
-  const NumericalScalar du(d_ * u);
+  const NumericalScalar au = a_ * u;
+  const NumericalScalar bu = b_ * u;
+  const NumericalScalar cu = c_ * u;
+  const NumericalScalar du = d_ * u;
 
-  NumericalScalar real(0.0);
-  NumericalScalar imag(0.0);
+  NumericalScalar real = 0.0;
+  NumericalScalar imag = 0.0;
   NumericalComplex phi;
 
   if (std::abs(u) <= 1.0e-10) phi = NumericalComplex((-a_ + 3.0 * b_ - 3.0 * c_ + d_) * h_ / 2.0, 1.0);
@@ -193,7 +193,7 @@ NumericalPoint Trapezoidal::computePDFGradient(const NumericalPoint & point) con
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   NumericalPoint pdfGradient(4, 0.0);
   if ((a_ < x) && (x < b_))
   {
@@ -225,7 +225,7 @@ NumericalPoint Trapezoidal::computeCDFGradient(const NumericalPoint & point) con
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x(point[0]);
+  const NumericalScalar x = point[0];
   NumericalPoint cdfGradient(4, 0.0);
   if ((a_ < x) && (x < b_))
   {
@@ -255,9 +255,9 @@ NumericalPoint Trapezoidal::computeCDFGradient(const NumericalPoint & point) con
 NumericalScalar Trapezoidal::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  NumericalScalar c1(0.5 * (b_ - a_) * h_);
-  NumericalScalar c2(c1 + (c_ - b_) * h_);
-  NumericalScalar proba( tail ? 1.0 - prob : prob);
+  NumericalScalar c1 = 0.5 * (b_ - a_) * h_;
+  NumericalScalar c2 = c1 + (c_ - b_) * h_;
+  NumericalScalar proba = tail ? 1.0 - prob : prob;
   // p in (0, c1)
   if (prob <= c1) return a_ + std::sqrt(2.0 * (b_ - a_) * proba / h_);
   // p in (c1, c2)
@@ -288,26 +288,26 @@ NumericalPoint Trapezoidal::getStandardDeviation() const /*throw(NotDefinedExcep
 /* Get the skewness of the distribution */
 NumericalPoint Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
 {
-  const NumericalScalar a2(a_ * a_);
-  const NumericalScalar a3(a2 * a_);
-  const NumericalScalar a4(a3 * a_);
+  const NumericalScalar a2 = a_ * a_;
+  const NumericalScalar a3 = a2 * a_;
+  const NumericalScalar a4 = a3 * a_;
 
-  const NumericalScalar b2(b_ * b_);
-  const NumericalScalar b3(b2 * b_);
-  const NumericalScalar b4(b3 * b_);
+  const NumericalScalar b2 = b_ * b_;
+  const NumericalScalar b3 = b2 * b_;
+  const NumericalScalar b4 = b3 * b_;
 
-  const NumericalScalar c2(c_ * c_);
-  const NumericalScalar c3(c2 * c_);
-  const NumericalScalar c4(c3 * c_);
+  const NumericalScalar c2 = c_ * c_;
+  const NumericalScalar c3 = c2 * c_;
+  const NumericalScalar c4 = c3 * c_;
 
-  const NumericalScalar d2(d_ * d_);
-  const NumericalScalar d3(d2 * d_);
-  const NumericalScalar d4(d3 * d_);
+  const NumericalScalar d2 = d_ * d_;
+  const NumericalScalar d3 = d2 * d_;
+  const NumericalScalar d4 = d3 * d_;
 
-  NumericalScalar thirdMoment((d_ - c_ - b_ + a_) * (d_ - c_ + b_ - a_) * (2 * d4 + 10 * c_ * d3 - 9 * b_ * d3 - 9 * a_ * d3 + 21 * c2 * d2 - 36 * b_ * c_ * d2 - 36 * a_ * c_ * d2 + 14 * b2 * d2 + 35 * a_ * b_ * d2 + 14 * a2 * d2 + 10 * c3 * d_ - 36 * b_ * c2 * d_ - 36 * a_ * c2 * d_ + 35 * b2 * c_ * d_ + 74 * a_ * b_ * c_ * d_ + 35 * a2 * c_ * d_ - 9 * b3 * d_ - 36 * a_ * b2 * d_ - 36 * a2 * b_ * d_ - 9 * a3 * d_ + 2 * c4 - 9 * b_ * c3 - 9 * a_ * c3 + 14 * b2 * c2 + 35 * a_ * b_ * c2 + 14 * a2 * c2 - 9 * b3 * c_ - 36 * a_ * b2 * c_ - 36 * a2 * b_ * c_ - 9 * a3 * c_ + 2 * b4 + 10 * a_ * b3 + 21 * a2 * b2 + 10 * a3 * b_ + 2 * a4) * h_ * h_ * h_ / 2160.0);
+  NumericalScalar thirdMoment = (d_ - c_ - b_ + a_) * (d_ - c_ + b_ - a_) * (2 * d4 + 10 * c_ * d3 - 9 * b_ * d3 - 9 * a_ * d3 + 21 * c2 * d2 - 36 * b_ * c_ * d2 - 36 * a_ * c_ * d2 + 14 * b2 * d2 + 35 * a_ * b_ * d2 + 14 * a2 * d2 + 10 * c3 * d_ - 36 * b_ * c2 * d_ - 36 * a_ * c2 * d_ + 35 * b2 * c_ * d_ + 74 * a_ * b_ * c_ * d_ + 35 * a2 * c_ * d_ - 9 * b3 * d_ - 36 * a_ * b2 * d_ - 36 * a2 * b_ * d_ - 9 * a3 * d_ + 2 * c4 - 9 * b_ * c3 - 9 * a_ * c3 + 14 * b2 * c2 + 35 * a_ * b_ * c2 + 14 * a2 * c2 - 9 * b3 * c_ - 36 * a_ * b2 * c_ - 36 * a2 * b_ * c_ - 9 * a3 * c_ + 2 * b4 + 10 * a_ * b3 + 21 * a2 * b2 + 10 * a3 * b_ + 2 * a4) * h_ * h_ * h_ / 2160.0;
 
   // retrieve sigma^3
-  NumericalScalar standardDeviation3(getSigma());
+  NumericalScalar standardDeviation3 = getSigma();
   standardDeviation3 = standardDeviation3 * standardDeviation3 * standardDeviation3;
 
   return NumericalPoint(1, thirdMoment / standardDeviation3);
@@ -316,28 +316,28 @@ NumericalPoint Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
 /* Get the kurtosis of the distribution */
 NumericalPoint Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
 {
-  const NumericalScalar a2(a_ * a_);
-  const NumericalScalar a3(a2 * a_);
-  const NumericalScalar a4(a3 * a_);
+  const NumericalScalar a2 = a_ * a_;
+  const NumericalScalar a3 = a2 * a_;
+  const NumericalScalar a4 = a3 * a_;
 
-  const NumericalScalar b2(b_ * b_);
-  const NumericalScalar b3(b2 * b_);
-  const NumericalScalar b4(b3 * b_);
+  const NumericalScalar b2 = b_ * b_;
+  const NumericalScalar b3 = b2 * b_;
+  const NumericalScalar b4 = b3 * b_;
 
-  const NumericalScalar c2(c_ * c_);
-  const NumericalScalar c3(c2 * c_);
-  const NumericalScalar c4(c3 * c_);
+  const NumericalScalar c2 = c_ * c_;
+  const NumericalScalar c3 = c2 * c_;
+  const NumericalScalar c4 = c3 * c_;
 
-  const NumericalScalar d2(d_ * d_);
-  const NumericalScalar d3(d2 * d_);
-  const NumericalScalar d4(d3 * d_);
+  const NumericalScalar d2 = d_ * d_;
+  const NumericalScalar d3 = d2 * d_;
+  const NumericalScalar d4 = d3 * d_;
 
-  const NumericalScalar h2(h_ * h_);
+  const NumericalScalar h2 = h_ * h_;
 
-  NumericalScalar fourthMoment((d2 + c_ * d_ - 2 * b_ * d_ - a_ * d_ + c2 - b_ * c_ - 2 * a_ * c_ + b2 + a_ * b_ + a2) * (d2 + c_ * d_ - b_ * d_ - 2 * a_ * d_ + c2 - 2 * b_ * c_ - a_ * c_ + b2 + a_ * b_ + a2) * (d4 + 2 * c_ * d3 - 3 * b_ * d3 - 3 * a_ * d3 - 3 * c2 * d2 + 4 * b2 * d2 + a_ * b_ * d2 + 4 * a2 * d2 + 2 * c3 * d_ + b2 * c_ * d_ - 2 * a_ * b_ * c_ * d_ + a2 * c_ * d_ - 3 * b3 * d_ - 3 * a3 * d_ + c4 - 3 * b_ * c3 - 3 * a_ * c3 + 4 * b2 * c2 + a_ * b_ * c2 + 4 * a2 * c2 - 3 * b3 * c_ - 3 * a3 * c_ + b4 + 2 * a_ * b3 - 3 * a2 * b2 + 2 * a3 * b_ + a4) * h2 * h2 / 2160.0);
+  NumericalScalar fourthMoment = (d2 + c_ * d_ - 2 * b_ * d_ - a_ * d_ + c2 - b_ * c_ - 2 * a_ * c_ + b2 + a_ * b_ + a2) * (d2 + c_ * d_ - b_ * d_ - 2 * a_ * d_ + c2 - 2 * b_ * c_ - a_ * c_ + b2 + a_ * b_ + a2) * (d4 + 2 * c_ * d3 - 3 * b_ * d3 - 3 * a_ * d3 - 3 * c2 * d2 + 4 * b2 * d2 + a_ * b_ * d2 + 4 * a2 * d2 + 2 * c3 * d_ + b2 * c_ * d_ - 2 * a_ * b_ * c_ * d_ + a2 * c_ * d_ - 3 * b3 * d_ - 3 * a3 * d_ + c4 - 3 * b_ * c3 - 3 * a_ * c3 + 4 * b2 * c2 + a_ * b_ * c2 + 4 * a2 * c2 - 3 * b3 * c_ - 3 * a3 * c_ + b4 + 2 * a_ * b3 - 3 * a2 * b2 + 2 * a3 * b_ + a4) * h2 * h2 / 2160.0;
 
   // retrieve sigma^4
-  NumericalScalar standardDeviation4(getSigma());
+  NumericalScalar standardDeviation4 = getSigma();
   standardDeviation4 *= standardDeviation4;
   standardDeviation4 *= standardDeviation4;
 
@@ -348,12 +348,12 @@ NumericalPoint Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
 NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
-  const NumericalScalar beta(1.0 - 2.0 * (d_ - b_) / (d_ - a_));
-  const NumericalScalar gamma(1.0 - 2.0 * (d_ - c_) / (d_ - a_));
-  const NumericalScalar eta(2.0 / (2.0 - beta + gamma));
-  const NumericalScalar betaPow(std::pow(beta, n + 1.0));
-  const NumericalScalar gammaPow(std::pow(gamma, n + 1.0));
-  NumericalScalar value(eta * (gammaPow - betaPow) / (n + 1));
+  const NumericalScalar beta = 1.0 - 2.0 * (d_ - b_) / (d_ - a_);
+  const NumericalScalar gamma = 1.0 - 2.0 * (d_ - c_) / (d_ - a_);
+  const NumericalScalar eta = 2.0 / (2.0 - beta + gamma);
+  const NumericalScalar betaPow = std::pow(beta, n + 1.0);
+  const NumericalScalar gammaPow = std::pow(gamma, n + 1.0);
+  NumericalScalar value = eta * (gammaPow - betaPow) / (n + 1);
   if (beta > -1.0)
   {
     if (n % 2 == 0) value += (eta / (beta + 1.0)) * ((beta * betaPow - 1.0) / (n + 2) + (betaPow + 1.0) / (n + 1));
@@ -373,7 +373,7 @@ Trapezoidal::Implementation Trapezoidal::getStandardRepresentative() const
 void Trapezoidal::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  NumericalScalar standardDeviation(getSigma());
+  NumericalScalar standardDeviation = getSigma();
   covariance_(0, 0) = standardDeviation * standardDeviation;
   isAlreadyComputedCovariance_ = true;
 }
@@ -391,7 +391,7 @@ NumericalPoint Trapezoidal::getParameter() const
 
 void Trapezoidal::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = Trapezoidal(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
@@ -417,23 +417,23 @@ Bool Trapezoidal::isElliptical() const
 /* Sigma accessor */
 NumericalScalar Trapezoidal::getSigma() const
 {
-  const NumericalScalar a2(a_ * a_);
-  const NumericalScalar a3(a2 * a_);
-  const NumericalScalar a4(a3 * a_);
+  const NumericalScalar a2 = a_ * a_;
+  const NumericalScalar a3 = a2 * a_;
+  const NumericalScalar a4 = a3 * a_;
 
-  const NumericalScalar b2(b_ * b_);
-  const NumericalScalar b3(b2 * b_);
-  const NumericalScalar b4(b3 * b_);
+  const NumericalScalar b2 = b_ * b_;
+  const NumericalScalar b3 = b2 * b_;
+  const NumericalScalar b4 = b3 * b_;
 
-  const NumericalScalar c2(c_ * c_);
-  const NumericalScalar c3(c2 * c_);
-  const NumericalScalar c4(c3 * c_);
+  const NumericalScalar c2 = c_ * c_;
+  const NumericalScalar c3 = c2 * c_;
+  const NumericalScalar c4 = c3 * c_;
 
-  const NumericalScalar d2(d_ * d_);
-  const NumericalScalar d3(d2 * d_);
-  const NumericalScalar d4(d3 * d_);
+  const NumericalScalar d2 = d_ * d_;
+  const NumericalScalar d3 = d2 * d_;
+  const NumericalScalar d4 = d3 * d_;
 
-  NumericalScalar SecondMoment((d4 + 2 * c_ * d3 - 3 * b_ * d3 - 3 * a_ * d3 - 3 * b_ * c_ * d2 - 3 * a_ * c_ * d2 + 4 * b2 * d2 + 4 * a_ * b_ * d2 + 4 * a2 * d2 + 2 * c3 * d_ - 3 * b_ * c2 * d_ - 3 * a_ * c2 * d_ + 4 * b2 * c_ * d_ + 4 * a_ * b_ * c_ * d_ + 4 * a2 * c_ * d_ - 3 * b3 * d_ - 3 * a_ * b2 * d_ - 3 * a2 * b_ * d_ - 3 * a3 * d_ + c4 - 3 * b_ * c3 - 3 * a_ * c3 + 4 * b2 * c2 + 4 * a_ * b_ * c2 + 4 * a2 * c2 - 3 * b3 * c_ - 3 * a_ * b2 * c_ - 3 * a2 * b_ * c_ - 3 * a3 * c_ + b4 + 2 * a_ * b3 + 2 * a3 * b_ + a4) * h_ * h_ / 72.0);
+  NumericalScalar SecondMoment = (d4 + 2 * c_ * d3 - 3 * b_ * d3 - 3 * a_ * d3 - 3 * b_ * c_ * d2 - 3 * a_ * c_ * d2 + 4 * b2 * d2 + 4 * a_ * b_ * d2 + 4 * a2 * d2 + 2 * c3 * d_ - 3 * b_ * c2 * d_ - 3 * a_ * c2 * d_ + 4 * b2 * c_ * d_ + 4 * a_ * b_ * c_ * d_ + 4 * a2 * c_ * d_ - 3 * b3 * d_ - 3 * a_ * b2 * d_ - 3 * a2 * b_ * d_ - 3 * a3 * d_ + c4 - 3 * b_ * c3 - 3 * a_ * c3 + 4 * b2 * c2 + 4 * a_ * b_ * c2 + 4 * a2 * c2 - 3 * b3 * c_ - 3 * a_ * b2 * c_ - 3 * a2 * b_ * c_ - 3 * a3 * c_ + b4 + 2 * a_ * b3 + 2 * a3 * b_ + a4) * h_ * h_ / 72.0;
 
   return std::sqrt(SecondMoment);
 }

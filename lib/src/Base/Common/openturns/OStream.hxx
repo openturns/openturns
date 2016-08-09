@@ -135,8 +135,8 @@ inline OStream & operator << (OStream & OS, std::__1::__iom_t4<T> manip)
 
 inline OStream & operator << (OStream & OS, std::__1::__iom_t5 manip)
 {
-    OS.getStream() << manip;
-    return OS;
+  OS.getStream() << manip;
+  return OS;
 }
 #elif defined(__GNUC__)
 

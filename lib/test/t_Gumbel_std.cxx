@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps(1e-5);
+    NumericalScalar eps = 1e-5;
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
@@ -130,9 +130,9 @@ int main(int argc, char *argv[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
     // Specific to this distribution
-    NumericalScalar mu(distribution.getMu());
+    NumericalScalar mu = distribution.getMu();
     fullprint << "mu=" << mu << std::endl;
-    NumericalScalar sigma(distribution.getSigma());
+    NumericalScalar sigma = distribution.getSigma();
     fullprint << "sigma=" << sigma << std::endl;
     Gumbel newDistribution(mu, sigma, Gumbel::MUSIGMA);
     fullprint << "alpha from (mu, sigma)=" << newDistribution.getAlpha() << std::endl;

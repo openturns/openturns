@@ -148,7 +148,7 @@ void SimulationResultImplementation::setBlockSize(const UnsignedInteger blockSiz
 /* String converter */
 String SimulationResultImplementation::__repr__() const
 {
-  const NumericalScalar defaultConfidenceLevel(ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel"));
+  const NumericalScalar defaultConfidenceLevel = ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel");
   OSS oss;
   oss.setPrecision(6);
   oss << std::scientific
@@ -172,7 +172,7 @@ NumericalScalar SimulationResultImplementation::getConfidenceLength(const Numeri
   // Check if the given level is in ]0, 1[
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Confidence level must be in ]0, 1[";
   // The probability estimate is asymptotically normal
-  const NumericalScalar xq(DistFunc::qNormal(0.5 + 0.5 * level));
+  const NumericalScalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
   return 2.0 * xq * sqrt(varianceEstimate_);
 }
 

@@ -109,7 +109,7 @@ NumericalScalar NegativeBinomial::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return std::exp(SpecFunc::LnGamma(k + r_) - SpecFunc::LnGamma(r_) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + r_ * log1p(-p_));
 }
@@ -120,7 +120,7 @@ NumericalScalar NegativeBinomial::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
   if (p_ <= 0.5) return DistFunc::pBeta(r_, floor(k) + 1, 1.0 - p_, false);
   return DistFunc::pBeta(floor(k) + 1, r_, p_, true);
@@ -130,7 +130,7 @@ NumericalScalar NegativeBinomial::computeComplementaryCDF(const NumericalPoint &
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
   if (p_ <= 0.5) return DistFunc::pBeta(r_, floor(k) + 1, 1.0 - p_, true);
@@ -142,7 +142,7 @@ NumericalPoint NegativeBinomial::computePDFGradient(const NumericalPoint & point
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   NumericalPoint pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE) << "In NegativeBinomial::computePDFGradient(const NumericalPoint & point) const";
@@ -154,7 +154,7 @@ NumericalPoint NegativeBinomial::computeCDFGradient(const NumericalPoint & point
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k(point[0]);
+  const NumericalScalar k = point[0];
   if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
   throw NotYetImplementedException(HERE) << "In NegativeBinomial::computeCDFGradient(const NumericalPoint & point) const";
 }
@@ -196,8 +196,8 @@ void NegativeBinomial::computeCovariance() const
 NumericalSample NegativeBinomial::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedInteger kMax(static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), getRange().getUpperBound()[0])));
+  const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
+  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), getRange().getUpperBound()[0]));
   NumericalSample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
@@ -214,7 +214,7 @@ NumericalPoint NegativeBinomial::getParameter() const
 
 void NegativeBinomial::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = NegativeBinomial(parameter[0], parameter[1]);
   setWeight(w);
@@ -285,15 +285,15 @@ NumericalScalar NegativeBinomial::computeScalarQuantile(const NumericalScalar pr
   if (prob <= 0.0) return (tail ? getRange().getUpperBound()[0] : 0.0);
   if (prob >= 1.0) return (tail ? 0.0 : getRange().getUpperBound()[0]);
   // Initialization by the Cornish-Fisher expansion
-  NumericalScalar qNorm(DistFunc::qNormal(prob, tail));
-  NumericalScalar gamma1(getSkewness()[0]);
-  NumericalScalar gamma2(getKurtosis()[0] - 3.0);
-  NumericalScalar quantile(round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0)));
+  NumericalScalar qNorm = DistFunc::qNormal(prob, tail);
+  NumericalScalar gamma1 = getSkewness()[0];
+  NumericalScalar gamma2 = getKurtosis()[0] - 3.0;
+  NumericalScalar quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
   if (quantile < 0.0) quantile = 0.0;
-  NumericalScalar cdf(tail ? computeComplementaryCDF(quantile) : computeCDF(quantile));
+  NumericalScalar cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
   LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, Cornish-Fisher estimate=" << quantile << ", cdf=" << cdf);
-  NumericalScalar oldCDF(cdf);
-  const NumericalScalar step(tail ? -1.0 : 1.0);
+  NumericalScalar oldCDF = cdf;
+  const NumericalScalar step = tail ? -1.0 : 1.0;
   while (cdf >= prob)
   {
     quantile -= step;

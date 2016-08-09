@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedInteger size(10);
+    UnsignedInteger size = 10;
     for (UnsignedInteger dimension = 1; dimension < 4; ++dimension)
     {
       LinearEnumerateFunction f(dimension);

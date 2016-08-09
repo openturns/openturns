@@ -25,7 +25,8 @@ try:
 
     # Test sampling without reinitialization excepted when distribution
     # dimension changes
-    myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, False)
+    myPlane = LowDiscrepancyExperiment(
+        HaltonSequence(), distribution, size, False)
     print("sample  = ", repr(myPlane.generate()))
     # sample 2 != sample
     print("sample2 = ", repr(myPlane.generate()))

@@ -81,11 +81,11 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
       (upperBound_.getDimension() == dimension_) &&
       (other.lowerBound_.getDimension() == dimension_) &&
       (other.upperBound_.getDimension() == dimension_))
-    {
-      const Interval boundingBox(Interval(lowerBound_, upperBound_).intersect(Interval(other.lowerBound_, other.upperBound_)));
-      result.setLowerBound(boundingBox.getLowerBound());
-      result.setUpperBound(boundingBox.getUpperBound());
-    }
+  {
+    const Interval boundingBox(Interval(lowerBound_, upperBound_).intersect(Interval(other.lowerBound_, other.upperBound_)));
+    result.setLowerBound(boundingBox.getLowerBound());
+    result.setUpperBound(boundingBox.getUpperBound());
+  }
   return result;
 }
 
@@ -107,11 +107,11 @@ LevelSet LevelSet::join(const LevelSet & other) const
       (upperBound_.getDimension() == dimension_) &&
       (other.lowerBound_.getDimension() == dimension_) &&
       (other.upperBound_.getDimension() == dimension_))
-    {
-      const Interval boundingBox(Interval(lowerBound_, upperBound_).join(Interval(other.lowerBound_, other.upperBound_)));
-      result.setLowerBound(boundingBox.getLowerBound());
-      result.setUpperBound(boundingBox.getUpperBound());
-    }
+  {
+    const Interval boundingBox(Interval(lowerBound_, upperBound_).join(Interval(other.lowerBound_, other.upperBound_)));
+    result.setLowerBound(boundingBox.getLowerBound());
+    result.setUpperBound(boundingBox.getUpperBound());
+  }
   return result;
 }
 
@@ -173,17 +173,17 @@ void LevelSet::computeLowerBound() const
   LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
   NumericalMathFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      Matrix m(1, dimension_);
-      m(0, i) = 1.0;
-      LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
-      OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
-      problem.setMinimization(true);
-      Cobyla solver(problem);
-      solver.setStartingPoint(NumericalPoint(dimension_));
-      solver.run();
-      lowerBound_[i] = solver.getResult().getOptimalPoint()[i];
-    }
+  {
+    Matrix m(1, dimension_);
+    m(0, i) = 1.0;
+    LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
+    OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+    problem.setMinimization(true);
+    Cobyla solver(problem);
+    solver.setStartingPoint(NumericalPoint(dimension_));
+    solver.run();
+    lowerBound_[i] = solver.getResult().getOptimalPoint()[i];
+  }
 }
 
 /* Upper bound of the bounding box */
@@ -205,17 +205,17 @@ void LevelSet::computeUpperBound() const
   LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
   NumericalMathFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      Matrix m(1, dimension_);
-      m(0, i) = 1.0;
-      LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
-      OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
-      problem.setMinimization(false);
-      Cobyla solver(problem);
-      solver.setStartingPoint(NumericalPoint(dimension_));
-      solver.run();
-      upperBound_[i] = solver.getResult().getOptimalPoint()[i];
-    }
+  {
+    Matrix m(1, dimension_);
+    m(0, i) = 1.0;
+    LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
+    OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+    problem.setMinimization(false);
+    Cobyla solver(problem);
+    solver.setStartingPoint(NumericalPoint(dimension_));
+    solver.run();
+    upperBound_[i] = solver.getResult().getOptimalPoint()[i];
+  }
 }
 
 /* String converter */

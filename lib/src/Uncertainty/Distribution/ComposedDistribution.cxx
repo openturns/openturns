@@ -139,7 +139,7 @@ String ComposedDistribution::__str__(const String & offset) const
 void ComposedDistribution::setDistributionCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
-  const UnsignedInteger size(coll.getSize());
+  const UnsignedInteger size = coll.getSize();
   if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the distribution dimension";
   Description description(size);
   NumericalPoint lowerBound(size);
@@ -221,7 +221,7 @@ ComposedDistribution * ComposedDistribution::clone() const
 /* Get one realization of the ComposedDistribution */
 NumericalPoint ComposedDistribution::getRealization() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return distributionCollection_[0].getRealization();
   // Special case for independent copula
   NumericalPoint result(dimension);
@@ -264,7 +264,7 @@ struct ComposedDistributionComputeSamplePolicy
 /* Get a sample of the distribution */
 NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // For 1D or independent components, we can only rely on possible parallel
   // implementation of getSample() methods of the marginal distributions
   if (dimension == 1) return distributionCollection_[0].getSample(size);
@@ -302,13 +302,13 @@ NumericalSample ComposedDistribution::getSample(const UnsignedInteger size) cons
 NumericalPoint ComposedDistribution::computeDDF(const NumericalPoint & point) const
 {
   /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   NumericalPoint uPoint(dimension);
   NumericalPoint pdfMarginal(dimension);
   NumericalPoint ddfMarginal(dimension);
-  NumericalScalar productPDF(1.0);
+  NumericalScalar productPDF = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalPoint component(NumericalPoint(1, point[i]));
@@ -318,7 +318,7 @@ NumericalPoint ComposedDistribution::computeDDF(const NumericalPoint & point) co
     productPDF *= pdfMarginal[i];
   }
   // Initialization with the values of an independent copula
-  NumericalScalar pdfCopula(1.0);
+  NumericalScalar pdfCopula = 1.0;
   NumericalPoint ddfCopula(dimension, 0.0);
   // If the distribution does not have an independent copula
   if (!hasIndependentCopula())
@@ -336,12 +336,12 @@ NumericalPoint ComposedDistribution::computeDDF(const NumericalPoint & point) co
 NumericalScalar ComposedDistribution::computePDF(const NumericalPoint & point) const
 {
   /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   // Special case for dimension 1, to boost performances
   if (dimension == 1) return distributionCollection_[0].computePDF(point);
-  NumericalScalar productPDF(1.0);
+  NumericalScalar productPDF = 1.0;
   // Special case for the independent case, to boost performances
   if (hasIndependentCopula())
   {
@@ -363,14 +363,14 @@ NumericalScalar ComposedDistribution::computePDF(const NumericalPoint & point) c
 NumericalScalar ComposedDistribution::computeCDF(const NumericalPoint & point) const
 {
   /* CDF = CDF_copula(CDF_dist1(p1), ..., CDF_distn(pn)) */
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   if (dimension == 1) return distributionCollection_[0].computeCDF(point);
   // Special case for the independent case, to boost performances
   if (hasIndependentCopula())
   {
-    NumericalScalar productCDF(1.0);
+    NumericalScalar productCDF = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) productCDF *= distributionCollection_[i].computeCDF(point[i]);
     return productCDF;
   }
@@ -389,14 +389,14 @@ NumericalScalar ComposedDistribution::computeSurvivalFunction(const NumericalPoi
    *
    * With \bar{C} the survival function of the copula, not to be mistaken with the survival copula \hat{C}
    */
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   if (dimension == 1) return distributionCollection_[0].computeSurvivalFunction(point);
   // Special case for the independent case, to boost performances
   if (hasIndependentCopula())
   {
-    NumericalScalar productSurvival(1.0);
+    NumericalScalar productSurvival = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) productSurvival *= distributionCollection_[i].computeSurvivalFunction(point[i]);
     return productSurvival;
   }
@@ -409,7 +409,7 @@ NumericalScalar ComposedDistribution::computeSurvivalFunction(const NumericalPoi
 /* Compute the probability content of an interval */
 NumericalScalar ComposedDistribution::computeProbability(const Interval & interval) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   // If the interval is empty
@@ -433,7 +433,7 @@ NumericalScalar ComposedDistribution::computeProbability(const Interval & interv
 /* Get the PDF gradient of the distribution */
 NumericalPoint ComposedDistribution::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   NumericalPoint gradient;
@@ -443,11 +443,11 @@ NumericalPoint ComposedDistribution::computePDFGradient(const NumericalPoint & p
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalPoint marginalGradient(distributionCollection_[i].computePDFGradient(NumericalPoint(1, point[i])));
-    const UnsignedInteger marginalParameterDimension(marginalGradient.getDimension());
+    const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
     for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
   }
   const NumericalPoint copulaGradient(copula_.computePDFGradient(point));
-  const UnsignedInteger copulaParameterDimension(copulaGradient.getDimension());
+  const UnsignedInteger copulaParameterDimension = copulaGradient.getDimension();
   // Then, put the gradient according to the copula parameters
   for (UnsignedInteger j = 0; j < copulaParameterDimension; ++j) gradient.add(copulaGradient[j]);
   return gradient;
@@ -456,7 +456,7 @@ NumericalPoint ComposedDistribution::computePDFGradient(const NumericalPoint & p
 /* Get the CDF gradient of the distribution */
 NumericalPoint ComposedDistribution::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   NumericalPoint gradient;
@@ -466,11 +466,11 @@ NumericalPoint ComposedDistribution::computeCDFGradient(const NumericalPoint & p
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalPoint marginalGradient(distributionCollection_[i].computeCDFGradient(NumericalPoint(1, point[i])));
-    const UnsignedInteger marginalParameterDimension(marginalGradient.getDimension());
+    const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
     for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
   }
   const NumericalPoint copulaGradient(copula_.computeCDFGradient(point));
-  const UnsignedInteger copulaParameterDimension(copulaGradient.getDimension());
+  const UnsignedInteger copulaParameterDimension = copulaGradient.getDimension();
   // Then, put the gradient according to the copula parameters
   for (UnsignedInteger j = 0; j < copulaParameterDimension; ++j) gradient.add(copulaGradient[j]);
   return gradient;
@@ -481,7 +481,7 @@ NumericalPoint ComposedDistribution::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   if (prob < 0.0 || prob > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return distributionCollection_[0].computeQuantile(prob, tail);
   NumericalPoint quantile(copula_.computeQuantile(prob));
   for (UnsignedInteger i = 0; i < getDimension(); ++i) quantile[i] = distributionCollection_[i].computeQuantile(quantile[i])[0];
@@ -491,7 +491,7 @@ NumericalPoint ComposedDistribution::computeQuantile(const NumericalScalar prob,
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ComposedDistribution::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return Distribution(getMarginal(conditioningDimension)).computePDF(x);
@@ -504,7 +504,7 @@ NumericalScalar ComposedDistribution::computeConditionalPDF(const NumericalScala
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ComposedDistribution::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeCDF(x);
@@ -517,7 +517,7 @@ NumericalScalar ComposedDistribution::computeConditionalCDF(const NumericalScala
 /* Compute the numerical range of the distribution given the parameters values */
 void ComposedDistribution::computeRange()
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint lowerBound(dimension);
   NumericalPoint upperBound(dimension);
   Interval::BoolCollection finiteLowerBound(dimension);
@@ -536,7 +536,7 @@ void ComposedDistribution::computeRange()
 /* Compute the mean of the distribution. It is cheap if the marginal means are cheap */
 void ComposedDistribution::computeMean() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   mean_ = NumericalPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) mean_[i] = distributionCollection_[i].getMean()[0];
   isAlreadyComputedMean_ = true;
@@ -545,7 +545,7 @@ void ComposedDistribution::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint ComposedDistribution::getStandardDeviation() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint standardDeviation(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) standardDeviation[i] = distributionCollection_[i].getStandardDeviation()[0];
   return standardDeviation;
@@ -554,7 +554,7 @@ NumericalPoint ComposedDistribution::getStandardDeviation() const
 /* Compute the covariance of the distribution */
 void ComposedDistribution::computeCovariance() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // We need this to initialize the covariance matrix in two cases:
   // + this is the first call to this routine (which could be checked by testing the dimension of the distribution and the dimension of the matrix
   // + the copula has changed from a non-independent one to the independent copula
@@ -594,7 +594,7 @@ void ComposedDistribution::computeCovariance() const
       const Distribution marginalDistribution(getMarginal(component));
       for(UnsignedInteger nodeIndex = 0; nodeIndex < integrationNodesNumber_; ++nodeIndex)
       {
-        const NumericalScalar node(gaussNodes[nodeIndex]);
+        const NumericalScalar node = gaussNodes[nodeIndex];
         const NumericalPoint q(marginalDistribution.computeQuantile(node));
         marginalQuantiles[nodeIndex][component] = q[0];
         marginalPDF[nodeIndex][component] = marginalDistribution.computePDF(q);
@@ -615,16 +615,16 @@ void ComposedDistribution::computeCovariance() const
         const Distribution marginalCopula(copula_.getMarginal(indices));
         if (!marginalCopula.hasIndependentCopula())
         {
-          NumericalScalar covarianceIJ(0.0);
+          NumericalScalar covarianceIJ = 0.0;
           // Then we loop over the integration points
           for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
           {
-            const NumericalScalar nodeI(gaussNodes[rowNodeIndex]);
-            const NumericalScalar weightI(gaussWeights[rowNodeIndex]);
+            const NumericalScalar nodeI = gaussNodes[rowNodeIndex];
+            const NumericalScalar weightI = gaussWeights[rowNodeIndex];
             for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
             {
-              const NumericalScalar nodeJ(gaussNodes[columnNodeIndex]);
-              const NumericalScalar weightJ(gaussWeights[columnNodeIndex]);
+              const NumericalScalar nodeJ = gaussNodes[columnNodeIndex];
+              const NumericalScalar weightJ = gaussWeights[columnNodeIndex];
               NumericalPoint in(2);
               in[0] = nodeI;
               in[1] = nodeJ;
@@ -643,7 +643,7 @@ void ComposedDistribution::computeCovariance() const
 /* Get the skewness of the distribution */
 NumericalPoint ComposedDistribution::getSkewness() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint skewness(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) skewness[i] = distributionCollection_[i].getSkewness()[0];
   return skewness;
@@ -652,7 +652,7 @@ NumericalPoint ComposedDistribution::getSkewness() const
 /* Get the kurtosis of the distribution */
 NumericalPoint ComposedDistribution::getKurtosis() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPoint kurtosis(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) kurtosis[i] = distributionCollection_[i].getKurtosis()[0];
   return kurtosis;
@@ -673,12 +673,12 @@ ComposedDistribution::Implementation ComposedDistribution::getMarginal(const Ind
   // This call will check that indices are correct
   const Copula marginalCopula(copula_.getMarginal(indices));
   DistributionCollection marginalDistributions(0);
-  const UnsignedInteger size(indices.getSize());
+  const UnsignedInteger size = indices.getSize();
   const Description description(getDescription());
   Description marginalDescription(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger j(indices[i]);
+    const UnsignedInteger j = indices[i];
     marginalDistributions.add(distributionCollection_[j]);
     marginalDescription[i] = description[j];
   }
@@ -690,18 +690,18 @@ ComposedDistribution::Implementation ComposedDistribution::getMarginal(const Ind
 /* Get the isoprobabilistic transformation */
 ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIsoProbabilisticTransformation() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // Set the parameters values and descriptions
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
   // First, compute the dimension of the marginal parameters space
-  const UnsignedInteger size(parametersCollection.getSize());
+  const UnsignedInteger size = parametersCollection.getSize();
   NumericalPoint parameters(0);
   Description description(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPointWithDescription marginalParameters(parametersCollection[i]);
     const Description marginalDescription(marginalParameters.getDescription());
-    const UnsignedInteger marginalDimension(marginalParameters.getDimension());
+    const UnsignedInteger marginalDimension = marginalParameters.getDimension();
     const String marginalName(marginalParameters.getName());
     for (UnsignedInteger j = 0; j < marginalDimension; ++j)
     {
@@ -766,18 +766,18 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
 /* Get the inverse isoprobabilist transformation */
 ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution::getInverseIsoProbabilisticTransformation() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   // Set the parameters values and descriptions
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
   // First, compute the dimension of the marginal parameters space
-  const UnsignedInteger size(parametersCollection.getSize());
+  const UnsignedInteger size = parametersCollection.getSize();
   NumericalPoint parameters(0);
   Description description(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPointWithDescription marginalParameters(parametersCollection[i]);
     const Description marginalDescription(marginalParameters.getDescription());
-    const UnsignedInteger marginalDimension(marginalParameters.getDimension());
+    const UnsignedInteger marginalDimension = marginalParameters.getDimension();
     const String marginalName(marginalParameters.getName());
     for (UnsignedInteger j = 0; j < marginalDimension; ++j)
     {
@@ -849,7 +849,7 @@ ComposedDistribution::Implementation ComposedDistribution::getStandardDistributi
 /* Parameters value and description accessor */
 ComposedDistribution::NumericalPointWithDescriptionCollection ComposedDistribution::getParametersCollection() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   NumericalPointWithDescriptionCollection parameters(dimension + (dimension > 1 ? 1 : 0));
   const Description description(getDescription());
   // First put the marginal parameters
@@ -882,8 +882,8 @@ ComposedDistribution::NumericalPointWithDescriptionCollection ComposedDistributi
 
 void ComposedDistribution::setParametersCollection(const NumericalPointCollection& parametersCollection)
 {
-  const UnsignedInteger dimension(getDimension());
-  const UnsignedInteger parametersSize(dimension + (dimension > 1 ? 1 : 0));
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger parametersSize = dimension + (dimension > 1 ? 1 : 0);
   if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
 
   // set marginal parameters
@@ -965,12 +965,12 @@ Bool ComposedDistribution::hasEllipticalCopula() const
 /* Check if the distribution is elliptical */
 Bool ComposedDistribution::isElliptical() const
 {
-  const Bool ellipticalCopula(copula_.hasEllipticalCopula());
+  const Bool ellipticalCopula = copula_.hasEllipticalCopula();
   if (!ellipticalCopula) return false;
   const String copulaKind(copula_.getImplementation()->getClassName());
   // Easy case: Normal or independent copula with Normal marginals
-  const Bool hasNormalCopula((copulaKind == NormalCopula::GetClassName()) || hasIndependentCopula());
-  Bool hasNormalMarginals(true);
+  const Bool hasNormalCopula = (copulaKind == NormalCopula::GetClassName()) || hasIndependentCopula();
+  Bool hasNormalMarginals = true;
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
     const String currentMarginalKind(distributionCollection_[i].getImplementation()->getClassName());
@@ -984,7 +984,7 @@ Bool ComposedDistribution::isElliptical() const
 /* Check if the distribution is continuous */
 Bool ComposedDistribution::isContinuous() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isContinuous()) return false;
   return true;
 }
@@ -992,7 +992,7 @@ Bool ComposedDistribution::isContinuous() const
 /* Check if the distribution is discrete */
 Bool ComposedDistribution::isDiscrete() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
   return true;
 }
@@ -1000,7 +1000,7 @@ Bool ComposedDistribution::isDiscrete() const
 /* Tell if the distribution is integer valued */
 Bool ComposedDistribution::isIntegral() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i) if (!distributionCollection_[i].isIntegral()) return false;
   return true;
 }

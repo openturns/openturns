@@ -29,9 +29,9 @@ typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilis
 
 SymmetricTensor clean(SymmetricTensor in)
 {
-  UnsignedInteger rowDim(in.getNbRows());
-  UnsignedInteger colDim(in.getNbColumns());
-  UnsignedInteger sheetDim(in.getNbSheets());
+  UnsignedInteger rowDim = in.getNbRows();
+  UnsignedInteger colDim = in.getNbColumns();
+  UnsignedInteger sheetDim = in.getNbSheets();
   for(UnsignedInteger i = 0; i < rowDim; i++)
     for(UnsignedInteger j = 0; j < colDim; j++)
       for (UnsignedInteger k = 0; k < sheetDim; k++)
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     aCollection.add(Uniform(-1.0, 2.0));
     aCollection.add(Gamma(2.0, 2.0, 0.0));
 
-    UnsignedInteger dim(aCollection.getSize());
+    UnsignedInteger dim = aCollection.getSize();
 
     // Create a copula
     CorrelationMatrix RCopula(dim);
@@ -109,8 +109,8 @@ int main(int argc, char *argv[])
     fullprint << "parameters gradient at point=" << transform.parameterGradient(point) << std::endl;
     {
       // Validation using finite difference
-      NumericalScalar eps(1.0e-5);
-      NumericalScalar factor(1.0 / (2.0 * eps));
+      NumericalScalar eps = 1.0e-5;
+      NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
       NumericalPoint dTdp;
       {
@@ -174,8 +174,8 @@ int main(int argc, char *argv[])
     fullprint << "(inverse) parameters gradient at point=" << inverseTransform.parameterGradient(point) << std::endl;
     {
       // Validation using finite difference
-      NumericalScalar eps(1.0e-5);
-      NumericalScalar factor(1.0 / (2.0 * eps));
+      NumericalScalar eps = 1.0e-5;
+      NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
       NumericalPoint dTdp;
       {

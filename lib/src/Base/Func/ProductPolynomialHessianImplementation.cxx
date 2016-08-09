@@ -64,18 +64,18 @@ String ProductPolynomialHessianImplementation::__repr__() const
 /* Compute the hessian of a product of univariate polynomials */
 SymmetricTensor ProductPolynomialHessianImplementation::hessian (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inDimension(inP.getDimension());
+  const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
-  NumericalScalar productEvaluation(1.0);
+  NumericalScalar productEvaluation = 1.0;
   NumericalPoint evaluations(inDimension);
   NumericalPoint derivatives(inDimension);
   NumericalPoint secondDerivatives(inDimension);
   for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
-    const NumericalScalar x(inP[i]);
-    const NumericalScalar y(polynomials_[i](x));
-    const NumericalScalar dy(polynomials_[i].gradient(x));
-    const NumericalScalar d2y(polynomials_[i].hessian(x));
+    const NumericalScalar x = inP[i];
+    const NumericalScalar y = polynomials_[i](x);
+    const NumericalScalar dy = polynomials_[i].gradient(x);
+    const NumericalScalar d2y = polynomials_[i].hessian(x);
     evaluations[i] = y;
     derivatives[i] = dy;
     secondDerivatives[i] = d2y;
@@ -87,7 +87,7 @@ SymmetricTensor ProductPolynomialHessianImplementation::hessian (const Numerical
   {
     for (UnsignedInteger i = 0; i < inDimension; ++i)
     {
-      const NumericalScalar dyi(derivatives[i] * (productEvaluation / evaluations[i]));
+      const NumericalScalar dyi = derivatives[i] * (productEvaluation / evaluations[i]);
       for (UnsignedInteger j = 0; j < i; ++j)
       {
         hess(i, j, 0) = derivatives[j] * (dyi / evaluations[j]);

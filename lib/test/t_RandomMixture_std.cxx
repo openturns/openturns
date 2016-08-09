@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   try
   {
     // Create a collection of test-cases and the associated references
-    UnsignedInteger numberOfTests(3);
+    UnsignedInteger numberOfTests = 3;
     Collection< Collection< Distribution > > testCases(numberOfTests);
     Collection< Distribution > references(numberOfTests);
     testCases[0] = Collection<Distribution>(2);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
-      NumericalScalar eps(1e-5);
+      NumericalScalar eps = 1e-5;
       NumericalPoint DDF = distribution.computeDDF(point);
       fullprint << "ddf      =" << DDF << std::endl;
       fullprint << "ddf (ref)=" << distributionReference.computeDDF(point) << std::endl;
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
     fullprint << "distribution=" << distribution.__str__() << std::endl;
     for (UnsignedInteger i = 0; i < 30; ++i)
     {
-      NumericalScalar x(-12.0 + i);
+      NumericalScalar x = -12.0 + i;
       fullprint << "pdf(" << x << ")=" << distribution.computePDF(x) << std::endl;
     }
     Graph graph(distribution.drawPDF());
@@ -210,13 +210,13 @@ int main(int argc, char *argv[])
     distribution2D.setBlockMax(10);
 
     // Build a grid for validation
-    const NumericalScalar xMin(distribution2D.getRange().getLowerBound()[0]);
-    const NumericalScalar xMax(distribution2D.getRange().getUpperBound()[0]);
-    const NumericalScalar yMin(distribution2D.getRange().getLowerBound()[1]);
-    const NumericalScalar yMax(distribution2D.getRange().getUpperBound()[1]);
+    const NumericalScalar xMin = distribution2D.getRange().getLowerBound()[0];
+    const NumericalScalar xMax = distribution2D.getRange().getUpperBound()[0];
+    const NumericalScalar yMin = distribution2D.getRange().getLowerBound()[1];
+    const NumericalScalar yMax = distribution2D.getRange().getUpperBound()[1];
     // Number of points of discretization
-    const UnsignedInteger nx(4);
-    const UnsignedInteger ny(4);
+    const UnsignedInteger nx = 4;
+    const UnsignedInteger ny = 4;
     NumericalPoint boxParameters(2);
     boxParameters[0] = nx;
     boxParameters[1] = ny;
@@ -234,16 +234,16 @@ int main(int argc, char *argv[])
     grid += translateFactor;
     // Compute PDF
     // parameters for theoritical PDF, obtained thanks to Maple
-    const NumericalScalar factor(sqrt(2.0) / (20 * M_PI));
+    const NumericalScalar factor = sqrt(2.0) / (20 * M_PI);
     for (UnsignedInteger index = 0; index < grid.getSize(); ++ index)
     {
       const NumericalPoint point(grid[index]);
-      const NumericalScalar PDF(distribution2D.computePDF(point));
+      const NumericalScalar PDF = distribution2D.computePDF(point);
       // Very small values are not very accurate on x86, skip them
       if (PDF < 1.e-12) continue;
       fullprint << "pdf      =" << PDF << std::endl;
-      const NumericalScalar y(point[1]);
-      const NumericalScalar x(point[0]);
+      const NumericalScalar y = point[1];
+      const NumericalScalar x = point[0];
       fullprint << "pdf (ref)=" << factor * exp(-3.0 / 50.0 * y * y - 2.0 / 25 * x * y - 11.0 / 100 * x * x) << std::endl;
     }
     // 2D test, but too much CPU consuming
@@ -273,7 +273,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger index = 0; index < newGrid.getSize(); ++ index)
     {
       const NumericalPoint point(newGrid[index]);
-      const NumericalScalar PDF(dist_2D.computePDF(point));
+      const NumericalScalar PDF = dist_2D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }
     // 3D test
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
     // Total number of points (is (2+2)**3)
     // Test is CPU consuming
     // Number of points of discretization
-    const UnsignedInteger N(2);
+    const UnsignedInteger N = 2;
     NumericalPoint box3DParameters(3, N);
     Box box3D(box3DParameters);
     // Grid ==> (mu, mu+sigma)
@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger index = 0; index < grid3D.getSize(); ++ index)
     {
       const NumericalPoint point(grid3D[index]);
-      const NumericalScalar PDF(dist_3D.computePDF(point));
+      const NumericalScalar PDF = dist_3D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }
   }

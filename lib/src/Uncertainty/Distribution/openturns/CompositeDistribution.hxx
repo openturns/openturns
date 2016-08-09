@@ -38,7 +38,7 @@ class OT_API CompositeDistribution
   : public DistributionImplementation
 {
   CLASSNAME;
- public:
+public:
 
   /** Default constructor */
   CompositeDistribution();
@@ -55,9 +55,9 @@ class OT_API CompositeDistribution
 
   /** Comparison operator */
   Bool operator ==(const CompositeDistribution & other) const;
- protected:
+protected:
   Bool equals(const DistributionImplementation & other) const;
- public:
+public:
 
   /** String converter */
   String __repr__() const;
@@ -113,7 +113,7 @@ class OT_API CompositeDistribution
 
   /** Compute the shifted moments of the distribution */
   NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
-                                                const NumericalPoint & shift) const;
+      const NumericalPoint & shift) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -121,31 +121,31 @@ class OT_API CompositeDistribution
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
- protected:
+protected:
 
- private:
-  
+private:
+
   friend class CompositeDistributionShiftedMomentWrapper;
 
   // Structure used to compute shifted moments
   struct CompositeDistributionShiftedMomentWrapper
   {
     CompositeDistributionShiftedMomentWrapper(const UnsignedInteger n,
-					      const NumericalScalar shift,
-					      const CompositeDistribution * p_distribution):
+        const NumericalScalar shift,
+        const CompositeDistribution * p_distribution):
       n_(n),
       shift_(shift),
       p_distribution_(p_distribution) {};
-    
+
     NumericalPoint computeShiftedMomentKernel(const NumericalPoint & point) const
     {
-      const NumericalScalar y(p_distribution_->function_(point)[0]);
-      const NumericalScalar power(std::pow(y - shift_, static_cast<NumericalScalar>(n_)));
-      const NumericalScalar pdf(p_distribution_->antecedent_.computePDF(point));
-      const NumericalScalar value(power * pdf);
+      const NumericalScalar y = p_distribution_->function_(point)[0];
+      const NumericalScalar power = std::pow(y - shift_, static_cast<NumericalScalar>(n_));
+      const NumericalScalar pdf = p_distribution_->antecedent_.computePDF(point);
+      const NumericalScalar value = power * pdf;
       return NumericalPoint(1, value);
     };
-    
+
     const UnsignedInteger n_;
     const NumericalScalar shift_;
     const CompositeDistribution * p_distribution_;

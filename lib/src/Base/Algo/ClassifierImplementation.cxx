@@ -62,7 +62,7 @@ UnsignedInteger ClassifierImplementation::classify(const NumericalPoint & inP) c
 /* Classify a sample */
 Indices ClassifierImplementation::classify(const NumericalSample & inS) const
 {
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   Indices prediction(size);
   for ( UnsignedInteger i = 0; i < size; ++ i )
   {
@@ -80,7 +80,7 @@ NumericalScalar ClassifierImplementation::grade(const NumericalPoint & inP, cons
 /* Grade a sample */
 NumericalPoint ClassifierImplementation::grade(const NumericalSample & inS, const Indices & hClass) const
 {
-  const UnsignedInteger size(inS.getSize());
+  const UnsignedInteger size = inS.getSize();
   if ( size != hClass.getSize() )
     throw InvalidDimensionException(HERE) << "Input sample dimension (=" << size << ") and classes dimension (=" << hClass.getSize() << ") do not match.";
   NumericalPoint grades(size);

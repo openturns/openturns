@@ -112,7 +112,7 @@ void GeneralizedPareto::computeRange()
 /* Get one realization of the distribution */
 NumericalPoint GeneralizedPareto::getRealization() const
 {
-  const NumericalScalar u(RandomGenerator::Generate());
+  const NumericalScalar u = RandomGenerator::Generate();
   if (xi_ == 0.0) return NumericalPoint(1, -sigma_ * std::log(u));
   return NumericalPoint(1, sigma_ * expm1(-xi_ * std::log(u)) / xi_);
 }
@@ -122,7 +122,7 @@ NumericalPoint GeneralizedPareto::getRealization() const
 NumericalPoint GeneralizedPareto::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z(point[0] / sigma_);
+  const NumericalScalar z = point[0] / sigma_;
   NumericalPoint result(1);
   if (z < 0.0) return result;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8)
@@ -140,7 +140,7 @@ NumericalPoint GeneralizedPareto::computeDDF(const NumericalPoint & point) const
 NumericalScalar GeneralizedPareto::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z(point[0] / sigma_);
+  const NumericalScalar z = point[0] / sigma_;
   if (z < 0.0) return 0.0;
   if (std::abs(z) * std::sqrt(std::abs(xi_)) < 1.0e-8) return std::exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return 0.0;
@@ -150,7 +150,7 @@ NumericalScalar GeneralizedPareto::computePDF(const NumericalPoint & point) cons
 NumericalScalar GeneralizedPareto::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z(point[0] / sigma_);
+  const NumericalScalar z = point[0] / sigma_;
   if (z < 0.0) return -SpecFunc::MaxNumericalScalar;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - std::log(sigma_);
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return -SpecFunc::MaxNumericalScalar;
@@ -161,7 +161,7 @@ NumericalScalar GeneralizedPareto::computeLogPDF(const NumericalPoint & point) c
 NumericalScalar GeneralizedPareto::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z(point[0] / sigma_);
+  const NumericalScalar z = point[0] / sigma_;
   if (z <= 0.0) return 0.0;
   if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 1.0;
@@ -172,7 +172,7 @@ NumericalScalar GeneralizedPareto::computeCDF(const NumericalPoint & point) cons
 NumericalScalar GeneralizedPareto::computeComplementaryCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z(point[0] / sigma_);
+  const NumericalScalar z = point[0] / sigma_;
   if (z <= 0.0) return 1.0;
   if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 0.0;
@@ -197,7 +197,7 @@ NumericalPoint GeneralizedPareto::computePDFGradient(const NumericalPoint & poin
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   NumericalPoint result(2);
-  const NumericalScalar epsilon(1.0e-5);
+  const NumericalScalar epsilon = 1.0e-5;
   result[0] = (GeneralizedPareto(sigma_ + epsilon, xi_).computePDF(point) - GeneralizedPareto(sigma_ - epsilon, xi_).computePDF(point)) / (2.0 * epsilon);
   result[1] = (GeneralizedPareto(sigma_, xi_ + epsilon).computePDF(point) - GeneralizedPareto(sigma_, xi_ - epsilon).computePDF(point)) / (2.0 * epsilon);
   return result;
@@ -209,7 +209,7 @@ NumericalPoint GeneralizedPareto::computeCDFGradient(const NumericalPoint & poin
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint result(2);
-  const NumericalScalar epsilon(1.0e-5);
+  const NumericalScalar epsilon = 1.0e-5;
   result[0] = (GeneralizedPareto(sigma_ + epsilon, xi_).computeCDF(point) - GeneralizedPareto(sigma_ - epsilon, xi_).computeCDF(point)) / (2.0 * epsilon);
   result[1] = (GeneralizedPareto(sigma_, xi_ + epsilon).computeCDF(point) - GeneralizedPareto(sigma_, xi_ - epsilon).computeCDF(point)) / (2.0 * epsilon);
   return result;
@@ -290,7 +290,7 @@ NumericalPoint GeneralizedPareto::getParameter() const
 
 void GeneralizedPareto::setParameter(const NumericalPoint & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize(); 
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   *this = GeneralizedPareto(parameter[0], parameter[1]);
   setWeight(w);

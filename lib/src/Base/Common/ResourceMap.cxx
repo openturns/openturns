@@ -684,7 +684,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "SubsetSampling-DefaultTargetProbability", 0.1 );
   setAsNumericalScalar( "SubsetSampling-DefaultProposalRange", 2.0 );
   setAsNumericalScalar( "SubsetSampling-DefaultBetaMin", 2.0 );
-  
+
   // AdaptiveDirectionalSampling parameters //
   setAsUnsignedInteger( "AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension", 3 );
   setAsNumericalScalar( "AdaptiveDirectionalSampling-DefaultGamma", 0.5 );

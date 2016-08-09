@@ -109,7 +109,7 @@ String Pairs::draw() const
     oss << "size_ <- " << data_.getSize() << "\n";
     oss << DrawableImplementation::draw() << "\n";
     oss << "description=c(";
-    const UnsignedInteger length(data_.getDimension());
+    const UnsignedInteger length = data_.getDimension();
     for(UnsignedInteger i = 0; i < length - 1; ++i) oss << "\"" << labels_[i] << "\"" << ",";
     oss << "\"" << labels_[length - 1] << "\"" << ") \n";
     // DataFrame organisation
@@ -151,7 +151,7 @@ void Pairs::checkData(const NumericalSample & data) const
 /* Build default labels by taking the level values */
 void Pairs::buildDefaultLabels()
 {
-  const UnsignedInteger number(data_.getDimension());
+  const UnsignedInteger number = data_.getDimension();
   labels_ = Description(number);
   for (UnsignedInteger i = 0; i < number; ++i) labels_[i] = OSS() << "V" << i + 1;
 }

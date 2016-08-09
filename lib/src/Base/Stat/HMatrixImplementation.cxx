@@ -99,7 +99,7 @@ static void trampoline_hmat_prepare_block(int row_start, int row_count, int col_
     void *context, hmat_block_info_t * block_info)
 {
   HMatrixTensorRealAssemblyFunction* assembly_function = static_cast<HMatrixTensorRealAssemblyFunction*>(context);
-  const UnsignedInteger outputDimension(assembly_function->getDimension());
+  const UnsignedInteger outputDimension = assembly_function->getDimension();
 
   ParallelBlockData * blockData = new ParallelBlockData(outputDimension,
       row_start, row_count, col_start, col_count);
@@ -137,11 +137,11 @@ static void trampoline_compute(void* v_data,
                                void* block)
 {
   ParallelBlockData * blockData = static_cast<ParallelBlockData*>(v_data);
-  UnsignedInteger rowBlockBegin(blockData->rowOffset_);
-  UnsignedInteger colBlockBegin(blockData->colOffset_);
+  UnsignedInteger rowBlockBegin = blockData->rowOffset_;
+  UnsignedInteger colBlockBegin = blockData->colOffset_;
   std::vector<couple_data_t> & list_couples = blockData->list_couples_;
 
-  const UnsignedInteger outputDimension(blockData->outputDimension_);
+  const UnsignedInteger outputDimension = blockData->outputDimension_;
   int lastPoint1 = -1, lastPoint2 = -1;
   const int firstRowIndex(rowBlockBegin + row_start);
   const int firstColumnIndex(colBlockBegin + col_start);

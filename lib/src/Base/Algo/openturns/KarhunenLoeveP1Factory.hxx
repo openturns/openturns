@@ -43,7 +43,7 @@ class OT_API KarhunenLoeveP1Factory
 
   CLASSNAME;
 
- public:
+public:
 
   /** Default constructor without parameters */
   KarhunenLoeveP1Factory();
@@ -78,7 +78,7 @@ class OT_API KarhunenLoeveP1Factory
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
- private:
+private:
   /** Underlying mesh */
   Mesh mesh_;
 

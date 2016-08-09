@@ -132,16 +132,16 @@ NumericalScalar Student::computeDensityGenerator(const NumericalScalar betaSquar
 /* Compute the derivative of the density generator */
 NumericalScalar Student::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
 {
-  const NumericalScalar iNu(1.0 / nu_);
-  const UnsignedInteger dimension(getDimension());
+  const NumericalScalar iNu = 1.0 / nu_;
+  const UnsignedInteger dimension = getDimension();
   return -0.5 * std::exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 1.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu);
 }
 
 /* Compute the second derivative of the density generator */
 NumericalScalar Student::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
 {
-  const NumericalScalar iNu(1.0 / nu_);
-  const UnsignedInteger dimension(getDimension());
+  const NumericalScalar iNu = 1.0 / nu_;
+  const UnsignedInteger dimension = getDimension();
   return 0.25 * std::exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 2.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu) * (1.0 + (dimension + 2.0) * iNu);
 }
 
@@ -155,7 +155,7 @@ Student * Student::clone() const
 /* Get one realization of the distribution */
 NumericalPoint Student::getRealization() const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return NumericalPoint(1, mean_[0] + sigma_[0] * DistFunc::rStudent(nu_));
   NumericalPoint value(dimension);
   // First, a realization of independant standard normal coordinates
@@ -167,7 +167,7 @@ NumericalPoint Student::getRealization() const
 /* Get the CDF of the distribution */
 NumericalScalar Student::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
@@ -175,26 +175,26 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
-    const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" ));
+    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension())));
+    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeCDF(point);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
-  NumericalScalar value(0.0);
-  NumericalScalar variance(0.0);
-  NumericalScalar a99(DistFunc::qNormal(0.995));
-  UnsignedInteger outerMax(10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-  NumericalScalar precision(0.0);
+  NumericalScalar value = 0.0;
+  NumericalScalar variance = 0.0;
+  NumericalScalar a99 = DistFunc::qNormal(0.995);
+  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" );
+  NumericalScalar precision = 0.0;
   for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
-    NumericalScalar valueBlock(0.0);
-    NumericalScalar varianceBlock(0.0);
+    NumericalScalar valueBlock = 0.0;
+    NumericalScalar varianceBlock = 0.0;
     for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ); ++indexSample)
     {
-      Bool inside(true);
+      Bool inside = true;
       NumericalPoint realization(getRealization());
       // Check if the realization is in the integration domain
       for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -203,16 +203,16 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
         if (!inside) break;
       }
       // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      NumericalScalar ind(inside);
-      NumericalScalar norm(1.0 / (indexSample + 1.0));
+      NumericalScalar ind = inside;
+      NumericalScalar norm = 1.0 / (indexSample + 1.0);
       varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
       valueBlock = (valueBlock * indexSample + ind) * norm;
     }
-    NumericalScalar norm(1.0 / (indexOuter + 1.0));
+    NumericalScalar norm = 1.0 / (indexOuter + 1.0);
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
-    const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
+    const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
     if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
@@ -226,7 +226,7 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
 /* Compute the probability content of an interval */
 NumericalScalar Student::computeProbability(const Interval & interval) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   if (interval.isNumericallyEmpty()) return 0.0;
@@ -242,8 +242,8 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
-    const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" ));
+    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension())));
+    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeProbability(interval);
@@ -252,28 +252,28 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
   LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");
   RandomGeneratorState initialState(RandomGenerator::GetState());
   RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-  NumericalScalar value(0.0);
-  NumericalScalar variance(0.0);
-  const NumericalScalar a99(DistFunc::qNormal(0.995));
-  UnsignedInteger outerMax(10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-  NumericalScalar precision(0.0);
+  NumericalScalar value = 0.0;
+  NumericalScalar variance = 0.0;
+  const NumericalScalar a99 = DistFunc::qNormal(0.995);
+  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" );
+  NumericalScalar precision = 0.0;
   for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
-    NumericalScalar valueBlock(0.0);
-    NumericalScalar varianceBlock(0.0);
+    NumericalScalar valueBlock = 0.0;
+    NumericalScalar varianceBlock = 0.0;
     for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ); ++indexSample)
     {
       // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      NumericalScalar ind(interval.numericallyContains(getRealization()));
-      NumericalScalar norm(1.0 / (indexSample + 1.0));
+      NumericalScalar ind = interval.numericallyContains(getRealization());
+      NumericalScalar norm = 1.0 / (indexSample + 1.0);
       varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
       valueBlock = (valueBlock * indexSample + ind) * norm;
     }
-    NumericalScalar norm(1.0 / (indexOuter + 1.0));
+    NumericalScalar norm = 1.0 / (indexOuter + 1.0);
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
-    const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
+    const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
     if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
@@ -287,7 +287,7 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
 /* Get the PDFGradient of the distribution */
 NumericalPoint Student::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
 
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
@@ -295,7 +295,7 @@ NumericalPoint Student::computePDFGradient(const NumericalPoint & point) const
   if (dimension == 1)
   {
     const NumericalPoint ellipticalPDFGradient(EllipticalDistribution::computePDFGradient(point));
-    const NumericalScalar epsNu(1e-3);
+    const NumericalScalar epsNu = 1e-3;
     pdfGradient[0] = (Student(nu_ + epsNu, mean_, sigma_, R_).computePDF(point) - Student(nu_ - epsNu, mean_, sigma_, R_).computePDF(point)) / (2.0 * epsNu);
     for (UnsignedInteger i = 0; i < 2 * dimension; ++i) pdfGradient[i + 1] = ellipticalPDFGradient[i];
     return pdfGradient;
@@ -306,16 +306,16 @@ NumericalPoint Student::computePDFGradient(const NumericalPoint & point) const
 /* Get the CDFGradient of the distribution */
 NumericalPoint Student::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
 
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   if (dimension == 1)
   {
     NumericalPoint cdfGradient(3, 0.0);
-    const NumericalScalar x(point[0] - mean_[0]);
-    const NumericalScalar eps(std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
-    const NumericalScalar i2Eps(0.5 / eps);
+    const NumericalScalar x = point[0] - mean_[0];
+    const NumericalScalar eps = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0);
+    const NumericalScalar i2Eps = 0.5 / eps;
     cdfGradient[0] = (DistFunc::pStudent(nu_ + eps, x / sigma_[0]) - DistFunc::pStudent(nu_ - eps, x / sigma_[0])) * i2Eps;
     // Opposite sign for eps because x - eps = point[0] - (mu + eps)
     cdfGradient[1] = (DistFunc::pStudent(nu_, (x - eps) / sigma_[0]) - DistFunc::pStudent(nu_, (x + eps) / sigma_[0])) * i2Eps;
@@ -332,7 +332,7 @@ NumericalPoint Student::computeCDFGradient(const NumericalPoint & point) const
 NumericalScalar Student::computeConditionalPDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning
   if (conditioningDimension == 0) return Distribution(getMarginal(conditioningDimension)).computePDF(x);
@@ -349,7 +349,7 @@ NumericalScalar Student::computeConditionalPDF(const NumericalScalar x,
 NumericalScalar Student::computeConditionalCDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning
   if (conditioningDimension == 0) return Distribution(getMarginal(conditioningDimension)).computeCDF(x);
@@ -366,7 +366,7 @@ NumericalScalar Student::computeConditionalCDF(const NumericalScalar x,
 NumericalScalar Student::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
-  const UnsignedInteger conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no contitioning
@@ -398,19 +398,19 @@ Student::Implementation Student::getMarginal(const UnsignedInteger i) const
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Student::Implementation Student::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedInteger outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension = indices.getSize();
   CorrelationMatrix R(outputDimension);
   NumericalPoint sigma(outputDimension);
   NumericalPoint mean(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
-    const UnsignedInteger index_i(indices[i]);
+    const UnsignedInteger index_i = indices[i];
     sigma[i] = sigma_[index_i];
     mean[i] = mean_[index_i];
     for (UnsignedInteger j = 0; j <= i; ++j) R(i, j) = R_(index_i, indices[j]);
@@ -422,7 +422,7 @@ Student::Implementation Student::getMarginal(const Indices & indices) const
 NumericalScalar Student::computeRadialDistributionCDF(const NumericalScalar radius,
     const Bool tail) const
 {
-  const NumericalScalar r2(radius * radius);
+  const NumericalScalar r2 = radius * radius;
   return DistFunc::pBeta(0.5 * getDimension(), 0.5 * nu_, r2 / (nu_ + r2), tail);
 }
 
@@ -479,7 +479,7 @@ NumericalPoint Student::getStandardMoment(const UnsignedInteger n) const
 {
   if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
-  NumericalScalar moment(1.0);
+  NumericalScalar moment = 1.0;
   for (UnsignedInteger i = 0; i < n / 2; ++i) moment *= (nu_ * (2 * i + 1)) / (nu_ - 2 * (i + 1));
   // Alternate expression, not very useful as the raw moments overflow the double precision for n approximately equal to 300 (if nu is large enough), and for these values the loop is equivalent to the analytic expression both in terms of speed and
   // const NumericalScalar moment(exp(0.5 * n * std::log(nu_) + SpecFunc::LogGamma(0.5 * (n + 1.0)) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)) / sqrt(M_PI));
@@ -498,12 +498,12 @@ Student::NumericalPointWithDescriptionCollection Student::getParametersCollectio
   // First, get the parameters of the underlying elliptical distribution, it means mu, sigma and R
   NumericalPointWithDescriptionCollection parameters(EllipticalDistribution::getParametersCollection());
   // We get a collection of NumericalPointWithDescription, we append the value of nu at the beginning of each NumericalPointWithDescription
-  const UnsignedInteger size(parameters.getSize());
+  const UnsignedInteger size = parameters.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPointWithDescription ellipticalParameterI(parameters[i]);
     const Description ellipticalDescriptionI(ellipticalParameterI.getDescription());
-    const UnsignedInteger ellipticalParameterIDimension(ellipticalParameterI.getDimension());
+    const UnsignedInteger ellipticalParameterIDimension = ellipticalParameterI.getDimension();
     NumericalPointWithDescription parameterI(ellipticalParameterIDimension + 1);
     Description descriptionI(ellipticalParameterIDimension + 1);
     parameterI[0] = nu_;
@@ -521,13 +521,13 @@ Student::NumericalPointWithDescriptionCollection Student::getParametersCollectio
 
 void Student::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
-  const NumericalScalar w(getWeight());
-  const UnsignedInteger size(parametersCollection.getSize());
-  const UnsignedInteger dimension(size > 1 ? size - 1 : size);
+  const NumericalScalar w = getWeight();
+  const UnsignedInteger size = parametersCollection.getSize();
+  const UnsignedInteger dimension = size > 1 ? size - 1 : size;
   if (dimension == 1) *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
   else
   {
-    const NumericalScalar nu(parametersCollection[0][0]);
+    const NumericalScalar nu = parametersCollection[0][0];
     NumericalPoint mean(dimension);
     NumericalPoint sigma(dimension);
     CorrelationMatrix R(dimension);
@@ -536,7 +536,7 @@ void Student::setParametersCollection(const NumericalPointCollection & parameter
       mean[i] = parametersCollection[i][1];
       sigma[i] = parametersCollection[i][2];
     }
-    UnsignedInteger parameterIndex(1);
+    UnsignedInteger parameterIndex = 1;
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       for (UnsignedInteger j = 0; j < i; ++j)
@@ -607,7 +607,7 @@ Description Student::getParameterDescription() const
 void Student::setNu(const NumericalScalar nu)
 {
   if (nu <= 2.0) LOGWARN(OSS() << "Warning! As nu <= 2, the covariance of the distribution will not be defined");
-  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger dimension = getDimension();
   nu_ = nu;
   // Only set the covarianceScalingFactor if nu > 0, else its value is -1.0
   if (nu > 2.0) covarianceScalingFactor_ = nu_ / (nu_ - 2.0);

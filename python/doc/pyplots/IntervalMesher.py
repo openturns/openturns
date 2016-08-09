@@ -3,10 +3,10 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create the mesher
-mesher = ot.IntervalMesher([10]*2)
+mesher = ot.IntervalMesher([10] * 2)
 
 # Create a square
-square = ot.Interval([0.0]*2, [1.0]*2)
+square = ot.Interval([0.0] * 2, [1.0] * 2)
 
 # Mesh the square the usual way
 mesh1 = mesher.build(square)

@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     FarlieGumbelMorgensternCopula distribution(0.7);
-    UnsignedInteger size(1000);
+    UnsignedInteger size = 1000;
     NumericalSample sample(distribution.getSample(size));
     FarlieGumbelMorgensternCopulaFactory factory;
     CovarianceMatrix covariance;

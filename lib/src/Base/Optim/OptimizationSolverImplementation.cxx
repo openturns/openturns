@@ -205,13 +205,13 @@ void OptimizationSolverImplementation::run()
  */
 NumericalPoint OptimizationSolverImplementation::computeLagrangeMultipliers(const NumericalPoint & x) const
 {
-  const UnsignedInteger equalityDimension(problem_.getEqualityConstraint().getOutputDimension());
-  const UnsignedInteger inequalityDimension(problem_.getInequalityConstraint().getOutputDimension());
-  const UnsignedInteger boundDimension(problem_.getBounds().getDimension());
+  const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
+  const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
+  const UnsignedInteger boundDimension = problem_.getBounds().getDimension();
   // If no constraint
   if (equalityDimension + inequalityDimension + boundDimension == 0) return NumericalPoint(0);
   // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
-  const UnsignedInteger inputDimension(x.getDimension());
+  const UnsignedInteger inputDimension = x.getDimension();
   // Get the lhs as a NumericalPoint
   const NumericalPoint lhs(NumericalPoint(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
   // In order to ease the construction of the rhs matrix, we use its internal storage representation as a NumericalPoint in column-major storage.
@@ -221,42 +221,42 @@ NumericalPoint OptimizationSolverImplementation::computeLagrangeMultipliers(cons
     rhs.add(*problem_.getEqualityConstraint().gradient(x).getImplementation());
   // Second, the bounds
   if (boundDimension > 0)
+  {
+    // First the lower bounds
+    const NumericalPoint lowerBounds(problem_.getBounds().getLowerBound());
+    for (UnsignedInteger i = 0; i < boundDimension; ++i)
     {
-      // First the lower bounds
-      const NumericalPoint lowerBounds(problem_.getBounds().getLowerBound());
-      for (UnsignedInteger i = 0; i < boundDimension; ++i)
-	{
-	  NumericalPoint boundGradient(inputDimension);
-	  // Check if the current lower bound is active up to the tolerance
-	  if (std::abs(x[i] - lowerBounds[i]) <= getMaximumConstraintError())
-	    boundGradient[i] = 1.0;
-	  rhs.add(boundGradient);
-	} // Lower bounds
-      // Second the upper bounds
-      const NumericalPoint upperBounds(problem_.getBounds().getUpperBound());
-      for (UnsignedInteger i = 0; i < boundDimension; ++i)
-	{
-	  NumericalPoint boundGradient(inputDimension);
-	  // Check if the current lower bound is active up to the tolerance
-	  if (std::abs(upperBounds[i] - x[i]) <= getMaximumConstraintError())
-	    boundGradient[i] = -1.0;
-	  rhs.add(boundGradient);
-	} // Upper bounds
-    } // boundDimension > 0
+      NumericalPoint boundGradient(inputDimension);
+      // Check if the current lower bound is active up to the tolerance
+      if (std::abs(x[i] - lowerBounds[i]) <= getMaximumConstraintError())
+        boundGradient[i] = 1.0;
+      rhs.add(boundGradient);
+    } // Lower bounds
+    // Second the upper bounds
+    const NumericalPoint upperBounds(problem_.getBounds().getUpperBound());
+    for (UnsignedInteger i = 0; i < boundDimension; ++i)
+    {
+      NumericalPoint boundGradient(inputDimension);
+      // Check if the current lower bound is active up to the tolerance
+      if (std::abs(upperBounds[i] - x[i]) <= getMaximumConstraintError())
+        boundGradient[i] = -1.0;
+      rhs.add(boundGradient);
+    } // Upper bounds
+  } // boundDimension > 0
   // Third, the inequality constraints
   if (inequalityDimension > 0)
+  {
+    NumericalPoint inequality(problem_.getInequalityConstraint()(x));
+    Matrix gradientInequality(problem_.getInequalityConstraint().gradient(x));
+    for (UnsignedInteger i = 0; i < inequalityDimension; ++i)
     {
-      NumericalPoint inequality(problem_.getInequalityConstraint()(x));
-      Matrix gradientInequality(problem_.getInequalityConstraint().gradient(x));
-      for (UnsignedInteger i = 0; i < inequalityDimension; ++i)
-	{
-	  // Check if the current inequality constraint is active up to the tolerance
-	  if (std::abs(inequality[i]) <= getMaximumConstraintError())
-	    rhs.add(*gradientInequality.getColumn(i).getImplementation());
-	  else
-	    rhs.add(NumericalPoint(inputDimension));
-	}      
-    } // Inequality constraints
+      // Check if the current inequality constraint is active up to the tolerance
+      if (std::abs(inequality[i]) <= getMaximumConstraintError())
+        rhs.add(*gradientInequality.getColumn(i).getImplementation());
+      else
+        rhs.add(NumericalPoint(inputDimension));
+    }
+  } // Inequality constraints
   return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);
 }
 

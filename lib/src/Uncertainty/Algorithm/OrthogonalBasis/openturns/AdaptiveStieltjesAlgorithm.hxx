@@ -74,7 +74,7 @@ private:
   struct DotProductWrapper
   {
     DotProductWrapper(const OrthogonalUniVariatePolynomial & qN,
-		      const Distribution & weight):
+                      const Distribution & weight):
       qN_(qN), weight_(weight)
     {
       // Nothing to do
@@ -83,9 +83,9 @@ private:
     // This method allows to compute <qN, qN>
     NumericalPoint kernelSym(const NumericalPoint & point) const
     {
-      const NumericalScalar pdf(weight_.computePDF(point));
-      const NumericalScalar x(point[0]);
-      const NumericalScalar qNX(qN_(x));
+      const NumericalScalar pdf = weight_.computePDF(point);
+      const NumericalScalar x = point[0];
+      const NumericalScalar qNX = qN_(x);
       NumericalPoint result(1);
       result[0] = qNX * qNX * pdf;
       return result;
@@ -94,10 +94,10 @@ private:
     // This method allows to compute <qN, qN> and <x.qN, qN>
     NumericalPoint kernelGen(const NumericalPoint & point) const
     {
-      const NumericalScalar pdf(weight_.computePDF(point));
-      const NumericalScalar x(point[0]);
-      const NumericalScalar qNX(qN_(x));
-      const NumericalScalar xQNX(x * qNX);
+      const NumericalScalar pdf = weight_.computePDF(point);
+      const NumericalScalar x = point[0];
+      const NumericalScalar qNX = qN_(x);
+      const NumericalScalar xQNX = x * qNX;
       NumericalPoint result(2);
       result[0] = qNX * qNX * pdf;
       result[1] = xQNX * qNX * pdf;

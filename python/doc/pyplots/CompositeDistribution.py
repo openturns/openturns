@@ -15,10 +15,9 @@ graphCDF.setXTitle('x')
 graphCDF.setLegendPosition('')
 
 
-
-
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle("CompositeDistribution: f(x)=x+sin(x); L=Normal(0.0, 10.0): pdf and cdf")
+plt.suptitle(
+    "CompositeDistribution: f(x)=x+sin(x); L=Normal(0.0, 10.0): pdf and cdf")
 pdf_axis = fig.add_subplot(121)
 cdf_axis = fig.add_subplot(122)
 pdf_axis.set_xlim(auto=True)

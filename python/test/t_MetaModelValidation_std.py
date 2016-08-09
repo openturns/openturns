@@ -81,7 +81,8 @@ try:
     # KrigingAlgorithm
     basis = ot.QuadraticBasisFactory(dimension).build()
     # model already computed, separatly
-    covarianceModel = ot.GeneralizedExponential([1.933,1.18,1.644], [10.85] , 2.0)
+    covarianceModel = ot.GeneralizedExponential(
+        [1.933, 1.18, 1.644], [10.85], 2.0)
     algo2 = ot.KrigingAlgorithm(
         inputSample, outputSample, basis, covarianceModel, True, True)
     algo2.run()

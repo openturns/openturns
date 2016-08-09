@@ -70,8 +70,8 @@ ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure)
   // Range = [a, +inf[    -> standardized measure has range [0, +inf[,    Laguerre factory
   // Range = ]-inf, b]    -> standardized measure has range ]-inf, 0],    no good factory, default to the Hermite factory
   // Range = ]-inf, +inf[ -> standardized measure has range ]-inf, +inf[, Hermite factory
-  const Bool finiteLowerBound(measure.getRange().getFiniteLowerBound()[0]);
-  const Bool finiteUpperBound(measure.getRange().getFiniteUpperBound()[0]);
+  const Bool finiteLowerBound = measure.getRange().getFiniteLowerBound()[0];
+  const Bool finiteUpperBound = measure.getRange().getFiniteUpperBound()[0];
   // Left-bounded measures
   if (finiteLowerBound)
   {
@@ -129,9 +129,9 @@ ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getRecurrenceCoefficients(c
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar alpha0(getMonicRecurrenceCoefficients(0)[0]);
-    const NumericalScalar beta1(getMonicRecurrenceCoefficients(1)[1]);
-    const NumericalScalar factor(1.0 / sqrt(beta1));
+    const NumericalScalar alpha0 = getMonicRecurrenceCoefficients(0)[0];
+    const NumericalScalar beta1 = getMonicRecurrenceCoefficients(1)[1];
+    const NumericalScalar factor = 1.0 / sqrt(beta1);
     recurrenceCoefficients[0] = factor;
     recurrenceCoefficients[1] = -alpha0 * factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
@@ -139,10 +139,10 @@ ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getRecurrenceCoefficients(c
   }
   // Compute the coefficients of the orthonormal polynomials involved in the relation
   const Coefficients alphaBetaN(getMonicRecurrenceCoefficients(n));
-  const NumericalScalar alphaN(alphaBetaN[0]);
-  const NumericalScalar betaN(alphaBetaN[1]);
-  const NumericalScalar betaNP1(getMonicRecurrenceCoefficients(n + 1)[1]);
-  const NumericalScalar factor(1.0 / sqrt(betaNP1));
+  const NumericalScalar alphaN = alphaBetaN[0];
+  const NumericalScalar betaN = alphaBetaN[1];
+  const NumericalScalar betaNP1 = getMonicRecurrenceCoefficients(n + 1)[1];
+  const NumericalScalar factor = 1.0 / sqrt(betaNP1);
   recurrenceCoefficients[0] = factor;
   recurrenceCoefficients[1] = -alphaN * factor;
   recurrenceCoefficients[2] = -sqrt(betaN) * factor;
@@ -154,7 +154,7 @@ NumericalScalar ChebychevAlgorithm::getStandardMoment(const UnsignedInteger orde
 {
   // We know that the raw moments will be accessed in a particular pattern: the moments not already
   // computed will always be accessed in a successive increasing order
-  const UnsignedInteger maxOrder(standardMoments_.getSize());
+  const UnsignedInteger maxOrder = standardMoments_.getSize();
   if (order > maxOrder) throw InvalidArgumentException(HERE) << "Error: cannot access to the raw moments in arbitrary order.";
   if (order == maxOrder)
     standardMoments_.add(measure_.getStandardMoment(order)[0]);
@@ -167,7 +167,7 @@ NumericalScalar ChebychevAlgorithm::getModifiedMoment(const UnsignedInteger orde
 {
   // We know that the modified moments will be accessed in a particular pattern: the moments not already
   // computed will always be accessed in a successive increasing order
-  const UnsignedInteger maxOrder(modifiedMoments_.getSize());
+  const UnsignedInteger maxOrder = modifiedMoments_.getSize();
   if (order > maxOrder) throw InvalidArgumentException(HERE) << "Error: cannot access to the modified moments in arbitrary order.";
   if (order == maxOrder)
   {
@@ -188,13 +188,13 @@ NumericalScalar ChebychevAlgorithm::getModifiedMoment(const UnsignedInteger orde
     // Coefficients of the order-th reference polynomial
     const Coefficients referenceCoefficients(referenceFamily_.build(order).getCoefficients());
     // Should deal with cancellation here...
-    NumericalScalar modifiedMoment(referenceCoefficients[0] * getStandardMoment(0));
+    NumericalScalar modifiedMoment = referenceCoefficients[0] * getStandardMoment(0);
     // Use of Kahan Summation Formula for a stable evaluation of the modified moments
-    NumericalScalar c(0.0);
+    NumericalScalar c = 0.0;
     for (UnsignedInteger i = 1; i <= order; ++i)
     {
-      const NumericalScalar y(referenceCoefficients[i] * getStandardMoment(i) - c);
-      const NumericalScalar t(modifiedMoment + y);
+      const NumericalScalar y = referenceCoefficients[i] * getStandardMoment(i) - c;
+      const NumericalScalar t = modifiedMoment + y;
       c = (t - modifiedMoment) - y;
       modifiedMoment = t;
     }
@@ -218,11 +218,11 @@ NumericalScalar ChebychevAlgorithm::getMixedMoment(const int j,
   // Orthogonality
   if (j > static_cast<int>(k)) return 0.0;
   // General case
-  const UnsignedInteger key(k + (j + k) * (j + k + 1) / 2);
+  const UnsignedInteger key = k + (j + k) * (j + k + 1) / 2;
   if (mixedMoments_.find(key) != mixedMoments_.end()) return mixedMoments_[key];
   const Coefficients alphaBeta(getMonicRecurrenceCoefficients(j - 1));
   const Coefficients aB(getReferenceMonicRecurrenceCoefficients(k));
-  const NumericalScalar sigmaJK(getMixedMoment(j - 1, k + 1) - (alphaBeta[0] - aB[0]) * getMixedMoment(j - 1, k) - alphaBeta[1] * getMixedMoment(j - 2, k) + aB[1] * getMixedMoment(j - 1, k - 1));
+  const NumericalScalar sigmaJK = getMixedMoment(j - 1, k + 1) - (alphaBeta[0] - aB[0]) * getMixedMoment(j - 1, k) - alphaBeta[1] * getMixedMoment(j - 2, k) + aB[1] * getMixedMoment(j - 1, k - 1);
   // Check for extrem numerical instability: E[Pn * Qn] <= 0 for j=k=n instead of E[Pn * Qn] = E[Pn^2] > 0
   if ((j == static_cast<int>(k)) && (sigmaJK <= 0.0)) throw InternalException(HERE) << "Error: numerical instability in the computation of the mixed moment (" << j << ", " << k << "), value=" << sigmaJK << ". Try to change the reference univariate polynomial family, the current one is " << referenceFamily_;
   mixedMoments_[key] = sigmaJK;
@@ -233,26 +233,26 @@ NumericalScalar ChebychevAlgorithm::getMixedMoment(const int j,
     Pk+1(x) = (x - alphak) * Pk(x) - betak * Pk-1(x) */
 ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getMonicRecurrenceCoefficients(const UnsignedInteger k) const
 {
-  const UnsignedInteger size(monicRecurrenceCoefficients_.getSize());
+  const UnsignedInteger size = monicRecurrenceCoefficients_.getSize();
   if (k < size) return monicRecurrenceCoefficients_[k];
   if (k > size) throw InvalidArgumentException(HERE) << "Error: cannot access to the monic recurrence coefficients in arbitrary order.";
   Coefficients alphaBeta(2, 0.0);
   // Initialization value
   if (k == 0)
   {
-    const NumericalScalar a0(getReferenceMonicRecurrenceCoefficients(0)[0]);
-    const NumericalScalar m0(getModifiedMoment(0));
-    const NumericalScalar m1(getModifiedMoment(1));
+    const NumericalScalar a0 = getReferenceMonicRecurrenceCoefficients(0)[0];
+    const NumericalScalar m0 = getModifiedMoment(0);
+    const NumericalScalar m1 = getModifiedMoment(1);
     alphaBeta[0] = a0 + m1 / m0;
   }
   else
   {
     // General case
-    const NumericalScalar sigmaKK(getMixedMoment(k, k));
-    const NumericalScalar sigmaKM1KM1(getMixedMoment(k - 1, k - 1));
-    const NumericalScalar sigmaKM1K(getMixedMoment(k - 1, k));
-    const NumericalScalar sigmaKKP1(getMixedMoment(k, k + 1));
-    const NumericalScalar aK(getReferenceMonicRecurrenceCoefficients(k)[0]);
+    const NumericalScalar sigmaKK = getMixedMoment(k, k);
+    const NumericalScalar sigmaKM1KM1 = getMixedMoment(k - 1, k - 1);
+    const NumericalScalar sigmaKM1K = getMixedMoment(k - 1, k);
+    const NumericalScalar sigmaKKP1 = getMixedMoment(k, k + 1);
+    const NumericalScalar aK = getReferenceMonicRecurrenceCoefficients(k)[0];
     alphaBeta[0] = aK + sigmaKKP1 / sigmaKK - sigmaKM1K / sigmaKM1KM1;
     alphaBeta[1] = sigmaKK / sigmaKM1KM1;
   }
@@ -264,7 +264,7 @@ ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getMonicRecurrenceCoefficie
     Qk+1(x) = (x - ak) * Qk(x) - bk * Qk-1(x) */
 ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getReferenceMonicRecurrenceCoefficients(const UnsignedInteger k) const
 {
-  const UnsignedInteger size(referenceMonicRecurrenceCoefficients_.getSize());
+  const UnsignedInteger size = referenceMonicRecurrenceCoefficients_.getSize();
   if (k < size) return referenceMonicRecurrenceCoefficients_[k];
   if (k > size) throw InvalidArgumentException(HERE) << "Error: cannot access to the reference monic recurrence coefficients in arbitrary order.";
   Coefficients aB(2, 0.0);
@@ -272,9 +272,9 @@ ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getReferenceMonicRecurrence
   {
     // Get the recurrence coefficients from the reference family and convert them to the associated monic family, else they are null
     const Coefficients normalizedCoefficients(referenceFamily_.getRecurrenceCoefficients(k));
-    const NumericalScalar aK(normalizedCoefficients[0]);
-    const NumericalScalar bK(normalizedCoefficients[1]);
-    const NumericalScalar cK(normalizedCoefficients[2]);
+    const NumericalScalar aK = normalizedCoefficients[0];
+    const NumericalScalar bK = normalizedCoefficients[1];
+    const NumericalScalar cK = normalizedCoefficients[2];
 
     aB[0] = -bK / aK;
     aB[1] = pow(cK / aK, 2);
