@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
   UnsignedInteger samplingSize = 100;
 
   // build basis
-  UnsignedInteger basisSize = 917;
+  UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(35);
 
   // run algorithm
   Collection<FittingAlgorithm> listFittingAlgorithm;

@@ -50,10 +50,10 @@ try:
         [LegendreFactory()] * dimension, enumerateFunction)
 
     # design experiment
-    samplingSize = 100
+    samplingSize = 75
 
     # build basis
-    basisSize = 917
+    basisSize = enumerateFunction.getStrataCumulatedCardinal(30)
 
     listFittingAlgorithm = list()
     listFittingAlgorithm.append(KFold())
