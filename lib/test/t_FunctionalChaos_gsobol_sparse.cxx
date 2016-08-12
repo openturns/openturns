@@ -80,10 +80,10 @@ int main(int argc, char *argv[])
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
   // design experiment
-  UnsignedInteger samplingSize = 100;
+  UnsignedInteger samplingSize = 75;
 
   // build basis
-  UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(35);
+  UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(30);
 
   // run algorithm
   Collection<FittingAlgorithm> listFittingAlgorithm;

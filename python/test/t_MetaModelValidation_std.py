@@ -44,7 +44,7 @@ try:
         polynomialCollection, enumerateFunction)
 
     # Create the adaptive strategy
-    degree = 10
+    degree = 8
     basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
     adaptiveStrategy = ot.FixedStrategy(productBasis, basisSize)
 

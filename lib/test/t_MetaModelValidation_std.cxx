@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Create the adaptive strategy
-    UnsignedInteger degree = 10;
+    UnsignedInteger degree = 8;
     UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(degree);
     AdaptiveStrategy adaptiveStrategy = FixedStrategy(productBasis, basisSize);
 
