@@ -88,17 +88,20 @@ void SubsetSampling::run()
   probabilityEstimatePerStep_.clear();
   eventInputSample_.clear();
   eventOutputSample_.clear();
-
   dimension_ = getEvent().getAntecedent()->getDimension();
+
+  const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
+  const UnsignedInteger blockSize = getBlockSize();
+  const UnsignedInteger N = maximumOuterSampling * blockSize;
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsNumericalScalar("Simulation-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
-  if (targetProbability_ * getMaximumOuterSampling() < 1)
-    throw InvalidArgumentException(HERE) << "maximumOuterSampling (" << getMaximumOuterSampling() << ") should be >= " << ceil(1.0 / targetProbability_);
+  if (targetProbability_ * N < 1.0)
+    throw InvalidArgumentException(HERE) << "The number of samples per step (" << N << ") should be >= " << ceil(1.0 / targetProbability_);
 
-  if (getMaximumOuterSampling() * getBlockSize() <= 100)
-    Log::Warn(OSS() << "The number of samples per step is very low : " << getMaximumOuterSampling()*getBlockSize() << ".");
+  if (N <= 100)
+    Log::Warn(OSS() << "The number of samples per step is very low : " << N << ".");
 
   // perform isoprobabilistic transformation (the study is done in the standard space):
   standardEvent_ = StandardEvent(getEvent());
@@ -108,9 +111,6 @@ void SubsetSampling::run()
   NumericalScalar coefficientOfVariationSquare = 0.0;
 
   // allocate input/output samples
-  const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
-  const UnsignedInteger blockSize = getBlockSize();
-  const UnsignedInteger N = maximumOuterSampling * blockSize;
   currentPointSample_ = NumericalSample(N, dimension_);
   currentLevelSample_ = NumericalSample(N, getEvent().getFunction().getOutputDimension());
 
