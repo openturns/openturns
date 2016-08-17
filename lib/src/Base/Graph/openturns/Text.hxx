@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cloud class for cloud plots
+ *  @brief Text class to add text on graphs
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,24 +18,25 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_CLOUD_HXX
-#define OPENTURNS_CLOUD_HXX
+#ifndef OPENTURNS_TEXT_HXX
+#define OPENTURNS_TEXT_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DrawableImplementation.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Cloud
+ * @class Text
  *
- * The class describing a cloud plot
+ * This class adds text on a graph
  * Instance of Drawable
  */
 
-class OT_API Cloud : public DrawableImplementation
+class OT_API Text : public DrawableImplementation
 {
   CLASSNAME;
 public:
@@ -43,28 +44,30 @@ public:
   typedef Collection<NumericalComplex>               NumericalComplexCollection;
 
   /** Default constructor */
-  explicit Cloud(const NumericalSample & data,
-                 const String & legend = "");
+  Text(const NumericalSample & data,
+       const Description & texts,
+       const UnsignedInteger & textPosition = 3,
+       const String & legend = "");
 
   /** Constructor from complex numbers */
-  explicit Cloud(const NumericalComplexCollection & data,
-                 const String & legend = "");
+  Text(const NumericalComplexCollection & data,
+       const Description & texts,
+       const UnsignedInteger & textPosition = 3,
+       const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Cloud(const NumericalSample & dataX,
-        const NumericalSample & dataY,
-        const String & legend = "");
+  Text(const NumericalSample & dataX,
+       const NumericalSample & dataY,
+       const Description & texts,
+       const UnsignedInteger & textPosition = 3,
+       const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Cloud(const NumericalPoint & dataX,
-        const NumericalPoint & dataY,
-        const String & legend = "");
-
-  /** Constructor with parameters */
-  Cloud(const NumericalSample & data,
-        const String & color,
-        const String & pointStyle,
-        const String & legend = "");
+  Text(const NumericalPoint & dataX,
+       const NumericalPoint & dataY,
+       const Description & texts,
+       const UnsignedInteger & textPosition = 3,
+       const String & legend = "");
 
   /** String converter */
   String __repr__() const;
@@ -73,8 +76,15 @@ public:
   String draw() const;
 
   /** Clone method */
-  virtual Cloud * clone() const;
+  virtual Text * clone() const;
 
+  /** Accessors to text */
+  Description getTextAnnotations() const;
+  void setTextAnnotations(const Description & textAnnotations);
+
+  /** Accessors to text position */
+  Indices getTextPositions() const;
+  void setTextPositions(const Indices & textPositions);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -86,12 +96,18 @@ protected:
   /** Check for data validity */
   virtual void checkData(const NumericalSample & data) const;
 
+  /** Labels */
+  Description textAnnotations_;
+
+  /** Text position  */
+  Indices textPositions_;
+
 private:
 
-  Cloud() {};
-  friend class Factory<Cloud>;
+  Text() {};
+  friend class Factory<Text>;
 
-}; /* class Cloud */
+}; /* class Text */
 
 END_NAMESPACE_OPENTURNS
-#endif /* OPENTURNS_CLOUD_HXX */
+#endif /* OPENTURNS_TEXT_HXX */

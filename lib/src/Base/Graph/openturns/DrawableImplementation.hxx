@@ -131,6 +131,14 @@ public:
   virtual Bool getDrawLabels() const;
   virtual void setDrawLabels(const Bool & drawLabels);
 
+  /** Accessor for textAnnotations */
+  virtual Description getTextAnnotations() const;
+  virtual void setTextAnnotations(const Description & textAnnotations);
+
+  /** Accessor for textPositions */
+  virtual Indices getTextPositions() const;
+  virtual void setTextPositions(const Indices & textPositions);
+
   /** Bounding box accessor */
   virtual BoundingBox getBoundingBox() const;
 

@@ -234,6 +234,7 @@ ot_add_python_module(graph graph_module.i
                       Polygon.i Polygon_doc.i.in
                       PolygonArray.i PolygonArray_doc.i.in
                       Staircase.i Staircase_doc.i.in
+                      Text.i Text_doc.i.in
                       BaseGraphTemplateDefs.i
                    )
 

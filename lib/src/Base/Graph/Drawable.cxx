@@ -265,6 +265,30 @@ void Drawable::setDrawLabels(const Bool & drawLabels)
   getImplementation()->setDrawLabels(drawLabels);
 }
 
+/* Accessor for textAnnotations */
+Description Drawable::getTextAnnotations() const
+{
+  return getImplementation()->getTextAnnotations();
+}
+
+void Drawable::setTextAnnotations(const Description & textAnnotations)
+{
+  copyOnWrite();
+  getImplementation()->setTextAnnotations(textAnnotations);
+}
+
+/* Accessor for textPositions */
+Indices Drawable::getTextPositions() const
+{
+  return getImplementation()->getTextPositions();
+}
+
+void Drawable::setTextPositions(const Indices & textPositions)
+{
+  copyOnWrite();
+  getImplementation()->setTextPositions(textPositions);
+}
+
 /* Accessor for data */
 NumericalSample Drawable::getData() const
 {

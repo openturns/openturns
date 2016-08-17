@@ -119,6 +119,14 @@ public:
   Bool getDrawLabels() const;
   void setDrawLabels(const Bool & drawLabels);
 
+  /** Accessor for textAnnotations */
+  Description getTextAnnotations() const;
+  void setTextAnnotations(const Description & textAnnotations);
+
+  /** Accessor for textPositions */
+  Indices getTextPositions() const;
+  void setTextPositions(const Indices & textPositions);
+
   /** Accessor for data */
   NumericalSample getData() const;
 

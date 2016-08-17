@@ -1386,6 +1386,28 @@ void DrawableImplementation::setDrawLabels(const Bool & drawLabels)
   throw NotDefinedException(HERE) << "Error: no flag drawLabels in " << getClassName();
 }
 
+/* Accessor for textAnnotations */
+Description DrawableImplementation::getTextAnnotations() const
+{
+  throw NotDefinedException(HERE) << "Error: no flag textAnnotations in " << getClassName();
+}
+
+void DrawableImplementation::setTextAnnotations(const Description & textAnnotations)
+{
+  throw NotDefinedException(HERE) << "Error: no flag textAnnotations in " << getClassName();
+}
+
+/* Accessor for textPositions */
+Indices DrawableImplementation::getTextPositions() const
+{
+  throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
+}
+
+void DrawableImplementation::setTextPositions(const Indices & textPositions)
+{
+  throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
+}
+
 /* R command generating method, for plotting through R */
 String DrawableImplementation::draw() const
 {

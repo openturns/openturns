@@ -235,6 +235,7 @@ ot_pyinstallcheck_test (Pie_std)
 ot_pyinstallcheck_test (Polygon_std)
 ot_pyinstallcheck_test (PolygonArray_std)
 ot_pyinstallcheck_test (Staircase_std)
+ot_pyinstallcheck_test (Text_std)
 endif ()
 
 ## Diff

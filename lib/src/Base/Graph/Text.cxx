@@ -1,0 +1,227 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief Text class for plot labels
+ *
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#include "openturns/Text.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(Text);
+
+static const Factory<Text> Factory_Text;
+
+/* Default constructor */
+Text::Text(const NumericalSample & data,
+           const Description & textAnnotations,
+           const UnsignedInteger & textPosition,
+           const String & legend)
+  : DrawableImplementation(data, legend)
+{
+  // Check data validity
+  setData(data);
+  setTextAnnotations(textAnnotations);
+  if (textPosition == 0 || textPosition > 4)
+  {
+    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+  }
+  textPositions_ = Indices(data_.getSize(), textPosition);
+}
+
+/* Constructor from complex numbers */
+Text::Text(const NumericalComplexCollection & data,
+           const Description & textAnnotations,
+           const UnsignedInteger & textPosition,
+           const String & legend)
+  : DrawableImplementation(NumericalSample(0, 2), legend)
+{
+  // Convert the complex numbers into a NumericalSample
+  const UnsignedInteger size = data.getSize();
+  NumericalSample sample(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    sample[i][0] = data[i].real();
+    sample[i][1] = data[i].imag();
+  }
+  // Check data validity
+  setData(sample);
+  setTextAnnotations(textAnnotations);
+  if (textPosition == 0 || textPosition > 4)
+  {
+    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+  }
+  textPositions_ = Indices(data_.getSize(), textPosition);
+}
+
+/* Contructor from 2 data sets */
+Text::Text(const NumericalSample & dataX,
+           const NumericalSample & dataY,
+           const Description & textAnnotations,
+           const UnsignedInteger & textPosition,
+           const String & legend)
+  : DrawableImplementation(NumericalSample(0, 2), legend)
+{
+  const UnsignedInteger size = dataX.getSize();
+  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Text based on two numerical samples with different size.";
+  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: cannot build a Text based on two numerical samples of dimension greater than 1.";
+  NumericalSample dataFull(dataX);
+  dataFull.stack(dataY);
+  // Check data validity
+  setData(dataFull);
+  setTextAnnotations(textAnnotations);
+  if (textPosition == 0 || textPosition > 4)
+  {
+    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+  }
+  textPositions_ = Indices(data_.getSize(), textPosition);
+}
+
+Text::Text(const NumericalPoint & dataX,
+           const NumericalPoint & dataY,
+           const Description & textAnnotations,
+           const UnsignedInteger & textPosition,
+           const String & legend)
+  : DrawableImplementation(NumericalSample(0, 2), legend)
+{
+  const UnsignedInteger size = dataX.getDimension();
+  if (dataY.getDimension() != size) throw InvalidDimensionException(HERE) << "Error: cannot build a Text based on two numerical points with different dimension.";
+  NumericalSample dataFull(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    dataFull[i][0] = dataX[i];
+    dataFull[i][1] = dataY[i];
+  }
+  // Check data validity
+  setData(dataFull);
+  setTextAnnotations(textAnnotations);
+  if (textPosition == 0 || textPosition > 4)
+  {
+    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+  }
+  textPositions_ = Indices(data_.getSize(), textPosition);
+}
+
+/* String converter */
+String Text::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << Text::GetClassName()
+      << " name=" << getName()
+      << " derived from " << DrawableImplementation::__repr__();
+  return oss;
+}
+
+/* Accessor for textAnnotations */
+Description Text::getTextAnnotations() const
+{
+  return textAnnotations_;
+}
+
+void Text::setTextAnnotations(const Description & textAnnotations)
+{
+  if (textAnnotations.getSize() != data_.getSize())
+  {
+    throw InvalidDimensionException(HERE) << "Expected array of size " << data_.getSize() << " got " << textAnnotations.getSize();
+  }
+  textAnnotations_ = textAnnotations;
+}
+
+/* Accessors to text position */
+Indices Text::getTextPositions() const
+{
+  return textPositions_;
+}
+
+void Text::setTextPositions(const Indices & textPositions)
+{
+  if (textPositions.getSize() != data_.getSize())
+  {
+    throw InvalidDimensionException(HERE) << "Expected array of size " << data_.getSize() << " got " << textPositions.getSize();
+  }
+  for (UnsignedInteger i = 0; i < textPositions.getSize(); ++i)
+  {
+    if (textPositions[i] == 0 || textPositions[i] > 4)
+    {
+      throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPositions[i] << " at index " << i;
+    }
+  }
+  textPositions_ = textPositions;
+}
+
+/* Draw method */
+String Text::draw() const
+{
+  dataFileName_ = "";
+  OSS oss;
+  if (textAnnotations_.getSize() == 0)
+    return oss;
+
+ oss << "labels <- rep(\"\", " << textAnnotations_.getSize() << ")\n";
+ oss << "position <- rep(3, " << textAnnotations_.getSize() << ")\n";
+ // We assume that only few labels are printed, otherwise graph is ugly
+ for (UnsignedInteger i = 0; i < textAnnotations_.getSize(); ++i)
+ {
+   if (textAnnotations_[i] != "")
+   {
+     oss << "labels[" << (i+1) << "] <- \"" << textAnnotations_[i] << "\"\n";
+     oss << "position[" << (i+1) << "] <- \"" << textPositions_[i] << "\"\n";
+   }
+ }
+ oss << "indices <- which(labels != \"\")\n";
+ oss << "text(dataOT[indices,1], dataOT[indices,2], labels[indices], cex = 0.75, xpd = TRUE, pos = position[indices]"
+     << ", col=\"" << color_ << "\""
+     << ", offset = 0.25)\n";
+
+  return oss;
+}
+
+/* Clone method */
+Text * Text::clone() const
+{
+  return new Text(*this);
+}
+
+/* Check validity of data */
+void Text::checkData(const NumericalSample & data) const
+{
+  if (data.getDimension() != 2)
+  {
+    throw InvalidDimensionException(HERE) << "Expected sample of dimension 2: got " << data.getDimension();
+  }
+}
+
+/* Method save() stores the object through the StorageManager */
+void Text::save(Advocate & adv) const
+{
+  DrawableImplementation::save(adv);
+  adv.saveAttribute( "textAnnotations_", textAnnotations_ );
+  adv.saveAttribute( "textPositions_", textPositions_ );
+}
+
+/* Method load() reloads the object from the StorageManager */
+void Text::load(Advocate & adv)
+{
+  DrawableImplementation::load(adv);
+  adv.loadAttribute( "textAnnotations_", textAnnotations_ );
+  adv.loadAttribute( "textPositions_", textPositions_ );
+}
+
+
+
+END_NAMESPACE_OPENTURNS

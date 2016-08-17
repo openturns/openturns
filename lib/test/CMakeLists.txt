@@ -301,6 +301,7 @@ ot_check_test (Pie_std)
 ot_check_test (Polygon_std)
 ot_check_test (PolygonArray_std)
 ot_check_test (Staircase_std)
+ot_check_test (Text_std)
 endif ()
 
 # Algo
