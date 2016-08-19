@@ -108,7 +108,12 @@ fail:
 }
 %enddef
 
-
+%define OTCollectionOperatorsHelper(collectionType, elementType)
+OT_COLLECTION_SETITEM(collectionType, elementType)
+OT_COLLECTION_GETITEM(collectionType, elementType)
+Bool __eq__(const collectionType & other) { return (*self) == other; }
+Bool __ne__(const collectionType & other) { return (*self) != other; }
+%enddef
 
 } // %extend
 

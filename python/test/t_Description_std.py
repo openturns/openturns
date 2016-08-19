@@ -73,3 +73,10 @@ print('desc6 = ', desc6)
 desc7 = Description(['forunicode', 'n2', 'n3'])
 desc7[1] = 'r2'
 print('desc7 = ', desc7)
+
+# comparison
+a = Description(['n2', 'n3'])
+print(a == a)
+print(a == Description(['n2', 'NN']))
+print(a != a)
+print(a != Description(['n2', 'NN']))
