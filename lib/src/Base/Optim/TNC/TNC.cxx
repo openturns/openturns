@@ -104,7 +104,7 @@ void TNC::checkProblem(const OptimizationProblem & problem) const
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {
-  const UnsignedInteger dimension = getStartingPoint().getDimension();
+  const UnsignedInteger dimension = getProblem().getDimension();
   Interval boundConstraints(getProblem().getBounds());
   if (!getProblem().hasBounds())
   {
@@ -112,6 +112,8 @@ void TNC::run()
   }
 
   NumericalPoint x(getStartingPoint());
+  if (x.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
   NumericalPoint low(boundConstraints.getLowerBound());
   NumericalPoint up(boundConstraints.getUpperBound());

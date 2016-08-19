@@ -71,13 +71,13 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
  */
 void Cobyla::run()
 {
-  const UnsignedInteger dimension = getStartingPoint().getDimension();
+  const UnsignedInteger dimension = getProblem().getDimension();
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
 
   NumericalPoint x(getStartingPoint());
   if (x.getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
+    throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
   if (getProblem().hasBounds())
   {
