@@ -35,7 +35,6 @@ if (MINGW)
 endif ()
 
 set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc"
-                        "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}"
                         ${ADAPT_CHECK_TESTS_EXPONENT} 
    )
 
