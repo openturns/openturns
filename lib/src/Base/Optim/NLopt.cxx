@@ -196,7 +196,7 @@ void NLopt::run()
   const UnsignedInteger dimension = getProblem().getDimension();
   NumericalPoint startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Invalid starting point dimension, expected " << dimension;
+    throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << startingPoint.getDimension() << "), expected " << dimension;
 
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(algoName_));
 
