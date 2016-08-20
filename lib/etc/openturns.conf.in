@@ -139,6 +139,9 @@
   <!-- OT::KarhunenLoeveP1Factory parameters -->
   <KarhunenLoeveP1Factory-RegularizationFactor value="0.0" />
 
+  <!-- OT::KarhunenLoeveP1Algorithm parameters -->
+  <KarhunenLoeveP1Algorithm-RegularizationFactor value="0.0" />
+
   <!-- OT::AdaptiveStieltjesAlgorithm parameters -->
   <AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots value="64"      />
   <AdaptiveStieltjesAlgorithm-MaximumError                    value="1.0e-12" />

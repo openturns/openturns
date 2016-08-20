@@ -270,6 +270,7 @@ ot_pyinstallcheck_test (IteratedQuadrature_std)
 ot_pyinstallcheck_test (KarhunenLoeveP1Factory_std)
 ot_pyinstallcheck_test (DesignProxy_std)
 ot_pyinstallcheck_test (LeastSquaresMethod_std)
+ot_pyinstallcheck_test (KarhunenLoeveP1Algorithm_std)
 
 ## Model
 ot_pyinstallcheck_test (Event_std)
@@ -295,6 +296,7 @@ ot_pyinstallcheck_test (FunctionalBasisProcess_std)
 ot_pyinstallcheck_test (WhittleFactory_std)
 ot_pyinstallcheck_test (ConditionedNormalProcess_std)
 ot_pyinstallcheck_test (KarhunenLoeveQuadratureFactory_std)
+ot_pyinstallcheck_test (KarhunenLoeveQuadratureAlgorithm_std)
 
 ## Transformation
 ot_pyinstallcheck_test (MarginalTransformationEvaluation_std)

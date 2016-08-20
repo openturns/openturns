@@ -1,0 +1,109 @@
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm
+"Computation of Karhunen-Loeve decomposition using Quadrature approximation.
+
+Available constructors:
+    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, experiment, basis, basisSize, mustScale, threshold*)
+
+    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, marginalDegree, threshold*)
+
+Parameters
+----------
+domain : :class:`~openturns.Domain`
+    The domain on which the covariance model and the Karhunen-Loeve eigenfunctions (modes) are discretized.
+covariance : :class:`~openturns.CovarianceModel`
+    The covariance function to decompose.
+experiment : :class:`~openturns.WeightedExperiment`
+    The points and weights used in the quadrature approximation.
+basis : :class:`~openturns.Basis`
+    The basis in wich the eigenfunctions are projected.
+basisSize : integer
+    The number of elements of the basis considered.
+marginalDegree : integer
+    The maximum degree to take into account in the tensorized Legendre basis.
+mustScale : boolean
+    Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
+threshold : float
+    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue. Default value is 0.
+
+Notes
+-----
+We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
+
+The class :class:`~openturns.KarhunenLoeveQuadratureAlgorithm` enables to determine the solutions of the second kind Fredholm equation associated to  :math:`C`, ie to find the :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` such that: 
+
+.. math::
+    :label: fredholmQuadrature
+
+    \int_{\cD} \mat{C}(\vect{s},\vect{t}) \vect{\varphi}_k(\vect{t})\,  d\vect{t} = \lambda_k  \vect{\varphi}_k(\vect{s}) \quad \forall \vect{s} \in \cD
+
+
+where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the   associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They constitue an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+
+OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
+
+The Karhunen-Loeve Quadrature approximation consists in replacing the integral of :eq:`fredholmQuadrature` by a quadrature approximation: if :math:`(\omega_\ell, \vect{\xi}_\ell)_{1 \leq \ell \leq L}` is the weighted experiment (see :class:`~openturns.WeightedExperiment`) associated to the measure :math:`\mu`, then for all functions measurable wrt :math:`\mu`, we have:
+
+.. math::
+
+    \int_{\Rset^n} f(\vect{x}) \mu(\vect{x})\, d\vect{x} \simeq \sum_{\ell=1}^{\ell=L} \omega_\ell f(\vect{\xi}_\ell)
+
+If we note :math:`\eta_{\ell}=\omega_{\ell}\dfrac{1_{\cD}(\vect{\xi}_{\ell})}{\mu(\vect{\xi}_{\ell})}`, we build a more general quadrature approximation :math:`(\eta_\ell, \xi_\ell)_{1 \leq l \leq L}` such that:
+
+.. math::
+
+    \int_{\cD} f(\vect{t})  \, d\vect{t} \simeq \sum_{\ell=1}^L \eta_\ell f(\vect{\xi}_\ell)
+
+where only the points :math:`\vect{\xi}_\ell \in \cD` are considered. 
+
+The second constructor is a short-hand to the first one, where *basis* is the tensorized Legendre basis, see :class:`~openturns.OrthogonalProductPolynomialFactory` and :class:`~openturns.LegendreFactory`, *experiment* is a tensorized Gauss-Legendre quadrature, see :class:`~openturns.GaussProductExperiment`, *basisSize* is equal to *marginalDegree* to the power the dimension of *domain* and *mustScale* is set to *True*.
+
+Examples
+--------
+Discretize the domain :math:`\cD` and create a covariance model:
+
+>>> import openturns as ot
+>>> domain = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+
+Give the basis used to decompose the eigenfunctions: 
+
+here, the 10 first Legendre polynomials family:
+
+>>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
+>>> basisSize = 10
+
+Create the weighted experiment of the quadrature approximation: 
+
+here, a Monte Carlo experiment from the measure orthogonal wrt the Legendre polynomials family:
+
+>>> experiment = ot.MonteCarloExperiment(basis.getMeasure(), 1000)
+
+Create the Karhunen-Loeve Quadrature algorithm:
+
+>>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, experiment, basis, basisSize, True, threshold)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::run
+"Computation of the eigenvalues and eigenfunctions values at the quadrature points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> domain = ot.Interval([-1.0]*2, [1.0]*2)
+>>> threshold = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
+>>> experiment = ot.MonteCarloExperiment(basis.getMeasure(), 1000)
+>>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, experiment, basis, 10, True, threshold)
+>>> algorithm.run()
+>>> result = algorithm.getResult()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getDomain
+"Accessor to the domain.
+
+Returns
+-------
+domain : :class:`~openturns.Domain`
+The domain  :math:`\cD_N` that discretizes the domin :math:`\cD`."
