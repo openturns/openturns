@@ -25,13 +25,23 @@
 #include "openturns/OSS.hxx"
 #include "openturns/ResourceMap.hxx" // For ResourceMap
 
+// include OTConfig that defines OPENTURNS_HAVE_XXX
+#include "openturns/OTconfig.hxx"
+
 #ifdef OPENTURNS_HAVE_UNISTD_H
 # include <unistd.h>  // for rmdir, unlink
 #endif
 
 #include <cstdlib>   // for system(3)
-#include <sys/types.h>            // for stat
-#include <sys/stat.h>             // for stat
+
+#ifdef OPENTURNS_HAVE_SYS_TYPES_H
+# include <sys/types.h>            // for stat
+#endif
+
+#ifdef OPENTURNS_HAVE_SYS_STAT_H
+# include <sys/stat.h>             // for stat
+#endif
+
 #include <fcntl.h>
 #ifndef WIN32
 #include <ftw.h>       // for stat(2)
