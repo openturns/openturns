@@ -31,10 +31,22 @@
 #define mkdir(p)  _mkdir(p)
 #endif /* _MSC_VER */
 #endif /* WIN32 */
-#include <sys/types.h>            // for stat
-#include <sys/stat.h>             // for stat
-#include <unistd.h>               // for stat
+
+// Include OTConfig that defines OPENTURNS_HAVE_XXX
+// It also defines INSTALL_PATH, SYSCONFIG_PATH, DATA_PATH, OPENTURNS_HOME_ENV_VAR
+
 #include "openturns/OTconfig.hxx"
+
+#ifdef OPENTURNS_HAVE_SYS_TYPES_H
+# include <sys/types.h>            // for stat
+#endif
+#ifdef OPENTURNS_HAVE_SYS_STAT_H
+# include <sys/stat.h>             // for stat
+#endif
+#ifdef OPENTURNS_HAVE_UNISTD_H
+# include <unistd.h>  // for stat
+#endif
+
 #include "openturns/OTthread.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Path.hxx"
