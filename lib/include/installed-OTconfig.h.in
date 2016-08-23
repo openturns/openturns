@@ -21,9 +21,6 @@
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
 
-/* Define to 1 if you have the <malloc.h> header file. */
-#cmakedefine OPENTURNS_HAVE_MALLOC_H
-
 /* Define to 1 if you have the <pthread.h> header file. */
 #cmakedefine OPENTURNS_HAVE_PTHREAD_H
 
