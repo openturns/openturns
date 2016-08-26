@@ -24,7 +24,12 @@ distributionCollection = [ot.Laplace(1.0, 0.0),
                           ot.Triangular(-1.0, 0.3, 1.0),
                           ot.Uniform(-1.0, 1.0),
                           ot.Uniform(-1.0, 3.0),
-                          ot.Weibull(1.0, 3.0)]
+                          ot.Weibull(1.0, 3.0),
+                          ot.Beta(1.0, 3.0, -1.0, 1.0),
+                          ot.Beta(0.5, 1.0, -1.0, 1.0),
+                          ot.Beta(0.5, 1.0, -2.0, 3.0),
+                          ot.Gamma(1.0, 3.0),
+                          ot.Arcsine()]
 for n in range(len(distributionCollection)):
     distribution = distributionCollection[n]
     name = distribution.getClassName()
@@ -49,4 +54,4 @@ for n in range(len(distributionCollection)):
 
             M[i, j] = ot.GaussKronrod().integrate(
                 ot.PythonFunction(1, 1, kernel), distribution.getRange())[0]
-    print("M=\n", M.clean(1.0e-8))
+    print("M=\n", M.clean(1.0e-6))

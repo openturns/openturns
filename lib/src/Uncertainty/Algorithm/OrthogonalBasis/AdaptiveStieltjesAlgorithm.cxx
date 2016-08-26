@@ -26,6 +26,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Histogram.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/OrthogonalUniVariatePolynomial.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
@@ -117,7 +118,6 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   monicCoefficients[0] = 1.0;
   // Build the monic orthogonal polynomial of degree cacheSize
   const OrthogonalUniVariatePolynomial qN(monicRecurrenceCoefficients_);
-  const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsNumericalScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
   const DotProductWrapper dotProductWrapper(qN, measure_);
   if (isElliptical_)
   {
@@ -133,7 +133,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
     else
     {
       const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
-      monicSquaredNorms_.add(algo.integrate(dotProductKernel, measure_.getRange())[0]);
+      monicSquaredNorms_.add(computeDotProduct(dotProductKernel, n)[0]);
       monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
     } // n != 1
   } // isElliptical_
@@ -142,7 +142,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
     // \beta_n = Rn / Rn-1 with Rn-1 = \beta_{n-1}Rn-2 = \beta_{n-1}\beta_{n-2}Rn-3 = ... = \prod_{k=0}^{n-1}\beta_k
     // Compute Rn and <x.Qn, Qn>
     const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
-    NumericalPoint dotProduct(algo.integrate(dotProductKernel, measure_.getRange()));
+    const NumericalPoint dotProduct(computeDotProduct(dotProductKernel, n));
     monicSquaredNorms_.add(dotProduct[0]);
     monicCoefficients[1] = -dotProduct[1] / monicSquaredNorms_[n + 1];
     monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
@@ -150,6 +150,36 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   monicRecurrenceCoefficients_.add(monicCoefficients);
   // Now n == cacheSize - 2
   return getRecurrenceCoefficients(n);
+}
+
+/* Compute dot products taking into account the singularities of the weights */
+NumericalPoint AdaptiveStieltjesAlgorithm::computeDotProduct(const NumericalMathFunction & kernel,
+							     const UnsignedInteger n) const
+{
+  if (measure_.isContinuous())
+    {
+      const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsNumericalScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
+      NumericalPoint bounds(1, measure_.getRange().getLowerBound()[0]);
+      bounds.add(measure_.getSingularities());
+      bounds.add(measure_.getRange().getUpperBound()[0]);
+      NumericalScalar a = bounds[0];
+      NumericalScalar b = bounds[1];
+      NumericalPoint dotProduct(algo.integrate(kernel, Interval(a, b)));
+      for (UnsignedInteger i = 2; i < bounds.getSize(); ++i)
+	{
+	  a = b;
+	  b = bounds[i];
+	  const NumericalPoint value(algo.integrate(kernel, Interval(a, b)));
+	  dotProduct += value;
+	}
+      return dotProduct;
+    }
+  if (measure_.isDiscrete())
+    {
+      const NumericalSample nodes(measure_.getSupport());
+      return kernel(nodes).computeMean() * nodes.getSize();
+    }
+  throw NotYetImplementedException(HERE) << "In AdaptiveStieltjesAlgorithm::computeDotProduct";
 }
 
 /* String converter */

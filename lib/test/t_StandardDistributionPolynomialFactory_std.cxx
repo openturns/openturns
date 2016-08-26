@@ -51,6 +51,11 @@ int main(int argc, char *argv[])
     distributionCollection.add(Uniform(-1.0, 1.0));
     distributionCollection.add(Uniform(-1.0, 3.0));
     distributionCollection.add(Weibull(1.0, 3.0));
+    distributionCollection.add(Beta(1.0, 3.0, -1.0, 1.0));
+    distributionCollection.add(Beta(0.5, 1.0, -1.0, 1.0));
+    distributionCollection.add(Beta(0.5, 1.0, -2.0, 3.0));
+    distributionCollection.add(Gamma(1.0, 3.0));
+    distributionCollection.add(Arcsine());
     for (UnsignedInteger n = 0; n < distributionCollection.getSize(); ++n)
     {
       const Distribution distribution(distributionCollection[n]);
