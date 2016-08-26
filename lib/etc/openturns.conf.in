@@ -414,7 +414,7 @@
 
   <!-- OT::SubsetSampling parameters -->
   <SubsetSampling-DefaultMaximumOuterSampling value="10000" />
-  <SubsetSampling-DefaultTargetProbability value="0.1"      />
+  <SubsetSampling-DefaultConditionalProbability value="0.1"      />
   <SubsetSampling-DefaultProposalRange value="2.0"          />
   <SubsetSampling-DefaultBetaMin value="2.0"                />
 

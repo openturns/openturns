@@ -77,7 +77,7 @@ coef : `~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::setTargetProbability
+%feature("docstring") OT::SubsetSampling::setConditionalProbability
 "Conditional probability accessor.
 
 Value of :math:`P(F_i|F_{i-1})` between successive steps.
@@ -89,7 +89,7 @@ prob : float
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::getTargetProbability
+%feature("docstring") OT::SubsetSampling::getConditionalProbability
 "Conditional probability accessor.
 
 Value of :math:`P(F_i|F_{i-1})` between successive steps.
