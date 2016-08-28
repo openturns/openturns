@@ -456,13 +456,13 @@ NumericalPoint Histogram::getSingularities() const
 {
   const UnsignedInteger size = width_.getSize();
   // Here we know that size > 0
-  NumericalScalar x(first_ + width_[0]);
+  NumericalScalar x = first_ + width_[0];
   NumericalPoint singularities(1, x);
   for (UnsignedInteger i = 1; i < size - 1; ++i)
-    {
-      x += width_[i];
-      singularities.add(x);
-    }
+  {
+    x += width_[i];
+    singularities.add(x);
+  }
   return singularities;
 }
 
@@ -615,3 +615,4 @@ void Histogram::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

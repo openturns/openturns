@@ -41,6 +41,7 @@ Orthogonal univariate polynomial families
     :template: OrthogonalUniVariateFunctionFamily.rst_t
 
     HermiteFactory
+    HistogramPolynomialFactory
     JacobiFactory
     LaguerreFactory
     LegendreFactory

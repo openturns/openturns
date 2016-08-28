@@ -95,7 +95,7 @@ measure : :class:`~openturns.Distribution`
 Notes
 -----
 Two polynomials P and Q are orthogonal with respect to the **probability
-measure** :math:`w(x) \di{x}` if and only if their scalar product:
+measure** :math:`w(x) \di{x}` if and only if their dot product:
 
 .. math::
 
@@ -166,7 +166,7 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i > 1
+    P_{-1}=0, P_0=1, P_{n + 1} = (a_n x + b_n) P_n + c_n P_{n - 1}, \quad n > 1
 
 Returns
 -------
