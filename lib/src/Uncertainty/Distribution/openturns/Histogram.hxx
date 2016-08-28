@@ -106,7 +106,9 @@ public:
   Implementation getStandardRepresentative() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  NumericalPoint getParameter() const;
+  void setParameter(const NumericalPoint & parameter);
+  Description getParameterDescription() const;
 
   /* Interface specific to Histogram */
 

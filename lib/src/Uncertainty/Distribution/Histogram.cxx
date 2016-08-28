@@ -39,8 +39,8 @@ static const Factory<Histogram> Factory_Histogram;
 Histogram::Histogram()
   : ContinuousDistribution()
   , first_(0.0)
-  , width_(0)
-  , height_(0)
+  , width_(1)
+  , height_(1, 1.0)
   , cumulatedWidth_(0)
 {
   setName( "Histogram" );
@@ -323,18 +323,47 @@ Histogram::Implementation Histogram::getStandardRepresentative() const
 }
 
 /* Parameters value and description accessor */
-Histogram::NumericalPointWithDescriptionCollection Histogram::getParametersCollection() const
+
+/* Parameters value accessor */
+NumericalPoint Histogram::getParameter() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
   const UnsignedInteger size = width_.getSize();
-  NumericalPointWithDescription point(1 + 2 * size);
+  NumericalPoint parameter(1 + 2 * size);
+  parameter[0] = first_;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    parameter[2 * i + 1] = width_[i];
+    parameter[2 * i + 2] = height_[i];
+  }
+  return parameter;
+}
+
+void Histogram::setParameter(const NumericalPoint & parameter)
+{
+  if (parameter.getSize() % 2 == 0) throw InvalidArgumentException(HERE) << "Error: expected an odd number of values, got " << parameter.getSize();
+  const NumericalScalar w = getWeight();
+  const UnsignedInteger size = (parameter.getSize() - 1) / 2;
+  first_ = parameter[0];
+  width_ = NumericalPoint(size);
+  height_ = NumericalPoint(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    width_[i] = parameter[2 * i + 1];
+    height_[i] = parameter[2 * i + 2];
+  }
+
+  *this = Histogram(first_, width_, height_);
+  setWeight(w);
+}
+
+/* Parameters description accessor */
+Description Histogram::getParameterDescription() const
+{
+  const UnsignedInteger size = width_.getSize();
   Description description(1 + 2 * size);
-  point[0] = first_;
   description[0] = "first";
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    point[2 * i + 1] = width_[i];
-    point[2 * i + 2] = height_[i];
     {
       OSS oss;
       oss << "width_" << i;
@@ -346,13 +375,8 @@ Histogram::NumericalPointWithDescriptionCollection Histogram::getParametersColle
       description[2 * i + 2] = oss;
     }
   }
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
+  return description;
 }
-
-
 
 
 /* Interface specific to Histogram */
