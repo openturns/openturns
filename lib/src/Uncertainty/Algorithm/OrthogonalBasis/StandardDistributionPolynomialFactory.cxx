@@ -30,6 +30,7 @@
 #include "openturns/KrawtchoukFactory.hxx"
 #include "openturns/LaguerreFactory.hxx"
 #include "openturns/LegendreFactory.hxx"
+#include "openturns/HistogramPolynomialFactory.hxx"
 #include "openturns/MeixnerFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -110,6 +111,23 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
     referenceFamily = HermiteFactory();
     hasClassMatch = true;
   }
+  // HistogramPolynomial factory
+  if (measureType == "Histogram")
+  {
+    const NumericalPoint parameter(measure_.getParameter());
+    const UnsignedInteger size = (parameter.getSize() - 1) / 2;
+    const NumericalScalar first = parameter[0];
+    NumericalPoint width(size);
+    NumericalPoint height(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      {
+	width[i] = parameter[2 * i + 1];
+	height[i] = parameter[2 * i + 2];
+      }
+
+    referenceFamily = HistogramPolynomialFactory(first, width, height);
+    hasClassMatch = true;
+  }
   // Chebychev factory
   if (measureType == "Arcsine")
   {
@@ -152,6 +170,17 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
     const NumericalPoint parameter(measure_.getParameter());
     referenceFamily = LaguerreFactory(parameter[0] - 1.0);
     hasClassMatch = true;
+  }
+  if (measureType == "Exponential")
+  {
+    const NumericalPoint parameter(measure_.getParameter());
+    if (parameter[0] == 1.0)
+      {
+	specificFamily_ = LaguerreFactory(0.0);
+	hasSpecificFamily_ = true;
+	// To avoid distribution comparison at the end of the method
+	hasClassMatch = false;
+      }
   }
   // Charlier factory
   if (measureType == "Poisson")

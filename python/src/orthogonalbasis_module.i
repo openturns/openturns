@@ -36,6 +36,7 @@
 %include KrawtchoukFactory.i
 %include LaguerreFactory.i
 %include LegendreFactory.i
+%include HistogramPolynomialFactory.i
 %include MeixnerFactory.i
 %include OrthogonalUniVariatePolynomialFamily.i
 %include OrthonormalizationAlgorithmImplementation.i

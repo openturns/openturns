@@ -29,6 +29,7 @@
 #include "openturns/CharlierFactory.hxx"
 #include "openturns/ChebychevFactory.hxx"
 #include "openturns/HermiteFactory.hxx"
+#include "openturns/HistogramPolynomialFactory.hxx"
 #include "openturns/JacobiFactory.hxx"
 #include "openturns/KrawtchoukFactory.hxx"
 #include "openturns/LaguerreFactory.hxx"

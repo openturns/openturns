@@ -1,0 +1,42 @@
+%feature("docstring") OT::HistogramPolynomialFactory
+"Histogram specific orthonormal univariate polynomial family.
+
+For the :class:`~openturns.Histogram` distribution.
+
+Available constructor:
+    HistogramPolynomialFactory(*first, width, height*)
+
+Parameters
+----------
+first : float
+    Lower bound.
+width : positive sequence of float
+    :math:`\ell_i` is the width of the class :math:`i`.
+height : positive sequence of float
+    :math:`h_i` is the frequency of the class :math:`i`.
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+
+The recurrence coefficients for the HistogramPolynomial polynomials are computed from the recurrence of the associated monic polynomials (see :class:`~openturns.AdaptiveStieltjesAlgorithm`) but with an exact evaluation of the dot-products.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.HistogramPolynomialFactory(1.0, [1.0, 2.0], [4.0, 2.0])
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+-2.56273 + 1.13899 * X
+7.80593 - 7.42767 * X + 1.5268 * X^2
+"
