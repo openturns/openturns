@@ -56,10 +56,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime generate_docstrings)
   swig_link_libraries (${MODULENAME} OT)
 
-  if (LINK_PYTHON_LIBRARY)
-    swig_link_libraries (${MODULENAME} ${PYTHON_LIBRARIES})
-  endif ()
-
   set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES NO_SONAME ON)
 
   if (USE_COTIRE)

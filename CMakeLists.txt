@@ -21,14 +21,13 @@ option (USE_LIBXML2                  "Use LibXml2 for XML support"              
 option (USE_R                        "Use R for graph output support"                                        ON)
 option (USE_OPENMP                   "Use OpenMP for multithreading"                                         OFF)
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
-option (USE_SPHINX                    "Use sphinx for documentation"                                          ON)
-option (USE_DOXYGEN                   "Use Doxygen for API documentation"                                     ON)
+option (USE_SPHINX                   "Use sphinx for documentation"                                          ON)
+option (USE_DOXYGEN                  "Use Doxygen for API documentation"                                     ON)
 option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
-option (LINK_PYTHON_LIBRARY          "Link python modules against python library"                            ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
 if (MSVC)
