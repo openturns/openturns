@@ -2,9 +2,13 @@ language: cpp
 
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
     - cmake
-    - gfortran
+    - gcc-4.8
+    - g++-4.8
+    - gfortran-4.8
     - bison
     - flex
     - libmuparser-dev
@@ -13,15 +17,12 @@ addons:
     - libboost-math-dev
     - libtbb-dev
     - r-base-core
-    - yodl
-    - swig
     - python-dev
     - python-scipy
     - python-matplotlib
     - texlive-latex-recommended
     - texlive-fonts-recommended
     - texlive-latex-extra
-    - dvipng
     - libkpathsea-dev
     - libpotrace-dev
     - python-lxml
@@ -29,6 +30,7 @@ addons:
     - asciidoc
 
 install:
+  - export CXX="g++-4.8" CC="gcc-4.8"
 # dvisvgm
   - git clone https://github.com/mgieseki/dvisvgm.git
   - pushd dvisvgm
