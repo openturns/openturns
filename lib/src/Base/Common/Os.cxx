@@ -274,45 +274,32 @@ int Os::DeleteDirectory(const String & path)
   }
 #endif
 
-  struct stat file_stat;
-  int rc = 0;
-  rc = stat( directory, &file_stat );
-  if (rc == 0)
-  {
-    if (! S_ISDIR(file_stat.st_mode))
-    {
-      // Not a directory
-      return 1;
-    }
-  }
-
 #ifndef WIN32
 
-  rc = nftw( directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH );
-  if ( rc != 0 ) return 1;
+  int rc = nftw(directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH);
+  if (rc != 0) return 1;
 
 #else /* WIN32 */
 
-  size_t timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
-  size_t countdown = timeout;
-  OT::String rmdirCmd = OT::String("rmdir /Q /S \"") + directory + "\"";
-  int directoryExists;
+  UnsignedInteger timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
+  UnsignedInteger countdown = timeout;
+  String rmdirCmd("rmdir /Q /S \"" + path + "\"");
+  Bool directoryExists = true;
 
   do
   {
-    rc = system( (rmdirCmd + " > NUL 2>&1").c_str() );
+    int rc = system((rmdirCmd + " > NUL 2>&1").c_str());
 
     // check if directory still there (rmdir dos command always return 0)
-    struct stat dir_stat;
-    directoryExists = stat( directory, &dir_stat );
-    if( directoryExists == 0 )
+    directoryExists = IsDirectory(path);
+    if (directoryExists)
     {
-      if  ( countdown <= 0 ) return 1;
-      --countdown;
+      if (countdown == 0) return 1;
+      -- countdown;
     }
-    Sleep( 1000 );
+    Sleep(1000);
   }
-  while( directoryExists == 0 );
+  while (directoryExists);
 
 #endif /* WIN32 */
 
