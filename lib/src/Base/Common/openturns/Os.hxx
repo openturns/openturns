@@ -77,6 +77,10 @@ public:
    */
   static int ExecuteCommand(const String & command);
 
+  static Bool IsDirectory(const String & fileName);
+
+  static Bool IsFile(const String & fileName);
+
 private:
 
   /** Default constructor */

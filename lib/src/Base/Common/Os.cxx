@@ -53,6 +53,9 @@
 # if !defined(S_ISDIR)
 #  define S_ISDIR(mode) (((mode) & S_IFDIR) != 0)
 # endif
+# if !defined(S_ISREG)
+#  define S_ISREG(mode) (((mode) & S_IFREG) != 0)
+# endif
 #elif defined(WIN32)
 # define MKDIR(p, mode)  mkdir(p)
 #else
@@ -187,20 +190,25 @@ convert_backslashes(String & path)
 #endif
 }
 
-// Function helper for Os::MakeDirectory
-static bool
-is_directory(const char * name)
+Bool Os::IsDirectory(const String & fileName)
 {
   struct stat dir_stat;
-  if(stat(name, &dir_stat) != 0) return false;
+  if(stat(fileName.c_str(), &dir_stat) != 0) return false;
   return S_ISDIR(dir_stat.st_mode);
+}
+
+Bool Os::IsFile(const String & fileName)
+{
+  struct stat dir_stat;
+  if(stat(fileName.c_str(), &dir_stat) != 0) return false;
+  return S_ISREG(dir_stat.st_mode);
 }
 
 // Returns 0 if no error
 int Os::MakeDirectory(const String & path)
 {
   if (path.empty()) return 1;
-  if (is_directory(path.c_str())) return 0;
+  if (IsDirectory(path)) return 0;
 
   String slashPath(path);
   convert_backslashes(slashPath);
@@ -210,7 +218,7 @@ int Os::MakeDirectory(const String & path)
   {
     String current_dir(path.substr(0, pos));
     const char * cpath = current_dir.c_str();
-    if (!is_directory(cpath) && (0 != MKDIR(cpath, 0777))) return 1;
+    if (!IsDirectory(current_dir) && (0 != MKDIR(cpath, 0777))) return 1;
     pos++;
   }
 
@@ -251,7 +259,7 @@ static int deleteRegularFileOrDirectory(const char * path,
 int Os::DeleteDirectory(const String & path)
 {
   if (path.empty()) return 1;
-  if (!is_directory(path.c_str())) return 1;
+  if (!IsDirectory(path)) return 1;
 
   // Refuse to delete root directory (/) and current directory (.)
   if (path == "/" || path == ".") return 1;
