@@ -63,10 +63,6 @@
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
 
-/* Define to 1 if your system has a GNU libc compatible `malloc' function, and
-   to 0 otherwise. */
-#cmakedefine HAVE_MALLOC
-
 /* Define to 1 if you have the <math.h> header file. */
 #cmakedefine OPENTURNS_HAVE_MATH_H
 
