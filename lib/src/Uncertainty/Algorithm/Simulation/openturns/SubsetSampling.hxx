@@ -123,7 +123,8 @@ private:
   UnsignedInteger dimension_;// input dimension
   NumericalSample currentPointSample_;// X
   NumericalSample currentLevelSample_;//f(X)
-
+  UnsignedInteger seedNumber_;// number of seed points
+  
 } ; /* class SubsetSampling */
 
 END_NAMESPACE_OPENTURNS
