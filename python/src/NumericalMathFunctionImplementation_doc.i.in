@@ -298,8 +298,8 @@ list_functions : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.NumericalMathFunction().GetValidFunctions()[0:2])
-[sin(arg) -> sine function,cos(arg) -> cosine function]"
+>>> print(ot.NumericalMathFunction.GetValidFunctions()[0])
+sin(arg) -> sine function"
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::GetValidFunctions
 OT_NumericalMathFunction_GetValidFunctions_doc
@@ -317,8 +317,8 @@ list_constants : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.NumericalMathFunction().GetValidConstants()[0:2])
-[_e -> Euler's constant (2.71828...),_pi -> Pi constant (3.14159...)]"
+>>> print(ot.NumericalMathFunction.GetValidConstants()[0])
+_e -> Euler's constant (2.71828...)"
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::GetValidConstants
 OT_NumericalMathFunction_GetValidConstants_doc
@@ -336,8 +336,8 @@ list_operators : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.NumericalMathFunction().GetValidOperators()[0:2])
-[= -> assignement, can only be applied to variable names (priority -1),and -> logical and (priority 1)]"
+>>> print(ot.NumericalMathFunction.GetValidOperators()[0])
+= -> assignement, can only be applied to variable names (priority -1)"
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::GetValidOperators
 OT_NumericalMathFunction_GetValidOperators_doc

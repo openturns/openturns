@@ -214,7 +214,7 @@ validColors : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().GetValidColors()[:5])
+>>> print(ot.Drawable.GetValidColors()[:5])
 [aliceblue,antiquewhite,antiquewhite1,antiquewhite2,antiquewhite3]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidColors
@@ -280,7 +280,7 @@ validFillStyles : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().GetValidFillStyles()[:2])
+>>> print(ot.Drawable.GetValidFillStyles()[:2])
 [solid,shaded]
 "
 %enddef
@@ -360,7 +360,7 @@ validLineStyles : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().GetValidLineStyles())
+>>> print(ot.Drawable.GetValidLineStyles())
 [blank,solid,dashed,dotted,dotdash,longdash,twodash]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::GetValidLineStyles
@@ -816,7 +816,7 @@ code : str
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().ConvertFromRGB(255,0,0))
+>>> print(ot.Drawable.ConvertFromRGB(255,0,0))
 #ff0000"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertFromRGB
@@ -848,7 +848,7 @@ code : str
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().ConvertFromRGBA(255,0,0,255))
+>>> print(ot.Drawable.ConvertFromRGBA(255,0,0,255))
 #ff0000ff"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertFromRGBA
@@ -873,7 +873,7 @@ code : str
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().ConvertFromName('red'))
+>>> print(ot.Drawable.ConvertFromName('red'))
 #FF0000"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertFromName
@@ -899,7 +899,7 @@ RGBComponents : :class:`~openturns.Indices`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().ConvertToRGB('#ff0000'))
+>>> print(ot.Drawable.ConvertToRGB('#ff0000'))
 [255,0,0]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertToRGB
@@ -927,7 +927,7 @@ RGBAComponents : :class:`~openturns.Indices`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().ConvertToRGBA('#ff0000'))
+>>> print(ot.Drawable.ConvertToRGBA('#ff0000'))
 [255,0,0,255]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertToRGBA
