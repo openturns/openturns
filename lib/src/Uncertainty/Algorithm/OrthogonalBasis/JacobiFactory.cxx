@@ -77,7 +77,7 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
     const NumericalScalar factor = 0.5 * sqrt((alpha_ + beta_ + 3.0) / ((alpha_ + 1.0) * (beta_ + 1.0)));
     recurrenceCoefficients[0] = (alpha_ + beta_ + 2.0) * factor;
     // To avoid spurious -0.0
-    if (alpha_ != beta_) recurrenceCoefficients[1] = -(alpha_ - beta_) * factor;
+    if (alpha_ != beta_) recurrenceCoefficients[1] = (alpha_ - beta_) * factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
@@ -88,7 +88,7 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
   const NumericalScalar factor2 = 0.5 * sqrt((twoNAlphaBetaP2 - 1) * factor1);
   recurrenceCoefficients[0] = factor2 * twoNAlphaBetaP2;
   // To avoid spurious -0.0
-  if (alpha_ != beta_) recurrenceCoefficients[1] = -factor2 * (alpha_ - beta_) * (alpha_ + beta_) / (twoNAlphaBetaP2 - 2);
+  if (alpha_ != beta_) recurrenceCoefficients[1] = factor2 * (alpha_ - beta_) * (alpha_ + beta_) / (twoNAlphaBetaP2 - 2);
   if (n == 1)
   {
     const NumericalScalar epsilon = alpha_ + beta_ + 1.0;

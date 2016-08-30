@@ -12,25 +12,11 @@ try:
     print("jacobi=", jacobi)
     jacobi = JacobiFactory(2.5, 3.5)
     print("jacobi=", jacobi)
-    iMax = 10
-    for i in range(iMax):
+    for i in range(10):
         print("jacobi(", i, ")=", jacobi.build(i))
-    distribution = jacobi.getMeasure()
-    M = SymmetricMatrix(iMax)
-    for i in range(iMax):
-        pI = jacobi.build(i)
-        for j in range(i + 1):
-            pJ = jacobi.build(j)
-
-            def kernel(x):
-                return [pI(x[0]) * pJ(x[0]) * distribution.computePDF(x)]
-
-            M[i, j] = GaussKronrod().integrate(
-                PythonFunction(1, 1, kernel), distribution.getRange())[0]
-    print("M=\n", M.clean(1.0e-6))
-    roots = jacobi.getRoots(iMax)
+    roots = jacobi.getRoots(10)
     print("jacobi(10) roots=", repr(roots))
-    nodes, weights = jacobi.getNodesAndWeights(iMax)
+    nodes, weights = jacobi.getNodesAndWeights(10)
     print("jacobi(10) nodes=", nodes, "and weights=", weights)
 except:
     import sys

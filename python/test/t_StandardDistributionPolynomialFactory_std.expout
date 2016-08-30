@@ -1,4 +1,4 @@
-polynomialFactory( Laplace = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Laplace name=Laplace dimension=1 lambda=1 mu=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0,-2]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,2] isElliptical=true )
+polynomialFactory( Laplace = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Laplace name=Laplace dimension=1 lambda=1 mu=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0,-2]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,2] isElliptical=true )
 Laplace  polynomial( 0 )= 1
 Laplace  polynomial( 1 )= 0.707107 * X
 Laplace  polynomial( 2 )= -0.447214 + 0.223607 * X^2
@@ -13,7 +13,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Logistic = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 alpha=0 beta=1 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0,-3.28987]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,3.28987] isElliptical=true )
+polynomialFactory( Logistic = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 alpha=0 beta=1 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0,-3.28987]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,3.28987] isElliptical=true )
 Logistic  polynomial( 0 )= 1
 Logistic  polynomial( 1 )= 0.551329 * X
 Logistic  polynomial( 2 )= -0.559017 + 0.169921 * X^2
@@ -28,7 +28,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Normal = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=1 values=[1] isElliptical=true )
+polynomialFactory( Normal = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=HermiteFactory measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] )
 Normal  polynomial( 0 )= 1
 Normal  polynomial( 1 )= X
 Normal  polynomial( 2 )= -0.707107 + 0.707107 * X^2
@@ -43,7 +43,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Normal = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,-1]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] isElliptical=true )
+polynomialFactory( Normal = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,-1]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] isElliptical=true )
 Normal  polynomial( 0 )= 1
 Normal  polynomial( 1 )= -1 + X
 Normal  polynomial( 2 )= -1.41421 * X + 0.707107 * X^2
@@ -58,7 +58,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Rayleigh = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 sigma=1 gamma=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-1.25331,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1.66678,-0.429204]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.429204] isElliptical=false )
+polynomialFactory( Rayleigh = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 sigma=1 gamma=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-1.25331,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1.66678,-0.429204]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.429204] isElliptical=false )
 Rayleigh  polynomial( 0 )= 1
 Rayleigh  polynomial( 1 )= -1.91306 + 1.5264 * X
 Rayleigh  polynomial( 2 )= 2.84565 - 5.00639 * X + 1.71446 * X^2
@@ -73,7 +73,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Student = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Student name=Student dimension=1 nu=22 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0,-1.1]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,1.1] isElliptical=true )
+polynomialFactory( Student = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Student name=Student dimension=1 nu=22 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0,-1.1]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,1.1] isElliptical=true )
 Student  polynomial( 0 )= 1
 Student  polynomial( 1 )= 0.953463 * X
 Student  polynomial( 2 )= -0.654654 + 0.59514 * X^2
@@ -88,7 +88,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Triangular = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Triangular name=Triangular dimension=1 a=-1 m=0.3 b=1 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.1,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0.0153398,-0.171667]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.171667] isElliptical=false )
+polynomialFactory( Triangular = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Triangular name=Triangular dimension=1 a=-1 m=0.3 b=1 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.1,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,0.0153398,-0.171667]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.171667] isElliptical=false )
 Triangular  polynomial( 0 )= 1
 Triangular  polynomial( 1 )= -0.241355 + 2.41355 * X
 Triangular  polynomial( 2 )= -0.877334 - 0.428839 * X + 5.06542 * X^2
@@ -103,7 +103,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Uniform = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=1 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,0,0]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=1 values=[1] isElliptical=true )
+polynomialFactory( Uniform = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=LegendreFactory measure=class=Uniform name=Uniform dimension=1 a=-1 b=1 )
 Uniform  polynomial( 0 )= 1
 Uniform  polynomial( 1 )= 1.73205 * X
 Uniform  polynomial( 2 )= -1.11803 + 3.3541 * X^2
@@ -118,7 +118,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Uniform = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=3 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,-1.33333]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,1.33333] isElliptical=true )
+polynomialFactory( Uniform = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=3 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,-1.33333]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,1.33333] isElliptical=true )
 Uniform  polynomial( 0 )= 1
 Uniform  polynomial( 1 )= -0.866025 + 0.866025 * X
 Uniform  polynomial( 2 )= -0.279508 - 1.67705 * X + 0.838525 * X^2
@@ -133,7 +133,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Weibull = class=StandardDistributionPolynomialFactory orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Weibull name=Weibull dimension=1 alpha=1 beta=3 gamma=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.89298,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false )
+polynomialFactory( Weibull = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Weibull name=Weibull dimension=1 alpha=1 beta=3 gamma=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.89298,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false )
 Weibull  polynomial( 0 )= 1
 Weibull  polynomial( 1 )= -2.75144 + 3.08119 * X
 Weibull  polynomial( 2 )= 5.3921 - 13.3967 * X + 7.27876 * X^2
@@ -141,6 +141,81 @@ Weibull  polynomial( 3 )= -8.91794 + 36.5275 * X - 42.8504 * X^2 + 14.9827 * X^3
 Weibull  polynomial( 4 )= 13.3264 - 79.2309 * X + 149.529 * X^2 - 111.023 * X^3 + 28.1044 * X^4
 Weibull  polynomial( 4 ) roots= [0.315842,0.737023,1.19993,1.69759]
 Weibull  polynomial( 4 ) nodes= [0.315842,0.737023,1.19993,1.69759]  and weights= [0.109605,0.491205,0.364361,0.03483]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
+polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=JacobiFactory alpha=1 beta=0 measure=class=Beta name=Beta dimension=1 r=1 t=3 a=-1 b=1 )
+Beta  polynomial( 0 )= 1
+Beta  polynomial( 1 )= 0.707107 + 2.12132 * X
+Beta  polynomial( 2 )= -0.866025 + 1.73205 * X + 4.33013 * X^2
+Beta  polynomial( 3 )= -0.75 - 3.75 * X + 3.75 * X^2 + 8.75 * X^3
+Beta  polynomial( 4 )= 0.838525 - 3.3541 * X - 11.7394 * X^2 + 7.82624 * X^3 + 17.609 * X^4
+Beta  polynomial( 4 ) roots= [-0.885792,-0.446314,0.167181,0.72048]
+Beta  polynomial( 4 ) nodes= [-0.885792,-0.446314,0.167181,0.72048]  and weights= [0.271014,0.406929,0.259695,0.0623619]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
+polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=ChebychevFactory measure=class=Arcsine name=Arcsine dimension=1 a=-1 b=1 )
+Beta  polynomial( 0 )= 1
+Beta  polynomial( 1 )= 1.41421 * X
+Beta  polynomial( 2 )= -1.41421 + 2.82843 * X^2
+Beta  polynomial( 3 )= -4.24264 * X + 5.65685 * X^3
+Beta  polynomial( 4 )= 1.41421 - 11.3137 * X^2 + 11.3137 * X^4
+Beta  polynomial( 4 ) roots= [-0.92388,-0.382683,0.382683,0.92388]
+Beta  polynomial( 4 ) nodes= [-0.92388,-0.382683,0.382683,0.92388]  and weights= [0.25,0.25,0.25,0.25]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
+polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Beta name=Beta dimension=1 r=0.5 t=1 a=-2 b=3 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.5,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.5,-3.125]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,3.125] isElliptical=true )
+Beta  polynomial( 0 )= 1
+Beta  polynomial( 1 )= -0.282843 + 0.565685 * X
+Beta  polynomial( 2 )= -1.30108 - 0.452548 * X + 0.452548 * X^2
+Beta  polynomial( 3 )= 0.803273 - 1.42553 * X - 0.543058 * X^2 + 0.362039 * X^3
+Beta  polynomial( 4 )= 0.979767 + 1.66538 * X - 1.37575 * X^2 - 0.579262 * X^3 + 0.289631 * X^4
+Beta  polynomial( 4 ) roots= [-1.8097,-0.456709,1.45671,2.8097]
+Beta  polynomial( 4 ) nodes= [-1.8097,-0.456709,1.45671,2.8097]  and weights= [0.25,0.25,0.25,0.25]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
+polynomialFactory( Gamma = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Gamma name=Gamma dimension=1 k=1 lambda=3 gamma=0 monicRecurrenceCoefficients=[class=NumericalPoint name=Unnamed dimension=3 values=[1,-0.333333,0],class=NumericalPoint name=Unnamed dimension=3 values=[1,-1,-0.111111]] monicSquaredNorms=class=NumericalPoint name=Unnamed dimension=2 values=[1,0.111111] isElliptical=false )
+Gamma  polynomial( 0 )= 1
+Gamma  polynomial( 1 )= -1 + 3 * X
+Gamma  polynomial( 2 )= 1 - 6 * X + 4.5 * X^2
+Gamma  polynomial( 3 )= -1 + 9 * X - 13.5 * X^2 + 4.5 * X^3
+Gamma  polynomial( 4 )= 1 - 12 * X + 27.0001 * X^2 - 18.0001 * X^3 + 3.37502 * X^4
+Gamma  polynomial( 4 ) roots= [0.107516,0.58192,1.51221,3.13169]
+Gamma  polynomial( 4 ) nodes= [0.107516,0.58192,1.51221,3.13169]  and weights= [0.603154,0.357419,0.0388879,0.000539296]
+M=
+ 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]]
+polynomialFactory( Arcsine = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=ChebychevFactory measure=class=Arcsine name=Arcsine dimension=1 a=-1 b=1 )
+Arcsine  polynomial( 0 )= 1
+Arcsine  polynomial( 1 )= 1.41421 * X
+Arcsine  polynomial( 2 )= -1.41421 + 2.82843 * X^2
+Arcsine  polynomial( 3 )= -4.24264 * X + 5.65685 * X^3
+Arcsine  polynomial( 4 )= 1.41421 - 11.3137 * X^2 + 11.3137 * X^4
+Arcsine  polynomial( 4 ) roots= [-0.92388,-0.382683,0.382683,0.92388]
+Arcsine  polynomial( 4 ) nodes= [-0.92388,-0.382683,0.382683,0.92388]  and weights= [0.25,0.25,0.25,0.25]
 M=
  5x5
 [[ 1 0 0 0 0 ]
