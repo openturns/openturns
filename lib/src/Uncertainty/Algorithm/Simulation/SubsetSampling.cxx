@@ -40,12 +40,13 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 /* Default constructor */
 SubsetSampling::SubsetSampling()
   : Simulation()
-  , proposalRange_(0.)
-  , conditionalProbability_(0.)
+  , proposalRange_(0.0)
+  , conditionalProbability_(0.0)
   , iSubset_(false)
-  , betaMin_(0.)
+  , betaMin_(0.0)
   , keepEventSample_(false)
   , numberOfSteps_(0)
+  , seedNumber_(0)
 {
 }
 
@@ -61,6 +62,7 @@ SubsetSampling::SubsetSampling(const Event & event,
   , betaMin_(ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultBetaMin"))
   , keepEventSample_(false)
   , numberOfSteps_(0)
+  , seedNumber_(0)
 {
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// overide simulation default outersampling
   UnsignedInteger outputDimension = event.getFunction().getOutputDimension();
@@ -97,11 +99,9 @@ void SubsetSampling::run()
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsNumericalScalar("Simulation-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
-  if (conditionalProbability_ * N < 1.0)
+  seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
+  if (seedNumber_ < 1)
     throw InvalidArgumentException(HERE) << "The number of samples per step (" << N << ") should be >= " << ceil(1.0 / conditionalProbability_);
-
-  if (N <= 100)
-    Log::Warn(OSS() << "The number of samples per step is very low : " << N << ".");
 
   // perform isoprobabilistic transformation (the study is done in the standard space):
   standardEvent_ = StandardEvent(getEvent());
@@ -182,7 +182,7 @@ void SubsetSampling::run()
     }
   }
 
-  gammaPerStep_.add(0.);
+  gammaPerStep_.add(0.0);
   probabilityEstimatePerStep_.add(probabilityEstimate);
   coefficientOfVariationPerStep_.add(coefficientOfVariationSquare);
 
@@ -344,7 +344,7 @@ void SubsetSampling::initializeSeed(NumericalScalar threshold)
 NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFailureProbability, NumericalScalar threshold)
 {
   const UnsignedInteger N = currentPointSample_.getSize();
-  const UnsignedInteger Nc = std::max<UnsignedInteger>(1, conditionalProbability_ * N);
+  const UnsignedInteger Nc = seedNumber_;
   Matrix IndicatorMatrice(Nc, N / Nc);
   NumericalPoint correlationSequence(N / Nc - 1);
   NumericalScalar currentFailureProbability2 = pow(currentFailureProbability, 2.);
@@ -368,7 +368,7 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
     correlationSequence[k] -= currentFailureProbability2;
   }
   const NumericalScalar R0 = currentFailureProbability * (1.0 - currentFailureProbability);
-  NumericalPoint rho = ((1.0 / R0) * correlationSequence);
+  const NumericalPoint rho = ((1.0 / R0) * correlationSequence);
   NumericalScalar gamma = 0.0;
   for (UnsignedInteger k = 0; k < N / Nc - 1; ++ k)
   {
@@ -381,11 +381,10 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
 /* Iterate one step of the algorithm */
 void SubsetSampling::generatePoints(NumericalScalar threshold)
 {
-  UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
-  UnsignedInteger blockSize = getBlockSize();
-  Distribution randomWalk(ComposedDistribution(ComposedDistribution::DistributionCollection(dimension_, Uniform(-0.5 * proposalRange_, 0.5 * proposalRange_))));
-  UnsignedInteger N = currentPointSample_.getSize(); // total sample size
-  UnsignedInteger Nc = conditionalProbability_ * N; //number of seeds (also = maximumOuterSampling*blockSize)
+  const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
+  const UnsignedInteger blockSize = getBlockSize();
+  const Distribution randomWalk(ComposedDistribution(ComposedDistribution::DistributionCollection(dimension_, Uniform(-0.5 * proposalRange_, 0.5 * proposalRange_))));
+  const UnsignedInteger Nc = seedNumber_;
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
@@ -393,7 +392,7 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
     for (UnsignedInteger j = 0; j < blockSize; ++ j)
     {
       // assign the new point to the seed, seed points being regrouped at the beginning of the sample
-      if (i*blockSize + j >= Nc)
+      if (i * blockSize + j >= Nc)
       {
         currentPointSample_[i * blockSize + j] = currentPointSample_[ i * blockSize + j - Nc ];
         currentLevelSample_[i * blockSize + j] = currentLevelSample_[ i * blockSize + j - Nc ];
@@ -451,7 +450,7 @@ NumericalScalar SubsetSampling::getProposalRange() const
 /* Ratio accessor */
 void SubsetSampling::setConditionalProbability(NumericalScalar conditionalProbability)
 {
-  if ((conditionalProbability <= 0.) || (conditionalProbability >= 1.)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
+  if ((conditionalProbability <= 0.0) || (conditionalProbability >= 1.0)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
   conditionalProbability_ = conditionalProbability;
 }
 
@@ -517,7 +516,7 @@ void SubsetSampling::setISubset(Bool iSubset)
 
 void SubsetSampling::setBetaMin(NumericalScalar betaMin)
 {
-  if (betaMin <= 0.) throw InvalidArgumentException(HERE) << "Beta min should be positive";
+  if (betaMin <= 0.0) throw InvalidArgumentException(HERE) << "Beta min should be positive";
   betaMin_ = betaMin;
 }
 
