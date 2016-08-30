@@ -30,8 +30,8 @@ OT_Graph_getLegendPosition_doc
 OT_Graph_setLegendPosition_doc
 %feature("docstring") OT::Graph::GetValidLegendPositions
 OT_Graph_GetValidLegendPositions_doc
-%feature("docstring") OT::Graph::isValidLegendPosition
-OT_Graph_isValidLegendPosition_doc
+%feature("docstring") OT::Graph::IsValidLegendPosition
+OT_Graph_IsValidLegendPosition_doc
 %feature("docstring") OT::Graph::getAxes
 OT_Graph_getAxes_doc
 %feature("docstring") OT::Graph::setAxes

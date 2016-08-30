@@ -317,9 +317,9 @@ void Graph::setLegendFontSize(const NumericalScalar legendFontSize)
 }
 
 /* check for legend position validity */
-Bool Graph::isValidLegendPosition(const String & position) const
+Bool Graph::IsValidLegendPosition(const String & position)
 {
-  return getImplementation()->isValidLegendPosition(position);
+  return GraphImplementation::IsValidLegendPosition(position);
 }
 
 /* Gives all the valid legend positions */
