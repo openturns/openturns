@@ -197,7 +197,7 @@ Examples
 >>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
 ...                                         ot.IndependentCopula(3))
 >>> size = 1000
->>> design = SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
+>>> design = ot.SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
 "
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::Generate

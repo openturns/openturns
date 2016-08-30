@@ -45,7 +45,7 @@ Create a distribution:
 >>> import openturns as ot
 >>> l = [1.0, 0.7, 1.2, 0.9]
 >>> h = [0.5, 1.5, 3.5, 2.5]
->>> distribution = Histogram(-1.5, l, h)"
+>>> distribution = ot.Histogram(-1.5, l, h)"
 
 // ---------------------------------------------------------------------
 

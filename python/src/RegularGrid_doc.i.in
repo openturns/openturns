@@ -28,7 +28,7 @@ Mesh
 Examples
 --------
 >>> import openturns as ot
->>> myRegularGrid = RegularGrid(0.0, 0.1, 100)"
+>>> myRegularGrid = ot.RegularGrid(0.0, 0.1, 100)"
 
 // ---------------------------------------------------------------------
 
