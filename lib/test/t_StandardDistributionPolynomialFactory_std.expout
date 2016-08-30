@@ -80,12 +80,12 @@ Weibull polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values
 Weibull polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[0.315842,0.737023,1.19993,1.69759] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.109605,0.491205,0.364361,0.03483]
 polynomialFactory(Beta=class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=JacobiFactory alpha=1 beta=0 measure=class=Beta name=Beta dimension=1 r=1 t=3 a=-1 b=1
 Beta polynomial(0)=1
-Beta polynomial(1)=-0.707107 + 2.12132 * X
-Beta polynomial(2)=-0.866025 - 1.73205 * X + 4.33013 * X^2
-Beta polynomial(3)=0.75 - 3.75 * X - 3.75 * X^2 + 8.75 * X^3
-Beta polynomial(4)=0.838525 + 3.3541 * X - 11.7394 * X^2 - 7.82624 * X^3 + 17.609 * X^4
-Beta polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-0.72048,-0.167181,0.446314,0.885792]
-Beta polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-0.72048,-0.167181,0.446314,0.885792] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.0623619,0.259695,0.406929,0.271014]
+Beta polynomial(1)=0.707107 + 2.12132 * X
+Beta polynomial(2)=-0.866025 + 1.73205 * X + 4.33013 * X^2
+Beta polynomial(3)=-0.75 - 3.75 * X + 3.75 * X^2 + 8.75 * X^3
+Beta polynomial(4)=0.838525 - 3.3541 * X - 11.7394 * X^2 + 7.82624 * X^3 + 17.609 * X^4
+Beta polynomial(4) roots=class=NumericalPoint name=Unnamed dimension=4 values=[-0.885792,-0.446314,0.167181,0.72048]
+Beta polynomial(4) nodes=class=NumericalPoint name=Unnamed dimension=4 values=[-0.885792,-0.446314,0.167181,0.72048] and weights=class=NumericalPoint name=Unnamed dimension=4 values=[0.271014,0.406929,0.259695,0.0623619]
 polynomialFactory(Beta=class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=ChebychevFactory measure=class=Arcsine name=Arcsine dimension=1 a=-1 b=1
 Beta polynomial(0)=1
 Beta polynomial(1)=1.41421 * X
