@@ -176,7 +176,7 @@ public:
   void setLegendFontSize(const NumericalScalar legendFontSize);
 
   /** Check for legend position validity */
-  Bool isValidLegendPosition(const String & position) const;
+  static Bool IsValidLegendPosition(const String & position);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
