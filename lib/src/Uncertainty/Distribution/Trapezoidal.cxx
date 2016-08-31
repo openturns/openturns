@@ -513,6 +513,15 @@ void Trapezoidal::update()
   computeRange();
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint Trapezoidal::getSingularities() const
+{
+  NumericalPoint singularities(0);
+  if (a_ < b_ && b_ < d_) singularities.add(b_);
+  if (b_ < c_ && c_ < d_) singularities.add(c_);
+  return singularities;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Trapezoidal::save(Advocate & adv) const
 {

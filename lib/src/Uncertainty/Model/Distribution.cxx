@@ -661,6 +661,12 @@ NumericalPoint Distribution::getProbabilities() const
   return getImplementation()->getProbabilities();
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint Distribution::getSingularities() const
+{
+  return getImplementation()->getSingularities();
+}
+
 /* Compute the density generator of the elliptical generator, i.e.
   *  the function phi such that the density of the distribution can
   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */

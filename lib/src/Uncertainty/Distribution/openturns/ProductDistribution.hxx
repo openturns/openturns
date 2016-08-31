@@ -149,6 +149,9 @@ public:
   /** Tell if the distribution is integer valued */
   Bool isIntegral() const;
 
+  /** Get the PDF singularities inside of the range - 1D only */
+  NumericalPoint getSingularities() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

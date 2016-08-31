@@ -313,6 +313,12 @@ NumericalScalar Laplace::getLambda() const
   return lambda_;
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint Laplace::getSingularities() const
+{
+  return NumericalPoint(1, mu_);
+}
+
 /* Method save() stores the object through the StorageManager */
 void Laplace::save(Advocate & adv) const
 {

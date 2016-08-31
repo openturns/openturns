@@ -392,6 +392,14 @@ NumericalScalar Triangular::getB() const
 }
 
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint Triangular::getSingularities() const
+{
+  if (m_ == a_) return NumericalPoint(0);
+  if (m_ == b_) return NumericalPoint(0);
+  return NumericalPoint(1, m_);
+}
+
 /* Method save() stores the object through the StorageManager */
 void Triangular::save(Advocate & adv) const
 {

@@ -1036,6 +1036,14 @@ Bool ProductDistribution::isIntegral() const
   return left_.isIntegral() && right_.isIntegral();
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint ProductDistribution::getSingularities() const
+{
+  if (getRange().getLowerBound()[0] >= 0.0) return NumericalPoint(0);
+  if (getRange().getUpperBound()[0] <= 0.0) return NumericalPoint(0);
+  return NumericalPoint(1);
+}
+
 /* Method save() stores the object through the StorageManager */
 void ProductDistribution::save(Advocate & adv) const
 {
