@@ -124,6 +124,7 @@ NLopt::NLopt(const String & algoName)
   : OptimizationSolverImplementation()
   , algoName_(algoName)
 {
+  GetAlgorithmCode(algoName);
 }
 
 NLopt::NLopt(const OptimizationProblem & problem,
