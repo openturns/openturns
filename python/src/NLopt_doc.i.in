@@ -1,5 +1,9 @@
 %feature("docstring") OT::NLopt
-"Generic interface to NLopt solvers.
+"Interface to NLopt.
+
+This class exposes the solvers from the non-linear optimization library [NLopt]_.
+
+More details about available algorithms are available `here <http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms>`_.
 
 Parameters
 ----------

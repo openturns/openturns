@@ -44,6 +44,8 @@ Bibliography
 .. [Nataf1962] Nataf, A. *Determination des distributions dont les marges sont
     donnees.* C. R. Acad. Sci. Paris, 1962, 225, 42-43.
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
+.. [NLopt] Steven G. Johnson, The NLopt nonlinear-optimization package,
+    http://ab-initio.mit.edu/nlopt
 .. [Rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <http://doc.openturns.org/papers/rosenblatt1952.pdf>`__
