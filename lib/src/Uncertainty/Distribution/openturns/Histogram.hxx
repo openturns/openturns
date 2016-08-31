@@ -124,6 +124,9 @@ public:
   void setPairCollection(const HistogramPairCollection & collection);
   HistogramPairCollection getPairCollection() const;
 
+  /** Get the PDF singularities inside of the range - 1D only */
+  NumericalPoint getSingularities() const;
+
   /** Draw the PDF of the Histogram using a specific presentation */
   //        using ContinuousDistribution::drawPDF;
   virtual Graph drawPDF() const;

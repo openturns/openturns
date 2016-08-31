@@ -1884,6 +1884,21 @@ OT_Distribution_getProbabilities_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_getSingularities_doc
+"Accessor to the singularities of the PDF function.
+
+It is defined for univariate distributions only, and gives all the singularities (ie discontinuities of any order) strictly inside of the range of the distribution.
+
+Returns
+-------
+singularities : :class:`~openturns.NumericalPoint`
+    The singularities of the PDF of an univariate distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSingularities
+OT_Distribution_getSingularities_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_hasEllipticalCopula_doc
 "Test whether the copula of the distribution is elliptical or not.
 

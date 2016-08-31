@@ -451,6 +451,21 @@ Histogram::HistogramPairCollection Histogram::getPairCollection() const
   return collection;
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint Histogram::getSingularities() const
+{
+  const UnsignedInteger size = width_.getSize();
+  // Here we know that size > 0
+  NumericalScalar x(first_ + width_[0]);
+  NumericalPoint singularities(1, x);
+  for (UnsignedInteger i = 1; i < size - 1; ++i)
+    {
+      x += width_[i];
+      singularities.add(x);
+    }
+  return singularities;
+}
+
 /* Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF() const
 {

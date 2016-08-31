@@ -134,6 +134,9 @@ public:
   /** B accessor */
   NumericalScalar getB() const;
 
+  /** Get the PDF singularities inside of the range - 1D only */
+  NumericalPoint getSingularities() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
