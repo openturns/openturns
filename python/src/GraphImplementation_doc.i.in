@@ -260,7 +260,7 @@ listPositions : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Graph().GetValidLegendPositions())
+>>> print(ot.Graph.GetValidLegendPositions())
 [,bottomright,bottom,bottomleft,left,topleft,top,topright,right,center]#10"
 %enddef
 %feature("docstring") OT::GraphImplementation::GetValidLegendPositions
@@ -268,7 +268,7 @@ OT_Graph_GetValidLegendPositions_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_isValidLegendPosition_doc
+%define OT_Graph_IsValidLegendPosition_doc
 "Test if the proposed legend position is valid or not.
 
 Parameters
@@ -288,13 +288,13 @@ setLegendPosition, GetValidLegendPositions
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Graph().isValidLegendPosition('lefttop'))
+>>> print(ot.Graph.IsValidLegendPosition('lefttop'))
 False
->>> print(ot.Graph().isValidLegendPosition('topleft'))
+>>> print(ot.Graph.IsValidLegendPosition('topleft'))
 True"
 %enddef
-%feature("docstring") OT::GraphImplementation::isValidLegendPosition
-OT_Graph_isValidLegendPosition_doc
+%feature("docstring") OT::GraphImplementation::IsValidLegendPosition
+OT_Graph_IsValidLegendPosition_doc
 
 // ---------------------------------------------------------------------
 

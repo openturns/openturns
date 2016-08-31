@@ -177,7 +177,7 @@ public:
   void setLegendFontSize(const NumericalScalar legendFontSize);
 
   /** Check for legend position validity */
-  Bool isValidLegendPosition(const String & position) const;
+  static Bool IsValidLegendPosition(const String & position);
 
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();

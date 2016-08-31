@@ -114,7 +114,7 @@ GraphImplementation::GraphImplementation(const String & title,
   }
   // Check if the given legend position is valid
 
-  if (!isValidLegendPosition(legendPosition)) throw InvalidArgumentException(HERE) << "The given legend position = " << legendPosition << " is invalid";
+  if (!IsValidLegendPosition(legendPosition)) throw InvalidArgumentException(HERE) << "The given legend position = " << legendPosition << " is invalid";
   if (legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid, it must be > 0";
   legendPosition_ = legendPosition;
 }
@@ -669,7 +669,7 @@ String GraphImplementation::getLegendPosition() const
 /* Set the legend position */
 void GraphImplementation::setLegendPosition(const String & position)
 {
-  if(!isValidLegendPosition(position)) throw InvalidArgumentException(HERE) << "The given legend position = " << position << " is invalid";
+  if(!IsValidLegendPosition(position)) throw InvalidArgumentException(HERE) << "The given legend position = " << position << " is invalid";
 
   legendPosition_ = position;
 }
@@ -700,7 +700,7 @@ void GraphImplementation::setLegendFontSize(const NumericalScalar legendFontSize
 }
 
 /* check for legend position validity */
-Bool GraphImplementation::isValidLegendPosition(const String & position) const
+Bool GraphImplementation::IsValidLegendPosition(const String & position)
 {
   const Description::const_iterator it = find(ValidLegendPositions.begin(), ValidLegendPositions.end(), position);
 
