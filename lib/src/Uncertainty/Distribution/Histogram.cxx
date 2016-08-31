@@ -148,12 +148,12 @@ NumericalPoint Histogram::computeDDF(const NumericalPoint & point) const
 NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   NumericalScalar x = point[0] - first_;
   const UnsignedInteger size = width_.getSize();
   if ((x < 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
   // Find the bin index by bisection
   UnsignedInteger iMin = 0;
+  if (x < cumulatedWidth_[iMin]) return height_[iMin];
   UnsignedInteger iMax = size - 1;
   while (iMax > iMin + 1)
   {
