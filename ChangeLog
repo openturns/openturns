@@ -85,6 +85,7 @@
  * #842 (Better ProcessCollection in Python)
  * #843 (Remove all the specific isCopula() methods)
  * #845 (Wrong comparison operator for interface classes with derivative implementation classes)
+ * #849 (Ambiguous NumericalSample::computeQuantile)
 
 == 1.7 release (2016-01-27) == #release-1.7
 
