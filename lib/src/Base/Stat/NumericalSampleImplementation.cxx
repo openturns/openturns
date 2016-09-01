@@ -1678,8 +1678,9 @@ NumericalPoint NumericalSampleImplementation::computeRawMoment(const UnsignedInt
 NumericalPoint NumericalSampleImplementation::computeQuantilePerComponent(const NumericalScalar prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
+  if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
-  // Special case for prob outside of the allowed bounds
+  // Special case for extremum cases
   const NumericalScalar scalarIndex = prob * size_ - 0.5;
   if (scalarIndex >= size_ - 1) return getMax();
   // Special case for prob <= 0.0
