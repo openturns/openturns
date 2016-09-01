@@ -232,3 +232,22 @@ Notes
 It computes the kriging response surface and creates a
 :class:`~openturns.KrigingResult` structure containing all the results."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::setOptimizeParameters
+"Covariance model parameters optimization flag accessor.
+
+Parameters
+----------
+optimizeParams : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getOptimizeParameters
+"Covariance model parameters optimization flag accessor.
+
+Returns
+-------
+optimizeParams : bool
+    Whether to optimize the covariance model parameters."

@@ -108,3 +108,11 @@ assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 # Estimation
 assert_almost_equal(outputValidSample,  metaModel(
     inputValidSample), 1.e-1, 1e-1)
+
+# With no estimation of the covariance model parameters
+algo.setOptimizeParameters(False)
+algo.run()
+result = algo.getResult()
+conditionalCovariance = result.getCovarianceModel()
+assert_almost_equal(conditionalCovariance.getParameter(), covarianceModel.getParameter())
+

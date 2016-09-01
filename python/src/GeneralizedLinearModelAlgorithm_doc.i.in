@@ -31,7 +31,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
-    OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
+    It uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
     Default is set in resource map key `GeneralizedLinearModelAlgorithm-NormalizeData`
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *GeneralizedLinearModelResult*.
@@ -139,7 +139,7 @@ With  :math:`\mat{L}` the inferior triangular matrix such that :math:`\mat{L}\Tr
 
     \log p((\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = cste -\dfrac{1}{2} \log \det \mat{L} -\dfrac{1}{2}  \| \mat{L}^{-1}(\vect{y}-\vect{m}) \|^2
 
-OpenTURNS proceeds as follows:
+It proceeds as follows:
 
     - maximization of :eq:`logLikelihood` with respect to :math:`\vect{\alpha}` where :math:`(\vect{\theta}, \vect{\sigma})` are fixed: it is equivalent to minimizing the term :math:`\| \mat{L}^{-1}(\vect{y}-\vect{m}) \|^2` (the optimization problem is a least square problem). Then :math:`\vect{\alpha} = \vect{\alpha}(\vect{\theta}, \vect{\sigma})`;
     - maximization of :eq:`logLikelihood` with respect to :math:`\vect{\theta}, \vect{\sigma}` where :math:`\vect{\alpha}` has been replaced by  :math:`\vect{\alpha} = \vect{\alpha}(\vect{\theta}, \vect{\sigma})`. 
@@ -157,7 +157,7 @@ It is also possible to proceed as follows:
     - fulfill the *GeneralizedLinearModelAlgorithm* with the optimized value of these parameters.
 
 
-With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
+With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if the library had been compiled with `hmat-oss` support.
 
 This implementation, which is based on a sparse representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralizedLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
 
@@ -302,5 +302,25 @@ algorithm : :class:`~openturns.OptimizationSolver`
 Parameters
 ----------
 algorithm : :class:`~openturns.OptimizationSolver`
-    Solver used to optimize the covariance model parameters.
-"
+    Solver used to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizeParameters
+"Covariance model parameters optimization flag accessor.
+
+Parameters
+----------
+optimizeParams : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizeParameters
+"Covariance model parameters optimization flag accessor.
+
+Returns
+-------
+optimizeParams : bool
+    Whether to optimize the covariance model parameters."
+

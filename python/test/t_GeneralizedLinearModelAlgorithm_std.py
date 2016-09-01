@@ -53,8 +53,21 @@ try:
                         [0.00013144], 1e-5, 1e-5)
     assert_almost_equal(conditionalCovariance.getParameter(), [
                         0.011464782674211804], 1e-5, 1e-3)
-    print("Test Ok")
 
+    # With no estimation of the covariance model parameters
+    algo.setOptimizeParameters(False)
+    algo.run()
+    # compare covariance parameters
+    result = algo.getResult()
+    conditionalCovariance = result.getCovarianceModel()
+    assert_almost_equal(conditionalCovariance.getParameter(), covarianceModel.getParameter())
+    # perform an evaluation
+    metaModel = result.getMetaModel()
+    residual = metaModel(X) - Y
+    assert_almost_equal(residual.computeCenteredMoment(2), [0.00013144], 1e-5, 1e-5)
+    assert_almost_equal(conditionalCovariance.getParameter(), [1.0], 0.0, 0.0)
+
+    print("Test Ok")
 except:
     import sys
     print("t_GeneralizedLinearModelAlgorithm_std.py",
