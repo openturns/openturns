@@ -30,11 +30,13 @@
 %include OrthogonalUniVariatePolynomial.i
 %include OrthogonalUniVariatePolynomialFactory.i
 %include CharlierFactory.i
+%include ChebychevFactory.i
 %include HermiteFactory.i
 %include JacobiFactory.i
 %include KrawtchoukFactory.i
 %include LaguerreFactory.i
 %include LegendreFactory.i
+%include HistogramPolynomialFactory.i
 %include MeixnerFactory.i
 %include OrthogonalUniVariatePolynomialFamily.i
 %include OrthonormalizationAlgorithmImplementation.i

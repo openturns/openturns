@@ -106,7 +106,9 @@ public:
   Implementation getStandardRepresentative() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  NumericalPoint getParameter() const;
+  void setParameter(const NumericalPoint & parameter);
+  Description getParameterDescription() const;
 
   /* Interface specific to Histogram */
 
@@ -123,6 +125,9 @@ public:
   /** Collection accessor */
   void setPairCollection(const HistogramPairCollection & collection);
   HistogramPairCollection getPairCollection() const;
+
+  /** Get the PDF singularities inside of the range - 1D only */
+  NumericalPoint getSingularities() const;
 
   /** Draw the PDF of the Histogram using a specific presentation */
   //        using ContinuousDistribution::drawPDF;

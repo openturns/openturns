@@ -525,6 +525,21 @@ NumericalSample TruncatedDistribution::getSupport(const Interval & interval) con
   return distribution_.getSupport(getRange().intersect(interval));
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint TruncatedDistribution::getSingularities() const
+{
+  NumericalPoint singularities(0);
+  NumericalPoint nontruncatedSingularities(distribution_.getSingularities());
+  const UnsignedInteger size = nontruncatedSingularities.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const NumericalScalar x = nontruncatedSingularities[i];
+    if (x >= upperBound_) return singularities;
+    if (x > lowerBound_) singularities.add(x);
+  }
+  return singularities;
+}
+
 /* Method save() stores the object through the StorageManager */
 void TruncatedDistribution::save(Advocate & adv) const
 {
@@ -561,3 +576,4 @@ void TruncatedDistribution::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

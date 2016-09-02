@@ -1,0 +1,98 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief HistogramPolynomial polynomial factory
+ *
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef OPENTURNS_HISTOGRAMPOLYNOMIALFACTORY_HXX
+#define OPENTURNS_HISTOGRAMPOLYNOMIALFACTORY_HXX
+
+#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
+#include "openturns/LegendreFactory.hxx"
+#include "openturns/Histogram.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class HistogramPolynomialFactory
+ *
+ * Histogram polynomial factory
+ */
+
+class OT_API HistogramPolynomialFactory
+  : public OrthogonalUniVariatePolynomialFactory
+{
+  CLASSNAME;
+public:
+
+
+  /** Default constructor, associated with the default Histogram distribution */
+  HistogramPolynomialFactory();
+
+  /** Parameter constructor */
+  HistogramPolynomialFactory(const NumericalScalar first,
+			     const NumericalPoint & width,
+			     const NumericalPoint & height);
+
+  /** Virtual constructor */
+  virtual HistogramPolynomialFactory * clone() const;
+
+  /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
+      Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
+
+  /** First accessor */
+  NumericalScalar getFirst() const;
+
+  /** Width accessor */
+  NumericalPoint getWidth() const;
+
+  /** Height accessor */
+  NumericalPoint getHeight() const;
+
+  /** String converter */
+  String __repr__() const;
+
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
+private:
+
+  /** Compute dot products taking into account the singularities of the weights */
+  NumericalPoint computeDotProduct(const OrthogonalUniVariatePolynomial & qN) const;
+
+  /** Underlying histogram */
+  const Histogram * p_histogram_;
+
+  /** Factory used to compute the dot-products */
+  LegendreFactory legendre_;
+
+  /** Cache to store the recurrence coefficients */
+  mutable CoefficientsPersistentCollection monicRecurrenceCoefficients_;
+
+  /** Cache to store the squared norm of the monic orthogonal polynomials */
+  mutable NumericalPoint monicSquaredNorms_;
+
+} ; /* class HistogramPolynomialFactory */
+
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_HISTOGRAMPOLYNOMIALFACTORY_HXX */

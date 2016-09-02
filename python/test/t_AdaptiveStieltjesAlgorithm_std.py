@@ -30,7 +30,7 @@ try:
 
     # Second test
     distribution = Beta(0.5, 3.0, -1.0, 1.0)
-    algo0 = JacobiFactory(-0.5, 1.5)
+    algo0 = JacobiFactory(0.5, 3.0, 1)
     algo1 = AdaptiveStieltjesAlgorithm(distribution)
     print(algo1)
     for i in range(iMax):

@@ -2450,6 +2450,13 @@ NumericalPoint DistributionImplementation::getProbabilities() const
   return computePDF(getSupport()).getImplementation()->getData();
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint DistributionImplementation::getSingularities() const
+{
+  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: cannot ask for PDF singularities for multivariate distributions.";
+  return NumericalPoint(0);
+}
+
 /* Compute the density generator of the elliptical generator, i.e.
  *  the function phi such that the density of the distribution can
  *  be written as p(x) = phi(t(x-mu)R(x-mu))

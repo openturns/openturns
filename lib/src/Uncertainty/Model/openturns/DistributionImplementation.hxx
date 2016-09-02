@@ -387,6 +387,9 @@ public:
   /** Get the discrete probability levels */
   virtual NumericalPoint getProbabilities() const;
 
+  /** Get the PDF singularities inside of the range - 1D only */
+  virtual NumericalPoint getSingularities() const;
+
   /** Compute the density generator of the elliptical generator, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */

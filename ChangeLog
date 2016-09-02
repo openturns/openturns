@@ -7,6 +7,8 @@
 ==== Major changes ====
 
 ==== New classes ====
+  * HistogramPolynomialFactory
+  * ChebychevFactory
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes

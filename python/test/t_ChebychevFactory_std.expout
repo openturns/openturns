@@ -1,0 +1,13 @@
+chebychev= class=ChebychevFactory measure=class=Arcsine name=Arcsine dimension=1 a=-1 b=1
+chebychev( 0 )= 1
+chebychev( 1 )= 1.41421 * X
+chebychev( 2 )= -1.41421 + 2.82843 * X^2
+chebychev( 3 )= -4.24264 * X + 5.65685 * X^3
+chebychev( 4 )= 1.41421 - 11.3137 * X^2 + 11.3137 * X^4
+chebychev( 5 )= 7.07107 * X - 28.2843 * X^3 + 22.6274 * X^5
+chebychev( 6 )= -1.41421 + 25.4558 * X^2 - 67.8823 * X^4 + 45.2548 * X^6
+chebychev( 7 )= -9.89949 * X + 79.196 * X^3 - 158.392 * X^5 + 90.5097 * X^7
+chebychev( 8 )= 1.41421 - 45.2548 * X^2 + 226.274 * X^4 - 362.039 * X^6 + 181.019 * X^8
+chebychev( 9 )= 12.7279 * X - 169.706 * X^3 + 610.94 * X^5 - 814.587 * X^7 + 362.039 * X^9
+chebychev(10) roots= class=NumericalPoint name=Unnamed dimension=10 values=[0.987688,0.891007,0.707107,0.45399,0.156434,-0.156434,-0.45399,-0.707107,-0.891007,-0.987688]
+chebychev(10) nodes= [0.987688,0.891007,0.707107,0.45399,0.156434,-0.156434,-0.45399,-0.707107,-0.891007,-0.987688]#10 and weights= [0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]#10
