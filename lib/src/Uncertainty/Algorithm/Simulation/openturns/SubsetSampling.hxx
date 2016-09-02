@@ -38,7 +38,7 @@ public:
   /** Constructor with parameters */
   SubsetSampling(const Event & event,
                  const NumericalScalar proposalRange = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultProposalRange"),
-                 const NumericalScalar targetProbability = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultTargetProbability"));
+                 const NumericalScalar conditionalProbability = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultConditionalProbability"));
 
   /** Virtual constructor */
   virtual SubsetSampling * clone() const;
@@ -48,8 +48,8 @@ public:
   NumericalScalar getProposalRange() const;
 
   /** Ratio parameter */
-  void setTargetProbability(NumericalScalar targetProbability);
-  NumericalScalar getTargetProbability() const;
+  void setConditionalProbability(NumericalScalar conditionalProbability);
+  NumericalScalar getConditionalProbability() const;
 
   /** Accessor to the achieved number of steps */
   UnsignedInteger getNumberOfSteps();
@@ -104,7 +104,7 @@ private:
 
   // some parameters
   NumericalScalar proposalRange_;// width of the proposal pdf
-  NumericalScalar targetProbability_;// target probability at each subset
+  NumericalScalar conditionalProbability_;// target probability at each subset
   Bool iSubset_;// conditional pre-sampling
   NumericalScalar betaMin_;// pre-sampling hypersphere exclusion radius
   Bool keepEventSample_;// do we keep the event sample ?
@@ -123,7 +123,8 @@ private:
   UnsignedInteger dimension_;// input dimension
   NumericalSample currentPointSample_;// X
   NumericalSample currentLevelSample_;//f(X)
-
+  UnsignedInteger seedNumber_;// number of seed points
+  
 } ; /* class SubsetSampling */
 
 END_NAMESPACE_OPENTURNS
