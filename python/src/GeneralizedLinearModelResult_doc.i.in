@@ -49,7 +49,7 @@ The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
 
 where :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` are the trend functions.
 
-If a normalizing transformation *T* has been used, the meta model is bilt on the inputs :math:`\vect{z}_k = T(\vect{x}_k)` and the meta model writes:
+If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)` and the meta model writes:
 
 .. math::
     :label: metaModelWithT
