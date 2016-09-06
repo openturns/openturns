@@ -17,7 +17,7 @@ inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
 inputTransformation : :class:`~openturns.NumericalMathFunction`
     Function  *T* that helps to normalize the input sample.
 
-    If used, the meta model is built on the transformed data.
+    If used, the metamodel is built on the transformed data.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`. 
 
@@ -88,7 +88,7 @@ The *GeneralizedLinearModelAlgorithm* class estimates the coefficients :math:`\a
 
 Note that the parameters :math:`(\mat{R}, \vect{\lambda})` are not optimized: they are fixed to the values specified by the User.
 
-If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
+If a normalizing transformation *T* has been used, the metamodel is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
 
  **Estimation of the parameters** :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}`
 
@@ -177,7 +177,7 @@ Create the algorithm:
 >>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
-Get the resulting meta model:
+Get the resulting metamodel:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()"

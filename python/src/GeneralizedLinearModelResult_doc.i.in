@@ -12,7 +12,7 @@ Parameters
 inputSample, outputSample : :class:`~openturns.NumericalSample`
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
+    The metamodel: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
 residuals : :class:`~openturns.NumericalPoint`
     The residual errors.
 relativeErrors : :class:`~openturns.NumericalPoint`
@@ -34,7 +34,7 @@ Notes
 -----
 The structure is usually created by the method *run()* of a :class:`~openturns.GeneralizedLinearModelAlgorithm`, and obtained thanks to the *getResult()* method.
 
-The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
+The metamodel :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
 
 .. math::
     :label: metaModel
@@ -49,7 +49,7 @@ The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
 
 where :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` are the trend functions.
 
-If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)` and the meta model writes:
+If a normalizing transformation *T* has been used, the metamodel is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)` and the metamodel writes:
 
 .. math::
     :label: metaModelWithT
@@ -82,7 +82,7 @@ Get the result:
 
 >>> result = algo.getResult()
 
-Get the meta model:
+Get the metamodel:
 
 >>> metaModel = result.getMetaModel()
 >>> graph = metaModel.draw(0.0, 7.0)
@@ -139,7 +139,7 @@ If the trend is not estimated, the collection is empty.
 Returns
 -------
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
+    The metamodel :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
 "
 
 // ---------------------------------------------------------------------

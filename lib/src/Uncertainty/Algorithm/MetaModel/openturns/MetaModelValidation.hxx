@@ -89,7 +89,7 @@ protected:
   /** The output sample */
   NumericalSample outputSample_;
 
-  /** The meta model */
+  /** The metamodel */
   NumericalMathFunction metaModel_;
 
   /** Boolean argument */

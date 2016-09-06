@@ -90,7 +90,7 @@ algo = KrigingAlgorithm(
     inputSample, outputSample, basisCollection, covarianceModel)
 algo.run()
 result = algo.getResult()
-# Get meta model
+# Get metamodel
 metaModel = result.getMetaModel()
 outData = metaModel(inputValidSample)
 

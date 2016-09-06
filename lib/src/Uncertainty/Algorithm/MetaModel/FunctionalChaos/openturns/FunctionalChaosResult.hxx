@@ -101,7 +101,7 @@ public:
   /** Reduced basis accessor */
   virtual NumericalMathFunctionCollection getReducedBasis() const;
 
-  /** Composed meta model accessor */
+  /** Composed metamodel accessor */
   virtual NumericalMathFunction getComposedMetaModel() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -138,7 +138,7 @@ private:
   /** The collection of vectors upon which we project the (composed) model */
   NumericalMathFunctionPersistentCollection Psi_k_;
 
-  /** Composed meta model */
+  /** Composed metamodel */
   NumericalMathFunction composedMetaModel_;
 
 } ; /* class FunctionalChaosResult */

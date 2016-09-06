@@ -536,7 +536,7 @@ void GeneralizedLinearModelAlgorithm::run()
   conditionalCovarianceModel.setParameter(covarianceModelParameters);
 
   LOGINFO("Build the output meta-model");
-  // The meta model is of type DualLinearCombination function
+  // The metamodel is of type DualLinearCombination function
   // We should write the coefficients into a NumericalSample and build the basis into a collection
   Collection<NumericalMathFunction> allFunctionsCollection;
   for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)

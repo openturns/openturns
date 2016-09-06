@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     // Get result
     KrigingResult result(algo.getResult());
 
-    // Get meta model
+    // Get metamodel
     NumericalMathFunction metaModel(result.getMetaModel());
 
     // Interpolation error

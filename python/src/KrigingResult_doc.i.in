@@ -12,7 +12,7 @@ Parameters
 inputSample, outputSample : 2-d sequence of float
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
+    The metamodel: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 residuals : :class:`~openturns.NumericalPoint`
     The residual errors.
 relativeErrors : :class:`~openturns.NumericalPoint`
@@ -34,7 +34,7 @@ covarianceHMatrix :  :class:`~openturns.HMatrix`
 
 Notes
 -----
-The Kriging meta model :math:`\tilde{\cM}` is defined by:
+The Kriging metamodel :math:`\tilde{\cM}` is defined by:
 
 .. math::
     :label: metaModelKrig
@@ -62,7 +62,7 @@ and
 
     \vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})
 
-At the end, the meta model writes:
+At the end, the metamodel writes:
 
 .. math::
     :label: metaModelKrigFinal
@@ -92,7 +92,7 @@ Get the result:
 
 >>> resKriging = algoKriging.getResult()
 
-Get the meta model:
+Get the metamodel:
 
 >>> metaModel = resKriging.getMetaModel()
 >>> graph = metaModel.draw(0.0, 7.0)
@@ -234,7 +234,7 @@ where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega,
 Returns
 -------
 metaModel : :class:`~openturns.NumericalMathFunction`
-    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
+    The metamodel :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 "
 
 // ---------------------------------------------------------------------

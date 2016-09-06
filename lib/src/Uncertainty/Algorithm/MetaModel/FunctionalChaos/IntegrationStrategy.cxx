@@ -176,7 +176,7 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   TBB::ParallelFor( 0, addedSize, policy );
   alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
-  // The residual is the mean squared error between the model and the meta model
+  // The residual is the mean squared error between the model and the metamodel
   residual_p_ = 0.0;
   const NumericalPoint values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
