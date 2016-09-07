@@ -118,6 +118,10 @@ public:
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;
   void setOptimizeParameters(const Bool optimizeParameters);
+  
+  /** Observation noise accessor */
+  void setNoise(const NumericalPoint & noise);
+  NumericalPoint getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -220,6 +224,10 @@ private:
   /** Flag to tell if the parameters of the covariance model
       have to be optimized */
   Bool optimizeParameters_;
+  
+  /** Observation noise */
+  NumericalPoint noise_;
+
 }; // class GeneralizedLinearModelAlgorithm
 
 

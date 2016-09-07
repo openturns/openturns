@@ -108,6 +108,10 @@ public:
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;
   void setOptimizeParameters(const Bool optimizeParameters);
+  
+  /** Observation noise accessor */
+  void setNoise(const NumericalPoint & noise);
+  NumericalPoint getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

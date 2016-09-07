@@ -161,6 +161,11 @@ With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierar
 
 This implementation, which is based on a sparse representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralizedLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
 
+A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
+with :func:`setNoise()`:
+
+.. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
+
 Examples
 --------
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
@@ -323,3 +328,24 @@ Returns
 -------
 optimizeParameters : bool
     Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setNoise
+"Observation noise variance accessor.
+
+Parameters
+----------
+noise : sequence of positive float
+    The noise variance :math:`\tau_k^2` of each output value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getNoise
+"Observation noise variance accessor.
+
+Parameters
+----------
+noise : sequence of positive float
+    The noise variance :math:`\tau_k^2` of each output value."
+

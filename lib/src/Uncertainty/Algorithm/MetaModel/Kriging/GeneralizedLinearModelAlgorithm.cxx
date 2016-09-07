@@ -864,6 +864,24 @@ void GeneralizedLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeP
   }
 }
 
+
+/* Observation noise accessor */
+void GeneralizedLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size (" << noise.getSize()  << ") does not match sample size (" << size << ")";
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise must be positive";
+  noise_ = noise;
+}
+
+
+NumericalPoint GeneralizedLinearModelAlgorithm::getNoise() const
+{
+  return noise_;
+}
+
+
 NumericalPoint GeneralizedLinearModelAlgorithm::getRho() const
 {
   return rho_;
@@ -879,7 +897,8 @@ String GeneralizedLinearModelAlgorithm::__repr__() const
       << ", basis=" << basis_
       << ", covarianceModel=" << covarianceModel_
       << ", solver=" << solver_
-      << ", optimizeParameters=" << optimizeParameters_;
+      << ", optimizeParameters=" << optimizeParameters_
+      << ", noise=" << noise_;
   return oss;
 }
 
@@ -945,6 +964,7 @@ void GeneralizedLinearModelAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "keepCholeskyFactor_", keepCholeskyFactor_ );
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
   adv.saveAttribute( "optimizeParameters_", optimizeParameters_ );
+  adv.saveAttribute( "noise_", noise_ );
 }
 
 
@@ -964,6 +984,7 @@ void GeneralizedLinearModelAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "keepCholeskyFactor_", keepCholeskyFactor_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
   adv.loadAttribute( "optimizeParameters_", optimizeParameters_ );
+  adv.loadAttribute( "noise_", noise_ );
 }
 
 END_NAMESPACE_OPENTURNS

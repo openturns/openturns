@@ -290,6 +290,17 @@ void KrigingAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
   glmAlgo_.setOptimizeParameters(optimizeParameters);
 }
 
+/** Observation noise accessor */
+void KrigingAlgorithm::setNoise(const NumericalPoint & noise)
+{
+  glmAlgo_.setNoise(noise);
+}
+
+NumericalPoint KrigingAlgorithm::getNoise() const
+{
+  return glmAlgo_.getNoise();
+}
+
 /* Method save() stores the object through the StorageManager */
 void KrigingAlgorithm::save(Advocate & adv) const
 {
