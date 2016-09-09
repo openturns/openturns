@@ -47,7 +47,7 @@ public:
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  NumericalPoint generate();
+  NumericalPoint generate() const;
 
   /** String converter */
   String __repr__() const;
@@ -65,7 +65,7 @@ private:
   Unsigned64BitsIntegerPersistentCollection base_;
 
   /** Current seed into the sequence */
-  Unsigned64BitsInteger seed_;
+  mutable Unsigned64BitsInteger seed_;
 
 }; /* class HaltonSequence */
 

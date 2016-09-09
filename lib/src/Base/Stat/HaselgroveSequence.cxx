@@ -63,7 +63,7 @@ void HaselgroveSequence::initialize(const UnsignedInteger dimension)
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint HaselgroveSequence::generate()
+NumericalPoint HaselgroveSequence::generate() const
 {
   NumericalPoint realization(dimension_);
   // Loop over the components

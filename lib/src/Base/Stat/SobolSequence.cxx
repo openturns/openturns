@@ -166,7 +166,7 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint SobolSequence::generate()
+NumericalPoint SobolSequence::generate() const
 {
   // initialize a point with values 2^-MaximumBase2Logarithm
   NumericalPoint sequencePoint(dimension_, Epsilon);

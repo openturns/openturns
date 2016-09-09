@@ -66,7 +66,7 @@ public:
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  NumericalPoint generate();
+  NumericalPoint generate() const;
 
   /** String converter */
   String __repr__() const;
@@ -80,10 +80,10 @@ public:
 protected:
   /** The numbers used to generate the sequence */
   Unsigned64BitsIntegerPersistentCollection base_;
-  Unsigned64BitsIntegerPersistentCollection coefficients_;
+  mutable Unsigned64BitsIntegerPersistentCollection coefficients_;
 
   /** Current seed */
-  Unsigned64BitsInteger seed_;
+  mutable Unsigned64BitsInteger seed_;
 
 private:
   /** return 2^n */
