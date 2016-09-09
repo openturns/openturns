@@ -103,9 +103,10 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample GaussProductExperiment::generate()
+NumericalSample GaussProductExperiment::generateWithWeights(NumericalPoint & weights)
 {
   if (!isAlreadyComputedNodesAndWeights_) computeNodesAndWeights();
+  weights = weights_;
   return nodes_;
 }
 

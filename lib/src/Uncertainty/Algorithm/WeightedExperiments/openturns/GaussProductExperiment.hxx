@@ -63,8 +63,7 @@ public:
   virtual String __repr__() const;
 
   /** Sample generation */
-  using WeightedExperimentImplementation::generate;
-  NumericalSample generate();
+  NumericalSample generateWithWeights(NumericalPoint & weights);
 
   /** Marginal degrees accessor */
   void setMarginalDegrees(const Indices & marginalDegrees);
@@ -89,8 +88,9 @@ private:
   // Marginal degrees
   Indices marginalDegrees_;
 
-  // Integration nodes
+  // Integration nodes; weights
   NumericalSample nodes_;
+  NumericalPoint weights_;
 
   // Flag to manage the computation of nodes and weights
   mutable Bool isAlreadyComputedNodesAndWeights_;

@@ -92,8 +92,9 @@ NumericalSample WeightedExperiment::generateWithWeights(NumericalPoint & weights
 }
 
 /* Weight accessor */
-NumericalPoint WeightedExperiment::getWeight() const
+NumericalPoint WeightedExperiment::getWeight()
 {
+  copyOnWrite();
   return getImplementation()->getWeight();
 }
 

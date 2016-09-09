@@ -63,7 +63,6 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  NumericalSample generate();
   NumericalSample generateWithWeights(NumericalPoint & weights);
 
 protected:
