@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
     NumericalMathFunction analytical(input, foutput, formulas);
 
-    // we create a collection of uniform distributions over [-Pi; Pi[
+    // we create a collection of Normal centered distributions
     DistributionCollection aCollection;
     for(UnsignedInteger i = 0; i < dimension; ++i)
     {

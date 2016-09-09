@@ -67,16 +67,20 @@ NumericalPoint CorrelationAnalysis::SRC(const NumericalSample & inputSample,
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   const UnsignedInteger dimension = inputSample.getDimension();
-  LinearLeastSquares regressionAlgorithm(inputSample, outputSample);
+  // Var(X+a) = Var(X); However for numerical stability, data are centered
+  LinearLeastSquares regressionAlgorithm(inputSample - inputSample.computeMean(), outputSample);
   regressionAlgorithm.run();
+  // Linear coefficients
   const NumericalPoint linear(regressionAlgorithm.getLinear() * NumericalPoint(1, 1.0));
-  const NumericalScalar varOutput = outputSample.computeVariance()[0];
+  // Compute the output variance from the regression coefficients
+  NumericalScalar varOutput = 0.0;
   NumericalPoint src(inputSample.computeVariance());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    src[i] *= linear[i] * linear[i] / varOutput;
-    if (src[i] > 1.) LOGWARN(OSS() << "SRC coefficient for component " << i << " value (" << src[i] << ") is > 1. Check the variance of the samples." );
+    src[i] *= linear[i] * linear[i];
+    varOutput += src[i];
   }
+  src /= varOutput;
   return src;
 }
 
