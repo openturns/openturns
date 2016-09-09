@@ -61,7 +61,7 @@ public:
   void setDistribution(const Distribution & distribution);
 
   /** Sample generation */
-  NumericalSample generateWithWeights(NumericalPoint & weights);
+  NumericalSample generateWithWeights(NumericalPoint & weights) const;
 
 protected:
 

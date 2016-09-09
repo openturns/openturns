@@ -77,7 +77,7 @@ void FixedExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample FixedExperiment::generateWithWeights(NumericalPoint & weights)
+NumericalSample FixedExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   weights = weights_;
   return sample_;

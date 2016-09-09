@@ -49,7 +49,7 @@ String ExperimentImplementation::__repr__() const
 }
 
 /* Sample generation */
-NumericalSample ExperimentImplementation::generate()
+NumericalSample ExperimentImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In ExperimentImplementation::generate()";
 }
