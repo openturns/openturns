@@ -103,20 +103,20 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
 }
 
 /* Sample generation */
-NumericalSample WeightedExperimentImplementation::generate()
+NumericalSample WeightedExperimentImplementation::generate() const
 {
   NumericalPoint weights;
   return generateWithWeights(weights);
 }
 
 /* Sample generation with weights */
-NumericalSample WeightedExperimentImplementation::generateWithWeights(NumericalPoint & weights)
+NumericalSample WeightedExperimentImplementation::generateWithWeights(NumericalPoint & weights) const
 {
   throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
 }
 
 /* Weight accessor */
-NumericalPoint WeightedExperimentImplementation::getWeight()
+NumericalPoint WeightedExperimentImplementation::getWeight() const
 {
   Log::Warn(OSS() << "WeightedExperimentImplementation::getWeight is deprecated.");
   NumericalPoint weights;

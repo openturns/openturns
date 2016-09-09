@@ -81,7 +81,7 @@ String ImportanceSamplingExperiment::__repr__() const
 }
 
 /* Sample generation with weights */
-NumericalSample ImportanceSamplingExperiment::generateWithWeights(NumericalPoint & weights)
+NumericalSample ImportanceSamplingExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   NumericalSample result(size_, distribution_.getDimension());
   result.setDescription(distribution_.getDescription());

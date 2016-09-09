@@ -63,7 +63,7 @@ public:
   virtual String __repr__() const;
 
   /** Sample generation */
-  NumericalSample generateWithWeights(NumericalPoint & weights);
+  NumericalSample generateWithWeights(NumericalPoint & weights) const;
 
   /** Marginal degrees accessor */
   void setMarginalDegrees(const Indices & marginalDegrees);
@@ -76,7 +76,7 @@ protected:
 
 private:
   // Compute the tensor product nodes and weights
-  void computeNodesAndWeights();
+  void computeNodesAndWeights() const;
 
   // Distribution and marginal degrees accessor
   void setDistributionAndMarginalDegrees(const Distribution & distribution,
@@ -89,8 +89,8 @@ private:
   Indices marginalDegrees_;
 
   // Integration nodes; weights
-  NumericalSample nodes_;
-  NumericalPoint weights_;
+  mutable NumericalSample nodes_;
+  mutable NumericalPoint weights_;
 
   // Flag to manage the computation of nodes and weights
   mutable Bool isAlreadyComputedNodesAndWeights_;

@@ -54,7 +54,7 @@ public:
   virtual Composite * clone() const;
 
   /** Experiment plane generation */
-  virtual NumericalSample generate();
+  virtual NumericalSample generate() const;
 
   /** String converter */
   virtual String __repr__() const;

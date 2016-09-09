@@ -57,7 +57,7 @@ Factorial * Factorial::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Factorial::generate()
+NumericalSample Factorial::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();
