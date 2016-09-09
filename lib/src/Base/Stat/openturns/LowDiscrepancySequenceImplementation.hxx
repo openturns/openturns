@@ -57,10 +57,10 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1) */
-  virtual NumericalPoint generate();
+  virtual NumericalPoint generate() const;
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-  virtual NumericalSample generate(const UnsignedInteger size);
+  virtual NumericalSample generate(const UnsignedInteger size) const;
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
   static NumericalScalar ComputeStarDiscrepancy(const NumericalSample & sample);

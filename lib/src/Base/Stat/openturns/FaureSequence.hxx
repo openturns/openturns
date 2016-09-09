@@ -47,7 +47,7 @@ public:
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  NumericalPoint generate();
+  NumericalPoint generate() const;
 
   /** String converter */
   String __repr__() const;
@@ -63,10 +63,10 @@ private:
   void computeInitialBinomialCoefficients();
 
   /** Update the binomial table by adding one column to the triangular array */
-  void updateBinomialCoefficients();
+  void updateBinomialCoefficients() const;
 
   /** Binomial for the generation of the sequence */
-  Unsigned64BitsIntegerPersistentCollection coefficients_;
+  mutable Unsigned64BitsIntegerPersistentCollection coefficients_;
 
   /** Modulus of the sequence, i.e. least prime number greater or equal to the dimension */
   Unsigned64BitsInteger modulus_;
@@ -75,13 +75,13 @@ private:
   NumericalScalar modulusInverse_;
 
   /** Current seed into the sequence */
-  Unsigned64BitsInteger seed_;
+  mutable Unsigned64BitsInteger seed_;
 
   /** Next value of the seed that needs a coefficient update */
-  Unsigned64BitsInteger seedBound_;
+  mutable Unsigned64BitsInteger seedBound_;
 
   /** Number of digits of the seed in base the modulus */
-  UnsignedInteger logSeed_;
+  mutable UnsignedInteger logSeed_;
 
 }; /* class FaureSequence */
 

@@ -65,14 +65,14 @@ UnsignedInteger LowDiscrepancySequenceImplementation::getDimension() const
 
 
 /* Generate a low discrepancy vector of numbers uniformly distributed over [0, 1) */
-NumericalPoint LowDiscrepancySequenceImplementation::generate()
+NumericalPoint LowDiscrepancySequenceImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In LowDiscrepancySequenceImplementation::generate()";
 }
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size)
+NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size) const
 {
   NumericalSample sequenceSample(size, dimension_);
   for(UnsignedInteger i = 0; i < size ; ++i) sequenceSample[i] = generate();
