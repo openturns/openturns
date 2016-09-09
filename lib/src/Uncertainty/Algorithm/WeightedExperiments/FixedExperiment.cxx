@@ -40,8 +40,8 @@ FixedExperiment::FixedExperiment()
 FixedExperiment::FixedExperiment(const NumericalSample & sample)
   : WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
   , sample_(sample)
+  , weights_(sample.getSize(), 1.0 / sample.getSize())
 {
-  // Nothing to do
 }
 
 /* Constructor with parameters */
@@ -49,9 +49,8 @@ FixedExperiment::FixedExperiment(const NumericalSample & sample,
                                  const NumericalPoint & weights)
   : WeightedExperimentImplementation(UserDefined(sample, weights), sample.getSize())
   , sample_(sample)
+  , weights_(weights)
 {
-  // Add the weights to the upper level class
-  weights_ = weights;
 }
 
 /* Virtual constructor */
@@ -78,8 +77,9 @@ void FixedExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample FixedExperiment::generate()
+NumericalSample FixedExperiment::generateWithWeights(NumericalPoint & weights)
 {
+  weights = weights_;
   return sample_;
 }
 

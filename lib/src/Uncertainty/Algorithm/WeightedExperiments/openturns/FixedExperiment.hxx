@@ -61,14 +61,14 @@ public:
   void setDistribution(const Distribution & distribution);
 
   /** Sample generation */
-  using WeightedExperimentImplementation::generate;
-  NumericalSample generate();
+  NumericalSample generateWithWeights(NumericalPoint & weights);
 
 protected:
 
 private:
   // The fixed sample that will be returned at each call
   NumericalSample sample_;
+  NumericalPoint weights_;
 
 }; /* class FixedExperiment */
 

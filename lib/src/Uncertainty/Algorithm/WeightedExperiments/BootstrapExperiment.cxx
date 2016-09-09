@@ -60,8 +60,9 @@ String BootstrapExperiment::__repr__() const
 }
 
 /* Sample generation */
-NumericalSample BootstrapExperiment::generate()
+NumericalSample BootstrapExperiment::generateWithWeights(NumericalPoint & weights)
 {
+  weights = NumericalPoint(size_, 1.0 / size_);
   return distribution_.getSample(size_);
 }
 
