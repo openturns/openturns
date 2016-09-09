@@ -42,16 +42,16 @@ public:
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & sigma);
+                       const NumericalPoint & amplitude);
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & sigma,
+                       const NumericalPoint & amplitude,
                        const CorrelationMatrix & correlation);
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const CovarianceMatrix & covariance);
+                       const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
   DiracCovarianceModel * clone() const;
@@ -78,13 +78,15 @@ public:
   Matrix partialGradient(const NumericalPoint & s,
                          const NumericalPoint & t) const;
 
+  /** Nugget factor accessor */
+  virtual void setNuggetFactor(const NumericalScalar nuggetFactor);
+
   /** Parameters accessor */
   void setParameter(const NumericalPoint & parameters);
   NumericalPoint getParameter() const;
   Description getParameterDescription() const;
 
-  /** Scale/amplitude set accessors */
-  void setScale(const NumericalPoint & scale);
+  /** Amplitude/correlation accessors */
   void setAmplitude(const NumericalPoint & amplitude);
   void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
@@ -106,9 +108,7 @@ public:
 protected:
   friend struct DiracCovarianceModelDiscretizePolicy;
   friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
-  mutable CovarianceMatrix covariance_;
   mutable TriangularMatrix covarianceFactor_;
-  void computeCovariance();
 
 } ; /* class DiracCovarianceModel */
 

@@ -30,22 +30,43 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 /* Default constructor */
 SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")))
+  : StationaryCovarianceModel(spatialDimension)
 {
   // Nothing to do
 }
 
-/** Parameters constructor */
-SquaredExponential::SquaredExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+/* Parameters constructor */
+SquaredExponential::SquaredExponential(const NumericalPoint & scale)
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
-/** Parameters constructor */
-SquaredExponential::SquaredExponential(const NumericalPoint & theta,
-                                       const NumericalPoint & sigma)
-  : StationaryCovarianceModel(sigma, theta)
+/* Parameters constructor */
+SquaredExponential::SquaredExponential(const NumericalPoint & scale,
+                                       const NumericalPoint & amplitude)
+  : StationaryCovarianceModel(scale, amplitude)
+{
+  if (getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
+                                         << " Here, (got dimension=" << getDimension() <<")";
+}
+
+/* Parameters constructor */
+SquaredExponential::SquaredExponential(const NumericalPoint & scale,
+				       const NumericalPoint & amplitude,
+                                       const CorrelationMatrix & spatialCorrelation)
+  : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
+{
+  if (getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
+                                         << " Here, (got dimension=" << getDimension() <<")";
+}
+
+/* Parameters constructor */
+SquaredExponential::SquaredExponential(const NumericalPoint & scale,
+                                       const CovarianceMatrix & spatialCovariance)
+  : StationaryCovarianceModel(scale, spatialCovariance)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
@@ -92,21 +113,23 @@ String SquaredExponential::__repr__() const
 {
   OSS oss;
   oss << "class=" << SquaredExponential::GetClassName()
-      << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_;
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_;
   return oss;
 }
 
 /* String converter */
 String SquaredExponential::__str__(const String & offset) const
 {
-  OSS oss;
-  oss << SquaredExponential::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
-      << ")";
+  OSS oss(false);
+  oss << SquaredExponential::GetClassName();
+  oss << "(scale=" << getScale()
+      << ", amplitude=" << getAmplitude();
+  if (!isDiagonal_)
+    oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
+  else
+    oss << ", no spatial correlation";
+  oss << ")";
   return oss;
 }
 
