@@ -53,6 +53,9 @@
 # if !defined(S_ISDIR)
 #  define S_ISDIR(mode) (((mode) & S_IFDIR) != 0)
 # endif
+# if !defined(S_ISREG)
+#  define S_ISREG(mode) (((mode) & S_IFREG) != 0)
+# endif
 #elif defined(WIN32)
 # define MKDIR(p, mode)  mkdir(p)
 #else
@@ -187,20 +190,25 @@ convert_backslashes(String & path)
 #endif
 }
 
-// Function helper for Os::MakeDirectory
-static bool
-is_directory(const char * name)
+Bool Os::IsDirectory(const String & fileName)
 {
   struct stat dir_stat;
-  if(stat(name, &dir_stat) != 0) return false;
+  if(stat(fileName.c_str(), &dir_stat) != 0) return false;
   return S_ISDIR(dir_stat.st_mode);
+}
+
+Bool Os::IsFile(const String & fileName)
+{
+  struct stat dir_stat;
+  if(stat(fileName.c_str(), &dir_stat) != 0) return false;
+  return S_ISREG(dir_stat.st_mode);
 }
 
 // Returns 0 if no error
 int Os::MakeDirectory(const String & path)
 {
   if (path.empty()) return 1;
-  if (is_directory(path.c_str())) return 0;
+  if (IsDirectory(path)) return 0;
 
   String slashPath(path);
   convert_backslashes(slashPath);
@@ -210,7 +218,7 @@ int Os::MakeDirectory(const String & path)
   {
     String current_dir(path.substr(0, pos));
     const char * cpath = current_dir.c_str();
-    if (!is_directory(cpath) && (0 != MKDIR(cpath, 0777))) return 1;
+    if (!IsDirectory(current_dir) && (0 != MKDIR(cpath, 0777))) return 1;
     pos++;
   }
 
@@ -251,7 +259,7 @@ static int deleteRegularFileOrDirectory(const char * path,
 int Os::DeleteDirectory(const String & path)
 {
   if (path.empty()) return 1;
-  if (!is_directory(path.c_str())) return 1;
+  if (!IsDirectory(path)) return 1;
 
   // Refuse to delete root directory (/) and current directory (.)
   if (path == "/" || path == ".") return 1;
@@ -266,45 +274,32 @@ int Os::DeleteDirectory(const String & path)
   }
 #endif
 
-  struct stat file_stat;
-  int rc = 0;
-  rc = stat( directory, &file_stat );
-  if (rc == 0)
-  {
-    if (! S_ISDIR(file_stat.st_mode))
-    {
-      // Not a directory
-      return 1;
-    }
-  }
-
 #ifndef WIN32
 
-  rc = nftw( directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH );
-  if ( rc != 0 ) return 1;
+  int rc = nftw(directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH);
+  if (rc != 0) return 1;
 
 #else /* WIN32 */
 
-  size_t timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
-  size_t countdown = timeout;
-  OT::String rmdirCmd = OT::String("rmdir /Q /S \"") + directory + "\"";
-  int directoryExists;
+  UnsignedInteger timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
+  UnsignedInteger countdown = timeout;
+  String rmdirCmd("rmdir /Q /S \"" + path + "\"");
+  Bool directoryExists = true;
 
   do
   {
-    rc = system( (rmdirCmd + " > NUL 2>&1").c_str() );
+    int rc = system((rmdirCmd + " > NUL 2>&1").c_str());
 
     // check if directory still there (rmdir dos command always return 0)
-    struct stat dir_stat;
-    directoryExists = stat( directory, &dir_stat );
-    if( directoryExists == 0 )
+    directoryExists = IsDirectory(path);
+    if (directoryExists)
     {
-      if  ( countdown <= 0 ) return 1;
-      --countdown;
+      if (countdown == 0) return 1;
+      -- countdown;
     }
-    Sleep( 1000 );
+    Sleep(1000);
   }
-  while( directoryExists == 0 );
+  while (directoryExists);
 
 #endif /* WIN32 */
 
