@@ -24,7 +24,9 @@ try:
     myPlane = LHSExperiment(distribution, size, True, False)
     print("sample  = ", myPlane.generate())
     print("sample2 = ", myPlane.generate())
-
+    myPlane = LHSExperiment(size)
+    print("sample  = ", myPlane.generate())
+    print("sample2 = ", myPlane.generate())
 except:
     import sys
     print("t_LHSExperiment_std.py", sys.exc_info()[0], sys.exc_info()[1])
