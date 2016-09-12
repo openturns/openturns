@@ -83,6 +83,7 @@
  * #831 (Missing get/setParameter in OpenTURNSPythonFunction)
  * #837 (TruncatedDistribution::setParameter segfaults)
  * #838 (Symmetry of SymmetricMatrix not always enforced)
+ * #840 (Remove WeightedExperiment::getWeight)
  * #841 (Better CovarianceModelCollection in Python)
  * #842 (Better ProcessCollection in Python)
  * #843 (Remove all the specific isCopula() methods)
