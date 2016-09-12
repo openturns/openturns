@@ -143,7 +143,7 @@ void LowDiscrepancyExperiment::setRestart(const Bool restart)
 }
 
 /* Sample generation */
-NumericalSample LowDiscrepancyExperiment::generate()
+NumericalSample LowDiscrepancyExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   // In-place transformation to reduce memory consumption
   NumericalSample sample(sequence_.generate(size_));
@@ -151,6 +151,7 @@ NumericalSample LowDiscrepancyExperiment::generate()
   const UnsignedInteger dimension = marginals_.getSize();
   for (UnsignedInteger i = 0; i < size_; ++ i)
     for (UnsignedInteger j = 0; j < dimension; ++ j) sample[i][j] = marginals_[j].computeQuantile(sample[i][j])[0];
+  weights = NumericalPoint(size_, 1.0 / size_);
   return sample;
 }
 

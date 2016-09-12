@@ -103,9 +103,10 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample GaussProductExperiment::generate()
+NumericalSample GaussProductExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   if (!isAlreadyComputedNodesAndWeights_) computeNodesAndWeights();
+  weights = weights_;
   return nodes_;
 }
 
@@ -128,6 +129,14 @@ void GaussProductExperiment::setDistributionAndMarginalDegrees(const Distributio
   // Set the marginal degrees here then the distribution with checks
   marginalDegrees_ = marginalDegrees;
   setDistribution(distribution);
+
+  const UnsignedInteger dimension = distribution_.getDimension();
+  size_ = 1;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    const UnsignedInteger dI = marginalDegrees_[i];
+    size_ *= dI;
+  }
 }
 
 Indices GaussProductExperiment::getMarginalDegrees() const
@@ -136,19 +145,17 @@ Indices GaussProductExperiment::getMarginalDegrees() const
 }
 
 /* Compute the tensor product nodes and weights */
-void GaussProductExperiment::computeNodesAndWeights()
+void GaussProductExperiment::computeNodesAndWeights() const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   // Build the integration nodes and weights
   // First, get the marginal nodes and weights
   NumericalPointCollection marginalNodes(dimension);
   NumericalPointCollection marginalWeights(dimension);
-  size_ = 1;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger dI = marginalDegrees_[i];
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
-    size_ *= dI;
   }
   // Second, multiplex everything
   nodes_ = NumericalSample(size_, dimension);

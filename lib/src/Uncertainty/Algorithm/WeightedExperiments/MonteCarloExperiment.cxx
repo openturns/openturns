@@ -66,8 +66,9 @@ String MonteCarloExperiment::__repr__() const
 }
 
 /* Sample generation */
-NumericalSample MonteCarloExperiment::generate()
+NumericalSample MonteCarloExperiment::generateWithWeights(NumericalPoint & weights) const
 {
+  weights = NumericalPoint(size_, 1.0 / size_);
   return distribution_.getSample(size_);
 }
 

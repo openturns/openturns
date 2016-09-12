@@ -55,7 +55,7 @@ void ReverseHaltonSequence::initialize(const UnsignedInteger dimension)
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[
    See Bart Vandewoestyne, Ronald Cools, "Good permutations for deterministic scrambled Halton sequences in terms of L2-discrepancy", Journal of Computational and Applied Mathematics, 189, 341-361 (2006) */
-NumericalPoint ReverseHaltonSequence::generate()
+NumericalPoint ReverseHaltonSequence::generate() const
 {
   NumericalPoint realization(dimension_);
   // Loop over the components

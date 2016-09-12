@@ -58,7 +58,7 @@ Composite * Composite::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Composite::generate()
+NumericalSample Composite::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();

@@ -57,7 +57,7 @@ Axial * Axial::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Axial::generate()
+NumericalSample Axial::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();

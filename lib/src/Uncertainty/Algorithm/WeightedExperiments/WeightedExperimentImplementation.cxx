@@ -33,21 +33,19 @@ CLASSNAMEINIT(WeightedExperimentImplementation);
 
 
 /* Default constructor */
-WeightedExperimentImplementation::WeightedExperimentImplementation():
-  ExperimentImplementation(),
-  distribution_(),
-  size_(ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize")),
-  weights_(ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize"))
+WeightedExperimentImplementation::WeightedExperimentImplementation()
+  : ExperimentImplementation()
+  , distribution_()
+  , size_(ResourceMap::GetAsUnsignedInteger("WeightedExperiment-DefaultSize"))
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-WeightedExperimentImplementation::WeightedExperimentImplementation(const UnsignedInteger size):
-  ExperimentImplementation(),
-  distribution_(),
-  size_(0),
-  weights_(0)
+WeightedExperimentImplementation::WeightedExperimentImplementation(const UnsignedInteger size)
+  : ExperimentImplementation()
+  , distribution_()
+  , size_(0)
 {
   // Check if the size is valid
   setSize(size);
@@ -55,11 +53,10 @@ WeightedExperimentImplementation::WeightedExperimentImplementation(const Unsigne
 
 /* Constructor with parameters */
 WeightedExperimentImplementation::WeightedExperimentImplementation(const Distribution & distribution,
-    const UnsignedInteger size):
-  ExperimentImplementation(),
-  distribution_(distribution),
-  size_(0),
-  weights_(0)
+    const UnsignedInteger size)
+  : ExperimentImplementation()
+  , distribution_(distribution)
+  , size_(0)
 {
   // Check if the size is valid
   setSize(size);
@@ -98,7 +95,6 @@ void WeightedExperimentImplementation::setSize(const UnsignedInteger size)
 {
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0.";
   size_ = size;
-  weights_ = NumericalPoint(size_, 1.0 / size_);
 }
 
 UnsignedInteger WeightedExperimentImplementation::getSize() const
@@ -107,23 +103,25 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
 }
 
 /* Sample generation */
-NumericalSample WeightedExperimentImplementation::generate()
+NumericalSample WeightedExperimentImplementation::generate() const
 {
-  throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generate()";
+  NumericalPoint weights;
+  return generateWithWeights(weights);
 }
 
 /* Sample generation with weights */
-NumericalSample WeightedExperimentImplementation::generateWithWeights(NumericalPoint & weights)
+NumericalSample WeightedExperimentImplementation::generateWithWeights(NumericalPoint & weights) const
 {
-  const NumericalSample sample(generate());
-  weights = weights_;
-  return sample;
+  throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
 }
 
 /* Weight accessor */
 NumericalPoint WeightedExperimentImplementation::getWeight() const
 {
-  return weights_;
+  Log::Warn(OSS() << "WeightedExperimentImplementation::getWeight is deprecated.");
+  NumericalPoint weights;
+  generateWithWeights(weights);
+  return weights;
 }
 
 END_NAMESPACE_OPENTURNS

@@ -102,7 +102,7 @@ String LHSExperiment::__str__(const String & offset) const
 }
 
 /* Sample generation */
-NumericalSample LHSExperiment::generate()
+NumericalSample LHSExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   // To insure that the shuffle has been initialized
@@ -119,6 +119,7 @@ NumericalSample LHSExperiment::generate()
       sample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }
+  weights = NumericalPoint(size_, 1.0 / size_);
   return sample;
 }
 

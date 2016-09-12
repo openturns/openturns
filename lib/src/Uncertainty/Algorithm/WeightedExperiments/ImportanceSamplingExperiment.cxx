@@ -81,25 +81,18 @@ String ImportanceSamplingExperiment::__repr__() const
 }
 
 /* Sample generation with weights */
-NumericalSample ImportanceSamplingExperiment::generateWithWeights(NumericalPoint & weights)
+NumericalSample ImportanceSamplingExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   NumericalSample result(size_, distribution_.getDimension());
   result.setDescription(distribution_.getDescription());
-  weights_ = NumericalPoint(size_);
+  weights = NumericalPoint(size_);
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     result[i] = importanceDistribution_.getRealization();
-    weights_[i] = distribution_.computePDF(result[i]) / importanceDistribution_.computePDF(result[i]);
+    weights[i] = distribution_.computePDF(result[i]) / importanceDistribution_.computePDF(result[i]);
   }
-  weights = weights_;
   return result;
 }
 
-/* Sample generation */
-NumericalSample ImportanceSamplingExperiment::generate()
-{
-  NumericalPoint tmp(0);
-  return generateWithWeights(tmp);
-}
 
 END_NAMESPACE_OPENTURNS

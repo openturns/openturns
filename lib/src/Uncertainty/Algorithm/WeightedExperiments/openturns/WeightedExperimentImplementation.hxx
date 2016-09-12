@@ -69,22 +69,22 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  virtual NumericalSample generate();
+  virtual NumericalSample generate() const;
 
   /** Sample generation with weights*/
-  virtual NumericalSample generateWithWeights(NumericalPoint & weights);
+  virtual NumericalSample generateWithWeights(NumericalPoint & weights) const;
 
-  /** Weight accessor */
+  /** Weight accessor
+   * @deprecated */
   virtual NumericalPoint getWeight() const;
 
 protected:
 
   /** Distribution that defines the weights of the experiment */
   Distribution distribution_;
+
   /** The size of the sample to be generated */
   UnsignedInteger size_;
-  /** The weights associated with the sample for numerical integration */
-  NumericalPoint weights_;
 
 }; /* class WeightedExperimentImplementation */
 

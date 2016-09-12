@@ -66,7 +66,7 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint FaureSequence::generate()
+NumericalPoint FaureSequence::generate() const
 {
   NumericalPoint realization(dimension_);
   // First, compute the decomposition of seed_ in base modulus_
@@ -161,7 +161,7 @@ void FaureSequence::computeInitialBinomialCoefficients()
 }
 
 /* Update the binomial coefficients table by adding one column to the triangular array */
-void FaureSequence::updateBinomialCoefficients()
+void FaureSequence::updateBinomialCoefficients() const
 {
   // Here, we assume that the coefficient table has already been initialized and stores the values associated with logSeed-1
   UnsignedInteger previousIndex2 = coefficients_.getSize() - logSeed_ + 1;

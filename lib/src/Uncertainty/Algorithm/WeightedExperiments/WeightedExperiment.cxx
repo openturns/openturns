@@ -78,16 +78,14 @@ UnsignedInteger WeightedExperiment::getSize() const
 /* Here is the interface that all derived class must implement */
 
 /* Sample generation */
-NumericalSample WeightedExperiment::generate()
+NumericalSample WeightedExperiment::generate() const
 {
-  copyOnWrite();
   return getImplementation()->generate();
 }
 
 /* Sample generation with weights*/
-NumericalSample WeightedExperiment::generateWithWeights(NumericalPoint & weights)
+NumericalSample WeightedExperiment::generateWithWeights(NumericalPoint & weights) const
 {
-  copyOnWrite();
   return getImplementation()->generateWithWeights(weights);
 }
 

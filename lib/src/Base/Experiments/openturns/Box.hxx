@@ -53,7 +53,7 @@ public:
   /** Experiment plane generation :
    *  The box [0, 1]^n is uniformly sampled in each dimension
    */
-  virtual NumericalSample generate();
+  virtual NumericalSample generate() const;
 
   /** String converter */
   virtual String __repr__() const;

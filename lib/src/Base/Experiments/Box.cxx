@@ -64,7 +64,7 @@ Box * Box::clone() const
 /* Experiment plane generation
    The box [0, 1]^n is uniformly sampled in each dimension
    levels counts the number of interior points in each dimension */
-NumericalSample Box::generate()
+NumericalSample Box::generate() const
 {
   const UnsignedInteger dimension = levels_.getDimension();
   Indices bounds(dimension);
