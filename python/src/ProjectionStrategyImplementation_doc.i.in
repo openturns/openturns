@@ -25,7 +25,7 @@ transformation *T* and an orthonormal multivariate basis :math:`(\Psi_k)_{k \in 
 of :math:`L^2_{\mu}(\Rset^d,\Rset)`. See :class:`~openturns.FunctionalChaosAlgorithm` 
 to get more details. 
 
-The meta model of :math:`g`, based on the functional chaos decomposition of 
+The metamodel of :math:`g`, based on the functional chaos decomposition of 
 :math:`f = g \circ T^{-1}` writes:
 
 .. math::

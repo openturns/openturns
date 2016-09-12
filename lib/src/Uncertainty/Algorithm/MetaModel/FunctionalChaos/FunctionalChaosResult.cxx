@@ -70,7 +70,7 @@ FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model
   , Psi_k_(Psi_k)
   , composedMetaModel_()
 {
-  // The composed meta model will be a dual linear combination
+  // The composed metamodel will be a dual linear combination
   composedMetaModel_ = NumericalMathFunction(Psi_k, alpha_k);
   if (transformation.getEvaluation()->getClassName() == "IdentityEvaluation")
     metaModel_ = composedMetaModel_;
@@ -108,7 +108,7 @@ String FunctionalChaosResult::__repr__() const
 String FunctionalChaosResult::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << "meta model=" << metaModel_ << Os::GetEndOfLine();
+  oss << offset << "metamodel=" << metaModel_ << Os::GetEndOfLine();
   oss << offset << "orthogonal basis=" << orthogonalBasis_;
   return oss;
 }
@@ -161,7 +161,7 @@ FunctionalChaosResult::NumericalMathFunctionCollection FunctionalChaosResult::ge
   return Psi_k_;
 }
 
-/* Composed meta model accessor */
+/* Composed metamodel accessor */
 NumericalMathFunction FunctionalChaosResult::getComposedMetaModel() const
 {
   return composedMetaModel_;

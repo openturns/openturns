@@ -203,7 +203,7 @@ NumericalPoint KrigingResult::getConditionalMean(const NumericalSample & xi) con
 /* Compute mean of new points conditionnaly to observations */
 NumericalPoint KrigingResult::getConditionalMean(const NumericalPoint & xi) const
 {
-  // Use of meta model evaluation
+  // Use of metamodel evaluation
   // For NumericalPoint, no problematic of copy
   const NumericalPoint output = metaModel_.operator()(xi);
   return output;

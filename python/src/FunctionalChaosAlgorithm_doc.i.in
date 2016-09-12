@@ -79,7 +79,7 @@ It writes:
 
 For more details, see :class:`~openturns.FunctionalChaosRandomVector`.
 
-The functional chaos decomposition can be used to build a meta model of *g*, 
+The functional chaos decomposition can be used to build a metamodel of *g*, 
 which writes:
 
 .. math::

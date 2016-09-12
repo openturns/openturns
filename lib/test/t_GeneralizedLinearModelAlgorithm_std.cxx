@@ -24,19 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-static String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::scientific << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +34,6 @@ int main(int argc, char *argv[])
   try
   {
     // Set Numerical precision to 3
-    UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(3);
 
     std::cout << "=============" << std::endl;
@@ -85,6 +71,7 @@ int main(int argc, char *argv[])
     NumericalSample Y2 = model(X2);
 
     Basis basis = LinearBasisFactory(spatialDimension).build();
+    //DiracCovarianceModel covarianceModel(spatialDimension);
     DiracCovarianceModel covarianceModel(spatialDimension);
     GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
@@ -93,9 +80,25 @@ int main(int argc, char *argv[])
     GeneralizedLinearModelResult result = algo.getResult();
     NumericalMathFunction metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
-    const NumericalSample residual = metaModel(X) - Y;
+    NumericalSample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 0.00013144), 1e-5, 1e-5);
     assert_almost_equal(conditionalCovariance.getParameter(), NumericalPoint(1, 0.011464782674211804), 1e-5, 1e-3);
+
+    // Now without estimating covariance parameters
+    basis = LinearBasisFactory(spatialDimension).build();
+    covarianceModel = DiracCovarianceModel(spatialDimension);
+    algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
+    algo.setOptimizeParameters(false);
+    algo.run();
+
+    // perform an evaluation
+    result = algo.getResult();
+    metaModel = result.getMetaModel();
+    conditionalCovariance = result.getCovarianceModel();
+    residual = metaModel(X) - Y;
+    assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 0.00013144), 1e-5, 1e-5);
+    assert_almost_equal(conditionalCovariance.getParameter(), NumericalPoint(1, 1.0), 0.0, 0.0);
+
     std::cout << "Test Ok" << std::endl;
 
   }

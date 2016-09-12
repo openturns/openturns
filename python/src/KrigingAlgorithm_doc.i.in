@@ -17,7 +17,7 @@ inputSample, outputSample : 2-d sequence of float
 inputTransformation : :class:`~openturns.NumericalMathFunction`
     Function  *T* that helps to normalize the input sample.
 
-    If used, the meta model is built on the transformed data.
+    If used, the metamodel is built on the transformed data.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`.
 
@@ -42,7 +42,7 @@ Notes
 -----
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all *k*, with :math:`\cM:\Rset^d \mapsto \Rset^p` the model.
 
-The meta model *Kriging* is based on the same principles as those of the generalized linear model: it assumes that the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the trace of a normal process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The normal process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The metamodel *Kriging* is based on the same principles as those of the generalized linear model: it assumes that the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the trace of a normal process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The normal process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 
 .. math::
@@ -68,7 +68,7 @@ with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})`
 
 The estimation of the parameters :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` are made by the :class:`~openturns.GeneralizedLinearModelAlgorithm` class.
 
-The Kriging algorithm makes the generalized linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
+The Kriging algorithm makes the generalized linear model interpolary on the input samples. The Kriging metamodel :math:`\tilde{\cM}` is defined by:
 
 
 .. math::
@@ -103,7 +103,7 @@ Create the algorithm:
 >>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
 >>> algo.run()
 
-Get the resulting meta model:
+Get the resulting metamodel:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()"
@@ -232,3 +232,22 @@ Notes
 It computes the kriging response surface and creates a
 :class:`~openturns.KrigingResult` structure containing all the results."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::setOptimizeParameters
+"Covariance model parameters optimization flag accessor.
+
+Parameters
+----------
+optimizeParams : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getOptimizeParameters
+"Covariance model parameters optimization flag accessor.
+
+Returns
+-------
+optimizeParams : bool
+    Whether to optimize the covariance model parameters."

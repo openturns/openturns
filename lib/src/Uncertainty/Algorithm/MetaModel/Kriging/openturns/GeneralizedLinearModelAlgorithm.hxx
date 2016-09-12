@@ -115,6 +115,10 @@ public:
   OptimizationSolver getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationSolver & solver);
 
+  /** Optimization flag accessor */
+  Bool getOptimizeParameters() const;
+  void setOptimizeParameters(const Bool optimizeParameters);
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -184,7 +188,7 @@ private:
   CovarianceModel conditionalCovarianceModel_;
 
   // The optimization algorithm used for the meta-parameters estimation
-  mutable OptimizationSolver  solver_;
+  mutable OptimizationSolver solver_;
 
   // The coefficients of the current output conditional expectation part
   mutable NumericalPoint beta_;
@@ -206,13 +210,18 @@ private:
   mutable HMatrix covarianceCholeskyFactorHMatrix_;
 
   /** Boolean argument for keep covariance */
-  mutable Bool keepCholeskyFactor_;
+  Bool keepCholeskyFactor_;
 
   /** Method : 0 (lapack), 1 (hmat) */
   UnsignedInteger method_;
 
   /** Bool to tell if optimization has run */
-  Bool hasRun_;
+  mutable Bool hasRun_;
+
+  /** Flag to tell if the parameters of the covariance model
+      have to be optimized */
+  Bool optimizeParameters_;
+
 }; // class GeneralizedLinearModelAlgorithm
 
 
