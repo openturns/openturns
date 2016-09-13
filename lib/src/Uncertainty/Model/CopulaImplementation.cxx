@@ -173,7 +173,6 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
   // Here we have a circular dependency between copulas and distributions
   if (hasEllipticalCopula())
   {
-    std::cerr << "In CopulaImplementation::getKendallTau(), elliptical copula case" << std::endl;
     const CorrelationMatrix shape(getShapeMatrix());
     for (UnsignedInteger i = 0; i < dimension; ++i)
       for(UnsignedInteger j = 0; j < i; ++j)
