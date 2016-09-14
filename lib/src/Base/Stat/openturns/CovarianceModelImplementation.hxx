@@ -43,7 +43,7 @@ class OT_API CovarianceModelImplementation
 
   CLASSNAME;
 
- public:
+public:
 
   typedef Pointer<CovarianceModelImplementation> Implementation;
 
@@ -51,29 +51,13 @@ class OT_API CovarianceModelImplementation
   explicit CovarianceModelImplementation(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with amplitude and scale parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & amplitude,
-                                const NumericalPoint & scale);
-
-  /** Standard constructor with amplitude and scale parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & amplitude,
-                                const NumericalPoint & scale);
+  CovarianceModelImplementation(const NumericalPoint & scale,
+                                const NumericalPoint & amplitude);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
+  CovarianceModelImplementation(const NumericalPoint & scale,
                                 const NumericalPoint & amplitude,
-                                const NumericalPoint & scale,
                                 const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & amplitude,
-                                const NumericalPoint & scale,
-                                const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with scale and spatial covariance parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & scale,
-                                const CovarianceMatrix & spatialCovariance);
 
   /** Standard constructor with scale and spatial covariance parameter parameter */
   CovarianceModelImplementation(const NumericalPoint & scale,
@@ -202,29 +186,23 @@ class OT_API CovarianceModelImplementation
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
- protected:
+protected:
 
   virtual void setFullParameter(const NumericalPoint & parameter);
   virtual NumericalPoint getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
-  // set the covariance structure
-  void updateSpatialCovariance();
+  /** Collection - Container for scale values  */
+  NumericalPoint scale_;
 
-  /** Input dimension parameter */
+  /** Input dimension */
   UnsignedInteger spatialDimension_;
-
-  /** Input dimension parameter */
-  UnsignedInteger dimension_;
 
   /** Collection - Container for amplitude values  */
   NumericalPoint amplitude_;
 
-  /** Collection - Container for scale values  */
-  NumericalPoint scale_;
-
-  /** Correlation matrix of the spatial dependence structure */
-  CorrelationMatrix spatialCorrelation_;
+  /** Output dimension */
+  UnsignedInteger dimension_;
 
   /** Covariance matrix of the spatial dependence structure */
   CovarianceMatrix spatialCovariance_;
@@ -243,3 +221,4 @@ class OT_API CovarianceModelImplementation
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_COVARIANCEMODELIMPLEMENTATION_HXX */
+
