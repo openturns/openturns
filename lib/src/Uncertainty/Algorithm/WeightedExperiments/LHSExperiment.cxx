@@ -33,6 +33,7 @@ CLASSNAMEINIT(LHSExperiment);
 /* Default constructor */
 LHSExperiment::LHSExperiment()
   : WeightedExperimentImplementation()
+  , marginals_(1, distribution_)
   , shuffle_(0, 0)
   , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(false)
@@ -46,7 +47,7 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
                              const Bool alwaysShuffle,
                              const Bool randomShift)
   : WeightedExperimentImplementation(size)
-  , marginals_(0)
+  , marginals_(1, distribution_)
   , shuffle_(0, 0)
   , isAlreadyComputedShuffle_(false)
   , alwaysShuffle_(alwaysShuffle)
