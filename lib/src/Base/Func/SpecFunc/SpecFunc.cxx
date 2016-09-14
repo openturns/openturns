@@ -1106,4 +1106,18 @@ NumericalScalar SpecFunc::Cbrt(const NumericalScalar x)
   return (x < 0.0 ? -exp(log(-x) / 3.0) : exp(log(x) / 3.0));
 }
 
+UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
+                                              const UnsignedInteger k)
+{
+  if (k > n) return 0; // by convention
+  UnsignedInteger value = 1;
+  for (UnsignedInteger i = 0; i < std::min(k, n - k); ++ i)
+  {
+    value *= n - i;
+    value /= i + 1;
+  }
+  return value;
+}
+
+
 END_NAMESPACE_OPENTURNS

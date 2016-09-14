@@ -1063,3 +1063,18 @@ Returns
 -------
 result : float"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::BinomialCoefficient
+"Binomial coefficient.
+
+Returns the value :math:`C_k^n = \binom{n}{k}`
+
+Parameters
+----------
+n : int
+k : int
+
+Returns
+-------
+result : int"
