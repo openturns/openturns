@@ -196,6 +196,7 @@ as Python functions.
     SpecFunc_BesselI1
     SpecFunc_BesselK
     SpecFunc_Beta
+    SpecFunc_BinomialCoefficient
     SpecFunc_BitCount
     SpecFunc_Cbrt
     SpecFunc_Dawson

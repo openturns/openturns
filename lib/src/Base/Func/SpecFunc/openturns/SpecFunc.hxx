@@ -278,6 +278,9 @@ public:
   static NumericalScalar Atanh(const NumericalScalar x);
   static NumericalScalar Cbrt(const NumericalScalar x);
 
+  // binomial coefficient C(n, k)
+  static UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
+                                             const UnsignedInteger k);
 }; /* class SpecFunc */
 
 END_NAMESPACE_OPENTURNS

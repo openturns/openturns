@@ -64,7 +64,7 @@ CombinatorialGeneratorImplementation::IndicesCollection Combinations::generate()
   indices.fill();
   if (k_ == n_) return IndicesCollection(1, indices);
   /* Size of the sample to be generated: C(k, n) */
-  const UnsignedInteger size = static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(k_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1))));
+  const UnsignedInteger size = SpecFunc::BinomialCoefficient(n_, k_);
   IndicesCollection allCombinations(size, indices);
   for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
   {
