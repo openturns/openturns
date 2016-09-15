@@ -236,7 +236,7 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   // Special case when |x| << 1
   if (std::abs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
   // Small nu
-  if (delta < 100.0)
+  if (nu < 20.0)
   {
 #ifdef OPENTURNS_HAVE_BOOST
     return (tail ? boost::math::cdf(boost::math::complement(boost::math::non_central_t(nu, delta), x)) : boost::math::cdf(boost::math::non_central_t(nu, delta), x));
