@@ -74,17 +74,17 @@ public:
   /** Second order indices accessor */
   virtual SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
-  /** Total order indices accessor */
-  virtual NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  /** Total indices accessor */
+  virtual NumericalPoint getTotalIndices(const UnsignedInteger marginalIndex = 0) const;
 
-  /** Interval for the total order indices accessor */
-  virtual Interval getTotalOrderIndicesInterval() const;
+  /** Interval for the total indices accessor */
+  virtual Interval getTotalIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
   NumericalPoint getAggregatedFirstOrderIndices() const;
 
-  /** Aggregated total order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedTotalOrderIndices() const;
+  /** Aggregated total indices accessor for multivariate samples */
+  NumericalPoint getAggregatedTotalIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;
@@ -183,8 +183,8 @@ protected:
   /** Aggregated first order indices */
   mutable NumericalPoint mergedFirstOrderIndices_;
 
-  /** Aggregated total order indices */
-  mutable NumericalPoint mergedTotalOrderIndices_;
+  /** Aggregated total indices */
+  mutable NumericalPoint mergedTotalIndices_;
 
   /** Second order indices */
   mutable SymmetricTensor secondOrderIndices_;
@@ -192,8 +192,8 @@ protected:
   /** Confidence interval for first order indices (merged indices) */
   mutable Interval firstOrderIndiceInterval_;
 
-  /** Confidence interval for total order indices (merged indices) */
-  mutable Interval totalOrderIndiceInterval_;
+  /** Confidence interval for total indices (merged indices) */
+  mutable Interval totalIndiceInterval_;
 
 }; /* class SobolIndicesAlgorithmImplementation */
 

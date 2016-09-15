@@ -86,7 +86,7 @@ NumericalSample SaltelliSensitivityAlgorithm::computeIndices(const NumericalSamp
     // yE correspond to the block that start at index (p + 2) * size_
     // For first order indices, compute yE * yB
     const NumericalPoint yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
-    // For total order indices, compute yE * yA
+    // For total indices, compute yE * yA
     const NumericalPoint yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)

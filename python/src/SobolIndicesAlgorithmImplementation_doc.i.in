@@ -99,7 +99,7 @@ It follows that :math:`V_{i}` and :math:`V_{i,j}` terms are defined as follow:
 
 The implemented second order indices use this formula.
 
-The major methods (`Saltelli`, `Jansen`, `Mauntz-Kucherenko`, `Martinez`) use the :math:`E^i` matrix to compute the indices (first order and total order). This matrix is defined as follows:
+The major methods (`Saltelli`, `Jansen`, `Mauntz-Kucherenko`, `Martinez`) use the :math:`E^i` matrix to compute the indices (first order and total). This matrix is defined as follows:
 
 .. math::
 
@@ -118,7 +118,7 @@ The formulas for the evaluation of the indices are given in each class documenta
   - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
   - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method
 
-For multivariate outputs, aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
+For multivariate outputs, aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalIndices`. Such indices write as follow:
 
 
 .. math::
@@ -133,8 +133,8 @@ Aggregated second order indices have not been implemented.
 
 |
 
-Note finally that evaluation of intervals for indices might be done for first and total order thanks to
-the `getFirstOrderIndicesInterval` and `getTotalOrderIndicesInterval` methods. Default bootstrap size 
+Note finally that evaluation of intervals for indices might be done for first and total thanks to
+the `getFirstOrderIndicesInterval` and `getTotalIndicesInterval` methods. Default bootstrap size 
 and confidence level values are parametrized thanks to the resource map keys `SobolIndicesAlgorithm-BootstrapSize`
 and `SobolIndicesAlgorithm-BootstrapConfidenceLevel`. Appropriate setters
 might be called to change their values.
@@ -249,17 +249,17 @@ OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
-"Get the evaluation of merged total order Sobol indices.
+%define OT_SobolIndicesAlgorithm_getAggregatedTotalIndices_doc
+"Get the evaluation of merged total Sobol indices.
 
 Returns
 -------
 indices : :class:`~openturns.NumericalPoint`
-    Sequence containing merged total order Sobol indices."
+    Sequence containing merged total Sobol indices."
 
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices
-OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getAggregatedTotalIndices
+OT_SobolIndicesAlgorithm_getAggregatedTotalIndices_doc
 
 // ---------------------------------------------------------------------
 
@@ -281,8 +281,8 @@ OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_getTotalOrderIndices_doc
-"Get total order Sobol indices.
+%define OT_SobolIndicesAlgorithm_getTotalIndices_doc
+"Get total Sobol indices.
 
 Parameters
 ----------
@@ -292,24 +292,24 @@ i : int, optional
 Returns
 -------
 indices : :class:`~openturns.NumericalPoint`
-    Sequence containing total order Sobol indices."
+    Sequence containing total Sobol indices."
 
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getTotalOrderIndices
-OT_SobolIndicesAlgorithm_getTotalOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getTotalIndices
+OT_SobolIndicesAlgorithm_getTotalIndices_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
-"Get interval for the merged total order Sobol indices.
+%define OT_SobolIndicesAlgorithm_getTotalIndicesInterval_doc
+"Get interval for the merged total Sobol indices.
 
 Returns
 -------
 interval : :class:`~openturns.Interval`
-    Interval for total order Sobol indices for each component."
+    Interval for total Sobol indices for each component."
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval
-OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getTotalIndicesInterval
+OT_SobolIndicesAlgorithm_getTotalIndicesInterval_doc
 
 // ---------------------------------------------------------------------
 
@@ -374,8 +374,8 @@ Usage:
 
   draw(*marginalIndex*)
 
-With the first usage, draw the aggregated first and total order indices.
-With the second usage, draw the first and total order indices of a specific marginal in case of vectorial output
+With the first usage, draw the aggregated first and total indices.
+With the second usage, draw the first and total indices of a specific marginal in case of vectorial output
 
 Parameters
 ----------
@@ -385,7 +385,7 @@ marginalIndex: int
 Returns
 -------
 Graph : :class:`~openturns.Graph`
-    A graph containing the aggregated first and total order indices.
+    A graph containing the aggregated first and total indices.
 
 Notes
 -----

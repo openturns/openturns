@@ -67,8 +67,8 @@ public:
   /** Interval for the first order indices accessor */
   virtual Interval getFirstOrderIndicesInterval() const;
 
-  /** Interval for the total order indices accessor */
-  virtual Interval getTotalOrderIndicesInterval() const;
+  /** Interval for the total indices accessor */
+  virtual Interval getTotalIndicesInterval() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

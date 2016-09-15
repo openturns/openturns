@@ -69,22 +69,22 @@ int main(int argc, char *argv[])
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
       const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const NumericalPoint totalIndices(sensitivitySobol.getTotalIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
-      fullprint << "Total order Sobol indice of Y|X3 = " << totalOrderIndices[2] << std::endl;
+      fullprint << "Total Sobol indice of Y|X3 = " << totalIndices[2] << std::endl;
       fullprint << "Second order Sobol indice of Y|X1,X3 = " << secondOrderIndices(0, 2) << std::endl;
       // Confidence interval
       sensitivitySobol.setBootstrapSize(nr_bootstrap);
       sensitivitySobol.setBootstrapConfidenceLevel(confidence_level);
 
       const Interval confidenceIntervalFirstOrder(sensitivitySobol.getFirstOrderIndicesInterval());
-      const Interval confidenceIntervalTotalOrder(sensitivitySobol.getTotalOrderIndicesInterval());
+      const Interval confidenceIntervalTotal(sensitivitySobol.getTotalIndicesInterval());
       fullprint << "Confidence interval of first order Y|X1 = [" << confidenceIntervalFirstOrder.getLowerBound()[0]
                 << ", " << confidenceIntervalFirstOrder.getUpperBound()[0] << "]" << std::endl;
-      fullprint << "Confidence interval of total order Y|X3 = [" << confidenceIntervalTotalOrder.getLowerBound()[2]
-                << ", " << confidenceIntervalTotalOrder.getUpperBound()[2] << "]" << std::endl;
+      fullprint << "Confidence interval of total Y|X3 = [" << confidenceIntervalTotal.getLowerBound()[2]
+                << ", " << confidenceIntervalTotal.getUpperBound()[2] << "]" << std::endl;
     }
 
     {
@@ -92,76 +92,76 @@ int main(int argc, char *argv[])
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
       const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const NumericalPoint totalIndices(sensitivitySobol.getTotalIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
-      fullprint << "Total order Sobol indice of Y|X3 = " << totalOrderIndices[2] << std::endl;
+      fullprint << "Total Sobol indice of Y|X3 = " << totalIndices[2] << std::endl;
       fullprint << "Second order Sobol indice of Y|X1,X3 = " << secondOrderIndices(0, 2) << std::endl;
       // Confidence interval
       sensitivitySobol.setBootstrapSize(nr_bootstrap);
       sensitivitySobol.setBootstrapConfidenceLevel(confidence_level);
 
       const Interval confidenceIntervalFirstOrder(sensitivitySobol.getFirstOrderIndicesInterval());
-      const Interval confidenceIntervalTotalOrder(sensitivitySobol.getTotalOrderIndicesInterval());
+      const Interval confidenceIntervalTotal(sensitivitySobol.getTotalIndicesInterval());
       fullprint << "Confidence interval of first order Y|X1 = [" << confidenceIntervalFirstOrder.getLowerBound()[0]
                 << ", " << confidenceIntervalFirstOrder.getUpperBound()[0] << "]" << std::endl;
-      fullprint << "Confidence interval of total order Y|X3 = [" << confidenceIntervalTotalOrder.getLowerBound()[2]
-                << ", " << confidenceIntervalTotalOrder.getUpperBound()[2] << "]" << std::endl;
+      fullprint << "Confidence interval of total Y|X3 = [" << confidenceIntervalTotal.getLowerBound()[2]
+                << ", " << confidenceIntervalTotal.getUpperBound()[2] << "]" << std::endl;
     }
     {
       MauntzKucherenkoSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
       const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const NumericalPoint totalIndices(sensitivitySobol.getTotalIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
-      fullprint << "Total order Sobol indice of Y|X3 = " << totalOrderIndices[2] << std::endl;
+      fullprint << "Total Sobol indice of Y|X3 = " << totalIndices[2] << std::endl;
       fullprint << "Second order Sobol indice of Y|X1,X3 = " << secondOrderIndices(0, 2) << std::endl;
       // Confidence interval
       sensitivitySobol.setBootstrapSize(nr_bootstrap);
       sensitivitySobol.setBootstrapConfidenceLevel(confidence_level);
 
       const Interval confidenceIntervalFirstOrder(sensitivitySobol.getFirstOrderIndicesInterval());
-      const Interval confidenceIntervalTotalOrder(sensitivitySobol.getTotalOrderIndicesInterval());
+      const Interval confidenceIntervalTotal(sensitivitySobol.getTotalIndicesInterval());
       fullprint << "Confidence interval of first order Y|X1 = [" << confidenceIntervalFirstOrder.getLowerBound()[0]
                 << ", " << confidenceIntervalFirstOrder.getUpperBound()[0] << "]" << std::endl;
-      fullprint << "Confidence interval of total order Y|X3 = [" << confidenceIntervalTotalOrder.getLowerBound()[2]
-                << ", " << confidenceIntervalTotalOrder.getUpperBound()[2] << "]" << std::endl;
+      fullprint << "Confidence interval of total Y|X3 = [" << confidenceIntervalTotal.getLowerBound()[2]
+                << ", " << confidenceIntervalTotal.getUpperBound()[2] << "]" << std::endl;
     }
     {
       MartinezSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
       const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const NumericalPoint totalIndices(sensitivitySobol.getTotalIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
-      fullprint << "Total order Sobol indice of Y|X3 = " << totalOrderIndices[2] << std::endl;
+      fullprint << "Total Sobol indice of Y|X3 = " << totalIndices[2] << std::endl;
       fullprint << "Second order Sobol indice of Y|X1,X3 = " << secondOrderIndices(0, 2) << std::endl;
       // Confidence interval
       sensitivitySobol.setBootstrapSize(nr_bootstrap);
       sensitivitySobol.setBootstrapConfidenceLevel(confidence_level);
 
       const Interval confidenceIntervalFirstOrder(sensitivitySobol.getFirstOrderIndicesInterval());
-      const Interval confidenceIntervalTotalOrder(sensitivitySobol.getTotalOrderIndicesInterval());
+      const Interval confidenceIntervalTotal(sensitivitySobol.getTotalIndicesInterval());
       fullprint << "Confidence interval of first order Y|X1 = [" << confidenceIntervalFirstOrder.getLowerBound()[0]
                 << ", " << confidenceIntervalFirstOrder.getUpperBound()[0] << "]" << std::endl;
-      fullprint << "Confidence interval of total order Y|X3 = [" << confidenceIntervalTotalOrder.getLowerBound()[2]
-                << ", " << confidenceIntervalTotalOrder.getUpperBound()[2] << "]" << std::endl;
+      fullprint << "Confidence interval of total Y|X3 = [" << confidenceIntervalTotal.getLowerBound()[2]
+                << ", " << confidenceIntervalTotal.getUpperBound()[2] << "]" << std::endl;
 
 
       fullprint << "Asymptotic estimate" << std::endl;
       ResourceMap::SetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval", true);
       const Interval asymptoticConfidenceIntervalFirstOrder(sensitivitySobol.getFirstOrderIndicesInterval());
-      const Interval asymptoticConfidenceIntervalTotalOrder(sensitivitySobol.getTotalOrderIndicesInterval());
+      const Interval asymptoticConfidenceIntervalTotal(sensitivitySobol.getTotalIndicesInterval());
       fullprint << "Confidence interval of first order Y|X1 = [" << asymptoticConfidenceIntervalFirstOrder.getLowerBound()[0]
                 << ", " << asymptoticConfidenceIntervalFirstOrder.getUpperBound()[0] << "]" << std::endl;
-      fullprint << "Confidence interval of total order Y|X3 = [" << asymptoticConfidenceIntervalTotalOrder.getLowerBound()[2]
-                << ", " << asymptoticConfidenceIntervalTotalOrder.getUpperBound()[2] << "]" << std::endl;
+      fullprint << "Confidence interval of total Y|X3 = [" << asymptoticConfidenceIntervalTotal.getLowerBound()[2]
+                << ", " << asymptoticConfidenceIntervalTotal.getUpperBound()[2] << "]" << std::endl;
     }
 
   }

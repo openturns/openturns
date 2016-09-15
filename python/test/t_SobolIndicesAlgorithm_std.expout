@@ -1,30 +1,30 @@
 Method of evaluation= Saltelli
 First order indices =  [0.293134,0.451208,-0.00292283]
-Total order indices =  [0.57499,0.427147,0.256687]
+Total indices =  [0.57499,0.427147,0.256687]
 Method of evaluation= Jansen
 First order indices =  [0.322419,0.457314,0.0260925]
-Total order indices =  [0.55841,0.433746,0.240408]
+Total indices =  [0.55841,0.433746,0.240408]
 Method of evaluation= MauntzKucherenko
 First order indices =  [0.293133,0.451207,-0.00292379]
-Total order indices =  [0.57499,0.427147,0.256687]
+Total indices =  [0.57499,0.427147,0.256687]
 Method of evaluation= Martinez
 First order indices =  [0.308902,0.459187,0.00683867]
-Total order indices =  [0.567786,0.430754,0.244293]
+Total indices =  [0.567786,0.430754,0.244293]
 Martinez method : indices
 First order indices =  [0.308902,0.459187,0.00683867]
-Total order indices =  [0.567786,0.430754,0.244293]
+Total indices =  [0.567786,0.430754,0.244293]
 Martinez method : bootstrap intervals
 First order indices interval =  [0.293839, 0.325449]
 [0.444118, 0.472919]
 [-0.0221776, 0.0299202]
-Total order indices interval =  [0.533427, 0.600547]
+Total indices interval =  [0.533427, 0.600547]
 [0.379899, 0.459605]
 [0.208616, 0.270619]
 Martinez method : asymptotic intervals
 First order indices interval =  [0.308335, 0.309469]
 [0.458692, 0.459682]
 [0.00621153, 0.0074658]
-Total order indices interval =  [0.567276, 0.568296]
+Total indices interval =  [0.567276, 0.568296]
 [0.43033, 0.431178]
 [0.244024, 0.244562]
 [0.0101493,0.60453,0.304954]
