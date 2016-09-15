@@ -70,6 +70,7 @@
 
 === Bug fixes ===
  * #565 (The SensitivityAnalysis class manages only one single output.)
+ * #604 (Bug concerning the NonCentralStudent distribution)
  * #698 (KernelSmoothing() as a factory)
  * #786 (Bug in sensitivity analysis)
  * #803 (prefix openturns includes)
