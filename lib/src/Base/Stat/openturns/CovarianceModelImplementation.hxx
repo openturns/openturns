@@ -51,29 +51,13 @@ public:
   explicit CovarianceModelImplementation(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with amplitude and scale parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & amplitude,
-                                const NumericalPoint & scale);
-
-  /** Standard constructor with amplitude and scale parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & amplitude,
-                                const NumericalPoint & scale);
+  CovarianceModelImplementation(const NumericalPoint & scale,
+                                const NumericalPoint & amplitude);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
+  CovarianceModelImplementation(const NumericalPoint & scale,
                                 const NumericalPoint & amplitude,
-                                const NumericalPoint & scale,
                                 const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & amplitude,
-                                const NumericalPoint & scale,
-                                const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with scale and spatial covariance parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & scale,
-                                const CovarianceMatrix & spatialCovariance);
 
   /** Standard constructor with scale and spatial covariance parameter parameter */
   CovarianceModelImplementation(const NumericalPoint & scale,
@@ -182,7 +166,9 @@ public:
 
   /** Parameters accessor */
   virtual void setParameter(const NumericalPoint & parameter);
+  virtual void setActiveParameter(const Indices & active);
   virtual NumericalPoint getParameter() const;
+  virtual Indices getActiveParameter() const;
   virtual Description getParameterDescription() const;
 
   /** String converter */
@@ -202,23 +188,21 @@ public:
 
 protected:
 
-  // set the covariance structure
-  void updateSpatialCovariance();
-
-  /** Input dimension parameter */
-  UnsignedInteger spatialDimension_;
-
-  /** Input dimension parameter */
-  UnsignedInteger dimension_;
-
-  /** Collection - Container for amplitude values  */
-  NumericalPoint amplitude_;
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
   /** Collection - Container for scale values  */
   NumericalPoint scale_;
 
-  /** Correlation matrix of the spatial dependence structure */
-  CorrelationMatrix spatialCorrelation_;
+  /** Input dimension */
+  UnsignedInteger spatialDimension_;
+
+  /** Collection - Container for amplitude values  */
+  NumericalPoint amplitude_;
+
+  /** Output dimension */
+  UnsignedInteger dimension_;
 
   /** Covariance matrix of the spatial dependence structure */
   CovarianceMatrix spatialCovariance_;
@@ -229,8 +213,12 @@ protected:
   /** Nugget factor */
   NumericalScalar nuggetFactor_;
 
+  /** Active parameters */
+  Indices activeParameter_;
+
 } ; /* class CovarianceModelImplementation */
 
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_COVARIANCEMODELIMPLEMENTATION_HXX */
+

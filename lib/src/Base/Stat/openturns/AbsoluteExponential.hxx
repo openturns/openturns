@@ -40,11 +40,11 @@ public:
   explicit AbsoluteExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  AbsoluteExponential(const NumericalPoint & theta);
+  AbsoluteExponential(const NumericalPoint & scale);
 
   /** Parameters constructor */
-  AbsoluteExponential(const NumericalPoint & theta,
-                      const NumericalPoint & sigma);
+  AbsoluteExponential(const NumericalPoint & scale,
+                      const NumericalPoint & amplitude);
 
   /** Virtual copy constructor */
   AbsoluteExponential * clone() const;
@@ -75,3 +75,4 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif
+

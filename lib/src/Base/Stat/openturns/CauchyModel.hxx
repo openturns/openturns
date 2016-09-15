@@ -48,12 +48,12 @@ public:
   CauchyModel();
 
   /** Standard constructor with amplitude and scale parameters parameters */
-  CauchyModel(const NumericalPoint & amplitude,
-              const NumericalPoint & scale);
+  CauchyModel(const NumericalPoint & scale,
+              const NumericalPoint & amplitude);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
-  CauchyModel(const NumericalPoint & amplitude,
-              const NumericalPoint & scale,
+  CauchyModel(const NumericalPoint & scale,
+              const NumericalPoint & amplitude,
               const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */

@@ -36,9 +36,9 @@ private:
   const CovarianceMatrix covarianceMatrix_;
 
 public:
-  DiracAssemblyFunction(const DiracCovarianceModel & covarianceModel)
-    : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
-    , covarianceMatrix_(covarianceModel(NumericalPoint(covarianceModel.getSpatialDimension())))
+  DiracAssemblyFunction(const CovarianceMatrix & covariance)
+    : HMatrixTensorRealAssemblyFunction(covariance.getDimension())
+    , covarianceMatrix_(covariance)
   {
     // Nothing to do
   }
@@ -47,7 +47,7 @@ public:
   {
     if (i == j)
     {
-      memcpy( &localValues->getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+      std::copy( covarianceMatrix_.getImplementation()->begin(), covarianceMatrix_.getImplementation()->end(), localValues->getImplementation()->begin() );
     }
   }
 };
@@ -55,73 +55,65 @@ public:
 /* Default constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension)
   : StationaryCovarianceModel(spatialDimension)
-  , covariance_(1)
   , covarianceFactor_()
 {
-  // Nothing to do
+  // Compute the Cholesky factor of the spatial covariance
+  CovarianceMatrix covariance(spatialCovariance_);
+  if (nuggetFactor_ > 0.0)
+    for (UnsignedInteger i = 0; i < covariance.getDimension(); ++i) covariance(i, i) *= (1.0 + nuggetFactor_);
+  covarianceFactor_ = covariance.computeCholesky(false);
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill(spatialDimension);
 }
 
 /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & sigma)
-  : StationaryCovarianceModel(spatialDimension)
-  , covariance_()
+                                           const NumericalPoint & amplitude)
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), amplitude)
   , covarianceFactor_()
 {
-  dimension_ = sigma.getDimension();
-  setAmplitude(sigma);
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill(spatialDimension);
+  // Compute the Cholesky factor of the spatial covariance
+  CovarianceMatrix covariance(spatialCovariance_);
+  if (nuggetFactor_ > 0.0)
+    for (UnsignedInteger i = 0; i < covariance.getDimension(); ++i) covariance(i, i) *= (1.0 + nuggetFactor_);
+  covarianceFactor_ = covariance.computeCholesky(false);
 }
 
-/** Parameters constructor */
+/* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & sigma,
-    const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(sigma.getDimension(), 1.0), NumericalPoint(spatialDimension, 1.0))
-  , covariance_()
+                                           const NumericalPoint & amplitude,
+                                           const CorrelationMatrix & correlation)
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), amplitude, correlation)
   , covarianceFactor_()
 {
-  dimension_ = sigma.getDimension();
-  // Set spatial correlation
-  setSpatialCorrelation(correlation);
-  // set amplitude & compute covariance
-  setAmplitude(sigma);
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill(spatialDimension);
+  // Compute the Cholesky factor of the spatial covariance
+  CovarianceMatrix covariance(spatialCovariance_);
+  if (nuggetFactor_ > 0.0)
+    for (UnsignedInteger i = 0; i < covariance.getDimension(); ++i) covariance(i, i) *= (1.0 + nuggetFactor_);
+  covarianceFactor_ = covariance.computeCholesky(false);
 }
 
-/** Parameters constructor */
+  /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const CovarianceMatrix & covariance)
-  : StationaryCovarianceModel(spatialDimension),
-    covariance_()
+                                           const CovarianceMatrix & spatialCovariance)
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), spatialCovariance)
+  , covarianceFactor_()
 {
-  dimension_ = covariance.getDimension();
-  amplitude_ = NumericalPoint(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-    amplitude_[i] = sqrt(covariance(i, i));
-  if (!covariance.isDiagonal())
-  {
-    CorrelationMatrix correlation(dimension_);
-    for(UnsignedInteger j = 0; j < dimension_; ++j)
-      for(UnsignedInteger i = j; i < dimension_; ++i)
-        spatialCorrelation_(i, j) = covariance(i, j) / (amplitude_[i] * amplitude_[j]);
-  }
-  // Copy covariance
-  covariance_ = covariance;
-}
-
-void DiracCovarianceModel::computeCovariance()
-{
-  // Method that helps to compute covariance_ attribut (for tau=0)
-  // after setAmplitude, setSpatialCorrelation
-  covariance_ = CovarianceMatrix(dimension_);
-  for(UnsignedInteger j = 0; j < dimension_; ++j) covariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor_);
-  if (!spatialCorrelation_.isDiagonal())
-  {
-    for(UnsignedInteger j = 0; j < dimension_; ++j)
-      for(UnsignedInteger i = j + 1; i < dimension_; ++i)
-        covariance_(i, j) = spatialCorrelation_(i, j) * amplitude_[i] * amplitude_[j];
-  }
-  // Compute once the Cholesky factor
-  covarianceFactor_ = covariance_.computeCholesky();
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill(spatialDimension);
+  // Compute the Cholesky factor of the spatial covariance
+  CovarianceMatrix covariance(spatialCovariance_);
+  if (nuggetFactor_ > 0.0)
+    for (UnsignedInteger i = 0; i < covariance.getDimension(); ++i) covariance(i, i) *= (1.0 + nuggetFactor_);
+  covarianceFactor_ = covariance.computeCholesky(false);
 }
 
 /* Virtual constructor */
@@ -137,9 +129,13 @@ CovarianceMatrix DiracCovarianceModel::operator() (const NumericalPoint & tau) c
   // If tau.norm1 is zero we compute the covariance matrix
   // Otherwise the returned value is 0
   if (tau.norm() == 0)
-    return covariance_;
-  else
-    return CovarianceMatrix(SquareMatrix(dimension_).getImplementation());
+    {
+      if (nuggetFactor_ == 0.0) return spatialCovariance_;
+      CovarianceMatrix covariance(spatialCovariance_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i) covariance(i, i) *= (1.0 + nuggetFactor_);
+      return covariance;
+    }
+  return CovarianceMatrix(SquareMatrix(dimension_).getImplementation());
 }
 
 // The following structure helps to compute the full covariance matrix
@@ -147,17 +143,19 @@ struct DiracCovarianceModelDiscretizePolicy
 {
   const NumericalSample & input_;
   CovarianceMatrix & output_;
-  const DiracCovarianceModel & model_;
+  const CovarianceMatrix & covariance_;
   const UnsignedInteger dimension_;
 
   DiracCovarianceModelDiscretizePolicy(const NumericalSample & input,
                                        CovarianceMatrix & output,
-                                       const DiracCovarianceModel & model)
+                                       const CovarianceMatrix & covariance)
     : input_(input)
     , output_(output)
-    , model_(model)
-    , dimension_(model.getDimension())
-  {}
+    , covariance_(covariance)
+    , dimension_(covariance.getDimension())
+  {
+    // Nothing to do
+  }
 
   inline void operator()(const TBB::BlockedRange<UnsignedInteger> & r) const
   {
@@ -166,7 +164,7 @@ struct DiracCovarianceModelDiscretizePolicy
       const UnsignedInteger indexBlock = index * dimension_;
       for (UnsignedInteger j = 0; j < dimension_; ++j)
         for (UnsignedInteger i = 0; i < dimension_; ++i)
-          output_(indexBlock + i, indexBlock + j) = model_.covariance_(i, j);
+          output_(indexBlock + i, indexBlock + j) = covariance_(i, j);
     }
   }
 }; /* end struct DiracCovarianceModelDiscretizePolicy */
@@ -184,7 +182,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const NumericalSample & vertic
   const UnsignedInteger fullSize = size * dimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
-  const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
+  const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, operator()(NumericalPoint(spatialDimension_, 0.0)) );
   // The loop is over the lower block-triangular part
   TBB::ParallelFor( 0, size, policy );
 
@@ -206,7 +204,9 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
     , output_(output)
     , model_(model)
     , dimension_(model.getDimension())
-  {}
+  {
+    // Nothing to do
+  }
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
@@ -256,7 +256,7 @@ NumericalSample DiracCovarianceModel::discretizeRow(const NumericalSample & vert
   NumericalSample result(size * dimension_, dimension_);
   for(UnsignedInteger j = 0; j < dimension_; ++j)
     for(UnsignedInteger i = j; i < dimension_; ++i)
-      result[p * dimension_ + i][j] = covariance_(i, j);
+      result[p * dimension_ + i][j] = spatialCovariance_(i, j);
   return result;
 }
 
@@ -275,14 +275,9 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const NumericalSample & vertices
   covarianceHMatrix.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
   covarianceHMatrix.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
   // Update covariance matrix
-  // Take into account nuggetFactor
-  CovarianceMatrix oldCovariance(covariance_);
-  for(UnsignedInteger j = 0; j < dimension_; ++j) covariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor);
   // Compute the covariance
-  DiracAssemblyFunction dirac(*this);
+  DiracAssemblyFunction dirac(operator()(NumericalPoint(spatialDimension_, 0.0)));
   covarianceHMatrix.assemble(dirac, 'L');
-  // Restore old covariance
-  covariance_ = CovarianceMatrix(oldCovariance);
   return covarianceHMatrix;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
@@ -298,6 +293,20 @@ Matrix DiracCovarianceModel::partialGradient(const NumericalPoint & s,
   // Gradient should be checked
   Matrix gradient(spatialDimension_, dimension_ * dimension_);
   return gradient;
+}
+
+/* Nugget factor accessor */
+void DiracCovarianceModel::setNuggetFactor(const NumericalScalar nuggetFactor)
+{
+  if (!(nuggetFactor == nuggetFactor_))
+    {
+      CovarianceModelImplementation::setNuggetFactor(nuggetFactor);
+      CovarianceMatrix covariance(spatialCovariance_);
+      if (nuggetFactor > 0.0)
+	for (UnsignedInteger i = 0; i < covariance.getDimension(); ++i)
+	  covariance(i, i) *= (1.0 + nuggetFactor);
+      covarianceFactor_ = covariance.computeCholesky(false);
+    }
 }
 
 /* Parameters accessor */
@@ -317,40 +326,46 @@ Description DiracCovarianceModel::getParameterDescription() const
 {
   Description description(0);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
-    description.add(OSS() << "sigma_" << j);
+    description.add(OSS() << "amplitude_" << j);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    for (UnsignedInteger j = 0; j < i; ++j)
+      description.add(OSS() << "R_" << i << "_" << j);
   return description;
 }
-void DiracCovarianceModel::setScale(const NumericalPoint & scale)
-{
-  // Scale factor has no effect
-  // No check of size or dimension
-  scale_ = scale;
-  LOGWARN(OSS() << "Scale parameter is not used.");
-}
 
-/** Amplitude accessor */
+/* Amplitude accessor */
 void DiracCovarianceModel::setAmplitude(const NumericalPoint & amplitude)
 {
   if (amplitude.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude vector should be of size " << dimension_
-                                         << ", here, amplitude dimension = " << amplitude.getDimension();
-  // Check positivity of amplitude
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    if (amplitude[i] <= 0)
-      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive. Or the #" << i << " component equals " << amplitude[i];
-  }
-  amplitude_ = amplitude;
-  computeCovariance();
+                                         << ", got dimension=" << amplitude.getDimension();
+  if (!(amplitude == amplitude_))
+    {
+      // Check positivity of amplitude
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	{
+	  if (amplitude[i] <= 0)
+	    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, the component " << i << " of the amplitude=" << amplitude[i] << " is not positive.";
+	}
+      // Update the Cholesky factor
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	{
+	  const NumericalScalar rho = std::sqrt(amplitude[i] / amplitude_[i]);
+	  for (UnsignedInteger j = 0; j <= i; ++j)
+	    covarianceFactor_(i, j) *= rho; 
+	} // i
+      amplitude_ = amplitude;
+    } // amplitude != amplitude_
 }
 
 void DiracCovarianceModel::setSpatialCorrelation(const CorrelationMatrix & correlation)
 {
-  if (correlation.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setSpatialCorrelation, correlation matrix should be of dimension " << dimension_
-                                         << ", here, matrix's dimension = " << correlation.getDimension();
-  spatialCorrelation_ = correlation;
-  computeCovariance();
+  CovarianceModelImplementation::setSpatialCorrelation(correlation);
+  CovarianceMatrix covariance(spatialCovariance_);
+  if (nuggetFactor_ > 0.0)
+    for (UnsignedInteger i = 0; i < covariance.getDimension(); ++i)
+      covariance(i, i) *= (1.0 + nuggetFactor_);
+  covarianceFactor_ = covariance.computeCholesky(false);
 }
 
 /* Is it a stationary model ? */
@@ -365,18 +380,22 @@ String DiracCovarianceModel::__repr__() const
   OSS oss;
   oss << "class=" << DiracCovarianceModel::GetClassName()
       << ", input dimension=" << spatialDimension_
-      << ", sigma=" << amplitude_
-      << ", spatialCorelation=" << spatialCorrelation_;
-  return oss;
+      << ", amplitude=" << amplitude_
+      << ", spatialCorelation=" << getSpatialCorrelation();
+   return oss;
 }
 
 /* String converter */
 String DiracCovarianceModel::__str__(const String & offset) const
 {
-  OSS oss;
+  OSS oss(false);
   oss << DiracCovarianceModel::GetClassName();
-  oss << "(t)=" << covariance_.__str__()
-      << " * t==" << NumericalPoint(spatialDimension_, 0.0).__str__();
+  oss << "(amplitude=" << getAmplitude();
+  if (!isDiagonal_)
+    oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
+  else
+    oss << ", no spatial correlation";
+  oss << ")";
   return oss;
 }
 
@@ -384,7 +403,6 @@ String DiracCovarianceModel::__str__(const String & offset) const
 void DiracCovarianceModel::save(Advocate & adv) const
 {
   StationaryCovarianceModel::save(adv);
-  adv.saveAttribute("covariance_", covariance_);
   adv.saveAttribute("covarianceFactor_", covarianceFactor_);
 }
 
@@ -392,7 +410,6 @@ void DiracCovarianceModel::save(Advocate & adv) const
 void DiracCovarianceModel::load(Advocate & adv)
 {
   StationaryCovarianceModel::load(adv);
-  adv.loadAttribute("covariance_", covariance_);
   adv.loadAttribute("covarianceFactor_", covarianceFactor_);
 }
 

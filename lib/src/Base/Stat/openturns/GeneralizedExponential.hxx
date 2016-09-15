@@ -40,11 +40,11 @@ public:
   explicit GeneralizedExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  GeneralizedExponential(const NumericalPoint & theta,
+  GeneralizedExponential(const NumericalPoint & scale,
                          const NumericalScalar p);
 
-  GeneralizedExponential(const NumericalPoint & theta,
-                         const NumericalPoint & sigma,
+  GeneralizedExponential(const NumericalPoint & scale,
+                         const NumericalPoint & amplitude,
                          const NumericalScalar p);
 
   /** Virtual copy constructor */
@@ -64,11 +64,22 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const;
 
+  /** P accessor */
+  NumericalScalar getP() const;
+  void setP(const NumericalScalar p);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
+
+protected:
+
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 private:
 
@@ -80,3 +91,4 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif
+
