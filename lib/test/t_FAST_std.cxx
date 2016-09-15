@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
 
     NumericalPoint firstOrderFastIndices(sensitivityFast.getFirstOrderIndices());
-    NumericalPoint totalOrderFastIndices(sensitivityFast.getTotalOrderIndices());
+    NumericalPoint totalFastIndices(sensitivityFast.getTotalIndices());
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       NumericalScalar value = firstOrderFastIndices[i];
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
     fullprint << std::endl;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      NumericalScalar value = totalOrderFastIndices[i];
-      fullprint << "Ishigami total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
+      NumericalScalar value = totalFastIndices[i];
+      fullprint << "Ishigami total FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
     }
     fullprint << std::endl;
     // // Test with G-Sobol function
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 
     // Comparaison with reference analytical values
     firstOrderFastIndices = sensitivityFast.getFirstOrderIndices();
-    totalOrderFastIndices = sensitivityFast.getTotalOrderIndices();
+    totalFastIndices = sensitivityFast.getTotalIndices();
     // First-order indices
     NumericalPoint V_i(inputDimension);
     NumericalPoint Vtot_i(inputDimension);
@@ -136,8 +136,8 @@ int main(int argc, char *argv[])
     fullprint << std::endl;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      NumericalScalar value = totalOrderFastIndices[i];
-      fullprint << "G-Sobol total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Vtot_i[i]) << std::endl;
+      NumericalScalar value = totalFastIndices[i];
+      fullprint << "G-Sobol total FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Vtot_i[i]) << std::endl;
     }
   }
   catch (TestFailed & ex)

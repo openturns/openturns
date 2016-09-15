@@ -1,2 +1,4 @@
 Remove deprecated LAR class in 1.10 version
 Remove deprecated WeightedExperiment::getWeight
+Remove deprecated FAST::getTotalOrderIndices
+

@@ -46,10 +46,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
   , varianceI_()
   , varianceTI_()
   , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , mergedTotalIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
-  , totalOrderIndiceInterval_()
+  , totalIndiceInterval_()
 {
   // Nothing to do
 }
@@ -68,10 +68,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const N
   , varianceI_()
   , varianceTI_()
   , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , mergedTotalIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
-  , totalOrderIndiceInterval_()
+  , totalIndiceInterval_()
 {
   if (outputDesign.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
@@ -111,10 +111,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   , varianceI_()
   , varianceTI_()
   , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , mergedTotalIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
-  , totalOrderIndiceInterval_()
+  , totalIndiceInterval_()
 {
   const UnsignedInteger inputDimension = model.getInputDimension();
   if (inputDimension != distribution.getDimension())
@@ -148,10 +148,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   , varianceI_()
   , varianceTI_()
   , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , mergedTotalIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
-  , totalOrderIndiceInterval_()
+  , totalIndiceInterval_()
 {
   const UnsignedInteger inputDimension = model.getInputDimension();
   if (inputDimension != experiment.getDistribution().getDimension())
@@ -242,13 +242,13 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const U
 {
   if (0 == varianceI_.getSize())
   {
-    // Invoke internal method to compute first/ total order indices indices
+    // Invoke internal method to compute first/ total indices indices
     // This method is defined in specific children classes
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const NumericalPoint firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   for (UnsignedInteger p = 0; p < inputDesign_.getDimension(); ++p)
@@ -258,7 +258,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const U
               << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
     // Another case : Si > STi
     if (varianceI_[marginalIndex][p] > varianceTI_[marginalIndex][p])
-      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
+      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total index . You may increase the sampling size. HERE we have: S_"
               << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
   }
   return firstOrderSensitivity;
@@ -314,15 +314,15 @@ struct BootstrapPolicy
 /** void method that computes confidence interval */
 void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
 {
-  if (0 != totalOrderIndiceInterval_.getDimension()) return;
+  if (0 != totalIndiceInterval_.getDimension()) return;
 
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
   const NumericalPoint aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTotalOrder(getAggregatedTotalOrderIndices());
+  const NumericalPoint aggregatedTotal(getAggregatedTotalIndices());
   // Compute confidence interval
   firstOrderIndiceInterval_ = Interval(aggregatedFirstOrder, aggregatedFirstOrder);
-  totalOrderIndiceInterval_ = Interval(aggregatedTotalOrder, aggregatedTotalOrder);
+  totalIndiceInterval_ = Interval(aggregatedTotal, aggregatedTotal);
   if (bootstrapSize_ > 0)
   {
     // Temporary samples that stores the first/total indices
@@ -373,12 +373,12 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
     const NumericalPoint firstOrderLowerBound(aggregatedFirstOrder * 2.0 - upperQuantileFO);
     const NumericalPoint firstOrderUpperBound(aggregatedFirstOrder * 2.0 - lowerQuantileFO);
     // Total order interval
-    const NumericalPoint totalOrderLowerBound(aggregatedTotalOrder * 2.0 - upperQuantileTO);
-    const NumericalPoint totalOrderUpperBound(aggregatedTotalOrder * 2.0 - lowerQuantileTO);
+    const NumericalPoint totalLowerBound(aggregatedTotal * 2.0 - upperQuantileTO);
+    const NumericalPoint totalUpperBound(aggregatedTotal * 2.0 - lowerQuantileTO);
 
     // Compute confidence interval
     firstOrderIndiceInterval_ = Interval(firstOrderLowerBound, firstOrderUpperBound);
-    totalOrderIndiceInterval_ = Interval(totalOrderLowerBound, totalOrderUpperBound);
+    totalIndiceInterval_ = Interval(totalLowerBound, totalUpperBound);
     LOGINFO(OSS() << "First order interval Bootstrap with Basic method=" );
     LOGINFO(OSS() << "Total Order from Bootstrap sample:  lowerQuantile=" << lowerQuantileTO << ", upperQuantile=" << upperQuantileTO );
   }
@@ -432,35 +432,35 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
 }
 
 /* Total order indices accessor */
-NumericalPoint SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+NumericalPoint SobolIndicesAlgorithmImplementation::getTotalIndices(const UnsignedInteger marginalIndex) const
 {
   if (0 == varianceI_.getSize())
   {
-    // Invoke internal method to compute first/ total order indices indices
+    // Invoke internal method to compute first/ total indices indices
     // This method is defined in specific children classes
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalIndices, marginalIndex should be in [0," << outputDimension - 1;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // Another case : Si > STi
     if (varianceI_[marginalIndex][p] > varianceTI_[marginalIndex][p])
-      LOGWARN(OSS() << "The estimated total order Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
+      LOGWARN(OSS() << "The estimated total Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
               << p << "=" <<  varianceI_[marginalIndex][p] / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
   }
   // return value
   return varianceTI_[marginalIndex] / referenceVariance_[marginalIndex] ;
 }
 
-/* Interval for the total order indices accessor */
-Interval SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval() const
+/* Interval for the total indices accessor */
+Interval SobolIndicesAlgorithmImplementation::getTotalIndicesInterval() const
 {
   // Interval evaluation using Bootstrap
   computeIndicesInterval();
-  return totalOrderIndiceInterval_;
+  return totalIndiceInterval_;
 }
 
 /* Aggregated first order indices accessor for multivariate samples */
@@ -468,33 +468,33 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndic
 {
   if (0 == varianceI_.getSize())
   {
-    // Invoke internal method to compute first/ total order indices indices
+    // Invoke internal method to compute first/ total indices indices
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   if (0 == mergedFirstOrderIndices_.getDimension())
   {
     // Compute aggregate indices
-    mergedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, mergedTotalOrderIndices_);
+    mergedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, mergedTotalIndices_);
   }
   // Indices computed
   return mergedFirstOrderIndices_;
 }
 
-/* Aggregated total order indices accessor for multivariate samples */
-NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices() const
+/* Aggregated total indices accessor for multivariate samples */
+NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedTotalIndices() const
 {
   if (0 == varianceI_.getSize())
   {
-    // Invoke internal method to compute first/ total order indices indices
+    // Invoke internal method to compute first/ total indices indices
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   if (0 == mergedFirstOrderIndices_.getDimension())
   {
     // Compute aggregate indices
-    mergedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, mergedTotalOrderIndices_);
+    mergedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, mergedTotalIndices_);
   }
   // Indices computed
-  return mergedTotalOrderIndices_;
+  return mergedTotalIndices_;
 }
 
 // Getter for bootstrap size
@@ -510,7 +510,7 @@ void SobolIndicesAlgorithmImplementation::setBootstrapSize(const UnsignedInteger
     throw InvalidArgumentException(HERE) << "Bootstrap sampling size should be positive. Here, bootstrapSize=" << bootstrapSize;
   bootstrapSize_ = bootstrapSize;
   firstOrderIndiceInterval_ = Interval();
-  totalOrderIndiceInterval_ = Interval();
+  totalIndiceInterval_ = Interval();
 }
 
 // Getter for bootstrap confidence level
@@ -526,7 +526,7 @@ void SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel(const Nume
     throw InvalidArgumentException(HERE) << "Confidence level value should be in ]0,1[. Here, confidence level=" << confidenceLevel;
   confidenceLevel_ = confidenceLevel;
   firstOrderIndiceInterval_ = Interval();
-  totalOrderIndiceInterval_ = Interval();
+  totalIndiceInterval_ = Interval();
 }
 
 /* String converter */
@@ -598,9 +598,9 @@ NumericalSample SobolIndicesAlgorithmImplementation::computeIndices(const Numeri
 Graph SobolIndicesAlgorithmImplementation::draw() const
 {
   Graph graph(OSS() << " Aggregated sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
-  // Define cloud for first order and total order indices
+  // Define cloud for first order and total indices
   const NumericalPoint aggregatedFO(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTO(getAggregatedTotalOrderIndices());
+  const NumericalPoint aggregatedTO(getAggregatedTotalIndices());
   NumericalSample data(aggregatedFO.getDimension(), 2);
   for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
   {
@@ -617,8 +617,8 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
     data[k][1] = aggregatedTO[k];
   }
   // Define cloud for TO
-  Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
-  graph.add(totalOrderIndicesGraph);
+  Cloud totalIndicesGraph(data, "blue", "square", "Aggregated TO");
+  graph.add(totalIndicesGraph);
   // Set bounding box
   NumericalPoint boundingBox(4, -0.1);
   boundingBox[1] = aggregatedFO.getDimension() + 1;
@@ -627,7 +627,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
   {
     // Add plot of intervals
     const Interval foInterval(getFirstOrderIndicesInterval());
-    const Interval toInterval(getTotalOrderIndicesInterval());
+    const Interval toInterval(getTotalIndicesInterval());
     // transform data
     data = NumericalSample(2, 2);
     for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
@@ -639,7 +639,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
       data[1][1] = foInterval.getUpperBound()[k];
       graph.add(Curve(data, "red", "solid", 2, ""));
 
-      // Relative to TotalOrder
+      // Relative to Total
       data[0][0] = (k + 1) + 0.1;
       data[0][1] = toInterval.getLowerBound()[k];
       data[1][0] = (k + 1) + 0.1;
@@ -656,9 +656,9 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
 Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) const
 {
   Graph graph(OSS() << " Sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
-  // Define cloud for first order and total order indices
+  // Define cloud for first order and total indices
   const NumericalPoint foIndices(getFirstOrderIndices(marginalIndex));
-  const NumericalPoint toIndices(getTotalOrderIndices(marginalIndex));
+  const NumericalPoint toIndices(getTotalIndices(marginalIndex));
   NumericalSample data(foIndices.getDimension(), 2);
   for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
   {
@@ -675,8 +675,8 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
     data[k][1] = toIndices[k];
   }
   // Define cloud for TO
-  Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
-  graph.add(totalOrderIndicesGraph);
+  Cloud totalIndicesGraph(data, "blue", "square", "Aggregated TO");
+  graph.add(totalIndicesGraph);
   // Set bounding box
   NumericalPoint boundingBox(4, -0.1);
   boundingBox[1] = foIndices.getDimension() + 1;
@@ -797,10 +797,10 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "varianceI_", varianceI_);
   adv.saveAttribute( "varianceTI_", varianceTI_);
   adv.saveAttribute( "mergedFirstOrderIndices_", mergedFirstOrderIndices_);
-  adv.saveAttribute( "mergedTotalOrderIndices_", mergedTotalOrderIndices_);
+  adv.saveAttribute( "mergedTotalIndices_", mergedTotalIndices_);
   adv.saveAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.saveAttribute( "firstOrderIndiceInterval_", firstOrderIndiceInterval_);
-  adv.saveAttribute( "totalOrderIndiceInterval_", totalOrderIndiceInterval_);
+  adv.saveAttribute( "totalIndiceInterval_", totalIndiceInterval_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -816,10 +816,10 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "varianceI_", varianceI_);
   adv.loadAttribute( "varianceTI_", varianceTI_);
   adv.loadAttribute( "mergedFirstOrderIndices_", mergedFirstOrderIndices_);
-  adv.loadAttribute( "mergedTotalOrderIndices_", mergedTotalOrderIndices_);
+  adv.loadAttribute( "mergedTotalIndices_", mergedTotalIndices_);
   adv.loadAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.loadAttribute( "firstOrderIndiceInterval_", firstOrderIndiceInterval_);
-  adv.loadAttribute( "totalOrderIndiceInterval_", totalOrderIndiceInterval_);
+  adv.loadAttribute( "totalIndiceInterval_", totalIndiceInterval_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -8,14 +8,14 @@ OT_SobolIndicesAlgorithm_getFirstOrderIndices_doc
 OT_SobolIndicesAlgorithm_getFirstOrderIndicesInterval_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::getAggregatedFirstOrderIndices
 OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
-%feature("docstring") OT::SobolIndicesAlgorithm::getAggregatedTotalOrderIndices
-OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getAggregatedTotalIndices
+OT_SobolIndicesAlgorithm_getAggregatedTotalIndices_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::getSecondOrderIndices
 OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
-%feature("docstring") OT::SobolIndicesAlgorithm::getTotalOrderIndices
-OT_SobolIndicesAlgorithm_getTotalOrderIndices_doc
-%feature("docstring") OT::SobolIndicesAlgorithm::getTotalOrderIndicesInterval
-OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getTotalIndices
+OT_SobolIndicesAlgorithm_getTotalIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::getTotalIndicesInterval
+OT_SobolIndicesAlgorithm_getTotalIndicesInterval_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::getBootstrapConfidenceLevel
 OT_SobolIndicesAlgorithm_getBootstrapConfidenceLevel_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::setBootstrapConfidenceLevel

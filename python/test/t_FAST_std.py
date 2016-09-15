@@ -28,7 +28,7 @@ try:
     sensitivityAnalysis = FAST(modelIshigami, distributions, 400)
 
     firstOrderIndices = sensitivityAnalysis.getFirstOrderIndices()
-    totalOrderIndices = sensitivityAnalysis.getTotalOrderIndices()
+    totalIndices = sensitivityAnalysis.getTotalIndices()
 
     # Comparaison with reference analytical values
     a = 7.0
@@ -49,8 +49,8 @@ try:
               value, "absolute error=%.8f" % fabs(value - sob_1[i]))
     print("\n")
     for i in range(inputDimension):
-        value = totalOrderIndices[i]
-        print("Ishigami total order FAST indice", i, "= %.8f" %
+        value = totalIndices[i]
+        print("Ishigami total FAST indice", i, "= %.8f" %
               value, "absolute error=%.8f" % fabs(value - sob_T1[i]))
 
     # Test with G-Sobol function
@@ -73,7 +73,7 @@ try:
 
     # Comparaison with reference analytical values
     firstOrderIndices = sensitivityAnalysis.getFirstOrderIndices()
-    totalOrderIndices = sensitivityAnalysis.getTotalOrderIndices()
+    totalIndices = sensitivityAnalysis.getTotalIndices()
     # First-order indices
     V_i = NumericalPoint(inputDimension)
     Vtot_i = NumericalPoint(inputDimension)
@@ -94,8 +94,8 @@ try:
 
     print("\n")
     for i in range(inputDimension):
-        value = totalOrderIndices[i]
-        print("G-Sobol total order FAST indices ", i, "= %.8f" %
+        value = totalIndices[i]
+        print("G-Sobol total FAST indices ", i, "= %.8f" %
               value, "absolute error=%.8f" % fabs(value - Vtot_i[i] / covTh))
 
 except:

@@ -55,6 +55,7 @@
  * Removed SensitivityAnalysis class
  * Deprecated SLSQP, LBFGS and NelderMead classes in favor of NLopt class
  * Deprecated LAR in favor of LARS
+ * Deprecated FAST::getTotalOrderIndices in favor of FAST::getTotalIndices
 
 === Python module ===
  * Add the possibility to distribute PythonFunction calls with multiprocessing

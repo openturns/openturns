@@ -143,7 +143,7 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
   const NumericalPoint aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTotalOrder(getAggregatedTotalOrderIndices());
+  const NumericalPoint aggregatedTotal(getAggregatedTotalIndices());
   const NumericalScalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
   const UnsignedInteger size = size_;
   if (size <= 3)
@@ -153,9 +153,9 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
   // First order interval
   NumericalPoint firstOrderLowerBound(inputDimension, 0.0);
   NumericalPoint firstOrderUpperBound(inputDimension, 0.0);
-  // Total order interval
-  NumericalPoint totalOrderLowerBound(inputDimension, 0.0);
-  NumericalPoint totalOrderUpperBound(inputDimension, 0.0);
+  // Total interval
+  NumericalPoint totalLowerBound(inputDimension, 0.0);
+  NumericalPoint totalUpperBound(inputDimension, 0.0);
   // Numerical scalar that will be used
   NumericalScalar z, rho;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
@@ -173,21 +173,21 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
     // TODO if interval is outside [0,1], how to procede?
     firstOrderLowerBound[p] = zmin;
     firstOrderUpperBound[p] = zmax;
-    // total order
+    // total
     // We compute STi which is a correlation coefficient
     // Even if multidimensional, linear combination is still gaussian
-    rho = 1.0 - aggregatedTotalOrder[p];
+    rho = 1.0 - aggregatedTotal[p];
     // Fisher transform
     z = 0.5 * std::log((1.0 + rho) / (1.0 - rho));
     // zmin/zmax
     zmin = std::tanh(z - t / std::sqrt(size - 3.0));
     zmax = std::tanh(z + t / std::sqrt(size - 3.0));
-    totalOrderLowerBound[p] = 1.0 - zmax;
-    totalOrderUpperBound[p] = 1.0 - zmin;
+    totalLowerBound[p] = 1.0 - zmax;
+    totalUpperBound[p] = 1.0 - zmin;
   }
   // Compute confidence interval
   firstOrderIndiceInterval_ = Interval(firstOrderLowerBound, firstOrderUpperBound);
-  totalOrderIndiceInterval_ = Interval(totalOrderLowerBound, totalOrderUpperBound);
+  totalIndiceInterval_ = Interval(totalLowerBound, totalUpperBound);
 }
 
 
@@ -198,7 +198,7 @@ Interval MartinezSensitivityAlgorithm::getFirstOrderIndicesInterval() const
   {
     useAsymptoticInterval_ = ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval");
     firstOrderIndiceInterval_ = Interval();
-    totalOrderIndiceInterval_ = Interval();
+    totalIndiceInterval_ = Interval();
   }
   if (useAsymptoticInterval_)
   {
@@ -212,14 +212,14 @@ Interval MartinezSensitivityAlgorithm::getFirstOrderIndicesInterval() const
   return firstOrderIndiceInterval_;
 }
 
-/** Interval for the total order indices accessor */
-Interval MartinezSensitivityAlgorithm::getTotalOrderIndicesInterval() const
+/** Interval for the total indices accessor */
+Interval MartinezSensitivityAlgorithm::getTotalIndicesInterval() const
 {
   if (useAsymptoticInterval_ != ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
   {
     useAsymptoticInterval_ = ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval");
     firstOrderIndiceInterval_ = Interval();
-    totalOrderIndiceInterval_ = Interval();
+    totalIndiceInterval_ = Interval();
   }
   if (useAsymptoticInterval_)
   {
@@ -230,7 +230,7 @@ Interval MartinezSensitivityAlgorithm::getTotalOrderIndicesInterval() const
     // Interval evaluation using Bootstrap
     computeIndicesInterval();
   }
-  return totalOrderIndiceInterval_;
+  return totalIndiceInterval_;
 }
 
 /* Method save() stores the object through the StorageManager */

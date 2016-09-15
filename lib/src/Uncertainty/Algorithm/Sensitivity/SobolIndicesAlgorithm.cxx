@@ -94,16 +94,16 @@ SymmetricMatrix SobolIndicesAlgorithm::getSecondOrderIndices(const UnsignedInteg
   return getImplementation()->getSecondOrderIndices(marginalIndex);
 }
 
-/* Total order indices accessor */
-NumericalPoint SobolIndicesAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+/* Total indices accessor */
+NumericalPoint SobolIndicesAlgorithm::getTotalIndices(const UnsignedInteger marginalIndex) const
 {
-  return getImplementation()->getTotalOrderIndices(marginalIndex);
+  return getImplementation()->getTotalIndices(marginalIndex);
 }
 
-/* Interval for the total order indices accessor */
-Interval SobolIndicesAlgorithm::getTotalOrderIndicesInterval() const
+/* Interval for the total indices accessor */
+Interval SobolIndicesAlgorithm::getTotalIndicesInterval() const
 {
-  return getImplementation()->getTotalOrderIndicesInterval();
+  return getImplementation()->getTotalIndicesInterval();
 }
 
 /* Aggregated first order indices accessor for multivariate samples */
@@ -112,10 +112,10 @@ NumericalPoint SobolIndicesAlgorithm::getAggregatedFirstOrderIndices() const
   return getImplementation()->getAggregatedFirstOrderIndices();
 }
 
-/* Aggregated total order indices accessor for multivariate samples */
-NumericalPoint SobolIndicesAlgorithm::getAggregatedTotalOrderIndices() const
+/* Aggregated total indices accessor for multivariate samples */
+NumericalPoint SobolIndicesAlgorithm::getAggregatedTotalIndices() const
 {
-  return getImplementation()->getAggregatedTotalOrderIndices();
+  return getImplementation()->getAggregatedTotalIndices();
 }
 
 /** Method that draw (plot) the sensitivity graph */

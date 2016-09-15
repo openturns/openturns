@@ -32,7 +32,7 @@ Notes
 This class is concerned with analyzing the influence the random vector
 :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
 :math:`Y^k` which is being studied for uncertainty, by using the [Martinez2011]_
-method for the evaluation of both first and total order indices.
+method for the evaluation of both first and total indices.
 
 These last ones are respectively given as follows:
 
@@ -50,7 +50,7 @@ where :math:`\rho_n` is the empirical correlation defined by:
    \rho_n(X, Y) = \frac{\Cov{X,Y}}{\sqrt{\Var{X} \Var{Y}}}
 
 The class provides also the evaluation of asymptotic confidence interval for first
-and total order indices, relying on the Fisher transformation.
+and total indices, relying on the Fisher transformation.
 
 This could be performed for gaussian output data. The
 `MartinezSensitivityAlgorithm-UseAsmpytoticInterval` resource map key should

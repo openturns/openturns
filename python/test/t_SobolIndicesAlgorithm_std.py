@@ -39,8 +39,8 @@ try:
         print("Method of evaluation=", method)
         print("First order indices = ", fo)
         # Get total order indices
-        to = sensitivity_algorithm.getTotalOrderIndices()
-        print("Total order indices = ", to)
+        to = sensitivity_algorithm.getTotalIndices()
+        print("Total indices = ", to)
 
     # Case 2 : Estimation of sensitivity using Martinez estimator and bootstrap
     nr_bootstrap = 100
@@ -51,25 +51,25 @@ try:
     sensitivity_algorithm.setBootstrapConfidenceLevel(confidence_level)
     # Get first order indices
     fo = sensitivity_algorithm.getFirstOrderIndices()
-    to = sensitivity_algorithm.getTotalOrderIndices()
+    to = sensitivity_algorithm.getTotalIndices()
     print("Martinez method : indices")
     print("First order indices = ", fo)
-    print("Total order indices = ", to)
+    print("Total indices = ", to)
     # Get the confidence interval thanks to Bootstrap
     interval_fo = sensitivity_algorithm.getFirstOrderIndicesInterval()
-    interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
+    interval_to = sensitivity_algorithm.getTotalIndicesInterval()
     print("Martinez method : bootstrap intervals")
     print("First order indices interval = ", interval_fo)
-    print("Total order indices interval = ", interval_to)
+    print("Total indices interval = ", interval_to)
     # In the case of Martinez, if output is Gaussian, we may use the Fisher
     # transform and get an asymptotic confidence interval
     ot.ResourceMap.SetAsBool(
         "MartinezSensitivityAlgorithm-UseAsymptoticInterval", True)
     interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval()
-    interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval()
+    interval_to_asymptotic = sensitivity_algorithm.getTotalIndicesInterval()
     print("Martinez method : asymptotic intervals")
     print("First order indices interval = ", interval_fo_asymptotic)
-    print("Total order indices interval = ", interval_to_asymptotic)
+    print("Total indices interval = ", interval_to_asymptotic)
 
     # with experiment
     sequence = ot.SobolSequence(input_dimension)

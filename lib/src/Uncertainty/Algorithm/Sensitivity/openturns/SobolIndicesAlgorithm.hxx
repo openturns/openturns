@@ -77,17 +77,17 @@ public:
   /** Second order indices accessor */
   SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
-  /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  /** Total indices accessor */
+  NumericalPoint getTotalIndices(const UnsignedInteger marginalIndex = 0) const;
 
-  /** Interval for the total order indices accessor */
-  Interval getTotalOrderIndicesInterval() const;
+  /** Interval for the total indices accessor */
+  Interval getTotalIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
   NumericalPoint getAggregatedFirstOrderIndices() const;
 
-  /** Aggregated total order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedTotalOrderIndices() const;
+  /** Aggregated total indices accessor for multivariate samples */
+  NumericalPoint getAggregatedTotalIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;
