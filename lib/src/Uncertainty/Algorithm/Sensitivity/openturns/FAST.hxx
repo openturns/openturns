@@ -50,7 +50,10 @@ public:
   /** First order indices accessor */
   NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
-  /** Total order indices accessor */
+  /** Total indices accessor */
+  NumericalPoint getTotalIndices(const UnsignedInteger marginalIndex = 0) const;
+
+  /** @deprecated */
   NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** FFT algorithm accessor */
@@ -80,8 +83,8 @@ private:
   /** First order indices */
   mutable NumericalSample firstOrderIndice_;
 
-  /** Total order indices */
-  mutable NumericalSample totalOrderIndice_;
+  /** Total indices */
+  mutable NumericalSample totalIndice_;
 
   /** Store if indices are already computed */
   mutable Bool alreadyComputedIndices_;

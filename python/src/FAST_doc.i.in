@@ -120,7 +120,7 @@ indices : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FAST::getTotalOrderIndices
+%feature("docstring") OT::FAST::getTotalIndices
 "Accessor to the total order indices.
 
 Parameters

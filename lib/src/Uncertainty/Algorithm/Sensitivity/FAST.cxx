@@ -64,7 +64,7 @@ void FAST::run() const
 
   // Allocate indices
   firstOrderIndice_ = NumericalSample(nbOut, nbIn);
-  totalOrderIndice_ = NumericalSample(nbOut, nbIn);
+  totalIndice_ = NumericalSample(nbOut, nbIn);
 
   // this avoids to store huge input samples while allowing for multi-threading
   const UnsignedInteger maximumOuterSampling = static_cast<UnsignedInteger>(ceil(1.0 * samplingSize_ / blockSize_));
@@ -99,7 +99,7 @@ void FAST::run() const
   NumericalSample D_i(nbOut, nbIn);
   NumericalSample D_l(nbOut, nbIn);
 
-  // For each input, compute first order and total order indices for each model's output
+  // For each input, compute first order and total indices for each model's output
   for (UnsignedInteger inp = 0; inp < nbIn; ++ inp)
   {
     NumericalPoint D(nbOut, 0.);
@@ -165,7 +165,7 @@ void FAST::run() const
     for ( UnsignedInteger out = 0; out < nbOut; ++ out )
     {
       firstOrderIndice_[out][inp] = D_i[out][inp] / D[out];
-      totalOrderIndice_[out][inp] = 1. - D_l[out][inp] / D[out];
+      totalIndice_[out][inp] = 1. - D_l[out][inp] / D[out];
     }
   }
   alreadyComputedIndices_ = true;
@@ -180,14 +180,19 @@ NumericalPoint FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) c
   return firstOrderIndice_[marginalIndex];
 }
 
-/* Total order indices accessor */
-NumericalPoint FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+/* Total indices accessor */
+NumericalPoint FAST::getTotalIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
-  if (marginalIndex >= totalOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << totalOrderIndice_.getSize();
-  return totalOrderIndice_[marginalIndex];
+  if (marginalIndex >= totalIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << totalIndice_.getSize();
+  return totalIndice_[marginalIndex];
 }
 
+NumericalPoint FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+{
+  Log::Warn(OSS() << "FAST::getTotalOrderIndices is deprecated.");
+  return getTotalIndices(marginalIndex);
+}
 
 /* FFT algorithm accessor */
 FFT FAST::getFFTAlgorithm() const
