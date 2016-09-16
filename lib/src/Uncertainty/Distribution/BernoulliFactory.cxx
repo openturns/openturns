@@ -21,6 +21,7 @@
 #include "openturns/BernoulliFactory.hxx"
 #include "openturns/DiscreteDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Binomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -95,6 +96,15 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPoint & parameters) 
 Bernoulli BernoulliFactory::buildAsBernoulli() const
 {
   return Bernoulli();
+}
+
+DistributionFactoryResult BernoulliFactory::buildEstimator(const NumericalSample & sample) const
+{
+  Bernoulli distribution(buildAsBernoulli(sample));
+  const UnsignedInteger size = sample.getSize();
+  Distribution parametersDistribution(Binomial(size, distribution.getP()) * (1.0 / size));
+  DistributionFactoryResult result(distribution, parametersDistribution);
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS

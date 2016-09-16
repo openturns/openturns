@@ -51,6 +51,8 @@ public:
   Bernoulli buildAsBernoulli(const NumericalPoint & parameters) const;
   Bernoulli buildAsBernoulli() const;
 
+  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+
 }; /* class BernoulliFactory */
 
 END_NAMESPACE_OPENTURNS

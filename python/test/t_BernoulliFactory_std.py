@@ -27,7 +27,11 @@ try:
     estimatedBernoulli = factory.buildAsBernoulli(
         distribution.getParameter())
     print("Bernoulli from parameters=", estimatedBernoulli)
-
+    result = factory.buildEstimator(sample)
+    estimatedDistribution = result.getDistribution()
+    print('Estimated distribution            =', repr(estimatedDistribution))
+    parameterDistribution = result.getParameterDistribution()
+    print('Parameter distribution            =', parameterDistribution)
 except:
     import sys
     print("t_BernoulliFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])
