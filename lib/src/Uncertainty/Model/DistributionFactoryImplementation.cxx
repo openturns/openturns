@@ -82,6 +82,8 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
 DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalSample & sample,
     CovarianceMatrix & covariance) const
 {
+  Log::Warn(OSS() << "DistributionFactory::build(NumericalSample, CovarianceMatrix&) is deprecated");
+
   /* The bootstrap sampler */
   BootstrapExperiment bootstrap(sample);
   /* Build the distribution based on the given sample */
