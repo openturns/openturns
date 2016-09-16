@@ -23,6 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
+#include "openturns/TensorizedCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -232,6 +233,20 @@ Bool AggregatedProcess::isStationary() const
   return true;
 }
 
+/* Covariance model accessor */
+CovarianceModel AggregatedProcess::getCovarianceModel() const
+{
+  Collection<CovarianceModel> coll(processCollection_.getSize());
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    coll[i] = processCollection_[i].getCovarianceModel();
+  return TensorizedCovarianceModel(coll);
+}
+
+/* Trend accessor */
+TrendTransform AggregatedProcess::getTrend() const
+{
+  throw NotYetImplementedException(HERE) << "AggregatedProcess::getTrend()";
+}
 
 /* Method save() stores the object through the StorageManager */
 void AggregatedProcess::save(Advocate & adv) const

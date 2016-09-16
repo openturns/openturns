@@ -88,6 +88,12 @@ public:
   /** Is the underlying a stationary process ? */
   virtual Bool isStationary() const;
 
+  /** Covariance model accessor */
+  CovarianceModel getCovarianceModel() const;
+
+  /** Trend accessor */
+  TrendTransform getTrend() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
