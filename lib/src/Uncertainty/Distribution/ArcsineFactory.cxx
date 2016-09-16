@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/ArcsineFactory.hxx"
+#include "openturns/ArcsineMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,7 +68,10 @@ Arcsine ArcsineFactory::buildAsArcsine(const NumericalSample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Arcsine distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mean = sample.computeMean()[0];
   NumericalScalar standardDeviation = sample.computeStandardDeviationPerComponent()[0];
-  Arcsine result(mean, standardDeviation, Arcsine::MUSIGMA);
+  NumericalPoint parameters(2);
+  parameters[0] = mean;
+  parameters[1] = standardDeviation;
+  Arcsine result(buildAsArcsine(ArcsineMuSigma()(parameters)));
   result.setDescription(sample.getDescription());
   return result;
 }

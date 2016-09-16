@@ -2,25 +2,14 @@
 "Gumbel distribution.
 
 Available constructors:
-    Gumbel(*arg1=1.0, arg2=0.0, parameters_set=ot.Gumbel.ALPHABETA*)
+    Gumbel(*alpha=1.0, beta=0.0*)
 
 Parameters
 ----------
-arg1 : float
-    If `parameters_set == ot.Gumbel.ALPHABETA`: scale parameter :math:`\alpha > 0`.
-
-    If `parameters_set == ot.Gumbel.AB`: location parameter :math:`a = \beta`.
-
-    If `parameters_set == ot.Gumbel.MUSIGMA`: mean.
-arg2 : float
-    If `parameters_set == ot.Gumbel.ALPHABETA`: location parameter :math:`\beta`.
-
-    If `parameters_set == ot.Gumbel.AB`: scale parameter :math:`b = 1 / \alpha > 0`.
-
-    If `parameters_set == ot.Gumbel.MUSIGMA`: standard deviation :math:`\sigma > 0`.
-parameters_set : int, optional
-    Integer telling which parameters set is used for defining the
-    distribution (amongst `ot.Gumbel.ALPHABETA, ot.Gumbel.AB, ot.Gumbel.MUSIGMA`).
+alpha : float
+    scale parameter :math:`\alpha > 0`.
+beta : float
+    location parameter :math:`\beta`.
 
 Notes
 -----
@@ -56,7 +45,17 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(10)
+
+Create a distribution from mu,sigma parameter set:
+
+>>> distribution = ot.Gumbel()
+>>> distribution.setParameter(ot.GumbelMuSigma()([1.5, 1.3]))
+
+Create a distribution from a,b parameter set:
+
+>>> distribution = ot.Gumbel()
+>>> distribution.setParameter(ot.GumbelAB()([-0.5, 0.5]))"
 
 // ---------------------------------------------------------------------
 

@@ -2,21 +2,14 @@
 "Arcsine distribution.
 
 Available constructors:
-    Arcsine(*arg1=-1.0, arg2=1.0, parameters_set=ot.Arcsine.AB*)
+    Arcsine(*a=-1.0, b=1.0*)
 
 Parameters
 ----------
-arg1 : float
-    If *parameters_set == ot.Arcsine.AB*: lower bound (:math:`a`).
-
-    If *parameters_set == ot.Arcsine.MUSIGMA*: mean.
-arg2 : float
-    If *parameters_set == ot.Arcsine.AB*: upper bound (:math:`b > a`).
-
-    If *parameters_set == ot.Arcsine.MUSIGMA*: standard deviation :math:`\sigma > 0`.
-parameters_set : int, optional
-    Integer telling which parameters set is used for defining the
-    distribution (amongst `ot.Arcsine.AB, ot.Arcsine.MUSIGMA`).
+a : float
+    lower bound (:math:`a`).
+b : float
+    upper bound (:math:`b > a`).
 
 Notes
 -----
@@ -48,7 +41,12 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(10)
+
+Create a distribution from mu,sigma parameter set:
+
+>>> distribution = ot.Arcsine()
+>>> distribution.setParameter(ot.ArcsineMuSigma()([8.4, 2.25]))"
 
 // ---------------------------------------------------------------------
 

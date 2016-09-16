@@ -52,6 +52,7 @@ public:
   Normal buildAsNormal(const NumericalPoint & parameters) const;
   Normal buildAsNormal() const;
 
+  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
 
 }; /* class NormalFactory */
 

@@ -2,25 +2,16 @@
 "Gamma distribution.
 
 Available constructors:
-    Gamma(*arg1=1.0, arg2=1.0, gamma=0.0, ot.Gamma.KLAMBDA*)
+    Gamma(*k=1.0, lambda=1.0, gamma=0.0*)
 
 Parameters
 ----------
-arg1 : float
-    If `parameters_set == ot.Gamma.KLAMBDA`: shape parameter :math:`k > 0` with
-    :math:`k = (\mu - \gamma)^2 / \sigma^2`.
-
-    If `parameters_set == ot.Gamma.MUSIGMA`: mean :math:`\mu`.
-arg2 : float
-    If `parameters_set == ot.Gamma.KLAMBDA`: scale parameter :math:`\lambda > 0` with
-    :math:`\lambda = (\mu - \gamma) / \sigma^2`.
-
-    If `parameters_set == ot.Gamma.MUSIGMA`: standard deviation :math:`\sigma > 0`.
+k : float
+    shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+lambda : float
+    scale parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
 gamma : float, optional
     Shift parameter :math:`\gamma`.
-parameters_set : int, optional
-    Integer telling which parameters set is used for defining the
-    distribution (amongst `ot.Gamma.KLAMBDA, ot.Gamma.MUSIGMA`).
 
 Notes
 -----
@@ -54,7 +45,12 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(10)
+
+Create a distribution from mu,sigma parameter set:
+
+>>> distribution = ot.Gamma()
+>>> distribution.setParameter(ot.GammaMuSigma()([1.5, 2.5, -0.5]))"
 
 // ---------------------------------------------------------------------
 

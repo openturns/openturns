@@ -2,23 +2,16 @@
 "Weibull distribution.
 
 Available constructors:
-    Weibull(*arg1=1.0, arg2=1.0, gamma=0., ot.Weibull.ALPHABETA*)
+    Weibull(*alpha=1.0, beta=1.0, gamma=0.0*)
 
 Parameters
 ----------
-arg1 : float
-    If `parameters_set == ot.Weibull.ALPHABETA`: scale parameter :math:`\alpha > 0`.
-
-    If `parameters_set == ot.Weibull.MUSIGMA`: mean.
-arg2 : float
-    If `parameters_set == ot.Weibull.ALPHABETA`: shape parameter :math:`\beta > 0`.
-
-    If `parameters_set == ot.Weibull.MUSIGMA`: standard deviation :math:`\sigma > 0`.
+alpha : float
+    scale parameter :math:`\alpha > 0`.
+beta : float
+    shape parameter :math:`\beta > 0`.
 gamma : float, optional
     Location parameter :math:`\gamma < \mu`.
-parameters_set : int, optional
-    Integer telling which parameters set is used for defining the
-    distribution (amongst `ot.Weibull.ALPHABETA, ot.Weibull.MUSIGMA`).
 
 Notes
 -----
@@ -55,7 +48,12 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(10)
+
+Create a distribution from mu,sigma parameter set:
+
+>>> distribution = ot.Weibull()
+>>> distribution.setParameter(ot.WeibullMuSigma()([1.3, 1.23, -0.5]))"
 
 // ---------------------------------------------------------------------
 

@@ -43,6 +43,20 @@ Arcsine::Arcsine()
 }
 
 /* Parameters constructor */
+Arcsine::Arcsine(const NumericalScalar a,
+                 const NumericalScalar b)
+  : ContinuousDistribution()
+  , a_(a)
+  , b_(b)
+{
+  if (!(a < b))
+    throw InvalidArgumentException(HERE) << "in Arcsine : a must be smaller than b";
+  setName("Arcsine");
+  setDimension(1);
+  computeRange();
+}
+
+/* Parameters constructor */
 Arcsine::Arcsine(const NumericalScalar arg1,
                  const NumericalScalar arg2,
                  const ParameterSet set)
@@ -50,6 +64,7 @@ Arcsine::Arcsine(const NumericalScalar arg1,
   , a_(-1.0)
   , b_(1.0)
 {
+  Log::Warn(OSS() << "Arcsine parameter set constructor is deprecated.");
   setName("Arcsine");
   switch (set)
   {
@@ -236,14 +251,14 @@ NumericalScalar Arcsine::getRoughness() const
 /* Compute the mean of the distribution */
 void Arcsine::computeMean() const
 {
-  mean_ = NumericalPoint(1, getMu());
+  mean_ = NumericalPoint(1, 0.5 * (a_ + b_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint Arcsine::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
-  return NumericalPoint(1, getSigma());
+  return NumericalPoint(1, 0.5 * (b_ - a_) * M_SQRT1_2);
 }
 
 /* Get the skewness of the distribution */
@@ -255,7 +270,7 @@ NumericalPoint Arcsine::getSkewness() const /*throw(NotDefinedException)*/
 /* Get the kurtosis of the distribution */
 NumericalPoint Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
 {
-  NumericalScalar standardDeviation4 = getSigma();
+  NumericalScalar standardDeviation4 = getStandardDeviation()[0];
   standardDeviation4 *= standardDeviation4;
   standardDeviation4 *= standardDeviation4;
   NumericalScalar a4 = 0.5 * (b_ - a_) * 0.5 * (b_ - a_);
@@ -280,7 +295,7 @@ Arcsine::Implementation Arcsine::getStandardRepresentative() const
 void Arcsine::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar eta = getSigma();
+  const NumericalScalar eta = getStandardDeviation()[0];
   covariance_(0, 0) = eta * eta;
   isAlreadyComputedCovariance_ = true;
 }
@@ -365,12 +380,14 @@ void Arcsine::setAB(const NumericalScalar a,
 /* Mu accessor */
 void Arcsine::setMu(const NumericalScalar mu)
 {
+  Log::Warn(OSS() << "Arcsine::setMu is deprecated");
   const NumericalScalar sigma = getSigma();
   setAB(mu - sigma * M_SQRT1_2, mu + sigma * M_SQRT1_2);
 }
 
 NumericalScalar Arcsine::getMu() const
 {
+  Log::Warn(OSS() << "Arcsine::getMu is deprecated");
   return 0.5 * (a_ + b_);
 }
 
@@ -378,12 +395,14 @@ NumericalScalar Arcsine::getMu() const
 /* Sigma accessor */
 void Arcsine::setSigma(const NumericalScalar sigma)
 {
+  Log::Warn(OSS() << "Arcsine::setSigma is deprecated");
   const NumericalScalar mu = getMu();
   setAB(mu - sigma * M_SQRT2, mu + sigma * M_SQRT2);
 }
 
 NumericalScalar Arcsine::getSigma() const
 {
+  Log::Warn(OSS() << "Arcsine::getSigma is deprecated");
   return 0.5 * (b_ - a_) * M_SQRT1_2;
 }
 

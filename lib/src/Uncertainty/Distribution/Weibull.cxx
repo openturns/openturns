@@ -44,6 +44,20 @@ Weibull::Weibull()
 }
 
 /* Parameters constructor */
+Weibull::Weibull(const NumericalScalar alpha,
+                 const NumericalScalar beta,
+                 const NumericalScalar gamma)
+  : ContinuousDistribution()
+  , alpha_(0.0)
+  , beta_(0.0)
+  , gamma_(gamma)
+{
+  setName("Weibull");
+  setAlphaBeta(alpha, beta);
+  setDimension(1);
+}
+
+/* Parameters constructor */
 Weibull::Weibull(const NumericalScalar arg1,
                  const NumericalScalar arg2,
                  const NumericalScalar gamma,
@@ -53,6 +67,7 @@ Weibull::Weibull(const NumericalScalar arg1,
   , beta_(0.0)
   , gamma_(gamma)
 {
+  Log::Warn(OSS() << "Weibull parameter set constructor is deprecated.");
   setName("Weibull");
   switch (set)
   {
@@ -269,14 +284,14 @@ NumericalScalar Weibull::computeScalarQuantile(const NumericalScalar prob,
 /* compute the mean of the distribution */
 void Weibull::computeMean() const
 {
-  mean_ =  NumericalPoint(1, getMu());
+  mean_ =  NumericalPoint(1, gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint Weibull::getStandardDeviation() const
 {
-  return NumericalPoint(1, getSigma());
+  return NumericalPoint(1, alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0)));
 }
 
 /* Get the skewness of the distribution */
@@ -304,7 +319,7 @@ NumericalPoint Weibull::getKurtosis() const
 void Weibull::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = std::pow(getSigma(), 2.0);
+  covariance_(0, 0) = std::pow(getStandardDeviation()[0], 2.0);
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -470,12 +485,14 @@ void Weibull::setMuSigma(const NumericalScalar mu,
 
 NumericalScalar Weibull::getMu() const
 {
+  Log::Warn(OSS() << "Weibull::getMu is deprecated");
   return gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_);
 }
 
 
 NumericalScalar Weibull::getSigma() const
 {
+  Log::Warn(OSS() << "Weibull::getSigma is deprecated");
   return alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0));
 }
 
