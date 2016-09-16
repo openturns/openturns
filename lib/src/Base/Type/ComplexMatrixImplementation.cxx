@@ -104,8 +104,8 @@ ComplexMatrixImplementation * ComplexMatrixImplementation::clone() const
 ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (const ComplexMatrixImplementation & b,
     const Bool keepIntact)
 {
-  if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE);
-  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE);
+  if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
+  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
   int m(nbRows_);
   int n(nbColumns_);
   // B is an extended copy of b, it must be large enought to store the solution, see LAPACK documentation
@@ -148,8 +148,8 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
     const Bool keepIntact)
 {
   const UnsignedInteger m = b.getSize();
-  if (nbRows_ != m) throw InvalidDimensionException(HERE);
-  if (nbRows_ == 0) throw InvalidDimensionException(HERE);
+  if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
   // A ComplexMatrixImplementation is also a collection of NumericalComplex, so it is automatically converted into a NumericalComplexCollection
   return solveLinearSystemRect(ComplexMatrixImplementation(m, 1, b), keepIntact);
@@ -236,8 +236,8 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
 NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
-  if ((i >= nbRows_) || (j >= nbColumns_)) throw InvalidDimensionException(HERE);
-
+  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   return operator[](convertPosition(i, j));
 }
 
@@ -246,8 +246,8 @@ NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteg
 const NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
-  if ((i >= nbRows_) || (j >= nbColumns_)) throw InvalidDimensionException(HERE);
-
+  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   return operator[](convertPosition(i, j));
 }
 
@@ -399,7 +399,7 @@ Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
 /* ComplexMatrixImplementation addition (must have the same dimensions) */
 ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const ComplexMatrixImplementation & matrix) const
 {
-  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE);
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot add matrices with incompatible dimensions";
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(matrix);
   int size(nbRows_ * nbColumns_);
@@ -414,7 +414,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Compl
 /* ComplexMatrixImplementation addition (must have the same dimensions) */
 ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const MatrixImplementation & matrix) const
 {
-  if ((nbRows_ != matrix.getNbRows() ) || (nbColumns_ != matrix.getNbColumns() )) throw InvalidDimensionException(HERE);
+  if ((nbRows_ != matrix.getNbRows() ) || (nbColumns_ != matrix.getNbColumns() )) throw InvalidDimensionException(HERE) << "Cannot add matrices with incompatible dimensions";
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(matrix);
   int size(nbRows_ * nbColumns_);
@@ -429,7 +429,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Matri
 /* ComplexMatrixImplementation substraction (must have the same dimensions) */
 ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const ComplexMatrixImplementation & matrix) const
 {
-  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE);
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot substract matrices with incompatible dimensions";
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);
@@ -906,7 +906,7 @@ Bool ComplexMatrixImplementation::isHermitian() const
 Bool ComplexMatrixImplementation::isHermitianPositiveDefinite(const Bool keepIntact)
 {
   // Exception for null dimension
-  if (getDimension() == 0) throw InvalidDimensionException(HERE);
+  if (getDimension() == 0) throw InvalidDimensionException(HERE) << "Cannot check the hermitian definite positiveness of an empty matrix";
   int info;
   int n(nbRows_);
   char uplo('L');
@@ -929,7 +929,7 @@ Bool ComplexMatrixImplementation::isHermitianPositiveDefinite(const Bool keepInt
 ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const Bool keepIntact)
 {
   // Exception for null dimension
-  if (getDimension() == 0) throw InvalidDimensionException(HERE);
+  if (getDimension() == 0) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
   int info;
   int n(nbRows_);
   char uplo('L');
