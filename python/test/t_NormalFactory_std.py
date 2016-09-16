@@ -36,7 +36,11 @@ try:
     estimatedNormal = factory.buildAsNormal(
         distribution.getParameter())
     print("Normal from parameters=", estimatedNormal)
-
+    result = factory.buildEstimator(sample[:,0])
+    estimatedDistribution = result.getDistribution()
+    print('Estimated distribution            =', repr(estimatedDistribution))
+    parameterDistribution = result.getParameterDistribution()
+    print('Parameter distribution            =', parameterDistribution)
 except:
     import sys
     print("t_NormalFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])

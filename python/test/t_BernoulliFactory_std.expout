@@ -6,3 +6,5 @@ Bernoulli          = Bernoulli(p = 0.7)
 Estimated Bernoulli= Bernoulli(p = 0.6916)
 Default Bernoulli= Bernoulli(p = 0.5)
 Bernoulli from parameters= Bernoulli(p = 0.7)
+Estimated distribution            = class=Bernoulli name=Bernoulli dimension=1 p=0.6916
+Parameter distribution            = RandomMixture(0.0001 * Binomial(n = 10000, p = 0.6916))
