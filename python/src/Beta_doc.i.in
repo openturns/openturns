@@ -2,25 +2,18 @@
 "Beta distribution.
 
 Available constructors:
-    Beta(*arg1=2.0, arg2=4.0, a=-1.0, b=1.0, parameters_set=ot.Beta.RT*)
+    Beta(*r=2.0, t=4.0, a=-1.0, b=1.0*)
 
 Parameters
 ----------
-arg1 : float
-    If *parameters_set == ot.Beta.RT*: shape parameter :math:`r > 0` with
-    :math:`r = t * (\mu - a) / (b - a)`.
-    If *parameters_set == ot.Beta.MUSIGMA*: mean :math:`\mu`.
-arg2 : float
-    If *parameters_set == ot.Beta.RT*: shape parameter :math:`t > r` with
-    :math:`t = (b - \mu) * (\mu - a) / \sigma^2 - 1`.
-    If *parameters_set == ot.Beta.MUSIGMA*: standard deviation :math:`\sigma > 0`.
+r : float
+    shape parameter :math:`r > 0` with :math:`r = t * (\mu - a) / (b - a)`.
+t : float
+    shape parameter :math:`t > r` with :math:`t = (b - \mu) * (\mu - a) / \sigma^2 - 1`.
 a : float
     Lower bound.
 b : float, :math:`b > a`
     Upper bound.
-parameters_set : int, optional
-    An integer telling which parameters set is used for defining the
-    distribution (amongst *ot.Beta.RT, ot.Beta.MUSIGMA*).
 
 Notes
 -----
@@ -54,7 +47,12 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(10)
+
+Create a distribution from mu,sigma parameter set:
+
+>>> distribution = ot.Beta()
+>>> distribution.setParameter(ot.BetaMuSigma()([0.2, 0.6, -1.0, 2.0]))"
 
 // ---------------------------------------------------------------------
 

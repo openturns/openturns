@@ -52,6 +52,27 @@ LogNormal::LogNormal()
   computeRange();
 }
 
+
+/* Default constructor */
+LogNormal::LogNormal(const NumericalScalar muLog,
+                     const NumericalScalar sigmaLog,
+                     const NumericalScalar gamma)
+  : ContinuousDistribution()
+  , muLog_(0.0)
+  , sigmaLog_(0.0)
+  , gamma_(gamma)
+  , normalizationFactor_(0.0)
+  , H_(0.0)
+  , hermiteNodes_(0)
+  , hermiteWeights_(0)
+{
+  setName("LogNormal");
+  setMuLogSigmaLog(muLog, sigmaLog);
+  normalizationFactor_ = 1.0 / (sigmaLog_ * std::sqrt(2.0 * M_PI));
+  setDimension(1);
+}
+
+
 /* Default constructor */
 LogNormal::LogNormal(const NumericalScalar arg1,
                      const NumericalScalar arg2,
@@ -66,6 +87,7 @@ LogNormal::LogNormal(const NumericalScalar arg1,
   , hermiteNodes_(0)
   , hermiteWeights_(0)
 {
+  Log::Warn(OSS() << "LogNormal parameter set constructor is deprecated.");
   setName("LogNormal");
   // Adapt the integration nodes number to the needs of the characteristic function integration
   switch (set)
@@ -324,14 +346,15 @@ NumericalScalar LogNormal::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void LogNormal::computeMean() const
 {
-  mean_ = NumericalPoint(1, getMu());
+  mean_ = NumericalPoint(1, gamma_ + std::exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint LogNormal::getStandardDeviation() const
 {
-  return NumericalPoint(1, getSigma());
+  NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
+  return NumericalPoint(1, std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0)));
 }
 
 /* Get the skewness of the distribution */
@@ -472,6 +495,7 @@ NumericalScalar LogNormal::getSigmaLog() const
 
 NumericalScalar LogNormal::getMu() const
 {
+  Log::Warn(OSS() << "LogNormal::getMu is deprecated");
   return gamma_ + std::exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_);
 }
 
@@ -491,6 +515,7 @@ void LogNormal::setMuSigma(const NumericalScalar mu,
 
 NumericalScalar LogNormal::getSigma() const
 {
+  Log::Warn(OSS() << "LogNormal::getSigma is deprecated");
   NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
   return std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
 }

@@ -36,7 +36,7 @@ class OT_API Arcsine
 {
   CLASSNAME;
 public:
-
+  /** @deprecated */
   enum ParameterSet {AB, MUSIGMA};
 
   typedef Pointer<DistributionImplementation> Implementation;
@@ -45,9 +45,14 @@ public:
   Arcsine();
 
   /** Parameters constructor */
+  Arcsine(const NumericalScalar a,
+          const NumericalScalar b);
+
+  /** Parameters constructor 
+   @deprecated */
   Arcsine(const NumericalScalar arg1,
           const NumericalScalar arg2,
-          const ParameterSet set = AB);
+          const ParameterSet set);
 
   /** Comparison operator */
   Bool operator ==(const Arcsine & other) const;
@@ -136,11 +141,13 @@ public:
   void setB(const NumericalScalar b);
   NumericalScalar getB() const;
 
-  /** Mu accessor */
+  /** Mu accessor 
+   @deprecated */
   void setMu(const NumericalScalar mu);
   NumericalScalar getMu() const;
 
-  /** Sigma accessor */
+  /** Sigma accessor
+   @deprecated */
   void setSigma(const NumericalScalar sigma);
   NumericalScalar getSigma() const;
 

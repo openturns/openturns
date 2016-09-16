@@ -2,31 +2,16 @@
 "Lognormal distribution.
 
 Available constructors:
-    LogNormal(*arg1=0.0, arg2=1.0, gamma=0.0, parameters_set=ot.LogNormal.MUSIGMA_LOG*)
+    LogNormal(*muLog=0.0, sigmaLog=1.0, gamma=0.0*)
 
 Parameters
 ----------
-arg1 : float
-    If `parameters_set == ot.LogNormal.MUSIGMA_LOG`: location parameter
-    :math:`\mu_\ell`.
-
-    If `parameters_set == ot.LogNormal.MUSIGMA`: mean.
-
-    If `parameters_set == ot.LogNormal.MU_SIGMAOVERMU`: mean.
-arg2 : float, :math:`arg2 > 0`
-    If `parameters_set == ot.LogNormal.MUSIGMA_LOG`: scale parameter
-    :math:`\sigma_\ell`.
-
-    If `parameters_set == ot.LogNormal.MUSIGMA`: standard deviation.
-
-    If `parameters_set == ot.LogNormal.MU_SIGMAOVERMU`: coefficient of
-    variation :math:`\delta = \sigma/\mu, \mu \neq 0`.
+muLog : float
+    location parameter :math:`\mu_\ell`.
+sigmaLog : float, :math:`arg2 > 0`
+    scale parameter :math:`\sigma_\ell`.
 gamma : float, optional
     Shift parameter :math:`\gamma < \mu`.
-parameters_set : int, optional
-    Integer telling which parameters set is used for defining the
-    distribution (amongst `ot.LogNormal.MUSIGMA_LOG, ot.LogNormal.MUSIGMA,
-    ot.LogNormal.MU_SIGMAOVERMU`).
 
 Notes
 -----
@@ -62,7 +47,17 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(10)
+
+Create a distribution from mu,sigma parameter set:
+
+>>> distribution = ot.LogNormal()
+>>> distribution.setParameter(ot.LogNormalMuSigma()([0.63, 3.3, -0.5]))
+
+Create a distribution from mu,sigma/mu parameter set:
+
+>>> distribution = ot.LogNormal()
+>>> distribution.setParameter(ot.LogNormalMuSigmaOverMu()([0.63, 5.24, -0.5]))"
 
 // ---------------------------------------------------------------------
 

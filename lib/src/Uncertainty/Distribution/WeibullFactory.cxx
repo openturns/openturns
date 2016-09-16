@@ -20,6 +20,7 @@
  */
 #include "openturns/WeibullFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/WeibullMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,7 +68,11 @@ Weibull WeibullFactory::buildAsWeibull(const NumericalSample & sample) const
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution if data contains NaN or Inf";
   try
   {
-    Weibull result(mean, sigma, gamma, Weibull::MUSIGMA);
+    NumericalPoint parameters(3);
+    parameters[0] = mean;
+    parameters[1] = sigma;
+    parameters[2] = gamma;
+    Weibull result(buildAsWeibull(WeibullMuSigma()(parameters)));  
     result.setDescription(sample.getDescription());
     return result;
   }
