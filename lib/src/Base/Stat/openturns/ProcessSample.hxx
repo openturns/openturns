@@ -104,6 +104,12 @@ public:
   /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
   Field computeQuantilePerComponent(const NumericalScalar prob) const;
 
+  /** Get the i-th marginal sample */
+  ProcessSample getMarginal(const UnsignedInteger index) const;
+
+  /** Get the marginal sample corresponding to indices dimensions */
+  ProcessSample getMarginal(const Indices & indices) const;
+
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0) const;
 

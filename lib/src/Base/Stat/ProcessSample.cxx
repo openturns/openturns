@@ -216,6 +216,24 @@ Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) con
   return Field(mesh_, result);
 }
 
+/* Get the i-th marginal process sample */
+ProcessSample ProcessSample::getMarginal(const UnsignedInteger index) const
+{
+  const UnsignedInteger size = data_.getSize();
+  ProcessSample result(mesh_, size, 1);
+  for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].getMarginal(index);
+  return result;
+}
+
+/* Get the marginal field corresponding to indices dimensions */
+ProcessSample ProcessSample::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger size = data_.getSize();
+  ProcessSample result(mesh_, size, indices.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].getMarginal(indices);
+  return result;
+}
+
 /* Draw a marginal of the ProcessSample, ie the collection of all the Field marginals */
 Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
 {
