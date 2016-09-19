@@ -149,3 +149,53 @@ Returns
 -------
 shuffle : :class:`~openturns.Matrix`
     For each point, the indices of the shuffled components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::getAlwaysShuffle
+"Cell randomization flag accessor.
+
+Returns
+-------
+alwaysShuffle : bool
+    Flag to tell if the shuffle must be regenerated at each call to generate
+    or not.
+    Default is *False*: the shuffle is generated once and for all."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::setAlwaysShuffle
+"Cell randomization flag accessor.
+
+Parameters
+----------
+alwaysShuffle : bool
+    Flag to tell if the shuffle must be regenerated at each call to generate
+    or not.
+    Default is *False*: the shuffle is generated once and for all."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::setRandomShift
+"Randomization flag accessor.
+
+Parameters
+----------
+randomShift : bool
+    Flag to tell if the point selected in each cell of the shuffle is the center
+    of the cell (*randomshift* is *False*) or if it is drawn wrt the restriction
+    of the distribution to the cell.
+    Default is *True*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::getRandomShift
+"Randomization flag accessor.
+
+Returns
+-------
+randomShift : bool
+    Flag to tell if the point selected in each cell of the shuffle is the center
+    of the cell (*randomshift* is *False*) or if it is drawn wrt the restriction
+    of the distribution to the cell.
+    Default is *True*."
