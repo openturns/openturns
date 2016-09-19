@@ -73,6 +73,7 @@
  * #604 (Bug concerning the NonCentralStudent distribution)
  * #698 (KernelSmoothing() as a factory)
  * #786 (Bug in sensitivity analysis)
+ * #802 (Python issue with ComplexMatrix::solveLinearSystem)
  * #803 (prefix openturns includes)
  * #813 (Error when multiplying a Matrix by a SymmetricMatrix)
  * #815 (ConditionedNormalProcess test fails randomly)
