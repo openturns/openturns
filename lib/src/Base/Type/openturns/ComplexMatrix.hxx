@@ -209,6 +209,13 @@ inline ComplexMatrix operator * (const NumericalComplex s,
   return m.operator * (s);
 }
 
+/** Declaration of friend operators */
+inline ComplexMatrix operator * (const Matrix & s,
+                                 const ComplexMatrix & m)
+{
+  return ComplexMatrix(*s.getImplementation()) * m;
+}
+
 
 /** Constructor from range of external collection */
 template <class InputIterator>

@@ -50,6 +50,7 @@ namespace OT {
   OTComplexMatrixGetAccessors()  
   
   ComplexMatrix __rmul__(NumericalComplex s) { return s * (*self); }
+  ComplexMatrix __rmul__(const Matrix & m) { return m * (*self); }
   
   ComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }
   
