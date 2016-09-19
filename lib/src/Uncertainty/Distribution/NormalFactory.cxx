@@ -59,7 +59,7 @@ NormalFactory::Implementation NormalFactory::build(const NumericalPoint & parame
 
 Normal NormalFactory::buildAsNormal(const NumericalSample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from a sample of size < 2";
   const NumericalPoint mean(sample.computeMean());
   const CovarianceMatrix covariance(sample.computeCovariance());
   Normal result(mean, covariance);
