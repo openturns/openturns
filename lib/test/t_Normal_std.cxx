@@ -41,6 +41,8 @@ inline NumericalPoint clean(NumericalPoint in)
 int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
+  Log::Show(Log::INFO);
+  ResourceMap::SetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 1000000);
   OStream fullprint(std::cout);
   setRandomGenerator();
   try
@@ -164,6 +166,10 @@ int main(int argc, char *argv[])
       fullprint << "quantile=" << quantile << std::endl;
       PlatformInfo::SetNumericalPrecision( oldPrecision );
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+      fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeInterval(0.95) << std::endl;
+      fullprint << "Minimum volume level set=" << distribution.computeMinimumVolumeLevelSet(0.95) << std::endl;
+      fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceInterval(0.95) << std::endl;
+      fullprint << "Unilateral confidence interval=" << distribution.computeUnilateralConfidenceInterval(0.95) << std::endl;
       NumericalPoint mean = distribution.getMean();
       fullprint << "mean=" << mean << std::endl;
       NumericalPoint standardDeviation = distribution.getStandardDeviation();

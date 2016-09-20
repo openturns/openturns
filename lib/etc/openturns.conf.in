@@ -493,19 +493,20 @@
   <MarginalTransformationEvaluation-ParametersEpsilon    value="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
-  <Distribution-DefaultPointNumber             value="129"     />
-  <Distribution-DefaultQuantileEpsilon         value="1.0e-12" />
-  <Distribution-DefaultPDFEpsilon              value="1.0e-14" />
-  <Distribution-DefaultCDFEpsilon              value="1.0e-14" />
-  <Distribution-DefaultQuantileIteration       value="100"     />
-  <Distribution-QMin                           value="0.15"  />
-  <Distribution-QMax                           value="0.85"  />
-  <Distribution-DefaultIntegrationNodesNumber  value="255"     />
-  <Distribution-DefaultLevelNumber             value="10"      />
-  <Distribution-DefaultQuantileCacheSize       value="128"     />
-  <Distribution-Parallel                       value="true"    />
-  <Distribution-CharacteristicFunctionBlockMax value="20"      />
-  <Distribution-CharacteristicFunctionNMax     value="1000000" />
+  <Distribution-DefaultPointNumber                value="129"     />
+  <Distribution-DefaultQuantileEpsilon            value="1.0e-12" />
+  <Distribution-DefaultPDFEpsilon                 value="1.0e-14" />
+  <Distribution-DefaultCDFEpsilon                 value="1.0e-14" />
+  <Distribution-DefaultQuantileIteration          value="100"     />
+  <Distribution-QMin                              value="0.15"  />
+  <Distribution-QMax                              value="0.85"  />
+  <Distribution-DefaultIntegrationNodesNumber     value="255"     />
+  <Distribution-DefaultLevelNumber                value="10"      />
+  <Distribution-DefaultQuantileCacheSize          value="128"     />
+  <Distribution-Parallel                          value="true"    />
+  <Distribution-CharacteristicFunctionBlockMax    value="20"      />
+  <Distribution-CharacteristicFunctionNMax        value="1000000" />
+  <Distribution-MinimumVolumeLevelSetSamplingSize value="1000000" />
 
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />

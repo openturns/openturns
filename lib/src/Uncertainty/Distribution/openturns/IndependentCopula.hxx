@@ -85,6 +85,7 @@ public:
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the quantile of the IndependentCopula distribution */
+  using DistributionImplementation::computeQuantile;
   NumericalPoint computeQuantile(const NumericalScalar prob,
                                  const Bool tail = false) const;
 

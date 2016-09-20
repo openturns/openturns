@@ -27,6 +27,7 @@
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/LevelSet.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Graph.hxx"
@@ -208,7 +209,11 @@ public:
   virtual NumericalScalar computeCDF(const NumericalPoint & point) const;
   virtual NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
   virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
-
+  virtual NumericalPoint computeInverseSurvivalFunction(const NumericalScalar point) const;
+#ifndef SWIG
+  virtual NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob,
+							NumericalScalar & marginalProb) const;
+#endif
 protected:
   virtual NumericalSample computeCDFSequential(const NumericalSample & sample) const;
   virtual NumericalSample computeCDFParallel(const NumericalSample & sample) const;
@@ -278,7 +283,11 @@ public:
   /** Get the quantile of the distributionImplementation */
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
-
+#ifndef SWIG
+  virtual NumericalPoint computeQuantile(const NumericalScalar prob,
+                                         const Bool tail,
+					 NumericalScalar & marginalProb) const;
+#endif
   /** Get the quantile over a provided grid */
 protected:
   virtual NumericalSample computeQuantileSequential(const NumericalPoint & prob,
@@ -301,8 +310,44 @@ public:
                                           NumericalSample & grid,
                                           const Bool tail = false) const;
 
-  /** Get the minimum volume interval containing a given probability of the distributionImplementation */
-  virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
+  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
+#ifndef SWIG
+  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
+					NumericalScalar & threshold) const;
+#endif
+  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
+					NumericalPoint & threshold) const;
+
+  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+  Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
+#ifndef SWIG
+  Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
+					      NumericalScalar & marginalProb) const;
+#endif
+  Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
+					      NumericalPoint & marginalProb) const;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
+					       const Bool tail = false) const;
+#ifndef SWIG
+  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
+					       const Bool tail,
+					       NumericalScalar & marginalProb) const;
+#endif
+  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
+					       const Bool tail,
+					       NumericalPoint & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
+#ifndef SWIG
+  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+					NumericalScalar & threshold) const;
+#endif
+  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+					NumericalPoint & threshold) const;
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
@@ -725,19 +770,55 @@ protected:
 
 #ifndef SWIG
 
-  // Structure used to wrap the computePDF() method for interpolation purpose
-  struct PDFWrapper
+  // Class used to wrap the computePDF() method for interpolation purpose
+  class PDFWrapper: public NumericalMathFunctionImplementation
   {
-    PDFWrapper(const DistributionImplementation * p_distribution):
-      p_distribution_(p_distribution) {};
+  public:
+    PDFWrapper(const DistributionImplementation * p_distribution)
+      : NumericalMathFunctionImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
 
-    NumericalPoint computePDF(const NumericalPoint & point) const
+    PDFWrapper * clone() const
+    {
+      return new PDFWrapper(*this);
+    }
+
+    NumericalPoint operator() (const NumericalPoint & point) const
     {
       return NumericalPoint(1, p_distribution_->computePDF(point));
+    }
+
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      return p_distribution_->computePDF(sample);
     };
 
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "pdf");
+    }
+
+  private:
     const DistributionImplementation * p_distribution_;
-  }; // struct PDFWrapper
+  };  // class PDFWrapper
 
   // Structure used to wrap the computeCDF() method for interpolation purpose
   struct CDFWrapper
