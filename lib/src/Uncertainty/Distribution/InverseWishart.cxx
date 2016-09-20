@@ -48,11 +48,12 @@ InverseWishart::InverseWishart(const CovarianceMatrix & v,
                                const NumericalScalar nu)
   : ContinuousDistribution()
   , cholesky_()
-  , nu_(nu)
+  , nu_(-1.) // implies nu_ != nu: see setNu
 {
   setName("InverseWishart");
   if (nu + 1 <= v.getDimension()) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << "is not greater than dimension-1=" << static_cast< SignedInteger > (v.getDimension()) - 1;
   setV(v);
+  setNu(nu);
 }
 
 /* Comparison operator */
@@ -189,15 +190,16 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
     // If the Cholesky factor is not defined, it means that M is not symmetric positive definite (an exception is thrown) and the PDF is zero
     TriangularMatrix X(CovarianceMatrix(m).computeCholesky());
     // Compute the determinant of the Cholesky factor, ie the square-root of the determinant of M
-    NumericalScalar logPDF = logNormalizationFactor_;
+    NumericalScalar logPDF = 0.;
     // Here, the diagonal of X is positive
     for (UnsignedInteger i = 0; i < p; ++i) logPDF -= std::log(X(i, i));
     logPDF *= nu_ + p + 1.0;
-    // V^{-1}M = (CC')^{-1}(XX')
-    // = C'^{-1}(C^{-1}X)X'
+    // Add the term which does not depend on M
+    logPDF += logNormalizationFactor_;
+    // Trace(V M^{-1}) = Trace(C C' X'^{-1} X^{-1}) = Trace(C'X'^{-1} X^{-1}C)
+    //                 = Trace(A'A) with A = X^{-1}C
     TriangularMatrix A(X.solveLinearSystem(cholesky_).getImplementation());
-    SquareMatrix B((A * cholesky_.transpose()).getImplementation());
-    SquareMatrix C(X.transpose().solveLinearSystem(B).getImplementation());
+    SquareMatrix C((A.transpose() * A).getImplementation());
     logPDF -= 0.5 * C.computeTrace();
     return logPDF;
   }
