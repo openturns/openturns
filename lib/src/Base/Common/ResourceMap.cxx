@@ -792,6 +792,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "WhiteNoise-MeanEpsilon", 1.0e-14 );
 
   // HMatrix parameters //
+  set( "HMatrix-ClusteringAlgorithm", "median" );
   setAsNumericalScalar( "HMatrix-AdmissibilityFactor", 2.0 );
   setAsUnsignedInteger( "HMatrix-CompressionMethod", 1 );
   setAsNumericalScalar( "HMatrix-AssemblyEpsilon", 1.0e-4);
