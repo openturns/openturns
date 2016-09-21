@@ -5,6 +5,7 @@
 %}
 
 %template(HMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::HMatrixImplementation>;
+%template(pairlonglong) std::pair< size_t, size_t >;
 
 %include openturns/HMatrix.hxx
 
