@@ -227,6 +227,11 @@ int main(int argc, char *argv[])
   fullprint << "id = " << id << std::endl;
   fullprint << "ptResult2 = " << ptResult2 << std::endl;
 
-
+  ComplexMatrix C(matrix1);
+  Matrix R(2, 2);
+  R(0, 0) = 3.;
+  R(1, 1) = 7.;
+  fullprint << "ComplexMatrix*Matrix = " << C*R << std::endl;
+  fullprint << "Matrix*ComplexMatrix = " << R*C << std::endl;
   return ExitCode::Success;
 }

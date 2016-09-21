@@ -44,7 +44,8 @@ a+b= [[ 2 0 ]
  [ 0 1 ]]
 a-b= [[ 0 0 ]
  [ 0 0 ]]
-no mul for Matrix ComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for Matrix ComplexMatrix
 no sub for ComplexMatrix
 no mul for Matrix HermitianMatrix
@@ -53,7 +54,8 @@ no sub for HermitianMatrix
 no mul for Matrix TriangularComplexMatrix
 no add for Matrix TriangularComplexMatrix
 no sub for TriangularComplexMatrix
-no mul for Matrix SquareComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for Matrix SquareComplexMatrix
 no sub for SquareComplexMatrix
 a= [[ 1   0   ]
@@ -101,7 +103,8 @@ a+b= [[ 2 0 ]
  [ 0 1 ]]
 a-b= [[ 0 0 ]
  [ 0 0 ]]
-no mul for SquareMatrix ComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareMatrix ComplexMatrix
 no sub for ComplexMatrix
 no mul for SquareMatrix HermitianMatrix
@@ -110,7 +113,8 @@ no sub for HermitianMatrix
 no mul for SquareMatrix TriangularComplexMatrix
 no add for SquareMatrix TriangularComplexMatrix
 no sub for TriangularComplexMatrix
-no mul for SquareMatrix SquareComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SquareMatrix SquareComplexMatrix
 no sub for SquareComplexMatrix
 a= [[ 1   0   ]
@@ -158,7 +162,8 @@ a+b= [[ 2 0 ]
  [ 0 1 ]]
 a-b= [[ 0 0 ]
  [ 0 0 ]]
-no mul for TriangularMatrix ComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for TriangularMatrix ComplexMatrix
 no sub for ComplexMatrix
 no mul for TriangularMatrix HermitianMatrix
@@ -167,7 +172,8 @@ no sub for HermitianMatrix
 no mul for TriangularMatrix TriangularComplexMatrix
 no add for TriangularMatrix TriangularComplexMatrix
 no sub for TriangularComplexMatrix
-no mul for TriangularMatrix SquareComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for TriangularMatrix SquareComplexMatrix
 no sub for SquareComplexMatrix
 a= [[ 1   0   ]
@@ -217,7 +223,8 @@ a+b= [[ 2 0 ]
  [ 0 1 ]]
 a-b= [[ 0 0 ]
  [ 0 0 ]]
-no mul for SymmetricMatrix ComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SymmetricMatrix ComplexMatrix
 no sub for ComplexMatrix
 no mul for SymmetricMatrix HermitianMatrix
@@ -226,7 +233,8 @@ no sub for HermitianMatrix
 no mul for SymmetricMatrix TriangularComplexMatrix
 no add for SymmetricMatrix TriangularComplexMatrix
 no sub for TriangularComplexMatrix
-no mul for SymmetricMatrix SquareComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for SymmetricMatrix SquareComplexMatrix
 no sub for SquareComplexMatrix
 a= [[ 1   0   ]
@@ -276,7 +284,8 @@ a+b= [[ 2 0 ]
  [ 0 1 ]]
 a-b= [[ 0 0 ]
  [ 0 0 ]]
-no mul for CovarianceMatrix ComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for CovarianceMatrix ComplexMatrix
 no sub for ComplexMatrix
 no mul for CovarianceMatrix HermitianMatrix
@@ -285,7 +294,8 @@ no sub for HermitianMatrix
 no mul for CovarianceMatrix TriangularComplexMatrix
 no add for CovarianceMatrix TriangularComplexMatrix
 no sub for TriangularComplexMatrix
-no mul for CovarianceMatrix SquareComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for CovarianceMatrix SquareComplexMatrix
 no sub for SquareComplexMatrix
 a= [[ 1   0   ]
@@ -332,7 +342,8 @@ a+b= [[ 2 0 ]
  [ 0 1 ]]
 a-b= [[ 0 0 ]
  [ 0 0 ]]
-no mul for CorrelationMatrix ComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for CorrelationMatrix ComplexMatrix
 no sub for ComplexMatrix
 no mul for CorrelationMatrix HermitianMatrix
@@ -341,7 +352,8 @@ no sub for HermitianMatrix
 no mul for CorrelationMatrix TriangularComplexMatrix
 no add for CorrelationMatrix TriangularComplexMatrix
 no sub for TriangularComplexMatrix
-no mul for CorrelationMatrix SquareComplexMatrix
+a*b= [[ (1,0)       (0,0)       ]
+ [ (0,0)          (0.25,0) ]]
 no add for CorrelationMatrix SquareComplexMatrix
 no sub for SquareComplexMatrix
 a= [[ (1,0)      (0,0)      ]
