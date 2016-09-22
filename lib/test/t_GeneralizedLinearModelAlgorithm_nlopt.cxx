@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction model(inDescription, formula);
     const NumericalSample Y = model(X);
     const Basis basis = QuadraticBasisFactory(spatialDimension).build();
-    GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
+    GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);
     NLopt solver("LN_NELDERMEAD");
     algo.setOptimizationSolver(solver);
     algo.run();
