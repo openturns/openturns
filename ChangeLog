@@ -11,8 +11,6 @@
   * ChebychevFactory
 
 ==== API changes ====
-  * Removed deprecated SLSQP, LBFGS and NelderMead classes
-  * Removed deprecated QuadraticCumul class
 
 === Python module ===
 
