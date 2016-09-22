@@ -325,7 +325,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const NumericalSample & firs
 
   /* Compute the p-value with respect to the hypothesis */
   // Initial values defined for hypothesis = "Equal"
-  NumericalScalar pValue = 2 * DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
+  NumericalScalar pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
   Description description(1, "Hypothesis test: autocorrelation equals 0.");
   if(hypothesis == "Less")
   {
