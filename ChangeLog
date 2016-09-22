@@ -1,24 +1,5 @@
 = New Features =
 
-== 1.9 release (in progress) == #release-1.9
-
-=== Library ===
-
-==== Major changes ====
-
-==== New classes ====
-  * HistogramPolynomialFactory
-  * ChebychevFactory
-
-==== API changes ====
-
-=== Python module ===
-
-=== Miscellaneous ===
-
-=== Bug fixes ===
-
-
 == 1.8rc1 release (2016-08-08) == #release-1.8rc1
 
 === Library ===
@@ -38,6 +19,8 @@
  * MauntzKucherenkoSensitivityAlgorithm
  * SoizeGhanemFactory
  * LevelSetMesher
+ * HistogramPolynomialFactory
+ * ChebychevFactory
 
 ==== API changes ====
  * Removed deprecated (AbdoRackwitz|Cobyla|SQP|TNC)SpecificParameters classes
