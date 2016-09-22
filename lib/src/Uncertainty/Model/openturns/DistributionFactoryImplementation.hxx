@@ -56,7 +56,8 @@ public:
   /** Build a distribution based on a sample */
   virtual Implementation build(const NumericalSample & sample) const;
 
-  /** Build a distribution based on a sample and gives the covariance matrix of the estimate */
+  /** Build a distribution based on a sample and gives the covariance matrix of the estimate
+   @deprecated */
   virtual Implementation build(const NumericalSample & sample,
                                CovarianceMatrix & covariance) const;
 

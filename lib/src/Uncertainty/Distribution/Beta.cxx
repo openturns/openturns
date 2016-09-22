@@ -47,6 +47,26 @@ Beta::Beta()
 }
 
 /* Parameters constructor */
+Beta::Beta(const NumericalScalar r,
+           const NumericalScalar t,
+           const NumericalScalar a,
+           const NumericalScalar b)
+  : ContinuousDistribution()
+  , r_(0.0)
+  , t_(0.0)
+  , a_(a)
+  , b_(b)
+  , normalizationFactor_(0.0)
+{
+  setName("Beta");
+  setA(a);
+  setB(b);
+  setRT(r, t);
+  setDimension(1);
+  computeRange();
+}
+
+/* Parameters constructor */
 Beta::Beta(const NumericalScalar arg1,
            const NumericalScalar arg2,
            const NumericalScalar a,
@@ -59,6 +79,7 @@ Beta::Beta(const NumericalScalar arg1,
   , b_(b)
   , normalizationFactor_(0.0)
 {
+  Log::Warn(OSS() << "Beta parameter set constructor is deprecated.");
   setName("Beta");
   setA(a);
   setB(b);
@@ -264,7 +285,7 @@ void Beta::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Beta::getStandardDeviation() const
 {
-  return NumericalPoint(1, getSigma());
+  return NumericalPoint(1, (b_ - a_) / t_ * std::sqrt(r_ * (t_ - r_) / (t_ + 1.0)));
 }
 
 /* Get the skewness of the distribution */
@@ -404,11 +425,13 @@ void Beta::setMuSigma(const NumericalScalar mu,
 
 NumericalScalar Beta::getMu() const
 {
+  Log::Warn(OSS() << "Beta::getMu is deprecated");
   return a_ + (b_ - a_) * r_ / t_;
 }
 
 NumericalScalar Beta::getSigma() const
 {
+  Log::Warn(OSS() << "Beta::getSigma is deprecated");
   return (b_ - a_) / t_ * std::sqrt(r_ * (t_ - r_) / (t_ + 1.0));
 }
 

@@ -45,6 +45,21 @@ Gamma::Gamma()
 }
 
 /* Parameters constructor */
+Gamma::Gamma(const NumericalScalar k,
+             const NumericalScalar lambda,
+             const NumericalScalar gamma)
+  : ContinuousDistribution()
+  , k_(0.0)
+  , lambda_(0.0)
+  , gamma_(gamma)
+  , normalizationFactor_(0.0)
+{
+  setName("Gamma");
+  setKLambda(k, lambda);
+  setDimension(1);
+}
+
+/* Parameters constructor */
 Gamma::Gamma(const NumericalScalar arg1,
              const NumericalScalar arg2,
              const NumericalScalar gamma,
@@ -55,6 +70,7 @@ Gamma::Gamma(const NumericalScalar arg1,
   , gamma_(gamma)
   , normalizationFactor_(0.0)
 {
+  Log::Warn(OSS() << "Gamma parameter set constructor is deprecated.");
   setName("Gamma");
   switch (set)
   {
@@ -169,11 +185,13 @@ void Gamma::setMuSigma(const NumericalScalar mu,
 
 NumericalScalar Gamma::getMu() const
 {
+  Log::Warn(OSS() << "Gamma::getMu is deprecated");
   return gamma_ + k_ / lambda_;
 }
 
 NumericalScalar Gamma::getSigma() const
 {
+  Log::Warn(OSS() << "Gamma::getSigma is deprecated");
   return std::sqrt(k_) / lambda_;
 }
 
@@ -347,14 +365,14 @@ NumericalScalar Gamma::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void Gamma::computeMean() const
 {
-  mean_ = NumericalPoint(1, getMu());
+  mean_ = NumericalPoint(1, gamma_ + k_ / lambda_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint Gamma::getStandardDeviation() const
 {
-  return NumericalPoint(1, getSigma());
+  return NumericalPoint(1, std::sqrt(k_) / lambda_);
 }
 
 /* Get the skewness of the distribution */

@@ -55,6 +55,8 @@
  * Removed SensitivityAnalysis class
  * Deprecated SLSQP, LBFGS and NelderMead classes in favor of NLopt class
  * Deprecated LAR in favor of LARS
+ * Deprecated DistributionFactory::build(NumericalSample, CovarianceMatrix&)
+ * Deprecated distributions alternative parameters constructors, accessors
 
 === Python module ===
  * Add the possibility to distribute PythonFunction calls with multiprocessing

@@ -20,6 +20,8 @@
  */
 #include <cmath>
 #include "openturns/NormalFactory.hxx"
+#include "openturns/Chi.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +59,7 @@ NormalFactory::Implementation NormalFactory::build(const NumericalPoint & parame
 
 Normal NormalFactory::buildAsNormal(const NumericalSample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from a sample of size < 2";
   const NumericalPoint mean(sample.computeMean());
   const CovarianceMatrix covariance(sample.computeCovariance());
   Normal result(mean, covariance);
@@ -85,6 +87,24 @@ Normal NormalFactory::buildAsNormal(const NumericalPoint & parameters) const
 Normal NormalFactory::buildAsNormal() const
 {
   return Normal();
+}
+
+
+DistributionFactoryResult NormalFactory::buildEstimator(const NumericalSample & sample) const
+{
+  if (sample.getDimension() > 1) return buildBootStrapEstimator(sample);
+  Normal distribution(buildAsNormal(sample));
+  NumericalScalar mu = distribution.getMean()[0];
+  NumericalScalar sigma = distribution.getSigma()[0];
+  const UnsignedInteger size = sample.getSize();
+  ComposedDistribution::DistributionCollection coll;
+  Normal muDistribution(mu, sigma / sqrt(1.0 * size));
+  coll.add(muDistribution);
+  Distribution sigmaDistribution(Chi(size - 1) * (1.0 / sqrt(1.0 * size - 1.0)));
+  coll.add(sigmaDistribution);
+  ComposedDistribution parametersDistribution(coll);
+  DistributionFactoryResult result(distribution, parametersDistribution);
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS

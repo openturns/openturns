@@ -42,6 +42,18 @@ Gumbel::Gumbel()
 }
 
 /* Parameters constructor */
+Gumbel::Gumbel(const NumericalScalar alpha,
+               const NumericalScalar beta)
+  : ContinuousDistribution()
+  , alpha_(0.0)
+  , beta_(beta)
+{
+  setName("Gumbel");
+  setAlpha(alpha);
+  setDimension( 1 );
+}
+
+/* Parameters constructor */
 Gumbel::Gumbel(const NumericalScalar arg1,
                const NumericalScalar arg2,
                const ParameterSet set)
@@ -49,6 +61,7 @@ Gumbel::Gumbel(const NumericalScalar arg1,
   , alpha_(0.0)
   , beta_(arg2)
 {
+  Log::Warn(OSS() << "Gumbel parameter set constructor is deprecated.");
   setName( "Gumbel" );
   switch (set)
   {
@@ -234,7 +247,7 @@ void Gumbel::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Gumbel::getStandardDeviation() const
 {
-  return NumericalPoint(1, getSigma());
+  return NumericalPoint(1, SpecFunc::PI_SQRT6 / alpha_);
 }
 
 /* Get the skewness of the distribution */
@@ -341,11 +354,13 @@ void Gumbel::setMuSigma(const NumericalScalar mu,
 
 NumericalScalar Gumbel::getMu() const
 {
+  Log::Warn(OSS() << "Gumbel::getMu is deprecated");
   return beta_ + SpecFunc::EulerConstant / alpha_;
 }
 
 NumericalScalar Gumbel::getSigma() const
 {
+  Log::Warn(OSS() << "Gumbel::getSigma is deprecated");
   return SpecFunc::PI_SQRT6 / alpha_;
 }
 
@@ -359,11 +374,13 @@ void Gumbel::setAB(const NumericalScalar a,
 
 NumericalScalar Gumbel::getA() const
 {
+  Log::Warn(OSS() << "Gumbel::getA is deprecated");
   return beta_;
 }
 
 NumericalScalar Gumbel::getB() const
 {
+  Log::Warn(OSS() << "Gumbel::getB is deprecated");
   return 1 / alpha_;
 }
 

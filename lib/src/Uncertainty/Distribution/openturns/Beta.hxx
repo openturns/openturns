@@ -35,7 +35,7 @@ class OT_API Beta
 {
   CLASSNAME;
 public:
-
+  /** @deprecated */
   enum ParameterSet { RT, MUSIGMA };
 
   typedef Pointer<DistributionImplementation> Implementation;
@@ -44,11 +44,18 @@ public:
   Beta();
 
   /** Parameters constructor */
+  Beta(const NumericalScalar r,
+       const NumericalScalar t,
+       const NumericalScalar a,
+       const NumericalScalar b);
+
+  /** Parameters constructor 
+   @deprecated */
   Beta(const NumericalScalar arg1,
        const NumericalScalar arg2,
        const NumericalScalar a,
        const NumericalScalar b,
-       const ParameterSet set = RT);
+       const ParameterSet set);
 
   /** Comparison operator */
   Bool operator ==(const Beta & other) const;
@@ -133,12 +140,14 @@ public:
   void setT(const NumericalScalar t);
   NumericalScalar getT() const;
 
-  /** Mu accessor */
+  /** Mu accessor 
+   @deprecated */
   void setMuSigma(const NumericalScalar mu,
                   const NumericalScalar sigma);
   NumericalScalar getMu() const;
 
-  /** Sigma accessor */
+  /** Sigma accessor 
+   @deprecated */
   NumericalScalar getSigma() const;
 
   /** A accessor */

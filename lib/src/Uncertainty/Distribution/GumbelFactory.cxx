@@ -20,6 +20,7 @@
  */
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/GumbelMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -66,8 +67,10 @@ Gumbel GumbelFactory::buildAsGumbel(const NumericalSample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mu = sample.computeMean()[0];
   NumericalScalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only if sigma > 0, here sigma=" << sigma;
-  Gumbel result(mu, sigma, Gumbel::MUSIGMA);
+  NumericalPoint parameters(2);
+  parameters[0] = mu;
+  parameters[1] = sigma;
+  Gumbel result(buildAsGumbel(GumbelMuSigma()(parameters)));
   result.setDescription(sample.getDescription());
   return result;
 }
