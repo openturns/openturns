@@ -46,8 +46,8 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
                              const CovarianceModel & covarianceModel,
                              const NumericalSample & covarianceCoefficients)
   : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
-  , inputData_(inputSample)
-  , inputTransformedData_(inputSample)
+  , inputSample_(inputSample)
+  , inputTransformedSample_(inputSample)
   , inputTransformation_()
   , hasTransformation_(false)
   , basis_(basis)
@@ -80,8 +80,8 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
                              const TriangularMatrix & covarianceCholeskyFactor,
                              const HMatrix & covarianceHMatrix)
   : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
-  , inputData_(inputSample)
-  , inputTransformedData_(inputSample)
+  , inputSample_(inputSample)
+  , inputTransformedSample_(inputSample)
   , inputTransformation_()
   , hasTransformation_(false)
   , basis_(basis)
@@ -139,6 +139,19 @@ String KrigingResult::__str__(const String & offset) const
   return oss;
 }
 
+
+/* Design accessors */
+NumericalSample KrigingResult::getInputSample() const
+{
+  return inputSample_;
+}
+
+NumericalSample KrigingResult::getOutputSample() const
+{
+  return outputSample_;
+}
+
+
 /* Basis accessor */
 KrigingResult::BasisCollection KrigingResult::getBasisCollection() const
 {
@@ -170,11 +183,11 @@ NumericalMathFunction KrigingResult::getTransformation() const
 
 void KrigingResult::setTransformation(const NumericalMathFunction & transformation)
 {
-  if (transformation.getInputDimension() != inputData_.getDimension())
-    throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputData_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();
+  if (transformation.getInputDimension() != inputSample_.getDimension())
+    throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputSample_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();
   inputTransformation_ = transformation;
   // Map inputData using the transformation
-  inputTransformedData_ = transformation(inputData_);
+  inputTransformedSample_ = transformation(inputSample_);
   hasTransformation_ = true;
 }
 
@@ -265,12 +278,12 @@ Matrix KrigingResult::getCrossMatrix(const NumericalSample & x) const
   // Each block is of size d x d
   // So we have trainingSize * sampleSize blocks
   // We fill the matrix by columns
-  const UnsignedInteger trainingSize = inputData_.getSize();
+  const UnsignedInteger trainingSize = inputSample_.getSize();
   const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getDimension();
   const UnsignedInteger sampleSize = x.getSize();
   const UnsignedInteger sampleFullSize = sampleSize * covarianceModel_.getDimension();
   Matrix result(trainingFullSize, sampleFullSize);
-  const KrigingResultCrossCovarianceFunctor policy( inputTransformedData_, x, result, covarianceModel_);
+  const KrigingResultCrossCovarianceFunctor policy( inputTransformedSample_, x, result, covarianceModel_);
   // The loop is over the lower block-triangular part
   TBB::ParallelFor( 0, trainingSize * sampleSize, policy );
   return result;
@@ -282,7 +295,7 @@ void KrigingResult::computeF() const
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
   const UnsignedInteger outputDimension = covarianceModel_.getDimension();
-  const UnsignedInteger sampleSize = inputData_.getSize();
+  const UnsignedInteger sampleSize = inputSample_.getSize();
   const UnsignedInteger basisCollectionSize = basis_.getSize();
   UnsignedInteger totalSize = 0;
   for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basis_[i].getSize();
@@ -298,7 +311,7 @@ void KrigingResult::computeF() const
     for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
-      const NumericalSample basisSample(localBasis[j](inputTransformedData_));
+      const NumericalSample basisSample(localBasis[j](inputTransformedSample_));
       for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample[i][0];
     }
   }
@@ -395,7 +408,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
   Matrix psi(phiT_ * B);
   // compute f(x) & define u = psi - f(x)
   LOGINFO("Compute f(x)");
-  // Note that fx = F^{T} for x in inputData_
+  // Note that fx = F^{T} for x in inputSample_
   Matrix fx(F_.getNbColumns(), sampleSize * covarianceModel_.getDimension());
   // Fill fx => equivalent to F for the x data with transposition
   UnsignedInteger index = 0;
@@ -456,8 +469,8 @@ Normal KrigingResult::operator()(const NumericalPoint & xi) const
 void KrigingResult::save(Advocate & adv) const
 {
   MetaModelResult::save(adv);
-  adv.saveAttribute( "inputData_", inputData_ );
-  adv.saveAttribute( "inputTransformedData_", inputTransformedData_ );
+  adv.saveAttribute( "inputSample_", inputSample_ );
+  adv.saveAttribute( "inputTransformedSample_", inputTransformedSample_ );
   adv.saveAttribute( "inputTransformation_", inputTransformation_ );
   adv.saveAttribute( "hasTransformation_", hasTransformation_ );
   adv.saveAttribute( "basis_", basis_ );
@@ -476,8 +489,8 @@ void KrigingResult::save(Advocate & adv) const
 void KrigingResult::load(Advocate & adv)
 {
   MetaModelResult::load(adv);
-  adv.loadAttribute( "inputData_", inputData_ );
-  adv.loadAttribute( "inputTransformedData_", inputTransformedData_ );
+  adv.loadAttribute( "inputSample_", inputSample_ );
+  adv.loadAttribute( "inputTransformedSample_", inputTransformedSample_ );
   adv.loadAttribute( "inputTransformation_", inputTransformation_ );
   adv.loadAttribute( "hasTransformation_", hasTransformation_ );
   adv.loadAttribute( "basis_", basis_ );

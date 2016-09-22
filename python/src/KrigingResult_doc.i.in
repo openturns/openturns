@@ -239,13 +239,40 @@ metaModel : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingResult::getInputTransformation
+%feature("docstring") OT::KrigingResult::setTransformation
+"Accessor to the normalizing transformation.
+
+Parameters
+----------
+transformation : :class:`~openturns.NumericalMathFunction`
+    The transformation *T* that normalizes the input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getTransformation
 "Accessor to the normalizing transformation.
 
 Returns
 -------
 transformation : :class:`~openturns.NumericalMathFunction`
-    The  transformation *T* that normalizes the input sample.
-"
+    The transformation *T* that normalizes the input sample."
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::KrigingResult::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.NumericalSample`
+    The output sample."
