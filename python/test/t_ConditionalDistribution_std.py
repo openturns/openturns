@@ -56,6 +56,10 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("Quantile=", quantile)
     print("CDF(quantile)= %.12g" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 
     # "
     # 1D tests
@@ -124,6 +128,10 @@ try:
         quantile = distribution.computeQuantile(0.95)
         print("Quantile=", quantile)
         print("CDF(quantile)= %.12g" % distribution.computeCDF(quantile))
+        # Get 95% survival function
+        inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+        print("InverseSurvival=", repr(inverseSurvival))
+        print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 
 except:
     import sys

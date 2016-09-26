@@ -18,6 +18,8 @@ characteristic function=(0.0679463313303-0.248507038511j)
 log characteristic function=(-1.35623659307-1.30390135592j)
 quantile= [3.39477]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-2.27095]
+Survival(inverseSurvival)=0.950000
 mean= [0.457532]
 covariance= [[ 2.99587 ]]
 parameters= [[alpha : 1.5, beta : 0.5, mu : 2.5,  : -0.5]]

@@ -17,6 +17,8 @@ ccdf    =4.9893e-01
 survival=8.5345e-02
 quantile= [2.234,2.234]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[-0.998063,-0.998063]
+Survival(inverseSurvival)=0.950000
 mean= [0.56419,0.56419]
 standard deviation= [0.825645,0.825645]
 skewness= [0.136949,0.136949]

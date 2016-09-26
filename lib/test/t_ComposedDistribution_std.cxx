@@ -120,6 +120,7 @@ int main(int argc, char *argv[])
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+
     // Reference
     Normal ref(mean, sigma, IdentityMatrix(distribution.getDimension()));
     fullprint << "Reference=" << std::endl;
@@ -171,9 +172,12 @@ int main(int argc, char *argv[])
     fullprint << "PDF (ref)=" << distributionRef.computePDF(point) << std::endl;
     fullprint << "CDF      =" << distribution.computeCDF(point) << std::endl;
     fullprint << "CDF (ref)=" << distributionRef.computeCDF(point) << std::endl;
-
-    fullprint << "Survival      =" << distribution.computeSurvivalFunction(point) << std::endl;
-    fullprint << "Survival (ref)=" << distributionRef.computeSurvivalFunction(point) << std::endl;
+    NumericalScalar Survival = distribution.computeSurvivalFunction(point);
+    fullprint << "Survival      =" << Survival << std::endl;
+    fullprint << "Survival (ref)=" << distribution.computeSurvivalFunction(point) << std::endl;
+    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
 
     // 95% quantile
     quantile = distribution.computeQuantile( 0.95 );

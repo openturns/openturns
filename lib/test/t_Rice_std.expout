@@ -26,6 +26,8 @@ pdf (FD)=0.0687907
 cdf=0.778505
 ccdf=0.221495
 survival=0.221495
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[1.87781]
+Survival(inverse survival)=0.95
 pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.00902981,0.0060508]
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.103467,-0.0426433]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[13.9273]

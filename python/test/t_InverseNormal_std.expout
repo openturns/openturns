@@ -16,6 +16,8 @@ ccdf=0.165692
 characteristic function= (0.130776955167+0.348768871351j)
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[8.26789]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.117535]
+Survival(inverseSurvival)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[2]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[4]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[6]

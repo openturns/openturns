@@ -85,6 +85,10 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)=", distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
     mean = distribution.getMean()
     print("mean=", mean)
     covariance = distribution.getCovariance()

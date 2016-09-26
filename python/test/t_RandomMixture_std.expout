@@ -21,6 +21,8 @@ log characteristic function=-0.345207 + 1.000000i
 quantile      = [4.73509]
 quantile (ref)= [4.73509]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[4.73509]
+Survival(inverseSurvival)=0.050000
 mean      = [2]
 mean (ref)= [2]
 standard deviation      = [1.63299]
@@ -59,6 +61,8 @@ log characteristic function=-1.125000 + -0.500000i
 quantile      = [3.93456]
 quantile (ref)= [3.93456]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[3.93456]
+Survival(inverseSurvival)=0.050000
 mean      = [-1]
 mean (ref)= [-1]
 standard deviation      = [3]
@@ -97,6 +101,8 @@ log characteristic function=-0.334715 + 1.390943i
 quantile      = [6.2957]
 quantile (ref)= [6.29579]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.817691]
+Survival(inverseSurvival)=0.950000
 mean      = [3]
 mean (ref)= [3]
 standard deviation      = [1.73205]

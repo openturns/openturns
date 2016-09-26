@@ -18,6 +18,8 @@ pdf (FD)=0.4375
 cdf=0.54375
 ccdf=0.45625
 survival=0.45625
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-0.7]
+Survival(inverse survival)=0.95
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[2.14]
 cdf(quantile)=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.858125]

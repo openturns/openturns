@@ -86,6 +86,10 @@ for testCase in range(len(distribution)):
         'quantile=', repr(referenceDistribution[testCase].computeQuantile(0.95)))
     print('cdf(quantile)=%.6f' %
           distribution[testCase].computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = ot.NumericalPoint(distribution[testCase].computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution[testCase].computeSurvivalFunction(inverseSurvival))
     mean = distribution[testCase].getMean()
     print('mean      =', repr(mean))
     print('mean (ref)=', repr(referenceDistribution[testCase].getMean()))

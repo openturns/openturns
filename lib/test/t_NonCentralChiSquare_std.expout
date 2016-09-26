@@ -26,6 +26,8 @@ pdf (FD)=0.168125
 cdf=0.205328
 ccdf=0.794672
 survival=0.794672
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.169073]
+Survival(inverse survival)=0.95
 characteristic function=(0.0479067,0.195396)
 log characteristic function=(-1.60354,1.33036)
 pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0269116,-0.0447116]

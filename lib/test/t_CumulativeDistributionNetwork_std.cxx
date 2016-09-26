@@ -90,6 +90,9 @@ int main(int argc, char *argv[])
     fullprint << std::setprecision(5) << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << std::setprecision(5) << "survival=" << Survival << std::endl;
+    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;

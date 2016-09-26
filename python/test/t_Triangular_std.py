@@ -99,6 +99,10 @@ try:
     quantile = distribution.computeQuantile(0.25)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 
     # Define a point, right part of the support
     point = NumericalPoint(distribution.getDimension(), 2.0)

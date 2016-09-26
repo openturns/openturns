@@ -9,7 +9,6 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 3
-
     copula = IndependentCopula(dim)
     print("Copula =", repr(copula))
     print("Copula =", copula)
@@ -68,6 +67,10 @@ try:
     quantile = copula.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % copula.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
 
     # mean
     mean = copula.getMean()

@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
-    for dim in range(1, 5):
+    for dim in range(1, 2):
         theta = NumericalPoint(dim + 1)
         for i in range(dim + 1):
             theta[i] = (i + 1.0) / 4.0
@@ -67,6 +67,10 @@ try:
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", repr(quantile))
         print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
+        # Get 95% survival function
+        inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+        print("InverseSurvival=", repr(inverseSurvival))
+        print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
         mean = distribution.getMean()
         print("mean=", repr(mean))
         standardDeviation = distribution.getStandardDeviation()

@@ -12,6 +12,8 @@ anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=clas
 Point =  class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.449735  cdf=0.073888
 Quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.662772,0.662772]
 CDF(quantile)=0.500000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[0.0258555,0.0258555]
+Survival(inverseSurvival)=0.950000
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000

@@ -26,6 +26,8 @@ pdf (FD)=0.5
 cdf=0.25
 ccdf=0.75
 survival=0.75
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.67032]
+Survival(inverse survival)=0.95
 pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
 pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
 cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]

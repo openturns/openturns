@@ -60,6 +60,10 @@ try:
     quantile = copula.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % copula.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
     mean = copula.getMean()
     print("mean=", repr(mean))
     covariance = copula.getCovariance()

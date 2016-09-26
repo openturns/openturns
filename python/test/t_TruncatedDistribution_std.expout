@@ -20,6 +20,8 @@ cdf gradient (ref)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.149
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.73264]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[1.14928]
+Survival(inverseSurvival)=0.950000
 mean      = class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
 mean (ref)= class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
 standard deviation      = class=NumericalPoint name=Unnamed dimension=1 values=[0.802475]
@@ -61,6 +63,8 @@ cdf gradient (ref)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.195
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.67299]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.67299]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[1.16934]
+Survival(inverseSurvival)=0.950000
 mean      = class=NumericalPoint name=Unnamed dimension=1 values=[2.64103]
 mean (ref)= class=NumericalPoint name=Unnamed dimension=1 values=[2.64103]
 standard deviation      = class=NumericalPoint name=Unnamed dimension=1 values=[1.09456]
@@ -102,6 +106,8 @@ cdf gradient (ref)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.193
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.64324]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.64324]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.53617]
+Survival(inverseSurvival)=0.950000
 mean      = class=NumericalPoint name=Unnamed dimension=1 values=[1.72929]
 mean (ref)= class=NumericalPoint name=Unnamed dimension=1 values=[1.72929]
 standard deviation      = class=NumericalPoint name=Unnamed dimension=1 values=[1.27879]
@@ -143,6 +149,8 @@ cdf gradient (ref)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.149
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.73264]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[1.14928]
+Survival(inverseSurvival)=0.950000
 mean      = class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
 mean (ref)= class=NumericalPoint name=Unnamed dimension=1 values=[2.35526]
 standard deviation      = class=NumericalPoint name=Unnamed dimension=1 values=[0.802475]

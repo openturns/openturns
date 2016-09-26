@@ -26,6 +26,8 @@ pdf (FD)=0.517181
 cdf=0.531405
 ccdf=0.468595
 survival=0.468595
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.230549]
+Survival(inverse survival)=0.95
 characteristic function=(0.385738,0.612601)
 log characteristic function=(-0.323062,1.00884)
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.2027]

@@ -24,6 +24,8 @@ cdf gradient     = [0.082705,0.127416]
 cdf gradient (FD)= [0.082705,0.127416]
 quantile= [0.174871]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0406605]
+Survival(inverseSurvival)=0.950000
 mean= [0.0888889]
 covariance= [[ 0.0022575 ]]
 correlation= [[ 1 ]]
@@ -66,6 +68,8 @@ cdf gradient     = [0.00792151,0.0339127]
 cdf gradient (FD)= [0.00792151,0.0339127]
 quantile= [0.0432604]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0182761]
+Survival(inverseSurvival)=0.950000
 mean= [0.0285714]
 covariance= [[ 6.27943e-05 ]]
 correlation= [[ 1 ]]

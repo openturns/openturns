@@ -16,6 +16,8 @@ pdf     =2.185069
 cdf=0.058797
 quantile= class=NumericalPoint name=Unnamed dimension=7 values=[0.992521,0.992521,0.992521,0.992521,0.992521,0.992521,0.992521]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=7 values=[0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738]
+Survival(inverseSurvival)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0833333,0.0373929,0,0,0,0,0,0.0373929,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0402153,0.0199465,0,0,0,0,0.0402153,0.0833333,0,0,0,0,0,0.0199465,0,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0568528,0,0,0,0,0,0.0568528,0.0833333]
 parameters= [class=NumericalPointWithDescription name=ComposedCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]

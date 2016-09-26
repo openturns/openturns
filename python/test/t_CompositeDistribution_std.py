@@ -68,6 +68,10 @@ try:
     print("quantile (tail)=", quantileTail)
     CDFTail = distribution.computeComplementaryCDF(quantileTail)
     print("cdf (tail)= %.12g" % CDFTail)
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
     CF = distribution.computeCharacteristicFunction(point[0])
     print("characteristic function=(%.6g+%.6gj)" % (CF.real, CF.imag))
     LCF = distribution.computeLogCharacteristicFunction(point[0])

@@ -16,6 +16,8 @@ pdf gradient     = class=NumericalPoint name=Unnamed dimension=0 values=[]
 cdf gradient     = class=NumericalPoint name=Unnamed dimension=0 values=[]
 quantile= class=NumericalPoint name=Unnamed dimension=3 values=[0.983048,0.983048,0.983048]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=3 values=[0.0169524,0.0169524,0.0169524]
+Survival(inverseSurvival)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833333,0,0,0,0.0833333,0,0,0,0.0833333]
 parameters= [class=NumericalPointWithDescription name=X0 dimension=0 description=[] values=[]]

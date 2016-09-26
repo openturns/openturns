@@ -47,6 +47,10 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = ot.NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
     mean = distribution.getMean()
     print("mean=", mean)
     standardDeviation = distribution.getStandardDeviation()

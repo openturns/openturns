@@ -22,6 +22,8 @@ cdf (ref)=0.081759
 quantile= class=NumericalPoint name=Unnamed dimension=3 values=[6.05991,7.07458,4.66827]
 quantile (ref)= class=NumericalPoint name=Unnamed dimension=3 values=[6.05991,7.07458,4.66827]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=3 values=[-3.05991,-6.07458,-0.668274]
+Survival(inverseSurvival)=0.950000
 cond. cdf=0.615836
 cond. cdf (vect)= [0.615836,0.657634,0.707868]
 cond. pdf=0.123311

@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    Beta distribution(2., 5., -1., 2.);
+    Beta distribution(2.0, 5.0, -1.0, 2.0);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -92,6 +92,9 @@ int main(int argc, char *argv[])
     fullprint << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
+    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
@@ -99,6 +102,7 @@ int main(int argc, char *argv[])
     fullprint << "quantile (tail)=" << quantileTail << std::endl;
     NumericalScalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
+
     NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;
     NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );

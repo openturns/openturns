@@ -22,6 +22,8 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=3 values=[-0.1875
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.724745]
 cdf(quantile)=0.250000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0477226]
+Survival(inverseSurvival)=0.950000
 Point=  class=NumericalPoint name=Unnamed dimension=1 values=[2]
 ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.666667]
 ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.666667]

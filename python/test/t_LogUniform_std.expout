@@ -25,6 +25,8 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.0552]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.67032]
+Survival(inverseSurvival)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.93758]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.08407]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.67539]

@@ -99,6 +99,11 @@ try:
     print("Quantile=", repr(quantile))
     print("CDF(quantile)=%.6f" % distribution.computeCDF(quantile))
 
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+
     # Reference : Normal nD, correlation matrix = identity
     ref = Normal(mean, sigma,  CorrelationMatrix(dim))
     print("Reference=")

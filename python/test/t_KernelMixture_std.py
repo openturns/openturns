@@ -98,6 +98,10 @@ try:
     print("quantile=", repr(quantile))
     print("quantile (ref)=", repr(distributionRef.computeQuantile(0.95)))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
     x = [1.1, 1.6, 2.2]
     q = [0.1, 0.3, 0.7]
     y = [[-0.5], [0.5], [1.5]]

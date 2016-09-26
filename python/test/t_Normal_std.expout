@@ -29,6 +29,8 @@ pdf gradient     = class=NumericalPoint name=Unnamed dimension=6 values=[-0.0027
 pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=6 values=[-0.002741,0.0036547,-0.010181,-0.0046988,-0.0019144,-0.0043071]
 quantile= class=NumericalPoint name=Unnamed dimension=3 values=[4.6596,5.7395,3.0798]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=3 values=[-3.6596,-6.7395,-1.0798]
+Survival(inverseSurvival)=0.950000
 mean= class=NumericalPoint name=Unnamed dimension=3 values=[0.5,-0.5,1]
 standard deviation= class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1]
 skewness= class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0]

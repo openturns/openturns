@@ -91,6 +91,9 @@ int main(int argc, char *argv[])
     fullprint << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
+    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
     NumericalPoint PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     NumericalPoint CDFgr = distribution.computeCDFGradient( point );
