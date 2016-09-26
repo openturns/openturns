@@ -146,13 +146,12 @@ NumericalScalar Trapezoidal::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-
   if (x <= a_) return 0.0;
   // Will never go there if a_ == b_
   if (x < b_) return 0.5 * h_ * ( (x - a_) * (x - a_) / (b_ - a_) );
   if (x < c_) return 0.5 * h_ * (2.0 * x - a_ - b_);
   // Will never go there if c_ == d_
-  if (x < d_) return 0.5 * h_ * ( (2.0 * c_ - a_ - b_) + ( (c_ - x) * (c_ - 2.0 * d_ + x) / (d_ - c_) ) );
+  if (x < d_) return 1.0 - 0.5 * h_ * (x - d_) * (x - d_) / (d_ - c_);
   return 1.0;
 }
 
@@ -255,15 +254,15 @@ NumericalPoint Trapezoidal::computeCDFGradient(const NumericalPoint & point) con
 NumericalScalar Trapezoidal::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  NumericalScalar c1 = 0.5 * (b_ - a_) * h_;
-  NumericalScalar c2 = c1 + (c_ - b_) * h_;
-  NumericalScalar proba = tail ? 1.0 - prob : prob;
-  // p in (0, c1)
-  if (prob <= c1) return a_ + std::sqrt(2.0 * (b_ - a_) * proba / h_);
-  // p in (c1, c2)
-  if (prob <= c2) return b_ + (proba - c1) / h_;
-  // p in (c2, 1)
-  return d_ - std::sqrt(2.0 * (1.0 - proba) * (d_ - c_) / h_);
+  const NumericalScalar c1 = 0.5 * (b_ - a_) * h_;
+  const NumericalScalar c2 = c1 + (c_ - b_) * h_;
+  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  // q in (0, c1)
+  if (q <= c1) return a_ + std::sqrt(2.0 * (b_ - a_) * q / h_);
+  // q in (c1, c2)
+  if (q <= c2) return b_ + (q - c1) / h_;
+  // q in (c2, 1)
+  return d_ - std::sqrt(2.0 * (d_ - c_) * (1.0 - q) / h_);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
