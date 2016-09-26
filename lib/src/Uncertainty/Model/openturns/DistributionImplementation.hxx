@@ -849,7 +849,7 @@ protected:
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
       const NumericalScalar cdf = p_distribution_->computeCDF(diagonalToSpace(u[0]));
-      LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
       return NumericalPoint(1, cdf);
     }
 
@@ -857,7 +857,7 @@ protected:
     {
       NumericalPoint x(dimension_);
       for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
-      LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
 
@@ -865,6 +865,38 @@ protected:
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
+
+  // Structure used to implement the computeInverseSurvivalFunction() method efficiently
+  struct SurvivalFunctionWrapper
+  {
+    SurvivalFunctionWrapper(const Collection< Implementation > marginals,
+			    const DistributionImplementation * p_distribution)
+      : marginals_(marginals)
+      , p_distribution_(p_distribution)
+      , dimension_(p_distribution->getDimension())
+    {
+      // Nothing to do
+    }
+
+    NumericalPoint computeDiagonal(const NumericalPoint & u) const
+    {
+      const NumericalScalar survival = p_distribution_->computeSurvivalFunction(diagonalToSpace(u[0]));
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::computeDiagonal, u=" << u << ", survival=" << survival);
+      return NumericalPoint(1, survival);
+    }
+
+    NumericalPoint diagonalToSpace(const NumericalScalar tau) const
+    {
+      NumericalPoint x(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau, true)[0];
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
+      return x;
+    }
+
+    const Collection< Implementation > marginals_;
+    const DistributionImplementation * p_distribution_;
+    const UnsignedInteger dimension_;
+  }; // struct SurvivalFunctionWrapper
 
   class CovarianceWrapper: public NumericalMathFunctionImplementation
   {

@@ -580,14 +580,48 @@ NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const 
 NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const NumericalScalar prob,
 									  NumericalScalar & marginalProb) const
 {
-  if (dimension_ == 1)
-    {
-      marginalProb = prob;
-      return computeQuantile(prob, true);
-    }
-  Collection<Distribution> newMarginals(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i) newMarginals[i] = Distribution(getMarginal(i)) * (-1.0);
-  return ComposedDistribution(newMarginals, getCopula()).computeQuantile(prob, false, marginalProb) * (-1.0);
+  LOGDEBUG(OSS() << "DistributionImplementation::computeInverseSurvivalFunction: prob=" << prob);
+  // Special case for bording values
+  if (prob < 0.0) return range_.getUpperBound();
+  if (prob >= 1.0) return range_.getLowerBound();
+  // Special case for dimension 1
+  if (dimension_ == 1) return NumericalPoint(1, computeScalarQuantile(prob, true));
+  // Extract the marginal distributions
+  Collection<Implementation> marginals(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; i++) marginals[i] = getMarginal(i);
+  // The n-D inverse survival function is defined as X(\tau) = (S_1^{-1}(\tau), ..., S_n^{-1}(\tau)),
+  // with tau such as S(X(\tau)) = q.
+  // As F(x) = C(F_1(x_1),...,F_n(x_n)), the constraint F(X(\tau)) = q reads:
+  // C(\tau,...,\tau) = q
+  // Bracketing of \tau using the Frechet Hoeffding bounds:
+  // max(n\tau - n + 1, 0) <= C(\tau,...,\tau) <= \tau
+  // from which we deduce that q <= \tau and \tau <= 1 - (1 - q) / n
+  // Lower bound of the bracketing interval
+  const SurvivalFunctionWrapper wrapper(marginals, this);
+  const NumericalMathFunction f(bindMethod<SurvivalFunctionWrapper, NumericalPoint, NumericalPoint>(wrapper, &SurvivalFunctionWrapper::computeDiagonal, 1, 1));
+  NumericalScalar leftTau = prob;
+  NumericalScalar leftSurvival = f(NumericalPoint(1, leftTau))[0];
+  // Due to numerical precision issues, the theoretical bound can be slightly violated
+  if (leftSurvival > prob)
+  {
+    leftTau = 0.0;
+    leftSurvival = 1.0;
+  }
+  // Upper bound of the bracketing interval
+  NumericalScalar rightTau = 1.0 - (1.0 - prob) / dimension_;
+  NumericalScalar rightSurvival = f(NumericalPoint(1, rightTau))[0];
+  // Due to numerical precision issues, the theoretical bound can be slightly violated
+  if (rightSurvival < prob)
+  {
+    rightTau = 1.0;
+    rightSurvival = 0.0;
+  }
+  LOGDEBUG(OSS() << "DistributionImplementation::computeInverseSurvivalFunction: dimension=" << dimension_ << ", prob=" << prob << ", leftTau=" << leftTau << ", leftSurvival=" << leftSurvival << ", rightTau=" << rightTau << ", rightSurvival=" << rightSurvival);
+  // Use Brent's method to compute the quantile efficiently for continuous distributions
+  const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
+  marginalProb = solver.solve(f, prob, leftTau, rightTau, leftSurvival, rightSurvival);
+  LOGINFO(OSS(false) << "tau=" << marginalProb);
+  return wrapper.diagonalToSpace(marginalProb);
 }
 
 /* On a NumericalSample */
