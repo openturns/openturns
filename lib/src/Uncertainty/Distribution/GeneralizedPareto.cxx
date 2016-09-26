@@ -219,8 +219,9 @@ NumericalPoint GeneralizedPareto::computeCDFGradient(const NumericalPoint & poin
 NumericalScalar GeneralizedPareto::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (xi_ == 0.0) return -sigma_ * (tail ? std::log(prob) : log1p(-prob));
-  return sigma_ * expm1(-xi_ * (tail ? std::log(-prob) : log1p(-prob))) / xi_;
+  const NumericalScalar logProb = tail ? std::log(prob) : log1p(-prob);
+  if (xi_ == 0.0) return -sigma_ * logProb;
+  else return sigma_ * expm1(-xi_ * logProb) / xi_;
 }
 
 /* Compute the mean of the distribution */
