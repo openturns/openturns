@@ -711,7 +711,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralizedLinearModelAlgorithm parameters //
   set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "LAPACK");
-  setAsBool("GeneralizedLinearModelAlgorithm-NormalizeData", true);
+  setAsBool("GeneralizedLinearModelAlgorithm-NormalizeData", false);
   setAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance", true);
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-StartingScaling", 1.0e-13 );
