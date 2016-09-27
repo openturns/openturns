@@ -1,0 +1,15 @@
+%feature("docstring") OT::TBB
+"Threading parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TBB::Enable
+"Enable threading.
+
+The number of threads is the value associated to the `parallel-threads` key
+in :class:`~openturns.ResourceMap`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TBB::Disable
+"Disable threading."

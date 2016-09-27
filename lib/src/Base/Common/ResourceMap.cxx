@@ -19,7 +19,6 @@
  *
  */
 #include <unistd.h>                 // for sysconf
-#include <string.h>                 // for strdup
 #include "openturns/OTthread.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/OSS.hxx"

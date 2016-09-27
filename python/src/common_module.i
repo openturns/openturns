@@ -15,6 +15,7 @@
 
 /* Base/Common */
 %include Memory.i
+%include TBB.i
 %include Object.i
 %include PersistentObject.i
 %include SharedPointer.i

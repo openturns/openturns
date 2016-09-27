@@ -42,6 +42,28 @@ tbb::task_scheduler_init * TBB_P_scheduler_ = 0;
 #endif /* OPENTURNS_HAVE_TBB */
 
 
+void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
+{
+#ifdef OPENTURNS_HAVE_TBB
+  delete TBB_P_scheduler_;
+  TBB_P_scheduler_ = new tbb::task_scheduler_init(numberOfThreads);
+#endif
+}
+
+void TBB::Enable()
+{
+  const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("parallel-threads");
+  SetNumberOfThreads(nbThreads);
+}
+
+
+void TBB::Disable()
+{
+  SetNumberOfThreads(1);
+}
+
+
+
 TBB_init::TBB_init()
 {
   if (!TBB_P_instance_)
@@ -56,10 +78,7 @@ TBB_init::TBB_init()
 #endif
     TBB_P_instance_ = new TBB;
   }
-#ifdef OPENTURNS_HAVE_TBB
-  UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger( "parallel-threads" );
-  TBB_P_scheduler_ = new tbb::task_scheduler_init( nbThreads );
-#endif /* OPENTURNS_HAVE_TBB */
+  TBB::Enable();
 }
 
 TBB_init::~TBB_init()
