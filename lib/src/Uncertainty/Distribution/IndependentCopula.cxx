@@ -189,9 +189,11 @@ NumericalPoint IndependentCopula::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   if (prob < 0.0 || prob > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
-  if (prob == 0.0) return getRange().getLowerBound();
-  if (prob == 1.0) return getRange().getUpperBound();
-  return NumericalPoint(getDimension(), std::pow(prob, 1.0 / getDimension()));
+  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  if (q == 0.0) return getRange().getLowerBound();
+  if (q == 1.0) return getRange().getUpperBound();
+  if (dimension_ == 1) return NumericalPoint(1, q);
+  return NumericalPoint(dimension_, std::pow(q, 1.0 / dimension_));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
