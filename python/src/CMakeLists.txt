@@ -86,6 +86,7 @@ ot_add_python_module(common common_module.i
                       OTtypes.i
                       OTexceptions.i
                       Memory.i
+                      TBB.i TBB_doc.i.in
                       Object.i Object_doc.i.in
                       PersistentObject.i PersistentObject_doc.i.in
                       Study.i Study_doc.i.in

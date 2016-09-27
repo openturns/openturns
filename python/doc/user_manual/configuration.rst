@@ -18,8 +18,8 @@ OPENTURNS_HOME
 OPENTURNS_LOG_SEVERITY
     The default severity of logs, see the :class:`~openturns.Log` class.
 
-OpenTURNS environment checking and filesystem manipulation
-==========================================================
+Environment checking and filesystem manipulation
+================================================
 
 .. autosummary::
     :toctree: _generated/
@@ -54,3 +54,13 @@ Resource catalog
     :template: class.rst_t
 
     ResourceMap
+
+Threading configuration
+=======================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    TBB_Enable
+    TBB_Disable
