@@ -116,6 +116,35 @@ private:
 
 };
 
+/** @deprecated */
+class OT_API LBFGS : public NLopt
+{
+  CLASSNAME;
+public:
+  LBFGS();
+  virtual LBFGS * clone() const;
+  explicit LBFGS(const OptimizationProblem & problem);
+};
+
+/** @deprecated */
+class OT_API NelderMead : public NLopt
+{
+  CLASSNAME;
+public:
+  NelderMead();
+  virtual NelderMead * clone() const;
+  explicit NelderMead(const OptimizationProblem & problem);
+};
+
+/** @deprecated */
+class OT_API SLSQP : public NLopt
+{
+  CLASSNAME;
+public:
+  SLSQP();
+  virtual SLSQP * clone() const;
+  explicit SLSQP(const OptimizationProblem & problem);
+};
 
 END_NAMESPACE_OPENTURNS
 

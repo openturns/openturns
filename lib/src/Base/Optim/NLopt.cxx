@@ -503,6 +503,52 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
   return outP[marginalIndex];
 }
 
+CLASSNAMEINIT(SLSQP);
+static const Factory<SLSQP> Factory_SLSQP;
+SLSQP::SLSQP() : NLopt("LD_SLSQP")
+{
+  Log::Warn(OSS() << "SLSQP class is deprecated.");
+}
+SLSQP::SLSQP(const OptimizationProblem & problem)
+  : NLopt(problem, "LD_SLSQP")
+{
+  Log::Warn(OSS() << "SLSQP class is deprecated.");
+}
+SLSQP * SLSQP::clone() const
+{
+  return new SLSQP(*this);
+}
+
+CLASSNAMEINIT(LBFGS);
+static const Factory<LBFGS> Factory_LBFGS;
+LBFGS::LBFGS() : NLopt("LD_LBFGS")
+{
+  Log::Warn(OSS() << "LBFGS class is deprecated.");
+}
+LBFGS::LBFGS(const OptimizationProblem & problem)
+  : NLopt(problem, "LD_LBFGS")
+{
+  Log::Warn(OSS() << "LBFGS class is deprecated.");
+}
+LBFGS * LBFGS::clone() const
+{
+  return new LBFGS(*this);
+}
+
+CLASSNAMEINIT(NelderMead);
+static const Factory<NelderMead> Factory_NelderMead;
+NelderMead::NelderMead() : NLopt("LN_NELDERMEAD")
+{
+  Log::Warn(OSS() << "NelderMead class is deprecated.");
+}
+NelderMead::NelderMead(const OptimizationProblem & problem)
+  : NLopt(problem, "LN_NELDERMEAD")
+{
+  Log::Warn(OSS() << "NelderMead class is deprecated.");
+}
+NelderMead * NelderMead::clone() const
+{
+  return new NelderMead(*this);
+}
 
 END_NAMESPACE_OPENTURNS
-
