@@ -90,7 +90,7 @@ ot-config: ot-check-compiler
 	  -DCMAKE_TOOLCHAIN_FILE=toolchain-$(TARGET).cmake \
 	  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 	  -DCMAKE_C_FLAGS_RELWITHDEBINFO="-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4" \
-	  -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4" \
+	  -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4 -D_hypot=hypot" \
 	  -DPYTHON_INCLUDE_DIR=$(MINGW_PREFIX)/$(TARGET)/include/python$(PYBASEVER_NODOT) \
 	  -DPYTHON_INCLUDE_DIR2=$(MINGW_PREFIX)/$(TARGET)/include/python$(PYBASEVER_NODOT) \
 	  -DPYTHON_LIBRARY=$(MINGW_PREFIX)/$(TARGET)/lib/libpython$(PYBASEVER_NODOT).dll.a \
