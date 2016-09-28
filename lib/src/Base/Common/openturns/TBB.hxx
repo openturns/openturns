@@ -114,6 +114,7 @@ public:
   struct Split {};
 #endif /* OPENTURNS_HAVE_TBB */
 
+#ifndef SWIG // swig 1.3.40 fails to parse this
   template <typename T>
   struct BlockedRange : public tbb::blocked_range<T>
   {
@@ -122,6 +123,7 @@ public:
     BlockedRange(value_type from, value_type to, size_type gs = 1) : tbb::blocked_range<T>(from, to, gs) {}
     BlockedRange(const tbb::blocked_range<T> & range) : tbb::blocked_range<T>(range) {}
   };
+#endif // SWIG
 
   template <typename BODY>
   static inline
@@ -144,12 +146,15 @@ public:
     tbb::parallel_sort( first, last );
   }
 
+  static void Enable();
+  static void Disable();
+
 private:
+  static void SetNumberOfThreads(const UnsignedInteger numberOfThreads);
 
-  friend struct TBB_init; /* friendship for static member initialization */
+  friend struct TBB_init;
+
 }; /* end class TBB */
-
-
 
 /** This struct initializes all static members of TBB */
 struct OT_API TBB_init

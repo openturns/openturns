@@ -52,6 +52,7 @@
  * Shortened ResourceMap keys to not contain 'Implementation'
 
 === Bug fixes ===
+ * #535 (parallel-threads option cannot be changed at runtime with TBB)
  * #565 (The SensitivityAnalysis class manages only one single output.)
  * #604 (Bug concerning the NonCentralStudent distribution)
  * #698 (KernelSmoothing() as a factory)
