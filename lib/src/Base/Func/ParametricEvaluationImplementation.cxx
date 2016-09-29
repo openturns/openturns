@@ -284,8 +284,15 @@ String ParametricEvaluationImplementation::__repr__() const
 
 String ParametricEvaluationImplementation::__str__(const String & offset) const
 {
-  OSS oss;
-  oss << offset << ParametricEvaluationImplementation::GetClassName();
+  NumericalPointWithDescription parameters(parameter_);
+  parameters.setDescription(parameterDescription_);
+
+  OSS oss(false);
+  oss << offset << ParametricEvaluationImplementation::GetClassName()
+      << function_ << " with"
+      << " parameters positions=" << parametersPositions_
+      << " parameters=" << parameters
+      << " input positions=" << inputPositions_;
   return oss;
 }
 
