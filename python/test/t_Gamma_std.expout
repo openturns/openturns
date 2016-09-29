@@ -26,6 +26,17 @@ quantile= [1.06295]
 cdf(quantile)= 0.95
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.429631]
 Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.499368, 1.06337]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.18978} with f=
+MinimumVolumeLevelSetEvaluation(Gamma(k = 1.5, lambda = 2.5, gamma = -0.5))
+beta= [0.111942]
+Bilateral confidence interval= [-0.456841, 1.36968]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.5, 1.06295]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.429631, 13.1546]
+beta= [0.95]
 mean= [0.1]
 covariance= [[ 0.24 ]]
 correlation= [[ 1 ]]
@@ -39,13 +50,6 @@ standard moment n= 3 , value= [13.125]
 standard moment n= 4 , value= [59.0625]
 standard moment n= 5 , value= [324.844]
 Standard representative= Gamma(k = 1.5, lambda = 1, gamma = 0)
-mu= 0.1
-standard deviation= [0.489898]
-skewness= [1.63299]
-kurtosis= [7]
-sigma= 0.489898
-k from (mu, sigma)= 1.5
-lambda from (mu, sigma)= 2.5
 Distribution  Gamma(k = 15, lambda = 2.5, gamma = 0)
 Elliptical =  False
 Continuous =  True
@@ -74,6 +78,17 @@ quantile= [8.75459]
 cdf(quantile)= 0.95
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[3.69853]
 Survival(inverseSurvival)=0.950000
+Minimum volume interval= [3.1431, 9.09027]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.27167} with f=
+MinimumVolumeLevelSetEvaluation(Gamma(k = 15, lambda = 2.5, gamma = 0))
+beta= [0.037943]
+Bilateral confidence interval= [3.35815, 9.39585]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 8.75459]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [3.69853, 26.3665]
+beta= [0.95]
 mean= [6]
 covariance= [[ 2.4 ]]
 correlation= [[ 1 ]]
@@ -87,10 +102,3 @@ standard moment n= 3 , value= [4080]
 standard moment n= 4 , value= [73440]
 standard moment n= 5 , value= [1.39536e+06]
 Standard representative= Gamma(k = 15, lambda = 1, gamma = 0)
-mu= 6
-standard deviation= [1.54919]
-skewness= [0.516398]
-kurtosis= [3.4]
-sigma= 1.54919
-k from (mu, sigma)= 15
-lambda from (mu, sigma)= 2.5

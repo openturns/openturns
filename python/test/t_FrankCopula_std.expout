@@ -14,20 +14,35 @@ Quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.662772,0.66277
 CDF(quantile)=0.500000
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[0.0258555,0.0258555]
 Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0.0127327, 0.987267]
+[0.0127327, 0.987267]
+threshold= [0.974535]
+Minimum volume level set= {x | f(x) <= 0.654845} with f=
+MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5))
+beta= [0.519522]
+Bilateral confidence interval= [0.0127327, 0.987267]
+[0.0127327, 0.987267]
+beta= [0.974535]
+Unilateral confidence interval (lower tail)= [0, 0.974144]
+[0, 0.974144]
+beta= [0.974144]
+Unilateral confidence interval (upper tail)= [0.0258555, 1]
+[0.0258555, 1]
+beta= [0.974144]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.56939]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.294088]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.0571768]
+margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.47206]
 indices= [1,0]
 margins= class=FrankCopula name=FrankCopula dimension=2 theta=2.5
 margins PDF=1.334391
 margins CDF=0.107307
 margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[0.974144,0.974144]
 margins CDF(qantile)=0.950000
-margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.243714,0.913771]
+margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[0.196586,0.435233]

@@ -105,6 +105,21 @@ try:
     inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    # Confidence regions
+    threshold = NumericalPoint()
+    print("Minimum volume interval=", distribution.computeMinimumVolumeInterval(0.95, threshold))
+    print("threshold=", threshold)
+    beta = NumericalPoint()
+    levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", beta)
+    print("Bilateral confidence interval=", distribution.computeBilateralConfidenceInterval(0.95, beta))
+    print("beta=", beta)
+    print("Unilateral confidence interval (lower tail)=", distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
+    print("beta=", beta)
+    print("Unilateral confidence interval (upper tail)=", distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
+    print("beta=", beta)
+    
     mean = distribution.getMean()
     print("mean=", repr(mean))
     standardDeviation = distribution.getStandardDeviation()
@@ -122,15 +137,6 @@ try:
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 
-    # Specific to this distribution
-    mu = distribution.getMu()
-    print("mu=%.6f" % mu)
-    sigma = distribution.getSigma()
-    print("sigma=%.6f" % sigma)
-    newDistribution = Beta(
-        mu, sigma, distribution.getA(), distribution.getB(), 1)
-    print("r from (mu, sigma)=%.6f" % newDistribution.getR())
-    print("t from (mu, sigma)=%.6f" % newDistribution.getT())
     # Test for non-normal parameters
     inf = float("inf")
     nan = float("nan")

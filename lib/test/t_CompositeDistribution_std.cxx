@@ -109,6 +109,21 @@ int main(int argc, char *argv[])
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     NumericalPoint CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
+    // Confidence regions
+    NumericalScalar threshold;
+    fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeInterval(0.95, threshold) << std::endl;
+    fullprint << "threshold=" << threshold << std::endl;
+    NumericalScalar beta;
+    //    ResourceMap::SetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 1000);
+    LevelSet levelSet(distribution.computeMinimumVolumeLevelSet(0.95, beta));
+    fullprint << "Minimum volume level set=" << levelSet << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceInterval(0.95, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, false, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, true, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     NumericalPoint standardDeviation = distribution.getStandardDeviation();

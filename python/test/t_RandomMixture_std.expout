@@ -23,6 +23,18 @@ quantile (ref)= [4.73509]
 cdf(quantile)=0.950000
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[4.73509]
 Survival(inverseSurvival)=0.050000
+dimension= 1 test case= 0
+Minimum volume interval= [-1.10557, -1.10557]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.88416} with f=
+MinimumVolumeLevelSetEvaluation(RandomMixture(Triangular(a = -2, m = 2, b = 6)))
+beta= [0.0559016]
+Bilateral confidence interval= [-1.10557, -1.10557]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-2, 4.73509]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [4.73509, 6]
+beta= [0.95]
 mean      = [2]
 mean (ref)= [2]
 standard deviation      = [1.63299]
@@ -63,6 +75,18 @@ quantile (ref)= [3.93456]
 cdf(quantile)=0.950000
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[3.93456]
 Survival(inverseSurvival)=0.050000
+dimension= 1 test case= 1
+Minimum volume interval= [-6.87989, -6.87989]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.93828} with f=
+MinimumVolumeLevelSetEvaluation(RandomMixture(Normal(mu = -1, sigma = 3)))
+beta= [0.0194816]
+Bilateral confidence interval= [-6.87989, -6.87989]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-23.9519, 3.93456]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [3.93456, 21.9519]
+beta= [0.95]
 mean      = [-1]
 mean (ref)= [-1]
 standard deviation      = [3]

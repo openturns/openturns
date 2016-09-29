@@ -122,6 +122,20 @@ int main(int argc, char *argv[])
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    // Confidence regions
+    NumericalScalar threshold;
+    fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeInterval(0.95, threshold) << std::endl;
+    fullprint << "threshold=" << threshold << std::endl;
+    NumericalScalar beta;
+    LevelSet levelSet(distribution.computeMinimumVolumeLevelSet(0.95, beta));
+    fullprint << "Minimum volume level set=" << levelSet << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceInterval(0.95, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, false, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, true, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     NumericalPoint standardDeviation = distribution.getStandardDeviation();
@@ -144,19 +158,6 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
-    // Specific to this distribution
-    NumericalScalar mu = distribution.getMu();
-    fullprint << "mu=" << mu << std::endl;
-    NumericalScalar sigma = distribution.getSigma();
-    fullprint << "sigma=" << sigma << std::endl;
-    LogNormal newDistribution(mu, sigma, distribution.getGamma(), LogNormal::MUSIGMA);
-    fullprint << "muLog from (mu, sigma)=" << newDistribution.getMuLog() << std::endl;
-    fullprint << "sigmaLog from (mu, sigma)=" << newDistribution.getSigmaLog() << std::endl;
-    NumericalScalar sigmaOverMu = distribution.getSigmaOverMu();
-    fullprint << "sigmaOverMu=" << sigmaOverMu << std::endl;
-    newDistribution = LogNormal(mu, sigmaOverMu, distribution.getGamma(), LogNormal::MU_SIGMAOVERMU);
-    fullprint << "muLog from (mu, sigmaOverMu)=" << newDistribution.getMuLog() << std::endl;
-    fullprint << "sigmaLog from (mu, sigmaOverMu)=" << newDistribution.getSigmaLog() << std::endl;
   }
   catch (TestFailed & ex)
   {

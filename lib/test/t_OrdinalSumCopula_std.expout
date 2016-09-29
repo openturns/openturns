@@ -14,8 +14,25 @@ ddf     =class=NumericalPoint name=Unnamed dimension=2 values=[0.25786,0.25786]
 ddf (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[5.86093,5.86093]
 pdf     =2.92442
 cdf=0.543575
-quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.971607,0.971607]
-cdf(quantile)=0.95
+Survival      =0.343575
+Survival (ref)=0.343575
+Inverse survival=class=NumericalPoint name=Unnamed dimension=2 values=[0.0299408,0.0299408]
+Survival(inverse survival)=0.95
+Quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.567157,0.567157]
+CDF(quantile)=0.5
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.160334,0.160334] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.839666,0.839666] finite lower bound=[1,1] finite upper bound=[1,1]
+threshold=0.679332
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
+ [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) gradientImplementation=MinimumVolumeLevelSetGradient(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
+ [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
+ [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) level=-0.206042
+beta=1.22881
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.160334,0.160334] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.839666,0.839666] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.679332
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.971607,0.971607] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.971607
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.0299408,0.0299408] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.970059
 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.5,0.5]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.083333,0.076861,0.076861,0.083333]
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.92233,0.92233,1]

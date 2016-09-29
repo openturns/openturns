@@ -71,7 +71,21 @@ try:
     inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
-
+    # Confidence regions
+    threshold = NumericalPoint()
+    print("Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold))
+    print("threshold=", threshold)
+    beta = NumericalPoint()
+    levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", beta)
+    print("Bilateral confidence interval=", copula.computeBilateralConfidenceInterval(0.95, beta))
+    print("beta=", beta)
+    print("Unilateral confidence interval (lower tail)=", copula.computeUnilateralConfidenceInterval(0.95, False, beta))
+    print("beta=", beta)
+    print("Unilateral confidence interval (upper tail)=", copula.computeUnilateralConfidenceInterval(0.95, True, beta))
+    print("beta=", beta)
+    
     # mean
     mean = copula.getMean()
     print("mean=", repr(mean))

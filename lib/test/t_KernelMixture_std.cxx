@@ -116,6 +116,24 @@ int main(int argc, char *argv[])
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "quantile (ref)=" << distributionRef.computeQuantile( 0.95 ) << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    if (distribution.getDimension() <= 2)
+    {
+      // Confidence regions
+      NumericalScalar threshold;
+      fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeInterval(0.95, threshold) << std::endl;
+      fullprint << "threshold=" << threshold << std::endl;
+      NumericalScalar beta;
+      LevelSet levelSet(distribution.computeMinimumVolumeLevelSet(0.95, beta));
+      fullprint << "Minimum volume level set=" << levelSet << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+      fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceInterval(0.95, beta) << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+      fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, false, beta) << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+      fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, true, beta) << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+    }
+
     NumericalPoint x(3);
     x[0] = 1.1;
     x[1] = 1.6;
@@ -167,3 +185,4 @@ int main(int argc, char *argv[])
 
   return ExitCode::Success;
 }
+

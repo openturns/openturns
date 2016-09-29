@@ -21,6 +21,17 @@ quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.963592]
 cdf(quantile)= 0.95
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0508413]
 Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0.000634361, 0.964014]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 1.77199} with f=
+MinimumVolumeLevelSetEvaluation(Burr(c = 1.5, k = 4.5))
+beta= [0.169994]
+Bilateral confidence interval= [0.0316926, 1.1727]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 0.963592]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0508413, 118.536]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.37922]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.310221]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[2.16221]

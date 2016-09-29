@@ -9,6 +9,10 @@ oneSample=class=NumericalSample name=a min copula implementation=class=Numerical
 anotherSample mean=class=NumericalPoint name=Unnamed dimension=3 values=[0.503282,0.503282,0.503282]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0847362,0.0847362,0.0847362,0.0847362,0.0847362,0.0847362,0.0847362,0.0847362,0.0847362]
 point= class=NumericalPoint name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] ddf (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] pdf=0.2 cdf=0.2
+Survival      =0.8
+Survival (ref)=0.8
+Inverse survival=class=NumericalPoint name=Unnamed dimension=3 values=[0.05,0.05,0.05]
+Survival(inverse survival)=0.95
 Quantile=class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 CDF(quantile)=0.5
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833333,0.0833333,0.0833333,0.0833333,0.0833333,0.0833333,0.0833333,0.0833333,0.0833333]

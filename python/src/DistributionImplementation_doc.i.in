@@ -803,6 +803,266 @@ OT_Distribution_drawMarginal1DCDF_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_computeMinimumVolumeLevelSet_doc
+"Compute the confidence domain with minimum volume.
+
+Available constructors:
+    computeMinimumVolumeLevelSet(alpha)
+
+    computeMinimumVolumeLevelSet(alpha, level)
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+level : sequence of float  of dimension 1
+    The value :math:`p_{\alpha}` of the density function defining the frontier of the domain.
+
+Returns
+-------
+levelSet : :class:`~openturns.LevelSet`
+    The minimum volume domain of measure :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+
+The minimum volume confidence domain :math:`A^*_{\alpha}` is the set of minimum volume and which measure is at least :math:`\alpha`. It is defined by:
+
+.. math::
+
+    A^*_{\alpha} = \argmin_{A \in \Rset^d\, | \, \mu(A) \geq \alpha} \lambda(A)
+
+
+where :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. Under some general conditions on :math:`\mu` (for example, no flat regions), the set  :math:`A^*_{\alpha}` is unique and realises the minimum: :math:`\mu(A^*_{\alpha}) = \alpha`. We show that :math:`A^*_{\alpha}` writes:
+
+.. math::
+
+    A^*_{\alpha} = \{ \vect{x} \in \Rset^d \, | \, p(\vect{x}) \geq p_{\alpha} \}
+
+for a certain :math:`p_{\alpha} >0`.
+
+If we consider the random variable :math:`Y = p(\vect{X})`, with cumulative distribution function :math:`F_Y`, then :math:`p_{\alpha}` is defined by:
+
+.. math::
+
+    1-F_Y(p_{\alpha}) = \alpha
+
+
+Thus the minimum volume domain of confidence :math:`\alpha` is the interior of the domain which frontier is the :math:`1-\alpha` quantile of :math:`Y`. It can be determined with simulations of :math:`Y`.
+
+Examples
+--------
+Create a sample from a Beta distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Beta distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence region of minimum volume of the native parameters al level 0.9:
+
+>>> confInt, level = paramDist.computeMinimumVolumeLevelSet(0.9)
+>>> print confInt
+>>> print level[0]"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSet
+OT_Distribution_computeMinimumVolumeLevelSet_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeInterval_doc
+"Compute the confidence interval with minimum volume.
+
+Available constructors:
+    computeMinimumVolumeInterval(alpha)
+
+    computeMinimumVolumeInterval(alpha, level)
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+level : sequence of float of dimension 1
+    The value :math:`\beta` which is the measure of each component interval.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+
+The minimum volume confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)` and :math:`\mu(I^*_{\alpha})  =  \alpha` with :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. 
+
+This problem resorts to solving  `d` univariate non linear equations: for a fixed value :math:`\beta`, we find each intervals :math:`[a_i, b_i]` such that:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+    F_i(b_i) - F_i(a_i) & = & \beta \\
+    p_i(b_i) & = & p_i(a_i)
+    \end{eqnarray*}
+
+which consists of finding :math:`a_i` such that:
+
+.. math::
+
+    p_i(a_i) =  p_i(F_i^{-1}(\beta + F_i(a_i)))
+
+To find :math:`\beta`, we use the Brent algorithm:  :math:`\mu([\vect{a}(\beta); \vect{b}(\beta)] = g(\beta) = \alpha` with `g` a non linear function.
+
+Examples
+--------
+Create a sample from a Beta distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Beta distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence interval of the native parameters al level 0.9 with minimum volume:
+
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 100)
+>>> level = ot.NumericalPoint()
+>>> confInt = paramDist.computeMinimumVolumeInterval(0.9, level)
+>>> print confInt
+>>> print level[0]"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
+OT_Distribution_computeMinimumVolumeInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeBilateralConfidenceInterval_doc
+"Compute a bilateral confidence interval.
+
+Available constructors:
+    computeBilateralConfidenceInterval(alpha)
+
+    computeBilateralConfidenceInterval(alpha, level)
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+level : sequence of float of dimension 1
+    The value :math:`\beta`.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+
+The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+
+Examples
+--------
+Create a sample from a Beta distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Beta distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the bilateral confidence interval al level 0.9:
+
+>>> level = ot.NumericalPoint()
+>>> confInt = paramDist.computeBilateralConfidenceInterval(0.9, level)
+>>> print confInt
+>>> print level[0]"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceInterval
+OT_Distribution_computeBilateralConfidenceInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeUnilateralConfidenceInterval_doc
+"Compute a unilateral confidence interval.
+
+Available constructors:
+    computeUnilateralConfidenceInterval(alpha, tail)
+
+    computeUnilateralConfidenceInterval(alpha, tail, level)
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+tail : boolean
+    `True` indicates the interval is bounded by an lower value.
+    `False` indicates the interval is bounded by an upper value.
+
+    Default value is `False`.
+level : sequence of float of dimension 1
+    The value :math:`\beta`.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The unilateral confidence interval of level :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu`.
+
+The left unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]-\infty, b_1] \times \dots \times ]-\infty, b_d]` where :math:`b_i = F_i^{-1}(\beta)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+It means that :math:`\vect{b}` is the quantile of level :math:`\alpha` of the measure :math:`\mu`, with iso-quantile components.
+
+The right unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]a_1; +\infty[ \times \dots \times ]a_d; +\infty[` where :math:`a_i = F_i^{-1}(1-\beta)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+It means that :math:`S_{\mu}^{-1}(\vect{a}) = \alpha` with iso-quantile components, where :math:`S_{\mu}` is the survival function of the measure :math:`\mu`.
+
+Examples
+--------
+Create a sample from a Beta distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Beta distribution and extract the asymptotic parameters distribution: 
+
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the right unilateral confidence interval al level 0.9:
+
+>>> level = ot.NumericalPoint()
+>>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, level)
+>>> print confInt
+>>> print level[0]
+
+Determine the left unilateral confidence interval al level 0.9:
+
+>>> level = ot.NumericalPoint()
+>>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, True, level)
+>>> print confInt
+>>> print level[0]"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeUnilateralConfidenceInterval
+OT_Distribution_computeUnilateralConfidenceInterval_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_drawMarginal1DPDF_doc
 "Draw the probability density function of a margin.
 

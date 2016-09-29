@@ -103,6 +103,21 @@ try:
     inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    # Confidence regions
+    threshold = NumericalPoint()
+    print("Minimum volume interval=", distribution.computeMinimumVolumeInterval(0.95, threshold))
+    print("threshold=", threshold)
+    beta = NumericalPoint()
+    levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", beta)
+    print("Bilateral confidence interval=", distribution.computeBilateralConfidenceInterval(0.95, beta))
+    print("beta=", beta)
+    print("Unilateral confidence interval (lower tail)=", distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
+    print("beta=", beta)
+    print("Unilateral confidence interval (upper tail)=", distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
+    print("beta=", beta)
+    
     mean = distribution.getMean()
     print("mean=", repr(mean))
     standardDeviation = distribution.getStandardDeviation()
@@ -119,22 +134,6 @@ try:
         print("standard moment n=", i, " value=",
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
-
-    # Specific to this distribution
-    mu = distribution.getMu()
-    print("mu=%.6f" % mu)
-    sigma = distribution.getSigma()
-    print("sigma=%.6f" % sigma)
-    newDistribution = LogNormal(mu, sigma, distribution.getGamma(), 1)
-    print("muLog from (mu, sigma)=%.6f" % newDistribution.getMuLog())
-    print("sigmaLog from (mu, sigma)=%.6f" % newDistribution.getSigmaLog())
-    sigmaOverMu = distribution.getSigmaOverMu()
-    print("sigmaOverMu=%.6f" % sigmaOverMu)
-    newDistribution = LogNormal(mu, sigmaOverMu, distribution.getGamma(), 2)
-    print("muLog from (mu, sigmaOverMu)=%.6f" % newDistribution.getMuLog())
-    print("sigmaLog from (mu, sigmaOverMu)=%.6f" %
-          newDistribution.getSigmaLog())
-
 
 except:
     import sys

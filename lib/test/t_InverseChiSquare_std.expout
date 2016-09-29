@@ -36,6 +36,16 @@ cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.088899
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.0444498]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.235]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0358836] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.238469] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseChiSquare(nu = 10.5)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseChiSquare(nu = 10.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseChiSquare(nu = 10.5)) level=35.0308
+beta=6.11368e-16
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0471602] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.283384] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.235] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0526499] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[85.793] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.117647]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00425872]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -81,6 +91,16 @@ cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.047946
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.023973]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.137723]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0299545] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.140394] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseChiSquare(nu = 15)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseChiSquare(nu = 15)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseChiSquare(nu = 15)) level=-0.39369
+beta=1.48244
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.036379] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.15969] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.137723] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0400067] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[10.2372] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.0769231]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00107585]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

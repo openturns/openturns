@@ -86,13 +86,36 @@ int main(int argc, char *argv[])
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
+    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    fullprint << "Survival      =" << Survival << std::endl;
+    fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
+    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
+    // Get 50% quantile
+    NumericalPoint quantile = copula.computeQuantile( 0.5 );
+    fullprint << "Quantile=" << quantile << std::endl;
+    fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
+
+    // Confidence regions
+    NumericalScalar threshold;
+    fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeInterval(0.95, threshold) << std::endl;
+    fullprint << "threshold=" << threshold << std::endl;
+    NumericalScalar beta;
+    LevelSet levelSet(copula.computeMinimumVolumeLevelSet(0.95, beta));
+    fullprint << "Minimum volume level set=" << levelSet << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Bilateral confidence interval=" << copula.computeBilateralConfidenceInterval(0.95, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (lower tail)=" << copula.computeUnilateralConfidenceInterval(0.95, false, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (upper tail)=" << copula.computeUnilateralConfidenceInterval(0.95, true, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+
     NumericalPoint PDFgr = copula.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     NumericalPoint CDFgr = copula.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
-    NumericalPoint quantile = copula.computeQuantile( 0.95 );
-    fullprint << "quantile=" << quantile << std::endl;
-    fullprint << "cdf(quantile)=" << copula.computeCDF(quantile) << std::endl;
     NumericalPoint mean = copula.getMean();
     fullprint << "mean=" << mean << std::endl;
     IndependentCopula::NumericalPointWithDescriptionCollection parameters = copula.getParametersCollection();

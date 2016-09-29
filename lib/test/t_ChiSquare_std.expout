@@ -36,6 +36,16 @@ cdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.29171
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.291714]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[4.9802]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.9802] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(ChiSquare(nu = 1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(ChiSquare(nu = 1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(ChiSquare(nu = 1.5)) level=3.61461
+beta=0.0269275
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.013113] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[6.27581] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.9802] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0332328] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[39.9307] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

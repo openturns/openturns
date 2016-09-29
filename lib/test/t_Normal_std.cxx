@@ -131,9 +131,9 @@ int main(int argc, char *argv[])
       }
       NumericalScalar Survival = distribution.computeSurvivalFunction( point );
       fullprint << "survival=" << Survival << std::endl;
-    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
-    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
-    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+      NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+      fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+      fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
       NumericalComplex CF = distribution.computeCharacteristicFunction( point );
       fullprint << "characteristic function=" << CF << std::endl;
       NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point );
@@ -168,6 +168,23 @@ int main(int argc, char *argv[])
       fullprint << "quantile=" << quantile << std::endl;
       PlatformInfo::SetNumericalPrecision( oldPrecision );
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+      if (distribution.getDimension() <= 2)
+	{
+	  // Confidence regions
+	  NumericalScalar threshold;
+	  fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeInterval(0.95, threshold) << std::endl;
+	  fullprint << "threshold=" << threshold << std::endl;
+	  NumericalScalar beta;
+	  LevelSet levelSet(distribution.computeMinimumVolumeLevelSet(0.95, beta));
+	  fullprint << "Minimum volume level set=" << levelSet << std::endl;
+	  fullprint << "beta=" << beta << std::endl;
+	  fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceInterval(0.95, beta) << std::endl;
+	  fullprint << "beta=" << beta << std::endl;
+	  fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, false, beta) << std::endl;
+	  fullprint << "beta=" << beta << std::endl;
+	  fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceInterval(0.95, true, beta) << std::endl;
+	  fullprint << "beta=" << beta << std::endl;
+	}
       NumericalPoint mean = distribution.getMean();
       fullprint << "mean=" << mean << std::endl;
       NumericalPoint standardDeviation = distribution.getStandardDeviation();
@@ -246,3 +263,4 @@ int main(int argc, char *argv[])
 
   return ExitCode::Success;
 }
+

@@ -77,10 +77,17 @@ int main(int argc, char *argv[])
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
+    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    fullprint << "Survival      =" << Survival << std::endl;
+    fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
+    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
     NumericalPoint quantile = copula.computeQuantile( 0.5 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
+
     // Covariance and correlation
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;

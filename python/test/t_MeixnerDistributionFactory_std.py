@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     distribution = MeixnerDistribution(1.5, 0.5, 2.5, -0.5)
-    size = 10000
+    size = 1000
     sample = distribution.getSample(size)
     factory = MeixnerDistributionFactory()
     covariance = CovarianceMatrix()

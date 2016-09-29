@@ -22,6 +22,17 @@ quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.985098]
 cdf(quantile)=0.950000
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-1.04859]
 Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-1.28067, 1.08074]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.51069} with f=
+MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5))
+beta= [0.0812123]
+Bilateral confidence interval= [-1.15266, 1.33812]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-2.23654, 0.985098]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-1.04859, 15.6181]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[-0.211392]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.641275]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.13955]
@@ -35,11 +46,3 @@ standard moment n= 3  value= [5.44487]
 standard moment n= 4  value= [23.5615]
 standard moment n= 5  value= [117.839]
 Standard representative= Gumbel(alpha = 1, beta = 0)
-mu=-0.211392
-sigma=0.641275
-alpha from (mu, sigma)=2.000000
-beta from (mu, sigma)=-0.500000
-a=-0.500000
-b=0.500000
-alpha from (a, b)=2.000000
-beta from (a, b)=-0.500000
