@@ -316,8 +316,17 @@ public:
   Interval computeMinimumVolumeInterval(const NumericalScalar prob,
 					NumericalScalar & threshold) const;
 #endif
-  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
-					NumericalPoint & threshold) const;
+  virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob,
+      NumericalPoint & marginalProb) const;
+
+#ifndef SWIG
+protected:
+  Interval computeUnivariateMinimumVolumeIntervalByOptimization(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+  Interval computeUnivariateMinimumVolumeIntervalByRootFinding(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+public:
+#endif
 
   /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
   Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
@@ -346,8 +355,20 @@ public:
   LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
 					NumericalScalar & threshold) const;
 #endif
+<<<<<<< HEAD
   LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
 					NumericalPoint & threshold) const;
+=======
+  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+      NumericalPoint & threshold) const;
+
+#ifndef SWIG
+protected:
+  virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
+      NumericalScalar & threshold) const;
+public:
+#endif
+>>>>>>> e6ebfbc... Improved confidence region computation
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside

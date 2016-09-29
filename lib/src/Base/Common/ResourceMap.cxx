@@ -773,6 +773,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionBlockMax", 20 );
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionNMax", 1000000 );
   setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1000000 );
+  setAsBool( "Distribution-MinimumVolumeLevelSetBySampling", false );
 
   // ContinuousDistribution parameters //
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );
