@@ -21,7 +21,7 @@ for distParam in distParams:
     non_native = distParam.getValues()
     desc = distParam.getDescription()
     print('non-native=', non_native, desc)
-    native = distParam(non_native)
+    native = distParam.evaluate()
     print('native=', native)
     non_native = distParam.inverse(native)
     print('non-native=', non_native)

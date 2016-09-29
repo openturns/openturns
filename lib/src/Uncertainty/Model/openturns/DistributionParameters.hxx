@@ -54,6 +54,9 @@ public:
   /** Build a distribution based on a set of native parameters */
   Distribution getDistribution() const;
 
+  /** Evaluate native parameters */
+  NumericalPoint evaluate() const;
+
   /** Compute jacobian / native parameters */
   Matrix gradient() const;
 

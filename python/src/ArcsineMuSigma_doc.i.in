@@ -33,7 +33,7 @@ Create the parameters of the Arcsine distribution:
 
 Convert parameters into the native parameters:
 
->>> print(parameters([8.4, 2.25]))
+>>> print(parameters.evaluate())
 [5.21802,11.582]
 
 The gradient of the transformation of the native parameters into the new

@@ -53,6 +53,13 @@ Distribution DistributionParametersImplementation::getDistribution() const
 
 
 /* Compute jacobian / native parameters */
+NumericalPoint DistributionParametersImplementation::evaluate() const
+{
+  return operator()(getValues());
+}
+
+
+/* Compute jacobian / native parameters */
 Matrix DistributionParametersImplementation::gradient() const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::gradient() const";
