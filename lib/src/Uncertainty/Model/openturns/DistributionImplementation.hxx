@@ -816,6 +816,20 @@ protected:
       return Description(1, "pdf");
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     const DistributionImplementation * p_distribution_;
   };  // class PDFWrapper
@@ -898,6 +912,81 @@ protected:
     const UnsignedInteger dimension_;
   }; // struct SurvivalFunctionWrapper
 
+  class MinimumVolumeLevelSetWrapper: public NumericalMathEvaluationImplementation
+  {
+  public:
+    // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
+    // object goes outside of the calling method
+    MinimumVolumeLevelSetWrapper(const DistributionImplementation::Implementation & p_distribution)
+      : NumericalMathEvaluationImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeLevelSetWrapper * clone() const
+    {
+      return new MinimumVolumeLevelSetWrapper(*this);
+    }
+
+    // The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
+    // where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
+    NumericalPoint operator() (const NumericalPoint & point) const
+    {
+      const NumericalScalar value = -p_distribution_->computeLogPDF(point);
+      return NumericalPoint(1, value);
+    }
+
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      return p_distribution_->computeLogPDF(sample) * (-1.0);
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "-logPDF");
+    }
+
+    Description getDescription() const
+    {
+      Description description(getInputDescription());
+      description.add(getOutputDescription());
+      return description;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "MinimumVolumeLevelSetWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "MinimumVolumeLevelSetWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation::Implementation p_distribution_;
+  }; // class MinimumVolumeLevelSetWrapper
+
   class CovarianceWrapper: public NumericalMathFunctionImplementation
   {
   public:
@@ -925,12 +1014,9 @@ protected:
     NumericalSample operator() (const NumericalSample & sample) const
     {
       const UnsignedInteger size = sample.getSize();
-      NumericalSample result(size, 1);
-      const NumericalSample pdf(p_distribution_->computePDF(sample));
-      for (UnsignedInteger i = 0; i < size; ++i)
-        result[i][0] = (sample[i][0] - muI_) * (sample[i][1] - muJ_) * pdf[i][0];
-      return result;
-    };
+      NumericalSample result(p_distribution_->computePDF(sample));
+      for (UnsignedInteger i = 0; i < size; ++i) result[i][0] *= (sample[i][0] - muI_) * (sample[i][1] - muJ_);
+    }
 
     UnsignedInteger getInputDimension() const
     {
@@ -952,6 +1038,20 @@ protected:
       return Description(1, "c");
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     const DistributionImplementation::Implementation p_distribution_;
     const NumericalScalar muI_;
@@ -969,7 +1069,9 @@ protected:
       , n_(1.0 * n)
       , shift_(shift)
       , p_distribution_(p_distribution)
-    {};
+    {
+      // Nothing to do
+    };
 
     ShiftedMomentWrapper * clone() const
     {
@@ -1003,11 +1105,25 @@ protected:
       return 1;
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     const NumericalScalar n_;
     const NumericalScalar shift_;
     const DistributionImplementation::Implementation & p_distribution_;
-  }; // struct DistributionImplementationCovarianceWrapper
+  }; // class ShiftedMomentWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
   class ConditionalPDFWrapper: public NumericalMathFunctionImplementation
@@ -1017,7 +1133,9 @@ protected:
       : NumericalMathFunctionImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
-    {};
+    {
+      // Nothing to do
+    };
 
     ConditionalPDFWrapper * clone() const
     {
@@ -1059,6 +1177,20 @@ protected:
       return 1;
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     NumericalPoint y_;
     const DistributionImplementation::Implementation p_distribution_;
@@ -1072,7 +1204,9 @@ protected:
       : NumericalMathFunctionImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
-    {};
+    {
+      // Nothing to do
+    };
 
     ConditionalCDFWrapper * clone() const
     {
@@ -1102,6 +1236,20 @@ protected:
     UnsignedInteger getOutputDimension() const
     {
       return 1;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
     }
 
   private:
