@@ -30,7 +30,7 @@ ComposedNumericalMathEvaluationImplementation::ComposedNumericalMathEvaluationIm
   , p_rightFunction_(p_rightFunction)
 {
   // Check if the dimensions of the left and right functions are compatible
-  if (p_leftFunction->getInputDimension() != p_rightFunction->getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension of the left function must be equal to the output dimension of the right function to compose them";
+  if (p_leftFunction->getInputDimension() != p_rightFunction->getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << p_leftFunction->getInputDimension() << " of the left function must be equal to the output dimension=" << p_rightFunction->getOutputDimension() << " of the right function to compose them";
   setInputDescription(p_rightFunction->getInputDescription());
   setOutputDescription(p_leftFunction->getOutputDescription());
 }
