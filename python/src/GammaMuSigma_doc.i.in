@@ -35,7 +35,7 @@ Create the parameters of the Gamma distribution:
 
 Convert parameters into the native parameters:
 
->>> print(parameters([1.5, 2.5, -0.5]))
+>>> print(parameters.evaluate())
 [0.64,0.32,-0.5]
 
 The gradient of the transformation of the native parameters into the new

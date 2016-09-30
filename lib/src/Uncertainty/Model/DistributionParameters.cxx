@@ -63,6 +63,13 @@ Distribution DistributionParameters::getDistribution() const
 
 
 /* Compute jacobian / native parameters */
+NumericalPoint DistributionParameters::evaluate() const
+{
+  return getImplementation()->evaluate();
+}
+
+
+/* Compute jacobian / native parameters */
 Matrix DistributionParameters::gradient() const
 {
   return getImplementation()->gradient();

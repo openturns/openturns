@@ -36,7 +36,7 @@ Create the parameters of the Weibull distribution:
 
 Convert parameters into the native parameters:
 
->>> print(parameters([1.3, 1.23, -0.5]))
+>>> print(parameters.evaluate())
 [1.99222,1.48961,-0.5]
 
 The gradient of the transformation of the native parameters into the new

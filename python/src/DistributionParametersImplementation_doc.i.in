@@ -76,6 +76,20 @@ OT_DistributionParameters_getDescription_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_DistributionParameters_evaluate_doc
+"Compute native parameters values.
+
+Returns
+-------
+values : :class:`~openturns.NumericalPoint`
+    The native parameter values."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::evaluate
+OT_DistributionParameters_evaluate_doc
+
+
+// ---------------------------------------------------------------------
+
 %define OT_DistributionParameters_gradient_doc
 "Get the gradient.
 
