@@ -563,12 +563,12 @@ NumericalScalar DistributionImplementation::computeSurvivalFunction(const Numeri
   if (dimension_ == 1) return computeComplementaryCDF(point);
   // Special case for independent copula
   if (hasIndependentCopula())
-    {
-      NumericalScalar value = 1.0;
-      for (UnsignedInteger i = 0; i < dimension_; ++i) value *= getMarginal(i)->computeComplementaryCDF(point[i]);
-      return value;
-    }
-  // For elliptical distributions, 
+  {
+    NumericalScalar value = 1.0;
+    for (UnsignedInteger i = 0; i < dimension_; ++i) value *= getMarginal(i)->computeComplementaryCDF(point[i]);
+    return value;
+  }
+  // For elliptical distributions,
   // P(X_1-mu_1<=x_1,...,X_d-mu_d<=x_d)=P(X_1-mu_1>=-x_1,...,X_d-mu_d>=-x_d)
   // So
   // P(X_1>=x_1,...,X_d>=x_d)=P(X_1<=2mu_1-x_1,...,X_d<=2mu_d-x_d)
@@ -610,7 +610,7 @@ NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const 
 }
 
 NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const NumericalScalar prob,
-									  NumericalScalar & marginalProb) const
+    NumericalScalar & marginalProb) const
 {
   // Special case for bording values
   marginalProb = prob;
@@ -620,13 +620,13 @@ NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const 
   if (dimension_ == 1) return NumericalPoint(1, computeScalarQuantile(prob, true));
   // Special case for independent copula
   if (hasIndependentCopula())
-    {
-      NumericalPoint result(dimension_);
-      marginalProb = std::pow(prob, 1.0 / dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i)->computeScalarQuantile(marginalProb, true);
-      return result;
-    }
-  // For elliptical distributions, 
+  {
+    NumericalPoint result(dimension_);
+    marginalProb = std::pow(prob, 1.0 / dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i)->computeScalarQuantile(marginalProb, true);
+    return result;
+  }
+  // For elliptical distributions,
   // P(X_1-mu_1<=x_1,...,X_d-mu_d<=x_d)=P(X_1-mu_1>=-x_1,...,X_d-mu_d>=-x_d)
   // So
   // P(X_1>=x_1,...,X_d>=x_d)=P(X_1<=2mu_1-x_1,...,X_d<=2mu_d-x_d)
@@ -866,9 +866,44 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   if (dimension_ == 1)
   {
     NumericalScalar error;
-    probability = GaussKronrod().integrate(pdfWrapper, reducedInterval, error)[0];
-  }
-  else probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+    const NumericalPoint singularities(getSingularities());
+    // If no singularity inside of the given reduced interval
+    const UnsignedInteger singularitiesNumber = singularities.getSize();
+    std::cerr << "singularitiesNumber=" << singularitiesNumber << std::endl;
+    const NumericalScalar lower = reducedInterval.getLowerBound()[0];
+    const NumericalScalar upper = reducedInterval.getUpperBound()[0];
+    if (singularitiesNumber == 0 || singularities[0] >= upper || singularities[singularitiesNumber - 1] <= lower) probability = GaussKronrod().integrate(pdfWrapper, reducedInterval, error)[0];
+    else
+    {
+      NumericalScalar a = lower;
+      for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
+      {
+	std::cerr << "i=" << i << std::endl;
+        const NumericalScalar b = singularities[i];
+        if (b > lower && b < upper)
+        {
+          probability += GaussKronrod().integrate(pdfWrapper, Interval(a, b), error)[0];
+	  std::cerr << "a=" << a << ", b=" << b << ", probability=" << probability << std::endl;
+          a = b;
+        }
+        // Exit the loop if no more singularities inside of the reduced interval
+        if (b >= upper) break;
+      } // for
+      // Last contribution
+      probability += GaussKronrod().integrate(pdfWrapper, Interval(a, upper), error)[0];
+    } // else
+  } // dimension_ == 1
+  else
+  {
+    if (hasIndependentCopula())
+    {
+      const NumericalPoint lower(interval.getLowerBound());
+      const NumericalPoint upper(interval.getLowerBound());
+      probability = 1.0;
+      for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i)->computeProbability(Interval(lower[i], upper[i]));
+    }
+    else probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+  } // dimension > 1
   return std::min(1.0, std::max(0.0, probability));
 }
 
@@ -1895,8 +1930,8 @@ NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar
 }
 
 NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar prob,
-							   const Bool tail,
-NumericalScalar & marginalProb) const
+    const Bool tail,
+    NumericalScalar & marginalProb) const
 {
   const NumericalScalar q = tail ? 1.0 - prob : prob;
   marginalProb = q;
@@ -1907,12 +1942,12 @@ NumericalScalar & marginalProb) const
   if (dimension_ == 1) return NumericalPoint(1, computeScalarQuantile(prob, tail));
   // Special case for independent copula
   if (hasIndependentCopula())
-    {
-      NumericalPoint result(dimension_);
-      marginalProb = std::pow(q, 1.0 / dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i)->computeScalarQuantile(marginalProb);
-      return result;
-    }
+  {
+    NumericalPoint result(dimension_);
+    marginalProb = std::pow(q, 1.0 / dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i)->computeScalarQuantile(marginalProb);
+    return result;
+  }
   // Extract the marginal distributions
   Collection<Implementation> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; i++) marginals[i] = getMarginal(i);
@@ -1961,7 +1996,7 @@ NumericalScalar & marginalProb) const
 struct MinimumVolumeIntervalWrapper
 {
   MinimumVolumeIntervalWrapper(const DistributionImplementation * p_distribution,
-			       const Collection<Distribution> & marginals,
+                               const Collection<Distribution> & marginals,
                                const NumericalScalar prob)
     : p_distribution_(p_distribution)
     , marginals_(marginals)
@@ -2012,11 +2047,11 @@ struct MinimumVolumeIntervalWrapper
     NumericalPoint upper(size);
     const NumericalScalar alpha(0.5 * (1.0 - beta));
     for (UnsignedInteger i = 0; i < size; ++i)
-      {
-	lower[i] = marginals_[i].computeQuantile(alpha, false)[0];
-	upper[i] = marginals_[i].computeQuantile(alpha, true)[0];
-      }
-    return Interval(lower, upper);					 
+    {
+      lower[i] = marginals_[i].computeQuantile(alpha, false)[0];
+      upper[i] = marginals_[i].computeQuantile(alpha, true)[0];
+    }
+    return Interval(lower, upper);
   }
 
   Interval buildMinimumVolumeInterval(const NumericalScalar beta) const
@@ -2025,12 +2060,12 @@ struct MinimumVolumeIntervalWrapper
     NumericalPoint lower(size);
     NumericalPoint upper(size);
     for (UnsignedInteger i = 0; i < size; ++i)
-      {
-	const Interval marginalIC(marginals_[i].computeMinimumVolumeInterval(beta));
-	lower[i] = marginalIC.getLowerBound()[0];
-	upper[i] = marginalIC.getUpperBound()[0];
-      }
-    return Interval(lower, upper);					 
+    {
+      const Interval marginalIC(marginals_[i].computeMinimumVolumeInterval(beta));
+      lower[i] = marginalIC.getLowerBound()[0];
+      upper[i] = marginalIC.getUpperBound()[0];
+    }
+    return Interval(lower, upper);
   }
 
   NumericalPoint computeBilateralProbability(const NumericalPoint & beta) const
@@ -2071,16 +2106,16 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
       return result;
     }
   if (prob <= 0.0)
-    {
-      const NumericalPoint median(computeQuantile(0.5));
-      marginalProb = 0.0;
-      return Interval(median, median);
-    }
+  {
+    const NumericalPoint median(computeQuantile(0.5));
+    marginalProb = 0.0;
+    return Interval(median, median);
+  }
   if (prob >= 1.0)
-    {
-      marginalProb = 1.0;
-      return range_;
-    }
+  {
+    marginalProb = 1.0;
+    return range_;
+  }
   if (dimension_ == 1)
   {
     // First, the most accurate method, which assumes a continuous PDF
@@ -2164,10 +2199,10 @@ Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMargi
     return Interval(median, median);
   }
   if (prob >= 1.0)
-    {
-      marginalProb = 1.0;
-      return range_;
-    }
+  {
+    marginalProb = 1.0;
+    return range_;
+  }
   if (dimension_ == 1)
   {
     marginalProb = prob;
@@ -2198,10 +2233,10 @@ Interval DistributionImplementation::computeUnilateralConfidenceIntervalWithMarg
 {
   marginalProb = -1.0;
   if (tail)
-    {
-      const NumericalPoint lowerBound(computeInverseSurvivalFunction(prob, marginalProb));
-      return Interval(lowerBound, range_.getUpperBound());
-    }
+  {
+    const NumericalPoint lowerBound(computeInverseSurvivalFunction(prob, marginalProb));
+    return Interval(lowerBound, range_.getUpperBound());
+  }
   const NumericalPoint upperBound(computeQuantile(prob, false, marginalProb));
   return Interval(range_.getLowerBound(), upperBound);
 }
@@ -2414,7 +2449,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
           const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
           const Interval interval(marginalDistribution->getRange());
           const NumericalPoint value(integrator.integrate(kernel, interval));
-          covariance_(rowIndex, columnIndex) = integrator.integrate(kernel.clone(), interval)[0];
+          covariance_(rowIndex, columnIndex) = integrator.integrate(kernel, interval)[0];
         }
       } // loop over column indices
     } // loop over row indices
