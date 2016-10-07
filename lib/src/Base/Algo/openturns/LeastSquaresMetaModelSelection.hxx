@@ -73,10 +73,8 @@ public:
   FittingAlgorithm getFittingAlgorithm() const;
 
   /** Perform the selection */
-  virtual void run();
-#ifndef SWIG
+  using ApproximationAlgorithmImplementation::run;
   virtual void run(const DesignProxy & proxy);
-#endif
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
