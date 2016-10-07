@@ -111,11 +111,6 @@ String LeastSquaresMetaModelSelection::__repr__() const
          << " fittingAlgorithm=" << fittingAlgorithm_;
 }
 
-void LeastSquaresMetaModelSelection::run()
-{
-  ApproximationAlgorithmImplementation::run();
-}
-
 /* Perform the selection */
 void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
 {
