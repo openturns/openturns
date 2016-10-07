@@ -72,14 +72,16 @@ Basis(PyObject * pyObj)
 {
   try
   {
-    OT::Pointer<OT::Collection<OT::NumericalMathFunction> > p_coll =  OT::buildCollectionFromPySequence<OT::NumericalMathFunction>( pyObj );
-  return new OT::Basis( *p_coll );
+    OT::Pointer<OT::Collection<OT::NumericalMathFunction> > p_coll =  OT::buildCollectionFromPySequence<OT::NumericalMathFunction>(pyObj);
+    return new OT::Basis(*p_coll);
   }
   catch (OT::InvalidArgumentException & ex)
   {
     return new OT::Basis(OT::convert<OT::_PyObject_, OT::Basis >(pyObj));
   }
 }
+
+
 
 } // Basis
 } // OT

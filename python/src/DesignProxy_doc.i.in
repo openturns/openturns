@@ -1,0 +1,13 @@
+%feature("docstring") OT::DesignProxy
+"Design matrix cache.
+
+Helps to cache evaluations of the design matrix during an iterative least
+squares problem resolution.
+
+Parameters
+----------
+x : :class:`~openturns.NumericalSample`
+    Input sample
+psi : :class:`~openturns.Basis`
+    Functional basis
+"

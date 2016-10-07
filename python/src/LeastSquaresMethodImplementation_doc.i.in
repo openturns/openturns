@@ -1,0 +1,65 @@
+%define OT_LeastSquaresMethod_doc
+"Base class for least square solvers.
+
+Available constructors:
+    LeastSquaresMethod(*proxy, y, weight, indices*)
+
+    LeastSquaresMethod(*proxy, y, indices*)
+
+Parameters
+----------
+proxy : :class:`~openturns.DesignProxy`
+    Input sample
+y : :class:`~openturns.NumericalSample`
+    Output sample
+weight : sequence of float
+    Output weights
+indices : sequence of int
+    Indices allowed in the basis
+
+See also
+--------
+CholeskyMethod, SVDMethod, QRMethod
+
+Notes
+-----
+Solve the least-squares problem:
+
+.. math::
+
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P} ||y - \vect{b}^{\intercal} \vect{\Psi}(\vect{U})||^2
+"
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation
+OT_LeastSquaresMethod_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_buildCurrentBasis_doc
+"Build the current basis.
+
+Returns
+-------
+phi : :class:`~openturns.Basis`
+    The basis according to current indices"
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::buildCurrentBasis
+OT_LeastSquaresMethod_buildCurrentBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_computeWeightedDesign_doc
+"Build the design matrix.
+
+Parameters
+----------
+whole : bool, defaults to False
+    Whether to use the initial indices instead of the current indices
+
+Returns
+-------
+psiAk : :class:`~openturns.Matrix`
+    The design matrix"
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::computeWeightedDesign
+OT_LeastSquaresMethod_computeWeightedDesign_doc
