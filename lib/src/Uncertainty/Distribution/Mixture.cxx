@@ -603,6 +603,35 @@ NumericalSample Mixture::getSupport(const Interval & interval) const
   return support;
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+NumericalPoint Mixture::getSingularities() const
+{
+  if (getDimension() > 1) throw InternalException(HERE) << "Error: getSingularities() is defined for 1D distributions only";
+  NumericalPoint singularities(0);
+  // Aggregate all the singularities of the atoms including the bounds of the range
+  // as it can be singularities within the mixture range
+  for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
+    {
+      singularities.add(distributionCollection_[i].getRange().getLowerBound()[0]);
+      singularities.add(distributionCollection_[i].getSingularities());
+      singularities.add(distributionCollection_[i].getRange().getUpperBound()[0]);
+    }
+  // The singularities of a distribution have to be strictly included into the
+  // range of the distribution. As the range of a mixture is the bounding box
+  // of the ranges of the atoms, the bounds of the mixture range are within
+  // the bounds of the atoms ranges and after the sorting and removing of
+  // duplicates they are the current first and last elements of singularities.
+  // We use a 3-steps approach:
+  // 1) Sort the values to put the lower bound at the first position and the upper
+  //    bound at the last position
+  std::sort(singularities.begin(), singularities.end());
+  // 2) Remove the duplicates and the upper bound in a unique pass
+  singularities.erase(singularities.unique(singularities.begin(), singularities.end()) - 1, singularities.end());
+  // 3) Remove the lower bound
+  singularities.erase(singularities.begin(), singularities.begin() + 1);
+  return singularities;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Mixture::save(Advocate & adv) const
 {
