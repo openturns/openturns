@@ -32,10 +32,9 @@ static const Factory<TensorizedCovarianceModel> Factory_TensorizedCovarianceMode
 
 /* Default constructor */
 TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimension)
-  : CovarianceModelImplementation(1),
-    collection_(dimension, AbsoluteExponential(1))
+  : CovarianceModelImplementation(1)
+  , collection_(dimension, AbsoluteExponential(1))
 {
-  setScale(NumericalPoint(spatialDimension_, 1.0));
   setAmplitude(NumericalPoint(dimension, 1));
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
@@ -47,9 +46,6 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
   : CovarianceModelImplementation()
 {
   setCollection(collection);
-  // Set same scale
-  setScale(NumericalPoint(spatialDimension_, 1.0));
-  
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
 }
@@ -60,7 +56,6 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
   : CovarianceModelImplementation()
 {
   setCollection(collection);
-  // Set same scale
   setScale(scale);
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
@@ -211,10 +206,14 @@ void TensorizedCovarianceModel::setScale(const NumericalPoint & scale)
     throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, incompatible dimension of the scale vector. Expected scale of size = " << spatialDimension_
                                          << ", vector size = " << scale.getDimension();
 
-  // Same scale fot all models
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  NumericalPoint scale0(collection_[0].getScale());
+  collection_[0].setScale(scale);
+  for (UnsignedInteger i = 1; i < collection_.getSize(); ++i)
   {
-    collection_[i].setScale(scale);
+    NumericalPoint newScale(collection_[i].getScale());
+    for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
+      newScale[j] *= scale[j] / scale0[j];
+    collection_[i].setScale(newScale);
   }
   // Copy of scale but not used
   scale_ = scale;
