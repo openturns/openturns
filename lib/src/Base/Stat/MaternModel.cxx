@@ -85,7 +85,7 @@ NumericalScalar MaternModel::computeStandardRepresentative(const NumericalPoint 
   NumericalPoint scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const NumericalScalar scaledPoint = scaledTau.norm();
-  if (std::abs(scaledPoint) <= SpecFunc::NumericalScalarEpsilon)
+  if (scaledPoint <= SpecFunc::NumericalScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
     return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));

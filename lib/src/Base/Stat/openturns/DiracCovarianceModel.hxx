@@ -106,7 +106,6 @@ public:
 protected:
   friend struct DiracCovarianceModelDiscretizePolicy;
   friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
-  mutable CovarianceMatrix covariance_;
   mutable TriangularMatrix covarianceFactor_;
   void computeCovariance();
 

@@ -71,7 +71,7 @@ NumericalScalar GeneralizedExponential::computeStandardRepresentative(const Nume
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
-  return tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  return tauOverThetaNorm <= SpecFunc::NumericalScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
 }
 
 /* Gradient wrt s */

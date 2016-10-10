@@ -20,6 +20,7 @@
 #include "openturns/AbsoluteExponential.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,7 +66,7 @@ NumericalScalar AbsoluteExponential::computeStandardRepresentative(const Numeric
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar tauOverThetaNorm = tauOverTheta.norm1();
-  return tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::NumericalScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
 }
 
 /* Gradient */

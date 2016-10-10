@@ -221,7 +221,7 @@ protected:
   CorrelationMatrix spatialCorrelation_;
 
   /** Covariance matrix of the spatial dependence structure */
-  CovarianceMatrix spatialCovariance_;
+  mutable CovarianceMatrix spatialCovariance_;
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
