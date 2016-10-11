@@ -869,7 +869,6 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
     const NumericalPoint singularities(getSingularities());
     // If no singularity inside of the given reduced interval
     const UnsignedInteger singularitiesNumber = singularities.getSize();
-    std::cerr << "singularitiesNumber=" << singularitiesNumber << std::endl;
     const NumericalScalar lower = reducedInterval.getLowerBound()[0];
     const NumericalScalar upper = reducedInterval.getUpperBound()[0];
     if (singularitiesNumber == 0 || singularities[0] >= upper || singularities[singularitiesNumber - 1] <= lower) probability = GaussKronrod().integrate(pdfWrapper, reducedInterval, error)[0];
@@ -878,12 +877,10 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
       NumericalScalar a = lower;
       for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
       {
-	std::cerr << "i=" << i << std::endl;
         const NumericalScalar b = singularities[i];
         if (b > lower && b < upper)
         {
           probability += GaussKronrod().integrate(pdfWrapper, Interval(a, b), error)[0];
-	  std::cerr << "a=" << a << ", b=" << b << ", probability=" << probability << std::endl;
           a = b;
         }
         // Exit the loop if no more singularities inside of the reduced interval
@@ -2431,7 +2428,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
   {
     const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
-    // We first loop over the coefficients because the most expensive task is to get the 2D marginal distributions
+    // We loop over the coefficients in the outer loop because the most expensive task is to get the 2D marginal distributions
 
     Indices indices(2);
     for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
@@ -2449,7 +2446,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
           const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
           const Interval interval(marginalDistribution->getRange());
           const NumericalPoint value(integrator.integrate(kernel, interval));
-          covariance_(rowIndex, columnIndex) = integrator.integrate(kernel, interval)[0];
+          covariance_(rowIndex, columnIndex) = value[0];
         }
       } // loop over column indices
     } // loop over row indices

@@ -1079,6 +1079,7 @@ protected:
       const UnsignedInteger size = sample.getSize();
       NumericalSample result(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i) result[i][0] *= (sample[i][0] - muI_) * (sample[i][1] - muJ_);
+      return result;
     }
 
     UnsignedInteger getInputDimension() const
