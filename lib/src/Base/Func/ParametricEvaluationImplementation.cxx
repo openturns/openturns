@@ -289,10 +289,10 @@ String ParametricEvaluationImplementation::__str__(const String & offset) const
 
   OSS oss(false);
   oss << offset << ParametricEvaluationImplementation::GetClassName()
-      << function_ << " with"
-      << " parameters positions=" << parametersPositions_
-      << " parameters=" << parameters
-      << " input positions=" << inputPositions_;
+      << "(" << function_
+      << ", parameters positions=" << parametersPositions_
+      << ", parameters=" << parameters
+      << ", input positions=" << inputPositions_ << ")";
   return oss;
 }
 
