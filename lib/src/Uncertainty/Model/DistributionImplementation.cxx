@@ -70,6 +70,7 @@
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -465,6 +466,23 @@ NumericalSample DistributionImplementation::getSampleByInversion(const UnsignedI
   return result;
 }
 
+NumericalSample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
+{
+  const SobolSequence sequence(1);
+  // Use CDF inversion in the 1D case
+  if (dimension_ == 1) return computeQuantile(sequence.generate(size).getImplementation()->getData());
+  // Use conditional CDF inversion in the 1D case
+  NumericalSample result(size, 0);
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  {
+    const NumericalPoint u(sequence.generate(size).getImplementation()->getData());
+    NumericalSampleImplementation q(size, 1);
+    q.setData(computeConditionalQuantile(u, result));
+    result.stack(q);
+  }
+  return result;
+}
+
 /* Get the DDF of the distributionImplementation */
 NumericalPoint DistributionImplementation::computeDDF(const NumericalPoint & point) const
 {
@@ -842,7 +860,7 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   if (reducedInterval == getRange()) return 1.0;
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
-  NumericalScalar probability;
+  NumericalScalar probability = 0;
   if (dimension_ == 1)
   {
     NumericalScalar error;
@@ -2182,7 +2200,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const Numerica
       const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
       return result;
     }
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(this).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // If dimension_ == 1 the threshold can be computed analyticaly
   NumericalScalar minusLogPDFThreshold;
@@ -2223,6 +2241,22 @@ LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC
   const NumericalSample xQMC(getSampleByQMC(size));
   const NumericalSample logPDFSample(computeLogPDF(xQMC));
   const NumericalScalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
+  threshold = std::exp(-minusLogPDFThreshold);
+
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold); 
+}
+
+LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
+      NumericalScalar & threshold) const
+{
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  // As we are in 1D and as the function defining the composite distribution can have complex variations,
+  // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
+  const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
+  const NumericalPoint q(getSampleByQMC(size).getImplementation()->getData());
+  const NumericalSample minusLogPDFSample(computeLogPDF(computeQuantile(q)) * NumericalPoint(1, -1.0));
+  const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold); 

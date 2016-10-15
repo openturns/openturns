@@ -147,8 +147,9 @@ protected:
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual NumericalSample getSample(const UnsignedInteger size) const;
-protected:
+ protected:
   virtual NumericalSample getSampleByInversion(const UnsignedInteger size) const;
+  virtual NumericalSample getSampleByQMC(const UnsignedInteger size) const;
 
 public:
   /** Get the DDF of the distributionImplementation */
@@ -319,7 +320,6 @@ public:
   virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob,
       NumericalPoint & marginalProb) const;
 
-#ifndef SWIG
 protected:
   Interval computeUnivariateMinimumVolumeIntervalByOptimization(const NumericalScalar prob,
       NumericalScalar & marginalProb) const;
@@ -355,20 +355,14 @@ public:
   LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
 					NumericalScalar & threshold) const;
 #endif
-<<<<<<< HEAD
   LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
 					NumericalPoint & threshold) const;
-=======
-  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-      NumericalPoint & threshold) const;
-
 #ifndef SWIG
 protected:
   virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
       NumericalScalar & threshold) const;
 public:
 #endif
->>>>>>> e6ebfbc... Improved confidence region computation
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
@@ -961,6 +955,76 @@ protected:
     NumericalSample operator() (const NumericalSample & sample) const
     {
       return p_distribution_->computeLogPDF(sample) * (-1.0);
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "-logPDF");
+    }
+
+    Description getDescription() const
+    {
+      Description description(getInputDescription());
+      description.add(getOutputDescription());
+      return description;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation::Implementation p_distribution_;
+  }; // class MinimumVolumeLevelSetEvaluation
+
+  class MinimumVolumeLevelSetGradient: public NumericalMathGradientImplementation
+  {
+  public:
+    // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
+    // object goes outside of the calling method
+    MinimumVolumeLevelSetGradient(const DistributionImplementation::Implementation & p_distribution)
+      : NumericalMathGradientImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeLevelSetGradient * clone() const
+    {
+      return new MinimumVolumeLevelSetGradient(*this);
+    }
+
+    Matrix gradient(const NumericalPoint & point) const
+    {
+      const NumericalScalar pdf = p_distribution_->computePDF(point);
+      if (pdf == 0) return Matrix(getInputDimension(), getOutputDimension());
+      const NumericalPoint value = p_distribution_->computeDDF(point) * (-1.0 / pdf);
+      return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
     }
 
     UnsignedInteger getInputDimension() const
