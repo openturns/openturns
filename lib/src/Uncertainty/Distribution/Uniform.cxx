@@ -157,6 +157,29 @@ NumericalScalar Uniform::computeComplementaryCDF(const NumericalPoint & point) c
   return (b_ - x) / (b_ - a_);
 }
 
+/* Get the product minimum volume interval containing a given probability of the distributionImplementation */
+Interval Uniform::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return computeBilateralConfidenceInterval(prob, marginalProb);
+}
+
+/* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+Interval Uniform::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  marginalProb = prob;
+  const NumericalScalar m = 0.5 * (a_ + b_);
+  const NumericalScalar d = 0.5 * (b_ - a_);
+  return Interval(m - prob * d, m + prob * d);
+}
+
+/* Get the minimum volume level set containing a given probability of the distributionImplementation */
+LevelSet Uniform::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  const NumericalMathFunction function("x", String(OSS(true) << 2.0 / (b_ - a_) << " * abs(x - (" << 0.5 * (a_ + b_) << "))"));
+  threshold = prob;
+  return LevelSet(function, threshold);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Uniform::computeCharacteristicFunction(const NumericalScalar x) const
 {

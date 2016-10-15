@@ -84,6 +84,27 @@ public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
+  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  using DistributionImplementation::computeMinimumVolumeInterval;
+#ifndef SWIG
+  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
+					NumericalScalar & marginalProb) const;
+#endif
+
+  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+  using DistributionImplementation::computeBilateralConfidenceInterval;
+#ifndef SWIG
+  Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
+					      NumericalScalar & marginalProb) const;
+#endif
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  using DistributionImplementation::computeMinimumVolumeLevelSet;
+#ifndef SWIG
+  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+					NumericalScalar & threshold) const;
+#endif
+
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;

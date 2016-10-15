@@ -68,6 +68,8 @@
 #include "openturns/TBB.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/IteratedQuadrature.hxx"
+#include "openturns/OptimizationProblem.hxx"
+#include "openturns/TNC.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/SobolSequence.hxx"
@@ -1831,34 +1833,41 @@ NumericalScalar DistributionImplementation::computeScalarQuantile(const Numerica
     LOGDEBUG("DistributionImplementation::computeScalarQuantile: look for a bracketing of the bounds of the range");
     // Find a rough estimate of the lower bound and the upper bound
     NumericalScalar step = 1.0;
-    if (computeCDF(lower) >= cdfEpsilon_)
+    NumericalScalar cdf = computeCDF(lower);
+    if (cdf >= cdfEpsilon_)
     {
       // negative lower bound
       lower -= step;
-      while (computeCDF(lower) >= cdfEpsilon_)
+      cdf = computeCDF(lower);
+      while (cdf >= cdfEpsilon_)
       {
         step *= 2.0;
         lower -= step;
+        cdf = computeCDF(lower);
       }
     }
     else
     {
       // positive lower bound
       lower += step;
+      cdf = computeCDF(lower);
       while (computeCDF(lower) <= cdfEpsilon_)
       {
         step *= 2.0;
         lower += step;
+        cdf = computeCDF(lower);
       }
     }
     // Here, lower is a rough estimate of the lower bound
     // Go to the upper bound
     upper = lower;
     step = 1.0;
-    while (computeComplementaryCDF(upper) >= cdfEpsilon_)
+    NumericalScalar ccdf = computeComplementaryCDF(upper);
+    while (ccdf >= cdfEpsilon_)
     {
       upper += step;
       step *= 2.0;
+      ccdf = computeComplementaryCDF(upper);
     }
   }
   LOGDEBUG(OSS() << "DistributionImplementation::computeScalarQuantile: lower=" << lower << ", upper=" << upper);
@@ -1985,6 +1994,12 @@ struct MinimumVolumeIntervalWrapper
     return NumericalPoint(1, pdfB - pdfPoint);
   }
 
+  NumericalPoint objective(const NumericalPoint & point) const
+  {
+    lastB_ = p_distribution_->computeQuantile(prob_ + p_distribution_->computeCDF(point))[0];
+    return NumericalPoint(1, lastB_ - point[0]);    
+  }
+
   NumericalScalar getLastB() const
   {
     return lastB_;
@@ -2094,11 +2109,48 @@ Interval DistributionImplementation::computeMinimumVolumeInterval(const Numerica
   return IC;
 }
 
-Interval DistributionImplementation::computeMinimumVolumeInterval(const NumericalScalar prob,
-    NumericalPoint & threshold) const
+/* If the density is continuous, we have to solve PDF(b) - PDF(a) == 0 with F(b)-F(a)=prob, b>=a
+   ie b=F^{-1}(prob+F(a))
+*/
+Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRootFinding(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
 {
-  threshold = NumericalPoint(1);
-  return computeMinimumVolumeInterval(prob, threshold[0]);
+  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
+  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::operator(), 1, 1));
+  Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  const NumericalScalar xMin = range_.getLowerBound()[0];
+  const NumericalScalar xMax = computeScalarQuantile(prob, true);
+  const NumericalScalar a = solver.solve(function, 0.0, xMin, xMax);
+  const NumericalScalar b = minimumVolumeIntervalWrapper.getLastB();
+  marginalProb = prob;
+  return Interval(a, b);
+}
+
+/* We minimize b-a with the constraint F(b)-F(a)=prob, b>=a
+ ie b=F^{-1}(prob+F(a))
+*/
+Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
+{
+  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
+  const NumericalMathFunction objective(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
+  OptimizationProblem problem;
+  problem.setObjective(objective);
+  problem.setBounds(getRange());
+  TNC solver(problem);
+  solver.setStartingPoint(computeQuantile(prob, true));
+  solver.run();
+  const NumericalScalar a = solver.getResult().getOptimalPoint()[0];
+  const NumericalScalar b = minimumVolumeIntervalWrapper.getLastB();
+  marginalProb = prob;
+  return Interval(a, b);
+}
+
+Interval DistributionImplementation::computeMinimumVolumeInterval(const NumericalScalar prob,
+    NumericalPoint & marginalProb) const
+{
+  marginalProb = NumericalPoint(1);
+  return computeMinimumVolumeInterval(prob, marginalProb[0]);
 }
 
 /* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
@@ -2219,7 +2271,8 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const Numerica
     minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
   } // dimension > 1
   threshold = std::exp(-minusLogPDFThreshold);
-  return LevelSet(minimumVolumeLevelSetWrapper, minusLogPDFThreshold);
+
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const NumericalScalar prob,
@@ -2241,22 +2294,6 @@ LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC
   const NumericalSample xQMC(getSampleByQMC(size));
   const NumericalSample logPDFSample(computeLogPDF(xQMC));
   const NumericalScalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
-  threshold = std::exp(-minusLogPDFThreshold);
-
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold); 
-}
-
-LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
-      NumericalScalar & threshold) const
-{
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
-  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  // As we are in 1D and as the function defining the composite distribution can have complex variations,
-  // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
-  const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
-  const NumericalPoint q(getSampleByQMC(size).getImplementation()->getData());
-  const NumericalSample minusLogPDFSample(computeLogPDF(computeQuantile(q)) * NumericalPoint(1, -1.0));
-  const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold); 

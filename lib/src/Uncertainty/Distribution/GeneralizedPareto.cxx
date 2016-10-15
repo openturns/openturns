@@ -179,6 +179,23 @@ NumericalScalar GeneralizedPareto::computeComplementaryCDF(const NumericalPoint 
   return std::exp(-log1p(xi_ * z) / xi_);
 }
 
+/** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+Interval GeneralizedPareto::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
+}
+
+/** Get the minimum volume level set containing a given probability of the distributionImplementation */
+LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  const Interval interval(computeMinimumVolumeInterval(prob));
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
+  threshold = std::exp(-minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex GeneralizedPareto::computeCharacteristicFunction(const NumericalScalar x) const
 {

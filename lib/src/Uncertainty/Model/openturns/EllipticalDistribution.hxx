@@ -95,6 +95,13 @@ public:
   using ContinuousDistribution::computeSurvivalFunction;
   virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
 
+  /** Get the minimum volume level set containing a given probability of the distribution */
+  using ContinuousDistribution::computeMinimumVolumeLevelSet;
+#ifndef SWIG
+  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+      NumericalScalar & threshold) const;
+#endif
+
   /** Mean point accessor */
   void setMean(const NumericalPoint & mean);
 
@@ -166,6 +173,65 @@ public:
 
 protected:
 
+  // Class used to wrap the computeRadialCDF() method for interpolation purpose
+  class RadialCDFWrapper: public NumericalMathFunctionImplementation
+  {
+  public:
+    RadialCDFWrapper(const EllipticalDistribution * p_distribution)
+      : NumericalMathFunctionImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    RadialCDFWrapper * clone() const
+    {
+      return new RadialCDFWrapper(*this);
+    }
+
+    NumericalPoint operator() (const NumericalPoint & point) const
+    {
+      return NumericalPoint(1, p_distribution_->computeRadialDistributionCDF(point[0]));
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return Description(1, "R");
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "radialCDF");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "RadialCDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "RadialCDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const EllipticalDistribution * p_distribution_;
+  };  // class RadialDFWrapper
+
   /** The sigma vector of the distribution */
   mutable NumericalPoint sigma_;
 
@@ -200,3 +266,4 @@ private:
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX */
+

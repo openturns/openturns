@@ -88,6 +88,35 @@ public:
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
 
+  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  using DistributionImplementation::computeMinimumVolumeInterval;
+#ifndef SWIG
+   Interval computeMinimumVolumeInterval(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+#endif
+
+  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+   using DistributionImplementation::computeBilateralConfidenceInterval;
+#ifndef SWIG
+   Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+#endif
+
+  /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+   using DistributionImplementation::computeUnilateralConfidenceInterval;
+#ifndef SWIG
+   Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
+      const Bool tail,
+      NumericalScalar & marginalProb) const;
+#endif
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+   using DistributionImplementation::computeMinimumVolumeLevelSet;
+#ifndef SWIG
+   LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+      NumericalScalar & threshold) const;
+#endif
+
   /** Parameters value accessors */
   void setParameter(const NumericalPoint & parameter);
   NumericalPoint getParameter() const;

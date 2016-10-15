@@ -118,6 +118,35 @@ NumericalPoint ParametrizedDistribution::computeQuantile(const NumericalScalar p
   return distribution_.computeQuantile(prob, tail);
 }
 
+/* Get the product minimum volume interval containing a given probability of the distributionImplementation */
+Interval ParametrizedDistribution::computeMinimumVolumeInterval(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const
+{
+  return distribution_.computeMinimumVolumeInterval(prob, marginalProb);
+}
+
+/* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+Interval ParametrizedDistribution::computeBilateralConfidenceInterval(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const
+{
+  return distribution_.computeBilateralConfidenceInterval(prob, marginalProb);
+}
+
+/* Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+Interval ParametrizedDistribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
+      const Bool tail,
+      NumericalScalar & marginalProb) const
+{
+  return distribution_.computeUnilateralConfidenceInterval(prob, tail, marginalProb);
+}
+
+/* Get the minimum volume level set containing a given probability of the distributionImplementation */
+LevelSet ParametrizedDistribution::computeMinimumVolumeLevelSet(const NumericalScalar prob,
+      NumericalScalar & threshold) const
+{
+  return distribution_.computeMinimumVolumeLevelSet(prob, threshold);
+}
+
 /* Get the PDFGradient of the distribution */
 NumericalPoint ParametrizedDistribution::computePDFGradient(const NumericalPoint & point) const
 {

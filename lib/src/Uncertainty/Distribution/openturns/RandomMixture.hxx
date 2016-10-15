@@ -112,6 +112,13 @@ public:
   /** Get one realization of the RandomMixture */
   NumericalPoint getRealization() const;
 
+  /** Get a sample of the RandomMixture */
+  NumericalSample getSample(const UnsignedInteger size) const;
+
+ protected:
+  virtual NumericalSample getSampleByQMC(const UnsignedInteger size) const;
+ public:
+
   /** Get the DDF of the RandomMixture */
   using DistributionImplementation::computeDDF;
   NumericalPoint computeDDF(const NumericalPoint & point) const;
@@ -189,6 +196,13 @@ public:
                                   const NumericalScalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  using DistributionImplementation::computeMinimumVolumeLevelSet;
+#ifndef SWIG
+  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
+      NumericalScalar & threshold) const;
+#endif
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;

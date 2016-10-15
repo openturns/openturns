@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/EllipticalDistribution.hxx"
+#include "openturns/Distribution.hxx"
 #include "openturns/NatafEllipticalDistributionEvaluation.hxx"
 #include "openturns/NatafEllipticalDistributionGradient.hxx"
 #include "openturns/NatafEllipticalDistributionHessian.hxx"
@@ -32,6 +33,7 @@
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Brent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -340,6 +342,27 @@ NumericalPoint EllipticalDistribution::computePDFGradient(const NumericalPoint &
 NumericalScalar EllipticalDistribution::computeSurvivalFunction(const NumericalPoint & point) const
 {
   return computeCDF(2.0 * mean_ - point);
+}
+
+/* Get the minimum volume level set containing at least a given probability of the distribution.
+   The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
+   where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
+   In the case of an elliptical distribution, it is the opposite of the value of the log-PDF of the standard representative at any point at distance q from the origin, where q is the prob-quantile of the radial distribution.
+*/
+LevelSet EllipticalDistribution::computeMinimumVolumeLevelSet(const NumericalScalar prob,
+    NumericalScalar & threshold) const
+{
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeLevelSet()";
+  if (getDimension() == 1) return DistributionImplementation::computeMinimumVolumeLevelSet(prob, threshold);
+  RadialCDFWrapper radialWrapper(this);
+  const Distribution standard(getStandardDistribution());
+  NumericalPoint point(getDimension());
+  const NumericalScalar xMax = standard.getRange().getUpperBound().norm();
+  Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  point[0] = solver.solve(radialWrapper, prob, 0.0, xMax, 0.0, 1.0);
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  return LevelSet(minimumVolumeLevelSetFunction, -standard.computeLogPDF(point));
 }
 
 /* Update the derivative attributes */
