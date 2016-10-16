@@ -32,6 +32,14 @@ OT_Distribution_computeGeneratingFunction_doc
 OT_Distribution_computeLogCharacteristicFunction_doc
 %feature("docstring") OT::Distribution::computeLogGeneratingFunction
 OT_Distribution_computeLogGeneratingFunction_doc
+%feature("docstring") OT::Distribution::computeMinimumVolumeLevelSet
+OT_Distribution_computeMinimumVolumeLevelSet_doc
+%feature("docstring") OT::Distribution::computeMinimumVolumeInterval
+OT_Distribution_computeMinimumVolumeInterval_doc
+%feature("docstring") OT::Distribution::computeBilateralConfidenceInterval
+OT_Distribution_computeBilateralConfidenceInterval_doc
+%feature("docstring") OT::Distribution::computeUnilateralConfidenceInterval
+OT_Distribution_computeUnilateralConfidenceInterval_doc
 %feature("docstring") OT::Distribution::computeLogPDF
 OT_Distribution_computeLogPDF_doc
 %feature("docstring") OT::Distribution::computePDF
@@ -48,6 +56,8 @@ OT_Distribution_computeRadialDistributionCDF_doc
 OT_Distribution_computeScalarQuantile_doc
 %feature("docstring") OT::Distribution::computeSurvivalFunction
 OT_Distribution_computeSurvivalFunction_doc
+%feature("docstring") OT::Distribution::computeInverseSurvivalFunction
+OT_Distribution_computeInverseSurvivalFunction_doc
 %feature("docstring") OT::Distribution::drawCDF
 OT_Distribution_drawCDF_doc
 %feature("docstring") OT::Distribution::drawMarginal1DCDF

@@ -465,26 +465,6 @@ OT_Distribution_computeLogPDF_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_computeMinimumVolumeInterval_doc
-"Compute the minimum volume interval of a given probability content.
-
-Univariate case only.
-
-Parameters
-----------
-prob : float
-    Probability
-
-Returns
--------
-interval : :class:`~openturns.Interval`
-    Minimum volume interval of a given probability content in the univariate case."
-%enddef
-%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
-OT_Distribution_computeMinimumVolumeInterval_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Distribution_computePDF_doc
 "Compute the probability density function.
 
@@ -661,22 +641,23 @@ OT_Distribution_computeScalarQuantile_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
+x : sequence of float, 2-d sequence of float
     Survival function input(s).
 
 Returns
 -------
 S : float, :class:`~openturns.NumericalPoint`
-    Survival function value(s) at input(s) `X`.
+    Survival function value(s) at input(s) `x`.
 
 Notes
 -----
-The survival function is defined as follows:
+The survival function of the random vector :math:`\vect{X}` is defined as follows:
 
 .. math::
 
-    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i > x_i},
-                             \quad \vect{x} \in \supp{\vect{X}}
+ 
+    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^d X_i > x_i}
+             \quad \forall \vect{x} \in \Rset^d
 
 .. warning::
 
@@ -689,6 +670,33 @@ computeComplementaryCDF"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSurvivalFunction
 OT_Distribution_computeSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeInverseSurvivalFunction_doc
+"Compute the inverse survival function.
+
+Parameters
+----------
+p : float, :math:`p \in [0; 1]`
+    Level of the survival function.
+
+Returns
+-------
+x : :class:`~openturns.NumericalPoint`
+    Point :math:`\vect{x}` such that :math:`S_{\vect{X}}(\vect{x}) = p` with iso-quantile components.
+
+Notes
+-----
+The inverse survival function writes: :math:`S^{-1}(p)  =  \vect{x}^p` where :math:`S( \vect{x}^p) = \Prob{\bigcap_{i=1}^d X_i > x_i^p}`. OpenTURNS returns the point :math:`\vect{x}^p` such that 
+:math:`\Prob{ X_1 > x_1^p}   =  \dots = \Prob{ X_d > x_d^p}`.
+
+See Also
+--------
+computeQuantile, computeSurvivalFunction"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeInverseSurvivalFunction
+OT_Distribution_computeInverseSurvivalFunction_doc
 
 // ---------------------------------------------------------------------
 
@@ -853,20 +861,21 @@ Thus the minimum volume domain of confidence :math:`\alpha` is the interior of t
 
 Examples
 --------
-Create a sample from a Beta distribution:
+Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Beta().getSample(10)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
-Fit a Beta distribution and extract the asymptotic parameters distribution:
+Fit a Normal distribution and extract the asymptotic parameters distribution:
 
->>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
 Determine the confidence region of minimum volume of the native parameters al level 0.9:
 
->>> confInt, level = paramDist.computeMinimumVolumeLevelSet(0.9)
+>>> level = ot.NumericalPoint()
+>>> confInt = paramDist.computeMinimumVolumeLevelSet(0.9, level)
 >>> print confInt
 >>> print level[0]"
 %enddef
@@ -921,15 +930,15 @@ To find :math:`\beta`, we use the Brent algorithm:  :math:`\mu([\vect{a}(\beta);
 
 Examples
 --------
-Create a sample from a Beta distribution:
+Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Beta().getSample(10)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
-Fit a Beta distribution and extract the asymptotic parameters distribution:
+Fit a Normal distribution and extract the asymptotic parameters distribution:
 
->>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
 Determine the confidence interval of the native parameters al level 0.9 with minimum volume:
@@ -973,15 +982,15 @@ The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product 
 
 Examples
 --------
-Create a sample from a Beta distribution:
+Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Beta().getSample(10)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
-Fit a Beta distribution and extract the asymptotic parameters distribution:
+Fit a Normal distribution and extract the asymptotic parameters distribution:
 
->>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
 Determine the bilateral confidence interval al level 0.9:
@@ -1033,15 +1042,15 @@ It means that :math:`S_{\mu}^{-1}(\vect{a}) = \alpha` with iso-quantile componen
 
 Examples
 --------
-Create a sample from a Beta distribution:
+Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Beta().getSample(10)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
-Fit a Beta distribution and extract the asymptotic parameters distribution: 
+Fit a Normal distribution and extract the asymptotic parameters distribution: 
 
->>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
 Determine the right unilateral confidence interval al level 0.9:
@@ -1717,7 +1726,7 @@ The iso-probabilistic transformation is defined as follows:
        \end{array}\right.
 
 **An** iso-probabilistic transformation is a *diffeomorphism* [#diff]_ from
-:math:`\supp{\vect{X}}` to :math:`\Rset^n` that maps realizations
+:math:`\supp{\vect{X}}` to :math:`\Rset^d` that maps realizations
 :math:`\vect{x}` of a random vector :math:`\vect{X}` into realizations
 :math:`\vect{y}` of another random vector :math:`\vect{Y}` while
 preserving probabilities. It is hence defined so that it satisfies:
@@ -1726,8 +1735,8 @@ preserving probabilities. It is hence defined so that it satisfies:
     :nowrap:
 
     \begin{eqnarray*}
-        \Prob{\bigcap_{i=1}^n X_i \leq x_i}
-            & = & \Prob{\bigcap_{i=1}^n Y_i \leq y_i} \\
+        \Prob{\bigcap_{i=1}^d X_i \leq x_i}
+            & = & \Prob{\bigcap_{i=1}^d Y_i \leq y_i} \\
         F_{\vect{X}}(\vect{x})
             & = & F_{\vect{Y}}(\vect{y})
     \end{eqnarray*}
