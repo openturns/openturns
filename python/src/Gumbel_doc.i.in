@@ -36,26 +36,41 @@ Its first moments are:
 
 where :math:`\gamma` is the Euler-Mascheroni constant.
 
+
+It is possible to create a Gumbel distribution from the alternative parametrizations :math:`(\mu, \sigma)`: see  :class:`~openturns.GumbelMuSigma` or :math:`(a,b)`: see  :class:`~openturns.GumbelAB`. In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative  parametrization only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta)`.
+
 Examples
 --------
-Create a distribution:
+Create a distribution in its native parameters :math:`(\alpha, \beta)`:
 
 >>> import openturns as ot
->>> distribution = ot.Gumbel(1.0, 0.0)
+>>> myDist = ot.Gumbel(1.0, 0.0)
+
+Create a it with the alternative parametrization :math:`(\mu, \sigma)`:
+
+>>> myDist2 = ot.Gumbel()
+>>> myDist2.setParameter(ot.GumbelMuSigma()([0.58, 1.28]))
+
+Create a it with the alternative parametrization :math:`(a,b)`:
+
+>>> myDist3 = ot.Gumbel()
+>>> myDist3.setParameter(ot.GumbelAB()([0.0, 1.0]))
+
+Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.GumbelMuSigma(0.58, 1.28)
+>>> myDist4 = ot.ParametrizedDistribution(myParam)
+
+Create it from :math:`(a,b)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.GumbeAB(0.0, 1.0)
+>>> myDist5 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)
-
-Create a distribution from mu,sigma parameter set:
-
->>> distribution = ot.Gumbel()
->>> distribution.setParameter(ot.GumbelMuSigma()([1.5, 1.3]))
-
-Create a distribution from a,b parameter set:
-
->>> distribution = ot.Gumbel()
->>> distribution.setParameter(ot.GumbelAB()([-0.5, 0.5]))"
+>>> sample = myDist.getSample(10)"
 
 // ---------------------------------------------------------------------
 

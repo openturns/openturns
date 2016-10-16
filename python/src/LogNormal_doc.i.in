@@ -8,7 +8,7 @@ Parameters
 ----------
 muLog : float
     location parameter :math:`\mu_\ell`.
-sigmaLog : float, :math:`arg2 > 0`
+sigmaLog : float, :math:`\sigma_\ell > 0`
     scale parameter :math:`\sigma_\ell`.
 gamma : float, optional
     Shift parameter :math:`\gamma < \mu`.
@@ -38,26 +38,41 @@ Its first moments are:
                       \left(\exp(\sigma_\ell^2) - 1\right)
     \end{eqnarray*}
 
+
+It is possible to create a LogNormal distribution from the alternative parametrizations :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.LogNormalMuSigma` or :math:`(\mu, \sigma / \mu, \gamma)`: see  :class:`~openturns.LogNormalMuSigmaOverMu`. In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative  parametrization only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\mu_\ell, \sigma_\ell, \gamma)`.
+
 Examples
 --------
-Create a distribution:
+Create a distribution from its native parameters :math:`(\mu_\ell, \sigma_\ell, \gamma)`:
 
 >>> import openturns as ot
->>> distribution = ot.LogNormal(0.0, 1.0, 0.0)
+>>> myDist = ot.LogNormal(1.0, 1.0, 0.0)
+
+Create a it from the alternative parametrization :math:`(\mu, \sigma, \gamma)`:
+
+>>> myDist2 = ot.LogNormal()
+>>> myDist2.setParameter(ot.LogNormalMuSigma()([4.5, 5.8, 0.0]))
+
+Create a it from the alternative parametrization :math:`(\mu, \sigma/\mu, \gamma)`:
+
+>>> myDist3 = ot.LogNormal()
+>>> myDist3.setParameter(ot.LogNormalMuSigmaOverMu()([4.5, 1.3, 0.0]))
+
+Create it from :math:`(\mu, \sigma, \gamma)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.LogNormalMuSigma(4.5, 5.8, 0.0)
+>>> myDist4 = ot.ParametrizedDistribution(myParam)
+
+Create it from :math:`(\mu, \sigma/\mu, \gamma)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.LogNormalMuSigmaOverMu(4.5, 1.3, 0.0)
+>>> myDist5 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)
-
-Create a distribution from mu,sigma parameter set:
-
->>> distribution = ot.LogNormal()
->>> distribution.setParameter(ot.LogNormalMuSigma()([0.63, 3.3, -0.5]))
-
-Create a distribution from mu,sigma/mu parameter set:
-
->>> distribution = ot.LogNormal()
->>> distribution.setParameter(ot.LogNormalMuSigmaOverMu()([0.63, 5.24, -0.5]))"
+>>> sample = myDist.getSample(10)"
 
 // ---------------------------------------------------------------------
 

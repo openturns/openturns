@@ -14,7 +14,7 @@ OT_DistributionFactory_doc
 // ---------------------------------------------------------------------
 
 %define OT_DistributionFactory_build_doc
-"build the distribution.
+"Build the distribution.
 
 **Available usages**:
 
@@ -40,19 +40,8 @@ OT_DistributionFactory_build_doc
 // ---------------------------------------------------------------------
 
 %define OT_DistributionFactory_buildEstimator_doc
-"Build the distribution and the distribution of its parameter.
+"Build the distribution and the parameter distribution.
 
-If the distribution is estimated by method of moments, the distribution of the
-parameter is gaussian and estimated by bootstrap.
-If the distribution is estimated by maximum likelihood and the distribution
-is regular the distribution of the parameter is gaussian and its covariance
-matrix is the Fisher information matrix.
-In other cases, the distribution of parameter is estimated by bootstrap with
-:class:`~openturns.KernelSmoothing`.
-When specifying the parametrization, the distribution of the parameters is
-estimated by :class:`~openturns.KernelSmoothing` unless the distribution of
-parameters is gaussian, in which case the parameters distribution is gaussian
-too.
 
 Parameters
 ----------
@@ -63,8 +52,39 @@ parameters : :class:`~openturns.DistributionParameters`
 
 Returns
 -------
-parameterDistribution : :class:`~openturns.DistributionFactoryResult`
-    The results."
+resDist : :class:`~openturns.DistributionFactoryResult`
+    The results.
+
+Notes
+-----
+According to the way the native parameters of the distribution are estimated, the parameters distribution differs:
+
+    - Moments method: the asymptotic parameters distribution is normal and estimated by Bootstrap on the initial data;
+    - Maximum likelihood method with a regular model: the asymptotic parameters distribution is normal and its covariance matrix is the inverse Fisher information matrix;
+    - Other methods: the asymptotic parameters distribution is estimated by Bootstrap on the initial data and kernel fitting (see :class:`~openturns.KernelSmoothing`).
+
+
+If another set of parameters is specified, the native parameters distribution is first estimated and the new distribution is determined from it:
+
+    - if the native parameters distribution is normal and the transformation regular at the estimated parameters values: the asymptotic parameters distribution is normal and its covariance matrix determined from the inverse Fisher information matrix of the native parameters and the transformation;
+    - in the other cases, the asymptotic parameters distribution is estimated by Bootstrap on the initial data and kernel fitting.
+
+
+Examples
+--------
+Create a sample from a Beta distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(1000)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 1000)
+
+Fit a Beta distribution in the native parameters and create a :class:`~openturns.DistributionFactory`:
+
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+
+Fit a Beta distribution  in the alternative parametrization :math:`(\mu, \sigma, a, b)`:
+
+>>> fittedRes2 = ot.BetaFactory().buildEstimator(sample, ot.BetaMuSigma())"
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::buildEstimator
 OT_DistributionFactory_buildEstimator_doc

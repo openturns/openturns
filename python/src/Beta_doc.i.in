@@ -38,21 +38,31 @@ Its first moments are:
         \Var{X} & = & \left(\frac{b - a}{t}\right)^2 \frac{r\,(t - r)}{t + 1}
     \end{eqnarray*}
 
+
+It is possible to create a Beta distribution from the alternative parametrization :math:`(\mu, \sigma, a, b)`: see  :class:`~openturns.BetaMuSigma`. In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative  parametrization :math:`(\mu, \sigma, a, b)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(r, t, a, b)`.
+
 Examples
 --------
-Create a distribution:
+Create a distribution from its native parameters :math:`(r, t, a, b)`:
 
 >>> import openturns as ot
->>> distribution = ot.Beta(2.0, 1.0, 1.0, 5.0, ot.Beta.MUSIGMA)
+>>> myDist = ot.Beta(1.0, 2.0, 1.0, 5.0)
+
+Create a it from the alternative parametrization :math:`(\mu, \sigma, a, b)`:
+
+>>> myDist2 = ot.Beta()
+>>> myDist2.setParameter(ot.BetaMuSigma()([3.0, 1.15, 1.0, 5.0]))
+
+Create it from :math:`(\mu, \sigma, a, b)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.BetaMuSigma(3.0, 1.15, 1.0, 5.0)
+>>> myDist3 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)
-
-Create a distribution from mu,sigma parameter set:
-
->>> distribution = ot.Beta()
->>> distribution.setParameter(ot.BetaMuSigma()([0.2, 0.6, -1.0, 2.0]))"
+>>> sample = myDist.getSample(10)"
 
 // ---------------------------------------------------------------------
 
