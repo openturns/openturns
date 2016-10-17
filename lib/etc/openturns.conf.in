@@ -526,6 +526,7 @@
   <WhiteNoise-MeanEpsilon value="1.0e-14" />
 
   <!-- OT::HMatrix parameters -->
+  <HMatrix-ClusteringAlgorithm  value="median" />
   <HMatrix-AdmissibilityFactor  value="2.0" />
   <HMatrix-CompressionMethod    value="1"   />
   <HMatrix-AssemblyEpsilon      value="1.0e-4"/>
