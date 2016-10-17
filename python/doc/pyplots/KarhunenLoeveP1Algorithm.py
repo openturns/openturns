@@ -3,15 +3,13 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 from math import sqrt
 
-mesh = ot.IntervalMesher([256]).build(ot.Interval(-1.0, 1.0))
+mesh = ot.IntervalMesher([128]).build(ot.Interval(-1.0, 1.0))
 threshold = 0.001
 model = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)
 algo.run()
 ev = algo.getResult().getEigenValues()
-modes = algo.getResult().getModesAsProcessSample()
-for i in range(modes.getSize()):
-    modes[i] = ot.Field(mesh, modes[i].getValues() * [sqrt(ev[i])])
+modes = algo.getResult().getScaledModesAsProcessSample()
 g = modes.drawMarginal(0)
 g.setXTitle("$t$")
 g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
