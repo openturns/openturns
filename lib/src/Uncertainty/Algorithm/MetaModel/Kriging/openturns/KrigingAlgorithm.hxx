@@ -105,6 +105,10 @@ public:
   /** Log-Likelihood function accessor */
   NumericalMathFunction getLogLikelihoodFunction();
 
+  /** Optimization flag accessor */
+  Bool getOptimizeParameters() const;
+  void setOptimizeParameters(const Bool optimizeParameters);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

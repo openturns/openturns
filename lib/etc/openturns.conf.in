@@ -446,6 +446,7 @@
   <GeneralizedLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
   <GeneralizedLinearModelAlgorithm-NormalizeData                  value="false" />
   <GeneralizedLinearModelAlgorithm-KeepCovariance                 value="true" />
+  <GeneralizedLinearModelAlgorithm-OptimizeParameters             value="true" />
   <GeneralizedLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
   <GeneralizedLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
   <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />

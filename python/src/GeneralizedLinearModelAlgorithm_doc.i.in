@@ -88,7 +88,7 @@ The *GeneralizedLinearModelAlgorithm* class estimates the coefficients :math:`\a
 
 Note that the parameters :math:`(\mat{R}, \vect{\lambda})` are not optimized: they are fixed to the values specified by the User.
 
-If a normalizing transformation *T* has been used, the meta model is bilt on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
+If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
 
  **Estimation of the parameters** :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}`
 
@@ -302,5 +302,24 @@ algorithm : :class:`~openturns.OptimizationSolver`
 Parameters
 ----------
 algorithm : :class:`~openturns.OptimizationSolver`
-    Solver used to optimize the covariance model parameters.
-"
+    Solver used to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizeParameters
+"Accessor to the covariance model parameters optimization flag.
+
+Parameters
+----------
+optimizeParameters : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizeParameters
+"Accessor to the covariance model parameters optimization flag.
+
+Returns
+-------
+optimizeParameters : bool
+    Whether to optimize the covariance model parameters."
