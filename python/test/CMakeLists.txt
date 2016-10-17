@@ -267,6 +267,8 @@ ot_pyinstallcheck_test (KissFFT_std)
 ot_pyinstallcheck_test (GaussKronrod_std)
 ot_pyinstallcheck_test (IteratedQuadrature_std)
 ot_pyinstallcheck_test (KarhunenLoeveP1Factory_std)
+ot_pyinstallcheck_test (DesignProxy_std)
+ot_pyinstallcheck_test (LeastSquaresMethod_std)
 
 ## Model
 ot_pyinstallcheck_test (Event_std)
@@ -537,6 +539,7 @@ endif ()
 if (NLOPT_FOUND)
   ot_pyinstallcheck_test (GeneralizedLinearModelAlgorithm_nlopt)
 endif ()
+ot_pyinstallcheck_test (TensorApproximationAlgorithm_std)
 
 ## Sensitivity
 ot_pyinstallcheck_test (ANCOVA_std)

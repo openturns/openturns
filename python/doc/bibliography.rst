@@ -46,6 +46,10 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
 .. [NLopt] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [Rai2015] Rai, P. *Sparse Low Rank Approximation of Multivariate Functions -
+    Applications in Uncertainty Quantification.*, PhD thesis.
+    Ecole Centrale de Nantes, France, 2015.
+    `pdf <http://doc.openturns.org/papers/rai2015.pdf>`__
 .. [Rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <http://doc.openturns.org/papers/rosenblatt1952.pdf>`__

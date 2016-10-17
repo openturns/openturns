@@ -86,8 +86,23 @@ void CholeskyMethod::update(const Indices & addedIndices,
 {
   const UnsignedInteger addedSize = addedIndices.getSize();
   const UnsignedInteger removedSize = removedIndices.getSize();
+
   // Early exit if nothing has changed
-  if (addedSize == 0 && removedSize == 0) return;
+  if (addedSize == 0 && removedSize == 0)
+  {
+    // initialize decomposition if needed
+    if (l_.getNbRows() == 0)
+    {
+      Indices previousRowFilter(proxy_.getRowFilter());
+      proxy_.setRowFilter(Indices(0));
+      MatrixImplementation mPsiAk2(computeWeightedDesign()); // current design
+      l_ = mPsiAk2.computeGram(true).computeCholesky();
+      proxy_.setRowFilter(previousRowFilter);
+    }
+    else
+      return;
+  }
+
   // On row modification
   if (row)
   {

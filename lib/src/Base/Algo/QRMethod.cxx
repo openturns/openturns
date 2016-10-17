@@ -119,7 +119,7 @@ NumericalPoint QRMethod::solve(const NumericalPoint & rhs)
     for (UnsignedInteger i = 0; i < size; ++i) y[i] *= weightSqrt_[i];
     b = q_.getImplementation()->genVectProd(y, true);
   }
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, true, false));
+  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 
@@ -129,8 +129,8 @@ NumericalPoint QRMethod::solveNormal(const NumericalPoint & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b(r_.getImplementation()->solveLinearSystemTri(rhs, true, true, true));
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, true, false));
+  NumericalPoint b(r_.getImplementation()->solveLinearSystemTri(rhs, true, false, true)); // rhs, keep, lower, transpose
+  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 

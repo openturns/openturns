@@ -367,6 +367,14 @@ ot_add_python_module(algo algo_module.i
                       ApproximationAlgorithmImplementation.i ApproximationAlgorithmImplementation_doc.i.in
                       ApproximationAlgorithmImplementationFactory.i ApproximationAlgorithmImplementationFactory_doc.i.in
                       ApproximationAlgorithm.i ApproximationAlgorithm_doc.i.in
+                      DesignProxy.i DesignProxy_doc.i.in
+                      LeastSquaresMethodImplementation.i LeastSquaresMethodImplementation_doc.i.in
+                      LeastSquaresMethod.i LeastSquaresMethod_doc.i.in
+                      CholeskyMethod.i CholeskyMethod_doc.i.in
+                      QRMethod.i QRMethod_doc.i.in
+                      SVDMethod.i SVDMethod_doc.i.in
+                      LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
+                      LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
                       ClassifierImplementation.i ClassifierImplementation_doc.i.in
                       Classifier.i Classifier_doc.i.in
                       FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i.in
@@ -374,8 +382,6 @@ ot_add_python_module(algo algo_module.i
                       CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i.in
                       KDTree.i
                       KFold.i KFold_doc.i.in
-                      LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
-                      LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
                       PythonNumericalMathEvaluationImplementation.cxx
@@ -703,6 +709,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       StandardEvent.i StandardEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
+                      TensorApproximationResult.i TensorApproximationResult_doc.i.in
+                      TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in
                       UncertaintyMetaModelTemplateDefs.i
                    )
 

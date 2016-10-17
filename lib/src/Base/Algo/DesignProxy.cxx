@@ -36,7 +36,7 @@ DesignProxy::DesignProxy ()
   , designCache_(0, 0)
   , alreadyComputed_(0)
   , rowFilter_(0)
-  , hasRowFilter_(false)
+  , weight_(0)
 {
   // Nothing to do
 }
@@ -50,7 +50,7 @@ DesignProxy::DesignProxy(const NumericalSample & x,
   , designCache_(0, 0)
   , alreadyComputed_(0)
   , rowFilter_(0)
-  , hasRowFilter_(false)
+  , weight_(0)
 {
   initialize();
 }
@@ -126,23 +126,35 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
     startDesign += xSize;
   } // j
   // Apply row filter if needed
-  if (hasRowFilter_)
+  if (hasRowFilter())
   {
     const UnsignedInteger newRowDim = rowFilter_.getSize();
     MatrixImplementation filteredDesign(newRowDim, indicesSize);
     UnsignedInteger linearIndex = 0;
     UnsignedInteger shift = 0;
-    for (UnsignedInteger j = 0; j < indicesSize; ++j)
+    for (UnsignedInteger j = 0; j < indicesSize; ++ j)
     {
-      for (UnsignedInteger i = 0; i < newRowDim; ++i)
+      for (UnsignedInteger i = 0; i < newRowDim; ++ i)
       {
         filteredDesign[linearIndex] = design[shift + rowFilter_[i]];
-        ++linearIndex;
+        ++ linearIndex;
       }
       shift += xSize;
     }
-    return filteredDesign;
-  }
+    design = filteredDesign;
+  } // hasRowFilter()
+  if (hasWeight())
+  {
+    UnsignedInteger linearIndex = 0;
+    for (UnsignedInteger j = 0; j < design.getNbColumns(); ++ j)
+    {
+      for (UnsignedInteger i = 0; i < design.getNbRows(); ++ i)
+      {
+        design[linearIndex] *= weight_[i];
+        ++ linearIndex;
+      } // i
+    } // j
+  } // hasWeight()
   return design;
 }
 
@@ -162,7 +174,6 @@ Basis DesignProxy::getBasis() const
 void DesignProxy::setRowFilter(const Indices & rowFilter)
 {
   rowFilter_ = rowFilter;
-  hasRowFilter_ = rowFilter.getSize() > 0;
 }
 
 Indices DesignProxy::getRowFilter() const
@@ -173,7 +184,25 @@ Indices DesignProxy::getRowFilter() const
 /* Row filter flag accessor */
 Bool DesignProxy::hasRowFilter() const
 {
-  return hasRowFilter_;
+  return rowFilter_.getSize() > 0;
+}
+
+/* Weight accessor */
+void DesignProxy::setWeight(const NumericalPoint & weight)
+{
+  if (weight.getDimension() > 0 && !(weight.getDimension() == x_.getSize())) throw InvalidArgumentException(HERE) << "Error: the weight dimension=" << weight.getDimension() << " is different from the sample size=" << x_.getSize();
+  weight_ = weight;
+}
+
+NumericalPoint DesignProxy::getWeight() const
+{
+  return weight_;
+}
+
+/* Weight flag accessor */
+Bool DesignProxy::hasWeight() const
+{
+  return weight_.getSize() > 0;
 }
 
 END_NAMESPACE_OPENTURNS

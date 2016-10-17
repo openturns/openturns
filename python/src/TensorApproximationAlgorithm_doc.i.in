@@ -1,0 +1,192 @@
+%feature("docstring") OT::TensorApproximationAlgorithm
+"Tensor approximation algorithm.
+
+Available constructors:
+    TensorApproximationAlgorithm(*inputSample, outputSample, distribution, functionFactory, nk*)
+
+Parameters
+----------
+inputSample, outputSample : 2-d sequence of float
+    The input random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`
+    and the output samples :math:`\vect{Y}` of a model evaluated apart.
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function :math:`f_{\vect{X}}(\vect{x})`
+    of the physical input vector :math:`\vect{X}`.
+functionFactory : :class:`~openturns.OrthogonalProductFunctionFactory`
+    The basis factory.
+degrees : sequence of int
+    The size of the basis for each component
+    Of size equal to the input dimension.
+maxRank : int, optional (default=1)
+    The maximum rank
+
+Notes
+-----
+Consider a physical model :math:`g` depending
+on a set random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`.
+We call functional chaos expansion the class of spectral methods which gathers
+all types of response surface that can be seen as a projection of the physical
+model in an orthonormal basis. This class of methods uses the Hilbertian space
+(square-integrable space: :math:`L^2`) to construct the response surface.
+
+See also
+--------
+FunctionalChaosAlgorithm, KrigingAlgorithm
+
+Notes
+-----
+TensorApproximationAlgorithm allows to perform a low-rank approximation in the canonical
+tensor format (refer to [Rai2015]_ for other tensor formats and more details).
+
+The canonical tensor approximation of rank :math:`1` reads:
+
+.. math::
+
+    f(X_1, \dots, X_d) = \prod_{i=1}^d v_i^{(k)} (x_i)
+
+The available alternating least-squares algorithm consists in successive approximations
+of the coefficients in the basis of the i-th component:
+
+.. math::
+
+    v_i^{(k)} (x_i) = \sum_{j=1}^{n_j^{(k)}} \beta_j \phi_j (x_i)
+
+The full canonical tensor approximation of rank :math:`r` reads:
+
+.. math::
+
+    f(X_1, \dots, X_d) = \sum_{k=1}^r \alpha_k \prod_{i=1}^d v_i^{(k)} (x_i)
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define the model
+>>> dim = 1
+>>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> # Create the input distribution
+>>> distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
+>>> factoryCollection = [ot.FourierSeriesFactory()] * dim
+>>> functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
+>>> size = 10
+>>> X = distribution.getSample(size)
+>>> Y = model(X)
+>>> nk = [5] * dim
+>>> maxRank = 1
+>>> algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk, maxRank)
+>>> algo.run()
+>>> result = algo.getResult()
+
+
+Each rank-1 expansion can optionally be performed with L1 regularisation to
+induce a sparse representation:
+
+>>> lsfactory = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())
+>>> algo.setApproximationAlgorithmFactory(lsfactory)
+
+
+Also, the rank :math:`r` can optionally be chosen automatically by means of cross-validation:
+
+>>> algo.setRankSelection(True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::run
+"Compute the response surface."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::getResult
+"Result accessor.
+
+Returns
+-------
+result : :class:`~openturns.TensorApproximationResult`
+    The result of the approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::setApproximationAlgorithmFactory
+"Approximation algorithm accessor.
+
+Parameters
+----------
+factory : :class:`~openturns.ApproximationAlgorithmFactory`
+    The algorithm generator to solve linear sub-problem during the alternating
+    least-squares algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::setMaximumAlternatingLeastSquaresIteration
+"Maximum ALS algorithm iteration accessor.
+
+Parameters
+----------
+maxALSIteration : int
+    The maximum number of iterations for the alternating least-squares
+    algorithm used for the rank-1 approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::getMaximumAlternatingLeastSquaresIteration
+"Maximum ALS algorithm iteration accessor.
+
+Returns
+-------
+maxALSIteration : int
+    The maximum number of iterations for the alternating least-squares
+    algorithm used for the rank-1 approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::setMaximumRadiusError
+"Maximum radius error accessor.
+
+Parameters
+----------
+maxRadiusError : float
+    Convergence criterion on the radius during alternating least-squares
+    algorithm used for the rank-1 approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::getMaximumRadiusError
+"Maximum radius error accessor.
+
+Returns
+-------
+maxRadiusError : float
+    Convergence criterion on the radius during alternating least-squares
+    algorithm used for the rank-1 approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::setMaximumResidualError
+"Maximum residual error accessor.
+
+Parameters
+----------
+maxResErr : float
+    Convergence criterion on the residual during alternating least-squares
+    algorithm used for the rank-1 approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::getMaximumResidualError
+"Maximum residual error accessor.
+
+Returns
+-------
+maxResErr : float
+    Convergence criterion on the residual during alternating least-squares
+    algorithm used for the rank-1 approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TensorApproximationAlgorithm::setRankSelection
+"Rank selection flag accessor.
+
+Parameters
+----------
+rankSelection : bool
+    Whether to use cross-validation to determine the optimal rank."
+

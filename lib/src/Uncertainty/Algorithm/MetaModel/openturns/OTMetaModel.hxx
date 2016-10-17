@@ -24,6 +24,7 @@
 
 #include "openturns/OTFunctionalChaos.hxx"
 #include "openturns/OTKriging.hxx"
+#include "openturns/OTTensorApproximation.hxx"
 
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/MetaModelResult.hxx"
