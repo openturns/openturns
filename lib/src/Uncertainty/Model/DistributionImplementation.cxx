@@ -1566,6 +1566,82 @@ NumericalSample DistributionImplementation::computePDFGradient(const NumericalSa
   return outSample;
 }
 
+/* Get the logPDF gradient of the distribution */
+NumericalPoint DistributionImplementation::computeLogPDFGradient(const NumericalPoint & point) const
+{
+  // log(u)' = u' / u for any u function
+  // With u(theta|point) = PDF(theta|point), du(theta|point)/dtheta = PDFGradient(theta|point)
+  const NumericalScalar pdf = computePDF(point);
+  if (pdf > 0)
+  {
+    const NumericalPoint logPDFGradient(computePDFGradient(point) / pdf);
+    return logPDFGradient;
+  }
+  else
+    // LogPDFGradient is used to maximize the log-likelihood for exponential models
+    // if pdf is zero the u'/u has undetermined form (for exponential models we could extract
+    // the correct determined form)
+    return NumericalPoint(getParameterDimension(), 0.0);
+}
+
+/* Get the LogPDFGradient of the distributionImplementation */
+struct ComputeLogPDFGradientPolicy
+{
+  const NumericalSample & input_;
+  NumericalSample & output_;
+  const DistributionImplementation & distribution_;
+
+  ComputeLogPDFGradientPolicy( const NumericalSample & input,
+                               NumericalSample & output,
+                               const DistributionImplementation & distribution)
+    : input_(input)
+    , output_(output)
+    , distribution_(distribution)
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const NumericalPoint out = distribution_.computeLogPDFGradient(input_[i]);
+      for (UnsignedInteger j = 0; j < output_.getDimension(); ++j)
+        output_[i][j] = out[j];
+    }
+  }
+}; /* end struct ComputeLogPDFGradientPolicy */
+
+/* Get the logPDF gradient of the distribution (sequential implementation) */
+NumericalSample DistributionImplementation::computeLogPDFGradientSequential(const NumericalSample & sample) const
+{
+  const UnsignedInteger size = sample.getSize();
+  NumericalSample outSample(size, getParameterDimension());
+  // Sequential implementation
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const NumericalPoint result = computeLogPDFGradient(sample[i]);
+    for (UnsignedInteger j = 0; j < getParameterDimension(); ++j)
+      outSample[i][j] = result[j];
+  }
+  return outSample;
+}
+
+/* Get the logPDF gradient of the distribution (parallel implementation) */
+NumericalSample DistributionImplementation::computeLogPDFGradientParallel(const NumericalSample & sample) const
+{
+  const UnsignedInteger size = sample.getSize();
+  NumericalSample outSample(size, getParameterDimension());
+  const ComputeLogPDFGradientPolicy policy( sample, outSample, *this );
+  TBB::ParallelFor( 0, size, policy );
+  return outSample;
+}
+
+/* Get the logPDF gradient of the distribution */
+NumericalSample DistributionImplementation::computeLogPDFGradient(const NumericalSample & inSample) const
+{
+  if (isParallel_) return computeLogPDFGradientParallel(inSample);
+  else return computeLogPDFGradientSequential(inSample);
+}
+
 /* ComputeCDFGradient On a NumericalSample */
 NumericalSample DistributionImplementation::computeCDFGradient(const NumericalSample & inSample) const
 {

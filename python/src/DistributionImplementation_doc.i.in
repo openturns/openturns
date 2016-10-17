@@ -465,6 +465,25 @@ OT_Distribution_computeLogPDF_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_computeLogPDFGradient_doc
+"Compute the gradient of the log probability density function.
+
+Parameters
+----------
+X : sequence of float
+    PDF input.
+
+Returns
+-------
+dfdtheta : :class:`~openturns.NumericalPoint`
+    Partial derivatives of the logPDF with respect to the distribution
+    parameters at input `X`."
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeLogPDFGradient
+OT_Distribution_computeLogPDFGradient_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_computePDF_doc
 "Compute the probability density function.
 

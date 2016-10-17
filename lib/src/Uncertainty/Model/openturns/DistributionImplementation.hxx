@@ -276,7 +276,16 @@ public:
   /** Get the PDF gradient of the distribution */
   virtual NumericalPoint computePDFGradient(const NumericalPoint & point) const;
   virtual NumericalSample computePDFGradient(const NumericalSample & inSample) const;
-public:
+
+  /** Get the logPDF gradient of the distribution */
+  virtual NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+  virtual NumericalSample computeLogPDFGradient(const NumericalSample & inSample) const;
+
+protected:
+  virtual NumericalSample computeLogPDFGradientSequential(const NumericalSample & sample) const;
+  virtual NumericalSample computeLogPDFGradientParallel(const NumericalSample & sample) const;
+
+ public:
   /** Get the CDF gradient of the distribution */
   virtual NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
   virtual NumericalSample computeCDFGradient(const NumericalSample & inSample) const;

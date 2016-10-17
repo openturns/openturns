@@ -573,6 +573,18 @@ NumericalSample Distribution::computePDFGradient(const NumericalSample & sample)
   return getImplementation()->computePDFGradient(sample);
 }
 
+/* Get the logPDF gradient of the distribution */
+NumericalPoint Distribution::computeLogPDFGradient(const NumericalPoint & point) const
+{
+  return getImplementation()->computeLogPDFGradient(point);
+}
+
+NumericalSample Distribution::computeLogPDFGradient(const NumericalSample & sample) const
+{
+  return getImplementation()->computeLogPDFGradient(sample);
+}
+
+
 /* Get the CDF gradient of the distribution */
 NumericalPoint Distribution::computeCDFGradient(const NumericalPoint & point) const
 {

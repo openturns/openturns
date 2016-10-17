@@ -204,6 +204,10 @@ public:
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
   NumericalSample computePDFGradient(const NumericalSample & sample) const;
 
+  /** Get the log(PDFgradient) of the distribution */
+  NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+  NumericalSample computeLogPDFGradient(const NumericalSample & sample) const;
+
   /** Get the CDF gradient of the distribution */
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
   NumericalSample computeCDFGradient(const NumericalSample & sample) const;
