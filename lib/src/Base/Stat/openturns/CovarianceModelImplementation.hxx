@@ -50,30 +50,15 @@ public:
   /** Dimension-based constructor */
   explicit CovarianceModelImplementation(const UnsignedInteger spatialDimension = 1);
 
-  /** Standard constructor with amplitude and scale parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & amplitude,
-                                const NumericalPoint & scale);
 
   /** Standard constructor with amplitude and scale parameter parameter */
   CovarianceModelImplementation(const NumericalPoint & amplitude,
                                 const NumericalPoint & scale);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & amplitude,
-                                const NumericalPoint & scale,
-                                const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
   CovarianceModelImplementation(const NumericalPoint & amplitude,
                                 const NumericalPoint & scale,
                                 const CorrelationMatrix & spatialCorrelation);
-
-  /** Standard constructor with scale and spatial covariance parameter parameter */
-  CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-                                const NumericalPoint & scale,
-                                const CovarianceMatrix & spatialCovariance);
 
   /** Standard constructor with scale and spatial covariance parameter parameter */
   CovarianceModelImplementation(const NumericalPoint & scale,

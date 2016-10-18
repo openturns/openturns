@@ -52,27 +52,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   updateSpatialCovariance();
 }
 
-/* Constructor with parameter */
-CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude,
-    const NumericalPoint & scale)
-  : PersistentObject()
-  , spatialDimension_(spatialDimension)
-  , dimension_(amplitude.getDimension())
-  , amplitude_(amplitude)
-  , scale_(scale)
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
-  , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
-{
-  if (scale.getDimension() != spatialDimension_)
-    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, incompatible dimensions between spatial dimension and scale";
-  setAmplitude(amplitude);
-  setScale(scale);
-  updateSpatialCovariance();
-}
-
 /** Standard constructor with amplitude and scale parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & amplitude,
     const NumericalPoint & scale)
@@ -89,28 +68,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   setAmplitude(amplitude);
   setScale(scale);
   updateSpatialCovariance();
-}
-
-CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude,
-    const NumericalPoint & scale,
-    const CorrelationMatrix & spatialCorrelation)
-  : PersistentObject()
-  , spatialDimension_(spatialDimension)
-  , dimension_(amplitude.getDimension())
-  , amplitude_(amplitude)
-  , scale_(scale)
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
-  , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
-{
-  if (scale.getDimension() != spatialDimension_)
-    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, incompatible dimensions between spatial dimension and scale";
-  if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
-  setAmplitude(amplitude);
-  setScale(scale);
-  setSpatialCorrelation(spatialCorrelation);
 }
 
 /** Standard constructor with amplitude, scale and spatial correlation parameter parameter */
@@ -132,36 +89,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   if (spatialCorrelation.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, the given spatial correlation has a dimension different from the scales and amplitudes.";
   setSpatialCorrelation(spatialCorrelation);
-}
-
-CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension,
-    const NumericalPoint & scale,
-    const CovarianceMatrix & spatialCovariance)
-  : PersistentObject()
-  , spatialDimension_(spatialDimension)
-  , dimension_(spatialCovariance.getDimension())
-  , amplitude_(spatialCovariance.getDimension())
-  , scale_(0)
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
-  , isDiagonal_(true)
-  , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
-{
-  setScale(scale);
-  // spatialCovariance
-  spatialCovariance_ = spatialCovariance;
-  NumericalPoint amplitude(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
-  // Check that the amplitudes are valid
-  setAmplitude(amplitude);
-  // Convert the spatial covariance into a spatial correlation
-  if (!spatialCovariance.isDiagonal())
-  {
-    spatialCorrelation_ = CorrelationMatrix(dimension_);
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j)
-        spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
-  } // !isDiagonal
 }
 
 /** Standard constructor with scale and spatial covariance parameter parameter */

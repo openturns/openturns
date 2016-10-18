@@ -31,7 +31,7 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on spatial dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")))
 {
   // Nothing to do
 }

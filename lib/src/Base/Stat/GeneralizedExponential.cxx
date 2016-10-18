@@ -31,7 +31,7 @@ static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 
 /* Default constructor */
 GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")))
   , p_(1.0)
 {
   // Nothing to do

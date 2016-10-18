@@ -31,7 +31,7 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 /* Default constructor */
 SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")))
 {
   // Nothing to do
 }
