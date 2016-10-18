@@ -38,6 +38,7 @@
  * Deprecated LAR in favor of LARS
  * Deprecated DistributionFactory::build(NumericalSample, CovarianceMatrix&)
  * Deprecated distributions alternative parameters constructors, accessors
+ * Swap SpectralModel scale & amplitude parameters: CauchyModel, ExponentialCauchy
 
 === Python module ===
  * Add the possibility to distribute PythonFunction calls with multiprocessing

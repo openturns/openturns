@@ -36,7 +36,7 @@ try:
             spatialCorrelation[index, index - 1] = 1.0 / index
 
     # Sample a CauchyModel
-    referenceModel = CauchyModel(amplitude, scale, spatialCorrelation)
+    referenceModel = CauchyModel(scale, amplitude, spatialCorrelation)
 
     size = 5
     frequencyGrid = RegularGrid(0.0, 2.0 / size, size)

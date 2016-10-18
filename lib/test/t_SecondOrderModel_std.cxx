@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     fullprint << "myCovarianceModel = " << myCovarianceModel << std::endl;
 
     /* Spectral model  */
-    CauchyModel mySpectralModel(amplitude, scale);
+    CauchyModel mySpectralModel(scale, amplitude);
     fullprint << "mySpectralModel = " << mySpectralModel << std::endl;
 
     /* We build the second order model using covariance and spectral models */

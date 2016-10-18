@@ -16,7 +16,7 @@ try:
     scale = NumericalPoint(defaultDimension, 1.0)
 
     # Second order model with parameters
-    myModel = ExponentialCauchy(amplitude, scale)
+    myModel = ExponentialCauchy(scale, amplitude)
 
     # checking the copy-cast*/
     mySecondOrderModel = SecondOrderModel(myModel)
@@ -47,7 +47,7 @@ try:
     amplitude = NumericalPoint(highDimension, 1.0)
 
     # Second order model with parameters
-    mySpecModel = CauchyModel(amplitude, scale)
+    mySpecModel = CauchyModel(scale, amplitude)
     print("mySpecModel = ", mySpecModel)
 
     mySpectralProcess2 = SpectralNormalProcess(mySpecModel, myTimeGrid)

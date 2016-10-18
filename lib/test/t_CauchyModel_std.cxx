@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     /* Second order model with parameters */
-    CauchyModel myModel(amplitude, scale);
+    CauchyModel myModel(scale, amplitude);
     fullprint << "myModel = " << myModel << std::endl;
 
     const NumericalScalar frequencyValue = 1.0;
@@ -76,11 +76,11 @@ int main(int argc, char *argv[])
     fullprint << "spatialCorrelation=\n" << spatialCorrelation.__str__() << std::endl;
 
     /* checking the cast */
-    SpectralModel mySpectralModel(CauchyModel(amplitude, scale, spatialCorrelation));
+    SpectralModel mySpectralModel(CauchyModel(scale, amplitude, spatialCorrelation));
     fullprint << "mySpectralModel = " << mySpectralModel << std::endl;
 
     /* Second order model - high dimension */
-    CauchyModel myHighModel(amplitude, scale, spatialCorrelation);
+    CauchyModel myHighModel(scale, amplitude, spatialCorrelation);
     fullprint << "myHighModel = " << myHighModel << std::endl;
 
     fullprint << "spectral density matrix at f = " << frequencyValue << " : " << myHighModel(frequencyValue).clean(1.0e-6) << std::endl;

@@ -55,7 +55,7 @@ Examples
 >>> # Scale values
 >>> scale = [1.0]*defaultDimension
 >>> # Second order model with parameters
->>> myModel = ot.ExponentialCauchy(amplitude, scale)
+>>> myModel = ot.ExponentialCauchy(scale, amplitude)
 >>> # Time grid
 >>> tmin = 0.0
 >>> step = 0.1

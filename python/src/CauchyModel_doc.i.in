@@ -2,16 +2,16 @@
 "Cauchy spectral model.
 
 Available constructors:
-    CauchyModel(*sigma, theta*)
+    CauchyModel(*theta, sigma*)
 
 Parameters
 ----------
-sigma : sequence of float
-    Amplitude coefficients :math:`\sigma` of the spectral density function.
-    Vector of size p
 theta : sequence of float
     Scale coefficients :math:`\theta` of the spectral density function.
     Vector of size n
+sigma : sequence of float
+    Amplitude coefficients :math:`\sigma` of the spectral density function.
+    Vector of size p
 
 Notes
 -----
@@ -25,7 +25,7 @@ The spectral density function of input dimension **n** and output dimension **p*
 Examples
 --------
 >>> import openturns as ot
->>> spectralModel = ot.CauchyModel([2.0], [3.0, 2.0])
+>>> spectralModel = ot.CauchyModel([3.0, 2.0], [2.0])
 >>> f = 0.3
 >>> print(spectralModel(f))
 [[ (0.191364,0) ]]

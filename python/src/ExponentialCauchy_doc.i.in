@@ -3,16 +3,16 @@
 
 Available constructors:
 
-    ExponentialCauchy(*sigma, theta*)
+    ExponentialCauchy(*theta, sigma*)
 
 Parameters
 ----------
-sigma : sequence of floats
-    Amplitude coefficients :math:`\sigma`.
-    Should be of size 1
 theta : sequence of floats
     Scale coefficients.
     The spatial dimension is the size of vector.
+sigma : sequence of floats
+    Amplitude coefficients :math:`\sigma`.
+    Should be of size 1
 
 Notes
 -----
@@ -22,7 +22,7 @@ spectral model.
 Examples
 --------
 >>> import openturns as ot
->>> model = ot.ExponentialCauchy([1.0], [10.0, 10.0])
+>>> model = ot.ExponentialCauchy([10.0, 10.0], [1.0])
 >>> t = [0.1, 0.3]
 >>> s = [0.2, 0.4]
 >>> print(model.computeCovariance(s, t))

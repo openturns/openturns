@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     NumericalPoint scale(defaultDimension, 1.0);
 
     /* Second order model with parameters */
-    ExponentialCauchy myModel(amplitude, scale);
+    ExponentialCauchy myModel(scale, amplitude);
 
     /* checking the copy-cast*/
     SecondOrderModel mySecondOrderModel(myModel);
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger highDimension = 3;
     amplitude.resize(highDimension);
     for (UnsignedInteger k = 0; k < highDimension; ++k) amplitude[k] = 1.0;
-    CauchyModel mySpecModel(amplitude, scale);
+    CauchyModel mySpecModel(scale, amplitude);
     fullprint << "mySpecModel = " << mySpecModel << std::endl;
 
     SpectralNormalProcess mySpectralProcess2(mySpecModel, myTimeGrid);
