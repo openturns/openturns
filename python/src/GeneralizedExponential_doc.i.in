@@ -70,3 +70,25 @@ Create a  generalized exponential covariance function specifying the scale vecto
 Create a  generalized exponential covariance function specifying the scale vector, the amplitude and p:
 
 >>> covModel3 = ot.GeneralizedExponential([1.5, 2.5], [3.5], 3)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExponential::setP
+"P accessor.
+
+Parameters
+----------
+p : int, :math:`p \geq 1`
+    Define the norm that is used within the model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExponential::getP
+"P accessor.
+
+Returns
+-------
+p : int, :math:`p \geq 1`
+    Define the norm that is used within the model."
+

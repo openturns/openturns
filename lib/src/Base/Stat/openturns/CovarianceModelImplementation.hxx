@@ -170,6 +170,10 @@ public:
   virtual NumericalPoint getParameter() const;
   virtual Description getParameterDescription() const;
 
+  /** Indices of the active parameters */
+  virtual void setActiveParameter(const Indices & active);
+  virtual Indices getActiveParameter() const;
+
   /** String converter */
   virtual String __repr__() const;
 
@@ -186,7 +190,10 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
+  
   // set the covariance structure
   void updateSpatialCovariance();
 
@@ -213,6 +220,9 @@ protected:
 
   /** Nugget factor */
   NumericalScalar nuggetFactor_;
+
+  /** Active parameters */
+  Indices activeParameter_;
 
 } ; /* class CovarianceModelImplementation */
 

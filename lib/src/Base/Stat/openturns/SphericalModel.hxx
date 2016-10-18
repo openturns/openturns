@@ -86,6 +86,13 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+protected:
+
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
+
 private :
 
   NumericalScalar radius_;

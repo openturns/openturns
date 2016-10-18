@@ -40,6 +40,9 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger spatialDime
 {
   // Update the default values for the amplitude
   setAmplitude(NumericalPoint(spatialDimension, collection_[0].getAmplitude()[0]));
+
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /* Parameters constructor */
@@ -47,6 +50,9 @@ ProductCovarianceModel::ProductCovarianceModel(const CovarianceModelCollection &
   : CovarianceModelImplementation()
 {
   setCollection(collection);
+
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /* Collection accessor */
@@ -162,7 +168,7 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void ProductCovarianceModel::setParameter(const NumericalPoint & parameter)
+void ProductCovarianceModel::setFullParameter(const NumericalPoint & parameter)
 {
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension)
@@ -180,7 +186,7 @@ void ProductCovarianceModel::setParameter(const NumericalPoint & parameter)
   setAmplitude(NumericalPoint(1, parameter[parameterDimension - 1]));
 }
 
-NumericalPoint ProductCovarianceModel::getParameter() const
+NumericalPoint ProductCovarianceModel::getFullParameter() const
 {
   // Convention scale + amplitude
   // local amplitudes is 1
@@ -191,7 +197,7 @@ NumericalPoint ProductCovarianceModel::getParameter() const
   return result;
 }
 
-Description ProductCovarianceModel::getParameterDescription() const
+Description ProductCovarianceModel::getFullParameterDescription() const
 {
   const UnsignedInteger size = spatialDimension_ + 1;
   Description description(size);

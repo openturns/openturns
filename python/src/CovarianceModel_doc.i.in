@@ -52,3 +52,7 @@ OT_CovarianceModel_setParameter_doc
 OT_CovarianceModel_setSpatialCorrelation_doc
 %feature("docstring") OT::CovarianceModel::operator()
 OT_CovarianceModel_operator_doc
+%feature("docstring") OT::CovarianceModel::setActiveParameter
+OT_CovarianceModel_setActiveParameter_doc
+%feature("docstring") OT::CovarianceModel::getActiveParameter
+OT_CovarianceModel_getActiveParameter_doc

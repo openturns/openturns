@@ -71,3 +71,23 @@ Create a  Matern covariance function specifying the scale vector and :math:`\nu`
 Create a  Matern covariance function specifying the scale vector, the amplitude and :math:`\nu`:
 
 >>> covModel3 = ot.MaternModel([1.5, 2.5], [3.5], 4.5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaternModel::setNu
+"Nu accessor.
+
+Parameters
+----------
+nu : float, :math:`\nu \geq 0`
+    Coefficient :math:`\nu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaternModel::getNu
+"Nu accessor.
+
+Returns
+-------
+nu : float, :math:`\nu \geq 0`
+    Coefficient :math:`\nu`."

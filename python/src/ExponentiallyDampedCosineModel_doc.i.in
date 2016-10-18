@@ -68,3 +68,22 @@ Create a  exponentially damped cosine  covariance function specifying the amplit
 
 >>> covModel3 = ot.ExponentiallyDampedCosineModel([1.5, 2.5], [3.5], 5.0)"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExponentiallyDampedCosineModel::setFrequency
+"Frequency accessor.
+
+Parameters
+----------
+f : positive float
+    Frequency parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExponentiallyDampedCosineModel::getFrequency
+"Frequency accessor.
+
+Returns
+-------
+f : positive float
+    Frequency parameter."

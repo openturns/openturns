@@ -58,6 +58,10 @@ public:
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
 
+  /** P accessor */
+  NumericalScalar getP() const;
+  void setP(const NumericalScalar p);
+
   /** String converter */
   String __repr__() const;
 
@@ -69,6 +73,13 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
+
+protected:
+
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 private:
 

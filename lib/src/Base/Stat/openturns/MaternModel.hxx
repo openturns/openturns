@@ -62,6 +62,10 @@ public:
   using StationaryCovarianceModel::setScale;
   void setScale(const NumericalPoint & scale);
 
+  /** Nu accessor */
+  NumericalScalar getNu() const;
+  void setNu(const NumericalScalar nu);
+
   /** String converter */
   String __repr__() const;
 
@@ -73,6 +77,13 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
+
+protected:
+
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 private:
 

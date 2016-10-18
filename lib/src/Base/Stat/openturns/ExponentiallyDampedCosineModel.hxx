@@ -77,11 +77,15 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Frequency accessor */
+  void setFrequency(const NumericalScalar frequency);
   NumericalScalar getFrequency() const;
 
 protected:
 
-  void setFrequency(const NumericalScalar frequency);
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 public:
 

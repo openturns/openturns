@@ -48,7 +48,9 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , spatialCovariance_(0)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+  , activeParameter_(spatialDimension_ + dimension_)
 {
+  activeParameter_.fill();
   updateSpatialCovariance();
 }
 
@@ -64,9 +66,11 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   , spatialCovariance_(0)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+  , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
 {
   setAmplitude(amplitude);
   setScale(scale);
+  activeParameter_.fill();
   updateSpatialCovariance();
 }
 
@@ -83,9 +87,11 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   , spatialCovariance_(0)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+  , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
 {
   setAmplitude(amplitude);
   setScale(scale);
+  activeParameter_.fill();
   if (spatialCorrelation.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, the given spatial correlation has a dimension different from the scales and amplitudes.";
   setSpatialCorrelation(spatialCorrelation);
@@ -103,6 +109,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   , spatialCovariance_(0)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor"))
+  , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
 {
   // spatialCovariance
   spatialCovariance_ = spatialCovariance;
@@ -119,6 +126,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
         spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
   } // !isDiagonal
   setScale(scale);
+  activeParameter_.fill();
 }
 
 /* Virtual constructor */
@@ -536,47 +544,122 @@ void CovarianceModelImplementation::setNuggetFactor(const NumericalScalar nugget
   nuggetFactor_ = nuggetFactor;
 }
 
-/* Parameters accessor */
+void CovarianceModelImplementation::setFullParameter(const NumericalPoint & parameter)
+{
+  // Here we manage only the generic parameters
+  // First the scale parameter
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < spatialDimension_; ++ i)
+    {
+      scale_[i] = parameter[index];
+      ++ index;
+    }
+  // Second the amplitude parameter
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+    {
+      amplitude_[i] = parameter[index];
+      ++ index;
+    }
+  // Third the spatial correation parameter, only the lower triangle
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      {
+        spatialCorrelation_(i, j) = parameter[index];
+        ++ index;
+      }
+  isDiagonal_ = spatialCorrelation_.isDiagonal();
+  updateSpatialCovariance();
+}
+
+
+NumericalPoint CovarianceModelImplementation::getFullParameter() const
+{
+  // Here we manage only the generic parameters
+  // First the scale parameter
+  NumericalPoint parameter(getScale());
+  // Second the amplitude parameter
+  parameter.add(getAmplitude());
+  // Third the spatial correation parameter, only the lower triangle
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      parameter.add(spatialCorrelation_(i, j));
+  return parameter;
+}
+
+Description CovarianceModelImplementation::getFullParameterDescription() const
+{
+  // Here we manage only the generic parameters
+  // First the scale parameter
+  Description description(0);
+  // First the scale parameter
+  for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
+    description.add(OSS() << "scale_" << j);
+  // Second the amplitude parameter
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    description.add(OSS() << "amplitude_" << j);
+  // Third the spatial correlation parameter, only the lower triangle
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    for (UnsignedInteger j = 0; j < i; ++j)
+      description.add(OSS() << "R_" << i << "_" << j);
+
+  return description;
+}
+
+/* Indices of the active parameters */
+void CovarianceModelImplementation::setActiveParameter(const Indices & active)
+{
+  if (!active.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the active parameter indices must be given in increasing order, here active=" << active;
+  activeParameter_ = active;
+}
+
+Indices CovarianceModelImplementation::getActiveParameter() const
+{
+  return activeParameter_;
+}
+
+
 void CovarianceModelImplementation::setParameter(const NumericalPoint & parameter)
 {
-  // Default parameter setter
-  // By convention, the first points corresponds to scale parameter
-  // it follows amplitude parameter
-  if (parameter.getDimension() != spatialDimension_ + dimension_)
-    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter: parameter dimension should be " << spatialDimension_ + dimension_
-                                         << " (got " << parameter.getDimension() << ")";
-  NumericalPoint scale(spatialDimension_);
-  NumericalPoint amplitude(dimension_);
-  for (UnsignedInteger j = 0; j < spatialDimension_; ++j) scale[j] = parameter[j];
-  for (UnsignedInteger j = 0; j < dimension_; ++j) amplitude[j] = parameter[spatialDimension_ + j];
-  setScale(scale);
-  setAmplitude(amplitude);
+  const UnsignedInteger activeSize = activeParameter_.getSize();
+  if (activeSize == 0) return;
+  // Brute-force approach: everything is updated
+  NumericalPoint fullParameter(getFullParameter());
+  for (UnsignedInteger i = 0; i < activeSize; ++i)
+    fullParameter[activeParameter_[i]] = parameter[i];
+  setFullParameter(fullParameter);
 }
+
 
 NumericalPoint CovarianceModelImplementation::getParameter() const
 {
-  // Convention : scale parameter + amplitude parameter
-  NumericalPoint result(getScale());
-  result.add(getAmplitude());
-  // return result
+  // For now we use a brute-force approach: build all the parameters then extract the relevant ones
+  NumericalPoint result(0);
+  const UnsignedInteger activeSize = activeParameter_.getSize();
+  // Quick return if no parameter
+  if (activeSize == 0) return result;
+  const NumericalPoint parameter(getFullParameter());
+  if (activeSize == parameter.getSize()) return parameter;
+  // Then filter only the active parameters
+  for (UnsignedInteger i = 0; i < activeSize; ++ i)
+    result.add(parameter[activeParameter_[i]]);
   return result;
 }
 
 Description CovarianceModelImplementation::getParameterDescription() const
 {
-  // Convention : scale parameter + amplitude parameter
-  Description description(spatialDimension_ + dimension_);
-  for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
-  {
-    description[j] = OSS() << "scale_" << j;
-  }
-  for (UnsignedInteger j = 0; j < dimension_; ++j)
-  {
-    description[spatialDimension_ + j] = OSS() << "amplitude_" << j;
-  }
-  // return description
-  return description;
+  // For now we use a brute-force approach: build all the parameters then extract the relevant ones
+  Description result(0);
+  const UnsignedInteger activeSize = activeParameter_.getSize();
+  // Quick return if no parameter
+  if (activeSize == 0) return result;
+  const Description description(getFullParameterDescription());
+  if (activeSize == description.getSize()) return description;
+  // Then filter only the active parameters
+  for (UnsignedInteger i = 0; i < activeSize; ++i)
+    result.add(description[activeParameter_[i]]);
+  return result;
 }
+
 
 /* Is it a stationary model ? */
 Bool CovarianceModelImplementation::isStationary() const

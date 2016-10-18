@@ -39,6 +39,7 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   , radius_(1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Constructor with parameters */
@@ -50,6 +51,7 @@ SphericalModel::SphericalModel(const NumericalPoint & scale,
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
   setRadius(radius);
+  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Virtual constructor */
@@ -108,6 +110,30 @@ CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
 Bool SphericalModel::isStationary() const
 {
   return true;
+}
+
+void SphericalModel::setFullParameter(const NumericalPoint & parameter)
+{
+  CovarianceModelImplementation::setFullParameter(parameter);
+  setRadius(parameter[parameter.getSize() - 1]);
+}
+
+NumericalPoint SphericalModel::getFullParameter() const
+{
+  // Get the generic parameter
+  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  // Add the specific one
+  parameter.add(radius_);
+  return parameter;
+}
+
+Description SphericalModel::getFullParameterDescription() const
+{
+  // Description of the generic parameter
+  Description description(CovarianceModelImplementation::getFullParameterDescription());
+  // Description of the specific parameter
+  description.add("radius");
+  return description;
 }
 
 /* String converter */

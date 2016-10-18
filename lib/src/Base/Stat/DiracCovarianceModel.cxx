@@ -57,7 +57,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   : StationaryCovarianceModel(spatialDimension)
   , covarianceFactor_()
 {
-  // Nothing to do
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill();
 }
 
 /* Parameters constructor */
@@ -68,6 +70,10 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 {
   dimension_ = amplitude.getDimension();
   setAmplitude(amplitude);
+
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill();
 }
 
 /** Parameters constructor */
@@ -82,6 +88,10 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   setSpatialCorrelation(correlation);
   // set amplitude & compute covariance
   setAmplitude(amplitude);
+
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill();
 }
 
 /** Parameters constructor */
@@ -102,6 +112,10 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   }
   // Copy covariance
   spatialCovariance_ = covariance;
+
+  // Remove the scale from the active parameter
+  activeParameter_ = Indices(dimension_);
+  activeParameter_.fill();
 }
 
 void DiracCovarianceModel::computeCovariance()
@@ -297,25 +311,26 @@ Matrix DiracCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void DiracCovarianceModel::setParameter(const NumericalPoint & parameters)
+void DiracCovarianceModel::setFullParameter(const NumericalPoint & parameters)
 {
   if (parameters.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << dimension_ << ", here, parameters dimension = " << parameters.getDimension();
   setAmplitude(parameters);
 }
 
-NumericalPoint DiracCovarianceModel::getParameter() const
+NumericalPoint DiracCovarianceModel::getFullParameter() const
 {
-  return amplitude_;
+  return getAmplitude();
 }
 
-Description DiracCovarianceModel::getParameterDescription() const
+Description DiracCovarianceModel::getFullParameterDescription() const
 {
   Description description(0);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
   return description;
 }
+
 void DiracCovarianceModel::setScale(const NumericalPoint & scale)
 {
   // Scale factor has no effect
