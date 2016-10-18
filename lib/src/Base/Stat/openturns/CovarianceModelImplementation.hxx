@@ -190,17 +190,17 @@ protected:
   // set the covariance structure
   void updateSpatialCovariance();
 
-  /** Input dimension parameter */
-  UnsignedInteger spatialDimension_;
-
-  /** Input dimension parameter */
-  UnsignedInteger dimension_;
-
   /** Container for scale values  */
   NumericalPoint scale_;
 
-  /** Container for amplitude values  */
+  /** Input dimension */
+  UnsignedInteger spatialDimension_;
+
+  /** Amplitude values  */
   NumericalPoint amplitude_;
+
+  /** Output dimension */
+  UnsignedInteger dimension_;
 
   /** Correlation matrix of the spatial dependence structure */
   CorrelationMatrix spatialCorrelation_;

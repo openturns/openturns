@@ -40,10 +40,10 @@ static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImple
 /* Dimension-based constructor */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension)
   : PersistentObject()
-  , spatialDimension_(spatialDimension)
-  , dimension_(1)
   , scale_(spatialDimension, 1.0)
+  , spatialDimension_(spatialDimension)
   , amplitude_(1, 1.0)
+  , dimension_(1)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
@@ -56,10 +56,10 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
     const NumericalPoint & amplitude)
   : PersistentObject()
-  , spatialDimension_(scale.getDimension())
-  , dimension_(amplitude.getDimension())
   , scale_(0)
+  , spatialDimension_(scale.getDimension())
   , amplitude_(0)
+  , dimension_(amplitude.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
@@ -75,10 +75,10 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
     const NumericalPoint & amplitude,
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
-  , spatialDimension_(scale.getDimension())
-  , dimension_(amplitude.getDimension())
   , scale_(0)
+  , spatialDimension_(scale.getDimension())
   , amplitude_(0)
+  , dimension_(amplitude.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
@@ -95,10 +95,10 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
-  , spatialDimension_(scale.getDimension())
-  , dimension_(spatialCovariance.getDimension())
   , scale_(0)
+  , spatialDimension_(scale.getDimension())
   , amplitude_(0)
+  , dimension_(spatialCovariance.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
@@ -618,11 +618,10 @@ String CovarianceModelImplementation::__str__(const String & offset) const
 void CovarianceModelImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-
-  adv.saveAttribute("spatialDimension_", spatialDimension_);
-  adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("scale_", scale_);
+  adv.saveAttribute("spatialDimension_", spatialDimension_);
   adv.saveAttribute("amplitude_", amplitude_);
+  adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("spatialCorrelation_", spatialCorrelation_);
   adv.saveAttribute("spatialCovariance_", spatialCovariance_);
   adv.saveAttribute("isDiagonal_", isDiagonal_);
@@ -633,11 +632,10 @@ void CovarianceModelImplementation::save(Advocate & adv) const
 void CovarianceModelImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-
-  adv.loadAttribute("spatialDimension_", spatialDimension_);
-  adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("scale_", scale_);
+  adv.loadAttribute("spatialDimension_", spatialDimension_);
   adv.loadAttribute("amplitude_", amplitude_);
+  adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("spatialCorrelation_", spatialCorrelation_);
   adv.loadAttribute("spatialCovariance_", spatialCovariance_);
   adv.loadAttribute("isDiagonal_", isDiagonal_);
