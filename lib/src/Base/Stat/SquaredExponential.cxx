@@ -93,7 +93,6 @@ String SquaredExponential::__repr__() const
 {
   OSS oss;
   oss << "class=" << SquaredExponential::GetClassName()
-      << " input dimension=" << spatialDimension_
       << " scale=" << scale_
       << " amplitude=" << amplitude_;
   return oss;
@@ -104,8 +103,7 @@ String SquaredExponential::__str__(const String & offset) const
 {
   OSS oss;
   oss << SquaredExponential::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", scale=" << scale_.__str__()
+      << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ")";
   return oss;

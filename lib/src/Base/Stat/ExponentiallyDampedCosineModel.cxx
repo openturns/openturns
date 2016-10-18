@@ -119,8 +119,7 @@ Bool ExponentiallyDampedCosineModel::isStationary() const
 String ExponentiallyDampedCosineModel::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
+  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName()
       << " scale=" << scale_
       << " amplitude=" << amplitude_
       << " frequency=" << frequency_;
@@ -131,11 +130,11 @@ String ExponentiallyDampedCosineModel::__repr__() const
 String ExponentiallyDampedCosineModel::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " scale=" << scale_
-      << " amplitude=" << amplitude_
-      << " frequency=" << frequency_;
+  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName()
+      << "(scale=" << scale_
+      << ", amplitude=" << amplitude_
+      << ", frequency=" << frequency_
+      << ")";
   return oss;
 }
 

@@ -112,7 +112,6 @@ String GeneralizedExponential::__repr__() const
 {
   OSS oss;
   oss << "class=" << GeneralizedExponential::GetClassName()
-      << " input dimension=" << spatialDimension_
       << " scale=" << scale_
       << " amplitude=" << amplitude_
       << " p=" << p_;
@@ -124,8 +123,7 @@ String GeneralizedExponential::__str__(const String & offset) const
 {
   OSS oss;
   oss << GeneralizedExponential::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", scale=" << scale_.__str__()
+      << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", p=" << p_
       << ")";

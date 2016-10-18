@@ -137,7 +137,6 @@ String MaternModel::__repr__() const
 {
   OSS oss;
   oss << "class=" << MaternModel::GetClassName()
-      << " input dimension=" << spatialDimension_
       << " scale=" << scale_
       << " amplitude=" << amplitude_
       << " nu=" << nu_;
@@ -149,8 +148,7 @@ String MaternModel::__str__(const String & offset) const
 {
   OSS oss;
   oss << MaternModel::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", scale=" << scale_.__str__()
+      << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", nu=" << nu_
       << ")";

@@ -114,8 +114,7 @@ Bool SphericalModel::isStationary() const
 String SphericalModel::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << SphericalModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
+  oss << "class=" << SphericalModel::GetClassName()
       << " scale=" << scale_
       << " amplitude=" << amplitude_
       << " radius=" << radius_;
@@ -127,8 +126,7 @@ String SphericalModel::__str__(const String & offset) const
 {
   OSS oss;
   oss << SphericalModel::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", scale=" << scale_.__str__()
+      << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", radius=" << radius_
       << ")";

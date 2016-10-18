@@ -360,9 +360,8 @@ String DiracCovarianceModel::__repr__() const
 {
   OSS oss;
   oss << "class=" << DiracCovarianceModel::GetClassName()
-      << ", input dimension=" << spatialDimension_
       << ", amplitude=" << amplitude_
-      << ", spatialCorelation=" << spatialCorrelation_;
+      << ", spatialCorrelation=" << spatialCorrelation_;
   return oss;
 }
 
