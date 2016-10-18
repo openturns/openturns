@@ -31,14 +31,14 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on spatial dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")), NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
@@ -46,7 +46,7 @@ AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta,
     const NumericalPoint & sigma)
-  : StationaryCovarianceModel(sigma, theta)
+  : StationaryCovarianceModel(theta, sigma)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."

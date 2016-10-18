@@ -39,19 +39,19 @@ ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)
   // Nothing to do
 }
 
-/** Standard constructor with amplitude and scale parameters parameters */
+/** Standard constructor with scale and amplitude parameters parameters */
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
                                    const NumericalPoint & amplitude)
-  : StationaryCovarianceModel(amplitude, scale)
+  : StationaryCovarianceModel(scale, amplitude)
 {
   // Nothing to do
 }
 
-/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+/** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
                                    const NumericalPoint & amplitude,
                                    const CorrelationMatrix & spatialCorrelation)
-  : StationaryCovarianceModel(amplitude, scale, spatialCorrelation)
+  : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
 {
   // Nothing to do
 }

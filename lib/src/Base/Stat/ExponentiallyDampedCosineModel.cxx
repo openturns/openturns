@@ -45,7 +45,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & scale,
     const NumericalPoint & amplitude,
     const NumericalScalar frequency)
-  : StationaryCovarianceModel(amplitude, scale)
+  : StationaryCovarianceModel(scale, amplitude)
   , frequency_(0.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;

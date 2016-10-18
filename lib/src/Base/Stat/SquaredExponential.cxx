@@ -31,14 +31,14 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 /* Default constructor */
 SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")), NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
@@ -46,7 +46,7 @@ SquaredExponential::SquaredExponential(const NumericalPoint & theta)
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const NumericalPoint & theta,
                                        const NumericalPoint & sigma)
-  : StationaryCovarianceModel(sigma, theta)
+  : StationaryCovarianceModel(theta, sigma)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."

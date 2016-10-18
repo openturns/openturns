@@ -40,19 +40,19 @@ StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spati
   // Nothing to do
 }
 
-/** Standard constructor with amplitude and scale parameters parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & amplitude,
-    const NumericalPoint & scale)
-  : CovarianceModelImplementation(amplitude, scale)
+/** Standard constructor with scale and amplitude parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & scale,
+    const NumericalPoint & amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
   // Nothing to do
 }
 
-/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & amplitude,
-    const NumericalPoint & scale,
+/** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & scale,
+    const NumericalPoint & amplitude,
     const CorrelationMatrix & spatialCorrelation)
-  : CovarianceModelImplementation(amplitude, scale, spatialCorrelation)
+  : CovarianceModelImplementation(scale, amplitude, spatialCorrelation)
 {
   // Nothing to do
 }

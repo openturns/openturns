@@ -15,17 +15,13 @@ Parameters
 spatialDim : int
     Spatial dimension :math:`n`.
     By default, the spatial dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
-
-sigma : sequence of positive floats
-    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
-
 theta : sequence of floats
      Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
-
+sigma : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
     By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
-
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`C^{stat} \in \cS_d^+(\Rset)`.
 

@@ -74,7 +74,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
     const NumericalPoint & sigma,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(NumericalPoint(sigma.getDimension(), 1.0), NumericalPoint(spatialDimension, 1.0))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), NumericalPoint(sigma.getDimension(), 1.0))
   , covarianceFactor_()
 {
   dimension_ = sigma.getDimension();

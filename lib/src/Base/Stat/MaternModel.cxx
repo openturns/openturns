@@ -31,7 +31,7 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta")), NumericalPoint(1, 1.0))
   , nu_(ResourceMap::GetAsNumericalScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(NumericalPoint(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta") ))
 {
@@ -42,7 +42,7 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
 /** Parameters constructor */
 MaternModel::MaternModel(const NumericalPoint & theta,
                          const NumericalScalar nu)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
   , nu_(nu)
   , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
 {
@@ -53,7 +53,7 @@ MaternModel::MaternModel(const NumericalPoint & theta,
 MaternModel::MaternModel(const NumericalPoint & theta,
                          const NumericalPoint & sigma,
                          const NumericalScalar nu)
-  : StationaryCovarianceModel(sigma, theta)
+  : StationaryCovarianceModel(theta, sigma)
   , nu_(nu)
   , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
 {

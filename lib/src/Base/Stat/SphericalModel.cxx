@@ -45,7 +45,7 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
 SphericalModel::SphericalModel(const NumericalPoint & scale,
                                const NumericalPoint & amplitude,
                                const NumericalScalar a)
-  : StationaryCovarianceModel(amplitude, scale)
+  : StationaryCovarianceModel(scale, amplitude)
   , a_(a)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;

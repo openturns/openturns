@@ -31,7 +31,7 @@ static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 
 /* Default constructor */
 GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")), NumericalPoint(1, 1.0))
   , p_(1.0)
 {
   // Nothing to do
@@ -40,7 +40,7 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
     const NumericalScalar p)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
   , p_(p)
 {
   // Nothing to do
@@ -50,7 +50,7 @@ GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
     const NumericalPoint & sigma,
     const NumericalScalar p)
-  : StationaryCovarianceModel(sigma, theta)
+  : StationaryCovarianceModel(theta, sigma)
   , p_(p)
 {
   if (getDimension() != 1)
