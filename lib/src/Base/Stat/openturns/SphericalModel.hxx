@@ -51,7 +51,7 @@ public:
   /** Standard constructor with amplitude and range parameters parameters */
   SphericalModel(const NumericalPoint & scale,
                  const NumericalPoint & amplitude,
-                 const NumericalScalar a = 1);
+                 const NumericalScalar radius = 1);
 
   /** Virtual copy constructor */
   virtual SphericalModel * clone() const;
@@ -76,6 +76,10 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const;
 
+  /** Radius accessor */
+  NumericalScalar getRadius() const;
+  void setRadius(const NumericalScalar radius);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -84,7 +88,7 @@ public:
 
 private :
 
-  NumericalScalar a_;
+  NumericalScalar radius_;
 
 } ; /* class SphericalModel */
 

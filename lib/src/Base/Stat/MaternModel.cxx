@@ -40,22 +40,22 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
 }
 
 /** Parameters constructor */
-MaternModel::MaternModel(const NumericalPoint & theta,
+MaternModel::MaternModel(const NumericalPoint & scale,
                          const NumericalScalar nu)
-  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
   , nu_(nu)
-  , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
+  , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
 {
   initialize();
 }
 
 /** Parameters constructor */
-MaternModel::MaternModel(const NumericalPoint & theta,
-                         const NumericalPoint & sigma,
+MaternModel::MaternModel(const NumericalPoint & scale,
+                         const NumericalPoint & amplitude,
                          const NumericalScalar nu)
-  : StationaryCovarianceModel(theta, sigma)
+  : StationaryCovarianceModel(scale, amplitude)
   , nu_(nu)
-  , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
+  , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
@@ -138,8 +138,8 @@ String MaternModel::__repr__() const
   OSS oss;
   oss << "class=" << MaternModel::GetClassName()
       << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " nu=" << nu_;
   return oss;
 }
@@ -150,8 +150,8 @@ String MaternModel::__str__(const String & offset) const
   OSS oss;
   oss << MaternModel::GetClassName()
       << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << ", scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ", nu=" << nu_
       << ")";
   return oss;

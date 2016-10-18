@@ -37,16 +37,16 @@ AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
 }
 
 /** Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & scale)
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta,
-    const NumericalPoint & sigma)
-  : StationaryCovarianceModel(theta, sigma)
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & scale,
+    const NumericalPoint & amplitude)
+  : StationaryCovarianceModel(scale, amplitude)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
@@ -106,8 +106,8 @@ String AbsoluteExponential::__repr__() const
   OSS oss;
   oss << "class=" << AbsoluteExponential::GetClassName()
       << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_;
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_;
   return oss;
 }
 
@@ -117,8 +117,8 @@ String AbsoluteExponential::__str__(const String & offset) const
   OSS oss;
   oss << AbsoluteExponential::GetClassName()
       << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << ", scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ")";
   return oss;
 }

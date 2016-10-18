@@ -37,16 +37,16 @@ SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension)
 }
 
 /** Parameters constructor */
-SquaredExponential::SquaredExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
+SquaredExponential::SquaredExponential(const NumericalPoint & scale)
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-SquaredExponential::SquaredExponential(const NumericalPoint & theta,
-                                       const NumericalPoint & sigma)
-  : StationaryCovarianceModel(theta, sigma)
+SquaredExponential::SquaredExponential(const NumericalPoint & scale,
+                                       const NumericalPoint & amplitude)
+  : StationaryCovarianceModel(scale, amplitude)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
@@ -94,8 +94,8 @@ String SquaredExponential::__repr__() const
   OSS oss;
   oss << "class=" << SquaredExponential::GetClassName()
       << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_;
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_;
   return oss;
 }
 
@@ -105,8 +105,8 @@ String SquaredExponential::__str__(const String & offset) const
   OSS oss;
   oss << SquaredExponential::GetClassName()
       << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << ", scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ")";
   return oss;
 }

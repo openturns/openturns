@@ -42,11 +42,11 @@ public:
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & sigma);
+                       const NumericalPoint & amplitude);
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & sigma,
+                       const NumericalPoint & amplitude,
                        const CorrelationMatrix & correlation);
 
   /** Parameters constructor */

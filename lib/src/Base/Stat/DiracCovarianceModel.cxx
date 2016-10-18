@@ -62,26 +62,26 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 
 /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & sigma)
+    const NumericalPoint & amplitude)
   : StationaryCovarianceModel(spatialDimension)
   , covarianceFactor_()
 {
-  dimension_ = sigma.getDimension();
-  setAmplitude(sigma);
+  dimension_ = amplitude.getDimension();
+  setAmplitude(amplitude);
 }
 
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & sigma,
+    const NumericalPoint & amplitude,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), NumericalPoint(sigma.getDimension(), 1.0))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), NumericalPoint(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
-  dimension_ = sigma.getDimension();
+  dimension_ = amplitude.getDimension();
   // Set spatial correlation
   setSpatialCorrelation(correlation);
   // set amplitude & compute covariance
-  setAmplitude(sigma);
+  setAmplitude(amplitude);
 }
 
 /** Parameters constructor */
@@ -313,7 +313,7 @@ Description DiracCovarianceModel::getParameterDescription() const
 {
   Description description(0);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
-    description.add(OSS() << "sigma_" << j);
+    description.add(OSS() << "amplitude_" << j);
   return description;
 }
 void DiracCovarianceModel::setScale(const NumericalPoint & scale)
@@ -361,7 +361,7 @@ String DiracCovarianceModel::__repr__() const
   OSS oss;
   oss << "class=" << DiracCovarianceModel::GetClassName()
       << ", input dimension=" << spatialDimension_
-      << ", sigma=" << amplitude_
+      << ", amplitude=" << amplitude_
       << ", spatialCorelation=" << spatialCorrelation_;
   return oss;
 }

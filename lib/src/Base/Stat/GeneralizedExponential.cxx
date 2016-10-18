@@ -38,19 +38,19 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
 }
 
 /** Parameters constructor */
-GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
+GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
     const NumericalScalar p)
-  : StationaryCovarianceModel(theta, NumericalPoint(1, 1.0))
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
   , p_(p)
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-GeneralizedExponential::GeneralizedExponential(const NumericalPoint & theta,
-    const NumericalPoint & sigma,
+GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
+    const NumericalPoint & amplitude,
     const NumericalScalar p)
-  : StationaryCovarianceModel(theta, sigma)
+  : StationaryCovarianceModel(scale, amplitude)
   , p_(p)
 {
   if (getDimension() != 1)
@@ -113,8 +113,8 @@ String GeneralizedExponential::__repr__() const
   OSS oss;
   oss << "class=" << GeneralizedExponential::GetClassName()
       << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " p=" << p_;
   return oss;
 }
@@ -125,8 +125,8 @@ String GeneralizedExponential::__str__(const String & offset) const
   OSS oss;
   oss << GeneralizedExponential::GetClassName()
       << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << ", scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ", p=" << p_
       << ")";
   return oss;

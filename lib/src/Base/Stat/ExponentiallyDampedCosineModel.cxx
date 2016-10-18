@@ -121,8 +121,8 @@ String ExponentiallyDampedCosineModel::__repr__() const
   OSS oss(true);
   oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " frequency=" << frequency_;
   return oss;
 }
@@ -133,8 +133,8 @@ String ExponentiallyDampedCosineModel::__str__(const String & offset) const
   OSS oss(false);
   oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
   oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " frequency=" << frequency_;
   return oss;
 }

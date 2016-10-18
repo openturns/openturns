@@ -568,11 +568,11 @@ Description CovarianceModelImplementation::getParameterDescription() const
   Description description(spatialDimension_ + dimension_);
   for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
   {
-    description[j] = OSS() << "theta_" << j;
+    description[j] = OSS() << "scale_" << j;
   }
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    description[spatialDimension_ + j] = OSS() << "sigma_" << j;
+    description[spatialDimension_ + j] = OSS() << "amplitude_" << j;
   }
   // return description
   return description;

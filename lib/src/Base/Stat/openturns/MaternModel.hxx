@@ -40,11 +40,11 @@ public:
   explicit MaternModel(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  MaternModel(const NumericalPoint & theta,
+  MaternModel(const NumericalPoint & scale,
               const NumericalScalar nu);
 
-  MaternModel(const NumericalPoint & theta,
-              const NumericalPoint & sigma,
+  MaternModel(const NumericalPoint & scale,
+              const NumericalPoint & amplitude,
               const NumericalScalar nu);
 
   /** Virtual copy constructor */

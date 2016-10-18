@@ -4,20 +4,20 @@
 Available constructors:
     ExponentialModel(*spatialDim=1*)
 
-    ExponentialModel(*theta, sigma*)
+    ExponentialModel(*scale, amplitude*)
 
-    ExponentialModel(*theta, sigma, spatialCorrelation*)
+    ExponentialModel(*scale, amplitude, spatialCorrelation*)
 
-    ExponentialModel(*theta, spatialCovariance*)
+    ExponentialModel(*scale, spatialCovariance*)
 
 Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
     By default, the spatial dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
-theta : sequence of floats
+scale : sequence of floats
      Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
-sigma : sequence of positive floats
+amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
