@@ -69,6 +69,14 @@ public:
   using ContinuousDistribution::computeLogPDF;
   NumericalScalar computeLogPDF(const NumericalPoint & point) const;
 
+  // LogPDFGradient
+  using ContinuousDistribution::computeLogPDFGradient;
+  NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+
+  // PDFGradient
+  using ContinuousDistribution::computePDFGradient;
+  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using ContinuousDistribution::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
