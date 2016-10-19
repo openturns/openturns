@@ -142,6 +142,30 @@ NumericalScalar FisherSnedecor::computeLogPDF(const NumericalPoint & point) cons
   return normalizationFactor_ + (0.5 * d1_ - 1.0) * std::log(x) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
 }
 
+NumericalPoint FisherSnedecor::computeLogPDFGradient(const NumericalPoint & point) const
+{
+  const NumericalScalar x = point[0];
+  NumericalPoint logPdfGradient(2, 0.0);
+  if (!(x > 0.0)) return logPdfGradient;
+  const NumericalScalar d1xd2 = d1_ * x + d2_;
+  // First derivate the normlizationFactor as function of d1_, d2_ (see expression above in LogPDF)
+  // As the term is a combinations of LnBeta(d1/2, d2/2) := log(Beta(d1/2, d2/2), dLnBeta = dBeta/Beta
+  // As dBeta(x,y) = B(x,y) * (DiGamma(X) - DiGamma(x+y)) (see  https://en.wikipedia.org/wiki/Beta_function#Derivatives)
+  // it follows that d(LnBeta(x,y)) = dBeta(x,y) / Beta(x,y) = DiGamma(X) - DiGamma(x+y)
+  // Rest is very easy to derivate
+  logPdfGradient[0] = 0.5 * ( std::log(d1_ * x / d1xd2) + 1.0 - SpecFunc::DiGamma(0.5 * d1_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) - (d1_ + d2_) * x / d1xd2);
+  logPdfGradient[1] = 0.5 * (-d1_  / d2_ - SpecFunc::DiGamma(0.5 * d2_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) -log1p(d1_ * x / d2_) + (d1_  + d2_) * (d1_ * x  / d2_) / d1xd2);
+  return logPdfGradient;
+}
+
+NumericalPoint FisherSnedecor::computePDFGradient(const NumericalPoint & point) const
+{
+  // PDF(x) =  exp(LogPDF(x)) thus PDF(x)' = LogPDF(x)' * exp(LogPDF(x))
+  NumericalPoint PdfGradient(computeLogPDFGradient(point));
+  NumericalScalar pdf = computePDF(point);
+  return PdfGradient * pdf;
+}
+
 /* Get the CDF of the distribution */
 NumericalScalar FisherSnedecor::computeCDF(const NumericalPoint & point) const
 {
