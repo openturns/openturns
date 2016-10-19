@@ -119,32 +119,27 @@ NumericalPoint ParametrizedDistribution::computeQuantile(const NumericalScalar p
 }
 
 /* Get the product minimum volume interval containing a given probability of the distributionImplementation */
-Interval ParametrizedDistribution::computeMinimumVolumeInterval(const NumericalScalar prob,
-      NumericalScalar & marginalProb) const
+Interval ParametrizedDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
-  return distribution_.computeMinimumVolumeInterval(prob, marginalProb);
+  return distribution_.computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
-Interval ParametrizedDistribution::computeBilateralConfidenceInterval(const NumericalScalar prob,
-      NumericalScalar & marginalProb) const
+Interval ParametrizedDistribution::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
-  return distribution_.computeBilateralConfidenceInterval(prob, marginalProb);
+  return distribution_.computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
-Interval ParametrizedDistribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
-      const Bool tail,
-      NumericalScalar & marginalProb) const
+Interval ParametrizedDistribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const
 {
-  return distribution_.computeUnilateralConfidenceInterval(prob, tail, marginalProb);
+  return distribution_.computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
 }
 
 /* Get the minimum volume level set containing a given probability of the distributionImplementation */
-LevelSet ParametrizedDistribution::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-      NumericalScalar & threshold) const
+LevelSet ParametrizedDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
-  return distribution_.computeMinimumVolumeLevelSet(prob, threshold);
+  return distribution_.computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
 /* Get the PDFGradient of the distribution */

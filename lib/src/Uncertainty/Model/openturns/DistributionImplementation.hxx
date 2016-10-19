@@ -312,14 +312,9 @@ public:
                                           NumericalSample & grid,
                                           const Bool tail = false) const;
 
-  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  /** Get the product minimum volume interval containing a given probability of the distribution */
   virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
-#ifndef SWIG
-  virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob,
-      NumericalScalar & marginalProb) const;
-#endif
-  virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob,
-      NumericalPoint & marginalProb) const;
+  virtual Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
 protected:
   Interval computeUnivariateMinimumVolumeIntervalByOptimization(const NumericalScalar prob,
@@ -329,41 +324,23 @@ protected:
 
 public:
 
-  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+  /** Get the product bilateral confidence interval containing a given probability of the distribution */
   virtual Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
-#ifndef SWIG
-  virtual Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
-      NumericalScalar & marginalProb) const;
-#endif
-  virtual Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
-      NumericalPoint & marginalProb) const;
+  virtual Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
   /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
-  virtual Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
-      const Bool tail = false) const;
-#ifndef SWIG
-  virtual Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
-      const Bool tail,
-      NumericalScalar & marginalProb) const;
-#endif
-  virtual Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
-      const Bool tail,
-      NumericalPoint & marginalProb) const;
+  virtual Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
+  virtual Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
 
-  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  /** Get the minimum volume level set containing a given probability of the distribution */
   virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
-#ifndef SWIG
-  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-      NumericalScalar & threshold) const;
-#endif
-  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-					NumericalPoint & threshold) const;
-#ifndef SWIG
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+
 protected:
   virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
       NumericalScalar & threshold) const;
+
 public:
-#endif
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
@@ -956,76 +933,6 @@ protected:
     NumericalSample operator() (const NumericalSample & sample) const
     {
       return p_distribution_->computeLogPDF(sample) * (-1.0);
-    }
-
-    UnsignedInteger getInputDimension() const
-    {
-      return p_distribution_->getDimension();
-    }
-
-    UnsignedInteger getOutputDimension() const
-    {
-      return 1;
-    }
-
-    Description getInputDescription() const
-    {
-      return p_distribution_->getDescription();
-    }
-
-    Description getOutputDescription() const
-    {
-      return Description(1, "-logPDF");
-    }
-
-    Description getDescription() const
-    {
-      Description description(getInputDescription());
-      description.add(getOutputDescription());
-      return description;
-    }
-
-    String __repr__() const
-    {
-      OSS oss;
-      oss << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
-      return oss;
-    }
-
-    String __str__(const String & offset) const
-    {
-      OSS oss;
-      oss << offset << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
-      return oss;
-    }
-
-  private:
-    const DistributionImplementation::Implementation p_distribution_;
-  }; // class MinimumVolumeLevelSetEvaluation
-
-  class MinimumVolumeLevelSetGradient: public NumericalMathGradientImplementation
-  {
-  public:
-    // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
-    // object goes outside of the calling method
-    MinimumVolumeLevelSetGradient(const DistributionImplementation::Implementation & p_distribution)
-      : NumericalMathGradientImplementation()
-      , p_distribution_(p_distribution)
-    {
-      // Nothing to do
-    }
-
-    MinimumVolumeLevelSetGradient * clone() const
-    {
-      return new MinimumVolumeLevelSetGradient(*this);
-    }
-
-    Matrix gradient(const NumericalPoint & point) const
-    {
-      const NumericalScalar pdf = p_distribution_->computePDF(point);
-      if (pdf == 0) return Matrix(getInputDimension(), getOutputDimension());
-      const NumericalPoint value = p_distribution_->computeDDF(point) * (-1.0 / pdf);
-      return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
     }
 
     UnsignedInteger getInputDimension() const

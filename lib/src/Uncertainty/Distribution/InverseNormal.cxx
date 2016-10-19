@@ -144,8 +144,7 @@ NumericalScalar InverseNormal::computeCDF(const NumericalPoint & point) const
 }
 
 /** Get the minimum volume level set containing a given probability of the distributionImplementation */
-LevelSet InverseNormal::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-    NumericalScalar & threshold) const
+LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
   NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());

@@ -96,11 +96,7 @@ public:
   virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  using ContinuousDistribution::computeMinimumVolumeLevelSet;
-#ifndef SWIG
-  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-      NumericalScalar & threshold) const;
-#endif
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Mean point accessor */
   void setMean(const NumericalPoint & mean);

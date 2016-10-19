@@ -149,8 +149,7 @@ NumericalScalar Frechet::computeLogPDF(const NumericalPoint & point) const
 }
 
 /** Get the minimum volume level set containing a given probability of the distributionImplementation */
-LevelSet Frechet::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-    NumericalScalar & threshold) const
+LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
   NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());

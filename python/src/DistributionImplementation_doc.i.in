@@ -814,17 +814,10 @@ OT_Distribution_drawMarginal1DCDF_doc
 %define OT_Distribution_computeMinimumVolumeLevelSet_doc
 "Compute the confidence domain with minimum volume.
 
-Available constructors:
-    computeMinimumVolumeLevelSet(alpha)
-
-    computeMinimumVolumeLevelSet(alpha, level)
-
 Parameters
 ----------
 alpha : float, :math:`\alpha \in [0,1]`
     The confidence level.
-level : sequence of float  of dimension 1
-    The value :math:`p_{\alpha}` of the density function defining the frontier of the domain.
 
 Returns
 -------
@@ -864,7 +857,7 @@ Examples
 Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(10)
+>>> sample = ot.Normal().getSample(100)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Normal distribution and extract the asymptotic parameters distribution:
@@ -872,32 +865,63 @@ Fit a Normal distribution and extract the asymptotic parameters distribution:
 >>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
-Determine the confidence region of minimum volume of the native parameters al level 0.9:
+Determine the confidence region of minimum volume of the native parameters at level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeMinimumVolumeLevelSet(0.9, level)
->>> print confInt
->>> print level[0]"
+>>> levelSet = paramDist.computeMinimumVolumeLevelSet(0.9)
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSet
 OT_Distribution_computeMinimumVolumeLevelSet_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_computeMinimumVolumeInterval_doc
-"Compute the confidence interval with minimum volume.
+%define OT_Distribution_computeMinimumVolumeLevelSetWithThreshold_doc
+"Compute the confidence domain with minimum volume.
 
-Available constructors:
-    computeMinimumVolumeInterval(alpha)
-
-    computeMinimumVolumeInterval(alpha, level)
+Refer to :func:`computeMinimumVolumeLevelSet()`
 
 Parameters
 ----------
 alpha : float, :math:`\alpha \in [0,1]`
     The confidence level.
-level : sequence of float of dimension 1
-    The value :math:`\beta` which is the measure of each component interval.
+
+Returns
+-------
+levelSet : :class:`~openturns.LevelSet`
+    The minimum volume domain of measure :math:`\alpha`.
+level : float
+    The value :math:`p_{\alpha}` of the density function defining the frontier of the domain.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(100)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence region of minimum volume of the native parameters at level 0.9 with PDF threshold:
+
+>>> levelSet, threshold = paramDist.computeMinimumVolumeLevelSetWithThreshold(0.9)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold
+OT_Distribution_computeMinimumVolumeLevelSetWithThreshold_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeInterval_doc
+"Compute the confidence interval with minimum volume.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
 
 Returns
 -------
@@ -920,7 +944,7 @@ This problem resorts to solving  `d` univariate non linear equations: for a fixe
     p_i(b_i) & = & p_i(a_i)
     \end{eqnarray*}
 
-which consists of finding :math:`a_i` such that:
+which consists of finding the bound :math:`a_i` such that:
 
 .. math::
 
@@ -933,7 +957,7 @@ Examples
 Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(10)
+>>> sample = ot.Normal().getSample(100)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Normal distribution and extract the asymptotic parameters distribution:
@@ -941,33 +965,66 @@ Fit a Normal distribution and extract the asymptotic parameters distribution:
 >>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
-Determine the confidence interval of the native parameters al level 0.9 with minimum volume:
+Determine the confidence interval of the native parameters at level 0.9 with minimum volume:
 
->>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 100)
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeMinimumVolumeInterval(0.9, level)
->>> print confInt
->>> print level[0]"
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 1000)
+>>> confInt = paramDist.computeMinimumVolumeInterval(0.9)
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
 OT_Distribution_computeMinimumVolumeInterval_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_computeBilateralConfidenceInterval_doc
-"Compute a bilateral confidence interval.
+%define OT_Distribution_computeMinimumVolumeIntervalWithMarginalProbability_doc
+"Compute the confidence interval with minimum volume.
 
-Available constructors:
-    computeBilateralConfidenceInterval(alpha)
-
-    computeBilateralConfidenceInterval(alpha, level)
+Refer to :func:`computeMinimumVolumeInterval()`
 
 Parameters
 ----------
 alpha : float, :math:`\alpha \in [0,1]`
     The confidence level.
-level : sequence of float of dimension 1
-    The value :math:`\beta`.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+marginalProb : float
+    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(100)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence interval of the native parameters at level 0.9 with minimum volume:
+
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 1000)
+>>> confInt, marginalProb = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability
+OT_Distribution_computeMinimumVolumeIntervalWithMarginalProbability_doc
+
+// ---------------------------------------------------------------------
+
+
+%define OT_Distribution_computeBilateralConfidenceInterval_doc
+"Compute a bilateral confidence interval.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
 
 Returns
 -------
@@ -993,25 +1050,56 @@ Fit a Normal distribution and extract the asymptotic parameters distribution:
 >>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
-Determine the bilateral confidence interval al level 0.9:
+Determine the bilateral confidence interval at level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeBilateralConfidenceInterval(0.9, level)
->>> print confInt
->>> print level[0]"
+>>> confInt = paramDist.computeBilateralConfidenceInterval(0.9)"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceInterval
 OT_Distribution_computeBilateralConfidenceInterval_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_computeBilateralConfidenceIntervalWithMarginalProbability_doc
+"Compute a bilateral confidence interval.
+
+Refer to :func:`computeBilateralConfidenceInterval()`
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+marginalProb : float
+    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the bilateral confidence interval at level 0.9 with marginal probability:
+
+>>> confInt, marginalProb = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability
+OT_Distribution_computeBilateralConfidenceIntervalWithMarginalProbability_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_computeUnilateralConfidenceInterval_doc
 "Compute a unilateral confidence interval.
-
-Available constructors:
-    computeUnilateralConfidenceInterval(alpha, tail)
-
-    computeUnilateralConfidenceInterval(alpha, tail, level)
 
 Parameters
 ----------
@@ -1020,10 +1108,7 @@ alpha : float, :math:`\alpha \in [0,1]`
 tail : boolean
     `True` indicates the interval is bounded by an lower value.
     `False` indicates the interval is bounded by an upper value.
-
     Default value is `False`.
-level : sequence of float of dimension 1
-    The value :math:`\beta`.
 
 Returns
 -------
@@ -1053,22 +1138,65 @@ Fit a Normal distribution and extract the asymptotic parameters distribution:
 >>> fittedRes = ot.NormalFactory().buildEstimator(sample)
 >>> paramDist = fittedRes.getParameterDistribution()
 
-Determine the right unilateral confidence interval al level 0.9:
+Determine the right unilateral confidence interval at level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, level)
->>> print confInt
->>> print level[0]
+>>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9)
 
-Determine the left unilateral confidence interval al level 0.9:
+Determine the left unilateral confidence interval at level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, True, level)
->>> print confInt
->>> print level[0]"
+>>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, True)
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeUnilateralConfidenceInterval
 OT_Distribution_computeUnilateralConfidenceInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
+"Compute a unilateral confidence interval.
+
+Refer to :func:`computeUnilateralConfidenceInterval()`
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+tail : boolean
+    `True` indicates the interval is bounded by an lower value.
+    `False` indicates the interval is bounded by an upper value.
+    Default value is `False`.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The unilateral confidence interval of level :math:`\alpha`.
+marginalProb : float
+    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution: 
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the right unilateral confidence interval at level 0.9:
+
+>>> confInt, marginalProb = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, False)
+
+Determine the left unilateral confidence interval at level 0.9:
+
+>>> confInt, marginalProb = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability
+OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
 
 // ---------------------------------------------------------------------
 

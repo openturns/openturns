@@ -349,11 +349,11 @@ NumericalScalar EllipticalDistribution::computeSurvivalFunction(const NumericalP
    where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
    In the case of an elliptical distribution, it is the opposite of the value of the log-PDF of the standard representative at any point at distance q from the origin, where q is the prob-quantile of the radial distribution.
 */
-LevelSet EllipticalDistribution::computeMinimumVolumeLevelSet(const NumericalScalar prob,
+LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
     NumericalScalar & threshold) const
 {
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeLevelSet()";
-  if (getDimension() == 1) return DistributionImplementation::computeMinimumVolumeLevelSet(prob, threshold);
+  if (getDimension() == 1) return DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
   RadialCDFWrapper radialWrapper(this);
   const Distribution standard(getStandardDistribution());
   NumericalPoint point(getDimension());

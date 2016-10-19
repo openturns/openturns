@@ -85,25 +85,13 @@ public:
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
-  using DistributionImplementation::computeMinimumVolumeInterval;
-#ifndef SWIG
-  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
-					NumericalScalar & marginalProb) const;
-#endif
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
   /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
-  using DistributionImplementation::computeBilateralConfidenceInterval;
-#ifndef SWIG
-  Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
-					      NumericalScalar & marginalProb) const;
-#endif
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distributionImplementation */
-  using DistributionImplementation::computeMinimumVolumeLevelSet;
-#ifndef SWIG
-  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-					NumericalScalar & threshold) const;
-#endif
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;

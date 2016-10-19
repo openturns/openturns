@@ -1971,7 +1971,7 @@ NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /** Get the minimum volume level set containing a given probability of the distributionImplementation */
-LevelSet RandomMixture::computeMinimumVolumeLevelSet(const NumericalScalar prob,
+LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
     NumericalScalar & threshold) const
 {
   NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());

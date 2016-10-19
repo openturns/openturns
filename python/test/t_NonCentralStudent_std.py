@@ -101,12 +101,12 @@ try:
     inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+
     # Confidence regions
-    threshold = NumericalPoint()
-    print("Minimum volume interval=", distribution.computeMinimumVolumeInterval(0.95, threshold))
-    print("threshold=", threshold)
-    beta = NumericalPoint()
-    levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    print("Minimum volume interval=", interval)
+    print("threshold=", NumericalPoint(1, threshold))
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=", NumericalPoint(1, beta))
     interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)

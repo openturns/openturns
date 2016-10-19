@@ -160,7 +160,7 @@ NumericalScalar Uniform::computeComplementaryCDF(const NumericalPoint & point) c
 /* Get the product minimum volume interval containing a given probability of the distributionImplementation */
 Interval Uniform::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
-  return computeBilateralConfidenceInterval(prob, marginalProb);
+  return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */

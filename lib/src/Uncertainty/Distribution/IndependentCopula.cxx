@@ -198,23 +198,20 @@ NumericalPoint IndependentCopula::computeQuantile(const NumericalScalar prob,
 }
 
 /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
-Interval IndependentCopula::computeMinimumVolumeInterval(const NumericalScalar prob,
-                                      NumericalScalar & marginalProb) const
+Interval IndependentCopula::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
-  return computeBilateralConfidenceInterval(prob, marginalProb);
+  return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
-Interval IndependentCopula::computeBilateralConfidenceInterval(const NumericalScalar prob,
-    NumericalScalar & marginalProb) const
+Interval IndependentCopula::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
   marginalProb = std::pow(prob, 1.0 / dimension_);
   return Interval(NumericalPoint(dimension_, 0.5 * (1.0 - marginalProb)), NumericalPoint(dimension_, 0.5 * (1.0 + marginalProb)));
 }
 
 /** Get the minimum volume level set containing a given probability of the distributionImplementation */
-LevelSet IndependentCopula::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-    NumericalScalar & threshold) const
+LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   const Description inVars(Description::BuildDefault(dimension_, "x"));
   OSS formula;

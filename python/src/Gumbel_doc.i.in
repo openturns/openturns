@@ -65,7 +65,7 @@ Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remai
 
 Create it from :math:`(a,b)` and keep that parametrization for the remaining study: 
 
->>> myParam = ot.GumbeAB(0.0, 1.0)
+>>> myParam = ot.GumbelAB(0.0, 1.0)
 >>> myDist5 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:

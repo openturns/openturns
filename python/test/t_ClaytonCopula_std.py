@@ -57,21 +57,24 @@ try:
     inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
+
     # Confidence regions
-    threshold = NumericalPoint()
-    print("Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold))
-    print("threshold=", threshold)
-    beta = NumericalPoint()
-    levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
+    interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    print("Minimum volume interval=", interval)
+    print("threshold=", NumericalPoint(1, threshold))
+    levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
-    print("beta=", beta)
-    print("Bilateral confidence interval=", copula.computeBilateralConfidenceInterval(0.95, beta))
-    print("beta=", beta)
-    print("Unilateral confidence interval (lower tail)=", copula.computeUnilateralConfidenceInterval(0.95, False, beta))
-    print("beta=", beta)
-    print("Unilateral confidence interval (upper tail)=", copula.computeUnilateralConfidenceInterval(0.95, True, beta))
-    print("beta=", beta)
-    
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("Bilateral confidence interval=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("Unilateral confidence interval (lower tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("Unilateral confidence interval (upper tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+
     # Extract the marginals
     for i in range(dim):
         margin = copula.getMarginal(i)

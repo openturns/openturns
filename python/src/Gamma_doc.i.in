@@ -48,14 +48,14 @@ Create a distribution from its native parameters :math:`(k, \lambda, \gamma)`:
 >>> import openturns as ot
 >>> myDist = ot.Gamma(1.0, 1.0, 0.0)
 
-Create a it from the alternative parametrization :math:`(\mu,\lambda, \gamma)`:
+Create a it from the alternative parametrization :math:`(\mu, \lambda, \gamma)`:
 
 >>> myDist2 = ot.Gamma()
 >>> myDist2.setParameter(ot.GammaMuSigma()([1.0, 1.0, 0.0]))
 
 Create it from :math:`(\mu, \lambda, \gamma)` and keep that parametrization for the remaining study: 
 
->>> myParam = ot.GammaMuSigma(3.0, 1.15, 1.0, 5.0)
+>>> myParam = ot.GammaMuSigma(1.5, 2.5, -0.5)
 >>> myDist3 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:

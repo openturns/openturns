@@ -34,7 +34,6 @@ Fit a Beta distribution and create a :class:`~openturns.DistributionFactory`:
 Get the fitted Beta distribution and its parameters:
 
 >>> fittedBeta =  fittedRes.getDistribution()
->>> print fittedBeta
 
 Get the asymptotic parameters distribution: 
 

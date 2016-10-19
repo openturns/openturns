@@ -224,43 +224,21 @@ public:
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
 
-  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
-#ifndef SWIG
-  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
-					NumericalScalar & threshold) const;
-#endif
-  Interval computeMinimumVolumeInterval(const NumericalScalar prob,
-					NumericalPoint & threshold) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
   /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
   Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
-#ifndef SWIG
-  Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
-					      NumericalScalar & marginalProb) const;
-#endif
-  Interval computeBilateralConfidenceInterval(const NumericalScalar prob,
-					      NumericalPoint & marginalProb) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
   /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
-  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
-					       const Bool tail = false) const;
-#ifndef SWIG
-  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
-					       const Bool tail,
-					       NumericalScalar & marginalProb) const;
-#endif
-  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob,
-					       const Bool tail,
-					       NumericalPoint & marginalProb) const;
+  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distributionImplementation */
   LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
-#ifndef SWIG
-  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-					NumericalScalar & threshold) const;
-#endif
-  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-					NumericalPoint & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside

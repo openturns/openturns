@@ -45,51 +45,39 @@ Examples
 Create a sample and fit a Gamma distribution and the native parameters distribution:
 
 >>> import openturns as ot
->>> sample = ot.Gamma().getSample(1000)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 1000)
+>>> sample = ot.Gamma().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 10)
 >>> fittedRes = ot.GammaFactory().buildEstimator(sample)
 
 Fit a Gamma distribution in another parametrization:
 
->>> fittedRes2 = ot.GammaFactory().buildEstimator(sample, GammaMuSigma())
+>>> fittedRes2 = ot.GammaFactory().buildEstimator(sample, ot.GammaMuSigma())
 
 Get the fitted Gamma distribution and its parameters:
 
 >>> fittedGamma =  fittedRes.getDistribution()
 >>> print fittedGamma
->>> fittedParameters = fittedRes.get
+Gamma(k = 1.0452, lambda = 0.996212, gamma = 0.00031485)
+>>> fittedParameters = fittedGamma.getParameter()
 
 Get the asymptotic parameters distribution: 
 
 >>> paramDist = fittedRes.getParameterDistribution()
 
->>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVomuleLevelSetSamplingSize', 100)
-
 Determine the confidence interval al level 0.9 with minimum volume:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeMinimumVolumeInterval(0.9, level)
->>> print confInt
->>> print level[0]
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVomuleLevelSetSamplingSize', 100)
+>>> confInt, level = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
 
 Determine the bilateral confidence interval al level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeBilateralConfidenceInterval(0.9, level)
->>> print confInt
->>> print level[0]
+>>> confInt, level = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)
 
 Determine the right unilateral confidence interval al level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, level)
->>> print confInt
->>> print level[0]
+>>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9)
 
 Determine the left unilateral confidence interval al level 0.9:
 
->>> level = ot.NumericalPoint()
->>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, True, level)
->>> print confInt
->>> print level[0]
+>>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
 "

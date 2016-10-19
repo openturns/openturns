@@ -625,16 +625,9 @@ Interval Distribution::computeMinimumVolumeInterval(const NumericalScalar prob) 
   return getImplementation()->computeMinimumVolumeInterval(prob);
 }
 
-Interval Distribution::computeMinimumVolumeInterval(const NumericalScalar prob,
-						    NumericalScalar & threshold) const
+Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
-  return getImplementation()->computeMinimumVolumeInterval(prob, threshold);
-}
-
-Interval Distribution::computeMinimumVolumeInterval(const NumericalScalar prob,
-						    NumericalPoint & threshold) const
-{
-  return getImplementation()->computeMinimumVolumeInterval(prob, threshold);
+  return getImplementation()->computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product bilateral confidence interval containing at least a given probability of the distributionImplementation.
@@ -647,16 +640,9 @@ Interval Distribution::computeBilateralConfidenceInterval(const NumericalScalar 
   return getImplementation()->computeBilateralConfidenceInterval(prob);
 }
 
-Interval Distribution::computeBilateralConfidenceInterval(const NumericalScalar prob,
-							  NumericalScalar & marginalProb) const
+Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
-  return getImplementation()->computeBilateralConfidenceInterval(prob, marginalProb);
-}
-
-Interval Distribution::computeBilateralConfidenceInterval(const NumericalScalar prob,
-							  NumericalPoint & marginalProb) const
-{
-  return getImplementation()->computeBilateralConfidenceInterval(prob, marginalProb);
+  return getImplementation()->computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product unilateral confidence interval containing at least a given probability of the distributionImplementation.
@@ -674,18 +660,9 @@ Interval Distribution::computeUnilateralConfidenceInterval(const NumericalScalar
   return getImplementation()->computeUnilateralConfidenceInterval(prob, tail);
 }
 
-Interval Distribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
-							   const Bool tail,
-							   NumericalScalar & marginalProb) const
+Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const
 {
-  return getImplementation()->computeUnilateralConfidenceInterval(prob, tail, marginalProb);
-}
-
-Interval Distribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
-							   const Bool tail,
-							   NumericalPoint & marginalProb) const
-{
-  return getImplementation()->computeUnilateralConfidenceInterval(prob, tail, marginalProb);
+  return getImplementation()->computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
 }
 
 /* Get the minimum volume level set containing at least a given probability of the distributionImplementation.
@@ -697,16 +674,9 @@ LevelSet Distribution::computeMinimumVolumeLevelSet(const NumericalScalar prob) 
   return getImplementation()->computeMinimumVolumeLevelSet(prob);
 }
 
-LevelSet Distribution::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-						    NumericalScalar & threshold) const
+LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
-  return getImplementation()->computeMinimumVolumeLevelSet(prob, threshold);
-}
-
-LevelSet Distribution::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-						    NumericalPoint & threshold) const
-{
-  return getImplementation()->computeMinimumVolumeLevelSet(prob, threshold);
+  return getImplementation()->computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
 /* Compute the quantile over a regular grid */

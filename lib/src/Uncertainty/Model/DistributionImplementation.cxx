@@ -2056,10 +2056,10 @@ struct MinimumVolumeIntervalWrapper
 Interval DistributionImplementation::computeMinimumVolumeInterval(const NumericalScalar prob) const
 {
   NumericalScalar marginalProb = -1.0;
-  return computeMinimumVolumeInterval(prob, marginalProb);
+  return computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
 }
 
-Interval DistributionImplementation::computeMinimumVolumeInterval(const NumericalScalar prob,
+Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob,
     NumericalScalar & marginalProb) const
 {
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
@@ -2067,7 +2067,7 @@ Interval DistributionImplementation::computeMinimumVolumeInterval(const Numerica
   if (isElliptical())
     {
       LOGINFO("Compute the minimum volume interval using the bilateral confidence interval (elliptical case)");
-      const Interval result(computeBilateralConfidenceInterval(prob, marginalProb));
+      const Interval result(computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb));
       return result;
     }
   if (prob <= 0.0)
@@ -2146,21 +2146,14 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
   return Interval(a, b);
 }
 
-Interval DistributionImplementation::computeMinimumVolumeInterval(const NumericalScalar prob,
-    NumericalPoint & marginalProb) const
-{
-  marginalProb = NumericalPoint(1);
-  return computeMinimumVolumeInterval(prob, marginalProb[0]);
-}
-
 /* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
 Interval DistributionImplementation::computeBilateralConfidenceInterval(const NumericalScalar prob) const
 {
   NumericalScalar marginalProb = -1.0;
-  return computeBilateralConfidenceInterval(prob, marginalProb);
+  return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
-Interval DistributionImplementation::computeBilateralConfidenceInterval(const NumericalScalar prob,
+Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob,
     NumericalScalar & marginalProb) const
 {
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
@@ -2191,23 +2184,15 @@ Interval DistributionImplementation::computeBilateralConfidenceInterval(const Nu
   return IC;
 }
 
-Interval DistributionImplementation::computeBilateralConfidenceInterval(const NumericalScalar prob,
-    NumericalPoint & marginalProb) const
-{
-  marginalProb = NumericalPoint(1);
-  const Interval result(computeBilateralConfidenceInterval(prob, marginalProb[0]));
-  return result;
-}
-
 /* Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
 Interval DistributionImplementation::computeUnilateralConfidenceInterval(const NumericalScalar prob,
     const Bool tail) const
 {
   NumericalScalar marginalProb = -1.0;
-  return computeUnilateralConfidenceInterval(prob, tail, marginalProb);
+  return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
 }
 
-Interval DistributionImplementation::computeUnilateralConfidenceInterval(const NumericalScalar prob,
+Interval DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob,
     const Bool tail,
     NumericalScalar & marginalProb) const
 {
@@ -2221,16 +2206,6 @@ Interval DistributionImplementation::computeUnilateralConfidenceInterval(const N
   return Interval(range_.getLowerBound(), upperBound);
 }
 
-Interval DistributionImplementation::computeUnilateralConfidenceInterval(const NumericalScalar prob,
-    const Bool tail,
-    NumericalPoint & marginalProb) const
-{
-  marginalProb = NumericalPoint(1);
-  const Interval result(computeUnilateralConfidenceInterval(prob, tail, marginalProb[0]));
-  return result;
-}
-
-
 /* Get the minimum volume level set containing at least a given probability of the distributionImplementation.
    The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
    where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
@@ -2238,10 +2213,10 @@ Interval DistributionImplementation::computeUnilateralConfidenceInterval(const N
 LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const NumericalScalar prob) const
 {
   NumericalScalar threshold = -1.0;
-  return computeMinimumVolumeLevelSet(prob, threshold);
+  return computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
-LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const NumericalScalar prob,
+LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
     NumericalScalar & threshold) const
 {
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeLevelSet()";
@@ -2252,7 +2227,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const Numerica
       const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
       return result;
     }
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(this).clone());
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // If dimension_ == 1 the threshold can be computed analyticaly
   NumericalScalar minusLogPDFThreshold;
@@ -2273,14 +2248,6 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const Numerica
   threshold = std::exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
-}
-
-LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const NumericalScalar prob,
-    NumericalPoint & threshold) const
-{
-  threshold = NumericalPoint(1);
-  const LevelSet result(computeMinimumVolumeLevelSet(prob, threshold[0]));
-  return result;
 }
 
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,

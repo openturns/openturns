@@ -198,11 +198,7 @@ public:
                                   const Bool tail = false) const;
 
   /** Get the minimum volume level set containing a given probability of the distributionImplementation */
-  using DistributionImplementation::computeMinimumVolumeLevelSet;
-#ifndef SWIG
-  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob,
-      NumericalScalar & threshold) const;
-#endif
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
