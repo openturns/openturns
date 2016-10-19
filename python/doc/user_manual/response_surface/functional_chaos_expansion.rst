@@ -45,7 +45,20 @@ Computation of the polynomial chaos coefficients
     FittingAlgorithm
     CorrectedLeaveOneOut
     KFold
+    DesignProxy
 
+Least Squares problem resolution
+================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    LeastSquaresMethod
+    CholeskyMethod
+    SVDMethod
+    QRMethod
+    
 Functional chaos result
 =======================
 

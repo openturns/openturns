@@ -43,6 +43,12 @@
 %include KDTree.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
+%include DesignProxy.i
+%include LeastSquaresMethodImplementation.i
+%include LeastSquaresMethod.i
+%include CholeskyMethod.i
+%include QRMethod.i
+%include SVDMethod.i
 %include LeastSquaresMetaModelSelection.i
 %include LeastSquaresMetaModelSelectionFactory.i
 %include PenalizedLeastSquaresAlgorithm.i

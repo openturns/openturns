@@ -1,0 +1,108 @@
+%feature("docstring") OT::DesignProxy
+"Design matrix cache.
+
+Helps to cache evaluations of the design matrix.
+
+Can be useful for an iterative least squares problem resolution.
+
+Parameters
+----------
+x : :class:`~openturns.NumericalSample`
+    Input sample
+psi : :class:`~openturns.Basis`
+    Functional basis"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::getInputSample
+"Input sample accessor.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    Input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::getBasis
+"Basis accessor.
+
+Returns
+-------
+basis : :class:`~openturns.getBasis`
+    Basis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::computeDesign
+"Build the design matrix.
+
+Parameters
+----------
+indices : sequence of int
+    Indices of the current basis in the global basis
+
+Returns
+-------
+psiAk : :class:`~openturns.Matrix`
+    The design matrix"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::getRowFilter
+"Row filter accessor.
+
+Returns
+-------
+rowFilter : :class:`~openturns.Indices`
+    Sub-indices in of the basis in the current indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::setRowFilter
+"Row filter accessor.
+
+Parameters
+----------
+rowFilter : sequence of int
+    Sub-indices in of the basis in the current indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::hasRowFilter
+"Row filter flag accessor.
+
+Returns
+-------
+hasRowFilter : bool
+    Whether sub-indices of the basis are set"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::setWeight
+"Weights accessor.
+
+Parameters
+----------
+weight : sequence of float
+    Weights on each basis term"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::getWeight
+"Weights accessor.
+
+Returns
+-------
+weight : :class:`~openturns.NumericalPoint`
+    Weights on each basis term"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::hasWeight
+"Weight flag accessor.
+
+Returns
+-------
+hasWeight : bool
+    Whether weights are set"
