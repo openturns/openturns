@@ -11,7 +11,7 @@ Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
 log pdf=-1.51735
 pdf     =0.219293
-pdf (FD)=0.219293
+pdf (FD)=0.219283
 cdf=0.640774
 ccdf=0.359226
 survival=0.359226
@@ -21,9 +21,9 @@ characteristic function=(0.0679463,-0.248507)
 log characteristic function=(-1.35624,-1.3039)
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.39477]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.90578] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.94843] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.90577] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.94843] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) level=3.50548
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(MeixnerDistribution(alpha = 1.5, beta = 0.5, delta = 2.5, mu = -0.5)) level=3.50547
 beta=0.0300325
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.80555] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.06095] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
