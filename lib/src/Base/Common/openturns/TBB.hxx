@@ -146,6 +146,7 @@ public:
     tbb::parallel_sort( first, last );
   }
 
+  static Bool IsAvailable();
   static void Enable();
   static void Disable();
 

@@ -3,6 +3,16 @@
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::TBB::IsAvailable
+"Ask whether threading support is available.
+
+Returns
+-------
+available : bool
+    Whether threading support is available."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::TBB::Enable
 "Enable threading.
 
