@@ -96,6 +96,9 @@ public:
   using ContinuousDistribution::computeSurvivalFunction;
   NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
 
+  /** Get the probability content of an interval */
+  NumericalScalar computeProbability(const Interval & interval) const;
+
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
