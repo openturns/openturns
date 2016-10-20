@@ -95,12 +95,6 @@ Get the result:
 Get the meta model:
 
 >>> metaModel = resKriging.getMetaModel()
->>> graph = metaModel.draw(0.0, 7.0)
->>> cloud = ot.Cloud(sampleX, sampleY)
->>> cloud.setPointStyle('fcircle')
->>> graph.add(cloud)
->>> graph.add(f.draw(0.0, 7.0))
->>> graph.setColors(['black', 'blue', 'red'])
 "
 
 // ---------------------------------------------------------------------

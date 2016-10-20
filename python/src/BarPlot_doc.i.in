@@ -32,12 +32,12 @@ Examples
 >>> from math import floor
 >>> # Create data
 >>> myDistribution = ot.Normal(0.5, 2.0)
->>> sample = myDistribution.getSample(100)
+>>> sample = myDistribution.getSample(10)
 >>> minSample = sample.getMin()[0]
 >>> maxSample = sample.getMax()[0] + 0.1
->>> nBars = 10
+>>> nBars = 4
 >>> data = ot.NumericalSample(nBars, [(maxSample - minSample) / nBars, 0])
->>> for i in range(100):
+>>> for i in range(10):
 ...     index = int(floor((sample[i, 0] - minSample) / (maxSample - minSample) * nBars))
 ...     data[index, 1] += 1
 >>> # Create an empty graph

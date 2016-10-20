@@ -104,23 +104,23 @@ Examples
 >>> S[1, 0] = 0.3
 >>> R = ot.NormalCopula().GetCorrelationFromSpearmanCorrelation(S)
 >>> CorrelatedInputDistribution = ot.ComposedDistribution([ot.Normal()] * 2, ot.NormalCopula(R))
->>> sample = CorrelatedInputDistribution.getSample(2000)
+>>> sample = CorrelatedInputDistribution.getSample(200)
 >>> # Functional chaos computation
 >>> productBasis = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()] * 2, ot.EnumerateFunction(2))
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, 15)
->>> projectionStrategy = ot.LeastSquaresStrategy(ot.MonteCarloExperiment(250))
+>>> projectionStrategy = ot.LeastSquaresStrategy(ot.MonteCarloExperiment(100))
 >>> algo = ot.FunctionalChaosAlgorithm(model, distribution, adaptiveStrategy, projectionStrategy)
 >>> algo.run()
 >>> ancovaResult = ot.ANCOVA(algo.getResult(), sample)
 >>> indices = ancovaResult.getIndices()
 >>> print(indices)
-[0.411077,0.588923]
+[0.408398,0.591602]
 >>> uncorrelatedIndices = ancovaResult.getUncorrelatedIndices()
 >>> print(uncorrelatedIndices)
-[0.29868,0.476527]
+[0.284905,0.468108]
 >>> # Get indices measuring the correlated effects
 >>> print(indices - uncorrelatedIndices)
-[0.112397,0.112397]"
+[0.123494,0.123494]"
 
 // ---------------------------------------------------------------------
 

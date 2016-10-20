@@ -35,7 +35,7 @@ Create a *KernelMixture*:
 >>> myKernelMixture = ot.KernelMixture(kernel, bandwith, sample)
  
 See the pdf:
->>> graph = myKernelMixture.drawPDF(511)
+>>> graph = myKernelMixture.drawPDF(64)
 >>> graph.setLegends(['KernelMixture'])"
 
 // ---------------------------------------------------------------------

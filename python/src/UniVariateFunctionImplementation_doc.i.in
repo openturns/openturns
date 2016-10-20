@@ -17,8 +17,8 @@ gradient : float
 Examples
 --------
 >>> import openturns as ot
->>> P = ot.UniVariatePolynomial([1., 2., 3.])
->>> print(P.gradient(1.))
+>>> P = ot.UniVariatePolynomial([1.0, 2.0, 3.0])
+>>> print(P.gradient(1.0))
 8.0"
 %enddef
 %feature("docstring") OT::UniVariateFunctionImplementation::gradient

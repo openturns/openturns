@@ -70,7 +70,7 @@ Create it from :math:`(a,b)` and keep that parametrization for the remaining stu
 
 Draw a sample:
 
->>> sample = myDist.getSample(10)"
+>>> sample = myDist.getSample(5)"
 
 // ---------------------------------------------------------------------
 

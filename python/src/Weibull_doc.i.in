@@ -62,7 +62,7 @@ Create it from :math:`(\mu, \sigma,\gamma)` and keep that parametrization for th
 
 Draw a sample:
 
->>> sample = myDist.getSample(10)"
+>>> sample = myDist.getSample(5)"
 
 // ---------------------------------------------------------------------
 

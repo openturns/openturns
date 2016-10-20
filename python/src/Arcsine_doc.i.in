@@ -55,7 +55,7 @@ Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remai
 
 Draw a sample:
 
->>> sample = myDist.getSample(10)"
+>>> sample = myDist.getSample(5)"
 
 // ---------------------------------------------------------------------
 

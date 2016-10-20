@@ -51,11 +51,9 @@ Create a distribution:
 >>> distY = ot.Uniform(-1.0, 1.0)
 >>> distZ = ot.ProductDistribution(distX, distY)
 
+Draw a sample:
 
-Draw the PDF:
-
->>> pdfdistZ = distZ.drawPDF()
-"
+>>> sample = distZ.getSample(5)"
 
 // ---------------------------------------------------------------------
 

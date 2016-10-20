@@ -93,8 +93,8 @@ Examples
 >>> output = ot.RandomVector(myFunction, vect)
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create an OptimizationSolver algorithm
->>> myCobyla = ot.Cobyla()
->>> myAlgo = ot.Analytical(myCobyla, myEvent, [50.0, 1.0, 10.0, 5.0])"
+>>> myOptim = ot.AbdoRackwitz()
+>>> myAlgo = ot.Analytical(myOptim, myEvent, [50.0, 1.0, 10.0, 5.0])"
 
 // ---------------------------------------------------------------------
 

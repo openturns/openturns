@@ -103,7 +103,7 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(5)"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RandomMixture::getDistributionCollection

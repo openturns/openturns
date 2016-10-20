@@ -63,7 +63,7 @@ Create a Box Cox tranformation:
 
 Estimate a transformation from a sample:
 
->>> mySample = ot.Exponential(2).getSample(1000)
+>>> mySample = ot.Exponential(2).getSample(100)
 >>> myModelTransform = ot.BoxCoxFactory().build(mySample)
 
 Apply ot to the sample:
@@ -75,7 +75,7 @@ Apply ot to the sample:
 
 Apply it to a field:
 
->>> myIndices= ot.Indices([40,20])
+>>> myIndices= ot.Indices([10,5])
 >>> myMesher=ot.IntervalMesher(myIndices)
 >>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
 >>> myMesh=myMesher.build(myInterval)

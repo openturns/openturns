@@ -50,7 +50,7 @@ Create a Karhunen-Loeve Quadrature factory:
 >>> domain = ot.Interval([-1.0]*2, [1.0]*2)
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
 >>> basisSize = 10
->>> samplingSize = 100
+>>> samplingSize = 20
 >>> experiment = ot.LHSExperiment(basis.getMeasure(), samplingSize)
 >>> mustScale = False
 >>> threshold = 0.01
@@ -78,7 +78,7 @@ Examples
 >>> domain = ot.Interval([-1.0]*2, [1.0]*2)
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
 >>> basisSize = 10
->>> samplingSize = 100
+>>> samplingSize = 20
 >>> experiment = ot.LHSExperiment(basis.getMeasure(), samplingSize)
 >>> mustScale = False
 >>> threshold = 0.01

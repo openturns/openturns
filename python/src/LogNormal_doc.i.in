@@ -72,7 +72,7 @@ Create it from :math:`(\mu, \sigma/\mu, \gamma)` and keep that parametrization f
 
 Draw a sample:
 
->>> sample = myDist.getSample(10)"
+>>> sample = myDist.getSample(5)"
 
 // ---------------------------------------------------------------------
 

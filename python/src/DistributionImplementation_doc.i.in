@@ -857,7 +857,7 @@ Examples
 Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(100)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Normal distribution and extract the asymptotic parameters distribution:
@@ -897,7 +897,7 @@ Examples
 Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(100)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Normal distribution and extract the asymptotic parameters distribution:
@@ -957,7 +957,7 @@ Examples
 Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(100)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Normal distribution and extract the asymptotic parameters distribution:
@@ -998,7 +998,7 @@ Examples
 Create a sample from a Normal distribution:
 
 >>> import openturns as ot
->>> sample = ot.Normal().getSample(100)
+>>> sample = ot.Normal().getSample(10)
 >>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Normal distribution and extract the asymptotic parameters distribution:

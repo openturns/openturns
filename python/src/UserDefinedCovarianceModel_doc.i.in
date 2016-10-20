@@ -65,7 +65,7 @@ Create the covariance function at (s,t):
 
 Create the time grid:
 
->>> N = 128
+>>> N = 32
 >>> a = 4.0
 >>> myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
 

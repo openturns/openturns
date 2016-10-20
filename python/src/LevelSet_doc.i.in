@@ -60,7 +60,7 @@ Examples
 >>> # Intersection between levelSet1 and levelSet2
 >>> intersection = levelSet1.intersect(levelSet2)
 >>> # Tests
->>> print(intersection.contains([1.]))
+>>> print(intersection.contains([1.0]))
 False
 >>> print(intersection.contains([0.25]))
 True"

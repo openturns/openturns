@@ -39,11 +39,11 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.NonCentralChiSquare(6.)
+>>> distribution = ot.NonCentralChiSquare(6.0)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(5)"
 
 // ---------------------------------------------------------------------
 

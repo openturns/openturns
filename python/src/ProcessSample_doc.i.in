@@ -35,7 +35,7 @@ Examples
 Create a bi dimensional mesh as a box:
 
 >>> import openturns as ot
->>> myIndices = [100,40]
+>>> myIndices = [10, 5]
 >>> myMesher = ot.IntervalMesher(myIndices)
 >>> lowerBound = [0.0, 0.0]
 >>> upperBound = [2.0, 1.0]

@@ -24,7 +24,7 @@ Examples
 Fit a distribution on data thanks to the kernel smoothing technique:
 
 >>> import openturns as ot
->>> sample = ot.Gamma(6.0, 1.0).getSample(1000)
+>>> sample = ot.Gamma(6.0, 1.0).getSample(100)
 >>> kernel = ot.KernelSmoothing()
 >>> fittedDist = kernel.build(sample)
 

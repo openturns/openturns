@@ -75,8 +75,8 @@ Examples
 Create a sample from a Beta distribution:
 
 >>> import openturns as ot
->>> sample = ot.Beta().getSample(1000)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 1000)
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
 
 Fit a Beta distribution in the native parameters and create a :class:`~openturns.DistributionFactory`:
 
