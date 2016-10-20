@@ -809,7 +809,7 @@ String Mesh::streamToVTKFormat() const
   oss << "\n";
   // If no simplices, assume vertices type
   oss << "CELL_TYPES " << numSimplices << "\n";
-  UnsignedInteger cellType;
+  UnsignedInteger cellType = 0;
   // Cell type is:
   // 1 for vertex
   // 3 for line

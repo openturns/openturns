@@ -129,7 +129,7 @@ NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
   NumericalScalar alpha = 0.;
   NumericalScalar beta = 0.;
   const NumericalScalar ratio = 1.0 + pow(sigma / (mu - gamma), 2.0);
-  NumericalScalar t;
+  NumericalScalar t = -1.0;
   NumericalScalar betaMin = 1.0;
   NumericalScalar betaMax = 1.0;
   NumericalScalar step = 0.5;

@@ -40,7 +40,7 @@ void incgam(const NumericalScalar a,
   //  the computation and inversion of the incomplete gamma function ratios",
   //  A. Gil, J. Segura and N.M. Temme, submitted to SIAM J Sci Comput
   // -------------------------------------------------------------------
-  NumericalScalar lnx;
+  NumericalScalar lnx = -1.0;
   ierr = 0;
   if (a > alpha(x))
   {
@@ -198,8 +198,8 @@ void invincgam(const NumericalScalar a,
     }
     else r = x * gamstar(a) / (sqrt(a) * SpecFunc::ISQRT2PI * exp(-0.5 * a * eta * eta));
     SignedInteger ierrf;
-    NumericalScalar px;
-    NumericalScalar qx;
+    NumericalScalar px = -1.0;
+    NumericalScalar qx = -1.0;
     incgam(a, x, px, qx, ierrf);
     r = (pcase ? -r * (px - p) : r * (qx - q));
     if (a <= 0.05) dx = r;
@@ -249,7 +249,7 @@ NumericalScalar dompart(const NumericalScalar a,
                         const Bool qt)
 {
   // dompart is approx. of  x^a * exp(-x) / gamma(a+1) ;
-  NumericalScalar r;
+  NumericalScalar r = -1.0;
   const NumericalScalar lnx = log(x);
   if (a <= 1.0) r = -x + a * lnx;
   else

@@ -405,8 +405,8 @@ void FunctionalChaosAlgorithm::run()
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
     Indices marginalIndices;
     NumericalPoint marginalAlpha_k;
-    NumericalScalar marginalResidual;
-    NumericalScalar marginalRelativeError;
+    NumericalScalar marginalResidual = -1.0;
+    NumericalScalar marginalRelativeError = -1.0;
     // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
     runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
     residuals[outputIndex] = marginalResidual;

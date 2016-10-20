@@ -113,10 +113,10 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const NumericalSample & firstSampl
   Bool testResult;
   resultFile >> testResult;
   // Third, test threshold
-  NumericalScalar pThreshold;
+  NumericalScalar pThreshold = -1.0;
   resultFile >> pThreshold;
   // Fourth, test value
-  NumericalScalar pValue;
+  NumericalScalar pValue = -1.0;
   resultFile >> pValue;
 
   // Clean-up everything

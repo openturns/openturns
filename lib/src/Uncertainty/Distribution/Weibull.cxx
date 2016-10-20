@@ -431,7 +431,7 @@ void Weibull::setMuSigma(const NumericalScalar mu,
   if (mu <= gamma_) throw InvalidArgumentException(HERE) << "Mu MUST be > gamma, here mu=" << mu << " and gamma=" << gamma_;
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be > 0.0, here sigma=" << sigma;
   const NumericalScalar ratio = 1.0 + std::pow(sigma / (mu - gamma_), 2.0);
-  NumericalScalar t;
+  NumericalScalar t = -1.0;
   NumericalScalar betaMin = 1.0;
   NumericalScalar betaMax = 1.0;
   NumericalScalar step = 0.5;

@@ -286,9 +286,8 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
  */
 void Path::AntislashFileName(FileName & filename)
 {
-  UnsignedInteger i;
-  for(i = 0; i < filename.size(); i++)
-    if(filename.at(i) == '/')
+  for (UnsignedInteger i = 0; i < filename.size(); ++ i)
+    if (filename.at(i) == '/')
       filename.at(i) = '\\';
 }
 

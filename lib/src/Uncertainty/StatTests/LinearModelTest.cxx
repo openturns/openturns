@@ -149,9 +149,9 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const NumericalSample
   resultFile >> testType;
   Bool testResult;
   resultFile >> testResult;
-  NumericalScalar pThreshold;
+  NumericalScalar pThreshold = -1.0;
   resultFile >> pThreshold;
-  NumericalScalar pValue;
+  NumericalScalar pValue = -1.0;
   resultFile >> pValue;
 
   // Clean-up everything

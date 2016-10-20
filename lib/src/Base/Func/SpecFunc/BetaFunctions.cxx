@@ -352,9 +352,9 @@ NumericalScalar BPSER(const NumericalScalar a,
 NumericalScalar ALGDIV(const NumericalScalar a,
                        const NumericalScalar b)
 {
-  NumericalScalar x;
-  NumericalScalar xM1;
-  NumericalScalar d;
+  NumericalScalar x = -1.0;
+  NumericalScalar xM1 = -1.0;
+  NumericalScalar d = -1.0;
   if (a > b)
   {
     const NumericalScalar h = b / a;

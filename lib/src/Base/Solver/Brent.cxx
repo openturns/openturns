@@ -110,8 +110,8 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
     if ((std::abs(oldDelta) >= error)  && (std::abs(fA) > std::abs(fB)))
     {
       // The new increment for the root will be p / q with p > 0
-      NumericalScalar p;
-      NumericalScalar q;
+      NumericalScalar p = -1.0;
+      NumericalScalar q = -1.0;
       const NumericalScalar cb = c - b;
 
       // We can just perform a linear inverse interpolation here

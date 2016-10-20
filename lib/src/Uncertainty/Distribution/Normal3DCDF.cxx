@@ -188,11 +188,11 @@ NumericalScalar tvnf(const NumericalScalar x,
                      const NumericalScalar a13)
 {
   NumericalScalar result = 0.0;
-  NumericalScalar r12;
-  NumericalScalar rr2;
+  NumericalScalar r12 = -1.0;
+  NumericalScalar rr2 = -1.0;
   sincs(a12 * x, r12, rr2);
-  NumericalScalar r13;
-  NumericalScalar rr3;
+  NumericalScalar r13 = -1.0;
+  NumericalScalar rr3 = -1.0;
   sincs(a13 * x, r13, rr3);
   if (std::abs(a12) > 0.0) result  = a12 * pntgnd(h1, h2, h3, r13, r23, r12, rr2);
   if (std::abs(a13) > 0.0) result += a13 * pntgnd(h1, h3, h2, r12, r23, r13, rr3);

@@ -130,9 +130,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       if (((inputClass == "ChiSquare") || (inputClass == "Exponential") || (inputClass == "Gamma")) &&
           ((outputClass == "ChiSquare") || (outputClass == "Exponential") || (outputClass == "Gamma")))
       {
-        NumericalScalar k1;
-        NumericalScalar lambda1;
-        NumericalScalar gamma1;
+        NumericalScalar k1 = -1.0;
+        NumericalScalar lambda1 = -1.0;
+        NumericalScalar gamma1 = -1.0;
         if (inputClass == "ChiSquare")
         {
           k1 = 0.5 * inputParameters[0];
@@ -151,9 +151,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
           lambda1 = inputParameters[1];
           gamma1 = inputParameters[2];
         }
-        NumericalScalar k2;
-        NumericalScalar lambda2;
-        NumericalScalar gamma2;
+        NumericalScalar k2 = -1.0;
+        NumericalScalar lambda2 = -1.0;
+        NumericalScalar gamma2 = -1.0;
         if (outputClass == "ChiSquare")
         {
           k2 = 0.5 * outputParameters[0];
