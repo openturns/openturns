@@ -181,7 +181,7 @@ Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::int
     NumericalPoint bi;
     NumericalSample fi;
     NumericalPoint ei;
-    NumericalScalar error;
+    NumericalScalar error = -1.0;
     valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
     valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdfWrapper, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
     derivativesCDF[i] = computePDF(xCDF);

@@ -747,8 +747,8 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
     const NumericalScalar c = distributionCollection_[1].getRange().getLowerBound()[0];
     const NumericalScalar d = distributionCollection_[1].getRange().getUpperBound()[0];
     // Compute the bounds of the convolution
-    NumericalScalar lower;
-    NumericalScalar upper;
+    NumericalScalar lower = -1.0;
+    NumericalScalar upper = -1.0;
     NumericalScalar uc = (z0 - alpha2 * c) / alpha1;
     NumericalScalar ud = (z0 - alpha2 * d) / alpha1;
     if ((alpha1 > 0) == (alpha2 > 0))
@@ -891,7 +891,7 @@ struct EquivalentNormalPDFSumPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    UnsignedInteger fakeLevelMax;
+    UnsignedInteger fakeLevelMax = 0;
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       output_[i] = mixture_.computeEquivalentNormalPDFSum(grid_[i], two_b_sigma_, levelMax_, fakeLevelMax);
@@ -1730,8 +1730,8 @@ NumericalScalar RandomMixture::computeCDF(const NumericalPoint & point) const
     const NumericalScalar c = distributionCollection_[1].getRange().getLowerBound()[0];
     const NumericalScalar d = distributionCollection_[1].getRange().getUpperBound()[0];
     // Compute the bounds of the convolution
-    NumericalScalar lower;
-    NumericalScalar upper;
+    NumericalScalar lower = -1.0;
+    NumericalScalar upper = -1.0;
     NumericalScalar uc = (z0 - alpha2 * c) / alpha1;
     NumericalScalar ud = (z0 - alpha2 * d) / alpha1;
     const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
@@ -1912,14 +1912,10 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
     error = 0.0;
     for (UnsignedInteger m = k; m < 2 * k; ++m)
     {
-      NumericalScalar sinMHLower;
-      NumericalScalar cosMHLower;
-      sinMHLower = std::sin(m * a);
-      cosMHLower = std::cos(m * a);
-      NumericalScalar sinMHUpper;
-      NumericalScalar cosMHUpper;
-      sinMHUpper = std::sin(m * b);
-      cosMHUpper = std::cos(m * b);
+      NumericalScalar sinMHLower = std::sin(m * a);
+      NumericalScalar cosMHLower = std::cos(m * a);
+      NumericalScalar sinMHUpper = std::sin(m * b);
+      NumericalScalar cosMHUpper = std::cos(m * b);
       const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m));
       const NumericalScalar contribution = factor * (deltaValue.real() * (sinMHUpper - sinMHLower) + deltaValue.imag() * (cosMHLower - cosMHUpper)) / (m * referenceBandwidth_[0]);
       value += contribution;

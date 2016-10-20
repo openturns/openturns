@@ -150,7 +150,7 @@ void CompositeDistribution::update()
   const DerivativeWrapper derivativeWrapper(function_);
   const NumericalMathFunction derivative(bindMethod<DerivativeWrapper, NumericalPoint, NumericalPoint>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
   NumericalScalar a = xMin;
-  NumericalScalar fpA;
+  NumericalScalar fpA = -1.0;
   try
   {
     fpA = derivative(NumericalPoint(1, a))[0];
@@ -180,7 +180,7 @@ void CompositeDistribution::update()
     {
       const NumericalScalar root = solver_.solve(derivative, 0.0, a, b, fpA, fpB);
       bounds_.add(root);
-      NumericalScalar value;
+      NumericalScalar value = -1.0;
       try
       {
         value = function_(NumericalPoint(1, root))[0];
@@ -202,7 +202,7 @@ void CompositeDistribution::update()
     }
   }
   bounds_.add(xMax);
-  NumericalScalar value;
+  NumericalScalar value = -1.0;
   try
   {
     value = function_(NumericalPoint(1, xMax))[0];

@@ -862,10 +862,10 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   if (reducedInterval == getRange()) return 1.0;
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
-  NumericalScalar probability = 0;
+  NumericalScalar probability = 0.0;
   if (dimension_ == 1)
   {
-    NumericalScalar error;
+    NumericalScalar error = -1.0;
     const NumericalPoint singularities(getSingularities());
     // If no singularity inside of the given reduced interval
     const UnsignedInteger singularitiesNumber = singularities.getSize();

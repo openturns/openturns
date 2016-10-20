@@ -448,8 +448,8 @@ void fromNodeConverter<XML_STMGR::numericalcomplex_tag, NumericalComplex>(XML::N
 {
   XML::Node node_real = XML::FindElementByName( node, XML_STMGR::real_tag::Get() );
   XML::Node node_imag = XML::FindElementByName( node, XML_STMGR::imag_tag::Get() );
-  NumericalScalar real;
-  NumericalScalar imag;
+  NumericalScalar real = -1.0;
+  NumericalScalar imag = -1.0;
   fromStringConverter( getValueToConvert<XML_STMGR::real_tag>( node_real ), real );
   fromStringConverter( getValueToConvert<XML_STMGR::imag_tag>( node_imag ), imag );
   value = NumericalComplex( real, imag );
@@ -597,7 +597,7 @@ void IndexedValueReader(TAG tag,
   XML::Node node;
   while (( node = XML::FindNextElementByName( state.current_, tag.Get() ) ))
   {
-    UnsignedInteger idx;
+    UnsignedInteger idx = 0;
     fromStringConverter( XML::GetAttributeByName(node, XML_STMGR::index_attribute::Get()), idx );
     state.next();
     if (idx == index)

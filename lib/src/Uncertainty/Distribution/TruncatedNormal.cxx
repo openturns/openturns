@@ -151,7 +151,7 @@ NumericalPoint TruncatedNormal::getRealization() const
      Algorithm from John Geweke, "Efficient Simulation from the Multivariate Normal and Student-t Distributions Subject to Linear Constraints and the Evaluation of Constraint Probabilities", communication at the meeting "Computer Science and Statistics: the Twenty-Third Symposium on the Interface", April 22-24, 1991. */
   // If the truncation is strong, use CDF inversion, else use rejection. The cut-off must balance the cost of the two methods
   if (PhiBNorm_ - PhiANorm_ < 0.25) return computeQuantile(RandomGenerator::Generate());
-  NumericalScalar value;
+  NumericalScalar value = -1.0;
   do
   {
     value = DistFunc::rNormal();

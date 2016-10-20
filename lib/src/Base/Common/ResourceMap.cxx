@@ -166,7 +166,7 @@ Bool ResourceMap::getAsBool(String key) const
 
 UnsignedInteger ResourceMap::getAsUnsignedInteger(String key) const
 {
-  UnsignedInteger value;
+  UnsignedInteger value = 0;
   String st = get( key );
   std::istringstream iss( st );
   iss >> value;
@@ -175,7 +175,7 @@ UnsignedInteger ResourceMap::getAsUnsignedInteger(String key) const
 
 NumericalScalar ResourceMap::getAsNumericalScalar(String key) const
 {
-  NumericalScalar value;
+  NumericalScalar value = -1.0;
   String st = get( key );
   std::istringstream iss( st );
   iss >> value;

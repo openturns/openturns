@@ -473,8 +473,8 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
   }
   const NumericalScalar d = alpha - 0.3333333333333333333333333;
   const NumericalScalar c = 1.0 / std::sqrt(9.0 * d);
-  NumericalScalar x;
-  NumericalScalar v;
+  NumericalScalar x = -1.0;
+  NumericalScalar v = -1.0;
   for (;;)
   {
     do
@@ -844,7 +844,7 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
     7.784695709041462e-03,  3.224671290700398e-01,
     2.445134137142996e+00,  3.754408661907416e+00
   };
-  NumericalScalar x;
+  NumericalScalar x = -1.0;
   // Left tail
   if (p < 0.02425)
   {
@@ -898,8 +898,8 @@ NumericalScalar DistFunc::rNormal()
     /* Are we in the bottom band? Sample from the tail of the Normal distribution */
     if (index == DistFunc::NumberOfBandNormalZigurrat - 1)
     {
-      NumericalScalar x;
-      NumericalScalar y;
+      NumericalScalar x = -1.0;
+      NumericalScalar y = -1.0;
       /* Marsaglia method */
       do
       {

@@ -84,7 +84,7 @@ NumericalSample RandomizedQuasiMonteCarlo::computeBlockSample()
     {
       // use marginal laws to compute quantile from the low-discrepancy value to build the input sample
       // with a cyclic scrambling of the low discrepancy point as in R. Cranley and T.N.L. Patterson, "Randomization of number theoretic methods for multiple integration.", SIAM Journal of Numerical Analysis, 13:904-914, 1976.
-      NumericalScalar tmp;
+      NumericalScalar tmp = -1.0;
       inputSample[index][component] = marginals_[component].computeQuantile(modf(inputSample[index][component] + RandomGenerator::Generate(), &tmp))[0];
     } // For component
   } // For index

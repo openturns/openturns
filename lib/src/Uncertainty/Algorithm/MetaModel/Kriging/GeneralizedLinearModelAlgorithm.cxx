@@ -592,7 +592,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLogLikelihood(const Nume
     throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeLogLikelihood, could not compute likelihood,"
                                          << " covariance model requires an argument of size " << covarianceModel_.getParameter().getSize()
                                          << " but here we got " << parameters.getSize();
-  NumericalScalar logLikelihood;
+  NumericalScalar logLikelihood = -1.0;
   if (method_ == 1)
     logLikelihood = computeHMatLogDeterminantCholesky(parameters);
   else
