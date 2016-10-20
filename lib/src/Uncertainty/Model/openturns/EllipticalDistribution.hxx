@@ -169,6 +169,31 @@ public:
 
 protected:
 
+  /** The sigma vector of the distribution */
+  mutable NumericalPoint sigma_;
+
+  /** The correlation matrix (Rij) of the distribution */
+  mutable CorrelationMatrix R_;
+
+  /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
+  mutable CovarianceMatrix shape_;
+
+  /** The inverse of the correlation matrix of the distribution */
+  SymmetricMatrix inverseR_;
+
+  /** The Cholesky factor of the shape matrix shape_ = cholesky_ * cholesky_.transpose() */
+  TriangularMatrix cholesky_;
+
+  /** The inverse Cholesky factor of the covariance matrix */
+  TriangularMatrix inverseCholesky_;
+
+  /** The normalization factor of the distribution */
+  NumericalScalar normalizationFactor_;
+
+  /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape_*/
+  NumericalScalar covarianceScalingFactor_;
+
+private:
   // Class used to wrap the computeRadialCDF() method for interpolation purpose
   class RadialCDFWrapper: public NumericalMathFunctionImplementation
   {
@@ -226,33 +251,8 @@ protected:
 
   private:
     const EllipticalDistribution * p_distribution_;
-  };  // class RadialDFWrapper
+  };  // class RadialCDFWrapper
 
-  /** The sigma vector of the distribution */
-  mutable NumericalPoint sigma_;
-
-  /** The correlation matrix (Rij) of the distribution */
-  mutable CorrelationMatrix R_;
-
-  /** The shape matrix of the distribution = Diag(sigma_) * R_ * Diag(sigma_) */
-  mutable CovarianceMatrix shape_;
-
-  /** The inverse of the correlation matrix of the distribution */
-  SymmetricMatrix inverseR_;
-
-  /** The Cholesky factor of the shape matrix shape_ = cholesky_ * cholesky_.transpose() */
-  TriangularMatrix cholesky_;
-
-  /** The inverse Cholesky factor of the covariance matrix */
-  TriangularMatrix inverseCholesky_;
-
-  /** The normalization factor of the distribution */
-  NumericalScalar normalizationFactor_;
-
-  /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape_*/
-  NumericalScalar covarianceScalingFactor_;
-
-private:
   /** Compute the value of the auxiliary attributes */
   void update();
 
