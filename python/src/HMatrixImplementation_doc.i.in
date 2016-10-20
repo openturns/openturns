@@ -1,0 +1,302 @@
+%define OT_HMatrix_doc
+"Hierarchical matrices (or HMatrix) are a compressed representation of dense
+matrices.  In many applications, matrix coefficients represent an interaction
+between two degrees of freedom; when these interactions are smooth, it is
+possible to approximate sub-blocks by a local low-rank approximation B =~ UV^T
+where B has dimension (m,n), U (m,k), and V (n,k).
+Of course, this is interesting only if k is much lower than m and n.
+
+In order to obtain this compressed representation, several different steps must
+be performed:
+
+1. Clustering: creation of rows and columns cluster trees
+   Vertices where interactions are computed are reordered to improve locality.
+   A binary space partition algorithm is used to recursively divide vertex set.
+   Root cell contains all vertices.  At each recursion step, a cell is divided
+   into two new cells until it contains less than a given number of vertices.
+   Space partition is performed orthogonally to original axis, by cutting its
+   longest dimension.
+
+   * The 'median' clustering algorithm divides a cell into two cells containing
+     the same number of degrees of freedom.
+   * The 'geometric' clustering algorithm divides a cell into two cells of the
+     same geometric size
+   * The 'hybrid' clustering algorithm is a mix.  It first performs a 'median'
+     bisection; if volumes of these new cells are very different, a 'geometric'
+     clustering is performed instead.
+
+2. Admissibility: creation of an empty HMatrix structure
+   The first step created a full binary tree for rows and columns degrees of
+   freedom.  We will now create a hierarchical representation of our matrix by
+   checking whether some blocks can be replaced by low-rank approximations.
+   The whole matrix represents the interactions of all rows degrees of freedom
+   against all columns degrees of freedom.  It can not be approximated by a
+   low-rank approximation, and thus it is replaced by 4 blocks obtained by
+   considering interactions between rows and columns children nodes.  This
+   operation is performed recursively.  At each step, we compute axis aligned
+   bounding boxes rows_bbox and cols_bbox: if
+   min(diameter(rows_bbox), diameter(cols_bbox)) <= eta*distance(rows_bbox, cols_bbox)
+   then we consider that interaction between rows and columns degrees of
+   freedom can have a local low-rank approximation, and recursion is stopped.
+   Otherwise, we recurse until bottom cluster tree is reached.
+   The whole matrix is thus represented by a 4-tree where leaves will contain
+   either low-rank approximation or full blocks.
+   The eta parameter is called the admissibility factor, and it can be modified.
+
+3. Assembly: coefficients computations
+   The hierarchical structure of the matrix has been computed during step 2.
+   To compute coefficients, we call the assembleReal method and provide a
+   callable to compute interaction between two nodes.  Full blocks are computed
+   by calling this callable for the whole block.  If compression method is
+   'SVD', low-rank approximation is computed by first computing the whole
+   block, then finding its singular value decomposition, and rank is truncated
+   so that error does not exceed assemblyEpsilon.  This method is precise, but
+   very costly.  If compression method is a variant of ACA, only few rows and
+   columns are computed.  This is much more efficient, but error may be larger
+   than expected on some problems.
+
+4. Matrix computations
+   Once an HMatrix is computed, usual linear algebra operations can be
+   performed.  Matrix can be factorized in-place, in order to solve systems.
+   Or we can compute its product by a matrix or vector.  But keep in mind that
+   rows and columns are reordered internally, and thus results may differ
+   sensibly from standard dense representation (for instance when computing a
+   Cholesky or LU decomposition).
+
+See also
+--------
+HMatrixFactory, HMatrixParameters"
+
+%enddef
+%feature("docstring") OT::HMatrixImplementation
+OT_HMatrix_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_getNbColumns_doc
+"Accessor to the number of columns.
+
+Returns
+-------
+nbColumns : int
+    Number of columns."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::getNbColumns
+OT_HMatrix_getNbColumns_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_getNbRows_doc
+"Accessor to the number of rows.
+
+Returns
+-------
+nbRows : int
+    Number of rows."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::getNbRows
+OT_HMatrix_getNbRows_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_norm_doc
+"Compute norm value.
+
+Returns
+-------
+norm : float
+    Frobenius norm."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::norm
+OT_HMatrix_norm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_transpose_doc
+"Transpose matrix in-place."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::transpose
+OT_HMatrix_transpose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_factorize_doc
+"Factorize matrix.
+
+Parameters
+----------
+method : str
+    Factorization method, either one of: LDLt, LLt or LU"
+%enddef
+%feature("docstring") OT::HMatrixImplementation::factorize
+OT_HMatrix_factorize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_dump_doc
+"Save matrix to a file.
+
+Parameters
+----------
+fileName : str
+    File name to save to."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::dump
+OT_HMatrix_dump_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_getDiagonal_doc
+"Diagonal values accessor.
+
+Returns
+-------
+diag : :class:`~openturns.NumericalPoint`
+    Diagonal values."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::getDiagonal
+OT_HMatrix_getDiagonal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_solve_doc
+"Solve linear system op(A)*x=b, after A has been factorized.
+
+Parameters
+----------
+b : sequence of float or :class:`~openturns.Matrix`
+    Second term of the equation, vector or matrix.
+trans : bool
+    Whether to solve the equation with A (False) or A^t (True).
+    Defaults to False.
+
+Returns
+-------
+x : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+    Equation solution, vector or matrix."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::solve
+OT_HMatrix_solve_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_solveLower_doc
+"Solve lower linear system op(L)*x=b, after A has been factorized.
+
+Parameters
+----------
+b : sequence of float or :class:`~openturns.Matrix`
+    Second term of the equation, vector or matrix.
+trans : bool
+    Whether to solve the equation with L (False) or L^t (True).
+    Defaults to False.
+
+Returns
+-------
+x : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+    Equation solution, vector or matrix."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::solveLower
+OT_HMatrix_solveLower_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_compressionRatio_doc
+"Compression ratio accessor.
+
+Returns
+-------
+ratio : 2-tuple of int
+    Numbers of elements in the compressed and uncompressed forms."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::compressionRatio
+OT_HMatrix_compressionRatio_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_fullrkRatio_doc
+"Block ratio accessor.
+
+Returns
+-------
+ratio : 2-tuple of int
+    Numbers of elements in full blocks and low rank blocks."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::fullrkRatio
+OT_HMatrix_fullrkRatio_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_gemv_doc
+"Multiply vector in-place y=alpha*op(A)*x+beta*y.
+
+Parameters
+----------
+trans : str
+    Whether to use A or A^t: either N or T.
+alpha : float
+    Coefficient
+x : sequence of float
+    Vector to multiply.
+beta : float
+    Coefficient.
+y : :class:`~openturns.NumericalPoint`
+    Vector multiplied in-place."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::gemv
+OT_HMatrix_gemv_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_gemm_doc
+"Multiply matrix in-place self=alpha*op(A)*op(B)+beta*self.
+
+Parameters
+----------
+transA : str
+    Whether to use A or A^t: either N or T.
+transB : str
+    Whether to use B or B^t: either N or T.
+alpha : float
+    Coefficient
+a : :class:`~openturns.HMatrix`
+    Multiplied matrix A.
+b : :class:`~openturns.HMatrix`
+    Multiplied matrix B.    
+beta : float
+    Coefficient."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::gemm
+OT_HMatrix_gemm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_assembleReal_doc
+"Assemble matrix.
+
+Parameters
+----------
+f : assembly function
+    Callable that takes i,j int parameters and returns a float
+symmetry : str
+    Symmetry flag, either N or L"
+%enddef
+%feature("docstring") OT::HMatrixImplementation::assembleReal
+OT_HMatrix_assembleReal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_assembleTensor_doc
+"Assemble matrix by block.
+
+Parameters
+----------
+f : assembly function
+    Callable that takes i,j int parameters and returns a Matrix
+outputDimension : int
+    Block dimension
+symmetry : str
+    Symmetry flag, either N or L"
+%enddef
+%feature("docstring") OT::HMatrixImplementation::assembleTensor
+OT_HMatrix_assembleTensor_doc

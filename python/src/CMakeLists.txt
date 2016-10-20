@@ -156,7 +156,6 @@ ot_add_python_module(statistics statistics_module.i
                       Full.i Full_doc.i.in
                       Last.i Last_doc.i.in
                       Null.i Null_doc.i.in
-		      HMatrixParameters.i HMatrixParameters_doc.i.in
                       LinearModel.i LinearModel_doc.i.in
                       LinearModelFactory.i LinearModelFactory_doc.i.in
                       TestResult.i TestResult_doc.i.in
@@ -202,12 +201,13 @@ ot_add_python_module(statistics statistics_module.i
                       GeneralizedExponential.i GeneralizedExponential_doc.i.in
                       AbsoluteExponential.i AbsoluteExponential_doc.i.in
                       MaternModel.i MaternModel_doc.i.in
-		      DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
+                      DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
-		      TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i.in
-                      HMatrixFactory.i
-                      HMatrix.i
-                      HMatrixImplementation.i
+                      TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i.in
+                      HMatrixParameters.i HMatrixParameters_doc.i.in
+                      HMatrixFactory.i HMatrixFactory_doc.i.in
+                      HMatrix.i HMatrix_doc.i.in
+                      HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
                    )
 
