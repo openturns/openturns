@@ -286,9 +286,6 @@
   <LogNormalFactory-ResidualPrecision value="1e-12" />
   <LogNormalFactory-MaximumIteration  value="50"    />
 
-  <!-- MaximumLikelihoodFactory parameters -->
-  <MaximumLikelihoodFactory-GradientStep value="1.0e-5" />
-
   <!-- Meixner parameters -->
   <MeixnerDistribution-CDFIntegrationNodesNumber value="32" />
   <MeixnerDistribution-CDFDiscretization value="10000" />
