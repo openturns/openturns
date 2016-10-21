@@ -93,6 +93,13 @@ try:
     except:
         print('no')
 
+    # check that TBB library was found
+    print('9: multithreading (TBB)'.ljust(width), end=' ')
+    if ot.TBB.IsAvailable():
+        print('OK')
+    else:
+        print('no')
+
 except:
     import os
     import traceback
