@@ -191,7 +191,7 @@ NumericalScalar Beta::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x = point[0];
   if ((x == b_) && (t_ - r_ == 1.0)) return 0.0;
-  if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxNumericalScalar;
+  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinNumericalScalar;
   return normalizationFactor_ + (r_ - 1.0) * std::log(x - a_) + (t_ - r_ - 1.0) * std::log(b_ - x);
 }
 

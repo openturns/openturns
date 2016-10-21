@@ -152,7 +152,7 @@ NumericalScalar InverseWishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const NumericalScalar logPDF = computeLogPDF(m);
-  const NumericalScalar pdf = logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : std::exp(logPDF);
+  const NumericalScalar pdf = (logPDF == SpecFunc::LogMinNumericalScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
@@ -160,7 +160,7 @@ NumericalScalar InverseWishart::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const NumericalScalar logPDF = computeLogPDF(point);
-  const NumericalScalar pdf = logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : std::exp(logPDF);
+  const NumericalScalar pdf = (logPDF == SpecFunc::LogMinNumericalScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
@@ -203,7 +203,7 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
   }
   catch (...)
   {
-    return -SpecFunc::MaxNumericalScalar;
+    return SpecFunc::LogMinNumericalScalar;
   }
 }
 

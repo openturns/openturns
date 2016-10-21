@@ -505,7 +505,7 @@ NumericalScalar DistributionImplementation::computePDF(const NumericalPoint & po
 NumericalScalar DistributionImplementation::computeLogPDF(const NumericalPoint & point) const
 {
   const NumericalScalar pdf = computePDF(point);
-  NumericalScalar logPdf = -SpecFunc::MaxNumericalScalar;
+  NumericalScalar logPdf = SpecFunc::LogMinNumericalScalar;
   if ( pdf > 0.0 ) logPdf = std::log(pdf);
   return logPdf;
 }
@@ -2730,7 +2730,7 @@ Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber) const
 {
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
   NumericalPoint origin(2);
@@ -2943,7 +2943,7 @@ Graph DistributionImplementation::drawLogPDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber) const
 {
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
   NumericalPoint origin(2);
@@ -3166,7 +3166,7 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
   if (xMin.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: expected xMin to be of dimension 2, here dimension=" << xMin.getDimension();
   if (xMax.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: expected xMax to be of dimension 2, here dimension=" << xMax.getDimension();
   if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected pointNumber to be of size 2, here size=" << pointNumber.getSize();
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
   NumericalPoint origin(2);

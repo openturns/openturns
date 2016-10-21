@@ -203,7 +203,7 @@ NumericalScalar LogNormal::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
-  if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
   NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return std::log(normalizationFactor_) - 0.5 * logX * logX - std::log(x);
 }

@@ -117,7 +117,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
   if (samplesNumber_ == 0)
   {
     currentLogLikelihood_ = computeLogLikelihood(currentState_);
-    if (currentLogLikelihood_ <= -SpecFunc::MaxNumericalScalar)
+    if (currentLogLikelihood_ <= SpecFunc::LogMinNumericalScalar)
       throw InvalidArgumentException(HERE) << "The likelihood of the initial state should be positive";
   }
 
@@ -159,7 +159,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
       if (nonRejectedComponent || (uLog < alphaLog))
       {
         // the likelihood can be 0 wrt the observations because of a non-rejected component (always ok wrt prior)
-        if (nextLogLikelihood == -SpecFunc::MaxNumericalScalar)
+        if (nextLogLikelihood == SpecFunc::LogMinNumericalScalar)
           throw InternalException(HERE) << "Cannot update the (non-accepted) component #" << j << " with null likelihood wrt observations";
 
         logLikelihoodCandidate = nextLogLikelihood;

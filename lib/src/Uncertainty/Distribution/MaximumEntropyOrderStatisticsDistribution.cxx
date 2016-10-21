@@ -213,7 +213,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFac
   if (y < x)
   {
     const NumericalScalar value = computeExponentialFactor(k, y, x);
-    if (value == 0.0) return SpecFunc::MaxNumericalScalar;
+    if (value == 0.0) return SpecFunc::LogMinNumericalScalar;
     return 1.0 / value;
   }
   // Generic part, no approximation here
@@ -463,8 +463,8 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const N
 
   // Early exit if the point is not in the support
   for (UnsignedInteger k = 1; k < dimension; ++ k)
-    if (point[k - 1] > point[k]) return -SpecFunc::MaxNumericalScalar;
-  if (!getRange().numericallyContains(point)) return -SpecFunc::MaxNumericalScalar;
+    if (point[k - 1] > point[k]) return SpecFunc::LogMinNumericalScalar;
+  if (!getRange().numericallyContains(point)) return SpecFunc::LogMinNumericalScalar;
 
   // Early exit for the independent case
   if (hasIndependentCopula())

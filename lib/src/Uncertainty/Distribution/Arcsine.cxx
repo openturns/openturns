@@ -162,7 +162,7 @@ NumericalScalar Arcsine::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxNumericalScalar;
+  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinNumericalScalar;
   return -std::log(M_PI) - 0.5 * (std::log(b_ - x) + std::log(x - a_));
 }
 

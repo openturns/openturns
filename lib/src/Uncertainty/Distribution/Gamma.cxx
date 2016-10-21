@@ -284,7 +284,7 @@ NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
 
   // From textbook, we have log(PDF(x)) =  - lambda * (x - gamma) + (k - 1) * log(x - gamma) + k * log(lambda) - log(Gamma(k))
   const NumericalScalar u = lambda_ * (point[0] - gamma_);
-  if (u <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (u <= 0.0) return SpecFunc::LogMinNumericalScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - lambda * (x - gamma) + (k - 1) * log(lambda * (x - gamma) / k)
   if (k_ >= 6.9707081224932495879) return normalizationFactor_ - u + (k_ - 1.0) * std::log(u / k_);
