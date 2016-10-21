@@ -525,6 +525,15 @@ NumericalSample Distribution::computePDF(const NumericalScalar xMin,
   return getImplementation()->computePDF(xMin, xMax, pointNumber, grid);
 }
 
+/*  Compute the log-PDF of 1D distributions over a regular grid */
+NumericalSample Distribution::computeLogPDF(const NumericalScalar xMin,
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber) const
+{
+  NumericalSample grid;
+  return getImplementation()->computeLogPDF(xMin, xMax, pointNumber, grid);
+}
+
 /*  Compute the CDF of 1D distributions over a regular grid */
 NumericalSample Distribution::computeCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
@@ -833,6 +842,66 @@ Graph Distribution::drawMarginal2DPDF(const UnsignedInteger firstMarginal,
 Graph Distribution::drawPDF() const
 {
   return getImplementation()->drawPDF();
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 */
+Graph Distribution::drawLogPDF(const NumericalScalar xMin,
+			       const NumericalScalar xMax,
+			       const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 */
+Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->drawLogPDF(pointNumber);
+}
+
+/* Draw the log-PDF of a 1D marginal */
+Graph Distribution::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
+					 const NumericalScalar xMin,
+					 const NumericalScalar xMax,
+					 const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph Distribution::drawLogPDF(const NumericalPoint & xMin,
+			       const NumericalPoint & xMax,
+			       const Indices & pointNumber) const
+{
+  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph Distribution::drawLogPDF(const NumericalPoint & xMin,
+			       const NumericalPoint & xMax) const
+{
+  return getImplementation()->drawLogPDF(xMin, xMax);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph Distribution::drawLogPDF(const Indices & pointNumber) const
+{
+  return getImplementation()->drawLogPDF(pointNumber);
+}
+
+/* Draw the log-PDF of a 2D marginal */
+Graph Distribution::drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
+					 const UnsignedInteger secondMarginal,
+					 const NumericalPoint & xMin,
+					 const NumericalPoint & xMax,
+					 const Indices & pointNumber) const
+{
+  return getImplementation()->drawMarginal2DLogPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 or 2 */
+Graph Distribution::drawLogPDF() const
+{
+  return getImplementation()->drawLogPDF();
 }
 
 /* Draw the CDF of the distribution when its dimension is 1 */
