@@ -57,6 +57,7 @@ String MixtureClassifier::__repr__() const
          << " mixture=" << mixture_;
 }
 
+/* Associate a set of points to a class */
 UnsignedInteger MixtureClassifier::classify(const NumericalPoint& inP) const
 {
   if (inP.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the point to classify has dimension=" << inP.getDimension() << " but the classifier expects dimension=" << mixture_.getDimension();
@@ -64,7 +65,7 @@ UnsignedInteger MixtureClassifier::classify(const NumericalPoint& inP) const
   UnsignedInteger bestClass = 0;
   Distribution atom(mixture_.getDistributionCollection()[0]);
   NumericalScalar bestGrade = log(atom.getWeight()) + atom.computeLogPDF(inP);
-  for ( UnsignedInteger classIndex = 1; classIndex < size; ++classIndex )
+  for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     atom = mixture_.getDistributionCollection()[classIndex];
     const NumericalScalar gradeValue = log(atom.getWeight()) + atom.computeLogPDF(inP);
@@ -75,6 +76,40 @@ UnsignedInteger MixtureClassifier::classify(const NumericalPoint& inP) const
     }
   }
   return bestClass;
+}
+
+Indices MixtureClassifier::classifySequential(const NumericalSample & inS) const
+{
+  const UnsignedInteger mixtureSize = mixture_.getDistributionCollection().getSize();
+  const UnsignedInteger size = inS.getSize();
+  NumericalPoint logWeights(mixtureSize);
+  NumericalSample atomsLogPDF(mixtureSize, size);
+  // The expansive part: the computation of the log-PDF, here we benefit
+  // from possible parallelism in computeLogPDF() for each atom
+  for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
+    {
+      const Distribution atom(mixture_.getDistributionCollection()[classIndex]);
+      atomsLogPDF[classIndex] = atom.computeLogPDF(inS).getImplementation()->getData();
+      logWeights[classIndex] = std::log(atom.getWeight());
+    }
+  // Now grade the points
+  // The outer loop is on the classes and the inner loop on the point to
+  // benefit from data locality
+  NumericalPoint bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  Indices bestClasses(size);
+  for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
+    {
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const NumericalScalar grade = logWeights[classIndex] + atomsLogPDF[classIndex][i];
+	  if (grade > bestGrades[i])
+	    {
+	      bestGrades[i] = grade;
+	      bestClasses[i] = classIndex;
+	    } // grade > bestGrades[i]
+	} // for i
+    } // for classIndex
+  return bestClasses;
 }
 
 NumericalScalar MixtureClassifier::grade(const NumericalPoint& inP,

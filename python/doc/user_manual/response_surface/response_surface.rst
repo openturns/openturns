@@ -22,7 +22,13 @@ Non-parametric
     MetaModelResult
     MetaModelValidation
     Classifier
+
+    :template: classWithPlot.rst_t
+
     MixtureClassifier
+
+    :template: class.rst_t
+
     ExpertMixture
 
 .. toctree::

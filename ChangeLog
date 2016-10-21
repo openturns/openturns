@@ -51,6 +51,7 @@
  * Added more options to control LHSExperiment and LowDiscrepancyExperiment
  * Improved the IntervalMesher class: now it takes into account the diamond flag
  * Shortened ResourceMap keys to not contain 'Implementation'
+ * Improved the performance of Classifier/MixtureClassifier/ExpertMixture
 
 === Bug fixes ===
  * #535 (parallel-threads option cannot be changed at runtime with TBB)

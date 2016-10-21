@@ -485,6 +485,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "Matrix-DefaultSmallPivot", 1.0e-7  );
   setAsNumericalScalar( "Matrix-SymmetryThreshold", 1.0e-12 );
 
+  // BernsteinCopulaFactory parameters //
+  setAsBool( "BernsteinCopulaFactory-Parallel", false );
+
   // BurrFactory parameters //
   setAsNumericalScalar( "BurrFactory-AbsolutePrecision", 1.0e-12 );
   setAsNumericalScalar( "BurrFactory-RelativePrecision", 1.0e-12 );
@@ -862,6 +865,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // CholeskyMethod parameters //
   setAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
+
+  // Classifier parameters //
+  setAsBool( "Classifier-Parallel", true);
 
 }
 

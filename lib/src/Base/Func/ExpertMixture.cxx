@@ -20,6 +20,7 @@
  */
 #include "openturns/ExpertMixture.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -108,9 +109,9 @@ Classifier ExpertMixture::getClassifier() const
 /* Operator () */
 NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedInteger inputDimension = experts_[0].getInputDimension();
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a point of dimension=" << inP.getDimension();
-  const UnsignedInteger outputDimension = experts_[0].getOutputDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
   const UnsignedInteger size = experts_.getSize();
   UnsignedInteger bestClass = 0;
   // Build the point (x, f(x)) for the first class and grade it according to the classifier
@@ -136,6 +137,34 @@ NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
   }
   LOGDEBUG(OSS() << "Best class index=" << bestClass << ", best grade=" << bestGrade << ", best value=" << bestValue);
   return bestValue;
+}
+
+NumericalSample ExpertMixture::operator() (const NumericalSample & inS) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a sample of dimension=" << inS.getDimension();
+  const UnsignedInteger size = inS.getSize();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  NumericalSample bestValues(size, outputDimension);
+  const UnsignedInteger expertSize = experts_.getSize();
+  NumericalPoint bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++classIndex)
+  {
+    // Build the point (x, f(x)) for each other class and grade it according to the classifier
+    NumericalSample mixedSample(inS);
+    // Here is the evaluation of the expert over a sample, benefiting from possible
+    // parallelism/vectorization
+    const NumericalSample localValues(experts_[classIndex](inS));
+    mixedSample.stack(localValues);
+    const NumericalPoint grades = classifier_.grade(mixedSample, Indices(size, classIndex));
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (grades[i] > bestGrades[i])
+	{
+	  bestGrades[i] = grades[i];
+	  bestValues[i] = localValues[i];
+	}
+  } // classIndex
+  return bestValues;
 }
 
 /* Accessor for input point dimension */

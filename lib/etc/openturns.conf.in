@@ -218,6 +218,9 @@
   <Matrix-DefaultSmallPivot value="1.0e-7"     />
   <Matrix-SymmetryThreshold value="1.0e-12"    />
 
+  <!-- OT::BernsteinCopulaFactory parameters -->
+  <BernsteinCopulaFactory-Parallel value="true" />
+
   <!-- OT::BurrFactory parameters -->
   <BurrFactory-AbsolutePrecision value="1e-12" />
   <BurrFactory-RelativePrecision value="1e-12" />
@@ -595,6 +598,9 @@
 
   <!-- OT::CholeskyMethod parameters -->
   <CholeskyMethod-LargeCase value="128"/>
+
+  <!-- OT::Classifier parameters -->
+  <Classifier-Parallel value="true" />
 
   <!-- <-your-variable value="its value" /> -->
 </openturns-configuration>

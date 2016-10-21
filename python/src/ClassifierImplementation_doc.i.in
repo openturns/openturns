@@ -127,3 +127,31 @@ verb : bool
 %enddef
 %feature("docstring") OT::ClassifierImplementation::setVerbose
 OT_Classifier_setVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_setParallel_doc
+"Accessor to the parallel flag.
+
+Parameters
+----------
+flag : bool
+    Logical value telling if the classification and grading are done in parallel. 
+"
+%enddef
+%feature("docstring") OT::ClassifierImplementation::setParallel
+OT_Classifier_setParallel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Classifier_isParallel_doc
+"Accessor to the parallel flag.
+
+Returns
+-------
+flag : bool
+    Logical value telling if the parallel mode has been activated.
+"
+%enddef
+%feature("docstring") OT::ClassifierImplementation::isParallel
+OT_Classifier_isParallel_doc
