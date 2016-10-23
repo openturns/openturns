@@ -54,14 +54,14 @@ try:
     idx[3] = x2.index(max(x2))
 
     labels = Description(sample.getSize())
-    for i in xrange(4):
+    for i in range(4):
       labels[idx[i]] = str(idx[i])
 
-    position = Indices (sample.getSize(), 3)
-    position[idx[0]] = 4
-    position[idx[1]] = 2
-    position[idx[2]] = 3
-    position[idx[3]] = 1
+    position = Description(sample.getSize(), "top")
+    position[idx[0]] = "right"
+    position[idx[1]] = "left"
+    position[idx[2]] = "top"
+    position[idx[3]] = "bottom"
 
     myText = Text(sample, labels)
     myText.setColor("red")

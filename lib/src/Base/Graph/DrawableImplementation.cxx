@@ -1398,12 +1398,12 @@ void DrawableImplementation::setTextAnnotations(const Description & textAnnotati
 }
 
 /* Accessor for textPositions */
-Indices DrawableImplementation::getTextPositions() const
+Description DrawableImplementation::getTextPositions() const
 {
   throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }
 
-void DrawableImplementation::setTextPositions(const Indices & textPositions)
+void DrawableImplementation::setTextPositions(const Description & textPositions)
 {
   throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }

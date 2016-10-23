@@ -124,8 +124,8 @@ public:
   void setTextAnnotations(const Description & textAnnotations);
 
   /** Accessor for textPositions */
-  Indices getTextPositions() const;
-  void setTextPositions(const Indices & textPositions);
+  Description getTextPositions() const;
+  void setTextPositions(const Description & textPositions);
 
   /** Accessor for data */
   NumericalSample getData() const;

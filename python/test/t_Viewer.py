@@ -85,14 +85,14 @@ try:
     idx[3] = x2.index(max(x2))
 
     labels = ot.Description(sample2D.getSize())
-    for i in xrange(4):
+    for i in range(4):
       labels[idx[i]] = str(idx[i])
 
-    position = ot.Indices(sample2D.getSize(), 3)
-    position[idx[0]] = 4
-    position[idx[1]] = 2
-    position[idx[2]] = 3
-    position[idx[3]] = 1
+    position = ot.Description(sample2D.getSize(), "top")
+    position[idx[0]] = "right"
+    position[idx[1]] = "left"
+    position[idx[2]] = "top"
+    position[idx[3]] = "bottom"
 
     text = ot.Text(sample2D, labels)
     text.setColor("red")

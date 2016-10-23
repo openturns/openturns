@@ -278,12 +278,12 @@ void Drawable::setTextAnnotations(const Description & textAnnotations)
 }
 
 /* Accessor for textPositions */
-Indices Drawable::getTextPositions() const
+Description Drawable::getTextPositions() const
 {
   return getImplementation()->getTextPositions();
 }
 
-void Drawable::setTextPositions(const Indices & textPositions)
+void Drawable::setTextPositions(const Description & textPositions)
 {
   copyOnWrite();
   getImplementation()->setTextPositions(textPositions);

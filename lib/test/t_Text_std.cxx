@@ -95,11 +95,11 @@ int main(int argc, char *argv[])
     {
       labels[idx[i]] = (OSS() << idx[i]);
     }
-    Indices position(sample.getSize(), 3);
-    position[idx[0]] = 4;
-    position[idx[1]] = 2;
-    position[idx[2]] = 3;
-    position[idx[3]] = 1;
+    Description position(sample.getSize(), "top");
+    position[idx[0]] = "right";
+    position[idx[1]] = "left";
+    position[idx[2]] = "top";
+    position[idx[3]] = "bottom";
 
     Text myText(sample, labels);
     myText.setColor("red");

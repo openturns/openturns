@@ -136,8 +136,8 @@ public:
   virtual void setTextAnnotations(const Description & textAnnotations);
 
   /** Accessor for textPositions */
-  virtual Indices getTextPositions() const;
-  virtual void setTextPositions(const Indices & textPositions);
+  virtual Description getTextPositions() const;
+  virtual void setTextPositions(const Description & textPositions);
 
   /** Bounding box accessor */
   virtual BoundingBox getBoundingBox() const;

@@ -27,6 +27,8 @@
 #include "openturns/Collection.hxx"
 #include "openturns/Description.hxx"
 
+#include <map>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -46,28 +48,30 @@ public:
   /** Default constructor */
   Text(const NumericalSample & data,
        const Description & texts,
-       const UnsignedInteger & textPosition = 3,
+       const String & textPosition = "top",
        const String & legend = "");
 
   /** Constructor from complex numbers */
   Text(const NumericalComplexCollection & data,
        const Description & texts,
-       const UnsignedInteger & textPosition = 3,
+       const String & textPosition = "top",
        const String & legend = "");
 
   /** Contructor from 2 data sets */
   Text(const NumericalSample & dataX,
        const NumericalSample & dataY,
        const Description & texts,
-       const UnsignedInteger & textPosition = 3,
+       const String & textPosition = "top",
        const String & legend = "");
 
   /** Contructor from 2 data sets */
   Text(const NumericalPoint & dataX,
        const NumericalPoint & dataY,
        const Description & texts,
-       const UnsignedInteger & textPosition = 3,
+       const String & textPosition = "top",
        const String & legend = "");
+
+  static Bool IsValidTextPosition(String textPosition);
 
   /** String converter */
   String __repr__() const;
@@ -83,8 +87,8 @@ public:
   void setTextAnnotations(const Description & textAnnotations);
 
   /** Accessors to text position */
-  Indices getTextPositions() const;
-  void setTextPositions(const Indices & textPositions);
+  Description getTextPositions() const;
+  void setTextPositions(const Description & textPositions);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -100,12 +104,19 @@ protected:
   Description textAnnotations_;
 
   /** Text position  */
-  Indices textPositions_;
+  Description textPositions_;
 
 private:
 
   Text() {};
   friend class Factory<Text>;
+
+  /** A map matching text position with R codes */
+  static std::map<String, UnsignedInteger> Position;
+
+  /** Initialize positon map */
+  static void InitializePositionMap();
+  static Bool IsTextFirstInitialization;
 
 }; /* class Text */
 

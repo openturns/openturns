@@ -27,27 +27,31 @@ CLASSNAMEINIT(Text);
 
 static const Factory<Text> Factory_Text;
 
+/* Accepted text position */
+std::map<String, UnsignedInteger> Text::Position;
+Bool Text::IsTextFirstInitialization = true;
+
 /* Default constructor */
 Text::Text(const NumericalSample & data,
            const Description & textAnnotations,
-           const UnsignedInteger & textPosition,
+           const String & textPosition,
            const String & legend)
   : DrawableImplementation(data, legend)
 {
   // Check data validity
   setData(data);
   setTextAnnotations(textAnnotations);
-  if (textPosition == 0 || textPosition > 4)
+  if(!IsValidTextPosition(textPosition))
   {
-    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+    throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
-  textPositions_ = Indices(data_.getSize(), textPosition);
+  textPositions_ = Description(data_.getSize(), textPosition);
 }
 
 /* Constructor from complex numbers */
 Text::Text(const NumericalComplexCollection & data,
            const Description & textAnnotations,
-           const UnsignedInteger & textPosition,
+           const String & textPosition,
            const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
@@ -62,18 +66,18 @@ Text::Text(const NumericalComplexCollection & data,
   // Check data validity
   setData(sample);
   setTextAnnotations(textAnnotations);
-  if (textPosition == 0 || textPosition > 4)
+  if(!IsValidTextPosition(textPosition))
   {
-    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+    throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
-  textPositions_ = Indices(data_.getSize(), textPosition);
+  textPositions_ = Description(data_.getSize(), textPosition);
 }
 
 /* Contructor from 2 data sets */
 Text::Text(const NumericalSample & dataX,
            const NumericalSample & dataY,
            const Description & textAnnotations,
-           const UnsignedInteger & textPosition,
+           const String & textPosition,
            const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
@@ -85,17 +89,17 @@ Text::Text(const NumericalSample & dataX,
   // Check data validity
   setData(dataFull);
   setTextAnnotations(textAnnotations);
-  if (textPosition == 0 || textPosition > 4)
+  if(!IsValidTextPosition(textPosition))
   {
-    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+    throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
-  textPositions_ = Indices(data_.getSize(), textPosition);
+  textPositions_ = Description(data_.getSize(), textPosition);
 }
 
 Text::Text(const NumericalPoint & dataX,
            const NumericalPoint & dataY,
            const Description & textAnnotations,
-           const UnsignedInteger & textPosition,
+           const String & textPosition,
            const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
@@ -110,11 +114,11 @@ Text::Text(const NumericalPoint & dataX,
   // Check data validity
   setData(dataFull);
   setTextAnnotations(textAnnotations);
-  if (textPosition == 0 || textPosition > 4)
+  if(!IsValidTextPosition(textPosition))
   {
-    throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPosition;
+    throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
-  textPositions_ = Indices(data_.getSize(), textPosition);
+  textPositions_ = Description(data_.getSize(), textPosition);
 }
 
 /* String converter */
@@ -143,12 +147,12 @@ void Text::setTextAnnotations(const Description & textAnnotations)
 }
 
 /* Accessors to text position */
-Indices Text::getTextPositions() const
+Description Text::getTextPositions() const
 {
   return textPositions_;
 }
 
-void Text::setTextPositions(const Indices & textPositions)
+void Text::setTextPositions(const Description & textPositions)
 {
   if (textPositions.getSize() != data_.getSize())
   {
@@ -156,9 +160,9 @@ void Text::setTextPositions(const Indices & textPositions)
   }
   for (UnsignedInteger i = 0; i < textPositions.getSize(); ++i)
   {
-    if (textPositions[i] == 0 || textPositions[i] > 4)
+    if(!IsValidTextPosition(textPositions[i]))
     {
-      throw InvalidArgumentException(HERE) << "Expected position is 1 (below), 2 (left), 3 (above) or 4 (right), got " << textPositions[i] << " at index " << i;
+      throw InvalidArgumentException(HERE) << "The given text position = " << textPositions[i] << " is invalid";
     }
   }
   textPositions_ = textPositions;
@@ -180,7 +184,8 @@ String Text::draw() const
    if (textAnnotations_[i] != "")
    {
      oss << "labels[" << (i+1) << "] <- \"" << textAnnotations_[i] << "\"\n";
-     oss << "position[" << (i+1) << "] <- \"" << textPositions_[i] << "\"\n";
+     const std::map<String, UnsignedInteger>::const_iterator it(Position.find(textPositions_[i]));
+     oss << "position[" << (i+1) << "] <- \"" << it->second << "\"\n";
    }
  }
  oss << "indices <- which(labels != \"\")\n";
@@ -212,6 +217,26 @@ void Text::save(Advocate & adv) const
   DrawableImplementation::save(adv);
   adv.saveAttribute( "textAnnotations_", textAnnotations_ );
   adv.saveAttribute( "textPositions_", textPositions_ );
+}
+
+Bool Text::IsValidTextPosition(String textPosition)
+{
+  if(IsTextFirstInitialization)
+  {
+    InitializePositionMap();
+    IsTextFirstInitialization = false;
+  }
+
+  const std::map<String, UnsignedInteger>::const_iterator it(Position.find(textPosition));
+  return (it != Position.end());
+}
+
+void Text::InitializePositionMap()
+{
+  Position["bottom"] = 1;
+  Position["left"] = 2;
+  Position["top"] = 3;
+  Position["right"] = 4;
 }
 
 /* Method load() reloads the object from the StorageManager */

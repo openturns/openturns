@@ -28,11 +28,11 @@ labels = ot.Description(sample.getSize())
 for i in range(4):
   labels[idx[i]] = str(idx[i])
 
-position = ot.Indices(sample.getSize(), 3)
-position[idx[0]] = 4
-position[idx[1]] = 2
-position[idx[2]] = 3
-position[idx[3]] = 1
+position = ot.Description(sample.getSize(), "top")
+position[idx[0]] = "right"
+position[idx[1]] = "left"
+position[idx[2]] = "top"
+position[idx[3]] = "bottom"
 
 annotations = ot.Text(sample, labels)
 annotations.setColor("red")
