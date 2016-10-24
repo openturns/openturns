@@ -702,16 +702,13 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
   const UnsignedInteger covarianceDimension = model.getDimension();
 
   HMatrixFactory hmatrixFactory;
-  NumericalScalar assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
-  NumericalScalar recompressionEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon");
+  HMatrixParameters hmatrixParameters;
 
   while (continuationCondition && (cumulatedScaling < maximalScaling))
   {
     try
     {
-      covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true);
-      covarianceCholeskyFactorHMatrix_.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
-      covarianceCholeskyFactorHMatrix_.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+      covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true, hmatrixParameters);
       if (covarianceDimension == 1)
       {
         CovarianceAssemblyFunction simple(model, normalizedInputSample_, cumulatedScaling);
@@ -731,8 +728,10 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
     {
       cumulatedScaling += scaling ;
       scaling *= 2.0;
-      assemblyEpsilon /= 10.0 ;
-      recompressionEpsilon /= 10.0;
+      NumericalScalar assemblyEpsilon = hmatrixParameters.getAssemblyEpsilon() / 10.0;
+      hmatrixParameters.setAssemblyEpsilon(assemblyEpsilon);
+      NumericalScalar recompressionEpsilon = hmatrixParameters.getRecompressionEpsilon() / 10.0;
+      hmatrixParameters.setRecompressionEpsilon(recompressionEpsilon);
       LOGDEBUG(OSS() <<  "Currently, scaling up to "  << cumulatedScaling << " to get an admissible covariance. Maybe compression & recompression factors are not adapted.");
       LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );
       LOGDEBUG(OSS() <<  "Currently, recompression epsilon "  <<  recompressionEpsilon);

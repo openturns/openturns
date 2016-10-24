@@ -23,6 +23,7 @@
 #define OPENTURNS_HMATRIXFACTORY_HXX
 
 #include "openturns/OTprivate.hxx"
+#include "openturns/HMatrixParameters.hxx"
 #include "openturns/PersistentObject.hxx"
 
 
@@ -50,7 +51,7 @@ public:
   virtual HMatrixFactory * clone() const;
 
   /** Method to create an HMatrix object */
-  HMatrix build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric);
+  HMatrix build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters = HMatrixParameters());
 
   /** Tell whether HMat support is available */
   static Bool IsAvailable();
