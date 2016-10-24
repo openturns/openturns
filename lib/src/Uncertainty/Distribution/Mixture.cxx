@@ -626,7 +626,7 @@ NumericalPoint Mixture::getSingularities() const
   //    bound at the last position
   std::sort(singularities.begin(), singularities.end());
   // 2) Remove the duplicates and the upper bound in a unique pass
-  singularities.erase(singularities.unique(singularities.begin(), singularities.end()) - 1, singularities.end());
+  singularities.erase(std::unique(singularities.begin(), singularities.end()) - 1, singularities.end());
   // 3) Remove the lower bound
   singularities.erase(singularities.begin(), singularities.begin() + 1);
   return singularities;
