@@ -450,13 +450,17 @@ class View(object):
                     if len(text) == 0: continue
                     horizontal = horizontal_default
                     vertical = vertical_default
-                    if positions[i] == 2:
+                    # Text.getTextPositions() describes position of text with respect
+                    # to given coordinates;  in matplotlib, positional argument controls
+                    # which side of the text bounding box is positioned, its meaning is
+                    # thus inverted.
+                    if positions[i] == 'left':
                         horizontal='right'
-                    elif positions[i] == 4:
+                    elif positions[i] == 'right':
                         horizontal='left'
-                    if positions[i] == 3:
+                    elif positions[i] == 'top':
                         vertical='bottom'
-                    elif positions[i] == 1:
+                    elif positions[i] == 'bottom':
                         vertical='top'
                     self._ax[0].text(x[i][0], y[i][0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
 
