@@ -1,0 +1,4 @@
+Run test_computeLogPDF... SUCCESS
+Run test_computeLogPDF_1D_case... SUCCESS
+Run test_computeLogPDF_diagonal_case... SUCCESS
+Run test_getSample_getMean... SUCCESS

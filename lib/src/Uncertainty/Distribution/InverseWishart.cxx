@@ -41,6 +41,7 @@ InverseWishart::InverseWishart()
   setName("InverseWishart");
   setV(CovarianceMatrix(1));
   computeRange();
+  update();
 }
 
 /* Parameters constructor */
@@ -143,10 +144,9 @@ CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
     // The off-diagonal elements are normaly distributed
     for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
   }
-  const TriangularMatrix M((A.solveLinearSystem(cholesky_)).getImplementation());
-  return (M.transpose() * M).getImplementation();
+  const TriangularMatrix M((A.solveLinearSystem(inverseCholeskyInverse_)).getImplementation());
+  return (M.computeGram()).getImplementation();
 }
-
 
 /* Get the PDF of the distribution */
 NumericalScalar InverseWishart::computePDF(const CovarianceMatrix & m) const
@@ -338,6 +338,7 @@ Description InverseWishart::getParameterDescription() const
 /* V accessor */
 void InverseWishart::setV(const CovarianceMatrix & v)
 {
+  const UnsignedInteger p = v.getDimension();
   try
   {
     cholesky_ = CovarianceMatrix(v).computeCholesky();
@@ -346,7 +347,10 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   {
     throw InvalidArgumentException(HERE) << "Error: V must be positive definite";
   }
-  const UnsignedInteger p = cholesky_.getDimension();
+  TriangularMatrix T((cholesky_.solveLinearSystem(IdentityMatrix(p))).getImplementation());
+  CovarianceMatrix vInverse((cholesky_.transpose().solveLinearSystem(T)).getImplementation());
+  TriangularMatrix vInverseCholesky((CovarianceMatrix(vInverse).computeCholesky()).getImplementation());
+  inverseCholeskyInverse_ = TriangularMatrix((vInverseCholesky.solveLinearSystem(IdentityMatrix(p))).getImplementation());
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -392,6 +396,7 @@ void InverseWishart::save(Advocate & adv) const
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "nu_", nu_ );
+  adv.saveAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
 }
 
@@ -401,7 +406,8 @@ void InverseWishart::load(Advocate & adv)
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "nu_", nu_ );
-  adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
+  adv.loadAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );
+  adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
   computeRange();
 }
 
