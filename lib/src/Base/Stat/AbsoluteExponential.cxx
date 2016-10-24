@@ -85,7 +85,7 @@ Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
   if (norm1 == 0.0)
   {
     Matrix gradient(spatialDimension_, 1);
-    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] / scale_[i];
+    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     return gradient;
   }
   // General case
@@ -94,8 +94,8 @@ Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
   NumericalPoint factor(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
-    factor[i] = amplitude_[0] / scale_[i];
-    if (tau[i] < 0) factor[i] *= -1.0;
+    factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
+    if (tau[i] > 0) factor[i] *= -1.0;
   }
   return Matrix(spatialDimension_, 1, factor * value) ;
 }
