@@ -36,21 +36,22 @@ static const Factory<SphericalModel> Factory_SphericalModel;
 /* Constructor from spatial dimension */
 SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   : StationaryCovarianceModel(spatialDimension)
-  , a_(1.0)
+  , radius_(1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Constructor with parameters */
 SphericalModel::SphericalModel(const NumericalPoint & scale,
                                const NumericalPoint & amplitude,
-                               const NumericalScalar a)
-  : StationaryCovarianceModel(amplitude, scale)
-  , a_(a)
+                               const NumericalScalar radius)
+  : StationaryCovarianceModel(scale, amplitude)
+  , radius_(-1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
-  if (a <= 0)
-    throw InvalidArgumentException(HERE) << "In SphericalModel::SphericalModel, the ray parameter a should be stricly positive. Here, got (a=" << a << ")";
+  setRadius(radius);
+  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Virtual constructor */
@@ -72,7 +73,7 @@ NumericalScalar SphericalModel::computeAsScalar(const NumericalPoint & tau) cons
 }
 
 /* Computation of the representative function:
- * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| (3 - (|tau/scale| / a)^2)) for 0<=|tau/scale|<=a, 0 otherwise
+ * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| (3 - (|tau/scale| / radius)^2)) for 0<=|tau/scale|<=radius, 0 otherwise
  */
 NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoint & tau) const
 {
@@ -80,7 +81,7 @@ NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoi
     throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar normTauOverScaleA = tauOverTheta.norm() / a_;
+  const NumericalScalar normTauOverScaleA = tauOverTheta.norm() / radius_;
   if (normTauOverScaleA <= SpecFunc::NumericalScalarEpsilon) return 1.0 + nuggetFactor_;
   if (normTauOverScaleA >= 1.0) return 0.0;
   return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
@@ -111,15 +112,38 @@ Bool SphericalModel::isStationary() const
   return true;
 }
 
+void SphericalModel::setFullParameter(const NumericalPoint & parameter)
+{
+  CovarianceModelImplementation::setFullParameter(parameter);
+  setRadius(parameter[parameter.getSize() - 1]);
+}
+
+NumericalPoint SphericalModel::getFullParameter() const
+{
+  // Get the generic parameter
+  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  // Add the specific one
+  parameter.add(radius_);
+  return parameter;
+}
+
+Description SphericalModel::getFullParameterDescription() const
+{
+  // Description of the generic parameter
+  Description description(CovarianceModelImplementation::getFullParameterDescription());
+  // Description of the specific parameter
+  description.add("radius");
+  return description;
+}
+
 /* String converter */
 String SphericalModel::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << SphericalModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
-      << " a=" << a_;
+  oss << "class=" << SphericalModel::GetClassName()
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
+      << " radius=" << radius_;
   return oss;
 }
 
@@ -128,26 +152,37 @@ String SphericalModel::__str__(const String & offset) const
 {
   OSS oss;
   oss << SphericalModel::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
-      << ", a=" << a_
+      << "(scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
+      << ", radius=" << radius_
       << ")";
   return oss;
+}
+
+/* Radius accessor */
+NumericalScalar SphericalModel::getRadius() const
+{
+  return radius_;
+}
+
+void SphericalModel::setRadius(const NumericalScalar radius)
+{
+  if (radius <= 0.0) throw InvalidArgumentException(HERE) << "Error: the radius must be positive.";
+  radius_ = radius;
 }
 
 /* Method save() stores the object through the StorageManager */
 void SphericalModel::save(Advocate & adv) const
 {
   StationaryCovarianceModel::save(adv);
-  adv.saveAttribute("a_", a_);
+  adv.saveAttribute("radius_", radius_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SphericalModel::load(Advocate & adv)
 {
   StationaryCovarianceModel::load(adv);
-  adv.loadAttribute("a_", a_);
+  adv.loadAttribute("radius_", radius_);
 }
 
 END_NAMESPACE_OPENTURNS

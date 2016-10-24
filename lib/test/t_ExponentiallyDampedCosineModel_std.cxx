@@ -31,8 +31,6 @@ int main(int argc, char *argv[])
 
   try
   {
-    /* Spatial dimension of the model */
-    UnsignedInteger spatialDimension = 1;
     /* Amplitude values */
     NumericalPoint amplitude(1, 1.0);
     /* Scale values */

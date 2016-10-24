@@ -38,18 +38,19 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   : StationaryCovarianceModel(spatialDimension)
   , frequency_(1.0)
 {
-  // Nothing to do
+  activeParameter_.add(activeParameter_.getSize());// add f
 }
 
 /** Standard constructor with amplitude and scale parameters */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & scale,
     const NumericalPoint & amplitude,
     const NumericalScalar frequency)
-  : StationaryCovarianceModel(amplitude, scale)
+  : StationaryCovarianceModel(scale, amplitude)
   , frequency_(0.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
   setFrequency(frequency);
+  activeParameter_.add(activeParameter_.getSize());// add f
 }
 
 /* Virtual constructor */
@@ -119,10 +120,9 @@ Bool ExponentiallyDampedCosineModel::isStationary() const
 String ExponentiallyDampedCosineModel::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName()
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " frequency=" << frequency_;
   return oss;
 }
@@ -131,24 +131,48 @@ String ExponentiallyDampedCosineModel::__repr__() const
 String ExponentiallyDampedCosineModel::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
-      << " frequency=" << frequency_;
+  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName()
+      << "(scale=" << scale_
+      << ", amplitude=" << amplitude_
+      << ", frequency=" << frequency_
+      << ")";
   return oss;
 }
 
 /* Frequency accessor */
+void ExponentiallyDampedCosineModel::setFrequency(const NumericalScalar frequency)
+{
+  if (frequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
+  frequency_ = frequency;
+}
+
 NumericalScalar ExponentiallyDampedCosineModel::getFrequency() const
 {
   return frequency_;
 }
 
-void ExponentiallyDampedCosineModel::setFrequency(const NumericalScalar frequency)
+void ExponentiallyDampedCosineModel::setFullParameter(const NumericalPoint & parameter)
 {
-  if (frequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
-  frequency_ = frequency;
+  CovarianceModelImplementation::setFullParameter(parameter);
+  setFrequency(parameter[parameter.getSize() - 1]);
+}
+
+NumericalPoint ExponentiallyDampedCosineModel::getFullParameter() const
+{
+  // Get the generic parameter
+  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  // Add the specific one
+  parameter.add(frequency_);
+  return parameter;
+}
+
+Description ExponentiallyDampedCosineModel::getFullParameterDescription() const
+{
+  // Description of the generic parameter
+  Description description(CovarianceModelImplementation::getFullParameterDescription());
+  // Description of the specific parameter
+  description.add("frequency");
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */

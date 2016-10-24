@@ -4,9 +4,9 @@
 Available constructors:
     SquaredExponential(*spatialDim=1*)
 
-    SquaredExponential(*theta*)
+    SquaredExponential(*scale*)
 
-    SquaredExponential(*theta, sigma*)
+    SquaredExponential(*scale, amplitude*)
 
 Parameters
 ----------
@@ -14,12 +14,10 @@ spatialDim : int
     Spatial dimension :math:`n`.
     When not fulfilled, the spatial dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
     By default, equal to 1.
-
-theta : sequence of floats
+scale : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
     The size of :math:`\vect{\theta}` is the spatial dimension.
-
-sigma : sequence of positive floats
+amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.

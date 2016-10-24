@@ -49,11 +49,11 @@ public:
   explicit ExponentialModel(const UnsignedInteger spatialDimension = 1);
 
 
-  /** Standard constructor with amplitude and scale parameters parameters */
+  /** Standard constructor with scale and amplitude parameters parameters */
   ExponentialModel(const NumericalPoint & scale,
                    const NumericalPoint & amplitude);
 
-  /** Standard constructor with amplitude, scale and spatial correlation parameters */
+  /** Standard constructor with scale, amplitude and spatial correlation parameters */
   ExponentialModel(const NumericalPoint & scale,
                    const NumericalPoint & amplitude,
                    const CorrelationMatrix & spatialCorrelation);

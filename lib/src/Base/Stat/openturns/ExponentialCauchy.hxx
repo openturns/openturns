@@ -47,9 +47,9 @@ public:
   /** Default constructor without parameters */
   ExponentialCauchy();
 
-  /** Standard constructor with amplitude and scale parameters parameters */
-  ExponentialCauchy(const NumericalPoint & amplitude,
-                    const NumericalPoint & scale);
+  /** Standard constructor with scale and amplitude parameters parameters */
+  ExponentialCauchy(const NumericalPoint & scale,
+                    const NumericalPoint & amplitude);
 
   /** Virtual copy constructor */
   virtual ExponentialCauchy * clone() const;

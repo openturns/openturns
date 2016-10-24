@@ -17,7 +17,7 @@ try:
     scale = NumericalPoint(defaultDimension, 1.0)
 
     # Second order model with parameters
-    myModel = ExponentialCauchy(amplitude, scale)
+    myModel = ExponentialCauchy(scale, amplitude)
     print("myModel = ", myModel)
 
     # checking the copy-cast*/

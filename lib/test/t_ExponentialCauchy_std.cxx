@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     /* Second order model with parameters */
-    ExponentialCauchy myModel(amplitude, scale);
+    ExponentialCauchy myModel(scale, amplitude);
     fullprint << "myModel = " << myModel << std::endl;
 
     const NumericalScalar frequencyValueOne = 1.0;

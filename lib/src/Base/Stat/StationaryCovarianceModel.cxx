@@ -40,45 +40,19 @@ StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spati
   // Nothing to do
 }
 
-/* Constructor with parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
+/** Standard constructor with scale and amplitude parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & scale,
+    const NumericalPoint & amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
+{
+  // Nothing to do
+}
+
+/** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
+StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & scale,
     const NumericalPoint & amplitude,
-    const NumericalPoint & scale)
-  : CovarianceModelImplementation(spatialDimension, amplitude, scale)
-{
-  // Nothing to do
-}
-
-/** Standard constructor with amplitude and scale parameters parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & amplitude,
-    const NumericalPoint & scale)
-  : CovarianceModelImplementation(amplitude, scale)
-{
-  // Nothing to do
-}
-
-StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude,
-    const NumericalPoint & scale,
     const CorrelationMatrix & spatialCorrelation)
-  : CovarianceModelImplementation(spatialDimension, amplitude, scale, spatialCorrelation)
-{
-  // Nothing to do
-}
-
-/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const NumericalPoint & amplitude,
-    const NumericalPoint & scale,
-    const CorrelationMatrix & spatialCorrelation)
-  : CovarianceModelImplementation(amplitude, scale, spatialCorrelation)
-{
-  // Nothing to do
-}
-
-StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & scale,
-    const CovarianceMatrix & spatialCovariance)
-  : CovarianceModelImplementation(spatialDimension, scale, spatialCovariance)
+  : CovarianceModelImplementation(scale, amplitude, spatialCorrelation)
 {
   // Nothing to do
 }

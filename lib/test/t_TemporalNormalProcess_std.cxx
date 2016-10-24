@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     NumericalPoint scale(defaultDimension, 1.0);
 
     /* Second order model with parameters */
-    ExponentialCauchy myModel(amplitude, scale);
+    ExponentialCauchy myModel(scale, amplitude);
     fullprint << "myModel=" << myModel << std::endl;
 
     /* checking the copy-cast*/

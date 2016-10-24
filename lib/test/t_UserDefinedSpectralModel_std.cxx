@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     }
 
     /* Sample a CauchyModel */
-    CauchyModel referenceModel(amplitude, scale, spatialCorrelation);
+    CauchyModel referenceModel(scale, amplitude, spatialCorrelation);
 
     UnsignedInteger size = 5;
     UserDefinedSpectralModel::HermitianMatrixCollection dspCollection(size);

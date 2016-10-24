@@ -14,7 +14,7 @@ try:
     timeGrid = RegularGrid(0.0, 0.1, size)
     amplitude = NumericalPoint(dimension, 2.0)
     scale = NumericalPoint(dimension, 1.0)
-    model = ExponentialCauchy(amplitude, scale)
+    model = ExponentialCauchy(scale, amplitude)
     myProcess = SpectralNormalProcess(model, timeGrid)
 
     # Create a Process sample

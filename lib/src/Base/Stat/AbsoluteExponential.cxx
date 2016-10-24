@@ -31,22 +31,22 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on spatial dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")), NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & scale)
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta,
-    const NumericalPoint & sigma)
-  : StationaryCovarianceModel(sigma, theta)
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & scale,
+    const NumericalPoint & amplitude)
+  : StationaryCovarianceModel(scale, amplitude)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
@@ -105,9 +105,8 @@ String AbsoluteExponential::__repr__() const
 {
   OSS oss;
   oss << "class=" << AbsoluteExponential::GetClassName()
-      << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_;
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_;
   return oss;
 }
 
@@ -116,9 +115,8 @@ String AbsoluteExponential::__str__(const String & offset) const
 {
   OSS oss;
   oss << AbsoluteExponential::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << "(scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ")";
   return oss;
 }

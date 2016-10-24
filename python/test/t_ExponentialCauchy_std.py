@@ -25,7 +25,7 @@ try:
     print("myDefautModel = ", myDefautModel)
 
     # Second order model with parameters
-    myModel = ExponentialCauchy(amplitude, scale)
+    myModel = ExponentialCauchy(scale, amplitude)
     print("myModel = ", myModel)
 
     timeValueOne = 1.

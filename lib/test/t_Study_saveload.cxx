@@ -603,8 +603,8 @@ int main(int argc, char *argv[])
       const UnsignedInteger spatialDimension = 1;
       NumericalPoint amplitude(defaultDimension, 1.0);
       NumericalPoint scale(spatialDimension, 1.0);
-      cauchyModel = CauchyModel (amplitude, scale);
-      exponentialCauchy = ExponentialCauchy (amplitude, scale);
+      cauchyModel = CauchyModel (scale, amplitude);
+      exponentialCauchy = ExponentialCauchy (scale, amplitude);
       absoluteExponential = AbsoluteExponential(scale, amplitude);
     }
     study.add("cauchyModel", cauchyModel);

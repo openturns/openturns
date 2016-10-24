@@ -31,45 +31,39 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta")), NumericalPoint(1, 1.0))
   , nu_(ResourceMap::GetAsNumericalScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(NumericalPoint(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta") ))
 {
   // Compute the normalization factor
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
+  activeParameter_.add(activeParameter_.getSize());// add nu
 }
 
 /** Parameters constructor */
-MaternModel::MaternModel(const NumericalPoint & theta,
+MaternModel::MaternModel(const NumericalPoint & scale,
                          const NumericalScalar nu)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
-  , nu_(nu)
-  , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
+  , nu_(0.0)
+  , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
 {
-  initialize();
+  setNu(nu);
+  activeParameter_.add(activeParameter_.getSize());// add nu
 }
 
 /** Parameters constructor */
-MaternModel::MaternModel(const NumericalPoint & theta,
-                         const NumericalPoint & sigma,
+MaternModel::MaternModel(const NumericalPoint & scale,
+                         const NumericalPoint & amplitude,
                          const NumericalScalar nu)
-  : StationaryCovarianceModel(sigma, theta)
-  , nu_(nu)
-  , sqrt2nuOverTheta_(NumericalPoint(theta.getDimension(), 0.0))
+  : StationaryCovarianceModel(scale, amplitude)
+  , nu_(0.0)
+  , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getDimension() << ")";
-  initialize();
-}
-
-void MaternModel::initialize()
-{
-  if (nu_ <= 0.0) throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, nu must be positive, here nu=" << nu_;
-  // Compute the normalization factor
-  logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
-  // Compute usefull scaling factor
-  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+  setNu(nu);
+  activeParameter_.add(activeParameter_.getSize());// add nu
 }
 
 /* Virtual constructor */
@@ -132,14 +126,37 @@ void MaternModel::setScale(const NumericalPoint & scale)
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
 }
 
+void MaternModel::setFullParameter(const NumericalPoint & parameter)
+{
+  CovarianceModelImplementation::setFullParameter(parameter);
+  setNu(parameter[parameter.getSize() - 1]);
+}
+
+NumericalPoint MaternModel::getFullParameter() const
+{
+  // Get the generic parameter
+  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  // Add the specific one
+  parameter.add(nu_);
+  return parameter;
+}
+
+Description MaternModel::getFullParameterDescription() const
+{
+  // Description of the generic parameter
+  Description description(CovarianceModelImplementation::getFullParameterDescription());
+  // Description of the specific parameter
+  description.add("nu");
+  return description;
+}
+
 /* String converter */
 String MaternModel::__repr__() const
 {
   OSS oss;
   oss << "class=" << MaternModel::GetClassName()
-      << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_
       << " nu=" << nu_;
   return oss;
 }
@@ -149,12 +166,30 @@ String MaternModel::__str__(const String & offset) const
 {
   OSS oss;
   oss << MaternModel::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << "(scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ", nu=" << nu_
       << ")";
   return oss;
+}
+
+/* Nu accessor */
+NumericalScalar MaternModel::getNu() const
+{
+  return nu_;
+}
+
+void MaternModel::setNu(const NumericalScalar nu)
+{
+  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive.";
+  if (!(nu == nu_))
+  {
+    nu_ = nu;
+    // Compute the normalization factor
+    logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
+    // Compute usefull scaling factor
+    for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+  }
 }
 
 /* Method save() stores the object through the StorageManager */
