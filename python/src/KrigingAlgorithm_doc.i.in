@@ -85,6 +85,11 @@ where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y
 
 where :math:`\Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_N))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}_N)  \right)` is a matrix in :math:`\cM_{p,NP}(\Rset)` and :math:`\vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})`.
 
+A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
+with :func:`setNoise()`:
+
+.. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
+
 Examples
 --------
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
@@ -231,4 +236,44 @@ Notes
 -----
 It computes the kriging response surface and creates a
 :class:`~openturns.KrigingResult` structure containing all the results."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::setOptimizeParameters
+"Accessor to the covariance model parameters optimization flag.
+
+Parameters
+----------
+optimizeParameters : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getOptimizeParameters
+"Accessor to the covariance model parameters optimization flag.
+
+Returns
+-------
+optimizeParameters : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::setNoise
+"Observation noise variance accessor.
+
+Parameters
+----------
+noise : sequence of positive float
+    The noise variance :math:`\tau_k^2` of each output value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getNoise
+"Observation noise variance accessor.
+
+Returns
+-------
+noise : sequence of positive float
+    The noise variance :math:`\tau_k^2` of each output value."
 

@@ -279,6 +279,27 @@ NumericalMathFunction KrigingAlgorithm::getLogLikelihoodFunction()
   return glmAlgo_.getObjectiveFunction();
 }
 
+/* Optimize parameters flag accessor */
+Bool KrigingAlgorithm::getOptimizeParameters() const
+{
+  return glmAlgo_.getOptimizeParameters();
+}
+
+void KrigingAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
+{
+  glmAlgo_.setOptimizeParameters(optimizeParameters);
+}
+
+/** Observation noise accessor */
+void KrigingAlgorithm::setNoise(const NumericalPoint & noise)
+{
+  glmAlgo_.setNoise(noise);
+}
+
+NumericalPoint KrigingAlgorithm::getNoise() const
+{
+  return glmAlgo_.getNoise();
+}
 
 /* Method save() stores the object through the StorageManager */
 void KrigingAlgorithm::save(Advocate & adv) const

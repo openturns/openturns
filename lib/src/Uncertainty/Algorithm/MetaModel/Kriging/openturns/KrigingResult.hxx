@@ -55,8 +55,8 @@ public:
   KrigingResult();
 
   /** Parameter constructor without any cholesky factor*/
-  KrigingResult(const NumericalSample & inputData,
-                const NumericalSample & outputData,
+  KrigingResult(const NumericalSample & inputSample,
+                const NumericalSample & outputSample,
                 const NumericalMathFunction & metaModel,
                 const NumericalPoint & residuals,
                 const NumericalPoint & relativeErrors,
@@ -66,8 +66,8 @@ public:
                 const NumericalSample & covarianceCoefficients);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
-  KrigingResult(const NumericalSample & inputData,
-                const NumericalSample & outputData,
+  KrigingResult(const NumericalSample & inputSample,
+                const NumericalSample & outputSample,
                 const NumericalMathFunction & metaModel,
                 const NumericalPoint & residuals,
                 const NumericalPoint & relativeErrors,
@@ -84,6 +84,10 @@ public:
   /** String converter */
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
+
+  /** Design accessors */
+  virtual NumericalSample getInputSample() const;
+  virtual NumericalSample getOutputSample() const;
 
   /** Trend basis accessor */
   virtual BasisCollection getBasisCollection() const;
@@ -138,10 +142,12 @@ private:
   friend struct KrigingResultCrossCovarianceFunctor;
 
   /** inputData should be keeped*/
-  NumericalSample inputData_;
+  NumericalSample inputSample_;
 
   /** input transformed data: store data*/
-  NumericalSample inputTransformedData_;
+  NumericalSample inputTransformedSample_;
+
+  NumericalSample outputSample_;
 
   /** inputTransformation ==> iso-probabilistic transformation */
   NumericalMathFunction inputTransformation_;

@@ -88,7 +88,7 @@ The *GeneralizedLinearModelAlgorithm* class estimates the coefficients :math:`\a
 
 Note that the parameters :math:`(\mat{R}, \vect{\lambda})` are not optimized: they are fixed to the values specified by the User.
 
-If a normalizing transformation *T* has been used, the meta model is bilt on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
+If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
 
  **Estimation of the parameters** :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}`
 
@@ -160,6 +160,11 @@ It is also possible to proceed as follows:
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
 This implementation, which is based on a sparse representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralizedLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
+
+A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
+with :func:`setNoise()`:
+
+.. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
 
 Examples
 --------
@@ -302,5 +307,45 @@ algorithm : :class:`~openturns.OptimizationSolver`
 Parameters
 ----------
 algorithm : :class:`~openturns.OptimizationSolver`
-    Solver used to optimize the covariance model parameters.
-"
+    Solver used to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizeParameters
+"Accessor to the covariance model parameters optimization flag.
+
+Parameters
+----------
+optimizeParameters : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizeParameters
+"Accessor to the covariance model parameters optimization flag.
+
+Returns
+-------
+optimizeParameters : bool
+    Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setNoise
+"Observation noise variance accessor.
+
+Parameters
+----------
+noise : sequence of positive float
+    The noise variance :math:`\tau_k^2` of each output value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getNoise
+"Observation noise variance accessor.
+
+Parameters
+----------
+noise : sequence of positive float
+    The noise variance :math:`\tau_k^2` of each output value."
+
