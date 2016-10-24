@@ -67,6 +67,13 @@ public:
   /** Row filter flag accessor */
   Bool hasRowFilter() const;
 
+  /** Weight accessor */
+  void setWeight(const NumericalPoint & weight);
+  NumericalPoint getWeight() const;
+
+  /** Weight flag accessor */
+  Bool hasWeight() const;
+
 protected:
   void initialize();
 
@@ -85,8 +92,8 @@ protected:
   /** Filter on the rows of the design matrix */
   Indices rowFilter_;
 
-  /** Flag to tell if the rows must be filtered */
-  Bool hasRowFilter_;
+  /** Weight on each basis function */
+  NumericalPoint weight_;
 
 }; /* class DesignProxy */
 
