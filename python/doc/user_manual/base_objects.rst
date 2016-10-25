@@ -59,6 +59,9 @@ Matrices
     SymmetricMatrix
     TriangularMatrix
     TriangularComplexMatrix
+    HMatrixParameters
+    HMatrixFactory
+    HMatrix
 
 Tensors
 =======

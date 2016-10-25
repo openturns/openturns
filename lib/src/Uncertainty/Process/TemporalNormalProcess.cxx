@@ -170,20 +170,18 @@ void TemporalNormalProcess::initialize() const
   // The regularization is needed for fast decreasing covariance models
   const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-StartingScaling");
   const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-MaximalScaling");
-  NumericalScalar assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
-  NumericalScalar recompressionEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
+  HMatrixFactory hmatFactory;
+  HMatrixParameters hmatrixParameters;
+
   while (continuationCondition && (cumulatedScaling < maximalScaling))
   {
     // Unroll the regularization to optimize the computation
     if (samplingMethod_ == 1)
     {
       LOGINFO(OSS() << "Assemble and factor the covariance matrix");
-      HMatrixFactory hmatFactory;
-      covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getDimension(), true);
-      covarianceHMatrix_.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
-      covarianceHMatrix_.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+      covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getDimension(), true, hmatrixParameters);
       if (covarianceModel_.getDimension() == 1)
       {
         CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices(), cumulatedScaling);
@@ -203,8 +201,10 @@ void TemporalNormalProcess::initialize() const
       {
         cumulatedScaling += scaling ;
         scaling *= 2.0;
-        assemblyEpsilon /= 10.0 ;
-        recompressionEpsilon /= 10.0;
+        NumericalScalar assemblyEpsilon = hmatrixParameters.getAssemblyEpsilon() / 10.0;
+        hmatrixParameters.setAssemblyEpsilon(assemblyEpsilon);
+        NumericalScalar recompressionEpsilon = hmatrixParameters.getRecompressionEpsilon() / 10.0;
+        hmatrixParameters.setRecompressionEpsilon(recompressionEpsilon);
         LOGDEBUG(OSS() <<  "Currently, scaling up to "  << cumulatedScaling << " to get an admissible covariance. Maybe compression & recompression factors are not adapted.");
         LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );
         LOGDEBUG(OSS() <<  "Currently, recompression epsilon "  <<  recompressionEpsilon);

@@ -56,11 +56,13 @@ int main(int argc, char *argv[])
   {
     ResourceMap::SetAsBool("HMatrix-ForceSequential", true);
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 10);
-    ResourceMap::SetAsNumericalScalar("HMatrix-AssemblyEpsilon", 1.e-6);
-    ResourceMap::SetAsNumericalScalar("HMatrix-RecompressionEpsilon", 1.e-6);
 
     HMatrixFactory hmatrixFactory;
     if (!hmatrixFactory.IsAvailable()) throw NotYetImplementedException(HERE);
+
+    HMatrixParameters hmatrixParameters;
+    hmatrixParameters.setAssemblyEpsilon(1.e-6);
+    hmatrixParameters.setRecompressionEpsilon(1.e-6);
 
     const UnsignedInteger n = 30;
 
@@ -75,7 +77,7 @@ int main(int argc, char *argv[])
 
     TestHMatrixRealAssemblyFunction simpleAssembly(vertices, 10.0);
     // Non-symmetric HMatrix
-    HMatrix hmat(hmatrixFactory.build(vertices, 1, false));
+    HMatrix hmat(hmatrixFactory.build(vertices, 1, false, hmatrixParameters));
     hmat.assemble(simpleAssembly, 'N');
 
     hmat.factorize("LU");

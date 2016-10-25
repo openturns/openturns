@@ -71,7 +71,8 @@ class OT_API HMatrixTensorRealAssemblyFunction
 public:
   virtual ~HMatrixTensorRealAssemblyFunction() {}
 
-  HMatrixTensorRealAssemblyFunction(UnsignedInteger outputDimension) : dimension_(outputDimension) {}
+  HMatrixTensorRealAssemblyFunction(const UnsignedInteger outputDimension)
+  : dimension_(outputDimension) {}
 
   UnsignedInteger getDimension() const
   {

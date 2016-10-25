@@ -77,6 +77,8 @@
  * #845 (Wrong comparison operator for interface classes with derivative implementation classes)
  * #849 (Ambiguous NumericalSample::computeQuantile)
  * #853 (Switch the default for normalize boolean from TRUE to FALSE in ot.GeneralizedLinearModelAlgorithm)
+ * #861 (document HMatrix classes)
+
 == 1.7 release (2016-01-27) == #release-1.7
 
 === Library ===

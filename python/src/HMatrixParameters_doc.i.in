@@ -1,4 +1,4 @@
-%define OT_HMatrixParameters_doc
+%feature("docstring") OT::HMatrixParameters
 "Parameters for HMatrix class.
 
 Notes
@@ -6,64 +6,105 @@ Notes
 This class regroups the parameters used by :class:`~openturns.HMatrix`
 "
 
-%enddef
-%feature("docstring") OT::HMatrixParameters
-OT_HMatrixParameters_doc
-
 // ---------------------------------------------------------------------
 
-%define OT_HMatrixParameters_getAssemblyEpsilon_doc
+%feature("docstring") OT::HMatrixParameters::getAssemblyEpsilon
 "Return the epsilon used for the assembly.
 
 Returns
 -------
 epsilon : float
-    assembly epsilon for HMatrix.
-"
-%enddef
-%feature("docstring") OT::HMatrixParameters::getAssemblyEpsilon
-OT_HMatrixParameters_getAssemblyEpsilon_doc
+    assembly epsilon for HMatrix."
 
 // ---------------------------------------------------------------------
 
-%define OT_HMatrixParameters_setAssemblyEpsilon_doc
+%feature("docstring") OT::HMatrixParameters::setAssemblyEpsilon
 "Set the epsilon used for the assembly.
 
 Parameters
 ----------
 epsilon : float
-    assembly epsilon for HMatrix.
-"
-%enddef
-%feature("docstring") OT::HMatrixParameters::setAssemblyEpsilon
-OT_HMatrixParameters_setAssemblyEpsilon_doc
+    assembly epsilon for HMatrix."
+
 // ---------------------------------------------------------------------
 
-%define OT_HMatrixParameters_getRecompressionEpsilon_doc
+%feature("docstring") OT::HMatrixParameters::getRecompressionEpsilon
 "Return the epsilon used for the recompression.
 
 Returns
 -------
 epsilon : float
-    recompression epsilon for HMatrix.
-"
-%enddef
-%feature("docstring") OT::HMatrixParameters::getRecompressionEpsilon
-OT_HMatrixParameters_getRecompressionEpsilon_doc
+    recompression epsilon for HMatrix."
 
 // ---------------------------------------------------------------------
 
-%define OT_HMatrixParameters_setRecompressionEpsilon_doc
+%feature("docstring") OT::HMatrixParameters::setRecompressionEpsilon
 "Set the epsilon used for the recompression.
 
 Parameters
 ----------
 epsilon : float
-    recompression epsilon for HMatrix.
-"
-%enddef
-%feature("docstring") OT::HMatrixParameters::setRecompressionEpsilon
-OT_HMatrixParameters_setRecompressionEpsilon_doc
+    recompression epsilon for HMatrix."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::getAdmissibilityFactor
+"Return the admissibility factor used for cluster blocks.
+
+Returns
+-------
+epsilon : float
+    admissibility factor for HMatrix."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::setAdmissibilityFactor
+"Set the admissibility factor used for cluster blocks.
+
+Parameters
+----------
+epsilon : float
+    admissibility factor for HMatrix."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::getClusteringAlgorithm
+"Return the clustering algorithm.
+
+Returns
+-------
+algorithm : str
+    clustering algorithm (either 'median', 'geometric' or 'hybrid')."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::setClusteringAlgorithm
+"Set the clustering algorithm.
+
+Parameters
+----------
+algorithm : str
+    clustering algorithm (either 'median', 'geometric' or 'hybrid')."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::getCompressionMethod
+"Return the compression method.
+
+Returns
+-------
+method : str
+    compression method (either 'SVD', 'ACA full', 'ACA partial' or 'ACA+'."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::setCompressionMethod
+"Set the compression method.
+
+Parameters
+----------
+method : str
+    compression method (either 'SVD', 'ACA full', 'ACA partial' or 'ACA+'."
 
 // ---------------------------------------------------------------------
 

@@ -63,7 +63,7 @@ HMatrixFactory::IsAvailable()
 
 
 HMatrix
-HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric)
+HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {
 #ifndef OPENTURNS_HAVE_HMAT
   throw NotYetImplementedException(HERE) << "OpenTURNS has been built without HMat support";
@@ -79,9 +79,9 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
 
   hmat_get_parameters(&settings);
-  settings.compressionMethod = ResourceMap::GetAsUnsignedInteger("HMatrix-CompressionMethod");
-  settings.assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
-  settings.recompressionEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon");
+  settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
+  settings.assemblyEpsilon = parameters.getAssemblyEpsilon();
+  settings.recompressionEpsilon = parameters.getRecompressionEpsilon();
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.maxParallelLeaves = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxParallelLeaves");
 
@@ -107,7 +107,7 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
   }
 
   hmat_clustering_algorithm_t* algo;
-  const String clusteringAlgorithm = ResourceMap::Get("HMatrix-ClusteringAlgorithm");
+  const String clusteringAlgorithm = parameters.getClusteringAlgorithm();
   if (clusteringAlgorithm == "median")
     algo = hmat_create_clustering_median();
   else if (clusteringAlgorithm == "geometric")
@@ -121,7 +121,7 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
   hmat_delete_clustering(algo);
   delete[] points;
 
-  NumericalScalar eta = ResourceMap::GetAsNumericalScalar("HMatrix-AdmissibilityFactor");
+  NumericalScalar eta = parameters.getAdmissibilityFactor();
   hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
   hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
   hmat_delete_admissibility(admissibility);

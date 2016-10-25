@@ -422,13 +422,7 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample &
 {
 #ifdef OPENTURNS_HAVE_HMAT
   HMatrixFactory hmatrixFactory;
-  const NumericalScalar assemblyEpsilon = parameters.getAssemblyEpsilon();
-  const NumericalScalar recompressionEpsilon = parameters.getRecompressionEpsilon();
-
-  HMatrix covarianceHMatrix = hmatrixFactory.build(vertices, dimension_, true);
-  // Set assembly & recompression epsilon
-  covarianceHMatrix.getImplementation()->setKey("assembly-epsilon", OSS() << assemblyEpsilon);
-  covarianceHMatrix.getImplementation()->setKey("recompression-epsilon", OSS() << recompressionEpsilon);
+  HMatrix covarianceHMatrix = hmatrixFactory.build(vertices, dimension_, true, parameters);
   if (dimension_ == 1)
   {
     CovarianceAssemblyFunction simple(*this, vertices, nuggetFactor);

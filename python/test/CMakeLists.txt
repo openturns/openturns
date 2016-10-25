@@ -213,6 +213,9 @@ ot_pyinstallcheck_test (UserDefinedCovarianceModel_std)
 ot_pyinstallcheck_test (UserDefinedStationaryCovarianceModel_std)
 ot_pyinstallcheck_test (StationaryCovarianceModelFactory_std)
 ot_pyinstallcheck_test (NonStationaryCovarianceModelFactory_std)
+if (HMAT_FOUND)
+ot_pyinstallcheck_test (HMatrix_std)
+endif ()
 
 # Geom
 ot_pyinstallcheck_test (Domain_std)
