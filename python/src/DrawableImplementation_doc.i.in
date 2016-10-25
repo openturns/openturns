@@ -26,6 +26,8 @@ The different drawable elements are:
 
 - :class:`~openturns.Staircase`
 
+- :class:`~openturns.Text`
+
 Examples
 --------
 >>> import openturns as ot
@@ -706,6 +708,62 @@ pattern : str
 %enddef
 %feature("docstring") OT::DrawableImplementation::setPattern
 OT_Drawable_setPattern_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getTextAnnotations_doc
+"Accessor to the annotations of the Text.
+
+Returns
+-------
+annotations : :class:`~openturns.Description`
+    Accessor to text annotations."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getTextAnnotations
+OT_Drawable_getTextAnnotations_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setTextAnnotations_doc
+"Accessor to the annotations of the Text.
+
+Parameters
+----------
+annotations : :class:`~openturns.Description`
+    Accessor to text annotations."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setTextAnnotations
+OT_Drawable_setTextAnnotations_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getTextPositions_doc
+"Accessor to the position of annotations.
+
+Parameters
+----------
+positions : :class:`~openturns.Indices`
+    Accessor to text position with respect to data coordinates.  Text is 
+    written below (position=1), above (position=3), to the left (position=2)
+    or to the right (position=4) of data coordinates."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getTextPositions
+OT_Drawable_getTextPositions_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setTextPositions_doc
+"Accessor to the position of annotations.
+
+Parameters
+----------
+positions : :class:`~openturns.Indices`
+    Accessor to text position with respect to data coordinates.  Text is 
+    written below (position=1), above (position=3), to the left (position=2)
+    or to the right (position=4) of data coordinates."
+%enddef
+%feature("docstring") OT::DrawableImplementation::setTextPositions
+OT_Drawable_setTextPositions_doc
 
 // ---------------------------------------------------------------------
 

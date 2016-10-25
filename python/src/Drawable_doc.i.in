@@ -82,6 +82,14 @@ OT_Drawable_setOrigin_doc
 OT_Drawable_getLevels_doc
 %feature("docstring") OT::Drawable::setLevels
 OT_Drawable_setLevels_doc
+%feature("docstring") OT::Drawable::getTextAnnotations
+OT_Drawable_getTextAnnotations_doc
+%feature("docstring") OT::Drawable::setTextAnnotations
+OT_Drawable_setTextAnnotations_doc
+%feature("docstring") OT::Drawable::getTextPositions
+OT_Drawable_getTextPositions_doc
+%feature("docstring") OT::Drawable::setTextPositions
+OT_Drawable_setTextPositions_doc
 %feature("docstring") OT::Drawable::getPattern
 OT_Drawable_getPattern_doc
 %feature("docstring") OT::Drawable::setPattern

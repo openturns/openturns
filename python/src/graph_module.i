@@ -38,6 +38,7 @@
 %include Polygon.i
 %include PolygonArray.i
 %include Staircase.i
+%include Text.i
 
 /* At last we include template definitions */
 %include BaseGraphTemplateDefs.i

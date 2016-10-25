@@ -81,7 +81,7 @@ class View(object):
         Passed on to matplotlib.pyplot.step kwargs
 
     text_kwargs : dict, optional
-        Used when drawing Pairs drawables
+        Used when drawing Pairs, Text drawables
         Passed on to matplotlib.axes.Axes.text kwargs
 
     legend_kwargs : dict, optional
@@ -238,6 +238,8 @@ class View(object):
                 bar_kwargs['color'] = drawable.getColorCode()
             if ('color' not in step_kwargs_default) and ('c' not in step_kwargs_default):
                 step_kwargs['color'] = drawable.getColorCode()
+            if ('color' not in text_kwargs_default) and ('c' not in text_kwargs_default):
+                text_kwargs['color'] = drawable.getColorCode()
 
             # set marker
             pointStyleDict = {'square': 's', 'circle': 'o', 'triangleup': '2', 'plus': '+', 'times': '+', 'diamond': '+', 'triangledown':
@@ -426,6 +428,41 @@ class View(object):
                                 1 + i * dim + j].transAxes
                             self._ax[1 + i * dim + j].text(
                                 0.5, 0.5, labels[i], **text_kwargs)
+
+            elif drawableKind == 'Text':
+                dim = drawable.getData().getDimension()
+
+                # adjust font
+                if ('fontsize' not in text_kwargs_default) and ('size' not in text_kwargs_default):
+                    text_kwargs['fontsize'] = max(16 - dim, 4)
+                if 'horizontalalignment' in text_kwargs_default:
+                    horizontal_default = text_kwargs['horizontalalignment']
+                    del text_kwargs['horizontalalignment']
+                else:
+                    horizontal_default = 'center'
+                if 'verticalalignment' in text_kwargs_default:
+                    vertical_default = text_kwargs['verticalalignment']
+                    del text_kwargs['verticalalignment']
+                else:
+                    vertical_default = 'center'
+                positions = drawable.getTextPositions()
+                for i, text in enumerate(drawable.getTextAnnotations()):
+                    if len(text) == 0: continue
+                    horizontal = horizontal_default
+                    vertical = vertical_default
+                    # Text.getTextPositions() describes position of text with respect
+                    # to given coordinates;  in matplotlib, positional argument controls
+                    # which side of the text bounding box is positioned, its meaning is
+                    # thus inverted.
+                    if positions[i] == 'left':
+                        horizontal='right'
+                    elif positions[i] == 'right':
+                        horizontal='left'
+                    elif positions[i] == 'top':
+                        vertical='bottom'
+                    elif positions[i] == 'bottom':
+                        vertical='top'
+                    self._ax[0].text(x[i][0], y[i][0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
 
             else:
                 raise ValueError(

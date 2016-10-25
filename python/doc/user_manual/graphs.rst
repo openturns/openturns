@@ -35,6 +35,7 @@ Drawable objects
     Pie
     Polygon
     PolygonArray
+    Text
 
 Graphical visualisation object
 ==============================
