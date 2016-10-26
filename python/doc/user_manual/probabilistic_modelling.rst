@@ -219,3 +219,14 @@ Samplers
     MCMC
     RandomWalkMetropolisHastings
     CalibrationStrategy
+
+Low-level distribution functions
+================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    DistFunc_pNormal
+    DistFunc_qNormal
+    DistFunc_rNormal

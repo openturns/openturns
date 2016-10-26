@@ -494,7 +494,7 @@ ot_add_python_module(model_process model_process_module.i
                    )
 
 ot_add_python_module(dist_bundle1 dist_bundle1_module.i
-                      DistFunc.i
+                      DistFunc.i DistFunc_doc.i.in
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
