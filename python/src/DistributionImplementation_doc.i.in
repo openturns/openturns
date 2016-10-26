@@ -2850,3 +2850,45 @@ dist : :class:`~openturns.Distribution`
 %enddef
 %feature("docstring") OT::DistributionImplementation::abs
 OT_Distribution_abs_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_setIntegrationNodesNumber_doc
+"Accessor to the number of Gauss integration points.
+
+Parameters
+----------
+N : int
+    Number of integration points."
+%enddef
+%feature("docstring") OT::DistributionImplementation::setIntegrationNodesNumber
+OT_Distribution_setIntegrationNodesNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getIntegrationNodesNumber_doc
+"Accessor to the number of Gauss integration points.
+
+Returns
+-------
+N : int
+    Number of integration points."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getIntegrationNodesNumber
+OT_Distribution_getIntegrationNodesNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getGaussNodesAndWeights_doc
+"Accessor to the gauss integration points.
+
+Returns
+-------
+nodes : :class:`~openturns.NumericalPoint`
+    Gauss nodes
+weights : :class:`~openturns.NumericalPoint`
+    Integration weights."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getGaussNodesAndWeights
+OT_Distribution_getGaussNodesAndWeights_doc
+

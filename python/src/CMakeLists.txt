@@ -546,7 +546,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       InverseGamma.i InverseGamma_doc.i.in
                       InverseNormal.i InverseNormal_doc.i.in
                       InverseNormalFactory.i InverseNormalFactory_doc.i.in
-                      InverseWishart.i
+                      InverseWishart.i InverseWishart_doc.i.in
                       KPermutationsDistribution.i KPermutationsDistribution_doc.i.in
                       KernelMixture.i KernelMixture_doc.i.in
                       KernelSmoothing.i KernelSmoothing_doc.i.in
@@ -611,7 +611,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Weibull.i Weibull_doc.i.in
                       WeibullFactory.i WeibullFactory_doc.i.in
                       WeibullMuSigma.i WeibullMuSigma_doc.i.in
-                      Wishart.i
+                      Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i
                    )

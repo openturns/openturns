@@ -41,6 +41,7 @@ Parametric distributions
     InverseChiSquare
     InverseGamma
     InverseNormal
+    InverseWishart
     KPermutationsDistribution
     Laplace
     Logistic
@@ -65,6 +66,7 @@ Parametric distributions
     UserDefined
     VonMises
     Weibull
+    Wishart
     ZipfMandelbrot
 
 Parametrized distributions
