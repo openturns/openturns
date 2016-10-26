@@ -227,6 +227,12 @@ public:
     // parallelization handeled by distribution::computeLogPDFGradient
     const NumericalPoint logPdfGradient = distribution.computeLogPDFGradient(sample_).computeMean();
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
+    // Check about this
+    // Gradient should be 0 for knownParameters
+    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+    {
+      result(knownParameterIndices_[j], 0) = 0.0;
+    }
     return result;
   }
 
