@@ -34,7 +34,7 @@ def loadTestsFromTestCase(cls):
         try:
             test.debug()
             print("SUCCESS")
-        except  Exception, exception:
+        except Exception as exception:
             print("FAILURE")
             print(exception)
         test.tearDown()
