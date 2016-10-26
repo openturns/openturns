@@ -164,7 +164,7 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
     for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) gradient(start + j, 0) *= rightValue;
     rightValue *= localCovariances[i - 1];
   }
-  return gradient;
+  return gradient * amplitude_[0] * amplitude_[0];
 }
 
 /* Parameters accessor */
@@ -174,7 +174,7 @@ void ProductCovarianceModel::setFullParameter(const NumericalPoint & parameter)
   if (parameter.getDimension() != parameterDimension)
     throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameter.getDimension() << ")";
   // Convention is the following :
-  // Scale parameters than amplitude parameter
+  // Scale parameters then amplitude parameter
   // As it is a 1 d model, scale size = parameterDimension - 1
   NumericalPoint scale(parameterDimension - 1);
   for (UnsignedInteger i = 0; i < parameterDimension - 1; ++i)

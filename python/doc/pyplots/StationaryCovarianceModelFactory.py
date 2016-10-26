@@ -42,4 +42,4 @@ fig = plt.figure(figsize=(10, 4))
 plt.suptitle('Stationary covariance model estimation')
 cov_axis = fig.add_subplot(111)
 view = View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
-view.show()
+

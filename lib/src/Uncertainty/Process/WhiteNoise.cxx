@@ -92,6 +92,10 @@ Bool WhiteNoise::isStationary() const
 /* Is the underlying gaussian ? */
 Bool WhiteNoise::isNormal() const
 {
+  // The easy case: the distribution is an interface to
+  // a Normal distribution
+  if (distribution_.getImplementation()->getClassName() == "Normal") return true;
+  // The hard case: the distribution has the properties of a Normal distribution
   return (distribution_.isElliptical() && distribution_.getStandardDistribution().hasIndependentCopula());
 }
 

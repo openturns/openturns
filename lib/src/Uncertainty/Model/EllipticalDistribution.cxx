@@ -90,7 +90,15 @@ Bool EllipticalDistribution::operator ==(const EllipticalDistribution & other) c
 Bool EllipticalDistribution::equals(const DistributionImplementation & other) const
 {
   const EllipticalDistribution* p_other = dynamic_cast<const EllipticalDistribution*>(&other);
-  return p_other && (*this == *p_other);
+  // First, check with cast
+  if (p_other != 0) return *this == *p_other;
+  // Second, check by properties
+  // The copula...
+  if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (*getCopula() == *other.getCopula()) ) ) return false;
+  // Then the marginals
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!(*getMarginal(i) == *other.getMarginal(i))) return false;
+  return true;
 }
 
 /* Centers and reduces a value u = Diag(sigma_)^(-1) * (x - mean_) */

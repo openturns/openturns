@@ -141,6 +141,18 @@ Bool ProcessImplementation::isComposite() const
   return false;
 }
 
+/* Covariance model accessor */
+CovarianceModel ProcessImplementation::getCovarianceModel() const
+{
+  throw NotYetImplementedException(HERE) << "In ProcessImplementation::getCovarianceModel()";
+}
+
+/* Trend accessor */
+TrendTransform ProcessImplementation::getTrend() const
+{
+  throw NotYetImplementedException(HERE) << "In ProcessImplementation::getTrend()";
+}
+
 /* Discrete realization accessor */
 Field ProcessImplementation::getRealization() const
 {

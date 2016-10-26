@@ -6,7 +6,7 @@ from math import sqrt
 domain = ot.Interval(-1.0, 1.0)
 basis = ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()])
 basisSize = 10
-experiment = ot.LHSExperiment(basis.getMeasure(), 10000)
+experiment = ot.GaussProductExperiment(basis.getMeasure(), [20])
 mustScale = False
 threshold = 0.001
 factory = ot.KarhunenLoeveQuadratureFactory(
@@ -26,4 +26,4 @@ fig = plt.figure(figsize=(6, 4))
 plt.suptitle("P1 approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=False).show()
+View(g, figure=fig, axes=[axis], add_legend=False)

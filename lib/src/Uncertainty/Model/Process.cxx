@@ -102,6 +102,18 @@ Bool Process::isComposite() const
   return getImplementation()->isComposite();
 }
 
+/* Covariance model accessor */
+CovarianceModel Process::getCovarianceModel() const
+{
+  return getImplementation()->getCovarianceModel();
+}
+
+/* Trend accessor */
+TrendTransform Process::getTrend() const
+{
+  return getImplementation()->getTrend();
+}
+
 /* Here is the interface that all derived class may implement */
 
 /* Dimension accessor */

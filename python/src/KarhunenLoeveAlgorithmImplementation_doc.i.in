@@ -1,0 +1,133 @@
+%define OT_KarhunenLoeveAlgorithm_doc
+"Base class for Karhunen Loeve algorithms.
+
+Available constructors:
+    KarhunenLoeveAlgorithm(*covModel, s*)
+
+Parameters
+----------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model.
+s : float, positive
+    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+
+Notes
+-----
+We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
+
+The class :class:`~openturns.KarhunenLoeveAlgorithm` enables to determine the solutions of the second kind Fredholm equation associated to  :math:`C`, ie to find the :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` such that: 
+
+.. math::
+    :label: fredholm
+
+    \int_{\cD} \mat{C}(\vect{s},\vect{t}) \vect{\varphi}_k(\vect{t})\,  d\vect{t} = \lambda_k  \vect{\varphi}_k(\vect{s}) \quad \forall \vect{s} \in \cD
+
+
+where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the   associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They constitue an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+
+
+OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
+
+The integrals in :eq:`fredholm` can be evaluated with:
+
+    - a :math:`P_1` -approach: see :class:`~openturns.KarhunenLoeveP1Algorithm`,
+
+    - a quadrature approach: see :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`.
+
+See also
+--------
+KarhunenLoeveResult"
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation
+OT_KarhunenLoeveAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveAlgorithm_getThreshold_doc
+"Accessor to the limit ratio on eigenvalues.
+
+Returns
+-------
+s : float, positive
+    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+
+Notes
+-----
+OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  at the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1`."
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::getThreshold
+OT_KarhunenLoeveAlgorithm_getThreshold_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveAlgorithm_getCovarianceModel_doc
+"Accessor to the covariance model.
+
+Returns
+-------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model."
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::getCovarianceModel
+OT_KarhunenLoeveAlgorithm_getCovarianceModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveAlgorithm_setThreshold_doc
+"Accessor to the limit ratio on eigenvalues.
+
+Parameters
+----------
+s : float, positive
+    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+
+Notes
+-----
+OpenTURNS truncates  the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` at the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1`."
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::setThreshold
+OT_KarhunenLoeveAlgorithm_setThreshold_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveAlgorithm_setCovarianceModel_doc
+"Accessor to the covariance model.
+
+Parameters
+----------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model."
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::setCovarianceModel
+OT_KarhunenLoeveAlgorithm_setCovarianceModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveAlgorithm_run_doc
+"Launch the algorithm.
+
+Notes
+-----
+It launches the algorithm and creates a :class:`~openturns.KarhunenLoeveResult`,
+structure containing all the results."
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::run
+OT_KarhunenLoeveAlgorithm_run_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveAlgorithm_getResult_doc
+"Get the result structure.
+
+Returns
+-------
+resKL : :class:`~openturns.KarhunenLoeveResult`
+    The structure containing all the results of the Fredholm problem.
+
+Notes
+-----
+The structure contains all the results of the Fredholm problem."
+%enddef
+%feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::getResult
+OT_KarhunenLoeveAlgorithm_getResult_doc
+

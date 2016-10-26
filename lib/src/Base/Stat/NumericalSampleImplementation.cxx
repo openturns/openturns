@@ -2114,7 +2114,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const S
   return nsi;
 }
 
-/* Get the i-th marginal distribution */
+/* Get the i-th marginal sample */
 NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const UnsignedInteger index) const
 {
   if (index >= dimension_) throw InvalidArgumentException(HERE) << "The index of a marginal sample must be in the range [0, dim-1]";
@@ -2134,7 +2134,7 @@ NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const U
   return marginalSample;
 }
 
-/* Get the distribution of the marginal distribution corresponding to indices dimensions */
+/* Get the marginal sample corresponding to indices dimensions */
 NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(dimension_ - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, dim-1] and  must be different";

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class GaussKronrod
+ *  @brief The test file of class KarhunenLoeveQuadratureFactory
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *

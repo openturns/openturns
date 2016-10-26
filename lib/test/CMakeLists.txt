@@ -315,6 +315,7 @@ ot_check_test (KissFFT_std)
 ot_check_test (GaussKronrod_std)
 ot_check_test (IteratedQuadrature_std)
 ot_check_test (KarhunenLoeveP1Factory_std)
+ot_check_test (KarhunenLoeveP1Algorithm_std)
 
 # Analytical
 ot_check_test (Analytical_std)
@@ -492,6 +493,7 @@ ot_check_test (WhittleFactory_std)
 ot_check_test (ConditionedNormalProcess_std)
 ot_check_test (ARMALikelihoodFactory_std)
 ot_check_test (KarhunenLoeveQuadratureFactory_std)
+ot_check_test (KarhunenLoeveQuadratureAlgorithm_std)
 
 # Transformation
 ot_check_test (MarginalTransformationEvaluation_std)

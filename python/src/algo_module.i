@@ -61,6 +61,11 @@
 %include IteratedQuadrature.i
 %include ExpertMixture.i
 %include KarhunenLoeveP1Factory.i
+%include KarhunenLoeveResultImplementation.i
+%include KarhunenLoeveResult.i
+%include KarhunenLoeveAlgorithmImplementation.i
+%include KarhunenLoeveAlgorithm.i
+%include KarhunenLoeveP1Algorithm.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

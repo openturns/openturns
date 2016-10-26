@@ -76,6 +76,12 @@ public:
   /** Is the underlying a composite process ? */
   Bool isComposite() const;
 
+  /** Covariance model accessor */
+  CovarianceModel getCovarianceModel() const;
+
+  /** Trend accessor */
+  TrendTransform getTrend() const;
+
   /** Dimension accessor */
   UnsignedInteger getSpatialDimension() const;
   UnsignedInteger getDimension() const;

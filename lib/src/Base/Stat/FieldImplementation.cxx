@@ -227,6 +227,20 @@ void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp,
   setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
 }
 
+
+/* Get the i-th marginal field */
+FieldImplementation FieldImplementation::getMarginal(const UnsignedInteger index) const
+{
+  return FieldImplementation(mesh_, values_.getMarginal(index));
+}
+
+/* Get the marginal field corresponding to indices dimensions */
+FieldImplementation FieldImplementation::getMarginal(const Indices & indices) const
+{
+  return FieldImplementation(mesh_, values_.getMarginal(indices));
+}
+
+
 /* Description Accessor */
 void FieldImplementation::setDescription(const Description & description)
 {

@@ -1,0 +1,26 @@
+// KarhunenLoeveResult docstrings are defined in KarhunenLoeveResultImplementation_doc.i.in
+
+%feature("docstring") OT::KarhunenLoeveResult
+OT_KarhunenLoeveResult_doc
+%feature("docstring") OT::KarhunenLoeveResult::getThreshold
+OT_KarhunenLoeveResult_getThreshold_doc
+%feature("docstring") OT::KarhunenLoeveResult::getCovarianceModel
+OT_KarhunenLoeveResult_getCovarianceModel_doc
+%feature("docstring") OT::KarhunenLoeveResult::getEigenValues
+OT_KarhunenLoeveResult_getEigenValues_doc
+%feature("docstring") OT::KarhunenLoeveResult::getModes
+OT_KarhunenLoeveResult_getModes_doc
+%feature("docstring") OT::KarhunenLoeveResult::getScaledModes
+OT_KarhunenLoeveResult_getScaledModes_doc
+%feature("docstring") OT::KarhunenLoeveResult::getModesAsProcessSample
+OT_KarhunenLoeveResult_getModesAsProcessSample_doc
+%feature("docstring") OT::KarhunenLoeveResult::getScaledModesAsProcessSample
+OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
+%feature("docstring") OT::KarhunenLoeveResult::getProjectionMatrix
+OT_KarhunenLoeveResult_getProjectionMatrix_doc
+%feature("docstring") OT::KarhunenLoeveResult::project
+OT_KarhunenLoeveResult_project_doc
+%feature("docstring") OT::KarhunenLoeveResult::lift
+OT_KarhunenLoeveResult_lift_doc
+%feature("docstring") OT::KarhunenLoeveResult::liftAsField
+OT_KarhunenLoeveResult_liftAsField_doc

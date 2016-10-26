@@ -406,6 +406,9 @@ void ResourceMap::loadDefaultConfiguration()
   // KarhunenLoeveP1Factory parameters //
   setAsNumericalScalar( "KarhunenLoeveP1Factory-RegularizationFactor", 0.0);
 
+  // KarhunenLoeveP1Algorithm parameters //
+  setAsNumericalScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
+
   // AdaptiveStieltjesAlgorithm parameters //
   setAsUnsignedInteger( "AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64 );
   setAsNumericalScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );

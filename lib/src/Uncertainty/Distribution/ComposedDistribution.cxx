@@ -103,8 +103,18 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
 
 Bool ComposedDistribution::equals(const DistributionImplementation & other) const
 {
+  // First, test the dimension
+  if (!(dimension_ == other.getDimension())) return false;
+  // Second, check with cast
   const ComposedDistribution* p_other = dynamic_cast<const ComposedDistribution*>(&other);
-  return p_other && (*this == *p_other);
+  if (p_other != 0) return (*this == *p_other);
+  // Third, check by properties
+  // The copula...
+  if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (copula_ == *other.getCopula()) ) ) return false;
+  // Then the marginals
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!(distributionCollection_[i] == *other.getMarginal(i))) return false;
+  return true;
 }
 
 /* String converter */

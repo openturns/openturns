@@ -34,6 +34,7 @@ The cumulative distribution function is defined as:
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDF
 OT_Distribution_computeCDF_doc
+
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeCDFGradient_doc

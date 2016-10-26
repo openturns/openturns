@@ -82,8 +82,9 @@ void FunctionalChaosRandomVector::computeCovariance() const
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
       covariance_(i, j) = 0.0;
-      // The loop starts at 1 as indices[0] is supposed to be associated with the mean (constant term in the basis)
-      for (UnsignedInteger k = 1; k < size; ++k) covariance_(i, j) += coefficients[k][i] * coefficients[k][j];
+      for (UnsignedInteger k = 0; k < size; ++k) 
+	// Take into account only non-zero indices as the null index is the mean of the vector
+	if (indices[k] > 0) covariance_(i, j) += coefficients[k][i] * coefficients[k][j];
     } // Loop over the second index
   } // Loop over the first index
   isAlreadyComputedCovariance_ = true;
@@ -110,6 +111,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
   NumericalScalar totalVariance = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    // We don't take into account coefficient of index 0 as it corresponds to the constant function, ie the mean of the random vector
     if (coefficientIndices[i] > 0)
     {
       const NumericalScalar coefficientI = coefficients[i][0];

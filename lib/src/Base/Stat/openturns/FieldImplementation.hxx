@@ -102,6 +102,12 @@ public:
   NumericalSample getValues() const;
   void setValues(const NumericalSample & values);
 
+  /** Get the i-th marginal sample */
+  FieldImplementation getMarginal(const UnsignedInteger index) const;
+
+  /** Get the marginal sample corresponding to indices dimensions */
+  FieldImplementation getMarginal(const Indices & indices) const;
+
 #ifndef SWIG
   /** Individual value accessor */
   NSI_point operator[](const UnsignedInteger index);

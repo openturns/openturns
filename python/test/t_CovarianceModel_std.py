@@ -25,16 +25,16 @@ def test_model(myModel):
 
     eps = 1e-5
     if (dimension == 1):
-        print('myModel(', x1, ', ', x2, ')=',  myModel(x1, x2))
+        print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
 
         grad = myModel.partialGradient(x1, x2)
-        print('dCov =', grad)
+        print('dCov =', repr(grad))
         gradfd = ot.NumericalPoint(spatialDimension)
         for j in range(spatialDimension):
             x1_d = ot.NumericalPoint(x1)
             x1_d[j] = x1_d[j] + eps
             gradfd[j] = (myModel(x1_d, x2)[0, 0] - myModel(x1, x2)[0, 0]) / eps
-        print('dCov (FD)=', gradfd)
+        print('dCov (FD)=', repr(gradfd))
     else:
         print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
 
@@ -61,50 +61,55 @@ def test_model(myModel):
 spatialDimension = 2
 
 
-myDefautModel = ot.SquaredExponential()
+myDefautModel = ot.SquaredExponential([2.0], [3.0])
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
-
-myModel = ot.SquaredExponential(spatialDimension)
+myModel = ot.SquaredExponential([2.0] * spatialDimension, [3.0])
 test_model(myModel)
 
 
-myDefautModel = ot.GeneralizedExponential()
+myDefautModel = ot.GeneralizedExponential([2.0], [3.0], 1.5)
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
-myModel = ot.GeneralizedExponential([10.0] * spatialDimension, 1.5)
+myModel = ot.GeneralizedExponential([2.0] * spatialDimension, [3.0], 1.5)
 test_model(myModel)
 
 
-myDefautModel = ot.AbsoluteExponential()
+myDefautModel = ot.AbsoluteExponential([2.0], [3.0])
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
-myModel = ot.AbsoluteExponential(spatialDimension)
+myModel = ot.AbsoluteExponential([2.0] * spatialDimension, [3.0])
+test_model(myModel)
+
+myDefautModel = ot.MaternModel([2.0], [3.0], 1.5)
+print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
+
+myModel = ot.MaternModel([2.0] * spatialDimension, [3.0], 1.5)
 test_model(myModel)
 
 
-myDefautModel = ot.MaternModel()
+myDefautModel = ot.ExponentiallyDampedCosineModel([2.0], [3.0], 1.5)
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
-myModel = ot.MaternModel([8.0] * spatialDimension, 2.0)
+myModel = ot.ExponentiallyDampedCosineModel([2.0] * spatialDimension, [3.0], 1.5)
 test_model(myModel)
 
-
-myDefautModel = ot.ExponentiallyDampedCosineModel()
+myDefautModel = ot.SphericalModel([2.0], [3.0], 4.5)
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
-myModel = ot.ExponentiallyDampedCosineModel([1.0] * spatialDimension, [1.0], 0.1)
-test_model(myModel)
-
-myDefautModel = ot.SphericalModel()
-print('myDefautModel = ',  myDefautModel)
-
-myModel = ot.SphericalModel([1.0] * spatialDimension, [1.0], 0.5)
+myModel = ot.SphericalModel([2.0] * spatialDimension, [3.0], 4.5)
 test_model(myModel)
 
 
 myDefautModel = ot.DiracCovarianceModel()
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
 amplitude = list(map(lambda k: 1.5 + 2.0 * k, range(2)))
 myModel = ot.DiracCovarianceModel(spatialDimension, amplitude)
@@ -113,16 +118,17 @@ test_model(myModel)
 
 myDefautModel = ot.ProductCovarianceModel()
 print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
 
-cov1 = ot.AbsoluteExponential([3.0])
-cov2 = ot.SquaredExponential([2.0])
+cov1 = ot.AbsoluteExponential([2.0], [3.0])
+cov2 = ot.SquaredExponential([2.0], [3.0])
 myModel = ot.ProductCovarianceModel([cov1, cov2])
 test_model(myModel)
 
 # Collection ==> add covariance models
 # Add AbsoluteExponentialModel to the collection
-myAbsoluteExponential = ot.AbsoluteExponential([3.0] * spatialDimension)
-mySquaredExponential = ot.SquaredExponential([2.0] * spatialDimension)
+myAbsoluteExponential = ot.AbsoluteExponential([2.0] * spatialDimension, [3.0])
+mySquaredExponential = ot.SquaredExponential([2.0] * spatialDimension, [3.0])
 # Add exponentialModel to the collection
 amplitude = [4.0, 2.0]
 scale = [1.0] * spatialDimension

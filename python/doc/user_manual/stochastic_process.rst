@@ -187,7 +187,15 @@ Karhunen Loeve decomposition
 
 .. autosummary::
     :toctree: _generated/
-    :template: classWithPlot.rst_t
+    :template: class.rst_t
 
+    KarhunenLoeveAlgorithm
+
+    :template: classWithPlot.rst_t
+    KarhunenLoeveP1Algorithm
     KarhunenLoeveP1Factory
+    KarhunenLoeveQuadratureAlgorithm
     KarhunenLoeveQuadratureFactory
+
+    :template: class.rst_t
+    KarhunenLoeveResult

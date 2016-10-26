@@ -57,6 +57,12 @@ public:
   /** Realization accessor */
   Field getRealization() const;
 
+  /** Is the underlying a Normal process ? */
+  Bool isNormal() const;
+
+  /** Is the underlying a stationary process ? */
+  Bool isStationary() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
