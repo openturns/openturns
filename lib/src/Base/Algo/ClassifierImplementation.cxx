@@ -145,7 +145,7 @@ struct GradePolicy
 
 
 /* Grade a sample */
-NumericalPoint ClassifierImplementation::gradeTBB(const NumericalSample & inS,
+NumericalPoint ClassifierImplementation::gradeParallel(const NumericalSample & inS,
     const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
@@ -171,7 +171,7 @@ NumericalPoint ClassifierImplementation::grade(const NumericalSample & inS, cons
   if ( size != hClass.getSize() )
     throw InvalidDimensionException(HERE) << "Input sample dimension (=" << size << ") and classes dimension (=" << hClass.getSize() << ") do not match.";
   if (isParallel_)
-    return gradeTBB(inS, hClass);
+    return gradeParallel(inS, hClass);
   return gradeSequential(inS, hClass);
 }
 

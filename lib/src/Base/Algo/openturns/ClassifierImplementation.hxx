@@ -63,7 +63,7 @@ public:
                                const Indices & outC) const;
 
 protected:
-  virtual NumericalPoint gradeTBB(const NumericalSample & inS,
+  virtual NumericalPoint gradeParallel(const NumericalSample & inS,
                            const Indices & outC) const;
   virtual NumericalPoint gradeSequential(const NumericalSample & inS,
                                   const Indices & outC) const;
