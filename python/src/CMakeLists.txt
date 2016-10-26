@@ -545,7 +545,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       InverseChiSquare.i InverseChiSquare_doc.i.in
                       InverseGamma.i InverseGamma_doc.i.in
                       InverseNormal.i InverseNormal_doc.i.in
-                      InverseNormalFactory.i NormalFactory_doc.i.in InverseNormalFactory_doc.i.in
+                      InverseNormalFactory.i InverseNormalFactory_doc.i.in
                       InverseWishart.i
                       KPermutationsDistribution.i KPermutationsDistribution_doc.i.in
                       KernelMixture.i KernelMixture_doc.i.in
@@ -559,7 +559,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogNormalMuSigma.i LogNormalMuSigma_doc.i.in
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
-                      LogUniformFactory.i UniformFactory_doc.i.in LogUniformFactory_doc.i.in
+                      LogUniformFactory.i LogUniformFactory_doc.i.in
 		      MarginalDistribution.i
 		      MaximumDistribution.i
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
@@ -575,7 +575,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
                       NonCentralStudent.i NonCentralStudent_doc.i.in
                       Normal.i Normal_doc.i.in
-                      NormalFactory.i
+                      NormalFactory.i NormalFactory_doc.i.in
                       NormalGamma.i NormalGamma_doc.i.in
                    )
 
@@ -603,10 +603,10 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormal.i TruncatedNormal_doc.i.in
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
-                      UniformFactory.i
+                      UniformFactory.i UniformFactory_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedPair.i UserDefinedPair_doc.i.in
-                      UserDefinedFactory.i
+                      UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
                       Weibull.i Weibull_doc.i.in
                       WeibullFactory.i WeibullFactory_doc.i.in

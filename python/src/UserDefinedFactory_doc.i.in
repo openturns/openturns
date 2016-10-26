@@ -1,0 +1,12 @@
+%feature("docstring") OT::UserDefinedFactory
+"UserDefined factory.
+
+Available constructor:
+    UserDefinedFactory()
+
+See also
+--------
+DistributionFactory, UserDefined"
+
+
+
