@@ -15,22 +15,31 @@ def loadTestsFromTestCase(cls):
     """Launch the tests of the test case class"""
     import sys
     from inspect import getmembers
-    cls.setUpClass()
-    for member in getmembers(TestInverseWishartMethods):
+    members = getmembers(cls)
+    test_names = []
+    is_tearDownClass_there = False
+    for member in members:
         member_name = member[0]
         if member_name[0:5] == 'test_':
-            test = cls(member_name)
-            test.setUp()
-            print("Run " + member_name + "... ", end="")
-            sys.stdout.flush()
-            try:
-                test.debug()
-                print("SUCCESS")
-            except  Exception, exception:
-                print("FAILURE")
-                print(exception)
-            test.tearDown()
-    cls.tearDownClass()
+            test_names.append(member_name)
+        elif member_name == 'setUpClass':
+            cls.setUpClass()
+        elif member_name == 'tearDownClass':
+            is_tearDownClass_there = True
+    for test_name in test_names:
+        test = cls(test_name)
+        test.setUp()
+        print("Run " + test_name + "... ", end="")
+        sys.stdout.flush()
+        try:
+            test.debug()
+            print("SUCCESS")
+        except  Exception, exception:
+            print("FAILURE")
+            print(exception)
+        test.tearDown()
+    if is_tearDownClass_there:
+        cls.tearDownClass()
 
 class TestInverseWishartMethods(ut.TestCase):
     """Test case for the class InverseWishart"""
