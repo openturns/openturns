@@ -90,6 +90,18 @@ Bool Classifier::getVerbose() const
   return getImplementation()->getVerbose();
 }
 
+/** Parallelization flag accessor */
+void Classifier::setParallel(const Bool flag)
+{
+  copyOnWrite();
+  getImplementation()->setParallel(flag);
+}
+
+Bool Classifier::isParallel() const
+{
+  return getImplementation()->isParallel();
+}
+
 /* Input space dimension */
 UnsignedInteger Classifier::getDimension() const
 {

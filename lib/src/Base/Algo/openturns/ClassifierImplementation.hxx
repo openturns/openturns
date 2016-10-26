@@ -51,11 +51,23 @@ public:
   virtual UnsignedInteger classify(const NumericalPoint & inP) const;
   virtual Indices classify(const NumericalSample & inS) const;
 
+protected:
+  virtual Indices classifyParallel(const NumericalSample & inS) const;
+  virtual Indices classifySequential(const NumericalSample & inS) const;
+public:
+
   /** Grade a point as if it were associated to a class */
   virtual NumericalScalar grade(const NumericalPoint & inP,
                                 const UnsignedInteger outC) const;
   virtual NumericalPoint grade(const NumericalSample & inS,
                                const Indices & outC) const;
+
+protected:
+  virtual NumericalPoint gradeTBB(const NumericalSample & inS,
+                           const Indices & outC) const;
+  virtual NumericalPoint gradeSequential(const NumericalSample & inS,
+                                  const Indices & outC) const;
+public:
 
   /** String converter */
   virtual String __repr__() const;
@@ -67,6 +79,10 @@ public:
 
   /** Input space dimension */
   virtual UnsignedInteger getDimension() const;
+
+  /** Parallelization flag accessor */
+  void setParallel(const Bool flag);
+  Bool isParallel() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -86,9 +102,12 @@ private:
   /** Verbosity flag */
   Bool verbose_;
 
+  /** Flag to tell if parallelization must be used */
+  Bool isParallel_;
 
 }; /* class ClassifierImplementation */
 
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_CLASSIFIERIMPLEMENTATION_HXX */
+
