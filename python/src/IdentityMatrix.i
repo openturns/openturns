@@ -1,10 +1,10 @@
 // SWIG file IdentityMatrix.i
 
-OTAutodoc(IdentityMatrix)
-
 %{
 #include "openturns/IdentityMatrix.hxx"
 %}
+
+%include IdentityMatrix_doc.i
 
 %include openturns/IdentityMatrix.hxx
 

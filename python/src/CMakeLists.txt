@@ -140,7 +140,7 @@ ot_add_python_module(typ typ_module.i
                       TriangularComplexMatrix.i TriangularComplexMatrix_doc.i.in
                       CovarianceMatrix.i CovarianceMatrix_doc.i.in
                       CorrelationMatrix.i CorrelationMatrix_doc.i.in
-                      IdentityMatrix.i
+                      IdentityMatrix.i IdentityMatrix_doc.i.in
                       NumericalSample.i NumericalSample_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
