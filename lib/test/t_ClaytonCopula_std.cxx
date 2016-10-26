@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < thetas.getSize(); ++i)
     {
       NumericalPoint x(points[i]);
-      ClaytonCopula copula(thetas[i]);
+      copula = ClaytonCopula(thetas[i]);
       fullprint << copula.__str__() << std::endl;
       fullprint << "PDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computePDF(x) << std::endl;
       fullprint << "CDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computeCDF(x) << std::endl;

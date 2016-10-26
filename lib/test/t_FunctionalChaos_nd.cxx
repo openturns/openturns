@@ -243,7 +243,7 @@ int main(int argc, char *argv[])
           fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[outputIndex]) << std::endl;
           for (UnsignedInteger i = 0; i < inputDimension; ++i)
           {
-            NumericalScalar value = vector.getSobolTotalIndex(i, outputIndex);
+            value = vector.getSobolTotalIndex(i, outputIndex);
             fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i + inputDimension * outputIndex]) << std::endl;
           }
           indices = Indices(2);
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
             for (UnsignedInteger j = i + 1; j < inputDimension; ++j)
             {
               indices[1] = j;
-              NumericalScalar value = vector.getSobolTotalIndex(indices, outputIndex);
+              value = vector.getSobolTotalIndex(indices, outputIndex);
               fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k + inputDimension * outputIndex]) << std::endl;
               k = k + 1;
             }

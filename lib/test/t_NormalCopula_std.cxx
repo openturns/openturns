@@ -145,15 +145,13 @@ int main(int argc, char *argv[])
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
     // Creation of the correlation matrix from a Spearman correlation matrix
+    spearman = CorrelationMatrix(dim);
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
-      CorrelationMatrix spearman(dim);
-      for (UnsignedInteger i = 1; i < dim; i++)
-      {
-        spearman(i, i - 1) = 0.25;
-      }
-      CorrelationMatrix correlation(NormalCopula::GetCorrelationFromSpearmanCorrelation(spearman));
-      fullprint << "Normal copula correlation=" << correlation << " from the Spearman correlation=" << spearman << std::endl;
+      spearman(i, i - 1) = 0.25;
     }
+    correlation = NormalCopula::GetCorrelationFromSpearmanCorrelation(spearman);
+    fullprint << "Normal copula correlation=" << correlation << " from the Spearman correlation=" << spearman << std::endl;
   }
   catch (TestFailed & ex)
   {

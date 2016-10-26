@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(defaultDimension, 1.0);
+    NumericalPoint scale(spatialDimension, 1.0);
 
     /* Second order model with parameters */
     ExponentialCauchy myModel(scale, amplitude);
