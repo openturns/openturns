@@ -336,6 +336,27 @@ NumericalPoint TruncatedNormal::computePDFGradient(const NumericalPoint & point)
   return pdfGradient;
 }
 
+/* Get the LogPDFGradient of the distribution */
+NumericalPoint TruncatedNormal::computeLogPDFGradient(const NumericalPoint & point) const
+{
+  if (point.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In TruncatedNormal::computeLogPDFGradient, the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const NumericalScalar x = point[0];
+  NumericalPoint logPdfGradient(getParameterDimension());
+  if (!(x > a_) || !(x < b_)) return logPdfGradient;
+  const NumericalScalar iSigma = 1.0 / sigma_;
+  const NumericalScalar xNorm = (x - mu_) * iSigma;
+  const NumericalScalar aNorm = (a_ - mu_) * iSigma;
+  const NumericalScalar bNorm = (b_ - mu_) * iSigma;
+  const NumericalScalar iDenom = normalizationFactor_ * iSigma;
+  logPdfGradient[0] = xNorm * iSigma +  iDenom * (phiBNorm_ - phiANorm_);
+  logPdfGradient[1] = iSigma * ( -1.0 + xNorm * xNorm ) + iDenom * (phiBNorm_ * bNorm - phiANorm_ * aNorm);
+  logPdfGradient[2] = phiANorm_ * iDenom;
+  logPdfGradient[3] = - phiBNorm_ * iDenom;
+  return logPdfGradient;
+}
+
 /* Get the CDFGradient of the distribution */
 NumericalPoint TruncatedNormal::computeCDFGradient(const NumericalPoint & point) const
 {

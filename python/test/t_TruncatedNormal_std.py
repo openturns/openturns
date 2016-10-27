@@ -69,6 +69,7 @@ try:
     print("cdf=%.6f" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
     print("ccdf=%.6f" % CCDF)
+
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
@@ -82,6 +83,21 @@ try:
     PDFgrFD[3] = (TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() + eps).computePDF(point) -
                   TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
+
+    # derivative of the logPDF with regards the parameters of the distribution
+    logPDFgr = distribution.computeLogPDFGradient(point)
+    print("log-pdf gradient     =", repr(logPDFgr))
+    # by the finite difference technique
+    logPDFgrFD = NumericalPoint(4)
+    logPDFgrFD[0] = (TruncatedNormal(distribution.getMu() + eps, distribution.getSigma(), distribution.getA(), distribution.getB()).computeLogPDF(point) -
+                  TruncatedNormal(distribution.getMu() - eps, distribution.getSigma(), distribution.getA(), distribution.getB()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[1] = (TruncatedNormal(distribution.getMu(), distribution.getSigma() + eps, distribution.getA(), distribution.getB()).computeLogPDF(point) -
+                  TruncatedNormal(distribution.getMu(), distribution.getSigma() - eps, distribution.getA(), distribution.getB()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[2] = (TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA() + eps, distribution.getB()).computeLogPDF(point) -
+                  TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA() - eps, distribution.getB()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[3] = (TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() + eps).computeLogPDF(point) -
+                  TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() - eps).computeLogPDF(point)) / (2.0 * eps)
+    print("log-pdf gradient (FD)=", repr(logPDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
