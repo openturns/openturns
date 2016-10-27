@@ -37,6 +37,8 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
     +-------------------------------------+----------------------------------------------+
+    | Ubuntu 16.10 'Yakkety Yak'          | deb http://ubuntu.openturns.org yakkety main |
+    +-------------------------------------+----------------------------------------------+
     | Debian 7.0 'Wheezy'                 | deb http://debian.openturns.org wheezy main  |
     +-------------------------------------+----------------------------------------------+
     | Debian 8.0 'Jessie'                 | deb http://debian.openturns.org jessie main  |
