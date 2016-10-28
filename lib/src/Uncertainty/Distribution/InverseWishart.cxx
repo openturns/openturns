@@ -41,6 +41,7 @@ InverseWishart::InverseWishart()
   setName("InverseWishart");
   setV(CovarianceMatrix(1));
   computeRange();
+  update();
 }
 
 /* Parameters constructor */
@@ -48,11 +49,12 @@ InverseWishart::InverseWishart(const CovarianceMatrix & v,
                                const NumericalScalar nu)
   : ContinuousDistribution()
   , cholesky_()
-  , nu_(nu)
+  , nu_(-1.0) // implies nu_ != nu: see setNu
 {
   setName("InverseWishart");
   if (nu + 1 <= v.getDimension()) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << "is not greater than dimension-1=" << static_cast< SignedInteger > (v.getDimension()) - 1;
   setV(v);
+  setNu(nu);
 }
 
 /* Comparison operator */
@@ -142,10 +144,9 @@ CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
     // The off-diagonal elements are normaly distributed
     for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
   }
-  const TriangularMatrix M((A.solveLinearSystem(cholesky_)).getImplementation());
-  return (M.transpose() * M).getImplementation();
+  const TriangularMatrix M((A.solveLinearSystem(inverseCholeskyInverse_)).getImplementation());
+  return (M.computeGram()).getImplementation();
 }
-
 
 /* Get the PDF of the distribution */
 NumericalScalar InverseWishart::computePDF(const CovarianceMatrix & m) const
@@ -189,16 +190,16 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
     // If the Cholesky factor is not defined, it means that M is not symmetric positive definite (an exception is thrown) and the PDF is zero
     TriangularMatrix X(CovarianceMatrix(m).computeCholesky());
     // Compute the determinant of the Cholesky factor, ie the square-root of the determinant of M
-    NumericalScalar logPDF = logNormalizationFactor_;
+    NumericalScalar logPDF = 0.0;
     // Here, the diagonal of X is positive
     for (UnsignedInteger i = 0; i < p; ++i) logPDF -= std::log(X(i, i));
     logPDF *= nu_ + p + 1.0;
-    // V^{-1}M = (CC')^{-1}(XX')
-    // = C'^{-1}(C^{-1}X)X'
+    // Add the term which does not depend on M
+    logPDF += logNormalizationFactor_;
+    // Trace(V M^{-1}) = Trace(C C' X'^{-1} X^{-1}) = Trace(C'X'^{-1} X^{-1}C)
+    //                 = Trace(A'A) with A = X^{-1}C
     TriangularMatrix A(X.solveLinearSystem(cholesky_).getImplementation());
-    SquareMatrix B((A * cholesky_.transpose()).getImplementation());
-    SquareMatrix C(X.transpose().solveLinearSystem(B).getImplementation());
-    logPDF -= 0.5 * C.computeTrace();
+    logPDF -= 0.5 * A.computeGram().computeTrace();
     return logPDF;
   }
   catch (...)
@@ -337,6 +338,7 @@ Description InverseWishart::getParameterDescription() const
 /* V accessor */
 void InverseWishart::setV(const CovarianceMatrix & v)
 {
+  const UnsignedInteger p = v.getDimension();
   try
   {
     cholesky_ = CovarianceMatrix(v).computeCholesky();
@@ -345,7 +347,10 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   {
     throw InvalidArgumentException(HERE) << "Error: V must be positive definite";
   }
-  const UnsignedInteger p = cholesky_.getDimension();
+  TriangularMatrix T((cholesky_.solveLinearSystem(IdentityMatrix(p))).getImplementation());
+  CovarianceMatrix vInverse((cholesky_.transpose().solveLinearSystem(T)).getImplementation());
+  TriangularMatrix vInverseCholesky((CovarianceMatrix(vInverse).computeCholesky()).getImplementation());
+  inverseCholeskyInverse_ = TriangularMatrix((vInverseCholesky.solveLinearSystem(IdentityMatrix(p))).getImplementation());
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -391,6 +396,7 @@ void InverseWishart::save(Advocate & adv) const
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "nu_", nu_ );
+  adv.saveAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
 }
 
@@ -400,7 +406,8 @@ void InverseWishart::load(Advocate & adv)
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "nu_", nu_ );
-  adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
+  adv.loadAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );
+  adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
   computeRange();
 }
 
