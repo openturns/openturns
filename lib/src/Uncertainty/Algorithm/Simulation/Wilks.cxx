@@ -62,7 +62,7 @@ UnsignedInteger Wilks::ComputeSampleSize(const NumericalScalar quantileLevel,
   // Descending recursion n! / (m - i)! / (n - m + i)! = n! / (m - (i - 1))! / (n - m + (i - 1))! * (m - (i - 1)) / (n - m + i)
   // -> Binomial(n, n - m + i - 1) = Binomial(n, n - m + i) * (n - m + i) / (m - i)
   for (UnsignedInteger i = marginIndex; i > 0; --i) cQuantileLevel[i - 1] = cQuantileLevel[i] * (1.0 - quantileLevel) / quantileLevel * (n - marginIndex + i) / (marginIndex - i + 1.0);
-  NumericalScalar cumulQuantileLevel;
+  NumericalScalar cumulQuantileLevel = -1.0;
   do
   {
     cumulQuantileLevel = 0.0;

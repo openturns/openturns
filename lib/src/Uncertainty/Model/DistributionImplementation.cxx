@@ -762,10 +762,10 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
   const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, dimension_, 1));
-  NumericalScalar probability;
+  NumericalScalar probability = -1.0;
   if (dimension_ == 1)
   {
-    NumericalScalar error;
+    NumericalScalar error = -1.0;
     probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
   }
   else probability = IteratedQuadrature().integrate(fPDF, reducedInterval)[0];

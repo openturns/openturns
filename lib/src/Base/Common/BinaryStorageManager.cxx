@@ -575,8 +575,8 @@ void fromStringConverter(const String & st, _Tp & value)
 //       {
 //      XML::Node node_real = XML::FindElementByName( node, BIN_STMGR::real_tag::Get() );
 //      XML::Node node_imag = XML::FindElementByName( node, BIN_STMGR::imag_tag::Get() );
-//      NumericalScalar real;
-//      NumericalScalar imag;
+//      NumericalScalar real = -1.0;
+//      NumericalScalar imag = -1.0;
 //      fromStringConverter( getValueToConvert<BIN_STMGR::real_tag>( node_real ), real );
 //      fromStringConverter( getValueToConvert<BIN_STMGR::imag_tag>( node_imag ), imag );
 //      value = NumericalComplex( real,imag );
@@ -711,7 +711,7 @@ void AttributeReader(TAG tag,
 
 //      XML::Node node;
 //      while ( node = XML::FindNextElementByName( state.current_, tag.Get() ) ) {
-//        UnsignedInteger idx;
+//        UnsignedInteger idx = 0;
 //        fromStringConverter( XML::GetAttributeByName(node, BIN_STMGR::index_attribute::Get()), idx );
 //        state.next();
 //        if (idx == index) {

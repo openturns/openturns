@@ -158,7 +158,7 @@ NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
   }
   if (sumX > n_ + supportEpsilon_) return 0.0;
   if ((sumP_ >= 1.0) && (sumX < n_ - supportEpsilon_)) return 0.0;
-  NumericalScalar logPDF;
+  NumericalScalar logPDF = -1.0;
   if (sumP_ < 1.0) logPDF = lgamma(n_ + 1.0) - lgamma(n_ - sumX + 1.0) + (n_ - sumX) * log1p(-sumP_);
   // In the case sumP_ >= 1.0, the PDF is positive only if sumX == n_
   else logPDF = lgamma(n_ + 1.0);
