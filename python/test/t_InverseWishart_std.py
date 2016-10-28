@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
+from __future__ import print_function, division
 import unittest as ut
 from math import pi, log, log10, floor
 
@@ -138,12 +138,12 @@ class TestInverseWishartMethods(ut.TestCase):
     # to the corresponding theoretical expectations
     def test_getSample_getMean(self):
         """Test InverseWishart.getSample and InverseWishart.getMean"""
-	d, Scale, DoF, N = self.dimension, self.Scale, self.DoF, int(1E+5)
+        d, Scale, DoF, N = self.dimension, self.Scale, self.DoF, int(1E+5)
         Identity = ot.CovarianceMatrix(d)
         Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity))
         inverse_wishart = ot.InverseWishart(Scale, DoF)
-        sample_inverse = ot.NumericalSample(N, (d*(d+1))/2)
-        sample = ot.NumericalSample(N, (d*(d+1))/2)
+        sample_inverse = ot.NumericalSample(N, (d*(d+1))//2)
+        sample = ot.NumericalSample(N, (d*(d+1))//2)
         for i in range(N):
             M_inverse = inverse_wishart.getRealizationAsMatrix()
             M = M_inverse.solveLinearSystem(Identity)
