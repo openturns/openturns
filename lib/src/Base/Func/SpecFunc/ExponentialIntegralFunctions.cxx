@@ -52,7 +52,7 @@ NumericalComplex Ei(const NumericalComplex & z)
   if (absZ > 2.0 - 1.035 * std::log(SpecFunc::Precision)) return EiAsymptoticSeries(z);
   if ((absZ > 1.0) && ((std::real(z) < 0.0) || (std::abs(std::imag(z)) > 1.0))) return EiContinuedFractionForward(z);
   if (absZ > 0.0) return EiPowerSeries(z);
-  return -SpecFunc::MaxNumericalScalar;
+  return SpecFunc::LogMinNumericalScalar;
 }
 
 NumericalScalar Ei(const NumericalScalar z)

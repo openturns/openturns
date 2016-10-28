@@ -215,7 +215,7 @@ NumericalScalar VonMises::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (std::abs(x) > M_PI) return -SpecFunc::MaxNumericalScalar;
+  if (std::abs(x) > M_PI) return SpecFunc::LogMinNumericalScalar;
   return normalizationFactor_ + kappa_ * std::cos(x - mu_);
 }
 

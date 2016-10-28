@@ -137,6 +137,7 @@ struct MaximumLikelihoodFactoryLogLikelihood
             result += logPdf;
           }
         } // Loop over the realizations
+	result /= size;
       } // Sequential computeLogPDF
     } // try
     catch (...)

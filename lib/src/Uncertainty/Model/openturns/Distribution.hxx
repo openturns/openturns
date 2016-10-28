@@ -154,6 +154,11 @@ public:
                              const NumericalScalar xMax,
                              const UnsignedInteger pointNumber) const;
 
+  /** Compute the log-PDF of 1D distributions over a regular grid */
+  NumericalSample computeLogPDF(const NumericalScalar xMin,
+				const NumericalScalar xMax,
+				const UnsignedInteger pointNumber) const;
+
   /** Get the CDF of the distribution */
   NumericalScalar computeCDF(const NumericalScalar scalar) const;
   NumericalScalar computeComplementaryCDF(const NumericalScalar scalar) const;
@@ -389,6 +394,36 @@ public:
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber) const;
+
+  /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
+  virtual Graph drawLogPDF() const;
+
+  /** Draw the log-PDF of the distribution when its dimension is 1 */
+  virtual Graph drawLogPDF(const NumericalScalar xMin,
+			   const NumericalScalar xMax,
+			   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+  virtual Graph drawLogPDF(const UnsignedInteger pointNumber) const;
+  
+  /** Draw the log-PDF of a 1D marginal */
+  virtual Graph drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
+				     const NumericalScalar xMin,
+				     const NumericalScalar xMax,
+				     const UnsignedInteger pointNumber) const;
+  
+  /** Draw the log-PDF of the distribution when its dimension is 2 */
+  virtual Graph drawLogPDF(const NumericalPoint & xMin,
+			   const NumericalPoint & xMax,
+			   const Indices & pointNumber) const;
+  virtual Graph drawLogPDF(const NumericalPoint & xMin,
+			   const NumericalPoint & xMax) const;
+  virtual Graph drawLogPDF(const Indices & pointNumber) const;
+
+  /** Draw the PDF of a 2D marginal */
+  virtual Graph drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
+				     const UnsignedInteger secondMarginal,
+				     const NumericalPoint & xMin,
+				     const NumericalPoint & xMax,
+				     const Indices & pointNumber) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawCDF() const;

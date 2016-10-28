@@ -160,7 +160,7 @@ NumericalScalar ChiSquare::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
   return normalizationFactor_ + (0.5 * nu_ - 1) * std::log(x) - 0.5 * x;
 }
 

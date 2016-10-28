@@ -90,7 +90,7 @@ Matrix GeneralizedExponential::partialGradient(const NumericalPoint & s,
   // For zero norm
   if (norm2 == 0.0)
   {
-    // Infinite gradient for p < 1
+    // Negative infinite gradient for p < 1
     if (p_ < 1.0) return Matrix(spatialDimension_, 1, NumericalPoint(spatialDimension_, -SpecFunc::MaxNumericalScalar));
     // Non-zero gradient for p == 1
     if (p_ == 1.0)

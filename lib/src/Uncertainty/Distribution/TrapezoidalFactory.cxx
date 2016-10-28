@@ -50,7 +50,7 @@ NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(cons
 {
   NumericalPoint result(3, 0.0);
   result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
-  result[1] = x[2] - x[1] - SpecFunc::MinNumericalScalar;  // x[1] <  x[2]
+  result[1] = x[2] - x[1] - SpecFunc::NumericalScalarEpsilon;  // x[1] <  x[2]
   result[2] = x[3] - x[2] ;                                // x[2] <= x[3]
   return result;
 }

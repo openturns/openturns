@@ -505,7 +505,7 @@ NumericalScalar DistributionImplementation::computePDF(const NumericalPoint & po
 NumericalScalar DistributionImplementation::computeLogPDF(const NumericalPoint & point) const
 {
   const NumericalScalar pdf = computePDF(point);
-  NumericalScalar logPdf = -SpecFunc::MaxNumericalScalar;
+  NumericalScalar logPdf = SpecFunc::LogMinNumericalScalar;
   if ( pdf > 0.0 ) logPdf = std::log(pdf);
   return logPdf;
 }
@@ -1212,6 +1212,33 @@ NumericalSample DistributionImplementation::computePDF(const NumericalPoint & xM
     for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
   return computePDF(inputSample);
+}
+
+/* Compute the log-PDF of 1D distributions over a regular grid */
+NumericalSample DistributionImplementation::computeLogPDF(const NumericalScalar xMin,
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber,
+    NumericalSample & grid) const
+{
+  return computeLogPDF(NumericalPoint(1, xMin), NumericalPoint(1, xMax), Indices(1, pointNumber), grid);
+}
+
+/* Compute the log-PDF of nD distributions over a regular grid */
+NumericalSample DistributionImplementation::computeLogPDF(const NumericalPoint & xMin,
+    const NumericalPoint & xMax,
+    const Indices & pointNumber,
+    NumericalSample & grid) const
+{
+  if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
+  if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
+  if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
+  const UnsignedInteger size = indices.getSize();
+  NumericalSample inputSample(indices.getSize(), dimension_);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  grid = inputSample;
+  return computeLogPDF(inputSample);
 }
 
 /* Compute the CDF of 1D distributions over a regular grid */
@@ -2703,7 +2730,7 @@ Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber) const
 {
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
   NumericalPoint origin(2);
@@ -2805,6 +2832,219 @@ Graph DistributionImplementation::drawPDF() const
   if (dimension == 1) return drawPDF(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
   if (dimension == 2) return drawPDF(Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
   throw InvalidDimensionException(HERE) << "Error: can draw a PDF only if dimension equals 1 or 2, here dimension=" << dimension;
+}
+
+
+/* Draw the log-PDF of a discrete distribution */
+Graph DistributionImplementation::drawDiscreteLogPDF(const NumericalScalar xMin,
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber) const
+{
+  if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
+  if (xMax < xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  const String title(OSS() << getDescription()[0] << " PDF");
+  const NumericalSample support(getSupport(Interval(xMin, xMax)));
+  // First the vertical bars
+  const String xName(getDescription()[0]);
+  Graph graphLogPDF(title, xName, "PDF", true, "topright");
+  NumericalPoint point(2);
+  point[0] = xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  const NumericalSample gridY(computeLogPDF(support));
+
+  NumericalSample data(0, 2);
+  data.add(point);
+  for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+  {
+    point[0] = support[i][0];
+    data.add(point);
+    point[1] = gridY[i][0];
+    data.add(point);
+    point[1] = 0.0;
+    data.add(point);
+  }
+  point[0] = xMax + ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  point[1] = 0.0;
+  data.add(point);
+  graphLogPDF.add(Curve(data, "red", "solid", 2, title));
+  NumericalPoint boundingBox(graphLogPDF.getBoundingBox());
+  const NumericalScalar yMin = boundingBox[2];
+  const NumericalScalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
+  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
+  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
+  graphLogPDF.setBoundingBox(boundingBox);
+  return graphLogPDF;
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 */
+Graph DistributionImplementation::drawLogPDF(const NumericalScalar xMin,
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber) const
+{
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PDF only if dimension equals 1, here dimension=" << dimension_;
+  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with a point number < 2";
+  if (isDiscrete()) return drawDiscreteLogPDF(xMin, xMax, pointNumber);
+  // Discretization of the x axis
+  const String title(OSS() << getDescription()[0] << " log PDF");
+  NumericalSample gridX;
+  const NumericalSample gridY(computeLogPDF(xMin, xMax, pointNumber, gridX));
+  Curve curvePDF(gridX, gridY);
+  curvePDF.setColor("red");
+  curvePDF.setLegend(title);
+  curvePDF.setLineStyle("solid");
+  curvePDF.setLineWidth(2);
+  const String xName(getDescription()[0]);
+  Graph graphPDF(title, xName, "log PDF", true, "topright");
+  graphPDF.add(curvePDF);
+  NumericalPoint boundingBox(graphPDF.getBoundingBox());
+  const NumericalScalar yMin = boundingBox[2];
+  const NumericalScalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
+  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
+  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
+  graphPDF.setBoundingBox(boundingBox);
+  return graphPDF;
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 */
+Graph DistributionImplementation::drawLogPDF(const UnsignedInteger pointNumber) const
+{
+  if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D distributions";
+  // For discrete distributions, use the numerical range to define the drawing range
+  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin")));
+  if (isDiscrete())
+  {
+    NumericalScalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
+    NumericalScalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
+    if (b <= a)
+    {
+      a -= 1.0;
+      b += 1.0;
+    }
+    return drawLogPDF(a, b, pointNumber);
+  }
+  return drawLogPDF(xMin - delta, xMax + delta, pointNumber);
+}
+
+/* Draw the log-PDF of a 1D marginal */
+Graph DistributionImplementation::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
+    const NumericalScalar xMin,
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber) const
+{
+  Graph marginalGraph(getMarginal(marginalIndex)->drawLogPDF(xMin, xMax, pointNumber));
+  marginalGraph.setTitle(OSS() << getDescription() << "->" << description_[marginalIndex] << " component log PDF");
+  return marginalGraph;
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph DistributionImplementation::drawLogPDF(const NumericalPoint & xMin,
+    const NumericalPoint & xMax,
+    const Indices & pointNumber) const
+{
+  if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  NumericalPoint discretization(2);
+  NumericalPoint scaling(2);
+  NumericalPoint origin(2);
+  const NumericalScalar nX = pointNumber[0] - 2;
+  discretization[0] = nX;
+  // Discretization of the first component
+  NumericalSample x(Box(NumericalPoint(1, nX)).generate());
+  origin[0] = xMin[0];
+  scaling[0] = xMax[0] - xMin[0];
+  x *= NumericalPoint(1, scaling[0]);
+  x += NumericalPoint(1, origin[0]);
+  const NumericalScalar nY = pointNumber[1] - 2;
+  discretization[1] = nY;
+  // Discretization of the second component
+  NumericalSample y(Box(NumericalPoint(1, nY)).generate());
+  origin[1] = xMin[1];
+  scaling[1] = xMax[1] - xMin[1];
+  y *= NumericalPoint(1, scaling[1]);
+  y += NumericalPoint(1, origin[1]);
+  NumericalSample xy;
+  // Compute the output sample, using possible parallelism or optimized implementation
+  const NumericalSample z(computeLogPDF(xMin, xMax, pointNumber, xy));
+  const String xName(description_[0]);
+  const String yName(description_[1]);
+  const String title(OSS() << getDescription() << " iso-log PDF");
+  Graph graph(title, xName, yName, true, "topright");
+  Contour isoValues(Contour(x, y, z, NumericalPoint(0), Description(0), true, title));
+  isoValues.buildDefaultLevels();
+  isoValues.buildDefaultLabels();
+  graph.add(isoValues);
+  return graph;
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph DistributionImplementation::drawLogPDF(const NumericalPoint & xMin,
+    const NumericalPoint & xMax) const
+{
+  return drawLogPDF(xMin, xMax, Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber) const
+{
+  if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: pointNumber must be of size 2, here size=" << pointNumber.getSize();
+  NumericalPoint xMin(2);
+  if (isCopula()) xMin = NumericalPoint(2, 0.0);
+  else
+  {
+    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+  }
+  NumericalPoint xMax(2);
+  if (isCopula()) xMax = NumericalPoint(2, 1.0);
+  else
+  {
+    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+  }
+  NumericalPoint delta(2, 0.0);
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
+  const Interval intersection(getRange().intersect(Interval(xMin - delta, xMax + delta)));
+  Graph graph(drawLogPDF(intersection.getLowerBound(), intersection.getUpperBound(), pointNumber));
+  // Add a border for a copula
+  if (isCopula())
+  {
+    const Drawable drawable(graph.getDrawable(0));
+    NumericalSample data(5, 2);
+    data[1][0] = 1.0;
+    data[2]    = NumericalPoint(2, 1.0);
+    data[3][1] = 1.0;
+    Curve square(data);
+    square.setColor("blue");
+    graph.setDrawable(square, 0);
+    graph.add(drawable);
+  }
+  return graph;
+}
+
+/* Draw the log-PDF of a 2D marginal */
+Graph DistributionImplementation::drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
+    const UnsignedInteger secondMarginal,
+    const NumericalPoint & xMin,
+    const NumericalPoint & xMax,
+    const Indices & pointNumber) const
+{
+  Indices indices(2);
+  indices[0] = firstMarginal;
+  indices[1] = secondMarginal;
+  Graph marginalGraph(getMarginal(indices)->drawLogPDF(xMin, xMax, pointNumber));
+  marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-log PDF");
+  return marginalGraph;
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 or 2 */
+Graph DistributionImplementation::drawLogPDF() const
+{
+  UnsignedInteger dimension = getDimension();
+  // Generic interface for the 1D and 2D cases
+  if (dimension == 1) return drawLogPDF(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"));
+  if (dimension == 2) return drawLogPDF(Indices(2, ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")));
+  throw InvalidDimensionException(HERE) << "Error: can draw a log-PDF only if dimension equals 1 or 2, here dimension=" << dimension;
 }
 
 
@@ -2926,7 +3166,7 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
   if (xMin.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: expected xMin to be of dimension 2, here dimension=" << xMin.getDimension();
   if (xMax.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: expected xMax to be of dimension 2, here dimension=" << xMax.getDimension();
   if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected pointNumber to be of size 2, here size=" << pointNumber.getSize();
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
   NumericalPoint origin(2);

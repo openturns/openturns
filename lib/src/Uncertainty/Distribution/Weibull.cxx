@@ -173,7 +173,7 @@ NumericalScalar Weibull::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
   const NumericalScalar y = x / alpha_;
   return std::log(beta_) + (beta_ - 1.0) * std::log(y) - std::log(alpha_) - std::pow(y, beta_);
 }
