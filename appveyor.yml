@@ -1,8 +1,8 @@
 install:
-  - appveyor DownloadFile https://downloads.sourceforge.net/openblas/v0.2.15/OpenBLAS-v0.2.15-Win32.zip
+  - appveyor-retry appveyor DownloadFile https://downloads.sourceforge.net/openblas/v0.2.15/OpenBLAS-v0.2.15-Win32.zip
   - 7z x OpenBLAS-v0.2.15-Win32.zip -oC:\Libraries > nil
 
-  - appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.10/swigwin-3.0.10.zip
+  - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.10/swigwin-3.0.10.zip
   - 7z x swigwin-3.0.10.zip -oC:\Libraries > nul
 
 build_script:
