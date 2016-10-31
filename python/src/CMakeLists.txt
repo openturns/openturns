@@ -417,6 +417,7 @@ ot_add_python_module(experiment experiment_module.i
                       Combinations.i Combinations_doc.i.in
                       KPermutations.i KPermutations_doc.i.in
                       Tuples.i Tuples_doc.i.in
+                      PythonExperimentImplementation.cxx
                       BaseExperimentTemplateDefs.i
                    )
 
