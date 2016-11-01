@@ -538,9 +538,6 @@ void GeneralizedLinearModelAlgorithm::computeF()
   const UnsignedInteger basisCollectionSize = basisCollection_.getSize();
   UnsignedInteger totalSize = 0;
   for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basisCollection_[i].getSize();
-  UnsignedInteger index = 0;
-  // Compute F
-  F_ = Matrix(sampleSize * outputDimension, totalSize);
   // if totalSize > 0, then basisCollection_.getSize() should be equal to outputDimension
   // This is checked in GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm
   F_ = Matrix(sampleSize * outputDimension, totalSize);
