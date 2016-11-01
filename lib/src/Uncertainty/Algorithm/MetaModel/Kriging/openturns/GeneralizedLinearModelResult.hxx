@@ -62,7 +62,8 @@ public:
                                const NumericalPoint & relativeErrors,
                                const BasisCollection & basis,
                                const NumericalPointCollection & trendCoefficients,
-                               const CovarianceModel & covarianceModel);
+                               const CovarianceModel & covarianceModel,
+			       const NumericalScalar optimalLogLikelihood);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
   GeneralizedLinearModelResult(const NumericalSample & inputData,
@@ -73,6 +74,7 @@ public:
                                const BasisCollection & basis,
                                const NumericalPointCollection & trendCoefficients,
                                const CovarianceModel & covarianceModel,
+			       const NumericalScalar optimalLogLikelihood,
                                const TriangularMatrix & covarianceCholeskyFactor,
                                const HMatrix & covarianceHMatrix);
 
@@ -98,6 +100,9 @@ public:
 
   /** process accessor */
   Process getNoise() const;
+
+  /** Optimal likelihood accessor */
+  NumericalScalar getOptimalLogLikelihood() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -141,6 +146,9 @@ private:
 
   /** The covariance model */
   CovarianceModel covarianceModel_;
+
+  /** The optimal log-likelihood value */
+  NumericalScalar optimalLogLikelihood_;
 
   /** Boolean for cholesky. */
   Bool hasCholeskyFactor_;

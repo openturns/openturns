@@ -23,13 +23,9 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/ProductCovarianceModel.hxx"
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/KrigingGradient.hxx"
-#include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/GeneralizedLinearModelResult.hxx"
 #include "openturns/ComposedFunction.hxx"
 
@@ -187,7 +183,7 @@ void KrigingAlgorithm::run()
   // Covariance coefficients are computed once, ever if optimiser is fixed
   rho_ = glmAlgo_.getRho();
 
-  /** Method that returns the covariance factor - hmat */
+  /* Method that returns the covariance factor - hmat */
   const GeneralizedLinearModelResult glmResult(glmAlgo_.getResult());
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT")
     covarianceCholeskyFactorHMatrix_ = glmResult.getHMatCholeskyFactor();
@@ -263,7 +259,7 @@ KrigingResult KrigingAlgorithm::getResult()
   return result_;
 }
 
-/** Optimization solver accessor */
+/* Optimization solver accessor */
 OptimizationSolver KrigingAlgorithm::getOptimizationSolver() const
 {
   return glmAlgo_.getOptimizationSolver();
@@ -285,8 +281,8 @@ Interval KrigingAlgorithm::getOptimizationBounds() const
   return glmAlgo_.getOptimizationBounds();
 }
 
-/** Log-Likelihood function accessor */
-NumericalMathFunction KrigingAlgorithm::getLogLikelihoodFunction()
+/* Log-Likelihood function accessor */
+NumericalMathFunction KrigingAlgorithm::getReducedLogLikelihoodFunction()
 {
   return glmAlgo_.getObjectiveFunction();
 }
@@ -302,7 +298,7 @@ void KrigingAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
   glmAlgo_.setOptimizeParameters(optimizeParameters);
 }
 
-/** Observation noise accessor */
+/* Observation noise accessor */
 void KrigingAlgorithm::setNoise(const NumericalPoint & noise)
 {
   glmAlgo_.setNoise(noise);

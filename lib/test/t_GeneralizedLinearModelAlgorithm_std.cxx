@@ -32,72 +32,69 @@ int main(int argc, char *argv[])
 
   try
   {
-    // Set Numerical precision to 3
-    PlatformInfo::SetNumericalPrecision(3);
-
-    std::cout << "=============" << std::endl;
-    std::cout << "Test standard" << std::endl;
-    std::cout << "=============" << std::endl;
-    UnsignedInteger sampleSize = 6;
+    // Set Numerical precision to 4
+    PlatformInfo::SetNumericalPrecision(4);
+    UnsignedInteger sampleSize = 40;
     UnsignedInteger spatialDimension = 1;
 
     // Create the function to estimate
-    Description input(spatialDimension);
-    input[0] = "x0";
-    Description foutput(1);
-    foutput[0] = "f0";
-    Description formulas(1);
-    formulas[0] = "x0";
-    NumericalMathFunction model(input, foutput, formulas);
+    NumericalMathFunction model("x0", "x0");
 
     NumericalSample X(sampleSize, spatialDimension);
-    NumericalSample X2(sampleSize, spatialDimension);
-    for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
-    {
-      X[i][0] = 3.0 + i;
-      X2[i][0] = 2.5 + i;
-    }
-    X[0][0] = 1.0;
-    X[1][0] = 3.0;
-    X2[0][0] = 2.0;
-    X2[1][0] = 4.0;
+    for (UnsignedInteger i = 0; i < sampleSize; ++ i)
+      X[i][0] = 3.0 + (8.0 * i) / sampleSize;
     NumericalSample Y = model(X);
-    for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
-    {
-      Y[i][0] += 0.01 * DistFunc::rNormal();
-    }
+
     // Add a small noise to data
-    NumericalSample Y2 = model(X2);
+    Y += TemporalNormalProcess(AbsoluteExponential(NumericalPoint(1, 0.1), NumericalPoint(1, 0.2)), Mesh(X)).getRealization().getValues();
 
     Basis basis = LinearBasisFactory(spatialDimension).build();
-    //DiracCovarianceModel covarianceModel(spatialDimension);
+    // Case of a misspecified covariance model
     DiracCovarianceModel covarianceModel(spatialDimension);
+    fullprint << "===================================================\n" << std::endl;
     GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
 
-    // perform an evaluation
     GeneralizedLinearModelResult result = algo.getResult();
-    NumericalMathFunction metaModel = result.getMetaModel();
-    CovarianceModel conditionalCovariance = result.getCovarianceModel();
-    NumericalSample residual = metaModel(X) - Y;
-    assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 0.00013144), 1e-5, 1e-5);
-    assert_almost_equal(conditionalCovariance.getParameter(), NumericalPoint(1, 0.011464782674211804), 1e-5, 1e-3);
-
+    fullprint << "\ncovariance (dirac, optimized)=" << result.getCovarianceModel() << std::endl;
+    fullprint << "trend (dirac, optimized)=" << result.getTrendCoefficients() << std::endl;
+    fullprint << "===================================================\n" << std::endl;
     // Now without estimating covariance parameters
     basis = LinearBasisFactory(spatialDimension).build();
     covarianceModel = DiracCovarianceModel(spatialDimension);
     algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
     algo.setOptimizeParameters(false);
     algo.run();
-
-    // perform an evaluation
     result = algo.getResult();
-    metaModel = result.getMetaModel();
-    conditionalCovariance = result.getCovarianceModel();
-    residual = metaModel(X) - Y;
-    assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 0.00013144), 1e-5, 1e-5);
-    assert_almost_equal(conditionalCovariance.getParameter(), NumericalPoint(1, 1.0), 0.0, 0.0);
+    fullprint << "\ncovariance (dirac, not optimized)=" << result.getCovarianceModel() << std::endl;
+    fullprint << "trend (dirac, not optimized)=" << result.getTrendCoefficients() << std::endl;
+    fullprint << "===================================================\n" << std::endl;
 
+    // Case of a well specified covariance model
+    // Test the optimization when the amplitude is deduced analytically from the scale
+    {
+      AbsoluteExponential covarianceModel(spatialDimension);
+      GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
+      algo.run();
+      GeneralizedLinearModelResult result = algo.getResult();
+      fullprint << "\ncovariance (reduced, unbiased)=" << result.getCovarianceModel() << std::endl;
+      fullprint << "trend (reduced, unbiased)=" << result.getTrendCoefficients() << std::endl;
+      fullprint << "===================================================\n" << std::endl;
+      ResourceMap::SetAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance", false);
+      algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis);
+      algo.run();
+      result = algo.getResult();
+      fullprint << "\ncovariance (reduced, biased)=" << result.getCovarianceModel() << std::endl;
+      fullprint << "trend (reduced, biased)=" << result.getTrendCoefficients() << std::endl;
+      fullprint << "===================================================\n" << std::endl;
+      ResourceMap::SetAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
+      algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis);
+      algo.run();
+      result = algo.getResult();
+      fullprint << "\ncovariance (full optim)=" << result.getCovarianceModel() << std::endl;
+      fullprint << "trend (full optim)=" << result.getTrendCoefficients() << std::endl;
+      fullprint << "===================================================\n" << std::endl;
+    }
     std::cout << "Test Ok" << std::endl;
 
   }

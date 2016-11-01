@@ -2,9 +2,9 @@
 "Generalized linear model result.
 
 Available constructors:
-    GeneralizedLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel*)
+    GeneralizedLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, optimalLogLikelihood*)
 
-    GeneralizedLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, covarianceCholeskyFactor, covarianceHMatrix*)
+    GeneralizedLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, covarianceCholeskyFactor, covarianceHMatrix, optimalLogLikelihood*)
 
 
 Parameters
@@ -28,7 +28,8 @@ covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
     The Cholesky factor :math:`\mat{L}` of :math:`\mat{C}`.
 covarianceHMatrix :  :class:`~openturns.HMatrix`
     The *hmat* implementation of :math:`\mat{L}`.
-
+optimalLogLikelihood : float
+    The maximum log-likelihood corresponding to the model.
 
 Notes
 -----
@@ -176,3 +177,15 @@ process : :class:`~openturns.Process`
 "
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelResult::getOptimalLogLikelihood
+"Accessor to the optimal log-likelihood of the model.
+
+Returns
+-------
+optimalLogLikelihood : float
+    The value of the log-likelihood corresponding to the model.
+"
+
+// ---------------------------------------------------------------------
+

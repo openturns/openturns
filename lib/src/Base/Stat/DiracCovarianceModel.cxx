@@ -343,7 +343,7 @@ void DiracCovarianceModel::setAmplitude(const NumericalPoint & amplitude)
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (amplitude[i] <= 0)
-      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive. Or the #" << i << " component equals " << amplitude[i];
+      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive but the #" << i << " component equals " << amplitude[i];
   }
   amplitude_ = amplitude;
   computeCovariance();

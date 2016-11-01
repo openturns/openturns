@@ -70,12 +70,14 @@ int main(int argc, char *argv[])
   Basis basis(ConstantBasisFactory(2).build());
 
   // Kriring algorithm
-  KrigingAlgorithm algo(inputSample, outputSample, basis, covarianceModel);
+  std::cerr << "before algo" << std::endl;
+  KrigingAlgorithm algo(inputSample, outputSample, basis, covarianceModel, true, true);
+  std::cerr << "before run" << std::endl;
   algo.run();
-
+  std::cerr << "run ok" << std::endl;
   // Get result
   KrigingResult result(algo.getResult());
-
+  std::cerr << "result=" << result << std::endl;
   // Build a mesh
   // Start with vertices
   NumericalSample vertices(0, 2);
@@ -124,7 +126,7 @@ int main(int argc, char *argv[])
 
   // Conditioned process
   ConditionedNormalProcess process(result, mesh2D);
-
+  std::cerr << "process (conditioned)=" << process << std::endl;
   // Get a realization of the process
   Field realization( process.getRealization() );
   fullprint << "realization = " << realization << std::endl;
