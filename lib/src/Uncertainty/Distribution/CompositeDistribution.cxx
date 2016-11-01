@@ -28,6 +28,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -89,7 +90,6 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   setName("CompositeDistribution");
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
-  if (!function.getGradient()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the function must have a gradient. Consider using finite difference.";
   if (antecedent.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the antecedent must have dimension 1. Here dimension=" << antecedent.getDimension();
   const UnsignedInteger size = bounds.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least two bounds.";
@@ -118,7 +118,6 @@ void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
-  if (!function.getGradient()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the function must have a gradient. Consider using finite difference.";
   if (antecedent.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the antecedent must have dimension 1. Here dimension=" << antecedent.getDimension();
   function_ = function;
   antecedent_ = antecedent;
@@ -131,8 +130,8 @@ void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction
 void CompositeDistribution::update()
 {
   // First, compute the roots of the gradient
-  const NumericalScalar xMin = antecedent_.getRange().getLowerBound()[0];
-  const NumericalScalar xMax = antecedent_.getRange().getUpperBound()[0];
+  const NumericalScalar xMin = antecedent_.getRange().getLowerBound()[0] + ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  const NumericalScalar xMax = antecedent_.getRange().getUpperBound()[0] - ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
   bounds_ = NumericalPoint(1, xMin);
   try
   {
@@ -329,12 +328,15 @@ NumericalScalar CompositeDistribution::computePDF(const NumericalPoint & point) 
       const NumericalScalar numerator = antecedent_.computePDF(fInvX);
       if (numerator > 0.0)
       {
+	const Matrix gradient(function_.gradient(fInvX));
+	if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
         const NumericalScalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
         if (SpecFunc::IsNormal(denominator)) pdf += numerator / denominator;
-        LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator);
+        LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator << ", pdf=" << pdf);
       }
     }
   } // i
+  LOGDEBUG(OSS() << "pdf=" << pdf);
   return pdf;
 }
 
@@ -363,12 +365,19 @@ NumericalScalar CompositeDistribution::computeCDF(const NumericalPoint & point) 
     // Fantecedent(t) - Fantecedent(a) if f(a) < x < f(b) where f(t) = x
     if (increasing_[i - 1])
     {
-      if (x >= fB) cdf += probabilities_[i] - probabilities_[i - 1];
+      LOGDEBUG(OSS() << "increasing");
+      if (x >= fB)
+	{
+	  cdf += probabilities_[i] - probabilities_[i - 1];
+	  LOGDEBUG(OSS() << "x >= fB, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", cdf=" << cdf);
+	}
       else if (x > fA)
       {
         const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
         cdf += antecedent_.computeCDF(fInvX) - probabilities_[i - 1];
+        LOGDEBUG(OSS() << "x < fA, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", cdf=" << cdf);
       }
+      LOGDEBUG(OSS() << "x <= fA, no contribution");
     } // increasing
     // If f is decreasing, f([a, b]) = [f(b), f(a)] and the contribution is:
     // 0 if x <= f(b)
@@ -376,15 +385,46 @@ NumericalScalar CompositeDistribution::computeCDF(const NumericalPoint & point) 
     // Fantecedent(b) - Fantecedent(t) if f(b) < x < f(a) where f(t) = x
     else
     {
-      if (x >= fA) cdf += probabilities_[i] - probabilities_[i - 1];
+      LOGDEBUG(OSS() << "decreasing");
+      if (x >= fA)
+	{
+	  cdf += probabilities_[i] - probabilities_[i - 1];
+	  LOGDEBUG(OSS() << "x >= fA, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", cdf=" << cdf);
+	}
       else if (x > fB)
       {
         const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
         cdf += probabilities_[i] - antecedent_.computeCDF(fInvX);
+        LOGDEBUG(OSS() << "x > fB, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", cdf=" << cdf);
       }
+      LOGDEBUG(OSS() << "x <= fB, no contribution");
     } // decreasing
   } // i
+  LOGDEBUG(OSS() << "cdf=" << cdf);
   return cdf;
+}
+
+/** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(prob, marginalProb);
+}
+
+/** Get the minimum volume level set containing a given probability of the distributionImplementation */
+LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  // As we are in 1D and as the function defining the composite distribution can have complex variations,
+  // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
+  const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
+  const NumericalPoint q(SobolSequence(1).generate(size).getImplementation()->getData());
+  const NumericalSample sampleAntecedent(antecedent_.computeQuantile(q));
+  const NumericalSample minusLogPDFSample(computeLogPDF(function_(sampleAntecedent)) * NumericalPoint(1, -1.0));
+  const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
+  threshold = std::exp(-minusLogPDFThreshold);
+
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Parameters value and description accessor */

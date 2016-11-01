@@ -35,7 +35,7 @@ Create a basis of functions:
 
 Create a mesh:
 
->>> myMesh = ot.RegularGrid(0.0, 0.1,300)
+>>> myMesh = ot.RegularGrid(0.0, 0.1, 10)
 
 Create the functional basis process:
 

@@ -617,9 +617,6 @@ Normal::Implementation Normal::getCopula() const
 NumericalScalar Normal::computeRadialDistributionCDF(const NumericalScalar radius,
     const Bool tail) const
 {
-  // It should be a chi-squared distribution with dimension degrees of freedom
-  // We only have a gamma distribution available for this time (OpenTURNS rc1)
-  // so we use the relation chisq(n) = gamma(n/2, 1/2)
   return tail ? ChiSquare(getDimension()).computeComplementaryCDF(radius * radius) : ChiSquare(getDimension()).computeCDF(radius * radius);
 }
 

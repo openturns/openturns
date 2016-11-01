@@ -196,7 +196,7 @@ Examples
 >>> model = ot.NumericalMathFunction(['X1', 'X2', 'X3'], ['Y'], formula)
 >>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
 ...                                         ot.IndependentCopula(3))
->>> size = 1000
+>>> size = 100
 >>> design = ot.SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
 "
 %enddef

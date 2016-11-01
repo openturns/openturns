@@ -26,6 +26,8 @@ pdf (FD)=0.5
 cdf=0.25
 ccdf=0.75
 survival=0.75
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.67032]
+Survival(inverse survival)=0.95
 pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
 pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
 cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.375,-0.125]
@@ -34,6 +36,16 @@ characteristic function=(-0.0896196,0.531924)
 log characteristic function=(-0.61726,1.73771)
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[4.0552]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.606531] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.0552] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(LogUniform(aLog = -0.5, bLog = 1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(LogUniform(aLog = -0.5, bLog = 1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(LogUniform(aLog = -0.5, bLog = 1.5)) level=2.09315
+beta=0.123298
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.637628] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.26311] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.606531] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.0552] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.67032] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[4.48169] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.93758]
 standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.08407]
 skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.67539]

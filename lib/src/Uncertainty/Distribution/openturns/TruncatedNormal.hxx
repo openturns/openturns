@@ -88,6 +88,12 @@ public:
   using ContinuousDistribution::computeComplementaryCDF;
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
+  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
   NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;

@@ -23,6 +23,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.1310
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.131075,-0.131075]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.91666]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-4.91666]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-5.99534, 4.99534]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 4.11966} with f=
+MinimumVolumeLevelSetEvaluation(Logistic(alpha = -0.5, beta = 1.5))
+beta= [0.01625]
+Bilateral confidence interval= [-5.99534, 4.99534]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-48.8543, 3.91666]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-4.91666, 47.8543]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[-0.5]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[2.7207]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0]

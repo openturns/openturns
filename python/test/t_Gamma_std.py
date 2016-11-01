@@ -85,6 +85,28 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)=", distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+
+    # Confidence regions
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    print("Minimum volume interval=", interval)
+    print("threshold=", NumericalPoint(1, threshold))
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("Bilateral confidence interval=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("Unilateral confidence interval (lower tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("Unilateral confidence interval (upper tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+
     mean = distribution.getMean()
     print("mean=", mean)
     covariance = distribution.getCovariance()
@@ -102,18 +124,3 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 
-    # Specific to this distribution
-    mu = distribution.getMu()
-    print("mu= %.6g" % mu)
-    standardDeviation = distribution.getStandardDeviation()
-    print("standard deviation=", standardDeviation)
-    skewness = distribution.getSkewness()
-    print("skewness=", skewness)
-    kurtosis = distribution.getKurtosis()
-    print("kurtosis=", kurtosis)
-    sigma = distribution.getSigma()
-    print("sigma= %.6g" % sigma)
-    newDistribution = Gamma(
-        mu, sigma, distribution.getGamma(), Gamma.MUSIGMA)
-    print("k from (mu, sigma)= %.6g" % newDistribution.getK())
-    print("lambda from (mu, sigma)= %.6g" % newDistribution.getLambda())

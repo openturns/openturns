@@ -7,6 +7,7 @@
 ==== Major changes ====
  * Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
  * New api for sensitivity analysis
+ * New methods to compute confidence regions in Distribution
 
 ==== New classes ====
  * SubsetSampling
@@ -41,12 +42,13 @@
  * Swap SpectralModel scale & amplitude parameters: CauchyModel, ExponentialCauchy
 
 === Python module ===
- * Add the possibility to distribute PythonFunction calls with multiprocessing
+ * Added the possibility to distribute PythonFunction calls with multiprocessing
 
 === Miscellaneous ===
  * Improved the computeCDF() method of Normal
- * Add HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals
- * Add two samples Kolmogorov test
+ * Added the computeMinimumVolumeInterval(), computeBilateralConfidenceInterval(), computeUnilateralConfidenceInterval() and computeMinimumVolumeLevelSet() methods to compute several kind of confidence regions in Distribution
+ * Added HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals
+ * Added two samples Kolmogorov test
  * Improved the speed of many algorithms based on method binding
  * Added more options to control LHSExperiment and LowDiscrepancyExperiment
  * Improved the IntervalMesher class: now it takes into account the diamond flag

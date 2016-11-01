@@ -24,20 +24,37 @@ anotherSample covariance= [[ 0.0845153 0.0201085 ]
 point=  [0.2,0.2]  pdf= 1.252  cdf= 0.05792
 Quantile= [0.683555,0.683555]
 CDF(quantile)= 0.5
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[0.0255431,0.0255431]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0.0126603, 0.98734]
+[0.0126603, 0.98734]
+threshold= [0.974679]
+Minimum volume level set= {x | f(x) <= 0.392698} with f=
+MinimumVolumeLevelSetEvaluation(class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7)
+beta= [0.675232]
+Bilateral confidence interval= [0.0126603, 0.98734]
+[0.0126603, 0.98734]
+beta= [0.974679]
+Unilateral confidence interval (lower tail)= [0, 0.974457]
+[0, 0.974457]
+beta= [0.974457]
+Unilateral confidence interval (upper tail)= [0.0255431, 1]
+[0.0255431, 1]
+beta= [0.974457]
 margin= IndependentCopula(dimension = 1)
 margin PDF= 1.0
 margin CDF= 0.25
 margin quantile= [0.95]
-margin realization= [0.56939]
+margin realization= [0.294088]
 margin= IndependentCopula(dimension = 1)
 margin PDF= 1.0
 margin CDF= 0.25
 margin quantile= [0.95]
-margin realization= [0.0571768]
+margin realization= [0.47206]
 indices= [1,0]
 margins= class=FarlieGumbelMorgensternCopula name=a farlieGumbelMorgenstern copula dimension=2 theta=0.7
 margins PDF= 1.175
 margins CDF= 0.087109375
 margins quantile= [0.974457,0.974457]
 margins CDF(quantile)= 0.95
-margins realization= [0.243714,0.941316]
+margins realization= [0.196586,0.508063]

@@ -22,6 +22,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.1861
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.186185,0.0973767,-0.0987654,-0.197531]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1.25419]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.707166]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.868627, 1.31692]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 1.83159} with f=
+MinimumVolumeLevelSetEvaluation(Beta(r = 2, t = 5, a = -1, b = 2))
+beta= [0.160159]
+Bilateral confidence interval= [-0.797242, 1.41764]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-1, 1.25419]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.707166, 2]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.2]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.6]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.285714]
@@ -35,10 +48,6 @@ standard moment n= 3  value= [-0.0857143]
 standard moment n= 4  value= [0.0857143]
 standard moment n= 5  value= [-0.047619]
 Standard representative= Beta(r = 2, t = 5, a = -1, b = 1)
-mu=0.200000
-sigma=0.600000
-r from (mu, sigma)=2.000000
-t from (mu, sigma)=5.000000
 InvalidArgumentException : The first shape parameter must be a real value, here r=inf
 InvalidArgumentException : The first shape parameter must be a real value, here r=nan
 InvalidArgumentException : The second shape parameter must be a real value, here t=inf

@@ -20,6 +20,19 @@ quantile= [4.91251]
 cdf(quantile)= 0.95
 quantile (tail)= [-0.78963]
 cdf (tail)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.78963]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.800977, 4.91251]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.43805} with f=
+MinimumVolumeLevelSetEvaluation(CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)])
+beta= [0.0321272]
+Bilateral confidence interval= [-0.79814, 5.94149]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.800977, 4.91251]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.78963, 60.4909]
+beta= [0.95]
 characteristic function=(0.421744+0.00166811j)
 log characteristic function=(-0.863349+0.00395524j)
 pdf gradient     = [0.0164482,-0.0648158]

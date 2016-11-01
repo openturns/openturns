@@ -32,7 +32,7 @@ Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_
 
 Add it to a process:
 
->>> myGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myGrid = ot.RegularGrid(0.0, 0.1, 10)
 >>> amplitude=[5.0]
 >>> scale=[0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)

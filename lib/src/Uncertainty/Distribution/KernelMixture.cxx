@@ -323,7 +323,7 @@ NumericalScalar KernelMixture::computeCDF(const NumericalPoint & point) const
   if (allTooLarge) return 1.0;
   if (oneTooSmall) return 0.0;
   const NumericalScalar cdfEpsilon = kernel_.getCDFEpsilon();
-  for(UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar cdfAtom = kernel_.computeCDF((point[0] - sample_[i][0]) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
@@ -377,7 +377,7 @@ NumericalScalar KernelMixture::computeSurvivalFunction(const NumericalPoint & po
   const NumericalScalar cdfEpsilon = kernel_.getCDFEpsilon();
   NumericalScalar survivalValue = 0.0;
   const UnsignedInteger size = sample_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar cdfAtom = kernel_.computeSurvivalFunction((point[0] - sample_[i][0]) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
@@ -389,6 +389,45 @@ NumericalScalar KernelMixture::computeSurvivalFunction(const NumericalPoint & po
   } /* end for */
   cdfEpsilon_ = kernel_.getCDFEpsilon() * size;
   return survivalValue / size;
+}
+
+/* Get the probability content of an interval */
+NumericalScalar KernelMixture::computeProbability(const Interval & interval) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
+  const Interval reducedInterval(interval.intersect(getRange()));
+  if (reducedInterval == getRange()) return 1.0;
+  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  const NumericalPoint lowerBound(reducedInterval.getLowerBound());
+  const NumericalPoint upperBound(reducedInterval.getUpperBound());
+  if (useApproximatePDFCDF_)
+  {
+    const NumericalScalar mean = getMean()[0];
+    if (lowerBound[0] > mean) return ccdfApproximation_(lowerBound)[0] - ccdfApproximation_(upperBound)[0];
+    else return cdfApproximation_(upperBound)[0] - cdfApproximation_(lowerBound)[0];
+  }
+  NumericalScalar probability = 0.0;
+  const UnsignedInteger size = sample_.getSize();
+  if (dimension == 1)
+  {
+    const NumericalScalar hInverse = bandwidthInverse_[0];
+    for(UnsignedInteger i = 0; i < size; ++i)
+      probability += kernel_.computeProbability(Interval((lowerBound[0] - sample_[i][0]) * hInverse, (upperBound[0] - sample_[i][0]) * hInverse));
+    return probability / size;
+  }
+  const NumericalScalar probabilityEpsilon = kernel_.getCDFEpsilon();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      NumericalScalar probabilityAtom = kernel_.computeProbability(Interval((lowerBound[0] - sample_[i][0]) * bandwidthInverse_[0], (upperBound[0] - sample_[i][0]) * bandwidthInverse_[0]));
+      for (UnsignedInteger j = 1; j < dimension; ++j)
+	{
+	  if (probabilityAtom < probabilityEpsilon) break;
+	  probabilityAtom *= kernel_.computeProbability(Interval((lowerBound[j] - sample_[i][j]) * bandwidthInverse_[j], (upperBound[j] - sample_[i][j]) * bandwidthInverse_[j]));
+	}
+      probability += probabilityAtom;
+  } /* end for */
+  return probability / size;
 }
 
 /* Compute the quantile function of the distribution */

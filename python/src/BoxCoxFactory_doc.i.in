@@ -193,14 +193,14 @@ Examples
 Estimate the Box Cox transformation from a sample:
 
 >>> import openturns as ot
->>> mySample = ot.Exponential(2).getSample(1000)
+>>> mySample = ot.Exponential(2).getSample(10)
 >>> myBoxCoxFactory = ot.BoxCoxFactory()
 >>> myModelTransform = myBoxCoxFactory.build(mySample)
 >>> estimatedLambda = myModelTransform.getLambda()
 
 Estimate the Box Cox transformation from a field:
 
->>> myIndices= ot.Indices([40,20])
+>>> myIndices= ot.Indices([10, 5])
 >>> myMesher=ot.IntervalMesher(myIndices)
 >>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
 >>> myMesh=myMesher.build(myInterval)
@@ -217,14 +217,14 @@ Estimate the Box Cox transformation from a field:
 
 Estimation of a generalized linear model:
 
->>> inputSample = ot.Uniform(-1.0, 1.0).getSample(200)
+>>> inputSample = ot.Uniform(-1.0, 1.0).getSample(20)
 >>> outputSample = ot.NumericalSample(inputSample)
 >>> # Evaluation of y = ax + b (a: scale, b: translate)
 >>> outputSample = outputSample * [3] + [3.1]
 >>> # inverse transfo + small noise
 >>> def f(x): import math; return [math.exp(x[0])]
 >>> inv_transfo = ot.PythonFunction(1,1, f)
->>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1e-2).getSample(200)
+>>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1.0e-2).getSample(20)
 >>> # Estimation
 >>> result = ot.GeneralizedLinearModelResult()
 >>> basis = ot.LinearBasisFactory(1).build()

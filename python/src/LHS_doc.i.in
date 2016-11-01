@@ -69,10 +69,10 @@ Examples
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create a LHS algorithm
 >>> myAlgo = ot.LHS(myEvent)
->>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setMaximumOuterSampling(150)
 >>> myAlgo.setBlockSize(4)
 >>> myAlgo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.135572"
+Probability estimate=0.151667"

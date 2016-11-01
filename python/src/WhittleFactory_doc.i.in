@@ -103,7 +103,7 @@ Create a time series from a scalar ARMA(4,2) and a normal white noise:
 >>> myMACoef = ot.ARMACoefficients([0.4, 0.3])
 >>> myARMAProcess = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
 >>> myTimeSeries = myARMAProcess.getRealization()
->>> myProcessSample = myARMAProcess.getSample(100)
+>>> myProcessSample = myARMAProcess.getSample(10)
 
 Estimate the ARMA process specifying the orders:
 

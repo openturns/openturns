@@ -294,6 +294,35 @@ NumericalScalar ComposedCopula::computeProbability(const Interval & interval) co
   return value;
 }
 
+/* Get the survival function of the distribution */
+NumericalScalar ComposedCopula::computeSurvivalFunction(const NumericalPoint & point) const
+{
+  /* Survival = Survival_copula1x...xSurvival_copula_n */
+  const UnsignedInteger dimension = getDimension();
+  if (isIndependent_) return IndependentCopula(dimension).computeSurvivalFunction(point);
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
+  const UnsignedInteger size = copulaCollection_.getSize();
+  NumericalScalar productSurvival = 1.0;
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // If one component is at the left of the support of its marginal distribution, the Survival is null
+    if (point[i] >= 1.0) return 0.0;
+    // If the component is inside of the support, update the Survival value
+    const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
+    NumericalPoint component(copulaDimension);
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
+    {
+      component[j] = point[index];
+      ++index;
+    }
+    const NumericalScalar survival = copulaCollection_[i].computeSurvivalFunction(component);
+    productSurvival *= survival;
+  }
+  return productSurvival;
+}
+
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix ComposedCopula::getKendallTau() const
 {

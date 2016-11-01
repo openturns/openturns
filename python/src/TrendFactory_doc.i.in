@@ -61,7 +61,7 @@ Examples
 Define a scalar temporal normal process on a mesh of dimension 1:
 
 >>> import openturns as ot
->>> myGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myGrid = ot.RegularGrid(0.0, 1.0, 100)
 >>> amplitude=[5.0]
 >>> scale=[0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)

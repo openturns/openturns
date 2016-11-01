@@ -76,7 +76,7 @@ Examples
 >>> # We create a ImportanceSampling algorithm
 >>> myImportance = ot.Normal([49.969, 1.84194, 10.4454, 4.66776], [1.0]*4, ot.IdentityMatrix(4))
 >>> myAlgo = ot.ImportanceSampling(myEvent, myImportance)
->>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setMaximumOuterSampling(150)
 >>> myAlgo.setBlockSize(4)
 >>> myAlgo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation

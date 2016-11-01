@@ -39,7 +39,7 @@ Create a random vector:
 
 Draw a sample:
 
->>> sample = rvX.getSample(100)"
+>>> sample = rvX.getSample(5)"
 
 // ---------------------------------------------------------------------
 

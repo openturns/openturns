@@ -465,26 +465,6 @@ OT_Distribution_computeLogPDF_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_computeMinimumVolumeInterval_doc
-"Compute the minimum volume interval of a given probability content.
-
-Univariate case only.
-
-Parameters
-----------
-prob : float
-    Probability
-
-Returns
--------
-interval : :class:`~openturns.Interval`
-    Minimum volume interval of a given probability content in the univariate case."
-%enddef
-%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
-OT_Distribution_computeMinimumVolumeInterval_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Distribution_computePDF_doc
 "Compute the probability density function.
 
@@ -661,22 +641,23 @@ OT_Distribution_computeScalarQuantile_doc
 
 Parameters
 ----------
-X : sequence of float, 2-d sequence of float
+x : sequence of float, 2-d sequence of float
     Survival function input(s).
 
 Returns
 -------
 S : float, :class:`~openturns.NumericalPoint`
-    Survival function value(s) at input(s) `X`.
+    Survival function value(s) at input(s) `x`.
 
 Notes
 -----
-The survival function is defined as follows:
+The survival function of the random vector :math:`\vect{X}` is defined as follows:
 
 .. math::
 
-    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i > x_i},
-                             \quad \vect{x} \in \supp{\vect{X}}
+ 
+    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^d X_i > x_i}
+             \quad \forall \vect{x} \in \Rset^d
 
 .. warning::
 
@@ -689,6 +670,33 @@ computeComplementaryCDF"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSurvivalFunction
 OT_Distribution_computeSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeInverseSurvivalFunction_doc
+"Compute the inverse survival function.
+
+Parameters
+----------
+p : float, :math:`p \in [0; 1]`
+    Level of the survival function.
+
+Returns
+-------
+x : :class:`~openturns.NumericalPoint`
+    Point :math:`\vect{x}` such that :math:`S_{\vect{X}}(\vect{x}) = p` with iso-quantile components.
+
+Notes
+-----
+The inverse survival function writes: :math:`S^{-1}(p)  =  \vect{x}^p` where :math:`S( \vect{x}^p) = \Prob{\bigcap_{i=1}^d X_i > x_i^p}`. OpenTURNS returns the point :math:`\vect{x}^p` such that 
+:math:`\Prob{ X_1 > x_1^p}   =  \dots = \Prob{ X_d > x_d^p}`.
+
+See Also
+--------
+computeQuantile, computeSurvivalFunction"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeInverseSurvivalFunction
+OT_Distribution_computeInverseSurvivalFunction_doc
 
 // ---------------------------------------------------------------------
 
@@ -800,6 +808,395 @@ Examples
 %enddef
 %feature("docstring") OT::DistributionImplementation::drawMarginal1DCDF
 OT_Distribution_drawMarginal1DCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeLevelSet_doc
+"Compute the confidence domain with minimum volume.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+levelSet : :class:`~openturns.LevelSet`
+    The minimum volume domain of measure :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+
+The minimum volume confidence domain :math:`A^*_{\alpha}` is the set of minimum volume and which measure is at least :math:`\alpha`. It is defined by:
+
+.. math::
+
+    A^*_{\alpha} = \argmin_{A \in \Rset^d\, | \, \mu(A) \geq \alpha} \lambda(A)
+
+
+where :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. Under some general conditions on :math:`\mu` (for example, no flat regions), the set  :math:`A^*_{\alpha}` is unique and realises the minimum: :math:`\mu(A^*_{\alpha}) = \alpha`. We show that :math:`A^*_{\alpha}` writes:
+
+.. math::
+
+    A^*_{\alpha} = \{ \vect{x} \in \Rset^d \, | \, p(\vect{x}) \geq p_{\alpha} \}
+
+for a certain :math:`p_{\alpha} >0`.
+
+If we consider the random variable :math:`Y = p(\vect{X})`, with cumulative distribution function :math:`F_Y`, then :math:`p_{\alpha}` is defined by:
+
+.. math::
+
+    1-F_Y(p_{\alpha}) = \alpha
+
+
+Thus the minimum volume domain of confidence :math:`\alpha` is the interior of the domain which frontier is the :math:`1-\alpha` quantile of :math:`Y`. It can be determined with simulations of :math:`Y`.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence region of minimum volume of the native parameters at level 0.9:
+
+>>> levelSet = paramDist.computeMinimumVolumeLevelSet(0.9)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSet
+OT_Distribution_computeMinimumVolumeLevelSet_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeLevelSetWithThreshold_doc
+"Compute the confidence domain with minimum volume.
+
+Refer to :func:`computeMinimumVolumeLevelSet()`
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+levelSet : :class:`~openturns.LevelSet`
+    The minimum volume domain of measure :math:`\alpha`.
+level : float
+    The value :math:`p_{\alpha}` of the density function defining the frontier of the domain.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence region of minimum volume of the native parameters at level 0.9 with PDF threshold:
+
+>>> levelSet, threshold = paramDist.computeMinimumVolumeLevelSetWithThreshold(0.9)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold
+OT_Distribution_computeMinimumVolumeLevelSetWithThreshold_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeInterval_doc
+"Compute the confidence interval with minimum volume.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+
+The minimum volume confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)` and :math:`\mu(I^*_{\alpha})  =  \alpha` with :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. 
+
+This problem resorts to solving  `d` univariate non linear equations: for a fixed value :math:`\beta`, we find each intervals :math:`[a_i, b_i]` such that:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+    F_i(b_i) - F_i(a_i) & = & \beta \\
+    p_i(b_i) & = & p_i(a_i)
+    \end{eqnarray*}
+
+which consists of finding the bound :math:`a_i` such that:
+
+.. math::
+
+    p_i(a_i) =  p_i(F_i^{-1}(\beta + F_i(a_i)))
+
+To find :math:`\beta`, we use the Brent algorithm:  :math:`\mu([\vect{a}(\beta); \vect{b}(\beta)] = g(\beta) = \alpha` with `g` a non linear function.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence interval of the native parameters at level 0.9 with minimum volume:
+
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 1000)
+>>> confInt = paramDist.computeMinimumVolumeInterval(0.9)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeInterval
+OT_Distribution_computeMinimumVolumeInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeIntervalWithMarginalProbability_doc
+"Compute the confidence interval with minimum volume.
+
+Refer to :func:`computeMinimumVolumeInterval()`
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+marginalProb : float
+    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence interval of the native parameters at level 0.9 with minimum volume:
+
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 1000)
+>>> confInt, marginalProb = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability
+OT_Distribution_computeMinimumVolumeIntervalWithMarginalProbability_doc
+
+// ---------------------------------------------------------------------
+
+
+%define OT_Distribution_computeBilateralConfidenceInterval_doc
+"Compute a bilateral confidence interval.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+
+The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the bilateral confidence interval at level 0.9:
+
+>>> confInt = paramDist.computeBilateralConfidenceInterval(0.9)"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceInterval
+OT_Distribution_computeBilateralConfidenceInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeBilateralConfidenceIntervalWithMarginalProbability_doc
+"Compute a bilateral confidence interval.
+
+Refer to :func:`computeBilateralConfidenceInterval()`
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The confidence interval of level :math:`\alpha`.
+marginalProb : float
+    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution:
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the bilateral confidence interval at level 0.9 with marginal probability:
+
+>>> confInt, marginalProb = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability
+OT_Distribution_computeBilateralConfidenceIntervalWithMarginalProbability_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeUnilateralConfidenceInterval_doc
+"Compute a unilateral confidence interval.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+tail : boolean
+    `True` indicates the interval is bounded by an lower value.
+    `False` indicates the interval is bounded by an upper value.
+    Default value is `False`.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The unilateral confidence interval of level :math:`\alpha`.
+
+Notes
+-----
+We consider an absolutely continuous measure :math:`\mu`.
+
+The left unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]-\infty, b_1] \times \dots \times ]-\infty, b_d]` where :math:`b_i = F_i^{-1}(\beta)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+It means that :math:`\vect{b}` is the quantile of level :math:`\alpha` of the measure :math:`\mu`, with iso-quantile components.
+
+The right unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]a_1; +\infty[ \times \dots \times ]a_d; +\infty[` where :math:`a_i = F_i^{-1}(1-\beta)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+It means that :math:`S_{\mu}^{-1}(\vect{a}) = \alpha` with iso-quantile components, where :math:`S_{\mu}` is the survival function of the measure :math:`\mu`.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution: 
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the right unilateral confidence interval at level 0.9:
+
+>>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9)
+
+Determine the left unilateral confidence interval at level 0.9:
+
+>>> confInt = paramDist.computeUnilateralConfidenceInterval(0.9, True)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeUnilateralConfidenceInterval
+OT_Distribution_computeUnilateralConfidenceInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
+"Compute a unilateral confidence interval.
+
+Refer to :func:`computeUnilateralConfidenceInterval()`
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [0,1]`
+    The confidence level.
+tail : boolean
+    `True` indicates the interval is bounded by an lower value.
+    `False` indicates the interval is bounded by an upper value.
+    Default value is `False`.
+
+Returns
+-------
+confInterval : :class:`~openturns.Interval`
+    The unilateral confidence interval of level :math:`\alpha`.
+marginalProb : float
+    The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Examples
+--------
+Create a sample from a Normal distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Normal distribution and extract the asymptotic parameters distribution: 
+
+>>> fittedRes = ot.NormalFactory().buildEstimator(sample)
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the right unilateral confidence interval at level 0.9:
+
+>>> confInt, marginalProb = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, False)
+
+Determine the left unilateral confidence interval at level 0.9:
+
+>>> confInt, marginalProb = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability
+OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
 
 // ---------------------------------------------------------------------
 
@@ -1457,7 +1854,7 @@ The iso-probabilistic transformation is defined as follows:
        \end{array}\right.
 
 **An** iso-probabilistic transformation is a *diffeomorphism* [#diff]_ from
-:math:`\supp{\vect{X}}` to :math:`\Rset^n` that maps realizations
+:math:`\supp{\vect{X}}` to :math:`\Rset^d` that maps realizations
 :math:`\vect{x}` of a random vector :math:`\vect{X}` into realizations
 :math:`\vect{y}` of another random vector :math:`\vect{Y}` while
 preserving probabilities. It is hence defined so that it satisfies:
@@ -1466,8 +1863,8 @@ preserving probabilities. It is hence defined so that it satisfies:
     :nowrap:
 
     \begin{eqnarray*}
-        \Prob{\bigcap_{i=1}^n X_i \leq x_i}
-            & = & \Prob{\bigcap_{i=1}^n Y_i \leq y_i} \\
+        \Prob{\bigcap_{i=1}^d X_i \leq x_i}
+            & = & \Prob{\bigcap_{i=1}^d Y_i \leq y_i} \\
         F_{\vect{X}}(\vect{x})
             & = & F_{\vect{Y}}(\vect{y})
     \end{eqnarray*}

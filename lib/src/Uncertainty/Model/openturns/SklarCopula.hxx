@@ -79,6 +79,10 @@ public:
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
 
+  /** Compute the survival function */
+  using CopulaImplementation::computeSurvivalFunction;
+  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+
   /** Get the PDFGradient of the distribution */
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 

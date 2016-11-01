@@ -21,6 +21,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=3 values=[-0.2544
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.65622]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.223897]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.489737, 3.66304]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.92424} with f=
+MinimumVolumeLevelSetEvaluation(Weibull(alpha = 2, beta = 1.5, gamma = -0.5))
+beta= [0.0537054]
+Bilateral confidence interval= [-0.327556, 4.27485]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.5, 3.65622]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.223897, 19.7578]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.30549]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.22587]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.07199]
@@ -34,7 +47,3 @@ standard moment n= 3  value= [2]
 standard moment n= 4  value= [4.0122]
 standard moment n= 5  value= [9.26053]
 Standard representative= Weibull(alpha = 1, beta = 1.5, gamma = 0)
-mu=1.305491
-sigma=1.225872
-alpha from (mu, sigma)=2.000000
-beta from (mu, sigma)=1.500000

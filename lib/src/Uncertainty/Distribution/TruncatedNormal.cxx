@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Brent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -219,6 +220,73 @@ NumericalScalar TruncatedNormal::computeComplementaryCDF(const NumericalPoint & 
   if (x > b_) return 0.0;
   // Don't call pNormal with tail in the next line
   return normalizationFactor_ * (PhiBNorm_ - DistFunc::pNormal((x - mu_) / sigma_));
+}
+
+/* Get the product minimum volume interval containing a given probability of the distributionImplementation */
+Interval TruncatedNormal::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  // Unimodal decreasing with mode at a_
+  if (mu_ <= a_)
+    return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
+  // Unimodal increasing with mode at b_
+  if (mu_ >= b_)
+    return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, true, marginalProb);
+  // Unimodal with mode in (a, b)
+  // Different cases here:
+  // 1) PDF(a) >= PDF(b): let \alpha\in(a,b) be such that PDF(\alpha)==PDF(a)
+  // 1a) P([a,\alpha])>=prob: the minimum volume interval (MVI) [c,d] is such that
+  //     PDF(c)=PDF(d) and a <= c < d <= \alpha -> this is a root-finding MVI
+  // 1b) P([a,\alpha])<prob: the MVI [c, d] is such that
+  //     c == a, \alpha < d <= b -> this is an unilateral MVI
+  // 2) PDF(a) < PDF(b): let \beta\in(a,b) be such that PDF(\beta)==PDF(b)
+  // 2a) PDF([\beta,b])>=prob: the MVI [c,d] is such that
+  //     PDF(c)=PDF(d) and beta <= c < d <= b -> this is a root-finding MVI
+  // 2b) P([\beta,b])<prob: the minimum volume interval [c, d] is such that
+  //     d == b, a <= c < \beta -> this is a tail unilateral MVI
+
+  // 1)
+  if (phiANorm_ >= phiBNorm_)
+    {
+      // Find \alpha
+      PDFWrapper pdfWrapper(this);
+      Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+      const NumericalScalar alpha = solver.solve(pdfWrapper, normalizationFactor_ * phiANorm_ / sigma_ , mu_, b_);
+      const NumericalScalar probability = computeProbability(Interval(a_, alpha));
+      // 1a)
+      if (probability >= prob)
+	return computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb);
+      // 1b)
+      return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
+    }
+  // 2)
+  // Find \beta
+  PDFWrapper pdfWrapper(this);
+  Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  const NumericalScalar beta = solver.solve(pdfWrapper, normalizationFactor_ * phiBNorm_ / sigma_, a_, mu_);
+  const NumericalScalar probability = computeProbability(Interval(beta, b_));
+  // 2a)
+  if (probability >= prob)
+    return computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb);
+  // 2b)
+  return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, true, marginalProb);
+}
+
+/* Get the minimum volume level set containing a given probability of the distributionImplementation */
+LevelSet TruncatedNormal::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  const Interval interval(computeMinimumVolumeInterval(prob));
+  const NumericalScalar lower = interval.getLowerBound()[0];
+  const NumericalScalar upper = interval.getUpperBound()[0];
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  NumericalScalar minusLogPDFThreshold = -1.0;
+  if (lower == a_)
+    minusLogPDFThreshold = -computeLogPDF(upper);
+  else
+    minusLogPDFThreshold = -computeLogPDF(lower);
+
+  threshold = std::exp(-minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -505,3 +573,4 @@ void TruncatedNormal::load(Advocate & adv)
 
 
 END_NAMESPACE_OPENTURNS
+

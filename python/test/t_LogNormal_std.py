@@ -99,6 +99,28 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+
+    # Confidence regions
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    print("Minimum volume interval=", interval)
+    print("threshold=", NumericalPoint(1, threshold))
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("Bilateral confidence interval=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("Unilateral confidence interval (lower tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("Unilateral confidence interval (upper tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+
     mean = distribution.getMean()
     print("mean=", repr(mean))
     standardDeviation = distribution.getStandardDeviation()
@@ -115,22 +137,6 @@ try:
         print("standard moment n=", i, " value=",
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
-
-    # Specific to this distribution
-    mu = distribution.getMu()
-    print("mu=%.6f" % mu)
-    sigma = distribution.getSigma()
-    print("sigma=%.6f" % sigma)
-    newDistribution = LogNormal(mu, sigma, distribution.getGamma(), 1)
-    print("muLog from (mu, sigma)=%.6f" % newDistribution.getMuLog())
-    print("sigmaLog from (mu, sigma)=%.6f" % newDistribution.getSigmaLog())
-    sigmaOverMu = distribution.getSigmaOverMu()
-    print("sigmaOverMu=%.6f" % sigmaOverMu)
-    newDistribution = LogNormal(mu, sigmaOverMu, distribution.getGamma(), 2)
-    print("muLog from (mu, sigmaOverMu)=%.6f" % newDistribution.getMuLog())
-    print("sigmaLog from (mu, sigmaOverMu)=%.6f" %
-          newDistribution.getSigmaLog())
-
 
 except:
     import sys

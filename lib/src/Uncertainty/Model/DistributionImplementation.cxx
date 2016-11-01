@@ -34,6 +34,7 @@
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/Chi.hxx"
 #include "openturns/ChiSquare.hxx"
+#include "openturns/ComposedDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/LogNormal.hxx"
 #include "openturns/LogUniform.hxx"
@@ -67,8 +68,11 @@
 #include "openturns/TBB.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/IteratedQuadrature.hxx"
+#include "openturns/OptimizationProblem.hxx"
+#include "openturns/TNC.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -464,6 +468,23 @@ NumericalSample DistributionImplementation::getSampleByInversion(const UnsignedI
   return result;
 }
 
+NumericalSample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
+{
+  const SobolSequence sequence(1);
+  // Use CDF inversion in the 1D case
+  if (dimension_ == 1) return computeQuantile(sequence.generate(size).getImplementation()->getData());
+  // Use conditional CDF inversion in the 1D case
+  NumericalSample result(size, 0);
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  {
+    const NumericalPoint u(sequence.generate(size).getImplementation()->getData());
+    NumericalSampleImplementation q(size, 1);
+    q.setData(computeConditionalQuantile(u, result));
+    result.stack(q);
+  }
+  return result;
+}
+
 /* Get the DDF of the distributionImplementation */
 NumericalPoint DistributionImplementation::computeDDF(const NumericalPoint & point) const
 {
@@ -540,6 +561,18 @@ NumericalScalar DistributionImplementation::computeComplementaryCDF(const Numeri
 NumericalScalar DistributionImplementation::computeSurvivalFunction(const NumericalPoint & point) const
 {
   if (dimension_ == 1) return computeComplementaryCDF(point);
+  // Special case for independent copula
+  if (hasIndependentCopula())
+  {
+    NumericalScalar value = 1.0;
+    for (UnsignedInteger i = 0; i < dimension_; ++i) value *= getMarginal(i)->computeComplementaryCDF(point[i]);
+    return value;
+  }
+  // For elliptical distributions,
+  // P(X_1-mu_1<=x_1,...,X_d-mu_d<=x_d)=P(X_1-mu_1>=-x_1,...,X_d-mu_d>=-x_d)
+  // So
+  // P(X_1>=x_1,...,X_d>=x_d)=P(X_1<=2mu_1-x_1,...,X_d<=2mu_d-x_d)
+  if (isElliptical()) return computeCDF(getMean() * 2.0 - point);
   const NumericalPoint lowerBounds(getRange().getLowerBound());
   const NumericalPoint upperBounds(getRange().getUpperBound());
   Bool allOutside = true;
@@ -568,6 +601,74 @@ NumericalScalar DistributionImplementation::computeSurvivalFunction(const Numeri
     sign = -sign;
   }
   return value;
+}
+
+NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const NumericalScalar prob) const
+{
+  NumericalScalar marginalProb = 0.0;
+  return computeInverseSurvivalFunction(prob, marginalProb);
+}
+
+NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
+{
+  // Special case for bording values
+  marginalProb = prob;
+  if (prob < 0.0) return range_.getUpperBound();
+  if (prob >= 1.0) return range_.getLowerBound();
+  // Special case for dimension 1
+  if (dimension_ == 1) return NumericalPoint(1, computeScalarQuantile(prob, true));
+  // Special case for independent copula
+  if (hasIndependentCopula())
+  {
+    NumericalPoint result(dimension_);
+    marginalProb = std::pow(prob, 1.0 / dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i)->computeScalarQuantile(marginalProb, true);
+    return result;
+  }
+  // For elliptical distributions,
+  // P(X_1-mu_1<=x_1,...,X_d-mu_d<=x_d)=P(X_1-mu_1>=-x_1,...,X_d-mu_d>=-x_d)
+  // So
+  // P(X_1>=x_1,...,X_d>=x_d)=P(X_1<=2mu_1-x_1,...,X_d<=2mu_d-x_d)
+  // So
+  // InverseSurvivalFunction(q) = 2mu-Quantile(q)
+  if (isElliptical()) return getMean() * 2.0 - computeQuantile(prob, false, marginalProb);
+  // Extract the marginal distributions
+  Collection<Implementation> marginals(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; i++) marginals[i] = getMarginal(i);
+  // The n-D inverse survival function is defined as X(\tau) = (S_1^{-1}(\tau), ..., S_n^{-1}(\tau)),
+  // with tau such as S(X(\tau)) = q.
+  // As F(x) = C(F_1(x_1),...,F_n(x_n)), the constraint F(X(\tau)) = q reads:
+  // C(\tau,...,\tau) = q
+  // Bracketing of \tau using the Frechet Hoeffding bounds:
+  // max(n\tau - n + 1, 0) <= C(\tau,...,\tau) <= \tau
+  // from which we deduce that q <= \tau and \tau <= 1 - (1 - q) / n
+  // Lower bound of the bracketing interval
+  const SurvivalFunctionWrapper wrapper(marginals, this);
+  const NumericalMathFunction f(bindMethod<SurvivalFunctionWrapper, NumericalPoint, NumericalPoint>(wrapper, &SurvivalFunctionWrapper::computeDiagonal, 1, 1));
+  NumericalScalar leftTau = prob;
+  NumericalScalar leftSurvival = f(NumericalPoint(1, leftTau))[0];
+  // Due to numerical precision issues, the theoretical bound can be slightly violated
+  if (leftSurvival > prob)
+  {
+    leftTau = 0.0;
+    leftSurvival = 1.0;
+  }
+  // Upper bound of the bracketing interval
+  NumericalScalar rightTau = 1.0 - (1.0 - prob) / dimension_;
+  NumericalScalar rightSurvival = f(NumericalPoint(1, rightTau))[0];
+  // Due to numerical precision issues, the theoretical bound can be slightly violated
+  if (rightSurvival < prob)
+  {
+    rightTau = 1.0;
+    rightSurvival = 0.0;
+  }
+  LOGDEBUG(OSS() << "DistributionImplementation::computeInverseSurvivalFunction: dimension=" << dimension_ << ", prob=" << prob << ", leftTau=" << leftTau << ", leftSurvival=" << leftSurvival << ", rightTau=" << rightTau << ", rightSurvival=" << rightSurvival);
+  // Use Brent's method to compute the quantile efficiently for continuous distributions
+  const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
+  marginalProb = solver.solve(f, prob, leftTau, rightTau, leftSurvival, rightSurvival);
+  LOGINFO(OSS(false) << "tau=" << marginalProb);
+  return wrapper.diagonalToSpace(marginalProb);
 }
 
 /* On a NumericalSample */
@@ -761,14 +862,45 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   if (reducedInterval == getRange()) return 1.0;
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
-  const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, dimension_, 1));
-  NumericalScalar probability;
+  NumericalScalar probability = 0;
   if (dimension_ == 1)
   {
     NumericalScalar error;
-    probability = GaussKronrod().integrate(fPDF, reducedInterval, error)[0];
-  }
-  else probability = IteratedQuadrature().integrate(fPDF, reducedInterval)[0];
+    const NumericalPoint singularities(getSingularities());
+    // If no singularity inside of the given reduced interval
+    const UnsignedInteger singularitiesNumber = singularities.getSize();
+    const NumericalScalar lower = reducedInterval.getLowerBound()[0];
+    const NumericalScalar upper = reducedInterval.getUpperBound()[0];
+    if (singularitiesNumber == 0 || singularities[0] >= upper || singularities[singularitiesNumber - 1] <= lower) probability = GaussKronrod().integrate(pdfWrapper, reducedInterval, error)[0];
+    else
+    {
+      NumericalScalar a = lower;
+      for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
+      {
+        const NumericalScalar b = singularities[i];
+        if (b > lower && b < upper)
+        {
+          probability += GaussKronrod().integrate(pdfWrapper, Interval(a, b), error)[0];
+          a = b;
+        }
+        // Exit the loop if no more singularities inside of the reduced interval
+        if (b >= upper) break;
+      } // for
+      // Last contribution
+      probability += GaussKronrod().integrate(pdfWrapper, Interval(a, upper), error)[0];
+    } // else
+  } // dimension_ == 1
+  else
+  {
+    if (hasIndependentCopula())
+    {
+      const NumericalPoint lower(interval.getLowerBound());
+      const NumericalPoint upper(interval.getLowerBound());
+      probability = 1.0;
+      for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i)->computeProbability(Interval(lower[i], upper[i]));
+    }
+    else probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+  } // dimension > 1
   return std::min(1.0, std::max(0.0, probability));
 }
 
@@ -1517,18 +1649,17 @@ Collection<PiecewiseHermiteEvaluationImplementation> DistributionImplementation:
   // Here we use an absolute precision of 0.0 in order to force the algorithm to use all the available discretization points
   GaussKronrod algorithm(n - 1, cdfEpsilon_ * cdfEpsilon_, GaussKronrodRule::G3K7);
   const PDFWrapper pdfWrapper(this);
-  const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, 1, 1));
   NumericalScalar error = -1.0;
   NumericalPoint ai;
   NumericalPoint bi;
   NumericalSample fi;
   NumericalPoint ei;
-  algorithm.integrate(fPDF, xMin, mu, error, ai, bi, fi, ei);
+  algorithm.integrate(pdfWrapper, xMin, mu, error, ai, bi, fi, ei);
   ai.add(mu);
   NumericalSample locationsCDF(ai.getSize(), 1);
   locationsCDF.getImplementation()->setData(ai);
   locationsCDF = locationsCDF.sort(0);
-  algorithm.integrate(fPDF, mu, xMax, error, ai, bi, fi, ei);
+  algorithm.integrate(pdfWrapper, mu, xMax, error, ai, bi, fi, ei);
   ai.add(xMax);
   NumericalSample locationsCCDF(ai.getSize(), 1);
   locationsCCDF.getImplementation()->setData(ai);
@@ -1724,7 +1855,6 @@ NumericalPoint DistributionImplementation::computeConditionalQuantile(const Nume
 NumericalScalar DistributionImplementation::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  LOGDEBUG(OSS() << "DistributionImplementation::computeScalarQuantile: prob=" << prob << " tail=" << (tail ? "true" : "false"));
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   // This test allows to check if one can trust the current range. If not, it means that we are here to compute the range and then we cannot rely on it!
   NumericalScalar lower = range_.getLowerBound()[0];
@@ -1735,34 +1865,41 @@ NumericalScalar DistributionImplementation::computeScalarQuantile(const Numerica
     LOGDEBUG("DistributionImplementation::computeScalarQuantile: look for a bracketing of the bounds of the range");
     // Find a rough estimate of the lower bound and the upper bound
     NumericalScalar step = 1.0;
-    if (computeCDF(lower) >= cdfEpsilon_)
+    NumericalScalar cdf = computeCDF(lower);
+    if (cdf >= cdfEpsilon_)
     {
       // negative lower bound
       lower -= step;
-      while (computeCDF(lower) >= cdfEpsilon_)
+      cdf = computeCDF(lower);
+      while (cdf >= cdfEpsilon_)
       {
         step *= 2.0;
         lower -= step;
+        cdf = computeCDF(lower);
       }
     }
     else
     {
       // positive lower bound
       lower += step;
+      cdf = computeCDF(lower);
       while (computeCDF(lower) <= cdfEpsilon_)
       {
         step *= 2.0;
         lower += step;
+        cdf = computeCDF(lower);
       }
     }
     // Here, lower is a rough estimate of the lower bound
     // Go to the upper bound
     upper = lower;
     step = 1.0;
-    while (computeComplementaryCDF(upper) >= cdfEpsilon_)
+    NumericalScalar ccdf = computeComplementaryCDF(upper);
+    while (ccdf >= cdfEpsilon_)
     {
       upper += step;
       step *= 2.0;
+      ccdf = computeComplementaryCDF(upper);
     }
   }
   LOGDEBUG(OSS() << "DistributionImplementation::computeScalarQuantile: lower=" << lower << ", upper=" << upper);
@@ -1785,13 +1922,29 @@ NumericalScalar DistributionImplementation::computeScalarQuantile(const Numerica
 NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  LOGDEBUG(OSS() << "DistributionImplementation::computeQuantile: prob=" << prob << ", tail=" << (tail ? "true" : "false"));
+  NumericalScalar marginalProb = 0.0;
+  return computeQuantile(prob, tail, marginalProb);
+}
+
+NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar prob,
+    const Bool tail,
+    NumericalScalar & marginalProb) const
+{
+  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  marginalProb = q;
   // Special case for bording values
   if (prob < 0.0) return (tail ? range_.getUpperBound() : range_.getLowerBound());
   if (prob >= 1.0) return (tail ? range_.getLowerBound() : range_.getUpperBound());
   // Special case for dimension 1
   if (dimension_ == 1) return NumericalPoint(1, computeScalarQuantile(prob, tail));
-  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  // Special case for independent copula
+  if (hasIndependentCopula())
+  {
+    NumericalPoint result(dimension_);
+    marginalProb = std::pow(q, 1.0 / dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i)->computeScalarQuantile(marginalProb);
+    return result;
+  }
   // Extract the marginal distributions
   Collection<Implementation> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; i++) marginals[i] = getMarginal(i);
@@ -1825,16 +1978,35 @@ NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar
   LOGDEBUG(OSS() << "DistributionImplementation::computeQuantile: dimension=" << dimension_ << ", q=" << q << ", leftTau=" << leftTau << ", leftCDF=" << leftCDF << ", rightTau=" << rightTau << ", rightCDF=" << rightCDF);
   // Use Brent's method to compute the quantile efficiently for continuous distributions
   const Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-  const NumericalScalar tau = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);
-  LOGINFO(OSS(false) << "tau=" << tau);
-  return wrapper.diagonalToSpace(tau);
+  marginalProb = solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF);
+  LOGINFO(OSS(false) << "tau=" << marginalProb);
+  return wrapper.diagonalToSpace(marginalProb);
 }
 
-struct MinimumVolumeWrapper
+/* Get the minimum volume interval containing at least a given probability of the distributionImplementation.
+   The minimum volume interval [a, b] is such that:
+   a\in[lowerBound, F^{-1}(1-p)]
+   b = F^{-1}(p+F(a))
+   f(a) = f(b) = f(F^{-1}(p+F(a)))
+   so we look for the root of f(F^{-1}(p+F(a))) - f(a)
+*/
+struct MinimumVolumeIntervalWrapper
 {
-  MinimumVolumeWrapper(const DistributionImplementation * p_distribution,
-                       const NumericalScalar prob)
+  MinimumVolumeIntervalWrapper(const DistributionImplementation * p_distribution,
+                               const Collection<Distribution> & marginals,
+                               const NumericalScalar prob)
     : p_distribution_(p_distribution)
+    , marginals_(marginals)
+    , lastB_(-SpecFunc::MaxNumericalScalar)
+    , prob_(prob)
+  {
+    // Nothing to do
+  }
+
+  MinimumVolumeIntervalWrapper(const DistributionImplementation * p_distribution,
+                               const NumericalScalar prob)
+    : p_distribution_(p_distribution)
+    , marginals_(0)
     , lastB_(-SpecFunc::MaxNumericalScalar)
     , prob_(prob)
   {
@@ -1849,7 +2021,15 @@ struct MinimumVolumeWrapper
   NumericalPoint operator() (const NumericalPoint & point) const
   {
     lastB_ = p_distribution_->computeQuantile(prob_ + p_distribution_->computeCDF(point))[0];
-    return NumericalPoint(1, p_distribution_->computePDF(lastB_) - p_distribution_->computePDF(point));
+    const NumericalScalar pdfB = p_distribution_->computePDF(lastB_);
+    const NumericalScalar pdfPoint = p_distribution_->computePDF(point);
+    return NumericalPoint(1, pdfB - pdfPoint);
+  }
+
+  NumericalPoint objective(const NumericalPoint & point) const
+  {
+    lastB_ = p_distribution_->computeQuantile(prob_ + p_distribution_->computeCDF(point))[0];
+    return NumericalPoint(1, lastB_ - point[0]);    
   }
 
   NumericalScalar getLastB() const
@@ -1857,32 +2037,265 @@ struct MinimumVolumeWrapper
     return lastB_;
   }
 
+  Interval buildBilateralInterval(const NumericalScalar beta) const
+  {
+    const UnsignedInteger size(marginals_.getSize());
+    NumericalPoint lower(size);
+    NumericalPoint upper(size);
+    const NumericalScalar alpha(0.5 * (1.0 - beta));
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      lower[i] = marginals_[i].computeQuantile(alpha, false)[0];
+      upper[i] = marginals_[i].computeQuantile(alpha, true)[0];
+    }
+    return Interval(lower, upper);
+  }
+
+  Interval buildMinimumVolumeInterval(const NumericalScalar beta) const
+  {
+    const UnsignedInteger size(marginals_.getSize());
+    NumericalPoint lower(size);
+    NumericalPoint upper(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Interval marginalIC(marginals_[i].computeMinimumVolumeInterval(beta));
+      lower[i] = marginalIC.getLowerBound()[0];
+      upper[i] = marginalIC.getUpperBound()[0];
+    }
+    return Interval(lower, upper);
+  }
+
+  NumericalPoint computeBilateralProbability(const NumericalPoint & beta) const
+  {
+    const Interval IC(buildBilateralInterval(beta[0]));
+    const NumericalScalar probability = p_distribution_->computeProbability(IC);
+    return NumericalPoint(1, probability);
+  }
+
+  NumericalPoint computeMinimumVolumeProbability(const NumericalPoint & beta) const
+  {
+    const Interval IC(buildMinimumVolumeInterval(beta[0]));
+    const NumericalScalar probability = p_distribution_->computeProbability(IC);
+    return NumericalPoint(1, probability);
+  }
+
   const DistributionImplementation * p_distribution_;
+  Collection<Distribution> marginals_;
   mutable NumericalScalar lastB_;
   const NumericalScalar prob_;
-};
+}; // struct MinimumVolumeIntervalWrapper
 
-/* Get the minimum volume interval containing at least a given probability of the distributionImplementation.
-   The minimum volume interval [a, b] is such that:
-   a\in[lowerBound, F^{-1}(1-p)]
-   b = F^{-1}(p+F(a))
-   f(a) = f(b) = f(F^{-1}(p+F(a)))
-   so we look for the root of f(F^{-1}(p+F(a))) - f(a)
-*/
 Interval DistributionImplementation::computeMinimumVolumeInterval(const NumericalScalar prob) const
 {
-  if (!isContinuous() || (getDimension() > 1)) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
+  NumericalScalar marginalProb = -1.0;
+  return computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
+{
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
+  // If the distribution is elliptical, the minimum volume interval is equal to the bilateral confidence interval which is much cheaper to compute
+  if (isElliptical())
+    {
+      LOGINFO("Compute the minimum volume interval using the bilateral confidence interval (elliptical case)");
+      const Interval result(computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb));
+      return result;
+    }
   if (prob <= 0.0)
   {
     const NumericalPoint median(computeQuantile(0.5));
+    marginalProb = 0.0;
     return Interval(median, median);
   }
-  if (prob >= 1.0) return range_;
-  const MinimumVolumeWrapper minimumVolumeWrapper(this, prob);
-  const NumericalMathFunction function(bindMethod<MinimumVolumeWrapper, NumericalPoint, NumericalPoint>(minimumVolumeWrapper, &MinimumVolumeWrapper::operator(), 1, 1));
+  if (prob >= 1.0)
+  {
+    marginalProb = 1.0;
+    return range_;
+  }
+  if (dimension_ == 1)
+  {
+    // First, the most accurate method, which assumes a continuous PDF
+    try
+      {
+	const Interval result(computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb));
+	LOGINFO("Compute the minimum volume interval by root finding (continuous case)");
+	return result;
+      }
+    // Second, the general purpose method
+    catch(...)
+      {
+	const Interval result(computeUnivariateMinimumVolumeIntervalByOptimization(prob, marginalProb));
+	LOGINFO("Compute the minimum volume interval by optimization (general case)");
+	return result;
+      }
+  }
+  Collection<Distribution> marginals(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
+  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);
+  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeMinimumVolumeProbability, 1, 1));
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
-  const NumericalScalar a = solver.solve(function, 0.0, range_.getLowerBound()[0], computeScalarQuantile(prob, true));
-  return Interval(a, minimumVolumeWrapper.getLastB());
+  // Here the equation we have to solve is P(X\in IC(\beta))=prob
+  marginalProb = solver.solve(function, prob, 0.0, 1.0, 0.0, 1.0);
+  const Interval IC(minimumVolumeIntervalWrapper.buildMinimumVolumeInterval(marginalProb));
+  return IC;
+}
+
+/* If the density is continuous, we have to solve PDF(b) - PDF(a) == 0 with F(b)-F(a)=prob, b>=a
+   ie b=F^{-1}(prob+F(a))
+*/
+Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRootFinding(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
+{
+  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
+  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::operator(), 1, 1));
+  Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  const NumericalScalar xMin = range_.getLowerBound()[0];
+  const NumericalScalar xMax = computeScalarQuantile(prob, true);
+  const NumericalScalar a = solver.solve(function, 0.0, xMin, xMax);
+  const NumericalScalar b = minimumVolumeIntervalWrapper.getLastB();
+  marginalProb = prob;
+  return Interval(a, b);
+}
+
+/* We minimize b-a with the constraint F(b)-F(a)=prob, b>=a
+ ie b=F^{-1}(prob+F(a))
+*/
+Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
+{
+  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
+  const NumericalMathFunction objective(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
+  OptimizationProblem problem;
+  problem.setObjective(objective);
+  problem.setBounds(getRange());
+  TNC solver(problem);
+  solver.setStartingPoint(computeQuantile(prob, true));
+  solver.run();
+  const NumericalScalar a = solver.getResult().getOptimalPoint()[0];
+  const NumericalScalar b = minimumVolumeIntervalWrapper.getLastB();
+  marginalProb = prob;
+  return Interval(a, b);
+}
+
+/* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+Interval DistributionImplementation::computeBilateralConfidenceInterval(const NumericalScalar prob) const
+{
+  NumericalScalar marginalProb = -1.0;
+  return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob,
+    NumericalScalar & marginalProb) const
+{
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
+  if (prob <= 0.0)
+  {
+    const NumericalPoint median(computeQuantile(0.5));
+    marginalProb = 0.0;
+    return Interval(median, median);
+  }
+  if (prob >= 1.0)
+  {
+    marginalProb = 1.0;
+    return range_;
+  }
+  if (dimension_ == 1)
+  {
+    marginalProb = prob;
+    const Interval IC(computeQuantile(0.5 * (1.0 - prob), false), computeQuantile(0.5 * (1.0 - prob), true));
+    return IC;
+  }
+  Collection<Distribution> marginals(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
+  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);
+  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeBilateralProbability, 1, 1));
+  Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  marginalProb = solver.solve(function, prob, 0.0, 1.0, 0.0, 1.0);
+  const Interval IC(minimumVolumeIntervalWrapper.buildBilateralInterval(marginalProb));
+  return IC;
+}
+
+/* Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+Interval DistributionImplementation::computeUnilateralConfidenceInterval(const NumericalScalar prob,
+    const Bool tail) const
+{
+  NumericalScalar marginalProb = -1.0;
+  return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
+}
+
+Interval DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob,
+    const Bool tail,
+    NumericalScalar & marginalProb) const
+{
+  marginalProb = -1.0;
+  if (tail)
+  {
+    const NumericalPoint lowerBound(computeInverseSurvivalFunction(prob, marginalProb));
+    return Interval(lowerBound, range_.getUpperBound());
+  }
+  const NumericalPoint upperBound(computeQuantile(prob, false, marginalProb));
+  return Interval(range_.getLowerBound(), upperBound);
+}
+
+/* Get the minimum volume level set containing at least a given probability of the distributionImplementation.
+   The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
+   where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
+*/
+LevelSet DistributionImplementation::computeMinimumVolumeLevelSet(const NumericalScalar prob) const
+{
+  NumericalScalar threshold = -1.0;
+  return computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
+}
+
+LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
+    NumericalScalar & threshold) const
+{
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeLevelSet()";
+  // 1D special case here to avoid a double construction of minimumVolumeLevelSetFunction
+  if ((dimension_ == 1) && (ResourceMap::GetAsBool("Distribution-MinimumVolumeLevelSetBySampling")))
+    {
+      LOGINFO("Compute the minimum volume level set by sampling (QMC)");
+      const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
+      return result;
+    }
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  // If dimension_ == 1 the threshold can be computed analyticaly
+  NumericalScalar minusLogPDFThreshold;
+  if (dimension_ == 1)
+  {
+    const CompositeDistribution composite(minimumVolumeLevelSetFunction, *this);
+    minusLogPDFThreshold = composite.computeQuantile(prob)[0];
+    LOGINFO("Compute the minimum volume level set by using a composite distribution quantile (univariate general case)");
+  } // dimension == 1
+  else
+  {
+    LOGINFO("Compute the minimum volume level set by sampling (Monte Carlo)");
+    const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize");
+    const NumericalSample xSample(getSample(size));
+    const NumericalSample logPDFSample(computeLogPDF(xSample));
+    minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
+  } // dimension > 1
+  threshold = std::exp(-minusLogPDFThreshold);
+
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+}
+
+LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
+      NumericalScalar & threshold) const
+{
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  // As we are in 1D and as the function defining the composite distribution can have complex variations,
+  // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
+  const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
+  const NumericalSample xQMC(getSampleByQMC(size));
+  const NumericalSample logPDFSample(computeLogPDF(xQMC));
+  const NumericalScalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
+  threshold = std::exp(-minusLogPDFThreshold);
+
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold); 
 }
 
 /* Get the mathematical and numerical range of the distribution.
@@ -2015,7 +2428,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
   {
     const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
-    // We first loop over the coefficients because the most expensive task is to get the 2D marginal distributions
+    // We loop over the coefficients in the outer loop because the most expensive task is to get the 2D marginal distributions
 
     Indices indices(2);
     for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
@@ -2033,7 +2446,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
           const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
           const Interval interval(marginalDistribution->getRange());
           const NumericalPoint value(integrator.integrate(kernel, interval));
-          covariance_(rowIndex, columnIndex) = integrator.integrate(kernel.clone(), interval)[0];
+          covariance_(rowIndex, columnIndex) = value[0];
         }
       } // loop over column indices
     } // loop over row indices
@@ -3934,3 +4347,4 @@ DistributionImplementation::Implementation DistributionImplementation::abs() con
 }
 
 END_NAMESPACE_OPENTURNS
+

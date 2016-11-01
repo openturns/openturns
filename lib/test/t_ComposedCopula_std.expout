@@ -15,8 +15,12 @@ ddf     =class=NumericalPoint name=Unnamed dimension=7 values=[0.580905,0.580905
 ddf (FD)=class=NumericalPoint name=Unnamed dimension=7 values=[0.580905,0.580905,0.91183,0.260523,0.130261,0.177648,0.177648]
 pdf     =2.18507
 cdf=0.0587971
-quantile=class=NumericalPoint name=Unnamed dimension=7 values=[0.992521,0.992521,0.992521,0.992521,0.992521,0.992521,0.992521]
-cdf(quantile)=0.95
+Survival      =0.00724359
+Survival (ref)=0.00724359
+Inverse survival=class=NumericalPoint name=Unnamed dimension=7 values=[0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738]
+Survival(inverse survival)=0.95
+Quantile=class=NumericalPoint name=Unnamed dimension=7 values=[0.895624,0.895624,0.895624,0.895624,0.895624,0.895624,0.895624]
+CDF(quantile)=0.5
 mean=class=NumericalPoint name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 parameters=[[copula_0_theta : 3, copula_1_R_2_1 : 0.5, copula_1_R_3_1 : 0.25, copula_1_R_3_2 : 0, copula_2_theta : 2]]
 covariance=class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.08333,0.03739,0,0,0,0,0,0.03739,0.08333,0,0,0,0,0,0,0,0.08333,0.04022,0.01995,0,0,0,0,0.04022,0.08333,0,0,0,0,0,0.01995,0,0.08333,0,0,0,0,0,0,0,0.08333,0.05685,0,0,0,0,0,0.05685,0.08333]

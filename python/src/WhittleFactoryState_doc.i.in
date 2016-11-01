@@ -19,18 +19,18 @@ Examples
 Create a time series from a scalar ARMA(4,2) and a normal white noise:
 
 >>> import openturns as ot
->>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 20)
 >>> myWhiteNoise = ot.WhiteNoise(ot.Triangular(-1.0, 0.0, 1.0), myTimeGrid)
 >>> myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
 >>> myMACoef = ot.ARMACoefficients([0.4, 0.3])
 >>> myARMAProcess = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
 >>> myTimeSeries = myARMAProcess.getRealization()
->>> myProcessSample = myARMAProcess.getSample(100)
+>>> myProcessSample = myARMAProcess.getSample(20)
 
 Estimate the ARMA process specifying a range for the orders:
 
->>> pIndices = [1, 2, 4]
->>> qIndices =  [4, 5, 6]
+>>> pIndices = [1, 2]
+>>> qIndices =  [4, 5]
 >>> myFactory_Range = ot.WhittleFactory(pIndices, qIndices)
 
 Print all the models and their state:

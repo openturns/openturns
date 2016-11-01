@@ -17,6 +17,14 @@ ccdf    =4.9893e-01
 survival=8.5345e-02
 quantile= [2.234,2.234]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[-0.998063,-0.998063]
+Survival(inverseSurvival)=0.950000
+Unilateral confidence interval (lower tail)= [-7.65063, 2.234]
+[-7.65063, 2.234]
+beta= [0.974679]
+Unilateral confidence interval (upper tail)= [-0.998063, 7.65063]
+[-0.998063, 7.65063]
+beta= [0.974679]
 mean= [0.56419,0.56419]
 standard deviation= [0.825645,0.825645]
 skewness= [0.136949,0.136949]

@@ -412,6 +412,17 @@ NumericalScalar Distribution::computeSurvivalFunction(const NumericalPoint & poi
   return getImplementation()->computeSurvivalFunction(point);
 }
 
+NumericalPoint Distribution::computeInverseSurvivalFunction(const NumericalScalar prob) const
+{
+  return getImplementation()->computeInverseSurvivalFunction(prob);
+}
+
+NumericalPoint Distribution::computeInverseSurvivalFunction(const NumericalScalar prob,
+							    NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeInverseSurvivalFunction(prob, marginalProb);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Distribution::computeCharacteristicFunction(const NumericalScalar x) const
 {
@@ -589,10 +600,83 @@ NumericalPoint Distribution::computeQuantile(const NumericalScalar prob,
   return getImplementation()->computeQuantile(prob, tail);
 }
 
+NumericalPoint Distribution::computeQuantile(const NumericalScalar prob,
+					     const Bool tail,
+					     NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeQuantile(prob, tail, marginalProb);
+}
+
 NumericalSample Distribution::computeQuantile(const NumericalPoint & prob,
     const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
+}
+
+/* Get the product minimum volume interval containing at least a given probability of the distributionImplementation.
+   The minimum volume interval [a, b] is such that:
+   a\in[lowerBound, F^{-1}(1-p)]
+   b = F^{-1}(p+F(a))
+   f(a) = f(b) = f(F^{-1}(p+F(a)))
+   so we look for the root of f(F^{-1}(p+F(a))) - f(a)
+*/
+Interval Distribution::computeMinimumVolumeInterval(const NumericalScalar prob) const
+{
+  return getImplementation()->computeMinimumVolumeInterval(prob);
+}
+
+Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/* Get the product bilateral confidence interval containing at least a given probability of the distributionImplementation.
+   The bilateral confidence interval [a, b] is such that:
+   for all i\in{1,...,d}, P(X_i\in[a_i, b_i])=\beta
+   where \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
+*/
+Interval Distribution::computeBilateralConfidenceInterval(const NumericalScalar prob) const
+{
+  return getImplementation()->computeBilateralConfidenceInterval(prob);
+}
+
+Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/* Get the product unilateral confidence interval containing at least a given probability of the distributionImplementation.
+   The bilateral confidence interval [a, b] is such that:
+   if upper == false
+     for all i\in{1,...,d}, a_i=-\intfy and P(X_i<=b_i)=\beta
+   if upper == true
+     for all i\in{1,...,d}, P(a_i<=X_i)=\beta and b_i=\intfy
+
+   where in both cases \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
+*/
+Interval Distribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
+							   const Bool tail) const
+{
+  return getImplementation()->computeUnilateralConfidenceInterval(prob, tail);
+}
+
+Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
+}
+
+/* Get the minimum volume level set containing at least a given probability of the distributionImplementation.
+   The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
+   where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
+*/
+LevelSet Distribution::computeMinimumVolumeLevelSet(const NumericalScalar prob) const
+{
+  return getImplementation()->computeMinimumVolumeLevelSet(prob);
+}
+
+LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  return getImplementation()->computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
 /* Compute the quantile over a regular grid */

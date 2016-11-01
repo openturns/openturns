@@ -39,7 +39,7 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(5)"
 
 // ---------------------------------------------------------------------
 

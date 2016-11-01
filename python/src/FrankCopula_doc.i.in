@@ -42,7 +42,7 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = copula.getSample(10)"
+>>> sample = copula.getSample(5)"
 
 // ---------------------------------------------------------------------
 

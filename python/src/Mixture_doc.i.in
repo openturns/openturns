@@ -30,11 +30,7 @@ Create a *Mixture*:
 >>> collDist = [ot.Triangular(1.0, 2.0, 4.0), ot.Normal(-1.0, 1.0), ot.Uniform(5.0, 6.0)]
 >>> weight = [0.4, 1.0, 0.2]
 >>> myMixture = ot.Mixture(collDist, weight)
-
-See the Mixture:
-
->>> graph = myMixture.drawPDF()
->>> graph.setLegends(['Mixture'])"
+"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::Mixture::getDistributionCollection

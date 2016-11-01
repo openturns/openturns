@@ -84,8 +84,21 @@ public:
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the quantile of the distributionImplementation */
+  using DistributionImplementation::computeQuantile;
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
+
+  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Parameters value accessors */
   void setParameter(const NumericalPoint & parameter);

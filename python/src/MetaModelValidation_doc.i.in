@@ -35,7 +35,7 @@ Examples
 >>> # We can build several types of models (kriging, pc, ...)
 >>> # We use a Taylor developement (order 5) and compare the metamodel with the model
 >>> metaModel = ot.NumericalMathFunction('x', 'x - x^3/6.0 + x^5/120.0')
->>> x = dist.getSample(100)
+>>> x = dist.getSample(10)
 >>> y = model(x)
 >>> # Validation of the model
 >>> val = ot.MetaModelValidation(x, y, metaModel)

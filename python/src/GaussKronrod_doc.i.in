@@ -44,7 +44,7 @@ Examples
 Create a Gauss-Kronrod algorithm:
 
 >>> import openturns as ot
->>> algo = ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))"
+>>> algo = ot.GaussKronrod(100, 1e-8, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussKronrod::integrate
@@ -88,7 +88,7 @@ Examples
 >>> f = ot.NumericalMathFunction('x', 'abs(sin(x))')
 >>> a = -2.5
 >>> b = 4.5
->>> algoGK = ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))
+>>> algoGK = ot.GaussKronrod(100, 1e-8, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))
 
 Use the high-level usage:
 

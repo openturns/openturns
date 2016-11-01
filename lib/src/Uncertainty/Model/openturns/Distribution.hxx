@@ -167,6 +167,11 @@ public:
   NumericalScalar computeCDF(const NumericalPoint & point) const;
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
   NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob) const;
+#ifndef SWIG
+  NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob,
+						NumericalScalar & marginalProb) const;
+#endif
 
   NumericalSample computeCDF(const NumericalSample & sample) const;
   NumericalSample computeComplementaryCDF(const NumericalSample & sample) const;
@@ -206,6 +211,11 @@ public:
   /** Get the quantile of the distribution */
   NumericalPoint computeQuantile(const NumericalScalar prob,
                                  const Bool tail = false) const;
+#ifndef SWIG
+  NumericalPoint computeQuantile(const NumericalScalar prob,
+                                 const Bool tail,
+				 NumericalScalar & marginalProb) const;
+#endif
   NumericalSample computeQuantile(const NumericalPoint & prob,
                                   const Bool tail = false) const;
   /** Compute the quantile over a regular grid */
@@ -213,6 +223,22 @@ public:
                                   const NumericalScalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
+
+  /** Get the product minimum volume interval containing a given probability of the distribution */
+  Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+  Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside

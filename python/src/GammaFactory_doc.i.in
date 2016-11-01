@@ -18,3 +18,66 @@ The parameters are estimated by maximum likelihood:
 See also
 --------
 DistributionFactory, Gamma"
+
+
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GammaFactory::buildEstimator
+"Build the Gamma distribution and the parameters distribution.
+
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+parameters : :class:`~openturns.DistributionParameters`
+    Optional, the parametrization.
+
+Returns
+-------
+resDist : :class:`~openturns.DistributionFactoryResult`
+    The results.
+
+Examples
+--------
+Create a sample and fit a Gamma distribution and the native parameters distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Gamma().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 10)
+>>> fittedRes = ot.GammaFactory().buildEstimator(sample)
+
+Fit a Gamma distribution in another parametrization:
+
+>>> fittedRes2 = ot.GammaFactory().buildEstimator(sample, ot.GammaMuSigma())
+
+Get the fitted Gamma distribution and its parameters:
+
+>>> fittedGamma =  fittedRes.getDistribution()
+>>> print fittedGamma
+Gamma(k = 1.0452, lambda = 0.996212, gamma = 0.00031485)
+>>> fittedParameters = fittedGamma.getParameter()
+
+Get the asymptotic parameters distribution: 
+
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence interval al level 0.9 with minimum volume:
+
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVomuleLevelSetSamplingSize', 100)
+>>> confInt, level = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
+
+Determine the bilateral confidence interval al level 0.9:
+
+>>> confInt, level = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)
+
+Determine the right unilateral confidence interval al level 0.9:
+
+>>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9)
+
+Determine the left unilateral confidence interval al level 0.9:
+
+>>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
+"

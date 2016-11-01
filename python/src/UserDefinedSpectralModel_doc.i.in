@@ -34,7 +34,7 @@ Create the frequency grid:
 >>> import openturns as ot
 >>> from math import exp
 >>> fmin = 0.1
->>> df = 0.2
+>>> df = 0.5
 >>> N = int((10.0 - fmin)/ df)
 >>> myFrequencyGrid =  ot.RegularGrid(fmin, df, N)
 

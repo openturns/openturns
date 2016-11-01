@@ -16,6 +16,8 @@ Point =  class=NumericalPoint name=Unnamed dimension=3 values=[0.2,0.2,0.2]  pdf
 Quantile      = class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
 Quantile (ref)= class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
 CDF(quantile)=0.500000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=3 values=[0.0174781,0.0174781,0.0174781]
+Survival(inverseSurvival)=0.950000
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF      =1.000000
 margin PDF (ref)=1.000000

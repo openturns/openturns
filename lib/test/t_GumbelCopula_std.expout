@@ -9,8 +9,22 @@ oneSample=class=NumericalSample name=a gumbel copula implementation=class=Numeri
 anotherSample mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.504187,0.500439]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0840685,0.0659466,0.0659466,0.0842036]
 point= class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=NumericalPoint name=Unnamed dimension=2 values=[-2.34991,-2.34991] ddf (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-2.34991,-2.34991] pdf=2.2206 cdf=0.119592
+Survival      =0.719592
+Survival (ref)=0.719592
+Inverse survival=class=NumericalPoint name=Unnamed dimension=2 values=[0.0298629,0.0298629]
+Survival(inverse survival)=0.95
 Quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.591374,0.591374]
 CDF(quantile)=0.5
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.0164093,0.0164093] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.983591,0.983591] finite lower bound=[1,1] finite upper bound=[1,1]
+threshold=0.967181
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GumbelCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(GumbelCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GumbelCopula(theta = 2.5)) level=0.936314
+beta=0.39207
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.0164093,0.0164093] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.983591,0.983591] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.967181
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.961873,0.961873] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.961873
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.0298629,0.0298629] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.970137
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.08333,0.06566,0.06566,0.08333]
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.7879,0.7879,1]
 spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.7879,0.7879,1]
@@ -19,16 +33,16 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.787581]
+margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.305358]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.162257]
+margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.109287]
 indices=[1,0]
 margins=class=GumbelCopula name=a gumbel copula dimension=2 theta=2.5
 margins PDF=2.03487
 margins CDF=0.160538
 margins quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.961873,0.961873]
 margins CDF(quantile)=0.95
-margins realization=class=NumericalPoint name=Unnamed dimension=2 values=[0.374821,0.792618]
+margins realization=class=NumericalPoint name=Unnamed dimension=2 values=[0.153303,0.00866159]

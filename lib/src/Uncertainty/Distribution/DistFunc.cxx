@@ -451,7 +451,7 @@ NumericalScalar DistFunc::qGamma(const NumericalScalar k,
                                  const NumericalScalar p,
                                  const Bool tail)
 {
-  if (!tail && (p >= 1.0 - SpecFunc::NumericalScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, p, tail);
+  if (!tail && (p >= 1.0 - SpecFunc::NumericalScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, 1.0 - SpecFunc::NumericalScalarEpsilon, tail);
   return SpecFunc::RegularizedIncompleteGammaInverse(k, p, tail);
 }
 /* Random number generation

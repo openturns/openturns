@@ -79,6 +79,12 @@ public:
   using DistributionImplementation::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
+  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
   using DistributionImplementation::setParametersCollection;

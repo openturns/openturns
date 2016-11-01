@@ -98,6 +98,26 @@ try:
     print("quantile=", repr(quantile))
     print("quantile (ref)=", repr(distributionRef.computeQuantile(0.95)))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    # Confidence regions
+    if distribution.getDimension() <= 2:
+        threshold = NumericalPoint()
+        print("Minimum volume interval=", distribution.computeMinimumVolumeInterval(0.95, threshold))
+        print("threshold=", threshold)
+        beta = NumericalPoint()
+        levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
+        print("Minimum volume level set=", levelSet)
+        print("beta=", beta)
+        print("Bilateral confidence interval=", distribution.computeBilateralConfidenceInterval(0.95, beta))
+        print("beta=", beta)
+        print("Unilateral confidence interval (lower tail)=", distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
+        print("beta=", beta)
+        print("Unilateral confidence interval (upper tail)=", distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
+        print("beta=", beta)
+    
     x = [1.1, 1.6, 2.2]
     q = [0.1, 0.3, 0.7]
     y = [[-0.5], [0.5], [1.5]]

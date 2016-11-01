@@ -186,12 +186,41 @@ NumericalPoint IndependentCopula::computeCDFGradient(const NumericalPoint & poin
 
 /* Get the quantile of the distribution */
 NumericalPoint IndependentCopula::computeQuantile(const NumericalScalar prob,
-    const Bool tail) const
+    const Bool tail,
+    NumericalScalar & marginalProb) const
 {
   if (prob < 0.0 || prob > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
-  if (prob == 0.0) return getRange().getLowerBound();
-  if (prob == 1.0) return getRange().getUpperBound();
-  return NumericalPoint(getDimension(), std::pow(prob, 1.0 / getDimension()));
+  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  marginalProb = std::pow(q, 1.0 / dimension_);
+  if (q == 0.0) return NumericalPoint(dimension_, 0.0);
+  if (q == 1.0) return NumericalPoint(dimension_, 1.0);
+  return NumericalPoint(dimension_, marginalProb);
+}
+
+/** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+Interval IndependentCopula::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+Interval IndependentCopula::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  marginalProb = std::pow(prob, 1.0 / dimension_);
+  return Interval(NumericalPoint(dimension_, 0.5 * (1.0 - marginalProb)), NumericalPoint(dimension_, 0.5 * (1.0 + marginalProb)));
+}
+
+/** Get the minimum volume level set containing a given probability of the distributionImplementation */
+LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  const Description inVars(Description::BuildDefault(dimension_, "x"));
+  OSS formula;
+  formula << "2*max(abs(" << inVars[0] << "-0.5";
+  for (UnsignedInteger i = 1; i < dimension_; ++i)
+    formula << "),abs(" << inVars[i] << "-0.5";
+  formula << "))";
+  threshold = std::pow(prob, 1.0 / dimension_);
+  return LevelSet(NumericalMathFunction(inVars, Description(1, formula)), threshold);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -270,6 +299,12 @@ IndependentCopula::InverseIsoProbabilisticTransformation IndependentCopula::getI
   return transformation;
 }
 
+/* Tell if the distribution is elliptical */
+Bool IndependentCopula::isElliptical() const
+{
+  return dimension_ == 1;
+}
+
 /* Tell if the distribution has elliptical copula */
 Bool IndependentCopula::hasEllipticalCopula() const
 {
@@ -296,3 +331,4 @@ void IndependentCopula::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

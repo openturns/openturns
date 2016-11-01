@@ -172,9 +172,9 @@ Create the stationary covariance model, a mesh and a process:
 >>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 10)
 >>> myProcess = ot.TemporalNormalProcess(myModel, myTimeGrid)
 
-Generate 100 fields:
+Generate 20 fields:
 
->>> mySample = myProcess.getSample(100)
+>>> mySample = myProcess.getSample(20)
 
 Estimate the covariance model  supposing the stationarity:
 

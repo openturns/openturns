@@ -26,10 +26,22 @@ pdf (FD)=0.0687907
 cdf=0.778505
 ccdf=0.221495
 survival=0.221495
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[1.87781]
+Survival(inverse survival)=0.95
 pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.00902981,0.0060508]
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.103467,-0.0426433]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[13.9273]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.68836] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[14.2519] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rice(sigma = 5, nu = 4)) gradientImplementation=MinimumVolumeLevelSetGradient(Rice(sigma = 5, nu = 4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rice(sigma = 5, nu = 4)) level=3.91877
+beta=0.0198656
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.31981] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[15.3859] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[13.9273] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.87781] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[63] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[7.23115]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[13.7104]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

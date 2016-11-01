@@ -71,10 +71,10 @@ Examples
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create a Monte Carlo algorithm
 >>> myAlgo = ot.MonteCarlo(myEvent)
->>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setMaximumOuterSampling(150)
 >>> myAlgo.setBlockSize(4)
 >>> myAlgo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.146505"
+Probability estimate=0.140000"

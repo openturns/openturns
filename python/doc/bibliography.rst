@@ -36,6 +36,9 @@ Bibliography
 .. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par
     decomposition de la variance*, Presentation in the meeting of GdR Ondes and
     GdR MASCOT-NUM, January, 13th, 2011, Institut Henri Poincare, Paris, France
+.. [Minka2012] Thomas P. Minka,
+    *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
+    `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
 .. [Munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,

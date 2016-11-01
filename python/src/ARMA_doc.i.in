@@ -51,7 +51,7 @@ Examples
 Create an ARMA(4,2) process:
 
 >>> import openturns as ot
->>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 10)
 >>> myWhiteNoise = ot.WhiteNoise(ot.Triangular(-1.0, 0.0, 1.0), myTimeGrid)
 >>> myARCoef = ot.ARMACoefficients([0.4, 0.3, 0.2, 0.1])
 >>> myMACoef = ot.ARMACoefficients([0.4, 0.3])

@@ -19,6 +19,8 @@ pdf (ref)=0.00541761
 cdf=0.0817585
 ccdf=0.918241
 survival=0.236113
+Inverse survival=class=NumericalPoint name=Unnamed dimension=3 values=[-3.05991,-6.07458,-0.668274]
+Survival(inverse survival)=0.95
 cdf (ref)=0.0817585
 characteristic function=(0.00663938,0.0936246)
 log characteristic function=(-2.36595,1.5)

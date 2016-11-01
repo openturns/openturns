@@ -98,9 +98,9 @@ Examples
 >>> formulaIshigami = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
 >>> modelIshigami = ot.NumericalMathFunction(['X1', 'X2', 'X3'], ['y'], formulaIshigami)
 >>> distributions = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
->>> sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 400)
+>>> sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 101)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
-[0.307461,0.442524,4.18878e-07]"
+[0.311097,0.441786,0.000396837]"
 
 // ---------------------------------------------------------------------
 

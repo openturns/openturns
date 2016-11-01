@@ -51,7 +51,7 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = finalDist.getSample(10)
+>>> sample = finalDist.getSample(5)
 "
 
 // ---------------------------------------------------------------------

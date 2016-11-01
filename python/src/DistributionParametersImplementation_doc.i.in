@@ -97,7 +97,12 @@ Returns
 -------
 gradient : :class:`~openturns.Matrix`
     The gradient of the transformation of the native parameters into the new
-    parameters."
+    parameters.
+
+Notes
+-----
+
+If we note :math:`(p_1, \dots, p_q)` the native parameters and :math:`(p'_1, \dots, p'_q)` the new ones, then the gradient matrix is :math:`\left( \dfrac{\partial p'_i}{\partial p_j} \right)_{1 \leq i,j \leq  q}`."
 %enddef
 %feature("docstring") OT::DistributionParametersImplementation::gradient
 OT_DistributionParameters_gradient_doc

@@ -369,7 +369,7 @@ Create an ARMA process and generate a time series:
 >>> import openturns as ot
 >>> arcoefficients = ot.ARMACoefficients([0.3])
 >>> macoefficients = ot.ARMACoefficients(0)
->>> timeGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> timeGrid = ot.RegularGrid(0.0, 0.1, 10)
 >>> whiteNoise = ot.WhiteNoise(ot.Normal(), timeGrid)
 >>> myARMA = ot.ARMA(arcoefficients, macoefficients, whiteNoise)
 

@@ -86,6 +86,28 @@ for testCase in range(len(distribution)):
         'quantile=', repr(referenceDistribution[testCase].computeQuantile(0.95)))
     print('cdf(quantile)=%.6f' %
           distribution[testCase].computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = ot.NumericalPoint(distribution[testCase].computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution[testCase].computeSurvivalFunction(inverseSurvival))
+
+    # Confidence regions
+    interval, threshold = distribution[testCase].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    print("Minimum volume interval=", interval)
+    print("threshold=", ot.NumericalPoint(1, threshold))
+    levelSet, beta = distribution[testCase].computeMinimumVolumeLevelSetWithThreshold(0.95)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", ot.NumericalPoint(1, beta))
+    interval, beta = distribution[testCase].computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("Bilateral confidence interval=", interval)
+    print("beta=", ot.NumericalPoint(1, beta))
+    interval, beta = distribution[testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("Unilateral confidence interval (lower tail)=", interval)
+    print("beta=", ot.NumericalPoint(1, beta))
+    interval, beta = distribution[testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("Unilateral confidence interval (upper tail)=", interval)
+    print("beta=", ot.NumericalPoint(1, beta))
+
     mean = distribution[testCase].getMean()
     print('mean      =', repr(mean))
     print('mean (ref)=', repr(referenceDistribution[testCase].getMean()))

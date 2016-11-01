@@ -83,10 +83,10 @@ public:
   virtual void run(const DesignProxy & proxy);
 #endif
 
-  /** Acccessor to the coefficients of the selected metamodel on the provided basis */
+  /** Accessor to the coefficients of the selected metamodel on the provided basis */
   NumericalPoint getCoefficients();
 
-  /** Acccessor to the residual of the selected metamodel on the provided basis */
+  /** Accessor to the residual of the selected metamodel on the provided basis */
   NumericalScalar getResidual();
 
   NumericalScalar getRelativeError();

@@ -10,6 +10,10 @@ oneSample=class=NumericalSample name=a normal copula implementation=class=Numeri
 anotherSample mean=class=NumericalPoint name=Unnamed dimension=3 values=[0.500491,0.497339,0.510215]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0807623,0.0187494,0.00159833,0.0187494,0.0838893,0.0218797,0.00159833,0.0218797,0.08306]
 point= class=NumericalPoint name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=NumericalPoint name=Unnamed dimension=3 values=[-0.0827656,-0.165531,-0.165531] ddf (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 pdf (ref)=1.37677 cdf=0.0176157 cdf (ref)=0.0176157
+Survival      =0.545177
+Survival (ref)=0.545177
+Inverse survival=class=NumericalPoint name=Unnamed dimension=3 values=[0.0174781,0.0174781,0.0174781]
+Survival(inverse survival)=0.95
 Quantile=class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
 QuantileRef=class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
 CDF(quantile)=0.5

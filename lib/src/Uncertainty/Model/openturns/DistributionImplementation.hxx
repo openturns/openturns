@@ -27,11 +27,13 @@
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/LevelSet.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
@@ -146,8 +148,9 @@ protected:
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual NumericalSample getSample(const UnsignedInteger size) const;
-protected:
+ protected:
   virtual NumericalSample getSampleByInversion(const UnsignedInteger size) const;
+  virtual NumericalSample getSampleByQMC(const UnsignedInteger size) const;
 
 public:
   /** Get the DDF of the distributionImplementation */
@@ -208,7 +211,11 @@ public:
   virtual NumericalScalar computeCDF(const NumericalPoint & point) const;
   virtual NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
   virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
-
+  virtual NumericalPoint computeInverseSurvivalFunction(const NumericalScalar point) const;
+#ifndef SWIG
+  virtual NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+#endif
 protected:
   virtual NumericalSample computeCDFSequential(const NumericalSample & sample) const;
   virtual NumericalSample computeCDFParallel(const NumericalSample & sample) const;
@@ -278,7 +285,11 @@ public:
   /** Get the quantile of the distributionImplementation */
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
-
+#ifndef SWIG
+  virtual NumericalPoint computeQuantile(const NumericalScalar prob,
+                                         const Bool tail,
+                                         NumericalScalar & marginalProb) const;
+#endif
   /** Get the quantile over a provided grid */
 protected:
   virtual NumericalSample computeQuantileSequential(const NumericalPoint & prob,
@@ -301,8 +312,35 @@ public:
                                           NumericalSample & grid,
                                           const Bool tail = false) const;
 
-  /** Get the minimum volume interval containing a given probability of the distributionImplementation */
+  /** Get the product minimum volume interval containing a given probability of the distribution */
   virtual Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
+  virtual Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+protected:
+  Interval computeUnivariateMinimumVolumeIntervalByOptimization(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+  Interval computeUnivariateMinimumVolumeIntervalByRootFinding(const NumericalScalar prob,
+      NumericalScalar & marginalProb) const;
+
+public:
+
+  /** Get the product bilateral confidence interval containing a given probability of the distribution */
+  virtual Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
+  virtual Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+  virtual Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
+  virtual Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distribution */
+  virtual LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+
+protected:
+  virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
+      NumericalScalar & threshold) const;
+
+public:
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
@@ -725,19 +763,69 @@ protected:
 
 #ifndef SWIG
 
-  // Structure used to wrap the computePDF() method for interpolation purpose
-  struct PDFWrapper
+  // Class used to wrap the computePDF() method for interpolation purpose
+  class PDFWrapper: public NumericalMathFunctionImplementation
   {
-    PDFWrapper(const DistributionImplementation * p_distribution):
-      p_distribution_(p_distribution) {};
+  public:
+    PDFWrapper(const DistributionImplementation * p_distribution)
+      : NumericalMathFunctionImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
 
-    NumericalPoint computePDF(const NumericalPoint & point) const
+    PDFWrapper * clone() const
+    {
+      return new PDFWrapper(*this);
+    }
+
+    NumericalPoint operator() (const NumericalPoint & point) const
     {
       return NumericalPoint(1, p_distribution_->computePDF(point));
+    }
+
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      return p_distribution_->computePDF(sample);
     };
 
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "pdf");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
     const DistributionImplementation * p_distribution_;
-  }; // struct PDFWrapper
+  };  // class PDFWrapper
 
   // Structure used to wrap the computeCDF() method for interpolation purpose
   struct CDFWrapper
@@ -768,7 +856,7 @@ protected:
     NumericalPoint computeDiagonal(const NumericalPoint & u) const
     {
       const NumericalScalar cdf = p_distribution_->computeCDF(diagonalToSpace(u[0]));
-      LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
       return NumericalPoint(1, cdf);
     }
 
@@ -776,7 +864,7 @@ protected:
     {
       NumericalPoint x(dimension_);
       for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
-      LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
 
@@ -784,6 +872,183 @@ protected:
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
+
+  // Structure used to implement the computeInverseSurvivalFunction() method efficiently
+  struct SurvivalFunctionWrapper
+  {
+    SurvivalFunctionWrapper(const Collection< Implementation > marginals,
+                            const DistributionImplementation * p_distribution)
+      : marginals_(marginals)
+      , p_distribution_(p_distribution)
+      , dimension_(p_distribution->getDimension())
+    {
+      // Nothing to do
+    }
+
+    NumericalPoint computeDiagonal(const NumericalPoint & u) const
+    {
+      const NumericalScalar survival = p_distribution_->computeSurvivalFunction(diagonalToSpace(u[0]));
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::computeDiagonal, u=" << u << ", survival=" << survival);
+      return NumericalPoint(1, survival);
+    }
+
+    NumericalPoint diagonalToSpace(const NumericalScalar tau) const
+    {
+      NumericalPoint x(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau, true)[0];
+      LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
+      return x;
+    }
+
+    const Collection< Implementation > marginals_;
+    const DistributionImplementation * p_distribution_;
+    const UnsignedInteger dimension_;
+  }; // struct SurvivalFunctionWrapper
+
+  class MinimumVolumeLevelSetEvaluation: public NumericalMathEvaluationImplementation
+  {
+  public:
+    // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
+    // object goes outside of the calling method
+    MinimumVolumeLevelSetEvaluation(const DistributionImplementation::Implementation & p_distribution)
+      : NumericalMathEvaluationImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeLevelSetEvaluation * clone() const
+    {
+      return new MinimumVolumeLevelSetEvaluation(*this);
+    }
+
+    // The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
+    // where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
+    NumericalPoint operator() (const NumericalPoint & point) const
+    {
+      const NumericalScalar value = -p_distribution_->computeLogPDF(point);
+      return NumericalPoint(1, value);
+    }
+
+    NumericalSample operator() (const NumericalSample & sample) const
+    {
+      return p_distribution_->computeLogPDF(sample) * (-1.0);
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "-logPDF");
+    }
+
+    Description getDescription() const
+    {
+      Description description(getInputDescription());
+      description.add(getOutputDescription());
+      return description;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation::Implementation p_distribution_;
+  }; // class MinimumVolumeLevelSetEvaluation
+
+  class MinimumVolumeLevelSetGradient: public NumericalMathGradientImplementation
+  {
+  public:
+    // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
+    // object goes outside of the calling method
+    MinimumVolumeLevelSetGradient(const DistributionImplementation::Implementation & p_distribution)
+      : NumericalMathGradientImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeLevelSetGradient * clone() const
+    {
+      return new MinimumVolumeLevelSetGradient(*this);
+    }
+
+    Matrix gradient(const NumericalPoint & point) const
+    {
+      const NumericalScalar pdf = p_distribution_->computePDF(point);
+      if (pdf == 0) return Matrix(getInputDimension(), getOutputDimension());
+      const NumericalPoint value = p_distribution_->computeDDF(point) * (-1.0 / pdf);
+      return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "-logPDF");
+    }
+
+    Description getDescription() const
+    {
+      Description description(getInputDescription());
+      description.add(getOutputDescription());
+      return description;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "MinimumVolumeLevelSetGradient(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "MinimumVolumeLevelSetGradient(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation::Implementation p_distribution_;
+  }; // class MinimumVolumeLevelSetGradient
 
   class CovarianceWrapper: public NumericalMathFunctionImplementation
   {
@@ -812,12 +1077,10 @@ protected:
     NumericalSample operator() (const NumericalSample & sample) const
     {
       const UnsignedInteger size = sample.getSize();
-      NumericalSample result(size, 1);
-      const NumericalSample pdf(p_distribution_->computePDF(sample));
-      for (UnsignedInteger i = 0; i < size; ++i)
-        result[i][0] = (sample[i][0] - muI_) * (sample[i][1] - muJ_) * pdf[i][0];
+      NumericalSample result(p_distribution_->computePDF(sample));
+      for (UnsignedInteger i = 0; i < size; ++i) result[i][0] *= (sample[i][0] - muI_) * (sample[i][1] - muJ_);
       return result;
-    };
+    }
 
     UnsignedInteger getInputDimension() const
     {
@@ -839,6 +1102,20 @@ protected:
       return Description(1, "c");
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     const DistributionImplementation::Implementation p_distribution_;
     const NumericalScalar muI_;
@@ -856,7 +1133,9 @@ protected:
       , n_(1.0 * n)
       , shift_(shift)
       , p_distribution_(p_distribution)
-    {};
+    {
+      // Nothing to do
+    };
 
     ShiftedMomentWrapper * clone() const
     {
@@ -890,11 +1169,25 @@ protected:
       return 1;
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     const NumericalScalar n_;
     const NumericalScalar shift_;
     const DistributionImplementation::Implementation & p_distribution_;
-  }; // struct DistributionImplementationCovarianceWrapper
+  }; // class ShiftedMomentWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
   class ConditionalPDFWrapper: public NumericalMathFunctionImplementation
@@ -904,7 +1197,9 @@ protected:
       : NumericalMathFunctionImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
-    {};
+    {
+      // Nothing to do
+    };
 
     ConditionalPDFWrapper * clone() const
     {
@@ -946,6 +1241,20 @@ protected:
       return 1;
     }
 
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
   private:
     NumericalPoint y_;
     const DistributionImplementation::Implementation p_distribution_;
@@ -959,7 +1268,9 @@ protected:
       : NumericalMathFunctionImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
-    {};
+    {
+      // Nothing to do
+    };
 
     ConditionalCDFWrapper * clone() const
     {
@@ -989,6 +1300,20 @@ protected:
     UnsignedInteger getOutputDimension() const
     {
       return 1;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
     }
 
   private:
@@ -1082,3 +1407,4 @@ OT_API DistributionImplementation::Implementation maximum(const DistributionImpl
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX */
+
