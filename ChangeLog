@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.8rc1 release (2016-08-08) == #release-1.8rc1
+== 1.8rc2 release (2016-11-03) == #release-1.8rc2
 
 === Library ===
 
@@ -71,15 +71,17 @@
  * #828 (ImportFromCSVFile fails on a file created by exportToCSVFile)
  * #830 (more optim algos examples)
  * #831 (Missing get/setParameter in OpenTURNSPythonFunction)
+ * #833 (Homogeneity in Covariance Models)
  * #837 (TruncatedDistribution::setParameter segfaults)
  * #838 (Symmetry of SymmetricMatrix not always enforced)
  * #840 (Remove WeightedExperiment::getWeight)
  * #841 (Better CovarianceModelCollection in Python)
  * #842 (Better ProcessCollection in Python)
  * #843 (Remove all the specific isCopula() methods)
- * #845 (Wrong comparison operator for interface classes with derivative implementation classes)
+ * #848 (Inverse Wishart sampling)
  * #849 (Ambiguous NumericalSample::computeQuantile)
  * #853 (Switch the default for normalize boolean from TRUE to FALSE in ot.GeneralizedLinearModelAlgorithm)
+ * #854 (InverseWishart.computeLogPDF)
  * #861 (document HMatrix classes)
 
 == 1.7 release (2016-01-27) == #release-1.7
