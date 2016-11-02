@@ -41,6 +41,7 @@ Wishart::Wishart()
   setName("Wishart");
   setV(CovarianceMatrix(1));
   computeRange();
+  update();
 }
 
 /* Parameters constructor */
@@ -48,11 +49,12 @@ Wishart::Wishart(const CovarianceMatrix & v,
                  const NumericalScalar nu)
   : ContinuousDistribution()
   , cholesky_()
-  , nu_(nu)
+  , nu_(-1.0)
 {
   setName("Wishart");
   if (nu + 1 <= v.getDimension()) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << "is not greater than dimension-1=" << static_cast< SignedInteger > (v.getDimension()) - 1;
   setV(v);
+  setNu(nu);
 }
 
 /* Comparison operator */
