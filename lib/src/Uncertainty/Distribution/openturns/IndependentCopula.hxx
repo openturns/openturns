@@ -78,13 +78,13 @@ public:
   using CopulaImplementation::computeSurvivalFunction;
   NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
 
-  /** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+  /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
-  /** Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+  /** Get the product bilateral confidence interval containing a given probability of the distribution */
   Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
-  /** Get the minimum volume level set containing a given probability of the distributionImplementation */
+  /** Get the minimum volume level set containing a given probability of the distribution */
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Get the PDF gradient of the distribution */

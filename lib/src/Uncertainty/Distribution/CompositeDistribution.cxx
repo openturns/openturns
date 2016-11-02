@@ -404,13 +404,13 @@ NumericalScalar CompositeDistribution::computeCDF(const NumericalPoint & point) 
   return cdf;
 }
 
-/** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+/** Get the product minimum volume interval containing a given probability of the distribution */
 Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
   return DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(prob, marginalProb);
 }
 
-/** Get the minimum volume level set containing a given probability of the distributionImplementation */
+/** Get the minimum volume level set containing a given probability of the distribution */
 LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());

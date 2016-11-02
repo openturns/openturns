@@ -417,7 +417,7 @@ void DistributionImplementation::setDimension(const UnsignedInteger dim)
   }
 }
 
-/* Get one realization of the distributionImplementation */
+/* Get one realization of the distribution */
 NumericalPoint DistributionImplementation::getRealization() const
 {
   return getRealizationByInversion();
@@ -434,7 +434,7 @@ NumericalSample DistributionImplementation::getSample(const UnsignedInteger size
   return returnSample;
 }
 
-/* Get one realization of the distributionImplementation */
+/* Get one realization of the distribution */
 NumericalPoint DistributionImplementation::getRealizationByInversion() const
 {
   // Use CDF inversion in the 1D case
@@ -485,7 +485,7 @@ NumericalSample DistributionImplementation::getSampleByQMC(const UnsignedInteger
   return result;
 }
 
-/* Get the DDF of the distributionImplementation */
+/* Get the DDF of the distribution */
 NumericalPoint DistributionImplementation::computeDDF(const NumericalPoint & point) const
 {
   if (dimension_ == 1)
@@ -505,7 +505,7 @@ NumericalPoint DistributionImplementation::computeDDF(const NumericalPoint & poi
   throw NotDefinedException(HERE) << "In DistributionImplementation::computeDDF()";
 }
 
-/* Get the PDF of the distributionImplementation */
+/* Get the PDF of the distribution */
 NumericalScalar DistributionImplementation::computePDF(const NumericalPoint & point) const
 {
   const NumericalScalar epsilon = 2.0 * std::pow(cdfEpsilon_, 1.0 / 3.0);
@@ -531,7 +531,7 @@ NumericalScalar DistributionImplementation::computeLogPDF(const NumericalPoint &
   return logPdf;
 }
 
-/* Get the CDF, complementary CDF and survival function of the distributionImplementation */
+/* Get the CDF, complementary CDF and survival function of the distribution */
 /* On a NumericalPoint */
 NumericalScalar DistributionImplementation::computeCDF(const NumericalPoint & point) const
 {
@@ -1136,7 +1136,7 @@ NumericalComplex DistributionImplementation::computeLogGeneratingFunction(const 
   return std::log(value);
 }
 
-/* Get the DDF of the distributionImplementation */
+/* Get the DDF of the distribution */
 NumericalSample DistributionImplementation::computeDDFSequential(const NumericalSample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
@@ -1145,7 +1145,7 @@ NumericalSample DistributionImplementation::computeDDFSequential(const Numerical
   return outSample;
 }
 
-/* Get the DDF of the distributionImplementation */
+/* Get the DDF of the distribution */
 struct ComputeDDFPolicy
 {
   const NumericalSample & input_;
@@ -1184,7 +1184,7 @@ NumericalSample DistributionImplementation::computeDDF(const NumericalSample & i
   else return computeDDFSequential(inSample);
 }
 
-/* Get the PDF of the distributionImplementation */
+/* Get the PDF of the distribution */
 NumericalSample DistributionImplementation::computePDFSequential(const NumericalSample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
@@ -1193,7 +1193,7 @@ NumericalSample DistributionImplementation::computePDFSequential(const Numerical
   return outSample;
 }
 
-/* Get the PDF of the distributionImplementation */
+/* Get the PDF of the distribution */
 struct ComputePDFPolicy
 {
   const NumericalSample & input_;
@@ -1232,7 +1232,7 @@ NumericalSample DistributionImplementation::computePDF(const NumericalSample & i
   else return computePDFSequential(inSample);
 }
 
-/* Get the Log PDF of the distributionImplementation */
+/* Get the Log PDF of the distribution */
 NumericalSample DistributionImplementation::computeLogPDFSequential(const NumericalSample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
@@ -1241,7 +1241,7 @@ NumericalSample DistributionImplementation::computeLogPDFSequential(const Numeri
   return outSample;
 }
 
-/* Get the LogPDF of the distributionImplementation */
+/* Get the LogPDF of the distribution */
 struct ComputeLogPDFPolicy
 {
   const NumericalSample & input_;
@@ -1280,14 +1280,14 @@ NumericalSample DistributionImplementation::computeLogPDF(const NumericalSample 
   else return computeLogPDFSequential(inSample);
 }
 
-/* Get the DDF of the distributionImplementation */
+/* Get the DDF of the distribution */
 NumericalScalar DistributionImplementation::computeDDF(const NumericalScalar scalar) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "ERROR: cannot use the simplified interface of computeDDF with distributions of dimension > 1";
   return computeDDF(NumericalPoint(1, scalar))[0];
 }
 
-/* Get the PDF of the distributionImplementation */
+/* Get the PDF of the distribution */
 NumericalScalar DistributionImplementation::computePDF(const NumericalScalar scalar) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "ERROR: cannot use the simplified interface of computePDF with distributions of dimension > 1";
@@ -1300,7 +1300,7 @@ NumericalScalar DistributionImplementation::computeLogPDF(const NumericalScalar 
   return computeLogPDF(NumericalPoint(1, scalar));
 }
 
-/* Get the CDF of the distributionImplementation */
+/* Get the CDF of the distribution */
 NumericalScalar DistributionImplementation::computeCDF(const NumericalScalar scalar) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "ERROR: cannot use the simplified interface of computeCDF with distributions of dimension > 1";
@@ -1983,7 +1983,7 @@ NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar
   return wrapper.diagonalToSpace(marginalProb);
 }
 
-/* Get the minimum volume interval containing at least a given probability of the distributionImplementation.
+/* Get the minimum volume interval containing at least a given probability of the distribution.
    The minimum volume interval [a, b] is such that:
    a\in[lowerBound, F^{-1}(1-p)]
    b = F^{-1}(p+F(a))
@@ -2178,7 +2178,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
   return Interval(a, b);
 }
 
-/* Get the product bilateral confidence interval containing a given probability of the distributionImplementation */
+/* Get the product bilateral confidence interval containing a given probability of the distribution */
 Interval DistributionImplementation::computeBilateralConfidenceInterval(const NumericalScalar prob) const
 {
   NumericalScalar marginalProb = -1.0;
@@ -2216,7 +2216,7 @@ Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMargi
   return IC;
 }
 
-/* Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+/* Get the product unilateral confidence interval containing a given probability of the distribution */
 Interval DistributionImplementation::computeUnilateralConfidenceInterval(const NumericalScalar prob,
     const Bool tail) const
 {
@@ -2238,7 +2238,7 @@ Interval DistributionImplementation::computeUnilateralConfidenceIntervalWithMarg
   return Interval(range_.getLowerBound(), upperBound);
 }
 
-/* Get the minimum volume level set containing at least a given probability of the distributionImplementation.
+/* Get the minimum volume level set containing at least a given probability of the distribution.
    The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
    where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
 */

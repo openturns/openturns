@@ -613,7 +613,7 @@ NumericalSample Distribution::computeQuantile(const NumericalPoint & prob,
   return getImplementation()->computeQuantile(prob, tail);
 }
 
-/* Get the product minimum volume interval containing at least a given probability of the distributionImplementation.
+/* Get the product minimum volume interval containing at least a given probability of the distribution.
    The minimum volume interval [a, b] is such that:
    a\in[lowerBound, F^{-1}(1-p)]
    b = F^{-1}(p+F(a))
@@ -630,7 +630,7 @@ Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const
   return getImplementation()->computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
 }
 
-/* Get the product bilateral confidence interval containing at least a given probability of the distributionImplementation.
+/* Get the product bilateral confidence interval containing at least a given probability of the distribution.
    The bilateral confidence interval [a, b] is such that:
    for all i\in{1,...,d}, P(X_i\in[a_i, b_i])=\beta
    where \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
@@ -645,7 +645,7 @@ Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability
   return getImplementation()->computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
-/* Get the product unilateral confidence interval containing at least a given probability of the distributionImplementation.
+/* Get the product unilateral confidence interval containing at least a given probability of the distribution.
    The bilateral confidence interval [a, b] is such that:
    if upper == false
      for all i\in{1,...,d}, a_i=-\intfy and P(X_i<=b_i)=\beta
@@ -665,7 +665,7 @@ Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbabilit
   return getImplementation()->computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
 }
 
-/* Get the minimum volume level set containing at least a given probability of the distributionImplementation.
+/* Get the minimum volume level set containing at least a given probability of the distribution.
    The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
    where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
 */

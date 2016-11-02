@@ -140,7 +140,7 @@ public:
   /** Virtual constructor */
   virtual DistributionImplementation * clone() const;
 
-  /** Get one realization of the distributionImplementation */
+  /** Get one realization of the distribution */
   virtual NumericalPoint getRealization() const;
 protected:
   virtual NumericalPoint getRealizationByInversion() const;
@@ -153,7 +153,7 @@ public:
   virtual NumericalSample getSampleByQMC(const UnsignedInteger size) const;
 
 public:
-  /** Get the DDF of the distributionImplementation */
+  /** Get the DDF of the distribution */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
   virtual NumericalPoint  computeDDF(const NumericalPoint & point) const;
   virtual NumericalSample computeDDF(const NumericalSample & sample) const;
@@ -162,7 +162,7 @@ protected:
   virtual NumericalSample computeDDFParallel(const NumericalSample & sample) const;
 public:
 
-  /** Get the PDF of the distributionImplementation */
+  /** Get the PDF of the distribution */
   virtual NumericalScalar computePDF(const NumericalScalar scalar) const;
   virtual NumericalScalar computePDF(const NumericalPoint & point) const;
   virtual NumericalSample computePDF(const NumericalSample & sample) const;
@@ -203,7 +203,7 @@ public:
 					const Indices & pointNumber,
 					NumericalSample & grid) const;
 
-  /** Get the CDF of the distributionImplementation */
+  /** Get the CDF of the distribution */
   virtual NumericalScalar computeCDF(const NumericalScalar scalar) const;
   virtual NumericalScalar computeComplementaryCDF(const NumericalScalar scalar) const;
   virtual NumericalScalar computeSurvivalFunction(const NumericalScalar scalar) const;
@@ -282,7 +282,7 @@ public:
   virtual NumericalSample computeCDFGradient(const NumericalSample & inSample) const;
 public:
 
-  /** Get the quantile of the distributionImplementation */
+  /** Get the quantile of the distribution */
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
 #ifndef SWIG
@@ -328,7 +328,7 @@ public:
   virtual Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
   virtual Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
 
-  /** Get the product unilateral confidence interval containing a given probability of the distributionImplementation */
+  /** Get the product unilateral confidence interval containing a given probability of the distribution */
   virtual Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
   virtual Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
 
@@ -1323,7 +1323,7 @@ protected:
 
 #endif
 
-  /** The dimension of the distributionImplementation */
+  /** The dimension of the distribution */
   UnsignedInteger dimension_;
 
   /** The weight used ONLY by Mixture */

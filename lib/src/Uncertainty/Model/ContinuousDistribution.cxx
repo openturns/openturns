@@ -59,7 +59,7 @@ String ContinuousDistribution::__repr__() const
   return oss;
 }
 
-/* Get the DDF of the distributionImplementation */
+/* Get the DDF of the distribution */
 NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) const
 {
   const UnsignedInteger dimension = getDimension();
