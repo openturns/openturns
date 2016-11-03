@@ -32,6 +32,9 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/TNC.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/NumericalMathGradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -82,78 +85,163 @@ String MaximumLikelihoodFactory::__str__(const String & offset) const
   return this->getClassName();
 }
 
-
-/* Here is the interface that all derived class must implement */
-
-
-struct MaximumLikelihoodFactoryLogLikelihood
+class LogLikelihoodEvaluation : public NumericalMathEvaluationImplementation
 {
-  MaximumLikelihoodFactoryLogLikelihood(const NumericalSample & sample,
+public:
+  LogLikelihoodEvaluation(const NumericalSample & sample,
                                         const Distribution & distribution,
                                         const NumericalPoint & knownParameterValues,
                                         const Indices & knownParameterIndices,
                                         const Bool & isParallel)
-    : sample_(sample)
+    : NumericalMathEvaluationImplementation()
+    , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
-    , isParallel_(isParallel)
   {
-    // Nothing to do
+    distribution_.getImplementation()->setParallel(isParallel);
   }
 
-  NumericalScalar computeLogLikelihood(const NumericalPoint & parameter) const
+  LogLikelihoodEvaluation * clone() const
+  {
+    return new LogLikelihoodEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return distribution_.getParameterDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return Description::BuildDefault(getInputDimension(), "theta");
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(1, "lh");
+  }
+
+  Description getDescription() const
+  {
+    Description description(getInputDescription());
+    description.add(getOutputDescription());
+    return description;
+  }
+
+  NumericalPoint operator() (const NumericalPoint & parameter) const
   {
     NumericalScalar result = 0.0;
-    try
+    NumericalPoint effectiveParameter(parameter);
+    UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     {
-      NumericalPoint effectiveParameter(parameter);
-      UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
-      for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-      {
-        effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
-      }
-      Distribution distribution(distribution_);
-      distribution.setParameter(effectiveParameter);
+      effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
+    }
+    Distribution distribution(distribution_);
+    distribution.setParameter(effectiveParameter);
+    // Take into account the mean over sample
+    // Parallelization (evaluation over a sample) is handeled by distribution_
+    const NumericalScalar logLikelihood = distribution.computeLogPDF(sample_).computeMean()[0];
+    result = SpecFunc::IsNormal(logLikelihood) ? logLikelihood : SpecFunc::LogMinNumericalScalar;
+    return NumericalPoint(1, result);
+  }
 
-      if (isParallel_)
-      {
-        const NumericalScalar logLikelihood = distribution.computeLogPDF(sample_).computeMean()[0];
-        result = SpecFunc::IsNormal(logLikelihood) ? logLikelihood : -SpecFunc::MaxNumericalScalar;
-      } // Parallel computeLogPDF
-      else
-      {
-        const UnsignedInteger size = sample_.getSize();
-        for (UnsignedInteger i = 0; i < size; ++ i)
-        {
-          const NumericalScalar logPdf = distribution.computeLogPDF(sample_[i]);
-          if (logPdf == -SpecFunc::MaxNumericalScalar)
-          {
-            result = -SpecFunc::MaxNumericalScalar;
-            break;
-          }
-          else
-          {
-            result += logPdf;
-          }
-        } // Loop over the realizations
-	result /= size;
-      } // Sequential computeLogPDF
-    } // try
-    catch (...)
+private:
+  NumericalSample sample_;
+  Distribution distribution_;
+  NumericalPoint knownParameterValues_;
+  Indices knownParameterIndices_;
+};
+
+class LogLikelihoodGradient : public NumericalMathGradientImplementation
+{
+public:
+  LogLikelihoodGradient(const NumericalSample & sample,
+                                        const Distribution & distribution,
+                                        const NumericalPoint & knownParameterValues,
+                                        const Indices & knownParameterIndices,
+                                        const Bool & isParallel)
+    : NumericalMathGradientImplementation()
+    , sample_(sample)
+    , distribution_(distribution)
+    , knownParameterValues_(knownParameterValues)
+    , knownParameterIndices_(knownParameterIndices)
+  {
+    distribution_.getImplementation()->setParallel(isParallel);
+  }
+
+  LogLikelihoodGradient * clone() const
+  {
+    return new LogLikelihoodGradient(*this);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return distribution_.getParameterDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return Description::BuildDefault(getInputDimension(), "theta");
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(1, "lhG");
+  }
+
+  Description getDescription() const
+  {
+    Description description(getInputDescription());
+    description.add(getOutputDescription());
+    return description;
+  }
+
+  Matrix gradient(const NumericalPoint & parameter) const
+  {
+    // Define conditionned distribution
+    NumericalPoint effectiveParameter(parameter);
+    UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     {
-      result = -SpecFunc::MaxNumericalScalar;
+      effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
+    }
+    Distribution distribution(distribution_);
+    distribution.setParameter(effectiveParameter);
+    // Evaluate the gradient
+    // Matrix result
+    MatrixImplementation result(parameter.getSize(), 1);
+    const UnsignedInteger size = sample_.getSize();
+    // Compute sum(LogPDFGraident(sample)) ~> size * mean
+    // parallelization handeled by distribution::computeLogPDFGradient
+    const NumericalPoint logPdfGradient = distribution.computeLogPDFGradient(sample_).computeMean();
+    result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
+    // Check about this
+    // Gradient should be 0 for knownParameters
+    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+    {
+      result(knownParameterIndices_[j], 0) = 0.0;
     }
     return result;
   }
 
-  const NumericalSample & sample_;
-  const Distribution distribution_;
-  const NumericalPoint knownParameterValues_;
-  const Indices knownParameterIndices_;
-  const Bool isParallel_;
+private:
+  NumericalSample sample_;
+  Distribution distribution_;
+  NumericalPoint knownParameterValues_;
+  Indices knownParameterIndices_;
 };
-
 
 NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & sample) const
 {
@@ -161,11 +249,13 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   UnsignedInteger parameterDimension = distribution_.getParameterDimension();
-  MaximumLikelihoodFactoryLogLikelihood logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_, isParallel_);
-
-  NumericalMathFunction logLikelihood(bindMethod<MaximumLikelihoodFactoryLogLikelihood, NumericalScalar, NumericalPoint>(logLikelihoodWrapper, &MaximumLikelihoodFactoryLogLikelihood::computeLogLikelihood, parameterDimension, 1));
+  // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
+  LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_, isParallel_);
+  NumericalMathFunction logLikelihood(logLikelihoodWrapper.clone());
+  // Define NumericalMathGradient using the LogLikelihoodEvaluation wrapper
+  LogLikelihoodGradient logLikelihoodWrapperGradient(sample, distribution_, knownParameterValues_, knownParameterIndices_, isParallel_);
   CenteredFiniteDifferenceGradient gradient(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-GradientStep"), logLikelihood.getEvaluation());
-  logLikelihood.setGradient(gradient);
+  logLikelihood.setGradient(logLikelihoodWrapperGradient.clone());
   OptimizationProblem problem(problem_);
   problem.setMinimization(false);
   problem.setObjective(logLikelihood);

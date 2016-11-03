@@ -17,6 +17,8 @@ cdf=0.743877
 ccdf=0.256123
 pdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[0.0277138,-0.0118013,0.0515102,-0.0643285]
 pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[0.0277138,-0.0118013,0.0515102,-0.0643285]
+log-pdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[0.103363,-0.0440151,0.192116,-0.239924]
+log-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[0.103363,-0.0440151,0.192116,-0.239924]
 cdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.0404404,0.00354582,-0.0492055,-0.178474]
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.0404404,0.00354582,-0.0492055,-0.178474]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1.79498]

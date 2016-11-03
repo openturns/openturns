@@ -50,6 +50,8 @@ OT_Distribution_computeUnilateralConfidenceInterval_doc
 OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
 %feature("docstring") OT::Distribution::computeLogPDF
 OT_Distribution_computeLogPDF_doc
+%feature("docstring") OT::Distribution::computeLogPDFGradient
+OT_Distribution_computeLogPDFGradient_doc
 %feature("docstring") OT::Distribution::computePDF
 OT_Distribution_computePDF_doc
 %feature("docstring") OT::Distribution::computePDFGradient
