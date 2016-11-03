@@ -64,7 +64,7 @@ String ArchimedeanCopula::__repr__() const
   return oss;
 }
 
-/* Get the PDF of the distributionImplementation */
+/* Get the PDF of the distribution */
 NumericalScalar ArchimedeanCopula::computePDF(const NumericalPoint & point) const
 {
   if ((point[0] <= 0.0) || (point[1] <= 0.0) || (point[0] >= 1.0) || point[1] >= 1.0) return 0.0;
@@ -74,7 +74,7 @@ NumericalScalar ArchimedeanCopula::computePDF(const NumericalPoint & point) cons
   return -computeArchimedeanGeneratorSecondDerivative(inv) * computeArchimedeanGeneratorDerivative(point[0]) * computeArchimedeanGeneratorDerivative(point[1]) / (den * den * den);
 }
 
-/* Get the CDF of the distributionImplementation */
+/* Get the CDF of the distribution */
 NumericalScalar ArchimedeanCopula::computeCDF(const NumericalPoint & point) const
 {
   if ((point[0] <= 0.0) || (point[1] <= 0.0)) return 0.0;

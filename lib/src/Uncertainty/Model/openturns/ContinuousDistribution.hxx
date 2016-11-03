@@ -46,19 +46,19 @@ public:
   /** Comparison operator */
   Bool operator ==(const ContinuousDistribution & other) const;
 
-  /** Get the PDF of the distributionImplementation */
+  /** Get the PDF of the distribution */
   using DistributionImplementation::computeDDF;
   NumericalPoint computeDDF(const NumericalPoint & point) const;
 
-  /** Get the PDF of the distributionImplementation */
+  /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
   NumericalScalar computePDF(const NumericalPoint & point) const;
 
-  /** Get the CDF of the distributionImplementation */
+  /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
-  /** Get the survival function of the distributionImplementation */
+  /** Get the survival function of the distribution */
   using DistributionImplementation::computeSurvivalFunction;
   NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
 

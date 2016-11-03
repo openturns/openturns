@@ -199,7 +199,7 @@ NumericalScalar StudentRealization(const NumericalScalar nu)
 {
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   const NumericalScalar n = DistFunc::rNormal();
-  NumericalScalar g;
+  NumericalScalar g = -1.0;
   do
   {
     g = DistFunc::rGamma(0.5 * nu);
@@ -635,7 +635,7 @@ NumericalScalar NonCentralStudentRealization(const NumericalScalar nu,
     const NumericalScalar delta)
 {
   const NumericalScalar n = DistFunc::rNormal() + delta;
-  NumericalScalar g;
+  NumericalScalar g = -1.0;
   do
   {
     g = DistFunc::rGamma(0.5 * nu);

@@ -41,6 +41,7 @@ Parametric distributions
     InverseChiSquare
     InverseGamma
     InverseNormal
+    InverseWishart
     KPermutationsDistribution
     Laplace
     Logistic
@@ -65,6 +66,7 @@ Parametric distributions
     UserDefined
     VonMises
     Weibull
+    Wishart
     ZipfMandelbrot
 
 Parametrized distributions
@@ -217,3 +219,14 @@ Samplers
     MCMC
     RandomWalkMetropolisHastings
     CalibrationStrategy
+
+Low-level distribution functions
+================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    DistFunc_pNormal
+    DistFunc_qNormal
+    DistFunc_rNormal

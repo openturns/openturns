@@ -105,10 +105,10 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
       break;
     }
     // Swap b and c such that fB <= fC
-    NumericalScalar y;
-    NumericalScalar fY;
-    NumericalScalar g;
-    NumericalScalar fG;
+    NumericalScalar y = -1.0;
+    NumericalScalar fY = -1.0;
+    NumericalScalar g = -1.0;
+    NumericalScalar fG = -1.0;
     if (std::abs(fB) < std::abs(fC))
     {
       y = s;

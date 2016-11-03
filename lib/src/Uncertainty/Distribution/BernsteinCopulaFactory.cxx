@@ -96,7 +96,6 @@ Distribution BernsteinCopulaFactory::buildParallel(const NumericalSample & empir
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
-  const UnsignedInteger dimension = empiricalCopulaSample.getDimension();
   Mixture::DistributionCollection atomsMixture(size);
   BernsteinCopulaFactoryPolicy policy(empiricalCopulaSample, binNumber, atomsMixture);
   TBB::ParallelFor( 0, size, policy );

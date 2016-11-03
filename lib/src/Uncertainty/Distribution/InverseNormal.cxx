@@ -143,7 +143,7 @@ NumericalScalar InverseNormal::computeCDF(const NumericalPoint & point) const
   return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
 }
 
-/** Get the minimum volume level set containing a given probability of the distributionImplementation */
+/** Get the minimum volume level set containing a given probability of the distribution */
 LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));

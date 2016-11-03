@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.8rc1
+Version:        1.8rc2
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -117,7 +117,7 @@ rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
 make tests %{?_smp_mflags}
-ctest %{?_smp_mflags} || cat Testing/Temporary/LastTest.log
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest %{?_smp_mflags} || cat Testing/Temporary/LastTest.log
 rm %{buildroot}%{python_sitearch}/%{name}/*.pyc
 
 %clean

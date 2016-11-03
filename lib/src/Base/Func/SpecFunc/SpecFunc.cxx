@@ -291,14 +291,13 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
 #ifdef OPENTURNS_HAVE_BOOST
   return std::log(boost::math::cyl_bessel_k(nu, x));
 #else
-  NumericalScalar logFactor;
+  NumericalScalar logFactor = 0.0;
   NumericalMathFunction integrand;
   UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
-  NumericalScalar upper;
+  NumericalScalar upper = -1.0;
   if (nu == 0.0)
   {
-    logFactor = 0.0;
     integrand = NumericalMathFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
     upper = std::log(-2.0 * std::log(NumericalScalarEpsilon) / x);
   }
@@ -308,7 +307,7 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
     integrand = NumericalMathFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
     upper = std::log(NumericalScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(NumericalScalarEpsilon) / nu) / nu, false);
   }
-  NumericalScalar epsilon;
+  NumericalScalar epsilon = -1.0;
   const NumericalScalar integral = GaussKronrod().integrate(integrand, Interval(NumericalScalarEpsilon, upper), epsilon)[0];
   PlatformInfo::SetNumericalPrecision(precision);
   if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxNumericalScalar;
@@ -756,7 +755,7 @@ NumericalScalar SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
   NumericalScalar pochhammerQ1 = q1;
   NumericalScalar factorial = 1.0;
   NumericalScalar sum = term;
-  NumericalScalar eps;
+  NumericalScalar eps = -1.0;
   UnsignedInteger k = 0;
   do
   {
@@ -938,9 +937,9 @@ NumericalScalar SpecFunc::ErfInverse(const NumericalScalar x)
     7.784695709041462e-03,  3.224671290700398e-01,
     2.445134137142996e+00,  3.754408661907416e+00
   };
-  NumericalScalar q;
-  NumericalScalar t;
-  NumericalScalar u;
+  NumericalScalar q = -1.0;
+  NumericalScalar t = -1.0;
+  NumericalScalar u = -1.0;
   q = std::min(p, 1.0 - p);
   if (q > 0.02425)
   {

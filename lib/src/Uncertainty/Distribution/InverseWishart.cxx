@@ -212,8 +212,7 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 NumericalScalar InverseWishart::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In InverseWishart::computeCDF(const NumericalPoint & point) const";
+  return ContinuousDistribution::computeCDF(point);
 }
 
 /* Compute the mean of the distribution */

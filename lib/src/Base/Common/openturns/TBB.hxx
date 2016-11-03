@@ -108,13 +108,14 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TBB
 {
 public:
+#ifndef SWIG // swig 1.3.40 fails to parse BlockedRange
+
 #ifdef OPENTURNS_HAVE_TBB
   typedef tbb::split Split;
 #else /* OPENTURNS_HAVE_TBB */
   struct Split {};
 #endif /* OPENTURNS_HAVE_TBB */
 
-#ifndef SWIG // swig 1.3.40 fails to parse this
   template <typename T>
   struct BlockedRange : public tbb::blocked_range<T>
   {

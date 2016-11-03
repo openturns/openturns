@@ -321,7 +321,7 @@ public:
   void load(Advocate & adv)
   {
     PersistentObject::load(adv);
-    UnsignedInteger size;
+    UnsignedInteger size = 0;
     adv.loadAttribute( "size", size );
 
     PersistentCollection< KeyType >      keyColl(size);

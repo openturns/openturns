@@ -1,0 +1,51 @@
+%feature("docstring") OT::DistFunc::pNormal
+"CDF of an unit-variance centered Normal distribution.
+
+Parameters
+----------
+x : float
+    Location
+tail : bool, default=False
+    Tail flag
+
+Returns
+-------
+cdf : float
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pNormal(0.9)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qNormal
+"Quantile of an unit-variance centered Normal distribution.
+
+Parameters
+----------
+prob : float
+
+Returns
+-------
+q : float
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qNormal(0.95)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rNormal
+"Realization of an unit-variance centered Normal distribution.
+
+Returns
+-------
+realization : float
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rNormal()"

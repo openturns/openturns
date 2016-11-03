@@ -108,3 +108,8 @@ print('First result calculated : %.4e' % resultSample[0][0])
 
 model = ot.NumericalMathFunction(['x'], ['y1', 'y2'], ['_pi', '_e'])
 print('Constants:', model([0]))
+
+empty = model.getMarginal([])
+x = [42.0]
+y = empty(x)
+print('empty eval', y)

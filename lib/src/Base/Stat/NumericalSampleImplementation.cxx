@@ -351,7 +351,7 @@ NumericalSampleImplementation NumericalSampleImplementation::BuildFromTextFile(c
   String line;
   Bool isDescription = false;
   Description description;
-  NumericalScalar f;
+  NumericalScalar f = -1.0;
   UnsignedInteger numLine = 1;
 
   // While there are lines to read

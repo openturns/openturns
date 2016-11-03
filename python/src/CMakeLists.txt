@@ -140,7 +140,7 @@ ot_add_python_module(typ typ_module.i
                       TriangularComplexMatrix.i TriangularComplexMatrix_doc.i.in
                       CovarianceMatrix.i CovarianceMatrix_doc.i.in
                       CorrelationMatrix.i CorrelationMatrix_doc.i.in
-                      IdentityMatrix.i
+                      IdentityMatrix.i IdentityMatrix_doc.i.in
                       NumericalSample.i NumericalSample_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
@@ -417,6 +417,7 @@ ot_add_python_module(experiment experiment_module.i
                       Combinations.i Combinations_doc.i.in
                       KPermutations.i KPermutations_doc.i.in
                       Tuples.i Tuples_doc.i.in
+                      PythonExperimentImplementation.cxx
                       BaseExperimentTemplateDefs.i
                    )
 
@@ -494,7 +495,7 @@ ot_add_python_module(model_process model_process_module.i
                    )
 
 ot_add_python_module(dist_bundle1 dist_bundle1_module.i
-                      DistFunc.i
+                      DistFunc.i DistFunc_doc.i.in
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
@@ -545,8 +546,8 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       InverseChiSquare.i InverseChiSquare_doc.i.in
                       InverseGamma.i InverseGamma_doc.i.in
                       InverseNormal.i InverseNormal_doc.i.in
-                      InverseNormalFactory.i NormalFactory_doc.i.in InverseNormalFactory_doc.i.in
-                      InverseWishart.i
+                      InverseNormalFactory.i InverseNormalFactory_doc.i.in
+                      InverseWishart.i InverseWishart_doc.i.in
                       KPermutationsDistribution.i KPermutationsDistribution_doc.i.in
                       KernelMixture.i KernelMixture_doc.i.in
                       KernelSmoothing.i KernelSmoothing_doc.i.in
@@ -559,7 +560,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogNormalMuSigma.i LogNormalMuSigma_doc.i.in
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
-                      LogUniformFactory.i UniformFactory_doc.i.in LogUniformFactory_doc.i.in
+                      LogUniformFactory.i LogUniformFactory_doc.i.in
 		      MarginalDistribution.i
 		      MaximumDistribution.i
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
@@ -575,7 +576,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
                       NonCentralStudent.i NonCentralStudent_doc.i.in
                       Normal.i Normal_doc.i.in
-                      NormalFactory.i
+                      NormalFactory.i NormalFactory_doc.i.in
                       NormalGamma.i NormalGamma_doc.i.in
                    )
 
@@ -603,15 +604,15 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormal.i TruncatedNormal_doc.i.in
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
-                      UniformFactory.i
+                      UniformFactory.i UniformFactory_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedPair.i UserDefinedPair_doc.i.in
-                      UserDefinedFactory.i
+                      UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
                       Weibull.i Weibull_doc.i.in
                       WeibullFactory.i WeibullFactory_doc.i.in
                       WeibullMuSigma.i WeibullMuSigma_doc.i.in
-                      Wishart.i
+                      Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i
                    )

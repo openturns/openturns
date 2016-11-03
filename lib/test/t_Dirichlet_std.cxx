@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
         fullprint << "margins=" << margins << std::endl;
         fullprint << "margins PDF=" << margins.computePDF(NumericalPoint(2, 0.5)) << std::endl;
         fullprint << "margins CDF=" << margins.computeCDF(NumericalPoint(2, 0.5)) << std::endl;
-        NumericalPoint quantile = margins.computeQuantile(0.95);
+        quantile = margins.computeQuantile(0.95);
         fullprint << "margins quantile=" << quantile << std::endl;
         fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
         fullprint << "margins realization=" << margins.getRealization() << std::endl;

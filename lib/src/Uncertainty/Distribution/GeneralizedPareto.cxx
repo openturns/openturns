@@ -179,13 +179,13 @@ NumericalScalar GeneralizedPareto::computeComplementaryCDF(const NumericalPoint 
   return std::exp(-log1p(xi_ * z) / xi_);
 }
 
-/** Get the product minimum volume interval containing a given probability of the distributionImplementation */
+/** Get the product minimum volume interval containing a given probability of the distribution */
 Interval GeneralizedPareto::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
 {
   return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
 }
 
-/** Get the minimum volume level set containing a given probability of the distributionImplementation */
+/** Get the minimum volume level set containing a given probability of the distribution */
 LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
