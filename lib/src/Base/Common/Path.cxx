@@ -47,6 +47,10 @@
 #include <libgen.h>               // for dirname
 #endif
 
+#ifdef OPENTURNS_HAVE_UNISTD_H
+#include <unistd.h>               // for getpid, readlink, close
+#endif
+
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."
 #endif
