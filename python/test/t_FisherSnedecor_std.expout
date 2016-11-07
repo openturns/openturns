@@ -15,6 +15,12 @@ pdf (FD)=0.517181
 cdf=0.531405
 ccdf=0.468595
 characteristic function=(0.385738+0.612601j)
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.0333323,0.00890862]
+pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.0333323,0.00890862]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
+cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
+log-pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.0644499,0.0172253]
+log-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.0644499,0.0172253]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.2027]
 cdf(quantile)=0.950000
 InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.230549]

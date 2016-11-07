@@ -98,26 +98,30 @@ int main(int argc, char *argv[])
     fullprint << "characteristic function=" << CF << std::endl;
     NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
     fullprint << "log characteristic function=" << LCF << std::endl;
-    // NumericalPoint PDFgr = distribution.computePDFGradient( point );
-    // fullprint << "pdf gradient     =" << PDFgr << std::endl;
-    // NumericalPoint PDFgrFD(3);
-    // PDFgrFD[0] = (FisherSnedecor(distribution.getA() + eps, distribution.getM(), distribution.getB()).computePDF(point) -
-    //               FisherSnedecor(distribution.getA() - eps, distribution.getM(), distribution.getB()).computePDF(point)) / (2.0 * eps);
-    // PDFgrFD[1] = (FisherSnedecor(distribution.getA(), distribution.getM() + eps, distribution.getB()).computePDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps);
-    // PDFgrFD[2] = (FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() + eps).computePDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps);
-    // fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-    // NumericalPoint CDFgr = distribution.computeCDFGradient( point );
-    // fullprint << "cdf gradient     =" << CDFgr << std::endl;
-    // NumericalPoint CDFgrFD(3);
-    // CDFgrFD[0] = (FisherSnedecor(distribution.getA() + eps, distribution.getM(), distribution.getB()).computeCDF(point) -
-    //               FisherSnedecor(distribution.getA() - eps, distribution.getM(), distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    // CDFgrFD[1] = (FisherSnedecor(distribution.getA(), distribution.getM() + eps, distribution.getB()).computeCDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    // CDFgrFD[2] = (FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() + eps).computeCDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
-    // fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
+    NumericalPoint PDFgr = distribution.computePDFGradient( point );
+    fullprint << "pdf gradient     =" << PDFgr << std::endl;
+    NumericalPoint PDFgrFD(2);
+    PDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computePDF(point) -
+                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computePDF(point) -
+                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computePDF(point)) / (2.0 * eps);
+    fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
+    NumericalPoint logPDFgr = distribution.computeLogPDFGradient( point );
+    fullprint << "log-pdf gradient     =" << logPDFgr << std::endl;
+    NumericalPoint logPDFgrFD(2);
+    logPDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeLogPDF(point) -
+                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeLogPDF(point)) / (2.0 * eps);
+    logPDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeLogPDF(point) -
+                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeLogPDF(point)) / (2.0 * eps);
+    fullprint << "log-pdf gradient (FD)=" << logPDFgrFD << std::endl;
+    NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+    fullprint << "cdf gradient     =" << CDFgr << std::endl;
+    NumericalPoint CDFgrFD(2);
+    CDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeCDF(point) -
+                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeCDF(point) -
+                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeCDF(point)) / (2.0 * eps);
+    fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
