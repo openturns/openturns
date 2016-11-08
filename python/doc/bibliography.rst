@@ -3,7 +3,6 @@
 ============
 Bibliography
 ============
-
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
@@ -11,16 +10,32 @@ Bibliography
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
     `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
+.. [Damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies
+    of space filling designs: optimization of Latin hypercube samples and
+    subprojection properties.* Journal of Simulation, 7:276-289, 2013.
+    `pdf <http://doc.openturns.org/papers/damblin2013.pdf>`__
+.. [Fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
+    computer experiments.* Chapman & Hall CRC, 2006.
 .. [Gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013
     `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
 .. [Jansen1999] Jansen, M.J.W. *Analysis of variance designs for model output*,
     Computer Physics Communication, 1999, 117, 35-43.
     `pdf <http://doc.openturns.org/papers/jansen1999.pdf>`__
+.. [Jin2005] R. Jin, W. Chen, and A. Sudjianto. *An efficient algorithm for
+    constructing optimal design of computer experiments.*
+    Journal of Statistical Planning and Inference, 134 :268-287, 2005.
+    `pdf <http://doc.openturns.org/papers/jin2005.pdf>`__
+.. [Johnson1990] Johnson M, Moore L and Ylvisaker D (1990).
+    *Minimax and maximin distance design.*
+    Journal of Statistical Planning and Inference 26(2): 131-148.
 .. [Knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
     `pdf <http://doc.openturns.org/papers/knight1966.pdf>`__
+.. [Koehler1996] J.R. Koehler and A.B. Owen. *Computer experiments. In S. Ghosh
+    and C.R. Rao, editors, Design and analysis of experiments,
+    volume 13 of Handbook of statistics.* Elsevier, 1996.
 .. [Lebrun2009a] Lebrun, R. & Dutfoy, A. *An innovating analysis of the Nataf
     transformation from the copula viewpoint.* Prob. Eng. Mech., 2009, 24,
     312-320.
@@ -36,9 +51,17 @@ Bibliography
 .. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par
     decomposition de la variance*, Presentation in the meeting of GdR Ondes and
     GdR MASCOT-NUM, January, 13th, 2011, Institut Henri Poincare, Paris, France
+.. [McKay1979] McKay M, Beckman R and Conover W (1979). *A comparison of three
+    methods for selecting values of input variables in the analysis of output
+    from a computer code.* Technometrics 21(2): 239-245.
+    `pdf <http://doc.openturns.org/papers/mckay1979.pdf>`__
 .. [Minka2012] Thomas P. Minka,
     *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
+.. [Morris1995] D. Morris and J. Mitchell. *Exploratory designs for
+    computational experiments.*
+    Journal of Statistical Planning and Inference, 43 :381-402, 1995.
+    `pdf <http://doc.openturns.org/papers/morris1995.pdf>`__
 .. [Munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
@@ -49,6 +72,10 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
 .. [NLopt] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [Pronzato2012] Pronzato L and Muller W (2012).
+    *Design of computer experiments: Space filling and beyond.*
+    Statistics and Computing 22(3): 681-701.
+    `pdf <http://doc.openturns.org/papers/prontazo2012.pdf>`__
 .. [Rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <http://doc.openturns.org/papers/rosenblatt1952.pdf>`__

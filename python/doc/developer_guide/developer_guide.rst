@@ -24,8 +24,6 @@ channels for you to contact us:
     Please consider using the mailing list first if you have any doubt whether
     you have bumped into a real bug or not.
 
-
-
 .. toctree::
     :maxdepth: 1
 
@@ -39,5 +37,4 @@ channels for you to contact us:
     coding_rules
     windows_port
     windows_native_port
-
-
+    validation/validation

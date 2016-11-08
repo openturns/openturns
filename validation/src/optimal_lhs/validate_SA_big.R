@@ -1,0 +1,30 @@
+library(DiceDesign)
+set.seed(123)
+
+dimension <- 50
+size <- 100
+X <- lhsDesign(size, dimension)$design
+dt1 <- system.time( result <- discrepSA_LHS(X,T0=10,c=0.999,it=50000,criterion="C2",profile="GEOM") )
+print(dt1)
+print(min(result$critValues))
+print(discrepancyCriteria(result$design, type='C2'))
+plot(result$design)
+png("dice_c2_crit_big.png")
+plot(result$critValues,type="l", col='blue', xlab="Iterations", ylab="C2 criterion", main="C2 criterion history of optimal design")
+dev.off()
+png("dice_c2_proba_big.png")
+plot(result$probaValues,type="p", pch=".", xlab="Iterations", ylab="Probability", main="Probability history of optimal design")
+dev.off()
+plot(result$tempValues,type="l")
+
+dt2 <- system.time( result <- maximinSA_LHS(X,T0=10,c=0.999,it=50000,profile="GEOM") )
+print(dt2)
+print(mindist(result$design))
+plot(result$design)
+png("dice_mindist_crit_big.png")
+plot(result$critValues,type="l", col='blue', xlab="Iterations", ylab="PhiP criterion", main="PhiP criterion history of optimal design")
+dev.off()
+png("dice_phip_proba_big.png")
+plot(result$probaValues,type="p", pch=".", xlab="Iterations", ylab="Probability", main="Probability history of optimal design")
+dev.off()
+plot(result$tempValues,type="l")

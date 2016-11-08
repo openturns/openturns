@@ -83,3 +83,40 @@ Low Discrepancy Sequences
     ReverseHaltonSequence
     HaselgroveSequence
     SobolSequence
+
+Optimal LHS generation
+----------------------
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    OptimalLHSExperiment
+    MonteCarloLHS
+    SimulatedAnnealingLHS
+    LHSResult
+
+Space Filling
+~~~~~~~~~~~~~
+Used to define the optimization criterion in :class:`~openturns.OptimalLHSExperiment`.
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    SpaceFilling
+    SpaceFillingC2
+    SpaceFillingMinDist
+    SpaceFillingPhiP
+
+Temperature Profile
+~~~~~~~~~~~~~~~~~~~
+Used to control the optimization in :class:`~openturns.SimulatedAnnealingLHS`.
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    TemperatureProfile
+    LinearProfile
+    GeometricProfile

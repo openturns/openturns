@@ -18,7 +18,7 @@
     install
     user_manual/user_manual
     examples/examples
-    theory
+    theory/theory
     developer_guide/developer_guide
     bibliography
 
