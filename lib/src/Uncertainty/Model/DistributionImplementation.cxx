@@ -1560,9 +1560,66 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
 /* ComputePDFGradient On a NumericalSample */
 NumericalSample DistributionImplementation::computePDFGradient(const NumericalSample & inSample) const
 {
+  if (dimension_ > 1) throw NotYetImplementedException(HERE) << "DistributionImplementation::computePDFGradient(const NumericalPoint & point) const";
+  // As we are in 1D, we know that the collection contains exactly one point
+  const NumericalPoint initialParameters(getParameter());
+  const UnsignedInteger parametersDimension = initialParameters.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, getParameterDimension());
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computePDFGradient(inSample[i]);
+  // Empty sample ==> stack for each parameter
+  NumericalSample outSample(size, 0);
+  // Clone the distribution
+  Implementation cloneDistribution(clone());
+  // Increment for centered differences
+  const NumericalScalar eps = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0);
+  // Increment for noncentered differences
+  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0);
+  NumericalPoint newParameters(initialParameters);
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+  {
+    NumericalScalar delta = 0.0;
+    NumericalSample rightPDF;
+    // We will try a centered finite difference approximation
+    try
+    {
+      newParameters[i] = initialParameters[i] + eps;
+      cloneDistribution->setParameter(newParameters);
+      rightPDF = cloneDistribution->computePDF(inSample);
+      delta += eps;
+    }
+    catch (...)
+    {
+      // If something went wrong with the right point, stay at the center point
+      newParameters[i] = initialParameters[i];
+      cloneDistribution->setParameter(newParameters);
+      rightPDF = cloneDistribution->computePDF(inSample);
+    }
+    NumericalSample leftPDF;
+    try
+    {
+      // If something is wrong with the right point, use non-centered finite differences
+      const NumericalScalar leftEpsilon = delta == 0.0 ? eps2 : eps;
+      newParameters[i] = initialParameters[i] - leftEpsilon;
+      cloneDistribution->setParameter(newParameters);
+      leftPDF = cloneDistribution->computePDF(inSample);
+      delta += leftEpsilon;
+    }
+    catch (...)
+    {
+      // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
+      if (delta == 0.0)
+        throw InvalidArgumentException(HERE) << "Error: cannot compute the PDF gradient at x=" << inSample << " for the current values of the parameters=" << initialParameters;
+      newParameters[i] = initialParameters[i] + eps2;
+      cloneDistribution->setParameter(newParameters);
+      rightPDF = cloneDistribution->computePDF(inSample);
+      delta += eps2;
+      // And the left point will be the center point
+      newParameters[i] = initialParameters[i];
+      cloneDistribution->setParameter(newParameters);
+      leftPDF = cloneDistribution->computePDF(inSample);
+    }
+    outSample.stack((rightPDF - leftPDF) / NumericalPoint(1, delta));
+    newParameters[i] = initialParameters[i];
+  }
   return outSample;
 }
 
