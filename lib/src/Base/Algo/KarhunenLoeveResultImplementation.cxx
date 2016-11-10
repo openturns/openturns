@@ -222,7 +222,7 @@ Field KarhunenLoeveResultImplementation::liftAsField(const NumericalPoint & coef
   const UnsignedInteger dimension = eigenvalues_.getDimension();
   NumericalSample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    values += modesAsProcessSample_[i] * std::sqrt(eigenvalues_[i]);
+    values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
   return Field(modesAsProcessSample_.getMesh(), values);
 }
 

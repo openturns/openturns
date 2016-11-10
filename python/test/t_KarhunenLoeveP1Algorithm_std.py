@@ -18,6 +18,8 @@ try:
     print("KL coefficients=", coefficients)
     KLFunctions = result.getModes()
     print("KL functions=", KLFunctions)
+    print("KL lift=", result.lift(coefficients[0]))
+    print("KL lift as field=", result.liftAsField(coefficients[0]))
     R = ot.CorrelationMatrix(2)
     R[0, 1] = 0.5
     scale = [1.0]
@@ -35,6 +37,8 @@ try:
     print("KL coefficients=", coefficients)
     KLFunctions = result.getModes()
     print("KL functions=", KLFunctions)
+    print("KL lift=", result.lift(coefficients[0]))
+    print("KL lift as field=", result.liftAsField(coefficients[0]))
 except:
     import sys
     print("t_KarhunenLoeveP1Algorithm_std.py",
