@@ -54,7 +54,9 @@ int main(int argc, char *argv[])
     NumericalSample coefficients(result.project(sample));
     fullprint << "KL coefficients=" << coefficients << std::endl;
     Basis KLFunctions(result.getModes());
-    fullprint << "KL functions=" << KLFunctions << std::endl;
+    fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+    fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
+    fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
     // Now using Legendre/Gauss quadrature
     {
       UnsignedInteger marginalDegree = 5;
@@ -68,7 +70,9 @@ int main(int argc, char *argv[])
       NumericalSample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
-      fullprint << "KL functions=" << KLFunctions << std::endl;
+      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
+      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
     }
   }
   catch (TestFailed & ex)
