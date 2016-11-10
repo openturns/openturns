@@ -36,8 +36,6 @@ class OT_API Gamma
 {
   CLASSNAME;
 public:
-  /** @deprecated */
-  enum ParameterSet { KLAMBDA, MUSIGMA };
 
   typedef Pointer<DistributionImplementation> Implementation;
 
@@ -48,14 +46,6 @@ public:
   Gamma(const NumericalScalar arg1,
         const NumericalScalar arg2,
         const NumericalScalar gamma = 0.0);
-
-  /** Parameters constructor
-   @deprecated */
-  Gamma(const NumericalScalar arg1,
-        const NumericalScalar arg2,
-        const NumericalScalar gamma,
-        const ParameterSet set);
-
 
   /** Comparison operator */
   Bool operator ==(const Gamma & other) const;
@@ -140,16 +130,6 @@ public:
   /** K and lambda accessor */
   void setKLambda(const NumericalScalar k,
                   const NumericalScalar lambda);
-
-  /** Mu accessor 
-   @deprecated */
-  void setMuSigma(const NumericalScalar mu,
-                  const NumericalScalar sigma);
-  NumericalScalar getMu() const;
-
-  /** Sigma accessor 
-   @deprecated */
-  NumericalScalar getSigma() const;
 
   /** Gamma accessor */
   void setGamma(const NumericalScalar gamma);

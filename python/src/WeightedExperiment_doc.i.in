@@ -12,5 +12,3 @@ OT_WeightedExperiment_setDistribution_doc
 OT_WeightedExperiment_getSize_doc
 %feature("docstring") OT::WeightedExperiment::setSize
 OT_WeightedExperiment_setSize_doc
-%feature("docstring") OT::WeightedExperiment::getWeight
-OT_WeightedExperiment_getWeight_doc

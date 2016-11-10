@@ -37,9 +37,6 @@ class OT_API LogNormal
 {
   CLASSNAME;
 public:
-  /** @deprecated */
-  enum ParameterSet { MUSIGMA_LOG, MUSIGMA, MU_SIGMAOVERMU };
-
   typedef Pointer<DistributionImplementation> Implementation;
 
   /** Default constructor */
@@ -49,13 +46,6 @@ public:
   LogNormal(const NumericalScalar muLog,
             const NumericalScalar sigmaLog,
             const NumericalScalar gamma = 0.0);
-
-  /** Parameters constructor 
-   @deprecated*/
-  LogNormal(const NumericalScalar arg1,
-            const NumericalScalar arg2,
-            const NumericalScalar gamma,
-            const ParameterSet set);
 
   /** Comparison operator */
   Bool operator ==(const LogNormal & other) const;
@@ -138,23 +128,9 @@ public:
   NumericalScalar getSigmaLog() const;
 
 
-  /** Mu accessor 
-   @deprecated */
-  void setMuSigma(const NumericalScalar mu,
-                  const NumericalScalar sigma);
-  NumericalScalar getMu() const;
-
-  /** Sigma accessor
-   @deprecated */
-  NumericalScalar getSigma() const;
-
   /** Gamma accessor */
   void setGamma(const NumericalScalar gamma);
   NumericalScalar getGamma() const;
-
-  /** SigmaOverMu accessor
-   @deprecated */
-  NumericalScalar getSigmaOverMu() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

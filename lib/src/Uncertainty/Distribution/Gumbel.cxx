@@ -53,38 +53,6 @@ Gumbel::Gumbel(const NumericalScalar alpha,
   setDimension( 1 );
 }
 
-/* Parameters constructor */
-Gumbel::Gumbel(const NumericalScalar arg1,
-               const NumericalScalar arg2,
-               const ParameterSet set)
-  : ContinuousDistribution()
-  , alpha_(0.0)
-  , beta_(arg2)
-{
-  Log::Warn(OSS() << "Gumbel parameter set constructor is deprecated.");
-  setName( "Gumbel" );
-  switch (set)
-  {
-    case ALPHABETA:
-      // This call set also the range.
-      setAlpha(arg1);
-      break;
-
-    case MUSIGMA:
-      // This call set also the range.
-      setMuSigma(arg1, arg2);
-      break;
-
-    case AB:
-      setAB(arg1, arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-  }
-  setDimension( 1 );
-}
-
 /* Comparison operator */
 Bool Gumbel::operator ==(const Gumbel & other) const
 {
@@ -338,50 +306,6 @@ void Gumbel::setBeta(const NumericalScalar beta)
 NumericalScalar Gumbel::getBeta() const
 {
   return beta_;
-}
-
-/* Mu accessor */
-void Gumbel::setMuSigma(const NumericalScalar mu,
-                        const NumericalScalar sigma)
-{
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma must be > 0, here sigma=" << sigma;
-  alpha_ = SpecFunc::PI_SQRT6 / sigma;
-  beta_ = mu - SpecFunc::EULERSQRT6_PI * sigma;
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  computeRange();
-}
-
-NumericalScalar Gumbel::getMu() const
-{
-  Log::Warn(OSS() << "Gumbel::getMu is deprecated");
-  return beta_ + SpecFunc::EulerConstant / alpha_;
-}
-
-NumericalScalar Gumbel::getSigma() const
-{
-  Log::Warn(OSS() << "Gumbel::getSigma is deprecated");
-  return SpecFunc::PI_SQRT6 / alpha_;
-}
-
-void Gumbel::setAB(const NumericalScalar a,
-                   const NumericalScalar b)
-{
-  if ( b <= 0. ) throw InvalidArgumentException(HERE) << "b must be positive";
-  beta_ = a;
-  setAlpha( 1. / b );
-}
-
-NumericalScalar Gumbel::getA() const
-{
-  Log::Warn(OSS() << "Gumbel::getA is deprecated");
-  return beta_;
-}
-
-NumericalScalar Gumbel::getB() const
-{
-  Log::Warn(OSS() << "Gumbel::getB is deprecated");
-  return 1 / alpha_;
 }
 
 /* Method save() stores the object through the StorageManager */

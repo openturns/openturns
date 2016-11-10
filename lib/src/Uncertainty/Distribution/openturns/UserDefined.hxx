@@ -25,7 +25,6 @@
 #include "openturns/DiscreteDistribution.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/UserDefinedPair.hxx"
 #include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,14 +40,8 @@ class OT_API UserDefined
   CLASSNAME;
 public:
 
-  typedef Collection<UserDefinedPair>           UserDefinedPairCollection;
-  typedef PersistentCollection<UserDefinedPair> UserDefinedPairPersistentCollection;
-
   /** Default constructor */
   UserDefined();
-
-  /** @deprecated Constructor from PairCollection */
-  explicit UserDefined(const UserDefinedPairCollection & collection);
 
   /** Constructor from a sample */
   explicit UserDefined(const NumericalSample & points);
@@ -120,10 +113,6 @@ public:
                const NumericalPoint & weights);
   NumericalSample getX() const;
   NumericalPoint getP() const;
-
-  /** @deprecated Pair collection accessor */
-  void setPairCollection(const UserDefinedPairCollection & collection);
-  UserDefinedPairCollection getPairCollection() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;

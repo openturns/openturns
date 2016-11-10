@@ -168,17 +168,4 @@ size : positive int
 %feature("docstring") OT::WeightedExperimentImplementation::setSize
 OT_WeightedExperiment_setSize_doc
 
-// ---------------------------------------------------------------------
-
-%define OT_WeightedExperiment_getWeight_doc
-"Accessor to the weights associated with the points.
-
-Returns
--------
-weights : :class:`~openturns.NumericalPoint` of size :math:`cardI`
-    Weights :math:`(\omega_i)_{i \in I}` associated with the points. By default,
-    all the weights are equal to :math:`1/cardI`."
-%enddef
-%feature("docstring") OT::WeightedExperimentImplementation::getWeight
-OT_WeightedExperiment_getWeight_doc
 

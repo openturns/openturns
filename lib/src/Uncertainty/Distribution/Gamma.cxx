@@ -59,38 +59,6 @@ Gamma::Gamma(const NumericalScalar k,
   setDimension(1);
 }
 
-/* Parameters constructor */
-Gamma::Gamma(const NumericalScalar arg1,
-             const NumericalScalar arg2,
-             const NumericalScalar gamma,
-             const ParameterSet set)
-  : ContinuousDistribution()
-  , k_(0.0)
-  , lambda_(0.0)
-  , gamma_(gamma)
-  , normalizationFactor_(0.0)
-{
-  Log::Warn(OSS() << "Gamma parameter set constructor is deprecated.");
-  setName("Gamma");
-  switch (set)
-  {
-    case KLAMBDA:
-      // This call set also the range.
-      setKLambda(arg1, arg2);
-      break;
-
-    case MUSIGMA:
-      // This call set also the range.
-      setMuSigma(arg1, arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-
-  } /* end switch */
-  setDimension(1);
-}
-
 /* Comparison operator */
 Bool Gamma::operator ==(const Gamma & other) const
 {
@@ -173,28 +141,6 @@ void Gamma::setKLambda(const NumericalScalar k,
     update();
   }
 }
-
-/* Mu accessor */
-void Gamma::setMuSigma(const NumericalScalar mu,
-                       const NumericalScalar sigma)
-{
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
-  const NumericalScalar eta = (mu - gamma_) / sigma;
-  setKLambda(eta * eta, eta / sigma);
-}
-
-NumericalScalar Gamma::getMu() const
-{
-  Log::Warn(OSS() << "Gamma::getMu is deprecated");
-  return gamma_ + k_ / lambda_;
-}
-
-NumericalScalar Gamma::getSigma() const
-{
-  Log::Warn(OSS() << "Gamma::getSigma is deprecated");
-  return std::sqrt(k_) / lambda_;
-}
-
 
 /* Gamma accessor */
 void Gamma::setGamma(const NumericalScalar gamma)

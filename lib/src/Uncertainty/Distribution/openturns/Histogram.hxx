@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/HistogramPair.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/PersistentObject.hxx"
 
@@ -42,16 +41,10 @@ class OT_API Histogram
 
 public:
 
-  typedef Collection<HistogramPair>                HistogramPairCollection;
-  typedef PersistentCollection<HistogramPair>      HistogramPairPersistentCollection;
-
   /** Default constructor */
   Histogram();
 
-  /** @deprecated Parameters constructor */
-  Histogram(const NumericalScalar first,
-            const HistogramPairCollection & collection);
-
+  /** Parameters constructor */
   Histogram(const NumericalScalar first,
             const NumericalPoint & width,
             const NumericalPoint & height);
@@ -121,10 +114,6 @@ public:
                const NumericalPoint & weight);
   NumericalPoint getWidth() const;
   NumericalPoint getHeight() const;
-
-  /** Collection accessor */
-  void setPairCollection(const HistogramPairCollection & collection);
-  HistogramPairCollection getPairCollection() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
   NumericalPoint getSingularities() const;

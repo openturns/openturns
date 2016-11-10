@@ -1,5 +1,28 @@
 = New Features =
 
+== 1.9 release (in progress) == #release-1.9
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+  * Removed deprecated SLSQP, LBFGS and NelderMead classes
+  * Removed deprecated QuadraticCumul class
+  * Removed classes UserDefinedPair, HistogramPair
+  * Removed deprecated method WeightedExperiment::getWeight
+  * Removed deprecated method DistributionFactory::build(NumericalSample, CovarianceMatrix&)
+  * Removed deprecated distributions alternative parameters constructors, accessors
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.8rc2 release (2016-11-03) == #release-1.8rc2
 
 === Library ===

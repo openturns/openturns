@@ -57,38 +57,6 @@ Weibull::Weibull(const NumericalScalar alpha,
   setDimension(1);
 }
 
-/* Parameters constructor */
-Weibull::Weibull(const NumericalScalar arg1,
-                 const NumericalScalar arg2,
-                 const NumericalScalar gamma,
-                 const ParameterSet set)
-  : ContinuousDistribution()
-  , alpha_(0.0)
-  , beta_(0.0)
-  , gamma_(gamma)
-{
-  Log::Warn(OSS() << "Weibull parameter set constructor is deprecated.");
-  setName("Weibull");
-  switch (set)
-  {
-    case ALPHABETA:
-      // This call set also the range
-      setAlphaBeta(arg1, arg2);
-      break;
-
-    case MUSIGMA:
-      // This call set also the range
-      setMuSigma(arg1, arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-
-  } /* end switch */
-
-  setDimension(1);
-}
-
 /* Comparison operator */
 Bool Weibull::operator ==(const Weibull & other) const
 {
@@ -414,86 +382,6 @@ void Weibull::setAlphaBeta(const NumericalScalar alpha,
     isAlreadyComputedCovariance_ = false;
     computeRange();
   }
-}
-
-
-/* MuSigma accessor */
-/* To compute (alpha, beta) from (mu, sigma), we proceed as follows:
-   1 + var_ / (mu_ - gamma_)^2 = GAMMA(1 + 2 / beta_) / GAMMA(1 + 1 / beta_)^2
-   = t(beta_)
-   This function is strictly decreasing and takes arbitrary large values near 0.
-   We solve the equation t(beta) = 1 + var_ / (mu_ - gamma_)^2 using Bisection's method, as it is very robust and we don't really have a speed constraint here. Then, we find alpha_ thanks to:
-   alpha_ = (mu_ - gamma_) / GAMMA(1 + 1 / beta_)
-*/
-void Weibull::setMuSigma(const NumericalScalar mu,
-                         const NumericalScalar sigma)
-{
-  if (mu <= gamma_) throw InvalidArgumentException(HERE) << "Mu MUST be > gamma, here mu=" << mu << " and gamma=" << gamma_;
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be > 0.0, here sigma=" << sigma;
-  const NumericalScalar ratio = 1.0 + std::pow(sigma / (mu - gamma_), 2.0);
-  NumericalScalar t = -1.0;
-  NumericalScalar betaMin = 1.0;
-  NumericalScalar betaMax = 1.0;
-  NumericalScalar step = 0.5;
-  // Bracketing interval
-  // Case beta < 1, i.e. ratio > 2
-  if (ratio > 2)
-  {
-    do
-    {
-      betaMin -= step;
-      step *= 0.5;
-      t = std::exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMin) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMin));
-    }
-    while (t < ratio);
-    // Here, we know that betaMin <= beta < betaMin + 2.0 * step
-    betaMax = betaMin + 2.0 * step;
-  }
-  // Case beta >= 1, i.e. ratio <= 2
-  else
-  {
-    do
-    {
-      betaMax += step;
-      step *= 2.0;
-      t = std::exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMax) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMax));
-    }
-    while (t >= ratio);
-    // Here, we know that betaMax - 0.5 * step <= beta < betaMax
-    betaMin = betaMax - 0.5 * step;
-  }
-  // Bisection loop
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
-  for (;;)
-  {
-    beta_ = 0.5 * (betaMin + betaMax);
-    // Convergence
-    if (betaMax - betaMin <= epsilon * (1.0 + std::abs(betaMax + betaMin)))
-    {
-      alpha_ = (mu - gamma_) / SpecFunc::Gamma(1.0 + 1.0 / beta_);
-      break;
-    }
-    // Non convergence, one step further
-    t = std::exp(SpecFunc::LnGamma(1.0 + 2.0 / beta_) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / beta_));
-    if (t < ratio) betaMax = beta_;
-    else betaMin = beta_;
-  }
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  computeRange();
-}
-
-NumericalScalar Weibull::getMu() const
-{
-  Log::Warn(OSS() << "Weibull::getMu is deprecated");
-  return gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_);
-}
-
-
-NumericalScalar Weibull::getSigma() const
-{
-  Log::Warn(OSS() << "Weibull::getSigma is deprecated");
-  return alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0));
 }
 
 

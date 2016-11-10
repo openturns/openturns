@@ -35,8 +35,6 @@ class OT_API Weibull
 {
   CLASSNAME;
 public:
-   /** @deprecated */
-  enum ParameterSet { ALPHABETA, MUSIGMA };
 
   typedef Pointer<DistributionImplementation> Implementation;
 
@@ -47,14 +45,6 @@ public:
   Weibull(const NumericalScalar alpha,
           const NumericalScalar beta,
           const NumericalScalar gamma = 0.0);
-
-  /** Parameters constructor 
-    @deprecated */
-  Weibull(const NumericalScalar arg1,
-          const NumericalScalar arg2,
-          const NumericalScalar gamma,
-          const ParameterSet set);
-
 
   /** Comparison operator */
   Bool operator ==(const Weibull & other) const;
@@ -141,16 +131,6 @@ public:
   /** Alpha accessor */
   void setAlpha(const NumericalScalar alpha);
   NumericalScalar getAlpha() const;
-
-  /** Mu accessor 
-   @deprecated */
-  void setMuSigma(const NumericalScalar mu,
-                  const NumericalScalar sigma);
-  NumericalScalar getMu() const;
-
-  /** Sigma accessor 
-   @deprecated */
-  NumericalScalar getSigma() const;
 
   /** Gamma accessor */
   void setGamma(const NumericalScalar gamma);

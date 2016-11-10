@@ -115,13 +115,4 @@ NumericalSample WeightedExperimentImplementation::generateWithWeights(NumericalP
   throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
 }
 
-/* Weight accessor */
-NumericalPoint WeightedExperimentImplementation::getWeight() const
-{
-  Log::Warn(OSS() << "WeightedExperimentImplementation::getWeight is deprecated.");
-  NumericalPoint weights;
-  generateWithWeights(weights);
-  return weights;
-}
-
 END_NAMESPACE_OPENTURNS

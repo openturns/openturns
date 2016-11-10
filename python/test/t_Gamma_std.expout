@@ -50,6 +50,9 @@ standard moment n= 3 , value= [13.125]
 standard moment n= 4 , value= [59.0625]
 standard moment n= 5 , value= [324.844]
 Standard representative= Gamma(k = 1.5, lambda = 1, gamma = 0)
+standard deviation= [0.489898]
+skewness= [1.63299]
+kurtosis= [7]
 Distribution  Gamma(k = 15, lambda = 2.5, gamma = 0)
 Elliptical =  False
 Continuous =  True
@@ -102,3 +105,6 @@ standard moment n= 3 , value= [4080]
 standard moment n= 4 , value= [73440]
 standard moment n= 5 , value= [1.39536e+06]
 Standard representative= Gamma(k = 15, lambda = 1, gamma = 0)
+standard deviation= [1.54919]
+skewness= [0.516398]
+kurtosis= [3.4]

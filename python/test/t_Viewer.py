@@ -159,7 +159,7 @@ try:
 
     # Convergence graph curve
     aCollection = []
-    aCollection.append(ot.LogNormal(300., 30., 0., ot.LogNormal.MUSIGMA))
+    aCollection.append(ot.LogNormalFactory().build(ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)
