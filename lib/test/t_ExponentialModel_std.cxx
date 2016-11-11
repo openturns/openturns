@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(defaultDimension, 1.0);
+    NumericalPoint amplitude(defaultDimension, 2.0);
     /* Scale values */
     NumericalPoint scale(spatialDimension, 1.0);
 
