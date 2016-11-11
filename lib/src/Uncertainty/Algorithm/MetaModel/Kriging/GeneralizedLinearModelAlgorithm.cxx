@@ -464,7 +464,6 @@ void GeneralizedLinearModelAlgorithm::computeF()
 {
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
-  if (basis_.getSize() == 0) return;
   // No early exit based on the sample/basis size as F_ must be initialized with the correct dimensions
   // With a multivariate basis of size similar to output dimension, each ith-basis should be applied to elements
   // of corresponding marginal
@@ -473,11 +472,12 @@ void GeneralizedLinearModelAlgorithm::computeF()
   const UnsignedInteger basisCollectionSize = basis_.getSize();
   UnsignedInteger totalSize = 0;
   for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basis_[i].getSize();
-  UnsignedInteger index = 0;
-  // Compute F
-  F_ = Matrix(sampleSize * outputDimension, totalSize);
   // if totalSize > 0, then basis_.getSize() should be equal to outputDimension
   // This is checked in GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm
+  F_ = Matrix(sampleSize * outputDimension, totalSize);
+  if (totalSize == 0) return;
+  // Compute F
+  UnsignedInteger index = 0;
   for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++ outputMarginal )
   {
     const Basis localBasis = basis_[outputMarginal];
