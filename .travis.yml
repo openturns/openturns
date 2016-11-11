@@ -76,7 +76,7 @@ script:
     -DHMAT_DIR=~/.local/lib/cmake/hmat
     -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so -DNLOPT_INCLUDE_DIR=~/.local/include
     .
-  - make install -j2 && make tests -j2 && ctest -j2 --output-on-failure --timeout 100
+  - make install -j4 && ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100
 
 after_success:
   - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" || exit 0
