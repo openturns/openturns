@@ -119,7 +119,7 @@ CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeG
   {
     // Only the lower part has to be filled-in
     const UnsignedInteger rowBase = rowIndex * dimension_;
-    for (UnsignedInteger columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
+    for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
       const UnsignedInteger columnBase = columnIndex * dimension_;
       const CovarianceMatrix localCovarianceMatrix(operator()( rowIndex * timeStep,  columnIndex * timeStep) );

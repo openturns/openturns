@@ -13,7 +13,7 @@ try:
     spatialDimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(defaultDimension, 1.0)
+    amplitude = NumericalPoint(defaultDimension, 2.0)
 
     # Scale values
     scale = NumericalPoint(spatialDimension, 1.0)
