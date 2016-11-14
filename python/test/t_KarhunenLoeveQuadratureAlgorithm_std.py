@@ -25,6 +25,8 @@ try:
     print("KL coefficients=", coefficients)
     KLFunctions  = result.getModes()
     print("KL functions=", KLFunctions)
+    print("KL lift=", result.lift(coefficients[0]))
+    print("KL lift as field=", result.liftAsField(coefficients[0]))
     # Now using Legendre/Gauss quadrature
     marginalDegree = 5
     algo = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, marginalDegree, threshold)
@@ -38,6 +40,8 @@ try:
     print("KL coefficients=", coefficients)
     KLFunctions = result.getModes()
     print("KL functions=", KLFunctions)
+    print("KL lift=", result.lift(coefficients[0]))
+    print("KL lift as field=", result.liftAsField(coefficients[0]))
 
 except:
     import sys
