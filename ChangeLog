@@ -5,8 +5,13 @@
 === Library ===
 
 ==== Major changes ====
+ * Integrate otlhs module
 
 ==== New classes ====
+ * SpaceFillingPhiP, SpaceFillingMinDist, SpaceFillingC2
+ * LinearProfile, GeometricProfile
+ * MonteCarloLHS, SimulatedAnnealingLHS
+ * LHSResult
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes
