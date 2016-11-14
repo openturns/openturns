@@ -1,0 +1,60 @@
+%define OT_OptimalLHS_doc
+"OptimalLHS base class.
+
+Notes
+-----
+Perform the generation of optimal LHS designs."
+
+%enddef
+%feature("docstring") OT::OptimalLHSExperiment
+OT_OptimalLHS_doc
+
+// ---------------------------------------------------------------------
+%define OT_OptimalLHS_generate_doc
+"Generate an optimal design.
+
+Returns
+-------
+value : :class:`~openturns.NumericalSample`
+    The optimal design"
+%enddef
+%feature("docstring") OT::OptimalLHSExperiment::generate
+OT_OptimalLHS_generate_doc
+
+// ---------------------------------------------------------------------
+%define OT_OptimalLHS_getResult_doc
+"Result accessor.
+
+Returns
+-------
+value : :class:`~ot.LHSResult`
+    Result of generation that contains the optimal design, some criteria and history"
+%enddef
+%feature("docstring") OT::OptimalLHSExperiment::getResult
+OT_OptimalLHS_getResult_doc
+
+// ---------------------------------------------------------------------
+%define OT_OptimalLHS_getlhs_doc
+"Return the LHS design.
+
+Returns
+-------
+value : :class:`~openturns.LHSExperiment`
+    Result the factory that builds initial design to be optimized"
+%enddef
+%feature("docstring") OT::OptimalLHSExperiment::getLHS
+OT_OptimalLHS_getlhs_doc
+
+// ---------------------------------------------------------------------
+%define OT_OptimalLHS_get_space_filling_doc
+"Return the space-filling criterion to be optimized.
+
+Returns
+-------
+value : :class:`~ot.SpaceFilling`
+    Criterion function to be optimized"
+%enddef
+%feature("docstring") OT::OptimalLHSExperiment::getSpaceFilling
+OT_OptimalLHS_get_space_filling_doc
+
+// ---------------------------------------------------------------------

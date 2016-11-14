@@ -1,0 +1,96 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief Abstract class for algorithms generating optimized LHS
+ *
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef OPENTURNS_OPTIMALLHSEXPERIMENT_HXX
+#define OPENTURNS_OPTIMALLHSEXPERIMENT_HXX
+
+#include <openturns/PersistentObject.hxx>
+#include <openturns/StorageManager.hxx>
+#include <openturns/LHSExperiment.hxx>
+#include <openturns/ComposedDistribution.hxx>
+
+#include "openturns/SpaceFilling.hxx"
+#include "openturns/LHSResult.hxx"
+
+namespace OT
+{
+
+/**
+ * @class OptimalLHSExperiment
+ *
+ * OptimalLHSExperiment is some optimallhs type to illustrate how to add some classes in OpenTURNS
+ */
+class OT_API OptimalLHSExperiment
+  : public WeightedExperimentImplementation
+{
+  CLASSNAME;
+
+public:
+  /** Default constructor */
+  explicit OptimalLHSExperiment(const LHSExperiment & lhs);
+
+  /** Default constructor */
+  OptimalLHSExperiment(const LHSExperiment & lhs, const SpaceFilling & spaceFilling);
+
+  /** Virtual constructor method */
+  OptimalLHSExperiment * clone() const;
+
+  /** Attributes for LHSExperiment */
+  LHSExperiment getLHS() const;
+
+  /** Attributes for SpaceFilling */
+  SpaceFilling getSpaceFilling() const;
+
+  /** Result accessor */
+  virtual LHSResult getResult() const;
+
+  /** String converter */
+  virtual String __repr__() const;
+
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
+protected:
+  void setLHS(const LHSExperiment & lhs);
+
+  LHSExperiment lhs_;
+
+  SpaceFilling spaceFilling_;
+
+  // marginal extraction can be costly
+  mutable ComposedDistribution::DistributionCollection marginals_;
+
+  /** Rank transformation */
+  NumericalSample rankTransform(const NumericalSample design) const;
+  NumericalSample inverseRankTransform(const NumericalSample design) const;
+
+  OptimalLHSExperiment() {};
+  friend class Factory<OptimalLHSExperiment>;
+
+  mutable LHSResult result_;
+
+}; /* class OptimalLHSExperiment */
+
+} /* namespace OT */
+
+#endif /* OT_OPTIMALLHSEXPERIMENT_HXX */

@@ -31,6 +31,19 @@
 %include GaussProductExperiment.i
 %include ImportanceSamplingExperiment.i
 %include LHSExperiment.i
+%include TemperatureProfileImplementation.i
+%include TemperatureProfile.i
+%include GeometricProfile.i
+%include LinearProfile.i
+%include SpaceFillingImplementation.i
+%include SpaceFilling.i
+%include SpaceFillingC2.i
+%include SpaceFillingMinDist.i
+%include SpaceFillingPhiP.i
+%include LHSResult.i
+%include OptimalLHSExperiment.i
+%include MonteCarloLHS.i
+%include SimulatedAnnealingLHS.i
 %include LowDiscrepancyExperiment.i
 %include MonteCarloExperiment.i
 

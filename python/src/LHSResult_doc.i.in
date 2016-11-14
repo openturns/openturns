@@ -1,0 +1,227 @@
+%define OT_LHSResult_doc
+"Summarize the results of an LHS optimization.
+
+Available constructor:
+    LHSResult(*bounds, spaceFilling, nRestart*)
+
+Parameters
+----------
+spaceFilling : :class:`~ot.SpaceFilling`
+    The space filling criteria used by optimization algorithm
+nRestart : int
+    The number of restarts performed by optimization algorithm
+
+Notes
+-----
+This class is not intendeted to be built by hand, but returned by optimization algorithms.
+
+Examples
+--------
+>>> import openturns as ot
+>>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> profile = ot.GeometricProfile()
+>>> spaceFilling = ot.SpaceFillingC2()
+>>> # Optim algo
+>>> algo = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
+>>> # first, generate a design
+>>> design = algo.generate()
+>>> # then, get the result
+>>> result = algo.generate()
+"
+%enddef
+%feature("docstring") OT::LHSResult
+OT_LHSResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LHSResult_get_optimal_design_doc
+"Accessor to the optimal design.
+
+Returns
+-------
+design : :class:`~openturns.NumericalSample`
+    The design that optimizes the criterion.
+
+Examples
+--------
+>>> import openturns as ot
+>>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> spaceFilling = ot.SpaceFillingPhiP(10)
+>>> # By Monte Carlo
+>>> algoMC = ot.MonteCarloLHS(lhs, 1000, spaceFilling)
+>>> # Get LHSResult
+>>> optimalDesignMC = algoMC.generate()
+>>> resultMC = algoMC.getResult()
+>>> # By simulated annealing, with restart
+>>> profile = ot.GeometricProfile()
+>>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
+>>> # Get LHSResult
+>>> optimalDesignSA = algoSA.generateWithRestart(5)
+>>> resultSA = algoSA.getResult()
+>>> # Get optimal results for all restarts
+>>> optimRestart = [resultSA.getOptimalDesign(i) for i in range(resultSA.getNumberOfRestarts())]"
+%enddef
+%feature("docstring") OT::LHSResult::getOptimalDesign
+OT_LHSResult_get_optimal_design_doc
+// ---------------------------------------------------------------------
+%define OT_LHSResult_get_algo_history_doc
+"Accessor to the internal values computed during optimization algorithm.
+
+Returns
+-------
+history : :class:`~openturns.NumericalPoint`
+    Some internal values computed during optimization algorithm.
+    SimulatedAnnealingLHS stores criterion value, temperature
+    and probability at each iteration.
+
+Examples
+--------
+>>> import openturns as ot
+>>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> profile = ot.GeometricProfile()
+>>> spaceFilling = ot.SpaceFillingPhiP(50)
+>>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
+>>> # Get LHSResult
+>>> design = algoSA.generateWithRestart(5)
+>>> resultSA = algoSA.getResult()
+>>> criterionHistory = resultSA.getAlgoHistory()"
+%enddef
+%feature("docstring") OT::LHSResult::getAlgoHistory
+OT_LHSResult_get_algo_history_doc
+// ---------------------------------------------------------------------
+%define OT_LHSResult_get_c2_doc
+"Accessor to the C2 criterion evaluated on the optimal design.
+
+Returns
+-------
+c2 : float
+    The C2 criterion.
+
+Examples
+--------
+>>> import openturns as ot
+>>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> profile = ot.GeometricProfile()
+>>> spaceFilling = ot.SpaceFillingPhiP(50)
+>>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
+>>> # Get LHSResult
+>>> design = algoSA.generate()
+>>> resultSA = algoSA.getResult()
+>>> c2 = resultSA.getC2()"
+%enddef
+%feature("docstring") OT::LHSResult::getC2
+OT_LHSResult_get_c2_doc
+// ---------------------------------------------------------------------
+%define OT_LHSResult_get_phi_p_doc
+"Accessor the PhiP criterion evaluated on the optimal design.
+
+Returns
+-------
+phiP : float
+    The PhiP criterion.
+
+Examples
+--------
+>>> import openturns as ot
+>>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> profile = ot.GeometricProfile()
+>>> spaceFilling = ot.SpaceFillingPhiP(50)
+>>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
+>>> design = algoSA.generate()
+>>> # Get LHSResult
+>>> resultSA = algoSA.getResult()
+>>> phip = resultSA.getPhiP()"
+%enddef
+%feature("docstring") OT::LHSResult::getPhiP
+OT_LHSResult_get_phi_p_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSResult::drawHistoryCriterion
+"Draw criterion history.
+
+Parameters
+----------
+restart : int (optional)
+    The restart index.
+title : str (optional)
+    Graph title.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The resulting graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSResult::drawHistoryProbability
+"Draw probability history.
+
+Parameters
+----------
+restart : int (optional)
+    The restart index.
+title : str (optional)
+    Graph title.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The resulting graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSResult::drawHistoryTemperature
+"Draw temperature history.
+
+Parameters
+----------
+restart : int (optional)
+    The restart index.
+title : str (optional)
+    Graph title.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The resulting graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSResult::getMinDist
+"Minimum distance accessor.
+
+Parameters
+----------
+restart : int (optional)
+    The restart index.
+
+Returns
+-------
+minDist : float
+    The minimum distance of sample points."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSResult::getNumberOfRestarts
+"Restart number accessor.
+
+Returns
+-------
+restart : int (optional)
+    The number of restart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSResult::getOptimalValue
+"Optimal value accessor.
+
+Returns
+-------
+value : float (optional)
+    The optimal value."

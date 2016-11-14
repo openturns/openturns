@@ -1,0 +1,48 @@
+%define OT_SpaceFillingC2_doc
+"Space filling C2 (centered L2-discrepancy) computation.
+
+Notes
+-----
+Compute the centered L2 discrepancy:
+
+.. math::
+    :nowrap:
+
+    \begin{multline*}
+    C^2(X_{d}^N) = \left(\frac{13}{12}\right)^{d} - \frac{2}{N} \sum_{i=1}^{N} \prod_{k=1}^{d} \left( 1 + \frac{1}{2} |x_k^{(i)} - 0.5| - \frac{1}{2} |x_k^{(i)} - 0.5|^2 \right)\\
+             + \frac{1}{N^2} \sum_{i,j=1}^{N} \prod_{k=1}^{d} \left( 1 + \frac{1}{2} |x_k^{(i)} - 0.5| + \frac{1}{2} |x_k^{(j)} - 0.5| - \frac{1}{2} |x_k^{(i)} - x_k^{(j)}| \right)
+    \end{multline*}
+"
+
+%enddef
+%feature("docstring") OT::SpaceFillingC2
+OT_SpaceFillingC2_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SpaceFillingC2_evaluate_doc
+"Compute the C2 criterion for a specific design.
+
+Parameters
+----------
+design : :class:`~openturns.NumericalSample` or 2d array like
+    The design
+
+Returns
+-------
+crit : float
+    The C2 criterion
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Build an LHS using openturns class
+>>> lhs = ot.LHSExperiment(ot.Uniform(), 100)
+>>> design = lhs.generate()
+>>> # Compute the C2 criterion
+>>> crit = ot.SpaceFillingC2().evaluate(design)"
+%enddef
+%feature("docstring") OT::SpaceFillingC2::evaluate
+OT_SpaceFillingC2_evaluate_doc
+
+// ---------------------------------------------------------------------

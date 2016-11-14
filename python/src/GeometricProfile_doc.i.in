@@ -1,0 +1,71 @@
+%define OT_GeometricProfile_doc
+"Geometric temperature profile.
+
+Available constructor:
+    GeometricProfile()
+
+    GeometricProfile(*T0, c, iMax*)
+
+
+Parameters
+----------
+T0 : float
+    Initial temperature
+c : float
+    The geometric ratio
+    Should be in ]0,1[
+iMax : int
+    Number of maximal iterations
+
+Notes
+-----
+The temperature write:
+
+.. math::
+    :nowrap:
+
+    \begin{equation*}
+        T(i) = T_0 * c^{i} \in [0,iMax]
+    \end{equation*}
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define a profile
+>>> T0 = 10.0
+>>> iMax = 100
+>>> c = 0.90
+>>> geometricProfile = ot.GeometricProfile(T0, c, iMax)
+"
+%enddef
+%feature("docstring") OT::GeometricProfile
+OT_GeometricProfile_doc
+// ---------------------------------------------------------------------
+%define OT_GeometricProfile_call_doc
+"Compute the temperature T(i).
+
+Parameters
+----------
+i : int
+    The index for whome we seek temperature
+
+Returns
+-------
+temperature:  float
+    The temperature
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define a profile
+>>> T0 = 10.0
+>>> iMax = 100
+>>> c = 0.90
+>>> geometricProfile = ot.GeometricProfile(T0, c, iMax)
+>>> temperature = geometricProfile(5)
+>>> print(temperature)
+5.9049..."
+%enddef
+%feature("docstring") OT::GeometricProfile::operator()
+OT_GeometricProfile_call_doc
+// ---------------------------------------------------------------------
