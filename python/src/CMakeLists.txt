@@ -160,7 +160,7 @@ ot_add_python_module(statistics statistics_module.i
                       LinearModelFactory.i LinearModelFactory_doc.i.in
                       TestResult.i TestResult_doc.i.in
                       RandomGenerator.i RandomGenerator_doc.i.in
-                      RandomGeneratorState.i
+                      RandomGeneratorState.i RandomGeneratorState_doc.i.in
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
                       LowDiscrepancySequenceImplementation.i LowDiscrepancySequenceImplementation_doc.i.in
                       LowDiscrepancySequence.i LowDiscrepancySequence_doc.i.in

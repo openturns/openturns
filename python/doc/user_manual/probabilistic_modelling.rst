@@ -95,6 +95,7 @@ Pseudo-random numbers generator
     :template: class.rst_t
 
     RandomGenerator
+    RandomGeneratorState
 
 Combining and transforming distributions
 ========================================
