@@ -24,10 +24,13 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SobolSequence.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KDTree);
+
+static const Factory<KDTree> Factory_KDTree;
 
 /**
  * @class KDNearestNeighboursFinder
@@ -192,7 +195,7 @@ private:
 
 /* Default constructor */
 KDTree::KDTree()
-  : Object()
+  : PersistentObject()
   , points_(0, 0)
   , p_root_(0)
 {
@@ -201,17 +204,22 @@ KDTree::KDTree()
 
 /* Parameters constructor */
 KDTree::KDTree(const NumericalSample & points)
-  : Object()
+  : PersistentObject()
   , points_(points)
   , p_root_(0)
 {
   // Build the tree
+  initialize();
+}
+
+void KDTree::initialize()
+{
   // Scramble the order in which the points are inserted in the tree in order to improve its balancing
-  const UnsignedInteger size = points.getSize();
+  const UnsignedInteger size = points_.getSize();
   Indices buffer(size);
   buffer.fill();
   SobolSequence sequence(1);
-  for (UnsignedInteger i = 0; i < points.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < points_.getSize(); ++ i)
   {
     const UnsignedInteger index = i + static_cast< UnsignedInteger >((size - i) * sequence.generate()[0]);
     insert(p_root_, buffer[index], 0);
@@ -373,6 +381,22 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
 NumericalSample KDTree::getPoints() const
 {
   return points_;
+}
+
+/* Method save() stores the object through the StorageManager */
+void KDTree::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("points_", points_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void KDTree::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("points_", points_);
+  initialize();
 }
 
 END_NAMESPACE_OPENTURNS
