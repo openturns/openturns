@@ -1,0 +1,113 @@
+%feature("docstring") OT::KDTree
+"Partition tree data structure.
+
+Allows to store and search points fast.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.Normal(2).getSample(10)
+>>> tree = ot.KDTree(sample)
+>>> neighbour = tree.getNearestNeighbour([0.1, 0.2])"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::isEmpty
+"Empty flag accessor.
+
+Returns
+-------
+empty : bool
+    Whether the collection is empty."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::insert
+"Insert a point in the tree.
+
+Parameters
+----------
+x : sequence of float
+    Given point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::getNearestNeighboursIndices
+"Accessor to the nearest neighbours indices.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+k : int
+    Number of points to return
+sorted : bool
+    Whether to return the points sorted
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of the k nearest neighbours."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::getNearestNeighbours
+"Accessor to the nearest neighbours.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+k : int
+    Number of points to return
+
+Returns
+-------
+neighbours : :class:`~openturns.NumericalSample`
+    Nearest neighbours."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::getNearestNeighbourIndex
+"Accessor to the nearest neighbour index.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    Index of the nearest neighbour."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::getNearestNeighbour
+"Accessor to the nearest neighbour.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+
+Returns
+-------
+neighbour : :class:`~openturns.NumericalPoint`
+    Nearest neighbour."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KDTree::getPoints
+"Collection of points accessor.
+
+Returns
+-------
+points : :class:`~openturns.NumericalSample`
+    Collection of points."

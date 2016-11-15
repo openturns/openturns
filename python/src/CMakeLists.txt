@@ -381,7 +381,7 @@ ot_add_python_module(algo algo_module.i
                       FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i.in
                       FittingAlgorithm.i FittingAlgorithm_doc.i.in
                       CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i.in
-                      KDTree.i
+                      KDTree.i KDTree_doc.i.in
                       KFold.i KFold_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
