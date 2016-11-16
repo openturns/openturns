@@ -27,10 +27,13 @@
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TrapezoidalFactory);
+
+static const Factory<TrapezoidalFactory> Factory_TrapezoidalFactory;
 
 /* Default constructor */
 TrapezoidalFactory::TrapezoidalFactory()

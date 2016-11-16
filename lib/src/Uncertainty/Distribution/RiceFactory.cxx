@@ -23,10 +23,13 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/NumericalPoint.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RiceFactory);
+
+static const Factory<RiceFactory> Factory_RiceFactory;
 
 /* Default constructor */
 RiceFactory::RiceFactory()

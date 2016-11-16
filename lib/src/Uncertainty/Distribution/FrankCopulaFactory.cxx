@@ -26,10 +26,13 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FrankCopulaFactory);
+
+static const Factory<FrankCopulaFactory> Factory_FrankCopulaFactory;
 
 /* Default constructor */
 FrankCopulaFactory::FrankCopulaFactory():

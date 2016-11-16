@@ -22,10 +22,13 @@
 #include "openturns/NormalFactory.hxx"
 #include "openturns/Chi.hxx"
 #include "openturns/ComposedDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NormalFactory);
+
+static const Factory<NormalFactory> Factory_NormalFactory;
 
 /* Default constructor */
 NormalFactory::NormalFactory()

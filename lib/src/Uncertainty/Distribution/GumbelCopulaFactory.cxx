@@ -20,10 +20,13 @@
  */
 #include <cmath>
 #include "openturns/GumbelCopulaFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GumbelCopulaFactory);
+
+static const Factory<GumbelCopulaFactory> Factory_GumbelCopulaFactory;
 
 /* Default constructor */
 GumbelCopulaFactory::GumbelCopulaFactory()

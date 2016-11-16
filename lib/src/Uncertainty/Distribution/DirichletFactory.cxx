@@ -21,10 +21,13 @@
 #include "openturns/DirichletFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DirichletFactory);
+
+static const Factory<DirichletFactory> Factory_DirichletFactory;
 
 /* Default constructor */
 DirichletFactory::DirichletFactory():

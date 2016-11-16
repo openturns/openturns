@@ -20,10 +20,13 @@
  */
 #include "openturns/ExponentialFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ExponentialFactory);
+
+static const Factory<ExponentialFactory> Factory_ExponentialFactory;
 
 /* Default constructor */
 ExponentialFactory::ExponentialFactory()

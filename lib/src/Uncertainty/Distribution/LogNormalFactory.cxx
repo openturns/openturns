@@ -25,10 +25,13 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LogNormalFactory);
+
+static const Factory<LogNormalFactory> Factory_LogNormalFactory;
 
 /* Default constructor */
 LogNormalFactory::LogNormalFactory()

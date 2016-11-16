@@ -22,10 +22,13 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HistogramFactory);
+
+static const Factory<HistogramFactory> Factory_HistogramFactory;
 
 /* Default constructor */
 HistogramFactory::HistogramFactory()

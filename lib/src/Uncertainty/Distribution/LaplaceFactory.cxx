@@ -19,10 +19,13 @@
  *
  */
 #include "openturns/LaplaceFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LaplaceFactory);
+
+static const Factory<LaplaceFactory> Factory_LaplaceFactory;
 
 /* Default constructor */
 LaplaceFactory::LaplaceFactory()

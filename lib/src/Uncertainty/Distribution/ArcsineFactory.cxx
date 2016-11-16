@@ -20,10 +20,13 @@
  */
 #include "openturns/ArcsineFactory.hxx"
 #include "openturns/ArcsineMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ArcsineFactory);
+
+static const Factory<ArcsineFactory> Factory_ArcsineFactory;
 
 /* Default constructor */
 ArcsineFactory::ArcsineFactory()

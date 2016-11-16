@@ -20,11 +20,13 @@
  */
 #include "openturns/BetaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 CLASSNAMEINIT(BetaFactory);
+
+static const Factory<BetaFactory> Factory_BetaFactory;
 
 /* Default constructor */
 BetaFactory::BetaFactory():

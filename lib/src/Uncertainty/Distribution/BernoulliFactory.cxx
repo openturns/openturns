@@ -22,12 +22,13 @@
 #include "openturns/DiscreteDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Binomial.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 CLASSNAMEINIT(BernoulliFactory);
 
+static const Factory<BernoulliFactory> Factory_BernoulliFactory;
 
 /* Default constructor */
 BernoulliFactory::BernoulliFactory():

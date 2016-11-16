@@ -21,10 +21,13 @@
 #include <cmath>
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(RayleighFactory);
+
+static const Factory<RayleighFactory> Factory_RayleighFactory;
 
 /* Default constructor */
 RayleighFactory::RayleighFactory()

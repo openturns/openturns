@@ -21,10 +21,13 @@
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/GumbelMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GumbelFactory);
+
+static const Factory<GumbelFactory> Factory_GumbelFactory;
 
 /* Default constructor */
 GumbelFactory::GumbelFactory()
