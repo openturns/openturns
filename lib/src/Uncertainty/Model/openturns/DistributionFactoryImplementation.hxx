@@ -78,6 +78,12 @@ public:
   NumericalPoint getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
 
+    /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 protected:
   /* Bootstrap estimator */
   virtual DistributionFactoryResult buildBootStrapEstimator(const NumericalSample & sample, const Bool isGaussian = false) const;
