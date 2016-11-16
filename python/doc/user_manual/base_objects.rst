@@ -126,3 +126,12 @@ History strategy
     Full
     Last
     Null
+
+K-d tree
+========
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    KDTree

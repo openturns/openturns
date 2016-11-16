@@ -157,6 +157,11 @@ try:
     generalizedLinearModelResult.setName('generalizedLinearModelResult')
     myStudy.add('generalizedLinearModelResult', generalizedLinearModelResult)
 
+    # KDTree
+    sample = ot.Normal(3).getSample(10)
+    kDTree = ot.KDTree(sample)
+    myStudy.add('kDTree', kDTree)
+
     # print 'Study = ' , myStudy
     myStudy.save()
 
@@ -226,6 +231,11 @@ try:
                        generalizedLinearModelResult)
 
     print('generalizedLinearModelResult = ', generalizedLinearModelResult)
+
+    # KDTree
+    kDTree = ot.KDTree()
+    myStudy.fillObject('kDTree', kDTree)
+    print('kDTree = ', kDTree)
 
     # cleanup
     os.remove(fileName)
