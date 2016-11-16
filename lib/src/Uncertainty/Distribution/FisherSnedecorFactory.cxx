@@ -24,10 +24,13 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FisherSnedecorFactory);
+
+static const Factory<FisherSnedecorFactory> Factory_FisherSnedecorFactory;
 
 /* Default constructor */
 FisherSnedecorFactory::FisherSnedecorFactory():

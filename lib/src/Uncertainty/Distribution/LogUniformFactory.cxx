@@ -20,10 +20,13 @@
  */
 #include "openturns/LogUniformFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LogUniformFactory);
+
+static const Factory<LogUniformFactory> Factory_LogUniformFactory;
 
 /* Default constructor */
 LogUniformFactory::LogUniformFactory()

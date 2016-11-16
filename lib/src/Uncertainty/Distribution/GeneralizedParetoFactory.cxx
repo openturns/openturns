@@ -23,10 +23,13 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TNC.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GeneralizedParetoFactory);
+
+static const Factory<GeneralizedParetoFactory> Factory_GeneralizedParetoFactory;
 
 /* Default constructor */
 GeneralizedParetoFactory::GeneralizedParetoFactory()

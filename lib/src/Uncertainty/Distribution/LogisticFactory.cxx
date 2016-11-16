@@ -20,10 +20,13 @@
  */
 #include "openturns/LogisticFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LogisticFactory);
+
+static const Factory<LogisticFactory> Factory_LogisticFactory;
 
 /* Default constructor */
 LogisticFactory::LogisticFactory()

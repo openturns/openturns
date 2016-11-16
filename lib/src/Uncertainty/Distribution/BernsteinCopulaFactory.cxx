@@ -24,6 +24,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,6 +35,8 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 CLASSNAMEINIT(BernsteinCopulaFactory);
+
+static const Factory<BernsteinCopulaFactory> Factory_BernsteinCopulaFactory;
 
 /* Default constructor */
 BernsteinCopulaFactory::BernsteinCopulaFactory()

@@ -23,10 +23,13 @@
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/DiscreteDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NegativeBinomialFactory);
+
+static const Factory<NegativeBinomialFactory> Factory_NegativeBinomialFactory;
 
 /* Default constructor */
 NegativeBinomialFactory::NegativeBinomialFactory()

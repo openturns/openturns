@@ -19,10 +19,13 @@
  *
  */
 #include "openturns/ChiSquareFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ChiSquareFactory);
+
+static const Factory<ChiSquareFactory> Factory_ChiSquareFactory;
 
 /* Default constructor */
 ChiSquareFactory::ChiSquareFactory():

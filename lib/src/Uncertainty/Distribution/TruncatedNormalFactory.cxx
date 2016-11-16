@@ -21,10 +21,13 @@
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TruncatedNormalFactory);
+
+static const Factory<TruncatedNormalFactory> Factory_TruncatedNormalFactory;
 
 /* Default constructor */
 TruncatedNormalFactory::TruncatedNormalFactory()

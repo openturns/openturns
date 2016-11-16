@@ -20,10 +20,13 @@
  */
 #include "openturns/TriangularFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TriangularFactory);
+
+static const Factory<TriangularFactory> Factory_TriangularFactory;
 
 /* Default constructor */
 TriangularFactory::TriangularFactory()

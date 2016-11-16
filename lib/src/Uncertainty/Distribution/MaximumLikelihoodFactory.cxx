@@ -32,10 +32,13 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/TNC.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MaximumLikelihoodFactory);
+
+static const Factory<MaximumLikelihoodFactory> Factory_MaximumLikelihoodFactory;
 
 /* Default constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory()

@@ -19,10 +19,13 @@
  *
  */
 #include "openturns/StudentFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(StudentFactory);
+
+static const Factory<StudentFactory> Factory_StudentFactory;
 
 /* Default constructor */
 StudentFactory::StudentFactory()
