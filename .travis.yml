@@ -41,7 +41,7 @@ install:
   - export PATH=$PATH:$HOME/.local/bin
   - popd
 # sphinx >=1.2 is looking better
-  - pip install six docutils --user
+  - pip install six docutils numpydoc --user
   - pip install git+https://github.com/sphinx-doc/sphinx.git --user
 # keep an eye on swig
   - git clone https://github.com/swig/swig.git
