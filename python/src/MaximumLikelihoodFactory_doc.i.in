@@ -13,7 +13,15 @@ distribution : :class:`~openturns.Distribution`
 
 See also
 --------
-DistributionFactory"
+DistributionFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(10)
+>>> factory = ot.MaximumLikelihoodFactory(distribution)
+>>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
 
