@@ -103,11 +103,11 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
   Collection<NumericalMathFunction> scaledModes(modes_.getSize());
   const UnsignedInteger dimension = modes_.getDimension();
   const NumericalPoint zero(dimension);
-  const IdentityMatrix Id(dimension);
+  const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
     {
       const NumericalMathFunction modeI(modes_.build(i));
-      LinearNumericalMathFunction scaling(zero, zero, Id * std::sqrt(eigenvalues_[i]));
+      LinearNumericalMathFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
       scaledModes[i] = NumericalMathFunction(scaling, modeI);
     }
   return scaledModes;
