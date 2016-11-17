@@ -4,6 +4,8 @@
 #include "openturns/RandomGeneratorState.hxx"
 %}
 
+%include RandomGeneratorState_doc.i
+
 %include openturns/RandomGeneratorState.hxx
 
 
