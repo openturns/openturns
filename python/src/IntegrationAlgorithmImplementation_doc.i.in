@@ -1,0 +1,27 @@
+%define OT_IntegrationAlgorithm_doc
+"Base class for integration algorithms.
+
+"
+%enddef
+%feature("docstring") OT::IntegrationAlgorithmImplementation
+OT_IntegrationAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_IntegrationAlgorithm_integrate_doc
+"Integrate a function on an interval.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    The function to integrate.
+interval : :class:`~openturns.Interval`
+    The integration domain.
+
+Returns
+-------
+value : :class:`~openturns.NumericalPoint`
+    The integral value."
+%enddef
+%feature("docstring") OT::IntegrationAlgorithmImplementation::integrate
+OT_IntegrationAlgorithm_integrate_doc
