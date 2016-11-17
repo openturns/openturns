@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cross-validation algorithm interface
+ *  @brief ODE solver interface
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -31,7 +31,7 @@ class ODESolverImplementation;
 /**
  * @class ODESolver
  *
- * Cross-validation algorithm interface
+ * ODE solver interface
  */
 class OT_API ODESolver
   : public TypedInterfaceObject<ODESolverImplementation>

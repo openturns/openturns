@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cross-validation algorithm interface
+ *  @brief ODE solver interface
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
