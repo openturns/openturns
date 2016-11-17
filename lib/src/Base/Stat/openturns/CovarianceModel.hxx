@@ -89,6 +89,10 @@ public:
   virtual Matrix partialGradient(const NumericalPoint & s,
                                  const NumericalPoint & t) const;
 
+  /** Gradient wrt parameters */
+  virtual Matrix parameterGradient (const NumericalPoint & s,
+                                    const NumericalPoint & t) const;
+
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;

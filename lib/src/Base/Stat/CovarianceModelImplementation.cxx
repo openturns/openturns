@@ -246,6 +246,30 @@ Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
   return gradient;
 }
 
+/* Gradient */
+Matrix CovarianceModelImplementation::parameterGradient(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const
+{
+  const NumericalPoint parameter(getParameter());
+  const UnsignedInteger size = parameter.getSize();
+  const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
+  Matrix gradient(size, dimension_ * dimension_);
+  CovarianceMatrix covRef = operator()(s, t);
+  Pointer<CovarianceModelImplementation> p_implementation(clone());
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    NumericalPoint parameterP(parameter);
+    parameterP[i] += epsilon;
+    p_implementation->setParameter(parameterP);
+    CovarianceMatrix covP = p_implementation->operator()(s, t);
+    for (UnsignedInteger j = 0; j < dimension_ * dimension_; ++ j)
+    {
+      gradient(i, j) = (covP(j % dimension_, j / dimension_) - covRef(j % dimension_, j / dimension_)) / epsilon;
+    }
+  }
+  return gradient;
+}
+
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
