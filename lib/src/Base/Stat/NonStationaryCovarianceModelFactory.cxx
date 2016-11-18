@@ -62,35 +62,43 @@ String NonStationaryCovarianceModelFactory::__str__(const String & offset) const
 }
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample, const Bool isCentered) const
 {
-  return buildAsUserDefinedCovarianceModel(sample).clone();
+  return buildAsUserDefinedCovarianceModel(sample, isCentered).clone();
 }
 
 
 struct ComputeCovariancePolicy
 {
   const ProcessSample & input_;
+  const Bool isCentered_;
   CovarianceMatrixCollection & output_;
   Field mean_;
   UnsignedInteger dimension_;
-  UnsignedInteger N_;
   UnsignedInteger size_;
   NumericalScalar alpha_;
 
   ComputeCovariancePolicy(const ProcessSample & input,
+                          const Bool isCentered,
                           CovarianceMatrixCollection & output)
     : input_(input)
+    , isCentered_(isCentered)
     , output_(output)
     , mean_()
     , dimension_(input.getDimension())
     , size_(input.getSize())
     , alpha_(1.0 / (size_ - 1.0))
   {
-    mean_ = input.computeMean();
+    if (!isCentered) mean_ = input.computeMean();
   }
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    if (isCentered_) evaluateCentered(r);
+    else evaluateNonCentered(r);
+  }
+
+  inline void evaluateCentered( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
@@ -99,15 +107,12 @@ struct ComputeCovariancePolicy
       CovarianceMatrix & matrix(output_[index]);
       for (UnsignedInteger k = 0; k < dimension_; ++k)
       {
-        const NumericalScalar muIK = mean_.getValueAtIndex(i)[k];
         for (UnsignedInteger l = 0; l <= k; ++l)
         {
-          const NumericalScalar muJL = mean_.getValueAtIndex(j)[l];
           NumericalScalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
-            coef += (input_[sampleIndex][i][k] - muIK)
-                    * (input_[sampleIndex][j][l] - muJL);
+            coef += input_[sampleIndex][i][k] * input_[sampleIndex][j][l];
           } // sampleIndex
           matrix(k, l) = coef * alpha_;
         } // l
@@ -115,9 +120,34 @@ struct ComputeCovariancePolicy
     } // index
   }
 
+  inline void evaluateNonCentered( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+    {
+      const UnsignedInteger i = static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5);
+      const UnsignedInteger j = index - (i * (i + 1)) / 2;
+      const NumericalPoint muI(mean_.getValueAtIndex(i));
+      const NumericalPoint muJ(mean_.getValueAtIndex(j));
+      CovarianceMatrix & matrix(output_[index]);
+      for (UnsignedInteger k = 0; k < dimension_; ++k)
+      {
+        const NumericalScalar muIK = muI[k];
+        for (UnsignedInteger l = 0; l <= k; ++l)
+        {
+          const NumericalScalar muJL = muJ[l];
+          NumericalScalar coef = 0.0;
+          for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
+          {
+            coef += (input_[sampleIndex][i][k] - muIK) * (input_[sampleIndex][j][l] - muJL);
+          } // sampleIndex
+          matrix(k, l) = coef * alpha_;
+        } // l
+      } // k
+    } // index
+  }
 }; /* end struct ComputeCovariancePolicy */
 
-UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample) const
+UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample, const Bool isCentered) const
 {
   const Mesh & mesh(sample.getMesh());
   const UnsignedInteger N = mesh.getVerticesNumber();
@@ -130,7 +160,7 @@ UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefin
   // Special case for a sample of size 1
   if (size == 0) return UserDefinedCovarianceModel(mesh, collection);
 
-  const ComputeCovariancePolicy policy( sample, collection );
+  const ComputeCovariancePolicy policy( sample, isCentered, collection );
   TBB::ParallelFor( 0, size, policy );
   return UserDefinedCovarianceModel(mesh, collection);
 }
