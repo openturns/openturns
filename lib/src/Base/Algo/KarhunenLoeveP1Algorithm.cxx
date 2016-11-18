@@ -82,29 +82,40 @@ KarhunenLoeveP1Algorithm * KarhunenLoeveP1Algorithm::clone() const
 void KarhunenLoeveP1Algorithm::run()
 {
   // Compute the gram of the mesh
+  LOGINFO("Build the Gram matrix");
   CovarianceMatrix gram(mesh_.computeP1Gram());
+  const UnsignedInteger numVertices = mesh_.getVerticesNumber();
+  if (!(gram.getDimension() == numVertices)) throw InternalException(HERE) << "Error: the P1 Gram matrix of the mesh has a dimension=" << gram.getDimension() << " different from the number of vertices=" << numVertices;
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
-  const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   // Extend the Gram matrix of the mesh
   const UnsignedInteger dimension = covariance_.getDimension();
   const UnsignedInteger augmentedDimension = dimension * numVertices;
-  CovarianceMatrix G(augmentedDimension);
-  for (UnsignedInteger i = 0; i < numVertices; ++i)
-  {
-    for (UnsignedInteger j = 0; j <= i; ++j)
+  CovarianceMatrix G;
+  if (dimension == 1) G = gram;
+  else
     {
-      const NumericalScalar gij = gram(i, j);
-      for (UnsignedInteger k = 0; k < dimension; ++k)
-        G(i * dimension + k, j * dimension + k) = gij;
-    } // Loop over j
-  } // Loop over i
+      G = CovarianceMatrix(augmentedDimension);
+      for (UnsignedInteger i = 0; i < numVertices; ++i)
+	{
+	  for (UnsignedInteger j = 0; j <= i; ++j)
+	    {
+	      const NumericalScalar gij = gram(i, j);
+	      for (UnsignedInteger k = 0; k < dimension; ++k)
+		G(i * dimension + k, j * dimension + k) = gij;
+	    } // Loop over j
+	} // Loop over i
+    }
   // Discretize the covariance model
+  LOGINFO("Discretize the covariance model");
   CovarianceMatrix C(covariance_.discretize(mesh_));
+  LOGINFO("Discretize the Fredholm equation");
   SquareMatrix M((C * G).getImplementation());
+  LOGINFO("Solve the eigenvalue problem");
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+  LOGINFO("Post-process the eigenvalue problem");
   NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
@@ -119,7 +130,8 @@ void KarhunenLoeveP1Algorithm::run()
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
   }
-  LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
+  LOGDEBUG(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
+  LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
   const NumericalScalar lowerBound = threshold_ * std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
