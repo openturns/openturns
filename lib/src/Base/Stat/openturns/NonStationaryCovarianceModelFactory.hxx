@@ -49,8 +49,13 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Build a a spectral model based on a sample */
+  using CovarianceModelFactoryImplementation::build;
   CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
-  UserDefinedCovarianceModel buildAsUserDefinedCovarianceModel(const ProcessSample & sample) const;
+  CovarianceModelImplementation::Implementation build(const ProcessSample & sample,
+                                                      const Bool isCentered) const;
+
+  UserDefinedCovarianceModel buildAsUserDefinedCovarianceModel(const ProcessSample & sample,
+                                                      const Bool isCentered = false) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
