@@ -415,6 +415,7 @@ if (BUILD_PYTHON)
     find_program (SPHINX_EXECUTABLE NAMES sphinx-build DOC "Sphinx Documentation Builder (sphinx-doc.org)")
     if (SPHINX_EXECUTABLE)
       find_python_module (sphinx 1.1)
+      find_python_module (numpydoc)
     endif ()
   endif ()
 
