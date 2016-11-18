@@ -1,0 +1,53 @@
+%define OT_ODESolver_doc
+"ODE solver base class.
+
+Solve an explicit first-order differential equation in the form :math:`y' = f(t, y)`"
+%enddef
+%feature("docstring") OT::ODESolverImplementation
+OT_ODESolver_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ODESolver_solve_doc
+"Solve ODE.
+
+Parameters
+----------
+initialState : sequence of float
+    Initial value of the equation
+timeGrid : sequence of float
+    Time steps
+
+Returns
+-------
+values : :class:`~openturns.NumericalSample`
+    The solution of the equation at grid points."
+%enddef
+%feature("docstring") OT::ODESolverImplementation::solve
+OT_ODESolver_solve_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ODESolver_setTransitionFunction_doc
+"Transition function accessor.
+
+Parameters
+----------
+transitionFunction : :class:`~openturns.DynamicalFunction`
+    Transition function."
+%enddef
+%feature("docstring") OT::ODESolverImplementation::setTransitionFunction
+OT_ODESolver_setTransitionFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ODESolver_getTransitionFunction_doc
+"Transition function accessor.
+
+Returns
+-------
+transitionFunction : :class:`~openturns.DynamicalFunction`
+    Transition function."
+%enddef
+%feature("docstring") OT::ODESolverImplementation::getTransitionFunction
+OT_ODESolver_getTransitionFunction_doc

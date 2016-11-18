@@ -262,6 +262,7 @@ endif ()
 ot_pyinstallcheck_test (Brent_std)
 ot_pyinstallcheck_test (Bisection_std)
 ot_pyinstallcheck_test (Secant_std)
+ot_pyinstallcheck_test (RungeKutta_std)
 
 # Algo
 ot_pyinstallcheck_test (PenalizedLeastSquaresAlgorithm_std)

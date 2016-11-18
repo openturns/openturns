@@ -1,10 +1,10 @@
 // SWIG file ODESolver.i
 
-OTAutodoc(ODESolver)
-
 %{
 #include "openturns/ODESolver.hxx"
 %}
+
+%include ODESolver_doc.i
 
 OTTypedInterfaceObjectHelper(ODESolver)
 

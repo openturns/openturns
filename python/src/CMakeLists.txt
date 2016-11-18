@@ -358,9 +358,9 @@ ot_add_python_module(solver solver_module.i
                       Bisection.i Bisection_doc.i.in
                       Secant.i Secant_doc.i.in
                       Brent.i Brent_doc.i.in
-                      ODESolverImplementation.i
-                      ODESolver.i
-                      RungeKutta.i
+                      ODESolverImplementation.i ODESolverImplementation_doc.i.in
+                      ODESolver.i ODESolver_doc.i.in
+                      RungeKutta.i RungeKutta_doc.i.in
                       BaseSolverTemplateDefs.i
                    )
 
