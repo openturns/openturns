@@ -194,6 +194,7 @@ Karhunen Loeve decomposition
     :template: classWithPlot.rst_t
     KarhunenLoeveP1Algorithm
     KarhunenLoeveQuadratureAlgorithm
+    KarhunenLoeveSVDAlgorithm
 
     :template: class.rst_t
     KarhunenLoeveResult

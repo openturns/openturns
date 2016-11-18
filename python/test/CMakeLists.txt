@@ -277,6 +277,7 @@ ot_pyinstallcheck_test (KarhunenLoeveP1Factory_std)
 ot_pyinstallcheck_test (DesignProxy_std)
 ot_pyinstallcheck_test (LeastSquaresMethod_std)
 ot_pyinstallcheck_test (KarhunenLoeveP1Algorithm_std)
+ot_pyinstallcheck_test (KarhunenLoeveSVDAlgorithm_std)
 
 ## Model
 ot_pyinstallcheck_test (Event_std)

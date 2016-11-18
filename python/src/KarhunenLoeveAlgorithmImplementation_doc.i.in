@@ -13,6 +13,8 @@ s : float, positive
 
 Notes
 -----
+The Karhunen Loeve decomposition enables to build some finite approximations of stochastic processes which are optimal with respect to the norm :math:`L^2`.
+
 We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
 
 The class :class:`~openturns.KarhunenLoeveAlgorithm` enables to determine the solutions of the second kind Fredholm equation associated to  :math:`C`, ie to find the :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` such that: 
@@ -23,16 +25,69 @@ The class :class:`~openturns.KarhunenLoeveAlgorithm` enables to determine the so
     \int_{\cD} \mat{C}(\vect{s},\vect{t}) \vect{\varphi}_k(\vect{t})\,  d\vect{t} = \lambda_k  \vect{\varphi}_k(\vect{s}) \quad \forall \vect{s} \in \cD
 
 
-where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the   associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They constitue an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the   associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They form an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+
+
+The Mercer theorem shows that the covariance function  :math:`C` writes:
+
+.. math::
+    :label: covFuncMercer
+
+    \mat{C}(\vect{s},\vect{t}) = \sum_{k=1}^{+\infty} \lambda_k \vect{\varphi}_k(\vect{s}) \Tr{\vect{\varphi}}_k(\vect{t}) \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
 
 OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
 
-The integrals in :eq:`fredholm` can be evaluated with:
+To solve :eq:`fredholm`, we use the functional basis :math:`(\theta_p)_{1 \leq p \leq P}` of :math:`L^2(\cD, \Rset)` with :math:`P` elements defined on :math:`\cD`. We search the solutions of type:
+
+.. math::
+
+    \tilde{\vect{\varphi}}_k(\vect{t})=\sum_{p=1}^{P} \vect{\phi}_{pk}\theta_p(\vect{t})
+
+where :math:`\vect{\phi}_{pk} \in \Rset^d`. We note:
+
+.. math::
+
+    \begin{align*}
+        \vect{\Phi}_k =
+        \left(
+          \begin{array}{l}
+            \vect{\phi}_{1k} \\
+            \dots \\
+            \vect{\phi}_{Pk}
+          \end{array}
+        \right) \in \Rset^{Pd}
+     \end{align*}
+
+and :math:`\mat{\vect{\Phi}} = (\vect{\Phi}_1\, |\, \dots \, | \vect{\Phi}_K)` the matrix of the :math:`K` first modes of the Karhunen Loeve decomposition.
+
+The approximated Fredholm problem writes for all :math:`k \geq 1`:
+
+.. math::
+
+   \int_{\cD} \mat{C}(\vect{s},\vect{t}) \tilde{\vect{\varphi}}_k(\vect{t})\,  d\vect{t} = \lambda_k   \tilde{\vect{\varphi}}_k(\vect{s}) \quad  \forall \vect{s} \in \cD
+
+which enables to define the **residual function** :math:`\vect{r}: \cD \rightarrow \Rset^d` defined by
+
+.. math::
+    :label: fredholmApprox
+
+    \vect{r}(\vect{s}) = \int_{\cD} \mat{C}(\vect{s},\vect{t}) \tilde{\vect{\varphi}}_k(\vect{t})\,  d\vect{t} - \lambda_k  \tilde{\vect{\varphi}}_k(\vect{s})
+
+The Fredholm problem writes:
+
+.. math::
+    :label: pbResidu
+
+    \vect{r}(\vect{s}) = \vect{0} \quad \forall \vect{s} \in \cD
+
+which is solved either by the **Galerkin** approach or the **collocation** approach.
+
+The integrals in :eq:`fredholmApprox` can be evaluated with:
 
     - a :math:`P_1` -approach: see :class:`~openturns.KarhunenLoeveP1Algorithm`,
-
-    - a quadrature approach: see :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`.
+    - a quadrature approach: see :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`,
+    - a singular values decomposition approach: see :class:`~openturns.KarhunenLoeveSVDAlgorithm`.
 
 See also
 --------

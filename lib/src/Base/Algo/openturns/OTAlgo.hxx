@@ -57,5 +57,6 @@
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
 #include "openturns/KarhunenLoeveAlgorithm.hxx"
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
+#include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTALGO_HXX */
