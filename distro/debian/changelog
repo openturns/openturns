@@ -5,7 +5,7 @@ openturns (1.8-1) experimental; urgency=low
 
  -- Denis Barbier <barbier@debian.org>  Thu, 16 Nov 2016 18:14:47 +0100
 
- openturns (1.8~rc2-1) experimental; urgency=low
+openturns (1.8~rc2-1) experimental; urgency=low
 
   [ Julien Schueller ]
   * New upstream pre-release.
