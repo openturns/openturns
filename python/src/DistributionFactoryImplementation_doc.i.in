@@ -125,7 +125,17 @@ Parameters
 values : sequence of float
     Values of fixed parameters.
 indices : sequence of int
-    Indices of fixed parameters."
+    Indices of fixed parameters.
+    
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Beta()
+>>> sample = distribution.getSample(10)
+>>> factory = ot.MaximumLikelihoodFactory(distribution)
+>>> # set (a,b) out of (r, t, a, b)
+>>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> inf_distribution = factory.build(sample)"
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::setKnownParameter
 OT_DistributionFactory_setKnownParameter_doc
