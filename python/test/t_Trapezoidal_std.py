@@ -86,6 +86,21 @@ try:
                   Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
 
+    # derivative of the logPDF with regards the parameters of the distribution
+    logPDFgr = distribution.computeLogPDFGradient(point)
+    print("log-pdf gradient     =", repr(logPDFgr))
+    # by the finite difference technique
+    logPDFgrFD = NumericalPoint(4)
+    logPDFgrFD[0] = (Trapezoidal(distribution.getA() + eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point) -
+                  Trapezoidal(distribution.getA() - eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[1] = (Trapezoidal(distribution.getA(), distribution.getB() + eps, distribution.getC(), distribution.getD()).computeLogPDF(point) -
+                  Trapezoidal(distribution.getA(), distribution.getB() - eps, distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[2] = (Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() + eps, distribution.getD()).computeLogPDF(point) -
+                  Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() - eps, distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[3] = (Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() + eps).computeLogPDF(point) -
+                  Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computeLogPDF(point)) / (2.0 * eps)
+    print("log-pdf gradient (FD)=", repr(logPDFgrFD))
+
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
@@ -104,6 +119,28 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+
+    # Confidence regions
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    print("Minimum volume interval=", interval)
+    print("threshold=", NumericalPoint(1, threshold))
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    print("Minimum volume level set=", levelSet)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("Bilateral confidence interval=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("Unilateral confidence interval (lower tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("Unilateral confidence interval (upper tail)=", interval)
+    print("beta=", NumericalPoint(1, beta))
+
     mean = distribution.getMean()
     print("mean=", repr(mean))
     standardDeviation = distribution.getStandardDeviation()

@@ -74,10 +74,6 @@ public:
   /** Sample generation with weights*/
   virtual NumericalSample generateWithWeights(NumericalPoint & weights) const;
 
-  /** Weight accessor
-   * @deprecated */
-  virtual NumericalPoint getWeight() const;
-
 protected:
 
   /** Distribution that defines the weights of the experiment */

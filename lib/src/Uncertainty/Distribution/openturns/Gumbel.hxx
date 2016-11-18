@@ -36,9 +36,6 @@ class OT_API Gumbel
 {
   CLASSNAME;
 public:
-  /** @deprecated */
-  enum ParameterSet { ALPHABETA, MUSIGMA, AB };
-
   typedef Pointer<DistributionImplementation> Implementation;
 
   /** Default constructor */
@@ -47,12 +44,6 @@ public:
   /** Parameters constructor */
   Gumbel(const NumericalScalar alpha,
          const NumericalScalar beta);
-
-  /** Parameters constructor 
-   @deprecated */
-  Gumbel(const NumericalScalar arg1,
-         const NumericalScalar arg2,
-         const ParameterSet set);
 
   /** Comparison operator */
   Bool operator ==(const Gumbel & other) const;
@@ -130,24 +121,6 @@ public:
   /** Beta accessor */
   void setBeta(const NumericalScalar beta);
   NumericalScalar getBeta() const;
-
-
-  /** Mu accessor 
-   @deprecated */
-  void setMuSigma(const NumericalScalar mu,
-                  const NumericalScalar sigma);
-  NumericalScalar getMu() const;
-
-  /** Sigma accessor */
-  //      void setSigma(NumericalScalar sigma);
-  NumericalScalar getSigma() const;
-
-  /** a/b accessor 
-   @deprecated */
-  void setAB(const NumericalScalar a,
-             const NumericalScalar b);
-  NumericalScalar getA() const;
-  NumericalScalar getB() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

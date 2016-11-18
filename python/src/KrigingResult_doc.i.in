@@ -95,12 +95,6 @@ Get the result:
 Get the meta model:
 
 >>> metaModel = resKriging.getMetaModel()
->>> graph = metaModel.draw(0.0, 7.0)
->>> cloud = ot.Cloud(sampleX, sampleY)
->>> cloud.setPointStyle('fcircle')
->>> graph.add(cloud)
->>> graph.add(f.draw(0.0, 7.0))
->>> graph.setColors(['black', 'blue', 'red'])
 "
 
 // ---------------------------------------------------------------------
@@ -239,13 +233,40 @@ metaModel : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingResult::getInputTransformation
+%feature("docstring") OT::KrigingResult::setTransformation
+"Accessor to the normalizing transformation.
+
+Parameters
+----------
+transformation : :class:`~openturns.NumericalMathFunction`
+    The transformation *T* that normalizes the input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getTransformation
 "Accessor to the normalizing transformation.
 
 Returns
 -------
 transformation : :class:`~openturns.NumericalMathFunction`
-    The  transformation *T* that normalizes the input sample.
-"
+    The transformation *T* that normalizes the input sample."
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::KrigingResult::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.NumericalSample`
+    The output sample."

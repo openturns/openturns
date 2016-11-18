@@ -53,10 +53,25 @@ public:
   virtual Distribution build(const NumericalSample & sample,
                              const UnsignedInteger binNumber);
 
+ private:
+  virtual Distribution buildParallel(const NumericalSample & sample,
+				     const UnsignedInteger binNumber);
+
+  virtual Distribution buildSequential(const NumericalSample & sample,
+				       const UnsignedInteger binNumber);
+ public:
+
   /** Compute the number of bins according to the inverse power rule */
   UnsignedInteger computeBinNumber(const NumericalSample & sample);
 
+  /** Parallelization flag accessor */
+  void setParallel(const Bool flag);
+  Bool isParallel() const;
+
 private:
+
+  /** Flag to tell if parallelization must be used */
+  Bool isParallel_;
 
 }; /* class BernsteinCopulaFactory */
 

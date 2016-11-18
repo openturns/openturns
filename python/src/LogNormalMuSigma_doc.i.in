@@ -35,7 +35,7 @@ Create the parameters of the LogNormal distribution:
 
 Convert parameters into the native parameters:
 
->>> print(parameters([0.63, 3.3, -0.5]))
+>>> print(parameters.evaluate())
 [-1.00492,1.50143,-0.5]
 
 The gradient of the transformation of the native parameters into the new

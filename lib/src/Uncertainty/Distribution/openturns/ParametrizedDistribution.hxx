@@ -67,7 +67,7 @@ public:
   using DistributionImplementation::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
-  /** Get the CDF of the distributionImplementation */
+  /** Get the CDF of the distribution */
   using DistributionImplementation::computeComplementaryCDF;
   virtual NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
@@ -83,9 +83,22 @@ public:
   using DistributionImplementation::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
-  /** Get the quantile of the distributionImplementation */
+  /** Get the quantile of the distribution */
+  using DistributionImplementation::computeQuantile;
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
+
+  /** Get the product minimum volume interval containing a given probability of the distribution */
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product bilateral confidence interval containing a given probability of the distribution */
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distribution */
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distribution */
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Parameters value accessors */
   void setParameter(const NumericalPoint & parameter);

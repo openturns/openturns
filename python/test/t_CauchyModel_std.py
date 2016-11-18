@@ -22,7 +22,7 @@ try:
     print("myDefautModel = ", myDefautModel)
 
     # Second order model with parameters
-    myModel = CauchyModel(amplitude, scale)
+    myModel = CauchyModel(scale, amplitude)
     print("myModel = ", myModel)
 
     frequencyValue = 1.0
@@ -49,12 +49,12 @@ try:
 
     # check the cast
     mySecondOrderModel = SpectralModel(
-        CauchyModel(amplitude, scale, spatialCorrelation))
+        CauchyModel(scale, amplitude, spatialCorrelation))
     print("mySecondOrderModel = ", mySecondOrderModel)
     # checking the cast
 
     # Second order model  - dimension 10
-    myHighModel = CauchyModel(amplitude, scale, spatialCorrelation)
+    myHighModel = CauchyModel(scale, amplitude, spatialCorrelation)
     print("myHighModel = ", myHighModel)
     print("spectral density matrix at f = ",
           frequencyValue, " : ", myModel(frequencyValue))

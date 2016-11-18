@@ -74,6 +74,9 @@ public:
   using ContinuousDistribution::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
+  /** Get the minimum volume level set containing a given probability of the distribution */
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;

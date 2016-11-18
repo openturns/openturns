@@ -11,9 +11,33 @@ distribution : :class:`~openturns.Distribution`
 parameterDistribution : :class:`~openturns.Distribution`
     The distribution of the parameter.
 
+
 See also
 --------
-DistributionFactory"
+DistributionFactory
+
+
+Examples
+--------
+We demonstrate the method on a Beta Distribution.
+
+Create a sample from a Beta distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
+
+Fit a Beta distribution and create a :class:`~openturns.DistributionFactory`: 
+
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+
+Get the fitted Beta distribution and its parameters:
+
+>>> fittedBeta =  fittedRes.getDistribution()
+
+Get the asymptotic parameters distribution: 
+
+>>> paramDist = fittedRes.getParameterDistribution()"
 
 // ---------------------------------------------------------------------
 

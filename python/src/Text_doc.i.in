@@ -1,0 +1,35 @@
+%feature("docstring") OT::Text
+"Text.
+
+Available constructors:
+    Text(*data, texts, position=3, legend=' '*)
+
+    Text(*dataX, dataY, texts, position=3, legend=' '*)
+
+Parameters
+----------
+data : 2-d sequence of float
+    Locations of texts
+dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
+    X- and Y-locations of texts
+position : str
+    Text position; valid values are 'top' (default), 'below', 'left' or 'right'
+legend : str
+    Legend of the Text.
+
+Examples
+--------
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(2)
+>>> R[1, 0] = -0.25
+>>> distribution = ot.Normal([-1.5, 0.5], [4.0, 1.0], R)
+>>> sample = distribution.getSample(20)
+>>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, '')
+>>> # Create the cloud
+>>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'My Cloud')
+>>> myGraph.add(myCloud)
+>>> # Add annotations
+>>> texts = ot.Description(5)
+>>> for i in range(5): texts[i] = str(i+1)
+>>> myText = ot.Text(sample[0:5,:], texts)
+>>> myGraph.add(myText)"

@@ -122,7 +122,7 @@ NumericalScalar InverseNormal::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
   return 0.5 * ( std::log(lambda_) - std::log(2.0 * M_PI * x * x * x)) - lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_);
 }
 
@@ -141,6 +141,17 @@ NumericalScalar InverseNormal::computeCDF(const NumericalPoint & point) const
   if (phiArg1 > 8.24) return 1.0;
   const NumericalScalar phiArg2 = -lx * ( x / mu_ + 1.0);
   return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
+}
+
+/** Get the minimum volume level set containing a given probability of the distribution */
+LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  const Interval interval(computeMinimumVolumeInterval(prob));
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
+  threshold = std::exp(-minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

@@ -1,12 +1,42 @@
 = New Features =
 
-== 1.8rc1 release (2016-08-08) == #release-1.8rc1
+== 1.9 release (in progress) == #release-1.9
+
+=== Library ===
+
+==== Major changes ====
+ * Integrate otlhs module
+
+==== New classes ====
+ * SpaceFillingPhiP, SpaceFillingMinDist, SpaceFillingC2
+ * LinearProfile, GeometricProfile
+ * MonteCarloLHS, SimulatedAnnealingLHS
+ * LHSResult
+
+==== API changes ====
+  * Removed deprecated SLSQP, LBFGS and NelderMead classes
+  * Removed deprecated QuadraticCumul class
+  * Removed classes UserDefinedPair, HistogramPair
+  * Removed deprecated method WeightedExperiment::getWeight
+  * Removed deprecated method DistributionFactory::build(NumericalSample, CovarianceMatrix&)
+  * Removed deprecated distributions alternative parameters constructors, accessors
+  * Added a generic implementation of the computeLogPDFGradient() method in the DistributionImplementation class.
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ * #729 (KDTree & save)
+
+== 1.8 release (2016-11-18) == #release-1.8
 
 === Library ===
 
 ==== Major changes ====
  * Changed the default orthonormalization algorithm of StandardDistributionPolynomialFactory from GramSchmidtAlgorithm to AdaptiveStieltjesAlgorithm
  * New api for sensitivity analysis
+ * New methods to compute confidence regions in Distribution
 
 ==== New classes ====
  * SubsetSampling
@@ -38,18 +68,21 @@
  * Deprecated LAR in favor of LARS
  * Deprecated DistributionFactory::build(NumericalSample, CovarianceMatrix&)
  * Deprecated distributions alternative parameters constructors, accessors
+ * Swap SpectralModel scale & amplitude parameters: CauchyModel, ExponentialCauchy
 
 === Python module ===
- * Add the possibility to distribute PythonFunction calls with multiprocessing
+ * Added the possibility to distribute PythonFunction calls with multiprocessing
 
 === Miscellaneous ===
  * Improved the computeCDF() method of Normal
- * Add HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals
- * Add two samples Kolmogorov test
+ * Added the computeMinimumVolumeInterval(), computeBilateralConfidenceInterval(), computeUnilateralConfidenceInterval() and computeMinimumVolumeLevelSet() methods to compute several kind of confidence regions in Distribution
+ * Added HarrisonMcCabe, BreuschPagan and DurbinWatson tests to test homoskedasticity, autocorrelation of linear regression residuals
+ * Added two samples Kolmogorov test
  * Improved the speed of many algorithms based on method binding
  * Added more options to control LHSExperiment and LowDiscrepancyExperiment
  * Improved the IntervalMesher class: now it takes into account the diamond flag
  * Shortened ResourceMap keys to not contain 'Implementation'
+ * Improved the performance of Classifier/MixtureClassifier/ExpertMixture
 
 === Bug fixes ===
  * #535 (parallel-threads option cannot be changed at runtime with TBB)
@@ -67,15 +100,19 @@
  * #828 (ImportFromCSVFile fails on a file created by exportToCSVFile)
  * #830 (more optim algos examples)
  * #831 (Missing get/setParameter in OpenTURNSPythonFunction)
+ * #833 (Homogeneity in Covariance Models)
  * #837 (TruncatedDistribution::setParameter segfaults)
  * #838 (Symmetry of SymmetricMatrix not always enforced)
  * #840 (Remove WeightedExperiment::getWeight)
  * #841 (Better CovarianceModelCollection in Python)
  * #842 (Better ProcessCollection in Python)
  * #843 (Remove all the specific isCopula() methods)
- * #845 (Wrong comparison operator for interface classes with derivative implementation classes)
+ * #848 (Inverse Wishart sampling)
  * #849 (Ambiguous NumericalSample::computeQuantile)
  * #853 (Switch the default for normalize boolean from TRUE to FALSE in ot.GeneralizedLinearModelAlgorithm)
+ * #854 (InverseWishart.computeLogPDF)
+ * #861 (document HMatrix classes)
+
 == 1.7 release (2016-01-27) == #release-1.7
 
 === Library ===

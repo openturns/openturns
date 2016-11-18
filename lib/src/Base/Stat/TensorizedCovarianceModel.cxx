@@ -32,11 +32,13 @@ static const Factory<TensorizedCovarianceModel> Factory_TensorizedCovarianceMode
 
 /* Default constructor */
 TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimension)
-  : CovarianceModelImplementation(1),
-    collection_(dimension, AbsoluteExponential(1))
+  : CovarianceModelImplementation(1)
+  , collection_(dimension, AbsoluteExponential(1))
 {
-  setScale(NumericalPoint(spatialDimension_, 1.0));
   setAmplitude(NumericalPoint(dimension, 1));
+
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /* Parameters constructor */
@@ -44,17 +46,20 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
   : CovarianceModelImplementation()
 {
   setCollection(collection);
-  // Set same scale
-  setScale(NumericalPoint(spatialDimension_, 1.0));
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /** Parameters constructor */
 TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollection & collection,
     const NumericalPoint & scale)
+  : CovarianceModelImplementation()
 {
   setCollection(collection);
-  // Set same scale
   setScale(scale);
+
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /* Collection accessor */
@@ -164,7 +169,7 @@ Matrix TensorizedCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void TensorizedCovarianceModel::setParameter(const NumericalPoint & parameter)
+void TensorizedCovarianceModel::setFullParameter(const NumericalPoint & parameter)
 {
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << getParameter().getDimension()
@@ -178,23 +183,21 @@ void TensorizedCovarianceModel::setParameter(const NumericalPoint & parameter)
   setAmplitude(amplitude);
 }
 
-NumericalPoint TensorizedCovarianceModel::getParameter() const
+NumericalPoint TensorizedCovarianceModel::getFullParameter() const
 {
-  // Same convention : scale than amplitude parameters
+  // Same convention : scale then amplitude parameters
   NumericalPoint result(0);
   result.add(scale_);
   result.add(amplitude_);
   return result;
-
 }
 
-Description TensorizedCovarianceModel::getParameterDescription() const
+Description TensorizedCovarianceModel::getFullParameterDescription() const
 {
   Description description(0);
-  for (UnsignedInteger j = 0; j < scale_.getDimension(); ++j) description.add(OSS() << "scale_" << "_" << j);
-  for (UnsignedInteger j = 0; j < amplitude_.getDimension(); ++j) description.add(OSS() << "amplitude_" << "_" << j);
+  for (UnsignedInteger j = 0; j < scale_.getDimension(); ++ j) description.add(OSS() << "scale_" << j);
+  for (UnsignedInteger j = 0; j < amplitude_.getDimension(); ++ j) description.add(OSS() << "amplitude_" << j);
   return description;
-
 }
 
 void TensorizedCovarianceModel::setScale(const NumericalPoint & scale)
@@ -203,10 +206,14 @@ void TensorizedCovarianceModel::setScale(const NumericalPoint & scale)
     throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, incompatible dimension of the scale vector. Expected scale of size = " << spatialDimension_
                                          << ", vector size = " << scale.getDimension();
 
-  // Same scale fot all models
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  NumericalPoint scale0(collection_[0].getScale());
+  collection_[0].setScale(scale);
+  for (UnsignedInteger i = 1; i < collection_.getSize(); ++i)
   {
-    collection_[i].setScale(scale);
+    NumericalPoint newScale(collection_[i].getScale());
+    for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
+      newScale[j] *= scale[j] / scale0[j];
+    collection_[i].setScale(newScale);
   }
   // Copy of scale but not used
   scale_ = scale;

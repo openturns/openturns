@@ -63,7 +63,7 @@ HMatrixFactory::IsAvailable()
 
 
 HMatrix
-HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric)
+HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {
 #ifndef OPENTURNS_HAVE_HMAT
   throw NotYetImplementedException(HERE) << "OpenTURNS has been built without HMat support";
@@ -79,9 +79,9 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
 
   hmat_get_parameters(&settings);
-  settings.compressionMethod = ResourceMap::GetAsUnsignedInteger("HMatrix-CompressionMethod");
-  settings.assemblyEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon");
-  settings.recompressionEpsilon = ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon");
+  settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
+  settings.assemblyEpsilon = parameters.getAssemblyEpsilon();
+  settings.recompressionEpsilon = parameters.getRecompressionEpsilon();
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.maxParallelLeaves = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxParallelLeaves");
 
@@ -105,11 +105,26 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
       memcpy(points + i * spatialDimension * outputDimension + j * spatialDimension, &sample[i][0], spatialDimension * sizeof(double));
   }
-  hmat_clustering_algorithm_t* algo = hmat_create_clustering_median();
+
+  hmat_clustering_algorithm_t* algo;
+  const String clusteringAlgorithm = parameters.getClusteringAlgorithm();
+  if (clusteringAlgorithm == "median")
+    algo = hmat_create_clustering_median();
+  else if (clusteringAlgorithm == "geometric")
+    algo = hmat_create_clustering_geometric();
+  else if (clusteringAlgorithm == "hybrid")
+    algo = hmat_create_clustering_hybrid();
+  else
+    throw InvalidArgumentException(HERE) << "Unknown clustering method: " << clusteringAlgorithm << ", valid choices are: median, geometric or hybrid";
+
   hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, spatialDimension, outputDimension * size, algo);
   hmat_delete_clustering(algo);
   delete[] points;
-  hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix(ct, ct, symmetric);
+
+  NumericalScalar eta = parameters.getAdmissibilityFactor();
+  hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
+  hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
+  hmat_delete_admissibility(admissibility);
   return HMatrix(new HMatrixImplementation(hmatInterface, ct, outputDimension * size, ptrHMat));
 #endif /* OPENTURNS_HAVE_HMAT */
 }

@@ -139,6 +139,9 @@
   <!-- OT::KarhunenLoeveP1Factory parameters -->
   <KarhunenLoeveP1Factory-RegularizationFactor value="0.0" />
 
+  <!-- OT::KarhunenLoeveP1Algorithm parameters -->
+  <KarhunenLoeveP1Algorithm-RegularizationFactor value="0.0" />
+
   <!-- OT::AdaptiveStieltjesAlgorithm parameters -->
   <AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots value="64"      />
   <AdaptiveStieltjesAlgorithm-MaximumError                    value="1.0e-12" />
@@ -218,6 +221,9 @@
   <Matrix-DefaultSmallPivot value="1.0e-7"     />
   <Matrix-SymmetryThreshold value="1.0e-12"    />
 
+  <!-- OT::BernsteinCopulaFactory parameters -->
+  <BernsteinCopulaFactory-Parallel value="true" />
+
   <!-- OT::BurrFactory parameters -->
   <BurrFactory-AbsolutePrecision value="1e-12" />
   <BurrFactory-RelativePrecision value="1e-12" />
@@ -279,9 +285,6 @@
   <LogNormalFactory-RelativePrecision value="1e-12" />
   <LogNormalFactory-ResidualPrecision value="1e-12" />
   <LogNormalFactory-MaximumIteration  value="50"    />
-
-  <!-- MaximumLikelihoodFactory parameters -->
-  <MaximumLikelihoodFactory-GradientStep value="1.0e-5" />
 
   <!-- Meixner parameters -->
   <MeixnerDistribution-CDFIntegrationNodesNumber value="32" />
@@ -446,6 +449,7 @@
   <GeneralizedLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
   <GeneralizedLinearModelAlgorithm-NormalizeData                  value="false" />
   <GeneralizedLinearModelAlgorithm-KeepCovariance                 value="true" />
+  <GeneralizedLinearModelAlgorithm-OptimizeParameters             value="true" />
   <GeneralizedLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
   <GeneralizedLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
   <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
@@ -486,19 +490,21 @@
   <MarginalTransformationEvaluation-ParametersEpsilon    value="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
-  <Distribution-DefaultPointNumber             value="129"     />
-  <Distribution-DefaultQuantileEpsilon         value="1.0e-12" />
-  <Distribution-DefaultPDFEpsilon              value="1.0e-14" />
-  <Distribution-DefaultCDFEpsilon              value="1.0e-14" />
-  <Distribution-DefaultQuantileIteration       value="100"     />
-  <Distribution-QMin                           value="0.15"  />
-  <Distribution-QMax                           value="0.85"  />
-  <Distribution-DefaultIntegrationNodesNumber  value="255"     />
-  <Distribution-DefaultLevelNumber             value="10"      />
-  <Distribution-DefaultQuantileCacheSize       value="128"     />
-  <Distribution-Parallel                       value="true"    />
-  <Distribution-CharacteristicFunctionBlockMax value="20"      />
-  <Distribution-CharacteristicFunctionNMax     value="1000000" />
+  <Distribution-DefaultPointNumber                value="129"     />
+  <Distribution-DefaultQuantileEpsilon            value="1.0e-12" />
+  <Distribution-DefaultPDFEpsilon                 value="1.0e-14" />
+  <Distribution-DefaultCDFEpsilon                 value="1.0e-14" />
+  <Distribution-DefaultQuantileIteration          value="100"     />
+  <Distribution-QMin                              value="0.15"    />
+  <Distribution-QMax                              value="0.85"    />
+  <Distribution-DefaultIntegrationNodesNumber     value="255"     />
+  <Distribution-DefaultLevelNumber                value="10"      />
+  <Distribution-DefaultQuantileCacheSize          value="128"     />
+  <Distribution-Parallel                          value="true"    />
+  <Distribution-CharacteristicFunctionBlockMax    value="20"      />
+  <Distribution-CharacteristicFunctionNMax        value="1000000" />
+  <Distribution-MinimumVolumeLevelSetSamplingSize value="1000000" />
+  <Distribution-MinimumVolumeLevelSetBySampling   value="false"   />
 
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />
@@ -526,6 +532,7 @@
   <WhiteNoise-MeanEpsilon value="1.0e-14" />
 
   <!-- OT::HMatrix parameters -->
+  <HMatrix-ClusteringAlgorithm  value="median" />
   <HMatrix-AdmissibilityFactor  value="2.0" />
   <HMatrix-CompressionMethod    value="1"   />
   <HMatrix-AssemblyEpsilon      value="1.0e-4"/>
@@ -593,6 +600,9 @@
 
   <!-- OT::CholeskyMethod parameters -->
   <CholeskyMethod-LargeCase value="128"/>
+
+  <!-- OT::Classifier parameters -->
+  <Classifier-Parallel value="true" />
 
   <!-- <-your-variable value="its value" /> -->
 </openturns-configuration>

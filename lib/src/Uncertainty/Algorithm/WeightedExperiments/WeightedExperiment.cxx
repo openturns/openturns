@@ -89,11 +89,4 @@ NumericalSample WeightedExperiment::generateWithWeights(NumericalPoint & weights
   return getImplementation()->generateWithWeights(weights);
 }
 
-/* Weight accessor */
-NumericalPoint WeightedExperiment::getWeight() const
-{
-  return getImplementation()->getWeight();
-}
-
-
 END_NAMESPACE_OPENTURNS

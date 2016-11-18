@@ -23,6 +23,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=3 values=[-0.1714
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.83742]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.468798]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.499653, 3.83753]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 4.14451} with f=
+MinimumVolumeLevelSetEvaluation(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5))
+beta= [0.0158512]
+Bilateral confidence interval= [-0.480551, 6.45838]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.5, 3.83742]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.468798, 35451.8]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.633148]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[3.30128]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[33.468]
@@ -36,10 +49,3 @@ standard moment n= 3  value= [1242.65]
 standard moment n= 4  value= [1.2026e+06]
 standard moment n= 5  value= [1.10423e+10]
 Standard representative= LogNormal(muLog = -1, sigmaLog = 1.5, gamma = 0)
-mu=0.633148
-sigma=3.301283
-muLog from (mu, sigma)=-1.000000
-sigmaLog from (mu, sigma)=1.500000
-sigmaOverMu=5.214074
-muLog from (mu, sigmaOverMu)=-1.000000
-sigmaLog from (mu, sigmaOverMu)=1.500000

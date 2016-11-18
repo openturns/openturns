@@ -19,6 +19,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.2507
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.250741,-0.131347]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[3.3804]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0765466]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0, 3.3804]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.80205} with f=
+MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2))
+beta= [0.0606855]
+Bilateral confidence interval= [0.0378807, 3.91368]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 3.3804]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0765466, 7.5]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.25]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.05644]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.18322]
@@ -53,6 +66,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.2281
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.228185,-0.114093]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.4936]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0769399]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0, 4.4936]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.4012} with f=
+MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0))
+beta= [0.0333333]
+Bilateral confidence interval= [0.0379767, 5.53332]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 4.4936]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0769399, 54.0655]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[2]
@@ -87,6 +113,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.2097
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.209735,-0.100495]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[6.15423]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0773359]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0, 6.15423]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 4.00034} with f=
+MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2))
+beta= [0.0183093]
+Bilateral confidence interval= [0.038073, 8.18459]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 6.15423]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0773359, 10126.3]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.875]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[2.42061]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[4.64758]

@@ -15,6 +15,8 @@ anotherSample covariance= class=CovarianceMatrix dimension=3 implementation=clas
 Zero point=  class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0]  pdf=0.001411  cdf=0.017655
 Quantile= class=NumericalPoint name=Unnamed dimension=3 values=[5.2424,8.3636,11.485]
 CDF(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=3 values=[-3.2424,-4.3636,-5.4848]
+Survival(inverseSurvival)=0.950000
 Reference=
 Zero point=  class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0]  pdf= 0.001411  cdf= 0.017655  quantile=  class=NumericalPoint name=Unnamed dimension=3 values=[5.2424,8.3636,11.485]
 margin= class=Normal name=First dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

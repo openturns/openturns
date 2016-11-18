@@ -59,38 +59,6 @@ Gamma::Gamma(const NumericalScalar k,
   setDimension(1);
 }
 
-/* Parameters constructor */
-Gamma::Gamma(const NumericalScalar arg1,
-             const NumericalScalar arg2,
-             const NumericalScalar gamma,
-             const ParameterSet set)
-  : ContinuousDistribution()
-  , k_(0.0)
-  , lambda_(0.0)
-  , gamma_(gamma)
-  , normalizationFactor_(0.0)
-{
-  Log::Warn(OSS() << "Gamma parameter set constructor is deprecated.");
-  setName("Gamma");
-  switch (set)
-  {
-    case KLAMBDA:
-      // This call set also the range.
-      setKLambda(arg1, arg2);
-      break;
-
-    case MUSIGMA:
-      // This call set also the range.
-      setMuSigma(arg1, arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-
-  } /* end switch */
-  setDimension(1);
-}
-
 /* Comparison operator */
 Bool Gamma::operator ==(const Gamma & other) const
 {
@@ -173,28 +141,6 @@ void Gamma::setKLambda(const NumericalScalar k,
     update();
   }
 }
-
-/* Mu accessor */
-void Gamma::setMuSigma(const NumericalScalar mu,
-                       const NumericalScalar sigma)
-{
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
-  const NumericalScalar eta = (mu - gamma_) / sigma;
-  setKLambda(eta * eta, eta / sigma);
-}
-
-NumericalScalar Gamma::getMu() const
-{
-  Log::Warn(OSS() << "Gamma::getMu is deprecated");
-  return gamma_ + k_ / lambda_;
-}
-
-NumericalScalar Gamma::getSigma() const
-{
-  Log::Warn(OSS() << "Gamma::getSigma is deprecated");
-  return std::sqrt(k_) / lambda_;
-}
-
 
 /* Gamma accessor */
 void Gamma::setGamma(const NumericalScalar gamma)
@@ -284,7 +230,7 @@ NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
 
   // From textbook, we have log(PDF(x)) =  - lambda * (x - gamma) + (k - 1) * log(x - gamma) + k * log(lambda) - log(Gamma(k))
   const NumericalScalar u = lambda_ * (point[0] - gamma_);
-  if (u <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (u <= 0.0) return SpecFunc::LogMinNumericalScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - lambda * (x - gamma) + (k - 1) * log(lambda * (x - gamma) / k)
   if (k_ >= 6.9707081224932495879) return normalizationFactor_ - u + (k_ - 1.0) * std::log(u / k_);

@@ -79,9 +79,9 @@ void AnalyticalParser::initialize() const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
+  inputStack_ = NumericalPoint(inputDimension);
   if (parsers_.getSize() == outputDimension) return;
   parsers_ = Collection<Pointer<MuParser> >(outputDimension);
-  inputStack_ = NumericalPoint(inputDimension);
   try
   {
     // For each parser of a formula, do

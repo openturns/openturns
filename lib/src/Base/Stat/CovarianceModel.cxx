@@ -283,6 +283,18 @@ Description CovarianceModel::getParameterDescription() const
   return getImplementation()->getParameterDescription();
 }
 
+/* Indices of the active parameters */
+void CovarianceModel::setActiveParameter(const Indices & active)
+{
+  copyOnWrite();
+  getImplementation()->setActiveParameter(active);
+}
+
+Indices CovarianceModel::getActiveParameter() const
+{
+  return getImplementation()->getActiveParameter();
+}
+
 /* Is it a stationary covariance model ? */
 Bool CovarianceModel::isStationary() const
 {

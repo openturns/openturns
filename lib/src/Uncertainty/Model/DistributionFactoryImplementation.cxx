@@ -18,28 +18,21 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-#include <iomanip>
-#include <fstream>
+
 #include "openturns/DistributionFactoryImplementation.hxx"
-#include "openturns/Description.hxx"
-#include "openturns/Path.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/OTconfig.hxx"
-#include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ParametrizedDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionFactoryImplementation);
+
+static const Factory<DistributionFactoryImplementation> Factory_DistributionFactoryImplementation;
 
 /* Default constructor */
 DistributionFactoryImplementation::DistributionFactoryImplementation(const UnsignedInteger bootstrapSize)
@@ -77,33 +70,6 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
 {
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const NumericalSample & sample) const";
 }
-
-/* Build a distribution based on a sample and gives the covariance matrix of the estimate */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalSample & sample,
-    CovarianceMatrix & covariance) const
-{
-  Log::Warn(OSS() << "DistributionFactory::build(NumericalSample, CovarianceMatrix&) is deprecated");
-
-  /* The bootstrap sampler */
-  BootstrapExperiment bootstrap(sample);
-  /* Build the distribution based on the given sample */
-  DistributionFactoryImplementation::Implementation distribution(build(sample));
-  const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionFactory-DefaultBootstrapSize");
-  NumericalSample parametersSample(bootstrapSize, distribution->getParameter());
-  for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
-  {
-    /* Draw a bootstrap sample */
-    const NumericalSample bootstrapSample(bootstrap.generate());
-    /* Build the associated distribution */
-    const DistributionImplementation::Implementation newDistribution(build(bootstrapSample));
-    /* Add the parameters to the parameters sample */
-    parametersSample.add(newDistribution->getParameter());
-  }
-  /* Compute the bootstrap covariance */
-  covariance = parametersSample.computeCovariance();
-  return distribution;
-}
-
 
 /* Build a distribution based on a set of parameters */
 DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalPoint & parameters) const
@@ -253,6 +219,25 @@ void DistributionFactoryImplementation::setBootstrapSize(const UnsignedInteger b
 {
   if (bootstrapSize == 0) throw InvalidArgumentException(HERE) << "Error: the bootstrap size must be > 0.";
   bootstrapSize_ = bootstrapSize;
+}
+
+
+/* Method save() stores the object through the StorageManager */
+void DistributionFactoryImplementation::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("bootstrapSize_", bootstrapSize_);
+  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
+  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void DistributionFactoryImplementation::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("bootstrapSize_", bootstrapSize_);
+  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
+  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 END_NAMESPACE_OPENTURNS

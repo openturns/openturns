@@ -49,8 +49,13 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
-  /** Associate a point with a class */
+  /** Associate a point to a class */
+  using ClassifierImplementation::classify;
   virtual UnsignedInteger classify(const NumericalPoint & inP) const;
+
+ private:
+  Indices classifySequential(const NumericalSample & inS) const;
+ public:
 
   /** Grade a point as if it were associated to a class */
   virtual NumericalScalar grade(const NumericalPoint & inP,

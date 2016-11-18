@@ -9,4 +9,10 @@ See also
 DistributionFactory"
 
 
+// ---------------------------------------------------------------------
+%define OT_BetaFactory_buildEstimator_doc
+"texte en plus dans la classe BetaFactory pour la methodebuildEstimator "
+%enddef
 
+%feature("docstring") OT::BetaFactory::buildEstimator
+OT_BetaFactory_buildEstimator_doc

@@ -274,21 +274,21 @@ int Os::DeleteDirectory(const String & path)
   }
 #endif
 
+  int rc = 0;
+
 #ifndef WIN32
 
-  int rc = nftw(directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH);
-  if (rc != 0) return 1;
+  rc = nftw(directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH);
 
 #else /* WIN32 */
 
-  UnsignedInteger timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
-  UnsignedInteger countdown = timeout;
+  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
   String rmdirCmd("rmdir /Q /S \"" + path + "\"");
   Bool directoryExists = true;
 
   do
   {
-    int rc = system((rmdirCmd + " > NUL 2>&1").c_str());
+    rc = system((rmdirCmd + " > NUL 2>&1").c_str());
 
     // check if directory still there (rmdir dos command always return 0)
     directoryExists = IsDirectory(path);
@@ -303,7 +303,7 @@ int Os::DeleteDirectory(const String & path)
 
 #endif /* WIN32 */
 
-  return 0;
+  return rc;
 }
 
 

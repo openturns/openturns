@@ -1,0 +1,69 @@
+%feature("docstring") OT::KarhunenLoeveP1Algorithm
+"Computation of Karhunen-Loeve decomposition using P1 approximation.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    The mesh :math:`\cD_N` that discretizes the domain :math:`\cD`.
+covariance : :class:`~openturns.CovarianceModel`
+    The covariance function to decompose.
+threshold : float
+    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+
+Notes
+-----
+We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
+
+The class :class:`~openturns.KarhunenLoeveP1Algorithm` enables to determine the solutions of the second kind Fredholm equation associated to  :math:`C`, ie to find the :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` such that: 
+
+.. math::
+
+    \int_{\cD} \mat{C}(\vect{s},\vect{t}) \vect{\varphi}_k(\vect{t})\,  d\vect{t} = \lambda_k  \vect{\varphi}_k(\vect{s}) \quad \forall \vect{s} \in \cD
+
+
+where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They constitue an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+
+OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
+
+The Karhunen-Loeve P1 approximation consists in replacing the covariance model :math:`\mat{C}` by its P1 approximation :math:`\hat{\mat{C}}` on a mesh :math:`\cD_N` which approximates the domain :math:`\cD`:
+
+.. math::
+    \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{\mat{C}}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}\mat{C}(\vect{\xi}_i,\vect{\xi}_j)\theta_i(\vect{s})\theta_j(\vect{t})
+
+Where :math:`\theta_n: \cD_N \mapsto \Rset` are the basis functions of the P1 finite element space associated to :math:`\cD_N`.
+
+Examples
+--------
+Create a Karhunen-Loeve P1 algorithm:
+
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> algorithm = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveP1Algorithm::run
+"Computation of the eigenvalues and eigen functions values at nodes.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> algorithm = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)
+>>> algorithm.run()
+>>> result = algorithm.getResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveP1Algorithm::getMesh
+"Accessor to the mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh :math:`\cD_N` that discretizes the domain :math:`\cD`."
+

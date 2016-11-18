@@ -145,6 +145,10 @@ public:
   NumericalPoint getParameter() const;
   Description getParameterDescription() const;
 
+  /** Indices of the active parameters */
+  void setActiveParameter(const Indices & active);
+  Indices getActiveParameter() const;
+
   /** Is it a stationary model ? */
   virtual Bool isStationary() const;
 

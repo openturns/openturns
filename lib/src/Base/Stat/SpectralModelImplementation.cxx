@@ -33,8 +33,8 @@ static const Factory<SpectralModelImplementation> Factory_SpectralModelImplement
 SpectralModelImplementation::SpectralModelImplementation()
   : PersistentObject()
   , dimension_(1)
-  , amplitude_(NumericalPoint(1, 1.0))
   , scale_(NumericalPoint(1, 1.0))
+  , amplitude_(NumericalPoint(1, 1.0))
   , spatialDimension_(1)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
@@ -44,12 +44,12 @@ SpectralModelImplementation::SpectralModelImplementation()
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & amplitude,
-    const NumericalPoint & scale)
+SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
+    const NumericalPoint & amplitude)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
-  , amplitude_(0)
   , scale_(0)
+  , amplitude_(0)
   , spatialDimension_(scale.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
@@ -61,13 +61,13 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & amplitude,
-    const NumericalPoint & scale,
+SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
+    const NumericalPoint & amplitude,
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
-  , amplitude_(0)
   , scale_(0)
+  , amplitude_(0)
   , spatialDimension_(scale.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
@@ -86,8 +86,8 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , dimension_(spatialCovariance.getDimension())
-  , amplitude_(0)
   , scale_(0)
+  , amplitude_(0)
   , spatialDimension_(scale.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
@@ -270,8 +270,8 @@ void SpectralModelImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "amplitude_", amplitude_);
   adv.saveAttribute( "scale_", scale_);
+  adv.saveAttribute( "amplitude_", amplitude_);
   adv.saveAttribute( "spatialDimension_", spatialDimension_);
   adv.saveAttribute( "spatialCorrelation_", spatialCorrelation_);
   adv.saveAttribute( "spatialCovariance_", spatialCovariance_);
@@ -284,8 +284,8 @@ void SpectralModelImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "amplitude_", amplitude_);
   adv.loadAttribute( "scale_", scale_);
+  adv.loadAttribute( "amplitude_", amplitude_);
   adv.loadAttribute( "spatialDimension_", spatialDimension_);
   adv.loadAttribute( "spatialCorrelation_", spatialCorrelation_);
   adv.loadAttribute( "spatialCovariance_", spatialCovariance_);

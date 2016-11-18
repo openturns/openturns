@@ -76,10 +76,32 @@ int main(int argc, char *argv[])
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
+    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    fullprint << "Survival      =" << Survival << std::endl;
+    fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
+    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
     NumericalPoint quantile = copula.computeQuantile( 0.5 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
+
+    // Confidence regions
+    NumericalScalar threshold;
+    fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
+    fullprint << "threshold=" << threshold << std::endl;
+    NumericalScalar beta;
+    LevelSet levelSet(copula.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
+    fullprint << "Minimum volume level set=" << levelSet << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Bilateral confidence interval=" << copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (lower tail)=" << copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (upper tail)=" << copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+
     // Covariance and correlation
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(4);
@@ -138,7 +160,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < thetas.getSize(); ++i)
     {
       NumericalPoint x(points[i]);
-      ClaytonCopula copula(thetas[i]);
+      copula = ClaytonCopula(thetas[i]);
       fullprint << copula.__str__() << std::endl;
       fullprint << "PDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computePDF(x) << std::endl;
       fullprint << "CDF(" << x.__str__() << ")=" << std::setprecision(12) << copula.computeCDF(x) << std::endl;

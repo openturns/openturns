@@ -819,7 +819,7 @@ String DrawableImplementation::ConvertFromName(const String & name)
 Indices DrawableImplementation::ConvertToRGB(const String & key)
 {
   Indices rgb(3, 0);
-  UnsignedInteger code;
+  UnsignedInteger code = 0;
   if (ScanColorCode(key, code))
   {
     code = code >> 8;
@@ -837,7 +837,7 @@ Indices DrawableImplementation::ConvertToRGB(const String & key)
 Indices DrawableImplementation::ConvertToRGBA(const String & key)
 {
   Indices rgba(4, 0);
-  UnsignedInteger code;
+  UnsignedInteger code = 0;
   if (ScanColorCode(key, code))
   {
     rgba[3] = code % 256;
@@ -1093,7 +1093,7 @@ Bool DrawableImplementation::ScanColorCode(const String & key,
 
 Bool DrawableImplementation::IsValidColorCode(const String & key)
 {
-  UnsignedInteger code;
+  UnsignedInteger code = 0;
   return ScanColorCode(key, code);
 }
 
@@ -1384,6 +1384,28 @@ Bool DrawableImplementation::getDrawLabels() const
 void DrawableImplementation::setDrawLabels(const Bool & drawLabels)
 {
   throw NotDefinedException(HERE) << "Error: no flag drawLabels in " << getClassName();
+}
+
+/* Accessor for textAnnotations */
+Description DrawableImplementation::getTextAnnotations() const
+{
+  throw NotDefinedException(HERE) << "Error: no flag textAnnotations in " << getClassName();
+}
+
+void DrawableImplementation::setTextAnnotations(const Description & textAnnotations)
+{
+  throw NotDefinedException(HERE) << "Error: no flag textAnnotations in " << getClassName();
+}
+
+/* Accessor for textPositions */
+Description DrawableImplementation::getTextPositions() const
+{
+  throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
+}
+
+void DrawableImplementation::setTextPositions(const Description & textPositions)
+{
+  throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }
 
 /* R command generating method, for plotting through R */

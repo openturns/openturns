@@ -42,17 +42,17 @@ CauchyModel::CauchyModel()
   // Nothing to do
 }
 
-CauchyModel::CauchyModel(const NumericalPoint & amplitude,
-                         const NumericalPoint & scale)
-  : SpectralModelImplementation(amplitude, scale)
+CauchyModel::CauchyModel(const NumericalPoint & scale,
+                         const NumericalPoint & amplitude)
+  : SpectralModelImplementation(scale, amplitude)
 {
   // Nothing to do
 }
 
-CauchyModel::CauchyModel(const NumericalPoint & amplitude,
-                         const NumericalPoint & scale,
+CauchyModel::CauchyModel(const NumericalPoint & scale,
+                         const NumericalPoint & amplitude,
                          const CorrelationMatrix & spatialCorrelation)
-  : SpectralModelImplementation(amplitude, scale, spatialCorrelation)
+  : SpectralModelImplementation(scale, amplitude, spatialCorrelation)
 {
   // Nothing to do
 }

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KDTREE_HXX
 #define OPENTURNS_KDTREE_HXX
 
-#include "openturns/Object.hxx"
+#include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,7 +34,7 @@ class KDNearestNeighboursFinder;
  * Organize d-dimensional points into a hierarchical tree-like structure
  */
 class OT_API KDTree
-  : public Object
+  : public PersistentObject
 {
   CLASSNAME;
 
@@ -78,6 +78,11 @@ public:
   /** Points accessor */
   NumericalSample getPoints() const;
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
 protected:
 #ifndef SWIG
   /**
@@ -127,6 +132,9 @@ protected:
       const NumericalPoint & x,
       NumericalScalar & bestSquaredDistance,
       const UnsignedInteger activeDimension) const;
+
+  /** Build the tree */
+  void initialize();
 
   /** The data organized by the tree */
   NumericalSample points_;

@@ -47,6 +47,28 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
+    # Get 95% survival function
+    inverseSurvival = ot.NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    print("InverseSurvival=", repr(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    # Confidence regions. Some computations take ages so they are commented
+    if distribution.getDimension() <= 2:
+        #interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        #print("Minimum volume interval=", interval)
+        #print("threshold=", ot.NumericalPoint(1, threshold))
+        #levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+        #print("Minimum volume level set=", levelSet)
+        #print("beta=", ot.NumericalPoint(1, beta))
+        #interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        #print("Bilateral confidence interval=", interval)
+        #print("beta=", ot.NumericalPoint(1, beta))
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+        print("Unilateral confidence interval (lower tail)=", interval)
+        print("beta=", ot.NumericalPoint(1, beta))
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+        print("Unilateral confidence interval (upper tail)=", interval)
+        print("beta=", ot.NumericalPoint(1, beta))
+
     mean = distribution.getMean()
     print("mean=", mean)
     standardDeviation = distribution.getStandardDeviation()

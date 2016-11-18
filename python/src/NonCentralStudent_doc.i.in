@@ -54,11 +54,11 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.NonCentralStudent(6.)
+>>> distribution = ot.NonCentralStudent(6.0)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)"
+>>> sample = distribution.getSample(5)"
 
 // ---------------------------------------------------------------------
 

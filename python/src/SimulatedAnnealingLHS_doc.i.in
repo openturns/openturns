@@ -1,0 +1,63 @@
+%define OT_SimulatedAnnealing_doc
+"LHS optimization using simulated annealing.
+
+Performs the optimization of an LHS using simulated annealing algorithm.
+
+Available constructors:
+
+    SimulatedAnnealingLHS(*lhsDesign*)
+
+    SimulatedAnnealingLHS(*lhsDesign, profile*)
+
+    SimulatedAnnealingLHS(*lhsDesign, profile, spaceFilling*)
+
+    SimulatedAnnealingLHS(*initialDesign, distribution*)
+
+    SimulatedAnnealingLHS(*initialDesign, distribution, profile*)
+
+    SimulatedAnnealingLHS(*initialDesign, distribution, profile, spaceFilling*)
+
+Parameters
+----------
+lhsDesign : :class:`~openturns.LHSExperiment`
+    Factory that generate designs
+initialDesign : 2d-array sequence
+    Initial design to be optimized
+distribution : :class:`~openturns.Distribution`
+    Distribution of designs
+profile : :class:`~ot.TemperatureProfile`
+    Temperature profile used by the simulated annealing algorithm
+    Default one is GeometricProfile
+spaceFilling : :class:`~ot.SpaceFilling`
+    Criterion to be optimized
+    Default one is SpaceFillingMinDist
+
+Notes
+-----
+
+With the first constructor, the initial design is generated thanks to lhsDesign. With the second usage, we fix it.
+Starting from this design, a new design is obtained by permuting one random coordinate of two randomly chosen elements; by construction, this design is also an LHS design. 
+If the new design is better than the previous one, it is kept.  
+If it is worse, it may anyway be kept with some probability, which depends on how these designs compare, but also on a temperature profile 
+T which decreases over time.  This means that jumping away from local extrema becomes less probable over time.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> size = 100
+>>> # Build standard randomized LHS algorithm
+>>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dimension)
+>>> lhs = ot.LHSExperiment(distribution, size)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> # Defining space fillings
+>>> spaceFilling = ot.SpaceFillingC2()
+>>> # Geometric profile
+>>> geomProfile = ot.GeometricProfile(10.0, 0.95, 2000)
+>>> # Simulated Annealing LHS with geometric temperature profile, C2 optimization
+>>> optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(lhs, geomProfile, spaceFilling)"
+%enddef
+%feature("docstring") OT::SimulatedAnnealingLHS
+OT_SimulatedAnnealing_doc
+
+// ---------------------------------------------------------------------

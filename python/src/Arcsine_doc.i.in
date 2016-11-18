@@ -32,21 +32,30 @@ Its first moments are:
         \Var{X} & = & \frac{(b - a)^2}{8}
     \end{eqnarray*}
 
+It is possible to create an Arcsine distribution from the alternative parametrization :math:`(\mu, \sigma)`: see  :class:`~openturns.ArcsineMuSigma`. In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative  parametrization :math:`(\mu, \sigma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(a, b)`
+
 Examples
 --------
-Create a distribution:
+Create a distribution from its native parameters :math:`(a, b)`:
 
 >>> import openturns as ot
->>> distribution = ot.Arcsine(2.0, 3.0)
+>>> myDist = ot.Arcsine(2.0, 3.0)
+
+Create a it from the alternative parametrization :math:`(\mu, \sigma)`:
+
+>>> myDist2 = ot.Arcsine()
+>>> myDist2.setParameter(ot.ArcsineMuSigma()([2.5, 0.35]))
+
+Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.ArcsineMuSigma(2.5, 0.35)
+>>> myDist3 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)
-
-Create a distribution from mu,sigma parameter set:
-
->>> distribution = ot.Arcsine()
->>> distribution.setParameter(ot.ArcsineMuSigma()([8.4, 2.25]))"
+>>> sample = myDist.getSample(5)"
 
 // ---------------------------------------------------------------------
 

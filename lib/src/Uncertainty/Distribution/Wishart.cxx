@@ -41,6 +41,7 @@ Wishart::Wishart()
   setName("Wishart");
   setV(CovarianceMatrix(1));
   computeRange();
+  update();
 }
 
 /* Parameters constructor */
@@ -48,11 +49,12 @@ Wishart::Wishart(const CovarianceMatrix & v,
                  const NumericalScalar nu)
   : ContinuousDistribution()
   , cholesky_()
-  , nu_(nu)
+  , nu_(-1.0)
 {
   setName("Wishart");
   if (nu + 1 <= v.getDimension()) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << "is not greater than dimension-1=" << static_cast< SignedInteger > (v.getDimension()) - 1;
   setV(v);
+  setNu(nu);
 }
 
 /* Comparison operator */
@@ -151,7 +153,7 @@ NumericalScalar Wishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const NumericalScalar logPDF = computeLogPDF(m);
-  const NumericalScalar pdf = logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : std::exp(logPDF);
+  const NumericalScalar pdf = (logPDF == SpecFunc::LogMinNumericalScalar ? 0.0 : std::exp(logPDF));
   return pdf;
 }
 
@@ -159,7 +161,7 @@ NumericalScalar Wishart::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const NumericalScalar logPDF = computeLogPDF(point);
-  const NumericalScalar pdf = logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : std::exp(logPDF);
+  const NumericalScalar pdf = (logPDF == SpecFunc::LogMinNumericalScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
@@ -202,7 +204,7 @@ NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
   }
   catch (...)
   {
-    return -SpecFunc::MaxNumericalScalar;
+    return SpecFunc::LogMinNumericalScalar;
   }
 }
 
@@ -210,8 +212,7 @@ NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 NumericalScalar Wishart::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In Wishart::computeCDF(const NumericalPoint & point) const";
+  return ContinuousDistribution::computeCDF(point);
 }
 
 /* Compute the mean of the distribution */

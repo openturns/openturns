@@ -20,10 +20,13 @@
  */
 #include <cmath>
 #include "openturns/NormalCopulaFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NormalCopulaFactory);
+
+static const Factory<NormalCopulaFactory> Factory_NormalCopulaFactory;
 
 /* Default constructor */
 NormalCopulaFactory::NormalCopulaFactory()

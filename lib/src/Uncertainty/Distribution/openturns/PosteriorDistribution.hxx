@@ -28,9 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 /**
  * @class PosteriorDistribution
  *
@@ -109,6 +106,9 @@ public:
 
   /** Compute the likelihood of the observations */
   NumericalPoint computeLikelihood(const NumericalPoint & theta) const;
+
+  /** Compute the log-likelihood of the observations */
+  NumericalPoint computeLogLikelihood(const NumericalPoint & theta) const;
 
 protected:
 

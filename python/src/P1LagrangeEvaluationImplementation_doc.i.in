@@ -17,7 +17,7 @@ LinearNumericalMathFunction
 
 Notes
 -----
-It returns a :class:`~openturns.NumericalMathFunction` that implements the P-1 Lagrange interpolation function :math:`f : \cD_N \rightarrow \Rset^p` :
+It returns a :class:`~openturns.NumericalMathFunction` that implements the P1 Lagrange interpolation function :math:`f : \cD_N \rightarrow \Rset^p` :
 
 .. math::
     \forall \vect{x} \in \Rset^n, f(\vect{x}) = \sum_{\vect{\xi}_i\in\cV(\vect{x})}\alpha_i f(\vect{\xi}_i)
@@ -29,7 +29,7 @@ where :math:`\cD_N` is a :class:`~openturns.Mesh`, :math:`\cV(\vect{x})` is the 
 
 Examples
 --------
-Create a Karhunen-Loeve P1 factory:
+Create a P1 Lagrange evaluation:
 
 >>> import openturns as ot
 >>> field = ot.Field(ot.RegularGrid(0.0, 1.0, 4), [[0.5], [1.5], [1.0], [-0.5]])

@@ -83,7 +83,7 @@ public:
   void load(Advocate & adv);
 
 protected:
-  /** Check fo data validity */
+  /** Check for data validity */
   virtual void checkData(const NumericalSample & data) const;
 
 private:

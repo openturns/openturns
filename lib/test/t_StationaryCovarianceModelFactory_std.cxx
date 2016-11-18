@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     const RegularGrid timeGrid(0.0, 0.1, size);
     const NumericalPoint amplitude(dimension, 1.0);
     const NumericalPoint scale(dimension, 1.0);
-    ExponentialCauchy model(amplitude, scale);
+    ExponentialCauchy model(scale, amplitude);
     SpectralNormalProcess myProcess(model, timeGrid);
 
     // Create a sample of time series

@@ -23,6 +23,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.0398
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.0398206,-0.0621201]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[11.5606]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[5.2394]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [5.20986, 11.5901]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.30479} with f=
+MinimumVolumeLevelSetEvaluation(Arcsine(a = 5.2, b = 11.6))
+beta= [0.0997794]
+Bilateral confidence interval= [5.20986, 11.5901]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [5.2, 11.5606]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [5.2394, 11.6]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[8.4]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[2.26274]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0]
@@ -36,7 +49,3 @@ standard moment n= 3  value= [0]
 standard moment n= 4  value= [0.375]
 standard moment n= 5  value= [0]
 Standard representative= Arcsine(a = -1, b = 1)
-mu= 8.4
-sigma= 2.2627416998
-a from (mu, sigma)= 5.2
-b from (mu, sigma)= 11.6

@@ -45,9 +45,7 @@ Examples
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
 >>> # Easier way to construct the same multivariate orthonormal basis
->>> polyColl = [0.]*3
->>> for i in range(Xdist.getDimension()):
-...     polyColl[i] = ot.StandardDistributionPolynomialFactory(Xdist.getMarginal(i))
+>>> polyColl = [ot.StandardDistributionPolynomialFactory(Xdist.getMarginal(i)) for i in range(Xdist.getDimension())]
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)"
 
 // ---------------------------------------------------------------------

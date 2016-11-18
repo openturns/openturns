@@ -20,8 +20,11 @@ to evaluate the following probability:
 
 Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
 vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
-which enables the definition of the event
-:math:`\cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\}`.
+which enables the definition of the event 
+
+.. math::
+
+    \cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\} 
 
 If we have the set :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}` of
 :math:`N` independent samples of the random vector :math:`\vect{X}`, we can
@@ -68,10 +71,10 @@ Examples
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create a Monte Carlo algorithm
 >>> myAlgo = ot.MonteCarlo(myEvent)
->>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setMaximumOuterSampling(150)
 >>> myAlgo.setBlockSize(4)
 >>> myAlgo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.146505"
+Probability estimate=0.140000"

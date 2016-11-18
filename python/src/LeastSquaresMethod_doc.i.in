@@ -1,0 +1,22 @@
+%feature("docstring") OT::LeastSquaresMethod
+OT_LeastSquaresMethod_doc
+%feature("docstring") OT::LeastSquaresMethod::buildCurrentBasis
+OT_LeastSquaresMethod_buildCurrentBasis_doc
+%feature("docstring") OT::LeastSquaresMethod::computeWeightedDesign
+OT_LeastSquaresMethod_computeWeightedDesign_doc
+%feature("docstring") OT::LeastSquaresMethod::getInputSample
+OT_LeastSquaresMethod_getInputSample_doc
+%feature("docstring") OT::LeastSquaresMethod::getOutputSample
+OT_LeastSquaresMethod_getOutputSample_doc
+%feature("docstring") OT::LeastSquaresMethod::getWeight
+OT_LeastSquaresMethod_getWeight_doc
+%feature("docstring") OT::LeastSquaresMethod::getBasis
+OT_LeastSquaresMethod_getBasis_doc
+%feature("docstring") OT::LeastSquaresMethod::getCurrentIndices
+OT_LeastSquaresMethod_getCurrentIndices_doc
+%feature("docstring") OT::LeastSquaresMethod::getInitialIndices
+OT_LeastSquaresMethod_getInitialIndices_doc
+%feature("docstring") OT::LeastSquaresMethod::trashDecomposition
+OT_LeastSquaresMethod_trashDecomposition_doc
+%feature("docstring") OT::LeastSquaresMethod::update
+OT_LeastSquaresMethod_update_doc

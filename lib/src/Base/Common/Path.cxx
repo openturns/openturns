@@ -47,6 +47,10 @@
 #include <libgen.h>               // for dirname
 #endif
 
+#ifdef OPENTURNS_HAVE_UNISTD_H
+#include <unistd.h>               // for getpid, readlink, close
+#endif
+
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."
 #endif
@@ -286,9 +290,8 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
  */
 void Path::AntislashFileName(FileName & filename)
 {
-  UnsignedInteger i;
-  for(i = 0; i < filename.size(); i++)
-    if(filename.at(i) == '/')
+  for (UnsignedInteger i = 0; i < filename.size(); ++ i)
+    if (filename.at(i) == '/')
       filename.at(i) = '\\';
 }
 
@@ -426,8 +429,8 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
  */
 void Path::DeleteTemporaryDirectory (const FileName & directoryName)
 {
-  if (Os::DeleteDirectory( directoryName))
-    LOGWARN( OSS() << "Can't remove temporary directory  " << directoryName );
+  if (Os::DeleteDirectory(directoryName))
+    LOGWARN(OSS() << "Can't remove temporary directory  " << directoryName);
 }
 
 

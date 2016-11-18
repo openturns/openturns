@@ -50,6 +50,19 @@ public:
   void setRecompressionEpsilon(const NumericalScalar recompressionEpsilon);
   NumericalScalar getRecompressionEpsilon() const;
 
+  /** accessor for admissibility factor */
+  void setAdmissibilityFactor(const NumericalScalar admissibilityFactor);
+  NumericalScalar getAdmissibilityFactor() const;
+
+  /** accessor for clustering algorithm */
+  void setClusteringAlgorithm(const String & clusteringAlgorithm);
+  String getClusteringAlgorithm() const;
+
+  /** accessor for compression method */
+  void setCompressionMethod(const String & compressionMethod);
+  String getCompressionMethod() const;
+  UnsignedInteger getCompressionMethodAsUnsignedInteger() const;
+
   /* String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
@@ -63,6 +76,9 @@ public:
 private:
   NumericalScalar assemblyEpsilon_;
   NumericalScalar recompressionEpsilon_;
+  NumericalScalar admissibilityFactor_;
+  String clusteringAlgorithm_;
+  String compressionMethod_;
 
 };
 

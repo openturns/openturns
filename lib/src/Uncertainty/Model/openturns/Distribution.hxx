@@ -154,6 +154,11 @@ public:
                              const NumericalScalar xMax,
                              const UnsignedInteger pointNumber) const;
 
+  /** Compute the log-PDF of 1D distributions over a regular grid */
+  NumericalSample computeLogPDF(const NumericalScalar xMin,
+				const NumericalScalar xMax,
+				const UnsignedInteger pointNumber) const;
+
   /** Get the CDF of the distribution */
   NumericalScalar computeCDF(const NumericalScalar scalar) const;
   NumericalScalar computeComplementaryCDF(const NumericalScalar scalar) const;
@@ -162,6 +167,11 @@ public:
   NumericalScalar computeCDF(const NumericalPoint & point) const;
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
   NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob) const;
+#ifndef SWIG
+  NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob,
+						NumericalScalar & marginalProb) const;
+#endif
 
   NumericalSample computeCDF(const NumericalSample & sample) const;
   NumericalSample computeComplementaryCDF(const NumericalSample & sample) const;
@@ -194,6 +204,10 @@ public:
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
   NumericalSample computePDFGradient(const NumericalSample & sample) const;
 
+  /** Get the log(PDFgradient) of the distribution */
+  NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+  NumericalSample computeLogPDFGradient(const NumericalSample & sample) const;
+
   /** Get the CDF gradient of the distribution */
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
   NumericalSample computeCDFGradient(const NumericalSample & sample) const;
@@ -201,6 +215,11 @@ public:
   /** Get the quantile of the distribution */
   NumericalPoint computeQuantile(const NumericalScalar prob,
                                  const Bool tail = false) const;
+#ifndef SWIG
+  NumericalPoint computeQuantile(const NumericalScalar prob,
+                                 const Bool tail,
+				 NumericalScalar & marginalProb) const;
+#endif
   NumericalSample computeQuantile(const NumericalPoint & prob,
                                   const Bool tail = false) const;
   /** Compute the quantile over a regular grid */
@@ -208,6 +227,22 @@ public:
                                   const NumericalScalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
+
+  /** Get the product minimum volume interval containing a given probability of the distribution */
+  Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product bilateral confidence interval containing a given probability of the distribution */
+  Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distribution */
+  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+
+  /** Get the minimum volume level set containing a given probability of the distribution */
+  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
@@ -389,6 +424,36 @@ public:
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber) const;
+
+  /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
+  virtual Graph drawLogPDF() const;
+
+  /** Draw the log-PDF of the distribution when its dimension is 1 */
+  virtual Graph drawLogPDF(const NumericalScalar xMin,
+			   const NumericalScalar xMax,
+			   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+  virtual Graph drawLogPDF(const UnsignedInteger pointNumber) const;
+  
+  /** Draw the log-PDF of a 1D marginal */
+  virtual Graph drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
+				     const NumericalScalar xMin,
+				     const NumericalScalar xMax,
+				     const UnsignedInteger pointNumber) const;
+  
+  /** Draw the log-PDF of the distribution when its dimension is 2 */
+  virtual Graph drawLogPDF(const NumericalPoint & xMin,
+			   const NumericalPoint & xMax,
+			   const Indices & pointNumber) const;
+  virtual Graph drawLogPDF(const NumericalPoint & xMin,
+			   const NumericalPoint & xMax) const;
+  virtual Graph drawLogPDF(const Indices & pointNumber) const;
+
+  /** Draw the PDF of a 2D marginal */
+  virtual Graph drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
+				     const UnsignedInteger secondMarginal,
+				     const NumericalPoint & xMin,
+				     const NumericalPoint & xMax,
+				     const Indices & pointNumber) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawCDF() const;

@@ -4,9 +4,9 @@
 Available constructors:
     GeneralizedExponential(*spatialDim=1*)
 
-    GeneralizedExponential(*theta, p*)
+    GeneralizedExponential(*scale, p*)
 
-    GeneralizedExponential(*theta, sigma, p*)
+    GeneralizedExponential(*scale, amplitude, p*)
 
 
 Parameters
@@ -15,16 +15,13 @@ spatialDim : int
     Spatial dimension :math:`n`.
     When not fulfilled, the spatial dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
     By default, equal to 1.
-
-theta : sequence of floats
+scale : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
     The size of :math:`\vect{\theta}` is the spatial dimension.
-
-sigma : sequence of positive floats
+amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
-
 p : int, :math:`p \geq 1`
     Define the norm that is used within the model.
 
@@ -73,3 +70,25 @@ Create a  generalized exponential covariance function specifying the scale vecto
 Create a  generalized exponential covariance function specifying the scale vector, the amplitude and p:
 
 >>> covModel3 = ot.GeneralizedExponential([1.5, 2.5], [3.5], 3)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExponential::setP
+"P accessor.
+
+Parameters
+----------
+p : int, :math:`p \geq 1`
+    Define the norm that is used within the model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExponential::getP
+"P accessor.
+
+Returns
+-------
+p : int, :math:`p \geq 1`
+    Define the norm that is used within the model."
+

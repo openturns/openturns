@@ -1,44 +1,57 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
 try:
     size = 100
     dim = 10
-    R = CorrelationMatrix(dim)
+    R = ot.CorrelationMatrix(dim)
     for i in range(dim):
         for j in range(i):
             R[i, j] = (i + j + 1.0) / (2.0 * dim)
 
-    mean = NumericalPoint(dim, 2.0)
-    sigma = NumericalPoint(dim, 3.0)
-    distribution = Normal(mean, sigma, R)
+    mean = [2.0] * dim
+    sigma = [3.0] * dim
+    distribution = ot.Normal(mean, sigma, R)
 
     sample = distribution.getSample(size)
-    sampleX = NumericalSample(size, dim - 1)
-    sampleY = NumericalSample(size, 1)
+    sampleX = ot.NumericalSample(size, dim - 1)
+    sampleY = ot.NumericalSample(size, 1)
     for i in range(size):
-        sampleY[i] = NumericalPoint(1, sample[i, 0])
-        p = NumericalPoint(dim - 1)
+        sampleY[i] = ot.NumericalPoint(1, sample[i, 0])
+        p = ot.NumericalPoint(dim - 1)
         for j in range(dim - 1):
             p[j] = sample[i, j + 1]
         sampleX[i] = p
 
-    sampleZ = NumericalSample(size, 1)
+    sampleZ = ot.NumericalSample(size, 1)
     for i in range(size):
-        sampleZ[i] = NumericalPoint(1, sampleY[i, 0] * sampleY[i, 0])
+        sampleZ[i] = ot.NumericalPoint(1, sampleY[i, 0] * sampleY[i, 0])
     print("LinearModelAdjustedRSquared=",
-          LinearModelTest.LinearModelAdjustedRSquared(sampleY, sampleZ))
+          ot.LinearModelTest.LinearModelAdjustedRSquared(sampleY, sampleZ))
     print("LinearModelFisher=",
-          LinearModelTest.LinearModelFisher(sampleY, sampleZ))
+          ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ))
     print("LinearModelResidualMean=",
-          LinearModelTest.LinearModelResidualMean(sampleY, sampleZ))
+          ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ))
     print("LinearModelRSquared=",
-          LinearModelTest.LinearModelRSquared(sampleY, sampleZ))
+          ot.LinearModelTest.LinearModelRSquared(sampleY, sampleZ))
+
+    # Durbin Watson
+    ot.RandomGenerator.SetSeed(5415)
+    eps = ot.Normal(0, 20)
+    f = ot.NumericalMathFunction('x', '5+2*x+x^2-0.1*x^3')
+    N = 15
+    x = ot.NumericalSample([[0],[1.42857],[2.85714],[4.28571],[5.71429],[7.14286],
+                            [8.57143],[10],[11.4286],[12.8571],[14.2857],[15.7143],
+                            [17.1429],[18.5714],[20]])
+    y = f(x) + eps.getSample(N)
+    linmodel = ot.LinearModelFactory().build(x, y)
+    dwTest = ot.LinearModelTest.LinearModelDurbinWatson(x, y)
+    print('Durbin Watson = ', dwTest)
 
 except:
     import sys

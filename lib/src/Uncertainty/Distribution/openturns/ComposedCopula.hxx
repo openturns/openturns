@@ -87,6 +87,10 @@ public:
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
 
+  /** Compute the survival function */
+  using CopulaImplementation::computeSurvivalFunction;
+  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
 

@@ -23,6 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
+#include "openturns/TensorizedCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -214,6 +215,37 @@ void AggregatedProcess::setTimeGrid(const RegularGrid & timeGrid)
   for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
     processCollection_[i].setTimeGrid(timeGrid);
   ProcessImplementation::setTimeGrid(timeGrid);
+}
+
+/* Is the underlying a gaussian process ? */
+Bool AggregatedProcess::isNormal() const
+{
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    if (!processCollection_[i].isNormal()) return false;
+  return true;
+}
+
+/* Is the underlying a stationary process ? */
+Bool AggregatedProcess::isStationary() const
+{
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    if (!processCollection_[i].isStationary()) return false;
+  return true;
+}
+
+/* Covariance model accessor */
+CovarianceModel AggregatedProcess::getCovarianceModel() const
+{
+  Collection<CovarianceModel> coll(processCollection_.getSize());
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    coll[i] = processCollection_[i].getCovarianceModel();
+  return TensorizedCovarianceModel(coll);
+}
+
+/* Trend accessor */
+TrendTransform AggregatedProcess::getTrend() const
+{
+  throw NotYetImplementedException(HERE) << "AggregatedProcess::getTrend()";
 }
 
 /* Method save() stores the object through the StorageManager */

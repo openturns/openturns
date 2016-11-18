@@ -64,6 +64,10 @@ public:
   NumericalPoint grade(const NumericalSample & inS,
                        const Indices & outC) const;
 
+  /** Parallelization flag accessor */
+  void setParallel(const Bool flag);
+  Bool isParallel() const;
+
   /** Input space dimension */
   UnsignedInteger getDimension() const;
 

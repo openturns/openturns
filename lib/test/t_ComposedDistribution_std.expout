@@ -45,6 +45,8 @@ CDF      =0.033495
 CDF (ref)=0.033495
 Survival      =0.439015
 Survival (ref)=0.439015
+Inverse survival=class=NumericalPoint name=Unnamed dimension=3 values=[-3.21773,-4.3266,-5.43546]
+Survival(inverse survival)=0.95
 Quantile      =class=NumericalPoint name=Unnamed dimension=3 values=[5.21773,8.3266,11.4355]
 Quantile (ref)=class=NumericalPoint name=Unnamed dimension=3 values=[5.21773,8.3266,11.4355]
 CDF(quantile)=0.95

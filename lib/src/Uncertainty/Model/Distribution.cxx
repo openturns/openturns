@@ -412,6 +412,17 @@ NumericalScalar Distribution::computeSurvivalFunction(const NumericalPoint & poi
   return getImplementation()->computeSurvivalFunction(point);
 }
 
+NumericalPoint Distribution::computeInverseSurvivalFunction(const NumericalScalar prob) const
+{
+  return getImplementation()->computeInverseSurvivalFunction(prob);
+}
+
+NumericalPoint Distribution::computeInverseSurvivalFunction(const NumericalScalar prob,
+							    NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeInverseSurvivalFunction(prob, marginalProb);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Distribution::computeCharacteristicFunction(const NumericalScalar x) const
 {
@@ -525,6 +536,15 @@ NumericalSample Distribution::computePDF(const NumericalScalar xMin,
   return getImplementation()->computePDF(xMin, xMax, pointNumber, grid);
 }
 
+/*  Compute the log-PDF of 1D distributions over a regular grid */
+NumericalSample Distribution::computeLogPDF(const NumericalScalar xMin,
+    const NumericalScalar xMax,
+    const UnsignedInteger pointNumber) const
+{
+  NumericalSample grid;
+  return getImplementation()->computeLogPDF(xMin, xMax, pointNumber, grid);
+}
+
 /*  Compute the CDF of 1D distributions over a regular grid */
 NumericalSample Distribution::computeCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
@@ -553,6 +573,18 @@ NumericalSample Distribution::computePDFGradient(const NumericalSample & sample)
   return getImplementation()->computePDFGradient(sample);
 }
 
+/* Get the logPDF gradient of the distribution */
+NumericalPoint Distribution::computeLogPDFGradient(const NumericalPoint & point) const
+{
+  return getImplementation()->computeLogPDFGradient(point);
+}
+
+NumericalSample Distribution::computeLogPDFGradient(const NumericalSample & sample) const
+{
+  return getImplementation()->computeLogPDFGradient(sample);
+}
+
+
 /* Get the CDF gradient of the distribution */
 NumericalPoint Distribution::computeCDFGradient(const NumericalPoint & point) const
 {
@@ -580,10 +612,83 @@ NumericalPoint Distribution::computeQuantile(const NumericalScalar prob,
   return getImplementation()->computeQuantile(prob, tail);
 }
 
+NumericalPoint Distribution::computeQuantile(const NumericalScalar prob,
+					     const Bool tail,
+					     NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeQuantile(prob, tail, marginalProb);
+}
+
 NumericalSample Distribution::computeQuantile(const NumericalPoint & prob,
     const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
+}
+
+/* Get the product minimum volume interval containing at least a given probability of the distribution.
+   The minimum volume interval [a, b] is such that:
+   a\in[lowerBound, F^{-1}(1-p)]
+   b = F^{-1}(p+F(a))
+   f(a) = f(b) = f(F^{-1}(p+F(a)))
+   so we look for the root of f(F^{-1}(p+F(a))) - f(a)
+*/
+Interval Distribution::computeMinimumVolumeInterval(const NumericalScalar prob) const
+{
+  return getImplementation()->computeMinimumVolumeInterval(prob);
+}
+
+Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/* Get the product bilateral confidence interval containing at least a given probability of the distribution.
+   The bilateral confidence interval [a, b] is such that:
+   for all i\in{1,...,d}, P(X_i\in[a_i, b_i])=\beta
+   where \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
+*/
+Interval Distribution::computeBilateralConfidenceInterval(const NumericalScalar prob) const
+{
+  return getImplementation()->computeBilateralConfidenceInterval(prob);
+}
+
+Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/* Get the product unilateral confidence interval containing at least a given probability of the distribution.
+   The bilateral confidence interval [a, b] is such that:
+   if upper == false
+     for all i\in{1,...,d}, a_i=-\intfy and P(X_i<=b_i)=\beta
+   if upper == true
+     for all i\in{1,...,d}, P(a_i<=X_i)=\beta and b_i=\intfy
+
+   where in both cases \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
+*/
+Interval Distribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
+							   const Bool tail) const
+{
+  return getImplementation()->computeUnilateralConfidenceInterval(prob, tail);
+}
+
+Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const
+{
+  return getImplementation()->computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
+}
+
+/* Get the minimum volume level set containing at least a given probability of the distribution.
+   The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
+   where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
+*/
+LevelSet Distribution::computeMinimumVolumeLevelSet(const NumericalScalar prob) const
+{
+  return getImplementation()->computeMinimumVolumeLevelSet(prob);
+}
+
+LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  return getImplementation()->computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
 /* Compute the quantile over a regular grid */
@@ -833,6 +938,66 @@ Graph Distribution::drawMarginal2DPDF(const UnsignedInteger firstMarginal,
 Graph Distribution::drawPDF() const
 {
   return getImplementation()->drawPDF();
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 */
+Graph Distribution::drawLogPDF(const NumericalScalar xMin,
+			       const NumericalScalar xMax,
+			       const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 */
+Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->drawLogPDF(pointNumber);
+}
+
+/* Draw the log-PDF of a 1D marginal */
+Graph Distribution::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
+					 const NumericalScalar xMin,
+					 const NumericalScalar xMax,
+					 const UnsignedInteger pointNumber) const
+{
+  return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph Distribution::drawLogPDF(const NumericalPoint & xMin,
+			       const NumericalPoint & xMax,
+			       const Indices & pointNumber) const
+{
+  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph Distribution::drawLogPDF(const NumericalPoint & xMin,
+			       const NumericalPoint & xMax) const
+{
+  return getImplementation()->drawLogPDF(xMin, xMax);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 2 */
+Graph Distribution::drawLogPDF(const Indices & pointNumber) const
+{
+  return getImplementation()->drawLogPDF(pointNumber);
+}
+
+/* Draw the log-PDF of a 2D marginal */
+Graph Distribution::drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
+					 const UnsignedInteger secondMarginal,
+					 const NumericalPoint & xMin,
+					 const NumericalPoint & xMax,
+					 const Indices & pointNumber) const
+{
+  return getImplementation()->drawMarginal2DLogPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber);
+}
+
+/* Draw the log-PDF of the distribution when its dimension is 1 or 2 */
+Graph Distribution::drawLogPDF() const
+{
+  return getImplementation()->drawLogPDF();
 }
 
 /* Draw the CDF of the distribution when its dimension is 1 */

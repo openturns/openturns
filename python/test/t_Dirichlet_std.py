@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
-    for dim in range(1, 5):
+    for dim in range(1, 2):
         theta = NumericalPoint(dim + 1)
         for i in range(dim + 1):
             theta[i] = (i + 1.0) / 4.0
@@ -67,6 +67,28 @@ try:
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", repr(quantile))
         print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
+        # Get 95% survival function
+        inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+        print("InverseSurvival=", repr(inverseSurvival))
+        print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+
+        # Confidence regions
+        interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        print("Minimum volume interval=", interval)
+        print("threshold=", NumericalPoint(1, threshold))
+        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+        print("Minimum volume level set=", levelSet)
+        print("beta=", NumericalPoint(1, beta))
+        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        print("Bilateral confidence interval=", interval)
+        print("beta=", NumericalPoint(1, beta))
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+        print("Unilateral confidence interval (lower tail)=", interval)
+        print("beta=", NumericalPoint(1, beta))
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+        print("Unilateral confidence interval (upper tail)=", interval)
+        print("beta=", NumericalPoint(1, beta))
+
         mean = distribution.getMean()
         print("mean=", repr(mean))
         standardDeviation = distribution.getStandardDeviation()
@@ -77,6 +99,7 @@ try:
         print("kurtosis=", repr(kurtosis))
         covariance = distribution.getCovariance()
         print("covariance=", repr(covariance))
+
         # Extract the marginals
         for i in range(dim):
             margin = distribution.getMarginal(i)

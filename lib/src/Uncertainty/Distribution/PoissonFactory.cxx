@@ -21,10 +21,13 @@
 #include <cmath>
 #include "openturns/PoissonFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PoissonFactory);
+
+static const Factory<PoissonFactory> Factory_PoissonFactory;
 
 /* Default constructor */
 PoissonFactory::PoissonFactory()

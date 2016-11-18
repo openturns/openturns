@@ -1,0 +1,52 @@
+Distribution  class=Wishart name=Wishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=3
+Distribution  Wishart(V = 
+[[ 1 ]], nu = 3)
+Mean=  class=NumericalPoint name=Unnamed dimension=1 values=[3]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6]
+Elliptical =  False
+oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[3.90923]
+oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1.18011]  last= class=NumericalPoint name=Unnamed dimension=1 values=[0.622293]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[3.00811]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.19866]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=NumericalPoint name=Unnamed dimension=1 values=[9.1]
+ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.00565984]
+ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.00565984]
+log pdf=-4.364801
+pdf     =0.012717
+pdf (FD)=0.012717
+cdf=0.972010
+ccdf=0.027990
+pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.00474156,-0.144349]
+cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.0581774,-1.33806]
+quantile= class=NumericalPoint name=Unnamed dimension=1 values=[7.81473]
+cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.351846]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0.00315933, 7.81683]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.79922} with f=
+MinimumVolumeLevelSetEvaluation(Wishart(V = 
+[[ 1 ]], nu = 3))
+beta= [0.0223883]
+Bilateral confidence interval= [0.215795, 9.3484]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 7.81473]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.351846, 59.8961]
+beta= [0.95]
+mean= class=NumericalPoint name=Unnamed dimension=1 values=[3]
+standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[2.44949]
+skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.63299]
+kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[7]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6]
+parameters= [class=NumericalPointWithDescription name=Unnamed dimension=0 description=[] values=[],class=NumericalPointWithDescription name=Unnamed dimension=0 description=[] values=[]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [3]
+standard moment n= 2  value= [15]
+standard moment n= 3  value= [105]
+standard moment n= 4  value= [945]
+standard moment n= 5  value= [10395]
+Standard representative= Wishart(V = 
+[[ 1 ]], nu = 3)

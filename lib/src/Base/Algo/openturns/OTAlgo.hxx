@@ -46,5 +46,16 @@
 #include "openturns/GaussKronrodRule.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/KarhunenLoeveP1Factory.hxx"
+#include "openturns/DesignProxy.hxx"
+#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/CholeskyMethod.hxx"
+#include "openturns/QRMethod.hxx"
+#include "openturns/SVDMethod.hxx"
+#include "openturns/KarhunenLoeveResultImplementation.hxx"
+#include "openturns/KarhunenLoeveResult.hxx"
+#include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
+#include "openturns/KarhunenLoeveAlgorithm.hxx"
+#include "openturns/KarhunenLoeveP1Algorithm.hxx"
 
 #endif /* OPENTURNS_OTALGO_HXX */

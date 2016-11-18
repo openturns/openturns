@@ -24,7 +24,7 @@ Create a normal normal white noise of dimension 1:
 
 >>> import openturns as ot
 >>> myDist = ot.Normal()
->>> myMesh = ot.IntervalMesher([100]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+>>> myMesh = ot.IntervalMesher([10]*2).build(ot.Interval([0.0]*2, [1.0]*2))
 >>> myWN = ot.WhiteNoise(myDist, myMesh)
 
 Get a realization:

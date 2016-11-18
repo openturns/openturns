@@ -1,0 +1,98 @@
+Here are instructions to validate this module.
+
+A) Validation of SpaceFilling evaluate() methods
+================================================
+
+ 1) Generate samples with otlhs:
+      $ python generate_lhs_samples.py
+    This command generates centered LHS and writes them
+    into the following files:
+      design_dim_2_size_20_1_centered.csv
+      design_dim_2_size_20_2_centered.csv
+      design_dim_2_size_20_3_centered.csv
+      design_dim_2_size_20_4_centered.csv
+      design_dim_2_size_20_5_centered.csv
+      design_dim_2_size_20_6_centered.csv
+      design_dim_2_size_20_7_centered.csv
+      design_dim_2_size_20_8_centered.csv
+      design_dim_2_size_20_9_centered.csv
+      design_dim_2_size_20_10_centered.csv
+      design_dim_50_size_100_1_centered.csv
+      design_dim_50_size_100_2_centered.csv
+      design_dim_50_size_100_3_centered.csv
+      design_dim_50_size_100_4_centered.csv
+      design_dim_50_size_100_5_centered.csv
+    It also calls the evaluate() method of space filling
+    criteria, and stores result in file
+      space_filling_criteria.val
+
+ 2) Compute criteria of these LHS designs with R package DiceDesign:
+      $ R --no-save < validate_spacefilling_evaluate.R
+    This creates a file
+      space_filling_criteria_ref.val
+
+ 3) Compare space_filling_criteria.val and space_filling_criteria_ref.val
+      $ diff space_filling_criteria.val space_filling_criteria_ref.val
+    There should be no difference
+
+ 4) Command
+      $ python generate_lhs_nonunit_samples.py
+    does the same thing for a distribution which is outside
+    of the unit cube, in order to test normalization.
+    Steps 2 and 3 can be performed, files have a _nonunit suffix.
+    There is a single numerical difference, due to rounding errors.
+
+B) Validation of SpaceFilling perturbLHS() methods
+==================================================
+
+ 1) Generate samples with otlhs:
+      $ python compute_spacefilling_perturbLHS.py
+    This command generates two centered LHS and writes them
+    into the following files:
+      design_dim_2_size_20_centered_perturbLHS.csv
+      design_dim_50_size_100_centered_perturbLHS.csv
+    It also calls the perturbLHS() method of space filling
+    criteria (except for MinDist) for all tuples (row1,row2,col),
+    and stores result in file
+      space_filling_criteria_perturbation.val
+
+ 2) Compute criteria updates of these LHS designs with R package DiceDesign:
+      $ R --no-save < validate_spacefilling_perturbLHS.R
+    This creates a file
+      space_filling_criteria_ref.val
+
+ 3) Compare space_filling_criteria_perturbation.val and
+    space_filling_criteria_perturbation_ref.val
+      $ diff space_filling_criteria_perturbation{,_ref}.val
+    There should be no difference
+
+C) Validation of Monte Carlo method
+===================================
+
+ 1) Run OTLHS Monte Carlo algorithms
+      $ python validate_MC_small.py
+      $ python validate_MC_big.py
+
+D) Validation of Simulated Annealing method
+===========================================
+
+ 1) Run OTLHS Simulated Annealing algorithms on a small sample
+      $ python validate_SA_small.py
+    This creates a small_OTLHS.pdf file
+
+ 2) Run R counterpart, which uses DiceDesign:
+      $ R --no-save < validate_SA_small.R
+    This creates a Rplots.pdf file
+
+ 3) Compare small_OTLHS.pdf and Rplots.pdf
+
+ 4) Run OTLHS Simulated Annealing algorithms on a large sample
+      $ python validate_SA_big.py
+    This creates a large_OTLHS.pdf file
+
+ 5) Run R counterpart, which uses DiceDesign:
+      $ R --no-save < validate_SA_big.R
+    This creates a Rplots.pdf file
+
+ 6) Compare large_OTLHS.pdf and Rplots.pdf
+

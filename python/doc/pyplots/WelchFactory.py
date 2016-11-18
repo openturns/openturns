@@ -14,7 +14,7 @@ myTimeGrid = ot.RegularGrid(tMin, timeStep, size)
 # We fix the parameter of the Cauchy model
 amplitude = [5]
 scale = [3]
-model = ot.ExponentialCauchy(amplitude, scale)
+model = ot.ExponentialCauchy(scale, amplitude)
 myNormalProcess = ot.SpectralNormalProcess(model, myTimeGrid)
 
 # Get a time series or a sample of time series
@@ -80,4 +80,3 @@ fig = plt.figure(figsize=(10, 4))
 plt.suptitle('Spectral model estimation')
 graph_axis = fig.add_subplot(111)
 view = View(graph, figure=fig, axes=[graph_axis], add_legend=False)
-view.show()

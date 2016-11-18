@@ -36,9 +36,6 @@ class OT_API Arcsine
 {
   CLASSNAME;
 public:
-  /** @deprecated */
-  enum ParameterSet {AB, MUSIGMA};
-
   typedef Pointer<DistributionImplementation> Implementation;
 
   /** Default constructor */
@@ -47,12 +44,6 @@ public:
   /** Parameters constructor */
   Arcsine(const NumericalScalar a,
           const NumericalScalar b);
-
-  /** Parameters constructor 
-   @deprecated */
-  Arcsine(const NumericalScalar arg1,
-          const NumericalScalar arg2,
-          const ParameterSet set);
 
   /** Comparison operator */
   Bool operator ==(const Arcsine & other) const;
@@ -141,16 +132,6 @@ public:
   void setB(const NumericalScalar b);
   NumericalScalar getB() const;
 
-  /** Mu accessor 
-   @deprecated */
-  void setMu(const NumericalScalar mu);
-  NumericalScalar getMu() const;
-
-  /** Sigma accessor
-   @deprecated */
-  void setSigma(const NumericalScalar sigma);
-  NumericalScalar getSigma() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -171,7 +152,6 @@ private:
 
   /** set both parameters */
   void setAB(const NumericalScalar a, const NumericalScalar b);
-  void setMuSigma(const NumericalScalar mu, const NumericalScalar sigma);
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

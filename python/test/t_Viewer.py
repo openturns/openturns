@@ -42,7 +42,7 @@ try:
     sample = normal.getSample(size)
     sample2 = ot.Gamma(3.0, 4.0, 0.0).getSample(size)
     graph = ot.VisualTest.DrawQQplot(sample, sample2, 100)
-    # graph.draw('curve4.png.png')
+    # graph.draw('curve4.png')
     view = View(graph)
     # view.save('curve4.png')
     view.show()
@@ -65,6 +65,41 @@ try:
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')
+    view.show(block=False)
+
+    # Text
+    graph = ot.Graph('Annotated cloud', 'x', 'y', True, '')
+    distribution = ot.Normal(2)
+    size = 30
+    sample2D = distribution.getSample(size)
+    cloud = ot.Cloud(sample2D, "red", "fsquare", "Sample2D Cloud");
+    graph.add(cloud)
+
+    # Display extrema indices
+    x1 = [ x[0] for x in sample2D[:,0]]
+    x2 = [ x[0] for x in sample2D[:,1]]
+    idx = [0] * 4
+    idx[0] = x1.index(min(x1))
+    idx[1] = x1.index(max(x1))
+    idx[2] = x2.index(min(x2))
+    idx[3] = x2.index(max(x2))
+
+    labels = ot.Description(sample2D.getSize())
+    for i in range(4):
+      labels[idx[i]] = str(idx[i])
+
+    position = ot.Description(sample2D.getSize(), "top")
+    position[idx[0]] = "right"
+    position[idx[1]] = "left"
+    position[idx[2]] = "top"
+    position[idx[3]] = "bottom"
+
+    text = ot.Text(sample2D, labels)
+    text.setColor("red")
+    text.setTextPositions(position)
+
+    graph.add(text)
+    view = View(graph)
     view.show(block=False)
 
     # CobWeb tests
@@ -124,7 +159,7 @@ try:
 
     # Convergence graph curve
     aCollection = []
-    aCollection.append(ot.LogNormal(300., 30., 0., ot.LogNormal.MUSIGMA))
+    aCollection.append(ot.LogNormalFactory().build(ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)

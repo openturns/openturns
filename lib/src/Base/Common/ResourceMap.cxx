@@ -166,7 +166,7 @@ Bool ResourceMap::getAsBool(String key) const
 
 UnsignedInteger ResourceMap::getAsUnsignedInteger(String key) const
 {
-  UnsignedInteger value;
+  UnsignedInteger value = 0;
   String st = get( key );
   std::istringstream iss( st );
   iss >> value;
@@ -175,7 +175,7 @@ UnsignedInteger ResourceMap::getAsUnsignedInteger(String key) const
 
 NumericalScalar ResourceMap::getAsNumericalScalar(String key) const
 {
-  NumericalScalar value;
+  NumericalScalar value = -1.0;
   String st = get( key );
   std::istringstream iss( st );
   iss >> value;
@@ -406,6 +406,9 @@ void ResourceMap::loadDefaultConfiguration()
   // KarhunenLoeveP1Factory parameters //
   setAsNumericalScalar( "KarhunenLoeveP1Factory-RegularizationFactor", 0.0);
 
+  // KarhunenLoeveP1Algorithm parameters //
+  setAsNumericalScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
+
   // AdaptiveStieltjesAlgorithm parameters //
   setAsUnsignedInteger( "AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64 );
   setAsNumericalScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );
@@ -485,6 +488,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "Matrix-DefaultSmallPivot", 1.0e-7  );
   setAsNumericalScalar( "Matrix-SymmetryThreshold", 1.0e-12 );
 
+  // BernsteinCopulaFactory parameters //
+  setAsBool( "BernsteinCopulaFactory-Parallel", false );
+
   // BurrFactory parameters //
   setAsNumericalScalar( "BurrFactory-AbsolutePrecision", 1.0e-12 );
   setAsNumericalScalar( "BurrFactory-RelativePrecision", 1.0e-12 );
@@ -546,9 +552,6 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "LogNormalFactory-RelativePrecision", 1.0e-12 );
   setAsNumericalScalar( "LogNormalFactory-ResidualPrecision", 1.0e-12 );
   setAsUnsignedInteger( "LogNormalFactory-MaximumIteration", 50 );
-
-  // MaximumLikelihoodFactory parameters //
-  setAsNumericalScalar( "MaximumLikelihoodFactory-GradientStep", 1.0e-5 );
 
   // Meixner parameters //
   setAsUnsignedInteger( "MeixnerDistribution-CDFIntegrationNodesNumber", 32 );
@@ -712,6 +715,7 @@ void ResourceMap::loadDefaultConfiguration()
   set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "LAPACK");
   setAsBool("GeneralizedLinearModelAlgorithm-NormalizeData", false);
   setAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance", true);
+  setAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters", true);
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-StartingScaling", 1.0e-13 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
@@ -765,6 +769,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsBool("Distribution-Parallel", true);
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionBlockMax", 20 );
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionNMax", 1000000 );
+  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1000000 );
+  setAsBool( "Distribution-MinimumVolumeLevelSetBySampling", false );
 
   // ContinuousDistribution parameters //
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );
@@ -792,6 +798,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "WhiteNoise-MeanEpsilon", 1.0e-14 );
 
   // HMatrix parameters //
+  set( "HMatrix-ClusteringAlgorithm", "median" );
   setAsNumericalScalar( "HMatrix-AdmissibilityFactor", 2.0 );
   setAsUnsignedInteger( "HMatrix-CompressionMethod", 1 );
   setAsNumericalScalar( "HMatrix-AssemblyEpsilon", 1.0e-4);
@@ -860,6 +867,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // CholeskyMethod parameters //
   setAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
+
+  // Classifier parameters //
+  setAsBool( "Classifier-Parallel", true);
 
 }
 

@@ -40,11 +40,11 @@ public:
   explicit SquaredExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  SquaredExponential(const NumericalPoint & theta);
+  SquaredExponential(const NumericalPoint & scale);
 
   /** Parameters constructor */
-  SquaredExponential(const NumericalPoint & theta,
-                     const NumericalPoint & sigma);
+  SquaredExponential(const NumericalPoint & scale,
+                     const NumericalPoint & amplitude);
 
   /** Virtual copy constructor */
   SquaredExponential * clone() const;

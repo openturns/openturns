@@ -133,6 +133,12 @@ std::pair<size_t, size_t> HMatrix::fullrkRatio() const
   return getImplementation()->fullrkRatio();
 }
 
+/* Dump HMatrix onto file */
+void HMatrix::dump(const String & name) const
+{
+  return getImplementation()->dump(name);
+}
+
 /* String converter */
 String HMatrix::__repr__() const
 {

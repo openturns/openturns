@@ -57,11 +57,11 @@ Examples
 >>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
 ...                                         ot.IndependentCopula(3))
 >>> # Define designs to pre-compute
->>> size = 1000
+>>> size = 100
 >>> inputDesign = ot.SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
 >>> outputDesign = model(inputDesign)
 >>> # sensitivity analysis algorithm
 >>> sensitivityAnalysis = ot.MauntzKucherenkoSensitivityAlgorithm(inputDesign, outputDesign, size)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
-[0.375564,0.406427,-0.00550453]"
+[0.182219,0.357106,-0.129096]"
 

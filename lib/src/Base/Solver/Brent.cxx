@@ -78,7 +78,7 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
   NumericalScalar b = supPoint;
   NumericalScalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   NumericalScalar c = a;
   NumericalScalar fC = fA;
   // Main loop
@@ -110,8 +110,8 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
     if ((std::abs(oldDelta) >= error)  && (std::abs(fA) > std::abs(fB)))
     {
       // The new increment for the root will be p / q with p > 0
-      NumericalScalar p;
-      NumericalScalar q;
+      NumericalScalar p = -1.0;
+      NumericalScalar q = -1.0;
       const NumericalScalar cb = c - b;
 
       // We can just perform a linear inverse interpolation here

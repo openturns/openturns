@@ -65,11 +65,6 @@ public:
   /** Marginal accessor */
   virtual Implementation getMarginal(const UnsignedInteger index) const;
 
-  /** Parameters accessor */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
-  Description getParameterDescription() const;
-
   /** Scale accessor */
   void setScale(const NumericalPoint & scale);
 
@@ -90,6 +85,11 @@ public:
 
 protected:
   void setCollection(const CovarianceModelCollection & collection);
+
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 private:
   /** The collection of marginal models */

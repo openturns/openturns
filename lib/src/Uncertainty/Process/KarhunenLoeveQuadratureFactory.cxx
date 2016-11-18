@@ -105,7 +105,6 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
     if (!hasSameBounds && mustScale) coll_[i] = NumericalMathFunction(basis.build(i), inverseScaling);
     else coll_[i] = basis.build(i);
   // Compute the integration nodes and weights
-  nodes_ = NumericalSample(0, dimension);
   NumericalPoint rawWeights;
   WeightedExperiment experimentCopy(experiment);
   LOGINFO("Generate the weighted experiment");

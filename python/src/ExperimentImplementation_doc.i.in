@@ -13,6 +13,17 @@ Different types of design of experiments can be determined:
   the random patterns, the low discrepancy sequences and the deterministic
   patterns.
 
+Examples
+--------
+Define a custom design of experiment:
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> class RandomExp(object):
+...     def generate(self):
+...         return ot.Normal(1).getSample(10)
+>>> experiment = ot.Experiment(RandomExp())
+>>> sample = experiment.generate()
+
 See also
 --------
 StratifiedExperiment, WeightedExperiment"

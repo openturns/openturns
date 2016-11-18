@@ -335,7 +335,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 8rc1)
+set (CPACK_PACKAGE_VERSION_MINOR 9dev)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ           "OFF"         )
@@ -419,24 +419,27 @@ if (BUILD_PYTHON)
   endif ()
 
   if (PYTHONINTERP_FOUND)
-    execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
-                      OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
-                      RESULT_VARIABLE _PYTHON_pythonlib_result
-                      OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-    if (NOT _PYTHON_pythonlib_result)
-      get_filename_component (_ABS_PYTHON_MODULE_PATH ${_ABS_PYTHON_MODULE_PATH} ABSOLUTE)
-      file (RELATIVE_PATH _REL_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
-
-      set (OPENTURNS_PYTHON_MODULE_PATH ${_REL_PYTHON_MODULE_PATH})
-      if (IS_ABSOLUTE ${OPENTURNS_PYTHON_MODULE_PATH})
-        set(PYTHON_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
-      else ()
-        set(PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_PYTHON_MODULE_PATH})
-      endif ()
+    if (DEFINED SITE_PACKAGE)
+      set (OPENTURNS_PYTHON_MODULE_PATH ${SITE_PACKAGE})
 
     else ()
-      message (SEND_ERROR "Could not run ${PYTHON_EXECUTABLE}")
+      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
+                        OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
+                        RESULT_VARIABLE _PYTHON_pythonlib_result
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+      if (_PYTHON_pythonlib_result)
+        message (SEND_ERROR "Could not run ${PYTHON_EXECUTABLE}")
+      endif ()
+
+      get_filename_component (_ABS_PYTHON_MODULE_PATH ${_ABS_PYTHON_MODULE_PATH} ABSOLUTE)
+      file (RELATIVE_PATH OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
+    endif ()
+
+    if (IS_ABSOLUTE ${OPENTURNS_PYTHON_MODULE_PATH})
+      set(PYTHON_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
+    else ()
+      set(PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_PYTHON_MODULE_PATH})
     endif ()
 
     if (CMAKE_VERSION VERSION_LESS "2.8.6")

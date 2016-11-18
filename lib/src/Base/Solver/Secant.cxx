@@ -85,7 +85,7 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
   NumericalScalar b = supPoint;
   NumericalScalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Secant method requires that the function takes different signs at the endpoints of the given starting interval, here f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Secant  method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   // p will store the previous approximation
   NumericalScalar c = a;
   NumericalScalar fC = fA;
@@ -105,10 +105,10 @@ NumericalScalar Secant::solve(const NumericalMathFunction & function,
       break;
     }
     // Swap b and c such that fB <= fC
-    NumericalScalar y;
-    NumericalScalar fY;
-    NumericalScalar g;
-    NumericalScalar fG;
+    NumericalScalar y = -1.0;
+    NumericalScalar fY = -1.0;
+    NumericalScalar g = -1.0;
+    NumericalScalar fG = -1.0;
     if (std::abs(fB) < std::abs(fC))
     {
       y = s;

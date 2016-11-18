@@ -4,32 +4,26 @@
 Available constructors:
     DiracCovarianceModel(*spatialDim=1*)
 
-    DiracCovarianceModel(*spatialDim, sigma*)
+    DiracCovarianceModel(*spatialDim, amplitude*)
 
-    DiracCovarianceModel(*spatialDim, sigma, spatialCorrelation*)
+    DiracCovarianceModel(*spatialDim, amplitude, spatialCorrelation*)
 
     DiracCovarianceModel(*spatialDim, spatialCovariance*)
 
 Parameters
 ----------
-
 spatialDim : int
     Spatial dimension :math:`n`.
-
     By default, equal to 1.
-sigma : sequence of positive floats
+amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
-
     Its size is the dimension :math:`d` of the process.
-
     By default, equal to :math:`[1]`.
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS^+_d([-1, 1])`.
-
     By default, Identity matrix.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`\mat{C}^{stat} \in \cS_d^+(\Rset)`.
-
     By default, Identity matrix.
 
 Notes
@@ -84,4 +78,4 @@ Create a  Dirac covariance function specifying the amplitude vector and the corr
 
 >>> corrMat = ot.CorrelationMatrix(2)
 >>> corrMat[1,0] = 0.1
->>> covModel3 =  ot.DiracCovarianceModel(2, [1.5, 2.5],corrMat)"
+>>> covModel3 =  ot.DiracCovarianceModel(2, [1.5, 2.5], corrMat)"

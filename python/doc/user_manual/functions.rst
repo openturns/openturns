@@ -128,8 +128,8 @@ Hessian functions
     ParametricHessianImplementation
     ProductNumericalMathHessianImplementation
 
-Cross-validation algorithm
-==========================
+Differential equation solvers
+=============================
 
 .. autosummary::
     :toctree: _generated/

@@ -59,6 +59,8 @@ public:
 
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const;
 
+  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel) const;
+
   /** Build a covariance model based on a Field */
   CovarianceModelImplementation::Implementation build(const Field & timeSerie) const;
 
@@ -69,10 +71,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-protected:
-
-  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel) const;
 
 private:
 

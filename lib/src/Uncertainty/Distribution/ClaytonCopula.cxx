@@ -201,7 +201,7 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
   // = -(1+K)^(-1/theta)*u^theta*v^(-theta-2)*(theta+1)*theta*(1-(u/v)^theta-1/theta-(1+1/theta)*u^theta)/(1+K)^3
 
   // For moderate theta, this form is cancellation-free
-  NumericalScalar factor;
+  NumericalScalar factor = -1.0;
   const NumericalScalar logU = std::log(u);
   const NumericalScalar logV = std::log(v);
   const NumericalScalar logUOverV = std::log(u / v);
@@ -254,12 +254,12 @@ NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
     if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return 0.0;
     return 1.0 + theta_ * (1.0 + logU + logV + logU * logV + theta_ * (logU + logV + 0.5 * (logU * logU + logV * logV + logU * logV * (8.0 + 3.0 * (logU + logV) + logU * logV))));
   }
-  // General case, we factor out u^(-theta) in order to prevent under/owerflow
+  // General case, we factor out u^(-theta) in order to prevent underflow/overflow
   // for theta>>1
   // c(u,v)=(theta+1)(u^(-theta)+v^(-theta)-1)^(-(1+2theta)/theta)(uv)^(-theta-1)
   // = (theta+1)exp(theta*log(u)-log(v)-(1/theta+2)log1p(expm1(theta*log(u/v))-expm1(theta*log(u))))
   // For moderate theta, this form is cancellation-free
-  NumericalScalar factor;
+  NumericalScalar factor = -1.0;
   const NumericalScalar logU = std::log(u);
   const NumericalScalar logV = std::log(v);
   const NumericalScalar logUOverV = std::log(u / v);
@@ -304,7 +304,7 @@ NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
   // for theta>>1
   // C(u,v)=u(1+(u/v)^theta-u^theta)^(-1/theta)
   // For moderate theta, this form is cancellation-free
-  NumericalScalar factor;
+  NumericalScalar factor = -1.0;
   if (theta_ < 100.0) factor = std::exp(theta_ * std::log(u)) * expm1(-theta_ * std::log(v));
   // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
   else factor = expm1(theta_ * std::log(u / v)) - expm1(theta_ * std::log(u));

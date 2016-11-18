@@ -23,7 +23,7 @@ try:
     print("myCovarianceModel = ", myCovarianceModel)
 
     # Spectral model
-    mySpectralModel = CauchyModel(amplitude, scale)
+    mySpectralModel = CauchyModel(scale, amplitude)
     print("mySpectralModel = ", mySpectralModel)
 
     # We build the second order model using covariance and spectral models

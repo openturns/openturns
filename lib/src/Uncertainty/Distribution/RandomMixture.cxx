@@ -39,6 +39,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -601,6 +602,39 @@ NumericalPoint RandomMixture::getRealization() const
   return weights_ * realization + constant_;
 }
 
+/* Get a of the RandomMixture */
+NumericalSample RandomMixture::getSample(const UnsignedInteger size) const
+{
+  const UnsignedInteger atomSize = distributionCollection_.getSize();
+  MatrixImplementation sample(atomSize, size);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < atomSize; ++i)
+    {
+      const NumericalPoint atomSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
+      std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index); 
+      index += size;
+    }
+  NumericalSampleImplementation result(size, getDimension());
+  result.setData(weights_.getImplementation()->genProd(sample).transpose());
+  return result + constant_;
+}
+
+NumericalSample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
+{
+  const UnsignedInteger atomSize = distributionCollection_.getSize();
+  MatrixImplementation sample(atomSize, size);
+  UnsignedInteger index = 0;
+  const NumericalPoint u(SobolSequence(1).generate(size).getImplementation()->getData());
+  for (UnsignedInteger i = 0; i < atomSize; ++i)
+    {
+      const NumericalPoint atomSample(distributionCollection_[i].computeQuantile(u).getImplementation()->getData());
+      std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index); 
+      index += size;
+    }
+  NumericalSampleImplementation result(size, getDimension());
+  result.setData(weights_.getImplementation()->genProd(sample).transpose());
+  return result + constant_;
+}
 
 /* Get the DDF of the RandomMixture */
 NumericalPoint RandomMixture::computeDDF(const NumericalPoint & point) const
@@ -713,8 +747,8 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
     const NumericalScalar c = distributionCollection_[1].getRange().getLowerBound()[0];
     const NumericalScalar d = distributionCollection_[1].getRange().getUpperBound()[0];
     // Compute the bounds of the convolution
-    NumericalScalar lower;
-    NumericalScalar upper;
+    NumericalScalar lower = -1.0;
+    NumericalScalar upper = -1.0;
     NumericalScalar uc = (z0 - alpha2 * c) / alpha1;
     NumericalScalar ud = (z0 - alpha2 * d) / alpha1;
     if ((alpha1 > 0) == (alpha2 > 0))
@@ -857,7 +891,7 @@ struct EquivalentNormalPDFSumPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    UnsignedInteger fakeLevelMax;
+    UnsignedInteger fakeLevelMax = 0;
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       output_[i] = mixture_.computeEquivalentNormalPDFSum(grid_[i], two_b_sigma_, levelMax_, fakeLevelMax);
@@ -1696,8 +1730,8 @@ NumericalScalar RandomMixture::computeCDF(const NumericalPoint & point) const
     const NumericalScalar c = distributionCollection_[1].getRange().getLowerBound()[0];
     const NumericalScalar d = distributionCollection_[1].getRange().getUpperBound()[0];
     // Compute the bounds of the convolution
-    NumericalScalar lower;
-    NumericalScalar upper;
+    NumericalScalar lower = -1.0;
+    NumericalScalar upper = -1.0;
     NumericalScalar uc = (z0 - alpha2 * c) / alpha1;
     NumericalScalar ud = (z0 - alpha2 * d) / alpha1;
     const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
@@ -1878,14 +1912,10 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
     error = 0.0;
     for (UnsignedInteger m = k; m < 2 * k; ++m)
     {
-      NumericalScalar sinMHLower;
-      NumericalScalar cosMHLower;
-      sinMHLower = std::sin(m * a);
-      cosMHLower = std::cos(m * a);
-      NumericalScalar sinMHUpper;
-      NumericalScalar cosMHUpper;
-      sinMHUpper = std::sin(m * b);
-      cosMHUpper = std::cos(m * b);
+      NumericalScalar sinMHLower = std::sin(m * a);
+      NumericalScalar cosMHLower = std::cos(m * a);
+      NumericalScalar sinMHUpper = std::sin(m * b);
+      NumericalScalar cosMHUpper = std::cos(m * b);
       const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m));
       const NumericalScalar contribution = factor * (deltaValue.real() * (sinMHUpper - sinMHLower) + deltaValue.imag() * (cosMHLower - cosMHUpper)) / (m * referenceBandwidth_[0]);
       value += contribution;
@@ -1934,6 +1964,22 @@ NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
   }
   // General case
   return DistributionImplementation::computeScalarQuantile(prob, tail);
+}
+
+/** Get the minimum volume level set containing a given probability of the distribution */
+LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
+    NumericalScalar & threshold) const
+{
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  // As we are in 1D and as the function defining the composite distribution can have complex variations,
+  // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
+  const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
+  const NumericalSample minusLogPDFSample(computeLogPDF(getSampleByQMC(size)) * NumericalPoint(1, -1.0));
+  const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
+  threshold = std::exp(-minusLogPDFThreshold);
+
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

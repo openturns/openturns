@@ -76,7 +76,7 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample,
   // Here, we know that size > 1
   else
   {
-    NumericalScalar h;
+    NumericalScalar h = -1.0;
     // Special case: only one bin, we choose a bin width equal to the data range
     if (binNumber == 1)
     {
@@ -385,8 +385,8 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
   if (outputSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the output sample dimension must be 1.";
   if (minValue > maxValue) throw InvalidArgumentException(HERE) << "Error: minValue cannot be greater than maxValue.";
   // If based on quantiles, rank the values
-  UnsignedInteger minRank;
-  UnsignedInteger maxRank;
+  UnsignedInteger minRank = 0;
+  UnsignedInteger maxRank = 0;
   if (!quantileScale)
   {
     const NumericalScalar minCDF = outputSample.computeEmpiricalCDF(NumericalPoint(1, minValue));

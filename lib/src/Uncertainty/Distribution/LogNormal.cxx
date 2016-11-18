@@ -73,50 +73,6 @@ LogNormal::LogNormal(const NumericalScalar muLog,
 }
 
 
-/* Default constructor */
-LogNormal::LogNormal(const NumericalScalar arg1,
-                     const NumericalScalar arg2,
-                     const NumericalScalar gamma,
-                     const ParameterSet set)
-  : ContinuousDistribution()
-  , muLog_(0.0)
-  , sigmaLog_(0.0)
-  , gamma_(gamma)
-  , normalizationFactor_(0.0)
-  , H_(0.0)
-  , hermiteNodes_(0)
-  , hermiteWeights_(0)
-{
-  Log::Warn(OSS() << "LogNormal parameter set constructor is deprecated.");
-  setName("LogNormal");
-  // Adapt the integration nodes number to the needs of the characteristic function integration
-  switch (set)
-  {
-    case MUSIGMA_LOG:
-      // This call set also the range.
-      // The arguments must be different from the initialization values, which is the case as sigmaLog_ is initialized by 0
-      setMuLogSigmaLog(arg1, arg2);
-      break;
-
-    case MUSIGMA:
-      // This call set also the range.
-      setMuSigma(arg1, arg2);
-      break;
-
-    case MU_SIGMAOVERMU:
-      if (arg1 == 0.0) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
-      // This call set also the range.
-      setMuSigma(arg1, arg1 * arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-
-  } /* end switch */
-  normalizationFactor_ = 1.0 / (sigmaLog_ * std::sqrt(2.0 * M_PI));
-  setDimension(1);
-}
-
 /* Comparison operator */
 Bool LogNormal::operator ==(const LogNormal & other) const
 {
@@ -203,7 +159,7 @@ NumericalScalar LogNormal::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
-  if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
   NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return std::log(normalizationFactor_) - 0.5 * logX * logX - std::log(x);
 }
@@ -493,33 +449,6 @@ NumericalScalar LogNormal::getSigmaLog() const
   return sigmaLog_;
 }
 
-NumericalScalar LogNormal::getMu() const
-{
-  Log::Warn(OSS() << "LogNormal::getMu is deprecated");
-  return gamma_ + std::exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_);
-}
-
-
-/* Sigma accessor */
-void LogNormal::setMuSigma(const NumericalScalar mu,
-                           const NumericalScalar sigma)
-{
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: sigma must be > 0, here sigma=" << sigma;
-  if (mu <= gamma_) throw InvalidArgumentException(HERE) << "Error: mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma_;
-  NumericalScalar shift = mu - gamma_;
-  NumericalScalar shiftSquared = shift * shift;
-  NumericalScalar deltaSquareRoot = std::sqrt(shiftSquared + sigma * sigma);
-  // This call takes care of the range and the mean and covariance flags
-  setMuLogSigmaLog(std::log(shiftSquared / deltaSquareRoot), std::sqrt(2 * std::log(deltaSquareRoot / shift)));
-}
-
-NumericalScalar LogNormal::getSigma() const
-{
-  Log::Warn(OSS() << "LogNormal::getSigma is deprecated");
-  NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
-  return std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
-}
-
 /* Gamma accessor */
 void LogNormal::setGamma(const NumericalScalar gamma)
 {
@@ -535,14 +464,6 @@ void LogNormal::setGamma(const NumericalScalar gamma)
 NumericalScalar LogNormal::getGamma() const
 {
   return gamma_;
-}
-
-/* SigmaOverMu accessor */
-NumericalScalar LogNormal::getSigmaOverMu() const
-{
-  NumericalScalar mu = getMu();
-  if (mu == 0.0) throw NotDefinedException(HERE) << "Error: trying to get sigmaOverMu with mu equal to zero";
-  return getSigma() / mu;
 }
 
 /* Method save() stores the object through the StorageManager */

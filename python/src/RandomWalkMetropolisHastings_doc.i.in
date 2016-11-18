@@ -72,7 +72,7 @@ Examples
 >>> p = ot.NumericalSample(obsSize, chainDim)
 >>> for i in range(obsSize):
 ...     for j in range(chainDim):
-...         p[i, j] = (-2 + 5. * i / 9.) ** j
+...         p[i, j] = (-2 + 5.0 * i / 9.0) ** j
 >>> # Model
 >>> fullModel = ot.NumericalMathFunction(
 ...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'],
@@ -85,7 +85,7 @@ Examples
 >>> # Proposal distribution
 >>> proposalColl = [ot.Uniform(-1.0, 1.0)]*chainDim
 >>> # Prior distribution
->>> sigma0 = [10.]*chainDim
+>>> sigma0 = [10.0]*chainDim
 >>> #  Covariance matrix
 >>> Q0_inv = ot.CorrelationMatrix(chainDim)
 >>> for i in range(chainDim): 
@@ -104,11 +104,11 @@ Examples
 >>> sampler = ot.RandomWalkMetropolisHastings(
 ...     prior, conditional, model, p, y_obs, mu0, proposalColl)
 >>> sampler.setCalibrationStrategyPerComponent(calibrationColl)
->>> sampler.setBurnIn(2000)
->>> sampler.setThinning(100)
+>>> sampler.setBurnIn(200)
+>>> sampler.setThinning(10)
 >>> # Get a realization
 >>> print(sampler.getRealization())
-[1.25054,1.32356,-2.15476]"
+[1.22816,1.0049,-1.99008]"
 
 // ---------------------------------------------------------------------
 

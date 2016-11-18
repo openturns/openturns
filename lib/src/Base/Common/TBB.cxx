@@ -42,6 +42,15 @@ tbb::task_scheduler_init * TBB_P_scheduler_ = 0;
 #endif /* OPENTURNS_HAVE_TBB */
 
 
+Bool TBB::IsAvailable()
+{
+#ifdef OPENTURNS_HAVE_TBB
+  return true;
+#else
+  return false;
+#endif
+}
+
 void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
 {
 #ifdef OPENTURNS_HAVE_TBB

@@ -209,7 +209,7 @@ void LinearCombinationEvaluationImplementation::setFunctionsCollectionAndCoeffic
       coefficients_.add(coefficients[i]);
       functionsCollection_.add(functionsCollection[i]);
     }
-    else LOGWARN(OSS() << "removed the contributor " << i << "=" << functionsCollection[i] << " from the linear combination as its coefficient is zero.");
+    else LOGWARN(OSS() << "removed the contributor " << i << "=" << functionsCollection[i] << " from the linear combination as its coefficient=" << coefficients[i] << " is too small.");
   if (functionsCollection_.getSize() == 0)
   {
     LOGINFO("Error: no significant contributors in the linear combination.");

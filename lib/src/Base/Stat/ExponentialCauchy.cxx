@@ -41,9 +41,9 @@ ExponentialCauchy::ExponentialCauchy()
   // Nothing to do
 }
 
-ExponentialCauchy::ExponentialCauchy(const NumericalPoint & amplitude,
-                                     const NumericalPoint & scale)
-  : SecondOrderModelImplementation(AbsoluteExponential(scale, amplitude), CauchyModel(amplitude, scale))
+ExponentialCauchy::ExponentialCauchy(const NumericalPoint & scale,
+                                     const NumericalPoint & amplitude)
+  : SecondOrderModelImplementation(AbsoluteExponential(scale, amplitude), CauchyModel(scale, amplitude))
 {
   // Nothing to do
 }

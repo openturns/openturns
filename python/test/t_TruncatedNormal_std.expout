@@ -17,10 +17,25 @@ cdf=0.743877
 ccdf=0.256123
 pdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[0.0277138,-0.0118013,0.0515102,-0.0643285]
 pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[0.0277138,-0.0118013,0.0515102,-0.0643285]
+log-pdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[0.103363,-0.0440151,0.192116,-0.239924]
+log-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[0.103363,-0.0440151,0.192116,-0.239924]
 cdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.0404404,0.00354582,-0.0492055,-0.178474]
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.0404404,0.00354582,-0.0492055,-0.178474]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1.79498]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-1.74843]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-1.74843, 2]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 1.58329} with f=
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 0.5, sigma = 3, a = -2, b = 2))
+beta= [0.205299]
+Bilateral confidence interval= [-1.87213, 1.89667]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-2, 1.79498]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-1.74843, 2]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.0697287]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[1.1195]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[-0.0708515]

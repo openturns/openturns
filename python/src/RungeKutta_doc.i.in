@@ -1,0 +1,17 @@
+%feature("docstring") OT::RungeKutta
+"Runge-Kutta fourth-order method.
+
+See also
+--------
+ODESolver
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.NumericalMathFunction(['t', 'y0', 'y1'], ['dy0', 'dy1'], ['t - y0', 'y1 + t^2'])
+>>> phi = ot.TemporalFunction(f)
+>>> solver = ot.RungeKutta(phi)
+>>> Y0 = [1.0, -1.0]
+>>> nt = 100
+>>> timeGrid = list(map(lambda i:(i**2.0) / (nt - 1.0)**2.0, range(nt)))
+>>> result = solver.solve(Y0, timeGrid)"

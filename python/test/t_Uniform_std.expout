@@ -24,6 +24,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1.4]
 cdf(quantile)=0.950000
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.4]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.45, 1.45]
+threshold= 0.95
+Minimum volume level set= {x | f(x) <= 0.95} with f=
+[x]->[1 * abs(x - (0.5))]
+beta= 0.95
+Bilateral confidence interval= [-0.45, 1.45]
+beta= 0.95
+Unilateral confidence interval (lower tail)= [-0.5, 1.4]
+beta= 0.95
+Unilateral confidence interval (upper tail)= [-0.4, 1.5]
+beta= 0.95
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
 standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.57735]
 skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0]

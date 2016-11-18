@@ -48,7 +48,7 @@ public:
   /** Constructor with spatial dimension */
   explicit ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension = 1);
 
-  /** Standard constructor with amplitude and scale parameters */
+  /** Standard constructor with scale and amplitude parameters */
   ExponentiallyDampedCosineModel(const NumericalPoint & scale,
                                  const NumericalPoint & amplitude,
                                  const NumericalScalar frequency);
@@ -77,11 +77,15 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Frequency accessor */
+  void setFrequency(const NumericalScalar frequency);
   NumericalScalar getFrequency() const;
 
 protected:
 
-  void setFrequency(const NumericalScalar frequency);
+  /** Parameter accessor */
+  virtual void setFullParameter(const NumericalPoint & parameter);
+  virtual NumericalPoint getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
 
 public:
 

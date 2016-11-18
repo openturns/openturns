@@ -21,10 +21,13 @@
 #include <cmath>
 #include "openturns/GeometricFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GeometricFactory);
+
+static const Factory<GeometricFactory> Factory_GeometricFactory;
 
 /* Default constructor */
 GeometricFactory::GeometricFactory()

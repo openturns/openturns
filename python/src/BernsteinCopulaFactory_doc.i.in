@@ -70,3 +70,25 @@ The number of bins is computed by minimizing the asymptotic mean integrated squa
 
 where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ClassifierImplementation::setParallel
+"Accessor to the parallel flag.
+
+Parameters
+----------
+flag : bool
+    Logical value telling if the classification and grading are done in parallel. 
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ClassifierImplementation::isParallel
+"Accessor to the parallel flag.
+
+Returns
+-------
+flag : bool
+    Logical value telling if the parallel mode has been activated.
+"

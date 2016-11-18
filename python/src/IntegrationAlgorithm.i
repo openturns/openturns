@@ -1,10 +1,10 @@
 // SWIG file IntegrationAlgorithm.i
 
-OTAutodoc(IntegrationAlgorithm)
-
 %{
 #include "openturns/IntegrationAlgorithm.hxx"
 %}
+
+%include IntegrationAlgorithm_doc.i
 
 OTTypedInterfaceObjectHelper(IntegrationAlgorithm)
 

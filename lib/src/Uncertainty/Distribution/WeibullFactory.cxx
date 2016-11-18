@@ -21,10 +21,13 @@
 #include "openturns/WeibullFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(WeibullFactory);
+
+static const Factory<WeibullFactory> Factory_WeibullFactory;
 
 /* Default constructor */
 WeibullFactory::WeibullFactory()

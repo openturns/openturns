@@ -92,6 +92,9 @@ class OT_API HMatrix :
   /** Get number of HMatrix elements in full blocks and low rank blocks */
   std::pair<size_t, size_t> fullrkRatio() const;
 
+  /** Dump HMatrix onto file */
+  void dump(const String & name) const;
+
   /** String converter */
   virtual String __repr__() const;
 

@@ -6,6 +6,7 @@ import openturns as ot
 ot.RandomGenerator.SetSeed(0)
 
 ot.ResourceMap.SetAsBool('MaximumLikelihoodFactory-Parallel', False)
+ot.TBB.Disable()
 
 distribution = ot.Trapezoidal(1.0, 2.3, 4.5, 5.0)
 size = 10000

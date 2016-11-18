@@ -4,27 +4,24 @@
 Available constructors:
     SphericalModel(*spatialDim=1*)
 
-    SphericalModel(*theta, sigma*)
+    SphericalModel(*scale, amplitude*)
 
-    SphericalModel(*theta, sigma,  a*)
+    SphericalModel(*scale, amplitude, radius*)
 
 Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
     By default, equal to 1.
-
-theta : sequence of positive floats
+scale : sequence of positive floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
     The size of :math:`\vect{\theta}` is the spatial dimension.
-
-sigma : sequence of positive floats
+amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
-
-a : float, :math:`a > 0`
-    Ray of the sphere on which the covariance model is not zero.
+radius : float, :math:`a > 0`
+    Radius of the sphere on which the covariance model is not zero.
     By default, equal to 1.
 
 
@@ -69,10 +66,30 @@ Create a standard spherical covariance function:
 >>> print(covModel(tau))
 [[ 0.54147 ]]
 
-Create a  spherical covariance function specifying the scale vector:
+Create a  spherical covariance function specifying the scale, amplitude vectors:
 
 >>> covarianceModel = ot.SphericalModel([0.2, 0.3], [2.5])
 
-Create a  squared exponential covariance function specifying the scale vector, the amplitude and a:
+Create a  squared exponential covariance function specifying the scale vector, the amplitude and radius:
 
->>> covModel3 = ot.SphericalModel([0.2, 0.3], [2.5],  2.3)"
+>>> covModel3 = ot.SphericalModel([0.2, 0.3], [2.5], 2.3)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SphericalModel::setRadius
+"Radius accessor.
+
+Parameters
+----------
+radius : float, :math:`a > 0`
+    Radius of the sphere on which the covariance model is not zero."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SphericalModel::getRadius
+"Radius accessor.
+
+Returns
+-------
+radius : float, :math:`a > 0`
+    Radius of the sphere on which the covariance model is not zero."

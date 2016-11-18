@@ -44,9 +44,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> ordinalSumCop = ot.OrdinalSumCopula([ot.GumbelCopula(2), ot.NormalCopula(2)], [0.3])
->>> graph = ordinalSumCop.drawPDF()
->>> graph.setTitle('Ordinal sum of copulas')"
+>>> ordinalSumCop = ot.OrdinalSumCopula([ot.GumbelCopula(2), ot.NormalCopula(2)], [0.3])"
 
 // ---------------------------------------------------------------------
 

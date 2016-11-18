@@ -1,6 +1,9 @@
 .. image:: https://travis-ci.org/openturns/openturns.svg?branch=master
     :target: https://travis-ci.org/openturns/openturns
 
+.. image:: https://ci.appveyor.com/api/projects/status/eclivj94bqwhh1mq/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/openturns/openturns
+
 =============================================================================
 OpenTURNS (Open source initiative to Treat Uncertainties, Risks'N Statistics)
 =============================================================================

@@ -16,6 +16,27 @@ OT::NumericalSample OT::DistributionImplementation::computePDF(const OT::Numeric
 %typemap(argout) OT::NumericalPoint & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
 OT::NumericalPoint OT::DistributionImplementation::getGaussNodesAndWeights(OT::NumericalPoint & weights) const;
 
+%typemap(in, numinputs=0) OT::NumericalPoint & marginalProb ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
+%typemap(argout) OT::NumericalPoint & marginalProb %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
+OT::Interval OT::DistributionImplementation::computeMinimumVolumeInterval(const OT::NumericalScalar prob, OT::NumericalPoint & marginalProb) const;
+OT::Interval OT::DistributionImplementation::computeBilateralConfidenceInterval(const OT::NumericalScalar prob, OT::NumericalPoint & marginalProb) const;
+OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceInterval(const OT::NumericalScalar prob, const OT::Bool tail, OT::NumericalPoint & marginalProb) const;
+
+%typemap(in, numinputs=0) OT::NumericalPoint & threshold ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
+%typemap(argout) OT::NumericalPoint & threshold %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
+OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSet(const OT::NumericalScalar prob, OT::NumericalPoint & threshold) const;
+
+
+%typemap(in, numinputs=0) OT::NumericalScalar & marginalProb ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
+%typemap(argout) OT::NumericalScalar & marginalProb %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
+OT::Interval OT::DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability(const OT::NumericalScalar prob, OT::NumericalScalar & marginalProb) const;
+OT::Interval OT::DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability(const OT::NumericalScalar prob, OT::NumericalScalar & marginalProb) const;
+OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability(const OT::NumericalScalar prob, const OT::Bool tail, OT::NumericalScalar & marginalProb) const;
+%typemap(in, numinputs=0) OT::NumericalScalar & threshold ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
+%typemap(argout) OT::NumericalScalar & threshold %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
+OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(const OT::NumericalScalar prob, OT::NumericalScalar & threshold) const;
+
+
 %{
 #include "openturns/DistributionImplementation.hxx"
 %}

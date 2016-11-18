@@ -135,7 +135,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & 
   UnsignedInteger outputDimension = p_evaluation_->getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
   UnsignedInteger diagonalOffset = 2 * inputDimension * (inputDimension - 1);
-  NumericalScalar scale;
+  NumericalScalar scale = -1.0;
   UnsignedInteger offDiagonalOffset = 0;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {

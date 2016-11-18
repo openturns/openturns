@@ -128,6 +128,9 @@ private:
   mutable TriangularMatrix cholesky_;
   NumericalScalar nu_;
 
+  /** The inverse of the Cholesky factor of the inverse of the scale matrix V */
+  TriangularMatrix inverseCholeskyInverse_;
+
   /** The log-normalization factor */
   NumericalScalar logNormalizationFactor_;
 

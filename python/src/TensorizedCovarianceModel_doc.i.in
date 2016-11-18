@@ -25,7 +25,7 @@ Its covariance function :math:`C : \cD \times \cD \rightarrow  \cS_d^+(\Rset)` i
 
 The amplitude of the covariance function is :math:`\Tr{\sigma} =(\Tr{\sigma}_{1}, \dots, \Tr{\sigma}_{K})` and each model :math:`C_k` is parameterized by its scale :math:`\vect{\theta}_k \in \Rset^n`.
 
-The method :math:`setScale(\vect{\theta})` fixes the same :math:`\vect{\theta} \in \Rset^n` to each model :math:`C_k`: :math:`\vect{\theta}_1 = \dots = \vect{\theta}_K = \vect{\theta}`.
+The method :math:`setScale(\vect{\theta})` updates the scale the following way. Let :math:`\vect{\theta}_k^0=(\theta_{k,1}^0,\hdots,\theta_{k,n}^0)` be the initial scale of the covariance model :math:`C_k`. After the update, :math:`C_k` has the scale :math:`\vect{\theta}_k=\left(\theta_1\rho_{k,1}^0,\hdots,\theta_n\rho_{k,n}^0\right)` where :math:`\rho_{k,j}^0=\dfrac{\theta^0_{k,j}}{\theta^0_{1,j}}`.
 
 Examples
 --------

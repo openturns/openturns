@@ -26,8 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -256,6 +255,152 @@ struct MeixnerBounds
   const MeixnerDistribution & distribution_;
 };
 
+class MeixnerBoundB: public NumericalMathFunctionImplementation
+{
+public:
+  MeixnerBoundB(const DistributionImplementation::Implementation & p_distribution)
+    : NumericalMathFunctionImplementation()
+    , p_distribution_(p_distribution)
+  {
+    // Nothing to do
+  }
+
+  MeixnerBoundB * clone() const
+  {
+    return new MeixnerBoundB(*this);
+  }
+
+  NumericalPoint operator() (const NumericalPoint & point) const
+  {
+    return NumericalPoint(1, p_distribution_->computePDF(point));
+  }
+
+  Matrix gradient(const NumericalPoint & point) const
+  {
+    const NumericalPoint value = p_distribution_->computeDDF(point);
+    return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return p_distribution_->getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return p_distribution_->getDescription();
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(1, "MeixnerDistributionObjectiveB");
+  }
+
+  Description getDescription() const
+  {
+    Description description(getInputDescription());
+    description.add(getOutputDescription());
+    return description;
+  }
+
+  String __repr__() const
+  {
+    OSS oss;
+    oss << "MeixnerBoundB(" << p_distribution_->__str__() << ")";
+    return oss;
+  }
+
+  String __str__(const String & offset) const
+  {
+    OSS oss;
+    oss << offset << "MeixnerBoundB(" << p_distribution_->__str__() << ")";
+    return oss;
+  }
+
+private:
+  const DistributionImplementation::Implementation p_distribution_;
+}; // class MeixnerBoundB
+
+class MeixnerBoundCD: public NumericalMathFunctionImplementation
+{
+public:
+  MeixnerBoundCD(const DistributionImplementation::Implementation & p_distribution)
+    : NumericalMathFunctionImplementation()
+    , p_distribution_(p_distribution)
+  {
+    // Nothing to do
+  }
+
+  MeixnerBoundCD * clone() const
+  {
+    return new MeixnerBoundCD(*this);
+  }
+
+  NumericalPoint operator() (const NumericalPoint & point) const
+  {
+    const NumericalScalar pdf = p_distribution_->computePDF(point);
+    return NumericalPoint(1, point[0] * std::sqrt(pdf));
+  }
+
+  Matrix gradient(const NumericalPoint & point) const
+  {
+    const NumericalScalar sqrtPDF = std::sqrt(p_distribution_->computePDF(point));
+    if (sqrtPDF <= 0.0) return MatrixImplementation(1, 1);
+    const NumericalPoint ddf(p_distribution_->computeDDF(point));
+    const NumericalPoint value(1, sqrtPDF + 0.5 * point[0] * ddf[0] / sqrtPDF);
+    return MatrixImplementation(1, 1, value);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return p_distribution_->getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return p_distribution_->getDescription();
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(1, "MeixnerDistributionObjectiveCD");
+  }
+
+  Description getDescription() const
+  {
+    Description description(getInputDescription());
+    description.add(getOutputDescription());
+    return description;
+  }
+
+  String __repr__() const
+  {
+    OSS oss;
+    oss << "MeixnerBoundCD(" << p_distribution_->__str__() << ")";
+    return oss;
+  }
+
+  String __str__(const String & offset) const
+  {
+    OSS oss;
+    oss << offset << "MeixnerBoundCD(" << p_distribution_->__str__() << ")";
+    return oss;
+  }
+
+private:
+  const DistributionImplementation::Implementation p_distribution_;
+}; // class MeixnerBoundCD
+
 /* Update the derivative attributes */
 void MeixnerDistribution::update()
 {
@@ -270,18 +415,10 @@ void MeixnerDistribution::update()
   cdfApproximation_ = CDFCCDF[0];
   ccdfApproximation_ = CDFCCDF[1];
   // Fourth, the random generator
-  // Update the bounds for the ratio of uniform sampling algorithm
-  const MeixnerBounds boundsFunctions(*this);
 
   // define objectives functions
-  NumericalMathFunction fB(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveB, 1, 1));
-  const NumericalPoint epsilon(1.0e-5 * getStandardDeviation());
-  const CenteredFiniteDifferenceGradient gradientB(epsilon, fB.getEvaluation());
-  fB.setGradient(gradientB.clone());
-
-  NumericalMathFunction fCD(bindMethod<MeixnerBounds, NumericalPoint, NumericalPoint>(boundsFunctions, &MeixnerBounds::computeObjectiveCD, 1, 1));
-  const CenteredFiniteDifferenceGradient gradientCD(epsilon, fCD.getEvaluation());
-  fCD.setGradient(gradientCD.clone());
+  MeixnerBoundB fB(clone());
+  MeixnerBoundCD fCD(clone());
 
   // Initilalyse Optimization problems
   OptimizationProblem problem;
@@ -302,12 +439,11 @@ void MeixnerDistribution::update()
   solver_.run();
   c_ = solver_.getResult().getOptimalValue()[0];
 
-// Define Optimization problem3 : maximization fCD
+  // Define Optimization problem3 : maximization fCD
   problem.setMinimization(false);
   solver_.setProblem(problem);
   solver_.run();
   dc_ = solver_.getResult().getOptimalValue()[0] - c_;
-
 }
 
 /* Get one realization of the distribution
@@ -507,3 +643,4 @@ void MeixnerDistribution::setOptimizationSolver(const OptimizationSolver & solve
 }
 
 END_NAMESPACE_OPENTURNS
+

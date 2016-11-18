@@ -68,10 +68,10 @@ Examples
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> # We create a QuasiMonteCarlo algorithm
 >>> myAlgo = ot.QuasiMonteCarlo(myEvent)
->>> myAlgo.setMaximumOuterSampling(250)
+>>> myAlgo.setMaximumOuterSampling(50)
 >>> myAlgo.setBlockSize(4)
 >>> myAlgo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.147000"
+Probability estimate=0.125000"

@@ -1,0 +1,44 @@
+%define OT_MonteCarloLHS_doc
+"Monte Carlo LHS optimization.
+
+Performs the optimization of an LHS using Monte Carlo simulations.
+
+Available constructors:
+    MonteCarloLHS(*lhsDesign, N*)
+
+    MonteCarloLHS(*lhsDesign, N, spaceFilling*)
+
+Parameters
+----------
+lhsDesign : :class:`~openturns.LHSExperiment`
+     Factory that generate designs
+N : int
+    Number of simulations
+spaceFilling : :class:`~ot.SpaceFilling`
+    Criterion to be optimized
+    Default spaceFilling is MinDist
+
+Notes
+-----
+MonteCarloLHS generate N designs using lhsDesign and returns the optimal one with respect to spaceFilling
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> size = 100
+>>> # Build standard randomized LHS algorithm
+>>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dimension)
+>>> lhs = ot.LHSExperiment(distribution, size)
+>>> lhs.setAlwaysShuffle(True) # randomized
+>>> # Defining space fillings
+>>> spaceFilling = ot.SpaceFillingC2()
+>>> # RandomBruteForce MonteCarlo with N designs (LHS with C2 optimization)
+>>> N = 10000
+>>> optimalLHSAlgorithm = ot.MonteCarloLHS(lhs, N, spaceFilling)
+"
+%enddef
+%feature("docstring") OT::MonteCarloLHS
+OT_MonteCarloLHS_doc
+
+// ---------------------------------------------------------------------

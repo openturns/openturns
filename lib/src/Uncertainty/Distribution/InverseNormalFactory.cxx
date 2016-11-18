@@ -21,10 +21,13 @@
 #include <cmath>
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(InverseNormalFactory);
+
+static const Factory<InverseNormalFactory> Factory_InverseNormalFactory;
 
 /* Default constructor */
 InverseNormalFactory::InverseNormalFactory()

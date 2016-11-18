@@ -174,7 +174,7 @@ struct MaximumEntropyOrderStatisticsDistributionWrapper
     {
       // First, try to use complementary CDF
       NumericalScalar a = distribution_.distributionCollection_[lower_].computeComplementaryCDF(point);
-      NumericalScalar b;
+      NumericalScalar b = -1.0;
       // If the smallest complementary CDF is less than 1/2 it is better to use complementary CDF
       if (a < 0.5) b = distribution_.distributionCollection_[upper_].computeComplementaryCDF(point);
       // Else use CDF
@@ -213,7 +213,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFac
   if (y < x)
   {
     const NumericalScalar value = computeExponentialFactor(k, y, x);
-    if (value == 0.0) return SpecFunc::MaxNumericalScalar;
+    if (value == 0.0) return SpecFunc::LogMinNumericalScalar;
     return 1.0 / value;
   }
   // Generic part, no approximation here
@@ -285,7 +285,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const U
   }
   const MaximumEntropyOrderStatisticsDistributionWrapper phiKWrapper(*this, k - 1, k, a);
   const NumericalMathFunction fPhiK(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiKWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePhi, 1, 1));
-  NumericalScalar error;
+  NumericalScalar error = -1.0;
   // Here we know that x < y, y > a, y < b, x < beta
   if (x <= a)
   {
@@ -347,7 +347,7 @@ PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistributi
   NumericalPoint upperBounds;
   NumericalSample contributions;
   NumericalPoint localErrors;
-  NumericalScalar error;
+  NumericalScalar error = -1.0;
   // We integrate the exponential factor in order to detect all the singularities using polynomial approximations of different order
   const NumericalPoint tmp(GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G1K3)).integrate(phi, xMin, xMax, error, lowerBounds, upperBounds, contributions, localErrors));
   // Now, we have to sort the intervals in order to build the approximation
@@ -463,8 +463,8 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const N
 
   // Early exit if the point is not in the support
   for (UnsignedInteger k = 1; k < dimension; ++ k)
-    if (point[k - 1] > point[k]) return -SpecFunc::MaxNumericalScalar;
-  if (!getRange().numericallyContains(point)) return -SpecFunc::MaxNumericalScalar;
+    if (point[k - 1] > point[k]) return SpecFunc::LogMinNumericalScalar;
+  if (!getRange().numericallyContains(point)) return SpecFunc::LogMinNumericalScalar;
 
   // Early exit for the independent case
   if (hasIndependentCopula())

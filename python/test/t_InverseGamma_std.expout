@@ -24,6 +24,19 @@ cdf gradient     = [0.082705,0.127416]
 cdf gradient (FD)= [0.082705,0.127416]
 quantile= [0.174871]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0406605]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0.0280966, 0.177562]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 34.4467} with f=
+MinimumVolumeLevelSetEvaluation(InverseGamma(k = 5.5, lambda = 2.5))
+beta= [1.09642e-15]
+Bilateral confidence interval= [0.0364963, 0.209657]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 0.174871]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0406605, 50.1015]
+beta= [0.95]
 mean= [0.0888889]
 covariance= [[ 0.0022575 ]]
 correlation= [[ 1 ]]
@@ -66,6 +79,19 @@ cdf gradient     = [0.00792151,0.0339127]
 cdf gradient (FD)= [0.00792151,0.0339127]
 quantile= [0.0432604]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0182761]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0.0154445, 0.0443646]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= -1.89324} with f=
+MinimumVolumeLevelSetEvaluation(InverseGamma(k = 15, lambda = 2.5))
+beta= [6.64087]
+Bilateral confidence interval= [0.0170288, 0.0476452]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 0.0432604]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0182761, 0.508519]
+beta= [0.95]
 mean= [0.0285714]
 covariance= [[ 6.27943e-05 ]]
 correlation= [[ 1 ]]

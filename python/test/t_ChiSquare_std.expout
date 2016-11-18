@@ -21,6 +21,19 @@ cdf gradient     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.2917
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.291714]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[4.9802]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.0332328]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [0, 4.9802]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 3.61461} with f=
+MinimumVolumeLevelSetEvaluation(ChiSquare(nu = 1.5))
+beta= [0.0269275]
+Bilateral confidence interval= [0.013113, 6.27581]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 4.9802]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.0332328, 39.9307]
+beta= [0.95]
 mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
 parameters= [class=NumericalPointWithDescription name=X0 dimension=1 description=[nu] values=[1.5]]

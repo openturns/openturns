@@ -91,33 +91,54 @@ int main(int argc, char *argv[])
     fullprint << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
+    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
     NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;
     NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
     fullprint << "log characteristic function=" << LCF << std::endl;
-    // NumericalPoint PDFgr = distribution.computePDFGradient( point );
-    // fullprint << "pdf gradient     =" << PDFgr << std::endl;
-    // NumericalPoint PDFgrFD(3);
-    // PDFgrFD[0] = (FisherSnedecor(distribution.getA() + eps, distribution.getM(), distribution.getB()).computePDF(point) -
-    //               FisherSnedecor(distribution.getA() - eps, distribution.getM(), distribution.getB()).computePDF(point)) / (2.0 * eps);
-    // PDFgrFD[1] = (FisherSnedecor(distribution.getA(), distribution.getM() + eps, distribution.getB()).computePDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps);
-    // PDFgrFD[2] = (FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() + eps).computePDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps);
-    // fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-    // NumericalPoint CDFgr = distribution.computeCDFGradient( point );
-    // fullprint << "cdf gradient     =" << CDFgr << std::endl;
-    // NumericalPoint CDFgrFD(3);
-    // CDFgrFD[0] = (FisherSnedecor(distribution.getA() + eps, distribution.getM(), distribution.getB()).computeCDF(point) -
-    //               FisherSnedecor(distribution.getA() - eps, distribution.getM(), distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    // CDFgrFD[1] = (FisherSnedecor(distribution.getA(), distribution.getM() + eps, distribution.getB()).computeCDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    // CDFgrFD[2] = (FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() + eps).computeCDF(point) -
-    //               FisherSnedecor(distribution.getA(), distribution.getM(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
-    // fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
+    NumericalPoint PDFgr = distribution.computePDFGradient( point );
+    fullprint << "pdf gradient     =" << PDFgr << std::endl;
+    NumericalPoint PDFgrFD(2);
+    PDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computePDF(point) -
+                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computePDF(point) -
+                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computePDF(point)) / (2.0 * eps);
+    fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
+    NumericalPoint logPDFgr = distribution.computeLogPDFGradient( point );
+    fullprint << "log-pdf gradient     =" << logPDFgr << std::endl;
+    NumericalPoint logPDFgrFD(2);
+    logPDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeLogPDF(point) -
+                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeLogPDF(point)) / (2.0 * eps);
+    logPDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeLogPDF(point) -
+                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeLogPDF(point)) / (2.0 * eps);
+    fullprint << "log-pdf gradient (FD)=" << logPDFgrFD << std::endl;
+    NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+    fullprint << "cdf gradient     =" << CDFgr << std::endl;
+    NumericalPoint CDFgrFD(2);
+    CDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeCDF(point) -
+                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeCDF(point) -
+                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeCDF(point)) / (2.0 * eps);
+    fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    // Confidence regions
+    NumericalScalar threshold;
+    fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
+    fullprint << "threshold=" << threshold << std::endl;
+    NumericalScalar beta;
+    LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
+    fullprint << "Minimum volume level set=" << levelSet << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
     // Moments
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;

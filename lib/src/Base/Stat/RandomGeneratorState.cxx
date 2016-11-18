@@ -32,13 +32,15 @@ static const Factory<RandomGeneratorState> Factory_RandomGeneratorState;
 
 
 /* Default constructor */
-RandomGeneratorState::RandomGeneratorState(): buffer_(0), index_(0)
+RandomGeneratorState::RandomGeneratorState()
+: buffer_(0), index_(0)
 {
   // Nothing to do
 }
 
 /* Standard constructor */
-RandomGeneratorState::RandomGeneratorState(const Indices buffer, const UnsignedInteger index) : buffer_(buffer), index_(index)
+RandomGeneratorState::RandomGeneratorState(const Indices buffer, const UnsignedInteger index)
+: buffer_(buffer), index_(index)
 {
   // Nothing to do
 }
@@ -89,10 +91,7 @@ Bool RandomGeneratorState::operator ==(const RandomGeneratorState & other) const
 void RandomGeneratorState::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  Indices indicesState(buffer_.getSize());
-  for(UnsignedInteger i = 0; i < buffer_.getSize(); i++)
-    indicesState[i] = buffer_[i];
-  adv.saveAttribute( "buffer_", indicesState);
+  adv.saveAttribute( "buffer_", buffer_);
   adv.saveAttribute( "index_", index_);
 }
 
@@ -100,9 +99,7 @@ void RandomGeneratorState::save(Advocate & adv) const
 void RandomGeneratorState::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  Indices indicesState(buffer_.getSize());
-  adv.loadAttribute( "buffer_", indicesState);
-  buffer_ = indicesState;
+  adv.loadAttribute( "buffer_", buffer_);
   adv.loadAttribute( "index_", index_);
 }
 

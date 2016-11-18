@@ -104,8 +104,8 @@ NumericalScalar AbdoRackwitz::computeLineSearch()
   /* We start with step=1 */
   NumericalScalar step = 1.0;
   NumericalPoint currentStepPoint;
-  NumericalScalar currentStepLevelValue;
-  NumericalScalar currentStepTheta;
+  NumericalScalar currentStepLevelValue = -1.0;
+  NumericalScalar currentStepTheta = -1.0;
   do
   {
     currentStepPoint = currentPoint_ + step * currentDirection_;

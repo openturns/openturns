@@ -46,13 +46,13 @@ public:
   /** Default constructor */
   SpectralModelImplementation();
 
-  /** Standard constructor with amplitude and scale parameters parameters */
-  SpectralModelImplementation(const NumericalPoint & amplitude,
-                              const NumericalPoint & scale);
+  /** Standard constructor with scale and amplitude parameters parameters */
+  SpectralModelImplementation(const NumericalPoint & scale,
+                              const NumericalPoint & amplitude);
 
-  /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
-  SpectralModelImplementation(const NumericalPoint & amplitude,
-                              const NumericalPoint & scale,
+  /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
+  SpectralModelImplementation(const NumericalPoint & scale,
+                              const NumericalPoint & amplitude,
                               const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
@@ -117,11 +117,11 @@ protected:
   /** dimension parameter */
   UnsignedInteger dimension_;
 
-  /** Collection - Container for amplitude values  */
-  NumericalPoint amplitude_;
-
-  /** Collection - Container for scale values  */
+  /** Container for scale values  */
   NumericalPoint scale_;
+
+  /** Container for amplitude values  */
+  NumericalPoint amplitude_;
 
   /** Spatial dimension parameter */
   UnsignedInteger spatialDimension_;

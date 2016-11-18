@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
     /* Amplitude values */
     NumericalPoint amplitude(dimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(dimension, 1.0);
+    NumericalPoint scale(spatialDimension, 1.0);
 
     /* Covariance model */
     ExponentialModel myCovarianceModel(scale, amplitude);
     fullprint << "myCovarianceModel = " << myCovarianceModel << std::endl;
 
     /* Spectral model  */
-    CauchyModel mySpectralModel(amplitude, scale);
+    CauchyModel mySpectralModel(scale, amplitude);
     fullprint << "mySpectralModel = " << mySpectralModel << std::endl;
 
     /* We build the second order model using covariance and spectral models */

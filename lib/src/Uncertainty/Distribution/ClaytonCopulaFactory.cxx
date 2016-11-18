@@ -20,10 +20,13 @@
  */
 #include <cmath>
 #include "openturns/ClaytonCopulaFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ClaytonCopulaFactory);
+
+static const Factory<ClaytonCopulaFactory> Factory_ClaytonCopulaFactory;
 
 /* Default constructor */
 ClaytonCopulaFactory::ClaytonCopulaFactory()

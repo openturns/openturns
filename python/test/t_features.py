@@ -65,32 +65,26 @@ try:
 
     # check that hmat library was found
     print('7: HMatrix (hmat-oss)'.ljust(width), end=' ')
-    try:
-        # This is a little bit tricky because HMat 1.0 fails with 1x1 matrices
-        ot.ResourceMap.SetAsUnsignedInteger(
-            'TemporalNormalProcess-SamplingMethod', 1)
-        vertices = [[0.0, 0.0, 0.0]]
-        vertices.append([1.0, 0.0, 0.0])
-        vertices.append([0.0, 1.0, 0.0])
-        vertices.append([0.0, 0.0, 1.0])
-        simplices = [[0, 1, 2, 3]]
-        # Discard messages from HMat
-        ot.Log.Show(0)
-        process = ot.TemporalNormalProcess(
-            ot.ExponentialModel(3), ot.Mesh(vertices, simplices))
-        f = process.getRealization()
+    if ot.HMatrixFactory.IsAvailable():
         print('OK')
-    except:
+    else:
         print('no')
 
     # check that nlopt library was found
     print('8: optimization (NLopt)'.ljust(width), end=' ')
     try:
         problem = ot.OptimizationProblem()
-        algo = ot.SLSQP()
+        algo = ot.NLopt('LD_SLSQP')
         algo.setProblem(problem)
         print('OK')
     except:
+        print('no')
+
+    # check that TBB library was found
+    print('9: multithreading (TBB)'.ljust(width), end=' ')
+    if ot.TBB.IsAvailable():
+        print('OK')
+    else:
         print('no')
 
 except:

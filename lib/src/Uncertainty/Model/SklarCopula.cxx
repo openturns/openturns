@@ -216,6 +216,24 @@ NumericalScalar SklarCopula::computeProbability(const Interval & interval) const
   return distribution_.computeProbability(Interval(lowerBound, upperBound));
 }
 
+/* Get the survival function of the distribution */
+NumericalScalar SklarCopula::computeSurvivalFunction(const NumericalPoint & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  // Early exit for the independent case
+  if (distribution_.hasIndependentCopula()) return IndependentCopula(dimension).computeSurvivalFunction(point);
+  NumericalPoint u(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    u[i] = std::max(point[i], 0.0);
+    if (u[i] >= 1.0) return 0.0;
+  }
+  NumericalPoint x(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    x[i] = marginalCollection_[i].computeQuantile(u[i])[0];
+  return distribution_.computeSurvivalFunction(x);
+}
+
 /* Get the PDFGradient of the distribution */
 NumericalPoint SklarCopula::computePDFGradient(const NumericalPoint & point) const
 {

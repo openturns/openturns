@@ -4,23 +4,20 @@
 Available constructors:
     ExponentiallyDampedCosineModel(*spatialDim=1*)
 
-    ExponentiallyDampedCosineModel(*theta, sigma,f*)
+    ExponentiallyDampedCosineModel(*scale, amplitude, f*)
 
 Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
     By default, equal to 1.
-
-theta : sequence of floats
+scale : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
     The size of :math:`\vect{\theta}` is the spatial dimension.
-
-sigma : sequence of positive floats
+amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
-
 f : positive float
     Frequency parameter.
 
@@ -71,3 +68,22 @@ Create a  exponentially damped cosine  covariance function specifying the amplit
 
 >>> covModel3 = ot.ExponentiallyDampedCosineModel([1.5, 2.5], [3.5], 5.0)"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExponentiallyDampedCosineModel::setFrequency
+"Frequency accessor.
+
+Parameters
+----------
+f : positive float
+    Frequency parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExponentiallyDampedCosineModel::getFrequency
+"Frequency accessor.
+
+Returns
+-------
+f : positive float
+    Frequency parameter."

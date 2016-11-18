@@ -56,32 +56,6 @@ Arcsine::Arcsine(const NumericalScalar a,
   computeRange();
 }
 
-/* Parameters constructor */
-Arcsine::Arcsine(const NumericalScalar arg1,
-                 const NumericalScalar arg2,
-                 const ParameterSet set)
-  : ContinuousDistribution()
-  , a_(-1.0)
-  , b_(1.0)
-{
-  Log::Warn(OSS() << "Arcsine parameter set constructor is deprecated.");
-  setName("Arcsine");
-  switch (set)
-  {
-    case AB:
-      setAB(arg1, arg2);
-      break;
-
-    case MUSIGMA:
-      setMuSigma(arg1, arg2);
-      break;
-
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid parameter set argument";
-  }
-  setDimension(1);
-}
-
 /* Comparison operator */
 Bool Arcsine::operator ==(const Arcsine & other) const
 {
@@ -162,7 +136,7 @@ NumericalScalar Arcsine::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxNumericalScalar;
+  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinNumericalScalar;
   return -std::log(M_PI) - 0.5 * (std::log(b_ - x) + std::log(x - a_));
 }
 
@@ -375,42 +349,6 @@ void Arcsine::setAB(const NumericalScalar a,
   a_ = a;
   b_ = b;
   computeRange();
-}
-
-/* Mu accessor */
-void Arcsine::setMu(const NumericalScalar mu)
-{
-  Log::Warn(OSS() << "Arcsine::setMu is deprecated");
-  const NumericalScalar sigma = getSigma();
-  setAB(mu - sigma * M_SQRT1_2, mu + sigma * M_SQRT1_2);
-}
-
-NumericalScalar Arcsine::getMu() const
-{
-  Log::Warn(OSS() << "Arcsine::getMu is deprecated");
-  return 0.5 * (a_ + b_);
-}
-
-
-/* Sigma accessor */
-void Arcsine::setSigma(const NumericalScalar sigma)
-{
-  Log::Warn(OSS() << "Arcsine::setSigma is deprecated");
-  const NumericalScalar mu = getMu();
-  setAB(mu - sigma * M_SQRT2, mu + sigma * M_SQRT2);
-}
-
-NumericalScalar Arcsine::getSigma() const
-{
-  Log::Warn(OSS() << "Arcsine::getSigma is deprecated");
-  return 0.5 * (b_ - a_) * M_SQRT1_2;
-}
-
-void Arcsine::setMuSigma(const NumericalScalar mu,
-                         const NumericalScalar sigma)
-{
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "in Arcsine : sigma must be positive";
-  setAB(mu - sigma * std::sqrt(2.0), mu + sigma * std::sqrt(2.0));
 }
 
 /* Method save() stores the object through the StorageManager */

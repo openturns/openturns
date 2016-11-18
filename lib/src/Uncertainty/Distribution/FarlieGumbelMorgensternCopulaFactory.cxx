@@ -24,10 +24,13 @@
 #include "openturns/FarlieGumbelMorgensternCopulaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(FarlieGumbelMorgensternCopulaFactory);
+
+static const Factory<FarlieGumbelMorgensternCopulaFactory> Factory_FarlieGumbelMorgensternCopulaFactory;
 
 /* Default constructor */
 FarlieGumbelMorgensternCopulaFactory::FarlieGumbelMorgensternCopulaFactory():

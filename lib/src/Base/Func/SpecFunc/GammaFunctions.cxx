@@ -60,11 +60,11 @@ NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q(a, x) : boost::math::gamma_p(a, x));
 #else
-  NumericalScalar p;
-  NumericalScalar q;
+  NumericalScalar p = -1.0;
+  NumericalScalar q = -1.0;
   SignedInteger ierr;
   incgam(a, x, p, q, ierr);
-  if (ierr == 1) throw InternalException(HERE) << "Error: underflow or overflow in RegularizedIncompleteGamma for a=" << a << ", x=" << x;
+  if (ierr == 1) LOGWARN(OSS() << "underflow or overflow in RegularizedIncompleteGamma for a=" << a << ", x=" << x);
   return (tail ? q : p);
 #endif
 }
@@ -78,10 +78,10 @@ NumericalScalar RegularizedIncompleteGammaInverse(const NumericalScalar a,
   return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
 #else
   const NumericalScalar y = 0.5 + (0.5 - x);
-  NumericalScalar xr;
+  NumericalScalar xr = -1.0;
   SignedInteger ierr;
   invincgam(a, (tail ? y : x), (tail ? x : y), xr, ierr);
-  if (ierr == -1) throw InternalException(HERE) << "Error: cannot compute the RegularizedIncompleteGammaInverse funtion for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.";
+  if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse funtion to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");
   if (ierr == -2) LOGWARN(OSS() << "up to 15 Newton iterations have been made to compute the RegularizedIncompleteGammaInverse funtion for a=" << a << ", x=" << x << ", tail=" << tail << ". The accuracy may be reduced.");
   return xr;
 #endif

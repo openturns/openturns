@@ -18,6 +18,19 @@ characteristic function=(0.892418, 0.0632527)
 log characteristic function=(-0.111315, 0.0707596)
 quantile= [1.06295]
 cdf(quantile)= 0.95
+InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.429631]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.499368, 1.06337]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.18978} with f=
+MinimumVolumeLevelSetEvaluation(Gamma(k = 1.5, lambda = 2.5, gamma = -0.5))
+beta= [0.111942]
+Bilateral confidence interval= [-0.456841, 1.36968]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [-0.5, 1.06295]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [-0.429631, 13.1546]
+beta= [0.95]
 mean= [0.1]
 covariance= [[ -0.120326 ]]
 correlation= [[ 1 ]]

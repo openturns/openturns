@@ -140,7 +140,7 @@ ot_add_python_module(typ typ_module.i
                       TriangularComplexMatrix.i TriangularComplexMatrix_doc.i.in
                       CovarianceMatrix.i CovarianceMatrix_doc.i.in
                       CorrelationMatrix.i CorrelationMatrix_doc.i.in
-                      IdentityMatrix.i
+                      IdentityMatrix.i IdentityMatrix_doc.i.in
                       NumericalSample.i NumericalSample_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
@@ -156,12 +156,11 @@ ot_add_python_module(statistics statistics_module.i
                       Full.i Full_doc.i.in
                       Last.i Last_doc.i.in
                       Null.i Null_doc.i.in
-		      HMatrixParameters.i HMatrixParameters_doc.i.in
                       LinearModel.i LinearModel_doc.i.in
                       LinearModelFactory.i LinearModelFactory_doc.i.in
                       TestResult.i TestResult_doc.i.in
                       RandomGenerator.i RandomGenerator_doc.i.in
-                      RandomGeneratorState.i
+                      RandomGeneratorState.i RandomGeneratorState_doc.i.in
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
                       LowDiscrepancySequenceImplementation.i LowDiscrepancySequenceImplementation_doc.i.in
                       LowDiscrepancySequence.i LowDiscrepancySequence_doc.i.in
@@ -202,12 +201,13 @@ ot_add_python_module(statistics statistics_module.i
                       GeneralizedExponential.i GeneralizedExponential_doc.i.in
                       AbsoluteExponential.i AbsoluteExponential_doc.i.in
                       MaternModel.i MaternModel_doc.i.in
-		      DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
+                      DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
-		      TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i.in
-                      HMatrixFactory.i
-                      HMatrix.i
-                      HMatrixImplementation.i
+                      TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i.in
+                      HMatrixParameters.i HMatrixParameters_doc.i.in
+                      HMatrixFactory.i HMatrixFactory_doc.i.in
+                      HMatrix.i HMatrix_doc.i.in
+                      HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
                    )
 
@@ -234,6 +234,7 @@ ot_add_python_module(graph graph_module.i
                       Polygon.i Polygon_doc.i.in
                       PolygonArray.i PolygonArray_doc.i.in
                       Staircase.i Staircase_doc.i.in
+                      Text.i Text_doc.i.in
                       BaseGraphTemplateDefs.i
                    )
 
@@ -357,9 +358,9 @@ ot_add_python_module(solver solver_module.i
                       Bisection.i Bisection_doc.i.in
                       Secant.i Secant_doc.i.in
                       Brent.i Brent_doc.i.in
-                      ODESolverImplementation.i
-                      ODESolver.i
-                      RungeKutta.i
+                      ODESolverImplementation.i ODESolverImplementation_doc.i.in
+                      ODESolver.i ODESolver_doc.i.in
+                      RungeKutta.i RungeKutta_doc.i.in
                       BaseSolverTemplateDefs.i
                    )
 
@@ -367,28 +368,39 @@ ot_add_python_module(algo algo_module.i
                       ApproximationAlgorithmImplementation.i ApproximationAlgorithmImplementation_doc.i.in
                       ApproximationAlgorithmImplementationFactory.i ApproximationAlgorithmImplementationFactory_doc.i.in
                       ApproximationAlgorithm.i ApproximationAlgorithm_doc.i.in
+                      DesignProxy.i DesignProxy_doc.i.in
+                      LeastSquaresMethodImplementation.i LeastSquaresMethodImplementation_doc.i.in
+                      LeastSquaresMethod.i LeastSquaresMethod_doc.i.in
+                      CholeskyMethod.i CholeskyMethod_doc.i.in
+                      QRMethod.i QRMethod_doc.i.in
+                      SVDMethod.i SVDMethod_doc.i.in
+                      LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
+                      LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
                       ClassifierImplementation.i ClassifierImplementation_doc.i.in
                       Classifier.i Classifier_doc.i.in
                       FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i.in
                       FittingAlgorithm.i FittingAlgorithm_doc.i.in
                       CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i.in
-                      KDTree.i
+                      KDTree.i KDTree_doc.i.in
                       KFold.i KFold_doc.i.in
-                      LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
-                      LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
                       PythonNumericalMathEvaluationImplementation.cxx
                       PythonNumericalMathGradientImplementation.cxx
                       PythonNumericalMathHessianImplementation.cxx
                       KissFFT.i KissFFT_doc.i.in
-                      IntegrationAlgorithmImplementation.i
-                      IntegrationAlgorithm.i
+                      IntegrationAlgorithmImplementation.i IntegrationAlgorithmImplementation_doc.i.in
+                      IntegrationAlgorithm.i IntegrationAlgorithm_doc.i.in
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
                       GaussKronrod.i GaussKronrod_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
 		      KarhunenLoeveP1Factory.i KarhunenLoeveP1Factory_doc.i.in
+		      KarhunenLoeveResultImplementation.i KarhunenLoeveResultImplementation_doc.i.in
+		      KarhunenLoeveResult.i KarhunenLoeveResult_doc.i.in
+		      KarhunenLoeveAlgorithmImplementation.i KarhunenLoeveAlgorithmImplementation_doc.i.in
+		      KarhunenLoeveP1Algorithm.i KarhunenLoeveP1Algorithm_doc.i.in
+		      KarhunenLoeveAlgorithm.i KarhunenLoeveAlgorithm_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )
 
@@ -405,6 +417,7 @@ ot_add_python_module(experiment experiment_module.i
                       Combinations.i Combinations_doc.i.in
                       KPermutations.i KPermutations_doc.i.in
                       Tuples.i Tuples_doc.i.in
+                      PythonExperimentImplementation.cxx
                       BaseExperimentTemplateDefs.i
                    )
 
@@ -477,11 +490,12 @@ ot_add_python_module(model_process model_process_module.i
                       ARMAFactory.i ARMAFactory_doc.i.in
 		      ConditionedNormalProcess.i ConditionedNormalProcess_doc.i.in
 		      KarhunenLoeveQuadratureFactory.i KarhunenLoeveQuadratureFactory_doc.i.in
+		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in                
                       UncertaintyProcessTemplateDefs.i
                    )
 
 ot_add_python_module(dist_bundle1 dist_bundle1_module.i
-                      DistFunc.i
+                      DistFunc.i DistFunc_doc.i.in
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
@@ -526,14 +540,13 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                    )
 
 ot_add_python_module(dist_bundle2 dist_bundle2_module.i
-                      HistogramPair.i HistogramPair_doc.i.in
                       Histogram.i Histogram_doc.i.in
                       HistogramFactory.i HistogramFactory_doc.i.in
                       InverseChiSquare.i InverseChiSquare_doc.i.in
                       InverseGamma.i InverseGamma_doc.i.in
                       InverseNormal.i InverseNormal_doc.i.in
-                      InverseNormalFactory.i NormalFactory_doc.i.in InverseNormalFactory_doc.i.in
-                      InverseWishart.i
+                      InverseNormalFactory.i InverseNormalFactory_doc.i.in
+                      InverseWishart.i InverseWishart_doc.i.in
                       KPermutationsDistribution.i KPermutationsDistribution_doc.i.in
                       KernelMixture.i KernelMixture_doc.i.in
                       KernelSmoothing.i KernelSmoothing_doc.i.in
@@ -546,7 +559,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogNormalMuSigma.i LogNormalMuSigma_doc.i.in
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
-                      LogUniformFactory.i UniformFactory_doc.i.in LogUniformFactory_doc.i.in
+                      LogUniformFactory.i LogUniformFactory_doc.i.in
 		      MarginalDistribution.i
 		      MaximumDistribution.i
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
@@ -562,7 +575,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
                       NonCentralStudent.i NonCentralStudent_doc.i.in
                       Normal.i Normal_doc.i.in
-                      NormalFactory.i
+                      NormalFactory.i NormalFactory_doc.i.in
                       NormalGamma.i NormalGamma_doc.i.in
                    )
 
@@ -590,15 +603,14 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormal.i TruncatedNormal_doc.i.in
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
-                      UniformFactory.i
+                      UniformFactory.i UniformFactory_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
-                      UserDefinedPair.i UserDefinedPair_doc.i.in
-                      UserDefinedFactory.i
+                      UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
                       Weibull.i Weibull_doc.i.in
                       WeibullFactory.i WeibullFactory_doc.i.in
                       WeibullMuSigma.i WeibullMuSigma_doc.i.in
-                      Wishart.i
+                      Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i
                    )
@@ -628,6 +640,19 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       ImportanceSamplingExperiment.i ImportanceSamplingExperiment_doc.i.in
                       GaussProductExperiment.i GaussProductExperiment_doc.i.in
                       LHSExperiment.i LHSExperiment_doc.i.in
+SimulatedAnnealingLHS.i SimulatedAnnealingLHS_doc.i.in
+MonteCarloLHS.i MonteCarloLHS_doc.i.in
+LHSResult.i LHSResult_doc.i.in
+OptimalLHSExperiment.i OptimalLHSExperiment_doc.i.in
+SpaceFillingPhiP.i SpaceFillingPhiP_doc.i.in
+SpaceFillingMinDist.i SpaceFillingMinDist_doc.i.in
+SpaceFillingC2.i SpaceFillingC2_doc.i.in
+SpaceFillingImplementation.i SpaceFillingImplementation_doc.i.in
+SpaceFilling.i SpaceFilling_doc.i.in
+LinearProfile.i LinearProfile_doc.i.in
+GeometricProfile.i GeometricProfile_doc.i.in
+TemperatureProfile.i TemperatureProfile_doc.i.in
+TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
                       LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
                       MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
                       UncertaintyWeightedExperimentTemplateDefs.i

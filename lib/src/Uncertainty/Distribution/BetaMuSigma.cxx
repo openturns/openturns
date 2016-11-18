@@ -160,6 +160,17 @@ NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
+void BetaMuSigma::setValues(const NumericalPoint & inP)
+{
+  if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
+  mu_ = inP[0];
+  sigma_ = inP[1];
+  a_ = inP[2];
+  b_ = inP[3];
+
+}
+
+
 NumericalPoint BetaMuSigma::getValues() const
 {
   NumericalPoint point(4);

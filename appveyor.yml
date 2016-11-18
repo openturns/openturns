@@ -1,0 +1,22 @@
+install:
+  - appveyor-retry appveyor DownloadFile https://downloads.sourceforge.net/openblas/v0.2.15/OpenBLAS-v0.2.15-Win32.zip
+  - 7z x OpenBLAS-v0.2.15-Win32.zip -oC:\Libraries > nil
+
+  - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.10/swigwin-3.0.10.zip
+  - 7z x swigwin-3.0.10.zip -oC:\Libraries > nul
+
+build_script:
+  - mkdir build
+  - cd build
+  - cmake -G "Visual Studio 10" \
+      -DCMAKE_INSTALL_PREFIX="C:\Libraries\openturns" \
+      -DBOOST_ROOT="C:\Libraries\boost_1_60_0" \
+      -DUSE_LAPACKE=OFF \
+      -DLAPACKE_FOUND=ON \
+      -DOPENTURNS_LIBRARIES="C:\Libraries\OpenBLAS-v0.2.15-Win32\lib\libopenblas.dll.a" \
+      -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
+      -DUSE_HMAT=OFF \
+      -DSWIG_EXECUTABLE="C:\Libraries\swigwin-3.0.10\swig.exe" \
+      -DBUILD_PYTHON=OFF \
+      ..
+  - cmake --build . --config Release --target INSTALL

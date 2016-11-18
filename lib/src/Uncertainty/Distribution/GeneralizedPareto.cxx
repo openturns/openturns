@@ -151,9 +151,9 @@ NumericalScalar GeneralizedPareto::computeLogPDF(const NumericalPoint & point) c
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar z = point[0] / sigma_;
-  if (z < 0.0) return -SpecFunc::MaxNumericalScalar;
+  if (z < 0.0) return SpecFunc::LogMinNumericalScalar;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - std::log(sigma_);
-  if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return -SpecFunc::MaxNumericalScalar;
+  if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return SpecFunc::LogMinNumericalScalar;
   return -(1.0 + 1.0 / xi_) * log1p(xi_ * z) - std::log(sigma_);
 }
 
@@ -177,6 +177,23 @@ NumericalScalar GeneralizedPareto::computeComplementaryCDF(const NumericalPoint 
   if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 0.0;
   return std::exp(-log1p(xi_ * z) / xi_);
+}
+
+/** Get the product minimum volume interval containing a given probability of the distribution */
+Interval GeneralizedPareto::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+{
+  return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
+}
+
+/** Get the minimum volume level set containing a given probability of the distribution */
+LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+{
+  const Interval interval(computeMinimumVolumeInterval(prob));
+  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
+  threshold = std::exp(-minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -219,8 +236,9 @@ NumericalPoint GeneralizedPareto::computeCDFGradient(const NumericalPoint & poin
 NumericalScalar GeneralizedPareto::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (xi_ == 0.0) return -sigma_ * (tail ? std::log(prob) : log1p(-prob));
-  return sigma_ * expm1(-xi_ * (tail ? std::log(-prob) : log1p(-prob))) / xi_;
+  const NumericalScalar logProb = tail ? std::log(prob) : log1p(-prob);
+  if (xi_ == 0.0) return -sigma_ * logProb;
+  else return sigma_ * expm1(-xi_ * logProb) / xi_;
 }
 
 /* Compute the mean of the distribution */

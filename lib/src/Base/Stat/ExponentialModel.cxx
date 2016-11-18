@@ -39,19 +39,19 @@ ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)
   // Nothing to do
 }
 
-/** Standard constructor with amplitude and scale parameters parameters */
+/** Standard constructor with scale and amplitude parameters parameters */
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
                                    const NumericalPoint & amplitude)
-  : StationaryCovarianceModel(amplitude, scale)
+  : StationaryCovarianceModel(scale, amplitude)
 {
   // Nothing to do
 }
 
-/** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
+/** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
                                    const NumericalPoint & amplitude,
                                    const CorrelationMatrix & spatialCorrelation)
-  : StationaryCovarianceModel(amplitude, scale, spatialCorrelation)
+  : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
 {
   // Nothing to do
 }
@@ -198,8 +198,7 @@ String ExponentialModel::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << ExponentialModel::GetClassName();
-  oss << " input dimension=" << spatialDimension_
-      << " scale=" << getScale()
+  oss << " scale=" << getScale()
       << " amplitude=" << getAmplitude()
       << " spatial correlation=" << getSpatialCorrelation()
       << " isDiagonal=" << isDiagonal();
@@ -211,8 +210,7 @@ String ExponentialModel::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << ExponentialModel::GetClassName();
-  oss << "(input dimension=" << spatialDimension_
-      << ", scale=" << getScale()
+  oss << "(scale=" << getScale()
       << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
     oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);

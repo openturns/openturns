@@ -1,0 +1,30 @@
+design=design_dim_2_size_20_1_centered.csv
+c2=3.7424634916177e-02, phip=9.2368609820592e+00, mindist=1.1180339887499e-01
+design=design_dim_2_size_20_2_centered.csv
+c2=3.9756801916269e-02, phip=1.4539725173219e+01, mindist=7.0710678118655e-02
+design=design_dim_2_size_20_3_centered.csv
+c2=3.4622655857252e-02, phip=1.4142135623826e+01, mindist=7.0710678118655e-02
+design=design_dim_2_size_20_4_centered.csv
+c2=3.5310809939870e-02, phip=1.4456309011263e+01, mindist=7.0710678118655e-02
+design=design_dim_2_size_20_5_centered.csv
+c2=4.6320657363751e-02, phip=1.4456309011328e+01, mindist=7.0710678118655e-02
+design=design_dim_2_size_20_6_centered.csv
+c2=4.1862612180906e-02, phip=1.4539725173244e+01, mindist=7.0710678118655e-02
+design=design_dim_2_size_20_7_centered.csv
+c2=4.0934133661406e-02, phip=1.4539725173228e+01, mindist=7.0710678118655e-02
+design=design_dim_2_size_20_8_centered.csv
+c2=3.5951054207203e-02, phip=9.1957299868635e+00, mindist=1.1180339887499e-01
+design=design_dim_2_size_20_9_centered.csv
+c2=3.8810157157769e-02, phip=9.2706042376728e+00, mindist=1.1180339887499e-01
+design=design_dim_2_size_20_10_centered.csv
+c2=3.8826257849676e-02, phip=1.4456309011263e+01, mindist=7.0710678118655e-02
+design=design_dim_50_size_100_1_centered.csv
+c2=2.6124591580463e+01, phip=5.4534391739897e-01, mindist=1.8351839144892e+00
+design=design_dim_50_size_100_2_centered.csv
+c2=2.5427092291761e+01, phip=5.1713345771273e-01, mindist=1.9406699874013e+00
+design=design_dim_50_size_100_3_centered.csv
+c2=2.6141690805074e+01, phip=4.9453167540663e-01, mindist=2.1044951888755e+00
+design=design_dim_50_size_100_4_centered.csv
+c2=2.6322210826622e+01, phip=5.1691817925687e-01, mindist=1.9479219696898e+00
+design=design_dim_50_size_100_5_centered.csv
+c2=2.7777966135178e+01, phip=5.1782924202828e-01, mindist=1.9647391684394e+00

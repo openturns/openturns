@@ -68,9 +68,9 @@ Create the covariance model, a mesh and a process:
 >>> myMesh = ot.IntervalMesher([10]*2).build(ot.Interval([0.0]*2, [1.0]*2))
 >>> myProcess = ot.TemporalNormalProcess(myModel, myMesh)
 
-Generate 100 fields:
+Generate 10 fields:
 
->>> mySample = myProcess.getSample(100)
+>>> mySample = myProcess.getSample(10)
 
 Estimate the covariance model without supposing the stationarity:
 

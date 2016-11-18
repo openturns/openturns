@@ -24,10 +24,13 @@
 #include "openturns/AliMikhailHaqCopulaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(AliMikhailHaqCopulaFactory);
+
+static const Factory<AliMikhailHaqCopulaFactory> Factory_AliMikhailHaqCopulaFactory;
 
 /* Default constructor */
 AliMikhailHaqCopulaFactory::AliMikhailHaqCopulaFactory():

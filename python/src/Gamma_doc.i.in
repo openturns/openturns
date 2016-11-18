@@ -36,21 +36,31 @@ Its first moments are:
         \Var{X} & = & \frac{\sqrt{k}}{\lambda}
     \end{eqnarray*}
 
+
+It is possible to create a Gamma distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.GammaMuSigma`. In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(k, \lambda, \gamma)`.
+
 Examples
 --------
-Create a distribution:
+Create a distribution from its native parameters :math:`(k, \lambda, \gamma)`:
 
 >>> import openturns as ot
->>> distribution = ot.Gamma(1.0, 1.0)
+>>> myDist = ot.Gamma(1.0, 1.0, 0.0)
+
+Create a it from the alternative parametrization :math:`(\mu, \lambda, \gamma)`:
+
+>>> myDist2 = ot.Gamma()
+>>> myDist2.setParameter(ot.GammaMuSigma()([1.0, 1.0, 0.0]))
+
+Create it from :math:`(\mu, \lambda, \gamma)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.GammaMuSigma(1.5, 2.5, -0.5)
+>>> myDist3 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:
 
->>> sample = distribution.getSample(10)
-
-Create a distribution from mu,sigma parameter set:
-
->>> distribution = ot.Gamma()
->>> distribution.setParameter(ot.GammaMuSigma()([1.5, 2.5, -0.5]))"
+>>> sample = myDist.getSample(5)"
 
 // ---------------------------------------------------------------------
 

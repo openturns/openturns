@@ -20,6 +20,7 @@
 #include "openturns/AbsoluteExponential.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -30,22 +31,22 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on spatial dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension, NumericalPoint(1, 1.0), NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")))
+  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta")), NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta)
-  : StationaryCovarianceModel( NumericalPoint(1, 1.0), theta)
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & scale)
+  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-AbsoluteExponential::AbsoluteExponential(const NumericalPoint & theta,
-    const NumericalPoint & sigma)
-  : StationaryCovarianceModel(sigma, theta)
+AbsoluteExponential::AbsoluteExponential(const NumericalPoint & scale,
+    const NumericalPoint & amplitude)
+  : StationaryCovarianceModel(scale, amplitude)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
@@ -65,7 +66,7 @@ NumericalScalar AbsoluteExponential::computeStandardRepresentative(const Numeric
   NumericalPoint tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar tauOverThetaNorm = tauOverTheta.norm1();
-  return tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::NumericalScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
 }
 
 /* Gradient */
@@ -84,7 +85,7 @@ Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
   if (norm1 == 0.0)
   {
     Matrix gradient(spatialDimension_, 1);
-    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] / scale_[i];
+    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     return gradient;
   }
   // General case
@@ -93,8 +94,8 @@ Matrix AbsoluteExponential::partialGradient(const NumericalPoint & s,
   NumericalPoint factor(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
-    factor[i] = amplitude_[0] / scale_[i];
-    if (tau[i] < 0) factor[i] *= -1.0;
+    factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
+    if (tau[i] > 0) factor[i] *= -1.0;
   }
   return Matrix(spatialDimension_, 1, factor * value) ;
 }
@@ -104,9 +105,8 @@ String AbsoluteExponential::__repr__() const
 {
   OSS oss;
   oss << "class=" << AbsoluteExponential::GetClassName()
-      << " input dimension=" << spatialDimension_
-      << " theta=" << scale_
-      << " sigma=" << amplitude_;
+      << " scale=" << scale_
+      << " amplitude=" << amplitude_;
   return oss;
 }
 
@@ -115,9 +115,8 @@ String AbsoluteExponential::__str__(const String & offset) const
 {
   OSS oss;
   oss << AbsoluteExponential::GetClassName()
-      << "(input dimension=" << spatialDimension_
-      << ", theta=" << scale_.__str__()
-      << ", sigma=" << amplitude_.__str__()
+      << "(scale=" << scale_.__str__()
+      << ", amplitude=" << amplitude_.__str__()
       << ")";
   return oss;
 }

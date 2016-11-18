@@ -26,6 +26,8 @@ pdf (FD)=0.128471
 cdf=0.942442
 ccdf=0.0575585
 survival=0.0575585
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-0.429631]
+Survival(inverse survival)=0.95
 characteristic function=(0.892418,0.0632527)
 log characteristic function=(-0.111315,0.0707596)
 pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.16512,-0.115624,0.278355]
@@ -34,6 +36,16 @@ cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.08756
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.0875625,0.0770828,-0.128471]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[1.06295]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.499368] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.06337] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Gamma(k = 1.5, lambda = 2.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Gamma(k = 1.5, lambda = 2.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Gamma(k = 1.5, lambda = 2.5, gamma = -0.5)) level=2.18978
+beta=0.111942
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.456841] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.36968] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.06295] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.429631] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[13.1546] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.1]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.24]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -47,13 +59,9 @@ standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=
 standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[59.0625]
 standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[324.844]
 Standard representative=Gamma(k = 1.5, lambda = 1, gamma = 0)
-mu=0.1
 standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.489898]
 skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.63299]
 kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[7]
-sigma=0.489898
-k from (mu, sigma)=1.5
-lambda from (mu, sigma)=2.5
 Distribution class=Gamma name=Gamma dimension=1 k=15 lambda=2.5 gamma=0
 Distribution Gamma(k = 15, lambda = 2.5, gamma = 0)
 Elliptical = false
@@ -73,6 +81,8 @@ pdf (FD)=8.76911e-07
 cdf=6.91531e-08
 ccdf=1
 survival=1
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[3.69853]
+Survival(inverse survival)=0.95
 characteristic function=(0.275588,-0.178824)
 log characteristic function=(-1.11315,5.7076)
 pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-1.54166e-06,4.38456e-06,-1.00845e-05]
@@ -81,6 +91,16 @@ cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-1.26959
 cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-1.26959e-07,3.50764e-07,-8.76911e-07]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[8.75459]
 cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.1431] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[9.09027] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Gamma(k = 15, lambda = 2.5, gamma = 0)) gradientImplementation=MinimumVolumeLevelSetGradient(Gamma(k = 15, lambda = 2.5, gamma = 0)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Gamma(k = 15, lambda = 2.5, gamma = 0)) level=3.27167
+beta=0.037943
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.35815] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[9.39585] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[8.75459] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.69853] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[26.3665] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
 mean=class=NumericalPoint name=Unnamed dimension=1 values=[6]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.4]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -94,10 +114,6 @@ standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=
 standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[73440]
 standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.39536e+06]
 Standard representative=Gamma(k = 15, lambda = 1, gamma = 0)
-mu=6
 standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.54919]
 skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.516398]
 kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.4]
-sigma=1.54919
-k from (mu, sigma)=15
-lambda from (mu, sigma)=2.5

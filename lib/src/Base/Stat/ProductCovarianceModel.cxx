@@ -40,6 +40,9 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger spatialDime
 {
   // Update the default values for the amplitude
   setAmplitude(NumericalPoint(spatialDimension, collection_[0].getAmplitude()[0]));
+
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /* Parameters constructor */
@@ -47,6 +50,9 @@ ProductCovarianceModel::ProductCovarianceModel(const CovarianceModelCollection &
   : CovarianceModelImplementation()
 {
   setCollection(collection);
+
+  activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
+  activeParameter_.fill();
 }
 
 /* Collection accessor */
@@ -158,17 +164,17 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
     for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) gradient(start + j, 0) *= rightValue;
     rightValue *= localCovariances[i - 1];
   }
-  return gradient;
+  return gradient * amplitude_[0] * amplitude_[0];
 }
 
 /* Parameters accessor */
-void ProductCovarianceModel::setParameter(const NumericalPoint & parameter)
+void ProductCovarianceModel::setFullParameter(const NumericalPoint & parameter)
 {
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension)
     throw InvalidArgumentException(HERE) << "Error: parameters dimension should be 1 (got " << parameter.getDimension() << ")";
   // Convention is the following :
-  // Scale parameters than amplitude parameter
+  // Scale parameters then amplitude parameter
   // As it is a 1 d model, scale size = parameterDimension - 1
   NumericalPoint scale(parameterDimension - 1);
   for (UnsignedInteger i = 0; i < parameterDimension - 1; ++i)
@@ -180,7 +186,7 @@ void ProductCovarianceModel::setParameter(const NumericalPoint & parameter)
   setAmplitude(NumericalPoint(1, parameter[parameterDimension - 1]));
 }
 
-NumericalPoint ProductCovarianceModel::getParameter() const
+NumericalPoint ProductCovarianceModel::getFullParameter() const
 {
   // Convention scale + amplitude
   // local amplitudes is 1
@@ -191,7 +197,7 @@ NumericalPoint ProductCovarianceModel::getParameter() const
   return result;
 }
 
-Description ProductCovarianceModel::getParameterDescription() const
+Description ProductCovarianceModel::getFullParameterDescription() const
 {
   const UnsignedInteger size = spatialDimension_ + 1;
   Description description(size);

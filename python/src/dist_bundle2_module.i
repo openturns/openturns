@@ -21,7 +21,6 @@
 %import model_copula_module.i
 
 /* Uncertainty/Distribution (except copulas) */
-%include HistogramPair.i
 %include Histogram.i
 %include HistogramFactory.i
 %include BayesDistribution.i

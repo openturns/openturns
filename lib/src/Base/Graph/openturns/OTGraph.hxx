@@ -36,5 +36,6 @@
 #include "openturns/PolygonArray.hxx"
 #include "openturns/Rfunctions.hxx"
 #include "openturns/Staircase.hxx"
+#include "openturns/Text.hxx"
 
 #endif /* OPENTURNS_OTGRAPH_HXX */

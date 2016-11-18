@@ -69,10 +69,6 @@ public:
   /** Sample generation with weights*/
   virtual NumericalSample generateWithWeights(NumericalPoint & weights) const;
 
-  /** Weight accessor 
-   * @deprecated */
-  virtual NumericalPoint getWeight() const;
-
 } ; /* class WeightedExperiment */
 
 END_NAMESPACE_OPENTURNS

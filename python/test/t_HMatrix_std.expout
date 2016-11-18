@@ -1,0 +1,9 @@
+rows= 9
+columns= 9
+norm= [3]
+norm(A-LLt) < 1e-10
+diagonal= [1,1,1,1,1,1,1,1,1]
+compressionRatio= (81, 81)
+fullrkRatio= (81, 0)
+y= [2.03,2.04,2.03,2.04,2.06,2.04,2.03,2.04,2.03]
+norm(A-LLt) < 1e-10

@@ -234,6 +234,19 @@ void Field::setValues(const NumericalSample & values)
   getImplementation()->setValues(values);
 }
 
+/* Get the i-th marginal field */
+Field Field::getMarginal(const UnsignedInteger index) const
+{
+  return getImplementation()->getMarginal(index);
+}
+
+/* Get the marginal field corresponding to indices dimensions */
+Field Field::getMarginal(const Indices & indices) const
+{
+  return getImplementation()->getMarginal(indices);
+}
+
+
 /* Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
 Mesh Field::asDeformedMesh() const
 {

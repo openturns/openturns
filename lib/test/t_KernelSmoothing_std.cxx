@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     }
     // Test with varying binning
     {
-      NumericalSample sample(Normal().getSample(5000));
+      sample = Normal().getSample(5000);
       Distribution ks1(KernelSmoothing(Normal(), true, 64).build(sample));
       Distribution ks2(KernelSmoothing(Normal(), true, 1024).build(sample));
       Distribution ks3(KernelSmoothing(Normal(), false).build(sample));

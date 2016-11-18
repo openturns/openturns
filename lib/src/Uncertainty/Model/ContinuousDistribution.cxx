@@ -59,7 +59,7 @@ String ContinuousDistribution::__repr__() const
   return oss;
 }
 
-/* Get the DDF of the distributionImplementation */
+/* Get the DDF of the distribution */
 NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) const
 {
   const UnsignedInteger dimension = getDimension();
@@ -155,7 +155,6 @@ Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::int
 {
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In ContinuousDistribution::interpolateCDF(const UnsignedInteger n): cannot interpolate CDF for multidimensional distributions.";
   const PDFWrapper pdfWrapper(this);
-  const NumericalMathFunction fPDF(bindMethod<PDFWrapper, NumericalPoint, NumericalPoint>(pdfWrapper, &PDFWrapper::computePDF, 1, 1));
   const NumericalScalar xMin = getRange().getLowerBound()[0];
   const NumericalScalar xMax = getRange().getUpperBound()[0];
   const NumericalScalar mu = getMean()[0];
@@ -182,9 +181,9 @@ Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::int
     NumericalPoint bi;
     NumericalSample fi;
     NumericalPoint ei;
-    NumericalScalar error;
-    valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(fPDF, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
-    valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(fPDF, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
+    NumericalScalar error = -1.0;
+    valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
+    valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdfWrapper, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
     derivativesCDF[i] = computePDF(xCDF);
     derivativesCCDF[n - i - 1] = -computePDF(xCCDF);
     xCDFOld = xCDF;

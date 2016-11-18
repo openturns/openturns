@@ -82,6 +82,18 @@ public:
   void setMesh(const Mesh & mesh);
   void setTimeGrid(const RegularGrid & timeGrid);
 
+  /** Is the underlying gaussian process ? */
+  virtual Bool isNormal() const;
+
+  /** Is the underlying a stationary process ? */
+  virtual Bool isStationary() const;
+
+  /** Covariance model accessor */
+  CovarianceModel getCovarianceModel() const;
+
+  /** Trend accessor */
+  TrendTransform getTrend() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

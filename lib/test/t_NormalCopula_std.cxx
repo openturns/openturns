@@ -82,10 +82,35 @@ int main(int argc, char *argv[])
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
+    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    fullprint << "Survival      =" << Survival << std::endl;
+    fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
+    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
     NumericalPoint quantile = copula.computeQuantile( 0.5 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
+
+    if (copula.getDimension() <= 2)
+    {
+      // Confidence regions
+      NumericalScalar threshold;
+      fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
+      fullprint << "threshold=" << threshold << std::endl;
+      NumericalScalar beta;
+      LevelSet levelSet(copula.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
+      fullprint << "Minimum volume level set=" << levelSet << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+      fullprint << "Bilateral confidence interval=" << copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+      fullprint << "Unilateral confidence interval (lower tail)=" << copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+      fullprint << "Unilateral confidence interval (upper tail)=" << copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
+      fullprint << "beta=" << beta << std::endl;
+    }
+
     // Covariance and correlation
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
@@ -120,15 +145,13 @@ int main(int argc, char *argv[])
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
     // Creation of the correlation matrix from a Spearman correlation matrix
+    spearman = CorrelationMatrix(dim);
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
-      CorrelationMatrix spearman(dim);
-      for (UnsignedInteger i = 1; i < dim; i++)
-      {
-        spearman(i, i - 1) = 0.25;
-      }
-      CorrelationMatrix correlation(NormalCopula::GetCorrelationFromSpearmanCorrelation(spearman));
-      fullprint << "Normal copula correlation=" << correlation << " from the Spearman correlation=" << spearman << std::endl;
+      spearman(i, i - 1) = 0.25;
     }
+    correlation = NormalCopula::GetCorrelationFromSpearmanCorrelation(spearman);
+    fullprint << "Normal copula correlation=" << correlation << " from the Spearman correlation=" << spearman << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -139,3 +162,4 @@ int main(int argc, char *argv[])
 
   return ExitCode::Success;
 }
+

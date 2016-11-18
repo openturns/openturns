@@ -28,9 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<HistogramPair>);
-static const Factory<PersistentCollection<HistogramPair> > Factory_PersistentCollection_HistogramPair;
-
 CLASSNAMEINIT(Histogram);
 
 static const Factory<Histogram> Factory_Histogram;
@@ -50,20 +47,6 @@ Histogram::Histogram()
 }
 
 /* Parameters constructor */
-Histogram::Histogram(const NumericalScalar first,
-                     const HistogramPairCollection & collection)
-  : ContinuousDistribution()
-  , first_(first)
-  , width_(0)
-  , height_(0)
-  , cumulatedWidth_(0)
-{
-  setName( "Histogram" );
-  // This call set also the range.
-  setPairCollection(collection);
-  setDimension( 1 );
-}
-
 Histogram::Histogram(const NumericalScalar first,
                      const NumericalPoint & width,
                      const NumericalPoint & height)
@@ -175,16 +158,15 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
   if (x <= 0.0) return 0.0;
   if (x >= cumulatedWidth_[size - 1]) return 1.0;
   // Find the bin index by bisection
-  // Must start at -1 as both cumulatedWidth_ and cumulatedSurface_ start with positive values
-  SignedInteger iMin = -1;
+  UnsignedInteger iMin = 0;
+  if (x < cumulatedWidth_[iMin]) return x * height_[iMin];
   UnsignedInteger iMax = size - 1;
-  while (static_cast<SignedInteger>(iMax) > iMin + 1)
+  while (iMax > iMin + 1)
   {
     const UnsignedInteger i = (iMin + iMax) / 2;
     if (x < cumulatedWidth_[i]) iMax = i;
     else iMin = i;
   }
-  // Here, we use only iMax as iMin can be -1
   return cumulatedSurface_[iMax] + (x - cumulatedWidth_[iMax]) * height_[iMax];
 }
 
@@ -231,9 +213,11 @@ NumericalScalar Histogram::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   const NumericalScalar p = tail ? 1.0 - prob : prob;
+  if (p <= 0.0) return first_;
   const UnsignedInteger size = width_.getSize();
+  if (p >= 1.0) return first_ + cumulatedWidth_[size - 1];
   // Search of the bin
-  UnsignedInteger  index(p * size);
+  UnsignedInteger index(p * size);
   NumericalScalar currentProba = cumulatedSurface_[index];
   UnsignedInteger currentIndex = index;
   // Basic search: upper bound. The loop must end because cumulatedSurface_[size - 1] = 1.0 and prob < 1.0
@@ -317,6 +301,8 @@ NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
 Histogram::Implementation Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
+  // No need to transform an histogram if its range is already [-1.0, 1.0]
+  if (first_ == -1.0 && std::abs(cumulatedWidth_[size - 1] - 2.0) <= ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")) return clone();
   const NumericalScalar first = -1.0;
   const NumericalScalar factor = 2.0 / cumulatedWidth_[size - 1];
   return Histogram(first, factor * width_, height_ / factor).clone();
@@ -417,7 +403,7 @@ void Histogram::setData(const NumericalPoint & l,
     NumericalScalar width = l[i];
     if (width <= 0.0) throw InvalidArgumentException(HERE) << "Error: all the widths must be > 0, here value=" << l;
     surface += height * width;
-    cumulatedWidth_[i] = width + (i == 0 ? 0 : cumulatedWidth_[i - 1]);
+    cumulatedWidth_[i] = width + (i == 0 ? 0.0 : cumulatedWidth_[i - 1]);
     cumulatedSurface_[i] = surface;
   }
   // Check if the surface is strictly positive
@@ -432,6 +418,8 @@ void Histogram::setData(const NumericalPoint & l,
     height_[i] = h[i] * normalizationFactor;
     cumulatedSurface_[i] *= normalizationFactor;
   }
+  // Here the value could be slightly different from 1, fix it.
+  cumulatedSurface_[size - 1] = 1.0;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computeRange();
@@ -449,31 +437,6 @@ NumericalPoint Histogram::getHeight() const
   return height_;
 }
 
-
-/* Collection accessor */
-void Histogram::setPairCollection(const HistogramPairCollection & collection)
-{
-  const UnsignedInteger size = collection.getSize();
-  NumericalPoint l(size);
-  NumericalPoint h(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    l[i] = collection[i].getWidth();
-    h[i] = collection[i].getHeight();
-  }
-  setData(l, h);
-}
-
-Histogram::HistogramPairCollection Histogram::getPairCollection() const
-{
-  const UnsignedInteger size = width_.getSize();
-  HistogramPairCollection collection(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    collection[i] = HistogramPair(width_[i], height_[i]);
-  }
-  return collection;
-}
 
 /* Get the PDF singularities inside of the range - 1D only */
 NumericalPoint Histogram::getSingularities() const

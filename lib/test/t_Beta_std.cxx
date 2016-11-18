@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    Beta distribution(2., 5., -1., 2.);
+    Beta distribution(2.0, 5.0, -1.0, 2.0);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -92,6 +92,9 @@ int main(int argc, char *argv[])
     fullprint << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
+    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    fullprint << "Inverse survival=" << InverseSurvival << std::endl;
+    fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
@@ -99,6 +102,7 @@ int main(int argc, char *argv[])
     fullprint << "quantile (tail)=" << quantileTail << std::endl;
     NumericalScalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
+
     NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;
     NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
@@ -127,6 +131,20 @@ int main(int argc, char *argv[])
     CDFgrFD[3] = (Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computeCDF(point) -
                   Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
+    // Confidence regions
+    NumericalScalar threshold;
+    fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
+    fullprint << "threshold=" << threshold << std::endl;
+    NumericalScalar beta;
+    LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
+    fullprint << "Minimum volume level set=" << levelSet << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
+    fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
+    fullprint << "beta=" << beta << std::endl;
     NumericalPoint mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     NumericalPoint standardDeviation = distribution.getStandardDeviation();
@@ -147,15 +165,6 @@ int main(int argc, char *argv[])
     fullprint << "parameters=" << parameters << std::endl;
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
-
-    // Specific to this distribution
-    NumericalScalar mu = distribution.getMu();
-    fullprint << "mu=" << mu << std::endl;
-    NumericalScalar sigma = distribution.getSigma();
-    fullprint << "sigma=" << sigma << std::endl;
-    Beta newDistribution(mu, sigma, distribution.getA(), distribution.getB(), Beta::MUSIGMA);
-    fullprint << "r from (mu, sigma)=" << newDistribution.getR() << std::endl;
-    fullprint << "t from (mu, sigma)=" << newDistribution.getT() << std::endl;
   }
   catch (TestFailed & ex)
   {

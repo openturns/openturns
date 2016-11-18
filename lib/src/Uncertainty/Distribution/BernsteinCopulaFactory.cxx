@@ -24,6 +24,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,9 +36,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(BernsteinCopulaFactory);
 
+static const Factory<BernsteinCopulaFactory> Factory_BernsteinCopulaFactory;
+
 /* Default constructor */
 BernsteinCopulaFactory::BernsteinCopulaFactory()
   : DistributionFactoryImplementation()
+  , isParallel_(ResourceMap::GetAsBool("BernsteinCopulaFactory-Parallel"))
 {
   setName("BernsteinCopulaFactory");
 }
@@ -91,6 +95,40 @@ Distribution BernsteinCopulaFactory::build(const NumericalSample & sample)
 }
 
 /* Build a Bernstein copula based on the given sample */
+Distribution BernsteinCopulaFactory::buildParallel(const NumericalSample & empiricalCopulaSample,
+    const UnsignedInteger binNumber)
+{
+  const UnsignedInteger size = empiricalCopulaSample.getSize();
+  Mixture::DistributionCollection atomsMixture(size);
+  BernsteinCopulaFactoryPolicy policy(empiricalCopulaSample, binNumber, atomsMixture);
+  TBB::ParallelFor( 0, size, policy );
+  Mixture result(atomsMixture);
+  // Here we know that the mixture is a copula even if none of its atoms is.
+  result.isCopula_ = true;
+  return result;
+}
+
+Distribution BernsteinCopulaFactory::buildSequential(const NumericalSample & empiricalCopulaSample,
+    const UnsignedInteger binNumber)
+{
+  const UnsignedInteger size = empiricalCopulaSample.getSize();
+  const UnsignedInteger dimension = empiricalCopulaSample.getDimension();
+  LOGINFO("BernsteinCopulaFactory - Create the resulting Bernstein copula");
+  Mixture::DistributionCollection atomsMixture(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const NumericalPoint nu(empiricalCopulaSample[i] * binNumber);
+      Mixture::DistributionCollection atomsKernel(dimension);
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber + 1.0, 0.0, 1.0);
+      atomsMixture[i] = ComposedDistribution(atomsKernel);
+    }
+  Mixture result(atomsMixture);
+  // Here we know that the mixture is a copula even if none of its atoms is.
+  result.isCopula_ = true;
+  return result;
+}
+
 Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
     const UnsignedInteger binNumber)
 {
@@ -100,14 +138,21 @@ Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
   const UnsignedInteger dimension = sample.getDimension();
   LOGINFO("BernsteinCopulaFactory - Create the empirical copula sample");
   const NumericalSample empiricalCopulaSample(sample.rank() * NumericalPoint(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
-  Mixture::DistributionCollection atomsMixture(size);
-  BernsteinCopulaFactoryPolicy policy(empiricalCopulaSample, binNumber, atomsMixture);
-  LOGINFO("BernsteinCopulaFactory - Create the resulting Bernstein copula");
-  TBB::ParallelFor( 0, size, policy );
-  Mixture result(atomsMixture);
-  // Here we know that the mixture is a copula even if none of its atoms is.
-  result.isCopula_ = true;
-  return result;
+  if (isParallel_)
+    return buildParallel(empiricalCopulaSample, binNumber);
+  return buildSequential(empiricalCopulaSample, binNumber);
 }
+
+/** Parallelization flag accessor */
+void BernsteinCopulaFactory::setParallel(const Bool flag)
+{
+  isParallel_ = flag;
+}
+
+Bool BernsteinCopulaFactory::isParallel() const
+{
+  return isParallel_;
+}
+
 
 END_NAMESPACE_OPENTURNS

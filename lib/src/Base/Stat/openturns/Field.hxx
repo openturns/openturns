@@ -81,6 +81,12 @@ public:
   void setValueAtNearestPosition(const NumericalPoint & position,
                                  const NumericalPoint & val);
 
+  /** Get the i-th marginal sample */
+  Field getMarginal(const UnsignedInteger index) const;
+
+  /** Get the marginal sample corresponding to indices dimensions */
+  Field getMarginal(const Indices & indices) const;
+
   /** Description accessor */
   void setDescription(const Description & description);
   Description getDescription() const;
