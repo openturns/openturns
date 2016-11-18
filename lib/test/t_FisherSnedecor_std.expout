@@ -30,6 +30,12 @@ Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.230549]
 Survival(inverse survival)=0.95
 characteristic function=(0.385738,0.612601)
 log characteristic function=(-0.323062,1.00884)
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0333323,0.00890862]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.0333323,0.00890862]
+log-pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0644499,0.0172253]
+log-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.0644499,0.0172253]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
 quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.2027]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0385599] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.21723] finite lower bound=[1] finite upper bound=[1]

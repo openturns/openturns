@@ -218,6 +218,37 @@ NumericalPoint Trapezoidal::computePDFGradient(const NumericalPoint & point) con
   return pdfGradient;
 }
 
+/* Get the logPDFGradient of the distribution */
+NumericalPoint Trapezoidal::computeLogPDFGradient(const NumericalPoint & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const NumericalScalar x = point[0];
+  NumericalPoint logPdfGradient(4, 0.0);
+  if ((a_ < x) && (x < b_))
+  {
+    logPdfGradient[0] = h_ / 2.0 - 1.0 / (x - a_) + 1.0 / (b_ - a_);
+    logPdfGradient[1] = h_ / 2.0 - 1.0 / (b_ - a_);
+    logPdfGradient[2] = -h_ / 2.0;
+    logPdfGradient[3] = -h_ / 2.0;
+  }
+  else if ((b_ <= x) && (x <= c_))
+  {
+    logPdfGradient[0] =  h_ / 2.0;
+    logPdfGradient[1] =  h_ / 2.0;
+    logPdfGradient[2] = -h_ / 2.0;
+    logPdfGradient[3] = -h_ / 2.0;
+  }
+  else if ((c_ < x) && (x < d_))
+  {
+    logPdfGradient[0] = h_ / 2.0;
+    logPdfGradient[1] = h_ / 2.0;
+    logPdfGradient[2] = -h_ / 2.0 + 1.0 / (d_ - c_);
+    logPdfGradient[3] = -h_ / 2.0 + 1.0 / (d_ - x) - 1.0 / (d_ - c_);
+  }
+  return logPdfGradient;
+}
+
 
 /* Get the CDFGradient of the distribution */
 NumericalPoint Trapezoidal::computeCDFGradient(const NumericalPoint & point) const

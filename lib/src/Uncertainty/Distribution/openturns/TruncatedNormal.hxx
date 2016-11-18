@@ -102,6 +102,10 @@ public:
   using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
+  /** Get the LogPDFGradient of the TruncatedNormal distribution */
+  using ContinuousDistribution::computeLogPDFGradient;
+  NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+
   /** Get the CDFGradient of the TruncatedNormal distribution */
   using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;

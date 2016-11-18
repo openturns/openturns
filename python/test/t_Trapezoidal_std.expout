@@ -20,6 +20,8 @@ ccdf=0.996622
 characteristic function= (-0.115059431951+0.0386019620712j)
 pdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
 pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
+log-pdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
+log-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
 cdf gradient     = class=NumericalPoint name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
 cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
 quantile= class=NumericalPoint name=Unnamed dimension=1 values=[11.1469]
