@@ -119,8 +119,9 @@ Combining and transforming distributions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
-    
+
     OrderStatisticsMarginalChecker
+    PosteriorDistribution
 
 .. autosummary::
     :toctree: _generated/
