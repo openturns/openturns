@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 
   try
   {
-
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
@@ -43,29 +42,29 @@ int main(int argc, char *argv[])
     // First conditioning distribution: continuous/continuous
     {
       Collection< Distribution > atoms;
-      atoms.add( Uniform( 0.0, 1.0) );
-      atoms.add( Uniform( 1.0, 2.0) );
+      atoms.add(Uniform(0.0, 1.0));
+      atoms.add(Uniform(1.0, 2.0));
       conditioningDistributionCollection.add(ComposedDistribution(atoms));
     }
     // Second conditioning distribution: discrete/continuous
     {
       Collection< Distribution > atoms;
-      atoms.add( Binomial(3, 0.5) );
-      atoms.add( Uniform( 1.0, 2.0) );
-      conditioningDistributionCollection.add(ComposedDistribution(atoms));
+      atoms.add(Binomial(3, 0.5));
+      atoms.add(Uniform(1.0, 2.0));
+//       conditioningDistributionCollection.add(ComposedDistribution(atoms));
     }
     // Third conditioning distribution: dirac/continuous
     {
       Collection< Distribution > atoms;
-      atoms.add( Dirac(0.0) );
-      atoms.add( Uniform( 1.0, 2.0) );
+      atoms.add(Dirac(0.0));
+      atoms.add(Uniform(1.0, 2.0));
       conditioningDistributionCollection.add(ComposedDistribution(atoms));
     }
     for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
       Distribution observationsDistribution(conditionedDistribution);
-      observationsDistribution.setParametersCollection(conditioningDistributionCollection[i].getMean());
+      observationsDistribution.setParameter(conditioningDistributionCollection[i].getMean());
       NumericalSample observations(observationsDistribution.getSample(observationsSize));
       PosteriorDistribution distribution(ConditionalDistribution(conditionedDistribution, conditioningDistributionCollection[i]), observations);
       UnsignedInteger dim = distribution.getDimension();
@@ -90,33 +89,33 @@ int main(int argc, char *argv[])
 
       // Test for sampling
       UnsignedInteger size = 10;
-      NumericalSample oneSample = distribution.getSample( size );
+      NumericalSample oneSample = distribution.getSample(size);
       fullprint << "oneSample=" << oneSample << std::endl;
 
       // Test for sampling
-      size = 10000;
-      NumericalSample anotherSample = distribution.getSample( size );
-      fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
-      fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
+//       size = 10000;
+//       NumericalSample anotherSample = distribution.getSample(size);
+//       fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
+//       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
       NumericalPoint zero(dim, 0.0);
 
       // Show PDF and CDF of zero point
-      NumericalScalar zeroPDF = distribution.computePDF( zero );
-      NumericalScalar zeroCDF = distribution.computeCDF( zero );
+      NumericalScalar zeroPDF = distribution.computePDF(zero);
+      NumericalScalar zeroCDF = distribution.computeCDF(zero);
       fullprint << "Zero point= " << zero
                 << " pdf=" << zeroPDF
                 << " cdf=" << zeroCDF
                 << std::endl;
       // Get 95% quantile
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+      NumericalPoint quantile = distribution.computeQuantile(0.95);
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       // Extract the marginals
-      for (UnsignedInteger i = 0; i < dim; i++)
+      for (UnsignedInteger j = 0; j < dim; ++ j)
       {
-        Distribution margin(distribution.getMarginal(i));
+        Distribution margin(distribution.getMarginal(j));
         fullprint << "margin=" << margin << std::endl;
         fullprint << "margin PDF=" << margin.computePDF(NumericalPoint(1)) << std::endl;
         fullprint << "margin CDF=" << margin.computeCDF(NumericalPoint(1)) << std::endl;
