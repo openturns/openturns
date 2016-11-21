@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir Algorithm
+ *  @brief The external header file of OpenTURNS for subdir Optimization
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,19 +19,9 @@
  *
  */
 
-#ifndef OPENTURNS_OTALGORITHM_HXX
-#define OPENTURNS_OTALGORITHM_HXX
+#ifndef OPENTURNS_OTUNCERTAINTYOPTIMIZATION_HXX
+#define OPENTURNS_OTUNCERTAINTYOPTIMIZATION_HXX
 
-#include "openturns/TaylorExpansionMoments.hxx"
+#include "openturns/EfficientGlobalOptimization.hxx"
 
-#include "openturns/OTAnalytical.hxx"
-#include "openturns/OTClassification.hxx"
-#include "openturns/OTWeightedExperiments.hxx"
-#include "openturns/OTMetaModel.hxx"
-#include "openturns/OTOrthogonalBasis.hxx"
-#include "openturns/OTSensitivity.hxx"
-#include "openturns/OTSimulation.hxx"
-#include "openturns/OTTransformation.hxx"
-#include "openturns/OTUncertaintyOptimization.hxx"
-
-#endif /* OPENTURNS_OTALGORITHM_HXX */
+#endif /* OPENTURNS_OTUNCERTAINTYOPTIMIZATION_HXX */

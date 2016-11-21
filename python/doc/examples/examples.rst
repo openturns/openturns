@@ -16,3 +16,5 @@ This is the examples section.
     numerical_methods/numerical_methods.rst
     axial_stressed_beam.ipynb
     optimal_lhs/optimal_lhs
+    ego
+

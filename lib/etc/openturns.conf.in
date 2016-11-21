@@ -107,7 +107,7 @@
   <AbdoRackwitz-DefaultOmega  value="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth value="1.2"    />
 
-  <!-- OT::OptimizationAlgorithmImplementation parameters -->
+  <!-- OT::OptimizationAlgorithm parameters -->
   <OptimizationAlgorithm-DefaultLevelValue              value="0.0"    />
   <OptimizationAlgorithm-DefaultMaximumIteration        value="100"    />
   <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value="100000" />
@@ -115,6 +115,14 @@
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value="1.0e-5" />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value="1.0e-5" />
   <OptimizationAlgorithm-DefaultMaximumConstraintError  value="1.0e-5" />
+  
+  <!-- OT::EfficientGlobalOptimization parameters -->
+  <EfficientGlobalOptimization-DefaultMultiStartExperimentSize value="100" />
+  <EfficientGlobalOptimization-DefaultMultiStartNumber value="20" />
+  <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value="1" />
+  <EfficientGlobalOptimization-DefaultImprovementFactor value="1.0" />
+  <EfficientGlobalOptimization-DefaultCorrelationLengthFactor value="1.0" />
+  <EfficientGlobalOptimization-DefaultAEITradeoff value="1.0" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value="0.1" />
