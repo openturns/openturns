@@ -257,6 +257,7 @@ ot_pyinstallcheck_test (NearestPointChecker_std)
 if (NLOPT_FOUND)
   ot_pyinstallcheck_test (NLopt_std)
 endif ()
+ot_pyinstallcheck_test (MultiStart_std)
 
 ## Solver
 ot_pyinstallcheck_test (Brent_std)
@@ -515,7 +516,7 @@ ot_pyinstallcheck_test (OrthogonalUniVariatePolynomialFunctionFactory_std)
 ot_pyinstallcheck_test (FourierSeriesFactory_std)
 ot_pyinstallcheck_test (HaarWaveletFactory_std)
 
-## TaylorExpansionMoments
+## Algorithm
 ot_pyinstallcheck_test (TaylorExpansionMoments_std)
 
 ## Analytical

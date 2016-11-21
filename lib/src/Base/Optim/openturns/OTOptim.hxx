@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTOPTIM_HXX
 #define OPENTURNS_OTOPTIM_HXX
 
+#include "openturns/MultiStart.hxx"
 #include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"

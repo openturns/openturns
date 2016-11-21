@@ -3,6 +3,7 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 
+ot_add_source_file (MultiStart.cxx)
 ot_add_source_file (NearestPointChecker.cxx)
 ot_add_source_file (NearestPointCheckerResult.cxx)
 ot_add_source_file (OptimizationProblem.cxx)
@@ -13,6 +14,7 @@ ot_add_source_file (OptimizationResult.cxx)
 ot_add_source_file (NLopt.cxx)
 
 ot_install_header_file (OTOptim.hxx)
+ot_install_header_file (MultiStart.hxx)
 ot_install_header_file (NearestPointChecker.hxx)
 ot_install_header_file (NearestPointCheckerResult.hxx)
 ot_install_header_file (OptimizationProblem.hxx)

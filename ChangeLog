@@ -12,6 +12,7 @@
  * LinearProfile, GeometricProfile
  * MonteCarloLHS, SimulatedAnnealingLHS
  * LHSResult
+ * MultiStart
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes

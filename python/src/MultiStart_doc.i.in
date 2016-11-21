@@ -1,0 +1,81 @@
+%feature("docstring") OT::MultiStart
+"Multi start optimization algorithm.
+
+The algorithm runs an optimization solver for N starting points and returns the
+best result of each local search.
+The algorithm succeeds when at least one local search succeeds.
+
+Available constructors:
+
+    MultiStart(*solver, startingPoints*)
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationSolver`
+    The internal solver
+startingPoints : 2-d sequence of float
+    Starting point candidates
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 2
+>>> model = ot.NumericalMathFunction(['x', 'y'], ['z'], ['x^2+y^2*(1-x)^3'])
+>>> bounds = ot.Interval([-3.0] * dim, [3.0] * dim)
+>>> problem = ot.OptimizationProblem()
+>>> problem.setObjective(model)
+>>> problem.setBounds(bounds)
+>>> solver = ot.TNC(problem)
+>>> startingPoints = ot.Normal(dim).getSample(3)
+>>> algo = ot.MultiStart(solver, startingPoints)
+>>> algo.run()
+>>> result = algo.getResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::getOptimizationSolver
+"Solver accessor.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationSolver`
+    The internal solver"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::setOptimizationSolver
+"Solver accessor.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationSolver`
+    The internal solver"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::setStartingPoints
+"Starting points accessor.
+
+Parameters
+----------
+startingPointNumber : :class:`~openturns.NumericalSample`
+    Starting points"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::getStartingPoints
+"Starting points accessor.
+
+Returns
+-------
+startingPointNumber : :class:`~openturns.NumericalSample`
+    Starting points"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::getResultCollection
+"Intermediate optimization results accessor.
+
+Returns
+-------
+results : :class:`~openturns.OptimizationResultCollection`
+    Intermediate optimization results"
