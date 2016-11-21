@@ -6,7 +6,6 @@
 
 %include MaximumLikelihoodFactory_doc.i
 
-%ignore OT::MaximumLikelihoodFactory::setParallel;
 %ignore OT::MaximumLikelihoodFactory::buildParameter;
 
 %include openturns/MaximumLikelihoodFactory.hxx

@@ -65,7 +65,6 @@ public:
   void setOptimizationProblem(const OptimizationProblem & problem);
   OptimizationProblem getOptimizationProblem() const;
 
-  void setParallel(const Bool parallel);
 protected:
   /* The underlying distribution */
   Distribution distribution_;
