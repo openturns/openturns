@@ -140,7 +140,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
     } // coefficientIndices[i] > 0
   } // Loop over the coefficients
   if (totalVariance > 0.0) return covarianceVariables / totalVariance;
-  else throw NotDefinedException(HERE) << "Error: the total variance of output=" << marginalIndex << " is zero, the Sobol index is undefined.";
+  else return 0.0;
 }
 
 /* Sobol index accessor */
@@ -192,7 +192,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
     } // coefficientIndices[i] > 0
   } // Loop over the coefficients
   if (totalVariance > 0.0) return covarianceVariables / totalVariance;
-  else throw NotDefinedException(HERE) << "Error: the total variance of output=" << marginalIndex << " is zero, the Sobol total index is undefined.";
+  else return 0.0;
 }
 
 /* Sobol total index accessor */
