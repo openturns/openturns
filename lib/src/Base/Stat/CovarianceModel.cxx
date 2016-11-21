@@ -135,6 +135,13 @@ Matrix CovarianceModel::partialGradient(const NumericalPoint & s,
   return getImplementation()->partialGradient(s, t);
 }
 
+/* Gradient wrt parameters */
+Matrix CovarianceModel::parameterGradient(const NumericalPoint & s,
+                                          const NumericalPoint & t) const
+{
+  return getImplementation()->parameterGradient(s, t);
+}
+
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModel::discretize(const RegularGrid & timeGrid) const
 {

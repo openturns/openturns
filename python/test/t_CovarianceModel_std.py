@@ -3,7 +3,6 @@
 from __future__ import print_function
 import openturns as ot
 
-
 def test_model(myModel):
 
     print('myModel = ',  myModel)
@@ -24,23 +23,18 @@ def test_model(myModel):
         x2[j] = 3.0 + 2.0 * j
 
     eps = 1e-5
-    if (dimension == 1):
-        print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
+    print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
 
-        grad = myModel.partialGradient(x1, x2)
-        print('dCov =', repr(grad))
+    grad = myModel.partialGradient(x1, x2)
+    print('dCov =', repr(grad))
+
+    if (dimension == 1):
         gradfd = ot.NumericalPoint(spatialDimension)
         for j in range(spatialDimension):
             x1_d = ot.NumericalPoint(x1)
             x1_d[j] = x1_d[j] + eps
             gradfd[j] = (myModel(x1_d, x2)[0, 0] - myModel(x1, x2)[0, 0]) / eps
-        print('dCov (FD)=', repr(gradfd))
     else:
-        print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
-
-        grad = myModel.partialGradient(x1, x2)
-        print('dCov =', repr(grad))
-
         gradfd = ot.Matrix(spatialDimension, dimension * dimension)
         covarianceX1X2 = myModel(x1, x2)
         # Symmetrize matrix
@@ -56,7 +50,14 @@ def test_model(myModel):
                 localCovariance.getImplementation())
             for j in range(currentValue.getSize()):
                 gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps
-        print('dCov (FD)=', repr(gradfd))
+    print('dCov (FD)=', repr(gradfd))
+
+    if (dimension == 1):
+        pGrad = myModel.parameterGradient(x1, x2)
+        precision = ot.PlatformInfo.GetNumericalPrecision()
+        ot.PlatformInfo.SetNumericalPrecision(4)
+        print('dCov/dP=', pGrad)
+        ot.PlatformInfo.SetNumericalPrecision(precision)
 
 spatialDimension = 2
 
