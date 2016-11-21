@@ -927,25 +927,6 @@ NumericalSampleImplementation & NumericalSampleImplementation::stack(const Numer
   return *this;
 }
 
-struct AddPolicy
-{
-  typedef NumericalPoint value_type;
-
-  static inline value_type GetInvariant(const NumericalSampleImplementation & nsi)
-  {
-    return value_type(nsi.getDimension(), 0.0);
-  }
-
-
-  template <typename T>
-  static inline value_type & inplace_op( value_type & a, const T & pt )
-  {
-    const UnsignedInteger dim = a.getDimension();
-    for (UnsignedInteger i = 0; i < dim; ++i) a[i] += pt[i];
-    return a;
-  }
-}; /* end struct AddPolicy */
-
 template <typename OP>
 struct ReductionFunctor
 {
@@ -997,9 +978,23 @@ public:
 NumericalPoint NumericalSampleImplementation::computeMean() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
-  ReductionFunctor<AddPolicy> functor( *this );
-  TBB::ParallelReduce( 0, size_, functor );
-  return functor.accumulator_ * (1.0 / size_);
+  NumericalPoint accumulated(dimension_);
+
+  const_data_iterator it(data_begin());
+  const const_data_iterator guard(data_end());
+  while (it != guard)
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)
+    {
+      accumulated[i] += *it;
+    }
+  }
+
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    accumulated[i] *= (1.0 / size_);
+  }
+  return accumulated;
 }
 
 struct CovariancePolicy
