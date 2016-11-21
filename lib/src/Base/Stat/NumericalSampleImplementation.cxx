@@ -997,44 +997,6 @@ NumericalPoint NumericalSampleImplementation::computeMean() const
   return accumulated;
 }
 
-struct CovariancePolicy
-{
-  typedef NumericalPoint value_type;
-
-  const value_type & mean_;
-  const UnsignedInteger dimension_;
-
-  CovariancePolicy( const value_type & mean)
-    : mean_(mean), dimension_(mean_.getDimension()) {}
-
-  static inline value_type GetInvariant(const NumericalSampleImplementation & nsi)
-  {
-    return value_type(nsi.getDimension() * nsi.getDimension(), 0.0);
-  }
-
-  inline value_type & inplace_op( value_type & var, NSI_const_point point ) const
-  {
-    UnsignedInteger baseIndex = 0;
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const NumericalScalar deltaI = point[i] - mean_[i];
-      for (UnsignedInteger j = i; j < dimension_; ++j)
-      {
-        const NumericalScalar deltaJ = point[j] - mean_[j];
-        var[baseIndex + j] += deltaI * deltaJ;
-      }
-      baseIndex += dimension_;
-    }
-    return var;
-  }
-
-  static inline value_type & inplace_op( value_type & var, const value_type & point )
-  {
-    return var += point;
-  }
-
-}; /* end struct CovariancePolicy */
-
 /*
  * Gives the covariance matrix of the sample, normalization by 1 / (size - 1) if size > 1
  */
@@ -1045,11 +1007,32 @@ CovarianceMatrix NumericalSampleImplementation::computeCovariance() const
   if (size_ == 1) return CovarianceMatrix(dimension_, NumericalPoint(dimension_ * dimension_));
 
   const NumericalPoint mean(computeMean());
+  const UnsignedInteger squaredDim(dimension_ * dimension_);
+  NumericalPoint accumulated(squaredDim);
 
-  const CovariancePolicy policy ( mean );
-  ReductionFunctor<CovariancePolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
-  CovarianceMatrix result(dimension_, functor.accumulator_ / (size_ - 1));
+  const_data_iterator it(data_begin());
+  const const_data_iterator guard(data_end());
+  while (it != guard)
+  {
+    UnsignedInteger baseIndex = 0;
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const NumericalScalar deltaI = *(it+i) - mean[i];
+      for (UnsignedInteger j = i; j < dimension_; ++j)
+      {
+        const NumericalScalar deltaJ = *(it+j) - mean[j];
+        accumulated[baseIndex + j] += deltaI * deltaJ;
+      }
+      baseIndex += dimension_;
+    }
+    it += dimension_;
+  }
+
+  for (UnsignedInteger i = 0; i < squaredDim; ++i)
+  {
+    accumulated[i] /= (size_ - 1);
+  }
+  CovarianceMatrix result(dimension_, accumulated);
   return result;
 }
 
@@ -1063,38 +1046,6 @@ TriangularMatrix NumericalSampleImplementation::computeStandardDeviation() const
 }
 
 
-struct VariancePerComponentPolicy
-{
-  typedef NumericalPoint value_type;
-
-  const value_type & mean_;
-  const UnsignedInteger dimension_;
-
-  VariancePerComponentPolicy( const value_type & mean)
-    : mean_(mean), dimension_(mean_.getDimension()) {}
-
-  static inline value_type GetInvariant(const NumericalSampleImplementation & nsi)
-  {
-    return value_type(nsi.getDimension(), 0.0);
-  }
-
-  inline value_type & inplace_op( value_type & var, NSI_const_point point ) const
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const NumericalScalar val = point[i] - mean_[i];
-      var[i] += val * val;
-    }
-    return var;
-  }
-
-  static inline value_type & inplace_op( value_type & var, const value_type & point )
-  {
-    return var += point;
-  }
-
-}; /* end struct VariancePerComponentPolicy */
-
 /*
  * Gives the variance of the sample (by component)
  */
@@ -1104,12 +1055,27 @@ NumericalPoint NumericalSampleImplementation::computeVariance() const
 
   // Special case for a sample of size 1
   if (size_ == 1) return NumericalPoint(dimension_, 0.0);
-  const NumericalPoint mean( computeMean() );
 
-  const VariancePerComponentPolicy policy ( mean );
-  ReductionFunctor<VariancePerComponentPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
-  return functor.accumulator_ / (size_ - 1);
+  const NumericalPoint mean( computeMean() );
+  NumericalPoint accumulated(dimension_);
+
+  const_data_iterator it(data_begin());
+  const const_data_iterator guard(data_end());
+  while (it != guard)
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)
+    {
+      const NumericalScalar val = *it - mean[i];
+      accumulated[i] += val * val;
+    }
+  }
+
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    accumulated[i] /= (size_ - 1);
+  }
+  return accumulated;
+
 }
 
 /*
