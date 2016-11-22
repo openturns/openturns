@@ -27,7 +27,6 @@
 #include "openturns/SpaceFillingMinDist.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 
-using namespace OT;
 
 namespace OT
 {

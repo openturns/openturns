@@ -23,7 +23,6 @@
 #include "openturns/LHSExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
-using namespace OT;
 
 BEGIN_NAMESPACE_OPENTURNS
 

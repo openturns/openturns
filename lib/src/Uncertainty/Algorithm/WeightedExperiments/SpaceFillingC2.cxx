@@ -21,7 +21,6 @@
 #include "openturns/SpaceFillingC2.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
-using namespace OT;
 
 namespace OT
 {

@@ -24,7 +24,6 @@
 #include <limits>
 #include <cmath>
 
-using namespace OT;
 
 namespace OT
 {
