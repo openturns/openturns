@@ -39,6 +39,7 @@ Box::Box()
 /* Constructor with parameters */
 Box::Box(const NumericalPoint & levels)
   : StratifiedExperiment(NumericalPoint(levels.getDimension(), 0.0), levels)
+  , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   if (levels.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
@@ -48,12 +49,26 @@ Box::Box(const NumericalPoint & levels)
 /* Constructor with parameters */
 Box::Box(const Indices & levels)
   : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
   setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
 }
+
+Box::Box(const Indices & levels,
+         const Interval & bounds)
+  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  , bounds_(bounds)
+{
+  // Check if there is the same number of levels than the dimension of the experiment plane
+  const UnsignedInteger size = levels.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
+  setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
+  if (bounds.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the bounds dimension must match the levels dimension";
+}
+
 
 /* Virtual constructor */
 Box * Box::clone() const
@@ -75,6 +90,17 @@ NumericalSample Box::generate() const
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j)
       boxPlane[i][j] = tuples[i][j] / (levels_[j] + 1.0);
+
+  // scale sample
+  if (bounds_ != Interval(dimension))
+  {
+    const NumericalPoint lowerBound(bounds_.getLowerBound());
+    const NumericalPoint upperBound(bounds_.getUpperBound());
+    const NumericalPoint delta(upperBound - lowerBound);
+    boxPlane *= delta;
+    boxPlane += lowerBound;
+  }
+
   return boxPlane;
 } // generate()
 
@@ -84,7 +110,8 @@ String Box::__repr__() const
   OSS oss;
   oss << "class=" << GetClassName()
       << " name=" << getName()
-      << " levels=" << levels_;
+      << " levels=" << levels_
+      << " bounds=" << bounds_;
   return oss;
 }
 
