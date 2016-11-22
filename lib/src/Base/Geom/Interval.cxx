@@ -339,6 +339,11 @@ Bool Interval::operator == (const Interval & other) const
          && (finiteUpperBound_ == other.finiteUpperBound_);
 }
 
+Bool Interval::operator != (const Interval & other) const
+{
+  return !operator==(other);
+}
+
 /* Lower bound accessor */
 NumericalPoint Interval::getLowerBound() const
 {
