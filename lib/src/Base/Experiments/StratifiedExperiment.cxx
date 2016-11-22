@@ -20,10 +20,13 @@
  */
 #include "openturns/StratifiedExperiment.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(StratifiedExperiment);
+
+static const Factory<StratifiedExperiment> Factory_StratifiedExperiment;
 
 /* Default constructor */
 StratifiedExperiment::StratifiedExperiment()
@@ -77,6 +80,22 @@ void StratifiedExperiment::setLevels(const NumericalPoint & levels)
 NumericalPoint StratifiedExperiment::getLevels() const
 {
   return levels_;
+}
+
+/* Method save() stores the object through the StorageManager */
+void StratifiedExperiment::save(Advocate & adv) const
+{
+  ExperimentImplementation::save(adv);
+  adv.saveAttribute("center_", center_);
+  adv.saveAttribute("levels_", levels_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void StratifiedExperiment::load(Advocate & adv)
+{
+  ExperimentImplementation::load(adv);
+  adv.loadAttribute("center_", center_);
+  adv.loadAttribute("levels_", levels_);
 }
 
 END_NAMESPACE_OPENTURNS

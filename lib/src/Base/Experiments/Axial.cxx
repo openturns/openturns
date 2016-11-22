@@ -20,12 +20,13 @@
  */
 #include "openturns/OTprivate.hxx"
 #include "openturns/Axial.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(Axial);
+
+static const Factory<Axial> Factory_Axial;
 
 /* Default constructor */
 Axial::Axial()

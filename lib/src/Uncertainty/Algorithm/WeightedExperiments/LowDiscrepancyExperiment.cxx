@@ -22,12 +22,13 @@
 #include "openturns/SobolSequence.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ComposedDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 CLASSNAMEINIT(LowDiscrepancyExperiment);
 
+static const Factory<LowDiscrepancyExperiment> Factory_LowDiscrepancyExperiment;
 
 /* Default constructor */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment()

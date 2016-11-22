@@ -21,11 +21,11 @@
 #include "openturns/OptimalLHSExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LHSExperiment.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 using namespace OT;
 
-namespace OT
-{
+BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimalLHSExperiment);
 
@@ -152,4 +152,4 @@ NumericalSample OptimalLHSExperiment::inverseRankTransform(const NumericalSample
 
 
 
-} /* namespace OT */
+END_NAMESPACE_OPENTURNS

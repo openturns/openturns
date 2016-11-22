@@ -19,12 +19,13 @@
  *
  */
 #include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(MonteCarloExperiment);
+
+static const Factory<MonteCarloExperiment> Factory_MonteCarloExperiment;
 
 /* Default constructor */
 MonteCarloExperiment::MonteCarloExperiment():

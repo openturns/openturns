@@ -42,6 +42,7 @@ class OT_API GaussProductExperiment
 public:
 
   typedef Collection<OrthogonalUniVariatePolynomialFamily> OrthogonalUniVariatePolynomialFamilyCollection;
+  typedef PersistentCollection<OrthogonalUniVariatePolynomialFamily> OrthogonalUniVariatePolynomialFamilyPersistentCollection;
 
   /** Default constructor */
   GaussProductExperiment();
@@ -72,6 +73,11 @@ public:
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution);
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
 protected:
 
 private:
@@ -83,7 +89,7 @@ private:
                                          const Indices & marginalDegrees);
 
   // Marginal orthogonal univariate polynomial family collection
-  OrthogonalUniVariatePolynomialFamilyCollection collection_;
+  OrthogonalUniVariatePolynomialFamilyPersistentCollection collection_;
 
   // Marginal degrees
   Indices marginalDegrees_;

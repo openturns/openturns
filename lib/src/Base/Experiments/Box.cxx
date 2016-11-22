@@ -21,13 +21,15 @@
 #include <cmath>
 #include "openturns/OTprivate.hxx"
 #include "openturns/Box.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/Tuples.hxx"
-#include "openturns/SpecFunc.hxx"
+#include "openturns/SpecFunc.hxx" // for boost.math.round
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Box);
+
+static const Factory<Box> Factory_Box;
 
 /* Default constructor */
 Box::Box()
@@ -123,6 +125,20 @@ void Box::setLevels(const NumericalPoint & levels)
   if (size != dimension) throw InvalidArgumentException(HERE) << "Error: levels dimension must equal center dimension for the Box design of experiment, here levels dimension=" << size << " and center dimension=" << dimension;
   for (UnsignedInteger i = 0; i < dimension; ++i) if (levels[i] < 0.0) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
   StratifiedExperiment::setLevels(levels);
+}
+
+/* Method save() stores the object through the StorageManager */
+void Box::save(Advocate & adv) const
+{
+  StratifiedExperiment::save(adv);
+  adv.saveAttribute("bounds_", bounds_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void Box::load(Advocate & adv)
+{
+  StratifiedExperiment::load(adv);
+  adv.loadAttribute("bounds_", bounds_);
 }
 
 END_NAMESPACE_OPENTURNS

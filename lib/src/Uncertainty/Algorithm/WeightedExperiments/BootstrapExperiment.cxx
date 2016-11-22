@@ -20,13 +20,13 @@
  */
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/UserDefined.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(BootstrapExperiment);
 
+static const Factory<BootstrapExperiment> Factory_BootstrapExperiment;
 
 /* Default constructor */
 BootstrapExperiment::BootstrapExperiment():

@@ -86,9 +86,15 @@ public:
   Bool getRandomShift() const;
   void setRandomShift(const Bool randomShift);
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
 private:
   // Marginal distributions
-  DistributionCollection marginals_;
+  mutable DistributionCollection marginals_;
 
   // Cells shuffle
   mutable Matrix shuffle_;

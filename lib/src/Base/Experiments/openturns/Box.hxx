@@ -65,6 +65,12 @@ public:
   /** Specific levels accessor */
   void setLevels(const NumericalPoint & levels);
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
 private:
   Interval bounds_;
 
