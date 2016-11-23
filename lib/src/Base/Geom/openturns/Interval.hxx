@@ -99,6 +99,7 @@ public:
 
   /** Comparison operator */
   Bool operator == (const Interval & other) const;
+  Bool operator != (const Interval & other) const;
 
   /** Lower bound accessor */
   NumericalPoint getLowerBound() const;

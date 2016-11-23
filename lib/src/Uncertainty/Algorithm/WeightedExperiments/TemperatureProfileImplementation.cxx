@@ -21,7 +21,6 @@
 #include "openturns/TemperatureProfileImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
-using namespace OT;
 
 namespace OT
 {

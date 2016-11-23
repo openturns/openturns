@@ -20,12 +20,15 @@
  */
 #include "openturns/OTprivate.hxx"
 #include "openturns/Factorial.hxx"
-#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx" // for boost.math.round
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Factorial);
+
+static const Factory<Factorial> Factory_Factorial;
 
 /* Default constructor */
 Factorial::Factorial()

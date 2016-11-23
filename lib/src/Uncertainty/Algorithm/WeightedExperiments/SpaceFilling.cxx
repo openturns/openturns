@@ -23,7 +23,6 @@
 #include "openturns/SpaceFillingImplementation.hxx"
 #include "openturns/SpaceFillingPhiP.hxx"
 
-using namespace OT;
 
 namespace OT
 {

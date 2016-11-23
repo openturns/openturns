@@ -23,7 +23,6 @@
 #include "openturns/TemperatureProfileImplementation.hxx"
 #include "openturns/GeometricProfile.hxx"
 
-using namespace OT;
 
 namespace OT
 {

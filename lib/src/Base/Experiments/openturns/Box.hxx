@@ -22,6 +22,7 @@
 #define OPENTURNS_BOX_HXX
 
 #include "openturns/StratifiedExperiment.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,6 +48,9 @@ public:
 
   explicit Box(const Indices & levels);
 
+  Box(const Indices & levels,
+      const Interval & bounds);
+
   /** Virtual constructor */
   virtual Box * clone() const;
 
@@ -60,6 +64,15 @@ public:
 
   /** Specific levels accessor */
   void setLevels(const NumericalPoint & levels);
+
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
+private:
+  Interval bounds_;
 
 }; /* class Box */
 

@@ -21,13 +21,15 @@
 #include <cmath>
 #include "openturns/OTprivate.hxx"
 #include "openturns/Box.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/Tuples.hxx"
-#include "openturns/SpecFunc.hxx"
+#include "openturns/SpecFunc.hxx" // for boost.math.round
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Box);
+
+static const Factory<Box> Factory_Box;
 
 /* Default constructor */
 Box::Box()
@@ -39,6 +41,7 @@ Box::Box()
 /* Constructor with parameters */
 Box::Box(const NumericalPoint & levels)
   : StratifiedExperiment(NumericalPoint(levels.getDimension(), 0.0), levels)
+  , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   if (levels.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
@@ -48,12 +51,26 @@ Box::Box(const NumericalPoint & levels)
 /* Constructor with parameters */
 Box::Box(const Indices & levels)
   : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
   setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
 }
+
+Box::Box(const Indices & levels,
+         const Interval & bounds)
+  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  , bounds_(bounds)
+{
+  // Check if there is the same number of levels than the dimension of the experiment plane
+  const UnsignedInteger size = levels.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
+  setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
+  if (bounds.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the bounds dimension must match the levels dimension";
+}
+
 
 /* Virtual constructor */
 Box * Box::clone() const
@@ -75,6 +92,17 @@ NumericalSample Box::generate() const
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j)
       boxPlane[i][j] = tuples[i][j] / (levels_[j] + 1.0);
+
+  // scale sample
+  if (bounds_ != Interval(dimension))
+  {
+    const NumericalPoint lowerBound(bounds_.getLowerBound());
+    const NumericalPoint upperBound(bounds_.getUpperBound());
+    const NumericalPoint delta(upperBound - lowerBound);
+    boxPlane *= delta;
+    boxPlane += lowerBound;
+  }
+
   return boxPlane;
 } // generate()
 
@@ -84,7 +112,8 @@ String Box::__repr__() const
   OSS oss;
   oss << "class=" << GetClassName()
       << " name=" << getName()
-      << " levels=" << levels_;
+      << " levels=" << levels_
+      << " bounds=" << bounds_;
   return oss;
 }
 
@@ -96,6 +125,20 @@ void Box::setLevels(const NumericalPoint & levels)
   if (size != dimension) throw InvalidArgumentException(HERE) << "Error: levels dimension must equal center dimension for the Box design of experiment, here levels dimension=" << size << " and center dimension=" << dimension;
   for (UnsignedInteger i = 0; i < dimension; ++i) if (levels[i] < 0.0) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
   StratifiedExperiment::setLevels(levels);
+}
+
+/* Method save() stores the object through the StorageManager */
+void Box::save(Advocate & adv) const
+{
+  StratifiedExperiment::save(adv);
+  adv.saveAttribute("bounds_", bounds_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void Box::load(Advocate & adv)
+{
+  StratifiedExperiment::load(adv);
+  adv.loadAttribute("bounds_", bounds_);
 }
 
 END_NAMESPACE_OPENTURNS

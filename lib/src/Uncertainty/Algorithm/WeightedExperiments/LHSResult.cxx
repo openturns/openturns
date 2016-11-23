@@ -26,7 +26,6 @@
 
 #include <limits>
 
-using namespace OT;
 
 
 namespace OT

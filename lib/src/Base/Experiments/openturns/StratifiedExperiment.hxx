@@ -62,6 +62,11 @@ public:
   /** Levels accessor */
   virtual NumericalPoint getLevels() const;
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
 protected:
 
   NumericalPoint center_;

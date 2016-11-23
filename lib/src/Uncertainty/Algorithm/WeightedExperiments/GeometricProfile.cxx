@@ -23,7 +23,6 @@
 
 #include <cmath>
 
-using namespace OT;
 
 namespace OT
 {

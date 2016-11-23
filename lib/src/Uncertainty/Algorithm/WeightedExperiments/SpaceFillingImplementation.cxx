@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 
-using namespace OT;
 
 namespace OT
 {

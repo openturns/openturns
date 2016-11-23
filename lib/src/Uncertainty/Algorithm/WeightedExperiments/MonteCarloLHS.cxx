@@ -25,7 +25,6 @@
 #include "openturns/SpaceFillingPhiP.hxx"
 #include "openturns/SpaceFillingMinDist.hxx"
 
-using namespace OT;
 
 namespace OT
 {

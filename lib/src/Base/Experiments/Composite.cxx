@@ -22,11 +22,14 @@
 #include "openturns/Axial.hxx"
 #include "openturns/Composite.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Composite);
+
+static const Factory<Composite> Factory_Composite;
 
 /* Default constructor */
 Composite::Composite()
