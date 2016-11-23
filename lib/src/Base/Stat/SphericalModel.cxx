@@ -39,7 +39,6 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   , radius_(1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
-  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Constructor with parameters */
@@ -51,7 +50,6 @@ SphericalModel::SphericalModel(const NumericalPoint & scale,
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
   setRadius(radius);
-  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Virtual constructor */

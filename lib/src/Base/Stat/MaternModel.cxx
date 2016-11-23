@@ -37,7 +37,6 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
 {
   // Compute the normalization factor
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
-  activeParameter_.add(activeParameter_.getSize());// add nu
 }
 
 /** Parameters constructor */
@@ -48,7 +47,6 @@ MaternModel::MaternModel(const NumericalPoint & scale,
   , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
 {
   setNu(nu);
-  activeParameter_.add(activeParameter_.getSize());// add nu
 }
 
 /** Parameters constructor */
@@ -63,7 +61,6 @@ MaternModel::MaternModel(const NumericalPoint & scale,
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getDimension() << ")";
   setNu(nu);
-  activeParameter_.add(activeParameter_.getSize());// add nu
 }
 
 /* Virtual constructor */
