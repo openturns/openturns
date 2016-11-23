@@ -253,18 +253,23 @@ Matrix CovarianceModelImplementation::parameterGradient(const NumericalPoint & s
   const NumericalPoint parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
   const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
-  Matrix gradient(size, dimension_ * dimension_);
+  Matrix gradient(size, (dimension_ * (dimension_ + 1)) / 2);
   CovarianceMatrix covRef = operator()(s, t);
   Pointer<CovarianceModelImplementation> p_implementation(clone());
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  for (UnsignedInteger k = 0; k < size; ++ k)
   {
     NumericalPoint parameterP(parameter);
-    parameterP[i] += epsilon;
+    parameterP[k] += epsilon;
     p_implementation->setParameter(parameterP);
     CovarianceMatrix covP = p_implementation->operator()(s, t);
-    for (UnsignedInteger j = 0; j < dimension_ * dimension_; ++ j)
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < dimension_; ++ j)
     {
-      gradient(i, j) = (covP(j % dimension_, j / dimension_) - covRef(j % dimension_, j / dimension_)) / epsilon;
+      for (UnsignedInteger i = 0; i <= j; ++ i)
+      {
+        gradient(k, index) = (covP(i, j) - covRef(i, j)) / epsilon;
+        ++ index;
+      }
     }
   }
   return gradient;
