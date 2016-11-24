@@ -42,7 +42,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationSolverImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
 {
-  // Nothing to do
+  checkProblem(problem);
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem,
@@ -50,7 +50,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
   : OptimizationSolverImplementation(problem)
   , rhoBeg_(rhoBeg)
 {
-  // Nothing to do
+  checkProblem(problem);
 }
 
 

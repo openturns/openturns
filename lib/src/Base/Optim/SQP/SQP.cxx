@@ -53,6 +53,7 @@ SQP::SQP(const OptimizationProblem & problem)
   , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
 {
   initialize();
+  checkProblem(problem);
 }
 
 SQP::SQP (const OptimizationProblem & problem,
@@ -65,6 +66,7 @@ SQP::SQP (const OptimizationProblem & problem,
   , smooth_(smooth)
 {
   initialize();
+  checkProblem(problem);
 }
 
 /* Virtual constructor */
