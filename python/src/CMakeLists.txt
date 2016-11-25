@@ -346,6 +346,7 @@ ot_add_python_module(optim optim_module.i
                       Cobyla.i Cobyla_doc.i.in
                       TNC.i TNC_doc.i.in
                       SQP.i SQP_doc.i.in
+                      MultiStart.i MultiStart_doc.i.in
                       NLopt.i NLopt_doc.i.in
                       LevelSet.i LevelSet_doc.i.in
                       LevelSetMesher.i LevelSetMesher_doc.i.in

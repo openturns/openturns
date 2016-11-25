@@ -11,6 +11,7 @@
 #include "openturns/OTGraph.hxx"
 #include "openturns/OTFunc.hxx"
 #include "openturns/OTDiff.hxx"
+#include "openturns/OTExperiments.hxx"
 #include "openturns/OTGeom.hxx"
 #include "openturns/OTOptim.hxx"
 %}
@@ -39,6 +40,10 @@
 %import diff_module.i
 %import BaseDiffTemplateDefs.i
 
+/* Base/Experiment */
+%import experiment_module.i
+%import BaseExperimentTemplateDefs.i
+
 /* Base/Optim */
 %include OptimizationProblemImplementation.i
 %include OptimizationProblem.i
@@ -51,6 +56,7 @@
 %include Cobyla.i
 %include TNC.i
 %include SQP.i
+%include MultiStart.i
 %include NLopt.i
 
 /* Base/Geom */

@@ -63,7 +63,7 @@ public:
 
   /** Problem accessor */
   OptimizationProblem getProblem() const;
-  void setProblem(const OptimizationProblem & problem);
+  virtual void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
   OptimizationResult getResult() const;

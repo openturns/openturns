@@ -1,0 +1,2 @@
+local search x*=class=NumericalPoint name=Unnamed dimension=2 values=[0.296446,0.320196] f(x*)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0649359]
+multistart x*=class=NumericalPoint name=Unnamed dimension=2 values=[0.228279,-1.62553] f(x*)=class=NumericalPoint name=Unnamed dimension=1 values=[-6.55113]

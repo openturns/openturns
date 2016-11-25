@@ -60,7 +60,7 @@ TNC::TNC(const OptimizationProblem & problem)
   , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
 {
-  // Nothing to do
+  checkProblem(problem);
 }
 
 /* Constructor with parameters */
@@ -83,7 +83,7 @@ TNC::TNC (const OptimizationProblem & problem,
   , fmin_(fmin)
   , rescale_(rescale)
 {
-  // Nothing to do
+  checkProblem(problem);
 }
 
 /* Virtual constructor */

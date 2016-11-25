@@ -50,6 +50,7 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
   , smooth_(smooth)
 {
   initialize();
+  checkProblem(problem);
 }
 
 
@@ -60,6 +61,7 @@ AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
   , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
 {
   initialize();
+  checkProblem(problem);
 }
 
 /* Virtual constructor */
