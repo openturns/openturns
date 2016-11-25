@@ -34,7 +34,6 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
   : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")), NumericalPoint(1, 1.0))
   , p_(1.0)
 {
-  activeParameter_.add(activeParameter_.getSize());// add p
 }
 
 /** Parameters constructor */
@@ -44,7 +43,6 @@ GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
   , p_(0.0)
 {
   setP(p);
-  activeParameter_.add(activeParameter_.getSize());// add p
 }
 
 /** Parameters constructor */
@@ -58,7 +56,6 @@ GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getDimension() << ")";
   setP(p);
-  activeParameter_.add(activeParameter_.getSize());// add p
 }
 
 /* Virtual constructor */
