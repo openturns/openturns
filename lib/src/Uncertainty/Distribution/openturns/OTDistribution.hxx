@@ -107,6 +107,7 @@
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/MeixnerDistribution.hxx"
 #include "openturns/MeixnerDistributionFactory.hxx"
+#include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/MinCopula.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/Multinomial.hxx"

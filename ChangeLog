@@ -13,6 +13,7 @@
  * MonteCarloLHS, SimulatedAnnealingLHS
  * LHSResult
  * MultiStart
+ * MethodOfMomentsFactory
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes

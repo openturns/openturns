@@ -49,6 +49,7 @@
 %include MaximumLikelihoodFactory.i
 %include MeixnerDistribution.i
 %include MeixnerDistributionFactory.i
+%include MethodOfMomentsFactory.i
 %include Mixture.i
 /* Must be after Mixture */
 %include ConditionalDistribution.i

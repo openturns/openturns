@@ -613,6 +613,13 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10 );
   setAsBool("MaximumLikelihoodFactory-Parallel", true);
 
+  // MethodOfMomentsFactory parameters //
+  setAsUnsignedInteger( "MethodOfMomentsFactory-MaximumEvaluationNumber", 1000 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10 );
+
   // Student parameters //
   setAsUnsignedInteger( "Student-MaximumNumberOfPoints", 10000000 );
   setAsUnsignedInteger( "Student-MinimumNumberOfPoints", 100000 );
