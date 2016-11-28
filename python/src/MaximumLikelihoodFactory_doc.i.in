@@ -18,9 +18,9 @@ DistributionFactory
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.Normal()
+>>> distribution = ot.Normal(0.9, 1.7)
 >>> sample = distribution.getSample(10)
->>> factory = ot.MaximumLikelihoodFactory(distribution)
+>>> factory = ot.MaximumLikelihoodFactory(ot.Normal())
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
