@@ -172,15 +172,8 @@ public:
     // Use of GLM to estimate the best generalized linear model
     GeneralizedLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
-    // Get result
-    GeneralizedLinearModelResult result(algo.getResult());
-    // Conditional covariance model
-    CovarianceModel conditionalCovarianceModel(result.getCovarianceModel());
-    // Parameters for the evaluation of likelihood function
-    const NumericalPoint covarianceParameters(conditionalCovarianceModel.getParameter());
-    // Finally evaluate the log-likelihood function
-    const NumericalScalar loglikelihood = algo.getObjectiveFunction()(covarianceParameters)[0];
-    return loglikelihood;
+    // Return the optimal log-likelihood
+    return algo.getResult().getOptimalLogLikelihood();
   }
 
   /** Likelihood function accessor */
