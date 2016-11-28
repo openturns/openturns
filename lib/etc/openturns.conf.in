@@ -339,7 +339,7 @@
   <!-- OT::TruncatedNormalFactory parameters -->
   <TruncatedNormalFactory-SigmaLowerBound         value="1.0e-4"  />
 
-  <!-- OT::TruncatedNormalFactory parameters -->
+  <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumEvaluationNumber value="1000"    />
   <MaximumLikelihoodFactory-MaximumAbsoluteError    value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumRelativeError    value="1.0e-10" />
