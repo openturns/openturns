@@ -64,6 +64,13 @@ void HMatrix::factorize(const String& method)
   getImplementation()->factorize(method);
 }
 
+/** Compute x <- alpha * this */
+void HMatrix::scale(NumericalScalar alpha)
+{
+  copyOnWrite();
+  getImplementation()->scale(alpha);
+}
+
 /** Compute y <- alpha op(this) * x + beta * y */
 void HMatrix::gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const
 {

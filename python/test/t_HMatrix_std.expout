@@ -7,3 +7,4 @@ compressionRatio= (81, 81)
 fullrkRatio= (81, 0)
 y= [2.03,2.04,2.03,2.04,2.06,2.04,2.03,2.04,2.03]
 norm(A-LLt) < 1e-10
+|norm(L) - 10 * norm(0.1*L)| < 1e-10
