@@ -227,6 +227,19 @@ OT_HMatrix_fullrkRatio_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_HMatrix_scale_doc
+"Scale matrix in-place A=alpha*A.
+
+Parameters
+----------
+alpha : float
+    Coefficient."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::scale
+OT_HMatrix_scale_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_HMatrix_gemv_doc
 "Multiply vector in-place y=alpha*op(A)*x+beta*y.
 
