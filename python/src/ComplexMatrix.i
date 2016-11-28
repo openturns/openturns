@@ -50,9 +50,11 @@ namespace OT {
   OTComplexMatrixGetAccessors()  
   
   ComplexMatrix __rmul__(NumericalComplex s) { return s * (*self); }
-  
+
+#if SWIG_VERSION < 0x030011
   ComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }
-  
+#endif
+
   ComplexMatrix __matmul__(const ComplexMatrix & other) { return *self * other; }
 
   ComplexMatrix __matmul__(const Matrix & other) { return *self * other; }

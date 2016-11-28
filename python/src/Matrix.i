@@ -333,10 +333,11 @@ namespace OT {
   OTMatrixAccessors()
 
   Matrix __rmul__(const NumericalScalar s) { return s * (*self); }
-    
-  Matrix __truediv__(const NumericalScalar s) { return (*self) / s; }
-
   Matrix __matmul__(const Matrix & other) { return *self * other; }
+
+#if SWIG_VERSION < 0x030011
+  Matrix __truediv__(const NumericalScalar s) { return (*self) / s; }
+#endif
 
 } // Matrix
 } // OT
