@@ -157,7 +157,14 @@ public:
     {
       effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
     }
-    distribution.setParameter(effectiveParameter);
+    try
+    {
+      distribution.setParameter(effectiveParameter);
+    }
+    catch (Exception &)
+    {
+      return NumericalPoint(1, SpecFunc::LogMinNumericalScalar);
+    }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
     const NumericalSample logPdfSample = distribution.computeLogPDF(sample_);
