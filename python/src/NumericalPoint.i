@@ -100,7 +100,9 @@ NumericalPoint __div__(NumericalScalar s)
  return (*self) / s;
 }
 
-NumericalPoint __truediv__(NumericalScalar s) { return (*self) / s; }
+#if SWIG_VERSION < 0x030011
+  NumericalPoint __truediv__(NumericalScalar s) { return (*self) / s; }
+#endif
 
 NumericalPoint __iadd__(const NumericalPoint & other)
 {

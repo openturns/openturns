@@ -57,9 +57,11 @@ namespace OT {
 
 DistributionImplementation(const DistributionImplementation & other) { return new OT::DistributionImplementation(other); } 
 
+#if SWIG_VERSION < 0x030011
 Pointer<DistributionImplementation> __truediv__(const NumericalScalar s) { return (*self) / s; }
 
 Pointer<DistributionImplementation> __truediv__(const DistributionImplementation & d) { return (*self) / d; }
+#endif
 
 Pointer<DistributionImplementation> __pow__(const NumericalScalar s) { return self->pow(s); }
 

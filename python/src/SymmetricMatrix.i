@@ -35,7 +35,9 @@ namespace OT {
   SymmetricMatrix __rmul__(NumericalScalar s) { return s * (*self); }
   Matrix __rmul__(const Matrix & m) { return m * (*self); }
 
+#if SWIG_VERSION < 0x030011
   SymmetricMatrix __truediv__(NumericalScalar s) { return (*self) / s; }
+#endif
 
 } // SymmetricMatrix
 } // OT

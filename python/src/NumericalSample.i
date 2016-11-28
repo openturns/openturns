@@ -413,11 +413,13 @@ NumericalSample(PyObject * pyObj, UnsignedInteger dimension)
 
 Bool __eq__(const NumericalSample & other) { return (*self) == other; }
 
+#if SWIG_VERSION < 0x030011
 NumericalSample __truediv__(const NumericalScalar & u) { return (*self) / u; }
 
 NumericalSample __truediv__(const NumericalPoint & v) { return (*self) / v; }
 
 NumericalSample __truediv__(const SquareMatrix & m) { return (*self) / m; }
+#endif
 
 } // %extend
 } // namespace OT
