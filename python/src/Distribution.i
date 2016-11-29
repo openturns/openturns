@@ -171,7 +171,9 @@ Distribution __div__(NumericalScalar s)
  return (*self) / s;
 }
 
-Distribution __truediv__(NumericalScalar s) { return (*self) / s; }
+#if SWIG_VERSION < 0x030011
+  Distribution __truediv__(NumericalScalar s) { return (*self) / s; }
+#endif
 
 } // class Distribution
 } // namespace OT
