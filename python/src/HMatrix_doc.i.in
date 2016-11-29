@@ -22,6 +22,8 @@ OT_HMatrix_solveLower_doc
 OT_HMatrix_compressionRatio_doc
 %feature("docstring") OT::HMatrix::fullrkRatio
 OT_HMatrix_fullrkRatio_doc
+%feature("docstring") OT::HMatrix::scale
+OT_HMatrix_scale_doc
 %feature("docstring") OT::HMatrix::gemv
 OT_HMatrix_gemv_doc
 %feature("docstring") OT::HMatrix::gemm

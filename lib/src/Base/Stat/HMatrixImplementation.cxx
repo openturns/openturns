@@ -322,6 +322,15 @@ void HMatrixImplementation::factorize(const String& method)
 #endif
 }
 
+void HMatrixImplementation::scale(NumericalScalar alpha)
+{
+#ifdef OPENTURNS_HAVE_HMAT
+  static_cast<hmat_interface_t*>(hmatInterface_)->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
+#else
+  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+#endif
+}
+
 void HMatrixImplementation::gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const
 {
 #ifdef OPENTURNS_HAVE_HMAT

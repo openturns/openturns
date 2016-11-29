@@ -59,6 +59,9 @@ class OT_API HMatrix :
 
   void factorize(const String& method);
 
+  /** Compute this <- alpha * this */
+  void scale(NumericalScalar alpha);
+
   /** Compute y <- alpha op(this) * x + beta * y */
   void gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const;
 
