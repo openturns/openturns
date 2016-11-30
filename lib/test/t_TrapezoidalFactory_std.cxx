@@ -30,8 +30,6 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  ResourceMap::SetAsBool("MaximumLikelihoodFactory-Parallel", false);
-  TBB::Disable();
   try
   {
     Trapezoidal distribution( 1.0, 2.3, 4.5, 5.0 );
