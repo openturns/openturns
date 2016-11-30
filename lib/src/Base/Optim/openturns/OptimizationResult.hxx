@@ -122,6 +122,9 @@ public:
   /** Draw error history graph */
   Graph drawErrorHistory() const;
 
+  /** Draw optimal value graph */
+  Graph drawOptimalValueHistory() const;
+
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);

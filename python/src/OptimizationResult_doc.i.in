@@ -33,7 +33,7 @@ problem : :class:`~openturns.OptimizationProblem`
 Returns
 -------
 absoluteError : float
-     Absolute error, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
+    Absolute error, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
 
 // ---------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ absoluteError : float
 Returns
 -------
 absoluteErrorHistory : :class:`~openturns.NumericalSample`
-     Value of the absolute error at each iteration of the solver."
+    Value of the absolute error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ absoluteErrorHistory : :class:`~openturns.NumericalSample`
 Returns
 -------
 constraintError : float
-     Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gather all the equality and inequality constraints."
+    Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gather all the equality and inequality constraints."
 
 // ---------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ constraintError : float
 Returns
 -------
 constraintErrorHistory : :class:`~openturns.NumericalSample`
-     Value of the constrainte error at each iteration of the solver."
+    Value of the constrainte error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ constraintErrorHistory : :class:`~openturns.NumericalSample`
 Parameters
 ----------
 iterationNumber : int
-     Number of evaluations."
+    Number of evaluations."
 
 // ---------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ iterationNumber : int
 Returns
 -------
 iterationNumber : int
-     Number of evaluations."
+    Number of evaluations."
 
 // ---------------------------------------------------------------------
 
@@ -93,7 +93,7 @@ iterationNumber : int
 Returns
 -------
 relativeError : float
-     Relative error, defined by :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`."
+    Relative error, defined by :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`."
 
 // ---------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ relativeError : float
 Returns
 -------
 relativeErrorHistory : :class:`~openturns.NumericalSample`
-     Value of the relative error at each iteration of the solver."
+    Value of the relative error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ relativeErrorHistory : :class:`~openturns.NumericalSample`
 Returns
 -------
 residualError : float
-     Residual error, defined by :math:`\eta^r_n=\|\nabla\cL{\vect{x}_n}\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`\cL` is the Lagrangian of the problem."
+    Residual error, defined by :math:`\eta^r_n=\|\nabla\cL{\vect{x}_n}\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`\cL` is the Lagrangian of the problem."
 
 // ---------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ residualError : float
 Returns
 -------
 residualErrorHistory : :class:`~openturns.NumericalSample`
-     Value of the residual error at each iteration of the solver."
+    Value of the residual error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ residualErrorHistory : :class:`~openturns.NumericalSample`
 Parameters
 ----------
 optimalPoint : :class:`~openturns.NumericalPoint`
-     Optimal point"
+    Optimal point"
 
 // ---------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 Returns
 -------
 optimalPoint : :class:`~openturns.NumericalPoint`
-     Optimal point"
+    Optimal point"
 
 // ---------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 Parameters
 ----------
 multipliers : :class:`~openturns.NumericalPoint`
-     Lagrange multipliers.
+    Lagrange multipliers.
 
 Notes
 -----
@@ -168,7 +168,7 @@ See :class:`~openturns.OptimizationSolver` for the details on how the multiplier
 Returns
 -------
 multipliers : :class:`~openturns.NumericalPoint`
-     Lagrange multipliers.
+    Lagrange multipliers.
 
 Notes
 -----
@@ -183,7 +183,7 @@ See :class:`~openturns.OptimizationSolver` for the details on how the multiplier
 Parameters
 ----------
 optimalValue : :class:`~openturns.NumericalPoint`
-     Value at the optimal point"
+    Value at the optimal point"
 
 // ---------------------------------------------------------------------
 
@@ -193,7 +193,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 Returns
 -------
 optimalValue : :class:`~openturns.NumericalPoint`
-     Value at the optimal point"
+    Value at the optimal point"
 
 // ---------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 Returns
 -------
 inputSample : :class:`~openturns.NumericalSample`
-     Input points used by the solver"
+    Input points used by the solver"
 
 // ---------------------------------------------------------------------
 
@@ -213,7 +213,7 @@ inputSample : :class:`~openturns.NumericalSample`
 Returns
 -------
 outputSample : :class:`~openturns.NumericalSample`
-     Output points used by the solver"
+    Output points used by the solver"
 
 // ---------------------------------------------------------------------
 
@@ -223,7 +223,7 @@ outputSample : :class:`~openturns.NumericalSample`
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
-     Problem corresponding to the result"
+    Problem corresponding to the result"
 
 // ---------------------------------------------------------------------
 
@@ -233,7 +233,7 @@ problem : :class:`~openturns.OptimizationProblem`
 Returns
 -------
 problem : :class:`~openturns.OptimizationProblem`
-     Problem corresponding to the result"
+    Problem corresponding to the result"
 
 // ---------------------------------------------------------------------
 
@@ -243,8 +243,14 @@ problem : :class:`~openturns.OptimizationProblem`
 Returns
 -------
 graph : :class:`~openturns.Graph`
-     Convergence criteria history graph"
+    Convergence criteria history graph"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::drawOptimalValueHistory
+"Draw the optimal value history.
 
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Optimal value history graph"

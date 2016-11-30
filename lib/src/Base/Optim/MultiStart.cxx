@@ -44,8 +44,8 @@ MultiStart::MultiStart(const OptimizationSolver & solver,
                        const NumericalSample & startingPoints)
   : OptimizationSolverImplementation(solver.getProblem())
   , solver_(solver)
+  , startingPoints_(startingPoints)
 {
-  setStartingPoints(startingPoints);
 }
 
 
@@ -65,6 +65,9 @@ void MultiStart::checkProblem(const OptimizationProblem & problem) const
 
 void MultiStart::run()
 {
+  if (startingPoints_.getDimension() != getProblem().getDimension())
+    throw InvalidArgumentException(HERE) << "The starting points dimension must match the problem dimension";
+
   // run the solver with each starting point
   OptimizationSolver solver(solver_);
   resultCollection_.clear();
@@ -130,8 +133,6 @@ OptimizationSolver MultiStart::getOptimizationSolver() const
 
 void MultiStart::setStartingPoints(const NumericalSample & startingPoints)
 {
-  if (startingPoints.getDimension() != getProblem().getDimension())
-    throw InvalidArgumentException(HERE) << "The starting points dimension must match the problem dimension";
   startingPoints_ = startingPoints;
 }
 
