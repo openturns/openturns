@@ -3,7 +3,6 @@
 from __future__ import print_function
 import openturns as ot
 
-ot.ResourceMap.SetAsBool('MaximumLikelihoodFactory-Parallel', False)
 ot.PlatformInfo.SetNumericalPrecision(5)
 distribution = ot.FisherSnedecor(4.5, 8.4)
 size = 10000

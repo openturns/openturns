@@ -45,7 +45,6 @@ static const Factory<MaximumLikelihoodFactory> Factory_MaximumLikelihoodFactory;
 /* Default constructor */
 MaximumLikelihoodFactory::MaximumLikelihoodFactory()
   : DistributionFactoryImplementation()
-  , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
   // Nothing to do
 }
@@ -55,7 +54,6 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
   : DistributionFactoryImplementation()
   , distribution_(distribution)
   , solver_(new TNC())
-  , isParallel_(ResourceMap::GetAsBool("MaximumLikelihoodFactory-Parallel"))
 {
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
@@ -93,15 +91,14 @@ public:
   LogLikelihoodEvaluation(const NumericalSample & sample,
                                         const Distribution & distribution,
                                         const NumericalPoint & knownParameterValues,
-                                        const Indices & knownParameterIndices,
-                                        const Bool & isParallel)
+                                        const Indices & knownParameterIndices)
     : NumericalMathEvaluationImplementation()
     , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
   {
-    distribution_.getImplementation()->setParallel(isParallel);
+    // Nothing to do
   }
 
   LogLikelihoodEvaluation * clone() const
@@ -150,15 +147,7 @@ public:
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
     const NumericalSample logPdfSample = distribution.computeLogPDF(sample_);
-    NumericalScalar logPdf = SpecFunc::LogMinNumericalScalar;
-    if (distribution.getImplementation()->isParallel())
-        logPdf = logPdfSample.computeMean()[0];
-    else
-    {
-      const UnsignedInteger size = sample_.getSize();
-      for (UnsignedInteger k = 0; k < size; ++k)
-        logPdf += logPdfSample(k, 0) / size;
-    }
+    const NumericalScalar logPdf = logPdfSample.computeMean()[0];
     result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinNumericalScalar;
     return NumericalPoint(1, result);
   }
@@ -176,15 +165,14 @@ public:
   LogLikelihoodGradient(const NumericalSample & sample,
                         const Distribution & distribution,
                         const NumericalPoint & knownParameterValues,
-                        const Indices & knownParameterIndices,
-                        const Bool & isParallel)
+                        const Indices & knownParameterIndices)
     : NumericalMathGradientImplementation()
     , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
   {
-    distribution_.getImplementation()->setParallel(isParallel);
+    // Nothing to do
   }
 
   LogLikelihoodGradient * clone() const
@@ -234,15 +222,7 @@ public:
     MatrixImplementation result(parameter.getSize(), 1);
     // Evaluate the gradient
     const NumericalSample logPdfGradientSample( distribution.computeLogPDFGradient(sample_));
-    NumericalPoint logPdfGradient(distribution_.getParameterDimension(), SpecFunc::LogMinNumericalScalar);
-    if (distribution.getImplementation()->isParallel())
-        logPdfGradient = logPdfGradientSample.computeMean();
-    else
-    {
-      const UnsignedInteger size = sample_.getSize();
-      for (UnsignedInteger k = 0; k < size; ++k)
-        logPdfGradient += logPdfGradientSample[k] / size;
-    }
+    const NumericalPoint logPdfGradient(logPdfGradientSample.computeMean());
     // Result as Matrix
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
     // Gradient should be 0 for knownParameters
@@ -267,10 +247,10 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 
   UnsignedInteger parameterDimension = distribution_.getParameterDimension();
   // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
-  LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_, isParallel_);
+  LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   NumericalMathFunction logLikelihood(logLikelihoodWrapper.clone());
   // Define NumericalMathGradient using the LogLikelihoodEvaluation wrapper
-  LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_, isParallel_);
+  LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
 
   // Define optimisation problem
@@ -323,12 +303,5 @@ OptimizationSolver MaximumLikelihoodFactory::getOptimizationSolver() const
 {
   return solver_;
 }
-
-
-void MaximumLikelihoodFactory::setParallel(const Bool parallel)
-{
-  isParallel_ = parallel;
-}
-
 
 END_NAMESPACE_OPENTURNS
