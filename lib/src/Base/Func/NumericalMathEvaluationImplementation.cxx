@@ -401,7 +401,7 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
 /* Get the function corresponding to indices components */
 NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // We build an analytical function that extract the needed component
   // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
   // with formula Yk = Xindices[k] for k=1,...,p

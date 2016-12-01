@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Indices);
 static const Factory<Indices> Factory_Indices;
 
-/* Check that no value is repeated and no value exceed the given bound */
+/* Check that no value is repeated and no value exceeds the given bound */
 Bool Indices::check(const UnsignedInteger bound) const
 {
   if (getSize() == 0) return true;
@@ -37,7 +37,7 @@ Bool Indices::check(const UnsignedInteger bound) const
   iterator iter = std::unique(copy.begin(), copy.end());
   if (iter < copy.end()) return false;
   // Check if the values are in the given bound
-  if (*max_element(begin(), end()) > bound) return false;
+  if (*max_element(begin(), end()) >= bound) return false;
   return true;
 }
 

@@ -95,7 +95,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
-  if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition
@@ -157,7 +157,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
-  if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition

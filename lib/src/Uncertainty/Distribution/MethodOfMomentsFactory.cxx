@@ -203,7 +203,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
 
   const UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
 
-  if (!knownParameterIndices_.check(effectiveParameterSize - 1))
+  if (!knownParameterIndices_.check(effectiveParameterSize))
     throw InvalidArgumentException(HERE) << "Error: known indices cannot exceed parameter size";
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";

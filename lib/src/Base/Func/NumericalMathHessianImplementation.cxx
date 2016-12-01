@@ -133,7 +133,7 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
 /* Get the function corresponding to indices components */
 NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal hessian.
   // The chain rule gives:
   // D2(Af) = AD2(f) in our case, instead of D2(gof) = D(Dg(f)Df) = (D2g(f)Df)Df + Dg(f)D2f, so we don't need f as in our case Dg(f) = A is a constant, and we don't need D(f) as D2g(f) = 0.

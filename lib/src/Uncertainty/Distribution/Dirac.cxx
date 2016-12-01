@@ -330,7 +330,7 @@ Dirac::Implementation Dirac::getMarginal(const UnsignedInteger i) const
 Dirac::Implementation Dirac::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
   NumericalPoint pointMarginal(outputDimension);

@@ -87,7 +87,7 @@ DualLinearCombinationEvaluationImplementation::Implementation DualLinearCombinat
 /* Get the function corresponding to indices components */
 DualLinearCombinationEvaluationImplementation::Implementation DualLinearCombinationEvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   // Special case for 1D marginal
   if (indices.getSize() == 1) return getMarginal(indices[0]);
   return new DualLinearCombinationEvaluationImplementation(functionsCollection_, coefficients_.getMarginal(indices));

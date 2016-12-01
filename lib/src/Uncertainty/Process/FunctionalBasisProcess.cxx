@@ -170,7 +170,7 @@ FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const
 /* Get the marginal random vector corresponding to indices components */
 FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   // First the marginal distribution
   Distribution marginalDistribution(distribution_.getMarginal(indices));
   // Second the marginal basis

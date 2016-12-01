@@ -368,7 +368,7 @@ ARMA::Implementation ARMA::getMarginal(const UnsignedInteger i) const
 /* Get the marginal random vector corresponding to indices components */
 ARMA::Implementation ARMA::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(dimension_ - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   throw NotYetImplementedException(HERE) << "In ARMA::getMarginal(const Indices & indices) const";
 }
 

@@ -57,7 +57,7 @@ ComposedNumericalMathEvaluationImplementation::Implementation ComposedNumericalM
 /* Get the function corresponding to indices components */
 ComposedNumericalMathEvaluationImplementation::Implementation ComposedNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   return new ComposedNumericalMathEvaluationImplementation(p_leftFunction_->getMarginal(indices), p_rightFunction_);
 }
 

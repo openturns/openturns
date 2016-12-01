@@ -80,7 +80,7 @@ DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation:
 /* Get the function corresponding to indices components */
 DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   throw NotYetImplementedException(HERE) << "In DynamicalFunctionImplementation::getMarginal(const Indices & indices) const";
 }
 

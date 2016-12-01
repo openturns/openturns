@@ -168,7 +168,7 @@ AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumeri
 AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getOutputDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and must be different";
   NumericalMathFunctionCollection marginalFunctions;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = functionsCollection_.getSize();
