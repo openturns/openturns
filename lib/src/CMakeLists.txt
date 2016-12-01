@@ -32,6 +32,7 @@ endforeach (built_source)
 include_directories (${INTERNAL_INCLUDE_DIRS})
 link_directories (${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
 add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES})
+set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 if (BUILD_SHARED_LIBS)
   set_target_properties(OT PROPERTIES COMPILE_DEFINITIONS "OT_DLL_EXPORTS")
