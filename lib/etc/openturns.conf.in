@@ -345,7 +345,6 @@
   <MaximumLikelihoodFactory-MaximumRelativeError    value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumObjectiveError   value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumConstraintError  value="1.0e-10" />
-  <MaximumLikelihoodFactory-Parallel                value="true" />
 
   <!-- OT::MethodOfMomentsFactory parameters -->
   <MethodOfMomentsFactory-MaximumEvaluationNumber value="1000"    />
