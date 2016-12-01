@@ -347,6 +347,13 @@
   <MaximumLikelihoodFactory-MaximumConstraintError  value="1.0e-10" />
   <MaximumLikelihoodFactory-Parallel                value="true" />
 
+  <!-- OT::MethodOfMomentsFactory parameters -->
+  <MethodOfMomentsFactory-MaximumEvaluationNumber value="1000"    />
+  <MethodOfMomentsFactory-MaximumAbsoluteError    value="1.0e-10" />
+  <MethodOfMomentsFactory-MaximumRelativeError    value="1.0e-10" />
+  <MethodOfMomentsFactory-MaximumObjectiveError   value="1.0e-10" />
+  <MethodOfMomentsFactory-MaximumConstraintError  value="1.0e-10" />
+
   <!-- OT::Student parameters -->
   <Student-MaximumNumberOfPoints          value="10000000" />
   <Student-MinimumNumberOfPoints          value="100000"   />
