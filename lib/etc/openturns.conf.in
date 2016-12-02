@@ -405,6 +405,11 @@
   <DistFunc-Precision        value="1.0e-14" />
   <DistFunc-MaximumIteration value="5000"    />
 
+  <!-- OT::KFactor parameters -->
+  <KFactor-Precision                     value="1.0e-8" />
+  <KFactor-MaximumIteration              value="    32" />
+  <KFactor-DefaultIntegrationNodesNumber value="   256" />
+
   <!-- OT::RootStrategyImplementation parameters -->
   <RootStrategy-DefaultMaximumDistance value="8.0" />
   <RootStrategy-DefaultStepSize        value="1.0" />

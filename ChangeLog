@@ -36,6 +36,8 @@
 
 === Bug fixes ===
  * #729 (KDTree & save)
+ * #774 (Exact limits of a normal distribution with unknown mean and
+	variance)
  * #871 (GeneralizedExponential P parameter : int or float ?)
 
 == 1.8 release (2016-11-18) == #release-1.8
