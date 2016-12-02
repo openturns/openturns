@@ -88,6 +88,13 @@ try:
     ref_point8 = point8
     print("point8 = ", repr(ref_point8))
 
+    point9 = NumericalPoint(2, 5.0) / 2.0
+    print("point9 = ", point9)
+
+    point10 = NumericalPoint(2, 5.0)
+    point10 /= 2.0
+    print("point10 = ", point10)
+
     # We create an orthonormal base (O,i,j)
     i = NumericalPoint(2)
     i[0] = 1
