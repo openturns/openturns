@@ -118,8 +118,14 @@ public:
   /** MatrixImplementation addition (must have the same dimensions) */
   MatrixImplementation operator + (const MatrixImplementation & matrix) const;
 
+  /** In-place MatrixImplementation addition (must have the same dimensions) */
+  MatrixImplementation & operator += (const MatrixImplementation & matrix);
+
   /** MatrixImplementation substraction (must have the same dimensions) */
   MatrixImplementation operator - (const MatrixImplementation & matrix) const;
+
+  /** In-place MatrixImplementation substraction (must have the same dimensions) */
+  MatrixImplementation & operator -= (const MatrixImplementation & matrix);
 
   /** MatrixImplementation multiplications (must have consistent dimensions) */
   MatrixImplementation genProd (const MatrixImplementation & matrix,
@@ -146,8 +152,14 @@ public:
   /** Multiplication with a NumericalScalar */
   MatrixImplementation operator * (const NumericalScalar s) const;
 
+  /** In-place Multiplication with a NumericalScalar */
+  MatrixImplementation & operator *= (const NumericalScalar s);
+
   /** Division by a NumericalScalar*/
   MatrixImplementation operator / (const NumericalScalar s) const;
+
+  /** In-place Division by a NumericalScalar*/
+  MatrixImplementation & operator /= (const NumericalScalar s);
 
   /** Symmetrize MatrixImplementation in case it is a symmetric matrix (stored as a triangular matrix) */
   void symmetrize() const;

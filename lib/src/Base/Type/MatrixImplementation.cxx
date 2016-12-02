@@ -230,6 +230,20 @@ MatrixImplementation MatrixImplementation::operator+ (const MatrixImplementation
   return result;
 }
 
+/* In-place MatrixImplementation addition (must have the same dimensions) */
+MatrixImplementation & MatrixImplementation::operator+= (const MatrixImplementation & matrix)
+{
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot add matrices with incompatible dimensions";
+  // Must copy as add will be overwritten by the operation
+  MatrixImplementation result(matrix);
+  int size(nbRows_ * nbColumns_);
+  double alpha(1.0);
+  int one(1);
+  daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &(*this)[0], &one);
+
+  return *this;
+}
+
 /* MatrixImplementation substraction (must have the same dimensions) */
 MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation & matrix) const
 {
@@ -242,6 +256,20 @@ MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation
   daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &result[0], &one);
 
   return result;
+}
+
+/* In-place MatrixImplementation substraction (must have the same dimensions) */
+MatrixImplementation & MatrixImplementation::operator-= (const MatrixImplementation & matrix)
+{
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot substract matrices with incompatible dimensions";
+  // Must copy as add will be overwritten by the operation
+  MatrixImplementation result(*this);
+  int size(nbRows_ * nbColumns_);
+  double alpha(-1.0);
+  int one(1);
+  daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &(*this)[0], &one);
+
+  return *this;
 }
 
 /* MatrixImplementation multiplications (must have consistent dimensions) */
@@ -363,7 +391,7 @@ MatrixImplementation MatrixImplementation::computeGram (const Bool transposed) c
   return C;
 }
 
-/* Multiplication with a NumericalScalar */
+/* Multiplication by a NumericalScalar */
 MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) const
 {
   if (s == 0.0) return MatrixImplementation(nbRows_, nbColumns_);
@@ -377,14 +405,44 @@ MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) c
   return scalprod;
 }
 
+/* In-place Multiplication by a NumericalScalar */
+MatrixImplementation & MatrixImplementation::operator*= (const NumericalScalar s)
+{
+  if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
+  double alpha(s);
+  int one(1);
+  int n_(nbRows_ * nbColumns_);
+  dscal_(&n_, &alpha, &(*this)[0], &one);
+
+  return *this;
+}
+
 /* Division by a NumericalScalar*/
 MatrixImplementation MatrixImplementation::operator/ (const NumericalScalar s) const
 {
   if (s == 0.0) throw InvalidArgumentException(HERE);
+  if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
+  MatrixImplementation scalprod(*this);
+  double alpha(1.0 / s);
+  int one(1);
+  int n_(nbRows_ * nbColumns_);
+  dscal_(&n_, &alpha, &scalprod[0], &one);
 
-  return operator * (1.0 / s);
+  return scalprod;
 }
 
+/* In-place division by a NumericalScalar */
+MatrixImplementation & MatrixImplementation::operator/= (const NumericalScalar s)
+{
+  if (s == 0.0) throw InvalidArgumentException(HERE);
+  if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
+  double alpha(1.0 / s);
+  int one(1);
+  int n_(nbRows_ * nbColumns_);
+  dscal_(&n_, &alpha, &(*this)[0], &one);
+
+  return *this;
+}
 
 MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementation & matrix,
     const char triangularSide,
