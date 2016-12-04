@@ -85,6 +85,7 @@
 %include MaternModel.i
 %include DiracCovarianceModel.i
 %include ProductCovarianceModel.i
+%include RankMCovarianceModel.i
 %include TensorizedCovarianceModel.i
 %include HMatrixFactory.i
 %include HMatrixImplementation.i

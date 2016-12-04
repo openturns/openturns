@@ -88,13 +88,32 @@ String FunctionalBasisProcess::__repr__() const
   return oss;
 }
 
-/* Is the underlying stationary ? */
+/* Covariance model accessor */
+CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
+{
+  const UnsignedInteger dimension = distribution_.getDimension();
+  Collection<NumericalMathFunction> functions(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    functions[i] = basis_.build(i);
+  if (distribution_.hasIndependentCopula())
+    {
+      // We use the standard deviation as it is an O(dim) computation
+      // in the general case, while covariance is an O(n^2) computation
+      NumericalPoint coefficients(distribution_.getStandardDeviation());
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+	coefficients[i] *= coefficients[i];
+      return RankMCovarianceModel(coefficients, functions);
+    }
+  return RankMCovarianceModel(NumericalPoint(dimension, 1.0), functions, distribution_.getCovariance());
+}
+
+/* Is the process stationary ? */
 Bool FunctionalBasisProcess::isStationary() const
 {
   return false;
 }
 
-/* Is the underlying gaussian ? */
+/* Is the process gaussian ? */
 Bool FunctionalBasisProcess::isNormal() const
 {
   // The easy case: the distribution is an interface to

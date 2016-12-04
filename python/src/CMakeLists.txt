@@ -203,6 +203,7 @@ ot_add_python_module(statistics statistics_module.i
                       MaternModel.i MaternModel_doc.i.in
                       DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
+                      RankMCovarianceModel.i RankMCovarianceModel_doc.i.in
                       TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i.in
                       HMatrixParameters.i HMatrixParameters_doc.i.in
                       HMatrixFactory.i HMatrixFactory_doc.i.in
