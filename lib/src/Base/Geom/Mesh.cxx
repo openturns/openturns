@@ -488,6 +488,35 @@ Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
   return verticesToSimplices_;
 }
 
+/* Compute weights such that an integral of a function over the mesh
+ * is a weighted sum of its values at the vertices
+ */
+NumericalPoint Mesh::computeWeights() const
+{
+  // First compute the volume of the simplices
+  const UnsignedInteger numSimplices = getSimplicesNumber();
+  NumericalPoint simplicesVolume(numSimplices);
+  for (UnsignedInteger i = 0; i < numSimplices; ++i)
+    simplicesVolume[i] = computeSimplexVolume(i);
+  // Second compute the map between vertices and simplices
+  const IndicesCollection verticesToSimplices(getVerticesToSimplicesMap());
+  // Then compute the weights of the vertices by distributing the volume of each simplex among its vertices
+  const UnsignedInteger numVertices = getVerticesNumber();
+  NumericalPoint weights(numVertices, 0.0);
+  for (UnsignedInteger i = 0; i < numVertices; ++i)
+    {
+      const Indices vertexSimplices(verticesToSimplices[i]);
+      NumericalScalar weight = 0.0;
+      for (UnsignedInteger j = 0; j < vertexSimplices.getSize(); ++j)
+	weight += simplicesVolume[vertexSimplices[j]];
+      weights[i] = weight;
+    } // i
+  // Normalize the weights: each simplex has dim+1 vertices, so each vertex
+  // get 1/(dim+1) of the volume of the simplices it belongs to
+  weights /= (dimension_ + 1.0);
+  return weights;
+}
+
 /* Comparison operator */
 Bool Mesh::operator == (const Mesh & other) const
 {
