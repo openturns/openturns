@@ -1,0 +1,100 @@
+%feature("docstring") OT::RankMCovarianceModel
+"Covariance function of finite rank.
+
+Available constructors:
+    RankMCovarianceModel(*spatialDimension*)
+
+    RankMCovarianceModel(*variance, basis*)
+
+    RankMCovarianceModel(*covariance, basis*)
+
+Parameters
+----------
+variance : sequence of float
+    The marginal variances of the coefficients of the basis.
+covariance : :class:`~openturns.CovarianceMatrix`
+    The covariance of the coefficients of the basis.
+
+Notes
+-----
+Let :math:`X` be a stochastic process defined by:
+
+.. math::
+
+   X(\omega,\vect{t})=\sum_{i=1}^M\xi_i(\omega)\phi_i(\vect{t}), \quad \forall \omega \in \Omega, \vect{t} \in \cD
+
+where :math:`(\xi_1,\dots,\xi_M)` is a random vector of dimension :math:`M` and :math:`(\phi_i)_{i=1,\dots,M}` are the :math:`M` first elements of a given basis.
+   
+Its covariance function, a *rank-M* covariance function, is given by:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sum_{i=1}^M \sum_{j=1}^M \Sigma_{ij}\phi_i(\vect{s})\Tr{\phi_j(\vect{t})}, \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+where :math:`\mat{\Sigma}` is the covariance matrix of :math:`(\xi_1,\dots,\xi_M)`.
+
+When :math:`\mat{\Sigma}` is diagonal, it reduces to:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sum_{i=1}^M \sigma_i^2\phi_i(\vect{s})\Tr{\phi_i(\vect{t})}, \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+where :math:`\sigma_i^2` is the variance of :math:`\xi_i`.
+
+The name *rank-M* is here to recall that the discretization of such a model will always lead to a covariance matrix of rank *at most* :math:`M`.
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> variance = [1.0, 2.0]
+>>> basis = ot.LinearBasisFactory().build()
+>>> myCovarianceModel = ot.RankMCovarianceModel(variance, basis)
+>>> covariance = ot.CovarianceMatrix(2, [1.0, 0.5, 0.5, 2.0])
+>>> myCovarianceModel = ot.RankMCovarianceModel(covariance, basis)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getCovariance
+"Covariance accessor.
+
+Returns
+-------
+covariance : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix of :math:`(\xi_1,\dots,\xi_M)`. Its dimension is zero if the coefficients are uncorrelated, in which case the marginal variances are given by *getVariance()*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getVariance
+"Variance accessor.
+
+Returns
+-------
+variance : :class:`~openturns.NumericalPoint`
+    Vector of marginal variances of :math:`(\xi_1,\dots,\xi_M)`. Its dimension is zero if the coefficients are correlated, in which case the covariance matrix is given by *getCovariance()*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getBasis
+"Basis accessor.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    Basis to which the functions :math:`(\phi_i)_{i=1,\dots,M}` belong.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getFunctions
+"Function collection accessor.
+
+Returns
+-------
+functions : :class:`~openturns.NumericalMathFunctionCollection`
+    The collection of functions :math:`(\phi_i)_{i=1,\dots,M}` defining the covariance model.
+"
+

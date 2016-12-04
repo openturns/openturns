@@ -36,6 +36,7 @@ Temporal information
     GeneralizedExponential
     MaternModel
     ProductCovarianceModel
+    RankMCovarianceModel
     SphericalModel
     SquaredExponential
     TensorizedCovarianceModel
