@@ -25,6 +25,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/Basis.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/Normal.hxx"

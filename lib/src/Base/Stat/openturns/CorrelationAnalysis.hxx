@@ -25,7 +25,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunction.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

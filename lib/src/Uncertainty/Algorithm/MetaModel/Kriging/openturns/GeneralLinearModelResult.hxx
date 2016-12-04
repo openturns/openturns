@@ -26,6 +26,7 @@
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
+#include "openturns/Basis.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/Process.hxx"
 #include "openturns/HMatrix.hxx"
