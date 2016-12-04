@@ -26,7 +26,6 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/Basis.hxx"
 #include "openturns/HMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
