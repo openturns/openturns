@@ -52,9 +52,7 @@ A comparison of criteria of the two designs is done, and the new LHS is accepted
     >>> lhs = ot.LHSExperiment(distribution, N)
     >>> lhs.setAlwaysShuffle(True) # randomized
     >>> algo = ot.SimulatedAnnealingLHS(lhs)
-    >>> result = algo.generate()
-    >>> # Retrieve optimal design
-    >>> design = result.getOptimalDesign()
+    >>> design = algo.generate()
 
 One could also fix the criterion, the temperature profile and gets more results.
 
@@ -76,9 +74,9 @@ One could also fix the criterion, the temperature profile and gets more results.
     >>> # e.g. T0=10, c=0.95, iMax=2000
     >>> temperatureProfile = ot.GeometricProfile()
     >>> algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
-    >>> result = algo.generate()
-    >>> # Retrieve optimal design
-    >>> design = result.getOptimalDesign()
+    >>> # optimal design
+    >>> design = algo.generate()
+    >>> result = algo.getResult()
     >>> # Criteria for the optimal design
     >>> crit_c2 = result.getC2()
     >>> crit_phip = result.getPhiP()
@@ -110,10 +108,9 @@ It is also possible to chain several iterations of the whole process with differ
     >>> temperatureProfile = ot.LinearProfile(10.0, 3000)
     >>> algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
     >>> restart = 50
-    >>> result = algo.generate(restart)
-    >>> # Retrieve optimal design
-    >>> design = result.getOptimalDesign()
+    >>> design = algo.generateWithRestart(restart)
     >>> # Retrieve all optimal designs
+    >>> result = algo.getResult()
     >>> designs = [result.getOptimalDesign(i) for i in range(restart)]
 
 Finally, we could start the optimization process of LHS using a precomputed LHS design.
@@ -136,14 +133,11 @@ Finally, we could start the optimization process of LHS using a precomputed LHS 
     >>> # T0=10, iMax=3000
     >>> temperatureProfile = ot.LinearProfile(10.0, 3000)
     >>> algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
-    >>> result = algo.generate()
-    >>> # optimal design
-    >>> design = result.getOptimalDesign()
+    >>> design = algo.generate()
+    >>> result = algo.getResult()
     >>> # check history ==> draw criterion
     >>> View(result.drawHistoryCriterion()).show()
     >>> # Convergence needs to be performed
     >>> # New algo starting from this design
     >>> algo = ot.SimulatedAnnealingLHS(design, distribution, temperatureProfile, space_filling)
-    >>> result = algo.generate()
-    >>> # New design
-    >>> design = result.getOptimalDesign()
+    >>> design = algo.generate()
