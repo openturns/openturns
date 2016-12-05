@@ -65,6 +65,17 @@ public:
   void setOptimizationProblem(const OptimizationProblem & problem);
   OptimizationProblem getOptimizationProblem() const;
 
+  /** Accessor to known parameter */
+  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
+  NumericalPoint getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 protected:
   /* The underlying distribution */
   Distribution distribution_;
@@ -72,6 +83,10 @@ protected:
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationSolver solver_;
   OptimizationProblem problem_;
+  
+  /* Known parameter */
+  NumericalPoint knownParameterValues_;
+  Indices knownParameterIndices_;
 
 }; /* class MethodOfMomentsFactory */
 

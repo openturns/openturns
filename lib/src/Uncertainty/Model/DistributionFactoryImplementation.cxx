@@ -191,24 +191,6 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
   return result;
 }
 
-void DistributionFactoryImplementation::setKnownParameter(const NumericalPoint & values,
-    const Indices & indices)
-{
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
-  knownParameterValues_ = values;
-  knownParameterIndices_ = indices;
-}
-
-Indices DistributionFactoryImplementation::getKnownParameterIndices() const
-{
-  return knownParameterIndices_;
-}
-
-NumericalPoint DistributionFactoryImplementation::getKnownParameterValues() const
-{
-  return knownParameterValues_;
-}
-
 /* Bootstrap size accessor */
 UnsignedInteger DistributionFactoryImplementation::getBootstrapSize() const
 {
@@ -227,8 +209,6 @@ void DistributionFactoryImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
-  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
-  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -236,8 +216,6 @@ void DistributionFactoryImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
-  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
-  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 END_NAMESPACE_OPENTURNS

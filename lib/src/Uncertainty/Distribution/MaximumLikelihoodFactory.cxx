@@ -362,4 +362,39 @@ OptimizationSolver MaximumLikelihoodFactory::getOptimizationSolver() const
   return solver_;
 }
 
+void MaximumLikelihoodFactory::setKnownParameter(const NumericalPoint & values,
+    const Indices & indices)
+{
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
+  knownParameterValues_ = values;
+  knownParameterIndices_ = indices;
+}
+
+Indices MaximumLikelihoodFactory::getKnownParameterIndices() const
+{
+  return knownParameterIndices_;
+}
+
+NumericalPoint MaximumLikelihoodFactory::getKnownParameterValues() const
+{
+  return knownParameterValues_;
+}
+
+
+/* Method save() stores the object through the StorageManager */
+void MaximumLikelihoodFactory::save(Advocate & adv) const
+{
+  DistributionFactoryImplementation::save(adv);
+  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
+  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void MaximumLikelihoodFactory::load(Advocate & adv)
+{
+  DistributionFactoryImplementation::load(adv);
+  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
+  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
+}
+
 END_NAMESPACE_OPENTURNS
