@@ -27,7 +27,7 @@ Examples
 >>> # first, generate a design
 >>> design = algo.generate()
 >>> # then, get the result
->>> result = algo.generate()
+>>> result = algo.getResult()
 "
 %enddef
 %feature("docstring") OT::LHSResult
