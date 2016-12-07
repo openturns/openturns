@@ -127,7 +127,7 @@ TemporalFunction::Implementation TemporalFunction::getMarginal(const UnsignedInt
 /* Get the function corresponding to indices components */
 TemporalFunction::Implementation TemporalFunction::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   return new TemporalFunction(p_evaluation_->getMarginal(indices));
 }
 

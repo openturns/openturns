@@ -143,7 +143,7 @@ WhiteNoise::Implementation WhiteNoise::getMarginal(const UnsignedInteger i) cons
 /* Get the marginal random vector corresponding to indices components */
 WhiteNoise::Implementation WhiteNoise::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   return new WhiteNoise(distribution_.getMarginal(indices), mesh_);
 }
 

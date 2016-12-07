@@ -2098,7 +2098,7 @@ NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const U
 /* Get the marginal sample corresponding to indices dimensions */
 NumericalSampleImplementation NumericalSampleImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(dimension_ - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, dim-1] and must be different";
 
   // Special case for dimension 1
   if (dimension_ == 1) return *this;

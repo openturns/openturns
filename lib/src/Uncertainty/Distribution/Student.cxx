@@ -399,7 +399,7 @@ Student::Implementation Student::getMarginal(const UnsignedInteger i) const
 Student::Implementation Student::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
