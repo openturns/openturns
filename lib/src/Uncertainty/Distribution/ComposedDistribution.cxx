@@ -282,12 +282,19 @@ NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger si
   // Special case for independent copula
   if (hasIndependentCopula())
   {
-    NumericalSample result(size, dimension);
+    NumericalPoint data(size * dimension);
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      const NumericalSample marginalSample(distributionCollection_[i].getSample(size));
-      for (UnsignedInteger j = 0; j < size; ++j) result[j][i] = marginalSample[j][0];
+      const NumericalPoint marginalSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
+      UnsignedInteger shift = i;
+      for (UnsignedInteger j = 0; j < size; ++j)
+	{
+	  data[shift] = marginalSample[j];
+	  shift += dimension;
+	}
     }
+    NumericalSampleImplementation result(size, dimension);
+    result.setData(data);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
