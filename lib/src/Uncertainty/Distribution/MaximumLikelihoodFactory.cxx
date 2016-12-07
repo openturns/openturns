@@ -277,7 +277,7 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
-  if (!knownParameterIndices_.check(effectiveParameterSize - 1))
+  if (!knownParameterIndices_.check(effectiveParameterSize))
     throw InvalidArgumentException(HERE) << "Error: known indices cannot exceed parameter size";
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
