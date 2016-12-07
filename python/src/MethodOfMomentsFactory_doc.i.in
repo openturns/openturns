@@ -30,6 +30,7 @@ DistributionFactory
 Examples
 --------
 >>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal(0.9, 1.7)
 >>> sample = distribution.getSample(10)
 >>> factory = ot.MethodOfMomentsFactory(ot.Normal())
@@ -74,3 +75,46 @@ Returns
 -------
 problem : :class:`~openturns.OptimizationProblem`
     The problem used for numerical optimization of the moments."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::setKnownParameter
+"Accessor to the known parameters.
+
+Parameters
+----------
+values : sequence of float
+    Values of fixed parameters.
+indices : sequence of int
+    Indices of fixed parameters.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Beta(2.3, 4.5, -1.0, 1.0)
+>>> sample = distribution.getSample(10)
+>>> factory = ot.MethodOfMomentsFactory(ot.Beta())
+>>> # set (a,b) out of (r, t, a, b)
+>>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> inf_distribution = factory.build(sample)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::getKnownParameterValues
+"Accessor to the known parameters indices.
+
+Returns
+-------
+values : :class:`~openturns.NumericalPoint`
+    Values of fixed parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::getKnownParameterIndices
+"Accessor to the known parameters indices.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of fixed parameters."

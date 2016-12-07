@@ -98,7 +98,13 @@ public:
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
   {
-    // Nothing to do
+    // build the unknown indices
+    const UnsignedInteger effectiveParameterSize = distribution.getParameter().getSize();
+    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+    {
+      if (!knownParameterIndices_.contains(j))
+        unknownParameterIndices_.add(j);
+    }
   }
 
   LogLikelihoodEvaluation * clone() const
@@ -108,7 +114,7 @@ public:
 
   UnsignedInteger getInputDimension() const
   {
-    return distribution_.getParameterDimension();
+    return unknownParameterIndices_.getSize();
   }
 
   UnsignedInteger getOutputDimension() const
@@ -136,14 +142,29 @@ public:
   NumericalPoint operator() (const NumericalPoint & parameter) const
   {
     NumericalScalar result = 0.0;
-    NumericalPoint effectiveParameter(parameter);
+    // Define conditinned distribution
+    Distribution distribution(distribution_);
+    NumericalPoint effectiveParameter(distribution.getParameter());
+    // set unknown values
+    UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
+    for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
+    {
+      effectiveParameter[unknownParameterIndices_[j]] = parameter[j];
+    }
+    // set known values
     UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     {
       effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
     }
-    Distribution distribution(distribution_);
-    distribution.setParameter(effectiveParameter);
+    try
+    {
+      distribution.setParameter(effectiveParameter);
+    }
+    catch (Exception &)
+    {
+      return NumericalPoint(1, SpecFunc::LogMinNumericalScalar);
+    }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
     const NumericalSample logPdfSample = distribution.computeLogPDF(sample_);
@@ -157,6 +178,7 @@ private:
   Distribution distribution_;
   NumericalPoint knownParameterValues_;
   Indices knownParameterIndices_;
+  Indices unknownParameterIndices_;
 };
 
 class LogLikelihoodGradient : public NumericalMathGradientImplementation
@@ -172,7 +194,13 @@ public:
     , knownParameterValues_(knownParameterValues)
     , knownParameterIndices_(knownParameterIndices)
   {
-    // Nothing to do
+    // build the unknown indices
+    const UnsignedInteger effectiveParameterSize = distribution.getParameter().getSize();
+    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+    {
+      if (!knownParameterIndices_.contains(j))
+        unknownParameterIndices_.add(j);
+    }
   }
 
   LogLikelihoodGradient * clone() const
@@ -182,7 +210,7 @@ public:
 
   UnsignedInteger getInputDimension() const
   {
-    return distribution_.getParameterDimension();
+    return unknownParameterIndices_.getSize();
   }
 
   UnsignedInteger getOutputDimension() const
@@ -209,27 +237,29 @@ public:
 
   Matrix gradient(const NumericalPoint & parameter) const
   {
-    // Define conditionned distribution
-    NumericalPoint effectiveParameter(parameter);
+    // Define conditinned distribution
+    Distribution distribution(distribution_);
+    NumericalPoint effectiveParameter(distribution.getParameter());
+    // set unknown values
+    UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
+    for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
+    {
+      effectiveParameter[unknownParameterIndices_[j]] = parameter[j];
+    }
+    // set known values
     UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
     {
       effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
     }
-    Distribution distribution(distribution_);
     distribution.setParameter(effectiveParameter);
     // Matrix result
     MatrixImplementation result(parameter.getSize(), 1);
     // Evaluate the gradient
-    const NumericalSample logPdfGradientSample( distribution.computeLogPDFGradient(sample_));
+    const NumericalSample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
     const NumericalPoint logPdfGradient(logPdfGradientSample.computeMean());
     // Result as Matrix
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
-    // Gradient should be 0 for knownParameters
-    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-    {
-      result(knownParameterIndices_[j], 0) = 0.0;
-    }
     return result;
   }
 
@@ -238,6 +268,7 @@ private:
   Distribution distribution_;
   NumericalPoint knownParameterValues_;
   Indices knownParameterIndices_;
+  Indices unknownParameterIndices_;
 };
 
 NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & sample) const
@@ -245,7 +276,12 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  UnsignedInteger effectiveParameterSize = distribution_.getParameterDimension();
+  if (!knownParameterIndices_.check(effectiveParameterSize - 1))
+    throw InvalidArgumentException(HERE) << "Error: known indices cannot exceed parameter size";
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+    throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
+
   // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
   LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   NumericalMathFunction logLikelihood(logLikelihoodWrapper.clone());
@@ -253,25 +289,47 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
 
-  // Define optimisation problem
+  // Define optimization problem
   OptimizationProblem problem(problem_);
   problem.setMinimization(false);
   problem.setObjective(logLikelihood);
   OptimizationSolver solver(solver_);
-  if (solver.getStartingPoint().getDimension() != parameterDimension)
+  if (solver.getStartingPoint().getDimension() != logLikelihood.getInputDimension())
   {
-    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << parameterDimension << ". Switching to the default parameter value=" << distribution_.getParameter());
-    solver.setStartingPoint(distribution_.getParameter());
+    NumericalPoint effectiveParameter(distribution_.getParameter());
+    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << logLikelihood.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
+
+    // extract unknown values
+    NumericalPoint parameter;
+    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+    {
+      if (!knownParameterIndices_.contains(j))
+        parameter.add(effectiveParameter[j]);
+    }
+    solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
   solver.run();
+
+  NumericalPoint effectiveParameter(effectiveParameterSize);
+  // set unknown values
   NumericalPoint parameter(solver.getResult().getOptimalPoint());
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+  {
+    if (!knownParameterIndices_.contains(j))
+    {
+      effectiveParameter[j] = parameter[index];
+      ++ index;
+    }
+  }
+  // set known values
   UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
   for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
   {
-    parameter[knownParameterIndices_[j]] = knownParameterValues_[j];
+    effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
   }
-  return parameter;
+  return effectiveParameter;
 }
 
 
@@ -302,6 +360,41 @@ void MaximumLikelihoodFactory::setOptimizationSolver(const OptimizationSolver& s
 OptimizationSolver MaximumLikelihoodFactory::getOptimizationSolver() const
 {
   return solver_;
+}
+
+void MaximumLikelihoodFactory::setKnownParameter(const NumericalPoint & values,
+    const Indices & indices)
+{
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
+  knownParameterValues_ = values;
+  knownParameterIndices_ = indices;
+}
+
+Indices MaximumLikelihoodFactory::getKnownParameterIndices() const
+{
+  return knownParameterIndices_;
+}
+
+NumericalPoint MaximumLikelihoodFactory::getKnownParameterValues() const
+{
+  return knownParameterValues_;
+}
+
+
+/* Method save() stores the object through the StorageManager */
+void MaximumLikelihoodFactory::save(Advocate & adv) const
+{
+  DistributionFactoryImplementation::save(adv);
+  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
+  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void MaximumLikelihoodFactory::load(Advocate & adv)
+{
+  DistributionFactoryImplementation::load(adv);
+  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
+  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -1,2 +1,3 @@
-Beta(r = 1.92, t = 3.69, a = -1, b = 0.985)
-Beta(r = 1.95, t = 3.78, a = -1, b = 1)
+distribution= Beta(r = 2.3, t = 4.5, a = -1, b = 1)
+estimated distribution= Beta(r = 2.12, t = 4.3, a = -0.989, b = 1.01)
+estimated distribution with bounds= Beta(r = 2.15, t = 4.31, a = -1, b = 1)
