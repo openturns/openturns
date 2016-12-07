@@ -96,9 +96,11 @@ NumericalPoint PiecewiseLinearEvaluationImplementation::operator () (const Numer
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  if (x <= locations_[iLeft]) return values_[iLeft];
+  if (x <= locations_[iLeft])
+    return values_[iLeft];
   UnsignedInteger iRight = locations_.getSize() - 1;
-  if (x >= locations_[iRight]) return values_[iRight];
+  if (x >= locations_[iRight])
+    return values_[iRight];
   if (isRegular_)
   {
     iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
@@ -135,14 +137,23 @@ NumericalPoint PiecewiseLinearEvaluationImplementation::getLocations() const
 void PiecewiseLinearEvaluationImplementation::setLocations(const NumericalPoint & locations)
 {
   const UnsignedInteger size = locations.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  const NumericalScalar step = locations_[0] - locations_[0];
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
+  Collection< std::pair<NumericalScalar, NumericalPoint> > locationsAndValues(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    locationsAndValues[i] = std::pair<NumericalScalar, NumericalPoint>(locations[i], values_[i]);
+  std::stable_sort(locationsAndValues.begin(), locationsAndValues.end());
+  std::cerr << "locationsAndValues=" << locationsAndValues << std::endl;
+  locations_ = NumericalPoint(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      locations_[i] = locationsAndValues[i].first;
+      values_[i] = locationsAndValues[i].second;      
+    }
+  const NumericalScalar step = locations_[1] - locations_[0];
+  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
-  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations[i] - locations[0] - i * step) < epsilon);
-  locations_ = locations;
-  std::stable_sort(locations_.begin(), locations_.end());
+  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations_[i] - locations_[0] - i * step) < epsilon);
 }
 
 /* Values accessor */
@@ -163,7 +174,7 @@ void PiecewiseLinearEvaluationImplementation::setValues(const NumericalPoint & v
 void PiecewiseLinearEvaluationImplementation::setValues(const NumericalSample & values)
 {
   const UnsignedInteger size = values.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   values_ = values;
 }
