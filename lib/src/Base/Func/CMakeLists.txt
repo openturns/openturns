@@ -3,6 +3,7 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 
+ot_add_source_file (AnalyticalFunction.cxx)
 if (MUPARSER_FOUND)
 ot_add_source_file (AnalyticalParser.cxx)
 ot_add_source_file (AnalyticalNumericalMathEvaluationImplementation.cxx)
@@ -99,6 +100,7 @@ ot_add_source_file (P1LagrangeEvaluationImplementation.cxx)
 ot_add_source_file (FunctionalBasisImplementation.cxx)
 ot_add_source_file (FunctionalBasis.cxx)
 
+ot_install_header_file (AnalyticalFunction.hxx)
 if (MUPARSER_FOUND)
 ot_install_header_file (AnalyticalParser.hxx)
 ot_install_header_file (AnalyticalNumericalMathEvaluationImplementation.hxx)

@@ -12,6 +12,7 @@ General mathematical functions
     :template: class.rst_t
 
     NumericalMathFunction
+    AnalyticalFunction
     PythonFunction
     OpenTURNSPythonFunction
 

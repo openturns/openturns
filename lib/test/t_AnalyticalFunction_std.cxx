@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         x[0] = 1.4 / 3;
       }
 
-      NumericalMathFunction f("x", "2*" + elementaryFunctions[i] + "(3*x)", "y");
+      AnalyticalFunction f("x", "2*" + elementaryFunctions[i] + "(3*x)");
       fullprint << "f=" << f.__str__() << std::endl;
       fullprint << "f(" << x[0] << ")=" << std::scientific << std::setprecision(4) << f(x)[0] << std::endl;
       NumericalScalar df = CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()).gradient(x)(0, 0);
@@ -111,14 +111,11 @@ int main(int argc, char *argv[])
     Description inp(2);
     inp[0] = "x0";
     inp[1] = "x1";
-    Description out(2);
-    out[0] = "y0";
-    out[1] = "y1";
     Description form(2);
     form[0] = "x0+x1";
     form[1] = "x0-x1";
 
-    NumericalMathFunction nmf(inp, out, form);
+    AnalyticalFunction nmf(inp, form);
     NumericalMathFunction marginal0(nmf.getMarginal(0));
     NumericalMathFunction marginal1(nmf.getMarginal(1));
     fullprint << "marginal 0=" << marginal0.__str__() << std::endl;
@@ -129,11 +126,9 @@ int main(int argc, char *argv[])
     inputVariables[0] = "xi1";
     inputVariables[1] = "xi2";
     inputVariables[2] = "xi3";
-    Description outputVariables(1);
-    outputVariables[0] = "y";
     Description formula(1);
     formula[0] = (OSS() << "sin(xi1) + 7. * (sin(xi2)) ^ 2 + 0.1 * xi3^4 * sin(xi1)");
-    NumericalMathFunction model(inputVariables, outputVariables, formula);
+    AnalyticalFunction model(inputVariables, formula);
 
     // Create an input distribution to calculate reference values
     Collection<Distribution> marginals(3);

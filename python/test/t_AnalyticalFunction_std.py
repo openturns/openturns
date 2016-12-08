@@ -49,8 +49,7 @@ for func in elementaryFunctions:
     if func == 'acosh':
         x[0] = 1.4
 
-    f = ot.NumericalMathFunction(
-        'x', '2.0*' + func + '(x)', 'y')
+    f = ot.AnalyticalFunction(['x'], ['2.0*' + func + '(x)'])
     print('f=', f)
     print('f(', x[0], ')=%.4e' % f(x)[0])
     try:
@@ -86,7 +85,7 @@ for func in elementaryFunctions:
             print('HESSIAN ERROR! check ' + func +
                   ' hessian, err=%.12g' % err_h)
 
-nmf = ot.NumericalMathFunction(['x0', 'x1'], ['y0', 'y1'], ['x0+x1', 'x0-x1'])
+nmf = ot.AnalyticalFunction(['x0', 'x1'], ['x0+x1', 'x0-x1'])
 marginal0 = nmf.getMarginal(0)
 marginal1 = nmf.getMarginal(1)
 print('marginal 0=', marginal0)
@@ -94,7 +93,7 @@ print('marginal 1=', marginal1)
 
 # test sample as input of a function
 formula = ['sin(xi1) + 7. * (sin(xi2)) ^ 2 + 0.1 * xi3^4 * sin(xi1)']
-model = ot.NumericalMathFunction(['xi1', 'xi2', 'xi3'], ['y'], formula)
+model = ot.AnalyticalFunction(['xi1', 'xi2', 'xi3'], formula)
 
 # Create an input distribution to calculate reference values
 distribution = ot.ComposedDistribution([ot.Uniform(-m.pi, m.pi)] * 3)
@@ -106,7 +105,7 @@ refResultValues = [m.sin(inSample[i][0]) + 7.0 * (m.sin(inSample[i][1])) **
 print('First reference value : %.4e' % refResultValues[0])
 print('First result calculated : %.4e' % resultSample[0][0])
 
-model = ot.NumericalMathFunction(['x'], ['y1', 'y2'], ['_pi', '_e'])
+model = ot.AnalyticalFunction(['x'], ['_pi', '_e'])
 print('Constants:', model([0]))
 
 empty = model.getMarginal([])

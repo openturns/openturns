@@ -25,6 +25,7 @@
 #include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
+#include "openturns/AnalyticalFunction.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
