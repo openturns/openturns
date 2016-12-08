@@ -13,6 +13,7 @@ General mathematical functions
 
     NumericalMathFunction
     AnalyticalFunction
+    ComposedFunction
     PythonFunction
     OpenTURNSPythonFunction
 

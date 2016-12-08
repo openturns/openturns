@@ -630,7 +630,7 @@ ot_check_test (Path_std IGNOREOUT)
 
 # Func
 ot_check_test (NumericalMathFunction_std)
-ot_check_test (NumericalMathFunction_composition)
+ot_check_test (ComposedFunction_std)
 
 # Stat
 ot_check_test (NumericalSample_csv)

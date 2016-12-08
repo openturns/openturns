@@ -272,6 +272,7 @@ ot_add_python_module(func func_module.i
                       ProductNumericalMathFunction.i
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
                       AnalyticalFunction.i AnalyticalFunction_doc.i.in
+                      ComposedFunction.i ComposedFunction_doc.i.in
                       BaseFuncCollection.i
                       DynamicalFunctionImplementation.i DynamicalFunctionImplementation_doc.i.in
                       DynamicalFunction.i DynamicalFunction_doc.i.in
