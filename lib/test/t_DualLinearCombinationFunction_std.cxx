@@ -36,14 +36,12 @@ int main(int argc, char *argv[])
     inVar[0] = "x1";
     inVar[1] = "x2";
     inVar[2] = "x3";
-    Description outVar(1);
-    outVar[0] = "y";
     Description formula(1);
     formula[0] = "x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)";
     DualLinearCombinationEvaluationImplementation::NumericalMathFunctionCollection functions(2);
-    functions[0] = NumericalMathFunction(inVar, outVar, formula);
+    functions[0] = AnalyticalFunction(inVar, formula);
     formula[0] = "exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)";
-    functions[1] = NumericalMathFunction(inVar, outVar, formula);
+    functions[1] = AnalyticalFunction(inVar, formula);
     // Second, build the weights
     NumericalSample coefficients(0, 3);
     NumericalPoint p(3);
@@ -56,7 +54,7 @@ int main(int argc, char *argv[])
     p[2] = -1.5;
     coefficients.add(p);
     // Third, build the function
-    NumericalMathFunction myFunction(functions, coefficients);
+    DualLinearCombinationFunction myFunction(functions, coefficients);
     NumericalPoint inPoint(3);
     inPoint[0] = 1.2;
     inPoint[1] = 2.3;

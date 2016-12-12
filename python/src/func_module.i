@@ -66,6 +66,7 @@
 %include LinearCombinationFunction.i
 %include ComposedFunction.i
 %include ParametricFunction.i
+%include DualLinearCombinationFunction.i
 %include DynamicalFunctionImplementation.i
 %include DynamicalFunction.i
 %include SpatialFunction.i
