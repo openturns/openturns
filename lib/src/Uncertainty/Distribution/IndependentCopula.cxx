@@ -30,6 +30,7 @@
 #include "openturns/InverseNatafIndependentCopulaHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/AnalyticalFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -220,7 +221,7 @@ LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const Nume
     formula << "),abs(" << inVars[i] << "-0.5";
   formula << "))";
   threshold = std::pow(prob, 1.0 / dimension_);
-  return LevelSet(NumericalMathFunction(inVars, Description(1, formula)), threshold);
+  return LevelSet(AnalyticalFunction(inVars, Description(1, formula)), threshold);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

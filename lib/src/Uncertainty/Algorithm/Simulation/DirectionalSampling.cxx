@@ -22,7 +22,7 @@
 #include "openturns/DirectionalSampling.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/LinearNumericalMathFunction.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 
@@ -158,7 +158,7 @@ NumericalScalar DirectionalSampling::computeTotalContribution(const NumericalSam
     for (UnsignedInteger indexComponent = 0; indexComponent < dimension; ++indexComponent) linear(indexComponent, 0) = direction[indexComponent];
     const LinearNumericalMathFunction ray(NumericalPoint(1, 0.0), NumericalPoint(dimension, 0.0), linear);
     // 1.2 Build the function along the ray
-    const NumericalMathFunction functionAlongRay(standardFunction_, ray);
+    const ComposedFunction functionAlongRay(standardFunction_, ray);
     // 2. Solve the function along the ray
     const NumericalScalarCollection roots(rootStrategy_.solve(functionAlongRay, standardEvent_.getThreshold()));
     // Second, compute the contribution of this direction

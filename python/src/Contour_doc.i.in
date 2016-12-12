@@ -33,7 +33,7 @@ legend : str
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x', 'y'], ['z'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
+>>> f = ot.AnalyticalFunction(['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
 >>> # Generate the data for the curves to be drawn
 >>> nX = 75
 >>> nY = 75

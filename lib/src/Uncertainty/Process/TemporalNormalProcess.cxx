@@ -29,6 +29,7 @@
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/AnalyticalFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +50,7 @@ TemporalNormalProcess::TemporalNormalProcess()
   , samplingMethod_(0)
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
+  trend_ = TrendTransform(AnalyticalFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
   trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
@@ -117,7 +118,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
   setMesh(mesh);
   setDimension(model.getDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
+  trend_ = TrendTransform(AnalyticalFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
   trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
@@ -141,7 +142,7 @@ TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceM
   setMesh(mesh);
   setDimension(covarianceModel.getDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
+  trend_ = TrendTransform(AnalyticalFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
   trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif

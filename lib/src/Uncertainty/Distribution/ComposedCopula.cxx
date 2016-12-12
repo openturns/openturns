@@ -29,6 +29,8 @@
 #include "openturns/Log.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NormalCopula.hxx"
+#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -600,10 +602,10 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
     const UnsignedInteger atomDimension = copulaCollection_[i].getDimension();
     Description atomVariables(atomDimension);
     for (UnsignedInteger j = 0; j < atomDimension; ++j) atomVariables[j] = allVariables[shift + j];
-    const NumericalMathFunction projection(allVariables, atomVariables);
+    const AnalyticalFunction projection(allVariables, atomVariables);
     // Second, check if the isoprobabilistic transformation associated with the current copula maps to a Normal standard distribution
-    if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = NumericalMathFunction(copulaCollection_[i].getIsoProbabilisticTransformation(), projection);
-    else atomTransformations[i] = NumericalMathFunction(RosenblattEvaluation(copulaCollection_[i]), projection);
+    if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getIsoProbabilisticTransformation(), projection);
+    else atomTransformations[i] = ComposedFunction(RosenblattEvaluation(copulaCollection_[i]), projection);
   }
   return NumericalMathFunction(atomTransformations);
 }
@@ -627,10 +629,10 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
     const UnsignedInteger atomDimension = copulaCollection_[i].getDimension();
     Description atomVariables(atomDimension);
     for (UnsignedInteger j = 0; j < atomDimension; ++j) atomVariables[j] = allVariables[shift + j];
-    const NumericalMathFunction projection(allVariables, atomVariables);
+    const AnalyticalFunction projection(allVariables, atomVariables);
     // Second, check if the isoprobabilistic transformation associated with the current copula maps to a Normal standard distribution
-    if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = NumericalMathFunction(copulaCollection_[i].getInverseIsoProbabilisticTransformation(), projection);
-    else atomTransformations[i] = NumericalMathFunction(InverseRosenblattEvaluation(copulaCollection_[i]), projection);
+    if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getInverseIsoProbabilisticTransformation(), projection);
+    else atomTransformations[i] = ComposedFunction(InverseRosenblattEvaluation(copulaCollection_[i]), projection);
   }
   return NumericalMathFunction(atomTransformations);
 }

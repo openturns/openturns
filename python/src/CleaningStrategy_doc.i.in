@@ -68,7 +68,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Define the model
 >>> inputDim = 1
->>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> model = ot.AnalyticalFunction(['x'], ['x*sin(x)'])
 >>> # Create the input distribution
 >>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
 >>> # Construction of the multivariate orthonormal basis

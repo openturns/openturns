@@ -24,6 +24,7 @@
 #include "openturns/LinearNumericalMathFunction.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/IdentityMatrix.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -108,7 +109,7 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
     {
       const NumericalMathFunction modeI(modes_.build(i));
       LinearNumericalMathFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
-      scaledModes[i] = NumericalMathFunction(scaling, modeI);
+      scaledModes[i] = ComposedFunction(scaling, modeI);
     }
   return scaledModes;
 }

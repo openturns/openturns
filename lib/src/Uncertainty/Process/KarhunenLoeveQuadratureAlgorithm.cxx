@@ -35,6 +35,7 @@
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
 #include "openturns/LegendreFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -164,7 +165,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Here we set the collection of functions
   Collection<NumericalMathFunction> coll(basisSize_);
   for (UnsignedInteger i = 0; i < basisSize_; ++i)
-    if (!hasSameBounds && mustScale_) coll[i] = NumericalMathFunction(basis_.build(i), inverseScaling);
+    if (!hasSameBounds && mustScale_) coll[i] = ComposedFunction(basis_.build(i), inverseScaling);
     else coll[i] = basis_.build(i);
   // Compute the integration nodes and weights
   NumericalPoint rawWeights;

@@ -31,6 +31,7 @@
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -211,7 +212,7 @@ void KrigingAlgorithm::run()
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
   // First build the meta-model on the transformed data
   // Then add the transformation if needed
-  if (normalize_) metaModel = NumericalMathFunction(metaModel, glmResult.getTransformation());
+  if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());
   // compute residual, relative error
   const NumericalPoint outputVariance(outputSample_.computeVariance());
   const NumericalSample mY(metaModel(inputSample_));

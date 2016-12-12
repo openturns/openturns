@@ -28,6 +28,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearNumericalMathFunction.hxx"
 #include "openturns/Pointer.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -102,7 +103,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   }
   // Here we set the collection of functions
   for (UnsignedInteger i = 0; i < basisSize; ++i)
-    if (!hasSameBounds && mustScale) coll_[i] = NumericalMathFunction(basis.build(i), inverseScaling);
+    if (!hasSameBounds && mustScale) coll_[i] = ComposedFunction(basis.build(i), inverseScaling);
     else coll_[i] = basis.build(i);
   // Compute the integration nodes and weights
   NumericalPoint rawWeights;

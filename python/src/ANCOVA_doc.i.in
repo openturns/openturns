@@ -98,7 +98,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Model and distribution definition
->>> model = ot.NumericalMathFunction(['X1','X2'], ['Y'], ['4.*X1 + 5.*X2'])
+>>> model = ot.AnalyticalFunction(['X1','X2'], ['4.*X1 + 5.*X2'])
 >>> distribution = ot.ComposedDistribution([ot.Normal()] * 2)
 >>> S = ot.CorrelationMatrix(2)
 >>> S[1, 0] = 0.3

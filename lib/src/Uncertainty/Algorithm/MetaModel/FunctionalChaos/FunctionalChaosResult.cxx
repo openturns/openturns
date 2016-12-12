@@ -23,6 +23,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,7 +76,7 @@ FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model
   if (transformation.getEvaluation()->getClassName() == "IdentityEvaluation")
     metaModel_ = composedMetaModel_;
   else
-    metaModel_ = NumericalMathFunction(composedMetaModel_, transformation);
+    metaModel_ = ComposedFunction(composedMetaModel_, transformation);
 }
 
 

@@ -27,7 +27,7 @@ Examples
 Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t)=1+2t+t^2`:
 
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['t'], ['1+2*t+t^2'])
+>>> f = ot.AnalyticalFunction(['t'], ['1+2*t+t^2'])
 >>> fTrend = ot.TrendTransform(f)
 
 Add it to a process:

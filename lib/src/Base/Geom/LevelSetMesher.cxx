@@ -29,6 +29,7 @@
 #include "openturns/Cobyla.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -218,7 +219,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               // Project the vertices not in the level set on the boundary of the level set
               // Build the optimization problem argmin ||x - x_0||^2 such that level - f(x) >= 0, where x_0 is the current vertex
               shiftFunction.setParameter(currentVertex);
-              NumericalMathFunction levelFunction(function, shiftFunction);
+              ComposedFunction levelFunction(function, shiftFunction);
               problem.setLevelFunction(levelFunction);
               solver_.setStartingPoint(delta);
 	      OptimizationResult result;

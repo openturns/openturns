@@ -24,7 +24,7 @@ Examples
 Define an optimization problem to find the minimum of the Rosenbrock function:
 
 >>> import openturns as ot
->>> rosenbrock = ot.NumericalMathFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> rosenbrock = ot.AnalyticalFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
 >>> problem = ot.OptimizationProblem()
 >>> problem.setObjective(rosenbrock)
 >>> solver = ot.OptimizationSolver(problem)
