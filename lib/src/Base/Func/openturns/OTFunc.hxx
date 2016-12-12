@@ -51,6 +51,7 @@
 #include "openturns/DynamicalFunctionImplementation.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/EnumerateFunctionImplementation.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/ExpertMixture.hxx"

@@ -261,6 +261,7 @@ ot_add_python_module(func func_module.i
                       DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
                       DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
                       DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
+                      LinearCombinationFunction.i LinearCombinationFunction_doc.i.in
                       LinearCombinationEvaluationImplementation.i
                       LinearCombinationGradientImplementation.i
                       LinearCombinationHessianImplementation.i

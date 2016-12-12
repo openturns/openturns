@@ -35,26 +35,22 @@ int main(int argc, char *argv[])
     Description inVar(2);
     inVar[0] = "x1";
     inVar[1] = "x2";
-    Description outVar(3);
-    outVar[0] = "y1";
-    outVar[1] = "y2";
-    outVar[2] = "y3";
     Description formula(3);
     formula[0] = "x1^3 * sin(x2 + 2.5 * x1) - (x1 + x2)^2 / (1.0 + x2^2)";
     formula[1] = "x2^3 * sin(x2 + 2.5 * x1) - (x2 + x1)^2 / (1.0 + x1^2)";
     formula[2] = "x1^3 * sin(x1 + 2.5 * x2) - (x2 + x1)^2 / (1.0 + x2^2)";
     LinearCombinationEvaluationImplementation::NumericalMathFunctionCollection functions(2);
-    functions[0] = NumericalMathFunction(inVar, outVar, formula);
+    functions[0] = AnalyticalFunction(inVar, formula);
     formula[0] = "exp(-x1 * x2 + x1) / cos(1.0 + x2 * x2 - x1)";
     formula[0] = "exp(-x2 * x1 + x1) / cos(1.0 + x2 * x1 - x2)";
     formula[0] = "exp(-x1 * x1 + x2) / cos(1.0 + x1 * x2 - x2)";
-    functions[1] = NumericalMathFunction(inVar, outVar, formula);
+    functions[1] = AnalyticalFunction(inVar, formula);
     // Second, build the weights
     NumericalPoint coefficients(2);
     coefficients[0] = 0.3;
     coefficients[1] = 2.9;
     // Third, build the function
-    NumericalMathFunction myFunction(functions, coefficients);
+    LinearCombinationFunction myFunction(functions, coefficients);
     NumericalPoint inPoint(2);
     inPoint[0] = 1.2;
     inPoint[1] = 2.3;
