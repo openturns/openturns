@@ -129,7 +129,7 @@ ot_pyinstallcheck_test (NumericalMathFunction_python_saveload)
 endif ()
 ot_pyinstallcheck_test (NumericalMathFunction_data)
 ot_pyinstallcheck_test (NumericalMathFunction_operations)
-ot_pyinstallcheck_test (NumericalMathFunction_parametric)
+ot_pyinstallcheck_test (ParametricFunction_std)
 
 if (R_base_FOUND)
 ot_pyinstallcheck_test (NumericalMathFunction_draw)

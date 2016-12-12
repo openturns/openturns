@@ -186,7 +186,7 @@ ot_check_test (NumericalMathFunction_aggregated)
 ot_check_test (NumericalMathFunction_dual_linear_combination)
 ot_check_test (NumericalMathFunction_linear_combination)
 ot_check_test (NumericalMathFunction_operations)
-ot_check_test (NumericalMathFunction_parametric)
+ot_check_test (ParametricFunction_std)
 ot_check_test (NumericalMathFunction_data)
 ot_check_test (NumericalMathFunction_history)
 

@@ -74,6 +74,7 @@
 #include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/NumericalMathGradientImplementation.hxx"
 #include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/ParametricFunction.hxx"
 #include "openturns/ParametricEvaluationImplementation.hxx"
 #include "openturns/ParametricGradientImplementation.hxx"
 #include "openturns/ParametricHessianImplementation.hxx"

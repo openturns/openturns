@@ -1,0 +1,45 @@
+%feature("docstring") OT::ParametricFunction
+"Parametric function.
+
+Available constructor:
+    ParametricFunction(*function, indices, referencePoint, parametersSet*)
+
+The function is the composed function :math:`f\circ g`.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    Function from which another function is created.
+indices : sequence of int
+    Indices of the set variables which are set to *referencePoint*'s values.
+referencePoint : sequence of float
+    Values of the set variables.
+    Must be of size of *indices* if *parametersSet* is *True* (default),
+    else its size should be the complementary size of *indices*.
+parametersSet : bool
+    If *True* (default), the set variables are the ones referenced
+    in *indices*.
+    Otherwise, the set variables are the ones referenced in the complementary
+    vector of *indices*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.AnalyticalFunction(ot.Description.BuildDefault(4, 'x'),
+...                              ['x0', 'x0 + x1', 'x0 + x2 + x3'])
+
+Then create another function by setting x1=4 and x3=10:
+
+>>> g = ot.ParametricFunction(f, [3, 1], [10, 4], True)
+>>> print(g.getInputDescription())
+[x0,x2]
+>>> print(g((1, 2)))
+[1,5,13]
+
+Or by setting x0=6 and x2=5:
+
+>>> g = ot.ParametricFunction(f, [3, 1], [6, 5], False)
+>>> print(g.getInputDescription())
+[x3,x1]
+>>> print(g((1, 2)))
+[6,8,12]"

@@ -264,6 +264,7 @@ ot_add_python_module(func func_module.i
                       LinearCombinationEvaluationImplementation.i
                       LinearCombinationGradientImplementation.i
                       LinearCombinationHessianImplementation.i
+                      ParametricFunction.i ParametricFunction_doc.i.in
                       ProductNumericalMathEvaluationImplementation.i
                       ProductNumericalMathGradientImplementation.i
                       ProductNumericalMathHessianImplementation.i

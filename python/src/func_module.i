@@ -64,6 +64,7 @@
 %include NumericalMathFunction.i
 %include AnalyticalFunction.i
 %include ComposedFunction.i
+%include ParametricFunction.i
 %include DynamicalFunctionImplementation.i
 %include DynamicalFunction.i
 %include SpatialFunction.i
