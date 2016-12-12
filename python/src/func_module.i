@@ -62,6 +62,7 @@
 %include NumericalMathFunctionImplementation.i
 %include ProductNumericalMathFunction.i
 %include NumericalMathFunction.i
+%include AggregatedFunction.i
 %include AnalyticalFunction.i
 %include LinearCombinationFunction.i
 %include ComposedFunction.i

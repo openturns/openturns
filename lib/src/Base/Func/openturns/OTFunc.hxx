@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTFUNC_HXX
 #define OPENTURNS_OTFUNC_HXX
 
+#include "openturns/AggregatedFunction.hxx"
 #include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
