@@ -16,6 +16,7 @@ General mathematical functions
     ComposedFunction
     LinearCombinationFunction
     DualLinearCombinationFunction
+    DatabaseFunction
     ParametricFunction
     PythonFunction
     OpenTURNSPythonFunction

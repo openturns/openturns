@@ -289,6 +289,7 @@ ot_add_python_module(func func_module.i
                       AnalyticalNumericalMathEvaluationImplementation.i
                       AnalyticalNumericalMathGradientImplementation.i
                       AnalyticalNumericalMathHessianImplementation.i
+                      DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
                       IndicatorNumericalMathEvaluationImplementation.i
                       PiecewiseLinearEvaluationImplementation.i

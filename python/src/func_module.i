@@ -92,6 +92,7 @@
 %include AnalyticalNumericalMathGradientImplementation.i
 %include AnalyticalNumericalMathHessianImplementation.i
 #endif
+%include DatabaseFunction.i
 %include DatabaseNumericalMathEvaluationImplementation.i
 %include IndicatorNumericalMathEvaluationImplementation.i
 %include ProductPolynomialEvaluationImplementation.i

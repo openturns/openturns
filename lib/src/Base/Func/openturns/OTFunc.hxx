@@ -43,6 +43,7 @@
 #include "openturns/ComposedNumericalMathHessianImplementation.hxx"
 #include "openturns/ConstantNumericalMathGradientImplementation.hxx"
 #include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/DatabaseFunction.hxx"
 #include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/DualLinearCombinationEvaluationImplementation.hxx"

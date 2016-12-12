@@ -127,7 +127,7 @@ ot_pyinstallcheck_test (NumericalMathFunction_python)
 if (LIBXML2_FOUND)
 ot_pyinstallcheck_test (NumericalMathFunction_python_saveload)
 endif ()
-ot_pyinstallcheck_test (NumericalMathFunction_data)
+ot_pyinstallcheck_test (DatabaseFunction_std)
 ot_pyinstallcheck_test (NumericalMathFunction_operations)
 ot_pyinstallcheck_test (ParametricFunction_std)
 

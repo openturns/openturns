@@ -187,7 +187,7 @@ ot_check_test (DualLinearCombinationFunction_std)
 ot_check_test (LinearCombinationFunction_std)
 ot_check_test (NumericalMathFunction_operations)
 ot_check_test (ParametricFunction_std)
-ot_check_test (NumericalMathFunction_data)
+ot_check_test (DatabaseFunction_std)
 ot_check_test (NumericalMathFunction_history)
 
 if (R_base_FOUND)

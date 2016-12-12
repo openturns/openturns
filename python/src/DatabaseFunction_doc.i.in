@@ -1,0 +1,25 @@
+%feature("docstring") OT::DatabaseFunction
+"Pre-evaluated function.
+
+Available constructor:
+    DatabaseFunction(*inputSample, outputSample*)
+
+Allows to build a function takes a value in the output sample when presented
+the corresponding point in the input sample .
+
+Parameters
+----------
+inputSample : 2-d sequence of float
+    Values of the inputs.
+outputSample : 2-d sequence of float
+    Values of the outputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> inputSample = [[1.0, 1.0], [2.0, 2.0]]
+>>> outputSample = [[4.0], [5.0]]
+>>> database = ot.DatabaseFunction(inputSample, outputSample)
+>>> x = [1.8]*database.getInputDimension()
+>>> print(database(x))
+[5]"
