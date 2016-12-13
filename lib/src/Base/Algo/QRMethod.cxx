@@ -134,6 +134,24 @@ NumericalPoint QRMethod::solveNormal(const NumericalPoint & rhs)
   return coefficients;
 }
 
+NumericalPoint QRMethod::getHDiag() const
+{
+  const UnsignedInteger dimension = q_.getNbRows();
+  NumericalPoint diag(dimension);
+  MatrixImplementation ei(dimension, 1);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    ei(i, 0) = 1.0;
+    const MatrixImplementation b(q_.getImplementation()->genProd(ei, true, false));
+    const MatrixImplementation bTb(b.genProd(b, true, false));
+    diag[i] = bTb(0, 0);
+    ei(i, 0) = 0.0;
+  }
+
+  return diag;
+}
+
+
 CovarianceMatrix QRMethod::getGramInverse() const
 {
   // G^{-1}=R^-1*R*^-T
@@ -141,6 +159,46 @@ CovarianceMatrix QRMethod::getGramInverse() const
   const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
   Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
   return invR.computeGram(false);
+}
+
+NumericalPoint QRMethod::getGramInverseDiag() const
+{
+  // G^{-1}=R^-1*R*^-T
+  const UnsignedInteger dimension = r_.getNbRows();
+  const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
+  const Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
+
+  NumericalPoint diag(dimension);
+  MatrixImplementation ei(dimension, 1);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    ei(i, 0) = 1.0;
+    const MatrixImplementation b(invR.getImplementation()->genProd(ei, true, false));
+    const MatrixImplementation bTb(b.genProd(b, true, false));
+    diag[i] = bTb(0, 0);
+    ei(i, 0) = 0.0;
+  }
+  return diag;
+}
+
+NumericalScalar QRMethod::getGramInverseTrace() const
+{
+  // G^{-1}=R^-1*R*^-T
+  const UnsignedInteger dimension = r_.getNbRows();
+  const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
+  const Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
+
+  NumericalScalar result(0.0);
+  MatrixImplementation ei(dimension, 1);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    ei(i, 0) = 1.0;
+    const MatrixImplementation b(invR.getImplementation()->genProd(ei, true, false));
+    const MatrixImplementation bTb(b.genProd(b, true, false));
+    result += bTb(0, 0);
+    ei(i, 0) = 0.0;
+  }
+  return result;
 }
 
 void QRMethod::trashDecomposition()

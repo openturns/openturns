@@ -37,5 +37,7 @@ for method in methods:
     print('getHDiag:', d)
     d = method.getGramInverse()
     print('getGramInverse:', d)
+    d = method.getGramInverseDiag()
+    print('getGramInverseDiag:', d)
     d = method.getGramInverseTrace()
     print('getGramInverseTrace: %.5g' % d)

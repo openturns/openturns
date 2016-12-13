@@ -269,6 +269,46 @@ SymmetricMatrix CholeskyMethod::getH() const
 }
 
 
+NumericalPoint CholeskyMethod::getHDiag() const
+{
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const TriangularMatrix invL(l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  const MatrixImplementation psiAk(computeWeightedDesign());
+  const MatrixImplementation lPsiAk(invL.getImplementation()->genProd(psiAk, false, true));
+
+  const UnsignedInteger dimension = psiAk.getNbRows();
+  NumericalPoint diag(dimension);
+  MatrixImplementation ei(dimension, 1);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    ei(i, 0) = 1.0;
+    const MatrixImplementation b(lPsiAk.genProd(ei, false, false));
+    const MatrixImplementation bTb(b.genProd(b, true, false));
+    diag[i] = bTb(0, 0);
+    ei(i, 0) = 0.0;
+  }
+
+  return diag;
+}
+
+NumericalPoint CholeskyMethod::getGramInverseDiag() const
+{
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const TriangularMatrix invL(l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  NumericalPoint diag(basisSize);
+  MatrixImplementation ei(basisSize, 1);
+  for (UnsignedInteger i = 0; i < basisSize; ++ i)
+  {
+    ei(i, 0) = 1.0;
+    const MatrixImplementation b(invL.getImplementation()->genProd(ei, false, false));
+    const MatrixImplementation bTb(b.genProd(b, true, false));
+    diag[i] = bTb(0, 0);
+    ei(i, 0) = 0.0;
+  }
+
+  return diag;
+}
+
 NumericalScalar CholeskyMethod::getGramInverseTrace() const
 {
   NumericalScalar traceInverse = 0.0;

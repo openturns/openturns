@@ -193,6 +193,29 @@ NumericalPoint SVDMethod::getHDiag() const
   return h;
 }
 
+NumericalPoint SVDMethod::getGramInverseDiag() const
+{
+  // G^{-1}=V\Sigma^{-2}V^T
+  const UnsignedInteger m = vT_.getNbRows();
+  const UnsignedInteger n = vT_.getNbColumns();
+  const MatrixImplementation & vTimpl(*vT_.getImplementation());
+  UnsignedInteger index = 0;
+  const UnsignedInteger svdSize = singularValues_.getSize();
+  NumericalPoint diag(n);
+  for (UnsignedInteger j = 0; j < n; ++j)
+  {
+    for (UnsignedInteger i = 0; i < svdSize; ++i)
+    {
+      const NumericalScalar val = vTimpl[index] / singularValues_[i];
+      diag[j] += val * val;
+      ++ index;
+    }
+    index += (m - svdSize);
+  }
+
+  return diag;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void SVDMethod::save(Advocate & adv) const

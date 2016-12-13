@@ -62,6 +62,11 @@ public:
 
   CovarianceMatrix getGramInverse() const;
 
+  NumericalPoint getGramInverseDiag() const;
+  NumericalPoint getHDiag() const;
+
+  NumericalScalar getGramInverseTrace() const;
+
   /** Update */
   void update(const Indices & addedIndices,
               const Indices & conservedIndices,

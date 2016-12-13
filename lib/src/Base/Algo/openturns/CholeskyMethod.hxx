@@ -70,6 +70,9 @@ public:
   CovarianceMatrix getGramInverse() const;
   SymmetricMatrix getH() const;
 
+  NumericalPoint getGramInverseDiag() const;
+  NumericalPoint getHDiag() const;
+
   NumericalScalar getGramInverseTrace() const;
 
   /** Method save() stores the object through the StorageManager */

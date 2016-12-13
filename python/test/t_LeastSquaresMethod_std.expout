@@ -17,6 +17,7 @@ getHDiag: [1,1,1]
 getGramInverse: [[  11.3611   -10.6667     2.30556  ]
  [ -10.6667    10.5       -2.33333  ]
  [   2.30556   -2.33333    0.527778 ]]
+getGramInverseDiag: [11.3611,10.5,0.527778]
 getGramInverseTrace: 22.389
 CholeskyMethod
 solve: [1.83333,-1,0.166667]
@@ -25,6 +26,7 @@ getHDiag: [1,1,1]
 getGramInverse: [[  11.3611   -10.6667     2.30556  ]
  [ -10.6667    10.5       -2.33333  ]
  [   2.30556   -2.33333    0.527778 ]]
+getGramInverseDiag: [11.3611,10.5,0.527778]
 getGramInverseTrace: 22.389
 QRMethod
 solve: [1.83333,-1,0.166667]
@@ -33,4 +35,5 @@ getHDiag: [1,1,1]
 getGramInverse: [[  11.3611   -10.6667     2.30556  ]
  [ -10.6667    10.5       -2.33333  ]
  [   2.30556   -2.33333    0.527778 ]]
+getGramInverseDiag: [11.3611,10.5,0.527778]
 getGramInverseTrace: 22.389

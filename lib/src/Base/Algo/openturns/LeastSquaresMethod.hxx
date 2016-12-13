@@ -97,6 +97,9 @@ public:
   /** Get the diagonal of H */
   NumericalPoint getHDiag() const;
 
+  /** Get the diagonal of the Gram inverse */
+  NumericalPoint getGramInverseDiag() const;
+
   /** Get the trace of the Gram inverse */
   NumericalScalar getGramInverseTrace() const;
 

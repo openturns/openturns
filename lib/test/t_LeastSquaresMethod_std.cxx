@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverse=" << qrMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << qrMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << qrMethod.getGramInverseTrace() << std::endl;
+      fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
     }
     {
       SVDMethod svdMethod(proxy, y, indices);
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverse=" << svdMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << svdMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << svdMethod.getGramInverseTrace() << std::endl;
+      fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
     }
     {
       CholeskyMethod choleskyMethod(proxy, y, indices);
@@ -75,6 +77,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverse=" << choleskyMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << choleskyMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << choleskyMethod.getGramInverseTrace() << std::endl;
+      fullprint << "GramInverseDiag=" << choleskyMethod.getGramInverseDiag() << std::endl;
     }
   }
 
