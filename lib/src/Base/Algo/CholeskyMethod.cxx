@@ -271,12 +271,12 @@ SymmetricMatrix CholeskyMethod::getH() const
 
 NumericalScalar CholeskyMethod::getGramInverseTrace() const
 {
-
   NumericalScalar traceInverse = 0.0;
-  for (UnsignedInteger k = 0; k < l_.getDimension(); ++ k)
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  for (MatrixImplementation::const_iterator it = invL.begin(); it != invL.end(); ++it)
   {
-    const NumericalScalar dk = l_(k, k);
-    traceInverse += 1.0 / (dk * dk);
+    traceInverse += (*it) * (*it);
   }
   return traceInverse;
 }

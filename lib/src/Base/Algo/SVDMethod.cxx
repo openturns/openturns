@@ -159,7 +159,7 @@ CovarianceMatrix SVDMethod::getGramInverse() const
   for (UnsignedInteger j = 0; j < n; ++j)
     for (UnsignedInteger i = 0; i < m; ++i)
     {
-      sigmaInvVt[index] = singularValues_[i] * vTimpl[index];
+      sigmaInvVt[index] = (1.0 / singularValues_[i]) * vTimpl[index];
       ++ index;
     }
   return sigmaInvVt.computeGram();
@@ -170,7 +170,7 @@ NumericalScalar SVDMethod::getGramInverseTrace() const
   NumericalScalar traceInverse = 0.0;
   for (UnsignedInteger k = 0; k < singularValues_.getDimension(); ++ k)
   {
-    traceInverse += 1.0 / singularValues_[k];
+    traceInverse += 1.0 / singularValues_[k] / singularValues_[k];
   }
   return traceInverse;
 }

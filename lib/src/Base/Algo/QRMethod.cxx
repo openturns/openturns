@@ -139,7 +139,7 @@ CovarianceMatrix QRMethod::getGramInverse() const
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
-  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b));
+  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
   return invR.computeGram(false);
 }
 
