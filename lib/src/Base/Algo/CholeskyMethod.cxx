@@ -272,20 +272,22 @@ SymmetricMatrix CholeskyMethod::getH() const
 NumericalPoint CholeskyMethod::getHDiag() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
-  const TriangularMatrix invL(l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
   const MatrixImplementation psiAk(computeWeightedDesign());
-  const MatrixImplementation lPsiAk(invL.getImplementation()->genProd(psiAk, false, true));
+  const MatrixImplementation invLPsiAk(invL.genProd(psiAk, false, true));
 
   const UnsignedInteger dimension = psiAk.getNbRows();
   NumericalPoint diag(dimension);
-  MatrixImplementation ei(dimension, 1);
+  MatrixImplementation::const_iterator invLPsiAk_iterator(invLPsiAk.begin());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    ei(i, 0) = 1.0;
-    const MatrixImplementation b(lPsiAk.genProd(ei, false, false));
-    const MatrixImplementation bTb(b.genProd(b, true, false));
-    diag[i] = bTb(0, 0);
-    ei(i, 0) = 0.0;
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invLPsiAk_iterator) * (*invLPsiAk_iterator);
+      ++invLPsiAk_iterator;
+    }
+    diag[i] = value;
   }
 
   return diag;
@@ -294,16 +296,18 @@ NumericalPoint CholeskyMethod::getHDiag() const
 NumericalPoint CholeskyMethod::getGramInverseDiag() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
-  const TriangularMatrix invL(l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
   NumericalPoint diag(basisSize);
-  MatrixImplementation ei(basisSize, 1);
+  MatrixImplementation::const_iterator invL_iterator(invL.begin());
   for (UnsignedInteger i = 0; i < basisSize; ++ i)
   {
-    ei(i, 0) = 1.0;
-    const MatrixImplementation b(invL.getImplementation()->genProd(ei, false, false));
-    const MatrixImplementation bTb(b.genProd(b, true, false));
-    diag[i] = bTb(0, 0);
-    ei(i, 0) = 0.0;
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invL_iterator) * (*invL_iterator);
+      ++invL_iterator;
+    }
+    diag[i] = value;
   }
 
   return diag;

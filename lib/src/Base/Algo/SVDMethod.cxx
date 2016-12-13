@@ -182,12 +182,13 @@ NumericalPoint SVDMethod::getHDiag() const
   const UnsignedInteger basisSize = currentIndices_.getSize();
   NumericalPoint h(sampleSize);
   // matrices are stored by columns
+  MatrixImplementation::const_iterator u_iterator(u_.getImplementation()->begin());
   for (UnsignedInteger j = 0; j < basisSize; ++ j)
   {
-    for (UnsignedInteger i = 0; i < sampleSize; ++ i)
+    for (MatrixImplementation::iterator h_iterator = h.begin(); h_iterator != h.end(); ++ h_iterator)
     {
-      const NumericalScalar u_ij = u_(i, j);
-      h[i] += u_ij * u_ij;
+      *h_iterator += (*u_iterator) * (*u_iterator);
+      ++ u_iterator;
     }
   }
   return h;
@@ -204,12 +205,14 @@ NumericalPoint SVDMethod::getGramInverseDiag() const
   NumericalPoint diag(n);
   for (UnsignedInteger j = 0; j < n; ++j)
   {
+    NumericalScalar diag_value = 0.0;
     for (UnsignedInteger i = 0; i < svdSize; ++i)
     {
       const NumericalScalar val = vTimpl[index] / singularValues_[i];
-      diag[j] += val * val;
+      diag_value += val * val;
       ++ index;
     }
+    diag[j] = diag_value;
     index += (m - svdSize);
   }
 
