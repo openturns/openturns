@@ -141,7 +141,6 @@ ot_add_source_file (WeibullFactory.cxx)
 ot_add_source_file (WeibullMuSigma.cxx)
 ot_add_source_file (Wishart.cxx)
 ot_add_source_file (ZipfMandelbrot.cxx)
-ot_add_source_file (poissinv_cpu.h)
 
 ot_install_header_file (AliMikhailHaqCopula.hxx)
 ot_install_header_file (AliMikhailHaqCopulaFactory.hxx)
