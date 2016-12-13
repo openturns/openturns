@@ -13,9 +13,24 @@
 SVDMethod
 solve: [1.83333,-1,0.166667]
 solveNormal: [3,-2.5,0.5]
+getHDiag: [1,1,1]
+getGramInverse: [[  14  36  98 ]
+ [  36  98 276 ]
+ [  98 276 794 ]]
+getGramInverseTrace: 5.2673
 CholeskyMethod
 solve: [1.83333,-1,0.166667]
 solveNormal: [3,-2.5,0.5]
+getHDiag: [1,1,1]
+getGramInverse: [[  11.3611   -10.6667     2.30556  ]
+ [ -10.6667    10.5       -2.33333  ]
+ [   2.30556   -2.33333    0.527778 ]]
+getGramInverseTrace: 0.78342
 QRMethod
 solve: [1.83333,-1,0.166667]
 solveNormal: [3,-2.5,0.5]
+getHDiag: [0.783417,37.0109,400.314]
+getGramInverse: [[ 0.0714286 0         0         ]
+ [ 0         0.184211  0         ]
+ [ 0         0         0.527778  ]]
+getGramInverseTrace: 0.78342

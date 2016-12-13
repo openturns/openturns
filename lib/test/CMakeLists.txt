@@ -317,6 +317,7 @@ ot_check_test (GaussKronrod_std)
 ot_check_test (IteratedQuadrature_std)
 ot_check_test (KarhunenLoeveP1Factory_std)
 ot_check_test (KarhunenLoeveP1Algorithm_std)
+ot_check_test (LeastSquaresMethod_std)
 
 # Analytical
 ot_check_test (Analytical_std)
