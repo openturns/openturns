@@ -24,7 +24,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
@@ -152,7 +152,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       linear(i, i) = 1.0;
       linear(i, dimension + i) = 1.0;
     }
-    LinearNumericalMathFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
+    LinearFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
     Indices parameters(dimension);
     parameters.fill();
     shiftFunction = NumericalMathFunction(shiftFunctionBase, parameters, NumericalPoint(dimension));

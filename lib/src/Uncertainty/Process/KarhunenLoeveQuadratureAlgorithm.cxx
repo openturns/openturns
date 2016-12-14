@@ -26,7 +26,7 @@
 #include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/ComposedDistribution.hxx"
@@ -159,8 +159,8 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       normalizationFactor *= T(i, i);
       inverseT(i, i) = 1.0 / T(i, i);
     }
-    scaling = LinearNumericalMathFunction(center, constant, T);
-    inverseScaling = LinearNumericalMathFunction(constant, center, inverseT);
+    scaling = LinearFunction(center, constant, T);
+    inverseScaling = LinearFunction(constant, center, inverseT);
   }
   // Here we set the collection of functions
   Collection<NumericalMathFunction> coll(basisSize_);

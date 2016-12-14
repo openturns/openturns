@@ -15,6 +15,7 @@ General mathematical functions
     AnalyticalFunction
     ComposedFunction
     LinearCombinationFunction
+    LinearFunction
     AggregatedFunction
     DualLinearCombinationFunction
     DatabaseFunction
@@ -30,7 +31,6 @@ Various functions
     :template: class.rst_t
 
     ComposedNumericalMathFunction
-    LinearNumericalMathFunction
     ProductNumericalMathFunction
     QuadraticNumericalMathFunction
 

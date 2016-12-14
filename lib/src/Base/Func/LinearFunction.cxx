@@ -18,17 +18,17 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 #include "openturns/ConstantNumericalMathGradientImplementation.hxx"
 #include "openturns/ConstantNumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LinearNumericalMathFunction);
+CLASSNAMEINIT(LinearFunction);
 
 /* Default constructor */
-LinearNumericalMathFunction::LinearNumericalMathFunction(const NumericalPoint & center,
+LinearFunction::LinearFunction(const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear)
   : NumericalMathFunction(new LinearNumericalMathEvaluationImplementation(center, constant, linear.transpose()),
@@ -39,26 +39,26 @@ LinearNumericalMathFunction::LinearNumericalMathFunction(const NumericalPoint & 
 }
 
 /* Comparison operator */
-Bool LinearNumericalMathFunction::operator ==(const LinearNumericalMathFunction & other) const
+Bool LinearFunction::operator ==(const LinearFunction & other) const
 {
   if (this == &other) return true;
   return *getImplementation() == *other.getImplementation();
 }
 
 /* String converter */
-String LinearNumericalMathFunction::__repr__() const
+String LinearFunction::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << LinearNumericalMathFunction::GetClassName()
+  oss << "class=" << LinearFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__repr__();
   return oss;
 }
 
-String LinearNumericalMathFunction::__str__(const String & offset) const
+String LinearFunction::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << LinearNumericalMathFunction::GetClassName()
+  oss << "class=" << LinearFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__str__();
   return oss;

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LINEARNUMERICALMATHFUNCTION_HXX
-#define OPENTURNS_LINEARNUMERICALMATHFUNCTION_HXX
+#ifndef OPENTURNS_LINEARFUNCTION_HXX
+#define OPENTURNS_LINEARFUNCTION_HXX
 
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class LinearNumericalMathFunction
+ * @class LinearFunction
  *
  * The class that simulates a linear numerical math function,
  * its gradient and its hessian. This class is just an interface
@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the function, the gradient or the hessian.
  */
-class OT_API LinearNumericalMathFunction
+class OT_API LinearFunction
   : public NumericalMathFunction
 {
   CLASSNAME;
@@ -48,21 +48,21 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  LinearNumericalMathFunction(const NumericalPoint & center,
+  LinearFunction(const NumericalPoint & center,
                               const NumericalPoint & constant,
                               const Matrix & linear);
 
 
   /** Comparison operator */
-  Bool operator ==(const LinearNumericalMathFunction & other) const;
+  Bool operator ==(const LinearFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
-}; /* class LinearNumericalMathFunction */
+}; /* class LinearFunction */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LINEARNUMERICALMATHFUNCTION_HXX */
+#endif /* OPENTURNS_LINEARFUNCTION_HXX */

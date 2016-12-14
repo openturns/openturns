@@ -26,7 +26,7 @@
 #include "openturns/TensorizedCovarianceModel.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
@@ -111,7 +111,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -173,7 +173,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::NumericalScalarEpsilon) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -277,7 +277,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -843,7 +843,7 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() 
   if (!normalize_)
   {
     const UnsignedInteger dimension = inputSample_.getDimension();
-    return LinearNumericalMathFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
+    return LinearFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
   }
   return inputTransformation_;
 }

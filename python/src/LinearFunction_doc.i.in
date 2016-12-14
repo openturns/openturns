@@ -1,8 +1,8 @@
-%feature("docstring") OT::LinearNumericalMathFunction
+%feature("docstring") OT::LinearFunction
 "Linear numerical math function.
 
 Available constructors:
-   LinearNumericalMathFunction(*center, constant, linear*)
+   LinearFunction(*center, constant, linear*)
 
 Parameters
 ----------

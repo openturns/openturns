@@ -22,7 +22,7 @@
  */
 #include "openturns/LinearBasisFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,14 +57,14 @@ Basis LinearBasisFactory::build() const
   Basis basis;
 
   // constant term
-  basis.add(LinearNumericalMathFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 1.0), Matrix(1, inputDimension_)));
+  basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 1.0), Matrix(1, inputDimension_)));
 
   // linear term
   for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
     Matrix linear(1, inputDimension_);
     linear(0, i) = 1.0;
-    basis.add(LinearNumericalMathFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 0.0), linear));
+    basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 0.0), linear));
   }
 
   return basis;

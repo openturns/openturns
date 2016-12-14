@@ -30,7 +30,7 @@
 #include "openturns/InverseNatafEllipticalDistributionEvaluation.hxx"
 #include "openturns/InverseNatafEllipticalDistributionGradient.hxx"
 #include "openturns/InverseNatafEllipticalDistributionHessian.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
@@ -760,7 +760,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
     const TriangularMatrix inverseCholesky(copula_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
-    LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), inverseCholesky);
+    LinearFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), inverseCholesky);
     return ComposedFunction(linear, marginalTransformation);
   }
   // General case: go to uniform marginal distributions using marginal transformations, then use the isoprobabilistic ransformation of the copula
@@ -837,7 +837,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     // Suppress the correlation between the components.
     const TriangularMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
     // const SquareMatrix cholesky(ComposedDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
-    LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), cholesky);
+    LinearFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), cholesky);
     return ComposedFunction(marginalTransformation, linear);
   }
   // General case: go to the copula using its inverse isoprobabilistic transformation, then add the correct marginal distributions using marginal transformations

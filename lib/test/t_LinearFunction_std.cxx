@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class LinearNumericalMathFunctionImplementation for standard methods
+ *  @brief The test file of class LinearFunctionImplementation for standard methods
  *
  *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     linear(0, 2) = 5.0;
     linear(1, 2) = 6.0;
 
-    LinearNumericalMathFunction myFunction(center, constant, linear);
+    LinearFunction myFunction(center, constant, linear);
     myFunction.setName("linearFunction");
     NumericalPoint inPoint(inputDimension);
     inPoint[0] = 7.0;

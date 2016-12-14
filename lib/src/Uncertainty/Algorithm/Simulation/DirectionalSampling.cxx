@@ -21,7 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DirectionalSampling.hxx"
 #include "openturns/CorrelationMatrix.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -156,7 +156,7 @@ NumericalScalar DirectionalSampling::computeTotalContribution(const NumericalSam
     // 1. Build the scalar function along the direction
     // 1.1 Build the linear function along the direction
     for (UnsignedInteger indexComponent = 0; indexComponent < dimension; ++indexComponent) linear(indexComponent, 0) = direction[indexComponent];
-    const LinearNumericalMathFunction ray(NumericalPoint(1, 0.0), NumericalPoint(dimension, 0.0), linear);
+    const LinearFunction ray(NumericalPoint(1, 0.0), NumericalPoint(dimension, 0.0), linear);
     // 1.2 Build the function along the ray
     const ComposedFunction functionAlongRay(standardFunction_, ray);
     // 2. Solve the function along the ray

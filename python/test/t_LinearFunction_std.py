@@ -27,7 +27,7 @@ try:
     linear[1, 2] = 6.0
 
     # myFunction = linear * (X- center) + constant
-    myFunction = LinearNumericalMathFunction(center, constant, linear)
+    myFunction = LinearFunction(center, constant, linear)
     myFunction.setName("linearFunction")
     inPoint = NumericalPoint(inputDimension)
     inPoint[0] = 7.0
@@ -43,5 +43,5 @@ try:
 
 except:
     import sys
-    print("t_LinearNumericalMathFunction_std.py",
+    print("t_LinearFunction_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

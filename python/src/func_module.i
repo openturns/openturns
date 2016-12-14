@@ -79,7 +79,7 @@
 %include LinearCombinationEvaluationImplementation.i
 %include LinearCombinationGradientImplementation.i
 %include LinearCombinationHessianImplementation.i
-%include LinearNumericalMathFunction.i
+%include LinearFunction.i
 %include QuadraticNumericalMathFunction.i
 %include UniVariateFunctionImplementation.i
 %include UniVariateFunction.i

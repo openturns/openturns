@@ -19,7 +19,7 @@ activateCache : bool
 See also
 --------
 NumericalMathFunction, AggregatedNumericalMathEvaluationImplementation, DualLinearCombinationEvaluationImplementation,
-LinearNumericalMathFunction
+LinearFunction
 
 Notes
 -----

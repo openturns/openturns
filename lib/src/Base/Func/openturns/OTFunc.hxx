@@ -64,7 +64,7 @@
 #include "openturns/LinearCombinationGradientImplementation.hxx"
 #include "openturns/LinearCombinationHessianImplementation.hxx"
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/IdentityEvaluation.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/QuadraticNumericalMathFunction.hxx"

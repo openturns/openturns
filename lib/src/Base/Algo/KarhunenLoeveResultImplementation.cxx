@@ -21,7 +21,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ComposedFunction.hxx"
@@ -108,7 +108,7 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
     {
       const NumericalMathFunction modeI(modes_.build(i));
-      LinearNumericalMathFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
+      LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
       scaledModes[i] = ComposedFunction(scaling, modeI);
     }
   return scaledModes;

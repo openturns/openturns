@@ -24,7 +24,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/AnalyticalFunction.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/ComposedFunction.hxx"
@@ -171,13 +171,13 @@ NumericalPoint LevelSet::getLowerBound() const
 void LevelSet::computeLowerBound() const
 {
   lowerBound_ = NumericalPoint(dimension_);
-  LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  LinearFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
   ComposedFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
-    LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
+    LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
     OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
     problem.setMinimization(true);
     Cobyla solver(problem);
@@ -203,13 +203,13 @@ NumericalPoint LevelSet::getUpperBound() const
 void LevelSet::computeUpperBound() const
 {
   upperBound_ = NumericalPoint(dimension_);
-  LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  LinearFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
   ComposedFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
-    LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
+    LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
     OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
     problem.setMinimization(false);
     Cobyla solver(problem);

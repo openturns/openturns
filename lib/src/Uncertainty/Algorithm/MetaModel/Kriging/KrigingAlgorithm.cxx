@@ -21,7 +21,7 @@
 
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ProductCovarianceModel.hxx"
 #include "openturns/KrigingEvaluation.hxx"
